@@ -6,12 +6,12 @@ import ScheduleBlock from "./schedule";
 import CardsBlock from "./cards";
 import { SettingsBlock, WizardBlock, DialogBlock } from "./forms";
 import {
-  ShellBlock,
   DashboardBlock,
   StatsBlock,
   NavBlock,
   ListBlock,
 } from "./workspace";
+import AppShell from "./shells/audited";
 import {
   CalendarBlock,
   BoardBlock,
@@ -27,7 +27,7 @@ export default function ApplicationBlock({ block }: BlockProps) {
     case "card":
       return <CardsBlock block={block} />;
     case "app-shell":
-      return <ShellBlock block={block} />;
+      return <AppShell block={block} />;
     case "dashboard":
       return <DashboardBlock block={block} />;
     case "stats":

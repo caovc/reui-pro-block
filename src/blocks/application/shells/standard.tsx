@@ -1,0 +1,625 @@
+import { useState } from "react";
+import {
+  Activity,
+  BarChart3,
+  Bot,
+  ChevronDown,
+  CircleHelp,
+  Code2,
+  CreditCard,
+  Ellipsis,
+  Home,
+  Layers,
+  Library,
+  MessageSquare,
+  Network,
+  PanelLeft,
+  PanelRight,
+  Plus,
+  Settings,
+  Shield,
+  Users,
+  Workflow,
+  Zap,
+} from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import {
+  AppsMenu,
+  Breadcrumbs,
+  Button,
+  CollapseHandle,
+  CreateItemDialog,
+  Face,
+  FooterLinks,
+  Members,
+  Navigation,
+  Notifications,
+  PinnedProjects,
+  PlaceholderCanvas,
+  ReuiMark,
+  SearchPalette,
+  UsageCard,
+  WorkspaceMenu,
+  RowActions,
+  Badge,
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  standardNavigation,
+  toast,
+} from "./chrome";
+import type { NavNode } from "./chrome";
+import { Sidebar } from "./primitives";
+import { CalendarContext } from "./calendar-panel";
+const railNavigation: NavNode[] = [
+  { label: "Overview", icon: Home },
+  {
+    label: "Pipelines",
+    icon: Zap,
+    children: ["Build Runs", "Deployments", "Release Gates"],
+  },
+  {
+    label: "Infrastructure",
+    icon: Layers,
+    children: ["Compute", "Databases", "Storage"],
+  },
+  { label: "Observability", icon: Activity, badge: "14" },
+  { label: "Security", icon: Shield },
+];
+const floatingNavigation: NavNode[] = [
+  { label: "Overview", icon: Home },
+  {
+    label: "Customers",
+    icon: Users,
+    children: ["Segments", "Accounts", "Health Scores"],
+  },
+  {
+    label: "Subscriptions",
+    icon: CreditCard,
+    children: ["Plans", "Invoices", "Usage"],
+  },
+  { label: "Revenue", icon: BarChart3, dot: true },
+  { label: "Automation", icon: Workflow },
+  { label: "Support", icon: CircleHelp },
+];
+const agentsNavigation: NavNode[] = [
+  { label: "New Chat", icon: Plus, accent: true },
+  {
+    label: "Agents",
+    icon: Bot,
+    children: ["My Agents", "Templates", "Deployed"],
+  },
+  {
+    label: "Threads",
+    icon: MessageSquare,
+    children: ["Recent", "Saved", "Archived"],
+  },
+  {
+    label: "Tools",
+    icon: Code2,
+    children: ["All tools", "Integrations", "API keys"],
+  },
+  {
+    label: "Knowledge",
+    icon: Library,
+    children: ["Sources", "Collections", "Documents"],
+  },
+  { label: "Runs", icon: Workflow, children: ["Live", "History", "Scheduled"] },
+  { label: "Analytics", icon: BarChart3 },
+  { label: "Settings", icon: Settings },
+];
+const appsNavigation: NavNode[] = [
+  {
+    label: "Audience",
+    icon: Users,
+    children: ["Contacts", "Segments", "Lists"],
+  },
+  {
+    label: "Account",
+    icon: Settings,
+    children: ["Profile", "Billing", "Security", "Members"],
+  },
+  {
+    label: "Network",
+    icon: Network,
+    children: ["Connections", "Integrations", "Requests"],
+  },
+];
+function ResourceLinks({ onSelect }: { onSelect: (s: string) => void }) {
+  const [open, setOpen] = useState(true);
+  const [items, setItems] = useState([
+    "API Gateway",
+    "ML Pipeline",
+    "Database",
+    "CDN",
+    "Authentication",
+  ]);
+  return (
+    <div className="mt-5 flex flex-col gap-1">
+      <Button
+        variant="ghost"
+        size="sm"
+        className="h-7 justify-between px-2 text-[11px] font-normal text-muted-foreground"
+        aria-expanded={open}
+        onClick={() => setOpen(!open)}
+      >
+        Resources
+        <ChevronDown />
+      </Button>
+      {open &&
+        items.map((name, i) => (
+          <div className="group flex items-center" key={name}>
+            <Button
+              variant="ghost"
+              className="shell-nav-button min-w-0 flex-1 justify-start"
+              onClick={() => onSelect(name)}
+            >
+              <span
+                className="mx-1 size-1.5 shrink-0 rounded-full"
+                style={{ background: `var(--chart-${i + 1})` }}
+              />
+              <span className="truncate">{name}</span>
+              {i === 0 && (
+                <Badge variant="outline" className="h-4 px-1 text-[9px]">
+                  Prod
+                </Badge>
+              )}
+              {i === 2 && (
+                <Badge variant="outline" className="h-4 px-1 text-[9px]">
+                  US-East
+                </Badge>
+              )}
+            </Button>
+            <RowActions
+              name={name}
+              onRemove={() => setItems(items.filter((v) => v !== name))}
+            />
+          </div>
+        ))}
+    </div>
+  );
+}
+function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
+  const [collapsed, setCollapsed] = useState(false);
+  const [active, setActive] = useState(
+    variant === 1 || variant === 2 || variant === 12 ? "Overview" : "Dashboard",
+  );
+  const [context, setContext] = useState(true);
+  const [auto, setAuto] = useState(true);
+  const [newItem, setNewItem] = useState(false);
+  const [workspace, setWorkspace] = useState("Atlas");
+  const dark = variant === 6 || variant === 9;
+  const floating = variant === 2;
+  const apps = variant === 12;
+  const inset = [3, 9, 10].includes(variant);
+  const hasSearch = [2, 3, 6, 9, 10].includes(variant);
+  const hasProjects = [3, 10, 12].includes(variant);
+  const hasMembers = variant === 6 || variant === 9;
+  const hasUsage = [3, 6, 9, 10].includes(variant);
+  const nav =
+    variant === 1
+      ? railNavigation
+      : variant === 2
+        ? floatingNavigation
+        : variant === 10
+          ? agentsNavigation
+          : standardNavigation;
+  const crumb =
+    variant === 1
+      ? ["Dashboard", active]
+      : variant === 2
+        ? ["VC Workspace", "CN @shadcn", active === "Overview" ? "Projects" : active]
+        : variant === 10
+          ? [
+              workspace,
+              "Nick Bold",
+              active === "Dashboard" ? "Overview" : active,
+            ]
+          : apps
+            ? ["Dashboards", active]
+            : ["Home", active === "Dashboard" ? "Overview" : active];
+  return (
+    <div
+      className={`shell-reference ${variant === 9 ? "bg-[#171717]" : ""} ${floating ? "bg-muted/25" : ""}`}
+      data-shell-variant={variant}
+    >
+      <Sidebar
+        collapsed={collapsed}
+        className={` ${collapsed ? "collapsed" : ""} ${dark ? "shell-dark" : ""} ${floating ? "m-2 rounded-xl border !w-60 shadow-sm" : ""} ${apps ? "!w-60 border-r" : ""} ${variant === 1 ? "!w-64 border-r" : ""}`}
+      >
+        <div
+          className={`mb-3 flex h-10 shrink-0 items-center gap-2 px-2 ${apps ? "h-12" : ""}`}
+        >
+          <ReuiMark />
+          {!collapsed && (
+            <>
+              <div className="sidebar-expanded min-w-0 flex-1">
+                <p className="text-[13px] font-medium">ReUI</p>
+                {apps && (
+                  <p className="mt-0.5 text-[10px] text-muted-foreground">
+                    Pro plan
+                  </p>
+                )}
+              </div>
+              {[3, 6, 9, 10].includes(variant) && (
+                <div className="sidebar-expanded">
+                  <Notifications />
+                </div>
+              )}
+              {variant === 1 && (
+                <div className="sidebar-expanded">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon-sm"
+                        aria-label="Switch workspace"
+                      >
+                        <Ellipsis />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuGroup>
+                        {["ReUI", "Acme Inc", "Atlas"].map((n) => (
+                          <DropdownMenuItem
+                            key={n}
+                            onSelect={() => setWorkspace(n)}
+                          >
+                            {n}
+                          </DropdownMenuItem>
+                        ))}
+                      </DropdownMenuGroup>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              )}
+              {[2, 3].includes(variant) && (
+                <Button
+                  size="icon-sm"
+                  variant="ghost"
+                  aria-label="Toggle Sidebar"
+                  onClick={() => setCollapsed(!collapsed)}
+                >
+                  <PanelLeft />
+                </Button>
+              )}
+            </>
+          )}
+        </div>
+        {hasSearch && (
+          <div className="mb-3 px-2">
+            <SearchPalette
+              collapsed={collapsed}
+              shortcut={variant === 10 ? "/" : "⌘K"}
+              onSelect={setActive}
+            />
+          </div>
+        )}
+        <div className="shell-scroll px-0 pb-3">
+          {apps ? (
+            <>
+              <Navigation
+                items={[
+                  { label: "Overview", icon: Home },
+                  {
+                    label: "Analytics",
+                    icon: BarChart3,
+                    badge: "Soon",
+                    disabled: true,
+                  },
+                ]}
+                label="Dashboards"
+                collapsed={collapsed}
+                active={active}
+                onSelect={setActive}
+              />
+              <div className="mt-5">
+                <Navigation
+                  items={appsNavigation}
+                  label="Workspace"
+                  initialExpanded={["Account"]}
+                  collapsed={collapsed}
+                  active={active === "Overview" ? "Billing" : active}
+                  onSelect={setActive}
+                />
+              </div>
+            </>
+          ) : (
+            <Navigation
+              items={nav}
+              initialExpanded={
+                variant === 1
+                  ? ["Pipelines"]
+                  : variant === 2
+                    ? ["Customers"]
+                    : []
+              }
+              collapsed={collapsed}
+              active={active}
+              onSelect={setActive}
+              label={variant === 10 ? "Workspace" : "Platform"}
+            />
+          )}
+          {variant === 1 && !collapsed && (
+            <div className="sidebar-expanded">
+              <ResourceLinks onSelect={setActive} />
+            </div>
+          )}
+          {hasProjects && (
+            <div className="sidebar-expanded">
+              <PinnedProjects
+                collapsed={collapsed}
+                onSelect={setActive}
+                names={
+                  apps
+                    ? [
+                        "Billing Portal",
+                        "Audience Sync",
+                        "Report Builder",
+                        "Network Map",
+                        "Access Review",
+                      ]
+                    : undefined
+                }
+              />
+            </div>
+          )}
+          {hasMembers && (
+            <div className="sidebar-expanded">
+              <Members collapsed={collapsed} onSelect={setActive} />
+            </div>
+          )}
+        </div>
+        {(variant === 1 || variant === 2 || apps) && (
+          <div className={collapsed ? "" : "sidebar-expanded"}>
+            <FooterLinks collapsed={collapsed} onSelect={setActive} />
+          </div>
+        )}
+        {hasUsage && (
+          <div className="sidebar-expanded">
+            <UsageCard
+              collapsed={collapsed}
+              title={variant === 9 ? "AI Credits" : "Spending Limit"}
+              description={
+                variant === 9
+                  ? "Usage resets at the end of your billing cycle."
+                  : undefined
+              }
+              upgrade={variant === 9}
+            />
+          </div>
+        )}
+        {!apps && (
+          <div className="mt-auto pt-1">
+            <WorkspaceMenu
+              collapsed={collapsed}
+              user={[1, 9, 10].includes(variant)}
+              initial={
+                variant === 1
+                  ? "ReUI"
+                  : variant === 2
+                    ? "Vercel"
+                    : variant === 9
+                      ? "Acme Corp"
+                      : variant === 10
+                        ? "Atlas"
+                        : "Claude"
+              }
+              subtitle={
+                variant === 9
+                  ? "Acme Corp"
+                  : variant === 10
+                    ? "Atlas"
+                    : undefined
+              }
+              top={variant === 1}
+              onName={setWorkspace}
+            />
+          </div>
+        )}
+        <CollapseHandle
+          collapsed={collapsed}
+          onToggle={() => setCollapsed(!collapsed)}
+        />
+      </Sidebar>
+      <div className={`shell-content-frame ${inset ? "inset" : ""}`}>
+        <header
+          className={`shell-header ${apps || variant === 10 || variant === 9 ? "border-b" : ""}`}
+        >
+          <Breadcrumbs items={crumb} />
+          <div className="flex shrink-0 items-center gap-1">
+            {variant === 6 && (
+              <>
+                <div className="mr-2 flex -space-x-1">
+                  {["Nick Johnson", "Alex Johnson", "Sarah Chen"].map(
+                    (n, i) => (
+                      <Face key={n} name={n} index={i} small />
+                    ),
+                  )}
+                </div>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      aria-label="More options"
+                    >
+                      <Ellipsis />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuGroup>
+                      <DropdownMenuItem
+                        onSelect={() => toast("Workspace refreshed")}
+                      >
+                        Refresh
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onSelect={() => setNewItem(true)}>
+                        Add a note
+                      </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                <Button
+                  variant={context ? "secondary" : "ghost"}
+                  size="icon-sm"
+                  aria-label={
+                    context ? "Close context panel" : "Open context panel"
+                  }
+                  onClick={() => setContext(!context)}
+                >
+                  <PanelRight />
+                </Button>
+              </>
+            )}
+            {variant === 10 && (
+              <>
+                <label className="mr-2 hidden items-center gap-2 text-xs sm:flex">
+                  <Switch
+                    checked={auto}
+                    onCheckedChange={setAuto}
+                    aria-label="Auto refresh"
+                  />
+                  Auto Refresh
+                </label>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      aria-label="More options"
+                    >
+                      <Ellipsis />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuGroup>
+                      {["Refresh", "Export", "Settings"].map((n) => (
+                        <DropdownMenuItem
+                          key={n}
+                          onSelect={() => toast(`${n} selected`)}
+                        >
+                          {n}
+                        </DropdownMenuItem>
+                      ))}
+                    </DropdownMenuGroup>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                <Button
+                  size="sm"
+                  className="ml-1 h-7 text-xs"
+                  onClick={() => setNewItem(true)}
+                >
+                  <Plus />
+                  New order
+                </Button>
+              </>
+            )}
+            {apps && (
+              <>
+                <SearchPalette iconOnly onSelect={setActive} />
+                <Notifications />
+                <AppsMenu onSelect={setActive} />
+                <WorkspaceMenu collapsed user initial="Atlas" />
+              </>
+            )}
+          </div>
+        </header>
+        {apps && (
+          <div className="flex flex-wrap items-center justify-between gap-3 px-6 pb-1 pt-5">
+            <div>
+              <h1 className="text-xl font-semibold tracking-tight">{active}</h1>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Your workspace at a glance.
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-7 text-xs"
+                onClick={() => {
+                  const blob = new Blob(
+                    ["Workspace report\nStatus: ready\nDate: 2026-06-10"],
+                    { type: "text/plain" },
+                  );
+                  const a = document.createElement("a");
+                  a.href = URL.createObjectURL(blob);
+                  a.download = "workspace-report.txt";
+                  a.click();
+                  URL.revokeObjectURL(a.href);
+                }}
+              >
+                Export
+              </Button>
+              <Button
+                size="sm"
+                className="h-7 text-xs"
+                onClick={() => setNewItem(true)}
+              >
+                <Plus />
+                New Report
+              </Button>
+            </div>
+          </div>
+        )}
+        <PlaceholderCanvas solid={[3, 9, 10].includes(variant)} />
+        {apps && (
+          <footer className="flex flex-wrap items-center justify-between gap-2 border-t px-6 py-3 text-[10px] text-muted-foreground">
+            <span>
+              2026 © <span className="text-foreground">ReUI</span>
+            </span>
+            <div className="flex gap-3">
+              {["Docs", "Changelog", "Support", "Privacy", "Status"].map(
+                (n) => (
+                  <Button
+                    key={n}
+                    variant="link"
+                    className="h-auto p-0 text-[10px] font-normal text-muted-foreground"
+                    onClick={() => toast(`${n} selected`)}
+                  >
+                    {n}
+                  </Button>
+                ),
+              )}
+            </div>
+          </footer>
+        )}
+      </div>
+      {variant === 6 && context && (
+        <aside className="shell-context">
+          <CalendarContext />
+        </aside>
+      )}
+      <CreateItemDialog
+        open={newItem}
+        onOpenChange={setNewItem}
+        title={apps ? "New report" : variant === 10 ? "New order" : "Add note"}
+        onCreate={(name) => toast.success(`${name} created`)}
+      />
+    </div>
+  );
+}
+export function IconRailDashboard() {
+  return <InsetNavShell variant={1} />;
+}
+export function FloatingSidebarAdmin() {
+  return <InsetNavShell variant={2} />;
+}
+export function ProjectTrackerSidebar() {
+  return <InsetNavShell variant={3} />;
+}
+export function TeamCalendarPanel() {
+  return <InsetNavShell variant={6} />;
+}
+export function TeamPresenceWorkspace() {
+  return <InsetNavShell variant={9} />;
+}
+export function AiAgentsConsole() {
+  return <InsetNavShell variant={10} />;
+}
+export function AppsGridHeader() {
+  return <InsetNavShell variant={12} />;
+}
