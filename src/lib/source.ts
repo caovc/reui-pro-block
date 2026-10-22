@@ -3,6 +3,8 @@ const raw = import.meta.glob(
   [
     "/src/blocks/**/*.{ts,tsx,css}",
     "/src/components/ui/*.{ts,tsx}",
+    "/src/components/reui/**/*.{ts,tsx,css}",
+    "/src/hooks/*.{ts,tsx}",
     "/src/lib/{utils,download}.ts",
     "/src/data/types.ts",
     "/src/index.css",

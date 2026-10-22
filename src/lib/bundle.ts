@@ -2,7 +2,7 @@ import { zipSync, strToU8 } from "fflate";
 import type { BlockMeta } from "@/data/types";
 import { blockFiles } from "./source";
 const assets = import.meta.glob(
-  "/src/blocks/**/assets/*.{jpg,jpeg,png,webp,svg}",
+  "/src/blocks/**/assets/**/*.{jpg,jpeg,png,webp,svg,woff,woff2}",
   { query: "?url", import: "default", eager: true },
 ) as Record<string, string>;
 const packageManifest = import.meta.glob("/package.json", {
@@ -16,17 +16,23 @@ export async function downloadBundle(block: BlockMeta) {
   for (const [path, content] of Object.entries(files))
     payload[path === `${block.id}.tsx` ? "src/Example.tsx" : path] =
       strToU8(content);
-  if (["marketing", "ecommerce"].includes(block.group)) {
-    await Promise.all(
-      Object.entries(assets)
-        .filter(([path]) => path.includes("/commerce/"))
-        .map(async ([path, url]) => {
-          const response = await fetch(url);
-          if (!response.ok) throw new Error(`Could not include asset ${path}`);
-          payload[path.slice(1)] = new Uint8Array(await response.arrayBuffer());
-        }),
-    );
-  }
+  const commerce = ["marketing", "ecommerce"].includes(block.group);
+  const application = block.group === "application";
+  const referenceFont = files["src/blocks/reference.css"] !== undefined;
+  await Promise.all(
+    Object.entries(assets)
+      .filter(
+        ([path]) =>
+          (commerce && path.includes("/commerce/")) ||
+          (application && path.includes("/application/")) ||
+          (referenceFont && path.startsWith("/src/blocks/assets/")),
+      )
+      .map(async ([path, url]) => {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`Could not include asset ${path}`);
+        payload[path.slice(1)] = new Uint8Array(await response.arrayBuffer());
+      }),
+  );
   const original = JSON.parse(packageManifest["/package.json"]);
   payload["package.json"] = strToU8(
     JSON.stringify(
@@ -87,8 +93,16 @@ export async function downloadBundle(block: BlockMeta) {
     ),
   );
   payload["README.md"] = strToU8(
-    `# ${block.name}\n\nIndependent shadcn/ui composition. Reference: ${block.reference}\n\nRequires Node.js 24+. Run npm install, then npm run dev. All demo actions are local. Replace the sample data and connect your own backend.\n\nThe entry is src/Example.tsx. Family modules are shared compositions; this bundle includes their transitive local dependencies.\n\nMIT open source code. shadcn/ui portions Copyright (c) 2023 shadcn. Preserve repository notices when redistributing. Images are free Unsplash demo photos; see https://unsplash.com/license.\n`,
+    `# ${block.name}\n\nIndependent composition using official free REUI and shadcn/ui components. Reference: ${block.reference}\n\nRequires Node.js 24+. Run npm install, then npm run dev. All demo actions are local. Replace the sample data and connect your own backend.\n\nThe entry is src/Example.tsx. Family modules are shared compositions; this bundle includes their transitive local dependencies.\n\nMIT open source code. Official REUI free portions Copyright (c) 2025 Keenthemes Inc; shadcn/ui portions Copyright (c) 2023 shadcn. Preserve repository and bundled component notices when redistributing. Images are free Unsplash demo photos; see https://unsplash.com/license.\n`,
   );
+  // Preserve the MIT notice for the actual official REUI free implementations.
+  const reuiNotices = import.meta.glob("/src/components/reui/*.{md,txt}", {
+    query: "?raw",
+    import: "default",
+    eager: true,
+  }) as Record<string, string>;
+  for (const [path, content] of Object.entries(reuiNotices))
+    payload[path.slice(1)] = strToU8(content);
   // These providers are required by main even when a particular family does not import them.
   const providerRaw = import.meta.glob(
     "/src/components/ui/{tooltip,sonner}.tsx",
@@ -103,13 +117,17 @@ export async function downloadBundle(block: BlockMeta) {
   }) as Record<string, string>;
   for (const [path, content] of Object.entries(notices))
     payload[path.slice(1)] = strToU8(content);
-  const imageNotes = import.meta.glob("/src/blocks/**/assets/*.md", {
+  const imageNotes = import.meta.glob("/src/blocks/**/assets/**/*.{md,txt}", {
     query: "?raw",
     import: "default",
     eager: true,
   }) as Record<string, string>;
   for (const [path, content] of Object.entries(imageNotes))
-    if (["marketing", "ecommerce"].includes(block.group))
+    if (
+      (commerce && path.includes("/commerce/")) ||
+      (application && path.includes("/application/")) ||
+      (referenceFont && path.startsWith("/src/blocks/assets/"))
+    )
       payload[path.slice(1)] = strToU8(content);
   const bytes = zipSync(payload);
   const url = URL.createObjectURL(
