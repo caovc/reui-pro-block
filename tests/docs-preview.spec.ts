@@ -151,3 +151,26 @@ test("official color picker and system mode update real preview tokens", async (
   await page.emulateMedia({ colorScheme: "dark" });
   await expect(page.frameLocator("iframe").locator("html")).toHaveClass("dark");
 });
+
+test("default keeps component fonts and explicit choices override a local font scope", async ({
+  page,
+}) => {
+  await page.goto("./#/block/marketing/faq/faq-1");
+  const surface = page
+    .frameLocator("iframe")
+    .locator(".reui-reference")
+    .first();
+  await expect(surface).toHaveCSS("font-family", "Inter, Arial, sans-serif");
+  await page.getByRole("button", { name: "Customize", exact: true }).click();
+  await page.getByRole("combobox", { name: "Body font" }).click();
+  await page.getByRole("option", { name: "Serif", exact: true }).click();
+  await expect(surface).toHaveCSS("font-family", "Georgia, serif");
+  await page.getByRole("combobox", { name: "Heading font" }).click();
+  await page.getByRole("option", { name: "Mono", exact: true }).click();
+  await expect(surface.getByRole("heading").first()).toHaveCSS(
+    "font-family",
+    "ui-monospace, monospace",
+  );
+  await page.getByRole("button", { name: "Reset", exact: true }).click();
+  await expect(surface).toHaveCSS("font-family", "Inter, Arial, sans-serif");
+});

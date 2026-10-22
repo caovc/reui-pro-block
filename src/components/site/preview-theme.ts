@@ -16,8 +16,8 @@ export const themeOptions = {
   base: ["neutral", "zinc", "stone"],
   accent: Object.keys(accents),
   chart: ["default", "neutral", "theme"],
-  font: Object.keys(fonts),
-  heading: Object.keys(fonts),
+  font: ["default", ...Object.keys(fonts)],
+  heading: ["default", ...Object.keys(fonts)],
   radius: ["0", "0.375", "0.625", "1"],
   mode: ["inherit", "light", "dark", "system"],
 } as const;
@@ -35,8 +35,8 @@ export const defaultTheme: PreviewTheme = {
   base: "neutral",
   accent: "blue",
   chart: "default",
-  font: "geist",
-  heading: "geist",
+  font: "default",
+  heading: "default",
   radius: "0.625",
   mode: "inherit",
   custom: "",
@@ -122,11 +122,13 @@ export function themeCSS(theme: PreviewTheme) {
           (_, i) =>
             `\n  --chart-${i + 1}: ${theme.chart === "neutral" ? `oklch(${0.75 - i * 0.11} 0 0)` : `color-mix(in oklch, ${color} ${100 - i * 16}%, var(--background))`};`,
         ).join("");
+  const bodyFont = fonts[theme.font as keyof typeof fonts];
+  const headingFont = fonts[theme.heading as keyof typeof fonts];
   return `/* Preview preset — append after your existing theme CSS. */
 :root:root {${palette(false)}
   --radius: ${theme.radius}rem;
-  --font-sans: ${fonts[theme.font as keyof typeof fonts]};
-  --font-heading: ${fonts[theme.heading as keyof typeof fonts]};
+  ${bodyFont ? `--font-sans: ${bodyFont};` : ""}
+  ${headingFont ? `--font-heading: ${headingFont};` : ""}
 }
 :root:root.dark {${palette(true)}
 }
@@ -137,8 +139,18 @@ export function themeCSS(theme: PreviewTheme) {
   --sidebar-primary: ${color};
   --sidebar-primary-foreground: #ffffff;${chart}
 }
-body { font-family: var(--font-sans); }
-h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); }
+${
+  bodyFont
+    ? `:root:root body { font-family: var(--font-sans); }
+:root:root .reui-reference { --font-sans: ${bodyFont}; font-family: var(--font-sans); }`
+    : ""
+}
+${
+  headingFont
+    ? `:root:root .reui-reference { --font-heading: ${headingFont}; }
+:root:root :is(h1, h2, h3, h4, h5, h6) { font-family: var(--font-heading); }`
+    : ""
+}
 `;
 }
 export function applyTheme(theme: PreviewTheme, dark: boolean) {
