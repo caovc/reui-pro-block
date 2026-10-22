@@ -1,0 +1,164 @@
+.preview-workspace {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.preview-workspace-main {
+  flex: 1;
+  min-width: 0;
+}
+.preset-sidebar {
+  width: 244px;
+  flex-shrink: 0;
+}
+.preset-frame {
+  background: var(--background);
+}
+.preset-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.preset-setting {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.preset-setting > span,
+.preset-foundation > span {
+  font-size: 11px;
+  color: var(--muted-foreground);
+}
+.preset-setting > button {
+  width: 100%;
+}
+.preset-foundation {
+  display: grid;
+  gap: 3px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.preset-foundation strong {
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+.preset-actions {
+  padding: 8px;
+  display: grid;
+  gap: 8px;
+}
+.preset-actions p {
+  color: var(--muted-foreground);
+  font-size: 11px;
+  line-height: 1.6;
+  padding: 4px;
+}
+.preview-status {
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.block-source-sheet[data-slot="sheet-content"] {
+  width: min(860px, 90vw);
+  max-width: none;
+  gap: 0;
+}
+.block-source-sheet > [data-slot="sheet-header"] {
+  border-bottom: 1px solid var(--border);
+  padding: 22px 52px 22px 24px;
+  flex-shrink: 0;
+}
+.block-source-scroll {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+  overscroll-behavior: contain;
+}
+.source-panel-content {
+  display: grid;
+  gap: 28px;
+  padding: 24px;
+  background: var(--background);
+  min-width: 0;
+}
+.source-panel-content section {
+  min-width: 0;
+}
+.source-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.source-section-heading h3 {
+  font-size: 16px;
+  font-weight: 600;
+}
+.source-section-heading > span {
+  font-size: 11px;
+  color: var(--muted-foreground);
+}
+.source-installation > p,
+.preset-source > p {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 1.8;
+  margin-bottom: 14px;
+}
+.installation-code [data-slot="code-block-header"] {
+  justify-content: space-between;
+}
+.preset-source summary {
+  font-size: 13px;
+  cursor: pointer;
+  margin-bottom: 14px;
+}
+.preset-source [data-slot="code-block-viewport"] {
+  max-height: 360px;
+}
+@media (max-width: 900px) {
+  .preview-workspace {
+    flex-direction: column;
+  }
+  .preset-sidebar {
+    width: 100%;
+  }
+  .preset-fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .preset-foundation {
+    grid-column: 1 / -1;
+  }
+  .preview-workspace-main {
+    width: 100%;
+  }
+  .preset-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .preset-actions p {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 600px) {
+  .block-source-sheet[data-slot="sheet-content"] {
+    width: 100vw;
+  }
+  .source-panel-content {
+    padding: 16px 10px;
+    gap: 24px;
+  }
+  .installation-code [data-slot="code-block-header"] {
+    padding-inline: 8px;
+    gap: 4px;
+  }
+  .source-panel-content .reui-source-viewer [data-slot="select-trigger"] {
+    max-width: calc(100vw - 144px);
+  }
+  .source-section-heading {
+    gap: 6px;
+  }
+}

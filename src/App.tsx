@@ -1,28 +1,21 @@
-import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ArrowDownToLine,
   ArrowLeft,
   ArrowRight,
   BookOpen,
-  Check,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
   Code2,
-  Copy,
   ExternalLink,
   GitFork as Github,
   Heart,
   LayoutGrid,
-  Monitor,
   Moon,
   PanelLeft,
-  RotateCcw,
   Search,
-  SlidersHorizontal,
-  Smartphone,
   Sun,
-  Tablet,
   X,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -39,8 +32,7 @@ import { BlockRenderer } from "@/blocks/renderer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Tooltip,
   TooltipTrigger,
@@ -78,11 +70,7 @@ import {
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
-const CodeViewer = lazy(() =>
-  import("@/components/site/code-viewer").then((module) => ({
-    default: module.CodeViewer,
-  })),
-);
+import { PreviewPanel, IsolatedPreview } from '@/components/site/block-preview';
 
 function useStored<T>(key: string, fallback: T) {
   const [value, setValue] = useState<T>(() => {
@@ -253,241 +241,6 @@ function NoResults({
   );
 }
 
-function PreviewPanel({ block, dark }: { block: BlockMeta; dark: boolean }) {
-  const [tab, setTab] = useState("preview");
-  const [device, setDevice] = useState("desktop");
-  const [revision, setRevision] = useState(0);
-  const [copied, setCopied] = useState(false);
-  const [radius, setRadius] = useState("0.625");
-  const [accent, setAccent] = useState("blue");
-  const [customize, setCustomize] = useState(false);
-  const iframe = useRef<HTMLIFrameElement>(null);
-  const [frameReady, setFrameReady] = useState(false);
-  const previewUrl = `${location.pathname}#/preview/${blockKey(block)}?theme=${dark ? "dark" : "light"}&radius=${radius}&accent=${accent}`;
-  const [canvasWidth, setCanvasWidth] = useState(1100);
-  const canvas = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const observer = new ResizeObserver(
-      (entries) =>
-        entries[0].contentRect.width > 0 &&
-        setCanvasWidth(entries[0].contentRect.width),
-    );
-    if (canvas.current) observer.observe(canvas.current);
-    return () => observer.disconnect();
-  }, [tab]);
-  const desired =
-    device === "mobile"
-      ? 390
-      : device === "tablet"
-        ? 768
-        : Math.max(1000, canvasWidth);
-  const scale = Math.max(0.1, Math.min(1, canvasWidth / desired));
-  async function copyLink() {
-    try {
-      await navigator.clipboard.writeText(location.href);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1800);
-    } catch {
-      toast.error("Could not copy link");
-    }
-  }
-  return (
-    <div className="preview-section">
-      <Tabs value={tab} onValueChange={setTab} className="gap-0">
-        <div className="preview-toolbar">
-          <div className="flex items-center gap-3">
-            <TabsList className="h-8">
-              <TabsTrigger value="preview">Preview</TabsTrigger>
-              <TabsTrigger value="code">Code</TabsTrigger>
-            </TabsList>
-            <Badge variant="outline" className="hidden sm:inline-flex">
-              {block.id}
-            </Badge>
-          </div>
-          <div className="flex items-center gap-1">
-            {tab === "preview" && (
-              <>
-                <ToggleGroup
-                  type="single"
-                  value={device}
-                  onValueChange={(value) => value && setDevice(value)}
-                  size="sm"
-                  className="hidden sm:flex"
-                  aria-label="Preview viewport"
-                >
-                  <ToggleGroupItem
-                    value="desktop"
-                    aria-label="Desktop viewport"
-                  >
-                    <Monitor />
-                  </ToggleGroupItem>
-                  <ToggleGroupItem value="tablet" aria-label="Tablet viewport">
-                    <Tablet />
-                  </ToggleGroupItem>
-                  <ToggleGroupItem value="mobile" aria-label="Mobile viewport">
-                    <Smartphone />
-                  </ToggleGroupItem>
-                </ToggleGroup>
-                <Separator
-                  orientation="vertical"
-                  className="mx-1 hidden h-5 sm:block"
-                />
-                <IconTip label="Reset preview">
-                  <Button
-                    variant="ghost"
-                    size="icon-sm"
-                    aria-label="Reset preview"
-                    onClick={() => {
-                      setRevision((n) => n + 1);
-                      setFrameReady(false);
-                    }}
-                  >
-                    <RotateCcw />
-                  </Button>
-                </IconTip>
-              </>
-            )}
-            <IconTip label="Copy link">
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                aria-label="Copy block link"
-                onClick={copyLink}
-              >
-                {copied ? <Check /> : <Copy />}
-              </Button>
-            </IconTip>
-            <IconTip label="Open preview in new tab">
-              <Button variant="ghost" size="icon-sm" asChild>
-                <a
-                  href={previewUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label="Open isolated preview"
-                >
-                  <ExternalLink />
-                </a>
-              </Button>
-            </IconTip>
-            <Button
-              variant="outline"
-              size="sm"
-              className="ml-1"
-              onClick={() => setCustomize((v) => !v)}
-              aria-expanded={customize}
-            >
-              <SlidersHorizontal data-icon="inline-start" />
-              <span className="hidden md:inline">Customize</span>
-            </Button>
-          </div>
-        </div>
-        {customize && (
-          <div className="customizer">
-            <span className="text-xs font-medium">Preview theme</span>
-            <Select value={accent} onValueChange={setAccent}>
-              <SelectTrigger aria-label="Accent color">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  {["blue", "violet", "green", "orange"].map((value) => (
-                    <SelectItem value={value} key={value}>
-                      {value[0].toUpperCase() + value.slice(1)}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-            <Select value={radius} onValueChange={setRadius}>
-              <SelectTrigger aria-label="Corner radius">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value="0">Square</SelectItem>
-                  <SelectItem value="0.375">Small radius</SelectItem>
-                  <SelectItem value="0.625">Default radius</SelectItem>
-                  <SelectItem value="1">Large radius</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-            <Button
-              variant="ghost"
-              size="icon-sm"
-              aria-label="Close customizer"
-              onClick={() => setCustomize(false)}
-            >
-              <X />
-            </Button>
-          </div>
-        )}
-        <TabsContent value="preview" className="preview-content">
-          <div ref={canvas} className="preview-canvas" data-device={device}>
-            <div
-              className="preview-frame-wrap"
-              style={{
-                width: desired * scale,
-                height: Math.max(640, 760 * scale),
-              }}
-            >
-              <iframe
-                key={`${block.id}-${revision}`}
-                ref={iframe}
-                title={`${block.name} live preview`}
-                src={previewUrl}
-                onLoad={() => setFrameReady(true)}
-                style={{
-                  width: desired,
-                  height: Math.max(760, 640 / scale),
-                  transform: `scale(${scale})`,
-                }}
-                className="live-frame"
-              />
-              {!frameReady && (
-                <div className="absolute inset-0 bg-background p-10">
-                  <Skeleton className="h-10 w-48" />
-                  <Skeleton className="mt-8 h-80 w-full" />
-                </div>
-              )}
-            </div>
-          </div>
-          <div className="preview-status">
-            <span>
-              <span className="status-dot" />
-              Interactive preview
-            </span>
-            <span>
-              {Math.round(desired)} px{" "}
-              <span className="hidden sm:inline">· shadcn/ui + React</span>
-            </span>
-          </div>
-        </TabsContent>
-        <TabsContent value="code">
-          <Suspense fallback={<Skeleton className="h-96 w-full" />}>
-            <CodeViewer key={blockKey(block)} block={block} dark={dark} />
-          </Suspense>
-        </TabsContent>
-      </Tabs>
-    </div>
-  );
-}
-function IsolatedPreview({ block }: { block: BlockMeta }) {
-  const params = new URLSearchParams(location.hash.split("?")[1]);
-  const theme = params.get("theme") || "light";
-  const radius = params.get("radius") || "0.625";
-  const accent = params.get("accent") || "blue";
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", theme === "dark");
-    document.documentElement.style.setProperty("--radius", `${radius}rem`);
-    document.documentElement.dataset.accent = accent;
-    document.title = `${block.name} — Preview`;
-  }, [theme, radius, accent, block.name]);
-  return (
-    <div className="isolated-preview" data-block-id={block.id}>
-      <BlockRenderer block={block} />
-    </div>
-  );
-}
 export default function App() {
   const hash = useHash();
   const [dark, setDark] = useStored("blocks-dark", false);
@@ -809,7 +562,7 @@ export default function App() {
                   </a>
                   <h1>{block.name}</h1>
                   <p>
-                    Built with shadcn/ui. Explore the interactions, customize
+                    Built with ReUI and shadcn/ui. Explore the interactions, customize
                     the theme, and make it yours.
                   </p>
                 </div>
@@ -921,7 +674,7 @@ export default function App() {
                       : "A carefully crafted collection of application, commerce, and marketing layouts."}
                   <span className="hidden xl:inline">
                     {" "}
-                    Built with shadcn/ui. Yours to customize.
+                    Built with ReUI and shadcn/ui. Yours to customize.
                   </span>
                 </p>
               </div>
