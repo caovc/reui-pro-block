@@ -51,8 +51,11 @@ export function blockFiles(block: BlockMeta) {
     }
   }
   visit(`/src/blocks/${family}/index.tsx`);
+  // Keep the shared body, focus and interaction rules too. Stopping at the
+  // html rule omitted the preview's 14px baseline from standalone downloads.
+  // Site-specific chrome begins at .brand, after these shared element rules.
   result["src/theme.css"] = (raw["/src/index.css"] ?? "").split(
-    /\nhtml\s*\{\s*scroll-behavior:/,
+    /\n\.brand\s*\{/,
   )[0];
   result["src/styles/shadcn.css"] = raw["/src/styles/shadcn.css"] ?? "";
   return result;
