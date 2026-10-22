@@ -1,0 +1,45 @@
+{
+  "audit_date": "2026-10-22",
+  "sources": [
+    {
+      "name": "Frame",
+      "url": "https://reui.io/r/radix-nova/frame.json",
+      "upstream_content_sha256": "bec56175281721e00b4d872c13ba7828ae1b849d470fa818835fba24f27a5697",
+      "local_path": "src/components/reui/frame.tsx",
+      "local_sha256": "bec56175281721e00b4d872c13ba7828ae1b849d470fa818835fba24f27a5697",
+      "modifications": [],
+      "ownership": "Existing official component installed by application workstream; not overwritten."
+    },
+    {
+      "name": "Time Picker",
+      "url": "https://reui.io/r/radix-nova/time-picker.json",
+      "upstream_content_sha256": "f0ba6cda8250d507b9f45cdbb77c7dd4a14f593623d420e9ca2245239e8ac3ea",
+      "local_path": "src/components/reui/time-picker.tsx",
+      "local_sha256": "54a119c4b5b25c5238b14a8c194459f74d9c8b13b989188d985d0c088f19bde1",
+      "modifications": [
+        "Provenance comment",
+        "Single upstream IconPlaceholder resolved to Lucide ClockIcon; all state/parsing/formatting implementations retained."
+      ]
+    },
+    {
+      "name": "Calendar Month Year Select example",
+      "url": "https://reui.io/r/radix-nova/c-calendar-8.json",
+      "upstream_content_sha256": "a273b5cbbcdf411ceb3c338d7c5f23480637c5a1210646ebfaafa8be166f6206",
+      "local_path": "src/components/reui/calendar-select.tsx",
+      "local_sha256": "e5453493bf71c62ddbdef5b9edb1f5067eefb8342a04594376797bbabf79f89d",
+      "modifications": [
+        "Lifted official Dropdown onChange event bridge and DropdownNav into a reusable controlled CalendarSelect; removed demo Card/date state.",
+        "Added pass-through Calendar props, slot classes, portalled font class and accessible labels.",
+        "Compatible year detection for installed DayPicker v10; keeps built-in previous/next navigation."
+      ]
+    }
+  ],
+  "excluded_components": [
+    {
+      "name": "Date Selector",
+      "url": "https://reui.io/components/date-selector.md",
+      "reason": "Official guidance excludes simple day+slot booking; component adds period/operator filtering and Apply semantics not present in these Pro previews."
+    }
+  ],
+  "shared_ui_changes": []
+}

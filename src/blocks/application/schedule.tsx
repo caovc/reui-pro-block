@@ -1,3 +1,9 @@
+import ScheduleAgendas from "./schedule-agendas";
+import {
+  TimeRangePicker,
+  MeetingScheduler,
+  SessionBooking,
+} from "./schedule-booking";
 import { useState } from "react";
 import {
   ArrowRight,
@@ -16,13 +22,11 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Calendar } from "@/components/ui/calendar";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Switch } from "@/components/ui/switch";
 import {
   Select,
   SelectContent,
@@ -59,22 +63,24 @@ function TimeSelect({
   value,
   onChange,
   label,
+  options = times,
 }: {
   value: string;
   onChange: (s: string) => void;
   label: string;
+  options?: string[];
 }) {
   return (
     <Field>
       <FieldLabel>{label}</FieldLabel>
       <Select value={value} onValueChange={onChange}>
-        <SelectTrigger className="w-full">
+        <SelectTrigger className="w-full" aria-label={label}>
           <Clock />
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            {times.map((t) => (
+            {options.map((t) => (
               <SelectItem key={t} value={t}>
                 {t}
               </SelectItem>
@@ -85,12 +91,11 @@ function TimeSelect({
     </Field>
   );
 }
-export default function ScheduleBlock({ block }: BlockProps) {
+function LegacyScheduleBlock({ block }: BlockProps) {
   const n = Number(block.id.split("-").pop());
   const [date, setDate] = useState<Date | undefined>(new Date(2026, 9, 22));
   const [slot, setSlot] = useState("");
   const [duration, setDuration] = useState("30 min");
-  const [end, setEnd] = useState("10:00");
   const [start, setStart] = useState("09:00");
   const [booked, setBooked] = useState(false);
   const [filter, setFilter] = useState("All events");
@@ -102,71 +107,6 @@ export default function ScheduleBlock({ block }: BlockProps) {
     month: "long",
     day: "numeric",
   });
-  const minutes = (s: string) => {
-    const [h, m] = s.split(":").map(Number);
-    return h * 60 + m;
-  };
-  if (n === 2)
-    return (
-      <div className="flex min-h-[420px] items-center justify-center p-6">
-        <Card className="w-full max-w-lg shadow-none">
-          <CardHeader>
-            <CardTitle className="text-lg">Choose your session time</CardTitle>
-            <CardDescription>
-              Find a time that works best for you.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-6">
-            <div className="grid grid-cols-2 gap-4">
-              <TimeSelect
-                label="Start time"
-                value={start}
-                onChange={setStart}
-              />
-              <TimeSelect label="End time" value={end} onChange={setEnd} />
-            </div>
-            <div>
-              <p className="mb-3 text-xs text-muted-foreground">
-                Quick duration
-              </p>
-              <SmallTabs
-                items={["15 min", "30 min", "45 min", "60 min"]}
-                value={duration}
-                onChange={(v) => {
-                  setDuration(v);
-                  const total = minutes(start) + parseInt(v);
-                  setEnd(
-                    `${String(Math.floor(total / 60)).padStart(2, "0")}:${String(total % 60).padStart(2, "0")}`,
-                  );
-                }}
-              />
-            </div>
-            <div className="flex items-center justify-between rounded-lg bg-muted/50 p-4">
-              <span className="text-sm text-muted-foreground">
-                Total duration
-              </span>
-              <span className="text-sm font-semibold">
-                {Math.max(0, minutes(end) - minutes(start))} minutes
-              </span>
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Button
-              className="w-full"
-              disabled={minutes(end) <= minutes(start)}
-              onClick={() =>
-                toast.success("Session time saved", {
-                  description: `${start} – ${end}`,
-                })
-              }
-            >
-              Confirm time
-              <Check />
-            </Button>
-          </CardFooter>
-        </Card>
-      </div>
-    );
   if (n === 7)
     return (
       <div className="mx-auto max-w-3xl p-6 md:p-10">
@@ -440,20 +380,11 @@ export default function ScheduleBlock({ block }: BlockProps) {
               <SmallTabs
                 items={["15 min", "30 min", "60 min"]}
                 value={duration}
-                onChange={setDuration}
+                onChange={(value) => {
+                  setDuration(value);
+                  setSlot("");
+                }}
               />
-              {n === 3 && (
-                <div className="flex flex-col gap-4 border-t pt-4">
-                  <div className="flex items-center justify-between text-xs">
-                    <label htmlFor="recurring">Recurring meeting</label>
-                    <Switch id="recurring" />
-                  </div>
-                  <div className="flex items-center justify-between text-xs">
-                    <label htmlFor="buffer">Include buffer time</label>
-                    <Switch defaultChecked id="buffer" />
-                  </div>
-                </div>
-              )}
             </aside>
             <div className="p-5">
               <h3 className="mb-3 text-sm font-semibold">
@@ -464,7 +395,10 @@ export default function ScheduleBlock({ block }: BlockProps) {
                   className="p-0"
                   mode="single"
                   selected={date}
-                  onSelect={setDate}
+                  onSelect={(value) => {
+                    setDate(value);
+                    setSlot("");
+                  }}
                   defaultMonth={new Date(2026, 9, 1)}
                 />
                 <div className="min-w-0">
@@ -472,31 +406,75 @@ export default function ScheduleBlock({ block }: BlockProps) {
                   {agenda ? (
                     <div className="flex flex-col gap-3">
                       {[
-                        "Product standup",
-                        "Design review",
-                        "Customer interview",
-                        "Weekly team sync",
+                        {
+                          title: "Product standup",
+                          category: "Standup",
+                          status: "Upcoming",
+                          location: "Google Meet",
+                          time: "09:00 – 09:30",
+                        },
+                        {
+                          title: "Design review",
+                          category: "Review",
+                          status: "Pending",
+                          location: "Design studio",
+                          time: "10:00 – 11:00",
+                        },
+                        {
+                          title: "Sprint planning",
+                          category: "Sprint",
+                          status: "Completed",
+                          location: "Meeting room A",
+                          time: "11:30 – 12:00",
+                        },
+                        {
+                          title: "Release deadline",
+                          category: "Deadline",
+                          status: "Cancelled",
+                          location: "Product channel",
+                          time: "14:00 – 14:30",
+                        },
+                        {
+                          title: "Research workshop",
+                          category: "Workshop",
+                          status: "Upcoming",
+                          location: "Google Meet",
+                          time: "15:00 – 16:00",
+                        },
                       ]
                         .filter(
-                          (_, i) => filter === "All events" || i % 2 === 0,
+                          (event) =>
+                            filter === "All events" ||
+                            (n === 1
+                              ? event.status
+                              : n === 8
+                                ? event.category
+                                : ["Standup", "Sprint"].includes(event.category)
+                                  ? "Team"
+                                  : "Design") === filter,
                         )
-                        .map((t, i) => (
+                        .map((event) => (
                           <button
-                            key={t}
+                            key={event.title}
                             className="rounded-lg border p-3 text-left"
                             onClick={() =>
-                              toast(t, {
-                                description: `${format} · ${9 + i * 2}:00`,
+                              toast(event.title, {
+                                description: `${format} · ${event.time} · ${event.location}`,
                               })
                             }
                           >
                             <p className="text-[10px] text-muted-foreground">
-                              {9 + i * 2}:00 – {10 + i * 2}:00
+                              {event.time}
                             </p>
-                            <p className="mt-1 text-xs font-medium">{t}</p>
+                            <p className="mt-1 text-xs font-medium">
+                              {event.title}
+                            </p>
+                            <p className="mt-1 text-xs text-muted-foreground">
+                              {event.location}
+                            </p>
                             <div className="mt-3 flex items-center justify-between">
                               <Badge variant="outline" className="text-[9px]">
-                                {i % 2 ? "Design" : "Team"}
+                                {n === 1 ? event.status : event.category}
                               </Badge>
                               <Team />
                             </div>
@@ -522,7 +500,26 @@ export default function ScheduleBlock({ block }: BlockProps) {
               {agenda ? (
                 <div className="mt-5 border-t pt-4">
                   <SmallTabs
-                    items={["All events", "Team", "Design"]}
+                    items={
+                      n === 1
+                        ? [
+                            "All events",
+                            "Upcoming",
+                            "Pending",
+                            "Completed",
+                            "Cancelled",
+                          ]
+                        : n === 8
+                          ? [
+                              "All events",
+                              "Sprint",
+                              "Standup",
+                              "Review",
+                              "Deadline",
+                              "Workshop",
+                            ]
+                          : ["All events", "Team", "Design"]
+                    }
                     value={filter}
                     onChange={setFilter}
                   />
@@ -548,6 +545,7 @@ export default function ScheduleBlock({ block }: BlockProps) {
                     </span>
                     <Button
                       size="sm"
+                      disabled={!date}
                       onClick={() => {
                         setBooked(true);
                         toast.success("Meeting confirmed");
@@ -565,4 +563,13 @@ export default function ScheduleBlock({ block }: BlockProps) {
       )}
     </div>
   );
+}
+
+export default function ScheduleBlock({ block }: BlockProps) {
+  if (block.id === "schedule-1" || block.id === "schedule-8")
+    return <ScheduleAgendas block={block} />;
+  if (block.id === "schedule-2") return <TimeRangePicker />;
+  if (block.id === "schedule-3") return <MeetingScheduler />;
+  if (block.id === "schedule-9") return <SessionBooking />;
+  return <LegacyScheduleBlock block={block} />;
 }
