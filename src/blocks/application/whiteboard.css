@@ -1,9 +1,9 @@
 @import "@fontsource/kalam/400.css";
 .wb-root {
   display: flex;
-  min-height: 760px;
+  min-height: 0;
   height: 100dvh;
-  max-height: 1000px;
+  max-height: none;
   flex-direction: column;
   background: var(--background);
   color: var(--foreground);
@@ -145,7 +145,7 @@
 }
 @media (max-width: 700px) {
   .wb-root {
-    min-height: 670px;
+    min-height: 0;
   }
   .wb-header {
     padding-inline: 10px;

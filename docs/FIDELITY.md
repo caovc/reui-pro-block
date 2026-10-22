@@ -44,7 +44,7 @@ The goal is the complete public REUI Pro Blocks catalog, recreated independently
 | Application | [Sheet](https://reui.io/blocks/application/sheet) | 24 | Pending |
 | Application | [Stats](https://reui.io/blocks/application/stats) | 17 | Pending |
 | Application | [Timeline](https://reui.io/blocks/application/timeline) | 9 | Pending |
-| Application | [Whiteboard](https://reui.io/blocks/application/whiteboard) | 2 | Pending |
+| Application | [Whiteboard](https://reui.io/blocks/application/whiteboard) | 2 | 2/2 desktop compared; see [audit](audits/whiteboard.md) for remaining vector/presence differences |
 | Application | [Wizard](https://reui.io/blocks/application/wizard) | 7 | Pending |
 | Data Grid | [Base](https://reui.io/blocks/data-grid/base) | 8 | Pending |
 | Data Grid | [Advanced](https://reui.io/blocks/data-grid/advanced) | 9 | Pending |

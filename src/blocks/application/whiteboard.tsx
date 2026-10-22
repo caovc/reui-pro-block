@@ -30,7 +30,6 @@ import {
 } from "lucide-react";
 import type { BlockProps } from "@/data/types";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -76,7 +75,7 @@ type Tool =
   | "eraser";
 type Shape = {
   id: string;
-  kind: Tool | "note" | "frame";
+  kind: Tool | "note" | "frame" | "phone";
   x: number;
   y: number;
   w: number;
@@ -87,6 +86,8 @@ type Shape = {
   image?: string;
   lane?: number;
   story?: number;
+  owner?: string;
+  presence?: string;
 };
 type Scene = { shapes: Shape[]; name: string };
 const ink = "#34343a",
@@ -94,41 +95,41 @@ const ink = "#34343a",
 const stamp = () => `${Date.now()}-${Math.random().toString(36).slice(2, 6)}`;
 function designScene(): Shape[] {
   const shapes: Shape[] = [
-    { id: "goals", kind: "frame", x: 30, y: 85, w: 260, h: 280, text: "Goals" },
+    { id: "goals", kind: "frame", x: 65, y: 98, w: 270, h: 287, text: "Goals" },
     {
       id: "flow",
       kind: "frame",
-      x: 370,
-      y: 85,
-      w: 960,
-      h: 330,
+      x: 413,
+      y: 98,
+      w: 910,
+      h: 336,
       text: "User Flow",
     },
     {
       id: "checkout",
       kind: "frame",
-      x: 30,
-      y: 490,
-      w: 720,
-      h: 430,
+      x: 65,
+      y: 535,
+      w: 415,
+      h: 330,
       text: "Checkout v2",
     },
     {
       id: "questions",
       kind: "frame",
-      x: 820,
-      y: 490,
-      w: 510,
-      h: 215,
+      x: 560,
+      y: 535,
+      w: 417,
+      h: 250,
       text: "Open Questions",
     },
     {
       id: "decisions",
       kind: "frame",
-      x: 820,
-      y: 760,
-      w: 510,
-      h: 160,
+      x: 1055,
+      y: 535,
+      w: 270,
+      h: 286,
       text: "Decisions",
     },
   ];
@@ -136,205 +137,246 @@ function designScene(): Shape[] {
     "Mobile: 38% quit\nat the payment step",
     "Goal: 30% payment\ndrop off by Q4",
     "No new PCI scope.\nMetric owner: Priya",
-  ].forEach((text, i) =>
+  ].forEach((text, index) =>
     shapes.push({
-      id: `goal${i}`,
+      id: `goal${index}`,
       kind: "note",
-      x: 63,
-      y: 118 + i * 73,
-      w: 195,
-      h: 60,
+      x: 100,
+      y: 132 + index * 78,
+      w: 200,
+      h: 64,
       text,
-      color: colors[i],
+      color: colors[index],
     }),
   );
   const nodes = [
-    { x: 405, y: 145, w: 100, h: 48, text: "Cart", kind: "rect" },
-    { x: 580, y: 145, w: 100, h: 48, text: "Shipping", kind: "rect" },
-    { x: 755, y: 122, w: 115, h: 94, text: "Saved\ncard?", kind: "diamond" },
-    { x: 950, y: 145, w: 100, h: 48, text: "Review", kind: "rect" },
-    { x: 1215, y: 145, w: 95, h: 48, text: "Done", kind: "rect" },
-    { x: 765, y: 305, w: 100, h: 48, text: "Add card", kind: "rect" },
+    { x: 447, y: 159, w: 103, h: 48, text: "Cart", kind: "rect" },
+    { x: 627, y: 159, w: 103, h: 48, text: "Shipping", kind: "rect" },
+    { x: 808, y: 136, w: 120, h: 94, text: "Saved\ncard?", kind: "diamond" },
+    { x: 1011, y: 159, w: 100, h: 48, text: "Review", kind: "rect" },
+    { x: 1190, y: 159, w: 100, h: 48, text: "Done", kind: "rect" },
+    { x: 819, y: 312, w: 101, h: 48, text: "Add Card", kind: "rect" },
   ];
-  nodes.forEach((n, i) =>
-    shapes.push({ ...n, id: `node${i}`, kind: n.kind as Tool }),
+  nodes.forEach((node, index) =>
+    shapes.push({ ...node, id: `node${index}`, kind: node.kind as Tool }),
   );
   [
-    [510, 170, 65, 0],
-    [685, 170, 62, 0],
-    [875, 170, 65, 0],
-    [1058, 170, 145, 0],
-    [812, 220, 0, 75],
-    [872, 330, 128, 0],
-    [1000, 320, 0, -114],
-  ].forEach(([x, y, w, h], i) =>
-    shapes.push({ id: `arrow${i}`, kind: "arrow", x, y, w, h }),
+    [558, 183, 62, 0],
+    [739, 183, 62, 0],
+    [936, 183, 68, 0],
+    [1120, 183, 62, 0],
+    [868, 240, 0, 62],
+    [925, 336, 135, 0],
+    [1060, 336, 0, -120],
+  ].forEach(([x, y, w, h], index) =>
+    shapes.push({ id: `arrow${index}`, kind: "arrow", x, y, w, h }),
   );
   shapes.push(
-    { id: "no", kind: "text", x: 830, y: 245, w: 60, h: 25, text: "No" },
-    { id: "yes", kind: "text", x: 895, y: 147, w: 42, h: 23, text: "Yes" },
-    { id: "pay", kind: "text", x: 1120, y: 147, w: 50, h: 23, text: "Pay" },
+    { id: "no", kind: "text", x: 856, y: 258, w: 60, h: 25, text: "No" },
+    { id: "yes", kind: "text", x: 956, y: 159, w: 42, h: 23, text: "Yes" },
+    { id: "pay", kind: "text", x: 1134, y: 159, w: 50, h: 23, text: "Pay" },
     {
       id: "exits",
       kind: "note",
-      x: 405,
-      y: 300,
-      w: 185,
-      h: 62,
+      x: 447,
+      y: 302,
+      w: 201,
+      h: 64,
       text: "Most exits happen\non the card form",
       color: colors[3],
     },
     {
       id: "audience",
       kind: "text",
-      x: 405,
-      y: 380,
+      x: 447,
+      y: 383,
       w: 370,
       h: 30,
       text: "Mobile web, signed in shoppers",
     },
+    { id: "screen", kind: "phone", x: 100, y: 570, w: 130, h: 260 },
   );
-  shapes.push(
-    { id: "screen", kind: "rect", x: 90, y: 540, w: 335, h: 315, text: "" },
-    {
-      id: "screen-title",
-      kind: "text",
-      x: 118,
-      y: 570,
-      w: 250,
-      h: 35,
-      text: "Complete your order",
-    },
-    {
-      id: "screen-input1",
-      kind: "rect",
-      x: 118,
-      y: 628,
-      w: 278,
-      h: 42,
-      text: "Card number",
-    },
-    {
-      id: "screen-input2",
-      kind: "rect",
-      x: 118,
-      y: 692,
-      w: 130,
-      h: 42,
-      text: "MM / YY",
-    },
-    {
-      id: "screen-input3",
-      kind: "rect",
-      x: 268,
-      y: 692,
-      w: 128,
-      h: 42,
-      text: "CVV",
-    },
-    {
-      id: "screen-button",
+  [
+    "Wallet buttons\nabove the card form",
+    "Billing copies\nshipping",
+    "Card errors are\neasy to miss",
+  ].forEach((text, index) =>
+    shapes.push({
+      id: `screen-note-${index}`,
       kind: "note",
-      x: 118,
-      y: 775,
-      w: 278,
-      h: 44,
-      text: "Pay $149.00",
+      x: 245,
+      y: 570 + index * 78,
+      w: 200,
+      h: 64,
+      text,
+      color: [colors[0], colors[2], colors[3]][index],
+    }),
+  );
+  shapes.push({
+    id: "screen-badge",
+    kind: "note",
+    x: 245,
+    y: 803,
+    w: 46,
+    h: 30,
+    text: "+3",
+    color: colors[4],
+  });
+  [
+    "Express wallets\non web in scope?\nKenji",
+    "Keep guest\ncheckout?\nPriya",
+    "Card scan on\nAndroid only?\nOmar",
+    "Which saved card\nis the default?\nEmma",
+  ].forEach((text, index) =>
+    shapes.push({
+      id: `question-${index}`,
+      kind: "note",
+      x: 595 + (index % 2) * 180,
+      y: 570 + Math.floor(index / 2) * 98,
+      w: 166,
+      h: 84,
+      text,
+      color: [colors[0], colors[0], colors[2], colors[4]][index],
+    }),
+  );
+  [
+    "Wallet buttons ship\nfirst. Kenji, Oct 8",
+    "exp_express_pay\nstays at 10%. Priya",
+    "One page review\nstays. Sofia, Oct 2",
+  ].forEach((text, index) =>
+    shapes.push({
+      id: `decision-${index}`,
+      kind: "note",
+      x: 1090,
+      y: 570 + index * 78,
+      w: 200,
+      h: 64,
+      text,
       color: colors[1],
-    },
-    {
-      id: "payment-note",
-      kind: "note",
-      x: 475,
-      y: 590,
-      w: 220,
-      h: 110,
-      text: "Keep the summary visible.\nDefault to saved card.\nAllow guest checkout.",
-      color: colors[0],
-    },
-    {
-      id: "question-note",
-      kind: "note",
-      x: 860,
-      y: 540,
-      w: 420,
-      h: 110,
-      text: "Can we remove the billing address?\nWhich wallets matter for mobile?\nHow do we measure recovery?",
-      color: colors[4],
-    },
-    {
-      id: "decision-note",
-      kind: "note",
-      x: 860,
-      y: 800,
-      w: 420,
-      h: 75,
-      text: "Ship saved card first.\nReview results after two weeks.",
-      color: colors[1],
-    },
+    }),
   );
   return shapes;
 }
 function sprintScene(): Shape[] {
-  const shapes: Shape[] = [];
-  const lanes = ["Backlog", "This sprint", "In progress", "Ready for review"];
-  lanes.forEach((text, i) =>
-    shapes.push({
-      id: `lane${i}`,
-      kind: "frame",
-      x: 30 + i * 340,
-      y: 115,
-      w: 310,
-      h: 690,
-      text: `${text}  ·  ${[18, 13, 8, 5][i]} pts`,
-    }),
-  );
-  const cards = [
-    [
-      "Improve the empty state",
-      "Add project templates",
-      "Review accessibility",
-    ],
-    ["Saved card checkout", "Invite teammates", "Reduce dashboard load"],
-    ["Mobile navigation", "Payment validation"],
-    ["Release checklist", "Update API docs"],
-  ];
-  cards.forEach((items, lane) =>
-    items.forEach((text, j) =>
-      shapes.push({
-        id: `story-${lane}-${j}`,
-        kind: "note",
-        x: 52 + lane * 340,
-        y: 155 + j * 145,
-        w: 266,
-        h: 120,
-        text: `${text}\n\n${[3, 5, 2][j % 3]} pts  ·  ${["Priya", "Alex", "Olivia"][j % 3]}`,
-        color: colors[(lane + j) % 5],
-        lane,
-        story: [3, 5, 2][j % 3],
-      }),
-    ),
-  );
-  shapes.push(
-    {
-      id: "sprint-heading",
-      kind: "text",
-      x: 35,
-      y: 35,
-      w: 600,
-      h: 42,
-      text: "Sprint 24  /  19–30 October",
-    },
+  const shapes: Shape[] = [
     {
       id: "sprint-goal",
-      kind: "text",
-      x: 740,
-      y: 40,
-      w: 520,
-      h: 34,
-      text: "Goal: make checkout feel effortless",
+      kind: "frame",
+      x: 35,
+      y: 183,
+      w: 620,
+      h: 140,
+      text: "Sprint Goal",
     },
-  );
+    {
+      id: "sprint-risks",
+      kind: "frame",
+      x: 735,
+      y: 183,
+      w: 620,
+      h: 140,
+      text: "Risks",
+    },
+    {
+      id: "goal-delivery",
+      kind: "note",
+      x: 65,
+      y: 218,
+      w: 330,
+      h: 72,
+      text: "Express Pay live for\n10% of web merchants",
+      color: "#fffde8",
+    },
+    {
+      id: "goal-demo",
+      kind: "note",
+      x: 420,
+      y: 218,
+      w: 190,
+      h: 72,
+      text: "Demo on Oct 9",
+      color: "#fffde8",
+    },
+    {
+      id: "risk-wallet",
+      kind: "note",
+      x: 765,
+      y: 218,
+      w: 170,
+      h: 72,
+      text: "Apple Pay domain\nnot verified",
+      color: "#fff1f2",
+    },
+    {
+      id: "risk-legal",
+      kind: "note",
+      x: 950,
+      y: 218,
+      w: 170,
+      h: 72,
+      text: "Legal review on\nreceipt copy",
+      color: "#fff1f2",
+    },
+    {
+      id: "risk-away",
+      kind: "note",
+      x: 1135,
+      y: 218,
+      w: 170,
+      h: 72,
+      text: "Emma away\nOct 5 and 6",
+      color: "#fff1f2",
+    },
+  ];
+  const names = ["Express Pay", "Receipts", "Offline Research", "Parked"];
+  const cards = [
+    [
+      { text: "Apple Pay sheet", points: 5, owner: "Omar" },
+      { text: "Card fallback", points: 3, owner: "Omar" },
+      { text: "Rollout flag 10%", points: 2, owner: "Alex" },
+      { text: "Refund path", points: 3, owner: "Omar" },
+    ],
+    [
+      { text: "Email receipt", points: 3, owner: "Sofia" },
+      { text: "Reprint receipt", points: 2, owner: "Sofia" },
+      { text: "Receipt QR code", points: 3, owner: "Priya" },
+    ],
+    [
+      { text: "Merchant calls", points: 3, owner: "Emma" },
+      { text: "Sync conflicts", points: 2, owner: "Emma" },
+    ],
+    [
+      { text: "Split tender", points: 8, owner: "" },
+      { text: "Tip presets", points: 3, owner: "" },
+    ],
+  ];
+  names.forEach((text, lane) => {
+    shapes.push({
+      id: `lane${lane}`,
+      kind: "frame",
+      x: 35 + lane * 350,
+      y: 417,
+      w: 270,
+      h: 365,
+      text,
+    });
+    cards[lane].forEach((card, i) =>
+      shapes.push({
+        id: `story-${lane}-${i}`,
+        kind: "note",
+        x: 67 + lane * 350,
+        y: 450 + i * 78,
+        w: 200,
+        h: 65,
+        text: `${card.text}\n${card.points} pts`,
+        story: card.points,
+        lane,
+        owner: card.owner,
+        color: ["#eef6ff", "#effbf5", "#f5f0ff", "#fff"][lane],
+        presence: i === 0 && lane < 2 ? ["Omar", "Sofia"][lane] : undefined,
+      }),
+    );
+  });
   return shapes;
 }
 function textLines(shape: Shape) {
@@ -352,10 +394,12 @@ function ShapeView({
   shape,
   selected,
   markerId,
+  handwritten = true,
 }: {
   shape: Shape;
   selected: boolean;
   markerId: string;
+  handwritten?: boolean;
 }) {
   const s = shape;
   const common = { stroke: ink, strokeWidth: 1.8, fill: "none" };
@@ -379,7 +423,7 @@ function ShapeView({
             y={s.y - 12}
             fill="#84848a"
             fontFamily="sans-serif"
-            fontSize={16}
+            fontSize={handwritten ? 16 : 19}
           >
             {s.text}
           </text>
@@ -392,7 +436,59 @@ function ShapeView({
           height={s.h}
           rx={12}
           fill={s.color || colors[0]}
+          stroke={handwritten ? "none" : "#e5e5ed"}
         />
+      ) : s.kind === "phone" ? (
+        <g transform={`translate(${s.x} ${s.y})`}>
+          <rect
+            width={s.w}
+            height={s.h}
+            rx={18}
+            fill="#fff"
+            stroke="#1c1c1f"
+            strokeWidth={1.5}
+          />
+          <text x={10} y={34} fontSize={10} fontFamily="sans-serif" fill="#222">
+            Checkout
+          </text>
+          <rect x={10} y={46} width={110} height={39} rx={4} fill="#f4f4f5" />
+          <rect x={16} y={53} width={24} height={24} rx={3} fill="#dedee0" />
+          <rect x={47} y={55} width={49} height={5} rx={2} fill="#a3a3a7" />
+          <rect x={47} y={65} width={34} height={4} rx={2} fill="#d5d5d8" />
+          <rect x={10} y={91} width={51} height={22} rx={4} fill="#18181b" />
+          <rect x={67} y={91} width={53} height={22} rx={4} fill="#18181b" />
+          <path d="M10 125H120" stroke="#dedee0" />
+          <rect
+            x={10}
+            y={134}
+            width={110}
+            height={23}
+            rx={4}
+            fill="#fff"
+            stroke="#bbb"
+          />
+          <rect
+            x={10}
+            y={162}
+            width={51}
+            height={23}
+            rx={4}
+            fill="#fff"
+            stroke="#bbb"
+          />
+          <rect
+            x={67}
+            y={162}
+            width={53}
+            height={23}
+            rx={4}
+            fill="#fff"
+            stroke="#e85a63"
+          />
+          <path d="M68 191H104" stroke="#e85a63" strokeWidth={3} />
+          <rect x={10} y={230} width={110} height={23} rx={6} fill="#18181b" />
+          <rect x={45} y={237} width={40} height={5} rx={2} fill="#fff" />
+        </g>
       ) : s.kind === "ellipse" ? (
         <ellipse
           cx={s.x + s.w / 2}
@@ -440,11 +536,60 @@ function ShapeView({
           y={s.kind === "text" ? s.y + 19 : centerY + 5}
           textAnchor={s.kind === "text" ? "start" : "middle"}
           fill={ink}
-          fontFamily="Kalam,cursive"
-          fontSize={s.kind === "text" ? 18 : 17}
+          fontFamily={handwritten ? "Kalam,cursive" : "sans-serif"}
+          fontSize={s.kind === "text" ? 18 : handwritten ? 17 : 18}
         >
           {textLines(s)}
         </text>
+      )}
+      {s.owner && (
+        <g pointerEvents="none">
+          <circle
+            cx={s.x + s.w - 8}
+            cy={s.y + 8}
+            r={15}
+            fill={
+              s.owner === "Omar"
+                ? "#3d6475"
+                : s.owner === "Sofia"
+                  ? "#597d95"
+                  : "#6f5e70"
+            }
+          />
+          <text
+            x={s.x + s.w - 8}
+            y={s.y + 12}
+            textAnchor="middle"
+            fill="white"
+            fontFamily="sans-serif"
+            fontSize={10}
+          >
+            {s.owner.slice(0, 2).toUpperCase()}
+          </text>
+        </g>
+      )}
+      {s.presence && (
+        <g pointerEvents="none">
+          <rect
+            x={s.x - 5}
+            y={s.y - 5}
+            width={s.w + 10}
+            height={s.h + 10}
+            rx={7}
+            fill="none"
+            stroke="#d1a7df"
+            strokeDasharray="7 5"
+          />
+          <text
+            x={s.x + 5}
+            y={s.y - 13}
+            fill="#8c58a3"
+            fontFamily="sans-serif"
+            fontSize={14}
+          >
+            ● {s.presence}
+          </text>
+        </g>
       )}
       {selected && (
         <rect
@@ -467,7 +612,7 @@ export default function Whiteboard({ block }: BlockProps) {
   const uid = useId().replaceAll(":", "");
   const pendingPoint = useRef({ x: 150, y: 150 });
   const [scene, setScene] = useState<Scene>(() => ({
-    name: sprint ? "Sprint Planning" : "Checkout Review",
+    name: sprint ? "Sprint 42 Planning" : "Checkout Review",
     shapes: sprint ? sprintScene() : designScene(),
   }));
   const [past, setPast] = useState<Scene[]>([]);
@@ -478,9 +623,11 @@ export default function Whiteboard({ block }: BlockProps) {
   const [grid, setGrid] = useState(true);
   const [snap, setSnap] = useState(false);
   const [viewOnly, setViewOnly] = useState(false);
-  const [panel, setPanel] = useState(false);
-  const [panelTab, setPanelTab] = useState("frames");
+  const [panel, setPanel] = useState(true);
+  const [panelTab, setPanelTab] = useState(sprint ? "plan" : "frames");
   const [frame, setFrame] = useState(0);
+  const [wholeBoard, setWholeBoard] = useState(true);
+  const [boardQuery, setBoardQuery] = useState("");
   const [versionName, setVersionName] = useState("");
   const [versions, setVersions] = useState<{ name: string; scene: Scene }[]>(
     [],
@@ -490,12 +637,25 @@ export default function Whiteboard({ block }: BlockProps) {
   const [shapeColor, setShapeColor] = useState(colors[0]);
   const [shareCopied, setShareCopied] = useState(false);
   const [follow, setFollow] = useState(false);
+  const [presenting, setPresenting] = useState(false);
+  const [cardQuery, setCardQuery] = useState("");
   const [decisions, setDecisions] = useState([
-    "Keep the sprint scope to 26 points.",
-    "Saved card checkout ships behind a flag.",
+    {
+      text: "Keep the sprint scope to 26 points.",
+      shapeId: "sprint-goal",
+      done: false,
+    },
+    {
+      text: "Saved card checkout ships behind a flag.",
+      shapeId: "story-0-2",
+      done: false,
+    },
   ]);
   const [decision, setDecision] = useState("");
   const [dirty, setDirty] = useState(false);
+  const [voting, setVoting] = useState(false);
+  const [vote, setVote] = useState("5");
+  const [revealed, setRevealed] = useState(false);
   const svg = useRef<SVGSVGElement>(null);
   const file = useRef<HTMLInputElement>(null);
   const image = useRef<HTMLInputElement>(null);
@@ -510,6 +670,73 @@ export default function Whiteboard({ block }: BlockProps) {
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const frames = scene.shapes.filter((s) => s.kind === "frame");
   const selectedShape = scene.shapes.find((s) => s.id === selected);
+  const laneMeta = [
+    { name: "Express Pay", owner: "Omar Farouk", capacity: 13 },
+    { name: "Receipts", owner: "Sofia Marino", capacity: 10 },
+    { name: "Offline Research", owner: "Emma Lindgren", capacity: 8 },
+    { name: "Parked", owner: "", capacity: 0 },
+  ];
+  const lanePoints = laneMeta.map((_, lane) =>
+    scene.shapes
+      .filter((shape) => shape.lane === lane)
+      .reduce((sum, shape) => sum + (shape.story || 0), 0),
+  );
+  const committedPoints = lanePoints
+    .slice(0, 3)
+    .reduce((sum, points) => sum + points, 0);
+  function togglePresent() {
+    const next = !presenting;
+    setPresenting(next);
+    setViewOnly(next);
+    setSelected(null);
+    setTool("select");
+    if (next) {
+      setFrame(0);
+      setZoom(110);
+      setPan({ x: -35, y: 40 });
+    } else {
+      setZoom(60);
+      setPan({ x: 0, y: 0 });
+    }
+  }
+  function addLaneCard(lane: number) {
+    const id = stamp();
+    const count = scene.shapes.filter((shape) => shape.lane === lane).length;
+    updateShapes([
+      ...scene.shapes,
+      {
+        id,
+        kind: "note",
+        x: 67 + lane * 350,
+        y: 450 + count * 78,
+        w: 200,
+        h: 65,
+        text: "New story\n3 pts",
+        story: 3,
+        lane,
+        color: ["#eef6ff", "#effbf5", "#f5f0ff", "#fff"][lane],
+      },
+    ]);
+    setSelected(id);
+    setText("New story\n3 pts");
+    setTextDialog(true);
+  }
+  function logSelection() {
+    if (!selectedShape) {
+      toast.info("Select a card on the canvas first.");
+      return;
+    }
+    setDecisions([
+      ...decisions,
+      {
+        text: selectedShape.text?.replaceAll("\n", " · ") || "Canvas decision",
+        shapeId: selectedShape.id,
+        done: false,
+      },
+    ]);
+    setPanel(true);
+    setPanelTab("decisions");
+  }
   function commit(next: Scene) {
     setPast((p) => [...p, scene]);
     setFuture([]);
@@ -677,7 +904,7 @@ export default function Whiteboard({ block }: BlockProps) {
                   ...shape,
                   lane: Math.max(
                     0,
-                    Math.min(3, Math.floor((shape.x + shape.w / 2 - 30) / 340)),
+                    Math.min(3, Math.floor((shape.x + shape.w / 2 - 35) / 350)),
                   ),
                 }
               : shape,
@@ -690,10 +917,15 @@ export default function Whiteboard({ block }: BlockProps) {
     gesture.current = null;
   }
   function selectFrame(i: number) {
+    setWholeBoard(false);
     const next = (i + frames.length) % frames.length;
     setFrame(next);
     const s = frames[next];
-    if (s) setPan({ x: Math.max(0, s.x - 50), y: Math.max(0, s.y - 80) });
+    if (s) {
+      setPan({ x: s.x - 50, y: s.y - (presenting ? 130 : 80) });
+      if (presenting)
+        setZoom(Math.min(150, Math.round((1400 * 60) / (s.w + 100))));
+    }
   }
   function addNote() {
     const id = stamp();
@@ -802,7 +1034,7 @@ export default function Whiteboard({ block }: BlockProps) {
     { id: "eraser", label: "Eraser", icon: Eraser },
   ];
   return (
-    <div className="wb-root">
+    <div className="wb-root" data-presenting={presenting}>
       <header className="wb-header">
         <div className="flex min-w-0 items-center gap-3">
           <h2 className="truncate text-sm font-semibold">{scene.name}</h2>
@@ -811,9 +1043,9 @@ export default function Whiteboard({ block }: BlockProps) {
             {dirty ? "Saving…" : "Saved"}
           </span>
           {sprint && (
-            <Badge variant="outline" className="hidden md:inline-flex">
-              Sprint 24
-            </Badge>
+            <span className="hidden text-xs text-muted-foreground md:inline">
+              Sep 28 to Oct 9
+            </span>
           )}
         </div>
         <div className="flex items-center gap-2">
@@ -873,88 +1105,106 @@ export default function Whiteboard({ block }: BlockProps) {
               </p>
             </PopoverContent>
           </Popover>
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button size="sm">
-                <Share2 data-icon="inline-start" />
-                <span className="hidden sm:inline">Share</span>
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent align="end" className="w-72">
-              <h3 className="mb-3 text-sm font-medium">Share this board</h3>
-              <div className="mb-3 flex items-center justify-between text-xs">
-                <span>View only</span>
-                <Switch
-                  checked={viewOnly}
-                  onCheckedChange={setViewOnly}
-                  aria-label="View only sharing"
-                />
-              </div>
-              <Button
-                className="w-full"
-                variant="outline"
-                size="sm"
-                onClick={async () => {
-                  try {
-                    await navigator.clipboard.writeText(
-                      `${location.href}${location.hash.includes("?") ? "&" : "?"}access=view`,
-                    );
-                    setShareCopied(true);
-                  } catch {
-                    toast.error("Copy unavailable");
-                  }
-                }}
-              >
-                {shareCopied ? (
-                  <Check data-icon="inline-start" />
-                ) : (
-                  <Share2 data-icon="inline-start" />
-                )}
-                {shareCopied ? "Link copied" : "Copy preview link"}
-              </Button>
-              <p className="mt-3 text-[10px] text-muted-foreground">
-                Local preview link; no permission changes are sent.
-              </p>
-            </PopoverContent>
-          </Popover>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button size="sm" variant="outline">
-                <ArrowDownToLine data-icon="inline-start" />
-                <span className="hidden sm:inline">Export</span>
-                <ChevronDown data-icon="inline-end" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuGroup>
-                <DropdownMenuItem
-                  onSelect={() =>
-                    download(exportSvg(), `${scene.name}.svg`, "image/svg+xml")
-                  }
-                >
-                  Export SVG
-                </DropdownMenuItem>
-                <DropdownMenuItem onSelect={exportPng}>
-                  Export PNG
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onSelect={() =>
-                    download(
-                      JSON.stringify(scene, null, 2),
-                      `${scene.name}.json`,
-                    )
-                  }
-                >
-                  <FileJson />
-                  Save board file
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {sprint ? (
+            <Button
+              variant={presenting ? "secondary" : "outline"}
+              size="sm"
+              aria-pressed={presenting}
+              onClick={togglePresent}
+            >
+              <Square data-icon="inline-start" />
+              Present
+            </Button>
+          ) : (
+            <>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button size="sm">
+                    <Share2 data-icon="inline-start" />
+                    <span className="hidden sm:inline">Share</span>
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent align="end" className="w-72">
+                  <h3 className="mb-3 text-sm font-medium">Share this board</h3>
+                  <div className="mb-3 flex items-center justify-between text-xs">
+                    <span>View only</span>
+                    <Switch
+                      checked={viewOnly}
+                      onCheckedChange={setViewOnly}
+                      aria-label="View only sharing"
+                    />
+                  </div>
+                  <Button
+                    className="w-full"
+                    variant="outline"
+                    size="sm"
+                    onClick={async () => {
+                      try {
+                        await navigator.clipboard.writeText(
+                          `${location.href}${location.hash.includes("?") ? "&" : "?"}access=view`,
+                        );
+                        setShareCopied(true);
+                      } catch {
+                        toast.error("Copy unavailable");
+                      }
+                    }}
+                  >
+                    {shareCopied ? (
+                      <Check data-icon="inline-start" />
+                    ) : (
+                      <Share2 data-icon="inline-start" />
+                    )}
+                    {shareCopied ? "Link copied" : "Copy preview link"}
+                  </Button>
+                  <p className="mt-3 text-[10px] text-muted-foreground">
+                    Local preview link; no permission changes are sent.
+                  </p>
+                </PopoverContent>
+              </Popover>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button size="sm" variant="outline">
+                    <ArrowDownToLine data-icon="inline-start" />
+                    <span className="hidden sm:inline">Export</span>
+                    <ChevronDown data-icon="inline-end" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem
+                      onSelect={() =>
+                        download(
+                          exportSvg(),
+                          `${scene.name}.svg`,
+                          "image/svg+xml",
+                        )
+                      }
+                    >
+                      Export SVG
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onSelect={exportPng}>
+                      Export PNG
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onSelect={() =>
+                        download(
+                          JSON.stringify(scene, null, 2),
+                          `${scene.name}.json`,
+                        )
+                      }
+                    >
+                      <FileJson />
+                      Save board file
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </>
+          )}
           <Button
             variant="ghost"
             size="icon-sm"
-            aria-label="Board panel"
+            aria-label={sprint ? "Planning panel" : "Board panel"}
             aria-pressed={panel}
             onClick={() => setPanel(!panel)}
           >
@@ -987,6 +1237,46 @@ export default function Whiteboard({ block }: BlockProps) {
                     Save board
                   </DropdownMenuItem>
                   <DropdownMenuItem
+                    onSelect={() =>
+                      download(
+                        exportSvg(),
+                        `${scene.name}.svg`,
+                        "image/svg+xml",
+                      )
+                    }
+                  >
+                    Export SVG
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onSelect={exportPng}>
+                    Export PNG
+                  </DropdownMenuItem>
+                  {sprint && (
+                    <DropdownMenuItem
+                      onSelect={async () => {
+                        const summary = `# ${scene.name}\n\n${laneMeta
+                          .map(
+                            (lane, index) =>
+                              `## ${lane.name} (${lanePoints[index]} pts)\n${scene.shapes
+                                .filter((shape) => shape.lane === index)
+                                .map(
+                                  (shape) =>
+                                    `- ${shape.text?.replaceAll("\n", " · ")}`,
+                                )
+                                .join("\n")}`,
+                          )
+                          .join("\n\n")}`;
+                        try {
+                          await navigator.clipboard.writeText(summary);
+                          toast.success("Plan copied as Markdown");
+                        } catch {
+                          download(summary, "sprint-plan.md", "text/markdown");
+                        }
+                      }}
+                    >
+                      Copy plan as Markdown
+                    </DropdownMenuItem>
+                  )}
+                  <DropdownMenuItem
                     onSelect={() => {
                       setPanel(true);
                       setPanelTab("templates");
@@ -1007,36 +1297,81 @@ export default function Whiteboard({ block }: BlockProps) {
                 </DropdownMenuGroup>
               </DropdownMenuContent>
             </DropdownMenu>
-            <ToggleGroup
-              type="single"
-              value={tool}
-              onValueChange={(value) => value && setTool(value as Tool)}
-              className="wb-tools"
-              aria-label="Drawing tools"
-            >
-              {tools.map(({ id, label, icon: Icon }) => (
-                <ToggleGroupItem
-                  value={id}
-                  key={id}
-                  aria-label={label}
-                  title={label}
-                  disabled={viewOnly && id !== "hand" && id !== "select"}
+            {presenting ? (
+              <div className="flex items-center gap-3 rounded-lg border px-3 py-1 text-xs">
+                <span>
+                  Presenting · {frames[frame]?.text}, {frame + 1} of{" "}
+                  {frames.length}
+                </span>
+                <Button size="xs" variant="ghost" onClick={togglePresent}>
+                  End
+                </Button>
+              </div>
+            ) : (
+              <ToggleGroup
+                type="single"
+                value={tool}
+                onValueChange={(value) => value && setTool(value as Tool)}
+                className="wb-tools"
+                aria-label="Drawing tools"
+              >
+                {tools.map(({ id, label, icon: Icon }) => (
+                  <ToggleGroupItem
+                    value={id}
+                    key={id}
+                    aria-label={label}
+                    title={label}
+                    disabled={viewOnly && id !== "hand" && id !== "select"}
+                  >
+                    <Icon />
+                  </ToggleGroupItem>
+                ))}
+              </ToggleGroup>
+            )}
+            {sprint ? (
+              <div className="flex gap-1 rounded-lg">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  aria-label="Estimate together"
+                  disabled={viewOnly}
+                  onClick={() => {
+                    if (!selectedShape?.story) {
+                      toast.info("Select a story card first.");
+                      return;
+                    }
+                    setVote(String(selectedShape.story));
+                    setRevealed(false);
+                    setVoting(true);
+                  }}
                 >
-                  <Icon />
-                </ToggleGroupItem>
-              ))}
-            </ToggleGroup>
-            <Button
-              variant="outline"
-              size="icon"
-              aria-label="Shape library"
-              onClick={() => {
-                setPanel(true);
-                setPanelTab("library");
-              }}
-            >
-              <Library />
-            </Button>
+                  <Avatar className="size-4">
+                    <AvatarFallback className="text-[7px]">5</AvatarFallback>
+                  </Avatar>
+                </Button>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  aria-label="Add to log"
+                  disabled={viewOnly}
+                  onClick={logSelection}
+                >
+                  <Pencil />
+                </Button>
+              </div>
+            ) : (
+              <Button
+                variant="outline"
+                size="icon"
+                aria-label="Shape library"
+                onClick={() => {
+                  setPanel(true);
+                  setPanelTab("library");
+                }}
+              >
+                <Library />
+              </Button>
+            )}
           </div>
           <svg
             ref={svg}
@@ -1045,7 +1380,7 @@ export default function Whiteboard({ block }: BlockProps) {
               tool === "hand" && "wb-hand",
               viewOnly && "wb-view-only",
             )}
-            viewBox={`${pan.x} ${pan.y} ${(1400 * 60) / zoom} ${(1000 * 60) / zoom}`}
+            viewBox={`${pan.x} ${pan.y} ${(1400 * 60) / zoom} ${(940 * 60) / zoom}`}
             preserveAspectRatio="xMinYMin meet"
             role="application"
             aria-label={`${scene.name} drawing canvas`}
@@ -1158,21 +1493,38 @@ export default function Whiteboard({ block }: BlockProps) {
               fill={grid ? `url(#${uid}-grid)` : "#fff"}
             />
             {scene.shapes.map((shape) => (
-              <ShapeView
+              <g
                 key={shape.id}
-                shape={
-                  sprint &&
-                  shape.kind === "frame" &&
-                  shape.id.startsWith("lane")
-                    ? {
-                        ...shape,
-                        text: `${shape.text?.split("  ·  ")[0]} · ${scene.shapes.filter((item) => item.kind === "note" && item.lane === Number(shape.id.slice(4))).reduce((sum, item) => sum + (item.story || 0), 0)} pts`,
-                      }
-                    : shape
+                opacity={
+                  presenting &&
+                  frames[frame] &&
+                  !(
+                    shape.id === frames[frame].id ||
+                    (shape.x >= frames[frame].x &&
+                      shape.x < frames[frame].x + frames[frame].w &&
+                      shape.y >= frames[frame].y &&
+                      shape.y < frames[frame].y + frames[frame].h)
+                  )
+                    ? 0.14
+                    : 1
                 }
-                markerId={`${uid}-arrow`}
-                selected={selected === shape.id}
-              />
+              >
+                <ShapeView
+                  shape={
+                    sprint &&
+                    shape.kind === "frame" &&
+                    shape.id.startsWith("lane")
+                      ? {
+                          ...shape,
+                          text: `${shape.text?.split("  ·  ")[0]} · ${scene.shapes.filter((item) => item.kind === "note" && item.lane === Number(shape.id.slice(4))).reduce((sum, item) => sum + (item.story || 0), 0)} pts`,
+                        }
+                      : shape
+                  }
+                  markerId={`${uid}-arrow`}
+                  handwritten={!sprint}
+                  selected={selected === shape.id}
+                />
+              </g>
             ))}
           </svg>
           {selectedShape && !viewOnly && (
@@ -1208,6 +1560,19 @@ export default function Whiteboard({ block }: BlockProps) {
               >
                 Edit text
               </Button>
+              {sprint && selectedShape.story !== undefined && (
+                <Button
+                  size="xs"
+                  variant="outline"
+                  onClick={() => {
+                    setVote(String(selectedShape.story));
+                    setRevealed(false);
+                    setVoting(true);
+                  }}
+                >
+                  Estimate
+                </Button>
+              )}
               <Button
                 size="icon-xs"
                 variant="ghost"
@@ -1309,16 +1674,27 @@ export default function Whiteboard({ block }: BlockProps) {
               >
                 <ArrowLeft />
               </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => {
-                  setPanel(true);
-                  setPanelTab("frames");
-                }}
-              >
-                {frames.length} frames
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm" aria-label="Choose a frame">
+                    {presenting
+                      ? frames[frame]?.text
+                      : `${frames.length} frames`}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuGroup>
+                    {frames.map((item, index) => (
+                      <DropdownMenuItem
+                        key={item.id}
+                        onSelect={() => selectFrame(index)}
+                      >
+                        {item.text}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
               <Button
                 size="icon-sm"
                 variant="ghost"
@@ -1330,61 +1706,195 @@ export default function Whiteboard({ block }: BlockProps) {
               </Button>
             </div>
           </div>
-          {sprint && (
-            <div className="wb-capacity">
-              <Badge variant="outline">
-                {scene.shapes
-                  .filter((s) => s.kind === "note")
-                  .reduce((n, s) => n + (s.story || 0), 0)}{" "}
-                / 40 points
-              </Badge>
-              <span>
-                {follow
-                  ? "Following Priya"
-                  : "Drag stories between capacity lanes"}
-              </span>
-            </div>
-          )}
         </div>
         {panel && (
           <aside className="wb-panel">
-            <div className="flex items-center justify-between border-b px-4 py-3">
-              <h3 className="text-xs font-medium">Board panel</h3>
-              <Button
-                size="icon-xs"
-                variant="ghost"
-                aria-label="Close board panel"
-                onClick={() => setPanel(false)}
-              >
-                <X />
-              </Button>
-            </div>
             <Tabs
               value={panelTab}
               onValueChange={setPanelTab}
               className="gap-0"
             >
-              <TabsList className="mx-3 mt-3 flex flex-wrap h-auto">
-                <TabsTrigger value="frames">Frames</TabsTrigger>
-                <TabsTrigger value="templates">Templates</TabsTrigger>
-                <TabsTrigger value="history">History</TabsTrigger>
-                <TabsTrigger value="library">Library</TabsTrigger>
-                {sprint && (
-                  <TabsTrigger value="decisions">Decisions</TabsTrigger>
+              <TabsList
+                className={cn(
+                  "mx-3 mt-3 flex flex-wrap h-auto",
+                  "w-[calc(100%-24px)]",
+                )}
+              >
+                {sprint ? (
+                  <>
+                    <TabsTrigger value="plan" className="flex-1">
+                      Plan
+                    </TabsTrigger>
+                    <TabsTrigger value="decisions" className="flex-1">
+                      Log
+                    </TabsTrigger>
+                  </>
+                ) : (
+                  <>
+                    <TabsTrigger value="frames">Frames</TabsTrigger>
+                    <TabsTrigger value="library">Library</TabsTrigger>
+                    <TabsTrigger value="history">History</TabsTrigger>
+                  </>
                 )}
               </TabsList>
-              <TabsContent value="frames" className="wb-panel-body">
-                {frames.map((s, i) => (
-                  <Button
-                    key={s.id}
-                    variant={i === frame ? "secondary" : "ghost"}
-                    className="w-full justify-start"
-                    onClick={() => selectFrame(i)}
+              <TabsContent value="plan" className="wb-panel-body">
+                <Input
+                  placeholder="Find a card"
+                  aria-label="Find a card"
+                  value={cardQuery}
+                  onChange={(event) => setCardQuery(event.target.value)}
+                />
+                <div className="my-4 px-1">
+                  <div className="flex justify-between text-xs">
+                    <span className="text-muted-foreground">Committed</span>
+                    <strong>{committedPoints} of 31 pts</strong>
+                  </div>
+                  <div
+                    className="my-2 h-1 rounded-full bg-muted"
+                    role="progressbar"
+                    aria-label="Committed points"
+                    aria-valuenow={committedPoints}
+                    aria-valuemax={31}
                   >
-                    <Square data-icon="inline-start" />
-                    {s.text}
-                  </Button>
+                    <div
+                      className="h-full rounded-full bg-foreground"
+                      style={{
+                        width: `${Math.min(100, (committedPoints / 31) * 100)}%`,
+                      }}
+                    />
+                  </div>
+                  <p className="text-[10px] text-muted-foreground">
+                    {lanePoints[3]} pts parked
+                  </p>
+                </div>
+                <p className="mb-3 text-xs text-muted-foreground">Lanes</p>
+                {laneMeta.map((lane, index) => (
+                  <div className="mb-1" key={lane.name}>
+                    <div className="flex items-center gap-2">
+                      <Button
+                        className="min-w-0 flex-1 justify-start h-auto py-2 text-left"
+                        variant="ghost"
+                        onClick={() => selectFrame(index + 2)}
+                      >
+                        <Square className="mr-1 size-4 shrink-0" />
+                        <span className="min-w-0">
+                          <span className="block text-sm font-normal">
+                            {lane.name}
+                          </span>
+                          <span className="mt-1 block text-[10px] font-normal text-muted-foreground">
+                            {lane.owner
+                              ? `${lane.owner} · ${lanePoints[index]} of ${lane.capacity} pts`
+                              : `${scene.shapes.filter((shape) => shape.lane === index).length} cards · ${lanePoints[index]} pts`}
+                          </span>
+                        </span>
+                      </Button>
+                      <Button
+                        size="icon-xs"
+                        variant="ghost"
+                        aria-label={`Add a card to ${lane.name}`}
+                        disabled={viewOnly}
+                        onClick={() => addLaneCard(index)}
+                      >
+                        <Plus />
+                      </Button>
+                    </div>
+                    {cardQuery &&
+                      scene.shapes
+                        .filter(
+                          (shape) =>
+                            shape.lane === index &&
+                            shape.text
+                              ?.toLowerCase()
+                              .includes(cardQuery.toLowerCase()),
+                        )
+                        .map((shape) => (
+                          <Button
+                            key={shape.id}
+                            variant="outline"
+                            size="sm"
+                            className="mb-2 w-full justify-start text-xs"
+                            onClick={() => {
+                              setSelected(shape.id);
+                              selectFrame(index + 2);
+                            }}
+                          >
+                            {shape.text?.split("\n")[0]}
+                          </Button>
+                        ))}
+                  </div>
                 ))}
+              </TabsContent>
+              <TabsContent value="frames" className="wb-panel-body">
+                <Input
+                  aria-label="Search board"
+                  placeholder="Search board"
+                  value={boardQuery}
+                  onChange={(event) => setBoardQuery(event.target.value)}
+                  className="mb-3"
+                />
+                <Button
+                  variant={wholeBoard ? "secondary" : "ghost"}
+                  className="mb-2 h-auto w-full justify-start py-3"
+                  onClick={() => {
+                    setWholeBoard(true);
+                    setPan({ x: 0, y: 0 });
+                    setZoom(60);
+                  }}
+                >
+                  <Grid2X2 data-icon="inline-start" />
+                  <span className="text-left">
+                    <span className="block text-xs font-medium">
+                      Whole Board
+                    </span>
+                    <span className="text-[10px] font-normal text-muted-foreground">
+                      {frames.length} frames ·{" "}
+                      {
+                        scene.shapes.filter((shape) => shape.kind !== "frame")
+                          .length
+                      }{" "}
+                      items
+                    </span>
+                  </span>
+                </Button>
+                {frames
+                  .filter((shape) =>
+                    shape.text
+                      ?.toLowerCase()
+                      .includes(boardQuery.toLowerCase()),
+                  )
+                  .map((s) => {
+                    const i = frames.indexOf(s);
+                    return (
+                      <Button
+                        key={s.id}
+                        variant={
+                          !wholeBoard && i === frame ? "secondary" : "ghost"
+                        }
+                        className="mb-2 h-auto w-full justify-start py-3"
+                        onClick={() => selectFrame(i)}
+                      >
+                        <Square data-icon="inline-start" />
+                        <span className="text-left">
+                          <span className="block text-xs font-medium">
+                            {s.text}
+                          </span>
+                          <span className="text-[10px] font-normal text-muted-foreground">
+                            {
+                              scene.shapes.filter(
+                                (shape) =>
+                                  shape.kind !== "frame" &&
+                                  shape.x >= s.x &&
+                                  shape.x < s.x + s.w &&
+                                  shape.y >= s.y &&
+                                  shape.y < s.y + s.h,
+                              ).length
+                            }{" "}
+                            items
+                          </span>
+                        </span>
+                      </Button>
+                    );
+                  })}
                 <p className="mt-4 text-xs leading-5 text-muted-foreground">
                   Choose a frame to navigate. Drag with the hand tool to move
                   around the canvas.
@@ -1467,12 +1977,61 @@ export default function Whiteboard({ block }: BlockProps) {
                 </Button>
               </TabsContent>
               <TabsContent value="decisions" className="wb-panel-body">
-                {decisions.map((d, i) => (
-                  <div className="mb-3 rounded-lg border p-3 text-xs" key={i}>
-                    <span className="mb-1 block text-[10px] text-muted-foreground">
-                      Decision {i + 1}
-                    </span>
-                    {d}
+                {decisions.map((entry, index) => (
+                  <div
+                    className="mb-3 rounded-lg border p-3 text-xs"
+                    key={`${index}-${entry.shapeId}`}
+                  >
+                    <div className="mb-2 flex items-center justify-between gap-2">
+                      <button
+                        className="text-[10px] text-muted-foreground hover:text-foreground"
+                        onClick={() => {
+                          const shape = scene.shapes.find(
+                            (item) => item.id === entry.shapeId,
+                          );
+                          if (shape) {
+                            setSelected(shape.id);
+                            setPan({ x: shape.x - 150, y: shape.y - 180 });
+                          }
+                        }}
+                      >
+                        ↗ Linked to canvas
+                      </button>
+                      <Button
+                        size="icon-xs"
+                        variant="ghost"
+                        aria-label={`Remove decision ${index + 1}`}
+                        onClick={() =>
+                          setDecisions(decisions.filter((_, i) => i !== index))
+                        }
+                      >
+                        <X />
+                      </Button>
+                    </div>
+                    <p
+                      className={cn(
+                        "leading-5",
+                        entry.done && "line-through text-muted-foreground",
+                      )}
+                    >
+                      {entry.text}
+                    </p>
+                    <Button
+                      className="mt-2"
+                      size="xs"
+                      variant="ghost"
+                      aria-pressed={entry.done}
+                      onClick={() =>
+                        setDecisions(
+                          decisions.map((item, i) =>
+                            i === index ? { ...item, done: !item.done } : item,
+                          ),
+                        )
+                      }
+                    >
+                      <Check data-icon="inline-start" />
+                      {entry.done ? "Done" : "Mark done"}
+                    </Button>
                   </div>
                 ))}
                 <Input
@@ -1486,7 +2045,14 @@ export default function Whiteboard({ block }: BlockProps) {
                   size="sm"
                   disabled={!decision.trim()}
                   onClick={() => {
-                    setDecisions([...decisions, decision]);
+                    setDecisions([
+                      ...decisions,
+                      {
+                        text: decision,
+                        shapeId: selected || "sprint-goal",
+                        done: false,
+                      },
+                    ]);
                     setDecision("");
                   }}
                 >
@@ -1497,6 +2063,75 @@ export default function Whiteboard({ block }: BlockProps) {
           </aside>
         )}
       </div>
+      <Dialog open={voting} onOpenChange={setVoting}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Planning poker</DialogTitle>
+            <DialogDescription>
+              {selectedShape?.text?.split("\n")[0] || "Estimate this story"} ·
+              Choose story points, then reveal the local ballots.
+            </DialogDescription>
+          </DialogHeader>
+          <ToggleGroup
+            type="single"
+            value={vote}
+            onValueChange={(value) => value && setVote(value)}
+            aria-label="Story point estimate"
+          >
+            {["1", "2", "3", "5", "8", "13"].map((points) => (
+              <ToggleGroupItem key={points} value={points}>
+                {points}
+              </ToggleGroupItem>
+            ))}
+          </ToggleGroup>
+          {revealed && (
+            <div className="grid grid-cols-4 gap-2">
+              {[
+                { name: "You", value: vote },
+                { name: "Omar", value: "5" },
+                { name: "Sofia", value: "3" },
+                { name: "Priya", value: "5" },
+              ].map((ballot) => (
+                <div
+                  className="rounded-lg border p-3 text-center"
+                  key={ballot.name}
+                >
+                  <p className="text-xl font-semibold">{ballot.value}</p>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    {ballot.name}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+          <p className="text-xs text-muted-foreground">
+            Other ballots are seeded demo values. No network session is
+            connected.
+          </p>
+          <Button
+            onClick={() => {
+              if (!revealed) setRevealed(true);
+              else {
+                updateShapes(
+                  scene.shapes.map((shape) =>
+                    shape.id === selected
+                      ? {
+                          ...shape,
+                          story: Number(vote),
+                          text: shape.text?.replace(/\d+ pts/, `${vote} pts`),
+                        }
+                      : shape,
+                  ),
+                );
+                setVoting(false);
+                setRevealed(false);
+              }
+            }}
+          >
+            {revealed ? `Use ${vote} points` : "Reveal votes"}
+          </Button>
+        </DialogContent>
+      </Dialog>
       <Dialog open={textDialog} onOpenChange={setTextDialog}>
         <DialogContent>
           <DialogHeader>

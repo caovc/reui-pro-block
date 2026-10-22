@@ -145,3 +145,74 @@ test("whiteboard draws shapes with undo, redo and SVG export", async ({
   await page.getByRole("menuitem", { name: "Export SVG", exact: true }).click();
   expect((await download).suggestedFilename()).toBe("Checkout Review.svg");
 });
+
+test("sprint planning updates capacity, linked decisions and presentation", async ({
+  page,
+}) => {
+  await page.goto(route("whiteboard", /Sprint Planning/));
+  await expect(page.getByText("26 of 31 pts", { exact: true })).toBeVisible();
+  const card = page.locator('[data-shape="story-0-0"]');
+  await card.click();
+  await page.getByRole("button", { name: "Estimate", exact: true }).click();
+  await page.getByRole("radio", { name: "8", exact: true }).click();
+  await page.getByRole("button", { name: "Reveal votes", exact: true }).click();
+  await page.getByRole("button", { name: "Use 8 points", exact: true }).click();
+  await expect(page.getByText("29 of 31 pts", { exact: true })).toBeVisible();
+  await expect(card).toContainText("8 pts");
+  await expect(page.getByRole("dialog")).toBeHidden();
+  await card.click();
+  const bounds = (await card.boundingBox())!;
+  const scale = await page
+    .locator(".wb-canvas")
+    .evaluate((element) => (element as SVGSVGElement).getScreenCTM()!.a);
+  await page.mouse.move(
+    bounds.x + bounds.width / 2,
+    bounds.y + bounds.height / 2,
+  );
+  await page.mouse.down();
+  await page.mouse.move(
+    bounds.x + bounds.width / 2 + 1050 * scale,
+    bounds.y + bounds.height / 2,
+    { steps: 12 },
+  );
+  await page.mouse.up();
+  await expect(page.getByText("21 of 31 pts", { exact: true })).toBeVisible();
+  await expect(page.getByText("19 pts parked", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Add to log", exact: true }).click();
+  await expect(page.getByRole("tabpanel")).toContainText(
+    "Apple Pay sheet · 8 pts",
+  );
+  await page
+    .getByRole("button", { name: "Mark done", exact: true })
+    .last()
+    .click();
+  await expect(
+    page.getByRole("button", { name: "Done", exact: true }),
+  ).toHaveAttribute("aria-pressed", "true");
+  await page.getByRole("tab", { name: "Plan", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Add a card to Receipts", exact: true })
+    .click();
+  await page
+    .getByLabel("Shape text", { exact: true })
+    .fill("Tax receipt\n3 pts");
+  await page.getByRole("button", { name: "Save text", exact: true }).click();
+  await expect(page.getByText("24 of 31 pts", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Present", exact: true }).click();
+  await expect(page.locator(".wb-root")).toHaveAttribute(
+    "data-presenting",
+    "true",
+  );
+  await expect(
+    page.getByText("Presenting · Sprint Goal, 1 of 6", { exact: true }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Next frame", exact: true }).click();
+  await expect(
+    page.getByText("Presenting · Risks, 2 of 6", { exact: true }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "End", exact: true }).click();
+  await expect(page.locator(".wb-root")).toHaveAttribute(
+    "data-presenting",
+    "false",
+  );
+});
