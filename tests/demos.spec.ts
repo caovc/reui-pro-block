@@ -89,12 +89,25 @@ test("FAQ categories and accordion expose selected answers", async ({
   page,
 }) => {
   await page.goto(route("faq"));
-  await page.getByRole("radio", { name: "Customization", exact: true }).click();
+  await page.getByRole("tab", { name: "Licensing", exact: true }).click();
   await expect(
-    page.getByRole("button", { name: "Can I customize the design?" }),
+    page.getByRole("button", {
+      name: "Can one team use ReUI across multiple products?",
+    }),
   ).toBeVisible();
-  await page.getByRole("button", { name: "Is dark mode supported?" }).click();
-  await expect(page.getByText(/Semantic color tokens/)).toBeVisible();
+  const question = page.getByRole("button", {
+    name: "Can one team use ReUI across multiple products?",
+  });
+  await expect(question).toHaveAttribute("aria-expanded", "true");
+  await expect(
+    page.getByRole("region", {
+      name: "Can one team use ReUI across multiple products?",
+    }),
+  ).toContainText(/license|products|projects/i);
+  await question.click();
+  await expect(question).toHaveAttribute("aria-expanded", "false");
+  await question.click();
+  await expect(question).toHaveAttribute("aria-expanded", "true");
 });
 
 test("virtual grid windows 1200 rows as the scroll position changes", async ({
