@@ -43,7 +43,7 @@ Browser tests require Chromium (`npx playwright install chromium`). `PREVIEW_URL
 
 ## Reusing a block
 
-Open a block, choose **Code**, and select its wrapper or implementation file. **Download source** saves a JSON source bundle with relative paths and contents. Place those files into a React project using the `@/` alias, install this repository's dependencies, and retain its `src/index.css` theme imports. Mount `TooltipProvider` and `Toaster` as shown in `src/main.tsx`. Local demo state should be replaced with your application data and services.
+Open a block, choose **Code**, and select its wrapper or implementation file. **Download source** saves a runnable ZIP starter with the wrapper, local dependencies, demo images, theme and Vite configuration. Extract it, run `npm install`, then `npm run dev`. The entry is `src/Example.tsx`. Local demo state should be replaced with your application data and services.
 
 ## Deployment
 

@@ -1,0 +1,147 @@
+import { test, expect } from "@playwright/test";
+import catalog from "../src/data/catalog.json" with { type: "json" };
+const items = catalog.flatMap((c) => c.blocks);
+function route(category: string, name?: RegExp) {
+  const block = items.find(
+    (b) => b.category === category && (!name || name.test(b.name)),
+  )!;
+  return `./#/preview/${block.group}/${block.category}/${block.id}`;
+}
+test("magic link form validates and changes to sent state", async ({
+  page,
+}) => {
+  await page.goto(route("auth", /Centered Magic Link/));
+  await page
+    .getByLabel("Work email", { exact: true })
+    .fill("preview@example.com");
+  await page
+    .getByRole("button", { name: "Send magic link", exact: true })
+    .click();
+  await expect(
+    page.getByRole("heading", { name: "Check your inbox" }),
+  ).toBeVisible();
+  await expect(
+    page.getByText("We sent a secure sign-in link to preview@example.com."),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Back to sign in" }).click();
+  await expect(page.getByLabel("Work email", { exact: true })).toBeVisible();
+});
+test("grid edit, search and bulk selection update visible records", async ({
+  page,
+}) => {
+  await page.goto(route("editing"));
+  await page.getByRole("button", { name: "New row", exact: true }).click();
+  await page.locator("#record-name").fill("QA preview record");
+  await page.getByRole("button", { name: "Save changes", exact: true }).click();
+  await page
+    .getByLabel("Search records", { exact: true })
+    .fill("QA preview record");
+  await expect(
+    page.getByRole("button", { name: "QA preview record", exact: true }),
+  ).toBeVisible();
+  await page
+    .getByRole("checkbox", { name: "Select all visible records", exact: true })
+    .check();
+  await expect(page.getByText("1 selected", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Delete", exact: true }).click();
+  await expect(page.getByText("No records match your search.")).toBeVisible();
+});
+test("calendar creates a visible event", async ({ page }) => {
+  await page.goto(route("event-calendar"));
+  await page.getByRole("button", { name: /Add event|New event/ }).click();
+  await page
+    .getByLabel("Event title", { exact: true })
+    .fill("QA release review");
+  await page.getByLabel("Day", { exact: true }).fill("22");
+  await page.getByRole("button", { name: "Create event", exact: true }).click();
+  await expect(
+    page.getByRole("button", { name: /QA release review/ }),
+  ).toBeVisible();
+});
+test("AI composer sends a message and renders a demo answer", async ({
+  page,
+}) => {
+  await page.goto(route("ai-chat"));
+  await page
+    .getByRole("textbox", { name: "Message", exact: true })
+    .fill("Summarize the release checklist");
+  await page.getByRole("button", { name: "Send message", exact: true }).click();
+  await expect(
+    page.getByText("Summarize the release checklist", { exact: true }),
+  ).toBeVisible();
+  await expect(page.getByText(/Here’s your release summary/)).toBeVisible();
+  await expect(
+    page.getByRole("textbox", { name: "Message", exact: true }),
+  ).toBeEmpty();
+});
+test("cart quantities update the order total", async ({ page }) => {
+  await page.goto(route("shopping-cart"));
+  const before = await page.locator(".isolated-preview").innerText();
+  const increase = page
+    .getByRole("button", { name: /Increase|Add one/ })
+    .first();
+  await increase.click();
+  await expect
+    .poll(async () => await page.locator(".isolated-preview").innerText())
+    .not.toBe(before);
+});
+test("FAQ categories and accordion expose selected answers", async ({
+  page,
+}) => {
+  await page.goto(route("faq"));
+  await page.getByRole("radio", { name: "Customization", exact: true }).click();
+  await expect(
+    page.getByRole("button", { name: "Can I customize the design?" }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Is dark mode supported?" }).click();
+  await expect(page.getByText(/Semantic color tokens/)).toBeVisible();
+});
+
+test("virtual grid windows 1200 rows as the scroll position changes", async ({
+  page,
+}) => {
+  await page.goto(route("virtualization"));
+  await expect(
+    page.getByText("Rows 1–16 of 1,200 · Scroll to browse"),
+  ).toBeVisible();
+  const mountedBefore = await page.locator("tbody tr").count();
+  expect(mountedBefore).toBeLessThan(25);
+  await page
+    .locator("div.overflow-auto")
+    .filter({ has: page.locator("table") })
+    .first()
+    .evaluate((element) => {
+      element.scrollTop = 5600;
+      element.dispatchEvent(new Event("scroll"));
+    });
+  await expect(page.getByText(/Rows 98–113 of 1,200/)).toBeVisible();
+  expect(await page.locator("tbody tr").count()).toBeLessThan(25);
+});
+
+test("whiteboard draws shapes with undo, redo and SVG export", async ({
+  page,
+}) => {
+  await page.goto(route("whiteboard", /Design Review/));
+  const canvas = page.getByRole("application", {
+    name: "Checkout Review drawing canvas",
+  });
+  await expect(canvas).toBeVisible();
+  const before = await canvas.locator("[data-shape]").count();
+  await page.getByRole("radio", { name: "Rectangle", exact: true }).click();
+  const box = (await canvas.boundingBox())!;
+  await page.mouse.move(box.x + box.width * 0.4, box.y + box.height * 0.5);
+  await page.mouse.down();
+  await page.mouse.move(box.x + box.width * 0.5, box.y + box.height * 0.6, {
+    steps: 5,
+  });
+  await page.mouse.up();
+  await expect(canvas.locator("[data-shape]")).toHaveCount(before + 1);
+  await page.getByRole("button", { name: "Undo", exact: true }).click();
+  await expect(canvas.locator("[data-shape]")).toHaveCount(before);
+  await page.getByRole("button", { name: "Redo", exact: true }).click();
+  await expect(canvas.locator("[data-shape]")).toHaveCount(before + 1);
+  await page.getByRole("button", { name: "Export", exact: true }).click();
+  const download = page.waitForEvent("download");
+  await page.getByRole("menuitem", { name: "Export SVG", exact: true }).click();
+  expect((await download).suggestedFilename()).toBe("Checkout Review.svg");
+});

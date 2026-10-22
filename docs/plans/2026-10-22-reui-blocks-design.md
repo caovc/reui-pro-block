@@ -16,14 +16,18 @@ React + TypeScript + Vite + Tailwind v4; shadcn Radix primitives, Lucide icons. 
 
 ## Sequence
 - [x] Inspect empty checkout and official public catalog/license.
-- [ ] Install foundation and commit this plan.
-- [ ] Generate exact category and block checklist.
-- [ ] Parallel implementation with file ownership and shared interfaces.
-- [ ] Integrate every public entry; expose source dependencies.
-- [ ] Validate types/build/lint and catalog coverage.
+- [x] Install foundation and commit this plan.
+- [x] Generate exact category and block checklist.
+- [x] Parallel implementation with file ownership and shared interfaces.
+- [x] Integrate every public entry; expose source dependencies.
+- [x] Validate types/build/lint and catalog coverage.
 - [ ] Browser QA: search, category navigation, every category renders, theme, mobile, favorites, code copy and demo actions.
 - [ ] Fix visual/runtime issues, document fidelity limitations.
 - [ ] Create public repository under authenticated GitHub account; deploy GitHub Pages via Actions; verify live URL.
 
 ## Acceptance
 No dead routes, no premium code/assets, no decorative non-working primary actions. Every entry has a reference, working preview and real implementation source. Coverage totals come from generated metadata. Responsive site at 390px and 1440px; theme persists; filters/favorites survive intended navigation; deep links load on Pages. Browser checks include representative interactions plus exhaustive route render smoke checks. Report layout-family reuse and remaining reference differences plainly.
+
+## Fidelity gate
+
+Full completion additionally requires per-entry functional and visual comparison with public previews. Working family dispatch is an intermediate milestone. Track the remaining scope in docs/FIDELITY.md; keep the goal active while those checks or material gaps remain.

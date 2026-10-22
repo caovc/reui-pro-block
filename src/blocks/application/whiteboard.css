@@ -1,0 +1,201 @@
+@import "@fontsource/kalam/400.css";
+.wb-root {
+  display: flex;
+  min-height: 760px;
+  height: 100dvh;
+  max-height: 1000px;
+  flex-direction: column;
+  background: var(--background);
+  color: var(--foreground);
+  overflow: hidden;
+}
+.wb-header {
+  height: 48px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid var(--border);
+  padding: 0 16px;
+  background: var(--background);
+}
+.wb-workspace {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  position: relative;
+}
+.wb-canvas-wrap {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+}
+.wb-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+  user-select: none;
+  color: #34343a;
+}
+.wb-hand {
+  cursor: grab;
+}
+.wb-hand:active {
+  cursor: grabbing;
+}
+.wb-view-only {
+  cursor: default;
+}
+.wb-shape {
+  cursor: inherit;
+}
+.wb-shape[data-shape] {
+  isolation: isolate;
+}
+.wb-topbar {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  top: 16px;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+  pointer-events: none;
+}
+.wb-topbar > * {
+  pointer-events: auto;
+  box-shadow: 0 1px 4px #0000000c;
+  background: var(--background);
+}
+.wb-tools {
+  padding: 3px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  gap: 1px !important;
+}
+.wb-tools [data-slot="toggle-group-item"] {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border-radius: 5px;
+}
+.wb-bottom {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 2;
+}
+.wb-bottom-group {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border);
+  background: var(--background);
+  box-shadow: 0 1px 4px #00000008;
+  padding: 3px;
+  border-radius: 9px;
+}
+.wb-selection {
+  position: absolute;
+  left: 16px;
+  top: 67px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 9px;
+  padding: 9px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--background);
+  box-shadow: 0 3px 8px #00000008;
+  max-width: 340px;
+}
+.wb-panel {
+  width: 280px;
+  flex-shrink: 0;
+  overflow-y: auto;
+  border-left: 1px solid var(--border);
+  background: var(--background);
+}
+.wb-panel-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.wb-capacity {
+  position: absolute;
+  left: 18px;
+  top: 65px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  pointer-events: none;
+  font-size: 10px;
+  color: var(--muted-foreground);
+}
+@media (max-width: 700px) {
+  .wb-root {
+    min-height: 670px;
+  }
+  .wb-header {
+    padding-inline: 10px;
+  }
+  .wb-topbar {
+    left: 10px;
+    right: 10px;
+    top: 12px;
+    gap: 6px;
+  }
+  .wb-tools {
+    max-width: calc(100% - 80px);
+    overflow: auto;
+    scrollbar-width: none;
+    flex-wrap: nowrap;
+  }
+  .wb-tools [data-slot="toggle-group-item"] {
+    width: 26px;
+    height: 28px;
+    flex-shrink: 0;
+  }
+  .wb-bottom {
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    gap: 5px;
+    flex-wrap: wrap;
+  }
+  .wb-bottom-group {
+    padding: 2px;
+  }
+  .wb-bottom-group button {
+    height: 26px;
+    min-width: 23px;
+    font-size: 10px;
+  }
+  .wb-panel {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 270px;
+    z-index: 5;
+    box-shadow: -8px 0 20px #00000010;
+  }
+  .wb-selection {
+    left: 10px;
+    max-width: 270px;
+  }
+  .wb-capacity > span {
+    display: none;
+  }
+}

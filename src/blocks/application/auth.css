@@ -1,0 +1,16 @@
+.reui-auth-dots {
+  background-image: radial-gradient(var(--border) 1px, transparent 1px);
+  background-size: 20px 20px;
+  mask-image: radial-gradient(ellipse at center, #000 20%, transparent 85%);
+  animation: auth-grid-drift 25s linear infinite;
+}
+@keyframes auth-grid-drift {
+  to {
+    background-position: 40px 40px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reui-auth-dots {
+    animation: none;
+  }
+}

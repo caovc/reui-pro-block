@@ -12,4 +12,6 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 
 ## Other dependencies
 
-Radix UI (MIT), Tailwind CSS (MIT), React (MIT), Lucide (ISC), Recharts (MIT), Sonner (MIT), Geist font (SIL Open Font License), Prism React Renderer (MIT), and their dependencies retain their respective licenses in node_modules / upstream packages. Demo photos use remote Unsplash image URLs and remain subject to the Unsplash license; no REUI premium imagery is downloaded or bundled.
+Radix UI (MIT), Tailwind CSS (MIT), React (MIT), Lucide (ISC), Recharts (MIT), Sonner (MIT), Geist and Kalam fonts (SIL Open Font License), Prism React Renderer (MIT), and their dependencies retain their respective licenses in node_modules / upstream packages. Demo photos use remote Unsplash image URLs and remain subject to the Unsplash license; no REUI premium imagery is downloaded or bundled.
+
+The official shadcn CSS utilities are vendored in src/styles/shadcn.css to avoid a runtime dependency on the CLI toolchain.

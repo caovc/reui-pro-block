@@ -26,6 +26,7 @@ def category(path):
    seen.setdefault(h,t.strip())
  group,slug=path.split('/')[2:]
  title=slug.replace('-',' ').title().replace('Ai ','AI ').replace('Crm','CRM').replace('Cta','CTA').replace('Faq','FAQ')
+ if slug=='drag-drop':title='Drag & Drop'
  blocks=[{'id':h.split('/')[-1],'name':t,'category':slug,'group':group,'reference':'https://reui.io'+h,'index':i} for i,(h,t) in enumerate(seen.items())]
  return {'id':slug,'name':title,'group':group,'groupLabel':labels[group],'reference':'https://reui.io'+path,'blocks':blocks,'count':len(blocks)}
 with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool: cats=list(pool.map(category,paths))
