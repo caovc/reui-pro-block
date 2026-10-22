@@ -392,7 +392,8 @@ kbd {
 .page-heading {
   margin-bottom: 28px;
 }
-h1 {
+.page-heading h1,
+.block-heading h1 {
   font-size: 25px;
   line-height: 1.25;
   font-weight: 600;
@@ -928,7 +929,8 @@ h1 {
   .page-heading {
     margin-bottom: 22px;
   }
-  h1 {
+  .page-heading h1,
+  .block-heading h1 {
     font-size: 23px;
     letter-spacing: -0.7px;
   }

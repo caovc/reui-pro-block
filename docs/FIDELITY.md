@@ -5,7 +5,7 @@ The goal is the complete public REUI Pro Blocks catalog, recreated independently
 ## Proven now
 
 - Public snapshot contains 662 unique entries across 78 categories and seven groups.
-- Complete production smoke passed for every entry (79 tests: snapshot + one test per category); 98 tests passed including site, interactions and responsive families.
+- Complete production smoke passed for every entry (79 tests: snapshot + one test per category). The latest isolated release batch passed 118 tests including site, interactions, dedicated charts/auth and responsive families.
 - Site controls tested: category/name search, quick search, favorites persistence, actual source files, viewport/theme/customizer, source download.
 - Auth and commerce ZIP starters extracted and independently built.
 - Responsive category sweep: all 78 category-first examples fit 390px after Wishlist and pricing toolbar fixes.
@@ -24,7 +24,7 @@ The goal is the complete public REUI Pro Blocks catalog, recreated independently
 | Group | Category | Entries | Per-entry visual audit |
 | --- | --- | ---: | --- |
 | Application | [App Shell](https://reui.io/blocks/application/app-shell) | 36 | Pending |
-| Application | [Auth](https://reui.io/blocks/application/auth) | 20 | Pending |
+| Application | [Auth](https://reui.io/blocks/application/auth) | 20 | 5/20 compared; see [centered auth audit](audits/auth-centered.md) |
 | Application | [Card](https://reui.io/blocks/application/card) | 43 | Pending |
 | Application | [Dashboard](https://reui.io/blocks/application/dashboard) | 8 | Pending |
 | Application | [Dialog](https://reui.io/blocks/application/dialog) | 15 | Pending |
@@ -55,14 +55,14 @@ The goal is the complete public REUI Pro Blocks catalog, recreated independently
 | Data Grid | [Filtering](https://reui.io/blocks/data-grid/filtering) | 4 | Pending |
 | Data Grid | [Grouping](https://reui.io/blocks/data-grid/grouping) | 7 | Pending |
 | Data Grid | [Virtualization](https://reui.io/blocks/data-grid/virtualization) | 2 | Pending |
-| Charts | [Area Chart](https://reui.io/blocks/chart/area-chart) | 4 | Pending |
+| Charts | [Area Chart](https://reui.io/blocks/chart/area-chart) | 4 | 4/4 desktop compared; see [data ledger](data-implementation.md) |
 | Charts | [Bar Chart](https://reui.io/blocks/chart/bar-chart) | 12 | Pending |
 | Charts | [Composed Chart](https://reui.io/blocks/chart/composed-chart) | 5 | Pending |
 | Charts | [Line Chart](https://reui.io/blocks/chart/line-chart) | 6 | Pending |
-| Charts | [Pie Chart](https://reui.io/blocks/chart/pie-chart) | 3 | Pending |
-| Charts | [Radial Chart](https://reui.io/blocks/chart/radial-chart) | 3 | Pending |
-| Charts | [Sankey Chart](https://reui.io/blocks/chart/sankey-chart) | 3 | Pending |
-| Charts | [Slope Chart](https://reui.io/blocks/chart/slope-chart) | 2 | Pending |
+| Charts | [Pie Chart](https://reui.io/blocks/chart/pie-chart) | 3 | 3/3 compared; see [data ledger](data-implementation.md) for remaining geometry/data differences |
+| Charts | [Radial Chart](https://reui.io/blocks/chart/radial-chart) | 3 | 3/3 compared; see [data ledger](data-implementation.md) for remaining geometry/data differences |
+| Charts | [Sankey Chart](https://reui.io/blocks/chart/sankey-chart) | 3 | 3/3 compared; see [data ledger](data-implementation.md) for remaining geometry/data differences |
+| Charts | [Slope Chart](https://reui.io/blocks/chart/slope-chart) | 2 | 2/2 compared; see [data ledger](data-implementation.md) for remaining geometry/data differences |
 | Charts | [Sparkline](https://reui.io/blocks/chart/sparkline) | 11 | Pending |
 | Charts | [Status Tracker](https://reui.io/blocks/chart/status-tracker) | 3 | Pending |
 | AI & Agents | [AI Chat](https://reui.io/blocks/ai-agents/ai-chat) | 13 | Pending |
@@ -85,7 +85,7 @@ The goal is the complete public REUI Pro Blocks catalog, recreated independently
 | eCommerce | [Comparison](https://reui.io/blocks/ecommerce/comparison) | 6 | Pending |
 | eCommerce | [Coupon](https://reui.io/blocks/ecommerce/coupon) | 6 | Pending |
 | eCommerce | [Filter Sidebar](https://reui.io/blocks/ecommerce/filter-sidebar) | 7 | Pending |
-| eCommerce | [Product Card](https://reui.io/blocks/ecommerce/product-card) | 10 | Pending |
+| eCommerce | [Product Card](https://reui.io/blocks/ecommerce/product-card) | 10 | 10/10 compared; see [commerce ledger](commerce-implementation.md) for photo/content differences |
 | eCommerce | [Product Detail](https://reui.io/blocks/ecommerce/product-detail) | 6 | Pending |
 | eCommerce | [Product Grid](https://reui.io/blocks/ecommerce/product-grid) | 6 | Pending |
 | eCommerce | [Receipt](https://reui.io/blocks/ecommerce/receipt) | 6 | Pending |

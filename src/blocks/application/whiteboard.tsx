@@ -704,7 +704,12 @@ export default function Whiteboard({ block }: BlockProps) {
     setTool("select");
     if (next) {
       setFrame(0);
-      setZoom(Math.min(110, Math.round(canvasSize.width * 84 / ((frames[0]?.w || 620) + 100))));
+      setZoom(
+        Math.min(
+          110,
+          Math.round((canvasSize.width * 84) / ((frames[0]?.w || 620) + 100)),
+        ),
+      );
       setPan({ x: -35, y: 40 });
     } else {
       setZoom(60);
@@ -933,7 +938,9 @@ export default function Whiteboard({ block }: BlockProps) {
     if (s) {
       setPan({ x: s.x - 50, y: s.y - (presenting ? 130 : 80) });
       if (presenting)
-        setZoom(Math.min(150, Math.round((canvasSize.width * 84) / (s.w + 100))));
+        setZoom(
+          Math.min(150, Math.round((canvasSize.width * 84) / (s.w + 100))),
+        );
     }
   }
   function addNote() {

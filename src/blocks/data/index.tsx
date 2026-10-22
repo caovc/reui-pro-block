@@ -7,12 +7,20 @@ import GridBlock from './grid'
 import ChartBlock from './charts'
 import GenerationMix from './generation-mix'
 import AreaPanel from './area-panels'
+import PieChartBlock from './pie-charts'
+import RadialChartBlock from './radial-charts'
+import SlopeChartBlock from './slope-charts'
+import SankeyChartBlock from './sankey-charts'
 import { ActivityBlock, ChatBlock, UsageBlock } from './ai'
 import { BoardBlock, PermissionBlock, PlansBlock, SettingsBlock, TimelineBlock, WizardBlock } from './workflows'
 export default function DataBlock({block}:BlockProps){
  if(block.group==='data-grid')return <GridBlock block={block}/>
  if(block.id==='chart-16')return <GenerationMix/>
  if(block.group==='chart'&&block.category==='area-chart')return <AreaPanel block={block}/>
+ if(block.group==='chart'&&block.category==='pie-chart')return <PieChartBlock block={block}/>
+ if(block.group==='chart'&&block.category==='radial-chart')return <RadialChartBlock block={block}/>
+ if(block.group==='chart'&&block.category==='slope-chart')return <SlopeChartBlock block={block}/>
+ if(block.group==='chart'&&block.category==='sankey-chart')return <SankeyChartBlock block={block}/>
  if(block.group==='chart')return <ChartBlock block={block}/>
  if(block.group==='ai-agents')return block.category==='ai-chat'?<ChatBlock block={block}/>:block.category==='agent-activity'?<ActivityBlock block={block}/>:<UsageBlock block={block}/>
  if(block.category==='digital-twin')return <DigitalTwinBlock block={block}/>
