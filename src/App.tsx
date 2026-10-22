@@ -1,0 +1,122 @@
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
+import { ArrowDownToLine, ArrowLeft, ArrowRight, BookOpen, Check, ChevronDown, ChevronLeft, ChevronRight, Code2, Copy, ExternalLink, GitFork as Github, Heart, LayoutGrid, Monitor, Moon, PanelLeft, RotateCcw, Search, SlidersHorizontal, Smartphone, Sun, Tablet, X } from 'lucide-react'
+import { toast } from 'sonner'
+import { categories, blocks, groups, blockKey, blockHref, categoryHref } from '@/data/catalog'
+import type { BlockMeta, CategoryMeta } from '@/data/types'
+import { BlockRenderer } from '@/blocks/renderer'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
+import { Input } from '@/components/ui/input'
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip'
+import { Sheet, SheetContent, SheetTitle, SheetDescription } from '@/components/ui/sheet'
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog'
+import { Empty, EmptyHeader, EmptyTitle, EmptyDescription, EmptyMedia, EmptyContent } from '@/components/ui/empty'
+import { ScrollArea } from '@/components/ui/scroll-area'
+import { Separator } from '@/components/ui/separator'
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem } from '@/components/ui/select'
+import { Skeleton } from '@/components/ui/skeleton'
+import { cn } from '@/lib/utils'
+import { downloadFile } from '@/lib/download'
+const CodeViewer = lazy(() => import('@/components/site/code-viewer').then(module => ({ default: module.CodeViewer })))
+
+function useStored<T,>(key:string, fallback:T) {
+ const [value,setValue]=useState<T>(()=>{try{return JSON.parse(localStorage.getItem(key)??'null')??fallback}catch{return fallback}})
+ useEffect(()=>{localStorage.setItem(key,JSON.stringify(value))},[key,value])
+ return [value,setValue] as const
+}
+function useHash() {
+ const [hash,setHash]=useState(location.hash.slice(1)||'/')
+ useEffect(()=>{const update=()=>{setHash(location.hash.slice(1)||'/');window.scrollTo(0,0)};window.addEventListener('hashchange',update);return()=>window.removeEventListener('hashchange',update)},[])
+ return hash
+}
+function IconTip({label,children}:{label:string;children:React.ReactNode}) {return <Tooltip><TooltipTrigger asChild>{children}</TooltipTrigger><TooltipContent>{label}</TooltipContent></Tooltip>}
+function Mark({small=false}:{small?:boolean}) {return <span className={cn('brand-mark',small&&'brand-mark-small')}><span/></span>}
+function Miniature({block}:{block:BlockMeta}) {
+ const ref=useRef<HTMLDivElement>(null)
+ const [visible,setVisible]=useState(false)
+ useEffect(()=>{const observer=new IntersectionObserver(entries=>{if(entries[0].isIntersecting){setVisible(true);observer.disconnect()}},{rootMargin:'100px'});if(ref.current)observer.observe(ref.current);return()=>observer.disconnect()},[])
+ const [width,setWidth]=useState(320)
+ useEffect(()=>{const observer=new ResizeObserver(entries=>setWidth(entries[0].contentRect.width));if(ref.current)observer.observe(ref.current);return()=>observer.disconnect()},[])
+ return <div className="miniature" ref={ref} aria-hidden="true"><div inert className="miniature-inner" style={{width:1100,height:750,transform:`scale(${width/1100})`}}>{visible?<BlockRenderer block={block}/>:<div className="p-14"><Skeleton className="h-12 w-48"/><Skeleton className="mt-8 h-96 w-full"/></div>}</div></div>
+}
+function CategoryTile({category}:{category:CategoryMeta}) {return <a className="catalog-tile" href={categoryHref(category)}><Miniature block={category.blocks[0]}/><div className="tile-caption"><span>{category.name}</span><span className="tile-count">{category.count} blocks</span></div></a>}
+function BlockTile({block,favorite,toggleFavorite}:{block:BlockMeta;favorite:boolean;toggleFavorite:(b:BlockMeta)=>void}) {return <div className="block-tile"><a className="catalog-tile" href={blockHref(block)}><Miniature block={block}/><div className="tile-caption"><div className="min-w-0"><span className="block-tile-name">{block.name}</span><span className="tile-count mt-1 block">{block.id}</span></div><ArrowRight className="size-4 shrink-0 text-muted-foreground"/></div></a><Button className="tile-heart" variant="outline" size="icon-sm" aria-label={`${favorite?'Remove':'Add'} ${block.name} ${favorite?'from':'to'} favorites`} aria-pressed={favorite} onClick={()=>toggleFavorite(block)}><Heart className={cn(favorite&&'fill-current')}/></Button></div>}
+function NoResults({clear,favorites=false}:{clear:()=>void;favorites?:boolean}) {return <Empty className="empty-results"><EmptyHeader><EmptyMedia variant="icon">{favorites?<Heart/>:<Search/>}</EmptyMedia><EmptyTitle>{favorites?'Your collection starts here':'No matching blocks'}</EmptyTitle><EmptyDescription>{favorites?'Save blocks with the heart button to find them here.':'Try another name or browse all categories.'}</EmptyDescription></EmptyHeader><EmptyContent><Button variant="outline" onClick={clear}>Browse all blocks</Button></EmptyContent></Empty>}
+
+function PreviewPanel({block,dark}:{block:BlockMeta;dark:boolean}) {
+ const [tab,setTab]=useState('preview');const [device,setDevice]=useState('desktop');const [revision,setRevision]=useState(0);const [copied,setCopied]=useState(false)
+ const [radius,setRadius]=useState('0.625');const [accent,setAccent]=useState('blue');const [customize,setCustomize]=useState(false)
+ const iframe=useRef<HTMLIFrameElement>(null)
+ const [frameReady,setFrameReady]=useState(false)
+ const previewUrl=`${location.pathname}#/preview/${blockKey(block)}?theme=${dark?'dark':'light'}&radius=${radius}&accent=${accent}`
+ const [canvasWidth,setCanvasWidth]=useState(1100);const canvas=useRef<HTMLDivElement>(null)
+ useEffect(()=>{const observer=new ResizeObserver(entries=>setCanvasWidth(entries[0].contentRect.width));if(canvas.current)observer.observe(canvas.current);return()=>observer.disconnect()},[tab])
+ const desired=device==='mobile'?390:device==='tablet'?768:Math.max(1000,canvasWidth)
+ const scale=Math.min(1,canvasWidth/desired)
+ async function copyLink(){try{await navigator.clipboard.writeText(location.href);setCopied(true);setTimeout(()=>setCopied(false),1800)}catch{toast.error('Could not copy link')}}
+ return <div className="preview-section">
+ <Tabs value={tab} onValueChange={setTab} className="gap-0">
+ <div className="preview-toolbar"><div className="flex items-center gap-3"><TabsList className="h-8"><TabsTrigger value="preview">Preview</TabsTrigger><TabsTrigger value="code">Code</TabsTrigger></TabsList><Badge variant="outline" className="hidden sm:inline-flex">{block.id}</Badge></div>
+ <div className="flex items-center gap-1">
+ {tab==='preview'&&<><ToggleGroup type="single" value={device} onValueChange={value=>value&&setDevice(value)} size="sm" className="hidden sm:flex" aria-label="Preview viewport"><ToggleGroupItem value="desktop" aria-label="Desktop viewport"><Monitor/></ToggleGroupItem><ToggleGroupItem value="tablet" aria-label="Tablet viewport"><Tablet/></ToggleGroupItem><ToggleGroupItem value="mobile" aria-label="Mobile viewport"><Smartphone/></ToggleGroupItem></ToggleGroup><Separator orientation="vertical" className="mx-1 hidden h-5 sm:block"/><IconTip label="Reset preview"><Button variant="ghost" size="icon-sm" aria-label="Reset preview" onClick={()=>{setRevision(n=>n+1);setFrameReady(false)}}><RotateCcw/></Button></IconTip></>}
+ <IconTip label="Copy link"><Button variant="ghost" size="icon-sm" aria-label="Copy block link" onClick={copyLink}>{copied?<Check/>:<Copy/>}</Button></IconTip><IconTip label="Open preview in new tab"><Button variant="ghost" size="icon-sm" asChild><a href={previewUrl} target="_blank" rel="noreferrer" aria-label="Open isolated preview"><ExternalLink/></a></Button></IconTip>
+ <Button variant="outline" size="sm" className="ml-1" onClick={()=>setCustomize(v=>!v)} aria-expanded={customize}><SlidersHorizontal data-icon="inline-start"/><span className="hidden md:inline">Customize</span></Button></div></div>
+ {customize&&<div className="customizer"><span className="text-xs font-medium">Preview theme</span><Select value={accent} onValueChange={setAccent}><SelectTrigger aria-label="Accent color"><SelectValue/></SelectTrigger><SelectContent><SelectGroup>{['blue','violet','green','orange'].map(value=><SelectItem value={value} key={value}>{value[0].toUpperCase()+value.slice(1)}</SelectItem>)}</SelectGroup></SelectContent></Select><Select value={radius} onValueChange={setRadius}><SelectTrigger aria-label="Corner radius"><SelectValue/></SelectTrigger><SelectContent><SelectGroup><SelectItem value="0">Square</SelectItem><SelectItem value="0.375">Small radius</SelectItem><SelectItem value="0.625">Default radius</SelectItem><SelectItem value="1">Large radius</SelectItem></SelectGroup></SelectContent></Select><Button variant="ghost" size="icon-sm" aria-label="Close customizer" onClick={()=>setCustomize(false)}><X/></Button></div>}
+ <TabsContent value="preview" className="preview-content"><div ref={canvas} className="preview-canvas" data-device={device}><div className="preview-frame-wrap" style={{width:desired*scale,height:Math.max(640,760*scale)}}><iframe key={`${block.id}-${revision}`} ref={iframe} title={`${block.name} live preview`} src={previewUrl} onLoad={()=>setFrameReady(true)} style={{width:desired,height:Math.max(760,640/scale),transform:`scale(${scale})`}} className="live-frame"/>{!frameReady&&<div className="absolute inset-0 bg-background p-10"><Skeleton className="h-10 w-48"/><Skeleton className="mt-8 h-80 w-full"/></div>}</div></div><div className="preview-status"><span><span className="status-dot"/>Interactive preview</span><span>{Math.round(desired)} px <span className="hidden sm:inline">· shadcn/ui + React</span></span></div></TabsContent>
+ <TabsContent value="code"><Suspense fallback={<Skeleton className="h-96 w-full"/>}><CodeViewer key={blockKey(block)} block={block} dark={dark}/></Suspense></TabsContent>
+ </Tabs></div>
+}
+function IsolatedPreview({block}:{block:BlockMeta}) {
+ const params=new URLSearchParams(location.hash.split('?')[1]);const theme=params.get('theme')||'light';const radius=params.get('radius')||'0.625';const accent=params.get('accent')||'blue'
+ useEffect(()=>{document.documentElement.classList.toggle('dark',theme==='dark');document.documentElement.style.setProperty('--radius',`${radius}rem`);document.documentElement.dataset.accent=accent;document.title=`${block.name} — Preview`},[theme,radius,accent,block.name])
+ return <div className="isolated-preview" data-block-id={block.id}><BlockRenderer block={block}/></div>
+}
+export default function App() {
+ const hash=useHash();const [dark,setDark]=useStored('blocks-dark',false);const [favorites,setFavorites]=useStored<string[]>('blocks-favorites',[])
+ const [group,setGroup]=useState('all');const [query,setQuery]=useState('');const [sidebar,setSidebar]=useState(false);const [searchOpen,setSearchOpen]=useState(false);const [searchQuery,setSearchQuery]=useState('');const [about,setAbout]=useState(false);const [page,setPage]=useState(1)
+ const segments=hash.split('?')[0].split('/').filter(Boolean)
+ const category=categories.find(c=>c.group===segments[1]&&c.id===segments[2]);const block=blocks.find(b=>blockKey(b)===segments.slice(1).join('/'))
+ const isFavoritePage=segments[0]==='favorites';const isCategory=segments[0]==='category'&&category;const isBlock=segments[0]==='block'&&block
+ const isolated=segments[0]==='preview'&&block
+ useEffect(()=>{if(!isolated)document.documentElement.classList.toggle('dark',dark)},[dark,isolated])
+ useEffect(()=>{setPage(1);setQuery('')},[hash])
+ useEffect(()=>{if(isolated)return;document.title=isBlock?`${block.name} — REUI Blocks`:isCategory?`${category.name} — REUI Blocks`:'REUI Blocks — Open component collection'},[isolated,isBlock,isCategory,block,category])
+ useEffect(()=>{const listener=(e:KeyboardEvent)=>{if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();setSearchOpen(v=>!v)}};window.addEventListener('keydown',listener);return()=>window.removeEventListener('keydown',listener)},[])
+ function toggleFavorite(b:BlockMeta){const key=blockKey(b);setFavorites(current=>current.includes(key)?current.filter(k=>k!==key):[...current,key])}
+ function clear(){setQuery('');setGroup('all');location.hash='/'}
+ const match=(text:string)=>text.toLowerCase().includes(query.trim().toLowerCase())
+ const filteredCategories=categories.filter(c=>(group==='all'||c.group===group)&&match(`${c.name} ${c.groupLabel}`)).sort((a,b)=>a.name.localeCompare(b.name))
+ const visibleBlocks=(isFavoritePage?blocks.filter(b=>favorites.includes(blockKey(b))):isCategory?category.blocks:blocks).filter(b=>match(`${b.name} ${b.category} ${b.id}`)&&(group==='all'||isCategory||b.group===group))
+ const showBlockResults=Boolean(isCategory||isFavoritePage||query.trim())
+ const currentCategory=isBlock?categories.find(c=>c.group===block.group&&c.id===block.category):category
+ const related=currentCategory?.blocks||[];const blockIndex=block?related.findIndex(b=>b.id===block.id):-1
+ const total=showBlockResults?visibleBlocks.length:filteredCategories.length
+ const limit=18;const displayed=showBlockResults?visibleBlocks.slice(0,page*limit):filteredCategories.slice(0,page*limit)
+ if(isolated)return <IsolatedPreview key={hash} block={block}/>
+ const sidebarContent= <><div className="sidebar-top"><Button variant="secondary" className="justify-start" asChild><a href="#/" onClick={()=>setSidebar(false)}><LayoutGrid data-icon="inline-start"/>All blocks<Badge variant="outline" className="ml-auto">{blocks.length}</Badge></a></Button><Button variant="ghost" className="justify-start" asChild><a href="#/favorites" onClick={()=>setSidebar(false)}><Heart data-icon="inline-start"/>Favorites<span className="ml-auto text-xs text-muted-foreground">{favorites.length}</span></a></Button></div><Separator/><div className="sidebar-categories">{groups.filter(g=>g.id!=='all').map(g=><section key={g.id}><h3>{g.name}<span>{g.count}</span></h3>{categories.filter(c=>c.group===g.id).map(c=><a key={c.id} className={cn('sidebar-link',currentCategory?.group===c.group&&currentCategory?.id===c.id&&'active')} href={categoryHref(c)} onClick={()=>setSidebar(false)}>{c.name}<span>{c.count}</span></a>)}</section>)}</div></>
+ return <div className="site-shell">
+ <header className="site-header"><a className="brand" href="#/" aria-label="REUI Blocks home"><Mark/><span>REUI</span><span className="brand-suffix">BLOCKS</span></a><nav className="header-nav" aria-label="Main navigation"><a className="nav-active" href="#/">Blocks<ChevronDown className="size-3"/></a><a href="https://ui.shadcn.com/docs/components" target="_blank" rel="noreferrer">Components<ExternalLink className="size-3"/></a><Button variant="ghost" onClick={()=>setAbout(true)}>Documentation</Button></nav><div className="header-actions"><Button variant="outline" className="search-trigger" onClick={()=>setSearchOpen(true)}><Search data-icon="inline-start"/><span>Search blocks...</span><kbd>⌘ K</kbd></Button><IconTip label={dark?'Light theme':'Dark theme'}><Button variant="ghost" size="icon" aria-label="Toggle theme" onClick={()=>setDark(!dark)}>{dark?<Sun/>:<Moon/>}</Button></IconTip><Button variant="ghost" size="icon" asChild><a href="https://github.com/caovc/reui-pro-block" target="_blank" rel="noreferrer" aria-label="GitHub repository"><Github/></a></Button><Button variant="outline" className="hidden sm:flex" asChild><a href="https://reui.io/blocks" target="_blank" rel="noreferrer">REUI reference<ArrowRight data-icon="inline-end"/></a></Button></div></header>
+ <div className="site-body"><aside className="desktop-sidebar"><ScrollArea className="h-full">{sidebarContent}</ScrollArea><div className="sidebar-footer"><Mark small/><span>Built with shadcn/ui</span><span className="status-dot"/></div></aside>
+ <main className="site-main" id="main-content">
+ <div className="breadcrumbs"><Button variant="ghost" size="icon-sm" className="sidebar-toggle" aria-label="Browse categories" onClick={()=>setSidebar(true)}><PanelLeft/></Button><a href="#/">Blocks</a>{(isCategory||isBlock)&&<><ChevronRight/><span>{currentCategory?.groupLabel}</span><ChevronRight/>{isBlock?<a href={categoryHref(currentCategory!)}>{currentCategory?.name}</a>:<span className="text-foreground">{category?.name}</span>}</>}</div>
+ {isBlock?<>
+ <div className="block-heading"><div><a className="back-link" href={categoryHref(currentCategory!)}><ArrowLeft className="size-3.5"/>All {currentCategory?.name} blocks</a><h1>{block.name}</h1><p>Built with shadcn/ui. Explore the interactions, customize the theme, and make it yours.</p></div><div className="flex items-center gap-2"><IconTip label="Favorite block"><Button variant="outline" size="icon" aria-label="Favorite block" aria-pressed={favorites.includes(blockKey(block))} onClick={()=>toggleFavorite(block)}><Heart className={cn(favorites.includes(blockKey(block))&&'fill-current')}/></Button></IconTip><Button variant="outline" onClick={async()=>{const {blockFiles}=await import('@/lib/source');downloadFile(`${block.id}.json`,JSON.stringify({name:block.id,type:'registry:block',files:Object.entries(blockFiles(block)).map(([path,content])=>({path,content,type:path.includes('/ui/')?'registry:ui':'registry:component'}))},null,2),'application/json')}}><ArrowDownToLine data-icon="inline-start"/>Download source</Button></div></div>
+ <PreviewPanel key={blockKey(block)} block={block} dark={dark}/>
+ <div className="block-details"><div><Badge variant="secondary">Independent implementation</Badge><span className="text-xs text-muted-foreground">Local demo data · Layout families · MIT primitives</span></div><a href={block.reference} target="_blank" rel="noreferrer">Compare with REUI<ExternalLink className="size-3"/></a></div>
+ <div className="block-pagination"><Button variant="outline" asChild disabled={blockIndex<=0}>{blockIndex>0?<a href={blockHref(related[blockIndex-1])}><ChevronLeft data-icon="inline-start"/>{related[blockIndex-1].name}</a>:<span><ChevronLeft/>Previous block</span>}</Button><span>{blockIndex+1} / {related.length}</span><Button variant="outline" asChild disabled={blockIndex>=related.length-1}>{blockIndex<related.length-1?<a href={blockHref(related[blockIndex+1])}>{related[blockIndex+1].name}<ChevronRight data-icon="inline-end"/></a>:<span>Next block<ChevronRight/></span>}</Button></div>
+ </>:<>
+ <div className="page-heading"><div className="flex items-center gap-3"><h1>{isFavoritePage?'Your favorite blocks':isCategory?`${category.name} blocks`:'Beautiful blocks. Ready to build.'}</h1><Badge variant="outline">{isFavoritePage?favorites.length:isCategory?category.count:blocks.length}</Badge></div><p>{isFavoritePage?'A little inspiration, saved for your next project.':isCategory?`Explore ${category.count} ${category.name.toLowerCase()} layouts. Preview, interact, and view the implementation.`:'A carefully crafted collection of application, commerce, and marketing layouts.'}<span className="hidden xl:inline"> Built with shadcn/ui. Yours to customize.</span></p></div>
+ <div className="catalog-controls">{!isCategory&&<Tabs value={group} onValueChange={value=>{setGroup(value);setPage(1)}} className="group-tabs"><TabsList>{groups.map(g=><TabsTrigger key={g.id} value={g.id}>{g.name}<span>{g.count}</span></TabsTrigger>)}</TabsList></Tabs>}<div className="catalog-search"><Search className="size-4"/><Input aria-label="Search blocks" placeholder={isCategory?`Search ${category.name.toLowerCase()}...`:'Search blocks...'} value={query} onChange={e=>{setQuery(e.target.value);setPage(1)}}/>{query&&<Button variant="ghost" size="icon-xs" aria-label="Clear search" onClick={()=>setQuery('')}><X/></Button>}</div></div>
+ <div className="catalog-meta"><span>{query?`${total} results for “${query}”`:isCategory?`${category.count} blocks`:isFavoritePage?`${favorites.length} saved blocks`:`${filteredCategories.length} categories · ${group==='all'?blocks.length:groups.find(g=>g.id===group)?.count} blocks`}</span><span className="flex items-center gap-1.5"><LayoutGrid className="size-3.5"/>{showBlockResults?'Block library':'Category library'}</span></div>
+ {total===0?<NoResults clear={clear} favorites={isFavoritePage&&!query}/>:<div className="catalog-grid">{displayed.map(item=>'blocks' in item?<CategoryTile key={`${item.group}/${item.id}`} category={item}/>:<BlockTile key={blockKey(item)} block={item} favorite={favorites.includes(blockKey(item))} toggleFavorite={toggleFavorite}/>)}</div>}
+ {page*limit<total&&<div className="load-more"><Button variant="outline" size="lg" onClick={()=>setPage(n=>n+1)}>Show more {showBlockResults?'blocks':'categories'}<ChevronDown data-icon="inline-end"/></Button><span>Showing {Math.min(page*limit,total)} of {total}</span></div>}
+ </>}
+ <footer className="site-footer"><div><Mark small/><span>REUI Blocks</span><span className="footer-note">Independent collection · Free components, thoughtful compositions.</span></div><Button variant="ghost" size="sm" onClick={()=>setAbout(true)}><BookOpen data-icon="inline-start"/>About this project</Button></footer>
+ </main></div>
+ <Sheet open={sidebar} onOpenChange={setSidebar}><SheetContent side="left" className="w-72 gap-0 p-0"><SheetTitle className="px-5 pt-5">Browse blocks</SheetTitle><SheetDescription className="px-5 pb-2">78 categories, built with shadcn/ui.</SheetDescription><ScrollArea className="min-h-0 flex-1">{sidebarContent}</ScrollArea></SheetContent></Sheet>
+ <Dialog open={searchOpen} onOpenChange={setSearchOpen}><DialogContent className="gap-0 p-0"><DialogTitle className="sr-only">Search all blocks</DialogTitle><DialogDescription className="sr-only">Find a layout by name or category.</DialogDescription><div className="global-search"><Search className="size-5"/><Input aria-label="Search all blocks" placeholder="What are you building?" value={searchQuery} onChange={e=>setSearchQuery(e.target.value)} autoFocus/></div><ScrollArea className="h-80"><div className="p-2">{(searchQuery.trim()?blocks.filter(b=>`${b.name} ${b.category}`.toLowerCase().includes(searchQuery.toLowerCase())):blocks.filter(b=>['dashboard','auth','product-card','ai-chat','pricing'].includes(b.category))).slice(0,30).map(b=><a className="search-result" key={blockKey(b)} href={blockHref(b)} onClick={()=>{setSearchOpen(false);setSearchQuery('')}}><span className="search-result-icon"><Code2 className="size-4"/></span><span>{b.name}<small>{categories.find(c=>c.group===b.group&&c.id===b.category)?.name}</small></span><ArrowRight className="ml-auto size-3.5 text-muted-foreground"/></a>)}{searchQuery&&!blocks.some(b=>`${b.name} ${b.category}`.toLowerCase().includes(searchQuery.toLowerCase()))&&<p className="p-8 text-center text-sm text-muted-foreground">No blocks found. Try “dashboard” or “login”.</p>}</div></ScrollArea><div className="search-footer"><span>{blocks.length} blocks to explore</span><kbd>ESC to close</kbd></div></DialogContent></Dialog>
+ <Dialog open={about} onOpenChange={setAbout}><DialogContent><DialogTitle>Made to be explored. Built to be yours.</DialogTitle><DialogDescription>An independent component collection inspired by REUI’s public block catalog.</DialogDescription><div className="about-content"><p>Browse all 662 reference entries across 78 categories. Every entry opens an interactive local implementation with its actual source files and dependencies.</p><p>Blocks share composable layout families. Names, structure, interactions, and demo content vary by entry; these are independent recreations and are not pixel-identical copies of the original Pro library.</p><p>Use the Code tab to inspect files. Download source includes the entry wrapper, family modules, and shadcn primitives. Install the dependencies from the repository’s package.json and use its Tailwind theme.</p><p>Forms, payments, authentication, and AI responses run as local demos. Connect your own services for production.</p><div className="flex gap-2"><Button asChild><a href="https://github.com/caovc/reui-pro-block" target="_blank" rel="noreferrer"><Github data-icon="inline-start"/>Repository</a></Button><Button variant="outline" asChild><a href="https://reui.io/blocks" target="_blank" rel="noreferrer">Original reference<ExternalLink data-icon="inline-end"/></a></Button></div></div></DialogContent></Dialog>
+ </div>
+}
