@@ -216,3 +216,26 @@ test("sprint planning updates capacity, linked decisions and presentation", asyn
     "false",
   );
 });
+
+for (const [id, name, panelLabel, cardId] of [
+  ["whiteboard-1", "Checkout Review", "Board panel", "goal0"],
+  ["whiteboard-2", "Sprint 42 Planning", "Planning panel", "story-0-0"],
+]) {
+  test(`${id} keeps notes readable and supports panning on a phone`, async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 720 });
+    await page.goto(`./#/preview/application/whiteboard/${id}`);
+    await page.getByRole("button", { name: panelLabel, exact: true }).click();
+    const canvas = page.getByRole("application", { name: `${name} drawing canvas` });
+    const card = page.locator(`[data-shape="${cardId}"]`);
+    await expect.poll(async () => (await card.boundingBox())?.width || 0).toBeGreaterThan(130);
+    const before = (await card.boundingBox())!;
+    await page.getByRole("radio", { name: "Hand", exact: true }).click();
+    await page.mouse.move(230, 590);
+    await page.mouse.down();
+    await page.mouse.move(280, 620, { steps: 6 });
+    await page.mouse.up();
+    await expect.poll(async () => (await card.boundingBox())!.x - before.x).toBeGreaterThan(45);
+    await expect(canvas).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(390);
+  });
+}

@@ -1,4 +1,4 @@
-import { useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import type { PointerEvent as ReactPointerEvent } from "react";
 import {
   ArrowDownToLine,
@@ -657,6 +657,18 @@ export default function Whiteboard({ block }: BlockProps) {
   const [vote, setVote] = useState("5");
   const [revealed, setRevealed] = useState(false);
   const svg = useRef<SVGSVGElement>(null);
+  const canvasWrap = useRef<HTMLDivElement>(null);
+  const [canvasSize, setCanvasSize] = useState({ width: 1000, height: 672 });
+  useEffect(() => {
+    const element = canvasWrap.current;
+    if (!element) return;
+    const observer = new ResizeObserver(([entry]) => {
+      const { width, height } = entry.contentRect;
+      if (width > 0 && height > 0) setCanvasSize({ width, height });
+    });
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
   const file = useRef<HTMLInputElement>(null);
   const image = useRef<HTMLInputElement>(null);
   const gesture = useRef<{
@@ -692,7 +704,7 @@ export default function Whiteboard({ block }: BlockProps) {
     setTool("select");
     if (next) {
       setFrame(0);
-      setZoom(110);
+      setZoom(Math.min(110, Math.round(canvasSize.width * 84 / ((frames[0]?.w || 620) + 100))));
       setPan({ x: -35, y: 40 });
     } else {
       setZoom(60);
@@ -840,13 +852,10 @@ export default function Whiteboard({ block }: BlockProps) {
     const g = gesture.current;
     if (!g) return;
     if (g.pan) {
-      const ratio =
-        1400 /
-        (event.currentTarget.getBoundingClientRect().width * (zoom / 60));
-      setPan((p) => ({
-        x: p.x - (event.clientX - g.x) * ratio,
-        y: p.y - (event.clientY - g.y) * ratio,
-      }));
+      const ratio = 84 / zoom;
+      const dx = (event.clientX - g.x) * ratio;
+      const dy = (event.clientY - g.y) * ratio;
+      setPan((p) => ({ x: p.x - dx, y: p.y - dy }));
       g.x = event.clientX;
       g.y = event.clientY;
       return;
@@ -924,7 +933,7 @@ export default function Whiteboard({ block }: BlockProps) {
     if (s) {
       setPan({ x: s.x - 50, y: s.y - (presenting ? 130 : 80) });
       if (presenting)
-        setZoom(Math.min(150, Math.round((1400 * 60) / (s.w + 100))));
+        setZoom(Math.min(150, Math.round((canvasSize.width * 84) / (s.w + 100))));
     }
   }
   function addNote() {
@@ -1213,7 +1222,7 @@ export default function Whiteboard({ block }: BlockProps) {
         </div>
       </header>
       <div className="wb-workspace">
-        <div className="wb-canvas-wrap">
+        <div className="wb-canvas-wrap" ref={canvasWrap}>
           <div className="wb-topbar">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -1380,7 +1389,7 @@ export default function Whiteboard({ block }: BlockProps) {
               tool === "hand" && "wb-hand",
               viewOnly && "wb-view-only",
             )}
-            viewBox={`${pan.x} ${pan.y} ${(1400 * 60) / zoom} ${(940 * 60) / zoom}`}
+            viewBox={`${pan.x} ${pan.y} ${(canvasSize.width * 84) / zoom} ${(canvasSize.height * 84) / zoom}`}
             preserveAspectRatio="xMinYMin meet"
             role="application"
             aria-label={`${scene.name} drawing canvas`}
