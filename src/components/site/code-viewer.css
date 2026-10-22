@@ -1,0 +1,29 @@
+.reui-source-viewer.source-code {
+  padding: 0 !important;
+  min-height: 0;
+  max-height: none;
+  overflow: hidden;
+  --code-block-font-size: 0.75rem;
+  --code-block-line-height: 1.5rem;
+}
+.reui-source-viewer.source-code > div {
+  white-space: normal;
+  min-height: 0;
+}
+.reui-source-viewer [data-slot="code-block-viewport"] {
+  max-height: 640px;
+  min-height: 400px;
+}
+.reui-source-viewer .code-filebar {
+  flex-wrap: nowrap;
+}
+@media (max-width: 600px) {
+  .reui-source-viewer .code-filebar {
+    gap: 8px;
+    padding-inline: 8px;
+  }
+  .reui-source-viewer [data-slot="code-block-viewport"] {
+    min-height: 300px;
+    max-height: 560px;
+  }
+}

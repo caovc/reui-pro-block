@@ -33,6 +33,13 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  NumberField,
+  NumberFieldGroup,
+  NumberFieldInput,
+  NumberFieldDecrement,
+  NumberFieldIncrement,
+} from "@/components/reui/number-field";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
@@ -1604,31 +1611,37 @@ export default function Whiteboard({ block }: BlockProps) {
           )}
           <div className="wb-bottom">
             <div className="wb-bottom-group">
-              <Button
-                size="icon-sm"
-                variant="ghost"
-                aria-label="Zoom out"
-                onClick={() => setZoom(Math.max(20, zoom - 10))}
+              <NumberField
+                className="w-32"
+                value={zoom / 100}
+                onValueChange={(value) =>
+                  value !== null && setZoom(Math.round(value * 100))
+                }
+                min={0.2}
+                max={1.8}
+                step={0.1}
+                format={{ style: "percent", maximumFractionDigits: 0 }}
+                size="sm"
               >
-                <Minus />
-              </Button>
+                <NumberFieldGroup className="border-0 shadow-none focus-within:ring-0">
+                  <NumberFieldDecrement aria-label="Zoom out" />
+                  <NumberFieldInput
+                    aria-label="Zoom percentage"
+                    className="w-12 px-0 text-xs"
+                  />
+                  <NumberFieldIncrement aria-label="Zoom in" />
+                </NumberFieldGroup>
+              </NumberField>
               <Button
                 size="sm"
                 variant="ghost"
+                aria-label="Reset zoom and pan"
                 onClick={() => {
                   setZoom(60);
                   setPan({ x: 0, y: 0 });
                 }}
               >
-                {zoom}%
-              </Button>
-              <Button
-                size="icon-sm"
-                variant="ghost"
-                aria-label="Zoom in"
-                onClick={() => setZoom(Math.min(180, zoom + 10))}
-              >
-                <Plus />
+                Fit
               </Button>
             </div>
             <div className="wb-bottom-group">

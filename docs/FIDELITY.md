@@ -24,8 +24,8 @@ The goal is the complete public REUI Pro Blocks catalog, recreated independently
 | Group | Category | Entries | Per-entry visual audit |
 | --- | --- | ---: | --- |
 | Application | [App Shell](https://reui.io/blocks/application/app-shell) | 36 | Pending |
-| Application | [Auth](https://reui.io/blocks/application/auth) | 20 | 5/20 compared; see [centered auth audit](audits/auth-centered.md) |
-| Application | [Card](https://reui.io/blocks/application/card) | 43 | Pending |
+| Application | [Auth](https://reui.io/blocks/application/auth) | 20 | 9/20 compared; see [centered](audits/auth-centered.md) and [split/framed](audits/auth-split.md) auth audits |
+| Application | [Card](https://reui.io/blocks/application/card) | 43 | 15/43 compared with actual free REUI Frame/IconTile/Badge; see [reuse audit](REUI-REUSE.md) and application ledger |
 | Application | [Dashboard](https://reui.io/blocks/application/dashboard) | 8 | Pending |
 | Application | [Dialog](https://reui.io/blocks/application/dialog) | 15 | Pending |
 | Application | [Empty State](https://reui.io/blocks/application/empty-state) | 14 | Pending |
@@ -109,3 +109,5 @@ The goal is the complete public REUI Pro Blocks catalog, recreated independently
 - Commerce: title-specific pricing/checkout/comparison/shop-hero refinements underway; bundled free photo assets.
 
 See the family implementation documents for precise local functionality and remaining gaps. This ledger must not be used to mark the full goal complete while the visual audit queue remains pending.
+
+The current consumer migration explicitly replaces duplicated UI with official free REUI implementations; see [actual reuse and verification](REUI-REUSE.md). Remaining categories and states still require their own audit.

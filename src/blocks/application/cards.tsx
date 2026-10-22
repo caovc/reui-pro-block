@@ -36,7 +36,12 @@ import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Metric, More, Team, toast } from "./shared";
 import type { BlockProps } from "@/data/types";
+import RefinedCards from "./card-variants";
 export default function CardsBlock({ block }: BlockProps) {
+  if (/^card-([1-9]|1[0-5])$/.test(block.id)) return <RefinedCards block={block}/>;
+  return <GenericCardsBlock block={block}/>;
+}
+function GenericCardsBlock({ block }: BlockProps) {
   const [connected, setConnected] = useState(false);
   const [saved, setSaved] = useState(false);
   const [step, setStep] = useState(1);

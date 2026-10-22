@@ -1,6 +1,6 @@
 # Centered authentication audit
 
-Inspected on 2026-10-22. Public rendered previews and their visible controls were inspected in the browser; no premium source was retrieved. Five distinct compositions now live in `auth-centered.tsx`; `auth-shared.tsx` supplies the independently retained provider icons. The other 15 auth entries remain in the earlier generic family and still need their individual visual pass.
+Inspected on 2026-10-22. Public rendered previews and their visible controls were inspected in the browser; no premium source was retrieved. Five distinct compositions now live in `auth-centered.tsx`; `auth-shared.tsx` supplies the independently retained provider icons. Four split/framed entries now have a separate [audit](auth-split.md); the other eleven auth entries remain in the generic family and still need their individual visual pass.
 
 | Entry | Public reference and observed composition | Implemented correction / checked behavior | Remaining differences |
 | --- | --- | --- | --- |

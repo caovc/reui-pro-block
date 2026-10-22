@@ -10,6 +10,10 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 
 THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+## REUI free components
+
+Official free registry implementations are vendored under `src/components/reui`, from the public `https://reui.io/r/radix-nova/` registry. MIT License, Copyright (c) 2025 Keenthemes Inc. Preserve the full [REUI MIT notice](src/components/reui/REUI-LICENSE.txt), including in downloaded starters. These free primitives are distinct from the paid Pro block source. Component-specific comments and audit records identify local compatibility changes and consumers.
+
 ## Other dependencies
 
 Radix UI (MIT), Tailwind CSS (MIT), React (MIT), Lucide (ISC), Recharts (MIT), Sonner (MIT), Geist and Kalam fonts (SIL Open Font License), Prism React Renderer (MIT), and their dependencies retain their respective licenses in node_modules / upstream packages. Demo photos use remote Unsplash image URLs and remain subject to the Unsplash license; no REUI premium imagery is downloaded or bundled.

@@ -21,6 +21,7 @@ import type { BlockProps } from "@/data/types";
 import "./auth.css";
 import { OAuthIcon, type Provider } from "./auth-shared";
 import CenteredAuth from "./auth-centered";
+import SplitAuth from "./auth-split";
 type AuthConfig = {
   providers: Provider[];
   magic?: boolean;
@@ -140,6 +141,8 @@ function TrustLogos() {
   );
 }
 export default function AuthBlock({ block }: BlockProps) {
+  if (["auth-1", "auth-2", "auth-3", "auth-4"].includes(block.id))
+    return <SplitAuth block={block} />;
   if (
     ["auth-15", "auth-16", "auth-17", "auth-19", "auth-20"].includes(block.id)
   )

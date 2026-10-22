@@ -20,48 +20,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
-import { OAuthIcon, type Provider } from "./auth-shared";
+import { AuthMark, FormDivider, OAuthIcon, type Provider } from "./auth-shared";
 
-function AuthMark({
-  wordmark = false,
-  large = false,
-}: {
-  wordmark?: boolean;
-  large?: boolean;
-}) {
-  return (
-    <div className="inline-flex items-center gap-2 text-sm font-medium">
-      <svg
-        aria-hidden="true"
-        viewBox="0 0 32 32"
-        className={large ? "size-10" : "size-8"}
-      >
-        <rect width="32" height="32" rx="10" fill="currentColor" />
-        <path
-          d="M9 9v8c0 5 3 7 7 7s7-2 7-7v-3"
-          fill="none"
-          stroke="var(--background)"
-          strokeWidth="2.7"
-          strokeLinecap="round"
-        />
-        <circle cx="23" cy="9" r="1.7" fill="var(--background)" />
-      </svg>
-      {wordmark && "ReUI"}
-    </div>
-  );
-}
-function FormDivider({ children = "or" }: { children?: string }) {
-  return (
-    <div className="flex items-center gap-3 text-xs text-muted-foreground">
-      <Separator className="flex-1" />
-      <span>{children}</span>
-      <Separator className="flex-1" />
-    </div>
-  );
-}
 export default function CenteredAuth({ block }: BlockProps) {
   const passwordCard = block.id === "auth-20";
   const magicPage = block.id === "auth-15";
