@@ -1,0 +1,19 @@
+{
+  "scope": "Deployment-relative test URLs",
+  "base": "f95cd62053138774f3f6404cc16c63378061bfbf",
+  "cause": "Leading /#/ discarded GitHub Pages /reui-pro-block/ base path, producing the host root404",
+  "fix": "Use ./#/ so Playwright resolves both configured origin and deployment directory",
+  "originalLiveRun": {
+    "passed": 22,
+    "failed": 4,
+    "traceDirectory": "/tmp/bricklane-46d-live-results",
+    "log": "/tmp/bricklane-46d-live-root.log"
+  },
+  "verification": {
+    "liveAppShell": "4/4 PASS15.6s, same assertions/timeouts; real Pages46dbee4",
+    "liveLog": "/tmp/bricklane-inset-basepath-live-root.log",
+    "defaultCI": "17/17 PASS29.9s; default5173 production server, CI=1, PREVIEW_URL unset",
+    "note": "Default suite ran on f95 plus the disjoint frozen Shop6\u20138 candidate; test-only changes do not alter application bundles"
+  },
+  "unchanged": "All application source, assertions, timeouts and retries"
+}

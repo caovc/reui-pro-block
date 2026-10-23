@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-const preview = (n: number) => `/#/preview/application/app-shell/app-shell-${n}`;
+const preview = (n: number) => `./#/preview/application/app-shell/app-shell-${n}`;
 
 for (const n of [3, 6, 9, 10]) {
   test(`AppShell ${n} retains its real header and dark/light usage frame`, async ({ page }) => {

@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 test("Flowly agent registry filters and creates an agent before opening the shared graph editor", async ({
   page,
 }) => {
-  await page.goto(`/#/template-preview/flowly`);
+  await page.goto(`./#/template-preview/flowly`);
   await page.getByRole("button", { name: "Agents", exact: true }).click();
   await expect(page.getByText("Contract Reviewer", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Drafts", exact: true }).click();
@@ -20,7 +20,7 @@ test("Flowly agent registry filters and creates an agent before opening the shar
 test("Echo scheduled tasks pause, edit and add suggested task using a real schedule form", async ({
   page,
 }) => {
-  await page.goto(`/#/template-preview/echo`);
+  await page.goto(`./#/template-preview/echo`);
   await page
     .getByRole("button", { name: /Scheduled/ })
     .first()
@@ -44,7 +44,7 @@ test("Echo scheduled tasks pause, edit and add suggested task using a real sched
 test("Lucent security policies and integration connections retain distinct local state", async ({
   page,
 }) => {
-  await page.goto(`/#/template-preview/lucent`);
+  await page.goto(`./#/template-preview/lucent`);
   await page.getByRole("button", { name: "Security", exact: true }).click();
   const toggle = page.getByRole("switch", {
     name: "Enforce two-factor authentication",
