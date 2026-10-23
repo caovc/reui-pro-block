@@ -15,3 +15,5 @@ Installation adapters (no changes to component behavior):
 - Official Badge semantic CSS variables are included in the shared theme and standalone downloads.
 
 Validation: an isolated checkout of the last published commit with only this foundation builds successfully with `npm run build`. Page migration is tracked separately; the presence of a dependency alone does not establish that a block has migrated.
+
+Local behavior correction on 2026-10-23: the vendored free `filters-chip.tsx` preserves focus when another open popover has already claimed it before an exiting editor's deferred Radix focus restoration runs. Both the value and operator editor use the guard; the existing creation handoff and normal Escape return-to-trigger behavior remain. The installation hashes in the provenance file describe the original import before later formatting and this documented correction. No filter renderer or state machine was replaced.

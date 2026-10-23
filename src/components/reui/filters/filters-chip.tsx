@@ -433,6 +433,17 @@ export interface FilterValuePopoverProps<V = unknown, O = unknown> {
   className?: string;
 }
 
+// Radix restores focus in a task after an exiting portal unmounts. A user
+// can open the next editor before that task runs; keep its focus rather
+// than returning to the old trigger and dismissing the new popover.
+function preserveActiveFilterPopoverFocus(event: Event) {
+  const closingPanel = event.target;
+  if (!(closingPanel instanceof HTMLElement)) return;
+  const focused = closingPanel.ownerDocument.activeElement;
+  const activePanel = focused?.closest('[data-slot="popover-content"][data-state="open"]');
+  if (activePanel && activePanel !== closingPanel) event.preventDefault();
+}
+
 export function FilterValuePopover<V, O>({
   rule,
   field,
@@ -487,7 +498,11 @@ export function FilterValuePopover<V, O>({
       <PopoverTrigger asChild disabled={actions.disabled} {...filterReadOnlyProps(actions)}>
         {trigger}
       </PopoverTrigger>
-      <PopoverContent align="start" className={cn("w-auto p-0", className)}>
+      <PopoverContent
+        align="start"
+        className={cn("w-auto p-0", className)}
+        onCloseAutoFocus={preserveActiveFilterPopoverFocus}
+      >
         <FilterValueEditor<V, O>
           rule={rule}
           field={field}
@@ -613,6 +628,7 @@ export function FilterOperatorPopover<V, O>({
            same guard `FiltersBuilder` runs for the field picker, for the same
            reason, so the two move together. */
         onCloseAutoFocus={(event) => {
+          preserveActiveFilterPopoverFocus(event);
           if (!handoff.current) return;
           handoff.current = false;
           event.preventDefault();

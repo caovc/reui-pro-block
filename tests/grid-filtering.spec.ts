@@ -1,4 +1,4 @@
-import { test, expect, type Page } from "@playwright/test";
+import { test, expect, type Locator, type Page } from "@playwright/test";
 const route = (id: number) => `/#/preview/data-grid/filtering/data-grid-filtering-${id}`;
 const rows = (page: Page) => page.locator('[data-slot="data-grid-table"] tbody tr');
 async function addFilter(page: Page, field: string, value: string, operator = "is") {
@@ -109,6 +109,57 @@ test("multiselect signal rules use any, all and none while row pin state survive
   await page.getByRole("button", { name: "Unpin OpenAI", exact: true }).click();
   await expect(page.getByText("1 renewals stay on top", { exact: true })).toBeVisible();
 });
+for (const direction of ["operator to value", "value to operator"] as const) {
+  test(`filter popovers keep the new editor focused after closing ${direction}`, async ({
+    page,
+  }) => {
+    await page.clock.install({ time: new Date("2026-10-23T00:00:00Z") });
+    await page.goto(route(4));
+    await addFilter(page, "Signals", "Security Review", "is any of");
+    const valueTrigger = page.getByRole("button", { name: "Security Review", exact: true });
+    const operatorTrigger = page.getByRole("button", { name: "is any of", exact: true });
+    const panels = page.locator('[data-slot="popover-content"]');
+    await expect(panels).toHaveCount(0);
+    await expect(valueTrigger).toBeFocused();
+    // Reproduce a busy task queue: the old portal unmounts, but its deferred
+    // focus restoration runs only after the next editor has opened.
+    const pauseAt = await page.evaluate(() => Date.now() + 1000);
+    await page.clock.pauseAt(pauseAt);
+
+    let closingPanel: Locator;
+    let nextOption: Locator;
+    if (direction === "operator to value") {
+      await operatorTrigger.click();
+      await page.getByRole("option", { name: "is all of", exact: true }).click();
+      closingPanel = panels.filter({ hasText: "is all of" });
+      await expect(closingPanel).toHaveCount(0);
+      await valueTrigger.click();
+      nextOption = page.getByRole("option", { name: "Usage Dip", exact: true });
+    } else {
+      await valueTrigger.click();
+      await page.keyboard.press("Escape");
+      closingPanel = panels.filter({ hasText: "Usage Dip" });
+      await expect(closingPanel).toHaveCount(0);
+      await operatorTrigger.click();
+      nextOption = page.getByRole("option", { name: "is all of", exact: true });
+    }
+    await expect(nextOption).toBeVisible();
+    await page.clock.runFor(20);
+    await expect(nextOption).toBeVisible();
+    await expect(page.getByRole("combobox", { name: "Signals", exact: true })).toBeFocused();
+    await page.clock.resume();
+    await nextOption.click();
+    await page.keyboard.press("Escape");
+    await expect(rows(page)).toHaveCount(direction === "operator to value" ? 1 : 3);
+    await expect(panels).toHaveCount(0);
+    await expect(
+      page.getByRole("button", {
+        name: direction === "operator to value" ? "2 selected" : "is all of",
+        exact: true,
+      }),
+    ).toBeFocused();
+  });
+}
 test("recovery plan persists and changes the selected row stage", async ({ page }) => {
   await page.goto(route(4));
   await page.getByRole("button", { name: "Create save plan", exact: true }).click();
