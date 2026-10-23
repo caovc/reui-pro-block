@@ -8,6 +8,7 @@ import Checkout from "./checkout-refined";
 import ShoppingCart from "./cart-refined";
 import { Comparison, ShopHero } from "./promotions";
 import { CouponVariants } from "./coupon-variants";
+import { ShopHeroVariants } from "./shop-hero-variants";
 import { Blog, FAQ, Contact, MarketingCompare } from "./marketing";
 import { Hero, CTA, HowItWorks } from "./heroes";
 import { Pricing } from "./pricing";
@@ -57,7 +58,11 @@ export default function CommerceBlock({ block }: BlockProps) {
         <ReviewLists block={block} />
       );
     case "shop-hero":
-      return <ShopHero key={block.id} block={block} />;
+      return block.index < 3 ? (
+        <ShopHeroVariants key={block.id} block={block} />
+      ) : (
+        <ShopHero key={block.id} block={block} />
+      );
     case "blog":
       return <Blog key={block.id} block={block} />;
     case "faq":

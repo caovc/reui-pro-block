@@ -1,0 +1,37 @@
+{
+  "base": "cbd6b34171ddd50bed29fc559be5083d4771fad1",
+  "scope": "ShopHero1\u20133 functional milestone; remaining five preserve their existing dispatcher",
+  "files": {
+    "src/blocks/commerce/shop-hero-variants/artwork.ts": "0e59398518977ac816287869e504dd41c9eee35cb7f86ab9a4d6ca5c9c38f7c1",
+    "src/blocks/commerce/shop-hero-variants/bento.tsx": "9cdb00619f343b6234b905d4bbbc9e233298dcbcd303d6ba3c90e203263f174a",
+    "src/blocks/commerce/shop-hero-variants/countdown.tsx": "85921fa4a545a12a8bd5fe24153c06ce349e3805fd16c1e827b6c6d00366b506",
+    "src/blocks/commerce/shop-hero-variants/data.ts": "facada4d0f987cfe50c18668637d98d1547378f959411eef00eb5fa7e1a4783b",
+    "src/blocks/commerce/shop-hero-variants/image-card.tsx": "faeb23fea88479454a0ae1310f9ee321b06960b2286d965334e51b85f9ce6b18",
+    "src/blocks/commerce/shop-hero-variants/index.tsx": "6321fab0cbaf863784285ab9ca2184de1a5999d1c80dc83ce174bf6fa42436ad",
+    "src/blocks/commerce/shop-hero-variants/live-cart.tsx": "16196ff536e31e3961086cf4ee8085ad6561a562d6a414aac3fb9e90d7d6810f",
+    "src/blocks/commerce/shop-hero-variants/shared.tsx": "9a59564a07d15884e441e13d0a8a46b1174bdbeec4af90bb5ce27d5ce7a53973",
+    "src/blocks/commerce/shop-hero-variants/use-shop-cart.ts": "2c79e8c6cf993ac9c322617f3bdbfde6e10ed79a1ea8b2bf70b9050ff59fabe8",
+    "tests/shop-hero-variants.spec.ts": "821d4babd1dcebf16bc4b1678b6230d23da083c58ab5849e1602a3365403fdd7",
+    "docs/shop-hero-variants-refinement.md": "58ac44b18fc862128c0ab3860cb18ad684717fc4339f56604533347d24ce4840",
+    "src/blocks/commerce/index.tsx": "1aca780fe9ee622b3ef62c44258f8cc7b8d296650b51d50cfcb5d9675e80ea4f",
+    "src/lib/source-targets.ts": "806ed1b916a15523767911073ec447f5717f400b3bf221f646d23a599ac4be6c",
+    "docs/FIDELITY.md": "1d05956f5fd6db07407232fe9b6b81db08b998630b05f06b52c473ee21c98139",
+    "docs/primary-progress.md": "6b9eca2332175a4fb01dbe3ef4a4036bbb00582b33b15373625d8332c8c6d202"
+  },
+  "verification": {
+    "build": "strict TypeScript + Vite passed",
+    "format": "full clean candidate749 files passed before integration notes",
+    "lint": "oxlint passed with existing repository warnings",
+    "tooling": "3/3 passed",
+    "production": "Root24/24 passed31.0s; owner18/18 passed17.6s",
+    "source": "All3 default source/copy/single-file download/ZIP leaf bytes match frozen implementations",
+    "starter": "Root actual Hero2 UI download160 files, independent strict build and1440/390 render; section padding28px/16px,font/background match site; actual cart0\u21921; no errors,overflow or broken images. Owner independently built all three actual archives156/160/160 files."
+  },
+  "actualFreeReuse": "Official c-card-8 image composition and Item, Frame, Badge, NumberField, Alert, Rating plus the existing official clipboard hook; all local still-life art is original.",
+  "publicEvidence": "Hero1 desktop/mobile and add-to-cart observed. Hero2/3 public rendered visual comparison remains pending; metadata briefs and local functional checks are not described as visual proof.",
+  "limitations": [
+    "ShopHero2/3 public rendered desktop/mobile pending; public Markdown briefs only. Hidden IAB unavailable and background Edge controllable/user tabs empty while user actively uses Edge.",
+    "Original local bag still lifes and fictional curator replace upstream photos/branding; exact photo/copy/spacing fidelity is not claimed.",
+    "Local cart/dialogs, live deadline and WELCOME10 copy are explicit functional extensions over public hash links/static countdown."
+  ]
+}

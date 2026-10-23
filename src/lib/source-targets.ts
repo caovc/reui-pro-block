@@ -196,6 +196,10 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
     return paths("application", application[block.category]);
   }
   if (block.group === "ecommerce" || block.group === "marketing") {
+    if (block.category === "shop-hero" && block.index < 3) {
+      const module = ["live-cart", "bento", "countdown"][block.index];
+      return paths("commerce", `shop-hero-variants/${module}`, "shop-hero-variants/index");
+    }
     if (block.category === "coupon") {
       const module = block.index === 1 ? "grid" : [4, 5].includes(block.index) ? "bars" : "heroes";
       return paths("commerce", `coupon-variants/${module}`, "coupon-variants/index");
