@@ -1,0 +1,40 @@
+{
+  "base": "868696ec1fd2f7109edb560c46f47f6d947aee39",
+  "frozenFiles": {
+    "src/blocks/application/navbar-variants/developer/api.tsx": "e9f93dbf2e84460d0a57e907fe55557e9347449b82cbef1512d3f6f27fd8d344",
+    "src/blocks/application/navbar-variants/developer/data.ts": "836c0e6cafaa5583f34fe1dfdf88e80668759617dd358d97ac05e42aa1296eba",
+    "src/blocks/application/navbar-variants/developer/design.tsx": "7fca5a27480e7a4f5be9cc29165cc01db12cbca655e56bbb70a866d6eae05d0d",
+    "src/blocks/application/navbar-variants/developer/developer.css": "5b28c1298e829da3b16146ec0aecc9ce0eb2b771e8662878ee40123a0163f6f7",
+    "src/blocks/application/navbar-variants/developer/free/request-bar.tsx": "7d55ba93293482f348ce089576498531c29713cbb1051670c5d3408a844ea5bb",
+    "src/blocks/application/navbar-variants/developer/free/sections.tsx": "c3af9865cc8f8310fb55517f36ae21d2f49872bf39848bc90f991dfdf53bb332",
+    "src/blocks/application/navbar-variants/developer/free/service-picker.tsx": "c59ce76e1c5cc1c37b1ed9f3f29bb762e0a883dff2c6371562c3648ddb6828ac",
+    "src/blocks/application/navbar-variants/developer/free/sync-picker.tsx": "609f66b06d5177a277b17519d60004b717fc63f1aa938e8ef4ed12434d54eef8",
+    "src/blocks/application/navbar-variants/developer/index.tsx": "8e9cbf2a0db15df0197b0f47271172cb4f9be0b3d8e82e7ffc24cc01ea0370e8",
+    "tests/navbar-developer.spec.ts": "9bd42ffae652451007c7bb8d1f744cff2eedb496394e9fe43c460a9abb550545",
+    "docs/navbar10-11-implementation.md": "e53a81cab6a93866814a1f61e0e2d31bac9395e74bc706a58478b2ec457d7413",
+    "docs/navbar10-11-release-manifest.json": "28df409f0fc5abf976a2ca2f45534c2b1c12aa1a8b68cad0d8d10bc33342dc4f"
+  },
+  "integration": {
+    "router": "DeveloperNavbarBlock only zero-based9/10; prior1\u20139 unchanged",
+    "source": "10 api /11 design, workspace fallback"
+  },
+  "validation": {
+    "strictBuild": "PASS",
+    "rootProduction": "75/75 PASS,1.9m,1worker",
+    "log": "/tmp/bricklane-navbar1011-root-production.log",
+    "formatToolingLint": "Full format, tooling3/3, lint0errors PASS",
+    "actualStarter": "360-file actual UI ZIP; owner independent strict build and1440/390 render PASS; Root inspected390 image"
+  },
+  "freeReuse": [
+    "whole c-input-group36 HTTP method/request bar",
+    "c-button-group54 service selection",
+    "c-dropdown7 native radios",
+    "c-tabs9 section navigation",
+    "existing Account14/Dialog3/6/Badge"
+  ],
+  "limitations": [
+    "Public10/11 rendered comparison pending",
+    "Original Bricklane glyphs/local request fixtures; DropdownvsSelect, phone stacking and inherited theme provisional"
+  ],
+  "deployment": "Push and own CI/Pages pending; latest verified livef95cd62"
+}

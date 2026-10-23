@@ -1,0 +1,80 @@
+{
+  "milestone": "Navbar 10\u201311 actual-free developer portal/design system",
+  "status": "READY for root integration; original rendered visual comparison pending",
+  "integrationBase": "ada079793acd449beb378cecb198fc8155c78a87",
+  "ownedFiles": [
+    {
+      "path": "src/blocks/application/navbar-variants/developer/api.tsx",
+      "sha256": "e9f93dbf2e84460d0a57e907fe55557e9347449b82cbef1512d3f6f27fd8d344"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/developer/data.ts",
+      "sha256": "836c0e6cafaa5583f34fe1dfdf88e80668759617dd358d97ac05e42aa1296eba"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/developer/design.tsx",
+      "sha256": "7fca5a27480e7a4f5be9cc29165cc01db12cbca655e56bbb70a866d6eae05d0d"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/developer/developer.css",
+      "sha256": "5b28c1298e829da3b16146ec0aecc9ce0eb2b771e8662878ee40123a0163f6f7"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/developer/free/request-bar.tsx",
+      "sha256": "7d55ba93293482f348ce089576498531c29713cbb1051670c5d3408a844ea5bb"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/developer/free/sections.tsx",
+      "sha256": "c3af9865cc8f8310fb55517f36ae21d2f49872bf39848bc90f991dfdf53bb332"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/developer/free/service-picker.tsx",
+      "sha256": "c59ce76e1c5cc1c37b1ed9f3f29bb762e0a883dff2c6371562c3648ddb6828ac"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/developer/free/sync-picker.tsx",
+      "sha256": "609f66b06d5177a277b17519d60004b717fc63f1aa938e8ef4ed12434d54eef8"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/developer/index.tsx",
+      "sha256": "8e9cbf2a0db15df0197b0f47271172cb4f9be0b3d8e82e7ffc24cc01ea0370e8"
+    },
+    {
+      "path": "tests/navbar-developer.spec.ts",
+      "sha256": "9bd42ffae652451007c7bb8d1f744cff2eedb496394e9fe43c460a9abb550545"
+    },
+    {
+      "path": "docs/navbar10-11-implementation.md",
+      "sha256": "e53a81cab6a93866814a1f61e0e2d31bac9395e74bc706a58478b2ec457d7413"
+    }
+  ],
+  "manifestPath": "docs/navbar10-11-release-manifest.json",
+  "sourceCount": 9,
+  "integration": {
+    "dispatcherImport": "DeveloperNavbarBlock from ./navbar-variants/developer",
+    "zeroBasedGuard": "9 <= block.index && block.index < 11",
+    "sourceTargets": {
+      "10": "navbar-variants/developer/api",
+      "11": "navbar-variants/developer/design"
+    },
+    "sharedWorkingFilesModified": false
+  },
+  "verification": {
+    "strictProductionBuild": "PASS /tmp/reui-navbar-developer-build.log",
+    "tests": "11/11 PASS 16.1s; 1 worker; standard 30s; /tmp/reui-navbar-developer-final-tests.log",
+    "sourceParity": "10/11 default, clipboard, single-file; ZIP exact leaves and four free adapters",
+    "actualZIP": {
+      "path": "/tmp/reui-navbar-developer-audit/navbar-10-source.zip",
+      "files": 360,
+      "bytes": 3609672,
+      "sha256": "ab15b941cb08bac07820030b60c1bbc62270076203ac313079030ad0d0884fb4",
+      "strictBuild": "PASS /tmp/reui-navbar-developer-zip-build.log",
+      "render": "1440/390 Stripe DELETE local fixture + native modal Escape/focus; zero errors/bad images/overflow; computed header styles/geometry equal; /tmp/reui-navbar-developer-zip-render.log"
+    },
+    "scopedFormat": "PASS 11 files",
+    "scopedOxlint": "PASS source/tests",
+    "originalVisual": "PENDING; public Markdown/free actual source audited, original live rendering unavailable without user focus disturbance"
+  },
+  "sourceProvenance": "docs/navbar10-11-implementation.md",
+  "gitWrites": "none; root coordinates commit/push/CI/Pages"
+}

@@ -139,6 +139,10 @@ function paths(family: string, ...modules: string[]) {
 export function blockImplementationCandidates(block: BlockMeta): string[] {
   const variant = Number(block.id.split("-").at(-1));
   if (block.group === "application") {
+    if (block.category === "navbar" && variant >= 10 && variant <= 11) {
+      const module = ["api", "design"][variant - 10];
+      return paths("application", `navbar-variants/developer/${module}`, "workspace");
+    }
     if (block.category === "navbar" && variant >= 7 && variant <= 9) {
       const module = ["cms", "marketplace", "repo"][variant - 7];
       return paths("application", `navbar-variants/publishing/${module}`, "workspace");
