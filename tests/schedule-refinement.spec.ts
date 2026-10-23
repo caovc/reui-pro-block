@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-const route = (n: number) => `/#/preview/application/schedule/schedule-${n}`;
+const route = (n: number) => `./#/preview/application/schedule/schedule-${n}`;
 
 test("range picker changes its real range and confirms in the original footer", async ({
   page,
