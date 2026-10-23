@@ -1,0 +1,33 @@
+{
+  "batch": "CI production preview and retained failure artifacts",
+  "base": "d01e5f2eecec18e809cc898811730d8ed6afac42",
+  "verificationBaseline": "b5d8d880134e90b87c1288f474302e8db564ff4c",
+  "freeze": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-ci-preview-freeze-bwtwy_3g",
+  "files": [
+    {
+      "path": ".github/workflows/deploy.yml",
+      "sha256": "b8478e32803aaca882ef01c10c2249fbc74dd992129314f001f5eca5394009db"
+    },
+    {
+      "path": "playwright.config.ts",
+      "sha256": "f56581a130d434003f4996eea4135014397bce7fe68bc1c9729d2fc94c317b7f"
+    },
+    {
+      "path": "docs/ci-production-preview.md",
+      "sha256": "1624e2a46493f69ef2c2f4d8542aa04812e2f5e4925fdbb81b7f7d0e9ab3b1fe"
+    }
+  ],
+  "verification": {
+    "siteDev": "4/4; 6.9s",
+    "siteCIProduction": "4/4;4.4s;strict production server started by config",
+    "sourceCPU4Dev": "4/4;31.3s;3 workers",
+    "sourceCPU4Production": "4/4;14.2s;3 workers",
+    "format": "3 owned files pass",
+    "oxlint": "playwright.config.ts pass",
+    "tooling": "3/3 pass"
+  },
+  "limitations": [
+    "Historical CI failures not conclusively reproduced; original run uploaded no traces.",
+    "No full suite or actual Actions artifact upload executed locally."
+  ]
+}

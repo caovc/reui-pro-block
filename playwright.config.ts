@@ -1,4 +1,7 @@
 import { defineConfig } from "@playwright/test";
+
+const isCI = Boolean(process.env.CI);
+
 export default defineConfig({
   testDir: "./tests",
   testMatch: "**/*.spec.ts",
@@ -15,8 +18,11 @@ export default defineConfig({
   webServer: process.env.PREVIEW_URL
     ? undefined
     : {
-        command: "npm run dev -- --host 127.0.0.1",
+        // CI builds dist first, then tests the exact assets that Pages will publish.
+        command: isCI
+          ? "npm run preview -- --host 127.0.0.1 --port 5173 --strictPort"
+          : "npm run dev -- --host 127.0.0.1 --port 5173 --strictPort",
         url: "http://127.0.0.1:5173",
-        reuseExistingServer: true,
+        reuseExistingServer: !isCI,
       },
 });
