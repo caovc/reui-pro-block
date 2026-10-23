@@ -252,3 +252,160 @@
 .shell-reference[data-shell-variant="2"] .shell-placeholder-canvas {
   padding: 0 8px 8px;
 }
+
+/* Inset navigation has its own native 64px gap, rather than the 48px rail. */
+.shell-reference[data-shell-variant="9"] {
+  --sidebar-width-icon: 50px;
+}
+.shell-inset-sidebar > [data-slot="sidebar-inner"] {
+  background: transparent;
+}
+.shell-standard-header {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-height: 40px;
+}
+.shell-standard-brand {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+  gap: 8px;
+  padding-inline: 2px;
+}
+[data-collapsible="icon"] .shell-standard-header {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+[data-collapsible="icon"] .shell-standard-brand {
+  flex: none;
+  min-height: 40px;
+}
+[data-collapsible="icon"] .shell-standard-toggle svg {
+  transform: rotate(180deg);
+}
+[data-collapsible="icon"] .shell-inset-sidebar .shell-collapse-handle {
+  left: calc(100% - 2px);
+}
+.shell-reference:is(
+    [data-shell-variant="3"],
+    [data-shell-variant="6"],
+    [data-shell-variant="9"],
+    [data-shell-variant="10"],
+    [data-shell-variant="12"]
+  )
+  .shell-sidebar {
+  padding: 0;
+}
+.shell-reference:is(
+    [data-shell-variant="3"],
+    [data-shell-variant="6"],
+    [data-shell-variant="9"],
+    [data-shell-variant="10"],
+    [data-shell-variant="12"]
+  )
+  .shell-scroll {
+  padding-inline: 8px;
+}
+.shell-reference:is(
+    [data-shell-variant="3"],
+    [data-shell-variant="6"],
+    [data-shell-variant="9"],
+    [data-shell-variant="10"],
+    [data-shell-variant="12"]
+  )
+  [data-slot="sidebar-group-label"] {
+  height: 32px;
+  padding: 0 8px;
+  font-size: 12px;
+}
+.shell-reference:is(
+    [data-shell-variant="3"],
+    [data-shell-variant="6"],
+    [data-shell-variant="9"],
+    [data-shell-variant="10"],
+    [data-shell-variant="12"]
+  )
+  .shell-nav-button {
+  height: 32px;
+  font-size: 14px;
+}
+.shell-reference:is(
+    [data-shell-variant="3"],
+    [data-shell-variant="6"],
+    [data-shell-variant="9"],
+    [data-shell-variant="10"],
+    [data-shell-variant="12"]
+  )
+  .shell-nav-button
+  svg {
+  width: 16px;
+  height: 16px;
+}
+.shell-reference:is(
+    [data-shell-variant="3"],
+    [data-shell-variant="6"],
+    [data-shell-variant="9"],
+    [data-shell-variant="10"]
+  )
+  .shell-nav-button:not([data-active="true"]) {
+  color: var(--muted-foreground);
+}
+.shell-reference:is(
+    [data-shell-variant="3"],
+    [data-shell-variant="6"],
+    [data-shell-variant="9"],
+    [data-shell-variant="10"]
+  )
+  [data-slot="sidebar-header"] {
+  padding: 8px;
+}
+.shell-reference .shell-standard-usage .shell-usage-card {
+  margin: 0;
+}
+.shell-reference .shell-usage-card {
+  --frame-panel-bg: var(--background);
+  --frame-panel-border-color: var(--border);
+  --frame-border-color: var(--border);
+  background: transparent;
+}
+.shell-reference .shell-usage-card [data-slot="frame-panel"] {
+  font-size: 12px;
+}
+.shell-reference .shell-usage-card [data-slot="frame-panel"] > p {
+  font-size: 12px;
+  line-height: 16px;
+}
+.shell-reference .shell-usage-card [data-slot="progress"] {
+  background: repeating-linear-gradient(120deg, var(--border) 0 1px, transparent 1px 3px);
+}
+.shell-reference[data-shell-variant="6"] .shell-header {
+  min-height: 50px;
+}
+.shell-reference[data-shell-variant="6"] .shell-placeholder-canvas {
+  padding-top: 0;
+}
+[data-collapsible="icon"] .shell-standard-brand {
+  margin-bottom: 6px;
+}
+.shell-reference:is([data-shell-variant="3"], [data-shell-variant="9"], [data-shell-variant="10"])
+  .shell-header {
+  min-height: 48px;
+}
+.shell-reference:is([data-shell-variant="3"], [data-shell-variant="10"]) .shell-placeholder-canvas {
+  padding-top: 0;
+}
+.shell-reference:is([data-shell-variant="3"], [data-shell-variant="9"], [data-shell-variant="10"])
+  .shell-scroll
+  > .sidebar-expanded
+  > [data-slot="collapsible"] {
+  margin-top: 16px;
+}
+.shell-reference[data-shell-variant="9"] [data-slot="sidebar-menu"] {
+  gap: 1px;
+}
+.shell-reference .shell-dark .shell-usage-card [data-slot="frame-panel-header"] p {
+  color: #facc15;
+}

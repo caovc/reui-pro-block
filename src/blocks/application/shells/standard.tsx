@@ -18,7 +18,6 @@ import {
   Library,
   MessageSquare,
   Network,
-  PanelLeft,
   PanelRight,
   Plus,
   Settings,
@@ -220,8 +219,8 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
       data-shell-variant={variant}
     >
       <Sidebar
-        width={floating || [1, 3, 9, 10].includes(variant) ? 256 : apps ? 240 : 248}
-        variant={floating ? "floating" : "sidebar"}
+        width={variant === 6 || variant === 9 ? 250 : apps ? 240 : 256}
+        variant={floating ? "floating" : inset ? "inset" : "sidebar"}
         collapsed={collapsed}
         header={
           variant === 1 ? (
@@ -244,58 +243,57 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
                 />
               )}
             </div>
-          ) : undefined
+          ) : (
+            <div className="shell-standard-header">
+              <div className="shell-standard-brand">
+                <ReuiMark />
+                {!collapsed && (
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium">Bricklane</p>
+                    {apps && <p className="text-xs text-muted-foreground">Pro plan</p>}
+                  </div>
+                )}
+              </div>
+              {!apps && <Notifications />}
+              {variant === 3 && !isMobile && (
+                <SidebarTrigger
+                  className="shell-standard-toggle opacity-60 hover:opacity-100"
+                  aria-label="Toggle Sidebar"
+                />
+              )}
+            </div>
+          )
         }
         footer={
           variant === 1 ? (
             <WorkspaceMenu collapsed={collapsed} user card />
           ) : floating ? (
             <WorkspaceMenu collapsed={collapsed} compact initial="Vercel" onName={setWorkspace} />
-          ) : undefined
+          ) : apps ? (
+            <FooterLinks collapsed={collapsed} onSelect={setActive} />
+          ) : (
+            <WorkspaceMenu
+              collapsed={collapsed}
+              user={[9, 10].includes(variant)}
+              initial={variant === 9 ? "Acme Corp" : variant === 10 ? "Atlas" : "Claude"}
+              subtitle={variant === 9 ? "Acme Corp" : variant === 10 ? "Atlas" : undefined}
+              onName={setWorkspace}
+            />
+          )
         }
         rail={
-          floating ? undefined : (
+          floating || variant === 3 ? undefined : (
             <CollapseHandle collapsed={collapsed} onToggle={() => setCollapsed(!collapsed)} />
           )
         }
         className={` ${collapsed ? "collapsed" : ""} ${dark ? "shell-dark" : ""} ${apps ? "border-r" : ""} ${variant === 1 ? "border-r" : ""}`}
       >
-        {variant !== 1 && !floating && (
-          <div
-            className={`mb-3 flex h-10 shrink-0 items-center gap-2 ${collapsed ? "justify-center px-0" : "px-2"} ${apps ? "h-12" : ""}`}
-          >
-            <ReuiMark />
-            {!collapsed && (
-              <>
-                <div className="sidebar-expanded min-w-0 flex-1">
-                  <p className="text-[13px] font-medium">Bricklane</p>
-                  {apps && <p className="mt-0.5 text-[10px] text-muted-foreground">Pro plan</p>}
-                </div>
-                {[3, 6, 9, 10].includes(variant) && (
-                  <div className="sidebar-expanded">
-                    <Notifications />
-                  </div>
-                )}
-                {variant === 3 && (
-                  <Button
-                    size="icon-sm"
-                    variant="ghost"
-                    aria-label="Toggle Sidebar"
-                    onClick={() => setCollapsed(!collapsed)}
-                  >
-                    <PanelLeft />
-                  </Button>
-                )}
-              </>
-            )}
-          </div>
-        )}
         {hasSearch && (
           <div
             className={
               floating
                 ? "shell-floating-search px-2 pt-2 mb-4"
-                : `mb-3 ${collapsed ? "px-0" : "px-2"}`
+                : "shell-standard-search px-2 pt-2 mb-4"
             }
           >
             <SearchPalette
@@ -374,7 +372,7 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
             </div>
           )}
         </div>
-        {(variant === 1 || variant === 2 || apps) && (
+        {(variant === 1 || variant === 2) && (
           <div
             className={
               variant === 1 ? "shell-icon-dashboard-footer" : collapsed ? "" : "sidebar-expanded"
@@ -384,7 +382,7 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
           </div>
         )}
         {hasUsage && (
-          <div className="sidebar-expanded">
+          <div className="sidebar-expanded shell-standard-usage mt-auto px-2 pb-2">
             <UsageCard
               collapsed={collapsed}
               title={variant === 9 ? "AI Credits" : "Spending Limit"}
@@ -392,17 +390,6 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
                 variant === 9 ? "Usage resets at the end of your billing cycle." : undefined
               }
               upgrade={variant === 9}
-            />
-          </div>
-        )}
-        {!apps && variant !== 1 && !floating && (
-          <div className="mt-auto pt-1">
-            <WorkspaceMenu
-              collapsed={collapsed}
-              user={[9, 10].includes(variant)}
-              initial={variant === 9 ? "Acme Corp" : variant === 10 ? "Atlas" : "Claude"}
-              subtitle={variant === 9 ? "Acme Corp" : variant === 10 ? "Atlas" : undefined}
-              onName={setWorkspace}
             />
           </div>
         )}

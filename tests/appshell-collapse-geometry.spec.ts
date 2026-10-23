@@ -20,16 +20,20 @@ test("icon collapse shrinks the painted panel and its layout spacer together", a
       expect(expanded.width).toBeGreaterThan(200);
       await page.keyboard.press("Control+b");
       await expect(sidebar).toHaveAttribute("data-collapsible", "icon");
-      // The free floating variant includes 16px outer padding and a 2px border allowance.
-      await expect.poll(async () => (await panel.boundingBox())?.width).toBe(n === 2 ? 66 : 48);
+      // Native floating/inset panels include outer padding and a 2px border allowance.
+      const padded = [2, 3, 9, 10].includes(n);
+      const icon = n === 9 ? 50 : 48;
+      await expect
+        .poll(async () => (await panel.boundingBox())?.width)
+        .toBe(padded ? icon + 18 : icon);
       const gap = (await sidebar.locator('[data-slot="sidebar-gap"]').boundingBox())!;
       const collapsed = (await (
-        n === 2 ? panel.locator('[data-slot="sidebar-inner"]') : panel
+        padded ? panel.locator('[data-slot="sidebar-inner"]') : panel
       ).boundingBox())!;
-      if (n === 2) expect(collapsed.width).toBe(50);
+      if (padded) expect(collapsed.width).toBe(icon + 2);
       // Floating examples retain their explicit outer gutter, never a full blank column.
       expect(gap.width).toBeGreaterThanOrEqual(48);
-      expect(gap.width).toBeLessThanOrEqual(64);
+      expect(gap.width).toBeLessThanOrEqual(66);
       expect(collapsed.x + collapsed.width).toBeLessThanOrEqual(gap.x + gap.width);
       await page.keyboard.press("Control+b");
       await expect.poll(async () => (await panel.boundingBox())?.width).toBe(expanded.width);

@@ -160,7 +160,11 @@ export function Sidebar({
         rail={rail}
         aria-label={label}
         className={cn(
-          variant === "floating" ? "shell-floating-sidebar" : "shell-sidebar",
+          variant === "floating"
+            ? "shell-floating-sidebar"
+            : variant === "inset"
+              ? "shell-inset-sidebar"
+              : "shell-sidebar",
           "shell-desktop-sidebar",
           compact && "collapsed",
           className,

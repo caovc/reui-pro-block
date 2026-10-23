@@ -54,3 +54,7 @@ All demo authentication, invitations, payments, releases and AI actions are loca
 ## Template CI address correction
 
 Run39925841223 on460f042 passed786 browser cases and failed5 before application load: two template suites bypassed Playwright baseURL with a private localhost5212 fallback. Root's local PREVIEW_URL override masked this integration defect. Original workflow diagnostics remain retained as artifact12490153249. Both suites now use relative routes and the shared configuration. On latest1d8435b, strict production build and13/13 affected cases passed with CI=1, PREVIEW_URL unset and the real default5173 preview server. Assertions, timeouts and retries are unchanged. A new cumulative CI/Pages result is still required; the latest verified live release remains e140d02.
+
+## AppShell native inset milestone
+
+AppShell3/9/10 now use actual free Sidebar's inset variant and native header/content/footer slots. Collapsed geometry follows the official gap/container sizing rather than an extra hand-built rail; mobile uses the existing free Sheet. Root passed strict production build,79/79 production regressions and full formatting/tooling checks on1d8435b plus the exact seven frozen files. The later template address correction changes test URLs/documentation only. The owner independently built/rendered the actual302-file AppShell3 starter and checked source/copy/single-file bytes. This milestone retains documented visual/interaction gaps across the remaining AppShell entries. CI/Pages must still verify the cumulative release.

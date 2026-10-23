@@ -29,6 +29,9 @@ import {
   Home,
   Laptop,
   LayoutDashboard,
+  SquareCheck,
+  CircleDot,
+  ChartNoAxesColumn,
   LogOut,
   Moon,
   Plus,
@@ -102,10 +105,10 @@ export type NavNode = {
 export const standardNavigation: NavNode[] = [
   { label: "Dashboard", icon: LayoutDashboard },
   { label: "Projects", icon: Folder },
-  { label: "My Tasks", icon: Check },
-  { label: "Issues", icon: CircleHelp, children: ["All issues", "Assigned to me", "Archived"] },
+  { label: "My Tasks", icon: SquareCheck },
+  { label: "Issues", icon: CircleDot, children: ["All issues", "Assigned to me", "Archived"] },
   { label: "Team", icon: Users, children: ["Members", "Groups", "Invitations"] },
-  { label: "Reports", icon: Activity },
+  { label: "Reports", icon: ChartNoAxesColumn },
 ];
 export const projectNames = [
   "Design System",
@@ -171,10 +174,12 @@ export function Face({
 export function PlaceholderCanvas({
   rows = 1,
   solid = false,
+  fill = true,
   className,
 }: {
   rows?: number;
   solid?: boolean;
+  fill?: boolean;
   className?: string;
 }) {
   return (
@@ -187,7 +192,7 @@ export function PlaceholderCanvas({
           <div key={i} className="shell-placeholder aspect-video" />
         ))}
       </div>
-      <div className="shell-placeholder min-h-40 flex-1" />
+      {fill && <div className="shell-placeholder min-h-40 flex-1" />}
     </div>
   );
 }
@@ -401,11 +406,21 @@ export function UsageCard({
   upgrade?: boolean;
 }) {
   const [upgraded, setUpgraded] = useState(false);
-  if (collapsed) return null;
+  const [dismissed, setDismissed] = useState(false);
+  if (collapsed || dismissed) return null;
   return (
-    <Frame spacing="xs" className="mx-2 mt-auto gap-0">
-      <FrameHeader className="px-2 py-1">
-        <p className="text-[11px] font-medium text-warning-foreground">{title}</p>
+    <Frame spacing="xs" dense className="shell-usage-card mx-2 mt-auto gap-0">
+      <FrameHeader className="relative px-2 py-1">
+        <p className="text-xs font-medium text-warning-foreground">{title}</p>
+        <Button
+          size="icon-sm"
+          variant="ghost"
+          className="absolute right-1 top-0 size-5 opacity-0 hover:opacity-100 focus:opacity-100"
+          aria-label={`Dismiss ${title}`}
+          onClick={() => setDismissed(true)}
+        >
+          <X />
+        </Button>
       </FrameHeader>
       <FramePanel className="p-2">
         <p className="mb-2 text-[11px] leading-4 text-muted-foreground">{description}</p>

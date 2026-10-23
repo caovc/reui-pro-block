@@ -1,0 +1,53 @@
+{
+  "scope": "AppShell native inset fidelity milestone",
+  "base": "460f042",
+  "frozen": "/tmp/appshell-inset-frozen",
+  "files": [
+    {
+      "path": "src/blocks/application/shells/standard.tsx",
+      "sha256": "27a2f4dbab63e4ecc6321e9f4d0f900474bf5b89fd33250baa1d17274f1beda0"
+    },
+    {
+      "path": "src/blocks/application/shells/chrome.tsx",
+      "sha256": "d231a0e5adf8735ed354c00e3a8db46f0a819d4ed6cb0243f7451359e36cc335"
+    },
+    {
+      "path": "src/blocks/application/shells/primitives.tsx",
+      "sha256": "9aea282d0ec9fb45694658d03726346bedf7f630f534af4f21ab119978036b67"
+    },
+    {
+      "path": "src/blocks/application/shells/sidebar-foundation.css",
+      "sha256": "dbc6aba56f3ed30c72ae4ab975f4f5dbc30a1ed239cf351cfa89ed42bfaad7b9"
+    },
+    {
+      "path": "tests/appshell-collapse-geometry.spec.ts",
+      "sha256": "d31d258e1ede6fe098eab8dab577df848f05da0fe6f019ad9b565f13dbf5bc59"
+    },
+    {
+      "path": "tests/appshell-inset-fidelity.spec.ts",
+      "sha256": "920f5522a351b30eb97502433cb8e692fcfd1116902de5efa59d52dd07f0dfc7"
+    },
+    {
+      "path": "docs/appshell-sidebar-migration.md",
+      "sha256": "cde8c77f74014ab192b19d6126efb7b9453ac2a34502519aa6b071269fcb2fdf"
+    }
+  ],
+  "validation": {
+    "build": "/tmp/appshell-inset-build.log",
+    "tests": "/tmp/appshell-inset-tests.log",
+    "result": "36/36 passed, 1 worker",
+    "export": "/tmp/appshell-inset-export",
+    "evidence": "/Users/caov/.codex/visualizations/2026/10/22/01a162bd-7057-7ad2-bc44-77cefb07d2ca/inset-fidelity/evidence.json"
+  },
+  "integrationBase": "76d550419e0084524fd3a3298b6d8dee0739c60a",
+  "rootValidation": {
+    "build": "PASS",
+    "production": "79/79 PASS, one worker",
+    "log": "/tmp/bricklane-shell-inset-root-production.log",
+    "format": "PASS full853 files",
+    "tooling": "3/3 PASS",
+    "lint": "0 errors; existing vendor warnings retained",
+    "export": "Actual302-file AppShell3 starter independently built/rendered by owner"
+  },
+  "deployment": "Pending cumulative CI/Pages"
+}
