@@ -26,8 +26,8 @@ The Commerce/Charts integration additionally passed 192 production browser tests
 | Group | Category | Entries | Per-entry visual audit |
 | --- | --- | ---: | --- |
 | Application | [App Shell](https://reui.io/blocks/application/app-shell) | 36 | Pending |
-| Application | [Auth](https://reui.io/blocks/application/auth) | 20 | 9/20 compared; see [centered](audits/auth-centered.md) and [split/framed](audits/auth-split.md) auth audits |
-| Application | [Card](https://reui.io/blocks/application/card) | 43 | 15/43 compared with actual free REUI Frame/IconTile/Badge; see [reuse audit](REUI-REUSE.md) and application ledger |
+| Application | [Auth](https://reui.io/blocks/application/auth) | 20 | 11/20 desktop compared; see [centered](audits/auth-centered.md), [split/framed](audits/auth-split.md), and [trial/blueprint](audits/auth-growth.md) audits |
+| Application | [Card](https://reui.io/blocks/application/card) | 43 | 35/43 desktop compared with actual free REUI compositions; see [Card16–29](card16-29-implementation.md), [Card30–35](card30-35-implementation.md), and [reuse audit](REUI-REUSE.md) |
 | Application | [Dashboard](https://reui.io/blocks/application/dashboard) | 8 | Pending |
 | Application | [Dialog](https://reui.io/blocks/application/dialog) | 15 | Pending |
 | Application | [Empty State](https://reui.io/blocks/application/empty-state) | 14 | Pending |
@@ -83,7 +83,7 @@ The Commerce/Charts integration additionally passed 192 production browser tests
 | Solutions | [Users](https://reui.io/blocks/solutions/users) | 8 | Pending |
 | Solutions | [Digital Twin](https://reui.io/blocks/solutions/digital-twin) | 2 | Pending |
 | eCommerce | [Category Card](https://reui.io/blocks/ecommerce/category-card) | 6 | Pending |
-| eCommerce | [Checkout](https://reui.io/blocks/ecommerce/checkout) | 7 | Pending |
+| eCommerce | [Checkout](https://reui.io/blocks/ecommerce/checkout) | 7 | 7/7 desktop compared; local mobile/state tests and remaining photo/payment differences in [ledger](checkout-cart-refinement.md) |
 | eCommerce | [Comparison](https://reui.io/blocks/ecommerce/comparison) | 6 | Pending |
 | eCommerce | [Coupon](https://reui.io/blocks/ecommerce/coupon) | 6 | Pending |
 | eCommerce | [Filter Sidebar](https://reui.io/blocks/ecommerce/filter-sidebar) | 7 | Pending |
@@ -92,7 +92,7 @@ The Commerce/Charts integration additionally passed 192 production browser tests
 | eCommerce | [Product Grid](https://reui.io/blocks/ecommerce/product-grid) | 6 | 6/6 compared; see [commerce ledger](commerce-implementation.md) for photo/content and carousel migration differences |
 | eCommerce | [Receipt](https://reui.io/blocks/ecommerce/receipt) | 6 | Pending |
 | eCommerce | [Review](https://reui.io/blocks/ecommerce/review) | 6 | Pending |
-| eCommerce | [Shopping Cart](https://reui.io/blocks/ecommerce/shopping-cart) | 7 | Pending |
+| eCommerce | [Shopping Cart](https://reui.io/blocks/ecommerce/shopping-cart) | 7 | 7/7 desktop compared; local mobile/state tests and remaining photo/payment differences in [ledger](cart-refinement.md) |
 | eCommerce | [Wishlist](https://reui.io/blocks/ecommerce/wishlist) | 6 | Pending |
 | eCommerce | [Shop Hero](https://reui.io/blocks/ecommerce/shop-hero) | 8 | Pending |
 | Marketing | [Blog](https://reui.io/blocks/marketing/blog) | 6 | Pending |
