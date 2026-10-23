@@ -16,7 +16,11 @@ Official free registry: https://reui.io/r/radix-nova/{name}.json. Configuration 
 | Card1–15 | Actual `Frame`/`FramePanel`/headers/footers, `IconTile`, `Badge` | Replaces the custom Frame/IconTile surface wrappers. Exact inverse and stacked variants are exercised; application records, decorative geometry and local business actions remain composed content. See the application ledger for each entry's free reuse and remaining visual differences. |
 | Downloaded starters | Recursive free-component source collection plus the upstream MIT notice | `source.ts` now includes ReUI nested TS/TSX/CSS and shared hooks; the ZIP includes `REUI-LICENSE.txt` and asset notices. Renaming imports without including their implementation would fail this gate. |
 
-Other coordinators own DataGrid, shell, template, schedule, pricing and chart migrations. Their per-entry ledgers must identify actual consumers; this document does not certify those unfinished batches.
+The next integrated milestone reuses actual free `Rating`, `Frame`, `NumberField` and `Badge` in Product Card1–10, Product Detail1–6 and Product Grid1–6. It replaces duplicated rating, frame and quantity controls. Gallery/review rails still need the available free Carousel composition; their remaining migration is explicitly recorded rather than described as a missing library feature.
+
+Charts reuse the official free c-chart1/2/3/8/12/19–22/25 patterns with actual Recharts Bar, Rectangle, Pie, Sector, Label and RadialBar implementations, plus free Frame/Badge chrome. These replace handwritten bar/pie/radial geometry where the free library supplies the corresponding behavior. Domain-specific rose radii, slope/Sankey paths, liquidity clock and brush/log annotations remain custom extensions; the data ledger identifies these gaps and geometry differences. The combined frozen production candidate passed 192 tests. Real Product Detail4 and Product Grid6 ZIPs include nested photos, component sources and notices, and build independently.
+
+Other coordinators own DataGrid, shell, template, schedule and pricing migrations. Their per-entry ledgers must identify actual consumers; this document does not certify those unfinished batches.
 
 ## Verification of this consumer milestone
 

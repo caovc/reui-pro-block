@@ -1,19 +1,21 @@
 import type { BlockProps } from '@/data/types'
-import { ProductCatalog, SingleProduct, CategoryBrowser, FilterSidebar } from './catalog'
+import { CategoryBrowser, FilterSidebar } from './catalog'
 import { Checkout, ShoppingCart, Wishlist, Receipt } from './transactions'
 import { Coupons, Comparison, Reviews, ShopHero } from './promotions'
 import { Blog, FAQ, Contact, MarketingCompare } from './marketing'
 import { Hero, CTA, HowItWorks } from './heroes'
 import { Pricing } from './pricing'
 import { ProductCards } from './product-cards'
+import { ProductDetails } from './product-details'
+import { ProductGrids } from './product-grids'
 
 /** Original implementations using open source shadcn primitives and public preview briefs. */
 export default function CommerceBlock({block}:BlockProps) {
  switch(block.category) {
   case 'category-card': return <CategoryBrowser key={block.id} block={block}/>
   case 'product-card': return <ProductCards key={block.id} block={block}/>
-  case 'product-grid': return <ProductCatalog key={block.id} block={block}/>
-  case 'product-detail': return <SingleProduct key={block.id} block={block}/>
+  case 'product-grid': return <ProductGrids key={block.id} block={block}/>
+  case 'product-detail': return <ProductDetails key={block.id} block={block}/>
   case 'filter-sidebar': return <FilterSidebar key={block.id} block={block}/>
   case 'checkout': return <Checkout key={block.id} block={block}/>
   case 'shopping-cart': return <ShoppingCart key={block.id} block={block}/>

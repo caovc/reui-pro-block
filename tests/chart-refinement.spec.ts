@@ -102,7 +102,7 @@ test('error runway baseline reranks services and permits keyboard focus', async 
   const service = page.getByRole('button', { name: 'auth: 24d error budget remaining', exact: true });
   await service.focus();
   await page.keyboard.press('Enter');
-  await expect(page.locator('[data-slot="card-footer"]')).toContainText('auth');
+  await expect(page.locator('[data-slot="card-footer"],[data-slot="frame-panel-footer"]')).toContainText('auth');
 });
 
 test('retention slider supports named keyboard control and play/pause advances the day', async ({ page }) => {

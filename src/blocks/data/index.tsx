@@ -5,6 +5,7 @@ import { AgentOpsBlock, AnalyticsBlock, DashboardBlock, OpsBlock } from './opera
 import QueueBlock from './queues'
 import GridBlock from './grid'
 import ChartBlock from './charts'
+import BarChartBlock from './bar-charts'
 import GenerationMix from './generation-mix'
 import AreaPanel from './area-panels'
 import PieChartBlock from './pie-charts'
@@ -21,6 +22,7 @@ export default function DataBlock({block}:BlockProps){
  if(block.group==='chart'&&block.category==='radial-chart')return <RadialChartBlock block={block}/>
  if(block.group==='chart'&&block.category==='slope-chart')return <SlopeChartBlock block={block}/>
  if(block.group==='chart'&&block.category==='sankey-chart')return <SankeyChartBlock block={block}/>
+ if(block.group==='chart'&&block.category==='bar-chart')return <BarChartBlock block={block}/>
  if(block.group==='chart')return <ChartBlock block={block}/>
  if(block.group==='ai-agents')return block.category==='ai-chat'?<ChatBlock block={block}/>:block.category==='agent-activity'?<ActivityBlock block={block}/>:<UsageBlock block={block}/>
  if(block.category==='digital-twin')return <DigitalTwinBlock block={block}/>

@@ -10,6 +10,8 @@ The goal is the complete public REUI Pro Blocks catalog, recreated independently
 - Auth and commerce ZIP starters extracted and independently built.
 - Responsive category sweep: all 78 category-first examples fit 390px after Wishlist and pricing toolbar fixes.
 
+The Commerce/Charts integration additionally passed 192 production browser tests, including the 22 commerce consumers and 23 refined chart entries. This records tested functionality; outstanding visual differences remain in the implementation ledgers.
+
 ## Work still required for full fidelity
 
 - Compare each entry's public visual preview at representative desktop and mobile widths, including meaningful state changes.
@@ -56,7 +58,7 @@ The goal is the complete public REUI Pro Blocks catalog, recreated independently
 | Data Grid | [Grouping](https://reui.io/blocks/data-grid/grouping) | 7 | Pending |
 | Data Grid | [Virtualization](https://reui.io/blocks/data-grid/virtualization) | 2 | Pending |
 | Charts | [Area Chart](https://reui.io/blocks/chart/area-chart) | 4 | 4/4 desktop compared; see [data ledger](data-implementation.md) |
-| Charts | [Bar Chart](https://reui.io/blocks/chart/bar-chart) | 12 | Pending |
+| Charts | [Bar Chart](https://reui.io/blocks/chart/bar-chart) | 12 | 12/12 compared; actual free chart patterns and remaining geometry differences in [data ledger](data-implementation.md) |
 | Charts | [Composed Chart](https://reui.io/blocks/chart/composed-chart) | 5 | Pending |
 | Charts | [Line Chart](https://reui.io/blocks/chart/line-chart) | 6 | Pending |
 | Charts | [Pie Chart](https://reui.io/blocks/chart/pie-chart) | 3 | 3/3 compared; see [data ledger](data-implementation.md) for remaining geometry/data differences |
@@ -86,8 +88,8 @@ The goal is the complete public REUI Pro Blocks catalog, recreated independently
 | eCommerce | [Coupon](https://reui.io/blocks/ecommerce/coupon) | 6 | Pending |
 | eCommerce | [Filter Sidebar](https://reui.io/blocks/ecommerce/filter-sidebar) | 7 | Pending |
 | eCommerce | [Product Card](https://reui.io/blocks/ecommerce/product-card) | 10 | 10/10 compared; see [commerce ledger](commerce-implementation.md) for photo/content differences |
-| eCommerce | [Product Detail](https://reui.io/blocks/ecommerce/product-detail) | 6 | Pending |
-| eCommerce | [Product Grid](https://reui.io/blocks/ecommerce/product-grid) | 6 | Pending |
+| eCommerce | [Product Detail](https://reui.io/blocks/ecommerce/product-detail) | 6 | 6/6 compared; see [commerce ledger](commerce-implementation.md) for photo/content and carousel migration differences |
+| eCommerce | [Product Grid](https://reui.io/blocks/ecommerce/product-grid) | 6 | 6/6 compared; see [commerce ledger](commerce-implementation.md) for photo/content and carousel migration differences |
 | eCommerce | [Receipt](https://reui.io/blocks/ecommerce/receipt) | 6 | Pending |
 | eCommerce | [Review](https://reui.io/blocks/ecommerce/review) | 6 | Pending |
 | eCommerce | [Shopping Cart](https://reui.io/blocks/ecommerce/shopping-cart) | 7 | Pending |

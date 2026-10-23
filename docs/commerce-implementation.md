@@ -137,3 +137,178 @@ Files for this batch:
 - `src/blocks/commerce/product-data.ts` — bounded demo datasets using existing bundled photographs.
 - `src/blocks/commerce/index.tsx` — Product Card now routes to the dedicated module; Product Grid retains its existing module.
 - `docs/commerce-implementation.md` — this audit ledger and the remaining fidelity differences.
+
+## Product Detail and Product Grid: individual public-preview audit
+
+This batch replaces the former shared `SingleProduct` / `ProductCatalog` routes with dedicated modules. Each of the 12 catalog URLs below was opened in a rendered Chromium browser; its actual public iframe URL was read from the catalog DOM. Default full-page screenshots were inspected and compared with local screenshots at **1280 × 1000**. Streaming catalog responses required navigation at the `commit` event; no paid source, registry payload or premium asset was accessed. Lazy images were allowed to load during a second scroll-through pass before evaluating photo regions. The optional public Markdown briefs were used only to cross-check the visible controls.
+
+The local implementation uses shadcn primitives and original React composition. Grid 1 and 2 intentionally share card content and state because the public examples have the same data/anatomy; Grid 2 adds the distinct double-panel frame. Details 2 and 4 share chapter typography, but have different gallery, purchase, reading, contents and package sections. Remaining detail/grid entries each have their own composition. Shared helpers cover gallery controls, color buttons, quantity, bag confirmation, spec rows, stars, local reviews and related items.
+
+New photographs are independently selected free Unsplash files, bundled under `src/blocks/commerce/assets/detail-grid/`; its `ATTRIBUTION.md` records original image URLs and license. Existing free commerce photos are reused. **These photographs do not depict the exact named demo products or exact colorways.** Some gallery views deliberately reuse a photograph with a different crop; hue changes are demo treatments. Product facts, names and short labels follow the visible sample where useful, while body prose, excerpts and review text are independently written. Star fills and distribution numbers are illustrative rather than pixel-exact aggregates.
+
+### product-detail-1 — Size Picker Detail
+
+- Reference: https://reui.io/blocks/ecommerce/product-detail/product-detail-1
+- Observed: breadcrumb; left five-image vertical filmstrip beside a large square sneaker photo; right category, title, rating, description, sale price, five colors, EU 39–45 with 44 struck/disabled, size-guide link, full-width bag/wishlist and three dashed service tiles. Four line tabs switch Description, grouped Specs, Shipping & Returns and Reviews. Related products have eight items with a 1/2 page count and arrows.
+- Corrections: dedicated sneaker layout restores this anatomy, sold-out size, selected-size tick, size-guide dialog, tab-specific content, related paging and wishlist states. Bag confirmation contains the chosen color and size; review submission validates and appends a local review.
+- Verification: **visually reviewed — desktop default and public Specs tab**. Local selected Midnight/EU 42 bag state, disabled 44, grouped specs, size guide and next related page are covered by the persistent test.
+- Remaining: the reference gallery contains different shoes/angles; local gallery uses the bundled red sneaker with crop/tint treatments. Related photos repeat and shorter independent descriptions change page height. Local cart/review dialogs add useful demo behavior where public controls were placeholders.
+
+### product-detail-2 — Story Product Page
+
+- Reference: https://reui.io/blocks/ecommerce/product-detail/product-detail-2
+- Observed: five-image audio filmstrip, color-only buy area, bullet features, compact bag and heart row, small service line; three alternating photo/copy chapters with numbered rules, hover captions and three specs each. Four compact specification cards follow, then rating distribution beside an autoplay review carousel and review-count link.
+- Corrections: separate audio editorial composition, matching chapter sequence and spec-card groups (Audio, Power, Connectivity, Build), Onyx/Sand/Sage states, active gallery, bag confirmation and independently paced review dots. Pause/play controls and an all-reviews dialog make the carousel usable locally.
+- Verification: **visually reviewed — desktop default after images loaded**. A public gallery change was exercised. Local gallery selection, Sand in the bag, manual second review and paused state are in the persistent test.
+- Remaining: alternate headphone angles and travel photography are substituted/repeated; color changes tint the photo. Original shorter prose reduces vertical rhythm. Native state/timer logic replaces the reference Embla carousel, and avatar portraits are simplified.
+
+### product-detail-3 — Spec Table Detail
+
+- Reference: https://reui.io/blocks/ecommerce/product-detail/product-detail-3
+- Observed: large audio image over six thumbnails; sticky buy column with SKU, maker/rating, colors, checked USB-C/Lightning/3.5 mm tiles, quantity, bag, wishlist and service cards. Below are a two-column overview, a single grouped specification table (In the Box, Audio, Build & Fit, Connectivity), review distribution/list and related items.
+- Corrections: explicit six-thumbnail/sticky-buy composition, connector and quantity state carried to the bag subtotal, grouped specification rows, independent overview and local review submission with submitted text visible in the review list.
+- Verification: **visually reviewed — desktop default and actual public Lightning selection**. Local three-unit Lightning order totals $1,047; review validation/submission is covered by the persistent test.
+- Remaining: headphone photos reuse one free shot with crop/finish treatments. Service-card secondary copy and related-product imagery are simplified; native table borders and star fills differ slightly. Local bag/review dialogs replace placeholder public actions.
+
+### product-detail-4 — Ebook Detail Page
+
+- Reference: https://reui.io/blocks/ecommerce/product-detail/product-detail-4
+- Observed: wide book photo, Look Inside counter and five captioned thumbnails; edition tiles, price following the selected edition, delivery/license chips and purchase row. A grey drop-cap opening excerpt precedes three alternating chapters, a 17-chapter/three-part contents grid with reading times, four detail cards and reader reviews. Complete Bundle visibly changes to **$49 / $78 / 37% Off**.
+- Corrections: dedicated book composition includes gallery/counter, edition-dependent $19/$29/$49 bag totals, selected package features, independently written readable sample dialog, drop cap, 17 contents entries, detail cards and reader carousel.
+- Verification: **visually reviewed — desktop default and actual public Complete Bundle state**. Local Ebook/Bundle totals, Workbook preview selection and sample readability are covered by the persistent test. A real downloaded ZIP was independently built.
+- Remaining: book photos are independently selected stacks/library images, not the reference cover/edition artwork. Body/sample prose and reviews are original; exact ebook text is not reproduced. No digital files, real purchase or license delivery is connected.
+
+### product-detail-5 — Compact Buy Box
+
+- Reference: https://reui.io/blocks/ecommerce/product-detail/product-detail-5
+- Observed: sticky square coffee gallery and five thumbnails; dense buy area with checkmark features, four colors, three capacity tiles, low-stock/shipping line, capped quantity, Add To Cart and a separate Buy Now/heart row. About and specs sit side-by-side, then rating/featured reviews and an open related row.
+- Corrections: dedicated coffee layout, Cream/Charcoal/Sage/Cobalt states, capacity guide and selection, stock-capped quantity with clamping on lower-stock color changes, subtotal-aware bag and demo checkout, matching two-column information and manual/autoplay featured reviews.
+- Verification: **visually reviewed — desktop default**; public gallery selection exercised. Persistent local test reaches stock 4, changes to Cobalt stock 2, selects 500 ml and confirms the $178 demo order.
+- Remaining: free coffee photographs show cafe drinks rather than the exact pour-over kit; secondary photos and related accessories are proxies. Capacity changes label/package state while the demo unit price stays $89. The explicit Cobalt stock reduction and confirmation dialog are useful local demo additions, not a claim about the public product’s inventory.
+
+### product-detail-6 — Single-Column Detail
+
+- Reference: https://reui.io/blocks/ecommerce/product-detail/product-detail-6
+- Observed: narrow centered title/rating, 4:3 backpack gallery and thumbnails, centered price/features/variants/quantity buy area, introductory paragraph and three numbered story chapters. Grouped specs and a rating/recommendation (92%) review area with long quote/progress segments precede a full-width related-products footer.
+- Corrections: independent single-column composition restores the centered buy box, three numbered story blocks, capacity guide, color/photo selection, stock cap, grouped specs, 92% recommendation, review segments and related footer. Bag confirmation carries capacity/color/quantity.
+- Verification: **visually reviewed — desktop default**; public gallery selection exercised. Persistent test changes to Charcoal/24 L, reaches stock 3, verifies $1,035 total and selects the second review segment.
+- Remaining: free fabric/travel backpacks replace the exact leather bags and do not match the named finishes. Story copy and review samples are original. Exact avatar stack is omitted; native review segments/timer replace Embla. Charcoal’s demo stock limit is illustrative.
+
+### product-grid-1 — Swatch Swap Grid
+
+- Reference: https://reui.io/blocks/ecommerce/product-grid/product-grid-1
+- Observed: four outlined shadcn cards in two columns, full-bleed square photo, sale/new pill, hover heart with the third seeded liked. Below: uppercase category, swatches with selected color aligned right, title, two-line description and current/compare price. No heading or cart footer.
+- Corrections: dedicated four-card collection; selecting a swatch changes the actual bundled image source and selected name, wishlist states remain independent and the third starts liked. Restored square ratio, card border, category and sale pricing hierarchy.
+- Verification: **visually reviewed — desktop default and public Sand swatch change**. Persistent local test asserts the image source changes, selected output reads Sand and hearts remain independent.
+- Remaining: free bag photographs are proxies and do not match exact finishes; reference sample imagery itself includes unrelated placeholders. Short independent descriptions and two-decimal currency formatting alter small details. No product-navigation backend is provided.
+
+### product-grid-2 — Stacked Panel Grid
+
+- Reference: https://reui.io/blocks/ecommerce/product-grid/product-grid-2
+- Observed: same four-product structure and swatch interaction as Grid 1, enclosed in a subtle grey frame; photo and details occupy separately rounded bordered panels with a visible inset gap.
+- Corrections: distinct stacked-panel shell around the shared card content, separate photo/details borders, inset padding/gap, live image swap and seeded wishlist. This intentionally shares only the inner product data/control anatomy with Grid 1.
+- Verification: **visually reviewed — desktop default after lazy images loaded and public Sand selection**. Persistent local image-source/name/wishlist checks pass independently for this entry.
+- Remaining: photo/finish substitutions, text length, currency decimals and subtle frame shades differ. The free implementation composes shadcn-compatible surfaces instead of retrieving the paid block’s Frame source.
+
+### product-grid-3 — Add-to-Cart Grid
+
+- Reference: https://reui.io/blocks/ecommerce/product-grid/product-grid-3
+- Observed: six open, borderless tiles in three columns; square images, upper-left badge, hover/seeded hearts, uppercase category tags, title, five-star rating with review-count link, price and full-width Add to Cart.
+- Corrections: separate six-item frameless layout, ratings/review counts, seeded third heart and per-product cart confirmation. Review count opens a local product-specific review panel.
+- Verification: **visually reviewed — desktop default after lazy images loaded**. Public cart action was clicked; persistent local test verifies the selected item in the bag and its linked review panel.
+- Remaining: bag photo set differs and repeats; rating fill/decimals and review prose are illustrative. The public cart is a placeholder; this demo provides local feedback without a shared server cart.
+
+### product-grid-4 — Numbered Story Grid
+
+- Reference: https://reui.io/blocks/ecommerce/product-grid/product-grid-4
+- Observed: six horizontal editorial chapters in two columns. Each has a 01–06/category rule, small square photo with badge/hover heart, title/price row, story sentence and three labeled specifications. No cart or rating row. First wishlist starts liked.
+- Corrections: independent six-story layout restores rules, horizontal photo/copy anatomy, three-column spec rows, badge differences and first seeded heart. Mobile retains readable columns without overflow.
+- Verification: **visually reviewed — desktop default after lazy images loaded**. Public first wishlist was toggled; persistent local test checks the seeded toggle and all six stories/specs.
+- Remaining: existing free home/ceramic/room photos replace the reference’s varied sample placeholders; some are category proxies rather than exact objects. Original shorter story prose and mobile wrapping vary the row height.
+
+### product-grid-5 — Quick Size Grid
+
+- Reference: https://reui.io/blocks/ecommerce/product-grid/product-grid-5
+- Observed: six 4:5 apparel photos in three columns, always-visible corner hearts/badges, hidden inset translucent quick-buy panel with XS–XL; unavailable sizes struck/disabled. First card begins with M selected; other cards prompt Select Size. Brand/title/price and shipping line sit beneath each photo.
+- Corrections: dedicated portrait grid, hover/focus buy panel, first selected M, product-specific sold-out sizes, selection-gated bag action and size in confirmation. Quick-buy panels are also visible on narrow screens for touch usability.
+- Verification: **visually reviewed — desktop default and public hover panel**. Persistent local test checks the second card’s unavailable M, disabled action before selection and successful S purchase. Settled local focus-panel and 390px top-of-page screenshots were also visually inspected.
+- Remaining: repeated bundled jacket/tee photos replace distinct outfits. Public quick-buy uses radio tiles while this implementation uses accessible pressed buttons. Narrow-screen always-visible controls are a deliberate usability addition.
+
+### product-grid-6 — Shop-the-Look Grid
+
+- Reference: https://reui.io/blocks/ecommerce/product-grid/product-grid-6
+- Observed: 2×2 square apparel tiles with cross-fade to a second lifestyle photo; badge upper left, hover Add to List/Cart actions, stacked swatch pill lower right expanding to color dots. Caption contains brand, title, price and Shop The Look/item count; first list item starts Saved.
+- Corrections: independent four-look composition with true two-image cross-fade on hover/focus, expanding selected-color pill, seeded list state, cart finish details and a local outfit dialog containing the indicated 3/4/5 items. Narrow-screen actions stay reachable without hover.
+- Verification: **visually reviewed — desktop default and actual public cross-fade/expanded pill**. Persistent local test checks settled opacity, keyboard swatch expansion/Olive selection, independent Saved toggle and four-item first-look dialog. Settled local focus-panel and 390px top-of-page screenshots were also visually inspected.
+- Remaining: free tee/jacket photos replace the reference’s clothing/lifestyle set and repeat across looks. The expanded color selection applies an illustrative finish treatment rather than exact product/color photography. Local outfit browsing replaces hash links; no backend styling service exists.
+
+### Detail/Grid batch verification and release files
+
+The persistent `tests/product-detail-grid.spec.ts` suite finished **25/25 passed** using a unique output directory (`--output=/tmp/reui-detail-grid-test-final`) to avoid trace-file collisions with other parallel jobs. It covers a meaningful interaction for every entry plus all 12 previews at **390px** with decoded local images, no page exceptions and no horizontal overflow. A separate real-download regression asserts nested images, attribution and new source modules are present in the ZIP. Standalone exports for **Product Detail 4** and **Product Grid 6** were downloaded through the actual website button, extracted and built with strict TypeScript plus Vite. Both include all eight new images and the nested attribution file. Both exported production previews were also opened in Chromium: the ebook Bundle/$49 bag flow and the grid cross-fade/four-item outfit dialog passed with no page exceptions. Commerce-only TypeScript checks passed. Source lint has only the existing-style Fast Refresh advisories for constants exported alongside components.
+
+Files in this batch (no staging/commit performed):
+
+- `src/blocks/commerce/product-details.tsx` — six dedicated detail compositions.
+- `src/blocks/commerce/product-grids.tsx` — six grid compositions, with shared inner content only for the two bag-card grids.
+- `src/blocks/commerce/product-detail-grid-shared.tsx` — gallery/variant/purchase/review/table helpers.
+- `src/blocks/commerce/assets/detail-grid/` — eight independently selected free photos plus attribution.
+- `src/blocks/commerce/index.tsx` — only Product Detail/Grid imports and dispatch changed.
+- `src/lib/bundle.ts` — parent-requested recursive image/font/notice asset globs; other export/font edits preserved.
+- `tests/product-detail-grid.spec.ts` — persistent per-entry interaction/mobile/image and nested ZIP regression coverage.
+- `docs/commerce-implementation.md` — this per-entry ledger.
+
+Previous Product Card files and other coordinators’ pricing/marketing/promotion/hero modules were preserved. All purchases, reviews, inventory, browsing and checkout remain local demo states; exact premium photographs, original prose, exact carousel physics and backend services are not reproduced.
+
+## Official free REUI reuse correction — milestone 1
+
+The user subsequently made **official free REUI implementation reuse first** explicit. The earlier independent compositions above did not satisfy that preference wherever they recreated available primitive behavior. This correction uses actual registry source, not similarly named wrappers. Shared vendor/dependency Git operations belong to the root/coordinator; this agent changed only its Rating integration source and commerce consumers/tests, and did not stage or commit.
+
+### Actual sources and migrations
+
+- **Rating** — official free Radix Nova registry, retrieved with `npx shadcn@latest view @reui/rating`; source `https://reui.io/r/radix-nova/rating.json`. Original content SHA-256 is recorded in `src/components/reui/rating.tsx`. The original small/normal/large variants, fractional fill percentage, hover preview, mouse-leave reset and controlled click callback are preserved. The generated registry `IconPlaceholder` is mechanically resolved to Lucide `Star`; editable star wrappers gain keyboard/ARIA attributes. These are explicitly local accessibility extensions. The former hand-looped fully filled stars in Product Card and Detail/Grid now render through this implementation. The review form's native rating dropdown is replaced by its actual editable Rating, and submitted rating is retained with local review data.
+- **Frame / FramePanel** — actual official free implementations installed by the application coordinator at `@/components/reui/frame`; `Frame dense` + direct `FramePanel` now provide Product Card 3/5 containers. Product Grid 2 now uses a real `Frame spacing="default"` containing two direct `FramePanel fit` children instead of custom bordered wrapper divs. Official inherited panel background/border/radius/spacing and dense/adjacency rules now drive the surfaces.
+- **NumberField** — official free registry source at `@/components/reui/number-field`, using its original `@base-ui/react/number-field` integration. Detail 3/5/6 quantity controls now compose `NumberField`, `NumberFieldGroup`, `NumberFieldDecrement`, `NumberFieldInput` and `NumberFieldIncrement`. They inherit original keyboard entry/arrow stepping, focus styling, disabled-at-boundary behavior and min/max parsing/clamping. The former bespoke minus/output/plus state renderer is removed. Parent-level inventory state still determines the allowed maximum.
+- **Badge** — actual official free implementation at `@/components/reui/badge` replaces the Nova shadcn Badge in the 22 audited entry compositions. Real `radius`, `size`, `success`, `warning`, `destructive` and `success-light` variants are used for sale/status/verified badges; manual badge colors were removed where official variants exist. Semantic token installation is owned by the shared foundation coordinator.
+
+Official vendor code is MIT, Copyright (c) 2025 Keenthemes Inc. Preserve `src/components/reui/REUI-LICENSE.txt` in distribution. Root owns the shared source-export/notice wiring. Frame/IconTile and NumberField/Badge vendor files belong to their coordinators and were consumed without overwriting their implementations.
+
+### Per-entry reuse map
+
+| Audited entry | Actual official free implementation used in this correction | Product-specific composition retained |
+| --- | --- | --- |
+| Product Card 1 | Badge | Apparel-only photo grid and wishlist data |
+| Product Card 2 | Badge | Catalog filters, swatch finish mapping and sort |
+| Product Card 3 | Frame + FramePanel, Badge | Selected size, stock tooltip and local bag state |
+| Product Card 4 | Badge | Related-item data and paging state; carousel migration still outstanding below |
+| Product Card 5 | Frame + FramePanel, Badge, Rating | Cut-corner media layout, finish data and local specs/bag state |
+| Product Card 6 | Badge | Masonry placement and product hover information |
+| Product Card 7 | Badge | Arrival/inventory metadata; carousel migration still outstanding |
+| Product Card 8 | Badge, Rating | Category/status filters, sort and cart data |
+| Product Card 9 | Badge, Rating | Divided accessory collection and delivery metadata |
+| Product Card 10 | Badge | Lookbook tile content and informative size chips |
+| Product Detail 1 | Badge, Rating (including editable review form) | Shoe variant data, sold-out size and purchase state |
+| Product Detail 2 | Badge, Rating | Audio chapters/spec data and finish state |
+| Product Detail 3 | Badge, Rating, NumberField | Connector options, grouped specs and inventory |
+| Product Detail 4 | Badge, Rating | Ebook edition pricing, original sample and chapter contents |
+| Product Detail 5 | Badge, Rating, NumberField | Capacity/color/stock and local checkout state |
+| Product Detail 6 | Badge, Rating, NumberField | Bag capacity/stock and single-column chapter data |
+| Product Grid 1 | Badge | Named color/photo mapping; its public example specifically uses shadcn Card |
+| Product Grid 2 | Frame + FramePanel, Badge | Named color/photo and wishlist state |
+| Product Grid 3 | Badge, Rating | Per-product bag data and local review panel |
+| Product Grid 4 | Badge | Six numbered product stories/spec data |
+| Product Grid 5 | Badge | Per-product available sizes and local quick-buy state |
+| Product Grid 6 | Badge | Two-photo cross-fade, palette mapping and outfit data |
+
+This table describes concrete current reuse, not completion of every reusable pattern in the scope. Product-specific data, edition/size compatibility, stock limits, local cart totals and the original catalog page compositions have no equivalent turnkey free eCommerce block in the public free UI registry; they remain application composition over the reused primitives. Ordinary shadcn Card/Tabs/Dialog/Button controls remain where the corresponding official free REUI examples themselves compose those primitives.
+
+### Remaining reuse work, explicitly not a claimed missing capability
+
+The free registry search found **`@reui/c-carousel-8`**, a real free pattern depending on shadcn Card/Carousel. Its source composes `Carousel`, `CarouselContent`, `CarouselItem`, `CarouselNext` and `CarouselPrevious`, with the image overlay/zoom treatment. Therefore the existing native Product Card 4/7 rails and local gallery/review carousel logic are **not** classified as a confirmed library gap. Their migration to the official free carousel pattern is the next correction, pending shared Carousel/Embla dependency coordination. The free `c-breadcrumb-*` examples were also located; the remaining custom breadcrumb composition is being audited rather than called unavailable. Checkout/Cart implementation is held until this reuse correction is concrete, and their next batch must begin with the actual free Stepper/Frame/NumberField/Alert and relevant official patterns.
+
+Photo substitutions and independent prose remain the fidelity differences documented per entry. No premium source/assets or backend integration were introduced.
+
+### Verification of this milestone
+
+A stable temporary production snapshot was built from committed repository state plus the current commerce consumers and coordinated official vendor/UI/CSS/export files; **strict TypeScript + Vite passed**. The complete Detail/Grid suite passed **28/28**, including the prior 25 regressions plus tests of original Rating fractional/hover/click behavior, Frame inherited panel styling and NumberField keyboard/max behavior. An additional **4/4** checks passed for Product Card 3/5/8 flows and all ten Product Card compositions at 390px. Product Card 3/5/8 production screenshots were visually inspected after migration. The live development server had unrelated concurrent HMR/optimized-dependency reload errors, so these results use the stable production preview on port 5295 with unique Playwright output directories.
+
+Ready source scope for root milestone publication: `src/blocks/commerce/product-cards.tsx`, `product-details.tsx`, `product-grids.tsx`, `product-detail-grid-shared.tsx`, coordinated `src/components/reui/rating.tsx`, `tests/product-detail-grid.spec.ts`, and this ledger. No commerce dispatcher edit was made during this correction. Root should include the coordinated free vendor/license/dependency/CSS/source-export foundation, run integration checks, then promptly commit/push and verify Pages as required by AGENTS.md; this agent makes no publication-success claim.
