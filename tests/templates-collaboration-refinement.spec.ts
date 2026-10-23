@@ -1,8 +1,7 @@
 import { test, expect } from "@playwright/test";
-const base = process.env.PREVIEW_URL || "http://127.0.0.1:5212";
 
 test("Pulse contacts keep account details through creation, search and edit", async ({ page }) => {
-  await page.goto(`${base}/#/template-preview/pulse`);
+  await page.goto(`/#/template-preview/pulse`);
   await page.getByRole("button", { name: "Contacts", exact: true }).click();
   await expect(page.getByText(/11 contacts/)).toBeVisible();
   await page.getByRole("button", { name: "Add contact", exact: true }).click();
@@ -24,7 +23,7 @@ test("Pulse contacts keep account details through creation, search and edit", as
 });
 
 test("Pulse invitation and activation update the specific member", async ({ page }) => {
-  await page.goto(`${base}/#/template-preview/pulse`);
+  await page.goto(`/#/template-preview/pulse`);
   await page.getByRole("button", { name: "Team", exact: true }).click();
   await page.getByRole("button", { name: "Invite people", exact: true }).click();
   await page.getByLabel("Full name", { exact: true }).fill("Sam Reviewer");
@@ -50,7 +49,7 @@ test("Pulse invitation and activation update the specific member", async ({ page
 });
 
 test("Roster hiring keeps candidate-specific stage and interview states", async ({ page }) => {
-  await page.goto(`${base}/#/template-preview/roster`);
+  await page.goto(`/#/template-preview/roster`);
   await page.getByRole("button", { name: "Hiring", exact: true }).click();
   await expect(page.locator(".ct-candidate-card")).toHaveCount(12);
   await page.getByLabel("Open candidate Yara Lindholm", { exact: true }).click();
@@ -73,7 +72,7 @@ test("Roster hiring keeps candidate-specific stage and interview states", async 
 });
 
 test("Roster directory expands only the chosen reporting branch", async ({ page }) => {
-  await page.goto(`${base}/#/template-preview/roster`);
+  await page.goto(`/#/template-preview/roster`);
   await page.getByRole("button", { name: "People", exact: true }).first().click();
   await page.getByRole("button", { name: "Directory", exact: true }).click();
   await expect(page.getByRole("row").filter({ hasText: "Daniel Reyes" })).toHaveCount(0);
@@ -90,7 +89,7 @@ test("Roster directory expands only the chosen reporting branch", async ({ page 
 });
 
 test("Filespace shared view and folder navigation show distinct records", async ({ page }) => {
-  await page.goto(`${base}/#/template-preview/filespace`);
+  await page.goto(`/#/template-preview/filespace`);
   await page.getByRole("treeitem", { name: "Client Deliverables", exact: true }).click();
   await expect(page.getByText("Deliverable Tracker.xlsx", { exact: true })).toBeVisible();
   await expect(page.getByRole("row").filter({ hasText: "Hero Cut v12.mp4" })).toHaveCount(0);
@@ -100,7 +99,7 @@ test("Filespace shared view and folder navigation show distinct records", async 
 });
 
 test("Filespace inherited permissions follow the parent folder", async ({ page }) => {
-  await page.goto(`${base}/#/template-preview/filespace`);
+  await page.goto(`/#/template-preview/filespace`);
   async function share() {
     await page.getByRole("button", { name: "Actions for Hero Cut v12.mp4", exact: true }).click();
     await page.getByRole("menuitem", { name: "Share", exact: true }).click();
@@ -127,7 +126,7 @@ test("Filespace inherited permissions follow the parent folder", async ({ page }
 });
 
 test("Filespace restore and move update the selected file metadata", async ({ page }) => {
-  await page.goto(`${base}/#/template-preview/filespace`);
+  await page.goto(`/#/template-preview/filespace`);
   async function action(name: string) {
     await page.getByRole("button", { name: "Actions for Hero Cut v12.mp4", exact: true }).click();
     await page.getByRole("menuitem", { name, exact: true }).click();
@@ -147,7 +146,7 @@ test("Filespace restore and move update the selected file metadata", async ({ pa
 });
 
 test("Limelight updates every console metric and preserves host navigation", async ({ page }) => {
-  await page.goto(`${base}/#/template-preview/limelight`);
+  await page.goto(`/#/template-preview/limelight`);
   const console = page.locator("#lime-home .ct-console");
   await console.getByRole("button", { name: "Month", exact: true }).click();
   await expect(console.locator(".ct-console-stats strong")).toContainText([
@@ -176,7 +175,7 @@ test("Limelight updates every console metric and preserves host navigation", asy
 });
 
 test("Overture validates an email and confirms a local waitlist signup", async ({ page }) => {
-  await page.goto(`${base}/#/template-preview/overture`);
+  await page.goto(`/#/template-preview/overture`);
   const email = page.getByRole("textbox", { name: "Email Address", exact: true });
   await email.fill("invalid");
   await page.getByRole("button", { name: "Join Waitlist", exact: true }).click();
@@ -191,20 +190,20 @@ test("Mobile templates keep file actions reachable and KPI summaries readable", 
   page,
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto(`${base}/#/template-preview/filespace`);
+  await page.goto(`/#/template-preview/filespace`);
   const action = page.getByRole("button", { name: "Actions for Hero Cut v12.mp4", exact: true });
   await expect(action).toBeInViewport();
   await action.click();
   await page.getByRole("menuitem", { name: "Details", exact: true }).click();
   await expect(page.getByRole("dialog").getByText("4.74 KB", { exact: true })).toBeVisible();
-  await page.goto(`${base}/#/template-preview/pulse`);
+  await page.goto(`/#/template-preview/pulse`);
   const cards = page.locator(".ct-stats > [data-slot='frame']");
   const first = await cards.nth(0).boundingBox();
   const second = await cards.nth(1).boundingBox();
   expect(first).not.toBeNull();
   expect(second).not.toBeNull();
   expect(second!.y).toBeGreaterThanOrEqual(first!.y + first!.height);
-  await page.goto(`${base}/#/template-preview/roster`);
+  await page.goto(`/#/template-preview/roster`);
   await expect(
     page.getByRole("button", { name: "Jul 1, 2026 - Jul 30, 2026", exact: true }),
   ).toBeInViewport();

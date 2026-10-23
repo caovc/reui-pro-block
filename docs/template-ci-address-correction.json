@@ -1,0 +1,14 @@
+{
+  "base": "1d8435bf818e1926e2a772284657d208cc181b41",
+  "failedRun": 39925841223,
+  "artifact": 12490153249,
+  "cause": "Two test-local5212 URL fallbacks bypassed configured5173 production server",
+  "fix": "Relative template routes use shared Playwright baseURL",
+  "validation": {
+    "build": "PASS",
+    "production": "13/13 PASS; CI=1; PREVIEW_URL unset; configured default5173 server",
+    "log": "/tmp/bricklane-ci-address-production.log"
+  },
+  "unchanged": "All application code, assertions, timeouts and retries",
+  "deployment": "Pending cumulative CI/Pages; live verified e140d02"
+}
