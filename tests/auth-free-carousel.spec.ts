@@ -36,13 +36,28 @@ test("free carousel owns story keyboard, dragging and dot selection", async ({ p
 
 test("free autoplay respects reduced motion and stops on user selection", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.clock.install();
   await page.goto("./#/preview/application/auth/auth-2");
   const third = page.getByRole("button", { name: "Show story 3", exact: true });
   await expect(third).toHaveAttribute("aria-pressed", "true");
+  await page.evaluate(async () => {
+    await document.fonts.ready;
+    await Promise.all([...document.images].map((image) => image.decode()));
+  });
+  await page.clock.install();
   await page.clock.runFor(7000);
   await expect(third).toHaveAttribute("aria-pressed", "true");
+  // emulateMedia resolves before Chromium dispatches the MediaQueryList change.
+  // Register first and await delivery before advancing the plugin's timer.
+  const preference = await page.evaluateHandle(() => ({
+    changed: new Promise<void>((resolve) => {
+      matchMedia("(prefers-reduced-motion: reduce)").addEventListener("change", () => resolve(), {
+        once: true,
+      });
+    }),
+  }));
   await page.emulateMedia({ reducedMotion: "no-preference" });
+  await preference.evaluate(async (preference) => preference.changed);
+  await preference.dispose();
   await page.clock.runFor(6600);
   await expect(page.getByRole("button", { name: "Show story 4", exact: true })).toHaveAttribute(
     "aria-pressed",
