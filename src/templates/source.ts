@@ -1,6 +1,6 @@
 import { zipSync, strToU8 } from "fflate";
 import type { TemplateMeta } from "./catalog";
-import { implementationFirst } from "@/lib/source-targets";
+import { implementationFirst, templateImplementationTargets } from "@/lib/source-targets";
 import { starterMain, starterViteConfig, starterHTML } from "@/lib/starter-files";
 
 const sources = import.meta.glob(
@@ -8,12 +8,10 @@ const sources = import.meta.glob(
     "/src/templates/{business,workflow,collaboration}/**/*.{ts,tsx,css}",
     "/src/templates/{surface.tsx,reference.css}",
     "/src/blocks/**/*.{ts,tsx,css}",
-    "/src/components/ui/*.{ts,tsx}",
-    "/src/components/brand-mark.tsx",
-    "/src/components/reui/**/*.{ts,tsx,css}",
+    "/src/components/**/*.{ts,tsx,css}",
     "/src/hooks/**/*.{ts,tsx}",
-    "/src/lib/{utils,download,demo-artwork}.ts",
-    "/src/data/*.{ts,json}",
+    "/src/lib/**/*.{ts,tsx}",
+    "/src/data/**/*.{ts,json}",
     "/src/index.css",
     "/src/styles/shadcn.css",
   ],
@@ -53,9 +51,15 @@ function collect(template: TemplateMeta) {
       requiredAssets.add(path);
       return;
     }
-    const resolved = [path, `${path}.tsx`, `${path}.ts`, `${path}.css`, `${path}/index.tsx`].find(
-      (name) => sources[name] !== undefined,
-    );
+    const resolved = [
+      path,
+      `${path}.tsx`,
+      `${path}.ts`,
+      `${path}.css`,
+      `${path}.json`,
+      `${path}/index.tsx`,
+      `${path}/index.ts`,
+    ].find((name) => sources[name] !== undefined);
     if (!resolved || files[resolved.slice(1)]) return;
     files[resolved.slice(1)] = sources[resolved];
     const imports = /(?:from\s*|import\s*\(?\s*|url\(\s*)['"]([^'"]+)['"]/g;
@@ -93,17 +97,7 @@ export default function Example() {
   return { files, requiredAssets };
 }
 export function templateFiles(template: TemplateMeta) {
-  const module =
-    template.family === "business" && ["manifest", "surge"].includes(template.id)
-      ? "commerce"
-      : template.family === "collaboration" && ["limelight", "overture"].includes(template.id)
-        ? "marketing"
-        : template.family === "collaboration" && ["filespace", "filebox"].includes(template.id)
-          ? "drive"
-          : template.id;
-  return implementationFirst(collect(template).files, [
-    `src/templates/${template.family}/${module}.tsx`,
-  ]);
+  return implementationFirst(collect(template).files, templateImplementationTargets(template));
 }
 
 export async function downloadTemplate(template: TemplateMeta) {

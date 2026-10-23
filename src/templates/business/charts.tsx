@@ -1,3 +1,4 @@
+import { ReuiStripePattern } from "@/blocks/data/reui-free-chart-primitives";
 import { useId } from "react";
 import {
   Area,
@@ -43,28 +44,9 @@ export function BusinessBars({
           barGap={2}
         >
           <defs>
-            <pattern
-              id={uid}
-              width="5"
-              height="5"
-              patternUnits="userSpaceOnUse"
-              patternTransform="rotate(40)"
-            >
-              <rect width="5" height="5" fill="#5179ef22" />
-              <line x1="0" y1="0" x2="0" y2="5" stroke="#5277f0" strokeWidth="1" />
-            </pattern>
-            {colors.map((color, i) => (
-              <pattern
-                id={uid + "color" + i}
-                key={color}
-                width="5"
-                height="5"
-                patternUnits="userSpaceOnUse"
-                patternTransform="rotate(40)"
-              >
-                <rect width="5" height="5" fill={color} />
-                <line x1="0" y1="0" x2="0" y2="5" stroke="#ffffff80" strokeWidth=".8" />
-              </pattern>
+            <ReuiStripePattern id={uid} color="#5277f0" />
+            {colors.map((color, index) => (
+              <ReuiStripePattern key={color} id={`${uid}color${index}`} color={color} />
             ))}
           </defs>
           <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="2 4" />
@@ -122,15 +104,7 @@ export function BusinessArea({ mono = false }: { mono?: boolean }) {
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart data={data} margin={{ top: 12, right: 2, left: 2, bottom: 0 }}>
           <defs>
-            <pattern
-              id={uid}
-              width="5"
-              height="5"
-              patternUnits="userSpaceOnUse"
-              patternTransform="rotate(40)"
-            >
-              <line x1="0" y1="0" x2="0" y2="5" stroke="#edb91f" strokeWidth=".8" />
-            </pattern>
+            <ReuiStripePattern id={uid} color="#edb91f" />
             <linearGradient id={uid + "gray"} x1="0" y1="0" x2="0" y2="1">
               <stop offset="0" stopColor="#7e7e86" stopOpacity=".3" />
               <stop offset="1" stopColor="#7e7e86" stopOpacity="0" />

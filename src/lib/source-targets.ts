@@ -368,6 +368,22 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
   return paths("data", "grid");
 }
 
+export function templateImplementationTargets(template: {
+  id: string;
+  family: "business" | "workflow" | "collaboration";
+}) {
+  const sharedModules: Record<string, string> = {
+    manifest: "commerce",
+    surge: "commerce",
+    limelight: "marketing",
+    overture: "marketing",
+    filespace: "drive",
+    filebox: "drive",
+  };
+  const module = sharedModules[template.id] ?? template.id;
+  return [`src/templates/${template.family}/${module}.tsx`];
+}
+
 export function implementationFirst(files: Record<string, string>, candidates: string[]) {
   const main = candidates.find((path) => files[path] !== undefined);
   if (!main) throw new Error(`Missing implementation source: ${candidates.join(", ")}`);

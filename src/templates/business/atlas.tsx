@@ -32,7 +32,7 @@ export default function Atlas() {
   return (
     <Shell
       id="atlas"
-      brand="ReUI"
+      brand="Bricklane"
       active={active}
       setActive={(x) => {
         setActive(x);
@@ -66,7 +66,7 @@ export default function Atlas() {
       {["Users", "All Users"].includes(active) ? (
         <AtlasUsers />
       ) : active === "Settings" ? (
-        <SettingsPage brand="ReUI" />
+        <SettingsPage brand="Bricklane" />
       ) : (
         <>
           <Heading

@@ -13,7 +13,7 @@ The first implementation covered the routes and basic controls but did not repro
 | Limelight | Archivo typography, hero proportions, pill buttons, three-column feature section and expanded testimonials | CTA scroll, pricing switch, hash preservation                                    |
 | Manifest  | 418 × 662 login card, official Alert, product editor as a full page                                        | Create product and variants, retain inventory, upload image                      |
 | Lucent    | Service marks, deployment ledger, runbook/traffic panels                                                   | Edit deployment, reopen saved release, rollback                                  |
-| Overture  | Geist typography and public screenshot wallpaper URLs                                                      | Email validation and local waitlist confirmation                                 |
+| Overture  | Geist typography and locally authored wallpaper illustrations                                              | Email validation and local waitlist confirmation                                 |
 | Atlas     | Users submenu, official user grid, chart legends, cluster bars and badges                                  | Invite a person with an assigned role                                            |
 | Tempo     | Dedicated 24-task, five-column board and official calendar                                                 | Board, create/edit task, calendar view/event                                     |
 | Miro      | Nine-field booking sheet, hierarchical heatmap, appointment calendar                                       | Save booking, find it in week and agenda views                                   |
@@ -34,7 +34,7 @@ The first implementation covered the routes and basic controls but did not repro
 - Official **useFileUpload** handles file selection and media management in drive/product flows. Official **Scrollspy** drives Limelight section navigation without replacing the host hash route.
 - Registry URLs, hashes and compatibility adjustments are recorded in [templates-free-component-provenance.md](templates-free-component-provenance.md). The upstream MIT notice is included in source downloads.
 
-Application-specific shells, reference data, product forms, CRM flows, the chat composer and SVG/Recharts plots remain custom compositions: the free registry does not supply the corresponding complete premium application. No premium application source was obtained. Public preview imagery is referenced by URL; licensed local assets retain their notices.
+Application-specific shells, reference data, product forms and CRM flows combine free primitives and existing project blocks. No premium application source was obtained. Bricklane uses its original brand mark and locally authored avatar, integration and wallpaper illustrations; third-party fonts and licensed assets retain their notices.
 
 ## Verified release candidate
 
@@ -51,7 +51,7 @@ Local reference, before and after screenshots are in `/tmp/reui-template-refinem
 
 ## Scope and remaining limits
 
-This is a substantially corrected independent recreation, not a claim of pixel-perfect or complete production equivalence. Some secondary pages and dialogs remain simplified local demonstrations. Small icon, chart-curve, avatar and canvas-position differences remain. CRUD state is session-local unless explicitly stored; authentication, AI generation, email delivery, payments and integrations require real services. Public image URLs depend on the upstream host and internet connectivity.
+This is a substantially corrected independent recreation, not a claim of pixel-perfect or complete production equivalence. Some secondary pages and dialogs remain simplified local demonstrations. Small icon, chart-curve, avatar and canvas-position differences remain. CRUD state is session-local unless explicitly stored; authentication, AI generation, email delivery, payments and integrations require real services. Original brand marks and media are intentional visual differences from the reference.
 
 ### Specific follow-up differences
 
@@ -64,3 +64,28 @@ The remaining differences below were observed during reference comparison; they 
 - Tempo: some sidebar icons, row spacing and badges differ; calendar colors use three local categories and do not implement the reference's full recurrence behavior.
 - Flux: chart peaks/axes and approval-detail badges differ; several secondary destinations remain simplified.
 - Business and collaboration families: some secondary routes and datasets remain abbreviated, and chart curves, avatar loading and small icon choices still differ. Roster's full organization tree and Pulse's secondary datasets need further comparison.
+
+## Second reference pass: component reuse and secondary pages
+
+The second pass opens the live public previews again and follows navigation, filtering, creation and edit states. Screenshots and interaction evidence are kept outside the repository under `/tmp/bricklane-templates-round2/`. Desktop comparisons use 1440 × 1000; narrow checks use 390 × 844. Reference images are audit evidence and are not application assets or download contents.
+
+### Business foundation milestone
+
+- Replaced the custom navigation expansion and child-navigation renderer with the actual free `SidebarNavigation` composition from `src/components/reui/sidebar.tsx` (c-sidebar-3).
+- Replaced the custom SVG sparkline with the existing Pro Block's `MiniTrend` implementation from `src/blocks/data/sparkline-primitives.tsx`; replaced duplicate chart stripe definitions with `ReuiStripePattern` (free c-chart-3).
+- Removed the twelve stock photos previously selected from the original Surge preview. Eight product illustrations and three store illustrations are locally authored SVGs, with their provenance recorded in `business/assets/LICENSE.md`.
+- Corrected remaining business wordmarks to Bricklane. The brand and illustration differences are intentional; card geometry, spacing and behavior continue to be compared with the reference.
+- Expanded template ZIP collection to include transitive component, library and data modules used by existing Pro Blocks. Source selection is maintained in `templateImplementationTargets` alongside the block source mappings.
+
+The fixed business foundation candidate passed its production build and 41 existing template/browser interaction checks. The six business screens also passed twelve desktop/narrow viewport checks without page errors or document overflow. These checks verify this milestone; the secondary-page findings below are being addressed separately.
+
+### Findings from actual navigation
+
+- Verve: Quick Stats, Attainment and Quota Plan previously shared the generic activity feed.
+- Atlas: several Users submenu entries previously did not navigate to their own pages.
+- Flowly: the workflow editor used a static horizontal step mockup; Agents and Runs shared one list.
+- Echo: Scheduled and Artifacts used generic cards instead of their distinct reference layouts.
+- Pulse: Contacts and Team used abbreviated generic records rather than the reference's distinct schemas and pagination.
+- Roster: Hiring repeated people in four columns; the reference has five candidate stages. The organization tree also needs independent node expansion.
+
+These findings are not marked resolved until their corresponding page and interaction milestone is verified.

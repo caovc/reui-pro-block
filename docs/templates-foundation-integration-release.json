@@ -1,0 +1,54 @@
+{
+  "scope": "Template business foundation, actual free reuse and original art",
+  "base": "095e5128b53d064222c6b5ca37bb2d90075c74f6",
+  "frozenFiles": {
+    "src/templates/business/catalog-data.ts": "96e3520aac8c6cdb8b30d97fcae1c5c2a8555ea8f4c19f54d6a3ab27b3c84627",
+    "src/templates/business/shared.tsx": "1e4990692828e4a9e1659d549823ffab67bd0d8653011d4d0c898526a814e2e8",
+    "src/templates/business/charts.tsx": "e067409931f3f2c880542aacff0cd823aea44593e06f19a552f5c720fc6f41cb",
+    "src/templates/business/business.css": "d1feb6c8a20841aac54d838c6300862018754e63f1be1923b697acee45163265",
+    "src/templates/business/auth.tsx": "c55ad0025771e5ea2f699ece7767fde83f3e340627744132ab6e3f6c7383e86c",
+    "src/templates/business/atlas.tsx": "498e295578d2d55d1873daad8bb778a3531b8e12377e68621204f984739ae477",
+    "src/templates/business/assets/LICENSE.md": "3c022ab3000575dc83abb8a7644196e405a89645af514fb29efccba7d27216bf",
+    "src/templates/business/assets/product-7.svg": "3ac0be249f406fefb5f1f8357c354e82abf7e7633467face0e00ed86c21a7488",
+    "src/templates/business/assets/product-6.svg": "d7d63f88eb483ff7b3a82ce79ad3cca10859d73b751b703eca010f09d0e1b636",
+    "src/templates/business/assets/product-4.svg": "09741f47d8e1281cb4060235d77fc44c2623148f1501345f297a17859104e7c4",
+    "src/templates/business/assets/product-5.svg": "614f79715c4ad43d73d297c36f37fabaed9991e76d02763c449b3704ab55eb4c",
+    "src/templates/business/assets/product-1.svg": "e61387805bd3986ac2357393993a59f5c403de2c5b89928a8ce02069732d385b",
+    "src/templates/business/assets/product-0.svg": "c05ca1917ec8177fcbb776ad72951555bd3bd4120c38d3cc8f415262b1579dc5",
+    "src/templates/business/assets/product-2.svg": "1b1cacfe33b4562420295ae3a2235ca556d1b08fb6726f4a35ddf20d90849452",
+    "src/templates/business/assets/product-3.svg": "66a4a5c2984492a91b5af7fd993f1748bcd3232b5c78a51938e5a88e81372600",
+    "src/templates/business/assets/store-study-2.svg": "15b10b1805416a8d4aa43a3d302dc65e765853f530a7e6088a71c1b5f81c017b",
+    "src/templates/business/assets/store-study-0.svg": "96ca8512b6f84d8814f4747a880c2b86f4111c5d964ecaa94cf510d0b5a96840",
+    "src/templates/business/assets/store-study-1.svg": "df23771eb23339635f65bfcce232573b86006594a762611454af3a359cba5d66",
+    "src/templates/source.ts": "e618aa164547e4016f3ef94a3bf8077e3fa491f3379682593b4b7ad116bbb91c",
+    "docs/templates-fidelity-review.md": "b7eeefc4d65477b93f8459b95ccbad6978a1d551164e115763d7ab5343231b14"
+  },
+  "deleted": [
+    "src/templates/business/assets/commerce-0.jpg",
+    "src/templates/business/assets/commerce-1.jpg",
+    "src/templates/business/assets/commerce-2.jpg",
+    "src/templates/business/assets/commerce-3.jpg",
+    "src/templates/business/assets/commerce-4.jpg",
+    "src/templates/business/assets/commerce-5.jpg",
+    "src/templates/business/assets/commerce-6.jpg",
+    "src/templates/business/assets/commerce-7.jpg",
+    "src/templates/business/assets/commerce-8.jpg",
+    "src/templates/business/assets/commerce-9.jpg",
+    "src/templates/business/assets/commerce-10.jpg",
+    "src/templates/business/assets/commerce-11.jpg"
+  ],
+  "sourceTargets": "Adds templateImplementationTargets only; preserves all existing published block leaf mappings.",
+  "actualReuse": [
+    "ReUI SidebarNavigation c-sidebar-3",
+    "Existing Pro Block MiniTrend",
+    "ReUI StripePattern c-chart-3"
+  ],
+  "verification": {
+    "root": "Clean committed base plus exact frozen20,12 deletions and one source function. Strict production build, full format, tooling3/3, oxlint pass.45/45 production template/interaction/site tests passed55.9s.",
+    "owner": "12 business desktop/mobile viewport checks pass. Actual UI Atlas115-file starter independently built; Users invitation flow and1440/390 renders pass without page errors or document overflow.",
+    "evidence": "/tmp/bricklane-templates-round2/atlas-export-render.json; atlas-export-{desktop,invited,mobile}.png",
+    "rootReview": "Reviewed the actual exported mobile user/invitation layout; original art and transitive source closure verified in frozen source.",
+    "limits": "Secondary destination fidelity is explicitly pending separate milestones; tests do not imply pixel identity.",
+    "deployment": "Pending CI and Pages confirmation."
+  }
+}

@@ -99,7 +99,7 @@ export function Auth({ id, onLogin }: { id: string; onLogin: () => void }) {
           >
             <label>
               Email address
-              <Input name="email" type="email" defaultValue="nick@reui.io" required />
+              <Input name="email" type="email" defaultValue="nick@bricklane.demo" required />
             </label>
             {!reset && (
               <>

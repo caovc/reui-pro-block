@@ -1,8 +1,12 @@
+import { MiniTrend } from "@/blocks/data/sparkline-primitives";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { SidebarNavigation } from "@/components/reui/sidebar";
 import { BrandGlyph } from "@/components/brand-mark";
-import userAvatar from "./assets/commerce-3.jpg";
+import { demoAvatar } from "@/lib/demo-artwork";
+const userAvatar = demoAvatar("Nick Bold");
 /* Shared template primitives and small data helpers intentionally share one module. */
 /* eslint-disable react/only-export-components */
-import { useState, type ReactNode } from "react";
+import { useState, type ReactNode, type ComponentProps } from "react";
 import {
   Search,
   Plus,
@@ -142,65 +146,39 @@ export function NavItems({
 }: {
   items: string[];
   active: string;
-  onSelect: (x: string) => void;
+  onSelect: (value: string) => void;
   atlas?: boolean;
 }) {
-  const [usersOpen, setUsersOpen] = useState(false);
   return (
-    <nav className="bt-nav">
-      {items.map((item) => {
-        const Icon = icons[item as keyof typeof icons] ?? FileText;
-        if (atlas && item === "Users")
-          return (
-            <div key={item} className="bt-user-nav">
-              <Button
-                variant="ghost"
-                className="justify-start w-full"
-                aria-expanded={usersOpen}
-                onClick={() => setUsersOpen(!usersOpen)}
-              >
-                <Users />
-                Users
-                <ChevronRight className={usersOpen ? "ml-auto rotate-90" : "ml-auto"} />
-              </Button>
-              {usersOpen && (
-                <div className="bt-user-subnav">
-                  {["All Users", "Roles & Permissions", "Access Control", "Audit Log"].map(
-                    (name) => (
-                      <Button
-                        key={name}
-                        variant={active === name ? "secondary" : "ghost"}
-                        aria-current={active === name ? "page" : undefined}
-                        onClick={() => {
-                          if (name === "All Users") onSelect(name);
-                        }}
-                      >
-                        {name}
-                      </Button>
-                    ),
-                  )}
-                </div>
-              )}
-            </div>
-          );
-        return (
-          <Button
-            key={item}
-            type="button"
-            variant={active === item ? "secondary" : "ghost"}
-            className="justify-start w-full"
-            aria-current={active === item ? "page" : undefined}
-            onClick={() => onSelect(item)}
-          >
-            <Icon />
-            {item}
-          </Button>
-        );
-      })}
+    <nav className="bt-nav bt-reui-navigation">
+      <SidebarNavigation
+        collapsed={false}
+        active={active}
+        onSelect={onSelect}
+        items={items.map((label) => {
+          const Icon = icons[label as keyof typeof icons] ?? FileText;
+          return {
+            label,
+            icon: <Icon />,
+            children:
+              atlas && label === "Users"
+                ? ["All Users", "Roles & Permissions", "Access Control", "Audit Log"]
+                : undefined,
+          };
+        })}
+      />
     </nav>
   );
 }
-export function Shell({
+
+export function Shell(props: ComponentProps<typeof ShellContent>) {
+  return (
+    <SidebarProvider className="contents" keyboardShortcut={false}>
+      <ShellContent {...props} />
+    </SidebarProvider>
+  );
+}
+function ShellContent({
   id,
   brand,
   active,
@@ -324,7 +302,7 @@ export function Shell({
           </span>
           <span>
             {id === "cohort" ? "Bruno Duarte" : "Nick Bold"}
-            <small>{id === "cohort" ? "Cohort UK" : "nick@reui.io"}</small>
+            <small>{id === "cohort" ? "Cohort UK" : "nick@bricklane.demo"}</small>
           </span>
         </Button>
       </div>
@@ -541,16 +519,23 @@ export function Spark({
   color?: string;
   index?: number;
 }) {
-  const paths = [
-    "M0 26 L10 20 L20 25 L30 9 L40 15 L50 8 L60 20 L70 13 L80 2",
-    "M0 22 L10 28 L20 15 L30 12 L40 18 L50 7 L60 17 L70 5 L80 10",
+  const series = [
+    [9, 13, 10, 24, 19, 27, 18, 23, 31],
+    [13, 7, 20, 23, 17, 28, 18, 30, 25],
   ];
   return (
-    <svg className="bt-spark" viewBox="0 0 80 35" aria-hidden="true">
-      <path d={paths[index % 2]} fill="none" stroke={color} strokeWidth="1.5" />
-    </svg>
+    <div className="bt-spark">
+      <MiniTrend
+        values={series[index % 2]}
+        color={color}
+        height={35}
+        label="Metric trend"
+        curve="linear"
+      />
+    </div>
   );
 }
+
 export function Bars(props: {
   labels: string[];
   large?: boolean;
