@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import {
   ArrowDownToLine,
   ArrowLeft,
@@ -12,6 +12,7 @@ import {
   GitFork as Github,
   Heart,
   LayoutGrid,
+  Monitor,
   Moon,
   PanelLeft,
   Search,
@@ -70,7 +71,11 @@ import {
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import { templates, templateCategories } from "@/templates/catalog";
 import { PreviewPanel, IsolatedPreview } from '@/components/site/block-preview';
+const TemplateGallery = lazy(() => import('@/templates/gallery'));
+const TemplateWorkspace = lazy(() => import('@/templates/workspace'));
+const TemplatePreview = lazy(() => import('@/templates/renderer').then(module => ({ default: module.TemplateRenderer })));
 
 function useStored<T>(key: string, fallback: T) {
   const [value, setValue] = useState<T>(() => {
@@ -261,6 +266,8 @@ export default function App() {
   const isCategory = segments[0] === "category" && category;
   const isBlock = segments[0] === "block" && block;
   const isolated = segments[0] === "preview" && block;
+  const isTemplates = segments[0] === "templates";
+  const isTemplateWorkspace = isTemplates && Boolean(segments[1]);
   useEffect(() => {
     if (!isolated) document.documentElement.classList.toggle("dark", dark);
   }, [dark, isolated]);
@@ -274,22 +281,27 @@ export default function App() {
   }, []);
   useEffect(() => {
     if (isolated) return;
-    document.title = isBlock
+    if (isTemplateWorkspace) return;
+    document.title = isTemplates ? "Templates — REUI" : isBlock
       ? `${block.name} — REUI Blocks`
       : isCategory
         ? `${category.name} — REUI Blocks`
         : "REUI Blocks — Open component collection";
-  }, [isolated, isBlock, isCategory, block, category]);
+  }, [isolated, isBlock, isCategory, block, category, isTemplates, isTemplateWorkspace]);
   useEffect(() => {
     const listener = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
+        if (isTemplates) {
+          document.querySelector<HTMLInputElement>('[aria-label="Search templates"]')?.focus();
+          return;
+        }
         setSearchOpen((v) => !v);
       }
     };
     window.addEventListener("keydown", listener);
     return () => window.removeEventListener("keydown", listener);
-  }, []);
+  }, [isTemplates]);
   function toggleFavorite(b: BlockMeta) {
     const key = blockKey(b);
     setFavorites((current) =>
@@ -339,10 +351,17 @@ export default function App() {
     ? visibleBlocks.slice(0, page * limit)
     : filteredCategories.slice(0, page * limit);
   if (isolated) return <IsolatedPreview key={hash} block={block} />;
+  if (segments[0] === 'template-preview') return <Suspense fallback={<Skeleton className="h-96 w-full"/>}><TemplatePreview id={segments[1]}/></Suspense>;
+  if (isTemplates && segments[1]) return <Suspense fallback={<div className="p-8" role="status">Loading template…</div>}><TemplateWorkspace key={segments[1]} id={segments[1]} dark={dark} onThemeChange={() => setDark(!dark)}/></Suspense>;
   const sidebarContent = (
     <>
       <div className="sidebar-top">
-        <Button variant="secondary" className="justify-start" asChild>
+        <Button variant={isTemplates ? "secondary" : "ghost"} className="justify-start" asChild>
+          <a href="#/templates" onClick={() => setSidebar(false)} aria-current={isTemplates ? "page" : undefined}>
+            <Monitor data-icon="inline-start" />Templates<Badge variant="outline" className="ml-auto">18</Badge>
+          </a>
+        </Button>
+        <Button variant={isTemplates ? "ghost" : "secondary"} className="justify-start" asChild>
           <a href="#/" onClick={() => setSidebar(false)}>
             <LayoutGrid data-icon="inline-start" />
             All blocks
@@ -391,7 +410,7 @@ export default function App() {
         </div>
       )}
       <div className="sidebar-categories">
-        {groups
+        {isTemplates ? templateCategories.filter(name => name !== 'All Templates').map(name => <section key={name}><h3>{name}<span>{templates.filter(t => t.category === name).length}</span></h3>{templates.filter(t => t.category === name).map(template => <a key={template.id} className="sidebar-link" href={`#/templates/${template.id}`} onClick={() => setSidebar(false)}>{template.name}<ArrowRight className="size-3"/></a>)}</section>) : groups
           .filter(
             (g) =>
               g.id !== "all" &&
@@ -456,13 +475,14 @@ export default function App() {
         <a className="brand" href="#/" aria-label="REUI Blocks home">
           <Mark />
           <span>REUI</span>
-          <span className="brand-suffix">BLOCKS</span>
+          <span className="brand-suffix">{isTemplates ? "TEMPLATES" : "BLOCKS"}</span>
         </a>
         <nav className="header-nav" aria-label="Main navigation">
-          <a className="nav-active" href="#/">
+          <a className={isTemplates ? "" : "nav-active"} href="#/">
             Blocks
             <ChevronDown className="size-3" />
           </a>
+          <a className={isTemplates ? "nav-active" : ""} href="#/templates" aria-current={isTemplates ? "page" : undefined}>Templates<Badge variant="secondary">18</Badge></a>
           <a
             href="https://ui.shadcn.com/docs/components"
             target="_blank"
@@ -479,10 +499,10 @@ export default function App() {
           <Button
             variant="outline"
             className="search-trigger"
-            onClick={() => setSearchOpen(true)}
+            onClick={() => isTemplates ? document.querySelector<HTMLInputElement>('[aria-label="Search templates"]')?.focus() : setSearchOpen(true)}
           >
             <Search data-icon="inline-start" />
-            <span>Search blocks...</span>
+            <span>{isTemplates ? "Search templates..." : "Search blocks..."}</span>
             <kbd>⌘ K</kbd>
           </Button>
           <IconTip label={dark ? "Light theme" : "Dark theme"}>
@@ -506,7 +526,7 @@ export default function App() {
             </a>
           </Button>
           <Button variant="outline" className="hidden sm:flex" asChild>
-            <a href="https://reui.io/blocks" target="_blank" rel="noreferrer">
+            <a href={isTemplates ? "https://reui.io/templates" : "https://reui.io/blocks"} target="_blank" rel="noopener noreferrer">
               REUI reference
               <ArrowRight data-icon="inline-end" />
             </a>
@@ -522,7 +542,7 @@ export default function App() {
             <span className="status-dot" />
           </div>
         </aside>
-        <main className="site-main" id="main-content">
+        <main className={cn("site-main", isTemplates && "template-site-main")} id="main-content">
           <div className="breadcrumbs">
             <Button
               variant="ghost"
@@ -533,7 +553,7 @@ export default function App() {
             >
               <PanelLeft />
             </Button>
-            <a href="#/">Blocks</a>
+            <a href={isTemplates ? "#/templates" : "#/"}>{isTemplates ? "Templates" : "Blocks"}</a>
             {(isCategory || isBlock) && (
               <>
                 <ChevronRight />
@@ -549,7 +569,7 @@ export default function App() {
               </>
             )}
           </div>
-          {isBlock ? (
+          {isTemplates ? <Suspense fallback={<Skeleton className="h-96 w-full"/>}><TemplateGallery dark={dark}/></Suspense> : isBlock ? (
             <>
               <div className="block-heading">
                 <div>

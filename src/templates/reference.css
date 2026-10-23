@@ -1,0 +1,29 @@
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("../blocks/assets/inter-latin-variable.woff2") format("woff2");
+}
+
+.template-surface {
+  --font-sans: "Inter", Arial, sans-serif;
+  min-height: inherit;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Radix renders menus, dialogs and sheets outside the template root. */
+body:has(.template-surface) :is(
+  [data-slot="dialog-content"],
+  [data-slot="sheet-content"],
+  [data-slot="popover-content"],
+  [data-slot="dropdown-menu-content"],
+  [data-slot="dropdown-menu-sub-content"],
+  [data-slot="select-content"],
+  [data-slot="tooltip-content"],
+  [data-sonner-toaster]
+) {
+  --font-sans: "Inter", Arial, sans-serif;
+  font-family: var(--font-sans);
+}
