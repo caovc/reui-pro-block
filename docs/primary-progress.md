@@ -16,24 +16,25 @@ Preview: https://caovc.github.io/reui-pro-block/
 - Dialog6–10 add actual free Combobox status/priority/member/label pickers and file/avatar upload adapters, alongside existing Dialog/Frame/IconTile compositions. Integrated production checks passed32/32. Their actual285-file starter independently built and matched desktop/mobile dialog geometry/styles; non-modal portal behavior remains a recorded difference.
 - AppShell collapse now paints the same48px width as its spacer across25 icon-collapsible layouts. AppShell1 aligns the brand, navigation and account trigger, keeps the workspace menu beside the rail, and uses the actual free account menu with a keyboard-operated Theme submenu. Root integration passed12 production checks; the owner passed49 broader checks and verified an actual269-file starter at1280/390.
 - Route changes now reset scroll immediately while preserving smooth in-page scrolling. A regression reproduces the old first-frame landing at636px and confirms the corrected route lands at0 before source interactions at1280/390. The original CI click recipient remains unproven; the trace ledger retains that limit.
+- All4 AI Usage entries now use independent implementations and source leaves. Actual free ruler/radio/dial/isometric chart/Frame compositions replace the generic usage surface. Root passed13 production checks and independently built the actual207-file starter with1440/390 Frame style parity. Public mobile evidence remains partial; original hardware geometry and local calculations are explicit differences.
 - Original Bricklane branding/artwork replaced reference identity and unverified portrait dependencies. Independently licensed free sources retain attribution.
 - Starter fix cada0d8 imports theme CSS first, preventing preflight from overriding Tailwind utilities in downloaded projects. Actual Data/Application archives prove padding16px and Frameborder1px remain equal to the site at1440/390. Earlier build-only archive checks did not establish this style parity.
 
 ## Current ownership
 
-| Owner                     | Scope                                                                                            |
-| ------------------------- | ------------------------------------------------------------------------------------------------ |
-| Primary                   | Release integration, real starter verification, CI/Pages; Sidebar and AI Usage integration       |
-| Application agent         | Final five Dialogs11/12/13/14/16 in independent modules; earlier ten integrated                  |
-| Data agent                | Native Burn-chart/Badge corrections published; next four AI Usage entries in independent modules |
-| Commerce agent            | All6 Coupons published; next8 Shop Heroes in independent modules                                 |
-| Source/export coordinator | Diagnose source/ZIP/site CI failures within original source scope                                |
-| Grid coordinator          | Diagnose two Grid CI failures; preserve previous filter-focus correction                         |
+| Owner                     | Scope                                                                                             |
+| ------------------------- | ------------------------------------------------------------------------------------------------- |
+| Primary                   | Release integration, real starter verification, CI/Pages; Sidebar and AI Usage integration        |
+| Application agent         | Final five Dialogs11/12/13/14/16 in independent modules; earlier ten integrated                   |
+| Data agent                | AI Usage4 integrated; next Agent Activity5 with actual free Trace/Timeline in independent modules |
+| Commerce agent            | All6 Coupons published; next8 Shop Heroes in independent modules                                  |
+| Source/export coordinator | Diagnose source/ZIP/site CI failures within original source scope                                 |
+| Grid coordinator          | Diagnose two Grid CI failures; preserve previous filter-focus correction                          |
 
 ## Release and validation rules
 
 Each milestone is built from latest committed HEAD plus its exact frozen payload. Source defaults must point to the actual rendered leaf. Playwright uses production previews, one worker and unique output directories. Actual UI-downloaded ZIPs are independently built and rendered; representative computed padding/borders are compared with the full preview.
 
-A commit or successful push does not establish deployment. Last verified successful Pages build/deploy isd72516b (run39913913739); the public preview includes all six Coupons, Dialogs1–10 and the immediate route-scroll correction. Both build and deploy succeeded at06:59UTC. Commit2a2b5ff tests the actual production assets and retains failure diagnostics. Its run39909617625 passed673/674; Coupon run39911450874 passed705/706. Their real traces show source clicks while route scrolling continued; the new first-frame regression establishes and fixes that scrolling defect without claiming to identify every historical click recipient. See [trace findings](source-navigation-ci-trace.md) and [route regression](source-navigation-scroll-fix.md). The Grid investigation separates reproduced loading-pressure symptoms from the unproven historical cause. Each new build and deploy must succeed before claiming an updated public preview. No blind retries or timeout inflation replace evidence-based fixes.
+A commit or successful push does not establish deployment. Last verified successful Pages build/deploy isd72516b (run39913913739); the public preview includes all six Coupons, Dialogs1–10 and the immediate route-scroll correction. Both build and deploy succeeded at06:59UTC. Commit2a2b5ff tests the actual production assets and retains failure diagnostics. Its run39909617625 passed673/674; Coupon run39911450874 passed705/706. Their real traces show source clicks while route scrolling continued; the new first-frame regression establishes and fixes that scrolling defect without claiming to identify every historical click recipient. See [trace findings](source-navigation-ci-trace.md) and [route regression](source-navigation-scroll-fix.md). The Grid investigation separates reproduced loading-pressure symptoms from the unproven historical cause. Shell milestone b9747b7 is pushed, with run39915259592 in progress. Each new build and deploy must succeed before claiming an updated public preview. No blind retries or timeout inflation replace evidence-based fixes.
 
 All demo authentication, invitations, payments, releases and AI actions are local. Missing service integration and deliberate visual differences stay documented. The full goal remains active while significant per-entry fidelity gaps remain.

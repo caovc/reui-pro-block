@@ -1,0 +1,32 @@
+{
+  "base": "b9747b71c10a36cd7a0018dcbf6a328a78906360",
+  "scope": "Four dedicated AI Usage functional compositions with actual free ReUI reuse and matching source leaves",
+  "files": {
+    "src/blocks/data/ai-usage-hardware-scene.tsx": "e7b8b076f33f86a0d155f88106777fd08cba62ada6edc4d56935fced2b61e11e",
+    "src/blocks/data/ai-usage-spend-map.tsx": "a5db8ddebf9d80f7fbda79eb49e782d644cb1ac1579d411d288cb3b56704431f",
+    "src/blocks/data/ai-usage-local-models.tsx": "707ff4934ee251a33233e00423bf3b8647576239342809294cf893722845226a",
+    "src/blocks/data/ai-usage-planner.tsx": "fd4b94e9bf01f79d1521ac6d5783a3519863513bc961dfaa1913d9c3877b73d0",
+    "src/blocks/data/ai-usage-variants.tsx": "f5681f968e255e634b7fb9c64a45795dcbc93ed8655d90bfe1d3d4038f88ffcb",
+    "src/blocks/data/ai-usage-edge-nodes.tsx": "e2202f85027b8205dc0876a2b519773cb216b529c209500e45bdbe4939092c1e",
+    "src/blocks/data/ai-usage-model.ts": "a0c5412b5b5099081caa360411c6c9a2baa0122568805750868c20d3b7e888ef",
+    "src/components/ui/slider.tsx": "1874634908f7fb82df69100c587d91e13c872e01f61e2b56c71be979fbd581de",
+    "tests/ai-usage-refinement.spec.ts": "666b93197e2f69701c6ac97f9247a94bcaebdd2f1fb70081ea13c19a93ade2d3",
+    "tests/ai-usage-source.spec.ts": "087e868cb277f318410910c03ed12196e00c2a224c5b11a0c8881be7b91b3139",
+    "docs/ai-usage-refinement.md": "dbeb7788fb68d9e59ea56f4091689a194d097aa4fa05651b28554d431f531008",
+    "src/blocks/data/index.tsx": "1a18e5d0304db760a360e701e5f363d9d321634a6821d67ad61c8e92d4d85d49",
+    "src/lib/source-targets.ts": "5ce837bafa35c875fd224554114c00114d1751c95da662ce940cb5bc4d39f1ed",
+    "docs/FIDELITY.md": "b7e46b3511d5533bc0043c3a7fcadfded808a91263268237ee164709b780131b",
+    "docs/primary-progress.md": "5c82e71aab7d8ec8bd654a3229c27242805bc96bde32d395b7e0a266c2f0b6ce"
+  },
+  "verification": {
+    "build": "strict TypeScript+Vite passed",
+    "format": "full clean candidate737 files passed before integration notes",
+    "lint": "oxlint passed with existing repository warnings",
+    "tooling": "3/3 passed",
+    "production": "Root13/13 passed30.0s; owner7/7 plus node persistence and prior retention-slider regression passed",
+    "starter": "Actual UI-downloaded207-file Local Models archive independently strict-built and rendered1440/390; computed Frame padding3px/border1px/radius14px/background/font matched; no errors, overflow or broken images; BF16 then Fit restored valid capacity"
+  },
+  "publicEvidence": "All4 desktop and Local Models mobile checked by owner. Root IAB390 ordinary viewport also observed Planner header/ruler/four model rows/add-on chips; full-page and lower-page operations timed out, so this is partial additional evidence, not a complete mobile1 audit. Mobile1 lower section and mobile2/3 remain pending.",
+  "customization": "Original hardware chassis/vents, responsive fan-map paths, cumulative curve and local domain formulas where no complete corresponding free component exists. Model/slider/radio/dial/prism mechanics actually reuse audited free implementations; see ledger for sources and limits.",
+  "remaining": "Functional milestone, not complete pixel fidelity; simulated local actions and documented fixture/material differences remain."
+}

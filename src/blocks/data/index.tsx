@@ -26,7 +26,8 @@ import PieChartBlock from "./pie-charts";
 import RadialChartBlock from "./radial-charts";
 import SlopeChartBlock from "./slope-charts";
 import SankeyChartBlock from "./sankey-charts";
-import { ActivityBlock, ChatBlock, UsageBlock } from "./ai";
+import { ActivityBlock, ChatBlock } from "./ai";
+import AiUsageVariants from "./ai-usage-variants";
 import {
   BoardBlock,
   PermissionBlock,
@@ -90,7 +91,7 @@ export default function DataBlock({ block }: BlockProps) {
     ) : block.category === "agent-activity" ? (
       <ActivityBlock block={block} />
     ) : (
-      <UsageBlock block={block} />
+      <AiUsageVariants block={block} />
     );
   if (block.category === "digital-twin") return <DigitalTwinBlock block={block} />;
   if (

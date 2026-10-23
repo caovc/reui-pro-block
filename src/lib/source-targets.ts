@@ -304,6 +304,15 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
     return paths("data", modules[block.category] ?? "charts");
   }
   if (block.group === "ai-agents") {
+    if (block.category === "ai-usage") {
+      const modules = [
+        "ai-usage-planner",
+        "ai-usage-spend-map",
+        "ai-usage-edge-nodes",
+        "ai-usage-local-models",
+      ];
+      return paths("data", modules[variant - 1], "ai-usage-variants");
+    }
     return paths("data", block.id === "ai-chat-9" ? "branching-chat" : "ai");
   }
   if (block.category === "digital-twin") return paths("data", "digital-twin");
