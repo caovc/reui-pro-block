@@ -539,7 +539,26 @@ export default function App() {
           <ScrollArea className="h-full">{sidebarContent}</ScrollArea>
           <div className="sidebar-footer">
             <Mark small />
-            <span>Built with shadcn/ui</span>
+            <span className="min-w-0 leading-relaxed">
+              Built with{" "}
+              <a
+                href="https://reui.io/"
+                target="_blank"
+                rel="noreferrer"
+                className="whitespace-nowrap text-foreground underline-offset-2 hover:underline"
+              >
+                ReUI
+              </a>{" "}
+              &amp;{" "}
+              <a
+                href="https://ui.shadcn.com/"
+                target="_blank"
+                rel="noreferrer"
+                className="whitespace-nowrap text-foreground underline-offset-2 hover:underline"
+              >
+                shadcn/ui
+              </a>
+            </span>
             <span className="status-dot" />
           </div>
         </aside>
