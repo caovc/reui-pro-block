@@ -1,0 +1,27 @@
+{
+  "baseCommit": "f4a7fd63398f8529f8f75420d8f15b1552c87d3b",
+  "frozenPayload": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/reui-starter-cascade-freeze-txap3a1v",
+  "files": [
+    {
+      "path": "src/lib/starter-files.ts",
+      "sha256": "fcc7f32c2a45a7f061e81fd6d9a73bb4b82bbde1715cd314cea0d85aa328e33e"
+    },
+    {
+      "path": "tests/starter-build.spec.ts",
+      "sha256": "a3d4e24059cd8b101530e04b247fd8926234faff8d6369cd882cdf5c6ea12a2b"
+    },
+    {
+      "path": "docs/starter-css-layer-order.md",
+      "sha256": "e53e2ba92cc7ba9ea5da98321e368ad430334dd62c01ab478f5f1835b7b7f296"
+    }
+  ],
+  "runtimeChange": "Import theme.css before all generated starter component imports.",
+  "verification": {
+    "baseline": "Data ZIP builds but padding 0px / Frame border 0px differ from preview 16px / 1px.",
+    "fixed": "Data Sparkline chart-31 and Application auth-4 actual ZIP builds; padding, border, radius and display match preview at 1440 and 390.",
+    "tests": "2 persistent real-export build/render tests passed in 25.6s.",
+    "evidenceBefore": "/tmp/reui-starter-cascade-before-real",
+    "evidenceAfter": "/tmp/reui-starter-cascade-after"
+  },
+  "verificationBaseline": "4770ce7aef87fd70cffb79529b225fbeb1008970"
+}

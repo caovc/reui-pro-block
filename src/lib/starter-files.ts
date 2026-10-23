@@ -1,9 +1,9 @@
-/** Readable scaffold shared by block and template downloads. */
-export const starterMain = `import { createRoot } from "react-dom/client";
+/** Load the theme first so its Tailwind layer order precedes component styles. */
+export const starterMain = `import "./theme.css";
+import { createRoot } from "react-dom/client";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import Example from "./Example";
-import "./theme.css";
 
 createRoot(document.getElementById("root")!).render(
   <TooltipProvider>
