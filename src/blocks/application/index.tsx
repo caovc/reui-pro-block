@@ -1,4 +1,5 @@
 import RefinedEmptyBlock from "./empty-variants";
+import TeamSetupEmptyBlock from "./empty-variants/team-setup";
 import type { BlockProps } from "@/data/types";
 import AuthBlock from "./auth";
 import Whiteboard from "./whiteboard";
@@ -59,7 +60,13 @@ export default function ApplicationBlock({ block }: BlockProps) {
     case "rich-text-editor":
       return <RichEditorBlock block={block} />;
     case "empty-state":
-      return block.index < 5 ? <RefinedEmptyBlock block={block} /> : <EmptyBlock block={block} />;
+      return block.index < 5 ? (
+        <RefinedEmptyBlock block={block} />
+      ) : block.index < 10 ? (
+        <TeamSetupEmptyBlock block={block} />
+      ) : (
+        <EmptyBlock block={block} />
+      );
     default:
       throw new Error(`Unknown application category: ${block.category}`);
   }

@@ -228,15 +228,17 @@ export function TrendSplitFrame({
   toolbar,
   footer,
   panels,
+  width = "max-w-[900px]",
 }: {
   title: ReactNode;
   description: ReactNode;
   toolbar: ReactNode;
   footer: ReactNode;
   panels: ReactNode[];
+  width?: string;
 }) {
   return (
-    <Frame className="w-full max-w-[900px]">
+    <Frame className={`w-full ${width}`}>
       <FrameHeader className="flex flex-row flex-wrap items-center justify-between gap-3 px-3 py-2.5">
         <div className="space-y-1">
           <FrameTitle className="flex flex-wrap items-center gap-2">{title}</FrameTitle>

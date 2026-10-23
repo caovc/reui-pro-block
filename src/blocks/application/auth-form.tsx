@@ -17,6 +17,7 @@ export function PasswordAuthForm({
   signup = true,
   initialMode = "login",
   outlinedLogo = false,
+  wordmark = false,
 }: {
   title?: string;
   description?: string;
@@ -27,6 +28,7 @@ export function PasswordAuthForm({
   signup?: boolean;
   initialMode?: "login" | "signup";
   outlinedLogo?: boolean;
+  wordmark?: boolean;
 }) {
   const id = useId();
   const [mode, setMode] = useState<"login" | "reset" | "signup" | "sent" | "signed">(initialMode);
@@ -47,7 +49,7 @@ export function PasswordAuthForm({
   return (
     <div className={`auth-detail-form ${magic ? "auth-detail-magic" : ""}`}>
       <header className="auth-detail-heading">
-        {logo && <AuthMark outlined={outlinedLogo} />}
+        {logo && <AuthMark outlined={outlinedLogo} wordmark={wordmark} />}
         <h1>{heading}</h1>
         <p>
           {mode === "reset"

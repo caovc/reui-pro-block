@@ -16,6 +16,7 @@ import QueueBlock from "./queues";
 import GridBlock from "./grid";
 import ChartBlock from "./charts";
 import BarChartBlock from "./bar-charts";
+import ComposedChartBlock from "./composed-charts";
 import LineChartBlock from "./line-charts";
 import GenerationMix from "./generation-mix";
 import AreaPanel from "./area-panels";
@@ -70,6 +71,8 @@ export default function DataBlock({ block }: BlockProps) {
     return <SlopeChartBlock block={block} />;
   if (block.group === "chart" && block.category === "sankey-chart")
     return <SankeyChartBlock block={block} />;
+  if (block.group === "chart" && block.category === "composed-chart")
+    return <ComposedChartBlock block={block} />;
   if (block.group === "chart" && block.category === "line-chart")
     return <LineChartBlock block={block} />;
   if (block.group === "chart" && block.category === "bar-chart")

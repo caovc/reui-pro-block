@@ -24,6 +24,7 @@ import CenteredAuth from "./auth-centered";
 import SplitAuth from "./auth-split";
 import { BlueprintMagicLink, FreeTrialSignup } from "./auth-growth";
 import { FounderStoryLogin, PhotoBackdropLogin } from "./auth-editorial";
+import { NightReviewLogin } from "./auth-review-panels";
 type AuthConfig = {
   providers: Provider[];
   magic?: boolean;
@@ -143,6 +144,8 @@ function TrustLogos() {
   );
 }
 export default function AuthBlock({ block }: BlockProps) {
+  if (["auth-10", "auth-11", "auth-18"].includes(block.id))
+    return <NightReviewLogin variant={Number(block.id.split("-").at(-1)) as 10 | 11 | 18} />;
   if (block.id === "auth-5") return <FreeTrialSignup />;
   if (block.id === "auth-7") return <BlueprintMagicLink />;
   if (block.id === "auth-6") return <FounderStoryLogin />;

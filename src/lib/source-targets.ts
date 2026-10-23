@@ -149,7 +149,12 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
       const modules = ["data-import", "search", "project", "reports", "brief"];
       return paths("application", `empty-variants/${modules[variant - 1]}`, "planning");
     }
+    if (block.category === "empty-state" && variant >= 6 && variant <= 10) {
+      const modules = ["launch", "invite", "settings", "invite", "blueprints"];
+      return paths("application", `empty-variants/team-setup/${modules[variant - 6]}`, "planning");
+    }
     if (block.category === "auth") {
+      if ([10, 11, 18].includes(variant)) return paths("application", "auth-review-panels", "auth");
       if ([6, 8].includes(variant)) return paths("application", "auth-editorial", "auth");
       const module = [5, 7].includes(variant)
         ? "auth-growth"
@@ -173,6 +178,13 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
     return paths("application", application[block.category]);
   }
   if (block.group === "ecommerce" || block.group === "marketing") {
+    if (block.category === "review" && [1, 2, 3].includes(block.index)) {
+      const modules = ["review-topic-filter", "review-summary", "review-highlights"];
+      return paths("commerce", modules[block.index - 1], "review-list-pages");
+    }
+    if (block.category === "review" && [0, 4, 5].includes(block.index)) {
+      return paths("commerce", "review-carousels", "review-carousel-pages");
+    }
     if (block.category === "receipt")
       return paths(
         "commerce",
@@ -213,6 +225,14 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
           ? "bar-operations"
           : "bar-slo-sync";
       return paths("data", module);
+    }
+    if (block.category === "composed-chart") {
+      const module = [19, 21].includes(variant)
+        ? "treasury-composed"
+        : [20, 36].includes(variant)
+          ? "sales-margin-composed"
+          : "canary-composed";
+      return paths("data", module, "charts");
     }
     if (block.category === "line-chart") {
       const module = [4, 26].includes(variant)

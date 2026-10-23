@@ -1,0 +1,100 @@
+{
+  "scope": "Application Empty State6\u201310, actual official free-source composition",
+  "baseCommit": "a0ffc0ec51d4c5fc788a4b42bcff992de071143e",
+  "candidate": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/reui-empty6-10-final-xhpxesp5",
+  "sharedIntegration": "Only application/index.tsx TeamSetupEmptyBlock import + 5<=index<10 branch. Root maintains source-targets variant6\u201310 mappings; no shared source-target file is owned by this payload. Frozen Empty1\u20135 code is unchanged.",
+  "verification": {
+    "productionBuild": "passed complete TypeScript+Vite on Bricklane baseline",
+    "tests": "13 passed17.7s;1worker;standard30s timeout;10renders1440/390;source/ZIP and long-text regression included",
+    "actualZIP": "/tmp/reui-empty6-10-audit/empty-state-9.zip",
+    "zipBytes": 3497533,
+    "zipFiles": 245,
+    "zipBuild": "passed /var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/reui-empty9-realzip-8hUuWu",
+    "format": "scoped oxfmt format/check passed",
+    "lint": "scoped Oxlint passed",
+    "officialHookBody": "TypeScript-transpiled body identical to registry source"
+  },
+  "integrationConditions": [
+    "Card original-avatar migration remains a separate5payload+manifest frozen batch, consumed as candidate dependency only.",
+    "Whole-Application candidate ZIP still includes12legacyScheduleJPEGs from a0 baseline. Root must integrate Schedule migration/deletion and repeat media/export checks under new branding policy; this Empty scope adds no media."
+  ],
+  "dependencies": [
+    {
+      "path": "src/lib/source-targets.ts",
+      "sha256": "6b3ac46b297ec13825a9ba51e5379cf5d8d79337cca173b78e3e0be63e130ad4",
+      "owner": "Root/source owner; copied into candidate only"
+    },
+    {
+      "path": "src/lib/demo-artwork.ts",
+      "sha256": "dd1ff55cd26fcc74604d7c94b0e7cb4f4b9df03e7d292f95502072d48d92b313",
+      "owner": "shared brand owner; consumed without edits"
+    }
+  ],
+  "files": [
+    {
+      "path": "docs/empty-state6-10-implementation.md",
+      "sha256": "8d7a25aa7730c7480310e3dded4ee6011f7e007de26f3e0330bf4be13b617755",
+      "bytes": 11571
+    },
+    {
+      "path": "src/blocks/application/empty-variants/team-setup/blueprint-schema.ts",
+      "sha256": "a3fb90a57b37965a77cdef9ce1f49ef57b6b650587377113d7466f70f2947f91",
+      "bytes": 1404
+    },
+    {
+      "path": "src/blocks/application/empty-variants/team-setup/blueprints.tsx",
+      "sha256": "8b6a98fbd9e332e75ab05b4127890ecfd83c76d82c44d6f1e82c7057758eaabd",
+      "bytes": 9158
+    },
+    {
+      "path": "src/blocks/application/empty-variants/team-setup/free/use-copy-to-clipboard.ts",
+      "sha256": "9a59b04fb49649bbb9949fcee1d941302fe4d611988e89406db10a7328b8f179",
+      "bytes": 888
+    },
+    {
+      "path": "src/blocks/application/empty-variants/team-setup/index.tsx",
+      "sha256": "1c96b52abb81263457444c134d88572ca00e43e7f4e01e7f06eaec1bd5a2288a",
+      "bytes": 727
+    },
+    {
+      "path": "src/blocks/application/empty-variants/team-setup/invite-form.tsx",
+      "sha256": "3b9e7d00f034d2154cd873e4b181ff856614a21816a9e5285ef98005e77becea",
+      "bytes": 1565
+    },
+    {
+      "path": "src/blocks/application/empty-variants/team-setup/invite.tsx",
+      "sha256": "34dd933395bd9efc446137e845703cd0047a5f7a8a961e06698f1da5b1e4fb2d",
+      "bytes": 5592
+    },
+    {
+      "path": "src/blocks/application/empty-variants/team-setup/launch.tsx",
+      "sha256": "f814003d10d2d1cfb6a58e1b097f6a7891c9d42b9f34c882f8104731af56f4a1",
+      "bytes": 8523
+    },
+    {
+      "path": "src/blocks/application/empty-variants/team-setup/settings.tsx",
+      "sha256": "aa03ad431a66f7bf679b44f2fdc00f9c2f157baf8f98766bb220b91bd14ebc03",
+      "bytes": 6368
+    },
+    {
+      "path": "src/blocks/application/empty-variants/team-setup/support.tsx",
+      "sha256": "04d2b2e73ab4fc54345a72d8157e7691b68b4cd8cc96667118f1f50ade6e9e6f",
+      "bytes": 967
+    },
+    {
+      "path": "src/blocks/application/empty-variants/team-setup/team-setup.css",
+      "sha256": "dab38d24fa5e56fba5754fd76d16516db5725ec4a2aa16e84a433ceb903955a5",
+      "bytes": 6518
+    },
+    {
+      "path": "src/blocks/application/index.tsx",
+      "sha256": "7e4f4bb2496c2fc0ed5a8d38e626ad430d9393a51b2670b80411783606618e7d",
+      "bytes": 2315
+    },
+    {
+      "path": "tests/empty-team-setup.spec.ts",
+      "sha256": "1c56763b1b707f2641dbe36cf9ccd05cc6979ad28e4f5c093e7b4bbe4d319c84",
+      "bytes": 14160
+    }
+  ]
+}

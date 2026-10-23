@@ -15,8 +15,12 @@ export const short = (v: number) =>
         ? `${(v / 1e3).toFixed(1)}K`
         : Math.round(v).toLocaleString();
 export const money = (v: number) =>
-  `$${v.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-export const usd = (v: number) => `$${short(v)}`;
+  `${v < 0 ? "-" : ""}$${Math.abs(v).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+export const usd = (v: number) => `${v < 0 ? "-" : ""}$${short(Math.abs(v))}`;
+export const currencyAxis = (v: number) =>
+  v === 0
+    ? "0"
+    : `${v < 0 ? "-" : ""}$${new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 1 }).format(Math.abs(v))}`;
 export const sum = (values: number[]) => values.reduce((a, b) => a + b, 0);
 export const change = (value: number, prior: number) => (prior ? (value / prior - 1) * 100 : 0);
 export function dates(count: number, end = "2025-10-16", trading = false) {

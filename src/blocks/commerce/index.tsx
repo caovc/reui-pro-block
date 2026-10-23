@@ -5,11 +5,13 @@ import { ReceiptDocuments } from "./receipt-refined";
 import { ReceiptPostPurchase } from "./receipt-post-purchase";
 import Checkout from "./checkout-refined";
 import ShoppingCart from "./cart-refined";
-import { Coupons, Comparison, Reviews, ShopHero } from "./promotions";
+import { Coupons, Comparison, ShopHero } from "./promotions";
 import { Blog, FAQ, Contact, MarketingCompare } from "./marketing";
 import { Hero, CTA, HowItWorks } from "./heroes";
 import { Pricing } from "./pricing";
 import { ProductCards } from "./product-cards";
+import { ReviewLists } from "./review-list-pages";
+import { ReviewCarousels } from "./review-carousel-pages";
 import { ProductDetails } from "./product-details";
 import { ProductGrids } from "./product-grids";
 
@@ -43,7 +45,11 @@ export default function CommerceBlock({ block }: BlockProps) {
     case "comparison":
       return <Comparison key={block.id} block={block} />;
     case "review":
-      return <Reviews key={block.id} block={block} />;
+      return [0, 4, 5].includes(block.index) ? (
+        <ReviewCarousels block={block} />
+      ) : (
+        <ReviewLists block={block} />
+      );
     case "shop-hero":
       return <ShopHero key={block.id} block={block} />;
     case "blog":

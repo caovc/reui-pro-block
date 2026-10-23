@@ -1,5 +1,5 @@
 /**
- * Adapted from REUI's FREE c-chart-13/16/17 chart implementations.
+ * Adapted from REUI's FREE c-chart-1/2/3/13/16/17 chart implementations.
  * Copyright (c) 2025 Keenthemes Inc. MIT, see components/reui/REUI-LICENSE.txt.
  * Retains the source's ChartContainer/ComposedChart, natural curves, gradient
  * stops, glow filter, axes/grid and ChartTooltipContent formatter composition.
@@ -17,7 +17,13 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
+import {
+  ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
 import {
   ColorPicker,
   ColorPickerContent,
@@ -25,6 +31,7 @@ import {
   ColorPickerTrigger,
 } from "@/components/reui/color-picker";
 import { cn } from "@/lib/utils";
+import { ReuiStripePattern } from "./reui-free-chart-primitives";
 export type TrendRow = { name: string; [key: string]: number | string | null | [number, number] };
 export type TrendSeries = {
   key: string;
@@ -77,10 +84,13 @@ export function ReuiTrend({
   rightFormat,
   axisSide = "left",
   hideXAxis = false,
+  hideYAxis = false,
+  stackOffset = "none",
   domain = ["auto", "auto"],
   rightDomain = ["auto", "auto"],
   grid = true,
   verticalGrid = false,
+  legend = false,
   height = 300,
   children,
   onPoint,
@@ -94,11 +104,14 @@ export function ReuiTrend({
   valueFormat?: (v: number) => string;
   axisSide?: "left" | "right";
   hideXAxis?: boolean;
+  hideYAxis?: boolean;
+  stackOffset?: "none" | "sign";
   rightFormat?: (v: number) => string;
   domain?: [number | "auto" | "dataMin" | "dataMax", number | "auto" | "dataMin" | "dataMax"];
   rightDomain?: [number | "auto" | "dataMin" | "dataMax", number | "auto" | "dataMin" | "dataMax"];
   grid?: boolean;
   verticalGrid?: boolean;
+  legend?: boolean;
   height?: number;
   children?: ReactNode;
   onPoint?: (index: number) => void;
@@ -121,7 +134,7 @@ export function ReuiTrend({
       tabIndex={0}
       aria-label={`${label}. Arrow keys move between points.`}
       className="min-w-0 outline-offset-[-2px]"
-      data-reui-chart="c-chart-13 c-chart-16 c-chart-17"
+      data-reui-chart="c-chart-1 c-chart-2 c-chart-3 c-chart-13 c-chart-16 c-chart-17"
       onKeyDown={(event) => {
         if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
           event.preventDefault();
@@ -145,6 +158,7 @@ export function ReuiTrend({
       >
         <ComposedChart
           accessibilityLayer
+          stackOffset={stackOffset}
           data={data}
           margin={{ top: 24, right: rightFormat ? 8 : 18, bottom: 4, left: 0 }}
           onMouseMove={(event) => {
@@ -168,6 +182,9 @@ export function ReuiTrend({
                   <rect width="6" height="6" fill={s.color} opacity=".04" />
                   <path d="M0,6 L6,0" stroke={s.color} strokeWidth=".8" opacity=".15" />
                 </pattern>
+                {s.kind === "bar" && (
+                  <ReuiStripePattern id={`${id}-${s.key}-bar-stripe`} color={s.color} />
+                )}
               </g>
             ))}
             <filter id={`${id}-dot-glow`} x="-50%" y="-50%" width="200%" height="200%">
@@ -192,6 +209,7 @@ export function ReuiTrend({
             minTickGap={28}
           />
           <YAxis
+            hide={hideYAxis}
             yAxisId="left"
             orientation={axisSide}
             domain={domain}
@@ -256,6 +274,14 @@ export function ReuiTrend({
               </div>
             )}
           />
+          {legend && (
+            <ChartLegend
+              itemSorter={(item) => series.findIndex((s) => s.key === item.dataKey)}
+              verticalAlign="top"
+              align="left"
+              content={<ChartLegendContent className="justify-start pb-3" />}
+            />
+          )}
           {children}
           {series.map((s) =>
             s.kind === "bar" ? (
@@ -264,7 +290,8 @@ export function ReuiTrend({
                 yAxisId={s.axis ?? "left"}
                 dataKey={s.key}
                 stackId={s.stack}
-                fill={s.fill ?? s.color}
+                fill={s.fill ?? (s.pattern ? `url(#${id}-${s.key}-bar-stripe)` : s.color)}
+                fillOpacity={s.opacity ?? 1}
                 radius={3}
                 barSize={s.width ?? 18}
                 isAnimationActive={false}
