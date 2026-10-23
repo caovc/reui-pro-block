@@ -1,0 +1,263 @@
+{
+  "milestone": "Navbar7–9 actual free publishing/marketplace/repository controls; original visual audit pending",
+  "testedArchiveBase": "f95cd62053138774f3f6404cc16c63378061bfbf",
+  "scope": "14 new source files under publishing plus independent test/ledger/manifest. No frozen first-run/toolbars/Dialog/shared/router/source-targets/package/Git modifications.",
+  "files": [
+    {
+      "path": "src/blocks/application/navbar-variants/publishing/cms.tsx",
+      "sha256": "a90a53b3495e64432af0a55a2e362af070d27d00b915782d3601dbc4a8dff459"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/publishing/data.ts",
+      "sha256": "3ca631254a5e253d7e6e4e3c4505d36def0886e3bf1a1f4ccbc1eb914b378c6c"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/publishing/free/account-menu.tsx",
+      "sha256": "a6bc2c9d3736d814cacd2f352f7bd6b7720f14127c08c470b97b3bc3d07083df"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/publishing/free/agent-picker.tsx",
+      "sha256": "ee3ef74d1aca4406d1fcf3123b940bd11ad1707266327d4fe32f2b5e31c9e7a1"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/publishing/free/branch-picker.tsx",
+      "sha256": "6d6e28e4a27acd316619778ba7d9ae82c1821877dfc76e0259bcc1893e9a3873"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/publishing/free/categories.tsx",
+      "sha256": "ec23a93d78ce99412a4712503732d240cdabf4b298b58b59f8071a55a679d828"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/publishing/free/publish-controls.tsx",
+      "sha256": "726f800d7df3f2cebbafbd794298a7e385480e2ccb5dce73df26a59677ce1ea2"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/publishing/index.tsx",
+      "sha256": "e3276c2dcfd8b9334dde4fffea0e1b4446bfa155c642d3e7e4cdc2591cc652ac"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/publishing/marketplace.tsx",
+      "sha256": "3396dacdcee491b448dab404c8ee168e8079b8889083799cba82b3725b21d6a7"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/publishing/notifications.tsx",
+      "sha256": "c85acc347cfb40f18abd2cebbfedbf3e21251e7bdc58ee163d3bdf0f5b2d2b74"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/publishing/publishing.css",
+      "sha256": "81791a928be0bed9b463f792ef91f16cc894dd45f25ee4462cc14b147e0006c4"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/publishing/repo.tsx",
+      "sha256": "ca660419bdaf7faec5fee20f8d16b9108db307399bf9d1550e0439de5e0fe1cb"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/publishing/schedule.tsx",
+      "sha256": "1df39f2da9e0f9cd9c7f1f503272d1155ea6e3f91f047d26ce3fa9bd0544f9dc"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/publishing/support.tsx",
+      "sha256": "e519f22e6e5dc052fb633654c8d854ffd32cb422e98149fb40f81f337a0aa160"
+    },
+    {
+      "path": "tests/navbar-publishing.spec.ts",
+      "sha256": "926a2a0e837ecef011bfd6da288cbfbad27fc6d8293d5e12e8961c67c99ef5da"
+    },
+    {
+      "path": "docs/navbar7-9-implementation.md",
+      "sha256": "c0bc613fb057b6aba9dd3299a227e355e5e87311c416ce83d073ca926441671f"
+    }
+  ],
+  "unchangedRequiredDependencies": [
+    {
+      "path": "src/blocks/application/navbar-variants/first-run/free/trail.tsx",
+      "sha256": "2981954d512ec257642b62930fdd3c32789e513fbba532509ee377216e243d24",
+      "note": "Existing/frozen dependency, not part of this payload."
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/toolbars/support.tsx",
+      "sha256": "ae08ce59909b6be81dc20d4b193ff6ac4e09632840b7ede8a548fcc90653527a",
+      "note": "Existing/frozen dependency, not part of this payload."
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/toolbars/toolbar.css",
+      "sha256": "7ba60abb1942defcc6c358ad27897275d10d190451781a73faa93e2ba61d4a41",
+      "note": "Existing/frozen dependency, not part of this payload."
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/toolbars/use-theme.ts",
+      "sha256": "9e80a751e82f25e98fa4bfe7316427cc99085aaa4aa5ba7f3a8822cd7d81a4b9",
+      "note": "Existing/frozen dependency, not part of this payload."
+    },
+    {
+      "path": "src/blocks/application/dialog-variants/first-run/free/dialog-surface.tsx",
+      "sha256": "fff63897eb044d56702cba1803c9a5ba045be62324cbf337e9fd8519299a5344",
+      "note": "Existing/frozen dependency, not part of this payload."
+    },
+    {
+      "path": "src/blocks/application/dialog-variants/first-run/first-run.css",
+      "sha256": "6d33a1532f2510ea3b18ad48e7ad17178a0981ce00aa922128875b69e3e16aa8",
+      "note": "Existing/frozen dependency, not part of this payload."
+    },
+    {
+      "path": "src/components/reui/time-picker.tsx",
+      "sha256": "42cca4524c849f6dd12efc451da89e88135ac8a883a6e894fc16f695cd36e93a",
+      "note": "Existing/frozen dependency, not part of this payload."
+    }
+  ],
+  "officialFreeSources": [
+    {
+      "name": "c-button-group-53",
+      "url": "https://reui.io/r/radix-nova/c-button-group-53.json",
+      "upstreamSourceSha256": "ec661d71fe2b0452db0de4c03e1042a0b4aaa3f625ccf9c47eed9ae2843e6c60",
+      "license": "MIT (c) Keenthemes"
+    },
+    {
+      "name": "c-button-group-7",
+      "url": "https://reui.io/r/radix-nova/c-button-group-7.json",
+      "upstreamSourceSha256": "3c040c4b1bc1237d96eac1b32be775fc74e00b5c3ae942ceb7897bb4fa4339d7",
+      "license": "MIT (c) Keenthemes"
+    },
+    {
+      "name": "c-toggle-group-5",
+      "url": "https://reui.io/r/radix-nova/c-toggle-group-5.json",
+      "upstreamSourceSha256": "b10361080ab7e301e4b6a441280fdbd103f8b84c8473d5c2fa5a4d95a72b4ec8",
+      "license": "MIT (c) Keenthemes"
+    },
+    {
+      "name": "c-dropdown-menu-14",
+      "url": "https://reui.io/r/radix-nova/c-dropdown-menu-14.json",
+      "upstreamSourceSha256": "8b6f7b239fbb780abf94ebde68851cf708d9e45f9aff07f99bcbbb157b22a9f2",
+      "license": "MIT (c) Keenthemes"
+    },
+    {
+      "name": "c-select-5",
+      "url": "https://reui.io/r/radix-nova/c-select-5.json",
+      "upstreamSourceSha256": "59ce33e5b54f51d36fed42660adfb6c4bb2a69d73df6221820931f935e1bddc8",
+      "license": "MIT (c) Keenthemes"
+    },
+    {
+      "name": "c-avatar-10",
+      "url": "https://reui.io/r/radix-nova/c-avatar-10.json",
+      "upstreamSourceSha256": "94f4dcb526d654fde666acc8f0c3d4ff2b7265b4a5773af42450fb69bd9b9b16",
+      "license": "MIT (c) Keenthemes"
+    },
+    {
+      "name": "c-dropdown-menu-11",
+      "url": "https://reui.io/r/radix-nova/c-dropdown-menu-11.json",
+      "upstreamSourceSha256": "11b72f166234d36b89c2d502a18c2998029fb33a19ece02ee6157470343e0367",
+      "license": "MIT (c) Keenthemes"
+    },
+    {
+      "name": "c-calendar-1",
+      "url": "https://reui.io/r/radix-nova/c-calendar-1.json",
+      "upstreamSourceSha256": "d978b5a62526c586ce49f224cf9b7b7aafc31cb6c9c1392cd48e76b47f8bdfbb",
+      "license": "MIT (c) Keenthemes"
+    },
+    {
+      "name": "c-time-picker-1",
+      "url": "https://reui.io/r/radix-nova/c-time-picker-1.json",
+      "upstreamSourceSha256": "f46457b3790f1b2d63ff38b54e842647a4d160dc432786dabcdabb3b4ef19a58",
+      "license": "MIT (c) Keenthemes"
+    }
+  ],
+  "installedActualFreeLibraries": [
+    "TimePicker original upstream source SHA f0ba6cda8250d507b9f45cdbb77c7dd4a14f593623d420e9ca2245239e8ac3ea",
+    "Rating with native decimal partial fill",
+    "Badge/Alert",
+    "Progress through audited c-progress-2 composition"
+  ],
+  "auditedNotUsed": {
+    "c-dropdown-menu-17": "Simple text alert list does not supply public8 rich grouped feed; actual11 body plus Avatar/Rating/Progress used."
+  },
+  "rootIntegration": {
+    "import": "import PublishingNavbarBlock from \"./navbar-variants/publishing\";",
+    "navbarGuard": "block.index >= 6 && block.index < 9",
+    "component": "<PublishingNavbarBlock block={block} />",
+    "preserve": "All existing earlier Navbar1–6 branches and later fallback. Only narrow guard insertion, not full latest router replacement.",
+    "sourceTargets": {
+      "variants": "1-based7–9",
+      "7": "navbar-variants/publishing/cms",
+      "8": "navbar-variants/publishing/marketplace",
+      "9": "navbar-variants/publishing/repo",
+      "fallback": "workspace"
+    },
+    "appliedOnlyInCandidate": true
+  },
+  "verification": {
+    "candidate": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/reui-navbar-publishing-production-g7nsckrq",
+    "strictProductionBuild": {
+      "result": "PASS TypeScript + Vite",
+      "log": "/tmp/reui-navbar-publishing-build.log"
+    },
+    "productionTests": {
+      "result": "17/17 PASS29.5s",
+      "test": "tests/navbar-publishing.spec.ts",
+      "workers": 1,
+      "timeoutMs": 30000,
+      "retryChange": false,
+      "log": "/tmp/reui-navbar-publishing-final-tests.log",
+      "output": "/tmp/reui-navbar-publishing-final-results"
+    },
+    "initialTestCorrections": "Initial15/17 passed. Native category semantics are radio/checked, not button/pressed. Keyboard typeahead must await native menu focus. Corrected selectors/readiness, focused2/2 PASS4.9s then final17allPASS; business source unchanged and no timeout/retry expansion.",
+    "coverage": [
+      "6 desktop/390 renders no script/image/overflow errors",
+      "whole actual free PublishControls53:3viewers/Preview/Publish/Draft/history",
+      "phone future native Calendar+TimePicker Clear gating/09:30 schedule",
+      "archive/delete/restoration local states",
+      "Research category really filters deployment options and local simulator/account counts",
+      "actual theme/Usage/API account actions",
+      "rich4notification avatar group/72progress/4.5rating/review/read state",
+      "4branch options/default marker/Remix target/local Run capturing chosen values",
+      "native keyboard typeahead and actual preview-link clipboard",
+      "all3 source defaults, exact clipboard/singlefile/ZIP leaf bytes and actual source/provenance deps"
+    ],
+    "screenshots": [
+      "/tmp/reui-navbar-publishing-audit/navbar-7-1440.png",
+      "/tmp/reui-navbar-publishing-audit/navbar-8-1440.png",
+      "/tmp/reui-navbar-publishing-audit/navbar-9-1440.png",
+      "/tmp/reui-navbar-publishing-audit/navbar-7-390.png",
+      "/tmp/reui-navbar-publishing-audit/navbar-8-390.png",
+      "/tmp/reui-navbar-publishing-audit/navbar-9-390.png",
+      "/tmp/reui-navbar-publishing-audit/navbar-7-open-390.png",
+      "/tmp/reui-navbar-publishing-audit/navbar-8-open-390.png",
+      "/tmp/reui-navbar-publishing-audit/navbar-9-open-390.png"
+    ],
+    "inspectedLocalScreenshots": [
+      "7phone schedule actualCalendar+TimePicker",
+      "8phone categories",
+      "9phone branches/targets"
+    ],
+    "actualDownloadedZip": {
+      "path": "/tmp/reui-navbar-publishing-audit/navbar-7-source.zip",
+      "sha256": "9e5933c1ade967a738dcec90373130cf753bc87fd4ee2e85b0f147c999e701a5",
+      "files": 350,
+      "bytes": 3594220,
+      "extracted": "/tmp/reui-navbar-publishing-realzip-H7K1Pr",
+      "independentBuild": "PASS",
+      "buildLog": "/tmp/reui-navbar-publishing-zip-build.log",
+      "standaloneRender": "1440 and390 Publish +Calendar22 +actualTimePicker09:30 +localSchedule PASS, zero page errors/horizontal overflow",
+      "renderLog": "/tmp/reui-navbar-publishing-zip-render.log"
+    },
+    "scopedOxfmtOxlint": "PASS on exact source/test/ledger; manifest separately formatted"
+  },
+  "referenceAudit": {
+    "publicMetadataRead": [
+      "https://reui.io/blocks/application/navbar/navbar-7.md",
+      "https://reui.io/blocks/application/navbar/navbar-8.md",
+      "https://reui.io/blocks/application/navbar/navbar-9.md"
+    ],
+    "renderedOriginalDesktopMobileStates": "PENDING: human Edge active; automation unavailable/timing out. No native foreground/tab operations.",
+    "limit": "Passing local tests/screenshots is not original visual parity; keep fidelity pending."
+  },
+  "remainingDifferences": [
+    "Original exact text/geometry/fixtures/menu arrangement/mobile/hover unverified",
+    "Local data/simulation only; no scheduling/deployment/repo execution/sharing permission APIs",
+    "Scoped theme/account popup; other demo portals follow global preview theme",
+    "Deployment captures agent at start; later field change does not change that simulated operation",
+    "Account14 isolated derivative necessary because frozen API has no domain-row slots",
+    "10–13 out of scope"
+  ],
+  "adjacentNextMigration": "Full ButtonGroup audit found52 whole Dashboard Actions matches prior Navbar6 strip more directly. Root informed and explicitly granted next independent analytics-only migration; frozen toolbars21 untouched here.",
+  "publication": "Functional/free-reuse READY with visual audit pending. Root serial Git push and CI/Pages verification. No child Git writes."
+}

@@ -1,3 +1,4 @@
+import PublishingNavbarBlock from "./navbar-variants/publishing";
 import ToolbarNavbarBlock from "./navbar-variants/toolbars";
 import RefinedNavbarBlock from "./navbar-variants/first-run";
 import RefinedDialogBlock from "./dialog-variants/first-run";
@@ -29,6 +30,9 @@ export default function ApplicationBlock({ block }: BlockProps) {
     case "stats":
       return <StatsBlock block={block} />;
     case "navbar":
+      if (block.index >= 6 && block.index < 9) {
+        return <PublishingNavbarBlock block={block} />;
+      }
       if (block.index >= 3 && block.index < 6) {
         return <ToolbarNavbarBlock block={block} />;
       }

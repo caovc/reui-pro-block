@@ -35,7 +35,7 @@ Preview: https://caovc.github.io/reui-pro-block/
 | Owner                     | Scope                                                                                      |
 | ------------------------- | ------------------------------------------------------------------------------------------ |
 | Primary                   | Release integration, real starter verification, CI/Pages; Sidebar and AI Usage integration |
-| Application agent         | Navbar7–9 and free ButtonGroup follow-up, independently frozen for integration             |
+| Application agent         | Navbar10–13;7–9 integrated,6 free ButtonGroup follow-up frozen                             |
 | Data agent                | AI Chat1–3 integrated; next4–6 in independent modules                                      |
 | Commerce agent            | All8 Shop Hero functional leaves; next Category Card1–3 in independent modules             |
 | Source/export coordinator | Diagnose source/ZIP/site CI failures within original source scope                          |
@@ -76,3 +76,9 @@ Shop Hero6–8 complete the eight independent functional entries with actual fre
 ## AI Chat initial milestone
 
 AI Chat1–3 now have independent copilot, document-docked and welcome compositions using actual free ReUI InputGroup, Attachment, Message/Scroller, CodeBlock and Questionnaire examples. Required answers, keyboard progression and FormData remain owned by the official delegated Questionnaire primitive. Local threads, streaming/stop, history/model/effort/context, exact document insert/undo and answer-derived plans have explicit application state. The actual230-file starter independently built/rendered at1440/390; source/copy/single-file/ZIP leaves agree. Root strict build,56/56 production checks, full formatting/tooling/lint passed. Public visual matching remains pending for1–3, and remote AI/recording are not connected.
+
+## Navbar publishing milestone
+
+Navbar7–9 add whole actual free ButtonGroup53 publication controls with native modal Calendar/TimePicker, native ToggleGroup5 agent choice and ButtonGroup7 repository branches. Their local publication/history, market filters/deployment and branch/target state stay connected to the displayed values. Root passed59 production regressions across all previous Navbars/global/site/source, then rebuilt on latest Chat1–3; latest cumulative35/35 production checks passed. Actual350-file Navbar7 starter independently built and rendered at1440/390 with working date/time scheduling; leaf source/copy/file/ZIP bytes agree. Public visual matching remains pending; fixture wording and local backend substitutes remain explicit.
+
+Run39931031669 onf95cd62 completed build and Pages deploy successfully, including Shop4/5 and Navbar4–6. Live verification of their own production interactions is in progress; newer Shop6–8/Chat1–3 remain pending their cumulative run.
