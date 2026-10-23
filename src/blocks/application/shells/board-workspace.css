@@ -1,0 +1,293 @@
+.board-icon-rail,
+.board-mobile-rail {
+  width: 49px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-right: 1px solid var(--border);
+  padding: 10px 8px 14px;
+  background: color-mix(in srgb, var(--muted) 80%, var(--background));
+  gap: 20px;
+}
+.board-brand {
+  height: 28px;
+  width: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--foreground);
+}
+.board-brand svg,
+.board-mobile-brand svg {
+  width: 28px;
+  height: 28px;
+}
+.board-brand svg rect,
+.board-mobile-brand svg rect {
+  fill: transparent;
+  stroke: var(--foreground);
+  stroke-opacity: 0.2;
+}
+.board-brand svg path,
+.board-mobile-brand svg path {
+  stroke: var(--foreground);
+}
+.board-brand svg circle,
+.board-mobile-brand svg circle {
+  fill: var(--foreground);
+}
+.board-rail-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.board-rail-groups > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.board-rail-groups > div + div {
+  position: relative;
+  padding-top: 8px;
+}
+.board-rail-groups > div + div:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 4px;
+  right: 4px;
+  height: 1px;
+  background: color-mix(in srgb, var(--foreground) 20%, transparent);
+}
+.board-icon-rail a[data-slot="button"],
+.board-mobile-rail a[data-slot="button"] {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  padding: 0;
+}
+.board-icon-rail a[data-slot="button"] > svg,
+.board-mobile-rail a[data-slot="button"] > svg {
+  width: 16px;
+  height: 16px;
+}
+.board-icon-rail a[data-variant="ghost"],
+.board-mobile-rail a[data-variant="ghost"] {
+  color: var(--muted-foreground);
+}
+.board-icon-rail footer,
+.board-mobile-rail footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.board-icon-rail footer > button,
+.board-mobile-rail footer > button {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+}
+.board-icon-rail footer [data-slot="avatar"],
+.board-mobile-rail footer [data-slot="avatar"] {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+}
+.board-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  height: 48px;
+  gap: 12px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--border);
+}
+.board-header-start,
+.board-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.board-header-actions {
+  flex-shrink: 0;
+}
+.board-header .board-desktop-views {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.board-desktop-views [data-slot="tabs-list"] {
+  height: 28px !important;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--muted);
+  gap: 0;
+}
+.board-desktop-views [data-slot="tabs-trigger"] {
+  height: 28px;
+  font-size: 12px;
+  font-weight: 400;
+  padding: 0 10px;
+  border-radius: 8px;
+}
+.board-desktop-views [data-state="active"] {
+  border-color: color-mix(in srgb, var(--foreground) 20%, transparent);
+  background: var(--background);
+  color: var(--foreground);
+  box-shadow: 0 1px 2px #00000012;
+}
+.board-shell .board-header-actions > button {
+  height: 26px;
+  gap: 4px;
+  padding: 0 8px;
+  font-size: 12px;
+  font-weight: 400;
+  border-radius: 8px;
+}
+.board-header-actions > button > svg {
+  width: 12px;
+  height: 12px;
+}
+.board-shell .board-header-actions > button:last-child {
+  width: 26px;
+  padding: 0;
+}
+.board-collaborators {
+  display: flex;
+  margin-right: 2px;
+}
+.board-collaborators > span + span {
+  margin-left: -8px;
+}
+.board-collaborators [data-slot="avatar"] {
+  height: 24px;
+  width: 24px;
+  border: 1px solid var(--background);
+}
+.board-mobile-navigation,
+.board-mobile-brand,
+.board-mobile-views {
+  display: none;
+}
+.board-mobile-rail {
+  width: 49px !important;
+  max-width: 49px !important;
+  gap: 20px;
+  padding: 10px 8px 14px;
+}
+.board-mobile-rail > [data-slot="sheet-close"] {
+  display: none;
+}
+.board-views-drawer > div:first-child {
+  margin-top: 8px;
+  height: 4px;
+  width: 96px;
+}
+.board-views-drawer nav {
+  padding: 6px;
+}
+.board-views-drawer nav ul {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.board-views-drawer nav a {
+  width: 100%;
+  height: 36px;
+  padding: 0 10px;
+  justify-content: flex-start;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--muted-foreground);
+}
+.board-views-drawer nav a[aria-current="page"] {
+  background: var(--muted);
+  color: var(--foreground);
+}
+.board-views-drawer nav a svg {
+  width: 16px;
+  height: 16px;
+}
+@media (max-width: 1023px) {
+  .board-header .board-desktop-views {
+    display: none;
+  }
+  .board-header .board-mobile-views {
+    display: inline-flex;
+    width: 24px;
+    height: 28px;
+    padding: 0;
+    flex-shrink: 0;
+  }
+  .board-header .board-mobile-views svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+@media (max-width: 767px) {
+  .board-icon-rail {
+    display: none;
+  }
+  .board-header {
+    padding: 0 12px;
+    gap: 8px;
+  }
+  .board-header-start {
+    gap: 4px;
+    flex: 1;
+  }
+  .board-header .board-mobile-navigation {
+    display: inline-flex;
+    width: 24px;
+    height: 28px;
+    padding: 0;
+    flex-shrink: 0;
+  }
+  .board-mobile-brand {
+    display: flex;
+    flex-shrink: 0;
+    margin-right: 4px;
+  }
+  .board-header-start .workspace-breadcrumb {
+    margin-left: 4px;
+  }
+  .board-header-actions {
+    gap: 8px;
+  }
+  .board-header-actions > button > span {
+    display: none;
+  }
+  .board-shell .board-header-actions > button {
+    width: 26px;
+    padding: 0;
+    justify-content: center;
+  }
+  .board-header .workspace-breadcrumb [data-slot="breadcrumb-list"] {
+    font-size: 14px;
+  }
+  .board-collaborators {
+    margin-right: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .board-views-drawer {
+    animation: none;
+  }
+}
+.board-icon-rail footer [data-slot="avatar-image"],
+.board-icon-rail footer [data-slot="avatar-fallback"],
+.board-icon-rail footer [data-slot="avatar"]:after,
+.board-mobile-rail footer [data-slot="avatar-image"],
+.board-mobile-rail footer [data-slot="avatar-fallback"],
+.board-mobile-rail footer [data-slot="avatar"]:after {
+  border-radius: inherit;
+}

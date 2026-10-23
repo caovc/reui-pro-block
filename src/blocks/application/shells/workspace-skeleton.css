@@ -1,0 +1,92 @@
+.shell-workspace-skeleton {
+  --workspace-grid-gap: 16px;
+  container-type: inline-size;
+  min-height: 0;
+  min-width: 0;
+  flex: 1;
+  overflow: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--workspace-grid-gap);
+}
+.shell-workspace-skeleton[data-spacing="24"] {
+  --workspace-grid-gap: 24px;
+}
+.workspace-summary-grid,
+.workspace-body-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--workspace-grid-gap);
+}
+.workspace-skeleton-card[data-slot="frame"] {
+  height: 294px;
+  padding: 0;
+  background: var(--background);
+  --frame-panel-radius: 14px;
+  --frame-panel-border-color: var(--border);
+}
+.workspace-skeleton-card.summary[data-slot="frame"] {
+  height: 130px;
+}
+.workspace-skeleton-card > [data-slot="frame-panel"] {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 8px;
+  min-height: 0;
+  background: var(--background);
+  box-shadow: 0 1px 2px #0000000a;
+}
+.workspace-skeleton-card [data-slot="skeleton"] {
+  height: 16px;
+  min-height: 16px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--input) 50%, var(--background));
+}
+.workspace-skeleton-card .workspace-skeleton-body {
+  margin-top: 16px;
+  flex: 1;
+  min-height: 0;
+}
+@container (min-width:32rem) {
+  .workspace-summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@container (min-width:48rem) {
+  .workspace-summary-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .workspace-body-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 1023px) {
+  .shell-workspace-skeleton {
+    padding: 12px;
+  }
+}
+.workspace-breadcrumb {
+  min-width: 0;
+}
+.workspace-breadcrumb [data-slot="breadcrumb-list"] {
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+.workspace-breadcrumb [data-slot="breadcrumb-item"] {
+  min-width: 0;
+  white-space: nowrap;
+}
+.workspace-breadcrumb [data-slot="breadcrumb-page"] {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@media (max-width: 639px) {
+  .workspace-breadcrumb [data-slot="breadcrumb-item"]:not(:last-child),
+  .workspace-breadcrumb [data-slot="breadcrumb-separator"] {
+    display: none;
+  }
+}
