@@ -1,3 +1,4 @@
+import StatusTrackerBlock from "./status-tracker";
 import FilteringGrid from "./grid-filtering";
 import BaseGrid from "./grid-base";
 import ColumnsGrid from "./grid-columns";
@@ -80,6 +81,8 @@ export default function DataBlock({ block }: BlockProps) {
     return <LineChartBlock block={block} />;
   if (block.group === "chart" && block.category === "bar-chart")
     return <BarChartBlock block={block} />;
+  if (block.group === "chart" && block.category === "status-tracker")
+    return <StatusTrackerBlock block={block} />;
   if (block.group === "chart") return <ChartBlock block={block} />;
   if (block.group === "ai-agents")
     return block.category === "ai-chat" ? (

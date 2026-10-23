@@ -1,0 +1,410 @@
+.refined-dialog-stage {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  min-height: 760px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 40px 20px;
+  background: var(--background);
+  color: var(--foreground);
+}
+.refined-dialog-launcher,
+.refined-dialog-result {
+  width: min(100%, 420px);
+  min-width: 0;
+}
+.refined-dialog-launcher [data-slot="frame-panel"] {
+  padding: 20px;
+}
+.refined-dialog-result [data-slot="alert-description"] {
+  overflow-wrap: anywhere;
+}
+.refined-dialog-duration-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.refined-dialog-duration-summary > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+}
+.refined-dialog-duration-summary span {
+  color: var(--muted-foreground);
+}
+.refined-dialog-surface {
+  width: calc(100% - 32px);
+  max-width: 576px;
+  gap: 0;
+}
+.refined-dialog-surface[data-dialog-entry="2"] {
+  max-width: 448px;
+}
+.refined-dialog-surface[data-dialog-entry="3"] {
+  max-width: 672px;
+}
+.refined-dialog-surface[data-dialog-entry="4"] {
+  max-width: 600px;
+}
+.refined-dialog-surface[data-dialog-entry="5"] {
+  max-width: 1024px;
+  height: min(768px, calc(100svh - 32px));
+}
+.refined-dialog-header {
+  padding: 20px 36px 20px 20px;
+}
+.refined-dialog-body {
+  padding: 8px 20px 24px;
+  scrollbar-width: thin;
+}
+.refined-dialog-footer {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin: 0;
+  padding: 16px 20px;
+}
+.refined-dialog-actions {
+  display: flex;
+  min-width: 0;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.refined-dialog-help {
+  height: auto;
+  justify-content: flex-start;
+  margin-right: auto;
+  padding: 0;
+  color: var(--muted-foreground);
+  font-weight: 400;
+  white-space: normal;
+  text-align: left;
+}
+.refined-dialog-help svg {
+  flex-shrink: 0;
+}
+.refined-dialog-time-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.refined-dialog-presets {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+.refined-dialog-presets button {
+  min-width: 0;
+}
+.refined-dialog-reasons {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.refined-dialog-reason {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  min-height: 38px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.refined-dialog-reason[data-selected="true"] {
+  background: var(--muted);
+}
+.refined-dialog-reason span {
+  min-width: 0;
+}
+.refined-checklist-sections > [data-slot="accordion-item"] {
+  border: 0;
+}
+.refined-checklist-sections [data-slot="accordion-trigger"] {
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 0;
+  text-decoration: none;
+}
+.refined-checklist-section-copy {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 5px;
+}
+.refined-checklist-section-copy > span:last-child {
+  color: var(--muted-foreground);
+  font-weight: 400;
+  line-height: 1.5;
+}
+.refined-checklist-fields,
+.refined-checklist-apps {
+  width: calc(100% - 52px);
+  min-width: 0;
+  margin-left: 52px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px;
+}
+.refined-checklist-fields {
+  gap: 4px;
+}
+.refined-checklist-field {
+  flex-wrap: nowrap;
+  padding: 3px 0;
+  color: var(--muted-foreground);
+}
+.refined-checklist-label {
+  flex: 0 0 130px;
+  font-size: 13px;
+}
+.refined-checklist-value {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  justify-content: space-between;
+  padding-inline: 6px;
+  font-weight: 400;
+}
+.refined-checklist-value span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.refined-checklist-editor {
+  min-width: 0;
+  flex: 1;
+}
+.refined-checklist-apps {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.refined-checklist-app-toolbar {
+  display: flex;
+  min-width: 0;
+  gap: 12px;
+}
+.refined-checklist-app-toolbar > [data-slot="input-group"] {
+  min-width: 0;
+  flex: 1;
+}
+.refined-checklist-apps [data-slot="item-description"] {
+  -webkit-line-clamp: unset;
+}
+.refined-template-layout {
+  display: grid;
+  width: 100%;
+  min-height: 0;
+  grid-template-columns: 288px minmax(0, 1fr);
+}
+.refined-dialog-surface[data-dialog-entry="5"] .refined-dialog-header {
+  border-bottom: 1px solid var(--border);
+}
+.refined-dialog-surface[data-dialog-entry="5"] .refined-dialog-body {
+  display: flex;
+  overflow: hidden;
+  padding: 0;
+}
+.refined-template-rail {
+  min-width: 0;
+  min-height: 0;
+  border-right: 1px solid var(--border);
+  padding: 20px;
+}
+.refined-template-rail [data-slot="scroll-area-viewport"] > div {
+  display: block !important;
+}
+.refined-template-category {
+  width: 100%;
+  min-width: 0;
+  gap: 10px;
+  border-radius: 10px;
+  padding: 8px 10px;
+  cursor: pointer;
+}
+.refined-template-category[data-selected="true"] {
+  background: var(--muted);
+}
+.refined-template-category:has(:focus-visible) {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+.refined-template-tone-warning {
+  color: var(--warning);
+}
+.refined-template-tone-info {
+  color: var(--info);
+}
+.refined-template-tone-success {
+  color: var(--success);
+}
+.refined-template-tone-destructive {
+  color: var(--destructive);
+}
+.refined-template-main {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  flex-direction: column;
+}
+.refined-template-search {
+  flex-shrink: 0;
+  padding: 20px 20px 16px;
+}
+.refined-template-results {
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+  padding: 0 20px 20px;
+}
+.refined-template-results [data-slot="scroll-area-viewport"] > div {
+  display: block !important;
+}
+.refined-template-card {
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  padding: 12px;
+  text-align: left;
+}
+.refined-template-card [data-slot="item-media"] img {
+  width: 128px;
+  height: 80px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  object-fit: cover;
+}
+.refined-template-card [data-slot="item-description"] {
+  -webkit-line-clamp: unset;
+}
+.refined-template-card [data-slot="item-content"] {
+  gap: 8px;
+}
+.refined-template-card-title {
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.refined-template-card [data-slot="item-title"] {
+  -webkit-line-clamp: unset;
+}
+.refined-template-selection {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--muted-foreground);
+  font-size: 13px;
+}
+.refined-template-empty {
+  min-height: 240px;
+}
+@media (max-width: 639px) {
+  .refined-dialog-time-fields,
+  .refined-dialog-reasons {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .refined-dialog-surface[data-dialog-entry="2"] .refined-dialog-footer {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+  .refined-dialog-surface[data-dialog-entry="1"] .refined-dialog-help {
+    flex-basis: 100%;
+  }
+  .refined-dialog-surface[data-dialog-entry="3"] .refined-dialog-footer {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+  .refined-dialog-surface[data-dialog-entry="3"] .refined-dialog-actions {
+    flex-wrap: nowrap;
+  }
+  .refined-dialog-header {
+    padding: 20px 36px 20px 16px;
+  }
+  .refined-dialog-body {
+    padding: 8px 16px 24px;
+  }
+  .refined-dialog-footer {
+    padding: 16px;
+  }
+  .refined-checklist-label {
+    flex-basis: 105px;
+  }
+  .refined-checklist-field {
+    flex-wrap: wrap;
+  }
+  .refined-checklist-field [data-slot="item-media"] {
+    display: none;
+  }
+  .refined-checklist-editor {
+    flex-basis: 100%;
+  }
+  .refined-checklist-fields,
+  .refined-checklist-apps {
+    width: 100%;
+    margin-left: 0;
+  }
+  .refined-checklist-sections [data-slot="accordion-trigger"] {
+    gap: 10px;
+  }
+  .refined-checklist-sections [data-slot="badge"] {
+    margin-top: 1px;
+  }
+  .refined-checklist-app-toolbar {
+    flex-wrap: wrap;
+  }
+  .refined-checklist-apps [data-slot="item-actions"] {
+    flex-basis: 100%;
+    justify-content: flex-end;
+  }
+  .refined-template-layout {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: min(38svh, 320px) minmax(0, 1fr);
+  }
+  .refined-template-rail {
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+    padding: 16px;
+  }
+  .refined-template-search {
+    padding: 16px;
+  }
+  .refined-template-results {
+    padding: 0 16px 16px;
+  }
+  .refined-template-card [data-slot="item-media"] img {
+    width: 88px;
+    height: 64px;
+  }
+  .refined-template-selection span {
+    display: none;
+  }
+  .refined-dialog-surface[data-dialog-entry="5"] .refined-dialog-footer {
+    flex-wrap: nowrap;
+    gap: 8px;
+  }
+  .refined-dialog-surface[data-dialog-entry="5"] .refined-dialog-actions {
+    flex-wrap: nowrap;
+    gap: 6px;
+  }
+  .refined-dialog-surface[data-dialog-entry="5"] .refined-dialog-actions button {
+    padding-inline: 8px;
+  }
+}

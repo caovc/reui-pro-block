@@ -1,0 +1,41 @@
+{
+  "base": "1d701a2346a673886dfe10d192ae9cb6e0eaa772",
+  "scope": "Dialog1–5 and three Status Tracker implementations with actual official free components",
+  "files": {
+    "docs/dialog1-5-implementation.md": "49a33c740139918a0d62bd904e5c705041c8bb56ef2063b4ed1867a9fdc3261a",
+    "src/blocks/application/dialog-variants/first-run/cancellation.tsx": "91dca0002d3d85ec1d478301515c77226fbe1d75551c20f5eb60290fc396918e",
+    "src/blocks/application/dialog-variants/first-run/checklist.tsx": "f7584401cee4ba33d14ec8832dd2a0ee556a3c1df91dfc610c219ec10c8536cb",
+    "src/blocks/application/dialog-variants/first-run/duration.tsx": "7932e9de44c25d824715ddaa67761771caa0b18ee4a9eb4b29692eefc08409d5",
+    "src/blocks/application/dialog-variants/first-run/first-run.css": "6d33a1532f2510ea3b18ad48e7ad17178a0981ce00aa922128875b69e3e16aa8",
+    "src/blocks/application/dialog-variants/first-run/free/dialog-surface.tsx": "fff63897eb044d56702cba1803c9a5ba045be62324cbf337e9fd8519299a5344",
+    "src/blocks/application/dialog-variants/first-run/index.tsx": "6b355922b8b2633c4b28f05b46ff2de32c0b1bf48fca9b514af8a15026e102c0",
+    "src/blocks/application/dialog-variants/first-run/invites.tsx": "66cb455fb152d2c8739cce5889bae6e3f6559570e586bc082fa56eef11630aff",
+    "src/blocks/application/dialog-variants/first-run/library.tsx": "9408ddd1fb71c48692f20f8867fe9cc34e50f6775d026bd18b0230e16f31a3f7",
+    "src/blocks/application/dialog-variants/first-run/support.tsx": "cbf487a8f3721ccc6ec2891a92d90b54aace6535c170a95846712baa571496d1",
+    "src/blocks/application/dialog-variants/first-run/template-data.ts": "c050eea598faa1411cc14f89b69ac52f2b2b07103c33cd99f65715483a9977f2",
+    "tests/dialog-first-run.spec.ts": "016cda39afe03754ad45204e5d36d2758c4355fc6bd9d94964e2948b0161e6e4",
+    "docs/dialog1-5-release-manifest.json": "c330cb288127d25f32f35e3c0933de808171a3c055aaf1e5cd05cc01de5c660b",
+    "src/blocks/data/status-tracker.tsx": "e1787ada929ce83e2c9c24f03980cd2218e31a69c50b904d81bcbfea6a2dc225",
+    "src/blocks/data/status-tracker-data.ts": "6aac2ce518ac3b7ac059f674d40494e58bc0028ef36f879878aac8823cfc4c14",
+    "src/blocks/data/status-tracker-primitives.tsx": "b24bd38f7f32fda45dd83ca70808b2f8b4074315519dc796c9d816711c8ddbef",
+    "src/blocks/data/cron-run-history.tsx": "1bedc7bbbc3835a13c90d9c847c3545aa4b29f887dacdfb5d527b7803b7e473f",
+    "src/blocks/data/release-lanes.tsx": "9ef7e970d60df2f6ac8afddd81534162afa0c711ca07c7b598de2d54e91e03bf",
+    "src/blocks/data/deploy-history.tsx": "08cf3cd937a755f8aa49104b9d6055346b7d0c447498d543bae104252f40dbd7",
+    "tests/status-tracker-refinement.spec.ts": "fdcd75189c98bc4604300c58d3deb6b6dda840f17b58266f270f68c0cbff8c1f",
+    "tests/status-tracker-source.spec.ts": "54562b265bb88cccff85e75f04a1fd11d5776c515563fae4385414fb7c64e7f2",
+    "docs/data-implementation.md": "508859fc3d074e891a14ec50fecc41d26715c91d1a5c7d9919fb152902090415",
+    "src/blocks/application/index.tsx": "64f98b7fff93808eec0e2eb6668d0aaf13bbe4ede84050c594ad46c9230ee2b9",
+    "src/blocks/data/index.tsx": "9c9f5c3ff1c5f2c96b36d0ae0fcfba4ea3e393314af3b9cc908ce67e10dfaeb7",
+    "src/lib/source-targets.ts": "20d3a091f5e5c29bb2b4d8f12e0043c000e7899a32d2174c9796634de1e44428",
+    "docs/FIDELITY.md": "d2844fbcc60a0f13975555b72573c17d4d34fa042672e4601e579815198bfc3d"
+  },
+  "verification": {
+    "productionBuild": "strict TypeScript+Vite passed",
+    "tooling": "3/3 source/reachability/format staging checks",
+    "browser": "21/21 production,34.5s,1worker",
+    "actualStarter": "Dialog5:269files; Status39:197files; both actual UI downloads independently built, rendered1440/390 and computed Frame padding,border,radius/display/font matched full preview",
+    "runtime": "no errors, horizontal overflow or broken images"
+  },
+  "scopeBoundaries": "Dialog6–10, Coupon, Burn/Badge and other shared-workspace WIP excluded. Only frozen Status data ledger staged; working next-batch ledger preserved.",
+  "limitations": "All workflows local; original thumbnails/app artwork; dialogs start closed with useful launchers; individual differences remain in ledgers. This does not certify all662 entries."
+}

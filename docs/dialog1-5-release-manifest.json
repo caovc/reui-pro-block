@@ -1,0 +1,210 @@
+{
+  "scope": "Application Dialog1–5: actual official free component composition and local workflows",
+  "baseCommit": "4770ce7aef87fd70cffb79529b225fbeb1008970",
+  "candidate": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/reui-dialog1-5-final-neigcqsm",
+  "frozenPayload": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/reui-dialog1-5-freeze-m0z55j9c",
+  "ownedFileCountIncludingManifest": 13,
+  "sharedIntegration": {
+    "workingSharedFilesEdited": false,
+    "dispatcher": "Add RefinedDialogBlock import from ./dialog-variants/first-run. Split combined dialog/sheet case: dialog uses RefinedDialogBlock for block.index<5, otherwise existing DialogBlock; sheet remains existing DialogBlock. Preserve all Empty14 and other routes.",
+    "sourceDefaults": {
+      "dialog-1": "dialog-variants/first-run/duration",
+      "dialog-2": "dialog-variants/first-run/invites",
+      "dialog-3": "dialog-variants/first-run/cancellation",
+      "dialog-4": "dialog-variants/first-run/checklist",
+      "dialog-5": "dialog-variants/first-run/library"
+    },
+    "instructions": "Exact source-targets hunk is in docs/dialog1-5-implementation.md. Both narrow hunks are applied privately in the tested candidate. Root merges against latest shared files; neither shared file is part of this payload."
+  },
+  "actualFreeReuse": [
+    "REUI free Dialog explicitly installs/consumes upstream shadcn Dialog; installed actual Dialog supplies Radix portal/overlay/focus/dismiss/close, no custom replacement.",
+    "Actual free c-dialog-3/6 scrolling composition adapted into owned free/dialog-surface.tsx, with provenance+MIT and explicit slot/width/focus/Escape adapters.",
+    "Installed actual official IconTile, Badge, Alert/AlertAction and Frame/Header/Panel/Footer.",
+    "Actual Select-in-Dialog/Accordion/ToggleGroup examples audited; existing Field/InputGroup/Item/ScrollArea/RadioGroup/Checkbox/Tooltip/Empty components consumed.",
+    "Existing original demoPanel/integrationArtwork/svgImage helpers supply all thumbnails/app marks; no original-site media or new assets."
+  ],
+  "upstreamExamples": [
+    {
+      "registry": "https://reui.io/r/radix-nova/c-dialog-3.json",
+      "rawSourceSHA256": "1e911f83ba74e72675d7eaa122878179858a2003113f8cc7fc90c9d1b9493ac6"
+    },
+    {
+      "registry": "https://reui.io/r/radix-nova/c-dialog-6.json",
+      "rawSourceSHA256": "83d39cb6dacc0b22d0c70324c3f42253a8afbaed64a927a5734f55d36b40d316"
+    }
+  ],
+  "verification": {
+    "productionBuild": "passed full TypeScript+Vite on4770ce7; /tmp/reui-dialog1-5-production-build-final.log",
+    "tests": "13 passed21.2s;1worker;standard30s timeout;10closed+10opened1440/390scenes;390x640footer;meaningfulstate+sourceZIP tests",
+    "testLog": "/tmp/reui-dialog1-5-tests-final.log",
+    "screenshots": "/tmp/reui-dialog1-5-audit:20launcher/open snapshots +short390x640;10opened layouts and representative launchers reviewed",
+    "actualZIP": "/tmp/reui-dialog1-5-audit/dialog-5.zip",
+    "zipBytes": 3465696,
+    "zipFiles": 262,
+    "legacyScheduleJPGs": [],
+    "zipBuild": "passed complete TypeScript+Vite: /var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/reui-dialog5-realzip-45b6jq9k; /tmp/reui-dialog5-realzip-build.log",
+    "format": "scoped oxfmt format/check passed",
+    "lint": "scoped Oxlint passed",
+    "workingTypeScript": "passed before isolation",
+    "priorFrozenSources": "11 Empty1–5 +10 Empty6–10 +9 Empty11–14 +4 Card avatar source hashes unchanged"
+  },
+  "corrections": [
+    "Fixed real Escape propagation: installed Radix Dialog onEscapeKeyDown prevents outer dismissal only while checklist inline editor discards a draft; successful subsequent Save is tested.",
+    "Tests follow actual radio roles and badge-inclusive title, click visible category label then assert real radio, and await source-sheet close before navigation; no timeout increase.",
+    "Refreshed isolated candidate onto published4770ce7 so the actual archive includes integrated original-avatar cleanup; no legacy Schedule/range JPEG remains."
+  ],
+  "limits": [
+    "Closed initial dialogs with useful actual Frame launcher scenes intentionally differ from original initially-open previews.",
+    "Durations, invitations, cancellation surveys, checklist/apps and template choices remain explicit local state. No scheduling, email, membership, billing, OAuth or remote project service.",
+    "Original demo artwork replaces reference picsum thumbnails/provider marks; local example escalation email and more readable mobile inline editors differ intentionally.",
+    "Free composition is adapted through content slots and layout/focus guards; no claim of byte-identical example module or paid-source reproduction."
+  ],
+  "dependencies": [
+    {
+      "path": "src/components/ui/dialog.tsx",
+      "sha256": "e7b23b215a5ccc94d827419106f0815fafda401f8cdbb43256a6746adab6ee17",
+      "workingMatchesTested": true,
+      "owner": "existing shared source consumed without edits"
+    },
+    {
+      "path": "src/components/reui/icon-tile.tsx",
+      "sha256": "286805a224e4d44a3f8f6873f87f6128206857365f0c1747bf76b2852e90e3af",
+      "workingMatchesTested": true,
+      "owner": "existing shared source consumed without edits"
+    },
+    {
+      "path": "src/components/reui/alert.tsx",
+      "sha256": "bcf730d92ee23d445d069d193a6dfc52229c4e4d7085d3e476e0e7b5789f3629",
+      "workingMatchesTested": true,
+      "owner": "existing shared source consumed without edits"
+    },
+    {
+      "path": "src/components/reui/badge.tsx",
+      "sha256": "aa775fdd1638b34a843f5ece24236705d152cc36ea5edce62a62fe5601dde664",
+      "workingMatchesTested": true,
+      "owner": "existing shared source consumed without edits"
+    },
+    {
+      "path": "src/components/reui/frame.tsx",
+      "sha256": "a80a37a89e4c47eb2ff226557b2f53e528681d09a4a0321d8aebf826b4c3ecd6",
+      "workingMatchesTested": true,
+      "owner": "existing shared source consumed without edits"
+    },
+    {
+      "path": "src/components/ui/field.tsx",
+      "sha256": "5c7849315fe9a5497fd1b968d12d25ba7e1cbc65012a98ef3833e0edc9137e4d",
+      "workingMatchesTested": true,
+      "owner": "existing shared source consumed without edits"
+    },
+    {
+      "path": "src/components/ui/accordion.tsx",
+      "sha256": "42a0754f93ba8f1301a2f5f94af482ede39fc404777f30c35461f05672204214",
+      "workingMatchesTested": true,
+      "owner": "existing shared source consumed without edits"
+    },
+    {
+      "path": "src/components/ui/select.tsx",
+      "sha256": "7cceaafe237565d9f153750cdc3769898f777386c1f6c417145b7d04b9cc770a",
+      "workingMatchesTested": true,
+      "owner": "existing shared source consumed without edits"
+    },
+    {
+      "path": "src/components/ui/toggle-group.tsx",
+      "sha256": "272412182a9283545481d76965452ca7113781ed970f398a97d958f4a3414bb9",
+      "workingMatchesTested": true,
+      "owner": "existing shared source consumed without edits"
+    },
+    {
+      "path": "src/components/ui/input-group.tsx",
+      "sha256": "c3519fdc20cdc9319dd693db8b5034d780dd9fb406a323eb28ac11e1fa799e92",
+      "workingMatchesTested": true,
+      "owner": "existing shared source consumed without edits"
+    },
+    {
+      "path": "src/components/ui/item.tsx",
+      "sha256": "586a27a26a55fe9bce3d097e56608145437f2735abbd5e036a8cca611583322c",
+      "workingMatchesTested": true,
+      "owner": "existing shared source consumed without edits"
+    },
+    {
+      "path": "src/components/ui/scroll-area.tsx",
+      "sha256": "47d13094994d22cb6db30c71320a06ea9946cda4308e5505eaf0e1f31826f739",
+      "workingMatchesTested": true,
+      "owner": "existing shared source consumed without edits"
+    },
+    {
+      "path": "src/components/ui/radio-group.tsx",
+      "sha256": "0e357c819f6b343a80ed13c58a7b5e1407223e16e84268d8378a7d12fa7a5971",
+      "workingMatchesTested": true,
+      "owner": "existing shared source consumed without edits"
+    },
+    {
+      "path": "src/lib/demo-artwork.ts",
+      "sha256": "dd1ff55cd26fcc74604d7c94b0e7cb4f4b9df03e7d292f95502072d48d92b313",
+      "workingMatchesTested": true,
+      "owner": "existing shared source consumed without edits"
+    }
+  ],
+  "files": [
+    {
+      "path": "docs/dialog1-5-implementation.md",
+      "sha256": "49a33c740139918a0d62bd904e5c705041c8bb56ef2063b4ed1867a9fdc3261a",
+      "bytes": 16287
+    },
+    {
+      "path": "src/blocks/application/dialog-variants/first-run/cancellation.tsx",
+      "sha256": "91dca0002d3d85ec1d478301515c77226fbe1d75551c20f5eb60290fc396918e",
+      "bytes": 6121
+    },
+    {
+      "path": "src/blocks/application/dialog-variants/first-run/checklist.tsx",
+      "sha256": "f7584401cee4ba33d14ec8832dd2a0ee556a3c1df91dfc610c219ec10c8536cb",
+      "bytes": 16573
+    },
+    {
+      "path": "src/blocks/application/dialog-variants/first-run/duration.tsx",
+      "sha256": "7932e9de44c25d824715ddaa67761771caa0b18ee4a9eb4b29692eefc08409d5",
+      "bytes": 6008
+    },
+    {
+      "path": "src/blocks/application/dialog-variants/first-run/first-run.css",
+      "sha256": "6d33a1532f2510ea3b18ad48e7ad17178a0981ce00aa922128875b69e3e16aa8",
+      "bytes": 8985
+    },
+    {
+      "path": "src/blocks/application/dialog-variants/first-run/free/dialog-surface.tsx",
+      "sha256": "fff63897eb044d56702cba1803c9a5ba045be62324cbf337e9fd8519299a5344",
+      "bytes": 2062
+    },
+    {
+      "path": "src/blocks/application/dialog-variants/first-run/index.tsx",
+      "sha256": "6b355922b8b2633c4b28f05b46ff2de32c0b1bf48fca9b514af8a15026e102c0",
+      "bytes": 758
+    },
+    {
+      "path": "src/blocks/application/dialog-variants/first-run/invites.tsx",
+      "sha256": "66cb455fb152d2c8739cce5889bae6e3f6559570e586bc082fa56eef11630aff",
+      "bytes": 5442
+    },
+    {
+      "path": "src/blocks/application/dialog-variants/first-run/library.tsx",
+      "sha256": "9408ddd1fb71c48692f20f8867fe9cc34e50f6775d026bd18b0230e16f31a3f7",
+      "bytes": 8329
+    },
+    {
+      "path": "src/blocks/application/dialog-variants/first-run/support.tsx",
+      "sha256": "cbf487a8f3721ccc6ec2891a92d90b54aace6535c170a95846712baa571496d1",
+      "bytes": 2213
+    },
+    {
+      "path": "src/blocks/application/dialog-variants/first-run/template-data.ts",
+      "sha256": "c050eea598faa1411cc14f89b69ac52f2b2b07103c33cd99f65715483a9977f2",
+      "bytes": 3234
+    },
+    {
+      "path": "tests/dialog-first-run.spec.ts",
+      "sha256": "016cda39afe03754ad45204e5d36d2758c4355fc6bd9d94964e2948b0161e6e4",
+      "bytes": 14977
+    }
+  ]
+}

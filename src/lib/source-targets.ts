@@ -161,6 +161,10 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
         "planning",
       );
     }
+    if (block.category === "dialog" && variant >= 1 && variant <= 5) {
+      const modules = ["duration", "invites", "cancellation", "checklist", "library"];
+      return paths("application", `dialog-variants/first-run/${modules[variant - 1]}`, "forms");
+    }
     if (block.category === "auth") {
       if ([9, 12].includes(variant)) return paths("application", "auth-methods", "auth");
       if ([13, 14].includes(variant)) return paths("application", "auth-access", "auth");
@@ -242,6 +246,11 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
     return paths("data", `grid-${block.category}`);
   }
   if (block.group === "chart") {
+    if (block.category === "status-tracker") {
+      const module =
+        variant === 38 ? "release-lanes" : variant === 39 ? "deploy-history" : "cron-run-history";
+      return paths("data", module, "status-tracker");
+    }
     if (block.id === "chart-16") return paths("data", "generation-mix");
     if (block.category === "bar-chart") {
       const module = [9, 10, 29, 30].includes(variant)
