@@ -1,0 +1,32 @@
+{
+  "base": "2a2b5ffe3926dd89185e1a9567130e999b687194",
+  "scope": "Six free ReUI Coupon compositions, source leaf mapping, independent Empty source checks and Grid CI investigation",
+  "files": {
+    "src/blocks/commerce/coupon-variants/artwork.ts": "85db9f06205ff303d7ca9230a812bb8414ca9a98d80617b782221a98a7219553",
+    "src/blocks/commerce/coupon-variants/bars.tsx": "6e5872ab85494394c135ee46117e9e130a162bf8f45c70db30c37a2be823094f",
+    "src/blocks/commerce/coupon-variants/copy.tsx": "6152b41f566cbcf1e0227fa8ac839600e6748e64af737a69722682e8148d1e25",
+    "src/blocks/commerce/coupon-variants/data.ts": "3d054ba2e3e6f1631b57e0113435bc653e2209942baf993b85f622bf49d2cb07",
+    "src/blocks/commerce/coupon-variants/grid.tsx": "10e42a229ffeca0bf4c7787d9e392b0ae997170e334751759aaf2f782508cc6d",
+    "src/blocks/commerce/coupon-variants/heroes.tsx": "5bff7f03bb1df780b894ad3096b5a7ed53ef1a0366f3308eb35c7ada8ce24233",
+    "src/blocks/commerce/coupon-variants/index.tsx": "e9c264078c5e479302174ea129cefd10850c12906e1f323dbd4feb0c82a48105",
+    "src/blocks/commerce/coupon-variants/shared.tsx": "d2b84acef19ec28fce02c1fd2c794a13e65c4e41c2f44680dfb2b70b92abdfa7",
+    "tests/coupon-variants.spec.ts": "3482c8384a404859f8691234f583891df53192b1e69c4949f3d3b3efea018a64",
+    "docs/coupon-variants-refinement.md": "647c3c6b9fc7c8d315d08df8c90543823444988e6d74edeeffd3b20490fe7b55",
+    "src/blocks/commerce/index.tsx": "ed2e08ec0e32573e99d61598c420c02c763275a7e97e667c47e358ebacc642e1",
+    "src/lib/source-targets.ts": "bd7985e9487651c5b523b8b0252f0a2ba48a480c70c02435588906e8b7181817",
+    "tests/empty-first-run.spec.ts": "5f31050a8c7c1a4871f27bb06bb1b8b476194a25cc6a9d52d82b164c58472f3f",
+    "tests/empty-team-setup.spec.ts": "feae1b0f6fc297ccb0966de0ab4f8318e9f250ad6704b6b1767cba2765b07f7c",
+    "docs/grid-ci-initial-render-investigation.md": "a2f5868598c45880914da0e1edb92645af9f5ad19a02f5bfa713b6a058e2b476",
+    "docs/primary-progress.md": "6b5dd0c0d586c8b366ddf5d434bfb9243680bee23b587abf30dbd3b183b56266",
+    "docs/FIDELITY.md": "3507784d8d96b2349969d8fb8c0dca41cda1b8e117c176269af4ad0797fb2805"
+  },
+  "verification": {
+    "build": "strict TypeScript+Vite passed",
+    "format": "full clean release candidate701files passed",
+    "lint": "oxlint passed with existing repository warnings",
+    "tooling": "3/3 passed",
+    "production": "59/59 passed,1worker,standard30s case timeout",
+    "starter": "Actual Coupon2 UI download151files independently built/rendered1440/390; computed Frame padding,border,radius/display/font match full preview; no errors,overflow,broken images"
+  },
+  "limitations": "All redemption local; original artwork replaces unlicensed reference images; ledger records reference observation method and interaction/visual differences. No other shared-workspace WIP included."
+}

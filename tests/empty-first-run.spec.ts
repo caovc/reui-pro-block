@@ -161,19 +161,21 @@ test("actual Frame brief selects signals and saves typed local content", async (
   await expect(preview).not.toContainText("Launch readiness");
 });
 
-test("Empty source viewer opens actual modules and starter ZIP preserves real free sources", async ({
-  page,
-}) => {
-  const modules = ["data-import", "search", "project", "reports", "brief"];
-  for (let id = 1; id <= 5; id++) {
-    await page.goto(`./#/block/application/empty-state/empty-state-${id}`);
+const emptySourceModules = ["data-import", "search", "project", "reports", "brief"];
+for (const [index, module] of emptySourceModules.entries()) {
+  test(`Empty ${index + 1} source viewer opens its actual module`, async ({ page }) => {
+    await page.goto(`./#/block/application/empty-state/empty-state-${index + 1}`);
     await page.getByRole("button", { name: "View code", exact: true }).click();
     const dialog = page.getByRole("dialog");
     await expect(dialog.getByRole("combobox", { name: "Source file", exact: true })).toHaveText(
-      `src/blocks/application/empty-variants/${modules[id - 1]}.tsx`,
+      `src/blocks/application/empty-variants/${module}.tsx`,
     );
     await dialog.getByRole("button", { name: "Close", exact: true }).click();
-  }
+    await expect(dialog).toHaveCount(0);
+  });
+}
+
+test("Empty starter ZIP preserves real free sources", async ({ page }) => {
   await page.goto("./#/block/application/empty-state/empty-state-1");
   const pending = page.waitForEvent("download");
   await page.getByRole("button", { name: "Download source", exact: true }).click();

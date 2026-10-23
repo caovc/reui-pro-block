@@ -228,19 +228,21 @@ test("actual free upload Hook imports validated blueprint JSON and rejects the w
   await expect(page.getByText("No blueprints yet", { exact: true })).toBeVisible();
 });
 
-test("team setup source viewer and actual ZIP contain the official clipboard Hook and IconStack", async ({
-  page,
-}) => {
-  const modules = ["launch", "invite", "settings", "invite", "blueprints"];
-  for (let id = 6; id <= 10; id++) {
-    await page.goto(`./#/block/application/empty-state/empty-state-${id}`);
+const teamSetupSourceModules = ["launch", "invite", "settings", "invite", "blueprints"];
+for (const [index, module] of teamSetupSourceModules.entries()) {
+  test(`Empty ${index + 6} source viewer opens its actual team setup module`, async ({ page }) => {
+    await page.goto(`./#/block/application/empty-state/empty-state-${index + 6}`);
     await page.getByRole("button", { name: "View code", exact: true }).click();
     const dialog = page.getByRole("dialog");
     await expect(dialog.getByRole("combobox", { name: "Source file", exact: true })).toHaveText(
-      `src/blocks/application/empty-variants/team-setup/${modules[id - 6]}.tsx`,
+      `src/blocks/application/empty-variants/team-setup/${module}.tsx`,
     );
     await dialog.getByRole("button", { name: "Close", exact: true }).click();
-  }
+    await expect(dialog).toHaveCount(0);
+  });
+}
+
+test("team setup ZIP contains the official clipboard Hook and IconStack", async ({ page }) => {
   await page.goto("./#/block/application/empty-state/empty-state-9");
   const pending = page.waitForEvent("download");
   await page.getByRole("button", { name: "Download source", exact: true }).click();

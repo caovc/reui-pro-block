@@ -6,7 +6,8 @@ import { ReceiptDocuments } from "./receipt-refined";
 import { ReceiptPostPurchase } from "./receipt-post-purchase";
 import Checkout from "./checkout-refined";
 import ShoppingCart from "./cart-refined";
-import { Coupons, Comparison, ShopHero } from "./promotions";
+import { Comparison, ShopHero } from "./promotions";
+import { CouponVariants } from "./coupon-variants";
 import { Blog, FAQ, Contact, MarketingCompare } from "./marketing";
 import { Hero, CTA, HowItWorks } from "./heroes";
 import { Pricing } from "./pricing";
@@ -46,7 +47,7 @@ export default function CommerceBlock({ block }: BlockProps) {
         <ReceiptPostPurchase block={block} />
       );
     case "coupon":
-      return <Coupons key={block.id} block={block} />;
+      return <CouponVariants key={block.id} block={block} />;
     case "comparison":
       return <Comparison key={block.id} block={block} />;
     case "review":
