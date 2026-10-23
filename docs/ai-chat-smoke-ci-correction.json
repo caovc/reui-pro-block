@@ -1,0 +1,26 @@
+{
+  "failedRun": 39934859814,
+  "failedCommit": "89a4f1cec484ed8de5a92a2bfd2c1e4451da2003",
+  "originalResult": "918 passed,1 failed,14.8m; only legacy demos AI composer case",
+  "artifact": 12493773124,
+  "retainedEvidence": {
+    "log": "/tmp/bricklane-chat123-ci-failure.log",
+    "archive": "/tmp/bricklane-chat123-ci-diagnostics.zip",
+    "extracted": "/tmp/bricklane-chat123-ci-diagnostics"
+  },
+  "cause": "Root updated Chat1–3 and its dedicated tests but omitted the legacy demos smoke contract. Exact locator Message does not match the rendered associated label Message the assistant. The same smoke also expected the previous demo response wording. The original failed accessibility snapshot shows the real rendered composer and disabled empty Send button.",
+  "change": "Update only this existing smoke to the actual associated label and current original release response. Preserve prompt rendering/send/input-clear assertions and add completion status count. No application code, assertions elsewhere, timeouts or retries changed.",
+  "base": "16a69bf680dc659cf4116d7a64cedc6727966993",
+  "validation": {
+    "strictBuild": "PASS latest16a69bf + only corrected test",
+    "production": "27/27 PASS29.2s; CI=1,PREVIEW_URL unset,actual default5173 production server; whole demos + initial Chat suites,one worker",
+    "finalLog": "/tmp/bricklane-chat-smoke-final-root-production.log",
+    "initialLocalResult": "26 passed,1 failed27.3s: old global prompt assertion matched both new history title and transcript; corrected by scoping the retained prompt/reply assertions to the actual named Chat transcript region",
+    "initialLocalLog": "/tmp/bricklane-chat-smoke-root-production.log",
+    "initialLocalDiagnostics": "/tmp/bricklane-chat-smoke-root-results",
+    "format": "Full955 files PASS before final doc update",
+    "tooling": "3/3 PASS",
+    "lint": "0 warnings/errors in changed test"
+  },
+  "deployment": "Original failure preserved. Own cumulative CI/Pages pending; latest verified livef95cd62."
+}

@@ -37,12 +37,20 @@ test("calendar creates a visible event", async ({ page }) => {
 test("AI composer sends a message and renders a demo answer", async ({ page }) => {
   await page.goto(route("ai-chat"));
   await page
-    .getByRole("textbox", { name: "Message", exact: true })
+    .getByRole("textbox", { name: "Message the assistant", exact: true })
     .fill("Summarize the release checklist");
   await page.getByRole("button", { name: "Send message", exact: true }).click();
-  await expect(page.getByText("Summarize the release checklist", { exact: true })).toBeVisible();
-  await expect(page.getByText(/Here’s your release summary/)).toBeVisible();
-  await expect(page.getByRole("textbox", { name: "Message", exact: true })).toBeEmpty();
+  const transcript = page.getByRole("region", { name: "Chat transcript", exact: true });
+  await expect(
+    transcript.getByText("Summarize the release checklist", { exact: true }),
+  ).toBeVisible();
+  await expect(transcript.getByText("Reply ready", { exact: true })).toHaveCount(1);
+  await expect(
+    transcript.getByText(/Release 4.2 focuses on everyday workspace reliability\./),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("textbox", { name: "Message the assistant", exact: true }),
+  ).toBeEmpty();
 });
 test("cart quantities update the order total", async ({ page }) => {
   await page.goto(route("shopping-cart"));
