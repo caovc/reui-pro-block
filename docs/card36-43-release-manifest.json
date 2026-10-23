@@ -1,0 +1,91 @@
+{
+  "milestone": "Card36–43 actual-free-first final dedicated card variants",
+  "frozenAt": "2026-10-23 Asia/Shanghai",
+  "scope": [
+    "card-36",
+    "card-37",
+    "card-38",
+    "card-39",
+    "card-40",
+    "card-41",
+    "card-42",
+    "card-43"
+  ],
+  "gitWrites": "none; root coordinates staging/commit/push/deploy",
+  "dispatcher": "Adds ./card-variants/final-profiles import and /^card-(3[6-9]|4[0-3])$/ branch after accepted first35; no other dispatcher edits.",
+  "productionCandidate": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/reui-card36-43-release-0ygr2rhr",
+  "validation": {
+    "productionBuild": "passed",
+    "scopedTypeScript": "passed",
+    "oxlint": "passed",
+    "playwright": "9 passed (8.8s),1worker, isolatedproduction5201",
+    "renderMatrix": "8variants x1440/390 =16; no page errors/overlays/document overflow",
+    "realSourceZip": "UI downloaded, required real sources/assets/MIT checked, extracted standalone npm run build passed",
+    "screenshots": "/tmp/reui-card36-43-audit/card-N-{1440,390}.png"
+  },
+  "actualFreeReuse": [
+    "REUI Frame/FramePanel",
+    "REUI IconTile",
+    "REUI Badge",
+    "REUI Alert",
+    "upstream Avatar/Image/Fallback/Badge/Group",
+    "upstream Item/Title/Content/Actions/Description",
+    "upstream ScrollArea/ScrollBar",
+    "upstream AspectRatio",
+    "upstream ChartContainer + Recharts BarChart/Bar (actual free c-chart-1 source inspected)",
+    "existing official shadcn Button/Dialog/Field/Input/Textarea"
+  ],
+  "dependencies": [
+    "frozen card-variants/extended/common.tsx + extended.css",
+    "existing attributed schedule Emma Wilson,James Park,Sarah Chen,Sofia Reyes,Liam Torres portraits",
+    "existing official component implementations; no shared source/dependency/media additions"
+  ],
+  "remainingDifferences": [
+    "replacement portraits instead of original Unsplash media",
+    "independent muted CSS cover and actual free UI/chart miniatures instead of original portfolio photos",
+    "local preview state only; no contact/message/analytics backend",
+    "allstyles/themevariants and pixel-exact font metrics not claimed"
+  ],
+  "files": [
+    {
+      "path": "docs/card36-43-implementation.md",
+      "sha256": "cac420fe3ba911f4a515c7ff952521fedf0840d7ba8db17f6e937f151eb77689",
+      "bytes": 8662
+    },
+    {
+      "path": "src/blocks/application/card-variants/final-profiles/final-profiles.css",
+      "sha256": "e4e59993a668bce0bc5d3773023ec501e958482e6b6c940468096590bf878560",
+      "bytes": 3731
+    },
+    {
+      "path": "src/blocks/application/card-variants/final-profiles/index.tsx",
+      "sha256": "22605ea7742b1449040a2812c4eac3c11d67378a067301014c5f21ca863edc2c",
+      "bytes": 833
+    },
+    {
+      "path": "src/blocks/application/card-variants/final-profiles/metrics.tsx",
+      "sha256": "03199cdfaf4fb073cbd2d393549e94b8b674ad535d5d478a98cb1472ee655429",
+      "bytes": 3572
+    },
+    {
+      "path": "src/blocks/application/card-variants/final-profiles/profiles.tsx",
+      "sha256": "c518d3cf1e6aa6751834ffdfb774e65fe745bdb6c3f452b1afa2df9ecbe4bb9b",
+      "bytes": 16301
+    },
+    {
+      "path": "src/blocks/application/card-variants/final-profiles/resources.tsx",
+      "sha256": "f2d49dc2431c9587aaedc0d6932aca14c4797f5e0184f2e39ab6daef138713cf",
+      "bytes": 4002
+    },
+    {
+      "path": "src/blocks/application/cards.tsx",
+      "sha256": "f1255754d6507ba71a3b31e21b7b1b1612fddf99c021c114f32e0772d64303b3",
+      "bytes": 22912
+    },
+    {
+      "path": "tests/card-final-profiles.spec.ts",
+      "sha256": "16911ed24ea88d12be5751e21c4fcb67c89f54562eb6c98542737924ff748696",
+      "bytes": 7848
+    }
+  ]
+}

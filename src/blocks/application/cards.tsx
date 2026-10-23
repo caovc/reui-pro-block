@@ -39,10 +39,12 @@ import type { BlockProps } from "@/data/types";
 import RefinedCards from "./card-variants";
 import ExtendedCards from "./card-variants/extended";
 import FinalKpis from "./card-variants/final-kpis";
+import FinalProfiles from "./card-variants/final-profiles";
 export default function CardsBlock({ block }: BlockProps) {
   if (/^card-([1-9]|1[0-5])$/.test(block.id)) return <RefinedCards block={block}/>;
   if (/^card-(1[6-9]|2[0-9])$/.test(block.id)) return <ExtendedCards block={block}/>;
   if (/^card-3[0-5]$/.test(block.id)) return <FinalKpis block={block}/>;
+  if (/^card-(3[6-9]|4[0-3])$/.test(block.id)) return <FinalProfiles block={block}/>;
   return <GenericCardsBlock block={block}/>;
 }
 function GenericCardsBlock({ block }: BlockProps) {

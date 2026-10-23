@@ -1,0 +1,167 @@
+.profile-card-dots,
+.profile-card-mesh {
+  position: relative;
+  isolation: isolate;
+}
+.profile-card-dots:after,
+.profile-card-mesh:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+  mask-image: radial-gradient(ellipse at top right, #000, transparent 85%);
+  background-image: radial-gradient(
+    color-mix(in oklab, var(--muted-foreground) 35%, transparent) 0.6px,
+    transparent 0.6px
+  );
+  background-size: 3px 3px;
+}
+.profile-card-dots-left:after {
+  mask-image: radial-gradient(ellipse at top left, #000, transparent 85%);
+}
+.profile-card-mesh:after {
+  mask-image: linear-gradient(#000, transparent);
+  background-image:
+    linear-gradient(
+      color-mix(in oklab, var(--border) 40%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      color-mix(in oklab, var(--border) 40%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 5px 5px;
+}
+.profile-card-dots > *,
+.profile-card-mesh > * {
+  position: relative;
+  z-index: 1;
+}
+.profile-card-stat-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.profile-card-stat-strip > div {
+  position: relative;
+  padding: 14px 8px;
+  text-align: center;
+  min-width: 0;
+}
+.profile-card-stat-strip > div:not(:last-child):before {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 20px;
+  bottom: 20px;
+  width: 1px;
+  background: linear-gradient(transparent, var(--border), transparent);
+}
+.profile-card-fitness-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.profile-card-cover {
+  height: 124px;
+  border-radius: 8px;
+  background:
+    radial-gradient(ellipse at 52% 0%, #fbfaf3 15%, transparent 65%),
+    radial-gradient(ellipse at 10% 80%, #8f7484, transparent 85%),
+    radial-gradient(ellipse at 90% 70%, #8996a0, transparent 80%), #e8e9e3;
+}
+.profile-project-thumb {
+  height: 100%;
+  width: 100%;
+  padding: 7%;
+  overflow: hidden;
+  background: #edf1f8;
+  color: #262634;
+  text-align: left;
+  position: relative;
+}
+.profile-project-appbar {
+  height: 9%;
+  display: flex;
+  align-items: center;
+  gap: 3%;
+  margin-bottom: 6%;
+}
+.profile-project-appbar > span {
+  width: 3%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #a3a6b5;
+}
+.profile-project-dashboard {
+  display: grid;
+  grid-template-columns: 14% 1fr;
+  gap: 6%;
+  height: 82%;
+}
+.profile-project-dashboard > aside {
+  border-radius: 3px;
+  background: #d6dbea;
+}
+.profile-project-dashboard > main {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 10%;
+}
+.profile-project-chart {
+  height: 48%;
+  width: 100%;
+  min-height: 0;
+  aspect-ratio: auto;
+}
+.profile-project-checkout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, #f1dfea, #dedcf1);
+}
+.profile-project-checkout .profile-project-appbar {
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  width: 90%;
+}
+.profile-project-phone {
+  width: 51%;
+  height: 95%;
+  border: 3px solid #252636;
+  border-radius: 8px;
+  background: white;
+  padding: 6%;
+  transform: rotate(-8deg);
+  font-size: 5px;
+  box-shadow: 6px 4px 0 #22223311;
+}
+.profile-project-console {
+  background: #1d2436;
+  color: #c9dbeb;
+}
+.profile-project-console .profile-project-appbar > span {
+  background: #4a5c77;
+}
+.profile-project-console .profile-project-dashboard > aside {
+  background: #263a50;
+}
+.profile-project-console [data-slot="frame-panel"] {
+  background: #25384a;
+  border-color: #3b4f64;
+}
+
+@container (max-width:460px) {
+  .profile-card-stat-strip > div {
+    padding: 14px 4px;
+  }
+  .profile-card-stat-strip .text-2xl {
+    font-size: 20px;
+  }
+  .profile-card-stat-strip .text-sm {
+    font-size: 11px;
+  }
+}

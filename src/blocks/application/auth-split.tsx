@@ -1,4 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import Autoplay from "embla-carousel-autoplay";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  type CarouselApi,
+} from "@/components/ui/carousel";
+import { Rating } from "@/components/reui/rating";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import sarah from "./assets/schedule-sarah-chen.jpg";
+import james from "./assets/schedule-james-park.jpg";
+import emma from "./assets/schedule-emma-wilson.jpg";
+import alex from "./assets/schedule-alex-johnson.jpg";
+import marcus from "./assets/schedule-marcus-webb.jpg";
+import sofia from "./assets/schedule-sofia-reyes.jpg";
 import { Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -147,41 +162,103 @@ const reviews = [
       "We shipped our first version with confidence and kept improving from there.",
   },
 ];
+// Actual free REUI c-carousel-5 Autoplay and c-carousel-11 API/dot patterns.
 function ReviewCarousel() {
+  const [api, setApi] = useState<CarouselApi>();
   const [active, setActive] = useState(2);
-  const [paused, setPaused] = useState(false);
+  const manual = useRef(false);
+  const root = useRef<HTMLDivElement>(null);
+  const [autoplay] = useState(() =>
+    Autoplay({
+      delay: 6500,
+      playOnInit: false,
+      stopOnInteraction: true,
+      stopOnMouseEnter: true,
+      stopOnFocusIn: true,
+    }),
+  );
+  const photos = [sarah, james, emma, alex, marcus, sofia];
   useEffect(() => {
-    if (paused) return;
-    const timer = window.setInterval(
-      () => setActive((value) => (value + 1) % reviews.length),
-      6500,
-    );
-    return () => window.clearInterval(timer);
-  }, [paused]);
+    if (!api) return;
+    const plugin = autoplay;
+    const selected = () => setActive(api.selectedScrollSnap());
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const mobile = window.matchMedia("(max-width: 700px)");
+    const updatePlayback = () => {
+      if (
+        reduced.matches ||
+        mobile.matches ||
+        manual.current ||
+        root.current?.contains(document.activeElement)
+      )
+        plugin.stop();
+      else plugin.play();
+    };
+    const reinitialized = () => {
+      selected();
+      updatePlayback();
+    };
+    selected();
+    api.on("select", selected);
+    api.on("reInit", reinitialized);
+    reduced.addEventListener("change", updatePlayback);
+    mobile.addEventListener("change", updatePlayback);
+    updatePlayback();
+    return () => {
+      api.off("select", selected);
+      api.off("reInit", reinitialized);
+      reduced.removeEventListener("change", updatePlayback);
+      mobile.removeEventListener("change", updatePlayback);
+      plugin.stop();
+    };
+  }, [api, autoplay]);
   return (
-    <section
+    <Carousel
+      ref={root}
+      setApi={setApi}
+      opts={{ align: "center", loop: true, startIndex: 2 }}
+      plugins={[autoplay]}
       className="auth-review-carousel"
       aria-label="Customer stories"
-      aria-roledescription="carousel"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocusCapture={() => setPaused(true)}
+      tabIndex={0}
+      onPointerDown={() => {
+        manual.current = true;
+        autoplay.stop();
+      }}
+      onKeyDown={(event) => {
+        if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+          manual.current = true;
+          autoplay.stop();
+        }
+      }}
+      onMouseLeave={() => {
+        if (
+          !manual.current &&
+          !window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
+          !root.current?.contains(document.activeElement)
+        )
+          autoplay.play();
+      }}
     >
-      <div className="auth-review-track">
-        {[-1, 0, 1].map((offset) => {
-          const review =
-            reviews[(active + offset + reviews.length) % reviews.length];
-          return (
+      <CarouselContent className="auth-review-track" aria-live="off">
+        {reviews.map((review, index) => (
+          <CarouselItem
+            className="auth-review-slide"
+            key={review.name}
+            aria-label={`Story ${index + 1} of ${reviews.length}`}
+          >
             <Card
-              key={`${active}-${offset}`}
-              className={`auth-review-card ${offset ? "auth-review-neighbor" : "auth-review-current"}`}
-              aria-hidden={offset !== 0}
+              className={`auth-review-card ${index === active ? "auth-review-current" : "auth-review-neighbor"}`}
+              aria-hidden={index !== active}
             >
               <CardContent>
                 <p>{review.quote}</p>
                 <p>{review.detail}</p>
                 <div className="auth-review-person">
-                  <span>{review.initials}</span>
+                  <Avatar>
+                    <AvatarImage src={photos[index]} alt="" />
+                    <AvatarFallback>{review.initials}</AvatarFallback>
+                  </Avatar>
                   <div>
                     <strong>{review.name}</strong>
                     <small>{review.role}</small>
@@ -189,9 +266,9 @@ function ReviewCarousel() {
                 </div>
               </CardContent>
             </Card>
-          );
-        })}
-      </div>
+          </CarouselItem>
+        ))}
+      </CarouselContent>
       <div className="auth-review-dots" aria-label="Choose a customer story">
         {reviews.map((review, index) => (
           <Button
@@ -202,15 +279,16 @@ function ReviewCarousel() {
             aria-label={`Show story ${index + 1}`}
             aria-pressed={active === index}
             onClick={() => {
-              setActive(index);
-              setPaused(true);
+              manual.current = true;
+              autoplay.stop();
+              api?.scrollTo(index);
             }}
           >
             <span className={active === index ? "active" : ""} />
           </Button>
         ))}
       </div>
-    </section>
+    </Carousel>
   );
 }
 function LegalFooter({ copyright = false }: { copyright?: boolean }) {
@@ -332,11 +410,12 @@ export default function SplitAuth({ block }: BlockProps) {
         </section>
         <aside className="auth-magic-review auth-grain">
           <figure>
-            <div className="auth-five-stars" aria-label="5 out of 5 stars">
-              {[0, 1, 2, 3, 4].map((n) => (
-                <Star key={n} fill="currentColor" />
-              ))}
-            </div>
+            <Rating
+              className="auth-five-stars"
+              rating={5}
+              role="img"
+              aria-label="5 out of 5 stars"
+            />
             <blockquote>
               “A thoughtful foundation for teams
               <br className="hidden xl:block" /> building their next great

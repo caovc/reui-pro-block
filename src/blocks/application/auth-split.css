@@ -593,3 +593,32 @@
 .auth-review-panel .auth-review-carousel {
   margin-top: 49px;
 }
+
+/* Actual c-carousel API owns dragging, centering, selection and loop geometry. */
+.auth-review-carousel .auth-review-track {
+  gap: 0;
+  justify-content: flex-start;
+  margin-left: -20px;
+  width: auto;
+  align-items: stretch;
+}
+.auth-review-slide {
+  flex: 0 0 290px;
+  padding-left: 20px;
+  min-width: 0;
+}
+.auth-five-stars > [class] {
+  gap: 3px;
+}
+.auth-five-stars [data-slot="rating-star-filled"] {
+  fill: currentColor;
+  color: inherit;
+}
+.auth-five-stars [data-slot="rating-star-empty"] {
+  color: inherit;
+}
+@media (max-width: 900px) {
+  .auth-review-slide {
+    flex-basis: 260px;
+  }
+}

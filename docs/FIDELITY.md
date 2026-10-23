@@ -27,7 +27,7 @@ The Commerce/Charts integration additionally passed 192 production browser tests
 | --- | --- | ---: | --- |
 | Application | [App Shell](https://reui.io/blocks/application/app-shell) | 36 | Pending |
 | Application | [Auth](https://reui.io/blocks/application/auth) | 20 | 11/20 desktop compared; see [centered](audits/auth-centered.md), [split/framed](audits/auth-split.md), and [trial/blueprint](audits/auth-growth.md) audits |
-| Application | [Card](https://reui.io/blocks/application/card) | 43 | 35/43 desktop compared with actual free REUI compositions; see [Card16–29](card16-29-implementation.md), [Card30–35](card30-35-implementation.md), and [reuse audit](REUI-REUSE.md) |
+| Application | [Card](https://reui.io/blocks/application/card) | 43 | 43/43 desktop compared with actual free REUI compositions; see [Card16–29](card16-29-implementation.md), [Card30–35](card30-35-implementation.md), [Card36–43](card36-43-implementation.md), and [reuse audit](REUI-REUSE.md) |
 | Application | [Dashboard](https://reui.io/blocks/application/dashboard) | 8 | Pending |
 | Application | [Dialog](https://reui.io/blocks/application/dialog) | 15 | Pending |
 | Application | [Empty State](https://reui.io/blocks/application/empty-state) | 14 | Pending |
