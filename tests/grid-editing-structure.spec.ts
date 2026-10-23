@@ -143,13 +143,40 @@ test("drive cascading selection and reparenting a file preserve hierarchy", asyn
   ).toHaveAttribute("aria-checked", "mixed");
   const source = page.locator('tr[data-row-id="9"]');
   const target = page.locator('tr[data-row-id="5"]');
-  await source
-    .getByRole("button", { name: "Drag to reorder row", exact: true })
-    .dragTo(target);
-  await expect(source).toHaveAttribute("data-depth", "1");
+  const handle = source.getByRole("button", {
+    name: "Drag to reorder row",
+    exact: true,
+  });
+  await handle.hover();
+  const grip = await handle.boundingBox();
+  const destination = await target.boundingBox();
+  expect(grip).not.toBeNull();
+  expect(destination).not.toBeNull();
+  const pointerX = grip!.x + grip!.width / 2;
+  await page.mouse.down();
+  await page.mouse.move(pointerX, grip!.y + grip!.height / 2 - 4);
+  // dnd-kit measures droppables after activation. Wait for the real drag
+  // and its destination indicator before releasing the pointer.
+  await expect(source).toHaveAttribute("data-dragging", "true");
+  await page.mouse.move(
+    pointerX,
+    destination!.y + destination!.height / 2,
+    { steps: 8 },
+  );
   await expect(
-    target.getByRole("button", { name: "Collapse row", exact: true }),
+    target.locator('[data-slot="data-grid-table-row-drop-indicator"]'),
   ).toBeVisible();
+  await page.mouse.up();
+  await expect(source).toHaveAttribute("data-depth", "1");
+  const collapse = target.getByRole("button", {
+    name: "Collapse row",
+    exact: true,
+  });
+  await expect(collapse).toBeVisible();
+  await collapse.click();
+  await expect(source).toHaveCount(0);
+  await target.getByRole("button", { name: "Expand row", exact: true }).click();
+  await expect(source).toHaveAttribute("data-depth", "1");
 });
 test("task spreadsheet commits a cell and undo restores the prior value", async ({
   page,

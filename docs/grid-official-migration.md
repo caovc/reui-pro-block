@@ -55,3 +55,9 @@ Temporary screenshots, traces and logs are under `/tmp/reui-grid-filtering/`; th
 - Final layout measurements: Dispatch frame 562.5/678.5px (desktop/mobile), header 32px and rows 51px; Inventory frame 465/569px with table top 205/293px and rows 49px; Treasury frame 688/854px, table height 503px, footer 102px, mobile table width 1000px. These close the specific review differences recorded during migration.
 
 Upstream `use no memo` bundler warnings remain informational: this project does not enable React Compiler; the official source directives are preserved in source. Unpaged grids intentionally disable pagination while retaining their full original datasets and other native models.
+
+### Deployment and drag-test follow-up
+
+The descendant `c8239fc` deployed successfully in Actions run `39886792829`: **368 tests passed**. All **48 live Grid routes** then rendered official model rows without page errors or document overflow; a real Merchant = Stripe filter returned the expected single transaction. At 390px the Treasury document remained 390px wide while its table scrolled inside the 1000px container content.
+
+A later 420-case CI run passed 419 cases but failed the Drive reparenting assertion after an immediate `dragTo` release. No product hierarchy error reproduced in 12 serial and 24 three-worker runs of that original test. The test now waits for the official active-drag state and destination drop indicator before mouse-up, retaining the depth assertion and additionally collapsing/reopening the destination folder to verify actual tree membership. The revised case passed 24 three-worker repetitions. This corrects missing gesture synchronization; it does not establish a reproducible product defect or increase timeouts.
