@@ -75,7 +75,7 @@ export async function downloadBundle(block: BlockMeta) {
       {
         compilerOptions: {
           target: "ES2022",
-          types: ["vite/client"],
+          types: ["vite/client", "node"],
           lib: ["ES2022", "DOM", "DOM.Iterable"],
           module: "ESNext",
           moduleResolution: "bundler",
