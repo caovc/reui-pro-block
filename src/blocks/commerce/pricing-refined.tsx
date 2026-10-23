@@ -485,7 +485,7 @@ export function AgencyPricing() {
         <div className="rp-trust">
           <div className="rp-trust-caption">
             <Separator />
-            <p>Used by teams at</p>
+            <p>Illustrative teams</p>
             <Separator />
           </div>
           <PricingBrandmarks />

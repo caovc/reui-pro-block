@@ -9,6 +9,10 @@ test("range picker changes its real range and confirms in the original footer", 
   await expect(frame).toHaveAttribute("data-slot", "frame");
   await expect(frame.locator('[data-slot="frame-panel"]')).toHaveCount(1);
   await expect(frame.getByRole("img", { name: "Alex Johnson" })).toBeVisible();
+  await expect(frame.getByRole("img", { name: "Alex Johnson" })).toHaveAttribute(
+    "src",
+    /^data:image\/svg\+xml,/,
+  );
   await expect(page.getByRole("combobox", { name: "Start time" })).toHaveText("09:00 AM");
   await expect(page.getByRole("combobox", { name: "End time" })).toHaveText("10:00 AM");
   await page.getByRole("button", { name: "3 hours", exact: true }).click();

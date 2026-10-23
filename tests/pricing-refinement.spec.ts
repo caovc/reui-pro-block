@@ -46,6 +46,15 @@ test("agency annual and monthly rates match reference and plan links introduce n
   }
   await page.getByRole("tab", { name: "Yearly 2 Months Free", exact: true }).click();
   await expect(page.getByLabel("Team price", { exact: true })).toHaveText("$70 per month");
-  await expect(page.getByRole("list", { name: "Customer logos" }).getByRole("img")).toHaveCount(6);
+  await expect(page.getByText("Illustrative teams", { exact: true })).toBeVisible();
+  const marks = page.getByRole("list", { name: "Illustrative team marks" }).getByRole("img");
+  await expect(marks).toHaveCount(6);
+  for (const mark of await marks.all()) {
+    await expect(mark).toHaveAttribute("alt", /^Team .+ original demo mark$/);
+    await expect(mark).toHaveAttribute("src", /^data:image\/svg\+xml,/);
+    expect(
+      await mark.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0),
+    ).toBe(true);
+  }
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });

@@ -441,10 +441,14 @@
 .rp-agency .rp-brandmarks li {
   display: flex;
   align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 20px;
 }
-.rp-agency .rp-brandmarks svg {
+.rp-agency .rp-brandmarks img {
   display: block;
-  width: auto;
+  flex-shrink: 0;
 }
 @container refined-pricing (min-width:640px) {
   .refined-pricing .rp-container {

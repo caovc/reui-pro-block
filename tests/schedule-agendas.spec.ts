@@ -26,6 +26,7 @@ test("appointment status filtering, day selection and participant details follow
     .click();
   const people = page.locator('[data-slot="popover-content"]');
   await expect(people.getByRole("heading", { name: "Attendees", exact: true })).toBeVisible();
+  await expect(people.getByRole("img").first()).toHaveAttribute("src", /^data:image\/svg\+xml,/);
   expect(await people.evaluate((el) => getComputedStyle(el).fontFamily)).toContain("Inter");
   await page.keyboard.press("Escape");
   await expect(people).toHaveCount(0);
@@ -38,6 +39,10 @@ test("team agenda categories, calendar keyboard selection and empty days update 
   await page.goto("./#/preview/application/schedule/schedule-8");
   await expect(page.getByRole("heading", { name: "June 9, 2026", exact: true })).toBeVisible();
   await expect(page.locator('img[alt="Alex Chen"]').first()).toBeVisible();
+  await expect(page.locator('img[alt="Alex Chen"]').first()).toHaveAttribute(
+    "src",
+    /^data:image\/svg\+xml,/,
+  );
   await page.getByRole("button", { name: "Workshop", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Figma Workshop", exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Sprint Kickoff", exact: true })).toHaveCount(0);

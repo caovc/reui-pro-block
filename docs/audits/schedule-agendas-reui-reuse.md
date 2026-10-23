@@ -41,7 +41,7 @@ The shared `CalendarSelect` was adapted from c-calendar-8's actual Dropdown/Drop
 
 `c-calendar-22` is a complete free sample composition with three fixed sample events, a Calendar, a CardFooter, an Add button, and colored event rows. It does not expose an agenda data API, date/status/category filtering, attendee slots, or the two Pro preview structures. It was installed and inspected; this audit does not falsely claim that its `Pattern()` export is rendered unchanged. Schedule-specific event data/filtering, colored dots, attendee content, and the confirmed two-column/vertical arrangement remain business composition around the reused controls.
 
-The free sources do not supply the exact Schedule 1/8 event datasets. Previously recorded limitations remain: some later June participant lists were not completely observed, Nina Patel's hidden photo was not observed, and no full-catalog fidelity claim follows from this migration. No creation/detail dialogs were invented for reference actions that produced no state change.
+The free sources do not supply the exact Schedule 1/8 event datasets. Previously recorded limitations remain: some later June participant lists were not completely observed, and no full-catalog fidelity claim follows from this migration. All participant images now intentionally use original local demoAvatar illustrations, including popover rows; original reference photographs are no longer consumed by Schedule. No creation/detail dialogs were invented for reference actions that produced no state change.
 
 ## Source fingerprints
 
@@ -66,3 +66,7 @@ At audit time the local shared `components/reui/frame.tsx` SHA-256 exactly match
 - At 1440×1000, Schedule 1 remains 896×422 at x272/y80, with 476×67.5 event cards. Schedule 8 remains 384×690.484375 at x528/y80, with 334×55.25 event cards and its scroll area at x553/y563.484375. These measured dimensions match the confirmed public reference.
 
 Temporary source downloads, CLI installation, comparison JSON, and screenshots are under `/tmp/reui-fidelity-review/agendas`. Production publication and git operations are coordinated by the primary agent; this subagent did not commit or push.
+
+## Original artwork policy follow-up
+
+The official free AvatarGroup composition above remains the actual implementation. Its demo photograph content has been replaced by the shared, locally authored `demoAvatar(name)` SVG generator. This changes imagery only, retains accessible names and loading fallbacks, and adds no remote image request. The previous reference-photo mapping/imports were removed; shared legacy files still used by other scopes are tracked in `src/blocks/application/assets/README.md` pending coordinated deletion. Official reference links and MIT/OFL attribution remain intact.

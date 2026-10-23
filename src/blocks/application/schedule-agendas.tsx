@@ -24,20 +24,9 @@ import { Badge } from "@/components/reui/badge";
 import { Frame, FramePanel } from "@/components/reui/frame";
 import { IconTile } from "@/components/reui/icon-tile";
 import type { BlockProps } from "@/data/types";
+import { demoAvatar } from "@/lib/demo-artwork";
 import "../reference.css";
 import "./schedule-agendas.css";
-import schedulePortrait0 from "./assets/schedule-alex-chen.jpg";
-import schedulePortrait1 from "./assets/schedule-priya-singh.jpg";
-import schedulePortrait2 from "./assets/schedule-marcus-webb.jpg";
-import schedulePortrait3 from "./assets/schedule-sofia-reyes.jpg";
-import schedulePortrait4 from "./assets/schedule-liam-torres.jpg";
-import schedulePortrait5 from "./assets/schedule-emma-wilson.jpg";
-import schedulePortrait6 from "./assets/schedule-alex-johnson.jpg";
-import schedulePortrait7 from "./assets/schedule-zoe-martinez.jpg";
-import schedulePortrait8 from "./assets/schedule-tom-anderson.jpg";
-import schedulePortrait9 from "./assets/schedule-sarah-chen.jpg";
-import schedulePortrait10 from "./assets/schedule-james-park.jpg";
-import schedulePortrait11 from "./assets/schedule-lucas-ferreira.jpg";
 
 type Category = "Sprint" | "Standup" | "Review" | "Deadline" | "Workshop";
 type AgendaEvent = {
@@ -66,23 +55,6 @@ const statusPeople = [
   "James Park",
   "Nina Patel",
 ];
-// Unsplash photographs also used in the public preview; free image license:
-// https://unsplash.com/license. No Pro asset files or source are included.
-const portraits: Record<string, string> = {
-  "Alex Chen": schedulePortrait0,
-  "Priya Singh": schedulePortrait1,
-  "Marcus Webb": schedulePortrait2,
-  "Sofia Reyes": schedulePortrait3,
-  "Liam Torres": schedulePortrait4,
-  "Emma Wilson": schedulePortrait5,
-  "Alex Johnson": schedulePortrait6,
-  "Zoe Martinez": schedulePortrait7,
-  "Tom Anderson": schedulePortrait8,
-  "Sarah Chen": schedulePortrait9,
-  "James Park": schedulePortrait10,
-  "Lucas Ferreira": schedulePortrait11,
-};
-const portrait = (name: string) => portraits[name];
 const event = (
   title: string,
   category: Category,
@@ -217,7 +189,7 @@ function Attendees({
     <AvatarGroup className="sa-avatars -space-x-1.5" aria-label="Attendees">
       {people.slice(0, 3).map((name) => (
         <Avatar key={name} className="sa-avatar" title={name}>
-          <AvatarImage src={portrait(name)} alt={name} />
+          <AvatarImage src={demoAvatar(name)} alt={name} />
           <AvatarFallback>{initials(name)}</AvatarFallback>
         </Avatar>
       ))}
@@ -239,7 +211,7 @@ function Attendees({
               {people.map((name) => (
                 <div key={name}>
                   <Avatar className="size-6">
-                    <AvatarImage src={portrait(name)} alt={name} />
+                    <AvatarImage src={demoAvatar(name)} alt={name} />
                     <AvatarFallback className="text-[10px]">{initials(name)}</AvatarFallback>
                   </Avatar>
                   <span>{name}</span>

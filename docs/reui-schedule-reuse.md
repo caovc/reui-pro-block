@@ -34,3 +34,7 @@ Final local evidence: the range, meeting, booking-state and responsive-render te
 Remaining visual limits from the earlier reference comparison remain: the 390px meeting calendar scales to show all seven days, and its icon assets use Lucide substitutions. This migration audits reuse and preserves the previously measured initial states; it does not claim exhaustive pixel identity across every Pro interaction state.
 
 Parent release gate subsequently passed on the frozen production candidate: all **14 combined site/schedule/pricing tests passed (37.3s)**, including the complete five booking tests and three agenda tests. Both actual source ZIP downloads independently built, and four standalone desktop/mobile renders with external HTTPS blocked passed their key interactions. This supersedes the pending gate statement above.
+
+## Original artwork policy follow-up
+
+Schedule 2 renders its Alex Johnson avatar using the locally authored `demoAvatar("Alex Johnson")` from `src/lib/demo-artwork.ts`, matching Schedule 1/8's participant illustration policy. The Schedule component itself no longer imports or loads the original preview portrait. Application-family source assembly and archives can still include cross-scope legacy resources pending coordinated cleanup; this is not a claim that the full archive is cleared. This is an intentional imagery substitution; the actual free ReUI Frame, TimePicker and CalendarSelect reuse chains above are unchanged. Official reference links, MIT notices and font OFL files remain intact.

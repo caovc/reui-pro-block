@@ -2,7 +2,7 @@ import { useRef, useState, type ComponentProps, type ReactNode } from "react";
 import { CircleCheck, CircleDot, Clock, Ellipsis, Info, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import rangePortrait from "./assets/range-alex-johnson.jpg";
+import { demoAvatar } from "@/lib/demo-artwork";
 import { CalendarDayButton } from "@/components/ui/calendar";
 import { CalendarSelect } from "@/components/reui/calendar-select";
 import {
@@ -215,7 +215,7 @@ export function TimeRangePicker() {
       <Frame className="sr-frame sr-range" role="region" aria-label="Time range picker">
         <FrameHeader className="sr-range-header">
           <Avatar>
-            <AvatarImage src={rangePortrait} alt="Alex Johnson" />
+            <AvatarImage src={demoAvatar("Alex Johnson")} alt="Alex Johnson" />
             <AvatarFallback>AJ</AvatarFallback>
           </Avatar>
           <div>
