@@ -1,32 +1,28 @@
-"use client"
+"use client";
 
 // Opted out of React Compiler with the rest of the grid (see data-grid.tsx).
-"use no memo"
+"use no memo";
 
-import { CheckIcon, CirclePlusIcon } from "lucide-react"
-import { useMemo, useState } from "react"
-import { Badge } from "@/components/reui/badge"
-import { useDataGrid } from "@/components/reui/data-grid/data-grid"
-import type { DataGridFeatures } from "@/components/reui/data-grid/data-grid"
-import type { Column } from "@tanstack/react-table"
+import { CheckIcon, CirclePlusIcon } from "lucide-react";
+import { useMemo, useState } from "react";
+import { Badge } from "@/components/reui/badge";
+import { useDataGrid } from "@/components/reui/data-grid/data-grid";
+import type { DataGridFeatures } from "@/components/reui/data-grid/data-grid";
+import type { Column } from "@tanstack/react-table";
 
-import { cn } from "cn"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-import { Separator } from "@/components/ui/separator"
+import { cn } from "cn";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Separator } from "@/components/ui/separator";
 interface DataGridColumnFilterProps<TData extends object, TValue> {
-  column?: Column<DataGridFeatures, TData, TValue>
-  title?: string
+  column?: Column<DataGridFeatures, TData, TValue>;
+  title?: string;
   options: {
-    label: string
-    value: string
-    icon?: React.ComponentType<{ className?: string }>
-  }[]
+    label: string;
+    value: string;
+    icon?: React.ComponentType<{ className?: string }>;
+  }[];
 }
 
 function DataGridColumnFilter<TData extends object, TValue>({
@@ -34,28 +30,24 @@ function DataGridColumnFilter<TData extends object, TValue>({
   title,
   options,
 }: DataGridColumnFilterProps<TData, TValue>) {
-  const { i18n } = useDataGrid()
-  const facets = column?.getFacetedUniqueValues()
-  const filterValue = column?.getFilterValue()
-  const selectedValues = new Set(
-    Array.isArray(filterValue) ? (filterValue as string[]) : []
-  )
-  const [searchQuery, setSearchQuery] = useState("")
+  const { i18n } = useDataGrid();
+  const facets = column?.getFacetedUniqueValues();
+  const filterValue = column?.getFilterValue();
+  const selectedValues = new Set(Array.isArray(filterValue) ? (filterValue as string[]) : []);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const filteredOptions = useMemo(() => {
-    if (!searchQuery) return options
+    if (!searchQuery) return options;
     return options.filter((option) =>
-      option.label.toLowerCase().includes(searchQuery.toLowerCase())
-    )
-  }, [options, searchQuery])
+      option.label.toLowerCase().includes(searchQuery.toLowerCase()),
+    );
+  }, [options, searchQuery]);
 
   return (
     <Popover>
       <PopoverTrigger asChild>
         <Button variant="outline" size="sm">
-          <CirclePlusIcon 
-            className="size-4"
-          />
+          <CirclePlusIcon className="size-4" />
           {title}
           {selectedValues?.size > 0 && (
             <>
@@ -72,11 +64,7 @@ function DataGridColumnFilter<TData extends object, TValue>({
                   options
                     .filter((option) => selectedValues.has(option.value))
                     .map((option) => (
-                      <Badge
-                        variant="secondary"
-                        key={option.value}
-                        className="px-1 font-normal"
-                      >
+                      <Badge variant="secondary" key={option.value} className="px-1 font-normal">
                         {option.label}
                       </Badge>
                     ))
@@ -103,19 +91,17 @@ function DataGridColumnFilter<TData extends object, TValue>({
           ) : (
             <div className="p-1">
               {filteredOptions.map((option) => {
-                const isSelected = selectedValues.has(option.value)
-                const facetCount = facets?.get(option.value)
+                const isSelected = selectedValues.has(option.value);
+                const facetCount = facets?.get(option.value);
                 const toggleOption = () => {
                   if (isSelected) {
-                    selectedValues.delete(option.value)
+                    selectedValues.delete(option.value);
                   } else {
-                    selectedValues.add(option.value)
+                    selectedValues.add(option.value);
                   }
-                  const filterValues = Array.from(selectedValues)
-                  column?.setFilterValue(
-                    filterValues.length ? filterValues : undefined
-                  )
-                }
+                  const filterValues = Array.from(selectedValues);
+                  column?.setFilterValue(filterValues.length ? filterValues : undefined);
+                };
                 return (
                   <div
                     key={option.value}
@@ -125,13 +111,13 @@ function DataGridColumnFilter<TData extends object, TValue>({
                     onClick={toggleOption}
                     onKeyDown={(e) => {
                       if (e.key === "Enter" || e.key === " ") {
-                        e.preventDefault()
-                        toggleOption()
+                        e.preventDefault();
+                        toggleOption();
                       }
                     }}
                     className={cn(
                       "rounded-md relative flex cursor-pointer items-center gap-2 px-2 py-1.5 text-sm outline-hidden select-none",
-                      "hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                      "hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
                     )}
                   >
                     <div
@@ -139,16 +125,12 @@ function DataGridColumnFilter<TData extends object, TValue>({
                         "border-primary rounded-sm flex h-4 w-4 items-center justify-center border",
                         isSelected
                           ? "bg-primary text-primary-foreground"
-                          : "opacity-50 [&_svg]:invisible"
+                          : "opacity-50 [&_svg]:invisible",
                       )}
                     >
-                      <CheckIcon 
-                        className="h-4 w-4"
-                      />
+                      <CheckIcon className="h-4 w-4" />
                     </div>
-                    {option.icon && (
-                      <option.icon className="text-muted-foreground h-4 w-4" />
-                    )}
+                    {option.icon && <option.icon className="text-muted-foreground h-4 w-4" />}
                     <span>{option.label}</span>
                     {facetCount !== undefined && (
                       <span className="ms-auto flex h-4 w-4 items-center justify-center font-mono text-xs">
@@ -156,7 +138,7 @@ function DataGridColumnFilter<TData extends object, TValue>({
                       </span>
                     )}
                   </div>
-                )
+                );
               })}
             </div>
           )}
@@ -170,8 +152,8 @@ function DataGridColumnFilter<TData extends object, TValue>({
                   onClick={() => column?.setFilterValue(undefined)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault()
-                      column?.setFilterValue(undefined)
+                      e.preventDefault();
+                      column?.setFilterValue(undefined);
                     }
                   }}
                   className="hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground rounded-md relative flex cursor-pointer items-center justify-center px-2 py-1.5 text-sm outline-hidden select-none"
@@ -184,7 +166,7 @@ function DataGridColumnFilter<TData extends object, TValue>({
         </div>
       </PopoverContent>
     </Popover>
-  )
+  );
 }
 
-export { DataGridColumnFilter, type DataGridColumnFilterProps }
+export { DataGridColumnFilter, type DataGridColumnFilterProps };

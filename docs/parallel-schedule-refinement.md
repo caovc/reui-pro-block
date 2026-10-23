@@ -4,13 +4,13 @@ This record supersedes the first pass after the user reported substantial visual
 
 ## Rebuilt surfaces
 
-| Entry | Observed public structure and initial size | Observed behavior reproduced |
-| --- | --- | --- |
-| 1 | 896×422 calendar/appointment panel, June 10, six actual event records, status dots and exact free portraits | Status filter and empty state; month/year/day; attendee popover. The reference keeps the June 10 event list when the heading date changes. |
-| 2 | 448×334 range card, Alex Johnson portrait/header, 09:00–10:00, ten exact duration presets | Time menus, presets, Apply changes the original footer to Confirmed, Cancel restores defaults. Removed the invented saved-card replacement. |
-| 3 | 512×803 meeting card, June 30/10:00/30 min/Every week, runtime timezone text, calendar/scrolling slots above the form | Duration/recurrence, title/description, switches, disabled noon slots. Submit changes the existing button to Scheduled while retaining the form; Cancel resets it. |
-| 8 | 384×690.48 compact agenda, June 9, colored day dots, six category filters, 180px scrolling event list | Category/date/month/year selection, actual event lists, attendee popover, keyboard navigation and empty state. |
-| 9 | 512×472 session picker, empty date and five duration choices | Twelve-hour slots, duration-dependent availability, Reset, Booked footer while keeping the calendar and slots. Removed the invented replacement confirmation screen. |
+| Entry | Observed public structure and initial size                                                                            | Observed behavior reproduced                                                                                                                                         |
+| ----- | --------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1     | 896×422 calendar/appointment panel, June 10, six actual event records, status dots and exact free portraits           | Status filter and empty state; month/year/day; attendee popover. The reference keeps the June 10 event list when the heading date changes.                           |
+| 2     | 448×334 range card, Alex Johnson portrait/header, 09:00–10:00, ten exact duration presets                             | Time menus, presets, Apply changes the original footer to Confirmed, Cancel restores defaults. Removed the invented saved-card replacement.                          |
+| 3     | 512×803 meeting card, June 30/10:00/30 min/Every week, runtime timezone text, calendar/scrolling slots above the form | Duration/recurrence, title/description, switches, disabled noon slots. Submit changes the existing button to Scheduled while retaining the form; Cancel resets it.   |
+| 8     | 384×690.48 compact agenda, June 9, colored day dots, six category filters, 180px scrolling event list                 | Category/date/month/year selection, actual event lists, attendee popover, keyboard navigation and empty state.                                                       |
+| 9     | 512×472 session picker, empty date and five duration choices                                                          | Twelve-hour slots, duration-dependent availability, Reset, Booked footer while keeping the calendar and slots. Removed the invented replacement confirmation screen. |
 
 Desktop frames start at y80. The same Inter Latin variable font as the public preview is bundled locally and applied to both surfaces and portalled controls. Thirteen exact, publicly licensed Unsplash portraits are bundled with source/license notes; initials remain fallbacks. No Pro registry source or premium artwork was used.
 

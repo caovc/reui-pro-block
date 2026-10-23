@@ -6,7 +6,6 @@ Final generation prompt:
 
 > Create a production website background asset, not a UI screenshot. Wide panoramic landscape 3.2:1 framing, 1536 by 480 composition if possible. Premium photorealistic 3D render of a friendly small autonomous home delivery robot in a warmly sunlit contemporary living room. Pale sage green rounded robot positioned just right of center at 62% width; glossy black oval face with two small cyan luminous curved eyes, small circular chest light, compact body and articulated arms. Left third: low powder blue credenza with rounded corners and slim legs, ceramic lamp above. Right third: edge of warm beige fabric sofa and soft cinnamon cushion. Background: softly blurred wood shelves and golden afternoon window light with green foliage outdoors. Low camera at robot eye level, detailed fabric and brushed metal, realistic soft shadows, cozy neutral amber, muted turquoise and sage palette. Robot face, cabinet and sofa should remain within the central horizontal band so the image can be cropped to a short 1440x444 hero banner. No people, no letters, no text, no logo, no borders, no watermark. Create an original scene, suitable as a fictional fleet dashboard cover image.
 
-
 ## Bundled free portraits
 
 These are the same free Unsplash demo portraits previously fetched remotely by `Face`; bundled here to avoid image-dependent layout/appearance and to work in standalone downloads. Their URLs use crop=64×64, quality=70:

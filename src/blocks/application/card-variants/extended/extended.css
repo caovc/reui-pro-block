@@ -60,15 +60,8 @@
 }
 .extended-mesh {
   background-image:
-    linear-gradient(
-      color-mix(in oklab, var(--border) 35%, transparent) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      90deg,
-      color-mix(in oklab, var(--border) 35%, transparent) 1px,
-      transparent 1px
-    );
+    linear-gradient(color-mix(in oklab, var(--border) 35%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklab, var(--border) 35%, transparent) 1px, transparent 1px);
   background-size: 14px 14px;
 }
 .extended-integration-band {

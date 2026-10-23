@@ -6,30 +6,14 @@ import { Rating } from "@/components/reui/rating";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import {
-  useTable,
-  type ColumnDef,
-  type SortingState,
-} from "@tanstack/react-table";
-import {
-  dataGridFeatures,
-  type DataGridFeatures,
-} from "@/components/reui/data-grid/data-grid";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { useTable, type ColumnDef, type SortingState } from "@tanstack/react-table";
+import { dataGridFeatures, type DataGridFeatures } from "@/components/reui/data-grid/data-grid";
 import { DataGridTableRowExpand } from "@/components/reui/data-grid/data-grid-table";
 import { DataGridColumnHeader } from "@/components/reui/data-grid/data-grid-column-header";
 import { StructureGrid } from "./grid-structure-model";
 import { cn } from "@/lib/utils";
-import {
-  FilterBar,
-  firstRule,
-  matchesRules,
-  type FilterRule,
-} from "./grid-filter-controls";
+import { FilterBar, firstRule, matchesRules, type FilterRule } from "./grid-filter-controls";
 import {
   StructureBadge,
   StructureFrame,
@@ -71,16 +55,9 @@ const taskSeed: Task[] = taskNames.map((name, i) => ({
   id: i + 1,
   name,
   status: ["In Progress", "In Progress", "Todo", "Review", "Backlog"][i % 5],
-  owner: ["Maya Perez", "Pavel Singh", "Noa Kim", "Emil Novak", "Jonas Reed"][
-    i % 5
-  ],
+  owner: ["Maya Perez", "Pavel Singh", "Noa Kim", "Emil Novak", "Jonas Reed"][i % 5],
   priority: i < 2 ? "Urgent" : "High",
-  project: [
-    "Registry API",
-    "Launch Analytics",
-    "Workspace Access",
-    "Task Delivery",
-  ][i % 4],
+  project: ["Registry API", "Launch Analytics", "Workspace Access", "Task Delivery"][i % 4],
   children: (i === 0
     ? [
         "Lock the signed entitlement payload shape",
@@ -89,11 +66,7 @@ const taskSeed: Task[] = taskNames.map((name, i) => ({
         "Document the fallback flow for invalid claims",
         "Audit session invalidation when workspace roles change",
       ]
-    : [
-        "Review requirements",
-        "Validate implementation",
-        "Complete acceptance checks",
-      ]
+    : ["Review requirements", "Validate implementation", "Complete acceptance checks"]
   ).map((name, j) => ({
     id: 1000 + i * 10 + j,
     name,
@@ -117,9 +90,7 @@ function SubtaskGrid() {
     [subtasks, setSubtasks] = useState(true),
     [newName, setNewName] = useState(""),
     [sorting, setSorting] = useState<SortingState>([]);
-  const active = rows.filter(
-    (r) => r.status !== "Backlog" && r.status !== "Done",
-  );
+  const active = rows.filter((r) => r.status !== "Backlog" && r.status !== "Done");
   function toggle(id: number, childId?: number) {
     setRows((v) =>
       v.map((r) =>
@@ -133,9 +104,7 @@ function SubtaskGrid() {
                 return {
                   ...r,
                   children,
-                  status: children.every((c) => c.done)
-                    ? "Done"
-                    : "In Progress",
+                  status: children.every((c) => c.done) ? "Done" : "In Progress",
                 };
               })()
             : {
@@ -191,10 +160,7 @@ function SubtaskGrid() {
                       : false
                 }
                 onCheckedChange={() =>
-                  toggle(
-                    r.child ? r.parentId! : r.id,
-                    r.child ? r.id : undefined,
-                  )
+                  toggle(r.child ? r.parentId! : r.id, r.child ? r.id : undefined)
                 }
               />
               <span
@@ -211,9 +177,7 @@ function SubtaskGrid() {
       },
       {
         accessorKey: "status",
-        header: ({ column }) => (
-          <DataGridColumnHeader column={column} title="Status" />
-        ),
+        header: ({ column }) => <DataGridColumnHeader column={column} title="Status" />,
         size: 145,
         cell: ({ row }) => <StructureBadge value={row.original.status} dot />,
       },
@@ -225,9 +189,7 @@ function SubtaskGrid() {
       },
       {
         accessorKey: "priority",
-        header: ({ column }) => (
-          <DataGridColumnHeader column={column} title="Priority" />
-        ),
+        header: ({ column }) => <DataGridColumnHeader column={column} title="Priority" />,
         size: 120,
         cell: ({ row }) => <StructureBadge value={row.original.priority} />,
       },
@@ -255,9 +217,7 @@ function SubtaskGrid() {
                             a.id === r.parentId
                               ? {
                                   ...a,
-                                  children: a.children.filter(
-                                    (b) => b.id !== r.id,
-                                  ),
+                                  children: a.children.filter((b) => b.id !== r.id),
                                 }
                               : a,
                           ),
@@ -273,8 +233,7 @@ function SubtaskGrid() {
                     },
                     {
                       label: "Delete task",
-                      onClick: () =>
-                        setRows((v) => v.filter((a) => a.id !== r.id)),
+                      onClick: () => setRows((v) => v.filter((a) => a.id !== r.id)),
                     },
                   ]
             }
@@ -314,18 +273,14 @@ function SubtaskGrid() {
       }),
     onPaginationChange: (updater) => {
       const next =
-        typeof updater === "function"
-          ? updater({ pageIndex: page, pageSize: size })
-          : updater;
+        typeof updater === "function" ? updater({ pageIndex: page, pageSize: size }) : updater;
       setPage(next.pageIndex);
       setSize(next.pageSize);
     },
     globalFilterFn: (row) =>
       matchesRules({ ...row.original }, rules) &&
       (tab === "All tasks" ||
-        (tab === "Active" &&
-          row.original.status !== "Backlog" &&
-          row.original.status !== "Done") ||
+        (tab === "Active" && row.original.status !== "Backlog" && row.original.status !== "Done") ||
         (tab === "Backlog" && row.original.status === "Backlog")),
   });
   const filtered = table.getFilteredRowModel().rows;
@@ -424,24 +379,13 @@ function SubtaskGrid() {
             key: "owner",
             label: "Assignee",
             type: "select",
-            options: [
-              "Maya Perez",
-              "Pavel Singh",
-              "Noa Kim",
-              "Emil Novak",
-              "Jonas Reed",
-            ],
+            options: ["Maya Perez", "Pavel Singh", "Noa Kim", "Emil Novak", "Jonas Reed"],
           },
           {
             key: "project",
             label: "Project",
             type: "select",
-            options: [
-              "Registry API",
-              "Launch Analytics",
-              "Workspace Access",
-              "Task Delivery",
-            ],
+            options: ["Registry API", "Launch Analytics", "Workspace Access", "Task Delivery"],
           },
         ]}
         rules={rules}
@@ -461,16 +405,9 @@ function SubtaskGrid() {
           <PopoverContent align="end">
             <label className="flex items-center justify-between text-xs">
               Show sub-tasks
-              <Checkbox
-                checked={subtasks}
-                onCheckedChange={(v) => setSubtasks(!!v)}
-              />
+              <Checkbox checked={subtasks} onCheckedChange={(v) => setSubtasks(!!v)} />
             </label>
-            <Button
-              size="xs"
-              variant="outline"
-              onClick={() => setExpanded(rows.map((r) => r.id))}
-            >
+            <Button size="xs" variant="outline" onClick={() => setExpanded(rows.map((r) => r.id))}>
               Expand all tasks
             </Button>
             <Button size="xs" variant="outline" onClick={() => setExpanded([])}>
@@ -497,11 +434,7 @@ function Ring({ value }: { value: number }) {
         viewBox="0 0 20 20"
         className={cn(
           "size-4 -rotate-90",
-          value >= 80
-            ? "text-emerald-500"
-            : value >= 50
-              ? "text-amber-500"
-              : "text-rose-500",
+          value >= 80 ? "text-emerald-500" : value >= 50 ? "text-amber-500" : "text-rose-500",
         )}
       >
         <circle
@@ -563,16 +496,8 @@ const releaseNames = [
 const releaseSeed: Review[] = releaseNames.map((name, i) => ({
   id: 8421 - i * 7,
   name,
-  service: ["Checkout", "Webhooks", "Authentication", "Checkout", "Webhooks"][
-    i % 5
-  ],
-  owner: [
-    "Maya Patel",
-    "Omar Haddad",
-    "Jonah Lee",
-    "Nina Santos",
-    "Omar Haddad",
-  ][i % 5],
+  service: ["Checkout", "Webhooks", "Authentication", "Checkout", "Webhooks"][i % 5],
+  owner: ["Maya Patel", "Omar Haddad", "Jonah Lee", "Nina Santos", "Omar Haddad"][i % 5],
   role: [
     "Release lead",
     "Integrations owner",
@@ -594,13 +519,7 @@ const releaseSeed: Review[] = releaseNames.map((name, i) => ({
   ].map((title, j) => ({
     title,
     status: ["Flagged", "Open", "Done", "Open", "Done"][j],
-    owner: [
-      "Jonah Lee",
-      "Nina Santos",
-      "Maya Patel",
-      "Omar Haddad",
-      "Maya Patel",
-    ][j],
+    owner: ["Jonah Lee", "Nina Santos", "Maya Patel", "Omar Haddad", "Maya Patel"][j],
     rating: [2.4, 3.1, 4.8, 4.2, 3.8][j],
     coverage: [42, 58, 96, 78, 66][j],
   })),
@@ -631,10 +550,7 @@ function ReleaseGrid() {
   }
   function checkCard(r: Review, c: Review["checks"][number], j: number) {
     return (
-      <div
-        key={c.title}
-        className="min-w-[230px] flex-1 rounded-lg border bg-background p-3"
-      >
+      <div key={c.title} className="min-w-[230px] flex-1 rounded-lg border bg-background p-3">
         <button
           aria-label={`Toggle ${c.title} for ${r.name}`}
           onClick={() =>
@@ -685,8 +601,8 @@ function ReleaseGrid() {
         <div className="mb-3 flex items-center gap-2 text-xs">
           <b className="font-medium">Checklist</b>
           <span className="text-muted-foreground">
-            · 3 of {r.checks.length} items ·{" "}
-            {r.checks.filter((c) => c.status !== "Done").length} open
+            · 3 of {r.checks.length} items · {r.checks.filter((c) => c.status !== "Done").length}{" "}
+            open
           </span>
           {r.checks.length > 3 && (
             <Popover>
@@ -733,12 +649,7 @@ function ReleaseGrid() {
         accessorKey: "owner",
         header: "Owner",
         size: 220,
-        cell: ({ row }) => (
-          <StructurePerson
-            name={row.original.owner}
-            detail={row.original.role}
-          />
-        ),
+        cell: ({ row }) => <StructurePerson name={row.original.owner} detail={row.original.role} />,
       },
       {
         accessorKey: "status",
@@ -748,9 +659,7 @@ function ReleaseGrid() {
       },
       {
         accessorKey: "risk",
-        header: ({ column }) => (
-          <DataGridColumnHeader column={column} title="Risk" />
-        ),
+        header: ({ column }) => <DataGridColumnHeader column={column} title="Risk" />,
         size: 140,
         cell: ({ row }) => <StructureBadge value={row.original.risk} />,
       },
@@ -761,9 +670,7 @@ function ReleaseGrid() {
         cell: ({ row: { original: r } }) => (
           <>
             {r.done}/{r.total}
-            <span className="block text-xs text-muted-foreground">
-              {r.total - r.done} pending
-            </span>
+            <span className="block text-xs text-muted-foreground">{r.total - r.done} pending</span>
           </>
         ),
       },
@@ -826,9 +733,7 @@ function ReleaseGrid() {
       }),
     onPaginationChange: (updater) => {
       const next =
-        typeof updater === "function"
-          ? updater({ pageIndex: page, pageSize: size })
-          : updater;
+        typeof updater === "function" ? updater({ pageIndex: page, pageSize: size }) : updater;
       setPage(next.pageIndex);
       setSize(next.pageSize);
     },
@@ -854,11 +759,7 @@ function ReleaseGrid() {
             <label htmlFor="release-name" className="text-xs font-medium">
               Release title
             </label>
-            <Input
-              id="release-name"
-              value={newName}
-              onChange={(e) => setNewName(e.target.value)}
-            />
+            <Input id="release-name" value={newName} onChange={(e) => setNewName(e.target.value)} />
             <Button
               size="sm"
               disabled={!newName.trim()}
@@ -908,13 +809,7 @@ function ReleaseGrid() {
             setStatus(v);
             setPage(0);
           }}
-          options={[
-            "All statuses",
-            "Needs approval",
-            "Blocked",
-            "Approved",
-            "Escalated",
-          ]}
+          options={["All statuses", "Needs approval", "Blocked", "Approved", "Escalated"]}
         />
         <Popover>
           <PopoverTrigger asChild>
@@ -926,16 +821,9 @@ function ReleaseGrid() {
           <PopoverContent align="end">
             <label className="flex items-center justify-between text-xs">
               Show checklist cards
-              <Checkbox
-                checked={checks}
-                onCheckedChange={(v) => setChecks(!!v)}
-              />
+              <Checkbox checked={checks} onCheckedChange={(v) => setChecks(!!v)} />
             </label>
-            <Button
-              size="xs"
-              variant="outline"
-              onClick={() => setExpanded(rows.map((r) => r.id))}
-            >
+            <Button size="xs" variant="outline" onClick={() => setExpanded(rows.map((r) => r.id))}>
               Expand all reviews
             </Button>
           </PopoverContent>
@@ -953,9 +841,5 @@ function ReleaseGrid() {
   );
 }
 export default function ExpansionGrid({ block }: BlockProps) {
-  return block.id === "data-grid-expansion-3" ? (
-    <ReleaseGrid />
-  ) : (
-    <SubtaskGrid />
-  );
+  return block.id === "data-grid-expansion-3" ? <ReleaseGrid /> : <SubtaskGrid />;
 }

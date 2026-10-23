@@ -1,13 +1,133 @@
-import { useMemo, useState } from 'react';
-import { EventCalendar } from '@/components/reui/event-calendar/event-calendar';
-import { EventCalendarContent } from '@/components/reui/event-calendar/event-calendar-content';
-import { EventCalendarNav } from '@/components/reui/event-calendar/event-calendar-nav';
-import type { CalendarEvent } from '@/components/reui/event-calendar/event-calendar-types';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuCheckboxItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Button, Avatar } from './shared';
-import { ChevronDown } from 'lucide-react';
-export function RosterCalendar({events,onOpen,onCreate}:{events:Record<number,string>,onOpen:(title:string)=>void,onCreate:(day:number)=>void}){
- const [timeOff,setTimeOff]=useState(true);const [team,setTeam]=useState(true);const [moved,setMoved]=useState<Record<string,{start:Date,end:Date}>>({});
- const calendarEvents=useMemo<CalendarEvent[]>(()=>Object.entries(events).filter(([,title])=>title.includes('leave')?timeOff:team).map(([key,title])=>({id:key,title,start:moved[key]?.start??new Date(2026,6,Number(key)-1),end:moved[key]?.end??new Date(2026,6,Number(key)+(title.includes('Ingrid')?1:title.includes('Priya')?2:title.includes('Abena')?3:0)),allDay:true,color:title.includes('leave')?'#f59e0b':'#10b981'})).concat(timeOff?[{id:'marco',title:'Marco Bianchi: annual leave',start:moved.marco?.start??new Date(2026,7,3),end:moved.marco?.end??new Date(2026,7,7),allDay:true,color:'#f59e0b'}]:[]).concat(team?[{id:'checkin',title:'Week 3 check-in',start:moved.checkin?.start??new Date(2026,6,27),end:moved.checkin?.end??new Date(2026,6,28),allDay:true,color:'#10b981'}]:[]),[events,timeOff,team,moved]);
- return <EventCalendar className="ct-roster-calendar" events={calendarEvents} defaultDate={new Date(2026,6,1)} defaultView="month" views={['month','week','day','agenda']} weekStartsOn={1} fixedWeeks timeZone="Asia/Shanghai" onEventClick={o=>onOpen(o.event.title)} onSlotClick={slot=>onCreate(slot.date.getDate()+1)} onEventUpdate={update=>{setMoved(m=>({...m,[update.event.id]:{start:update.start,end:update.end}}));return true}} renderEvent={({occurrence})=><><span className="ct-event-dot"/><span className="truncate font-medium">{occurrence.event.title}</span>{occurrence.event.title.includes(':')&&<span className="ml-auto"><Avatar name={occurrence.event.title.split(':')[0]}/></span>}</>} maxEventsPerCell={2}><div className="ct-calendar-toolbar"><EventCalendarNav/><DropdownMenu><DropdownMenuTrigger asChild><Button variant="outline" size="sm"><span className="ct-stream-dots"/>Streams<ChevronDown/></Button></DropdownMenuTrigger><DropdownMenuContent><DropdownMenuCheckboxItem checked={timeOff} onCheckedChange={setTimeOff}>Time off</DropdownMenuCheckboxItem><DropdownMenuCheckboxItem checked={team} onCheckedChange={setTeam}>Team events</DropdownMenuCheckboxItem></DropdownMenuContent></DropdownMenu></div><EventCalendarContent/></EventCalendar>
+import { useMemo, useState } from "react";
+import { EventCalendar } from "@/components/reui/event-calendar/event-calendar";
+import { EventCalendarContent } from "@/components/reui/event-calendar/event-calendar-content";
+import { EventCalendarNav } from "@/components/reui/event-calendar/event-calendar-nav";
+import type { CalendarEvent } from "@/components/reui/event-calendar/event-calendar-types";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuCheckboxItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button, Avatar } from "./shared";
+import { ChevronDown } from "lucide-react";
+export function RosterCalendar({
+  events,
+  onOpen,
+  onCreate,
+}: {
+  events: Record<number, string>;
+  onOpen: (title: string) => void;
+  onCreate: (day: number) => void;
+}) {
+  const [timeOff, setTimeOff] = useState(true);
+  const [team, setTeam] = useState(true);
+  const [moved, setMoved] = useState<Record<string, { start: Date; end: Date }>>({});
+  const calendarEvents = useMemo<CalendarEvent[]>(
+    () =>
+      Object.entries(events)
+        .filter(([, title]) => (title.includes("leave") ? timeOff : team))
+        .map(([key, title]) => ({
+          id: key,
+          title,
+          start: moved[key]?.start ?? new Date(2026, 6, Number(key) - 1),
+          end:
+            moved[key]?.end ??
+            new Date(
+              2026,
+              6,
+              Number(key) +
+                (title.includes("Ingrid")
+                  ? 1
+                  : title.includes("Priya")
+                    ? 2
+                    : title.includes("Abena")
+                      ? 3
+                      : 0),
+            ),
+          allDay: true,
+          color: title.includes("leave") ? "#f59e0b" : "#10b981",
+        }))
+        .concat(
+          timeOff
+            ? [
+                {
+                  id: "marco",
+                  title: "Marco Bianchi: annual leave",
+                  start: moved.marco?.start ?? new Date(2026, 7, 3),
+                  end: moved.marco?.end ?? new Date(2026, 7, 7),
+                  allDay: true,
+                  color: "#f59e0b",
+                },
+              ]
+            : [],
+        )
+        .concat(
+          team
+            ? [
+                {
+                  id: "checkin",
+                  title: "Week 3 check-in",
+                  start: moved.checkin?.start ?? new Date(2026, 6, 27),
+                  end: moved.checkin?.end ?? new Date(2026, 6, 28),
+                  allDay: true,
+                  color: "#10b981",
+                },
+              ]
+            : [],
+        ),
+    [events, timeOff, team, moved],
+  );
+  return (
+    <EventCalendar
+      className="ct-roster-calendar"
+      events={calendarEvents}
+      defaultDate={new Date(2026, 6, 1)}
+      defaultView="month"
+      views={["month", "week", "day", "agenda"]}
+      weekStartsOn={1}
+      fixedWeeks
+      timeZone="Asia/Shanghai"
+      onEventClick={(o) => onOpen(o.event.title)}
+      onSlotClick={(slot) => onCreate(slot.date.getDate() + 1)}
+      onEventUpdate={(update) => {
+        setMoved((m) => ({ ...m, [update.event.id]: { start: update.start, end: update.end } }));
+        return true;
+      }}
+      renderEvent={({ occurrence }) => (
+        <>
+          <span className="ct-event-dot" />
+          <span className="truncate font-medium">{occurrence.event.title}</span>
+          {occurrence.event.title.includes(":") && (
+            <span className="ml-auto">
+              <Avatar name={occurrence.event.title.split(":")[0]} />
+            </span>
+          )}
+        </>
+      )}
+      maxEventsPerCell={2}
+    >
+      <div className="ct-calendar-toolbar">
+        <EventCalendarNav />
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="sm">
+              <span className="ct-stream-dots" />
+              Streams
+              <ChevronDown />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuCheckboxItem checked={timeOff} onCheckedChange={setTimeOff}>
+              Time off
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem checked={team} onCheckedChange={setTeam}>
+              Team events
+            </DropdownMenuCheckboxItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+      <EventCalendarContent />
+    </EventCalendar>
+  );
 }

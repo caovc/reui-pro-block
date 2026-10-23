@@ -1,10 +1,5 @@
 import type { BlockProps } from "@/data/types";
-import {
-  OutreachCounters,
-  CompanySnapshot,
-  ProfileStatStrip,
-  FitnessStats,
-} from "./metrics";
+import { OutreachCounters, CompanySnapshot, ProfileStatStrip, FitnessStats } from "./metrics";
 import { ResourceHub, TopicShortcuts } from "./resources";
 import { CustomerProfile, ContributorPortfolio } from "./profiles";
 export default function FinalProfiles({ block }: BlockProps) {

@@ -4,11 +4,11 @@
 
 The three specialized routes remain connected. **All three implementations and their dedicated helpers are now frozen for the other Data Grid session's migration to the official free ReUI DataGrid and TanStack foundation.** No further independent edits are planned. No files were staged or committed.
 
-| Public entry | Implementation |
-| --- | --- |
-| `data-grid-drag-drop-3` | `src/blocks/data/grid-dispatch.tsx` |
-| `data-grid-editing-2` | `src/blocks/data/grid-inventory.tsx` |
-| `data-grid-expansion-2` | `src/blocks/data/grid-treasury.tsx` |
+| Public entry            | Implementation                       |
+| ----------------------- | ------------------------------------ |
+| `data-grid-drag-drop-3` | `src/blocks/data/grid-dispatch.tsx`  |
+| `data-grid-editing-2`   | `src/blocks/data/grid-inventory.tsx` |
+| `data-grid-expansion-2` | `src/blocks/data/grid-treasury.tsx`  |
 
 Dedicated dependencies: `src/blocks/data/grid-treasury-data.ts` and `src/blocks/data/grid-specialized.css`. Shared `data/index.tsx`, `grid.tsx`, other grid families, package files and global CSS were not changed during this latest refinement. The specialized stylesheet restores only these three sections' reference vertical spacing after the shared `.data-grid-refinement > section` margin reset. Preserve the outer mobile gutters supplied by `data/index.tsx`: 32px Dispatch/Treasury and 48px Inventory, 24px at desktop breakpoints.
 

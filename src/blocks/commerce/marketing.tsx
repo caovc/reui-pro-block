@@ -52,12 +52,7 @@ export function Blog({ block }: BlockProps) {
         <Button variant="ghost" size="sm" onClick={() => setArticle(null)}>
           ← All articles
         </Button>
-        <div
-          className={cn(
-            "mt-5",
-            i === 4 && "relative overflow-hidden rounded-xl",
-          )}
-        >
+        <div className={cn("mt-5", i === 4 && "relative overflow-hidden rounded-xl")}>
           <img
             src={p.image}
             alt="Editorial cover"
@@ -66,16 +61,9 @@ export function Blog({ block }: BlockProps) {
           {i === 4 && (
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
           )}
-          <div
-            className={cn(
-              "py-7",
-              i === 4 && "absolute bottom-0 p-7 text-white",
-            )}
-          >
+          <div className={cn("py-7", i === 4 && "absolute bottom-0 p-7 text-white")}>
             <Badge variant="secondary">{p.category}</Badge>
-            <h1 className="mt-4 text-3xl font-semibold leading-tight tracking-tight">
-              {p.title}
-            </h1>
+            <h1 className="mt-4 text-3xl font-semibold leading-tight tracking-tight">{p.title}</h1>
             <p className="mt-4 text-xs opacity-70">
               By {p.author} · October 22, 2026 · {p.time}
             </p>
@@ -84,28 +72,22 @@ export function Blog({ block }: BlockProps) {
         <div className="flex flex-col gap-6 py-4 text-sm leading-7 text-muted-foreground">
           <p className="text-lg leading-8 text-foreground">{p.text}</p>
           <p>
-            The best systems make complex things feel simple. They give people a
-            clear place to start, and just enough structure to keep going. That
-            clarity comes from making thoughtful choices, one small decision at
-            a time.
+            The best systems make complex things feel simple. They give people a clear place to
+            start, and just enough structure to keep going. That clarity comes from making
+            thoughtful choices, one small decision at a time.
           </p>
-          <h2 className="text-xl font-semibold text-foreground">
-            Start with what matters.
-          </h2>
+          <h2 className="text-xl font-semibold text-foreground">Start with what matters.</h2>
           <p>
-            Ask what the person on the other side of the screen needs to
-            understand, decide, or do. Then build around that. Remove the parts
-            that create work without adding value. Make the important things
-            easy to find.
+            Ask what the person on the other side of the screen needs to understand, decide, or do.
+            Then build around that. Remove the parts that create work without adding value. Make the
+            important things easy to find.
           </p>
           <blockquote className="border-l-2 border-foreground pl-5 text-lg italic text-foreground">
-            “Craft is the care you put into the things that other people will
-            use.”
+            “Craft is the care you put into the things that other people will use.”
           </blockquote>
           <p>
-            Better tools don’t happen all at once. They grow through
-            observation, iteration, and a willingness to keep asking whether
-            this could feel a little better.
+            Better tools don’t happen all at once. They grow through observation, iteration, and a
+            willingness to keep asking whether this could feel a little better.
           </p>
         </div>
         <Separator className="my-7" />
@@ -146,15 +128,9 @@ export function Blog({ block }: BlockProps) {
         }
       />
       <div
-        className={cn(
-          "grid gap-6",
-          i === 2 ? "md:grid-cols-2" : "sm:grid-cols-2 lg:grid-cols-3",
-        )}
+        className={cn("grid gap-6", i === 2 ? "md:grid-cols-2" : "sm:grid-cols-2 lg:grid-cols-3")}
       >
-        {(i === 2
-          ? [posts[page], posts[(page + 1) % 4]]
-          : posts.slice(0, 3)
-        ).map((x) => (
+        {(i === 2 ? [posts[page], posts[(page + 1) % 4]] : posts.slice(0, 3)).map((x) => (
           <button
             key={x.title}
             onClick={() => setArticle(posts.indexOf(x))}
@@ -186,14 +162,8 @@ export function Blog({ block }: BlockProps) {
                 <Badge variant="secondary">{x.category}</Badge>
                 <span className="opacity-60">{x.time}</span>
               </div>
-              <h3 className="text-lg font-medium leading-6 tracking-tight">
-                {x.title}
-              </h3>
-              {i !== 1 && (
-                <p className="text-sm leading-6 text-muted-foreground">
-                  {x.text}
-                </p>
-              )}
+              <h3 className="text-lg font-medium leading-6 tracking-tight">{x.title}</h3>
+              {i !== 1 && <p className="text-sm leading-6 text-muted-foreground">{x.text}</p>}
               <div className="mt-3 flex items-center gap-2 text-xs">
                 <span className="flex size-7 items-center justify-center rounded-full bg-muted text-foreground">
                   {x.author
@@ -296,9 +266,7 @@ export function MarketingCompare({ block }: BlockProps) {
                 j === 1 && "border-emerald-500/20 bg-emerald-500/5",
               )}
             >
-              <Badge variant="outline">
-                {j === 0 ? "The long way" : "A considered way"}
-              </Badge>
+              <Badge variant="outline">{j === 0 ? "The long way" : "A considered way"}</Badge>
               <h3 className="mt-5 text-xl font-semibold">
                 {j === 0 ? "Start from nothing." : "Start with clarity."}
               </h3>
@@ -318,13 +286,9 @@ export function MarketingCompare({ block }: BlockProps) {
                 ))}
               </div>
               <div className="mt-7 rounded-lg bg-background/70 p-4 text-sm">
-                <span className="text-muted-foreground">
-                  Time to a solid foundation
-                </span>
+                <span className="text-muted-foreground">Time to a solid foundation</span>
                 <p className="mt-1 font-medium">
-                  {j === 0
-                    ? "Days of setup and iteration"
-                    : "Minutes to make it yours"}
+                  {j === 0 ? "Days of setup and iteration" : "Minutes to make it yours"}
                 </p>
               </div>
             </div>
@@ -333,9 +297,8 @@ export function MarketingCompare({ block }: BlockProps) {
       )}
       {info && (
         <div className="mt-5 rounded-lg border p-5 text-sm leading-6 text-muted-foreground">
-          Choose a block, open its source tab, and copy the component files into
-          your project. Shared shadcn primitives keep the result consistent with
-          the rest of your app.
+          Choose a block, open its source tab, and copy the component files into your project.
+          Shared shadcn primitives keep the result consistent with the rest of your app.
         </div>
       )}
     </div>

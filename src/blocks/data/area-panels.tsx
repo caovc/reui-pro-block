@@ -1,49 +1,972 @@
-import { useId, useState } from 'react'
-import { ReferenceDot } from 'recharts'
-import { ArrowDownToLine, CalendarDays, ChevronDown, Columns3, Copy, Maximize2, MoreHorizontal, RefreshCw, SlidersHorizontal, TrendingUp } from 'lucide-react'
-import type { ReactNode } from 'react'
-import type { BlockProps } from '@/data/types'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/reui/badge'
-import { ReuiTrend, TrendColor, type TrendSeries } from './trend-foundation'
-import { ChartFrame } from './chart-chrome'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { toast } from 'sonner'
-import { downloadCsv } from './data-utils'
-const palette=['#7160e8','#379d8c','#3f8ee8','#e29b21','#e05279','#9856df']
-const fmt=(v:number)=>v>=1000?(v/1000).toFixed(1)+'M':Math.round(v)+'K'
-const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
-function ColorControl({color,onChange}:{color:string;onChange:(color:string)=>void}){return <TrendColor label="Series color" color={color} onChange={onChange}/>}
-function ChartActions({color,onColor,onRefresh,onExpand,onExport,onCopy,withRefresh=true}:{color:string;onColor:(c:string)=>void;onRefresh:()=>void;onExpand:()=>void;onExport:()=>void;onCopy:()=>void;withRefresh?:boolean}){return <div className="flex items-center"><ColorControl color={color} onChange={onColor}/>{withRefresh&&<><Button variant="outline" size="icon" className="-ml-px size-7 rounded-none" aria-label="Refresh data" onClick={onRefresh}><RefreshCw/></Button><Button variant="outline" size="icon" className="-ml-px size-7 rounded-none" aria-label="Expand chart" onClick={onExpand}><Maximize2/></Button></>}<DropdownMenu><DropdownMenuTrigger asChild><Button variant="outline" size="icon" className="-ml-px size-7 rounded-l-none" aria-label="More actions"><MoreHorizontal/></Button></DropdownMenuTrigger><DropdownMenuContent align="end"><DropdownMenuGroup><DropdownMenuItem onSelect={onExport}><ArrowDownToLine/>Export CSV</DropdownMenuItem><DropdownMenuItem onSelect={onCopy}><Copy/>Copy summary</DropdownMenuItem></DropdownMenuGroup></DropdownMenuContent></DropdownMenu></div>}
-function DisplayControl({grid,setGrid,previous,setPrevious,dots,setDots,curve,setCurve}:{grid:boolean;setGrid:(v:boolean)=>void;previous:boolean;setPrevious:(v:boolean)=>void;dots:boolean;setDots:(v:boolean)=>void;curve?:string;setCurve?:(v:string)=>void}){return <DropdownMenu><DropdownMenuTrigger asChild><Button variant="outline" size="sm" className="h-7 gap-1.5 px-2 text-[11px]"><SlidersHorizontal/>Display<ChevronDown/></Button></DropdownMenuTrigger><DropdownMenuContent align="end"><DropdownMenuLabel>Chart layers</DropdownMenuLabel><DropdownMenuGroup><DropdownMenuCheckboxItem checked={grid} onCheckedChange={setGrid}>Gridlines</DropdownMenuCheckboxItem><DropdownMenuCheckboxItem checked={previous} onCheckedChange={setPrevious}>Previous period</DropdownMenuCheckboxItem><DropdownMenuCheckboxItem checked={dots} onCheckedChange={setDots}>Data points</DropdownMenuCheckboxItem></DropdownMenuGroup>{curve&&setCurve&&<><DropdownMenuLabel>Curve</DropdownMenuLabel><DropdownMenuRadioGroup value={curve} onValueChange={setCurve}>{['Natural','Linear','Step'].map(c=><DropdownMenuRadioItem key={c} value={c}>{c}</DropdownMenuRadioItem>)}</DropdownMenuRadioGroup></>}</DropdownMenuContent></DropdownMenu>}
-function Frame(props:{title:string;description:ReactNode;toolbar:ReactNode;children:ReactNode;footer:ReactNode;width?:string}){return <ChartFrame {...props}/>}
-function Updated({children}:{children:ReactNode}){return <span className="flex items-center gap-2"><span className="size-1.5 rounded-full bg-emerald-500"/>{children}</span>}
-export function CampaignImpressions(){
- const [period,setPeriod]=useState('Last 30 days');const [channels,setChannels]=useState(['Search','Social','Display','Video']);const [color,setColor]=useState(palette[0]);const [prior,setPrior]=useState(true);const [current,setCurrent]=useState(true);const [expanded,setExpanded]=useState(false);const weights=[.30,.38,.18,.14]
- const baseCurrent=[1248,1372,1338,1524,1478,1434,1498,1456,1546,1424];const basePrior=[1180,1196,1232,1164,1260,1186,1288,1248,1260,1330];const factor=channels.reduce((s,c)=>s+weights[['Search','Social','Display','Video'].indexOf(c)],0)*(period==='Last 7 days'?.25:period==='Last 90 days'?2.7:1)
- const data=baseCurrent.map((v,i)=>({name:['Sep 15','Sep 18','Sep 21','Sep 24','Sep 27','Sep 30','Oct 3','Oct 6','Oct 9','Oct 11'][i],current:v*factor,prior:basePrior[i]*factor,Search:v*.30*(period==='Last 7 days'?.25:period==='Last 90 days'?2.7:1),Social:v*.38*(period==='Last 7 days'?.25:period==='Last 90 days'?2.7:1),Display:v*.18*(period==='Last 7 days'?.25:period==='Last 90 days'?2.7:1),Video:v*.14*(period==='Last 7 days'?.25:period==='Last 90 days'?2.7:1)}));const total=data.reduce((s,r)=>s+r.current,0);const prevTotal=data.reduce((s,r)=>s+r.prior,0);const growth=prevTotal?(total/prevTotal-1)*100:0;const topChannel=channels.toSorted((a,b)=>weights[['Search','Social','Display','Video'].indexOf(b)]-weights[['Search','Social','Display','Video'].indexOf(a)])[0];const topWeight=topChannel?weights[['Search','Social','Display','Video'].indexOf(topChannel)]:0;const selectedWeight=channels.reduce((sum,c)=>sum+weights[['Search','Social','Display','Video'].indexOf(c)],0)
- const plot=(large=false)=>{const series:TrendSeries[]=[...(prior?[{key:'prior',label:'Prior period',color:'#9ca3af',kind:'area' as const,curve:'linear' as const,dashed:true,dots:true,opacity:.15}]:[]),...(current?[{key:'current',label:'This period',color,kind:'area' as const,curve:'linear' as const,dashed:true,dots:true,opacity:.3}]:[])];return <div className="px-3 pb-3 pt-4"><div className="mb-3 flex justify-end gap-5 text-xs text-muted-foreground"><Button variant="ghost" size="sm" className="h-5 gap-1.5 px-0 text-xs font-normal" onClick={()=>setCurrent(v=>!v)} aria-pressed={current}><span className="h-px w-4 border-t border-dashed" style={{borderColor:color}}/>This period</Button><Button variant="ghost" size="sm" className="h-5 gap-1.5 px-0 text-xs font-normal" onClick={()=>setPrior(v=>!v)} aria-pressed={prior}><span className="h-px w-4 border-t border-dashed border-muted-foreground"/>Prior period</Button></div><ReuiTrend label="Campaign impressions by period" data={data} series={series} height={large?460:340} format={fmt} domain={[Math.max(0,Math.floor(Math.min(...data.map(r=>Math.min(r.current,r.prior)))/200)*200),Math.max(200,Math.ceil(Math.max(...data.map(r=>r.current))/200)*200)]} tooltipExtra={row=><div className="rounded-b-lg border border-t-0 bg-popover p-3 text-xs shadow-sm">{channels.map(c=><div key={c} className="flex justify-between gap-5"><span className="text-muted-foreground">{c}</span><span>{fmt(Number(row[c]))}</span></div>)}</div>}/></div>}
+import { useId, useState } from "react";
+import { ReferenceDot } from "recharts";
+import {
+  ArrowDownToLine,
+  CalendarDays,
+  ChevronDown,
+  Columns3,
+  Copy,
+  Maximize2,
+  MoreHorizontal,
+  RefreshCw,
+  SlidersHorizontal,
+  TrendingUp,
+} from "lucide-react";
+import type { ReactNode } from "react";
+import type { BlockProps } from "@/data/types";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/reui/badge";
+import { ReuiTrend, TrendColor, type TrendSeries } from "./trend-foundation";
+import { ChartFrame } from "./chart-chrome";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { toast } from "sonner";
+import { downloadCsv } from "./data-utils";
+const palette = ["#7160e8", "#379d8c", "#3f8ee8", "#e29b21", "#e05279", "#9856df"];
+const fmt = (v: number) => (v >= 1000 ? (v / 1000).toFixed(1) + "M" : Math.round(v) + "K");
+const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+function ColorControl({ color, onChange }: { color: string; onChange: (color: string) => void }) {
+  return <TrendColor label="Series color" color={color} onChange={onChange} />;
+}
+function ChartActions({
+  color,
+  onColor,
+  onRefresh,
+  onExpand,
+  onExport,
+  onCopy,
+  withRefresh = true,
+}: {
+  color: string;
+  onColor: (c: string) => void;
+  onRefresh: () => void;
+  onExpand: () => void;
+  onExport: () => void;
+  onCopy: () => void;
+  withRefresh?: boolean;
+}) {
+  return (
+    <div className="flex items-center">
+      <ColorControl color={color} onChange={onColor} />
+      {withRefresh && (
+        <>
+          <Button
+            variant="outline"
+            size="icon"
+            className="-ml-px size-7 rounded-none"
+            aria-label="Refresh data"
+            onClick={onRefresh}
+          >
+            <RefreshCw />
+          </Button>
+          <Button
+            variant="outline"
+            size="icon"
+            className="-ml-px size-7 rounded-none"
+            aria-label="Expand chart"
+            onClick={onExpand}
+          >
+            <Maximize2 />
+          </Button>
+        </>
+      )}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="outline"
+            size="icon"
+            className="-ml-px size-7 rounded-l-none"
+            aria-label="More actions"
+          >
+            <MoreHorizontal />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuGroup>
+            <DropdownMenuItem onSelect={onExport}>
+              <ArrowDownToLine />
+              Export CSV
+            </DropdownMenuItem>
+            <DropdownMenuItem onSelect={onCopy}>
+              <Copy />
+              Copy summary
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+  );
+}
+function DisplayControl({
+  grid,
+  setGrid,
+  previous,
+  setPrevious,
+  dots,
+  setDots,
+  curve,
+  setCurve,
+}: {
+  grid: boolean;
+  setGrid: (v: boolean) => void;
+  previous: boolean;
+  setPrevious: (v: boolean) => void;
+  dots: boolean;
+  setDots: (v: boolean) => void;
+  curve?: string;
+  setCurve?: (v: string) => void;
+}) {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" size="sm" className="h-7 gap-1.5 px-2 text-[11px]">
+          <SlidersHorizontal />
+          Display
+          <ChevronDown />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuLabel>Chart layers</DropdownMenuLabel>
+        <DropdownMenuGroup>
+          <DropdownMenuCheckboxItem checked={grid} onCheckedChange={setGrid}>
+            Gridlines
+          </DropdownMenuCheckboxItem>
+          <DropdownMenuCheckboxItem checked={previous} onCheckedChange={setPrevious}>
+            Previous period
+          </DropdownMenuCheckboxItem>
+          <DropdownMenuCheckboxItem checked={dots} onCheckedChange={setDots}>
+            Data points
+          </DropdownMenuCheckboxItem>
+        </DropdownMenuGroup>
+        {curve && setCurve && (
+          <>
+            <DropdownMenuLabel>Curve</DropdownMenuLabel>
+            <DropdownMenuRadioGroup value={curve} onValueChange={setCurve}>
+              {["Natural", "Linear", "Step"].map((c) => (
+                <DropdownMenuRadioItem key={c} value={c}>
+                  {c}
+                </DropdownMenuRadioItem>
+              ))}
+            </DropdownMenuRadioGroup>
+          </>
+        )}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+function Frame(props: {
+  title: string;
+  description: ReactNode;
+  toolbar: ReactNode;
+  children: ReactNode;
+  footer: ReactNode;
+  width?: string;
+}) {
+  return <ChartFrame {...props} />;
+}
+function Updated({ children }: { children: ReactNode }) {
+  return (
+    <span className="flex items-center gap-2">
+      <span className="size-1.5 rounded-full bg-emerald-500" />
+      {children}
+    </span>
+  );
+}
+export function CampaignImpressions() {
+  const [period, setPeriod] = useState("Last 30 days");
+  const [channels, setChannels] = useState(["Search", "Social", "Display", "Video"]);
+  const [color, setColor] = useState(palette[0]);
+  const [prior, setPrior] = useState(true);
+  const [current, setCurrent] = useState(true);
+  const [expanded, setExpanded] = useState(false);
+  const weights = [0.3, 0.38, 0.18, 0.14];
+  const baseCurrent = [1248, 1372, 1338, 1524, 1478, 1434, 1498, 1456, 1546, 1424];
+  const basePrior = [1180, 1196, 1232, 1164, 1260, 1186, 1288, 1248, 1260, 1330];
+  const factor =
+    channels.reduce((s, c) => s + weights[["Search", "Social", "Display", "Video"].indexOf(c)], 0) *
+    (period === "Last 7 days" ? 0.25 : period === "Last 90 days" ? 2.7 : 1);
+  const data = baseCurrent.map((v, i) => ({
+    name: [
+      "Sep 15",
+      "Sep 18",
+      "Sep 21",
+      "Sep 24",
+      "Sep 27",
+      "Sep 30",
+      "Oct 3",
+      "Oct 6",
+      "Oct 9",
+      "Oct 11",
+    ][i],
+    current: v * factor,
+    prior: basePrior[i] * factor,
+    Search: v * 0.3 * (period === "Last 7 days" ? 0.25 : period === "Last 90 days" ? 2.7 : 1),
+    Social: v * 0.38 * (period === "Last 7 days" ? 0.25 : period === "Last 90 days" ? 2.7 : 1),
+    Display: v * 0.18 * (period === "Last 7 days" ? 0.25 : period === "Last 90 days" ? 2.7 : 1),
+    Video: v * 0.14 * (period === "Last 7 days" ? 0.25 : period === "Last 90 days" ? 2.7 : 1),
+  }));
+  const total = data.reduce((s, r) => s + r.current, 0);
+  const prevTotal = data.reduce((s, r) => s + r.prior, 0);
+  const growth = prevTotal ? (total / prevTotal - 1) * 100 : 0;
+  const topChannel = channels.toSorted(
+    (a, b) =>
+      weights[["Search", "Social", "Display", "Video"].indexOf(b)] -
+      weights[["Search", "Social", "Display", "Video"].indexOf(a)],
+  )[0];
+  const topWeight = topChannel
+    ? weights[["Search", "Social", "Display", "Video"].indexOf(topChannel)]
+    : 0;
+  const selectedWeight = channels.reduce(
+    (sum, c) => sum + weights[["Search", "Social", "Display", "Video"].indexOf(c)],
+    0,
+  );
+  const plot = (large = false) => {
+    const series: TrendSeries[] = [
+      ...(prior
+        ? [
+            {
+              key: "prior",
+              label: "Prior period",
+              color: "#9ca3af",
+              kind: "area" as const,
+              curve: "linear" as const,
+              dashed: true,
+              dots: true,
+              opacity: 0.15,
+            },
+          ]
+        : []),
+      ...(current
+        ? [
+            {
+              key: "current",
+              label: "This period",
+              color,
+              kind: "area" as const,
+              curve: "linear" as const,
+              dashed: true,
+              dots: true,
+              opacity: 0.3,
+            },
+          ]
+        : []),
+    ];
+    return (
+      <div className="px-3 pb-3 pt-4">
+        <div className="mb-3 flex justify-end gap-5 text-xs text-muted-foreground">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-5 gap-1.5 px-0 text-xs font-normal"
+            onClick={() => setCurrent((v) => !v)}
+            aria-pressed={current}
+          >
+            <span className="h-px w-4 border-t border-dashed" style={{ borderColor: color }} />
+            This period
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-5 gap-1.5 px-0 text-xs font-normal"
+            onClick={() => setPrior((v) => !v)}
+            aria-pressed={prior}
+          >
+            <span className="h-px w-4 border-t border-dashed border-muted-foreground" />
+            Prior period
+          </Button>
+        </div>
+        <ReuiTrend
+          label="Campaign impressions by period"
+          data={data}
+          series={series}
+          height={large ? 460 : 340}
+          format={fmt}
+          domain={[
+            Math.max(
+              0,
+              Math.floor(Math.min(...data.map((r) => Math.min(r.current, r.prior))) / 200) * 200,
+            ),
+            Math.max(200, Math.ceil(Math.max(...data.map((r) => r.current)) / 200) * 200),
+          ]}
+          tooltipExtra={(row) => (
+            <div className="rounded-b-lg border border-t-0 bg-popover p-3 text-xs shadow-sm">
+              {channels.map((c) => (
+                <div key={c} className="flex justify-between gap-5">
+                  <span className="text-muted-foreground">{c}</span>
+                  <span>{fmt(Number(row[c]))}</span>
+                </div>
+              ))}
+            </div>
+          )}
+        />
+      </div>
+    );
+  };
 
- const toolbar=<><DropdownMenu><DropdownMenuTrigger asChild><Button variant="outline" size="sm" className="h-7 gap-1.5 px-2 text-[11px]"><CalendarDays/>{period}<ChevronDown/></Button></DropdownMenuTrigger><DropdownMenuContent align="end"><DropdownMenuRadioGroup value={period} onValueChange={setPeriod}>{['Last 7 days','Last 30 days','Last 90 days'].map(p=><DropdownMenuRadioItem key={p} value={p}>{p}</DropdownMenuRadioItem>)}</DropdownMenuRadioGroup></DropdownMenuContent></DropdownMenu><DropdownMenu><DropdownMenuTrigger asChild><Button variant="outline" size="sm" className="h-7 gap-1.5 px-2 text-[11px]"><Columns3/>Channels <span className="text-muted-foreground">{channels.length}/4</span><ChevronDown/></Button></DropdownMenuTrigger><DropdownMenuContent align="end"><DropdownMenuGroup>{['Search','Social','Display','Video'].map(c=><DropdownMenuCheckboxItem key={c} checked={channels.includes(c)} onCheckedChange={()=>setChannels(s=>s.includes(c)?s.filter(v=>v!==c):[...s,c])}>{c}</DropdownMenuCheckboxItem>)}</DropdownMenuGroup></DropdownMenuContent></DropdownMenu><ChartActions color={color} onColor={setColor} onRefresh={()=>{}} onExpand={()=>setExpanded(true)} withRefresh={false} onExport={()=>downloadCsv('campaign-impressions',data)} onCopy={()=>{navigator.clipboard.writeText(`${fmt(total)} campaign impressions, +${growth.toFixed(1)}% vs prior period`);toast.success('Summary copied')}}/></>
- return <div className="flex min-h-[650px] w-full items-center justify-center p-3 sm:p-6"><Frame title="Campaign Impressions" description="Delivery by channel through Oct 11" toolbar={toolbar} width="max-w-[1024px]" footer={<><Updated>Updated hourly <span className="opacity-40">•</span>{channels.length} of 4 channels</Updated><span>Sep 12 to Oct 11 vs Aug 13 to Sep 11</span></>}><dl className="grid grid-cols-2 divide-x divide-y border-b sm:grid-cols-4 sm:divide-y-0">{[['Impressions',fmt(total),<><Badge variant="secondary" className="h-4 gap-1 px-1 text-[9px]"><TrendingUp/>{growth.toFixed(1)}%</Badge><span>vs {fmt(prevTotal)} prior</span></>],['Daily Average',fmt(total/(period==='Last 7 days'?7:period==='Last 90 days'?90:30)),`vs ${fmt(prevTotal/(period==='Last 7 days'?7:period==='Last 90 days'?90:30))} prior`],['Peak',fmt(Math.max(...data.map(r=>r.current))),'Oct 6 to Oct 8'],['Top Channel',`${selectedWeight?Math.round(topWeight/selectedWeight*100):0}%`,topChannel?`${topChannel}, ${fmt(total*topWeight/selectedWeight)}`:'No channels selected']].map(([label,value,detail])=><div key={String(label)} className="flex flex-col gap-2 px-4 py-4"><dt className="text-xs text-muted-foreground">{label}</dt><dd className="text-2xl font-semibold tracking-tight">{value}</dd><dd className="flex flex-wrap items-center gap-2 text-[10px] text-muted-foreground">{detail}</dd></div>)}</dl>{plot()}</Frame><Dialog open={expanded} onOpenChange={setExpanded}><DialogContent className="w-[min(1150px,96vw)] sm:max-w-none"><DialogHeader><DialogTitle>Campaign Impressions</DialogTitle><DialogDescription>Delivery by channel · Current period compared with prior period</DialogDescription></DialogHeader>{plot(true)}</DialogContent></Dialog></div>
+  const toolbar = (
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" size="sm" className="h-7 gap-1.5 px-2 text-[11px]">
+            <CalendarDays />
+            {period}
+            <ChevronDown />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuRadioGroup value={period} onValueChange={setPeriod}>
+            {["Last 7 days", "Last 30 days", "Last 90 days"].map((p) => (
+              <DropdownMenuRadioItem key={p} value={p}>
+                {p}
+              </DropdownMenuRadioItem>
+            ))}
+          </DropdownMenuRadioGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" size="sm" className="h-7 gap-1.5 px-2 text-[11px]">
+            <Columns3 />
+            Channels <span className="text-muted-foreground">{channels.length}/4</span>
+            <ChevronDown />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuGroup>
+            {["Search", "Social", "Display", "Video"].map((c) => (
+              <DropdownMenuCheckboxItem
+                key={c}
+                checked={channels.includes(c)}
+                onCheckedChange={() =>
+                  setChannels((s) => (s.includes(c) ? s.filter((v) => v !== c) : [...s, c]))
+                }
+              >
+                {c}
+              </DropdownMenuCheckboxItem>
+            ))}
+          </DropdownMenuGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <ChartActions
+        color={color}
+        onColor={setColor}
+        onRefresh={() => {}}
+        onExpand={() => setExpanded(true)}
+        withRefresh={false}
+        onExport={() => downloadCsv("campaign-impressions", data)}
+        onCopy={() => {
+          navigator.clipboard.writeText(
+            `${fmt(total)} campaign impressions, +${growth.toFixed(1)}% vs prior period`,
+          );
+          toast.success("Summary copied");
+        }}
+      />
+    </>
+  );
+  return (
+    <div className="flex min-h-[650px] w-full items-center justify-center p-3 sm:p-6">
+      <Frame
+        title="Campaign Impressions"
+        description="Delivery by channel through Oct 11"
+        toolbar={toolbar}
+        width="max-w-[1024px]"
+        footer={
+          <>
+            <Updated>
+              Updated hourly <span className="opacity-40">•</span>
+              {channels.length} of 4 channels
+            </Updated>
+            <span>Sep 12 to Oct 11 vs Aug 13 to Sep 11</span>
+          </>
+        }
+      >
+        <dl className="grid grid-cols-2 divide-x divide-y border-b sm:grid-cols-4 sm:divide-y-0">
+          {[
+            [
+              "Impressions",
+              fmt(total),
+              <>
+                <Badge variant="secondary" className="h-4 gap-1 px-1 text-[9px]">
+                  <TrendingUp />
+                  {growth.toFixed(1)}%
+                </Badge>
+                <span>vs {fmt(prevTotal)} prior</span>
+              </>,
+            ],
+            [
+              "Daily Average",
+              fmt(total / (period === "Last 7 days" ? 7 : period === "Last 90 days" ? 90 : 30)),
+              `vs ${fmt(prevTotal / (period === "Last 7 days" ? 7 : period === "Last 90 days" ? 90 : 30))} prior`,
+            ],
+            ["Peak", fmt(Math.max(...data.map((r) => r.current))), "Oct 6 to Oct 8"],
+            [
+              "Top Channel",
+              `${selectedWeight ? Math.round((topWeight / selectedWeight) * 100) : 0}%`,
+              topChannel
+                ? `${topChannel}, ${fmt((total * topWeight) / selectedWeight)}`
+                : "No channels selected",
+            ],
+          ].map(([label, value, detail]) => (
+            <div key={String(label)} className="flex flex-col gap-2 px-4 py-4">
+              <dt className="text-xs text-muted-foreground">{label}</dt>
+              <dd className="text-2xl font-semibold tracking-tight">{value}</dd>
+              <dd className="flex flex-wrap items-center gap-2 text-[10px] text-muted-foreground">
+                {detail}
+              </dd>
+            </div>
+          ))}
+        </dl>
+        {plot()}
+      </Frame>
+      <Dialog open={expanded} onOpenChange={setExpanded}>
+        <DialogContent className="w-[min(1150px,96vw)] sm:max-w-none">
+          <DialogHeader>
+            <DialogTitle>Campaign Impressions</DialogTitle>
+            <DialogDescription>
+              Delivery by channel · Current period compared with prior period
+            </DialogDescription>
+          </DialogHeader>
+          {plot(true)}
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
 }
 
-export function OrdersOverview(){
- const [metric,setMetric]=useState('revenue');const [curve,setCurve]=useState('Natural');const [period,setPeriod]=useState('Day');const [grid,setGrid]=useState(true);const [previous,setPrevious]=useState(true);const [dots,setDots]=useState(false);const [expanded,setExpanded]=useState(false);const [revision,setRevision]=useState(0);const [point,setPoint]=useState(6);const id=useId().replaceAll(':','');const rows=[2200,1800,1650,2200,3100,2800,3500,4200,3800,3900,3100,2300];const scale=period==='Week'?7:period==='Month'?30:period==='Year'?365:1;const revenue=rows.map(v=>Math.round((v+revision*25)*scale));const orders=revenue.map(v=>Math.round(v/62.19));const data=rows.map((_,i)=>({name:period==='Day'?`${String(i*2).padStart(2,'0')}:00`:period==='Week'?['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][i%7]:period==='Year'?months[i]:`Sep ${i*2+1}`,current:metric==='revenue'?revenue[i]:metric==='orders'?orders[i]:Number((revenue[i]/orders[i]).toFixed(2)),prior:metric==='revenue'?Math.round(revenue[i]/1.077):metric==='orders'?Math.round(orders[i]/1.065):Number((revenue[i]/orders[i]/1.012).toFixed(2))}));const totalRevenue=revenue.reduce((a,b)=>a+b,0),totalOrders=orders.reduce((a,b)=>a+b,0),average=totalRevenue/totalOrders;const metricLabels={orders:'Orders',revenue:'Revenue',average:'Avg. Order'};const valueFormat=(v:number)=>metric==='orders'?Math.round(v).toLocaleString():`$${v.toLocaleString()}`
- const plot=(large=false)=><div className="relative px-3 pb-2 pt-8"><ReuiTrend label="Orders overview by period" data={data} series={[{key:'current',label:metricLabels[metric as keyof typeof metricLabels],color:'#7160e8',kind:'area',curve:curve==='Natural'?'natural':curve==='Linear'?'linear':'stepAfter',pattern:true,dots,stroke:`url(#${id}-order-stroke-${large})`}]} format={v=>metric==='orders'?String(Math.round(v)):`$${v>=1000?`${v/1000}K`:v}`} domain={[0,metric==='average'?100:metric==='orders'?Math.ceil(6000/62.19*scale/100)*100:6000*scale]} grid={grid} height={large?460:330} onPoint={setPoint}><defs><linearGradient id={`${id}-order-stroke-${large}`} x1="0" x2="1" y1="0" y2="0"><stop offset="0%" stopColor="#38b4d1"/><stop offset="50%" stopColor="#7562eb"/><stop offset="100%" stopColor="#ef5779"/></linearGradient></defs><ReferenceDot yAxisId="left" x={data[point].name} y={data[point].current} r={4.5} fill="var(--background)" stroke="#7160e8" strokeWidth={2}/><ReferenceDot yAxisId="left" x={data[11].name} y={data[11].current} r={6} fill="#f0587b" fillOpacity={.4} stroke="#ef5779" strokeWidth={2}/></ReuiTrend><div className="pointer-events-none absolute left-1/2 top-16 flex flex-col gap-1 rounded-xl border bg-popover/95 p-2 text-xs text-popover-foreground shadow-sm"><div className="flex justify-between gap-5"><span className="text-muted-foreground">{data[point].name}</span><span className="font-mono">{valueFormat(data[point].current)}</span></div>{previous&&<div className="flex justify-between gap-5"><span className="text-muted-foreground">Sep 29</span><span className="font-mono text-muted-foreground">{valueFormat(data[point].prior)}</span></div>}</div></div>
+export function OrdersOverview() {
+  const [metric, setMetric] = useState("revenue");
+  const [curve, setCurve] = useState("Natural");
+  const [period, setPeriod] = useState("Day");
+  const [grid, setGrid] = useState(true);
+  const [previous, setPrevious] = useState(true);
+  const [dots, setDots] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const [revision, setRevision] = useState(0);
+  const [point, setPoint] = useState(6);
+  const id = useId().replaceAll(":", "");
+  const rows = [2200, 1800, 1650, 2200, 3100, 2800, 3500, 4200, 3800, 3900, 3100, 2300];
+  const scale = period === "Week" ? 7 : period === "Month" ? 30 : period === "Year" ? 365 : 1;
+  const revenue = rows.map((v) => Math.round((v + revision * 25) * scale));
+  const orders = revenue.map((v) => Math.round(v / 62.19));
+  const data = rows.map((_, i) => ({
+    name:
+      period === "Day"
+        ? `${String(i * 2).padStart(2, "0")}:00`
+        : period === "Week"
+          ? ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"][i % 7]
+          : period === "Year"
+            ? months[i]
+            : `Sep ${i * 2 + 1}`,
+    current:
+      metric === "revenue"
+        ? revenue[i]
+        : metric === "orders"
+          ? orders[i]
+          : Number((revenue[i] / orders[i]).toFixed(2)),
+    prior:
+      metric === "revenue"
+        ? Math.round(revenue[i] / 1.077)
+        : metric === "orders"
+          ? Math.round(orders[i] / 1.065)
+          : Number((revenue[i] / orders[i] / 1.012).toFixed(2)),
+  }));
+  const totalRevenue = revenue.reduce((a, b) => a + b, 0),
+    totalOrders = orders.reduce((a, b) => a + b, 0),
+    average = totalRevenue / totalOrders;
+  const metricLabels = { orders: "Orders", revenue: "Revenue", average: "Avg. Order" };
+  const valueFormat = (v: number) =>
+    metric === "orders" ? Math.round(v).toLocaleString() : `$${v.toLocaleString()}`;
+  const plot = (large = false) => (
+    <div className="relative px-3 pb-2 pt-8">
+      <ReuiTrend
+        label="Orders overview by period"
+        data={data}
+        series={[
+          {
+            key: "current",
+            label: metricLabels[metric as keyof typeof metricLabels],
+            color: "#7160e8",
+            kind: "area",
+            curve: curve === "Natural" ? "natural" : curve === "Linear" ? "linear" : "stepAfter",
+            pattern: true,
+            dots,
+            stroke: `url(#${id}-order-stroke-${large})`,
+          },
+        ]}
+        format={(v) =>
+          metric === "orders" ? String(Math.round(v)) : `$${v >= 1000 ? `${v / 1000}K` : v}`
+        }
+        domain={[
+          0,
+          metric === "average"
+            ? 100
+            : metric === "orders"
+              ? Math.ceil(((6000 / 62.19) * scale) / 100) * 100
+              : 6000 * scale,
+        ]}
+        grid={grid}
+        height={large ? 460 : 330}
+        onPoint={setPoint}
+      >
+        <defs>
+          <linearGradient id={`${id}-order-stroke-${large}`} x1="0" x2="1" y1="0" y2="0">
+            <stop offset="0%" stopColor="#38b4d1" />
+            <stop offset="50%" stopColor="#7562eb" />
+            <stop offset="100%" stopColor="#ef5779" />
+          </linearGradient>
+        </defs>
+        <ReferenceDot
+          yAxisId="left"
+          x={data[point].name}
+          y={data[point].current}
+          r={4.5}
+          fill="var(--background)"
+          stroke="#7160e8"
+          strokeWidth={2}
+        />
+        <ReferenceDot
+          yAxisId="left"
+          x={data[11].name}
+          y={data[11].current}
+          r={6}
+          fill="#f0587b"
+          fillOpacity={0.4}
+          stroke="#ef5779"
+          strokeWidth={2}
+        />
+      </ReuiTrend>
+      <div className="pointer-events-none absolute left-1/2 top-16 flex flex-col gap-1 rounded-xl border bg-popover/95 p-2 text-xs text-popover-foreground shadow-sm">
+        <div className="flex justify-between gap-5">
+          <span className="text-muted-foreground">{data[point].name}</span>
+          <span className="font-mono">{valueFormat(data[point].current)}</span>
+        </div>
+        {previous && (
+          <div className="flex justify-between gap-5">
+            <span className="text-muted-foreground">Sep 29</span>
+            <span className="font-mono text-muted-foreground">
+              {valueFormat(data[point].prior)}
+            </span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 
- const toolbar=<><DropdownMenu><DropdownMenuTrigger asChild><Button variant="outline" size="sm" className="h-7 gap-1.5 px-2 text-[11px]" aria-label={`Period: ${period}`}><CalendarDays/>{period}<ChevronDown/></Button></DropdownMenuTrigger><DropdownMenuContent align="end"><DropdownMenuRadioGroup value={period} onValueChange={setPeriod}>{['Day','Week','Month','Year'].map(p=><DropdownMenuRadioItem key={p} value={p}>{p}</DropdownMenuRadioItem>)}</DropdownMenuRadioGroup></DropdownMenuContent></DropdownMenu><DisplayControl grid={grid} setGrid={setGrid} previous={previous} setPrevious={setPrevious} dots={dots} setDots={setDots} curve={curve} setCurve={setCurve}/><div className="flex"><Button variant="outline" size="icon" className="size-7 rounded-r-none" aria-label="Refresh data" onClick={()=>{setRevision(r=>r+1);toast.success('Orders refreshed')}}><RefreshCw/></Button><Button variant="outline" size="icon" className="-ml-px size-7 rounded-none" aria-label="Expand chart" onClick={()=>setExpanded(true)}><Maximize2/></Button><DropdownMenu><DropdownMenuTrigger asChild><Button variant="outline" size="icon" className="-ml-px size-7 rounded-l-none" aria-label="More actions"><MoreHorizontal/></Button></DropdownMenuTrigger><DropdownMenuContent align="end"><DropdownMenuGroup><DropdownMenuItem onSelect={()=>downloadCsv('orders-overview',data)}>Export CSV</DropdownMenuItem><DropdownMenuItem onSelect={()=>{navigator.clipboard.writeText(`${totalOrders.toLocaleString()} orders · $${totalRevenue.toLocaleString()} revenue · $${average.toFixed(2)} average order`);toast.success('Summary copied')}}>Copy summary</DropdownMenuItem></DropdownMenuGroup></DropdownMenuContent></DropdownMenu></div></>
- return <div className="flex min-h-[590px] w-full items-center justify-center p-3 sm:p-6"><Frame title="Orders Overview" description="Sep 30, compared with Sep 29" toolbar={toolbar} width="max-w-[768px]" footer={<><Updated>Updated {revision?'just now':'5 min ago'}</Updated><span>{metricLabels[metric as keyof typeof metricLabels]} per {period==='Day'?'2 hours':period==='Week'?'day':'2 days'}</span></>}><Tabs value={metric} onValueChange={setMetric} aria-label="Metric"><TabsList variant="line" className="h-auto w-full justify-start gap-3 sm:gap-4 rounded-none border-b bg-transparent px-4 py-0 group-data-horizontal/tabs:h-16">{[['orders','Orders',totalOrders.toLocaleString(),'6.5%'],['revenue','Revenue',`$${totalRevenue.toLocaleString()}`,'7.7%'],['average','Avg. Order',`$${average.toFixed(2)}`,'1.2%']].map(([key,label,value,change])=><TabsTrigger key={key} value={key} className="flex h-16 flex-none flex-col items-start gap-1 rounded-none border-x-0 border-t-0 px-0 pr-0 shadow-none group-data-horizontal/tabs:after:bottom-0"><span className="text-[10px] font-normal text-muted-foreground">{label}</span><span className="flex flex-wrap items-center gap-1 text-base font-semibold sm:gap-2 sm:text-lg">{value}<span className="flex basis-full items-center gap-0.5 text-[10px] font-normal text-emerald-600 sm:basis-auto"><TrendingUp className="size-3"/>{change}</span></span></TabsTrigger>)}</TabsList></Tabs>{plot()}</Frame><Dialog open={expanded} onOpenChange={setExpanded}><DialogContent className="w-[min(1100px,96vw)] sm:max-w-none"><DialogHeader><DialogTitle>Orders Overview</DialogTitle><DialogDescription>{metricLabels[metric as keyof typeof metricLabels]} · Current and prior period</DialogDescription></DialogHeader>{plot(true)}</DialogContent></Dialog></div>
+  const toolbar = (
+    <>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-7 gap-1.5 px-2 text-[11px]"
+            aria-label={`Period: ${period}`}
+          >
+            <CalendarDays />
+            {period}
+            <ChevronDown />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuRadioGroup value={period} onValueChange={setPeriod}>
+            {["Day", "Week", "Month", "Year"].map((p) => (
+              <DropdownMenuRadioItem key={p} value={p}>
+                {p}
+              </DropdownMenuRadioItem>
+            ))}
+          </DropdownMenuRadioGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <DisplayControl
+        grid={grid}
+        setGrid={setGrid}
+        previous={previous}
+        setPrevious={setPrevious}
+        dots={dots}
+        setDots={setDots}
+        curve={curve}
+        setCurve={setCurve}
+      />
+      <div className="flex">
+        <Button
+          variant="outline"
+          size="icon"
+          className="size-7 rounded-r-none"
+          aria-label="Refresh data"
+          onClick={() => {
+            setRevision((r) => r + 1);
+            toast.success("Orders refreshed");
+          }}
+        >
+          <RefreshCw />
+        </Button>
+        <Button
+          variant="outline"
+          size="icon"
+          className="-ml-px size-7 rounded-none"
+          aria-label="Expand chart"
+          onClick={() => setExpanded(true)}
+        >
+          <Maximize2 />
+        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="outline"
+              size="icon"
+              className="-ml-px size-7 rounded-l-none"
+              aria-label="More actions"
+            >
+              <MoreHorizontal />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuGroup>
+              <DropdownMenuItem onSelect={() => downloadCsv("orders-overview", data)}>
+                Export CSV
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onSelect={() => {
+                  navigator.clipboard.writeText(
+                    `${totalOrders.toLocaleString()} orders · $${totalRevenue.toLocaleString()} revenue · $${average.toFixed(2)} average order`,
+                  );
+                  toast.success("Summary copied");
+                }}
+              >
+                Copy summary
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+    </>
+  );
+  return (
+    <div className="flex min-h-[590px] w-full items-center justify-center p-3 sm:p-6">
+      <Frame
+        title="Orders Overview"
+        description="Sep 30, compared with Sep 29"
+        toolbar={toolbar}
+        width="max-w-[768px]"
+        footer={
+          <>
+            <Updated>Updated {revision ? "just now" : "5 min ago"}</Updated>
+            <span>
+              {metricLabels[metric as keyof typeof metricLabels]} per{" "}
+              {period === "Day" ? "2 hours" : period === "Week" ? "day" : "2 days"}
+            </span>
+          </>
+        }
+      >
+        <Tabs value={metric} onValueChange={setMetric} aria-label="Metric">
+          <TabsList
+            variant="line"
+            className="h-auto w-full justify-start gap-3 sm:gap-4 rounded-none border-b bg-transparent px-4 py-0 group-data-horizontal/tabs:h-16"
+          >
+            {[
+              ["orders", "Orders", totalOrders.toLocaleString(), "6.5%"],
+              ["revenue", "Revenue", `$${totalRevenue.toLocaleString()}`, "7.7%"],
+              ["average", "Avg. Order", `$${average.toFixed(2)}`, "1.2%"],
+            ].map(([key, label, value, change]) => (
+              <TabsTrigger
+                key={key}
+                value={key}
+                className="flex h-16 flex-none flex-col items-start gap-1 rounded-none border-x-0 border-t-0 px-0 pr-0 shadow-none group-data-horizontal/tabs:after:bottom-0"
+              >
+                <span className="text-[10px] font-normal text-muted-foreground">{label}</span>
+                <span className="flex flex-wrap items-center gap-1 text-base font-semibold sm:gap-2 sm:text-lg">
+                  {value}
+                  <span className="flex basis-full items-center gap-0.5 text-[10px] font-normal text-emerald-600 sm:basis-auto">
+                    <TrendingUp className="size-3" />
+                    {change}
+                  </span>
+                </span>
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
+        {plot()}
+      </Frame>
+      <Dialog open={expanded} onOpenChange={setExpanded}>
+        <DialogContent className="w-[min(1100px,96vw)] sm:max-w-none">
+          <DialogHeader>
+            <DialogTitle>Orders Overview</DialogTitle>
+            <DialogDescription>
+              {metricLabels[metric as keyof typeof metricLabels]} · Current and prior period
+            </DialogDescription>
+          </DialogHeader>
+          {plot(true)}
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
 }
 
-export function InboundLeads(){const [granularity,setGranularity]=useState('Month');const [color,setColor]=useState(palette[1]);const [grid,setGrid]=useState(true);const [previous,setPrevious]=useState(true);const [dots,setDots]=useState(true);const [trend,setTrend]=useState('Linear Trend');const [revision,setRevision]=useState(0);const [expanded,setExpanded]=useState(false);const [point,setPoint]=useState<number|null>(null);const rawCurrent=[398,431,506,488,547,529,468,452,583,641,612,503];const rawPrior=[352,381,404,436,428,459,392,371,448,497,521,437];const raw=rawCurrent.map((v,i)=>({name:months[i],current:v+revision*3,prior:rawPrior[i]}));const data=(()=>{const base=granularity==='Month'?raw:Array.from({length:4},(_,i)=>({name:`Q${i+1}`,current:raw.slice(i*3,i*3+3).reduce((s,r)=>s+r.current,0),prior:raw.slice(i*3,i*3+3).reduce((s,r)=>s+r.prior,0)}));const n=base.length;const mean=base.reduce((s,r)=>s+r.current,0)/n;const mx=(n-1)/2;const slope=base.reduce((s,r,i)=>s+(i-mx)*(r.current-mean),0)/base.reduce((s,_,i)=>s+(i-mx)**2,0);return base.map((r,i)=>({...r,trend:trend==='3-Point Average'?base.slice(Math.max(0,i-1),Math.min(n,i+2)).reduce((s,v)=>s+v.current,0)/base.slice(Math.max(0,i-1),Math.min(n,i+2)).length:mean+slope*(i-mx)}))})();const total=raw.reduce((s,r)=>s+r.current,0),priorTotal=raw.reduce((s,r)=>s+r.prior,0),growth=(total/priorTotal-1)*100
- const plot=(large=false)=><div className="relative px-3 pb-4 pt-8" tabIndex={0} role="application" aria-label="Inbound leads by period. Arrow keys move through the periods." onKeyDown={e=>{if(e.target!==e.currentTarget)return;if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();setPoint(p=>Math.max(0,Math.min(data.length-1,(p??0)+(e.key==='ArrowRight'?1:-1))))}else if(e.key==='Escape')setPoint(null)}}><ReuiTrend label="Inbound leads comparison" data={data} series={[...(previous?[{key:'prior',label:'2024',color:'#9ca3af',kind:'area' as const,dots,opacity:.3}]:[]),{key:'current',label:'2025',color,kind:'area',dots,glow:true},...(trend!=='None'?[{key:'trend',label:trend,color,kind:'line' as const,curve:trend==='Linear Trend'?'linear' as const:'monotone' as const,dashed:true,opacity:.7}]:[])]} domain={[0,granularity==='Month'?800:2400]} grid={grid} verticalGrid height={large?460:292} format={v=>Math.round(v).toLocaleString()} onPoint={setPoint}/>{point!==null&&<div className="absolute right-6 top-2 rounded-lg border bg-popover p-3 text-xs shadow-sm" aria-live="polite">{data[point].name} · 2025: {data[point].current} · 2024: {data[point].prior}</div>}</div>
+export function InboundLeads() {
+  const [granularity, setGranularity] = useState("Month");
+  const [color, setColor] = useState(palette[1]);
+  const [grid, setGrid] = useState(true);
+  const [previous, setPrevious] = useState(true);
+  const [dots, setDots] = useState(true);
+  const [trend, setTrend] = useState("Linear Trend");
+  const [revision, setRevision] = useState(0);
+  const [expanded, setExpanded] = useState(false);
+  const [point, setPoint] = useState<number | null>(null);
+  const rawCurrent = [398, 431, 506, 488, 547, 529, 468, 452, 583, 641, 612, 503];
+  const rawPrior = [352, 381, 404, 436, 428, 459, 392, 371, 448, 497, 521, 437];
+  const raw = rawCurrent.map((v, i) => ({
+    name: months[i],
+    current: v + revision * 3,
+    prior: rawPrior[i],
+  }));
+  const data = (() => {
+    const base =
+      granularity === "Month"
+        ? raw
+        : Array.from({ length: 4 }, (_, i) => ({
+            name: `Q${i + 1}`,
+            current: raw.slice(i * 3, i * 3 + 3).reduce((s, r) => s + r.current, 0),
+            prior: raw.slice(i * 3, i * 3 + 3).reduce((s, r) => s + r.prior, 0),
+          }));
+    const n = base.length;
+    const mean = base.reduce((s, r) => s + r.current, 0) / n;
+    const mx = (n - 1) / 2;
+    const slope =
+      base.reduce((s, r, i) => s + (i - mx) * (r.current - mean), 0) /
+      base.reduce((s, _, i) => s + (i - mx) ** 2, 0);
+    return base.map((r, i) => ({
+      ...r,
+      trend:
+        trend === "3-Point Average"
+          ? base.slice(Math.max(0, i - 1), Math.min(n, i + 2)).reduce((s, v) => s + v.current, 0) /
+            base.slice(Math.max(0, i - 1), Math.min(n, i + 2)).length
+          : mean + slope * (i - mx),
+    }));
+  })();
+  const total = raw.reduce((s, r) => s + r.current, 0),
+    priorTotal = raw.reduce((s, r) => s + r.prior, 0),
+    growth = (total / priorTotal - 1) * 100;
+  const plot = (large = false) => (
+    <div
+      className="relative px-3 pb-4 pt-8"
+      tabIndex={0}
+      role="application"
+      aria-label="Inbound leads by period. Arrow keys move through the periods."
+      onKeyDown={(e) => {
+        if (e.target !== e.currentTarget) return;
+        if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+          e.preventDefault();
+          setPoint((p) =>
+            Math.max(0, Math.min(data.length - 1, (p ?? 0) + (e.key === "ArrowRight" ? 1 : -1))),
+          );
+        } else if (e.key === "Escape") setPoint(null);
+      }}
+    >
+      <ReuiTrend
+        label="Inbound leads comparison"
+        data={data}
+        series={[
+          ...(previous
+            ? [
+                {
+                  key: "prior",
+                  label: "2024",
+                  color: "#9ca3af",
+                  kind: "area" as const,
+                  dots,
+                  opacity: 0.3,
+                },
+              ]
+            : []),
+          { key: "current", label: "2025", color, kind: "area", dots, glow: true },
+          ...(trend !== "None"
+            ? [
+                {
+                  key: "trend",
+                  label: trend,
+                  color,
+                  kind: "line" as const,
+                  curve: trend === "Linear Trend" ? ("linear" as const) : ("monotone" as const),
+                  dashed: true,
+                  opacity: 0.7,
+                },
+              ]
+            : []),
+        ]}
+        domain={[0, granularity === "Month" ? 800 : 2400]}
+        grid={grid}
+        verticalGrid
+        height={large ? 460 : 292}
+        format={(v) => Math.round(v).toLocaleString()}
+        onPoint={setPoint}
+      />
+      {point !== null && (
+        <div
+          className="absolute right-6 top-2 rounded-lg border bg-popover p-3 text-xs shadow-sm"
+          aria-live="polite"
+        >
+          {data[point].name} · 2025: {data[point].current} · 2024: {data[point].prior}
+        </div>
+      )}
+    </div>
+  );
 
- const toolbar=<><ToggleGroup type="single" value={granularity} onValueChange={v=>{if(v){setGranularity(v);setPoint(null)}}} variant="outline" size="sm" spacing={0} aria-label="Granularity"><ToggleGroupItem value="Month" className="h-7 px-2 text-[11px]" aria-label="By month">Month</ToggleGroupItem><ToggleGroupItem value="Quarter" className="h-7 px-2 text-[11px]" aria-label="By quarter">Quarter</ToggleGroupItem></ToggleGroup><DisplayControl grid={grid} setGrid={setGrid} previous={previous} setPrevious={setPrevious} dots={dots} setDots={setDots}/><DropdownMenu><DropdownMenuTrigger asChild><Button variant="outline" size="sm" className="h-7 gap-1.5 px-2 text-[11px]" aria-label={`Trend line: ${trend}`}>{trend}<ChevronDown/></Button></DropdownMenuTrigger><DropdownMenuContent align="end"><DropdownMenuRadioGroup value={trend} onValueChange={setTrend}>{['Linear Trend','3-Point Average','None'].map(t=><DropdownMenuRadioItem key={t} value={t}>{t}</DropdownMenuRadioItem>)}</DropdownMenuRadioGroup></DropdownMenuContent></DropdownMenu><ChartActions color={color} onColor={setColor} onRefresh={()=>{setRevision(r=>r+1);toast.success('Leads refreshed')}} onExpand={()=>setExpanded(true)} onExport={()=>downloadCsv('inbound-leads',data)} onCopy={()=>{navigator.clipboard.writeText(`${total.toLocaleString()} inbound leads in 2025, up ${growth.toFixed(1)}% vs 2024.`);toast.success('Summary copied')}}/></>
- return <div className="flex min-h-[560px] w-full items-center justify-center p-3 sm:p-6"><Card className="w-full max-w-[900px] gap-0 overflow-hidden py-0 shadow-none"><CardHeader className="flex flex-row flex-wrap items-start justify-between gap-3 px-4 py-4"><div className="flex flex-col gap-2"><CardTitle className="text-sm font-medium">Inbound Leads</CardTitle><CardDescription className="flex items-center gap-1.5 text-xs"><span className="flex items-center gap-1 font-medium" style={{color}}><TrendingUp className="size-4"/>{growth.toFixed(1)}%</span><span>vs 2024</span></CardDescription></div><div className="flex flex-wrap items-center gap-2">{toolbar}</div></CardHeader><CardContent className="px-0">{plot()}</CardContent><CardFooter className="flex flex-wrap items-center justify-between gap-2 border-t bg-muted/25 px-4 py-3 text-[10px] text-muted-foreground"><div className="flex items-center gap-5"><span className="flex items-center gap-1.5"><span className="size-2 rounded-full" style={{background:color}}/>2025 <strong className="font-medium text-foreground">{total.toLocaleString()}</strong></span><span className="flex items-center gap-1.5"><span className="size-2 rounded-full bg-muted-foreground/50"/>2024 <strong className="font-medium text-foreground">{priorTotal.toLocaleString()}</strong></span></div><div className="flex items-center gap-3">{trend!=='None'&&<span className="flex items-center gap-1"><span className="w-4 border-t border-dashed" style={{borderColor:color}}/>{trend==='Linear Trend'?'Linear trend +13 a month':'3-point average'}</span>}<span className="opacity-40">•</span><span>Updated {revision?'just now':'Jan 6, 09:30'}</span></div></CardFooter></Card><Dialog open={expanded} onOpenChange={setExpanded}><DialogContent className="w-[min(1150px,96vw)] sm:max-w-none"><DialogHeader><DialogTitle>Inbound Leads</DialogTitle><DialogDescription>2025 and 2024 · {granularity.toLowerCase()} view</DialogDescription></DialogHeader>{plot(true)}</DialogContent></Dialog></div>
+  const toolbar = (
+    <>
+      <ToggleGroup
+        type="single"
+        value={granularity}
+        onValueChange={(v) => {
+          if (v) {
+            setGranularity(v);
+            setPoint(null);
+          }
+        }}
+        variant="outline"
+        size="sm"
+        spacing={0}
+        aria-label="Granularity"
+      >
+        <ToggleGroupItem value="Month" className="h-7 px-2 text-[11px]" aria-label="By month">
+          Month
+        </ToggleGroupItem>
+        <ToggleGroupItem value="Quarter" className="h-7 px-2 text-[11px]" aria-label="By quarter">
+          Quarter
+        </ToggleGroupItem>
+      </ToggleGroup>
+      <DisplayControl
+        grid={grid}
+        setGrid={setGrid}
+        previous={previous}
+        setPrevious={setPrevious}
+        dots={dots}
+        setDots={setDots}
+      />
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-7 gap-1.5 px-2 text-[11px]"
+            aria-label={`Trend line: ${trend}`}
+          >
+            {trend}
+            <ChevronDown />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuRadioGroup value={trend} onValueChange={setTrend}>
+            {["Linear Trend", "3-Point Average", "None"].map((t) => (
+              <DropdownMenuRadioItem key={t} value={t}>
+                {t}
+              </DropdownMenuRadioItem>
+            ))}
+          </DropdownMenuRadioGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <ChartActions
+        color={color}
+        onColor={setColor}
+        onRefresh={() => {
+          setRevision((r) => r + 1);
+          toast.success("Leads refreshed");
+        }}
+        onExpand={() => setExpanded(true)}
+        onExport={() => downloadCsv("inbound-leads", data)}
+        onCopy={() => {
+          navigator.clipboard.writeText(
+            `${total.toLocaleString()} inbound leads in 2025, up ${growth.toFixed(1)}% vs 2024.`,
+          );
+          toast.success("Summary copied");
+        }}
+      />
+    </>
+  );
+  return (
+    <div className="flex min-h-[560px] w-full items-center justify-center p-3 sm:p-6">
+      <Card className="w-full max-w-[900px] gap-0 overflow-hidden py-0 shadow-none">
+        <CardHeader className="flex flex-row flex-wrap items-start justify-between gap-3 px-4 py-4">
+          <div className="flex flex-col gap-2">
+            <CardTitle className="text-sm font-medium">Inbound Leads</CardTitle>
+            <CardDescription className="flex items-center gap-1.5 text-xs">
+              <span className="flex items-center gap-1 font-medium" style={{ color }}>
+                <TrendingUp className="size-4" />
+                {growth.toFixed(1)}%
+              </span>
+              <span>vs 2024</span>
+            </CardDescription>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">{toolbar}</div>
+        </CardHeader>
+        <CardContent className="px-0">{plot()}</CardContent>
+        <CardFooter className="flex flex-wrap items-center justify-between gap-2 border-t bg-muted/25 px-4 py-3 text-[10px] text-muted-foreground">
+          <div className="flex items-center gap-5">
+            <span className="flex items-center gap-1.5">
+              <span className="size-2 rounded-full" style={{ background: color }} />
+              2025 <strong className="font-medium text-foreground">{total.toLocaleString()}</strong>
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="size-2 rounded-full bg-muted-foreground/50" />
+              2024{" "}
+              <strong className="font-medium text-foreground">{priorTotal.toLocaleString()}</strong>
+            </span>
+          </div>
+          <div className="flex items-center gap-3">
+            {trend !== "None" && (
+              <span className="flex items-center gap-1">
+                <span className="w-4 border-t border-dashed" style={{ borderColor: color }} />
+                {trend === "Linear Trend" ? "Linear trend +13 a month" : "3-point average"}
+              </span>
+            )}
+            <span className="opacity-40">•</span>
+            <span>Updated {revision ? "just now" : "Jan 6, 09:30"}</span>
+          </div>
+        </CardFooter>
+      </Card>
+      <Dialog open={expanded} onOpenChange={setExpanded}>
+        <DialogContent className="w-[min(1150px,96vw)] sm:max-w-none">
+          <DialogHeader>
+            <DialogTitle>Inbound Leads</DialogTitle>
+            <DialogDescription>2025 and 2024 · {granularity.toLowerCase()} view</DialogDescription>
+          </DialogHeader>
+          {plot(true)}
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
 }
-export default function AreaPanel({block}:BlockProps){return block.id==='chart-17'?<CampaignImpressions/>:block.id==='chart-18'?<OrdersOverview/>:<InboundLeads/>}
+export default function AreaPanel({ block }: BlockProps) {
+  return block.id === "chart-17" ? (
+    <CampaignImpressions />
+  ) : block.id === "chart-18" ? (
+    <OrdersOverview />
+  ) : (
+    <InboundLeads />
+  );
+}

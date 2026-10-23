@@ -1,12 +1,5 @@
 import { useRef, useState, type ComponentProps, type ReactNode } from "react";
-import {
-  CircleCheck,
-  CircleDot,
-  Clock,
-  Ellipsis,
-  Info,
-  ShieldCheck,
-} from "lucide-react";
+import { CircleCheck, CircleDot, Clock, Ellipsis, Info, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import rangePortrait from "./assets/range-alex-johnson.jpg";
@@ -46,11 +39,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import "../reference.css";
 import "./schedule-booking.css";
 
@@ -86,9 +75,7 @@ const time12 = (value: string, capital = true, leadingZero = true) => {
   });
 };
 const durationText = (minutes: number) =>
-  minutes < 60
-    ? `${minutes} min`
-    : `${minutes / 60} ${minutes === 60 ? "hour" : "hours"}`;
+  minutes < 60 ? `${minutes} min` : `${minutes / 60} ${minutes === 60 ? "hour" : "hours"}`;
 
 function Choice({
   label,
@@ -186,10 +173,8 @@ function BookingCalendar({
         dropdownNavClassName="sr-calendar-dropdowns"
         components={{ DayButton: Day }}
         formatters={{
-          formatWeekdayName: (day) =>
-            day.toLocaleDateString("en-US", { weekday: "short" }),
-          formatMonthDropdown: (day) =>
-            day.toLocaleDateString("en-US", { month: "long" }),
+          formatWeekdayName: (day) => day.toLocaleDateString("en-US", { weekday: "short" }),
+          formatMonthDropdown: (day) => day.toLocaleDateString("en-US", { month: "long" }),
         }}
         classNames={{
           month_caption: "sr-calendar-caption",
@@ -227,11 +212,7 @@ export function TimeRangePicker() {
   };
   return (
     <div className="reui-reference schedule-reference sr-page">
-      <Frame
-        className="sr-frame sr-range"
-        role="region"
-        aria-label="Time range picker"
-      >
+      <Frame className="sr-frame sr-range" role="region" aria-label="Time range picker">
         <FrameHeader className="sr-range-header">
           <Avatar>
             <AvatarImage src={rangePortrait} alt="Alex Johnson" />
@@ -245,24 +226,13 @@ export function TimeRangePicker() {
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                className="sr-more"
-                aria-label="Session options"
-              >
+              <Button variant="ghost" className="sr-more" aria-label="Session options">
                 <Ellipsis />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent
-              className="reui-reference schedule-reference-menu"
-              align="end"
-            >
+            <DropdownMenuContent className="reui-reference schedule-reference-menu" align="end">
               <DropdownMenuItem>View Profile</DropdownMenuItem>
-              <DropdownMenuItem
-                onSelect={() =>
-                  void navigator.clipboard.writeText(location.href)
-                }
-              >
+              <DropdownMenuItem onSelect={() => void navigator.clipboard.writeText(location.href)}>
                 Copy Link
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -326,10 +296,7 @@ export function TimeRangePicker() {
           <div className="sr-footer-note" aria-live="polite">
             <Tooltip>
               <TooltipTrigger asChild>
-                <button
-                  type="button"
-                  aria-label="Selected duration information"
-                >
+                <button type="button" aria-label="Selected duration information">
                   <Info />
                 </button>
               </TooltipTrigger>
@@ -347,8 +314,7 @@ export function TimeRangePicker() {
                 </>
               ) : (
                 <>
-                  Selected duration:{" "}
-                  <strong>{total > 0 ? durationText(total) : "0 min"}</strong>
+                  Selected duration: <strong>{total > 0 ? durationText(total) : "0 min"}</strong>
                 </>
               )}
             </span>
@@ -357,11 +323,7 @@ export function TimeRangePicker() {
             <Button variant="outline" className="sr-button" onClick={reset}>
               Cancel
             </Button>
-            <Button
-              className="sr-button"
-              disabled={total <= 0}
-              onClick={() => setConfirmed(true)}
-            >
+            <Button className="sr-button" disabled={total <= 0} onClick={() => setConfirmed(true)}>
               Apply
             </Button>
           </div>
@@ -372,13 +334,7 @@ export function TimeRangePicker() {
 }
 
 const MEETING_DURATIONS = [15, 30, 45, 60, 90, 120];
-const RECURRENCES = [
-  "Does not repeat",
-  "Every day",
-  "Every week",
-  "Every 2 weeks",
-  "Every month",
-];
+const RECURRENCES = ["Does not repeat", "Every day", "Every week", "Every 2 weeks", "Every month"];
 export function MeetingScheduler() {
   const [date, setDate] = useState<Date | undefined>(REFERENCE_DAY);
   const [slot, setSlot] = useState("10:00");
@@ -401,16 +357,10 @@ export function MeetingScheduler() {
     setRecording(false);
     setScheduled(false);
   };
-  const slots = Array.from({ length: 25 }, (_, index) =>
-    timeValue(8 * 60 + index * 30),
-  );
+  const slots = Array.from({ length: 25 }, (_, index) => timeValue(8 * 60 + index * 30));
   return (
     <div className="reui-reference schedule-reference sr-page">
-      <Frame
-        className="sr-frame sr-meeting"
-        role="region"
-        aria-label="Meeting scheduler"
-      >
+      <Frame className="sr-frame sr-meeting" role="region" aria-label="Meeting scheduler">
         <FrameHeader className="sr-meeting-header">
           <FrameTitle role="heading" aria-level={2}>
             Schedule Meeting
@@ -433,11 +383,7 @@ export function MeetingScheduler() {
                   ? `${date.toLocaleDateString("en-US", { weekday: "long" })}, ${date.getDate()}`
                   : "Pick a date"}
               </h3>
-              <ScrollArea
-                className="sr-slot-scroll"
-                type="always"
-                aria-label="Meeting times"
-              >
+              <ScrollArea className="sr-slot-scroll" type="always" aria-label="Meeting times">
                 <div className="sr-slot-items">
                   {slots.map((value) => (
                     <Button
@@ -575,11 +521,7 @@ export function SessionBooking() {
   };
   return (
     <div className="reui-reference schedule-reference sr-page">
-      <Frame
-        className="sr-frame sr-session"
-        role="region"
-        aria-label="Session booking"
-      >
+      <Frame className="sr-frame sr-session" role="region" aria-label="Session booking">
         <FrameHeader className="sr-session-header">
           <FrameTitle role="heading" aria-level={2}>
             Schedule a session
@@ -675,11 +617,7 @@ export function SessionBooking() {
           </p>
           <div className="sr-actions">
             {date && !booked && (
-              <Button
-                className="sr-button sr-small"
-                variant="ghost"
-                onClick={reset}
-              >
+              <Button className="sr-button sr-small" variant="ghost" onClick={reset}>
                 Reset
               </Button>
             )}

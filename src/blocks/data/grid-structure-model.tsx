@@ -50,10 +50,7 @@ export function StructureGrid<T extends object>({
   toolbar?: ReactNode;
   footerContent?: ReactNode;
   cellApi?: RefObject<DataGridCellSelectionApi | null>;
-  gridProps?: Omit<
-    DataGridProps<DataGridFeatures, T>,
-    "table" | "recordCount" | "children"
-  >;
+  gridProps?: Omit<DataGridProps<DataGridFeatures, T>, "table" | "recordCount" | "children">;
   className?: string;
 }) {
   const tableLayout = {
@@ -87,10 +84,7 @@ export function StructureGrid<T extends object>({
         footerContent={footerContent}
       />
     ) : (
-      <DataGridTable<T>
-        renderHeader={renderHeader}
-        footerContent={footerContent}
-      />
+      <DataGridTable<T> renderHeader={renderHeader} footerContent={footerContent} />
     );
   return (
     <DataGrid
@@ -114,13 +108,9 @@ export function StructureGrid<T extends object>({
         {mode === "virtual" ? (
           renderer
         ) : (
-          <DataGridScrollArea className="max-h-[720px]">
-            {renderer}
-          </DataGridScrollArea>
+          <DataGridScrollArea className="max-h-[720px]">{renderer}</DataGridScrollArea>
         )}
-        {tableLayout.cellSelection && (
-          <DataGridCellSelection<T> apiRef={cellApi} />
-        )}
+        {tableLayout.cellSelection && <DataGridCellSelection<T> apiRef={cellApi} />}
       </DataGridContainer>
       {children}
     </DataGrid>

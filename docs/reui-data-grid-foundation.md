@@ -15,4 +15,3 @@ Installation adapters (no changes to component behavior):
 - Official Badge semantic CSS variables are included in the shared theme and standalone downloads.
 
 Validation: an isolated checkout of the last published commit with only this foundation builds successfully with `npm run build`. Page migration is tracked separately; the presence of a dependency alone does not establish that a block has migrated.
-

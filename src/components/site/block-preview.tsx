@@ -1,11 +1,4 @@
-import {
-  lazy,
-  Suspense,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
 import {
   Check,
   Copy,
@@ -25,11 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/reui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import {
-  Tooltip,
-  TooltipTrigger,
-  TooltipContent,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -53,16 +42,8 @@ import {
   readTheme,
 } from "./preview-theme";
 import "./block-preview.css";
-const SourcePanel = lazy(() =>
-  import("./source-panel").then((m) => ({ default: m.SourcePanel })),
-);
-function IconTip({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
+const SourcePanel = lazy(() => import("./source-panel").then((m) => ({ default: m.SourcePanel })));
+function IconTip({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <Tooltip>
       <TooltipTrigger asChild>{children}</TooltipTrigger>
@@ -71,9 +52,7 @@ function IconTip({
   );
 }
 function useSystemDark() {
-  const [dark, setDark] = useState(
-    () => matchMedia("(prefers-color-scheme: dark)").matches,
-  );
+  const [dark, setDark] = useState(() => matchMedia("(prefers-color-scheme: dark)").matches);
   useEffect(() => {
     const media = matchMedia("(prefers-color-scheme: dark)");
     const update = () => setDark(media.matches);
@@ -82,13 +61,7 @@ function useSystemDark() {
   }, []);
   return dark;
 }
-export function PreviewPanel({
-  block,
-  dark,
-}: {
-  block: BlockMeta;
-  dark: boolean;
-}) {
+export function PreviewPanel({ block, dark }: { block: BlockMeta; dark: boolean }) {
   const [tab, setTab] = useState("preview");
   const [device, setDevice] = useState("desktop");
   const [revision, setRevision] = useState(0);
@@ -136,19 +109,13 @@ export function PreviewPanel({
   const canvas = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const observer = new ResizeObserver(
-      (entries) =>
-        entries[0].contentRect.width > 0 &&
-        setCanvasWidth(entries[0].contentRect.width),
+      (entries) => entries[0].contentRect.width > 0 && setCanvasWidth(entries[0].contentRect.width),
     );
     if (canvas.current) observer.observe(canvas.current);
     return () => observer.disconnect();
   }, [tab]);
   const desired =
-    device === "mobile"
-      ? 390
-      : device === "tablet"
-        ? 768
-        : Math.max(1000, canvasWidth);
+    device === "mobile" ? 390 : device === "tablet" ? 768 : Math.max(1000, canvasWidth);
   const scale = Math.max(0.1, Math.min(1, canvasWidth / desired));
   async function copyLink() {
     try {
@@ -183,10 +150,7 @@ export function PreviewPanel({
                   className="hidden sm:flex"
                   aria-label="Preview viewport"
                 >
-                  <ToggleGroupItem
-                    value="desktop"
-                    aria-label="Desktop viewport"
-                  >
+                  <ToggleGroupItem value="desktop" aria-label="Desktop viewport">
                     <Monitor />
                   </ToggleGroupItem>
                   <ToggleGroupItem value="tablet" aria-label="Tablet viewport">
@@ -196,10 +160,7 @@ export function PreviewPanel({
                     <Smartphone />
                   </ToggleGroupItem>
                 </ToggleGroup>
-                <Separator
-                  orientation="vertical"
-                  className="mx-1 hidden h-5 sm:block"
-                />
+                <Separator orientation="vertical" className="mx-1 hidden h-5 sm:block" />
                 <IconTip label="Reset preview">
                   <Button
                     variant="ghost"
@@ -302,8 +263,7 @@ export function PreviewPanel({
                   Interactive preview
                 </span>
                 <span>
-                  {Math.round(desired)} px{" "}
-                  <span className="hidden sm:inline">· ReUI + React</span>
+                  {Math.round(desired)} px <span className="hidden sm:inline">· ReUI + React</span>
                 </span>
                 <Button
                   variant="outline"
@@ -338,9 +298,7 @@ export function PreviewPanel({
           </SheetHeader>
           <div className="block-source-scroll">
             <Suspense fallback={<Skeleton className="h-96 w-full" />}>
-              {sourceOpen && (
-                <SourcePanel block={block} dark={dark} theme={theme} />
-              )}
+              {sourceOpen && <SourcePanel block={block} dark={dark} theme={theme} />}
             </Suspense>
           </div>
         </SheetContent>

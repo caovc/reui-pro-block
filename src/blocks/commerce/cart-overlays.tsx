@@ -1,15 +1,331 @@
-import { useState } from 'react'
-import { ShoppingBag, X } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { Progress } from '@/components/ui/progress'
-import { Badge } from '@/components/reui/badge'
-import { Frame, FramePanel } from '@/components/reui/frame'
-import { CartCheckout, CartEmpty, Quantity, cartPhotos as photo, money, useCart } from './cart-shared'
-import type { CartItem } from './cart-shared'
-const quickItems:CartItem[]=[{id:'aurora',name:'Aurora Studio Headphones',price:189.99,qty:1,detail:'Onyx Black',image:photo.headphones},{id:'pulse',name:'Pulse Mini Bluetooth Speaker',price:79.99,qty:2,detail:'Deep Slate',image:photo.lamp},{id:'beacon',name:'Beacon Trail GPS Watch',price:249.99,qty:1,detail:'Carbon Grey',image:photo.headphones},{id:'voyager',name:'Voyager Mechanical Keyboard',price:159.99,qty:1,detail:'Graphite',image:photo.lamp},{id:'helix',name:'Helix Air Sport Earbuds',price:129.99,qty:1,detail:'Cobalt',image:photo.headphones},{id:'solace',name:'Solace Mouse Pro Wireless',price:69.99,qty:1,detail:'Sand',image:photo.lamp},{id:'atlas',name:'Atlas Adjustable Desk Lamp',price:119.99,qty:1,detail:'Matte Black',image:photo.lamp}]
-const drawerItems:CartItem[]=[{id:'tote',name:'Linen Fold Carryall Tote',price:98,qty:1,detail:'Sand',category:'Bags',image:photo.bag},{id:'tee',name:'Studio Cotton Pocket Tee',price:42,qty:2,detail:'Ivory',category:'Tops',image:photo.shirt},{id:'pants',name:'Atelier Wide-Leg Linen Pants',price:148,qty:1,detail:'Stone',category:'Bottoms',image:photo.jacket},{id:'loafers',name:'Heritage Suede Loafers',price:185,qty:1,detail:'Tan',category:'Footwear',image:photo.shoes},{id:'scarf',name:'Maris Felted Wool Scarf',price:58,qty:1,detail:'Camel',category:'Accessories',image:photo.shirt}]
-export function CartDropdown(){const cart=useCart(quickItems),[open,setOpen]=useState(true),[view,setView]=useState(false);return <div className="flex min-h-176 justify-center px-4 pt-12" data-cart-variant="6"><Popover open={open} onOpenChange={setOpen}><PopoverTrigger asChild><Button variant="outline" className="rounded-full"><ShoppingBag/>Cart<Badge variant="secondary" size="sm">{cart.count}</Badge></Button></PopoverTrigger><PopoverContent sideOffset={10} align="center" className="w-[min(384px,calc(100vw-32px))] overflow-hidden p-0" aria-label="Quick cart"><ScrollArea className="h-100"><div className="divide-y p-4">{cart.items.map(item=><div key={item.id} className="flex items-start gap-3 py-4 first:pt-0"><img src={item.image} alt={item.name} className="size-12 shrink-0 rounded-lg bg-muted object-cover"/><div className="min-w-0 flex-1"><h2 className="text-sm font-medium leading-snug">{item.name}</h2><p className="mt-1 text-xs text-muted-foreground">{item.detail}</p><div className="mt-3 flex flex-wrap items-center justify-between gap-2"><Quantity item={item} compact removeAtOne onChange={v=>cart.update(item.id,v)}/><strong className="text-xs">{money(item.price*item.qty)}</strong></div></div></div>)}{!cart.items.length&&<CartEmpty onReset={()=>cart.setItems(quickItems)}/>}</div></ScrollArea><div className="space-y-4 border-t bg-muted/20 p-4"><div className="flex items-center justify-between text-sm"><span>Subtotal ({cart.count} items)</span><strong data-cart-total>{money(cart.subtotal)}</strong></div><div className="grid grid-cols-2 gap-3"><Button variant="outline" onClick={()=>setView(!view)}>View cart</Button><CartCheckout total={cart.subtotal} disabled={!cart.items.length} label="Checkout"/></div>{view&&<p className="text-xs text-muted-foreground">All {cart.count} items are shown above. Change quantities or remove items before checkout.</p>}</div></PopoverContent></Popover></div>}
-export function AddToCartDrawer(){const cart=useCart(drawerItems),[open,setOpen]=useState(true),[view,setView]=useState(false);const featured=cart.items.find(i=>i.id==='tote'),others=cart.items.filter(i=>i.id!=='tote');const row=(item:CartItem)=><div className="flex gap-3"><img src={item.image} alt={item.name} className="size-16 shrink-0 rounded-lg bg-muted object-cover"/><div className="min-w-0 flex-1"><p className="text-[9px] uppercase tracking-wider text-muted-foreground">{item.category}</p><h3 className="mt-1 text-sm font-medium leading-snug">{item.name}</h3><p className="mt-1 text-xs text-muted-foreground">{item.detail}</p><div className="mt-3 flex flex-wrap items-center justify-between gap-2"><Quantity item={item} compact removeAtOne onChange={v=>cart.update(item.id,v)}/><strong className="text-sm">{money(item.price*item.qty)}</strong></div></div></div>;return <div className="flex min-h-176 justify-center px-4 pt-12" data-cart-variant="7"><Sheet open={open} onOpenChange={setOpen}><SheetTrigger asChild><Button variant="outline">Open cart<Badge size="sm" variant="secondary">{cart.count}</Badge></Button></SheetTrigger><SheetContent showCloseButton={false} className="gap-0 overflow-hidden rounded-2xl data-[side=right]:inset-y-3 data-[side=right]:right-3 data-[side=right]:h-auto data-[side=right]:w-[calc(100vw-24px)] data-[side=right]:sm:max-w-104"><SheetHeader className="flex-row items-center justify-between border-b p-5"><div><SheetTitle>Your Cart <span className="ml-2 text-xs font-normal text-muted-foreground">{cart.count} items</span></SheetTitle><SheetDescription className="sr-only">Review the items you just added and proceed to checkout.</SheetDescription></div><Button variant="ghost" size="icon-sm" aria-label="Close cart" onClick={()=>setOpen(false)}><X/></Button></SheetHeader><ScrollArea className="min-h-0 flex-1"><div className="space-y-6 p-5">{featured&&<div className="space-y-3"><div className="flex items-center justify-between"><Badge variant="success-light">Just added</Badge><span className="text-xs text-muted-foreground">12 seconds ago</span></div><Frame variant="ghost"><FramePanel className="border-success/30 bg-success/5 p-3">{row(featured)}</FramePanel></Frame></div>}{!!others.length&&<><h2 className="text-[10px] font-medium tracking-wider text-muted-foreground">ALSO IN YOUR CART ({others.length})</h2><div className="space-y-6">{others.map(item=><div key={item.id}>{row(item)}</div>)}</div></>}{!cart.items.length&&<CartEmpty onReset={()=>cart.setItems(drawerItems)}/>}</div></ScrollArea><SheetFooter className="space-y-4 border-t bg-background p-5"><div className="space-y-2"><p className="text-xs text-muted-foreground">{cart.subtotal>=600?'Free shipping unlocked':`${money(600-cart.subtotal)} away from free shipping`}</p><Progress value={Math.min(100,cart.subtotal/6)} aria-label="Free shipping progress"/></div><div className="flex items-center justify-between text-sm"><span>Subtotal ({cart.count} items)</span><strong className="text-lg" data-cart-total>{money(cart.subtotal)}</strong></div><div className="grid grid-cols-2 gap-3"><Button variant="outline" onClick={()=>setView(!view)}>View cart</Button><CartCheckout total={cart.subtotal} disabled={!cart.items.length} label="Checkout"/></div>{view&&<p className="text-xs text-muted-foreground">Your full cart is shown above. Quantities stay saved when you close this drawer.</p>}<p className="text-center text-[10px] text-muted-foreground">Taxes and discounts calculated at checkout.</p></SheetFooter></SheetContent></Sheet></div>}
+import { useState } from "react";
+import { ShoppingBag, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/reui/badge";
+import { Frame, FramePanel } from "@/components/reui/frame";
+import {
+  CartCheckout,
+  CartEmpty,
+  Quantity,
+  cartPhotos as photo,
+  money,
+  useCart,
+} from "./cart-shared";
+import type { CartItem } from "./cart-shared";
+const quickItems: CartItem[] = [
+  {
+    id: "aurora",
+    name: "Aurora Studio Headphones",
+    price: 189.99,
+    qty: 1,
+    detail: "Onyx Black",
+    image: photo.headphones,
+  },
+  {
+    id: "pulse",
+    name: "Pulse Mini Bluetooth Speaker",
+    price: 79.99,
+    qty: 2,
+    detail: "Deep Slate",
+    image: photo.lamp,
+  },
+  {
+    id: "beacon",
+    name: "Beacon Trail GPS Watch",
+    price: 249.99,
+    qty: 1,
+    detail: "Carbon Grey",
+    image: photo.headphones,
+  },
+  {
+    id: "voyager",
+    name: "Voyager Mechanical Keyboard",
+    price: 159.99,
+    qty: 1,
+    detail: "Graphite",
+    image: photo.lamp,
+  },
+  {
+    id: "helix",
+    name: "Helix Air Sport Earbuds",
+    price: 129.99,
+    qty: 1,
+    detail: "Cobalt",
+    image: photo.headphones,
+  },
+  {
+    id: "solace",
+    name: "Solace Mouse Pro Wireless",
+    price: 69.99,
+    qty: 1,
+    detail: "Sand",
+    image: photo.lamp,
+  },
+  {
+    id: "atlas",
+    name: "Atlas Adjustable Desk Lamp",
+    price: 119.99,
+    qty: 1,
+    detail: "Matte Black",
+    image: photo.lamp,
+  },
+];
+const drawerItems: CartItem[] = [
+  {
+    id: "tote",
+    name: "Linen Fold Carryall Tote",
+    price: 98,
+    qty: 1,
+    detail: "Sand",
+    category: "Bags",
+    image: photo.bag,
+  },
+  {
+    id: "tee",
+    name: "Studio Cotton Pocket Tee",
+    price: 42,
+    qty: 2,
+    detail: "Ivory",
+    category: "Tops",
+    image: photo.shirt,
+  },
+  {
+    id: "pants",
+    name: "Atelier Wide-Leg Linen Pants",
+    price: 148,
+    qty: 1,
+    detail: "Stone",
+    category: "Bottoms",
+    image: photo.jacket,
+  },
+  {
+    id: "loafers",
+    name: "Heritage Suede Loafers",
+    price: 185,
+    qty: 1,
+    detail: "Tan",
+    category: "Footwear",
+    image: photo.shoes,
+  },
+  {
+    id: "scarf",
+    name: "Maris Felted Wool Scarf",
+    price: 58,
+    qty: 1,
+    detail: "Camel",
+    category: "Accessories",
+    image: photo.shirt,
+  },
+];
+export function CartDropdown() {
+  const cart = useCart(quickItems),
+    [open, setOpen] = useState(true),
+    [view, setView] = useState(false);
+  return (
+    <div className="flex min-h-176 justify-center px-4 pt-12" data-cart-variant="6">
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button variant="outline" className="rounded-full">
+            <ShoppingBag />
+            Cart
+            <Badge variant="secondary" size="sm">
+              {cart.count}
+            </Badge>
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent
+          sideOffset={10}
+          align="center"
+          className="w-[min(384px,calc(100vw-32px))] overflow-hidden p-0"
+          aria-label="Quick cart"
+        >
+          <ScrollArea className="h-100">
+            <div className="divide-y p-4">
+              {cart.items.map((item) => (
+                <div key={item.id} className="flex items-start gap-3 py-4 first:pt-0">
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="size-12 shrink-0 rounded-lg bg-muted object-cover"
+                  />
+                  <div className="min-w-0 flex-1">
+                    <h2 className="text-sm font-medium leading-snug">{item.name}</h2>
+                    <p className="mt-1 text-xs text-muted-foreground">{item.detail}</p>
+                    <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
+                      <Quantity
+                        item={item}
+                        compact
+                        removeAtOne
+                        onChange={(v) => cart.update(item.id, v)}
+                      />
+                      <strong className="text-xs">{money(item.price * item.qty)}</strong>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              {!cart.items.length && <CartEmpty onReset={() => cart.setItems(quickItems)} />}
+            </div>
+          </ScrollArea>
+          <div className="space-y-4 border-t bg-muted/20 p-4">
+            <div className="flex items-center justify-between text-sm">
+              <span>Subtotal ({cart.count} items)</span>
+              <strong data-cart-total>{money(cart.subtotal)}</strong>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <Button variant="outline" onClick={() => setView(!view)}>
+                View cart
+              </Button>
+              <CartCheckout total={cart.subtotal} disabled={!cart.items.length} label="Checkout" />
+            </div>
+            {view && (
+              <p className="text-xs text-muted-foreground">
+                All {cart.count} items are shown above. Change quantities or remove items before
+                checkout.
+              </p>
+            )}
+          </div>
+        </PopoverContent>
+      </Popover>
+    </div>
+  );
+}
+export function AddToCartDrawer() {
+  const cart = useCart(drawerItems),
+    [open, setOpen] = useState(true),
+    [view, setView] = useState(false);
+  const featured = cart.items.find((i) => i.id === "tote"),
+    others = cart.items.filter((i) => i.id !== "tote");
+  const row = (item: CartItem) => (
+    <div className="flex gap-3">
+      <img
+        src={item.image}
+        alt={item.name}
+        className="size-16 shrink-0 rounded-lg bg-muted object-cover"
+      />
+      <div className="min-w-0 flex-1">
+        <p className="text-[9px] uppercase tracking-wider text-muted-foreground">{item.category}</p>
+        <h3 className="mt-1 text-sm font-medium leading-snug">{item.name}</h3>
+        <p className="mt-1 text-xs text-muted-foreground">{item.detail}</p>
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
+          <Quantity item={item} compact removeAtOne onChange={(v) => cart.update(item.id, v)} />
+          <strong className="text-sm">{money(item.price * item.qty)}</strong>
+        </div>
+      </div>
+    </div>
+  );
+  return (
+    <div className="flex min-h-176 justify-center px-4 pt-12" data-cart-variant="7">
+      <Sheet open={open} onOpenChange={setOpen}>
+        <SheetTrigger asChild>
+          <Button variant="outline">
+            Open cart
+            <Badge size="sm" variant="secondary">
+              {cart.count}
+            </Badge>
+          </Button>
+        </SheetTrigger>
+        <SheetContent
+          showCloseButton={false}
+          className="gap-0 overflow-hidden rounded-2xl data-[side=right]:inset-y-3 data-[side=right]:right-3 data-[side=right]:h-auto data-[side=right]:w-[calc(100vw-24px)] data-[side=right]:sm:max-w-104"
+        >
+          <SheetHeader className="flex-row items-center justify-between border-b p-5">
+            <div>
+              <SheetTitle>
+                Your Cart{" "}
+                <span className="ml-2 text-xs font-normal text-muted-foreground">
+                  {cart.count} items
+                </span>
+              </SheetTitle>
+              <SheetDescription className="sr-only">
+                Review the items you just added and proceed to checkout.
+              </SheetDescription>
+            </div>
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              aria-label="Close cart"
+              onClick={() => setOpen(false)}
+            >
+              <X />
+            </Button>
+          </SheetHeader>
+          <ScrollArea className="min-h-0 flex-1">
+            <div className="space-y-6 p-5">
+              {featured && (
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <Badge variant="success-light">Just added</Badge>
+                    <span className="text-xs text-muted-foreground">12 seconds ago</span>
+                  </div>
+                  <Frame variant="ghost">
+                    <FramePanel className="border-success/30 bg-success/5 p-3">
+                      {row(featured)}
+                    </FramePanel>
+                  </Frame>
+                </div>
+              )}
+              {!!others.length && (
+                <>
+                  <h2 className="text-[10px] font-medium tracking-wider text-muted-foreground">
+                    ALSO IN YOUR CART ({others.length})
+                  </h2>
+                  <div className="space-y-6">
+                    {others.map((item) => (
+                      <div key={item.id}>{row(item)}</div>
+                    ))}
+                  </div>
+                </>
+              )}
+              {!cart.items.length && <CartEmpty onReset={() => cart.setItems(drawerItems)} />}
+            </div>
+          </ScrollArea>
+          <SheetFooter className="space-y-4 border-t bg-background p-5">
+            <div className="space-y-2">
+              <p className="text-xs text-muted-foreground">
+                {cart.subtotal >= 600
+                  ? "Free shipping unlocked"
+                  : `${money(600 - cart.subtotal)} away from free shipping`}
+              </p>
+              <Progress
+                value={Math.min(100, cart.subtotal / 6)}
+                aria-label="Free shipping progress"
+              />
+            </div>
+            <div className="flex items-center justify-between text-sm">
+              <span>Subtotal ({cart.count} items)</span>
+              <strong className="text-lg" data-cart-total>
+                {money(cart.subtotal)}
+              </strong>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <Button variant="outline" onClick={() => setView(!view)}>
+                View cart
+              </Button>
+              <CartCheckout total={cart.subtotal} disabled={!cart.items.length} label="Checkout" />
+            </div>
+            {view && (
+              <p className="text-xs text-muted-foreground">
+                Your full cart is shown above. Quantities stay saved when you close this drawer.
+              </p>
+            )}
+            <p className="text-center text-[10px] text-muted-foreground">
+              Taxes and discounts calculated at checkout.
+            </p>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet>
+    </div>
+  );
+}

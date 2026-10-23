@@ -80,10 +80,7 @@ export function Breadcrumbs({ items }: { items: string[] }) {
       {["Shop", ...items].map((item, i) => (
         <span
           key={item}
-          className={cn(
-            "flex items-center gap-2",
-            i === items.length && "text-foreground",
-          )}
+          className={cn("flex items-center gap-2", i === items.length && "text-foreground")}
         >
           {i > 0 && <ChevronRight className="size-3" />}
           {item}
@@ -104,12 +101,7 @@ export function ProductPrice({
   large?: boolean;
 }) {
   return (
-    <div
-      className={cn(
-        "flex flex-wrap items-center gap-2 text-base",
-        large && "text-2xl",
-      )}
-    >
+    <div className={cn("flex flex-wrap items-center gap-2 text-base", large && "text-2xl")}>
       <strong>
         <Money value={price} />
       </strong>
@@ -137,18 +129,10 @@ export function RatingStars({
 }) {
   return (
     <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
-      <Rating
-        rating={rating}
-        size="sm"
-        showValue
-        aria-label={`${rating} out of 5 stars`}
-      />
+      <Rating rating={rating} size="sm" showValue aria-label={`${rating} out of 5 stars`} />
       {count &&
         (reviewAction ? (
-          <button
-            className="underline-offset-4 hover:underline"
-            onClick={reviewAction}
-          >
+          <button className="underline-offset-4 hover:underline" onClick={reviewAction}>
             ({count})
           </button>
         ) : (
@@ -284,15 +268,11 @@ export function CartAction({
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Added to your bag</DialogTitle>
-            <DialogDescription>
-              This is a local storefront preview.
-            </DialogDescription>
+            <DialogDescription>This is a local storefront preview.</DialogDescription>
           </DialogHeader>
           <div className="rounded-lg border p-4">
             <p className="font-semibold">{name}</p>
-            {detail && (
-              <p className="mt-1 text-sm text-muted-foreground">{detail}</p>
-            )}
+            {detail && <p className="mt-1 text-sm text-muted-foreground">{detail}</p>}
             <div className="mt-5 flex justify-between text-sm">
               <span>
                 {quantity} × <Money value={price} />
@@ -311,8 +291,8 @@ export function CartAction({
 export function TrustRow({ simple = false }: { simple?: boolean }) {
   return simple ? (
     <p className="text-xs leading-6 text-muted-foreground">
-      Free 2-day shipping over $99 <span className="mx-1">·</span> 30-day
-      returns <span className="mx-1">·</span> 2-year warranty
+      Free 2-day shipping over $99 <span className="mx-1">·</span> 30-day returns{" "}
+      <span className="mx-1">·</span> 2-year warranty
     </p>
   ) : (
     <div className="grid grid-cols-3 gap-2">
@@ -336,11 +316,7 @@ export function TrustRow({ simple = false }: { simple?: boolean }) {
   );
 }
 export { FreeProductGallery as ProductGallery } from "./product-carousels";
-export function SpecRows({
-  groups,
-}: {
-  groups: { title: string; rows: string[][] }[];
-}) {
+export function SpecRows({ groups }: { groups: { title: string; rows: string[][] }[] }) {
   return (
     <div className="overflow-hidden rounded-lg border">
       <table className="w-full text-left text-xs sm:text-sm">
@@ -357,10 +333,7 @@ function SpecGroup({ title, rows }: { title: string; rows: string[][] }) {
   return (
     <>
       <tr className="bg-muted/50">
-        <th
-          colSpan={2}
-          className="px-4 py-2 text-[10px] font-semibold uppercase tracking-wide"
-        >
+        <th colSpan={2} className="px-4 py-2 text-[10px] font-semibold uppercase tracking-wide">
           {title}
         </th>
       </tr>
@@ -373,9 +346,7 @@ function SpecGroup({ title, rows }: { title: string; rows: string[][] }) {
     </>
   );
 }
-export function ReviewForm({
-  onReview,
-}: { onReview?: (review: Review) => void } = {}) {
+export function ReviewForm({ onReview }: { onReview?: (review: Review) => void } = {}) {
   const [open, setOpen] = useState(false),
     [sent, setSent] = useState(false),
     [name, setName] = useState(""),
@@ -396,9 +367,7 @@ export function ReviewForm({
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>
-              {sent ? "Thank you for your review" : "Write a review"}
-            </DialogTitle>
+            <DialogTitle>{sent ? "Thank you for your review" : "Write a review"}</DialogTitle>
             <DialogDescription>
               {sent
                 ? "Your review was submitted in this local demo."
@@ -526,10 +495,7 @@ export function ReviewSummary({
             <span>{5 - i}★</span>
             <Progress value={value} className="h-1" />
             <span className="text-right">
-              {Math.max(
-                1,
-                Math.round((Number(count.replaceAll(",", "")) * value) / 100),
-              )}
+              {Math.max(1, Math.round((Number(count.replaceAll(",", "")) * value) / 100))}
             </span>
           </div>
         ))}
@@ -562,9 +528,7 @@ export function ReviewsSection({
   return (
     <section className="space-y-7">
       <div>
-        <p className="mb-2 text-[10px] tracking-widest text-muted-foreground">
-          REVIEWS
-        </p>
+        <p className="mb-2 text-[10px] tracking-widest text-muted-foreground">REVIEWS</p>
         <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
       </div>
       <div className="grid gap-8 rounded-lg border p-4 sm:grid-cols-[140px_1fr]">
@@ -572,19 +536,13 @@ export function ReviewsSection({
           <strong className="text-3xl">{rating}</strong>
           <span className="text-xs text-muted-foreground"> / 5</span>
           <RatingStars rating={rating} />
-          <p className="mt-1 text-xs text-muted-foreground">
-            Based on {count} reviews
-          </p>
+          <p className="mt-1 text-xs text-muted-foreground">Based on {count} reviews</p>
         </div>
         <ReviewSummary rating={rating} count={count} barsOnly />
       </div>
       <div className="flex items-center justify-between">
-        <p className="text-[10px] tracking-wide text-muted-foreground">
-          RECENT REVIEWS
-        </p>
-        <ReviewForm
-          onReview={(review) => setSubmitted((items) => [review, ...items])}
-        />
+        <p className="text-[10px] tracking-wide text-muted-foreground">RECENT REVIEWS</p>
+        <ReviewForm onReview={(review) => setSubmitted((items) => [review, ...items])} />
       </div>
       <div className="divide-y">
         {[...submitted, ...reviews]
@@ -608,15 +566,12 @@ export function ReviewsSection({
                 <RatingStars rating={r.rating ?? 4.7} />
                 {r.title && <strong className="text-xs">{r.title}</strong>}
               </div>
-              <p className="text-sm leading-6 text-muted-foreground">
-                {r.text}
-              </p>
+              <p className="text-sm leading-6 text-muted-foreground">{r.text}</p>
             </article>
           ))}
       </div>
       <Button variant="ghost" size="sm" onClick={() => setAll(!all)}>
-        {all ? "Show fewer reviews" : `See All ${count} Reviews`}{" "}
-        <ChevronRight />
+        {all ? "Show fewer reviews" : `See All ${count} Reviews`} <ChevronRight />
       </Button>
     </section>
   );
@@ -677,10 +632,7 @@ export function RelatedProducts({
           ? photos.bag
           : photos.headphones;
   const tiles = names.map((name, i) => (
-    <article
-      key={name}
-      className={cn("overflow-hidden rounded-lg", kind === "shoes" && "border")}
-    >
+    <article key={name} className={cn("overflow-hidden rounded-lg", kind === "shoes" && "border")}>
       <div className="group relative aspect-square overflow-hidden rounded-lg bg-muted">
         <img
           src={src}
@@ -763,9 +715,7 @@ export function AllReviewsButton({
             {reviews.map((r) => (
               <article className="py-4" key={r.name}>
                 <p className="mb-2 text-sm font-semibold">{r.name}</p>
-                <p className="text-sm leading-6 text-muted-foreground">
-                  {r.text}
-                </p>
+                <p className="text-sm leading-6 text-muted-foreground">{r.text}</p>
               </article>
             ))}
           </div>

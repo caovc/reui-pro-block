@@ -43,11 +43,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Dialog,
@@ -146,7 +142,7 @@ function designScene(): Shape[] {
       w: 200,
       h: 64,
       text,
-      color: [colors[0],colors[2],colors[2]][index],
+      color: [colors[0], colors[2], colors[2]][index],
     }),
   );
   const nodes = [
@@ -252,7 +248,7 @@ function designScene(): Shape[] {
       w: 200,
       h: 64,
       text,
-      color: index===1?colors[2]:colors[1],
+      color: index === 1 ? colors[2] : colors[1],
     }),
   );
   return shapes;
@@ -440,17 +436,39 @@ function ShapeView({
         />
       ) : s.kind === "phone" ? (
         <g transform={`translate(${s.x} ${s.y})`}>
-          <rect
-            width={s.w}
-            height={s.h}
-            rx={18}
-            fill="#fff"
-            stroke="#1c1c1f"
-            strokeWidth={1.5}
-          />
-          <text x={10} y={34} fontSize={10} fontFamily="sans-serif" fill="#222">Today's stops</text>
-          {[0,1,2,3].map(i=><g key={i} transform={`translate(10 ${44+i*34})`}><rect width="110" height="28" rx="4" fill="#f4f4f5" stroke={i===1?'#fb7185':'none'}/><circle cx="12" cy="14" r="6" fill="#171717"/><rect x="23" y="8" width="44" height="5" rx="2" fill="#a3a3a3"/><rect x="23" y="17" width="30" height="4" rx="2" fill="#d4d4d4"/><text x="73" y="17" fontSize="8" fill={i===1?'#ef4444':'#666'}>{['14:35','15:10','15:45','16:20'][i]}</text></g>)}
-          <rect x="10" y="181" width="51" height="22" rx="4" fill="#fff" stroke="#d4d4d4"/><rect x="67" y="181" width="53" height="22" rx="4" fill="#fff" stroke="#d4d4d4"/><text x="18" y="195" fontSize="8">Reorder</text><text x="76" y="195" fontSize="8">Optimise</text><rect x="10" y="230" width="110" height="23" rx="6" fill="#18181b"/><text x="43" y="245" fontSize="8" fill="white">Start route</text>
+          <rect width={s.w} height={s.h} rx={18} fill="#fff" stroke="#1c1c1f" strokeWidth={1.5} />
+          <text x={10} y={34} fontSize={10} fontFamily="sans-serif" fill="#222">
+            Today's stops
+          </text>
+          {[0, 1, 2, 3].map((i) => (
+            <g key={i} transform={`translate(10 ${44 + i * 34})`}>
+              <rect
+                width="110"
+                height="28"
+                rx="4"
+                fill="#f4f4f5"
+                stroke={i === 1 ? "#fb7185" : "none"}
+              />
+              <circle cx="12" cy="14" r="6" fill="#171717" />
+              <rect x="23" y="8" width="44" height="5" rx="2" fill="#a3a3a3" />
+              <rect x="23" y="17" width="30" height="4" rx="2" fill="#d4d4d4" />
+              <text x="73" y="17" fontSize="8" fill={i === 1 ? "#ef4444" : "#666"}>
+                {["14:35", "15:10", "15:45", "16:20"][i]}
+              </text>
+            </g>
+          ))}
+          <rect x="10" y="181" width="51" height="22" rx="4" fill="#fff" stroke="#d4d4d4" />
+          <rect x="67" y="181" width="53" height="22" rx="4" fill="#fff" stroke="#d4d4d4" />
+          <text x="18" y="195" fontSize="8">
+            Reorder
+          </text>
+          <text x="76" y="195" fontSize="8">
+            Optimise
+          </text>
+          <rect x="10" y="230" width="110" height="23" rx="6" fill="#18181b" />
+          <text x="43" y="245" fontSize="8" fill="white">
+            Start route
+          </text>
         </g>
       ) : s.kind === "ellipse" ? (
         <ellipse
@@ -484,12 +502,7 @@ function ShapeView({
           markerEnd={s.kind === "arrow" ? `url(#${markerId})` : undefined}
         />
       ) : s.kind === "draw" ? (
-        <polyline
-          points={s.points}
-          {...common}
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
+        <polyline points={s.points} {...common} strokeLinecap="round" strokeLinejoin="round" />
       ) : s.kind === "image" && s.image ? (
         <image href={s.image} x={s.x} y={s.y} width={s.w} height={s.h} />
       ) : null}
@@ -511,13 +524,7 @@ function ShapeView({
             cx={s.x + s.w - 8}
             cy={s.y + 8}
             r={15}
-            fill={
-              s.owner === "Omar"
-                ? "#3d6475"
-                : s.owner === "Sofia"
-                  ? "#597d95"
-                  : "#6f5e70"
-            }
+            fill={s.owner === "Omar" ? "#3d6475" : s.owner === "Sofia" ? "#597d95" : "#6f5e70"}
           />
           <text
             x={s.x + s.w - 8}
@@ -543,13 +550,7 @@ function ShapeView({
             stroke="#d1a7df"
             strokeDasharray="7 5"
           />
-          <text
-            x={s.x + 5}
-            y={s.y - 13}
-            fill="#8c58a3"
-            fontFamily="sans-serif"
-            fontSize={14}
-          >
+          <text x={s.x + 5} y={s.y - 13} fill="#8c58a3" fontFamily="sans-serif" fontSize={14}>
             ● {s.presence}
           </text>
         </g>
@@ -592,9 +593,7 @@ export default function MeshCanvas({ block }: BlockProps) {
   const [wholeBoard, setWholeBoard] = useState(true);
   const [boardQuery, setBoardQuery] = useState("");
   const [versionName, setVersionName] = useState("");
-  const [versions, setVersions] = useState<{ name: string; scene: Scene }[]>(
-    [],
-  );
+  const [versions, setVersions] = useState<{ name: string; scene: Scene }[]>([]);
   const [textDialog, setTextDialog] = useState(false);
   const [text, setText] = useState("");
   const [shapeColor, setShapeColor] = useState(colors[0]);
@@ -643,10 +642,10 @@ export default function MeshCanvas({ block }: BlockProps) {
     pan?: boolean;
   } | null>(null);
   const [pan, setPan] = useState({ x: -78.4, y: -196 });
-  const [boardTab,setBoardTab]=useState("Board");
-  const [commentsOpen,setCommentsOpen]=useState(false);
-  const [comment,setComment]=useState("");
-  const [comments,setComments]=useState<string[]>([]);
+  const [boardTab, setBoardTab] = useState("Board");
+  const [commentsOpen, setCommentsOpen] = useState(false);
+  const [comment, setComment] = useState("");
+  const [comments, setComments] = useState<string[]>([]);
   const frames = scene.shapes.filter((s) => s.kind === "frame");
   const selectedShape = scene.shapes.find((s) => s.id === selected);
   const laneMeta = [
@@ -660,9 +659,7 @@ export default function MeshCanvas({ block }: BlockProps) {
       .filter((shape) => shape.lane === lane)
       .reduce((sum, shape) => sum + (shape.story || 0), 0),
   );
-  const committedPoints = lanePoints
-    .slice(0, 3)
-    .reduce((sum, points) => sum + points, 0);
+  const committedPoints = lanePoints.slice(0, 3).reduce((sum, points) => sum + points, 0);
   function togglePresent() {
     const next = !presenting;
     setPresenting(next);
@@ -671,12 +668,7 @@ export default function MeshCanvas({ block }: BlockProps) {
     setTool("select");
     if (next) {
       setFrame(0);
-      setZoom(
-        Math.min(
-          110,
-          Math.round((canvasSize.width * 84) / ((frames[0]?.w || 620) + 100)),
-        ),
-      );
+      setZoom(Math.min(110, Math.round((canvasSize.width * 84) / ((frames[0]?.w || 620) + 100))));
       setPan({ x: -35, y: 40 });
     } else {
       setZoom(60);
@@ -753,9 +745,7 @@ export default function MeshCanvas({ block }: BlockProps) {
   function pointerDown(event: ReactPointerEvent<SVGSVGElement>) {
     if (event.button !== 0) return;
     const p = position(event);
-    const target = (event.target as Element)
-      .closest("[data-shape]")
-      ?.getAttribute("data-shape");
+    const target = (event.target as Element).closest("[data-shape]")?.getAttribute("data-shape");
     const item = scene.shapes.find((s) => s.id === target);
     if (tool === "hand") {
       gesture.current = {
@@ -809,10 +799,7 @@ export default function MeshCanvas({ block }: BlockProps) {
       y: p.y,
       w: 0,
       h: 0,
-      color:
-        tool === "rect" || tool === "ellipse" || tool === "diamond"
-          ? "#fff"
-          : undefined,
+      color: tool === "rect" || tool === "ellipse" || tool === "diamond" ? "#fff" : undefined,
       points: tool === "draw" ? `${p.x},${p.y}` : undefined,
     };
     setScene({ ...scene, shapes: [...scene.shapes, shape] });
@@ -856,12 +843,8 @@ export default function MeshCanvas({ block }: BlockProps) {
                 }
               : {
                   ...s,
-                  x: ["arrow", "line"].includes(s.kind)
-                    ? g.x
-                    : Math.min(g.x, p.x),
-                  y: ["arrow", "line"].includes(s.kind)
-                    ? g.y
-                    : Math.min(g.y, p.y),
+                  x: ["arrow", "line"].includes(s.kind) ? g.x : Math.min(g.x, p.x),
+                  y: ["arrow", "line"].includes(s.kind) ? g.y : Math.min(g.y, p.y),
                   w: ["arrow", "line"].includes(s.kind) ? dx : Math.abs(dx),
                   h: ["arrow", "line"].includes(s.kind) ? dy : Math.abs(dy),
                 },
@@ -883,10 +866,7 @@ export default function MeshCanvas({ block }: BlockProps) {
             shape.id === g.id
               ? {
                   ...shape,
-                  lane: Math.max(
-                    0,
-                    Math.min(3, Math.floor((shape.x + shape.w / 2 - 35) / 350)),
-                  ),
+                  lane: Math.max(0, Math.min(3, Math.floor((shape.x + shape.w / 2 - 35) / 350))),
                 }
               : shape,
           ),
@@ -904,10 +884,7 @@ export default function MeshCanvas({ block }: BlockProps) {
     const s = frames[next];
     if (s) {
       setPan({ x: s.x - 50, y: s.y - (presenting ? 130 : 80) });
-      if (presenting)
-        setZoom(
-          Math.min(150, Math.round((canvasSize.width * 84) / (s.w + 100))),
-        );
+      if (presenting) setZoom(Math.min(150, Math.round((canvasSize.width * 84) / (s.w + 100))));
     }
   }
   function addNote() {
@@ -959,11 +936,7 @@ export default function MeshCanvas({ block }: BlockProps) {
     setVersionName("");
     toast.success("Version saved in this preview");
   }
-  function download(
-    content: string | Blob,
-    name: string,
-    type = "application/json",
-  ) {
+  function download(content: string | Blob, name: string, type = "application/json") {
     const url = URL.createObjectURL(
       typeof content === "string" ? new Blob([content], { type }) : content,
     );
@@ -1026,28 +999,43 @@ export default function MeshCanvas({ block }: BlockProps) {
             {dirty ? "Saving…" : "Saved"}
           </span>
           {sprint && (
-            <span className="hidden text-xs text-muted-foreground md:inline">
-              Sep 28 to Oct 9
-            </span>
+            <span className="hidden text-xs text-muted-foreground md:inline">Sep 28 to Oct 9</span>
           )}
         </div>
-        <div className="wf-canvas-tabs">{["Board","Outline","Comments","Activity"].map(tab=><Button key={tab} size="sm" variant={boardTab===tab?"outline":"ghost"} onClick={()=>{setBoardTab(tab);if(tab==="Comments")setCommentsOpen(true);if(tab==="Outline"){setPanel(true);setPanelTab("frames")}if(tab==="Activity"){setPanel(true);setPanelTab("history")}}}>{tab}</Button>)}</div>
+        <div className="wf-canvas-tabs">
+          {["Board", "Outline", "Comments", "Activity"].map((tab) => (
+            <Button
+              key={tab}
+              size="sm"
+              variant={boardTab === tab ? "outline" : "ghost"}
+              onClick={() => {
+                setBoardTab(tab);
+                if (tab === "Comments") setCommentsOpen(true);
+                if (tab === "Outline") {
+                  setPanel(true);
+                  setPanelTab("frames");
+                }
+                if (tab === "Activity") {
+                  setPanel(true);
+                  setPanelTab("history");
+                }
+              }}
+            >
+              {tab}
+            </Button>
+          ))}
+        </div>
         <div className="flex items-center gap-2">
           <Popover>
             <PopoverTrigger asChild>
-              <Button
-                variant="ghost"
-                aria-label="On this board, 3 here, 1 away"
-              >
+              <Button variant="ghost" aria-label="On this board, 3 here, 1 away">
                 <span className="flex">
                   {["AM", "PC", "OR"].map((name) => (
                     <Avatar
                       className="-ml-2 size-6 border-2 border-background first:ml-0"
                       key={name}
                     >
-                      <AvatarFallback className="text-[8px]">
-                        {name}
-                      </AvatarFallback>
+                      <AvatarFallback className="text-[8px]">{name}</AvatarFallback>
                     </Avatar>
                   ))}
                 </span>
@@ -1156,25 +1144,14 @@ export default function MeshCanvas({ block }: BlockProps) {
                 <DropdownMenuContent align="end">
                   <DropdownMenuGroup>
                     <DropdownMenuItem
-                      onSelect={() =>
-                        download(
-                          exportSvg(),
-                          `${scene.name}.svg`,
-                          "image/svg+xml",
-                        )
-                      }
+                      onSelect={() => download(exportSvg(), `${scene.name}.svg`, "image/svg+xml")}
                     >
                       Export SVG
                     </DropdownMenuItem>
-                    <DropdownMenuItem onSelect={exportPng}>
-                      Export PNG
-                    </DropdownMenuItem>
+                    <DropdownMenuItem onSelect={exportPng}>Export PNG</DropdownMenuItem>
                     <DropdownMenuItem
                       onSelect={() =>
-                        download(
-                          JSON.stringify(scene, null, 2),
-                          `${scene.name}.json`,
-                        )
+                        download(JSON.stringify(scene, null, 2), `${scene.name}.json`)
                       }
                     >
                       <FileJson />
@@ -1196,7 +1173,34 @@ export default function MeshCanvas({ block }: BlockProps) {
           </Button>
         </div>
       </header>
-      <Dialog open={commentsOpen} onOpenChange={setCommentsOpen}><DialogContent><DialogTitle>Comments</DialogTitle><DialogDescription>Discuss the Route Planner launch map.</DialogDescription>{comments.map((text,i)=><p key={i}>{text}</p>)}<form onSubmit={e=>{e.preventDefault();if(comment.trim()){setComments([...comments,comment]);setComment("")}}}><Textarea aria-label="Add comment" value={comment} onChange={e=>setComment(e.target.value)} placeholder="Add a comment…"/><Button className="mt-3" type="submit" disabled={!comment.trim()}>Post comment</Button></form></DialogContent></Dialog>
+      <Dialog open={commentsOpen} onOpenChange={setCommentsOpen}>
+        <DialogContent>
+          <DialogTitle>Comments</DialogTitle>
+          <DialogDescription>Discuss the Route Planner launch map.</DialogDescription>
+          {comments.map((text, i) => (
+            <p key={i}>{text}</p>
+          ))}
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (comment.trim()) {
+                setComments([...comments, comment]);
+                setComment("");
+              }
+            }}
+          >
+            <Textarea
+              aria-label="Add comment"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              placeholder="Add a comment…"
+            />
+            <Button className="mt-3" type="submit" disabled={!comment.trim()}>
+              Post comment
+            </Button>
+          </form>
+        </DialogContent>
+      </Dialog>
       <div className="wb-workspace">
         <div className="wb-canvas-wrap" ref={canvasWrap}>
           <div className="wb-topbar">
@@ -1212,29 +1216,16 @@ export default function MeshCanvas({ block }: BlockProps) {
                     Open board file
                   </DropdownMenuItem>
                   <DropdownMenuItem
-                    onSelect={() =>
-                      download(
-                        JSON.stringify(scene, null, 2),
-                        `${scene.name}.json`,
-                      )
-                    }
+                    onSelect={() => download(JSON.stringify(scene, null, 2), `${scene.name}.json`)}
                   >
                     Save board
                   </DropdownMenuItem>
                   <DropdownMenuItem
-                    onSelect={() =>
-                      download(
-                        exportSvg(),
-                        `${scene.name}.svg`,
-                        "image/svg+xml",
-                      )
-                    }
+                    onSelect={() => download(exportSvg(), `${scene.name}.svg`, "image/svg+xml")}
                   >
                     Export SVG
                   </DropdownMenuItem>
-                  <DropdownMenuItem onSelect={exportPng}>
-                    Export PNG
-                  </DropdownMenuItem>
+                  <DropdownMenuItem onSelect={exportPng}>Export PNG</DropdownMenuItem>
                   {sprint && (
                     <DropdownMenuItem
                       onSelect={async () => {
@@ -1243,10 +1234,7 @@ export default function MeshCanvas({ block }: BlockProps) {
                             (lane, index) =>
                               `## ${lane.name} (${lanePoints[index]} pts)\n${scene.shapes
                                 .filter((shape) => shape.lane === index)
-                                .map(
-                                  (shape) =>
-                                    `- ${shape.text?.replaceAll("\n", " · ")}`,
-                                )
+                                .map((shape) => `- ${shape.text?.replaceAll("\n", " · ")}`)
                                 .join("\n")}`,
                           )
                           .join("\n\n")}`;
@@ -1285,8 +1273,7 @@ export default function MeshCanvas({ block }: BlockProps) {
             {presenting ? (
               <div className="flex items-center gap-3 rounded-lg border px-3 py-1 text-xs">
                 <span>
-                  Presenting · {frames[frame]?.text}, {frame + 1} of{" "}
-                  {frames.length}
+                  Presenting · {frames[frame]?.text}, {frame + 1} of {frames.length}
                 </span>
                 <Button size="xs" variant="ghost" onClick={togglePresent}>
                   End
@@ -1360,43 +1347,28 @@ export default function MeshCanvas({ block }: BlockProps) {
           </div>
           <svg
             ref={svg}
-            className={cn(
-              "wb-canvas",
-              tool === "hand" && "wb-hand",
-              viewOnly && "wb-view-only",
-            )}
+            className={cn("wb-canvas", tool === "hand" && "wb-hand", viewOnly && "wb-view-only")}
             viewBox={`${pan.x} ${pan.y} ${(canvasSize.width * 84) / zoom} ${(canvasSize.height * 84) / zoom}`}
             preserveAspectRatio="xMinYMin meet"
             role="application"
             aria-label={`${scene.name} drawing canvas`}
             tabIndex={0}
             onKeyDown={(event) => {
-              if (
-                (event.metaKey || event.ctrlKey) &&
-                event.key.toLowerCase() === "z"
-              ) {
+              if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "z") {
                 event.preventDefault();
                 if (!viewOnly) {
                   if (event.shiftKey) redo();
                   else undo();
                 }
               } else if (event.key === "Escape") setSelected(null);
-              else if (
-                !viewOnly &&
-                selected &&
-                ["Delete", "Backspace"].includes(event.key)
-              ) {
+              else if (!viewOnly && selected && ["Delete", "Backspace"].includes(event.key)) {
                 event.preventDefault();
-                updateShapes(
-                  scene.shapes.filter((shape) => shape.id !== selected),
-                );
+                updateShapes(scene.shapes.filter((shape) => shape.id !== selected));
                 setSelected(null);
               } else if (
                 !viewOnly &&
                 selected &&
-                ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(
-                  event.key,
-                )
+                ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(event.key)
               ) {
                 event.preventDefault();
                 const amount = event.shiftKey ? 10 : 1;
@@ -1441,18 +1413,8 @@ export default function MeshCanvas({ block }: BlockProps) {
             }}
           >
             <defs>
-              <pattern
-                id={`${uid}-grid`}
-                width="20"
-                height="20"
-                patternUnits="userSpaceOnUse"
-              >
-                <path
-                  d="M20 0H0V20"
-                  fill="none"
-                  stroke="#ebebef"
-                  strokeWidth=".8"
-                />
+              <pattern id={`${uid}-grid`} width="20" height="20" patternUnits="userSpaceOnUse">
+                <path d="M20 0H0V20" fill="none" stroke="#ebebef" strokeWidth=".8" />
               </pattern>
               <marker
                 id={`${uid}-arrow`}
@@ -1462,12 +1424,7 @@ export default function MeshCanvas({ block }: BlockProps) {
                 refY="4"
                 orient="auto"
               >
-                <path
-                  d="M1 1L7 4L1 7"
-                  fill="none"
-                  stroke={ink}
-                  strokeWidth="1.2"
-                />
+                <path d="M1 1L7 4L1 7" fill="none" stroke={ink} strokeWidth="1.2" />
               </marker>
             </defs>
             <rect
@@ -1496,9 +1453,7 @@ export default function MeshCanvas({ block }: BlockProps) {
               >
                 <ShapeView
                   shape={
-                    sprint &&
-                    shape.kind === "frame" &&
-                    shape.id.startsWith("lane")
+                    sprint && shape.kind === "frame" && shape.id.startsWith("lane")
                       ? {
                           ...shape,
                           text: `${shape.text?.split("  ·  ")[0]} · ${scene.shapes.filter((item) => item.kind === "note" && item.lane === Number(shape.id.slice(4))).reduce((sum, item) => sum + (item.story || 0), 0)} pts`,
@@ -1514,9 +1469,7 @@ export default function MeshCanvas({ block }: BlockProps) {
           </svg>
           {selectedShape && !viewOnly && (
             <div className="wb-selection">
-              <span className="text-[10px] text-muted-foreground">
-                {selectedShape.kind}
-              </span>
+              <span className="text-[10px] text-muted-foreground">{selectedShape.kind}</span>
               <div className="flex gap-1">
                 {colors.map((color) => (
                   <button
@@ -1527,9 +1480,7 @@ export default function MeshCanvas({ block }: BlockProps) {
                     onClick={() => {
                       setShapeColor(color);
                       updateShapes(
-                        scene.shapes.map((s) =>
-                          s.id === selected ? { ...s, color } : s,
-                        ),
+                        scene.shapes.map((s) => (s.id === selected ? { ...s, color } : s)),
                       );
                     }}
                   />
@@ -1662,18 +1613,13 @@ export default function MeshCanvas({ block }: BlockProps) {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="sm" aria-label="Choose a frame">
-                    {presenting
-                      ? frames[frame]?.text
-                      : `${frames.length} frames`}
+                    {presenting ? frames[frame]?.text : `${frames.length} frames`}
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <DropdownMenuGroup>
                     {frames.map((item, index) => (
-                      <DropdownMenuItem
-                        key={item.id}
-                        onSelect={() => selectFrame(index)}
-                      >
+                      <DropdownMenuItem key={item.id} onSelect={() => selectFrame(index)}>
                         {item.text}
                       </DropdownMenuItem>
                     ))}
@@ -1694,17 +1640,8 @@ export default function MeshCanvas({ block }: BlockProps) {
         </div>
         {panel && (
           <aside className="wb-panel">
-            <Tabs
-              value={panelTab}
-              onValueChange={setPanelTab}
-              className="gap-0"
-            >
-              <TabsList
-                className={cn(
-                  "mx-3 mt-3 flex flex-wrap h-auto",
-                  "w-[calc(100%-24px)]",
-                )}
-              >
+            <Tabs value={panelTab} onValueChange={setPanelTab} className="gap-0">
+              <TabsList className={cn("mx-3 mt-3 flex flex-wrap h-auto", "w-[calc(100%-24px)]")}>
                 {sprint ? (
                   <>
                     <TabsTrigger value="plan" className="flex-1">
@@ -1748,9 +1685,7 @@ export default function MeshCanvas({ block }: BlockProps) {
                       }}
                     />
                   </div>
-                  <p className="text-[10px] text-muted-foreground">
-                    {lanePoints[3]} pts parked
-                  </p>
+                  <p className="text-[10px] text-muted-foreground">{lanePoints[3]} pts parked</p>
                 </div>
                 <p className="mb-3 text-xs text-muted-foreground">Lanes</p>
                 {laneMeta.map((lane, index) => (
@@ -1763,9 +1698,7 @@ export default function MeshCanvas({ block }: BlockProps) {
                       >
                         <Square className="mr-1 size-4 shrink-0" />
                         <span className="min-w-0">
-                          <span className="block text-sm font-normal">
-                            {lane.name}
-                          </span>
+                          <span className="block text-sm font-normal">{lane.name}</span>
                           <span className="mt-1 block text-[10px] font-normal text-muted-foreground">
                             {lane.owner
                               ? `${lane.owner} · ${lanePoints[index]} of ${lane.capacity} pts`
@@ -1788,9 +1721,7 @@ export default function MeshCanvas({ block }: BlockProps) {
                         .filter(
                           (shape) =>
                             shape.lane === index &&
-                            shape.text
-                              ?.toLowerCase()
-                              .includes(cardQuery.toLowerCase()),
+                            shape.text?.toLowerCase().includes(cardQuery.toLowerCase()),
                         )
                         .map((shape) => (
                           <Button
@@ -1828,41 +1759,27 @@ export default function MeshCanvas({ block }: BlockProps) {
                 >
                   <Grid2X2 data-icon="inline-start" />
                   <span className="text-left">
-                    <span className="block text-xs font-medium">
-                      Whole Board
-                    </span>
+                    <span className="block text-xs font-medium">Whole Board</span>
                     <span className="text-[10px] font-normal text-muted-foreground">
                       {frames.length} frames ·{" "}
-                      {
-                        scene.shapes.filter((shape) => shape.kind !== "frame")
-                          .length
-                      }{" "}
-                      items
+                      {scene.shapes.filter((shape) => shape.kind !== "frame").length} items
                     </span>
                   </span>
                 </Button>
                 {frames
-                  .filter((shape) =>
-                    shape.text
-                      ?.toLowerCase()
-                      .includes(boardQuery.toLowerCase()),
-                  )
+                  .filter((shape) => shape.text?.toLowerCase().includes(boardQuery.toLowerCase()))
                   .map((s) => {
                     const i = frames.indexOf(s);
                     return (
                       <Button
                         key={s.id}
-                        variant={
-                          !wholeBoard && i === frame ? "secondary" : "ghost"
-                        }
+                        variant={!wholeBoard && i === frame ? "secondary" : "ghost"}
                         className="mb-2 h-auto w-full justify-start py-3"
                         onClick={() => selectFrame(i)}
                       >
                         <Square data-icon="inline-start" />
                         <span className="text-left">
-                          <span className="block text-xs font-medium">
-                            {s.text}
-                          </span>
+                          <span className="block text-xs font-medium">{s.text}</span>
                           <span className="text-[10px] font-normal text-muted-foreground">
                             {
                               scene.shapes.filter(
@@ -1881,24 +1798,21 @@ export default function MeshCanvas({ block }: BlockProps) {
                     );
                   })}
                 <p className="mt-4 text-xs leading-5 text-muted-foreground">
-                  Choose a frame to navigate. Drag with the hand tool to move
-                  around the canvas.
+                  Choose a frame to navigate. Drag with the hand tool to move around the canvas.
                 </p>
               </TabsContent>
               <TabsContent value="templates" className="wb-panel-body">
-                {["Design review", "Sprint planning", "Blank canvas"].map(
-                  (name) => (
-                    <Button
-                      className="mb-3 w-full justify-start"
-                      key={name}
-                      variant="outline"
-                      onClick={() => template(name)}
-                    >
-                      <Grid2X2 data-icon="inline-start" />
-                      {name}
-                    </Button>
-                  ),
-                )}
+                {["Design review", "Sprint planning", "Blank canvas"].map((name) => (
+                  <Button
+                    className="mb-3 w-full justify-start"
+                    key={name}
+                    variant="outline"
+                    onClick={() => template(name)}
+                  >
+                    <Grid2X2 data-icon="inline-start" />
+                    {name}
+                  </Button>
+                ))}
               </TabsContent>
               <TabsContent value="history" className="wb-panel-body">
                 <FieldGroup>
@@ -1928,9 +1842,7 @@ export default function MeshCanvas({ block }: BlockProps) {
                   </div>
                 ))}
                 {!versions.length && (
-                  <p className="mt-6 text-xs text-muted-foreground">
-                    No saved versions yet.
-                  </p>
+                  <p className="mt-6 text-xs text-muted-foreground">No saved versions yet.</p>
                 )}
               </TabsContent>
               <TabsContent value="library" className="wb-panel-body">
@@ -1971,9 +1883,7 @@ export default function MeshCanvas({ block }: BlockProps) {
                       <button
                         className="text-[10px] text-muted-foreground hover:text-foreground"
                         onClick={() => {
-                          const shape = scene.shapes.find(
-                            (item) => item.id === entry.shapeId,
-                          );
+                          const shape = scene.shapes.find((item) => item.id === entry.shapeId);
                           if (shape) {
                             setSelected(shape.id);
                             setPan({ x: shape.x - 150, y: shape.y - 180 });
@@ -1986,9 +1896,7 @@ export default function MeshCanvas({ block }: BlockProps) {
                         size="icon-xs"
                         variant="ghost"
                         aria-label={`Remove decision ${index + 1}`}
-                        onClick={() =>
-                          setDecisions(decisions.filter((_, i) => i !== index))
-                        }
+                        onClick={() => setDecisions(decisions.filter((_, i) => i !== index))}
                       >
                         <X />
                       </Button>
@@ -2053,8 +1961,8 @@ export default function MeshCanvas({ block }: BlockProps) {
           <DialogHeader>
             <DialogTitle>Planning poker</DialogTitle>
             <DialogDescription>
-              {selectedShape?.text?.split("\n")[0] || "Estimate this story"} ·
-              Choose story points, then reveal the local ballots.
+              {selectedShape?.text?.split("\n")[0] || "Estimate this story"} · Choose story points,
+              then reveal the local ballots.
             </DialogDescription>
           </DialogHeader>
           <ToggleGroup
@@ -2077,21 +1985,15 @@ export default function MeshCanvas({ block }: BlockProps) {
                 { name: "Sofia", value: "3" },
                 { name: "Priya", value: "5" },
               ].map((ballot) => (
-                <div
-                  className="rounded-lg border p-3 text-center"
-                  key={ballot.name}
-                >
+                <div className="rounded-lg border p-3 text-center" key={ballot.name}>
                   <p className="text-xl font-semibold">{ballot.value}</p>
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    {ballot.name}
-                  </p>
+                  <p className="mt-1 text-xs text-muted-foreground">{ballot.name}</p>
                 </div>
               ))}
             </div>
           )}
           <p className="text-xs text-muted-foreground">
-            Other ballots are seeded demo values. No network session is
-            connected.
+            Other ballots are seeded demo values. No network session is connected.
           </p>
           <Button
             onClick={() => {
@@ -2120,12 +2022,8 @@ export default function MeshCanvas({ block }: BlockProps) {
       <Dialog open={textDialog} onOpenChange={setTextDialog}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>
-              {selected ? "Edit shape text" : "Add text to the board"}
-            </DialogTitle>
-            <DialogDescription>
-              Use a line break to create a new line.
-            </DialogDescription>
+            <DialogTitle>{selected ? "Edit shape text" : "Add text to the board"}</DialogTitle>
+            <DialogDescription>Use a line break to create a new line.</DialogDescription>
           </DialogHeader>
           <Textarea
             aria-label="Shape text"
@@ -2137,11 +2035,7 @@ export default function MeshCanvas({ block }: BlockProps) {
           <Button
             onClick={() => {
               if (selected)
-                updateShapes(
-                  scene.shapes.map((s) =>
-                    s.id === selected ? { ...s, text } : s,
-                  ),
-                );
+                updateShapes(scene.shapes.map((s) => (s.id === selected ? { ...s, text } : s)));
               else {
                 const p = pendingPoint.current;
                 updateShapes([
@@ -2175,11 +2069,7 @@ export default function MeshCanvas({ block }: BlockProps) {
           if (!f) return;
           try {
             const parsed = JSON.parse(await f.text());
-            if (
-              !Array.isArray(parsed.shapes) ||
-              typeof parsed.name !== "string"
-            )
-              throw new Error();
+            if (!Array.isArray(parsed.shapes) || typeof parsed.name !== "string") throw new Error();
             commit(parsed);
             setPan({ x: 0, y: 0 });
             toast.success("Board opened");

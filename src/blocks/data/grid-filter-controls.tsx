@@ -1,14 +1,7 @@
-import {
-  SlidersHorizontal,
-  ListFilter,
-} from "lucide-react";
+import { SlidersHorizontal, ListFilter } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   Select,
   SelectContent,
@@ -62,19 +55,12 @@ const operators = (field: FilterField) =>
             "is empty",
             "is not empty",
           ];
-export function matchesRules(
-  record: Record<string, unknown>,
-  rules: FilterRule[],
-) {
+export function matchesRules(record: Record<string, unknown>, rules: FilterRule[]) {
   return rules.every((rule) => {
     const result = (() => {
       const raw = record[rule.field];
-      const items = (Array.isArray(raw) ? raw : [raw]).map((x) =>
-        String(x ?? "").toLowerCase(),
-      );
-      const values = rule.values
-        .map((v) => v.toLowerCase())
-        .filter((v) => v !== "");
+      const items = (Array.isArray(raw) ? raw : [raw]).map((x) => String(x ?? "").toLowerCase());
+      const values = rule.values.map((v) => v.toLowerCase()).filter((v) => v !== "");
       if (rule.operator === "is empty") return items.every((x) => !x);
       if (rule.operator === "is not empty") return items.some(Boolean);
       if (!values.length) return true;
@@ -99,19 +85,14 @@ export function matchesRules(
         case "is all of":
           return values.every((v) => items.includes(v));
         case "greater than":
-          return Number.isFinite(Number(raw))
-            ? Number(raw) > Number(value)
-            : String(raw) > value;
+          return Number.isFinite(Number(raw)) ? Number(raw) > Number(value) : String(raw) > value;
         case "less than":
-          return Number.isFinite(Number(raw))
-            ? Number(raw) < Number(value)
-            : String(raw) < value;
+          return Number.isFinite(Number(raw)) ? Number(raw) < Number(value) : String(raw) < value;
         case "between":
           return (
             values.length < 2 ||
             (Number.isFinite(Number(raw))
-              ? Number(raw) >= Number(values[0]) &&
-                Number(raw) <= Number(values[1])
+              ? Number(raw) >= Number(values[0]) && Number(raw) <= Number(values[1])
               : String(raw) >= values[0] && String(raw) <= values[1])
           );
         default:
@@ -172,16 +153,12 @@ export function FilterBar({
       path: [rule.field],
       operator: rule.operator,
       value:
-        rule.operator.includes(" of") || rule.operator === "between"
-          ? rule.values
-          : rule.values[0],
+        rule.operator.includes(" of") || rule.operator === "between" ? rule.values : rule.values[0],
       negated: rule.negated,
     })),
   };
   return (
-    <div
-      className={cn("flex flex-wrap items-center gap-2 px-3 py-2", className)}
-    >
+    <div className={cn("flex flex-wrap items-center gap-2 px-3 py-2", className)}>
       <Filters
         fields={schema}
         query={query}
@@ -194,9 +171,7 @@ export function FilterBar({
               values:
                 rule.value === undefined
                   ? []
-                  : (Array.isArray(rule.value) ? rule.value : [rule.value]).map(
-                      String,
-                    ),
+                  : (Array.isArray(rule.value) ? rule.value : [rule.value]).map(String),
               negated: rule.negated,
             })),
           )
@@ -286,7 +261,14 @@ export function FilteringSettings<T extends object>({
         )}
         <div className="-mx-4 my-2 border-t" />
         <p className="text-xs text-muted-foreground">Columns</p>
-        <DataGridColumnVisibility table={table} trigger={<Button variant="outline" size="sm">Display columns</Button>}/>
+        <DataGridColumnVisibility
+          table={table}
+          trigger={
+            <Button variant="outline" size="sm">
+              Display columns
+            </Button>
+          }
+        />
         <Button
           variant="outline"
           size="sm"

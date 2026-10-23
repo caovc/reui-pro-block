@@ -52,11 +52,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 import {
   Head,
@@ -76,20 +72,7 @@ import {
 import { CalendarBlock, BoardBlock, WhiteboardBlock } from "./planning";
 import type { BlockProps, BlockMeta } from "@/data/types";
 const chartData = Array.from({ length: 12 }, (_, i) => ({
-  month: [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ][i],
+  month: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][i],
   revenue: [210, 320, 270, 450, 390, 580, 480, 710, 630, 810, 720, 940][i],
   previous: [140, 240, 210, 320, 290, 380, 340, 510, 440, 590, 520, 680][i],
 }));
@@ -98,9 +81,7 @@ export function OverviewChart() {
     <Card className="gap-5 shadow-none">
       <CardHeader className="flex flex-row items-start justify-between">
         <div>
-          <CardTitle className="text-sm font-medium">
-            Revenue overview
-          </CardTitle>
+          <CardTitle className="text-sm font-medium">Revenue overview</CardTitle>
           <div className="mt-2 flex items-center gap-3">
             <p className="text-3xl font-semibold tracking-tight">$48,295.00</p>
             <Badge variant="secondary">↗ 18.4%</Badge>
@@ -116,31 +97,15 @@ export function OverviewChart() {
           }}
           className="h-[230px] w-full"
         >
-          <AreaChart
-            data={chartData}
-            margin={{ left: 8, right: 8, top: 5, bottom: 0 }}
-          >
+          <AreaChart data={chartData} margin={{ left: 8, right: 8, top: 5, bottom: 0 }}>
             <defs>
               <linearGradient id="revenue-fill" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="0%"
-                  stopColor="var(--color-revenue)"
-                  stopOpacity={0.3}
-                />
-                <stop
-                  offset="100%"
-                  stopColor="var(--color-revenue)"
-                  stopOpacity={0}
-                />
+                <stop offset="0%" stopColor="var(--color-revenue)" stopOpacity={0.3} />
+                <stop offset="100%" stopColor="var(--color-revenue)" stopOpacity={0} />
               </linearGradient>
             </defs>
             <CartesianGrid vertical={false} strokeDasharray="3 3" />
-            <XAxis
-              dataKey="month"
-              axisLine={false}
-              tickLine={false}
-              tickMargin={12}
-            />
+            <XAxis dataKey="month" axisLine={false} tickLine={false} tickMargin={12} />
             <ChartTooltip content={<ChartTooltipContent />} />
             <Area
               type="monotone"
@@ -164,27 +129,9 @@ export function OverviewChart() {
 }
 const taskRows = [
   ["Website redesign", "Design", "In progress", "Olivia Rhye", "Oct 28, 2026"],
-  [
-    "Mobile app launch",
-    "Development",
-    "In review",
-    "Phoenix Baker",
-    "Oct 30, 2026",
-  ],
-  [
-    "Q4 marketing campaign",
-    "Marketing",
-    "In progress",
-    "Lana Steiner",
-    "Nov 2, 2026",
-  ],
-  [
-    "Customer research",
-    "Research",
-    "Completed",
-    "Demi Wilkinson",
-    "Oct 22, 2026",
-  ],
+  ["Mobile app launch", "Development", "In review", "Phoenix Baker", "Oct 30, 2026"],
+  ["Q4 marketing campaign", "Marketing", "In progress", "Lana Steiner", "Nov 2, 2026"],
+  ["Customer research", "Research", "Completed", "Demi Wilkinson", "Oct 22, 2026"],
   ["Design system update", "Design", "In progress", "Drew Cano", "Nov 5, 2026"],
 ];
 export function WorkTable({ block }: { block: BlockMeta }) {
@@ -195,19 +142,11 @@ export function WorkTable({ block }: { block: BlockMeta }) {
   const [ascending, setAscending] = useState(true);
   const rows = [
     ...taskRows,
-    ...extra.map((n) => [
-      n,
-      "Design",
-      "In progress",
-      "Alex Morgan",
-      "Nov 8, 2026",
-    ]),
+    ...extra.map((n) => [n, "Design", "In progress", "Alex Morgan", "Nov 8, 2026"]),
   ]
     .filter((r) => r.join(" ").toLowerCase().includes(q.toLowerCase()))
     .filter((r) => tab === "All projects" || r[2] === tab)
-    .sort((a, b) =>
-      ascending ? a[0].localeCompare(b[0]) : b[0].localeCompare(a[0]),
-    );
+    .sort((a, b) => (ascending ? a[0].localeCompare(b[0]) : b[0].localeCompare(a[0])));
   return (
     <Card className="gap-0 shadow-none">
       <CardHeader className="flex flex-row items-center justify-between border-b py-4">
@@ -218,9 +157,7 @@ export function WorkTable({ block }: { block: BlockMeta }) {
               {rows.length}
             </Badge>
           </CardTitle>
-          <CardDescription className="mt-1">
-            Keep track of your team’s work.
-          </CardDescription>
+          <CardDescription className="mt-1">Keep track of your team’s work.</CardDescription>
         </div>
         <NewItem onCreate={(n) => setExtra([...extra, n])} />
       </CardHeader>
@@ -231,11 +168,7 @@ export function WorkTable({ block }: { block: BlockMeta }) {
             value={tab}
             onChange={setTab}
           />
-          <SearchInput
-            value={q}
-            onChange={setQ}
-            placeholder="Search projects…"
-          />
+          <SearchInput value={q} onChange={setQ} placeholder="Search projects…" />
         </div>
         <div className="overflow-x-auto">
           <Table>
@@ -245,9 +178,7 @@ export function WorkTable({ block }: { block: BlockMeta }) {
                   <Checkbox
                     aria-label="Select all projects"
                     checked={rows.length > 0 && selected.length === rows.length}
-                    onCheckedChange={(v) =>
-                      setSelected(v ? rows.map((r) => r[0]) : [])
-                    }
+                    onCheckedChange={(v) => setSelected(v ? rows.map((r) => r[0]) : [])}
                   />
                 </TableHead>
                 <TableHead>
@@ -274,11 +205,7 @@ export function WorkTable({ block }: { block: BlockMeta }) {
                       aria-label={`Select ${r[0]}`}
                       checked={selected.includes(r[0])}
                       onCheckedChange={(v) =>
-                        setSelected(
-                          v
-                            ? [...selected, r[0]]
-                            : selected.filter((n) => n !== r[0]),
-                        )
+                        setSelected(v ? [...selected, r[0]] : selected.filter((n) => n !== r[0]))
                       }
                     />
                   </TableCell>
@@ -289,9 +216,7 @@ export function WorkTable({ block }: { block: BlockMeta }) {
                       </span>
                       <div>
                         <p className="font-medium">{r[0]}</p>
-                        <p className="mt-0.5 text-xs text-muted-foreground">
-                          {r[1]}
-                        </p>
+                        <p className="mt-0.5 text-xs text-muted-foreground">{r[1]}</p>
                       </div>
                     </div>
                   </TableCell>
@@ -301,9 +226,7 @@ export function WorkTable({ block }: { block: BlockMeta }) {
                   <TableCell>
                     <Person name={r[3]} compact />
                   </TableCell>
-                  <TableCell className="text-muted-foreground">
-                    {r[4]}
-                  </TableCell>
+                  <TableCell className="text-muted-foreground">{r[4]}</TableCell>
                   <TableCell>
                     <More />
                   </TableCell>
@@ -313,9 +236,7 @@ export function WorkTable({ block }: { block: BlockMeta }) {
           </Table>
         </div>
         {rows.length === 0 && (
-          <div className="p-10 text-center text-sm text-muted-foreground">
-            No projects found.
-          </div>
+          <div className="p-10 text-center text-sm text-muted-foreground">No projects found.</div>
         )}
         <div className="flex items-center justify-between border-t px-4 py-3 text-xs text-muted-foreground">
           <span>
@@ -336,12 +257,7 @@ export function DashboardBlock({ block }: BlockProps) {
       : /Calls/.test(block.name)
         ? ["Total calls", "Successful calls", "Avg. duration", "Cost per call"]
         : /Payout/.test(block.name)
-          ? [
-              "Total royalties",
-              "Pending payouts",
-              "Active creators",
-              "Paid this month",
-            ]
+          ? ["Total royalties", "Pending payouts", "Active creators", "Paid this month"]
           : ["Total revenue", "Orders", "Customers", "Conversion rate"];
   return (
     <div className="flex min-h-[650px] flex-col gap-6 p-6 md:p-8">
@@ -362,13 +278,11 @@ export function DashboardBlock({ block }: BlockProps) {
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuGroup>
-              {["Last 7 days", "Last 30 days", "Last 90 days", "This year"].map(
-                (p) => (
-                  <DropdownMenuItem key={p} onSelect={() => setPeriod(p)}>
-                    {p}
-                  </DropdownMenuItem>
-                ),
-              )}
+              {["Last 7 days", "Last 30 days", "Last 90 days", "This year"].map((p) => (
+                <DropdownMenuItem key={p} onSelect={() => setPeriod(p)}>
+                  {p}
+                </DropdownMenuItem>
+              ))}
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -390,9 +304,7 @@ export function DashboardBlock({ block }: BlockProps) {
           <CardHeader className="flex flex-row justify-between">
             <div>
               <CardTitle className="text-sm">Recent activity</CardTitle>
-              <CardDescription className="mt-1 text-xs">
-                Your team, at a glance
-              </CardDescription>
+              <CardDescription className="mt-1 text-xs">Your team, at a glance</CardDescription>
             </div>
             <More />
           </CardHeader>
@@ -410,9 +322,7 @@ export function DashboardBlock({ block }: BlockProps) {
                     ][i]
                   }
                 />
-                <p className="ml-11 mt-1 text-[10px] text-muted-foreground">
-                  {i + 1}h ago
-                </p>
+                <p className="ml-11 mt-1 text-[10px] text-muted-foreground">{i + 1}h ago</p>
               </div>
             ))}
           </CardContent>
@@ -435,9 +345,7 @@ export function NavBlock({ block }: BlockProps) {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="sm">
-                {block.name.includes("Repo")
-                  ? "acme / web-app"
-                  : "Acme Workspace"}
+                {block.name.includes("Repo") ? "acme / web-app" : "Acme Workspace"}
                 <ChevronDown />
               </Button>
             </DropdownMenuTrigger>
@@ -445,15 +353,8 @@ export function NavBlock({ block }: BlockProps) {
               <DropdownMenuLabel>Switch workspace</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                {[
-                  "Acme Workspace",
-                  "Personal workspace",
-                  "Create workspace",
-                ].map((w) => (
-                  <DropdownMenuItem
-                    key={w}
-                    onSelect={() => toast(`Switched to ${w}`)}
-                  >
+                {["Acme Workspace", "Personal workspace", "Create workspace"].map((w) => (
+                  <DropdownMenuItem key={w} onSelect={() => toast(`Switched to ${w}`)}>
                     {w}
                   </DropdownMenuItem>
                 ))}
@@ -464,11 +365,7 @@ export function NavBlock({ block }: BlockProps) {
         <div className="flex items-center gap-2">
           {/Search|Developer|Marketplace/.test(block.name) && (
             <div className="hidden md:block">
-              <SearchInput
-                value={search}
-                onChange={setSearch}
-                placeholder="Search workspace…"
-              />
+              <SearchInput value={search} onChange={setSearch} placeholder="Search workspace…" />
             </div>
           )}
           <Team />
@@ -572,9 +469,7 @@ export function ShellBlock({ block }: BlockProps) {
                   title={t}
                   variant={section === t ? "secondary" : "ghost"}
                   size="sm"
-                  className={
-                    collapsed ? "justify-center px-0" : "justify-start"
-                  }
+                  className={collapsed ? "justify-center px-0" : "justify-start"}
                   onClick={() => setSection(t)}
                 >
                   <Icon />
@@ -592,23 +487,21 @@ export function ShellBlock({ block }: BlockProps) {
               <p className="mb-2 mt-7 px-2 text-[10px] uppercase tracking-wider text-muted-foreground">
                 Favorites
               </p>
-              {["Website redesign", "Mobile app", "Brand guidelines"].map(
-                (n, i) => (
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    className="justify-start"
-                    key={n}
-                    onClick={() => {
-                      setSection(n);
-                    }}
-                  >
-                    <span className="size-2 rounded-sm border bg-muted" />
-                    {n}
-                    {i === 0 && <Star className="ml-auto" />}
-                  </Button>
-                ),
-              )}
+              {["Website redesign", "Mobile app", "Brand guidelines"].map((n, i) => (
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="justify-start"
+                  key={n}
+                  onClick={() => {
+                    setSection(n);
+                  }}
+                >
+                  <span className="size-2 rounded-sm border bg-muted" />
+                  {n}
+                  {i === 0 && <Star className="ml-auto" />}
+                </Button>
+              ))}
             </>
           )}
           <div className="mt-auto flex flex-col gap-3 pt-8">
@@ -618,9 +511,7 @@ export function ShellBlock({ block }: BlockProps) {
                   <span>Pro workspace</span>
                   <Zap className="size-3" />
                 </div>
-                <p className="mb-3 mt-2 text-[10px] text-muted-foreground">
-                  8 of 12 team members
-                </p>
+                <p className="mb-3 mt-2 text-[10px] text-muted-foreground">8 of 12 team members</p>
                 <Progress value={66} />
               </div>
             )}
@@ -640,9 +531,7 @@ export function ShellBlock({ block }: BlockProps) {
                 <>
                   <div className="flex-1 text-left">
                     <p className="text-xs">Alex Morgan</p>
-                    <p className="text-[10px] text-muted-foreground">
-                      alex@acme.com
-                    </p>
+                    <p className="text-[10px] text-muted-foreground">alex@acme.com</p>
                   </div>
                   <ChevronDown />
                 </>
@@ -664,9 +553,7 @@ export function ShellBlock({ block }: BlockProps) {
             </Button>
             <Separator orientation="vertical" className="h-4" />
             {top && <Brand />}
-            <span className="hidden text-xs text-muted-foreground md:inline">
-              Workspace
-            </span>
+            <span className="hidden text-xs text-muted-foreground md:inline">Workspace</span>
             <span className="text-xs text-muted-foreground">/</span>
             <span className="text-sm">{section}</span>
           </div>
@@ -715,11 +602,7 @@ export function ShellBlock({ block }: BlockProps) {
         {isMail ? (
           <div className="grid flex-1 md:grid-cols-[300px_1fr]">
             <div className="border-r bg-background p-4">
-              <SearchInput
-                value={q}
-                onChange={setQ}
-                placeholder="Search inbox…"
-              />
+              <SearchInput value={q} onChange={setQ} placeholder="Search inbox…" />
               <div className="mt-4 flex flex-col gap-1">
                 {[
                   "Design review tomorrow",
@@ -737,9 +620,7 @@ export function ShellBlock({ block }: BlockProps) {
                     >
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-medium">{people[i]}</span>
-                        <span className="text-[10px] text-muted-foreground">
-                          10:{20 + i}
-                        </span>
+                        <span className="text-[10px] text-muted-foreground">10:{20 + i}</span>
                       </div>
                       <p className="mt-2 text-sm font-medium">{t}</p>
                       <p className="mt-1 truncate text-xs text-muted-foreground">
@@ -769,16 +650,14 @@ export function ShellBlock({ block }: BlockProps) {
               <div className="text-sm leading-7">
                 <p>Hey Alex,</p>
                 <p className="mt-4">
-                  Hope you’re having a great week! I wanted to share a quick
-                  update and get your thoughts on the latest designs.
+                  Hope you’re having a great week! I wanted to share a quick update and get your
+                  thoughts on the latest designs.
                 </p>
                 <p className="mt-4">
-                  We’ve made good progress on the new direction. Let’s review
-                  together and make sure we’re aligned before moving forward.
+                  We’ve made good progress on the new direction. Let’s review together and make sure
+                  we’re aligned before moving forward.
                 </p>
-                <p className="mt-4">
-                  Looking forward to hearing what you think.
-                </p>
+                <p className="mt-4">Looking forward to hearing what you think.</p>
               </div>
               <Button
                 variant="outline"
@@ -800,15 +679,12 @@ export function ShellBlock({ block }: BlockProps) {
             </h2>
             <div className="w-full max-w-xl">
               {messages.map((m, i) => (
-                <div
-                  key={i}
-                  className="mb-3 rounded-lg bg-background p-4 text-sm"
-                >
+                <div key={i} className="mb-3 rounded-lg bg-background p-4 text-sm">
                   <p className="font-medium">You</p>
                   <p className="mt-2">{m}</p>
                   <p className="mt-4 border-t pt-3 text-muted-foreground">
-                    I can help with that. In this demo, your message is saved
-                    locally in this conversation.
+                    I can help with that. In this demo, your message is saved locally in this
+                    conversation.
                   </p>
                 </div>
               ))}
@@ -837,28 +713,17 @@ export function ShellBlock({ block }: BlockProps) {
                   >
                     <Plus />
                   </Button>
-                  <Button
-                    size="icon-sm"
-                    type="submit"
-                    aria-label="Send message"
-                  >
+                  <Button size="icon-sm" type="submit" aria-label="Send message">
                     <Send />
                   </Button>
                 </div>
               </form>
               <div className="mt-4 flex flex-wrap justify-center gap-2">
-                {["Write a brief", "Summarize activity", "Plan my week"].map(
-                  (t) => (
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      key={t}
-                      onClick={() => setMessage(t)}
-                    >
-                      {t}
-                    </Button>
-                  ),
-                )}
+                {["Write a brief", "Summarize activity", "Plan my week"].map((t) => (
+                  <Button size="sm" variant="outline" key={t} onClick={() => setMessage(t)}>
+                    {t}
+                  </Button>
+                ))}
               </div>
             </div>
           </div>
@@ -872,9 +737,7 @@ export function ShellBlock({ block }: BlockProps) {
           <div className="flex flex-1 flex-col gap-6 p-6">
             <Head
               title={
-                /Fleet|Security|Mission|Protection|Observability/.test(
-                  block.name,
-                )
+                /Fleet|Security|Mission|Protection|Observability/.test(block.name)
                   ? block.name
                   : section === "Overview"
                     ? "Workspace overview"
@@ -884,16 +747,9 @@ export function ShellBlock({ block }: BlockProps) {
               action=""
             />
             <div className="grid gap-4 lg:grid-cols-3">
-              {["Active projects", "Tasks completed", "Team members"].map(
-                (t, i) => (
-                  <Metric
-                    key={t}
-                    title={t}
-                    value={["24", "148", "12"][i]}
-                    index={i}
-                  />
-                ),
-              )}
+              {["Active projects", "Tasks completed", "Team members"].map((t, i) => (
+                <Metric key={t} title={t} value={["24", "148", "12"][i]} index={i} />
+              ))}
             </div>
             <WorkTable block={block} />
             <div className="grid flex-1 gap-4 sm:grid-cols-2">
@@ -908,19 +764,13 @@ export function ShellBlock({ block }: BlockProps) {
 }
 export function StatsBlock({ block }: BlockProps) {
   const [period, setPeriod] = useState("Monthly");
-  const quota = /Usage|Quota|Capacity|Progress|Compliance|Allocation/.test(
-    block.name,
-  );
+  const quota = /Usage|Quota|Capacity|Progress|Compliance|Allocation/.test(block.name);
   const wallet = /Wallet/.test(block.name);
   return (
     <div className="mx-auto flex min-h-[360px] max-w-6xl flex-col justify-center gap-6 p-6 md:p-10">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h2 className="text-lg font-semibold">{block.name}</h2>
-        <SmallTabs
-          items={["Weekly", "Monthly", "Yearly"]}
-          value={period}
-          onChange={setPeriod}
-        />
+        <SmallTabs items={["Weekly", "Monthly", "Yearly"]} value={period} onChange={setPeriod} />
       </div>
       {quota ? (
         <div className="grid gap-5 md:grid-cols-3">
@@ -934,18 +784,14 @@ export function StatsBlock({ block }: BlockProps) {
                 <div className="mb-4 flex items-end justify-between">
                   <p className="text-3xl font-semibold">
                     {[72, 48, 86][i]}
-                    <span className="text-sm font-normal text-muted-foreground">
-                      %
-                    </span>
+                    <span className="text-sm font-normal text-muted-foreground">%</span>
                   </p>
                   <Badge variant="outline">
                     {[7200, 48, 86][i]} / {[10000, 100, 100][i]}
                   </Badge>
                 </div>
                 <Progress value={[72, 48, 86][i]} />
-                <p className="mt-3 text-xs text-muted-foreground">
-                  Resets on November 1, 2026
-                </p>
+                <p className="mt-3 text-xs text-muted-foreground">Resets on November 1, 2026</p>
               </CardContent>
               <CardFooter>
                 <Button
@@ -966,10 +812,7 @@ export function StatsBlock({ block }: BlockProps) {
           <CardHeader>
             <CardDescription>Available balance</CardDescription>
             <CardTitle className="text-4xl">
-              $24,580.00{" "}
-              <span className="text-sm font-normal text-muted-foreground">
-                USD
-              </span>
+              $24,580.00 <span className="text-sm font-normal text-muted-foreground">USD</span>
             </CardTitle>
           </CardHeader>
           <CardContent className="grid grid-cols-2 gap-6">
@@ -985,10 +828,7 @@ export function StatsBlock({ block }: BlockProps) {
             </div>
           </CardContent>
           <CardFooter className="gap-2">
-            <Button
-              className="flex-1"
-              onClick={() => toast("Transfer selected")}
-            >
+            <Button className="flex-1" onClick={() => toast("Transfer selected")}>
               Send money
             </Button>
             <Button
@@ -1002,12 +842,7 @@ export function StatsBlock({ block }: BlockProps) {
         </Card>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {[
-            "Total revenue",
-            "Active subscribers",
-            "New customers",
-            "Growth rate",
-          ].map((t, i) => (
+          {["Total revenue", "Active subscribers", "New customers", "Growth rate"].map((t, i) => (
             <Metric
               key={t}
               title={t}
@@ -1058,15 +893,10 @@ export function ListBlock({ block }: BlockProps) {
             {rows
               .filter((n) => n.toLowerCase().includes(q.toLowerCase()))
               .map((n, i) => (
-                <div
-                  key={n}
-                  className="flex items-center justify-between gap-4 py-4"
-                >
+                <div key={n} className="flex items-center justify-between gap-4 py-4">
                   <div className="flex items-center gap-3">
                     <Avatar className="rounded-xl">
-                      <AvatarFallback className="rounded-xl">
-                        {n.slice(0, 2)}
-                      </AvatarFallback>
+                      <AvatarFallback className="rounded-xl">{n.slice(0, 2)}</AvatarFallback>
                     </Avatar>
                     <div>
                       <p className="text-sm font-medium">{n}</p>
@@ -1090,9 +920,7 @@ export function ListBlock({ block }: BlockProps) {
                           variant="outline"
                           onClick={() =>
                             setFollowed((v) =>
-                              v.includes(n)
-                                ? v.filter((x) => x !== n)
-                                : [...v, n],
+                              v.includes(n) ? v.filter((x) => x !== n) : [...v, n],
                             )
                           }
                         >

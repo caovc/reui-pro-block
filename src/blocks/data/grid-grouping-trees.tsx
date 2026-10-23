@@ -1,22 +1,19 @@
-import { Box,Clock3 } from "lucide-react";
+import { Box, Clock3 } from "lucide-react";
 import { useState } from "react";
 import { DomainRecordGrid } from "./grid-advanced-model-grid";
 import {
-Button,
-Checkbox,
-ChevronRight,
-Choice,
-DotBadge,
-ExportRows,
-GridFrame,
-GridSearch,
-TableOptions,
-TinyAvatar,
+  Button,
+  Checkbox,
+  ChevronRight,
+  Choice,
+  DotBadge,
+  ExportRows,
+  GridFrame,
+  GridSearch,
+  TableOptions,
+  TinyAvatar,
 } from "./grid-advanced-shared";
-import {
-cellClass,
-cn
-} from "./grid-advanced-utils";
+import { cellClass, cn } from "./grid-advanced-utils";
 type Part = {
   id: string;
   name: string;
@@ -297,21 +294,13 @@ const parts: Part[] = [
   },
 ];
 function partCost(p: Part): number {
-  return p.children
-    ? p.children.reduce((s, c) => s + partCost(c), 0) * p.qty
-    : p.cost * p.qty;
+  return p.children ? p.children.reduce((s, c) => s + partCost(c), 0) * p.qty : p.cost * p.qty;
 }
 function flattenParts(nodes: Part[]): Part[] {
   return nodes.flatMap((n) => [n, ...flattenParts(n.children || [])]);
 }
 const allParts = flattenParts(parts);
-function DepthControls({
-  onChange,
-  depth,
-}: {
-  onChange: (n: number) => void;
-  depth: number;
-}) {
+function DepthControls({ onChange, depth }: { onChange: (n: number) => void; depth: number }) {
   return (
     <div className="flex items-center gap-1 text-xs">
       <span className="mr-1 text-muted-foreground">Depth</span>
@@ -336,11 +325,7 @@ export function MaterialsTree() {
   const [query, setQuery] = useState("");
   const [supply, setSupply] = useState("All supply");
   const [depth, setDepth] = useState(2);
-  const [expanded, setExpanded] = useState<string[]>([
-    "SYS-100",
-    "ASM-110",
-    "SUB-111",
-  ]);
+  const [expanded, setExpanded] = useState<string[]>(["SYS-100", "ASM-110", "SUB-111"]);
   const [hidden, setHidden] = useState<string[]>([]);
   const total = parts.reduce((s, p) => s + partCost(p), 0);
   const setTreeDepth = (n: number) => {
@@ -352,10 +337,7 @@ export function MaterialsTree() {
           ? allParts.map((p) => p.id)
           : n === 1
             ? parts.map((p) => p.id)
-            : parts.flatMap((p) => [
-                p.id,
-                ...(p.children || []).map((c) => c.id),
-              ]),
+            : parts.flatMap((p) => [p.id, ...(p.children || []).map((c) => c.id)]),
     );
   };
   return (
@@ -400,24 +382,14 @@ export function MaterialsTree() {
       }
     >
       <div className="flex flex-wrap gap-2 border-b px-3 py-2">
-        <GridSearch
-          value={query}
-          onChange={setQuery}
-          placeholder="Search parts..."
-        />
+        <GridSearch value={query} onChange={setQuery} placeholder="Search parts..." />
         <div className="ml-auto flex flex-wrap items-center gap-2">
           <DepthControls depth={depth} onChange={setTreeDepth} />
           <Choice
             label="Supply filter"
             value={supply}
             onChange={setSupply}
-            options={[
-              "All supply",
-              "Stocked",
-              "Single source",
-              "Long lead",
-              "Shortage",
-            ]}
+            options={["All supply", "Stocked", "Single source", "Long lead", "Shortage"]}
           />
           <TableOptions
             columns={["Number", "Qty", "Unit Cost", "Lead Time", "Supply"]}
@@ -426,39 +398,132 @@ export function MaterialsTree() {
           />
         </div>
       </div>
-      <DomainRecordGrid data={parts} search={query} rowFilter={p=>supply==='All supply'||p.supply===supply} getSubRows={p=>p.children} getRowId={p=>p.id} expanded={query||supply!=='All supply'?true:Object.fromEntries(expanded.map(id=>[id,true]))} onExpandedChange={next=>setExpanded(next===true?allParts.map(p=>p.id):Object.keys(next).filter(id=>next[id]))} hidden={hidden} onHiddenChange={setHidden} className="[&_tbody_tr]:h-[45px]" fields={[{id:"name",title:"Part",value:p=>p.name,size:370,render:(p,_i,row)=><div className='flex items-center gap-2' style={{paddingLeft:row.depth*18}}><button aria-label={`${row.getIsExpanded()?'Collapse':'Expand'} ${p.name}`} aria-expanded={row.getIsExpanded()} disabled={!row.getCanExpand()} className='disabled:invisible' onClick={()=>row.toggleExpanded()}><ChevronRight className={cn('size-3',row.getIsExpanded()&&'rotate-90')}/></button><Box className='size-3 text-muted-foreground'/><span className={p.children?'font-medium':''}>{p.name}</span></div>},
-{id:"id",title:"Number",value:p=>p.id,size:125,className:"px-3 font-mono text-xs text-muted-foreground",render:(p,_i,_gridRow)=>{return <>
-                  {p.id}
-                </>}},
-{id:"qty",title:"Qty",value:p=>p.qty,size:65,className:cn(cellClass, "text-right"),render:(p,_i,_gridRow)=>{return <>
-                  {p.qty}
-                </>}},
-{id:"cost",title:"Unit Cost",value:p=>p.cost,size:120,className:cn(cellClass, "text-right"),render:(p,_i,_gridRow)=>{return <>
+      <DomainRecordGrid
+        data={parts}
+        search={query}
+        rowFilter={(p) => supply === "All supply" || p.supply === supply}
+        getSubRows={(p) => p.children}
+        getRowId={(p) => p.id}
+        expanded={
+          query || supply !== "All supply"
+            ? true
+            : Object.fromEntries(expanded.map((id) => [id, true]))
+        }
+        onExpandedChange={(next) =>
+          setExpanded(
+            next === true ? allParts.map((p) => p.id) : Object.keys(next).filter((id) => next[id]),
+          )
+        }
+        hidden={hidden}
+        onHiddenChange={setHidden}
+        className="[&_tbody_tr]:h-[45px]"
+        fields={[
+          {
+            id: "name",
+            title: "Part",
+            value: (p) => p.name,
+            size: 370,
+            render: (p, _i, row) => (
+              <div className="flex items-center gap-2" style={{ paddingLeft: row.depth * 18 }}>
+                <button
+                  aria-label={`${row.getIsExpanded() ? "Collapse" : "Expand"} ${p.name}`}
+                  aria-expanded={row.getIsExpanded()}
+                  disabled={!row.getCanExpand()}
+                  className="disabled:invisible"
+                  onClick={() => row.toggleExpanded()}
+                >
+                  <ChevronRight className={cn("size-3", row.getIsExpanded() && "rotate-90")} />
+                </button>
+                <Box className="size-3 text-muted-foreground" />
+                <span className={p.children ? "font-medium" : ""}>{p.name}</span>
+              </div>
+            ),
+          },
+          {
+            id: "id",
+            title: "Number",
+            value: (p) => p.id,
+            size: 125,
+            className: "px-3 font-mono text-xs text-muted-foreground",
+            render: (p, _i, _gridRow) => {
+              return <>{p.id}</>;
+            },
+          },
+          {
+            id: "qty",
+            title: "Qty",
+            value: (p) => p.qty,
+            size: 65,
+            className: cn(cellClass, "text-right"),
+            render: (p, _i, _gridRow) => {
+              return <>{p.qty}</>;
+            },
+          },
+          {
+            id: "cost",
+            title: "Unit Cost",
+            value: (p) => p.cost,
+            size: 120,
+            className: cn(cellClass, "text-right"),
+            render: (p, _i, _gridRow) => {
+              return (
+                <>
                   {p.children
                     ? "—"
                     : p.cost.toLocaleString("en-US", {
                         style: "currency",
                         currency: "USD",
                       })}
-                </>}},
-{id:"extended",title:"Extended Cost",value:p=>partCost(p),size:180,className:cn(cellClass, "text-right font-medium"),render:(p,_i,_gridRow)=>{return <>
-                <span className="mr-2 text-xs font-normal text-muted-foreground">
-                  {p.children
-                    ? `${((partCost(p) / total) * 100).toFixed(1)}%`
-                    : ""}
-                </span>
-                {partCost(p).toLocaleString("en-US", {
-                  style: "currency",
-                  currency: "USD",
-                })}
-              </>}},
-{id:"lead",title:"Lead Time",value:p=>p.lead,size:110,className:cellClass,render:(p,_i,_gridRow)=>{return <>
+                </>
+              );
+            },
+          },
+          {
+            id: "extended",
+            title: "Extended Cost",
+            value: (p) => partCost(p),
+            size: 180,
+            className: cn(cellClass, "text-right font-medium"),
+            render: (p, _i, _gridRow) => {
+              return (
+                <>
+                  <span className="mr-2 text-xs font-normal text-muted-foreground">
+                    {p.children ? `${((partCost(p) / total) * 100).toFixed(1)}%` : ""}
+                  </span>
+                  {partCost(p).toLocaleString("en-US", {
+                    style: "currency",
+                    currency: "USD",
+                  })}
+                </>
+              );
+            },
+          },
+          {
+            id: "lead",
+            title: "Lead Time",
+            value: (p) => p.lead,
+            size: 110,
+            className: cellClass,
+            render: (p, _i, _gridRow) => {
+              return (
+                <>
                   <DotBadge tone={p.lead > 50 ? "warn" : "muted"}>
                     <Clock3 className="size-3" />
                     {p.lead}d
                   </DotBadge>
-                </>}},
-{id:"supply",title:"Supply",value:p=>p.supply,size:125,className:cellClass,render:(p,_i,_gridRow)=>{return <>
+                </>
+              );
+            },
+          },
+          {
+            id: "supply",
+            title: "Supply",
+            value: (p) => p.supply,
+            size: 125,
+            className: cellClass,
+            render: (p, _i, _gridRow) => {
+              return (
+                <>
                   <DotBadge
                     tone={
                       p.supply === "Shortage"
@@ -472,7 +537,12 @@ export function MaterialsTree() {
                   >
                     {p.supply}
                   </DotBadge>
-                </>}}]} />
+                </>
+              );
+            },
+          },
+        ]}
+      />
       <footer className="flex justify-between border-t bg-muted/20 px-3 py-2 text-sm">
         <b className="font-medium">
           Meridian C2 Cargo <DotBadge>{allParts.length} lines</DotBadge>
@@ -679,10 +749,7 @@ const employees: Employee[] = [
 const flattenPeople = (nodes: Employee[]): Employee[] =>
   nodes.flatMap((p) => [p, ...flattenPeople(p.children || [])]);
 const allEmployees = flattenPeople(employees);
-const descendants = (p: Employee): number[] => [
-  p.id,
-  ...(p.children || []).flatMap(descendants),
-];
+const descendants = (p: Employee): number[] => [p.id, ...(p.children || []).flatMap(descendants)];
 export function ReportingTree() {
   const [query, setQuery] = useState("");
   const [department, setDepartment] = useState("All departments");
@@ -723,11 +790,7 @@ export function ReportingTree() {
       }
     >
       <div className="flex flex-wrap gap-2 border-b px-3 py-2">
-        <GridSearch
-          value={query}
-          onChange={setQuery}
-          placeholder="Search people..."
-        />
+        <GridSearch value={query} onChange={setQuery} placeholder="Search people..." />
         <div className="ml-auto flex flex-wrap items-center gap-2">
           <DepthControls
             depth={depth}
@@ -758,14 +821,7 @@ export function ReportingTree() {
             ]}
           />
           <TableOptions
-            columns={[
-              "Department",
-              "Location",
-              "Reports",
-              "Open Roles",
-              "Tenure",
-              "Status",
-            ]}
+            columns={["Department", "Location", "Reports", "Open Roles", "Tenure", "Status"]}
             hidden={hidden}
             setHidden={setHidden}
           />
@@ -785,36 +841,153 @@ export function ReportingTree() {
           </Button>
         </div>
       )}
-      <DomainRecordGrid data={employees} search={query} rowFilter={p=>department==='All departments'||p.department===department} getSubRows={p=>p.children} getRowId={p=>String(p.id)} expanded={query||department!=='All departments'?true:Object.fromEntries(expanded.map(id=>[String(id),true]))} onExpandedChange={next=>setExpanded(next===true?allEmployees.map(p=>p.id):Object.keys(next).filter(id=>next[id]).map(Number))} selection={selected.map(String)} onSelectionChange={ids=>setSelected(ids.map(Number))} hidden={hidden} onHiddenChange={setHidden} className="[&_tbody_tr]:h-14" fields={[{id:"select",title:"",value:p=>p.id,size:42,render:(p,_i,row)=><Checkbox aria-label={`Select ${p.name} and reports`} checked={row.getIsSomeSelected()?'indeterminate':row.getIsSelected()} onCheckedChange={v=>row.toggleSelected(!!v,{deselectParents:true})}/>},
-{id:"name",title:"Person",value:p=>p.name,size:385,render:(p,_i,row)=><div className='flex items-center gap-2' style={{paddingLeft:row.depth*16}}><button aria-label={`${row.getIsExpanded()?'Collapse':'Expand'} ${p.name}`} aria-expanded={row.getIsExpanded()} disabled={!row.getCanExpand()} className='disabled:invisible' onClick={()=>row.toggleExpanded()}><ChevronRight className={cn('size-3',row.getIsExpanded()&&'rotate-90')}/></button><TinyAvatar name={p.name}/><div><span className='font-medium'>{p.name}</span>{p.title.startsWith('VP')&&<span className='ml-2'><DotBadge tone='violet'>Vice President</DotBadge></span>}<span className='mt-0.5 block text-xs text-muted-foreground'>{p.title}</span></div></div>},
-{id:"department",title:"Department",value:p=>p.department,size:140,className:cellClass,render:(p,_i,_gridRow)=>{return <>{p.department}</>}},
-{id:"location",title:"Location",value:p=>p.location,size:130,className:cn(cellClass, "text-muted-foreground"),render:(p,_i,_gridRow)=>{return <>
-                    {p.location}
-                  </>}},
-{id:"reports",title:"Reports",value:p=>descendants(p).length-1,size:90,className:cellClass,render:(p,_i,_gridRow)=>{return <>
-                    {p.children
-                      ? `${p.children.length} of ${descendants(p).length - 1}`
-                      : "—"}
-                  </>}},
-{id:"roles",title:"Open Roles",value:p=>p.roles,size:100,className:cellClass,render:(p,_i,_gridRow)=>{return <>
-                    {p.roles ? <DotBadge tone="warn">{p.roles}</DotBadge> : "—"}
-                  </>}},
-{id:"tenure",title:"Tenure",value:p=>p.tenure,size:115,className:cellClass,render:(p,_i,_gridRow)=>{return <>
-                    {p.tenure} years
-                    <span className="block text-xs text-muted-foreground">
-                      {["Mar", "May", "Nov", "Apr", "Jan"][p.id % 5]}{" "}
-                      {2026 - p.tenure}
+      <DomainRecordGrid
+        data={employees}
+        search={query}
+        rowFilter={(p) => department === "All departments" || p.department === department}
+        getSubRows={(p) => p.children}
+        getRowId={(p) => String(p.id)}
+        expanded={
+          query || department !== "All departments"
+            ? true
+            : Object.fromEntries(expanded.map((id) => [String(id), true]))
+        }
+        onExpandedChange={(next) =>
+          setExpanded(
+            next === true
+              ? allEmployees.map((p) => p.id)
+              : Object.keys(next)
+                  .filter((id) => next[id])
+                  .map(Number),
+          )
+        }
+        selection={selected.map(String)}
+        onSelectionChange={(ids) => setSelected(ids.map(Number))}
+        hidden={hidden}
+        onHiddenChange={setHidden}
+        className="[&_tbody_tr]:h-14"
+        fields={[
+          {
+            id: "select",
+            title: "",
+            value: (p) => p.id,
+            size: 42,
+            render: (p, _i, row) => (
+              <Checkbox
+                aria-label={`Select ${p.name} and reports`}
+                checked={row.getIsSomeSelected() ? "indeterminate" : row.getIsSelected()}
+                onCheckedChange={(v) => row.toggleSelected(!!v, { deselectParents: true })}
+              />
+            ),
+          },
+          {
+            id: "name",
+            title: "Person",
+            value: (p) => p.name,
+            size: 385,
+            render: (p, _i, row) => (
+              <div className="flex items-center gap-2" style={{ paddingLeft: row.depth * 16 }}>
+                <button
+                  aria-label={`${row.getIsExpanded() ? "Collapse" : "Expand"} ${p.name}`}
+                  aria-expanded={row.getIsExpanded()}
+                  disabled={!row.getCanExpand()}
+                  className="disabled:invisible"
+                  onClick={() => row.toggleExpanded()}
+                >
+                  <ChevronRight className={cn("size-3", row.getIsExpanded() && "rotate-90")} />
+                </button>
+                <TinyAvatar name={p.name} />
+                <div>
+                  <span className="font-medium">{p.name}</span>
+                  {p.title.startsWith("VP") && (
+                    <span className="ml-2">
+                      <DotBadge tone="violet">Vice President</DotBadge>
                     </span>
-                  </>}},
-{id:"status",title:"Status",value:_p=>'Active',size:100,className:cellClass,render:(_p,_i,_gridRow)=>{return <>
-                    <DotBadge tone="good">● Active</DotBadge>
-                  </>}}]} />
+                  )}
+                  <span className="mt-0.5 block text-xs text-muted-foreground">{p.title}</span>
+                </div>
+              </div>
+            ),
+          },
+          {
+            id: "department",
+            title: "Department",
+            value: (p) => p.department,
+            size: 140,
+            className: cellClass,
+            render: (p, _i, _gridRow) => {
+              return <>{p.department}</>;
+            },
+          },
+          {
+            id: "location",
+            title: "Location",
+            value: (p) => p.location,
+            size: 130,
+            className: cn(cellClass, "text-muted-foreground"),
+            render: (p, _i, _gridRow) => {
+              return <>{p.location}</>;
+            },
+          },
+          {
+            id: "reports",
+            title: "Reports",
+            value: (p) => descendants(p).length - 1,
+            size: 90,
+            className: cellClass,
+            render: (p, _i, _gridRow) => {
+              return (
+                <>{p.children ? `${p.children.length} of ${descendants(p).length - 1}` : "—"}</>
+              );
+            },
+          },
+          {
+            id: "roles",
+            title: "Open Roles",
+            value: (p) => p.roles,
+            size: 100,
+            className: cellClass,
+            render: (p, _i, _gridRow) => {
+              return <>{p.roles ? <DotBadge tone="warn">{p.roles}</DotBadge> : "—"}</>;
+            },
+          },
+          {
+            id: "tenure",
+            title: "Tenure",
+            value: (p) => p.tenure,
+            size: 115,
+            className: cellClass,
+            render: (p, _i, _gridRow) => {
+              return (
+                <>
+                  {p.tenure} years
+                  <span className="block text-xs text-muted-foreground">
+                    {["Mar", "May", "Nov", "Apr", "Jan"][p.id % 5]} {2026 - p.tenure}
+                  </span>
+                </>
+              );
+            },
+          },
+          {
+            id: "status",
+            title: "Status",
+            value: (_p) => "Active",
+            size: 100,
+            className: cellClass,
+            render: (_p, _i, _gridRow) => {
+              return (
+                <>
+                  <DotBadge tone="good">● Active</DotBadge>
+                </>
+              );
+            },
+          },
+        ]}
+      />
       <footer className="flex justify-between border-t bg-muted/20 px-3 py-2 text-sm">
         <span className="font-medium">
           Meridian Cycles{" "}
-          <span className="ml-2 text-xs font-normal">
-            {allEmployees.length} people
-          </span>
+          <span className="ml-2 text-xs font-normal">{allEmployees.length} people</span>
         </span>
         <span className="text-xs text-muted-foreground">3 need attention</span>
       </footer>

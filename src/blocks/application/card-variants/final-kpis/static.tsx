@@ -6,12 +6,7 @@ import {
   TrendingDown,
   TrendingUp,
 } from "lucide-react";
-import {
-  Frame,
-  FramePanel,
-  FrameHeader,
-  FrameTitle,
-} from "@/components/reui/frame";
+import { Frame, FramePanel, FrameHeader, FrameTitle } from "@/components/reui/frame";
 import { Badge } from "@/components/reui/badge";
 import { Stage, GridFrame, People } from "../extended/common";
 import "./final-kpis.css";
@@ -51,9 +46,7 @@ export function ComplianceStrip() {
             },
           ].map(({ name, value, note, icon: Icon, tone }) => (
             <div key={name}>
-              <h3 className="text-xs font-normal text-muted-foreground">
-                {name}
-              </h3>
+              <h3 className="text-xs font-normal text-muted-foreground">{name}</h3>
               <p className="mt-5 flex flex-wrap items-center gap-1 text-xs">
                 <Icon className={`mr-1 size-3.5 shrink-0 ${tone}`} />
                 <span>{value}</span>
@@ -62,9 +55,7 @@ export function ComplianceStrip() {
             </div>
           ))}
           <div className="final-kpi-dots">
-            <h3 className="mb-4 text-xs font-normal text-muted-foreground">
-              Team
-            </h3>
+            <h3 className="mb-4 text-xs font-normal text-muted-foreground">Team</h3>
             <People extra={1} />
           </div>
         </FramePanel>
@@ -121,10 +112,7 @@ export function PeriodTrends() {
                 <span className="text-muted-foreground/35">{faint}</span>
               </p>
               <div className="flex flex-wrap items-center gap-1.5">
-                <Badge
-                  size="sm"
-                  variant={up ? "success-light" : "destructive-light"}
-                >
+                <Badge size="sm" variant={up ? "success-light" : "destructive-light"}>
                   {up ? <TrendingUp /> : <TrendingDown />}
                   {delta}
                 </Badge>
@@ -147,10 +135,7 @@ export function DealInvoiceTiles() {
           ["Pending Invoices", "$2.7M"],
           ["Active Clients", "36"],
         ].map(([name, value]) => (
-          <FramePanel
-            key={name}
-            className="final-kpi-dots flex min-h-[90px] flex-col gap-3"
-          >
+          <FramePanel key={name} className="final-kpi-dots flex min-h-[90px] flex-col gap-3">
             <p className="text-sm text-muted-foreground">{name}</p>
             <p className="text-xl font-semibold tracking-tight">{value}</p>
           </FramePanel>

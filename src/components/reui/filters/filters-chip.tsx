@@ -1,7 +1,17 @@
-"use client"
+"use client";
 
-import { ArrowLeftRightIcon, ChevronRightIcon, CopyIcon, CornerDownRightIcon, EllipsisVerticalIcon, LayersIcon, SlidersHorizontalIcon, Trash2Icon, XIcon } from "lucide-react"
-import * as React from "react"
+import {
+  ArrowLeftRightIcon,
+  ChevronRightIcon,
+  CopyIcon,
+  CornerDownRightIcon,
+  EllipsisVerticalIcon,
+  LayersIcon,
+  SlidersHorizontalIcon,
+  Trash2Icon,
+  XIcon,
+} from "lucide-react";
+import * as React from "react";
 import {
   filterControlSizes,
   filterReadOnlyProps,
@@ -13,12 +23,12 @@ import {
   useFilterFocusStore,
   useFilterRender,
   useFilterReorderable,
-} from "@/components/reui/filters/filters-context"
+} from "@/components/reui/filters/filters-context";
 import {
   FilterMenu,
   useFilterOptions,
   useFilterValueResolution,
-} from "@/components/reui/filters/filters-editors"
+} from "@/components/reui/filters/filters-editors";
 import {
   collapseFilterPath,
   FILTER_MENU_CLASS,
@@ -26,57 +36,42 @@ import {
   formatFilterPath,
   getFilterField,
   getFilterFieldChain,
-} from "@/components/reui/filters/filters-lib"
+} from "@/components/reui/filters/filters-lib";
 import {
   coerceFilterValue,
   getFilterArity,
   getFilterOperator,
   operatorTakesValue,
   visibleFilterOperators,
-} from "@/components/reui/filters/filters-operators"
-import {
-  findFilterNode,
-  isFilterGroup,
-} from "@/components/reui/filters/filters-query"
+} from "@/components/reui/filters/filters-operators";
+import { findFilterNode, isFilterGroup } from "@/components/reui/filters/filters-query";
 import type {
   FilterEditorProps,
   FilterField,
   FilterGroupNode,
   FilterOperator,
   FilterRule,
-} from "@/components/reui/filters/filters-types"
+} from "@/components/reui/filters/filters-types";
 
-import { cn } from "cn"
-import { Button } from "@/components/ui/button"
-import {
-  ButtonGroup,
-  ButtonGroupText,
-} from "@/components/ui/button-group"
+import { cn } from "cn";
+import { Button } from "@/components/ui/button";
+import { ButtonGroup, ButtonGroupText } from "@/components/ui/button-group";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
+} from "@/components/ui/dropdown-menu";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 /** Which part of the chip a pointer or key is aimed at. No `field`: the chip's
  *  attribute segment is display only, and only the builder re-picks one. */
-type ChipSegment = "operator" | "value" | "menu"
+type ChipSegment = "operator" | "value" | "menu";
 
 /** The ref half of `autoFocusProps`: a CALLBACK ref, the one shape an editor
  *  can spread onto any element without a cast, and a no-op here. */
-const noopAutoFocusRef: React.RefCallback<HTMLElement> = () => {}
+const noopAutoFocusRef: React.RefCallback<HTMLElement> = () => {};
 
 function defaultValueDisplay<V>(
   value: V | undefined,
@@ -87,32 +82,32 @@ function defaultValueDisplay<V>(
   fieldPlaceholder?: string,
   /** Whether the value is PICKED rather than typed: a select's search prompt
    *  and "enter text..." both give way to `labels.selectPlaceholder`. */
-  optionBacked?: boolean
+  optionBacked?: boolean,
 ): string {
   const emptyLabel = optionBacked
     ? labels.selectPlaceholder
-    : (fieldPlaceholder ?? labels.valuePlaceholder)
+    : (fieldPlaceholder ?? labels.valuePlaceholder);
   if (value === undefined || value === null || value === "") {
-    return emptyLabel
+    return emptyLabel;
   }
 
   if (getFilterArity(operator) === "range" && Array.isArray(value)) {
-    const [from, to] = value as unknown[]
-    return labels.valueRange(String(from ?? ""), String(to ?? ""))
+    const [from, to] = value as unknown[];
+    return labels.valueRange(String(from ?? ""), String(to ?? ""));
   }
 
   if (Array.isArray(value)) {
-    const values = value as string[]
-    if (values.length === 0) return emptyLabel
+    const values = value as string[];
+    if (values.length === 0) return emptyLabel;
     if (values.length === 1) {
-      return resolveOption(values[0])?.label ?? String(values[0])
+      return resolveOption(values[0])?.label ?? String(values[0]);
     }
-    return labels.valueCount(values.length)
+    return labels.valueCount(values.length);
   }
 
-  if (typeof value === "boolean") return value ? "True" : "False"
+  if (typeof value === "boolean") return value ? "True" : "False";
 
-  return resolveOption(String(value))?.label ?? String(value)
+  return resolveOption(String(value))?.label ?? String(value);
 }
 
 /** The same display with the option's own icon in front. A status filter reads
@@ -121,22 +116,22 @@ function defaultValueDisplay<V>(
 function valueWithIcon<V>(
   value: V | undefined,
   text: string,
-  resolveOption: (value: string) => { icon?: React.ReactNode } | undefined
+  resolveOption: (value: string) => { icon?: React.ReactNode } | undefined,
 ): React.ReactNode {
   const single =
     value === undefined || value === null || Array.isArray(value)
       ? Array.isArray(value) && value.length === 1
         ? String(value[0])
         : null
-      : String(value)
-  const icon = single ? resolveOption(single)?.icon : null
-  if (!icon) return text
+      : String(value);
+  const icon = single ? resolveOption(single)?.icon : null;
+  if (!icon) return text;
   return (
     <span className="flex items-center gap-1.5">
       {icon}
       {text}
     </span>
-  )
+  );
 }
 
 /** The glyph between two ancestors in a nested attribute path, a chevron
@@ -157,8 +152,8 @@ function FilterPathSeparator() {
          `size-3`. `inline-block` because the reset makes every `svg` a block,
          which broke the builder's inline `Repository > Stars` into three. */
       className="text-muted-foreground mx-[3px] inline-block size-3 shrink-0 self-center align-[calc(0.3635em_-_0.375rem)]"
-     />
-  )
+    />
+  );
 }
 
 /** The elided run of a collapsed path, with the FULL path behind it. THE
@@ -185,18 +180,18 @@ function FilterPathEllipsis({ full }: { full: string }) {
         <TooltipContent>{full}</TooltipContent>
       </Tooltip>
     </TooltipProvider>
-  )
+  );
 }
 
 /** Everything a rule needs in order to be READ, in either chrome. */
 export interface FilterRuleDisplay {
-  pathText: string
-  pathLabel: React.ReactNode
+  pathText: string;
+  pathLabel: React.ReactNode;
   /** Whether `pathLabel` shows fewer names than the path has, so the cell's
    *  own `title` can step aside for the ellipsis segment's tooltip. */
-  pathCollapsed: boolean
-  operatorLabel: string
-  valueLabel: React.ReactNode
+  pathCollapsed: boolean;
+  operatorLabel: string;
+  valueLabel: React.ReactNode;
   /** The same value as PLAIN TEXT, for an accessible name. Never scraped from
    *  the `renderValue` node: whatever text survives inside avatars and a count
    *  badge announces "plus one" for two people. Kept separate from
@@ -204,12 +199,12 @@ export interface FilterRuleDisplay {
    *  read back. A field whose values do not stringify supplies `valueText`
    *  itself, or the built-in fallback says "[object Object]" to exactly the
    *  audience the visible display is hiding it from. */
-  valueText: string
+  valueText: string;
   /** The same value with any collapsed COUNT spelled out. "3 selected" cannot
    *  be recovered from, which is fine while the editor opens and not once
    *  locked, so the control carries this as `title` and, locked, as its name. */
-  valueFullText: string
-  valueEmpty: boolean
+  valueFullText: string;
+  valueEmpty: boolean;
 }
 
 /** How one rule reads, resolved once and shared by both chromes, so a consumer
@@ -217,48 +212,40 @@ export interface FilterRuleDisplay {
 export function useFilterRuleDisplay<V, O>(
   rule: FilterRule<V>,
   field: FilterField<V, O> | undefined,
-  operator: FilterOperator | undefined
+  operator: FilterOperator | undefined,
 ): FilterRuleDisplay {
-  const actions = useFilterActions<V, O>()
-  const render = useFilterRender<V, O>()
+  const actions = useFilterActions<V, O>();
+  const render = useFilterRender<V, O>();
   // Lazily: a label needs no options until an editor actually opens.
-  const optionsState = useFilterOptions<V, O>(field, false)
+  const optionsState = useFilterOptions<V, O>(field, false);
 
   const values =
     rule.value === undefined || rule.value === null
       ? []
       : Array.isArray(rule.value)
         ? (rule.value as unknown[])
-        : [rule.value]
+        : [rule.value];
 
   // Saved views: values the loader has never returned are resolved through the
   // field's own `resolveValues`, so a restored chip reads "John Doe", not an id.
-  useFilterValueResolution(field, values)
+  useFilterValueResolution(field, values);
 
-  const pathText = formatFilterPath(
-    actions.index,
-    rule.path,
-    actions.labels.pathSeparator
-  )
+  const pathText = formatFilterPath(actions.index, rule.path, actions.labels.pathSeparator);
 
-  const chain = getFilterFieldChain(actions.index, rule.path)
+  const chain = getFilterFieldChain(actions.index, rule.path);
   // The CASCADER's collapser, from the actions context rather than per host, so
   // a deep path reads the same on a chip and in a builder row.
   const segments = collapseFilterPath(chain, {
     maxSegments: actions.maxPathSegments,
     collapse: actions.pathCollapse,
-  })
-  const pathCollapsed = segments.some((segment) => segment.type === "ellipsis")
+  });
+  const pathCollapsed = segments.some((segment) => segment.type === "ellipsis");
   const pathLabel = chain.length
     ? segments.map((segment, index) => (
         <React.Fragment
           /* Positional, because a field id is unique among its SIBLINGS only:
              "Company > Team > Company" is a legal path and its two ids collide. */
-          key={
-            segment.type === "field"
-              ? `${index}:${segment.field.id}`
-              : `${index}:ellipsis`
-          }
+          key={segment.type === "field" ? `${index}:${segment.field.id}` : `${index}:ellipsis`}
         >
           {index > 0 ? <FilterPathSeparator /> : null}
           {segment.type === "field" ? (
@@ -268,19 +255,19 @@ export function useFilterRuleDisplay<V, O>(
           )}
         </React.Fragment>
       ))
-    : pathText
+    : pathText;
 
   const operatorLabel = operator
     ? rule.negated
       ? actions.labels.negated(operator.label)
       : operator.label
-    : rule.operator || actions.labels.selectCondition
+    : rule.operator || actions.labels.selectCondition;
 
   const valueEmpty =
     rule.value === undefined ||
     rule.value === null ||
     rule.value === ("" as unknown as V) ||
-    values.length === 0
+    values.length === 0;
 
   if (!field) {
     return {
@@ -292,7 +279,7 @@ export function useFilterRuleDisplay<V, O>(
       valueText: "",
       valueFullText: "",
       valueEmpty,
-    }
+    };
   }
 
   const valueContext = {
@@ -303,11 +290,9 @@ export function useFilterRuleDisplay<V, O>(
     // Resolved, not empty: a custom display needs the option behind each value.
     options: values
       .map((entry) => optionsState.resolve(String(entry)))
-      .filter(Boolean) as NonNullable<
-      ReturnType<typeof optionsState.resolve>
-    >[],
+      .filter(Boolean) as NonNullable<ReturnType<typeof optionsState.resolve>>[],
     labels: actions.labels,
-  }
+  };
 
   // Computed even when a custom display replaces it: this is the string the
   // accessible name is built from. `field.valueText` overrides it.
@@ -324,14 +309,14 @@ export function useFilterRuleDisplay<V, O>(
         field.type === "select" ||
           field.type === "multiselect" ||
           Boolean(field.options?.length) ||
-          Boolean(field.loadOptions)
-      )
+          Boolean(field.loadOptions),
+      );
 
   const valueLabel = render.renderValue
     ? render.renderValue(valueContext)
     : field.renderValue
       ? field.renderValue(valueContext)
-      : valueWithIcon(rule.value, valueText, optionsState.resolve)
+      : valueWithIcon(rule.value, valueText, optionsState.resolve);
 
   // The list behind the count, or the same text again. Multi-value only: a
   // RANGE also stores an array but already spells both ends out ("10 to 99").
@@ -343,11 +328,8 @@ export function useFilterRuleDisplay<V, O>(
       ? valueText
       : actions.labels.valueDetail(
           valueText,
-          values.map(
-            (entry) =>
-              optionsState.resolve(String(entry))?.label ?? String(entry)
-          )
-        )
+          values.map((entry) => optionsState.resolve(String(entry))?.label ?? String(entry)),
+        );
 
   return {
     pathText,
@@ -358,16 +340,16 @@ export function useFilterRuleDisplay<V, O>(
     valueText,
     valueFullText,
     valueEmpty,
-  }
+  };
 }
 
 interface FilterValueEditorProps<V = unknown, O = unknown> {
-  rule: FilterRule<V>
-  field: FilterField<V, O>
-  operator: FilterOperator
+  rule: FilterRule<V>;
+  field: FilterField<V, O>;
+  operator: FilterOperator;
   /** Whether the surface holding it is showing. Gates the option service. */
-  open: boolean
-  onClose: () => void
+  open: boolean;
+  onClose: () => void;
 }
 
 /** The value editor - draft, option service, commit - with NO surface of its
@@ -380,22 +362,22 @@ function FilterValueEditor<V, O>({
   open,
   onClose,
 }: FilterValueEditorProps<V, O>) {
-  const actions = useFilterActions<V, O>()
-  const [draft, setDraft] = React.useState<V | undefined>(rule.value)
+  const actions = useFilterActions<V, O>();
+  const [draft, setDraft] = React.useState<V | undefined>(rule.value);
 
   React.useEffect(() => {
-    if (open) setDraft(rule.value)
-  }, [open, rule.value])
+    if (open) setDraft(rule.value);
+  }, [open, rule.value]);
 
-  const options = useFilterOptions<V, O>(field, open)
+  const options = useFilterOptions<V, O>(field, open);
   // A LOOKUP, not a definition: every result is a module-level built-in or the
   // consumer's own component, so the editor is never remounted mid-edit.
   const editor = React.useMemo(
     () => actions.resolveEditor(field, operator),
-    [actions, field, operator]
-  )
+    [actions, field, operator],
+  );
 
-  if (!editor) return null
+  if (!editor) return null;
 
   const editorProps: FilterEditorProps<V, O> = {
     field,
@@ -410,10 +392,10 @@ function FilterValueEditor<V, O>({
     commit: (next, commitOptions) => {
       actions.updateRule(rule.id, {
         value: (next === undefined ? draft : next) as V,
-      })
+      });
       // A multi-select commits per toggle and asks to stay put; others dismiss.
-      if (commitOptions?.close === false) return
-      onClose()
+      if (commitOptions?.close === false) return;
+      onClose();
     },
     cancel: onClose,
     // The same as cancel, honestly: `back` means something only to a `create`
@@ -421,12 +403,12 @@ function FilterValueEditor<V, O>({
     back: onClose,
     options,
     labels: actions.labels,
-  }
+  };
 
   // `createElement` rather than JSX: the component comes out of a lookup, so
   // `<Editor />` trips `react-hooks/static-components`. The fragment keeps the
   // props object, which carries a ref, from looking like a ref read in render.
-  return <>{React.createElement(editor, editorProps)}</>
+  return <>{React.createElement(editor, editorProps)}</>;
 }
 
 /** One step of the flow, released when the panel that owes it has LEFT THE
@@ -434,21 +416,21 @@ function FilterValueEditor<V, O>({
  *  so this unmount IS that moment and nothing is timed. `onRelease` is used AS
  *  the cleanup, so an unmemoized callback fires its step early. */
 function FilterStepHandoff({ onRelease }: { onRelease: () => void }) {
-  React.useEffect(() => onRelease, [onRelease])
-  return null
+  React.useEffect(() => onRelease, [onRelease]);
+  return null;
 }
 
 /** The value host: the editor in a popover anchored to the value segment, and
  *  BOTH routes end here. The operator popover used to draw the editor itself,
  *  so a handed-off panel sat a segment's width left of a second press. */
 export interface FilterValuePopoverProps<V = unknown, O = unknown> {
-  rule: FilterRule<V>
-  field: FilterField<V, O>
-  operator: FilterOperator | undefined
+  rule: FilterRule<V>;
+  field: FilterField<V, O>;
+  operator: FilterOperator | undefined;
   /** The element that opens it, WITH its own children: a chip segment must be
    *  a direct child of its `ButtonGroup` for the pill to fuse. */
-  trigger: React.ReactElement
-  className?: string
+  trigger: React.ReactElement;
+  className?: string;
 }
 
 export function FilterValuePopover<V, O>({
@@ -458,11 +440,11 @@ export function FilterValuePopover<V, O>({
   trigger,
   className,
 }: FilterValuePopoverProps<V, O>) {
-  const actions = useFilterActions<V, O>()
-  const focusStore = useFilterFocusStore()
-  const autoOpen = useFilterChipAutoOpen(rule.id) === "value"
-  const [open, setOpen] = React.useState(false)
-  const locked = isFilterLocked(actions)
+  const actions = useFilterActions<V, O>();
+  const focusStore = useFilterFocusStore();
+  const autoOpen = useFilterChipAutoOpen(rule.id) === "value";
+  const [open, setOpen] = React.useState(false);
+  const locked = isFilterLocked(actions);
 
   // The last step of the flow as well as the amend route; by now the condition
   // menu has UNMOUNTED (see `FilterStepHandoff`). CONSUMED as it is honoured,
@@ -472,19 +454,19 @@ export function FilterValuePopover<V, O>({
   // because a DIFFERENT chip was arrowed onto is worse than one that opened
   // nothing.
   React.useEffect(() => {
-    if (!autoOpen || open) return
-    if (!locked) setOpen(true)
-    focusStore.set({ id: rule.id, segment: "value", autoOpen: false })
-  }, [autoOpen, open, focusStore, rule.id, locked])
+    if (!autoOpen || open) return;
+    if (!locked) setOpen(true);
+    focusStore.set({ id: rule.id, segment: "value", autoOpen: false });
+  }, [autoOpen, open, focusStore, rule.id, locked]);
 
   // Nothing to open, but the trigger still renders so the value keeps its
   // place, and it wears the bar's state: that hangs on the TRIGGER below,
   // which this path never reaches, so the segment used to look live.
   if (!operator || !actions.resolveEditor(field, operator)) {
-    return React.cloneElement(
-      trigger as React.ReactElement<Record<string, unknown>>,
-      { disabled: actions.disabled, ...filterReadOnlyProps(actions) }
-    )
+    return React.cloneElement(trigger as React.ReactElement<Record<string, unknown>>, {
+      disabled: actions.disabled,
+      ...filterReadOnlyProps(actions),
+    });
   }
 
   return (
@@ -493,8 +475,8 @@ export function FilterValuePopover<V, O>({
     <Popover
       open={open}
       onOpenChange={(next) => {
-        if (next && locked) return
-        setOpen(next)
+        if (next && locked) return;
+        setOpen(next);
       }}
     >
       {/* The trigger IS the segment, never a wrapper, and `asChild` keeps it
@@ -502,11 +484,7 @@ export function FilterValuePopover<V, O>({
           (`[&>*:not(:last-child)]:rounded-r-none`,
           `[&>*:not(:first-child)]:border-l-0`), so a nested one keeps its own
           border and the chip reads as separate badges. */}
-      <PopoverTrigger
-        asChild
-        disabled={actions.disabled}
-        {...filterReadOnlyProps(actions)}
-      >
+      <PopoverTrigger asChild disabled={actions.disabled} {...filterReadOnlyProps(actions)}>
         {trigger}
       </PopoverTrigger>
       <PopoverContent align="start" className={cn("w-auto p-0", className)}>
@@ -516,13 +494,13 @@ export function FilterValuePopover<V, O>({
           operator={operator}
           open={open}
           onClose={() => {
-            setOpen(false)
-            focusStore.set({ id: rule.id, segment: "value", autoOpen: false })
+            setOpen(false);
+            focusStore.set({ id: rule.id, segment: "value", autoOpen: false });
           }}
         />
       </PopoverContent>
     </Popover>
-  )
+  );
 }
 
 /* A chip's ATTRIBUTE is fixed once the chip exists: no field popover here. A
@@ -535,10 +513,10 @@ export function FilterValuePopover<V, O>({
  *  value popover once its own panel has left the DOM; advancing in place
  *  anchored the editor to the CONDITION segment and doubled up in the row. */
 export interface FilterOperatorPopoverProps<V = unknown, O = unknown> {
-  rule: FilterRule<V>
-  field: FilterField<V, O>
-  trigger: React.ReactElement
-  className?: string
+  rule: FilterRule<V>;
+  field: FilterField<V, O>;
+  trigger: React.ReactElement;
+  className?: string;
 }
 
 export function FilterOperatorPopover<V, O>({
@@ -547,21 +525,21 @@ export function FilterOperatorPopover<V, O>({
   trigger,
   className,
 }: FilterOperatorPopoverProps<V, O>) {
-  const actions = useFilterActions<V, O>()
-  const focusStore = useFilterFocusStore()
-  const autoOpen = useFilterChipAutoOpen(rule.id) === "operator"
-  const [open, setOpen] = React.useState(false)
-  const locked = isFilterLocked(actions)
+  const actions = useFilterActions<V, O>();
+  const focusStore = useFilterFocusStore();
+  const autoOpen = useFilterChipAutoOpen(rule.id) === "operator";
+  const [open, setOpen] = React.useState(false);
+  const locked = isFilterLocked(actions);
   /** Whether the close this panel is going through IS the step being handed
    *  on. A ref, so it survives the render that closes the popover. Every OPEN
    *  clears it, so an Escape or an outside press finds it already lowered and
    *  spends nothing; `release` leaves it standing because one twin asks again
    *  later: Radix reads it from `onCloseAutoFocus`, a macrotask after the
    *  unmount. Clearing it in `release` would break that twin only. */
-  const handoff = React.useRef(false)
-  const operators = actions.resolveOperators(field)
-  const operator = getFilterOperator(operators, rule.operator)
-  void operator // Preserve the upstream lookup under noUnusedLocals.
+  const handoff = React.useRef(false);
+  const operators = actions.resolveOperators(field);
+  const operator = getFilterOperator(operators, rule.operator);
+  void operator; // Preserve the upstream lookup under noUnusedLocals.
 
   // Memoized because the array IS the menu's identity: the cascader rebuilds
   // its index per `items` identity, so a fresh array rebuilds it per keystroke.
@@ -571,61 +549,57 @@ export function FilterOperatorPopover<V, O>({
         value: entry.value,
         label: entry.label,
       })),
-    [operators]
-  )
+    [operators],
+  );
 
   // Opened by the root the moment the chip is created. CONSUMED here, or the
   // handoff re-opens the menu on the frame Escape closes it. Consumed even
   // while locked, for the reason on the value popover's copy.
   React.useEffect(() => {
-    if (!autoOpen || open) return
-    handoff.current = false
-    if (!locked) setOpen(true)
-    focusStore.set({ id: rule.id, segment: "operator", autoOpen: false })
-  }, [autoOpen, open, focusStore, rule.id, locked])
+    if (!autoOpen || open) return;
+    handoff.current = false;
+    if (!locked) setOpen(true);
+    focusStore.set({ id: rule.id, segment: "operator", autoOpen: false });
+  }, [autoOpen, open, focusStore, rule.id, locked]);
 
   const close = () => {
-    handoff.current = false
-    setOpen(false)
-    focusStore.set({ id: rule.id, segment: "operator", autoOpen: false })
-  }
+    handoff.current = false;
+    setOpen(false);
+    focusStore.set({ id: rule.id, segment: "operator", autoOpen: false });
+  };
 
   /** The parked step, spent on the frame this panel stops existing. Memoized
    *  on nothing that changes, and load bearing: `FilterStepHandoff` uses this
    *  AS its cleanup, so a new identity mid-flow fires the step too early. */
   const release = React.useCallback(() => {
-    if (!handoff.current) return
-    focusStore.set({ id: rule.id, segment: "value", autoOpen: true })
-  }, [focusStore, rule.id])
+    if (!handoff.current) return;
+    focusStore.set({ id: rule.id, segment: "value", autoOpen: true });
+  }, [focusStore, rule.id]);
 
   // The chip going away takes its step with it: React destroys a deleted
   // subtree top down, so this runs before the panel's own cleanup.
   React.useEffect(
     () => () => {
-      handoff.current = false
+      handoff.current = false;
     },
-    []
-  )
+    [],
+  );
 
   return (
     <Popover
       open={open}
       onOpenChange={(next) => {
-        if (next && locked) return
+        if (next && locked) return;
         /* Escape, an outside press, a second press: none is the step being
            taken, so none may spend it. RETIRED ON OPEN, not on close, and that
            is a twin difference: in Radix an item choice dismisses through here
            too, so retiring on close wiped the request before the unmount. */
-        if (next) handoff.current = false
-        setOpen(next)
+        if (next) handoff.current = false;
+        setOpen(next);
       }}
     >
       {/* `asChild` for the reason spelled out on the value popover's copy. */}
-      <PopoverTrigger
-        asChild
-        disabled={actions.disabled}
-        {...filterReadOnlyProps(actions)}
-      >
+      <PopoverTrigger asChild disabled={actions.disabled} {...filterReadOnlyProps(actions)}>
         {trigger}
       </PopoverTrigger>
       <PopoverContent
@@ -639,9 +613,9 @@ export function FilterOperatorPopover<V, O>({
            same guard `FiltersBuilder` runs for the field picker, for the same
            reason, so the two move together. */
         onCloseAutoFocus={(event) => {
-          if (!handoff.current) return
-          handoff.current = false
-          event.preventDefault()
+          if (!handoff.current) return;
+          handoff.current = false;
+          event.preventDefault();
         }}
         /* `w-auto` with a FLOOR: a catalog sizes to its longest label, and a
            boolean field's "is" and "is not" would read as a scrap of paper. */
@@ -654,21 +628,21 @@ export function FilterOperatorPopover<V, O>({
           items={items}
           selected={rule.operator ? [rule.operator] : []}
           onSelectionChange={(values) => {
-            const value = values[0]
+            const value = values[0];
             /* Deselecting the committed operator is a step back rather than a
                choice, so pressing the current row simply closes. */
             if (value === undefined) {
-              close()
-              return
+              close();
+              return;
             }
-            const chosen = getFilterOperator(operators, value)
+            const chosen = getFilterOperator(operators, value);
             /* BUILDING versus AMENDING, the same fork the advanced row draws
                at its field step. A rule reaches this menu with no operator
                exactly once, while it is being added, and only then is the
                value the step after this one. Re-picking the condition on a
                rule that already has one is an edit of that one cell: it
                commits and closes, and the user opens the value themselves. */
-            const building = !rule.operator
+            const building = !rule.operator;
             actions.updateRule(rule.id, {
               operator: value,
               /* The value moves with the operator: "is" to "is any of" would
@@ -676,17 +650,17 @@ export function FilterOperatorPopover<V, O>({
               value: coerceFilterValue(
                 rule.value,
                 getFilterOperator(operators, rule.operator),
-                chosen
+                chosen,
               ) as V,
-            })
+            });
             if (building && operatorTakesValue(chosen)) {
               /* PARKED, not opened: `release` hands the row to its value
                  surface once this panel has unmounted. */
-              handoff.current = true
-              setOpen(false)
-              return
+              handoff.current = true;
+              setOpen(false);
+              return;
             }
-            close()
+            close();
           }}
           labels={actions.labels}
           ariaLabel={field.label}
@@ -704,34 +678,34 @@ export function FilterOperatorPopover<V, O>({
         />
       </PopoverContent>
     </Popover>
-  )
+  );
 }
 
 /** The keyboard path to a CROSS-GROUP move: Alt+Arrow reorders within the
  *  owning group only and Wrap creates a NEW group, so the drag layer's
  *  cross-group move had no keyboard parity. Numbered in document order. */
 export function FilterMoveToMenuItems({ nodeId }: { nodeId: string }) {
-  const actions = useFilterActions()
+  const actions = useFilterActions();
   // A menu ITEM takes the native word: both twins already make `disabled`
   // roving-focusable and `aria-disabled`.
-  const reorderable = useFilterReorderable()
-  const locked = isFilterLocked(actions)
+  const reorderable = useFilterReorderable();
+  const locked = isFilterLocked(actions);
   // Read at render time: the menu's content mounts when the menu opens, so
   // this is the tree the user is looking at.
-  const query = actions.getQuery()
-  const found = findFilterNode(query, nodeId)
-  if (!found || !found.parent) return null
+  const query = actions.getQuery();
+  const found = findFilterNode(query, nodeId);
+  if (!found || !found.parent) return null;
 
-  const destinations: { id: string; label: string; size: number }[] = []
+  const destinations: { id: string; label: string; size: number }[] = [];
   if (found.parent.id !== query.id) {
     destinations.push({
       id: query.id,
       label: actions.labels.moveToTopLevel,
       size: query.rules.length,
-    })
+    });
   }
 
-  let position = 0
+  let position = 0;
   // `inside` suppresses the PUSH and not the walk, so the numbering stays
   // document order rather than renumbering every group after this one. Counted
   // before the exclusions for the same reason: the current parent is not
@@ -739,29 +713,29 @@ export function FilterMoveToMenuItems({ nodeId }: { nodeId: string }) {
   // row's menu is open.
   const visit = (group: FilterGroupNode<unknown>, inside: boolean) => {
     for (const child of group.rules) {
-      if (!isFilterGroup(child)) continue
-      position += 1
+      if (!isFilterGroup(child)) continue;
+      position += 1;
       // Itself and everything under it: `moveFilterNodeTo` already refuses that
       // move - it would detach the subtree and leave a cycle - so offering it
       // would be a menu row that quietly does nothing.
-      const within = inside || child.id === nodeId
+      const within = inside || child.id === nodeId;
       if (!within && child.id !== found.parent!.id) {
         destinations.push({
           id: child.id,
           label: actions.labels.moveToGroup(position),
           size: child.rules.length,
-        })
+        });
       }
-      visit(child, within)
+      visit(child, within);
     }
-  }
-  visit(query, false)
+  };
+  visit(query, false);
 
-  if (destinations.length === 0) return null
+  if (destinations.length === 0) return null;
 
   // The THIRD route into a move, gated on the same switch as the grip and
   // Alt+Arrow: ungated, a builder that draws no handle still reordered here.
-  if (!reorderable) return null
+  if (!reorderable) return null;
 
   return (
     <>
@@ -769,19 +743,15 @@ export function FilterMoveToMenuItems({ nodeId }: { nodeId: string }) {
         <DropdownMenuItem
           key={destination.id}
           disabled={locked}
-          onClick={() =>
-            actions.moveNodeTo(nodeId, destination.id, destination.size)
-          }
+          onClick={() => actions.moveNodeTo(nodeId, destination.id, destination.size)}
         >
           {/* A bend into the destination: movement, not duplication or nesting. */}
-          <CornerDownRightIcon
-            aria-hidden="true"
-           />
+          <CornerDownRightIcon aria-hidden="true" />
           <span className={FILTER_MENU_LABEL_CLASS}>{destination.label}</span>
         </DropdownMenuItem>
       ))}
     </>
-  )
+  );
 }
 
 /** The per-rule actions, without the trigger: the chip's kebab and a builder
@@ -793,51 +763,32 @@ export function FilterRuleMenuItems({
    *  a group; on in the builder, the only way to nest without dragging. */
   allowGrouping = false,
 }: {
-  ruleId: string
-  allowGrouping?: boolean
+  ruleId: string;
+  allowGrouping?: boolean;
 }) {
-  const actions = useFilterActions()
+  const actions = useFilterActions();
   // Gated here as well as at the trigger, because this is EXPORTED: a consumer
   // composing their own menu gets rows that say they are unavailable.
-  const locked = isFilterLocked(actions)
+  const locked = isFilterLocked(actions);
   return (
     /* Every row leads with an icon. `IconPlaceholder` because the source ships
        under five icon sets; no size class, because each style already sizes an
        unsized svg in a menu row; `aria-hidden`, the label IS the name. */
     <>
-      <DropdownMenuItem
-        disabled={locked}
-        onClick={() => actions.duplicateNode(ruleId)}
-      >
-        <CopyIcon
-          aria-hidden="true"
-         />
-        <span className={FILTER_MENU_LABEL_CLASS}>
-          {actions.labels.duplicate}
-        </span>
+      <DropdownMenuItem disabled={locked} onClick={() => actions.duplicateNode(ruleId)}>
+        <CopyIcon aria-hidden="true" />
+        <span className={FILTER_MENU_LABEL_CLASS}>{actions.labels.duplicate}</span>
       </DropdownMenuItem>
-      <DropdownMenuItem
-        disabled={locked}
-        onClick={() => actions.negateRule(ruleId)}
-      >
+      <DropdownMenuItem disabled={locked} onClick={() => actions.negateRule(ruleId)}>
         {/* Two arrows swapping: negation flips to the declared inverse. */}
-        <ArrowLeftRightIcon
-          aria-hidden="true"
-         />
+        <ArrowLeftRightIcon aria-hidden="true" />
         <span className={FILTER_MENU_LABEL_CLASS}>{actions.labels.negate}</span>
       </DropdownMenuItem>
       {allowGrouping ? (
-        <DropdownMenuItem
-          disabled={locked}
-          onClick={() => actions.wrapNodeInGroup(ruleId)}
-        >
+        <DropdownMenuItem disabled={locked} onClick={() => actions.wrapNodeInGroup(ruleId)}>
           {/* Layers: braces read as grouping in only three of the five sets. */}
-          <LayersIcon
-            aria-hidden="true"
-           />
-          <span className={FILTER_MENU_LABEL_CLASS}>
-            {actions.labels.wrapInGroup}
-          </span>
+          <LayersIcon aria-hidden="true" />
+          <span className={FILTER_MENU_LABEL_CLASS}>{actions.labels.wrapInGroup}</span>
         </DropdownMenuItem>
       ) : null}
       {allowGrouping ? <FilterMoveToMenuItems nodeId={ruleId} /> : null}
@@ -848,12 +799,8 @@ export function FilterRuleMenuItems({
       {actions.convertToAdvanced && actions.variant !== "advanced" ? (
         <DropdownMenuItem onClick={() => actions.convertToAdvanced?.()}>
           {/* Sliders: the one "advanced settings" glyph in all five sets. */}
-          <SlidersHorizontalIcon
-            aria-hidden="true"
-           />
-          <span className={FILTER_MENU_LABEL_CLASS}>
-            {actions.labels.convertToAdvanced}
-          </span>
+          <SlidersHorizontalIcon aria-hidden="true" />
+          <span className={FILTER_MENU_LABEL_CLASS}>{actions.labels.convertToAdvanced}</span>
         </DropdownMenuItem>
       ) : null}
       <DropdownMenuItem
@@ -862,47 +809,45 @@ export function FilterRuleMenuItems({
         onClick={() => actions.removeNode(ruleId)}
       >
         {/* No colour: the destructive variant already paints the row's svgs. */}
-        <Trash2Icon
-          aria-hidden="true"
-         />
+        <Trash2Icon aria-hidden="true" />
         <span className={FILTER_MENU_LABEL_CLASS}>{actions.labels.remove}</span>
       </DropdownMenuItem>
     </>
-  )
+  );
 }
 
 export interface FilterChipProps<V = unknown> {
-  rule: FilterRule<V>
-  index: number
+  rule: FilterRule<V>;
+  index: number;
 }
 
 /** One filter, as a chip. Memoization means something here: the actions
  *  context is stable, the focus store is subscribed to a boolean and the query
  *  shares structure, so editing one filter of forty re-renders one chip. */
 function FilterChipImpl<V, O>({ rule, index }: FilterChipProps<V>) {
-  const actions = useFilterActions<V, O>()
-  const render = useFilterRender<V, O>()
-  const focusStore = useFilterFocusStore()
-  const focused = useFilterChipFocused(rule.id)
-  const noFocus = useFilterFocusEmpty()
-  const locked = isFilterLocked(actions)
+  const actions = useFilterActions<V, O>();
+  const render = useFilterRender<V, O>();
+  const focusStore = useFilterFocusStore();
+  const focused = useFilterChipFocused(rule.id);
+  const noFocus = useFilterFocusEmpty();
+  const locked = isFilterLocked(actions);
   // THE CHIP'S HEIGHT, by way of the one button in it that has one:
   // `ButtonGroup` is `items-stretch` and no style gives a text segment a
   // height, so the kebab's rung is the pill's. The RADIUS survives because
   // every style whose `icon-sm` rounds differently re-pins it in a group.
-  const sizes = filterControlSizes(actions)
+  const sizes = filterControlSizes(actions);
   // The kebab is CONTROLLED so it can refuse to open: every mutating row
   // behind it is gated. That puts "Convert to advanced filter" out of reach
   // while locked; a consumer-composed menu still draws it.
-  const [menuOpen, setMenuOpen] = React.useState(false)
+  const [menuOpen, setMenuOpen] = React.useState(false);
   // Exactly one chip is in the tab order at a time. Before anything has been
   // focused that is the first chip, so Tab reaches the row in one press.
-  const isTabStop = focused || (noFocus && index === 0)
+  const isTabStop = focused || (noFocus && index === 0);
 
-  const field = getFilterField(actions.index, rule.path)
-  const operators = field ? actions.resolveOperators(field) : []
-  const operator = getFilterOperator(operators, rule.operator)
-  void operator // Preserve the upstream lookup under noUnusedLocals.
+  const field = getFilterField(actions.index, rule.path);
+  const operators = field ? actions.resolveOperators(field) : [];
+  const operator = getFilterOperator(operators, rule.operator);
+  void operator; // Preserve the upstream lookup under noUnusedLocals.
 
   const {
     pathText,
@@ -913,7 +858,7 @@ function FilterChipImpl<V, O>({ rule, index }: FilterChipProps<V>) {
     valueText,
     valueFullText,
     valueEmpty,
-  } = useFilterRuleDisplay<V, O>(rule, field, operator)
+  } = useFilterRuleDisplay<V, O>(rule, field, operator);
 
   if (!field) {
     // A rule pointing at a field the schema no longer has. Dropping it loses a
@@ -925,16 +870,13 @@ function FilterChipImpl<V, O>({ rule, index }: FilterChipProps<V>) {
         data-slot="filter-chip"
         data-unknown=""
         role="group"
-        aria-label={actions.labels.filterLabel(
-          rule.path.join(actions.labels.pathSeparator)
-        )}
+        aria-label={actions.labels.filterLabel(rule.path.join(actions.labels.pathSeparator))}
         data-focused={focused || undefined}
         data-rule-id={rule.id}
         data-index={index}
         tabIndex={isTabStop ? 0 : -1}
         onFocusCapture={() => {
-          if (!focused)
-            focusStore.set({ id: rule.id, segment: null, autoOpen: false })
+          if (!focused) focusStore.set({ id: rule.id, segment: null, autoOpen: false });
         }}
       >
         <ButtonGroupText className="bg-background dark:bg-input/30 text-muted-foreground">
@@ -951,31 +893,29 @@ function FilterChipImpl<V, O>({ rule, index }: FilterChipProps<V>) {
           {...filterReadOnlyProps(actions)}
           onClick={() => actions.removeNode(rule.id)}
         >
-          <XIcon
-           />
+          <XIcon />
         </Button>
       </ButtonGroup>
-    )
+    );
   }
 
-  if (render.renderChip) return <>{render.renderChip(rule)}</>
+  if (render.renderChip) return <>{render.renderChip(rule)}</>;
 
   const focusSegment = (segment: ChipSegment) =>
-    focusStore.set({ id: rule.id, segment, autoOpen: false })
+    focusStore.set({ id: rule.id, segment, autoOpen: false });
 
   // A rule with no condition yet, KEPT rather than removed (see
   // `isFilterRuleComplete`), so it has to read as unfinished. Through WORDS:
   // the dashed outline it replaces degraded to an underline under sera.
-  const incomplete = !rule.operator
+  const incomplete = !rule.operator;
 
   // The same test the value segment renders under, so the name matches the
   // chip: `valueText` alone appended a placeholder to valueless conditions.
-  const hasValue = Boolean(rule.operator) && operatorTakesValue(operator)
+  const hasValue = Boolean(rule.operator) && operatorTakesValue(operator);
 
   // The value's spoken form in the chip's NAME: a name is not a prompt, so
   // "Description contains enter text..." becomes "no value".
-  const valueName =
-    valueEmpty && !field.valueText ? actions.labels.noValue : valueText
+  const valueName = valueEmpty && !field.valueText ? actions.labels.noValue : valueText;
 
   return (
     <ButtonGroup
@@ -983,7 +923,7 @@ function FilterChipImpl<V, O>({ rule, index }: FilterChipProps<V>) {
       role="group"
       aria-label={actions.labels.filterLabel(
         `${pathText} ${operatorLabel}${hasValue ? ` ${valueName}` : ""}`.trim() +
-          (incomplete ? `, ${actions.labels.incomplete}` : "")
+          (incomplete ? `, ${actions.labels.incomplete}` : ""),
       )}
       data-focused={focused || undefined}
       data-incomplete={incomplete || undefined}
@@ -992,11 +932,10 @@ function FilterChipImpl<V, O>({ rule, index }: FilterChipProps<V>) {
       className={cn(
         /* Sera is an underline style, so the boxed segments are normalised to
            its bottom-border-only look or the chip reads as a mix of both. */
-        ""
+        "",
       )}
       onFocusCapture={() => {
-        if (!focused)
-          focusStore.set({ id: rule.id, segment: null, autoOpen: false })
+        if (!focused) focusStore.set({ id: rule.id, segment: null, autoOpen: false });
       }}
       data-index={index}
     >
@@ -1025,7 +964,7 @@ function FilterChipImpl<V, O>({ rule, index }: FilterChipProps<V>) {
               /* The operator is connective tissue between the field and the
                  value, so it reads quieter than either - unless it is still
                  the prompt "Select condition", the one thing to act on. */
-              incomplete ? "text-foreground" : "text-muted-foreground"
+              incomplete ? "text-foreground" : "text-muted-foreground",
             )}
             onPointerDown={() => focusSegment("operator")}
           >
@@ -1056,7 +995,7 @@ function FilterChipImpl<V, O>({ rule, index }: FilterChipProps<V>) {
               title={valueFullText === valueText ? undefined : valueFullText}
               className={cn(
                 "hover:bg-accent bg-background dark:bg-input/30 cursor-default",
-                valueEmpty && "text-muted-foreground"
+                valueEmpty && "text-muted-foreground",
               )}
               onPointerDown={() => focusSegment("value")}
             >
@@ -1070,15 +1009,11 @@ function FilterChipImpl<V, O>({ rule, index }: FilterChipProps<V>) {
       <DropdownMenu
         open={menuOpen}
         onOpenChange={(next) => {
-          if (next && locked) return
-          setMenuOpen(next)
+          if (next && locked) return;
+          setMenuOpen(next);
         }}
       >
-        <DropdownMenuTrigger
-          asChild
-          disabled={actions.disabled}
-          {...filterReadOnlyProps(actions)}
-        >
+        <DropdownMenuTrigger asChild disabled={actions.disabled} {...filterReadOnlyProps(actions)}>
           <Button
             variant="outline"
             size={sizes.icon}
@@ -1089,21 +1024,17 @@ function FilterChipImpl<V, O>({ rule, index }: FilterChipProps<V>) {
             aria-label={actions.labels.chipMenu(field.label)}
             onPointerDown={() => focusSegment("menu")}
           >
-            <EllipsisVerticalIcon
-             />
+            <EllipsisVerticalIcon />
           </Button>
         </DropdownMenuTrigger>
         {/* The SAME sizing the builder's menus use, from one constant: a menu
             that cuts "Convert to group" in one chrome is one defect twice. */}
-        <DropdownMenuContent
-          align="end"
-          className={cn(FILTER_MENU_CLASS, actions.menuClassName)}
-        >
+        <DropdownMenuContent align="end" className={cn(FILTER_MENU_CLASS, actions.menuClassName)}>
           <FilterRuleMenuItems ruleId={rule.id} />
         </DropdownMenuContent>
       </DropdownMenu>
     </ButtonGroup>
-  )
+  );
 }
 
-export const FilterChip = React.memo(FilterChipImpl) as typeof FilterChipImpl
+export const FilterChip = React.memo(FilterChipImpl) as typeof FilterChipImpl;

@@ -64,10 +64,7 @@ export function BoardWorkspace() {
             onChange={setView}
           />
           <div className="flex shrink-0 items-center gap-1">
-            <div
-              className="mr-2 hidden -space-x-1 lg:flex"
-              aria-label="3 people editing now"
-            >
+            <div className="mr-2 hidden -space-x-1 lg:flex" aria-label="3 people editing now">
               {[0, 1, 2].map((i) => (
                 <Face small key={i} index={i} />
               ))}
@@ -192,9 +189,7 @@ export function ObservabilityShell() {
   const [workspace, setWorkspace] = useState("Nimbus Core");
   const [explorer, setExplorer] = useState(true);
   const groups = observeGroups.map((g) =>
-    g.label === "Investigate" && !explorer
-      ? { ...g, items: ["Explorer", "Queries"] }
-      : g,
+    g.label === "Investigate" && !explorer ? { ...g, items: ["Explorer", "Queries"] } : g,
   );
   function unpin(name: string) {
     setPins((v) => v.filter((n) => n !== name));
@@ -343,13 +338,7 @@ export function FleetHeroShell() {
         <div className="relative z-10 mx-auto mt-4 max-w-full px-2">
           <Segments
             label="Fleet sections"
-            items={[
-              "Overview",
-              "Missions",
-              "Statistics",
-              "Requests",
-              "Maintenance",
-            ]}
+            items={["Overview", "Missions", "Statistics", "Requests", "Maintenance"]}
             value={section}
             onChange={setSection}
           />
@@ -357,9 +346,7 @@ export function FleetHeroShell() {
         {request && (
           <div className="shell-access-request absolute right-5 top-5 z-20 w-64 rounded-xl bg-black/65 p-3 text-xs text-white shadow-lg backdrop-blur-lg">
             <strong>Access request</strong>
-            <p className="mt-1 text-white/70">
-              R1-06 wants to connect to the control room.
-            </p>
+            <p className="mt-1 text-white/70">R1-06 wants to connect to the control room.</p>
             <div className="mt-2 flex gap-2">
               <button
                 className="rounded border border-white/30 px-2 py-1"

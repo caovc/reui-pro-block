@@ -4,26 +4,26 @@ The first implementation covered the routes and basic controls but did not repro
 
 ## Corrected differences
 
-| Template | Main corrections | Interaction checked |
-| --- | --- | --- |
-| Mesh | Five-column launch board, colored status icons, action queue, launch runway details | Board, task creation/editing/drag, share popover, canvas |
-| Flowly | Reference dashboard spacing, patterned activity bars and header legend, workflow sheet | Create workflow, select trigger, return to saved list |
-| Echo | Full-height viewport, correct font and content position, compact Projects list | Create and rename project, collapse sidebar |
-| Verve | CRM frame, performance card, quota meter, table frame and Create menu | Schedule meeting, deal creation and Kanban |
-| Limelight | Archivo typography, hero proportions, pill buttons, three-column feature section and expanded testimonials | CTA scroll, pricing switch, hash preservation |
-| Manifest | 418 × 662 login card, official Alert, product editor as a full page | Create product and variants, retain inventory, upload image |
-| Lucent | Service marks, deployment ledger, runbook/traffic panels | Edit deployment, reopen saved release, rollback |
-| Overture | Geist typography and public screenshot wallpaper URLs | Email validation and local waitlist confirmation |
-| Atlas | Users submenu, official user grid, chart legends, cluster bars and badges | Invite a person with an assigned role |
-| Tempo | Dedicated 24-task, five-column board and official calendar | Board, create/edit task, calendar view/event |
-| Miro | Nine-field booking sheet, hierarchical heatmap, appointment calendar | Save booking, find it in week and agenda views |
-| Cohort | 440 × 679 login card, calendar, workforce panels and approval flow | Event detail and individual approval decision |
-| Filespace | Reference file grid, nine-action menu, sharing/details/move/version panels | Per-file permissions, saved description, move target and version restore persist |
-| Roster | Official calendar, spanning events, review panels and gray headcount curve | Calendar view switch and event details |
-| Pulse | Layered KPI frames, queue cards, escalation grid and right-side sheets | Edit a ticket, save and reopen; board drag |
-| Surge | Patterned inventory bars, metric dividers, table borders | Full-page product creation and variant inventory |
-| Filebox | Auth/reset pages and suggested folders after sign-in | Reset navigation, sign-in and drive operations |
-| Flux | Official expandable run grid and approval review sheet | Approve selected request without changing another |
+| Template  | Main corrections                                                                                           | Interaction checked                                                              |
+| --------- | ---------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| Mesh      | Five-column launch board, colored status icons, action queue, launch runway details                        | Board, task creation/editing/drag, share popover, canvas                         |
+| Flowly    | Reference dashboard spacing, patterned activity bars and header legend, workflow sheet                     | Create workflow, select trigger, return to saved list                            |
+| Echo      | Full-height viewport, correct font and content position, compact Projects list                             | Create and rename project, collapse sidebar                                      |
+| Verve     | CRM frame, performance card, quota meter, table frame and Create menu                                      | Schedule meeting, deal creation and Kanban                                       |
+| Limelight | Archivo typography, hero proportions, pill buttons, three-column feature section and expanded testimonials | CTA scroll, pricing switch, hash preservation                                    |
+| Manifest  | 418 × 662 login card, official Alert, product editor as a full page                                        | Create product and variants, retain inventory, upload image                      |
+| Lucent    | Service marks, deployment ledger, runbook/traffic panels                                                   | Edit deployment, reopen saved release, rollback                                  |
+| Overture  | Geist typography and public screenshot wallpaper URLs                                                      | Email validation and local waitlist confirmation                                 |
+| Atlas     | Users submenu, official user grid, chart legends, cluster bars and badges                                  | Invite a person with an assigned role                                            |
+| Tempo     | Dedicated 24-task, five-column board and official calendar                                                 | Board, create/edit task, calendar view/event                                     |
+| Miro      | Nine-field booking sheet, hierarchical heatmap, appointment calendar                                       | Save booking, find it in week and agenda views                                   |
+| Cohort    | 440 × 679 login card, calendar, workforce panels and approval flow                                         | Event detail and individual approval decision                                    |
+| Filespace | Reference file grid, nine-action menu, sharing/details/move/version panels                                 | Per-file permissions, saved description, move target and version restore persist |
+| Roster    | Official calendar, spanning events, review panels and gray headcount curve                                 | Calendar view switch and event details                                           |
+| Pulse     | Layered KPI frames, queue cards, escalation grid and right-side sheets                                     | Edit a ticket, save and reopen; board drag                                       |
+| Surge     | Patterned inventory bars, metric dividers, table borders                                                   | Full-page product creation and variant inventory                                 |
+| Filebox   | Auth/reset pages and suggested folders after sign-in                                                       | Reset navigation, sign-in and drive operations                                   |
+| Flux      | Official expandable run grid and approval review sheet                                                     | Approve selected request without changing another                                |
 
 ## Actual free-component reuse
 

@@ -8,12 +8,12 @@ A third coordinator chat (`01a162a1-c1b4-7613-8929-d7764a3b086d`) records separa
 
 ## Assigned ownership for this pass
 
-| Agent | Existing files it may change | New report | State |
-| --- | --- | --- | --- |
-| schedule_refinement | `src/blocks/application/schedule.tsx` | `docs/parallel-schedule-refinement.md` | Completed: five targeted tests passed, including desktop/mobile and invalid time ranges |
-| pricing_refinement | `src/blocks/commerce/pricing.tsx`, new `pricing-refined.tsx` | `docs/parallel-pricing-refinement.md` | Completed: dedicated analytics/agency plans; two mobile interaction tests passed |
-| source_export_qa | `src/lib/source.ts`, `src/lib/bundle.ts`, `src/lib/download.ts` | `docs/parallel-export-refinement.md` | Completed: only `source.ts` changed; three real ZIP downloads independently built and rendered at 14px |
-| Coordinator | This coordination document | This file | Scoped production build, lint and 11 final browser tests passed; existing published site separately verified |
+| Agent               | Existing files it may change                                    | New report                             | State                                                                                                        |
+| ------------------- | --------------------------------------------------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| schedule_refinement | `src/blocks/application/schedule.tsx`                           | `docs/parallel-schedule-refinement.md` | Completed: five targeted tests passed, including desktop/mobile and invalid time ranges                      |
+| pricing_refinement  | `src/blocks/commerce/pricing.tsx`, new `pricing-refined.tsx`    | `docs/parallel-pricing-refinement.md`  | Completed: dedicated analytics/agency plans; two mobile interaction tests passed                             |
+| source_export_qa    | `src/lib/source.ts`, `src/lib/bundle.ts`, `src/lib/download.ts` | `docs/parallel-export-refinement.md`   | Completed: only `source.ts` changed; three real ZIP downloads independently built and rendered at 14px       |
+| Coordinator         | This coordination document                                      | This file                              | Scoped production build, lint and 11 final browser tests passed; existing published site separately verified |
 
 Agents may add narrowly scoped helper files and regression specs. They must not change package manifests, shared UI, existing tests, another owner's modules, or Git history. If a file changes externally during a pass, its owner must re-evaluate and avoid overwriting that change.
 
@@ -60,7 +60,6 @@ Remaining differences are explicit in the corrected records: mobile calendar/hea
 ## Completion rules
 
 Each report must list inspected references, concrete changes, verification evidence and remaining differences. New local changes are not considered published until their exact revision is deployed. The full 662-entry fidelity audit in `docs/FIDELITY.md` remains outstanding; working routes alone do not satisfy it.
-
 
 Another coordinator expanded the shared bundle asset and notice glob from flat paths to recursive paths. That compatible change was retained and included in the final refreshed snapshot; the exact bundle used for this pass is recorded in the validation manifest. All assets added by this pass are flat and included under either pattern. The final meeting-calendar scrollbar was shifted outside its time choices without changing their widths; all five scoped booking tests passed again (42.2s) after this CSS adjustment. The refreshed fourteen desktop/mobile captures remain free of page errors, overflow and broken images. Both sampled source ZIPs passed independent builds; four standalone desktop/mobile renders and key flows passed with external HTTPS blocked.
 

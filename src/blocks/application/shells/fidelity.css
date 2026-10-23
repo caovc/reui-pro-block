@@ -40,10 +40,7 @@
 .shell-reference .shell-scope-item:focus-visible > .shell-scope-label {
   box-shadow: 0 0 0 2px var(--ring);
 }
-.shell-reference
-  .shell-scope-item[data-folder="true"]
-  .shell-scope-label
-  > svg:first-child {
+.shell-reference .shell-scope-item[data-folder="true"] .shell-scope-label > svg:first-child {
   order: -2;
 }
 .shell-reference .shell-scope-grip {
@@ -297,9 +294,7 @@
   font-size: 12px;
   color: #737373;
 }
-.fleet-center
-  .shell-scope-item[data-folder="true"][aria-level="1"]
-  .shell-scope-label {
+.fleet-center .shell-scope-item[data-folder="true"][aria-level="1"] .shell-scope-label {
   padding-left: 4px;
 }
 .fleet-center .shell-scope-item[aria-level="1"]:first-child .shell-scope-label {
@@ -777,9 +772,7 @@
   border-radius: 8px;
   color: var(--muted-foreground);
 }
-.invoice-shell
-  .invoice-order-node[aria-level="1"]:first-child
-  > .invoice-order-label,
+.invoice-shell .invoice-order-node[aria-level="1"]:first-child > .invoice-order-label,
 .invoice-shell .invoice-order-node[aria-level="2"] > .invoice-order-label {
   color: var(--foreground);
 }
@@ -817,10 +810,7 @@
 .invoice-shell .invoice-order-node[data-folder="false"] > .invoice-order-label {
   padding-left: 0;
 }
-.invoice-shell
-  .invoice-order-node.check
-  > .invoice-order-label
-  > span[data-slot="badge"] {
+.invoice-shell .invoice-order-node.check > .invoice-order-label > span[data-slot="badge"] {
   margin-left: 0;
   background: #ffccd4;
   color: #ee1235;
@@ -1273,9 +1263,7 @@
 .fleet-placeholder-open .fleet-placeholder-row {
   gap: 24px;
 }
-.fleet-placeholder-open
-  .fleet-placeholder-row
-  > .fidelity-placeholder:last-child {
+.fleet-placeholder-open .fleet-placeholder-row > .fidelity-placeholder:last-child {
   margin-top: -12px;
 }
 .invoice-shell .invoice-order-node.check {

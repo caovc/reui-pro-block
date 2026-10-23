@@ -41,11 +41,11 @@ import ExtendedCards from "./card-variants/extended";
 import FinalKpis from "./card-variants/final-kpis";
 import FinalProfiles from "./card-variants/final-profiles";
 export default function CardsBlock({ block }: BlockProps) {
-  if (/^card-([1-9]|1[0-5])$/.test(block.id)) return <RefinedCards block={block}/>;
-  if (/^card-(1[6-9]|2[0-9])$/.test(block.id)) return <ExtendedCards block={block}/>;
-  if (/^card-3[0-5]$/.test(block.id)) return <FinalKpis block={block}/>;
-  if (/^card-(3[6-9]|4[0-3])$/.test(block.id)) return <FinalProfiles block={block}/>;
-  return <GenericCardsBlock block={block}/>;
+  if (/^card-([1-9]|1[0-5])$/.test(block.id)) return <RefinedCards block={block} />;
+  if (/^card-(1[6-9]|2[0-9])$/.test(block.id)) return <ExtendedCards block={block} />;
+  if (/^card-3[0-5]$/.test(block.id)) return <FinalKpis block={block} />;
+  if (/^card-(3[6-9]|4[0-3])$/.test(block.id)) return <FinalProfiles block={block} />;
+  return <GenericCardsBlock block={block} />;
 }
 function GenericCardsBlock({ block }: BlockProps) {
   const [connected, setConnected] = useState(false);
@@ -53,8 +53,7 @@ function GenericCardsBlock({ block }: BlockProps) {
   const [step, setStep] = useState(1);
   const n = block.name;
   const numeric = Number(block.id.split("-").pop());
-  const metric =
-    /KPI|Metric|Stats|Counters|Balance|Price|Snapshot|Stat Strip/.test(n);
+  const metric = /KPI|Metric|Stats|Counters|Balance|Price|Snapshot|Stat Strip/.test(n);
   const profile = /Profile|Applicant|Customer|Contributor|Investor/.test(n);
   const integration = /Integration|Connector/.test(n);
   const setup = /Setup|Numbered/.test(n);
@@ -162,8 +161,7 @@ function GenericCardsBlock({ block }: BlockProps) {
           </CardHeader>
           <CardContent className="flex flex-col gap-5">
             <p className="text-sm leading-6 text-muted-foreground">
-              Building thoughtful products and investing in people who care
-              about the details.
+              Building thoughtful products and investing in people who care about the details.
             </p>
             <div className="grid grid-cols-3 gap-3 border-y py-4 text-center">
               {[
@@ -190,9 +188,7 @@ function GenericCardsBlock({ block }: BlockProps) {
               className="flex-1"
               onClick={() => {
                 setConnected(!connected);
-                toast.success(
-                  connected ? "Connection removed" : "Connection request sent",
-                );
+                toast.success(connected ? "Connection removed" : "Connection request sent");
               }}
             >
               {connected ? "Requested" : "Connect"}
@@ -228,12 +224,8 @@ function GenericCardsBlock({ block }: BlockProps) {
               </CardHeader>
               <CardContent>
                 <div className="flex items-center justify-between text-xs">
-                  <span className="text-muted-foreground">
-                    Integration status
-                  </span>
-                  <Badge variant="outline">
-                    {connected ? "Connected" : "Not connected"}
-                  </Badge>
+                  <span className="text-muted-foreground">Integration status</span>
+                  <Badge variant="outline">{connected ? "Connected" : "Not connected"}</Badge>
                 </div>
               </CardContent>
               <CardFooter>
@@ -242,11 +234,7 @@ function GenericCardsBlock({ block }: BlockProps) {
                   variant={connected ? "outline" : "default"}
                   onClick={() => {
                     setConnected(!connected);
-                    toast.success(
-                      connected
-                        ? "Integration disconnected"
-                        : "Integration connected",
-                    );
+                    toast.success(connected ? "Integration disconnected" : "Integration connected");
                   }}
                 >
                   {connected ? "Disconnect" : "Connect integration"}
@@ -260,9 +248,7 @@ function GenericCardsBlock({ block }: BlockProps) {
         <Card className="mx-auto w-full max-w-xl shadow-none">
           <CardHeader>
             <CardTitle className="text-lg">Get your workspace ready</CardTitle>
-            <CardDescription>
-              A few simple steps to unlock your team’s potential.
-            </CardDescription>
+            <CardDescription>A few simple steps to unlock your team’s potential.</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-5">
             {[
@@ -309,48 +295,33 @@ function GenericCardsBlock({ block }: BlockProps) {
         <Card className="mx-auto w-full max-w-md shadow-none">
           <CardHeader className="flex flex-row justify-between">
             <div>
-              <CardTitle className="text-base">
-                Your order is on the way
-              </CardTitle>
-              <CardDescription className="mt-1">
-                Order #ACM-10428
-              </CardDescription>
+              <CardTitle className="text-base">Your order is on the way</CardTitle>
+              <CardDescription className="mt-1">Order #ACM-10428</CardDescription>
             </div>
             <Truck className="size-6" />
           </CardHeader>
           <CardContent>
             <div className="rounded-lg bg-muted/40 p-4">
-              <p className="text-xs text-muted-foreground">
-                Estimated delivery
-              </p>
+              <p className="text-xs text-muted-foreground">Estimated delivery</p>
               <p className="mt-1 text-xl font-semibold">Friday, October 23</p>
-              <p className="mt-1 text-xs text-muted-foreground">
-                Between 9:00 AM – 6:00 PM
-              </p>
+              <p className="mt-1 text-xs text-muted-foreground">Between 9:00 AM – 6:00 PM</p>
             </div>
             <div className="mt-6 flex flex-col gap-5">
-              {[
-                "Order confirmed",
-                "Packed & dispatched",
-                "Out for delivery",
-                "Delivered",
-              ].map((t, i) => (
-                <div className="flex items-center gap-3" key={t}>
-                  <span
-                    className={`flex size-6 items-center justify-center rounded-full border ${i < 3 ? "bg-foreground text-background" : ""}`}
-                  >
-                    {i < 3 ? (
-                      <Check className="size-3" />
-                    ) : (
-                      <Package className="size-3" />
-                    )}
-                  </span>
-                  <span className="flex-1 text-xs">{t}</span>
-                  <span className="text-[10px] text-muted-foreground">
-                    {i < 3 ? "Oct " + (20 + i) : "Pending"}
-                  </span>
-                </div>
-              ))}
+              {["Order confirmed", "Packed & dispatched", "Out for delivery", "Delivered"].map(
+                (t, i) => (
+                  <div className="flex items-center gap-3" key={t}>
+                    <span
+                      className={`flex size-6 items-center justify-center rounded-full border ${i < 3 ? "bg-foreground text-background" : ""}`}
+                    >
+                      {i < 3 ? <Check className="size-3" /> : <Package className="size-3" />}
+                    </span>
+                    <span className="flex-1 text-xs">{t}</span>
+                    <span className="text-[10px] text-muted-foreground">
+                      {i < 3 ? "Oct " + (20 + i) : "Pending"}
+                    </span>
+                  </div>
+                ),
+              )}
             </div>
           </CardContent>
           <CardFooter>
@@ -391,9 +362,7 @@ function GenericCardsBlock({ block }: BlockProps) {
                     />
                   ))}
                 </div>
-                <p className="mt-2 text-[10px] text-muted-foreground">
-                  Uptime in the last 90 days
-                </p>
+                <p className="mt-2 text-[10px] text-muted-foreground">Uptime in the last 90 days</p>
               </CardContent>
             </Card>
           ))}
@@ -401,30 +370,17 @@ function GenericCardsBlock({ block }: BlockProps) {
       ) : logo ? (
         <Card className="shadow-none">
           <CardHeader className="items-center text-center">
-            <CardTitle className="text-lg">
-              Trusted by teams that build great things
-            </CardTitle>
-            <CardDescription>
-              Join thousands of forward-thinking companies.
-            </CardDescription>
+            <CardTitle className="text-lg">Trusted by teams that build great things</CardTitle>
+            <CardDescription>Join thousands of forward-thinking companies.</CardDescription>
           </CardHeader>
           <CardContent className="grid grid-cols-2 gap-0 sm:grid-cols-3">
-            {[
-              "Layers",
-              "Sisyphus",
-              "Circooles",
-              "Catalog",
-              "Quotient",
-              "Hourglass",
-            ].map((s, i) => {
+            {["Layers", "Sisyphus", "Circooles", "Catalog", "Quotient", "Hourglass"].map((s, i) => {
               const Icon = [Layers, Box, Globe, BookOpen, Zap, Clock][i];
               return (
                 <button
                   className="flex items-center justify-center gap-2 border border-border/50 p-7 text-base font-semibold tracking-tight"
                   key={s}
-                  onClick={() =>
-                    toast(s, { description: "Partner profile selected" })
-                  }
+                  onClick={() => toast(s, { description: "Partner profile selected" })}
                 >
                   <Icon className="size-5" />
                   {s}
@@ -435,43 +391,39 @@ function GenericCardsBlock({ block }: BlockProps) {
         </Card>
       ) : schedule ? (
         <div className="grid gap-4 sm:grid-cols-2">
-          {["Product strategy workshop", "Design review & feedback"].map(
-            (s, i) => (
-              <Card key={s} className="shadow-none">
-                <CardHeader>
-                  <div className="mb-3 flex items-center justify-between">
-                    <Badge variant="outline">{i ? "Tomorrow" : "Today"}</Badge>
-                    <More />
-                  </div>
-                  <CardTitle className="text-base">{s}</CardTitle>
-                  <CardDescription>
-                    Align on what’s next and move forward together.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="mb-4 flex items-center gap-2 text-xs text-muted-foreground">
-                    <Clock className="size-3.5" />
-                    10:00 – 11:00 AM · 60 min
-                  </div>
-                  <Team />
-                </CardContent>
-                <CardFooter>
-                  <Button
-                    variant="outline"
-                    className="w-full"
-                    onClick={() =>
-                      toast.success("You joined the meeting", {
-                        description: s,
-                      })
-                    }
-                  >
-                    Join meeting
-                    <ArrowUpRight />
-                  </Button>
-                </CardFooter>
-              </Card>
-            ),
-          )}
+          {["Product strategy workshop", "Design review & feedback"].map((s, i) => (
+            <Card key={s} className="shadow-none">
+              <CardHeader>
+                <div className="mb-3 flex items-center justify-between">
+                  <Badge variant="outline">{i ? "Tomorrow" : "Today"}</Badge>
+                  <More />
+                </div>
+                <CardTitle className="text-base">{s}</CardTitle>
+                <CardDescription>Align on what’s next and move forward together.</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="mb-4 flex items-center gap-2 text-xs text-muted-foreground">
+                  <Clock className="size-3.5" />
+                  10:00 – 11:00 AM · 60 min
+                </div>
+                <Team />
+              </CardContent>
+              <CardFooter>
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() =>
+                    toast.success("You joined the meeting", {
+                      description: s,
+                    })
+                  }
+                >
+                  Join meeting
+                  <ArrowUpRight />
+                </Button>
+              </CardFooter>
+            </Card>
+          ))}
         </div>
       ) : promo ? (
         <Card className="mx-auto w-full max-w-xl overflow-hidden shadow-none">
@@ -481,12 +433,10 @@ function GenericCardsBlock({ block }: BlockProps) {
             </div>
           </div>
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl">
-              Your best work, without limits.
-            </CardTitle>
+            <CardTitle className="text-2xl">Your best work, without limits.</CardTitle>
             <CardDescription className="mx-auto max-w-sm leading-6">
-              Unlock advanced features, more integrations, and the flexibility
-              your growing team deserves.
+              Unlock advanced features, more integrations, and the flexibility your growing team
+              deserves.
             </CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-3">
@@ -495,10 +445,7 @@ function GenericCardsBlock({ block }: BlockProps) {
               "Advanced analytics and reporting",
               "Priority support, whenever you need it",
             ].map((t) => (
-              <div
-                key={t}
-                className="flex items-center justify-center gap-2 text-xs"
-              >
+              <div key={t} className="flex items-center justify-center gap-2 text-xs">
                 <Check className="size-3" />
                 {t}
               </div>
@@ -563,40 +510,35 @@ function GenericCardsBlock({ block }: BlockProps) {
         </div>
       ) : (
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {[
-            "Built for your workflow",
-            "Less busywork, more impact",
-            "Connected from day one",
-          ].map((s, i) => {
-            const Icon = [Zap, Layers, Users][i];
-            return (
-              <Card key={s} className="shadow-none">
-                <CardHeader>
-                  <div className="mb-5 flex h-28 items-center justify-center rounded-lg bg-muted/50">
-                    <Icon className="size-10 text-muted-foreground" />
-                  </div>
-                  <CardTitle className="text-base">{s}</CardTitle>
-                  <CardDescription className="leading-6">
-                    Thoughtfully designed tools that help your team focus on
-                    what matters most.
-                  </CardDescription>
-                </CardHeader>
-                <CardFooter>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="w-full"
-                    onClick={() =>
-                      toast(s, { description: "Feature details selected" })
-                    }
-                  >
-                    Learn more
-                    <ArrowRight />
-                  </Button>
-                </CardFooter>
-              </Card>
-            );
-          })}
+          {["Built for your workflow", "Less busywork, more impact", "Connected from day one"].map(
+            (s, i) => {
+              const Icon = [Zap, Layers, Users][i];
+              return (
+                <Card key={s} className="shadow-none">
+                  <CardHeader>
+                    <div className="mb-5 flex h-28 items-center justify-center rounded-lg bg-muted/50">
+                      <Icon className="size-10 text-muted-foreground" />
+                    </div>
+                    <CardTitle className="text-base">{s}</CardTitle>
+                    <CardDescription className="leading-6">
+                      Thoughtfully designed tools that help your team focus on what matters most.
+                    </CardDescription>
+                  </CardHeader>
+                  <CardFooter>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="w-full"
+                      onClick={() => toast(s, { description: "Feature details selected" })}
+                    >
+                      Learn more
+                      <ArrowRight />
+                    </Button>
+                  </CardFooter>
+                </Card>
+              );
+            },
+          )}
         </div>
       )}
     </div>

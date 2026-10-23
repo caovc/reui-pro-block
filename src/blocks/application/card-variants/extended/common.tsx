@@ -66,9 +66,7 @@ export function GridFrame({
 }
 export function People({ extra = 3 }: { extra?: number }) {
   return (
-    <AvatarGroup
-      aria-label={`Sarah Chen, James Park, Emma Wilson and ${extra} others`}
-    >
+    <AvatarGroup aria-label={`Sarah Chen, James Park, Emma Wilson and ${extra} others`}>
       {[
         [sarah, "Sarah Chen"],
         [james, "James Park"],
@@ -84,9 +82,7 @@ export function People({ extra = 3 }: { extra?: number }) {
           </AvatarFallback>
         </Avatar>
       ))}
-      <AvatarGroupCount className="size-6 text-[9px]">
-        +{extra}
-      </AvatarGroupCount>
+      <AvatarGroupCount className="size-6 text-[9px]">+{extra}</AvatarGroupCount>
     </AvatarGroup>
   );
 }
@@ -116,15 +112,13 @@ export function ContentLink({
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
             <DialogDescription>
-              {description ??
-                "This destination is presented as a local component preview."}
+              {description ?? "This destination is presented as a local component preview."}
             </DialogDescription>
           </DialogHeader>
           <div className="flex items-start gap-3 rounded-lg border p-4">
             <FileText className="mt-0.5 size-5 shrink-0 text-muted-foreground" />
             <p className="text-sm text-muted-foreground">
-              Sample content for {title}. Connect this card to your own
-              application route.
+              Sample content for {title}. Connect this card to your own application route.
             </p>
           </div>
           <Button variant="outline" onClick={() => setOpen(false)}>
@@ -135,13 +129,7 @@ export function ContentLink({
     </>
   );
 }
-export function RecordMenu({
-  title,
-  onEdit,
-}: {
-  title: string;
-  onEdit: () => void;
-}) {
+export function RecordMenu({ title, onEdit }: { title: string; onEdit: () => void }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

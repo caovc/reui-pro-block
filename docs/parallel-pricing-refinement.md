@@ -14,12 +14,12 @@ This supersedes the first pass. Actual clicks revealed that its plan-selection, 
 
 Desktop viewport: 1280×1100. Mobile: 390×844. Reference and final screenshot pairs were inspected with view_image. Copy, hierarchy, typography, palette, spacing, borders, icons, texture, brand artwork, responsive continuation and changed billing states were compared.
 
-| Element | Reference and implementation |
-| --- | --- |
-| Pricing 5 heading | x458.078125 y48, 363.8125×40 |
-| Pricing 5 first card | x96 y264, 260×472.75 |
-| Pricing 5 help card | x96 y752.75, 1088×88.25 |
-| Pricing 6 heading | x459.5 y102.625, 360.984375×40 |
+| Element              | Reference and implementation   |
+| -------------------- | ------------------------------ |
+| Pricing 5 heading    | x458.078125 y48, 363.8125×40   |
+| Pricing 5 first card | x96 y264, 260×472.75           |
+| Pricing 5 help card  | x96 y752.75, 1088×88.25        |
+| Pricing 6 heading    | x459.5 y102.625, 360.984375×40 |
 | Pricing 6 first card | x96 y322.625, 346.65625×569.75 |
 
 Mobile full-page dimensions also match the captured references: Pricing 5 is 390×2476; Pricing 6 is 390×2103. This is evidence about the measured elements, not a claim of pixel identity.
@@ -38,12 +38,12 @@ This recheck covers Pricing 5/6 only. It does not certify the other six pricing 
 
 The prior refinement used stock Badge plus manually rebuilt icon/list-row styles. Those duplicate basics have now been replaced with actual official implementations and composition. Official registry documentation distinguishes `@reui/*` components from their bare stock dependencies; the following table preserves that distinction.
 
-| Official source | Local implementation | Actual call site |
-| --- | --- | --- |
-| [ReUI Badge registry](https://reui.io/r/radix-nova/badge.json) | `src/components/reui/badge.tsx`, byte-identical official source | `pricing-refined.tsx:3`; BillingTabs `success-light`, Growth `success`, studio `outline` |
-| [ReUI IconTile registry](https://reui.io/r/radix-nova/icon-tile.json) | `src/components/reui/icon-tile.tsx`, existing shared source, unchanged except provenance comment | `pricing-refined.tsx:4`; help-row elevated/default IconTile at line95 |
-| [Official IconTile List Row example](https://reui.io/r/radix-nova/c-icon-tile-10.json) | Actual composition of IconTile with Item/Media/Content/Title/Description/Actions | `pricing-refined.tsx:91–95` |
-| [Stock Item dependency required by that ReUI example](https://ui.shadcn.com/r/styles/radix-nova/item.json) | New `src/components/ui/item.tsx`; only separator import changed to installed path | `pricing-refined.tsx:7` and help-row composition |
+| Official source                                                                                            | Local implementation                                                                             | Actual call site                                                                         |
+| ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
+| [ReUI Badge registry](https://reui.io/r/radix-nova/badge.json)                                             | `src/components/reui/badge.tsx`, byte-identical official source                                  | `pricing-refined.tsx:3`; BillingTabs `success-light`, Growth `success`, studio `outline` |
+| [ReUI IconTile registry](https://reui.io/r/radix-nova/icon-tile.json)                                      | `src/components/reui/icon-tile.tsx`, existing shared source, unchanged except provenance comment | `pricing-refined.tsx:4`; help-row elevated/default IconTile at line95                    |
+| [Official IconTile List Row example](https://reui.io/r/radix-nova/c-icon-tile-10.json)                     | Actual composition of IconTile with Item/Media/Content/Title/Description/Actions                 | `pricing-refined.tsx:91–95`                                                              |
+| [Stock Item dependency required by that ReUI example](https://ui.shadcn.com/r/styles/radix-nova/item.json) | New `src/components/ui/item.tsx`; only separator import changed to installed path                | `pricing-refined.tsx:7` and help-row composition                                         |
 
 Source SHA256 checks:
 

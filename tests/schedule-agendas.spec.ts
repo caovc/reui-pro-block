@@ -1,71 +1,89 @@
-import { expect, test } from '@playwright/test'
+import { expect, test } from "@playwright/test";
 
-test('appointment status filtering, day selection and participant details follow the preview', async ({ page }) => {
-  await page.goto('./#/preview/application/schedule/schedule-1')
-  await expect(page.getByRole('heading', { name: 'Wednesday, June 10', exact: true })).toBeVisible()
-  await expect(page.getByRole('heading', { name: 'Mobile QA Handoff', exact: true })).toBeVisible()
-  await page.getByRole('combobox', { name: 'Event status' }).click()
-  await page.getByRole('option', { name: 'Completed', exact: true }).click()
-  await expect(page.getByRole('heading', { name: 'No events found', exact: true })).toBeVisible()
-  await expect(page.getByRole('heading', { name: 'Mobile QA Handoff', exact: true })).toHaveCount(0)
-  await page.getByRole('combobox', { name: 'Event status' }).click()
-  await page.getByRole('option', { name: 'All events', exact: true }).click()
-  await page.getByRole('button', { name: 'Thursday, June 11, 2026', exact: true }).click()
-  await expect(page.getByRole('heading', { name: 'Thursday, June 11', exact: true })).toBeVisible()
+test("appointment status filtering, day selection and participant details follow the preview", async ({
+  page,
+}) => {
+  await page.goto("./#/preview/application/schedule/schedule-1");
+  await expect(
+    page.getByRole("heading", { name: "Wednesday, June 10", exact: true }),
+  ).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Mobile QA Handoff", exact: true })).toBeVisible();
+  await page.getByRole("combobox", { name: "Event status" }).click();
+  await page.getByRole("option", { name: "Completed", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "No events found", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Mobile QA Handoff", exact: true })).toHaveCount(
+    0,
+  );
+  await page.getByRole("combobox", { name: "Event status" }).click();
+  await page.getByRole("option", { name: "All events", exact: true }).click();
+  await page.getByRole("button", { name: "Thursday, June 11, 2026", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Thursday, June 11", exact: true })).toBeVisible();
   // The public preview retains the June 10 list when its heading's date changes.
-  await expect(page.getByRole('heading', { name: 'Mobile QA Handoff', exact: true })).toBeVisible()
-  await page.getByRole('button', { name: /^1 more:/ }).first().click()
-  const people = page.locator('[data-slot="popover-content"]')
-  await expect(people.getByRole('heading', { name: 'Attendees', exact: true })).toBeVisible()
-  expect(await people.evaluate(el => getComputedStyle(el).fontFamily)).toContain('Inter')
-  await page.keyboard.press('Escape')
-  await expect(people).toHaveCount(0)
-})
+  await expect(page.getByRole("heading", { name: "Mobile QA Handoff", exact: true })).toBeVisible();
+  await page
+    .getByRole("button", { name: /^1 more:/ })
+    .first()
+    .click();
+  const people = page.locator('[data-slot="popover-content"]');
+  await expect(people.getByRole("heading", { name: "Attendees", exact: true })).toBeVisible();
+  expect(await people.evaluate((el) => getComputedStyle(el).fontFamily)).toContain("Inter");
+  await page.keyboard.press("Escape");
+  await expect(people).toHaveCount(0);
+});
 
-test('team agenda categories, calendar keyboard selection and empty days update real content', async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 })
-  await page.goto('./#/preview/application/schedule/schedule-8')
-  await expect(page.getByRole('heading', { name: 'June 9, 2026', exact: true })).toBeVisible()
-  await expect(page.locator('img[alt="Alex Chen"]').first()).toBeVisible()
-  await page.getByRole('button', { name: 'Workshop', exact: true }).click()
-  await expect(page.getByRole('heading', { name: 'Figma Workshop', exact: true })).toBeVisible()
-  await expect(page.getByRole('heading', { name: 'Sprint Kickoff', exact: true })).toHaveCount(0)
-  await page.getByRole('button', { name: 'All', exact: true }).click()
-  const initialDay = page.getByRole('button', { name: 'Tuesday, June 9, 2026', exact: true })
-  await initialDay.focus()
-  await page.keyboard.press('ArrowRight')
-  const nextDay = page.getByRole('button', { name: 'Wednesday, June 10, 2026', exact: true })
-  await expect(nextDay).toBeFocused()
-  await page.keyboard.press('Space')
-  await expect(page.getByRole('heading', { name: 'June 10, 2026', exact: true })).toBeVisible()
-  await expect(page.getByRole('heading', { name: 'Checkout Review', exact: true })).toBeVisible()
-  await page.getByRole('button', { name: 'Sunday, June 21, 2026', exact: true }).click()
-  await expect(page.getByRole('heading', { name: 'No events scheduled', exact: true })).toBeVisible()
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
-})
+test("team agenda categories, calendar keyboard selection and empty days update real content", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("./#/preview/application/schedule/schedule-8");
+  await expect(page.getByRole("heading", { name: "June 9, 2026", exact: true })).toBeVisible();
+  await expect(page.locator('img[alt="Alex Chen"]').first()).toBeVisible();
+  await page.getByRole("button", { name: "Workshop", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Figma Workshop", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Sprint Kickoff", exact: true })).toHaveCount(0);
+  await page.getByRole("button", { name: "All", exact: true }).click();
+  const initialDay = page.getByRole("button", { name: "Tuesday, June 9, 2026", exact: true });
+  await initialDay.focus();
+  await page.keyboard.press("ArrowRight");
+  const nextDay = page.getByRole("button", { name: "Wednesday, June 10, 2026", exact: true });
+  await expect(nextDay).toBeFocused();
+  await page.keyboard.press("Space");
+  await expect(page.getByRole("heading", { name: "June 10, 2026", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Checkout Review", exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Sunday, June 21, 2026", exact: true }).click();
+  await expect(
+    page.getByRole("heading", { name: "No events scheduled", exact: true }),
+  ).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});
 
+test("official CalendarSelect preserves month/year navigation and native week keyboard movement", async ({
+  page,
+}) => {
+  await page.goto("./#/preview/application/schedule/schedule-8");
+  await page.getByRole("combobox", { name: "Month", exact: true }).click();
+  await page.getByRole("option", { name: "August", exact: true }).click();
+  await page.getByRole("combobox", { name: "Year", exact: true }).click();
+  await page.getByRole("option", { name: "2027", exact: true }).click();
+  await expect(
+    page.getByRole("button", { name: "Sunday, August 1, 2027", exact: true }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Next month", exact: true }).click();
+  await expect(page.getByRole("combobox", { name: "Month", exact: true })).toHaveText("September");
+  await page.getByRole("button", { name: "Previous month", exact: true }).click();
+  await expect(page.getByRole("combobox", { name: "Month", exact: true })).toHaveText("August");
 
-test('official CalendarSelect preserves month/year navigation and native week keyboard movement', async ({ page }) => {
-  await page.goto('./#/preview/application/schedule/schedule-8')
-  await page.getByRole('combobox', { name: 'Month', exact: true }).click()
-  await page.getByRole('option', { name: 'August', exact: true }).click()
-  await page.getByRole('combobox', { name: 'Year', exact: true }).click()
-  await page.getByRole('option', { name: '2027', exact: true }).click()
-  await expect(page.getByRole('button', { name: 'Sunday, August 1, 2027', exact: true })).toBeVisible()
-  await page.getByRole('button', { name: 'Next month', exact: true }).click()
-  await expect(page.getByRole('combobox', { name: 'Month', exact: true })).toHaveText('September')
-  await page.getByRole('button', { name: 'Previous month', exact: true }).click()
-  await expect(page.getByRole('combobox', { name: 'Month', exact: true })).toHaveText('August')
-
-  await page.reload()
-  await page.getByRole('button', { name: 'Tuesday, June 9, 2026', exact: true }).focus()
-  await page.keyboard.press('Home')
-  await expect(page.getByRole('button', { name: 'Sunday, June 7, 2026', exact: true })).toBeFocused()
-  await page.keyboard.press('End')
-  const endOfWeek = page.getByRole('button', { name: 'Saturday, June 13, 2026', exact: true })
-  await expect(endOfWeek).toBeFocused()
-  await expect(page.getByRole('heading', { name: 'June 9, 2026', exact: true })).toBeVisible()
-  await page.keyboard.press('Enter')
-  await expect(page.getByRole('heading', { name: 'June 13, 2026', exact: true })).toBeVisible()
-  await expect(page.getByRole('heading', { name: 'Roadmap Review', exact: true })).toBeVisible()
-})
+  await page.reload();
+  await page.getByRole("button", { name: "Tuesday, June 9, 2026", exact: true }).focus();
+  await page.keyboard.press("Home");
+  await expect(
+    page.getByRole("button", { name: "Sunday, June 7, 2026", exact: true }),
+  ).toBeFocused();
+  await page.keyboard.press("End");
+  const endOfWeek = page.getByRole("button", { name: "Saturday, June 13, 2026", exact: true });
+  await expect(endOfWeek).toBeFocused();
+  await expect(page.getByRole("heading", { name: "June 9, 2026", exact: true })).toBeVisible();
+  await page.keyboard.press("Enter");
+  await expect(page.getByRole("heading", { name: "June 13, 2026", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Roadmap Review", exact: true })).toBeVisible();
+});

@@ -9,12 +9,7 @@ import {
 } from "lucide-react";
 import { FramePanel } from "@/components/reui/frame";
 import { IconTile } from "@/components/reui/icon-tile";
-import {
-  Item,
-  ItemContent,
-  ItemDescription,
-  ItemTitle,
-} from "@/components/ui/item";
+import { Item, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
 import { Stage, GridFrame, ContentLink } from "../extended/common";
 import "./final-profiles.css";
 export function ResourceHub() {
@@ -100,11 +95,7 @@ export function TopicShortcuts() {
           },
         ].map(({ title, description, icon: Icon, tone }) => (
           <FramePanel key={title} className="flex flex-col gap-5">
-            <IconTile
-              variant="elevated"
-              size="sm"
-              className={`${tone} text-white`}
-            >
+            <IconTile variant="elevated" size="sm" className={`${tone} text-white`}>
               <Icon />
             </IconTile>
             <Item className="p-0">
@@ -114,9 +105,7 @@ export function TopicShortcuts() {
                     {title}
                   </ContentLink>
                 </ItemTitle>
-                <ItemDescription className="text-xs">
-                  {description}
-                </ItemDescription>
+                <ItemDescription className="text-xs">{description}</ItemDescription>
               </ItemContent>
             </Item>
           </FramePanel>

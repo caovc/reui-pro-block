@@ -2,13 +2,13 @@ import type {
   FilterField,
   FilterOperator,
   FilterValueType,
-} from "@/components/reui/filters/filters-types"
+} from "@/components/reui/filters/filters-types";
 
 /**
  * Every operator label, keyed by value. Split from `FilterLabels`: operator
  * wording is reworded per domain, chrome copy is translated once per app.
  */
-export type FilterOperatorLabels = Record<string, string>
+export type FilterOperatorLabels = Record<string, string>;
 
 export const DEFAULT_FILTER_OPERATOR_LABELS: FilterOperatorLabels = {
   contains: "contains",
@@ -36,7 +36,7 @@ export const DEFAULT_FILTER_OPERATOR_LABELS: FilterOperatorLabels = {
   is_on_or_after: "is on or after",
   empty: "is empty",
   not_empty: "is not empty",
-}
+};
 
 /**
  * Operator catalog per value type: value, arity, inverse, labels resolved at
@@ -97,9 +97,9 @@ const CATALOG: Record<
     { value: "empty", arity: "none", inverse: "not_empty" },
     { value: "not_empty", arity: "none", inverse: "empty" },
   ],
-}
+};
 
-export const DEFAULT_FILTER_VALUE_TYPE: FilterValueType = "text"
+export const DEFAULT_FILTER_VALUE_TYPE: FilterValueType = "text";
 
 /**
  * Builds the operator catalog for one set of labels. Callers memoize on the
@@ -108,24 +108,22 @@ export const DEFAULT_FILTER_VALUE_TYPE: FilterValueType = "text"
  * filter update, so every miss reallocated four arrays of 27 objects each.
  */
 export function createFilterOperators(
-  labels: FilterOperatorLabels
+  labels: FilterOperatorLabels,
 ): Record<FilterValueType, FilterOperator[]> {
-  const built = {} as Record<FilterValueType, FilterOperator[]>
+  const built = {} as Record<FilterValueType, FilterOperator[]>;
   for (const type of Object.keys(CATALOG) as FilterValueType[]) {
     built[type] = CATALOG[type].map((entry) => ({
       value: entry.value,
       label: labels[entry.value] ?? entry.value,
       arity: entry.arity ?? "one",
       inverse: entry.inverse,
-    }))
+    }));
   }
-  return built
+  return built;
 }
 
-export const DEFAULT_FILTER_OPERATORS: Record<
-  FilterValueType,
-  FilterOperator[]
-> = createFilterOperators(DEFAULT_FILTER_OPERATOR_LABELS)
+export const DEFAULT_FILTER_OPERATORS: Record<FilterValueType, FilterOperator[]> =
+  createFilterOperators(DEFAULT_FILTER_OPERATOR_LABELS);
 
 /**
  * The operators for a field: its own `operators` wins, array or function,
@@ -134,37 +132,31 @@ export const DEFAULT_FILTER_OPERATORS: Record<
  */
 export function resolveFilterOperators<V, O>(
   field: FilterField<V, O>,
-  catalog: Record<FilterValueType, FilterOperator[]> = DEFAULT_FILTER_OPERATORS
+  catalog: Record<FilterValueType, FilterOperator[]> = DEFAULT_FILTER_OPERATORS,
 ): FilterOperator[] {
-  if (typeof field.operators === "function") return field.operators(field)
-  if (field.operators) return field.operators
-  return catalog[field.type ?? DEFAULT_FILTER_VALUE_TYPE] ?? catalog.text
+  if (typeof field.operators === "function") return field.operators(field);
+  if (field.operators) return field.operators;
+  return catalog[field.type ?? DEFAULT_FILTER_VALUE_TYPE] ?? catalog.text;
 }
 
-export function visibleFilterOperators(
-  operators: readonly FilterOperator[]
-): FilterOperator[] {
-  return operators.filter((operator) => !operator.hidden)
+export function visibleFilterOperators(operators: readonly FilterOperator[]): FilterOperator[] {
+  return operators.filter((operator) => !operator.hidden);
 }
 
 export function getFilterOperator(
   operators: readonly FilterOperator[],
-  value: string | null | undefined
+  value: string | null | undefined,
 ): FilterOperator | undefined {
-  if (!value) return undefined
-  return operators.find((operator) => operator.value === value)
+  if (!value) return undefined;
+  return operators.find((operator) => operator.value === value);
 }
 
-export function getFilterArity(
-  operator: FilterOperator | undefined
-): FilterOperator["arity"] {
-  return operator?.arity ?? "one"
+export function getFilterArity(operator: FilterOperator | undefined): FilterOperator["arity"] {
+  return operator?.arity ?? "one";
 }
 
-export function operatorTakesValue(
-  operator: FilterOperator | undefined
-): boolean {
-  return getFilterArity(operator) !== "none"
+export function operatorTakesValue(operator: FilterOperator | undefined): boolean {
+  return getFilterArity(operator) !== "none";
 }
 
 /**
@@ -174,14 +166,14 @@ export function operatorTakesValue(
  */
 export function getDefaultFilterOperator<V, O>(
   field: FilterField<V, O>,
-  operators: readonly FilterOperator[]
+  operators: readonly FilterOperator[],
 ): string | null {
   if (field.defaultOperator) {
-    const named = getFilterOperator(operators, field.defaultOperator)
-    if (named) return named.value
+    const named = getFilterOperator(operators, field.defaultOperator);
+    if (named) return named.value;
   }
-  const visible = visibleFilterOperators(operators)
-  return visible[0]?.value ?? operators[0]?.value ?? null
+  const visible = visibleFilterOperators(operators);
+  return visible[0]?.value ?? operators[0]?.value ?? null;
 }
 
 /**
@@ -191,13 +183,13 @@ export function getDefaultFilterOperator<V, O>(
 export function negateFilterOperator(
   operator: FilterOperator | undefined,
   operators: readonly FilterOperator[],
-  negated: boolean | undefined
+  negated: boolean | undefined,
 ): { operator: string | null; negated: boolean } {
   if (operator?.inverse) {
-    const inverse = getFilterOperator(operators, operator.inverse)
-    if (inverse) return { operator: inverse.value, negated: Boolean(negated) }
+    const inverse = getFilterOperator(operators, operator.inverse);
+    if (inverse) return { operator: inverse.value, negated: Boolean(negated) };
   }
-  return { operator: operator?.value ?? null, negated: !negated }
+  return { operator: operator?.value ?? null, negated: !negated };
 }
 
 /**
@@ -207,21 +199,21 @@ export function negateFilterOperator(
 export function coerceFilterValue(
   value: unknown,
   from: FilterOperator | undefined,
-  to: FilterOperator | undefined
+  to: FilterOperator | undefined,
 ): unknown {
-  const nextArity = getFilterArity(to)
-  if (nextArity === "none") return undefined
-  if (value === undefined || value === null) return value
+  const nextArity = getFilterArity(to);
+  if (nextArity === "none") return undefined;
+  if (value === undefined || value === null) return value;
 
-  const previousArity = getFilterArity(from)
-  if (previousArity === nextArity) return value
+  const previousArity = getFilterArity(from);
+  if (previousArity === nextArity) return value;
 
-  const asArray = Array.isArray(value) ? value : [value]
+  const asArray = Array.isArray(value) ? value : [value];
 
-  if (nextArity === "many") return asArray
-  if (nextArity === "one") return asArray[0]
+  if (nextArity === "many") return asArray;
+  if (nextArity === "one") return asArray[0];
   if (nextArity === "range") {
-    return [asArray[0], asArray[1]] as [unknown, unknown]
+    return [asArray[0], asArray[1]] as [unknown, unknown];
   }
-  return value
+  return value;
 }

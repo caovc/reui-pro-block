@@ -30,9 +30,7 @@ export default function Artifact({ node, onCopy }: ArtifactProps) {
       style={artifactMetrics}
     >
       <CodeBlockHeader className="h-8 min-h-8 gap-2 px-2.5">
-        <CodeBlockTitle>
-          {node.filename || `example.${node.language || "markdown"}`}
-        </CodeBlockTitle>
+        <CodeBlockTitle>{node.filename || `example.${node.language || "markdown"}`}</CodeBlockTitle>
         <CodeBlockCopyButton
           size="icon-xs"
           className="ml-auto"

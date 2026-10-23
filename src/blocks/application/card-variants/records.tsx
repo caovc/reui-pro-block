@@ -42,14 +42,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import portrait from "@/blocks/application/assets/schedule-priya-singh.jpg";
-import {
-  CardStage,
-  FramedGrid,
-  LocalLink,
-  Avatars,
-  CopyValue,
-  Actions,
-} from "./common";
+import { CardStage, FramedGrid, LocalLink, Avatars, CopyValue, Actions } from "./common";
 
 export function InvestorProfile() {
   const [open, setOpen] = useState(false);
@@ -61,11 +54,7 @@ export function InvestorProfile() {
         <FramePanel className="refined-investor flex flex-col gap-5 p-5">
           <div className="flex flex-row items-center gap-5">
             <Avatar className="size-20 rounded-md border-4 border-background shadow-sm">
-              <AvatarImage
-                src={portrait}
-                alt="Mara Alves"
-                className="rounded-sm"
-              />
+              <AvatarImage src={portrait} alt="Mara Alves" className="rounded-sm" />
               <AvatarFallback className="rounded-sm">MA</AvatarFallback>
             </Avatar>
             <div className="flex min-w-0 flex-col gap-2">
@@ -74,9 +63,7 @@ export function InvestorProfile() {
                 <CheckCircle2 />
                 Open to Proposals
               </Badge>
-              <FrameDescription className="break-all">
-                malves@reui-capital.io
-              </FrameDescription>
+              <FrameDescription className="break-all">malves@reui-capital.io</FrameDescription>
             </div>
           </div>
           <div className="flex flex-col gap-4">
@@ -128,11 +115,7 @@ export function InvestorProfile() {
                 </li>
               ))}
             </ul>
-            <Button
-              variant="outline"
-              className="h-10 w-full"
-              onClick={() => setOpen(true)}
-            >
+            <Button variant="outline" className="h-10 w-full" onClick={() => setOpen(true)}>
               <MessageSquare />
               {saved ? "Review Funding Proposal" : "Send Funding Proposal"}
             </Button>
@@ -144,8 +127,7 @@ export function InvestorProfile() {
           <DialogHeader>
             <DialogTitle>Funding proposal</DialogTitle>
             <DialogDescription>
-              Save a sample proposal locally for Mara Alves. This preview does
-              not send email.
+              Save a sample proposal locally for Mara Alves. This preview does not send email.
             </DialogDescription>
           </DialogHeader>
           <form
@@ -175,9 +157,7 @@ export function InvestorProfile() {
                 />
               </Field>
               <Field>
-                <FieldLabel htmlFor="proposal-amount">
-                  Funding requested
-                </FieldLabel>
+                <FieldLabel htmlFor="proposal-amount">Funding requested</FieldLabel>
                 <Input
                   id="proposal-amount"
                   name="amount"
@@ -187,9 +167,7 @@ export function InvestorProfile() {
                 />
               </Field>
               <Field>
-                <FieldLabel htmlFor="proposal-message">
-                  Proposal summary
-                </FieldLabel>
+                <FieldLabel htmlFor="proposal-message">Proposal summary</FieldLabel>
                 <Textarea
                   id="proposal-message"
                   name="message"
@@ -245,11 +223,7 @@ export function DetailFacts() {
             <div className="flex items-end justify-between gap-2">
               <div className="min-w-0">
                 <FrameTitle>
-                  {i === 1 || i === 3 ? (
-                    <LocalLink title={value}>{value}</LocalLink>
-                  ) : (
-                    value
-                  )}
+                  {i === 1 || i === 3 ? <LocalLink title={value}>{value}</LocalLink> : value}
                 </FrameTitle>
                 <FrameDescription className="mt-1">{detail}</FrameDescription>
               </div>
@@ -345,9 +319,7 @@ export function DeliveryTracking() {
             onEdit={() => setOpen(true)}
             onCopy={async () => {
               try {
-                await navigator.clipboard.writeText(
-                  `${location.href}?tracking=NL-54321-AMST`,
-                );
+                await navigator.clipboard.writeText(`${location.href}?tracking=NL-54321-AMST`);
                 toast.success("Tracking link copied");
               } catch {
                 toast.error("Clipboard unavailable");
@@ -385,9 +357,7 @@ export function DeliveryTracking() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Edit delivery details</DialogTitle>
-            <DialogDescription>
-              Update the sample delivery locally.
-            </DialogDescription>
+            <DialogDescription>Update the sample delivery locally.</DialogDescription>
           </DialogHeader>
           <form
             className="flex flex-col gap-5"
@@ -402,21 +372,11 @@ export function DeliveryTracking() {
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="delivery-address">Address</FieldLabel>
-                <Input
-                  id="delivery-address"
-                  name="address"
-                  required
-                  defaultValue={address}
-                />
+                <Input id="delivery-address" name="address" required defaultValue={address} />
               </Field>
               <Field>
                 <FieldLabel htmlFor="delivery-notes">Delivery notes</FieldLabel>
-                <Textarea
-                  id="delivery-notes"
-                  name="notes"
-                  required
-                  defaultValue={notes}
-                />
+                <Textarea id="delivery-notes" name="notes" required defaultValue={notes} />
               </Field>
             </FieldGroup>
             <Button>Save delivery</Button>
@@ -471,9 +431,7 @@ export function MeetingCards() {
                 onEdit={() => setEditing(m)}
                 onCopy={async () => {
                   try {
-                    await navigator.clipboard.writeText(
-                      `${location.href}?meeting=${m.id}`,
-                    );
+                    await navigator.clipboard.writeText(`${location.href}?meeting=${m.id}`);
                     toast.success("Meeting link copied");
                   } catch {
                     toast.error("Clipboard unavailable");
@@ -489,10 +447,7 @@ export function MeetingCards() {
                       {m.title}
                     </LocalLink>
                   </FrameTitle>
-                  <Badge
-                    variant="secondary"
-                    className="shrink-0 px-1 text-[10px] font-normal"
-                  >
+                  <Badge variant="secondary" className="shrink-0 px-1 text-[10px] font-normal">
                     {m.duration}
                   </Badge>
                 </div>
@@ -502,10 +457,7 @@ export function MeetingCards() {
                 <FrameDescription>{m.description}</FrameDescription>
                 <div className="flex items-center gap-3">
                   <Avatars />
-                  <Badge
-                    variant="secondary"
-                    className="px-1 text-[10px] font-normal"
-                  >
+                  <Badge variant="secondary" className="px-1 text-[10px] font-normal">
                     {m.type}
                   </Badge>
                 </div>
@@ -533,9 +485,7 @@ export function MeetingCards() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Edit meeting</DialogTitle>
-            <DialogDescription>
-              Changes apply to this local preview.
-            </DialogDescription>
+            <DialogDescription>Changes apply to this local preview.</DialogDescription>
           </DialogHeader>
           {editing && (
             <form
@@ -566,12 +516,7 @@ export function MeetingCards() {
                 ].map(([name, label, value]) => (
                   <Field key={name}>
                     <FieldLabel htmlFor={`meeting-${name}`}>{label}</FieldLabel>
-                    <Input
-                      name={name}
-                      id={`meeting-${name}`}
-                      required
-                      defaultValue={value}
-                    />
+                    <Input name={name} id={`meeting-${name}`} required defaultValue={value} />
                   </Field>
                 ))}
               </FieldGroup>

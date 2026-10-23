@@ -68,10 +68,7 @@ export function Choices({
         <Button
           variant="ghost"
           size="sm"
-          className={cn(
-            "h-8 min-w-0 gap-1.5 px-2 font-normal",
-            compact && "border",
-          )}
+          className={cn("h-8 min-w-0 gap-1.5 px-2 font-normal", compact && "border")}
           aria-label={label}
         >
           {Icon && <Icon />}
@@ -132,13 +129,7 @@ export function Segments({
         ))}
       </div>
       <div className="md:hidden">
-        <Choices
-          label={label}
-          items={items}
-          value={value}
-          onChange={onChange}
-          compact
-        />
+        <Choices label={label} items={items} value={value} onChange={onChange} compact />
       </div>
     </>
   );
@@ -159,11 +150,7 @@ export function Sidebar({
   return (
     <>
       <aside
-        className={cn(
-          "shell-sidebar shell-desktop-sidebar",
-          collapsed && "collapsed",
-          className,
-        )}
+        className={cn("shell-sidebar shell-desktop-sidebar", collapsed && "collapsed", className)}
         aria-label={label}
       >
         {children}
@@ -237,12 +224,7 @@ export function Rail({
       </div>
       {children}
       <div className="mt-auto flex flex-col items-center gap-2">
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          aria-label="Help"
-          onClick={() => onChange("Help")}
-        >
+        <Button variant="ghost" size="icon-sm" aria-label="Help" onClick={() => onChange("Help")}>
           <CircleHelp />
         </Button>
         <WorkspaceMenu collapsed user />
@@ -309,10 +291,7 @@ function SkeletonSummary({ stats = false }: { stats?: boolean }) {
           <FrameFooter className="shell-card-foot">
             <span className="flex -space-x-2">
               {[0, 1, 2].map((i) => (
-                <i
-                  key={i}
-                  className="size-5 rounded-full border border-background bg-muted"
-                />
+                <i key={i} className="size-5 rounded-full border border-background bg-muted" />
               ))}
             </span>
             <span className="shell-skeleton-line !h-2 !w-1/4" />
@@ -379,10 +358,7 @@ export function ContentCards({
     );
   if (layout === "chat")
     return (
-      <div
-        className="shell-chat-skeleton"
-        aria-label="Conversation placeholders"
-      >
+      <div className="shell-chat-skeleton" aria-label="Conversation placeholders">
         {Array.from({ length: 4 }, (_, i) => (
           <div className="mb-8" key={i}>
             <div className="ml-auto mb-7 h-8 w-1/3 rounded-lg bg-muted/50" />
@@ -390,11 +366,7 @@ export function ContentCards({
               <span className="size-8 rounded-full bg-muted/40" />
               <div className="flex-1 space-y-3">
                 {[100, 100, 70].map((w, j) => (
-                  <div
-                    key={j}
-                    className="h-3 rounded bg-muted/40"
-                    style={{ width: `${w}%` }}
-                  />
+                  <div key={j} className="h-3 rounded bg-muted/40" style={{ width: `${w}%` }} />
                 ))}
               </div>
             </div>
@@ -527,17 +499,10 @@ export function ContentCards({
         {Array.from(
           {
             length:
-              layout === "four" || layout === "dashboard"
-                ? 4
-                : layout === "workbench"
-                  ? 6
-                  : 3,
+              layout === "four" || layout === "dashboard" ? 4 : layout === "workbench" ? 6 : 3,
           },
           (_, i) => (
-            <SkeletonSummary
-              stats={layout === "security" || layout === "fleet"}
-              key={i}
-            />
+            <SkeletonSummary stats={layout === "security" || layout === "fleet"} key={i} />
           ),
         )}
       </div>
@@ -547,9 +512,7 @@ export function ContentCards({
             length:
               layout === "rows" || layout === "fleet"
                 ? 5
-                : layout === "three" ||
-                    layout === "four" ||
-                    layout === "security"
+                : layout === "three" || layout === "four" || layout === "security"
                   ? 6
                   : layout === "workbench"
                     ? 1
@@ -595,23 +558,14 @@ export function NavSearch({
         onChange={(e) => onChange(e.target.value)}
         className="h-8 pl-7 pr-8 text-xs"
       />
-      <kbd className="absolute right-2 top-2 text-[10px] text-muted-foreground">
-        ⌘F
-      </kbd>
+      <kbd className="absolute right-2 top-2 text-[10px] text-muted-foreground">⌘F</kbd>
     </div>
   );
 }
 export const fleetGroups = [
   {
     label: "Fleet Overview",
-    items: [
-      "Overview",
-      "Live Map",
-      "All Robots",
-      "Robot Groups",
-      "Zones",
-      "Assignments",
-    ],
+    items: ["Overview", "Live Map", "All Robots", "Robot Groups", "Zones", "Assignments"],
   },
   {
     label: "Fleet Activity",
@@ -619,13 +573,7 @@ export const fleetGroups = [
   },
   {
     label: "Fleet Settings",
-    items: [
-      "Robot Profiles",
-      "Tags & Labels",
-      "Access Rules",
-      "Data Sync",
-      "Fleet Preferences",
-    ],
+    items: ["Robot Profiles", "Tags & Labels", "Access Rules", "Data Sync", "Fleet Preferences"],
   },
 ];
 const navIcons = [
@@ -665,9 +613,7 @@ export function GroupedNav({
   return (
     <div className="min-h-0 overflow-y-auto">
       {groups.map((group) => {
-        const items = group.items.filter((v) =>
-          v.toLowerCase().includes(query.toLowerCase()),
-        );
+        const items = group.items.filter((v) => v.toLowerCase().includes(query.toLowerCase()));
         if (!items.length) return null;
         return (
           <section className="mb-4" key={group.label}>
@@ -677,10 +623,7 @@ export function GroupedNav({
               return (
                 <Button
                   variant={active === item ? "secondary" : "ghost"}
-                  className={cn(
-                    "shell-nav-button justify-start",
-                    indented && "pl-6",
-                  )}
+                  className={cn("shell-nav-button justify-start", indented && "pl-6")}
                   key={item}
                   aria-label={item}
                   onClick={() => onSelect(item)}
@@ -694,9 +637,7 @@ export function GroupedNav({
         );
       })}
       {!matches.length && (
-        <p className="p-5 text-center text-xs text-muted-foreground">
-          No matching routes.
-        </p>
+        <p className="p-5 text-center text-xs text-muted-foreground">No matching routes.</p>
       )}
     </div>
   );
@@ -731,13 +672,7 @@ export function Promo() {
     </div>
   );
 }
-export function PageTitle({
-  title,
-  children,
-}: {
-  title: string;
-  children?: ReactNode;
-}) {
+export function PageTitle({ title, children }: { title: string; children?: ReactNode }) {
   return (
     <header className="shell-header border-b">
       <div className="flex min-w-0 items-center gap-3">

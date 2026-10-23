@@ -1,39 +1,39 @@
 // Title: Event Calendar Agenda View
 // Description: Chronological agenda grouped by day - a day header row plus a clean time / dot / title table.
 
-"use client"
+"use client";
 
-import { useMemo, type HTMLAttributes } from "react"
+import { useMemo, type HTMLAttributes } from "react";
 import {
   EventCalendarViewContext,
   useEventCalendar,
   useEventCalendarSelector,
   useEventCalendarSettings,
   useEventCalendarViewConfig,
-} from "@/components/reui/event-calendar/event-calendar"
-import { EventCalendarEvent } from "@/components/reui/event-calendar/event-calendar-event"
+} from "@/components/reui/event-calendar/event-calendar";
+import { EventCalendarEvent } from "@/components/reui/event-calendar/event-calendar-event";
 import {
   getDayKey,
   getRangeKey,
   toZoned,
   zonedStartOfDay,
-} from "@/components/reui/event-calendar/event-calendar-lib"
+} from "@/components/reui/event-calendar/event-calendar-lib";
 import type {
   EventCalendarDateRange,
   EventCalendarSegment,
-} from "@/components/reui/event-calendar/event-calendar-types"
-import { IconStack } from "@/components/reui/icon-stack"
-import { addDays, format } from "date-fns"
-import { Slot } from "radix-ui"
+} from "@/components/reui/event-calendar/event-calendar-types";
+import { IconStack } from "@/components/reui/icon-stack";
+import { addDays, format } from "date-fns";
+import { Slot } from "radix-ui";
 
-import { cn } from "cn"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { CalendarIcon } from "lucide-react"
+import { cn } from "cn";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { CalendarIcon } from "lucide-react";
 
 // The agenda window length is the agendaDayCount SETTING (the store derives
 // visibleRange from it); a per-view prop here would silently disagree.
 interface EventCalendarAgendaViewProps extends HTMLAttributes<HTMLDivElement> {
-  asChild?: boolean
+  asChild?: boolean;
 }
 
 function EventCalendarAgendaView({
@@ -41,32 +41,29 @@ function EventCalendarAgendaView({
   asChild = false,
   ...props
 }: EventCalendarAgendaViewProps) {
-  const instance = useEventCalendar()
-  const settings = useEventCalendarSettings()
-  const viewConfig = useEventCalendarViewConfig()
-  const visibleRange = useEventCalendarSelector<
-    unknown,
-    EventCalendarDateRange
-  >((state) => state.visibleRange, {
-    isEqual: (a, b) => getRangeKey(a) === getRangeKey(b),
-  })
+  const instance = useEventCalendar();
+  const settings = useEventCalendarSettings();
+  const viewConfig = useEventCalendarViewConfig();
+  const visibleRange = useEventCalendarSelector<unknown, EventCalendarDateRange>(
+    (state) => state.visibleRange,
+    {
+      isEqual: (a, b) => getRangeKey(a) === getRangeKey(b),
+    },
+  );
   // The index rebuilds whenever the events change, so its identity is the
   // subscription. Read it here, not in render: React Compiler caches a bare
   // getIndex() on the stable `instance`, and an edit never repainted a row.
-  const index = useEventCalendarSelector(() => instance.internals.getIndex())
+  const index = useEventCalendarSelector(() => instance.internals.getIndex());
 
   const days = useMemo(() => {
-    const result: Date[] = []
-    let cursor = zonedStartOfDay(visibleRange.start, settings.timeZone)
+    const result: Date[] = [];
+    let cursor = zonedStartOfDay(visibleRange.start, settings.timeZone);
     while (cursor < visibleRange.end) {
-      result.push(cursor)
-      cursor = zonedStartOfDay(
-        addDays(toZoned(cursor, settings.timeZone), 1),
-        settings.timeZone
-      )
+      result.push(cursor);
+      cursor = zonedStartOfDay(addDays(toZoned(cursor, settings.timeZone), 1), settings.timeZone);
     }
-    return result
-  }, [visibleRange, settings.timeZone])
+    return result;
+  }, [visibleRange, settings.timeZone]);
 
   const groups = days
     .map((day) => ({
@@ -74,16 +71,14 @@ function EventCalendarAgendaView({
       bucket: index.byDay.get(getDayKey(day, settings.timeZone)),
     }))
     .filter((group) => {
-      const total =
-        (group.bucket?.allDay.length ?? 0) + (group.bucket?.timed.length ?? 0)
-      return total > 0
-    })
+      const total = (group.bucket?.allDay.length ?? 0) + (group.bucket?.timed.length ?? 0);
+      return total > 0;
+    });
 
   const isToday = (day: Date) =>
-    getDayKey(day, settings.timeZone) ===
-    getDayKey(new Date(), settings.timeZone)
+    getDayKey(day, settings.timeZone) === getDayKey(new Date(), settings.timeZone);
 
-  const native = viewConfig.scrollbars === "native"
+  const native = viewConfig.scrollbars === "native";
 
   const body = (
     <>
@@ -92,20 +87,15 @@ function EventCalendarAgendaView({
           data-slot="event-calendar-no-events"
           className={cn(
             "flex min-h-72 flex-col items-center justify-center gap-4 py-16",
-            viewConfig.classNames?.noEvents
+            viewConfig.classNames?.noEvents,
           )}
         >
           {viewConfig.renderNoEvents?.() ?? (
             <>
               <IconStack>
-                <CalendarIcon
-                  className="size-5"
-                  aria-hidden="true"
-                />
+                <CalendarIcon className="size-5" aria-hidden="true" />
               </IconStack>
-              <span className="text-muted-foreground text-sm">
-                {settings.i18n.labels.noEvents}
-              </span>
+              <span className="text-muted-foreground text-sm">{settings.i18n.labels.noEvents}</span>
             </>
           )}
         </div>
@@ -116,12 +106,12 @@ function EventCalendarAgendaView({
         // kept everywhere else, including each day's internal rows.
         <div className="flex flex-col [&>*:last-child>*:last-child]:border-b-0">
           {groups.map(({ day, bucket }) => {
-            const items = [...(bucket?.allDay ?? []), ...(bucket?.timed ?? [])]
-            const zoned = toZoned(day, settings.timeZone)
-            const weekday = format(zoned, "EEEE", { locale: settings.locale })
+            const items = [...(bucket?.allDay ?? []), ...(bucket?.timed ?? [])];
+            const zoned = toZoned(day, settings.timeZone);
+            const weekday = format(zoned, "EEEE", { locale: settings.locale });
             const dayDate = format(zoned, "MMMM d, yyyy", {
               locale: settings.locale,
-            })
+            });
             return (
               <div
                 key={day.getTime()}
@@ -150,36 +140,28 @@ function EventCalendarAgendaView({
                     // scrollbars already sit outside the content box, so this
                     // only applies to the custom-scrollbar path.
                     !native && "me-2.5",
-                    viewConfig.classNames?.agendaDayHeader
+                    viewConfig.classNames?.agendaDayHeader,
                   )}
                 >
                   <span
-                    className={cn(
-                      "text-foreground font-semibold",
-                      isToday(day) && "text-primary"
-                    )}
+                    className={cn("text-foreground font-semibold", isToday(day) && "text-primary")}
                   >
                     {weekday}
                   </span>
-                  <span className="text-muted-foreground font-medium tabular-nums">
-                    {dayDate}
-                  </span>
+                  <span className="text-muted-foreground font-medium tabular-nums">{dayDate}</span>
                 </div>
                 {items.map((segment) => (
-                  <EventCalendarAgendaItem
-                    key={segment.occurrence.key}
-                    segment={segment}
-                  />
+                  <EventCalendarAgendaItem key={segment.occurrence.key} segment={segment} />
                 ))}
               </div>
-            )
+            );
           })}
         </div>
       )}
     </>
-  )
+  );
 
-  const Comp = asChild ? Slot.Root : "div"
+  const Comp = asChild ? Slot.Root : "div";
 
   return (
     <EventCalendarViewContext.Provider value={{ view: "agenda" }}>
@@ -196,7 +178,7 @@ function EventCalendarAgendaView({
         className={cn(
           "flex min-h-0 flex-1 flex-col overflow-hidden border-t",
           viewConfig.classNames?.agendaView,
-          className
+          className,
         )}
         {...props}
       >
@@ -213,7 +195,7 @@ function EventCalendarAgendaView({
         )}
       </Comp>
     </EventCalendarViewContext.Provider>
-  )
+  );
 }
 
 /**
@@ -221,23 +203,19 @@ function EventCalendarAgendaView({
  * and title (all replaceable via renderAgendaEvent). Clicking selects the
  * event (drag/resize stay off in the agenda).
  */
-function EventCalendarAgendaItem({
-  segment,
-}: {
-  segment: EventCalendarSegment
-}) {
-  const viewConfig = useEventCalendarViewConfig()
+function EventCalendarAgendaItem({ segment }: { segment: EventCalendarSegment }) {
+  const viewConfig = useEventCalendarViewConfig();
   return (
     <EventCalendarEvent
       segment={segment}
       className={cn(
         // read-only list: hover only, no selected/focused styling on click
         "hover:bg-accent/40 gap-3 rounded-none border-b px-4 py-2.5 transition-colors",
-        viewConfig.classNames?.agendaItem
+        viewConfig.classNames?.agendaItem,
       )}
     />
-  )
+  );
 }
 
-export { EventCalendarAgendaView }
-export type { EventCalendarAgendaViewProps }
+export { EventCalendarAgendaView };
+export type { EventCalendarAgendaViewProps };

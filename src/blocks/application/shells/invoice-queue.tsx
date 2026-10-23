@@ -146,8 +146,7 @@ function OrderQueue() {
     onPrimaryAction: (item) => setSelected(item.getId()),
     dataLoader: {
       getItem: (id) => nodes[id],
-      getChildren: (id) =>
-        id === "root" ? visibleOrders : (nodes[id].children ?? []),
+      getChildren: (id) => (id === "root" ? visibleOrders : (nodes[id].children ?? [])),
     },
     features: [syncDataLoaderFeature, hotkeysCoreFeature],
   });
@@ -199,9 +198,7 @@ function OrderQueue() {
         <Tree tree={tree} indent={20} aria-label="Order queue">
           {tree
             .getItems()
-            .filter((item) =>
-              visibleOrders.includes(item.getId().split("-")[0]),
-            )
+            .filter((item) => visibleOrders.includes(item.getId().split("-")[0]))
             .map((item) => {
               const row = item.getItemData();
               return (
@@ -220,9 +217,7 @@ function OrderQueue() {
                         ) : (
                           <CircleDot className="invoice-pending" />
                         ))}
-                      {row.name === "More" && (
-                        <ChevronDown className="-rotate-90" />
-                      )}
+                      {row.name === "More" && <ChevronDown className="-rotate-90" />}
                       <span>{row.name}</span>
                       {row.count && (
                         <Badge variant="destructive-light" size="xs">
@@ -244,27 +239,21 @@ function OrderQueue() {
                         </Badge>
                       )}
                     </TreeItemLabel>
-                    {selected === item.getId() && row.check && (
-                      <CheckActions name={row.name} />
-                    )}
+                    {selected === item.getId() && row.check && <CheckActions name={row.name} />}
                   </div>
                 </TreeItem>
               );
             })}
         </Tree>
         {!visibleOrders.length && (
-          <p className="p-4 text-xs text-muted-foreground">
-            No orders match your search.
-          </p>
+          <p className="p-4 text-xs text-muted-foreground">No orders match your search.</p>
         )}
       </div>
       <Button
         variant="outline"
         size="sm"
         className="invoice-new"
-        onClick={() =>
-          toast("New 3WIM", { description: "Create a new matching workflow." })
-        }
+        onClick={() => toast("New 3WIM", { description: "Create a new matching workflow." })}
       >
         <FilePlus2 />
         New 3WIM
@@ -276,11 +265,7 @@ function Advisor({ onClose }: { onClose: () => void }) {
   const [draft, setDraft] = useState("");
   const [messages, setMessages] = useState<string[]>([]);
   return (
-    <ResponsiveAssistantPanel
-      title="3WIM Advisor"
-      onClose={onClose}
-      className="invoice-advisor"
-    >
+    <ResponsiveAssistantPanel title="3WIM Advisor" onClose={onClose} className="invoice-advisor">
       <header>
         <IconTile size="xs" variant="elevated">
           <Sparkles />
@@ -302,12 +287,7 @@ function Advisor({ onClose }: { onClose: () => void }) {
         >
           <SlidersHorizontal />
         </Button>
-        <Button
-          variant="ghost"
-          size="icon-xs"
-          aria-label="Close assistant"
-          onClick={onClose}
-        >
+        <Button variant="ghost" size="icon-xs" aria-label="Close assistant" onClick={onClose}>
           <X />
         </Button>
       </header>
@@ -329,42 +309,33 @@ function Advisor({ onClose }: { onClose: () => void }) {
             <Bubble variant="outline" className="max-w-full">
               <BubbleContent>
                 <p>
-                  Two checks failed on PO-2026-10021, so Approve payment cannot
-                  start. Document validation raised 1 issue and the 3-way line
-                  match raised 2.
+                  Two checks failed on PO-2026-10021, so Approve payment cannot start. Document
+                  validation raised 1 issue and the 3-way line match raised 2.
                 </p>
                 <ol>
                   <li>
-                    Clear Document validation first. The tax ID on the invoice
-                    differs from the supplier record, and nothing after it runs
-                    until that is fixed.
+                    Clear Document validation first. The tax ID on the invoice differs from the
+                    supplier record, and nothing after it runs until that is fixed.
                   </li>
                   <li>
-                    Then open 3-way line match. Line 2 is invoiced for 500 units
-                    against 480 received, and line 4 is priced 3.1% over the PO.
+                    Then open 3-way line match. Line 2 is invoiced for 500 units against 480
+                    received, and line 4 is priced 3.1% over the PO.
                   </li>
                   <li>
-                    Ask for a credit note on the 20 short units rather than
-                    overriding. The price gap needs the buyer's sign off.
+                    Ask for a credit note on the 20 short units rather than overriding. The price
+                    gap needs the buyer's sign off.
                   </li>
                 </ol>
                 <p className="text-muted-foreground">
-                  Price tolerance is 2% per line, so the 3.1% variance cannot be
-                  approved from the queue.
+                  Price tolerance is 2% per line, so the 3.1% variance cannot be approved from the
+                  queue.
                 </p>
               </BubbleContent>
             </Bubble>
           </MessageContent>
         </Message>
-        {[
-          "How do I request a credit note?",
-          "Who can override a failed match?",
-        ].map((s) => (
-          <button
-            className="invoice-advisor-suggestion"
-            key={s}
-            onClick={() => setDraft(s)}
-          >
+        {["How do I request a credit note?", "Who can override a failed match?"].map((s) => (
+          <button className="invoice-advisor-suggestion" key={s} onClick={() => setDraft(s)}>
             ↳ {s}
           </button>
         ))}
@@ -415,10 +386,7 @@ export default function InvoiceQueue() {
   const [ai, setAi] = useState(false);
   const [app, setApp] = useState("3WIM");
   return (
-    <div
-      className="shell-reference reui-reference invoice-shell"
-      data-shell-variant="34"
-    >
+    <div className="shell-reference reui-reference invoice-shell" data-shell-variant="34">
       <nav className="invoice-app-rail" aria-label="Applications">
         <ReuiMark small />
         <div>
@@ -431,12 +399,7 @@ export default function InvoiceQueue() {
               ["Settings", SlidersHorizontal],
             ] as const
           ).map(([name, Icon]) => (
-            <IconTile
-              asChild
-              size="xs"
-              key={name}
-              className="invoice-rail-icon"
-            >
+            <IconTile asChild size="xs" key={name} className="invoice-rail-icon">
               <button
                 aria-label={name}
                 title={name}
@@ -449,12 +412,7 @@ export default function InvoiceQueue() {
           ))}
         </div>
         <footer>
-          <Button
-            variant="ghost"
-            size="icon-xs"
-            aria-label="Help"
-            onClick={() => toast("Help")}
-          >
+          <Button variant="ghost" size="icon-xs" aria-label="Help" onClick={() => toast("Help")}>
             <CircleHelp />
           </Button>
           <Button
@@ -481,25 +439,16 @@ export default function InvoiceQueue() {
                 <PanelLeft />
               </Button>
             </SheetTrigger>
-            <SheetContent
-              side="left"
-              className="invoice-mobile-queue reui-reference"
-            >
+            <SheetContent side="left" className="invoice-mobile-queue reui-reference">
               <SheetHeader className="sr-only">
                 <SheetTitle>Order queue</SheetTitle>
-                <SheetDescription>
-                  Search purchase orders and matching checks.
-                </SheetDescription>
+                <SheetDescription>Search purchase orders and matching checks.</SheetDescription>
               </SheetHeader>
               <OrderQueue />
             </SheetContent>
           </Sheet>
           <h1>3WIM Queue</h1>
-          <div
-            className="invoice-queue-tabs"
-            role="tablist"
-            aria-label="Invoice queues"
-          >
+          <div className="invoice-queue-tabs" role="tablist" aria-label="Invoice queues">
             {["Matching Queue", "Completed Matches"].map((name) => (
               <button
                 key={name}
@@ -512,12 +461,7 @@ export default function InvoiceQueue() {
             ))}
           </div>
           <div className="invoice-header-actions">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setAi(!ai)}
-              aria-pressed={ai}
-            >
+            <Button variant="outline" size="sm" onClick={() => setAi(!ai)} aria-pressed={ai}>
               <Sparkles />
               Ask AI
             </Button>

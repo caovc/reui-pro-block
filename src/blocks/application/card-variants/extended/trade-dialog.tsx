@@ -41,9 +41,7 @@ export function TradeDialog({
         <Alert variant="info">
           <FlaskConical />
           <AlertTitle>Practice mode</AlertTitle>
-          <AlertDescription>
-            This preview simulates an order locally.
-          </AlertDescription>
+          <AlertDescription>This preview simulates an order locally.</AlertDescription>
         </Alert>
         <ToggleGroup
           type="single"
@@ -97,9 +95,7 @@ export function TradeDialog({
           <Alert variant="success">
             <CheckCircle2 />
             <AlertTitle>Simulated {side} complete</AlertTitle>
-            <AlertDescription>
-              {quantity} BTS · saved in this preview only.
-            </AlertDescription>
+            <AlertDescription>{quantity} BTS · saved in this preview only.</AlertDescription>
           </Alert>
         ) : null}
         <Button disabled={!quantity} onClick={() => setSimulated(true)}>

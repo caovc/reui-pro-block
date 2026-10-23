@@ -19,11 +19,7 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import {
-  NumberField,
-  NumberFieldGroup,
-  NumberFieldInput,
-} from "@/components/reui/number-field";
+import { NumberField, NumberFieldGroup, NumberFieldInput } from "@/components/reui/number-field";
 import {
   Frame,
   Facet,
@@ -80,11 +76,7 @@ function config(title: string) {
       statuses: ["In stock", "Low stock", "Out of stock"],
       groups: ["Electronics", "Accessories", "Home & Living"],
     };
-  if (
-    /Contact|Team|Member|Patient|Permission|Access|Hierarchy|Invitation/i.test(
-      title,
-    )
-  )
+  if (/Contact|Team|Member|Patient|Permission|Access|Hierarchy|Invitation/i.test(title))
     return {
       entity: "person",
       name: "Member",
@@ -110,11 +102,7 @@ function config(title: string) {
     };
   return {
     entity: "task",
-    name: /Course/.test(title)
-      ? "Course"
-      : /Folder/.test(title)
-        ? "Folder"
-        : "Task",
+    name: /Course/.test(title) ? "Course" : /Folder/.test(title) ? "Folder" : "Task",
     amount: /Time/.test(title) ? "Hours" : "Estimate",
     statuses: ["In progress", "In review", "Complete"],
     groups: ["Backlog", "In progress", "Complete"],
@@ -175,10 +163,7 @@ function initialRows(title: string, count: number) {
         : `${c.entity === "product" ? "SKU" : "ID"}-${String(1000 + i).padStart(4, "0")}`,
     status: c.statuses[i % 3],
     owner: people[(i + 2) % 12],
-    amount: [
-      12450, 8920, 24500, 3280, 15680, 6750, 4210, 18900, 11200, 7480, 5200,
-      2240,
-    ][i % 12],
+    amount: [12450, 8920, 24500, 3280, 15680, 6750, 4210, 18900, 11200, 7480, 5200, 2240][i % 12],
     progress: [72, 45, 91, 34, 68, 83, 56, 92, 41, 64, 78, 23][i % 12],
     date: `Oct ${String(12 + (i % 18))}, 2026`,
     group: c.groups[i % 3],
@@ -201,10 +186,7 @@ function GenericGridBlock({ block }: BlockProps) {
         width: 300,
         cell: (r) => (
           <div>
-            <button
-              className="font-medium hover:underline"
-              onClick={() => setEditRow(r)}
-            >
+            <button className="font-medium hover:underline" onClick={() => setEditRow(r)}>
               {r.name}
             </button>
             <div className="text-xs text-muted-foreground">{r.detail}</div>
@@ -257,11 +239,7 @@ function GenericGridBlock({ block }: BlockProps) {
         cell: (r) => (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                aria-label={`Actions for ${r.name}`}
-              >
+              <Button variant="ghost" size="icon-sm" aria-label={`Actions for ${r.name}`}>
                 <ChevronDown />
               </Button>
             </DropdownMenuTrigger>
@@ -290,9 +268,7 @@ function GenericGridBlock({ block }: BlockProps) {
   );
   const match = useCallback(
     (r: GenericRecord) =>
-      `${r.name} ${r.detail} ${r.owner} ${r.group}`
-        .toLowerCase()
-        .includes(search.toLowerCase()) &&
+      `${r.name} ${r.detail} ${r.owner} ${r.group}`.toLowerCase().includes(search.toLowerCase()) &&
       (!statuses.length || statuses.includes(r.status)),
     [search, statuses],
   );
@@ -375,11 +351,7 @@ function GenericGridBlock({ block }: BlockProps) {
               <Trash2 />
               Delete
             </Button>
-            <Button
-              size="sm"
-              variant="ghost"
-              onClick={() => table.resetRowSelection()}
-            >
+            <Button size="sm" variant="ghost" onClick={() => table.resetRowSelection()}>
               Clear selection
             </Button>
           </div>
@@ -395,9 +367,7 @@ function GenericGridBlock({ block }: BlockProps) {
           <DialogContent>
             <DialogHeader>
               <DialogTitle>
-                {editRow && rows.some((r) => r.id === editRow.id)
-                  ? "Edit record"
-                  : "Add record"}
+                {editRow && rows.some((r) => r.id === editRow.id) ? "Edit record" : "Add record"}
               </DialogTitle>
               <DialogDescription>
                 Update the record details. Changes are saved in this preview.
@@ -410,21 +380,15 @@ function GenericGridBlock({ block }: BlockProps) {
                   <Input
                     id="record-name"
                     value={editRow.name}
-                    onChange={(e) =>
-                      setEditRow({ ...editRow, name: e.target.value })
-                    }
+                    onChange={(e) => setEditRow({ ...editRow, name: e.target.value })}
                   />
                 </Field>
                 <Field>
-                  <FieldLabel htmlFor="record-detail">
-                    Reference / email
-                  </FieldLabel>
+                  <FieldLabel htmlFor="record-detail">Reference / email</FieldLabel>
                   <Input
                     id="record-detail"
                     value={editRow.detail}
-                    onChange={(e) =>
-                      setEditRow({ ...editRow, detail: e.target.value })
-                    }
+                    onChange={(e) => setEditRow({ ...editRow, detail: e.target.value })}
                   />
                 </Field>
                 <Field>
@@ -432,9 +396,7 @@ function GenericGridBlock({ block }: BlockProps) {
                   <NumberField
                     id="record-value"
                     value={editRow.amount}
-                    onValueChange={(value) =>
-                      setEditRow({ ...editRow, amount: value ?? 0 })
-                    }
+                    onValueChange={(value) => setEditRow({ ...editRow, amount: value ?? 0 })}
                   >
                     <NumberFieldGroup>
                       <NumberFieldInput />
@@ -448,9 +410,7 @@ function GenericGridBlock({ block }: BlockProps) {
                       <Button
                         key={status}
                         size="sm"
-                        variant={
-                          editRow.status === status ? "default" : "outline"
-                        }
+                        variant={editRow.status === status ? "default" : "outline"}
                         onClick={() => setEditRow({ ...editRow, status })}
                       >
                         {status}

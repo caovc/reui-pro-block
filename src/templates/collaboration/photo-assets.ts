@@ -1,30 +1,55 @@
 // Photos remain hosted by their original public preview providers.
-export const referencePhotos:Record<string,string> = {
-  "https://limelight-landing.reui.io/avatars/300-1.png": "https://limelight-landing.reui.io/avatars/300-1.png",
-  "https://limelight-landing.reui.io/avatars/300-2.png": "https://limelight-landing.reui.io/avatars/300-2.png",
-  "https://limelight-landing.reui.io/avatars/300-3.png": "https://limelight-landing.reui.io/avatars/300-3.png",
-  "https://limelight-landing.reui.io/avatars/300-4.png": "https://limelight-landing.reui.io/avatars/300-4.png",
-  "https://limelight-landing.reui.io/avatars/300-5.png": "https://limelight-landing.reui.io/avatars/300-5.png",
-  "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-6.png&w=256&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2": "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-6.png&w=256&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2",
-  "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-3.png&w=256&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2": "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-3.png&w=256&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2",
-  "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-4.png&w=256&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2": "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-4.png&w=256&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2",
-  "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-5.png&w=256&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2": "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-5.png&w=256&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2",
-  "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-2.png&w=256&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2": "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-2.png&w=256&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2",
-  "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-6.png&w=96&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2": "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-6.png&w=96&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2",
-  "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-7.png&w=96&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2": "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-7.png&w=96&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2",
-  "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-8.png&w=96&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2": "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-8.png&w=96&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2",
-  "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-9.png&w=96&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2": "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-9.png&w=96&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2",
-  "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-10.png&w=96&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2": "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-10.png&w=96&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2",
-  "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-11.png&w=96&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2": "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-11.png&w=96&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2",
-  "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-12.png&w=96&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2": "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-12.png&w=96&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2",
-  "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-13.png&w=96&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2": "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-13.png&w=96&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2",
-  "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-14.png&w=96&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2": "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-14.png&w=96&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2",
-  "https://images.unsplash.com/photo-1543299750-19d1d6297053?w=96&h=96&dpr=2&q=80": "https://images.unsplash.com/photo-1543299750-19d1d6297053?w=96&h=96&dpr=2&q=80",
-  "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=96&h=96&dpr=2&q=80": "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=96&h=96&dpr=2&q=80",
-  "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=96&h=96&dpr=2&q=80": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=96&h=96&dpr=2&q=80",
-  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=96&h=96&dpr=2&q=80": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=96&h=96&dpr=2&q=80",
-  "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=96&h=96&dpr=2&q=80": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=96&h=96&dpr=2&q=80",
-  "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=96&h=96&dpr=2&q=80": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=96&h=96&dpr=2&q=80",
+export const referencePhotos: Record<string, string> = {
+  "https://limelight-landing.reui.io/avatars/300-1.png":
+    "https://limelight-landing.reui.io/avatars/300-1.png",
+  "https://limelight-landing.reui.io/avatars/300-2.png":
+    "https://limelight-landing.reui.io/avatars/300-2.png",
+  "https://limelight-landing.reui.io/avatars/300-3.png":
+    "https://limelight-landing.reui.io/avatars/300-3.png",
+  "https://limelight-landing.reui.io/avatars/300-4.png":
+    "https://limelight-landing.reui.io/avatars/300-4.png",
+  "https://limelight-landing.reui.io/avatars/300-5.png":
+    "https://limelight-landing.reui.io/avatars/300-5.png",
+  "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-6.png&w=256&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2":
+    "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-6.png&w=256&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2",
+  "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-3.png&w=256&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2":
+    "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-3.png&w=256&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2",
+  "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-4.png&w=256&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2":
+    "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-4.png&w=256&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2",
+  "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-5.png&w=256&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2":
+    "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-5.png&w=256&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2",
+  "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-2.png&w=256&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2":
+    "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-2.png&w=256&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2",
+  "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-6.png&w=96&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2":
+    "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-6.png&w=96&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2",
+  "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-7.png&w=96&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2":
+    "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-7.png&w=96&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2",
+  "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-8.png&w=96&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2":
+    "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-8.png&w=96&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2",
+  "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-9.png&w=96&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2":
+    "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-9.png&w=96&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2",
+  "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-10.png&w=96&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2":
+    "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-10.png&w=96&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2",
+  "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-11.png&w=96&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2":
+    "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-11.png&w=96&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2",
+  "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-12.png&w=96&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2":
+    "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-12.png&w=96&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2",
+  "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-13.png&w=96&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2":
+    "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-13.png&w=96&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2",
+  "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-14.png&w=96&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2":
+    "https://limelight-landing.reui.io/_next/image?url=%2Favatars%2F300-14.png&w=96&q=75&dpl=dpl_AJs6VM4Qr2xM6AA5GUSDgGvt9Dt2",
+  "https://images.unsplash.com/photo-1543299750-19d1d6297053?w=96&h=96&dpr=2&q=80":
+    "https://images.unsplash.com/photo-1543299750-19d1d6297053?w=96&h=96&dpr=2&q=80",
+  "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=96&h=96&dpr=2&q=80":
+    "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=96&h=96&dpr=2&q=80",
+  "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=96&h=96&dpr=2&q=80":
+    "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=96&h=96&dpr=2&q=80",
+  "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=96&h=96&dpr=2&q=80":
+    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=96&h=96&dpr=2&q=80",
+  "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=96&h=96&dpr=2&q=80":
+    "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=96&h=96&dpr=2&q=80",
+  "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=96&h=96&dpr=2&q=80":
+    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=96&h=96&dpr=2&q=80",
   "https://roster-hr.reui.io/avatars/01.jpg": "https://roster-hr.reui.io/avatars/01.jpg",
   "https://roster-hr.reui.io/avatars/05.jpg": "https://roster-hr.reui.io/avatars/05.jpg",
   "https://roster-hr.reui.io/avatars/09.jpg": "https://roster-hr.reui.io/avatars/09.jpg",
@@ -35,12 +60,20 @@ export const referencePhotos:Record<string,string> = {
   "https://roster-hr.reui.io/avatars/08.jpg": "https://roster-hr.reui.io/avatars/08.jpg",
   "https://roster-hr.reui.io/avatars/03.jpg": "https://roster-hr.reui.io/avatars/03.jpg",
   "https://roster-hr.reui.io/avatars/06.jpg": "https://roster-hr.reui.io/avatars/06.jpg",
-  "https://pulse-helpdesk.reui.io/avatars/mira-stone.jpg": "https://pulse-helpdesk.reui.io/avatars/mira-stone.jpg",
-  "https://pulse-helpdesk.reui.io/avatars/leo-grant.jpg": "https://pulse-helpdesk.reui.io/avatars/leo-grant.jpg",
-  "https://pulse-helpdesk.reui.io/avatars/sarah-chen.jpg": "https://pulse-helpdesk.reui.io/avatars/sarah-chen.jpg",
-  "https://pulse-helpdesk.reui.io/news/security-runbook.jpg": "https://pulse-helpdesk.reui.io/news/security-runbook.jpg",
-  "https://pulse-helpdesk.reui.io/avatars/carla-ferreira.jpg": "https://pulse-helpdesk.reui.io/avatars/carla-ferreira.jpg",
-  "https://pulse-helpdesk.reui.io/avatars/marcus-hale.jpg": "https://pulse-helpdesk.reui.io/avatars/marcus-hale.jpg",
-  "https://pulse-helpdesk.reui.io/avatars/priya-raman.jpg": "https://pulse-helpdesk.reui.io/avatars/priya-raman.jpg",
-  "https://pulse-helpdesk.reui.io/avatars/aisha-bello.jpg": "https://pulse-helpdesk.reui.io/avatars/aisha-bello.jpg"
+  "https://pulse-helpdesk.reui.io/avatars/mira-stone.jpg":
+    "https://pulse-helpdesk.reui.io/avatars/mira-stone.jpg",
+  "https://pulse-helpdesk.reui.io/avatars/leo-grant.jpg":
+    "https://pulse-helpdesk.reui.io/avatars/leo-grant.jpg",
+  "https://pulse-helpdesk.reui.io/avatars/sarah-chen.jpg":
+    "https://pulse-helpdesk.reui.io/avatars/sarah-chen.jpg",
+  "https://pulse-helpdesk.reui.io/news/security-runbook.jpg":
+    "https://pulse-helpdesk.reui.io/news/security-runbook.jpg",
+  "https://pulse-helpdesk.reui.io/avatars/carla-ferreira.jpg":
+    "https://pulse-helpdesk.reui.io/avatars/carla-ferreira.jpg",
+  "https://pulse-helpdesk.reui.io/avatars/marcus-hale.jpg":
+    "https://pulse-helpdesk.reui.io/avatars/marcus-hale.jpg",
+  "https://pulse-helpdesk.reui.io/avatars/priya-raman.jpg":
+    "https://pulse-helpdesk.reui.io/avatars/priya-raman.jpg",
+  "https://pulse-helpdesk.reui.io/avatars/aisha-bello.jpg":
+    "https://pulse-helpdesk.reui.io/avatars/aisha-bello.jpg",
 };

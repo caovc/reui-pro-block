@@ -1,13 +1,5 @@
 import { useState } from "react";
-import {
-  Check,
-  Database,
-  Play,
-  Plus,
-  RefreshCw,
-  Terminal,
-  X,
-} from "lucide-react";
+import { Check, Database, Play, Plus, RefreshCw, Terminal, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -24,13 +16,7 @@ import {
 } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Person, SmallTabs, toast } from "./shared";
 import type { BlockMeta } from "@/data/types";
 export default function TechnicalPanel({ block }: { block: BlockMeta }) {
@@ -132,12 +118,8 @@ export default function TechnicalPanel({ block }: { block: BlockMeta }) {
               className="flex items-center justify-between gap-2 border-b p-3 text-xs last:border-b-0"
             >
               <span className="font-mono">Oct 22, {12 + v}:00 UTC</span>
-              <Badge variant="secondary">
-                {newItem ? "Scheduled" : "Succeeded"}
-              </Badge>
-              {!newItem && (
-                <span className="text-muted-foreground">1.{v}s</span>
-              )}
+              <Badge variant="secondary">{newItem ? "Scheduled" : "Succeeded"}</Badge>
+              {!newItem && <span className="text-muted-foreground">1.{v}s</span>}
             </div>
           ))}
         </div>
@@ -190,9 +172,7 @@ export default function TechnicalPanel({ block }: { block: BlockMeta }) {
           onClick={() => {
             setRetry(true);
             toast.success(
-              /Failed/.test(n)
-                ? "Deployment retried successfully"
-                : "Rollout promoted to 100%",
+              /Failed/.test(n) ? "Deployment retried successfully" : "Rollout promoted to 100%",
             );
           }}
         >
@@ -248,32 +228,20 @@ export default function TechnicalPanel({ block }: { block: BlockMeta }) {
             <p className="text-xs font-medium">When incoming requests match…</p>
             {conditions.map((c, i) => (
               <div key={i} className="flex gap-2 rounded-lg border p-3">
-                <Input
-                  aria-label="Condition field"
-                  defaultValue={c}
-                  className="w-28 text-xs"
-                />
+                <Input aria-label="Condition field" defaultValue={c} className="w-28 text-xs" />
                 <Button
                   size="sm"
                   variant="outline"
-                  onClick={() =>
-                    setOperator(operator === "equals" ? "contains" : "equals")
-                  }
+                  onClick={() => setOperator(operator === "equals" ? "contains" : "equals")}
                 >
                   {operator}
                 </Button>
-                <Input
-                  aria-label="Condition value"
-                  placeholder="US"
-                  className="text-xs"
-                />
+                <Input aria-label="Condition value" placeholder="US" className="text-xs" />
                 <Button
                   variant="ghost"
                   size="icon-sm"
                   aria-label="Remove condition"
-                  onClick={() =>
-                    setConditions(conditions.filter((_, j) => i !== j))
-                  }
+                  onClick={() => setConditions(conditions.filter((_, j) => i !== j))}
                 >
                   <X />
                 </Button>
@@ -302,9 +270,7 @@ export default function TechnicalPanel({ block }: { block: BlockMeta }) {
           <h4 className="text-xs font-medium">Recent traffic preview</h4>
           <p className="mt-2 text-2xl font-semibold">
             1,284{" "}
-            <span className="text-xs font-normal text-muted-foreground">
-              matching requests
-            </span>
+            <span className="text-xs font-normal text-muted-foreground">matching requests</span>
           </p>
           <div className="mt-3 flex h-12 items-end gap-1">
             {Array.from({ length: 24 }, (_, i) => (
@@ -344,9 +310,7 @@ export default function TechnicalPanel({ block }: { block: BlockMeta }) {
           <>
             <div className="flex items-end justify-between">
               <div>
-                <p className="text-xs text-muted-foreground">
-                  Current availability
-                </p>
+                <p className="text-xs text-muted-foreground">Current availability</p>
                 <p className="mt-2 text-3xl font-semibold">
                   99.97<span className="text-lg">%</span>
                 </p>
@@ -359,9 +323,7 @@ export default function TechnicalPanel({ block }: { block: BlockMeta }) {
                 <span>72.4%</span>
               </div>
               <Progress value={72.4} />
-              <p className="mt-3 text-[10px] text-muted-foreground">
-                31m 16s remaining of 43m 12s
-              </p>
+              <p className="mt-3 text-[10px] text-muted-foreground">31m 16s remaining of 43m 12s</p>
             </div>
           </>
         )}
@@ -415,10 +377,7 @@ export default function TechnicalPanel({ block }: { block: BlockMeta }) {
             </Field>
             <Field>
               <FieldLabel>Database URL</FieldLabel>
-              <Input
-                type="password"
-                placeholder="postgresql://user:password@host:5432/db"
-              />
+              <Input type="password" placeholder="postgresql://user:password@host:5432/db" />
             </Field>
             <Button
               variant="outline"
@@ -464,12 +423,8 @@ export default function TechnicalPanel({ block }: { block: BlockMeta }) {
                 <TableBody>
                   {[1, 2, 3, 4, 5].map((i) => (
                     <TableRow key={i}>
-                      <TableCell className="font-mono text-xs">
-                        usr_00{i}
-                      </TableCell>
-                      <TableCell className="font-mono text-xs">
-                        u•••{i}@•••.com
-                      </TableCell>
+                      <TableCell className="font-mono text-xs">usr_00{i}</TableCell>
+                      <TableCell className="font-mono text-xs">u•••{i}@•••.com</TableCell>
                       <TableCell>
                         <Badge variant="outline">Active</Badge>
                       </TableCell>
@@ -490,10 +445,7 @@ export default function TechnicalPanel({ block }: { block: BlockMeta }) {
                 ["status", "enum", "Required"],
                 ["created_at", "timestamp", "Default: now()"],
               ].map(([f, t, d]) => (
-                <div
-                  key={f}
-                  className="flex items-center justify-between gap-3 text-xs"
-                >
+                <div key={f} className="flex items-center justify-between gap-3 text-xs">
                   <code>{f}</code>
                   <span className="text-muted-foreground">{t}</span>
                   <Badge variant="secondary">{d}</Badge>
@@ -514,9 +466,7 @@ export default function TechnicalPanel({ block }: { block: BlockMeta }) {
       <div className="rounded-lg border p-4">
         <p className="text-xs text-muted-foreground">Event type</p>
         <p className="mt-2 font-mono text-sm">workspace.settings.updated</p>
-        <p className="mt-2 text-xs text-muted-foreground">
-          Oct 22, 2026 · 12:04:32 UTC
-        </p>
+        <p className="mt-2 text-xs text-muted-foreground">Oct 22, 2026 · 12:04:32 UTC</p>
       </div>
       <Person name="Alex Morgan" sub="alex@acme.com · 203.0.113.10" />
       <Tabs defaultValue="diff">
@@ -549,8 +499,7 @@ export default function TechnicalPanel({ block }: { block: BlockMeta }) {
         </TabsContent>
         <TabsContent value="trace">
           <div className="rounded-lg border p-4 text-xs leading-7">
-            Request received → Authorized → Validated → Settings updated → Audit
-            recorded
+            Request received → Authorized → Validated → Settings updated → Audit recorded
           </div>
         </TabsContent>
       </Tabs>

@@ -22,12 +22,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
-} from "@/components/ui/field";
+import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field";
 import {
   Select,
   SelectContent,
@@ -38,13 +33,7 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -118,12 +107,7 @@ function TextField({
   return (
     <Field>
       <FieldLabel>{label}</FieldLabel>
-      <Input
-        type={type}
-        placeholder={placeholder}
-        defaultValue={defaultValue}
-        aria-label={label}
-      />
+      <Input type={type} placeholder={placeholder} defaultValue={defaultValue} aria-label={label} />
     </Field>
   );
 }
@@ -143,9 +127,7 @@ function ToggleRow({
         <label className="text-sm font-medium" htmlFor={title}>
           {title}
         </label>
-        <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-          {description}
-        </p>
+        <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{description}</p>
       </div>
       <Switch id={title} checked={on} onCheckedChange={setOn} />
     </div>
@@ -156,16 +138,8 @@ export function Connections({ compact = false }: { compact?: boolean }) {
   const [q, setQ] = useState("");
   return (
     <div className="flex flex-col gap-5">
-      <SearchInput
-        value={q}
-        onChange={setQ}
-        placeholder="Search integrations…"
-      />
-      <div
-        className={
-          compact ? "flex flex-col gap-1" : "grid gap-4 sm:grid-cols-2"
-        }
-      >
+      <SearchInput value={q} onChange={setQ} placeholder="Search integrations…" />
+      <div className={compact ? "flex flex-col gap-1" : "grid gap-4 sm:grid-cols-2"}>
         {connections
           .filter((c) => c[0].toLowerCase().includes(q.toLowerCase()))
           .map(([name, sub]) => (
@@ -178,9 +152,7 @@ export function Connections({ compact = false }: { compact?: boolean }) {
                 </Avatar>
                 <div className="flex-1">
                   <CardTitle className="text-sm">{name}</CardTitle>
-                  <CardDescription className="mt-1 text-xs">
-                    {sub}
-                  </CardDescription>
+                  <CardDescription className="mt-1 text-xs">{sub}</CardDescription>
                 </div>
                 {compact && (
                   <Button
@@ -188,9 +160,7 @@ export function Connections({ compact = false }: { compact?: boolean }) {
                     size="sm"
                     onClick={() => {
                       setConnected((v) =>
-                        v.includes(name)
-                          ? v.filter((n) => n !== name)
-                          : [...v, name],
+                        v.includes(name) ? v.filter((n) => n !== name) : [...v, name],
                       );
                       toast.success("Integration updated");
                     }}
@@ -209,9 +179,7 @@ export function Connections({ compact = false }: { compact?: boolean }) {
                     variant="outline"
                     onClick={() => {
                       setConnected((v) =>
-                        v.includes(name)
-                          ? v.filter((n) => n !== name)
-                          : [...v, name],
+                        v.includes(name) ? v.filter((n) => n !== name) : [...v, name],
                       );
                       toast.success("Integration updated");
                     }}
@@ -223,14 +191,11 @@ export function Connections({ compact = false }: { compact?: boolean }) {
             </Card>
           ))}
       </div>
-      {q &&
-        !connections.some((c) =>
-          c[0].toLowerCase().includes(q.toLowerCase()),
-        ) && (
-          <p className="py-8 text-center text-sm text-muted-foreground">
-            No integrations match “{q}”.
-          </p>
-        )}
+      {q && !connections.some((c) => c[0].toLowerCase().includes(q.toLowerCase())) && (
+        <p className="py-8 text-center text-sm text-muted-foreground">
+          No integrations match “{q}”.
+        </p>
+      )}
     </div>
   );
 }
@@ -240,9 +205,7 @@ function SecuritySettings() {
       <Card className="shadow-none">
         <CardHeader>
           <CardTitle className="text-base">Password & authentication</CardTitle>
-          <CardDescription>
-            Keep your account secure and control access.
-          </CardDescription>
+          <CardDescription>Keep your account secure and control access.</CardDescription>
         </CardHeader>
         <CardContent>
           <ToggleRow
@@ -276,25 +239,14 @@ function SecuritySettings() {
         <Badge variant="outline">Active now</Badge>
       </div>
       <FieldGroup>
-        <TextField
-          label="Current password"
-          type="password"
-          placeholder="••••••••"
-        />
-        <TextField
-          label="New password"
-          type="password"
-          placeholder="At least 8 characters"
-        />
+        <TextField label="Current password" type="password" placeholder="••••••••" />
+        <TextField label="New password" type="password" placeholder="At least 8 characters" />
       </FieldGroup>
     </div>
   );
 }
 function ApiKeys() {
-  const [keys, setKeys] = useState([
-    "Production API key",
-    "Development API key",
-  ]);
+  const [keys, setKeys] = useState(["Production API key", "Development API key"]);
   return (
     <div className="flex flex-col gap-5">
       <div className="flex items-start justify-between">
@@ -353,9 +305,7 @@ function NotificationSettings() {
   return (
     <>
       <h3 className="font-medium">Choose what you hear from us</h3>
-      <p className="mt-1 text-sm text-muted-foreground">
-        Manage how and when you receive updates.
-      </p>
+      <p className="mt-1 text-sm text-muted-foreground">Manage how and when you receive updates.</p>
       <div className="mt-4 divide-y">
         <ToggleRow
           title="Email notifications"
@@ -367,10 +317,7 @@ function NotificationSettings() {
           description="Get timely notifications on your device."
           checked
         />
-        <ToggleRow
-          title="Team activity"
-          description="Updates about projects you’re following."
-        />
+        <ToggleRow title="Team activity" description="Updates about projects you’re following." />
         <ToggleRow
           title="Weekly digest"
           description="A summary of everything that happened this week."
@@ -397,15 +344,11 @@ function Billing() {
                 Monthly
               </Badge>
             </CardTitle>
-            <CardDescription className="mt-2">
-              For growing teams with big ideas.
-            </CardDescription>
+            <CardDescription className="mt-2">For growing teams with big ideas.</CardDescription>
           </div>
           <p className="text-3xl font-semibold">
             $29
-            <span className="text-xs font-normal text-muted-foreground">
-              /month
-            </span>
+            <span className="text-xs font-normal text-muted-foreground">/month</span>
           </p>
         </CardHeader>
         <CardContent>
@@ -433,9 +376,7 @@ function Billing() {
           <CreditCard className="size-8" />
           <div>
             <p className="text-sm font-medium">Visa ending in 4242</p>
-            <p className="mt-1 text-xs text-muted-foreground">
-              Expires 06/2028
-            </p>
+            <p className="mt-1 text-xs text-muted-foreground">Expires 06/2028</p>
           </div>
         </div>
         <Button
@@ -451,10 +392,7 @@ function Billing() {
         </Button>
       </div>
       {["October 2026", "September 2026", "August 2026"].map((m) => (
-        <div
-          className="flex items-center justify-between border-b py-3 text-sm"
-          key={m}
-        >
+        <div className="flex items-center justify-between border-b py-3 text-sm" key={m}>
           <span>{m}</span>
           <Badge variant="outline">Paid</Badge>
           <span>$29.00</span>
@@ -462,10 +400,9 @@ function Billing() {
             variant="link"
             size="sm"
             onClick={() => {
-              const blob = new Blob(
-                [`Invoice ${m}\nAcme Pro subscription\nAmount: $29.00\nPaid`],
-                { type: "text/plain" },
-              );
+              const blob = new Blob([`Invoice ${m}\nAcme Pro subscription\nAmount: $29.00\nPaid`], {
+                type: "text/plain",
+              });
               const a = document.createElement("a");
               a.href = URL.createObjectURL(blob);
               a.download = "invoice.txt";
@@ -501,35 +438,24 @@ function ProfileFields() {
             <Upload />
             Upload photo
           </Button>
-          <p className="mt-2 text-xs text-muted-foreground">
-            JPG, GIF or PNG. 1MB max.
-          </p>
+          <p className="mt-2 text-xs text-muted-foreground">JPG, GIF or PNG. 1MB max.</p>
         </div>
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <TextField label="First name" defaultValue="Alex" />
         <TextField label="Last name" defaultValue="Morgan" />
       </div>
-      <TextField
-        label="Email address"
-        type="email"
-        defaultValue="alex@acme.com"
-      />
+      <TextField label="Email address" type="email" defaultValue="alex@acme.com" />
       <Field>
         <FieldLabel>Bio</FieldLabel>
         <Textarea
           defaultValue="Product designer building thoughtful digital experiences."
           rows={3}
         />
-        <FieldDescription>
-          Write a short introduction to share with your team.
-        </FieldDescription>
+        <FieldDescription>Write a short introduction to share with your team.</FieldDescription>
       </Field>
       <div className="grid gap-4 sm:grid-cols-2">
-        <Pick
-          label="Country"
-          options={["United States", "United Kingdom", "Germany", "Canada"]}
-        />
+        <Pick label="Country" options={["United States", "United Kingdom", "Germany", "Canada"]} />
         <Pick
           label="Timezone"
           options={[
@@ -549,25 +475,16 @@ function BusinessForm({ block }: { block: BlockMeta }) {
     <FieldGroup>
       {/Product/.test(name) ? (
         <>
-          <TextField
-            label="Product name"
-            placeholder="e.g. Everyday Backpack"
-          />
+          <TextField label="Product name" placeholder="e.g. Everyday Backpack" />
           <Field>
             <FieldLabel>Description</FieldLabel>
-            <Textarea
-              placeholder="Tell customers about your product…"
-              rows={4}
-            />
+            <Textarea placeholder="Tell customers about your product…" rows={4} />
           </Field>
           <div className="grid gap-4 sm:grid-cols-2">
             <TextField label="Price" placeholder="0.00" type="number" />
             <TextField label="SKU" placeholder="SKU-001" />
           </div>
-          <Pick
-            label="Category"
-            options={["Accessories", "Clothing", "Electronics", "Home"]}
-          />
+          <Pick label="Category" options={["Accessories", "Clothing", "Electronics", "Home"]} />
         </>
       ) : /Invoice/.test(name) ? (
         <>
@@ -576,28 +493,15 @@ function BusinessForm({ block }: { block: BlockMeta }) {
             <TextField label="Due date" type="date" defaultValue="2026-11-22" />
           </div>
           <TextField label="Bill to" placeholder="Customer or company name" />
-          <TextField
-            label="Customer email"
-            type="email"
-            placeholder="billing@company.com"
-          />
+          <TextField label="Customer email" type="email" placeholder="billing@company.com" />
           <div className="rounded-lg border p-4">
             <div className="mb-4 flex justify-between text-xs text-muted-foreground">
               <span>Item description</span>
               <span>Amount</span>
             </div>
             <div className="flex items-center justify-between">
-              <Input
-                aria-label="Line item"
-                placeholder="Design services"
-                className="mr-4"
-              />
-              <Input
-                aria-label="Amount"
-                type="number"
-                placeholder="1200"
-                className="w-24"
-              />
+              <Input aria-label="Line item" placeholder="Design services" className="mr-4" />
+              <Input aria-label="Amount" type="number" placeholder="1200" className="w-24" />
             </div>
             <div className="mt-5 flex justify-between border-t pt-4 text-sm font-medium">
               <span>Total</span>
@@ -608,14 +512,8 @@ function BusinessForm({ block }: { block: BlockMeta }) {
       ) : /Deploy/.test(name) ? (
         <>
           <TextField label="Application name" placeholder="my-awesome-app" />
-          <Pick
-            label="Git repository"
-            options={["acme/web-app", "acme/api", "acme/docs"]}
-          />
-          <Pick
-            label="Framework preset"
-            options={["Vite", "Next.js", "React", "Other"]}
-          />
+          <Pick label="Git repository" options={["acme/web-app", "acme/api", "acme/docs"]} />
+          <Pick label="Framework preset" options={["Vite", "Next.js", "React", "Other"]} />
           <div className="grid gap-4 sm:grid-cols-2">
             <TextField label="Build command" defaultValue="npm run build" />
             <TextField label="Output directory" defaultValue="dist" />
@@ -629,11 +527,7 @@ function BusinessForm({ block }: { block: BlockMeta }) {
             <TextField label="Registration number" placeholder="123456789" />
             <Pick
               label="Business type"
-              options={[
-                "Corporation",
-                "Limited liability company",
-                "Sole proprietor",
-              ]}
+              options={["Corporation", "Limited liability company", "Sole proprietor"]}
             />
           </div>
           <TextField label="Business address" placeholder="123 Market Street" />
@@ -648,10 +542,7 @@ function BusinessForm({ block }: { block: BlockMeta }) {
         </>
       ) : /Ticket/.test(name) ? (
         <>
-          <TextField
-            label="Ticket title"
-            defaultValue="Update onboarding flow"
-          />
+          <TextField label="Ticket title" defaultValue="Update onboarding flow" />
           <Field>
             <FieldLabel>Description</FieldLabel>
             <Textarea
@@ -660,50 +551,32 @@ function BusinessForm({ block }: { block: BlockMeta }) {
             />
           </Field>
           <div className="grid gap-4 sm:grid-cols-2">
-            <Pick
-              label="Priority"
-              options={["Medium", "High", "Urgent", "Low"]}
-            />
-            <Pick
-              label="Status"
-              options={["In progress", "Backlog", "In review", "Done"]}
-            />
+            <Pick label="Priority" options={["Medium", "High", "Urgent", "Low"]} />
+            <Pick label="Status" options={["In progress", "Backlog", "In review", "Done"]} />
           </div>
           <Pick
             label="Assignee"
-            options={[
-              "Olivia Rhye",
-              "Phoenix Baker",
-              "Lana Steiner",
-              "Unassigned",
-            ]}
+            options={["Olivia Rhye", "Phoenix Baker", "Lana Steiner", "Unassigned"]}
           />
         </>
       ) : /Invite|Role/.test(name) ? (
         <>
-          <TextField
-            label="Email address"
-            type="email"
-            placeholder="colleague@company.com"
-          />
+          <TextField label="Email address" type="email" placeholder="colleague@company.com" />
           <Pick label="Role" options={["Member", "Admin", "Viewer"]} />
           <Field>
             <FieldLabel>Message (optional)</FieldLabel>
             <Textarea placeholder="Welcome to the team!" />
           </Field>
-          {[
-            "View projects",
-            "Create and edit content",
-            "Invite members",
-            "Manage billing",
-          ].map((p, i) => (
-            <div className="flex items-center gap-2" key={p}>
-              <Checkbox defaultChecked={i < 2} id={p} />
-              <label htmlFor={p} className="text-sm">
-                {p}
-              </label>
-            </div>
-          ))}
+          {["View projects", "Create and edit content", "Invite members", "Manage billing"].map(
+            (p, i) => (
+              <div className="flex items-center gap-2" key={p}>
+                <Checkbox defaultChecked={i < 2} id={p} />
+                <label htmlFor={p} className="text-sm">
+                  {p}
+                </label>
+              </div>
+            ),
+          )}
         </>
       ) : (
         <ProfileFields />
@@ -713,21 +586,13 @@ function BusinessForm({ block }: { block: BlockMeta }) {
 }
 export function SettingsBlock({ block }: BlockProps) {
   const [section, setSection] = useState("General");
-  const integration =
-    /Integration|Connection|Connected|Import|App Connections/.test(block.name);
+  const integration = /Integration|Connection|Connected|Import|App Connections/.test(block.name);
   const security = /Security|Privacy|Auth/.test(block.name);
   const api = /API|Webhook/.test(block.name);
   const notifications = /Notification|Digest/.test(block.name);
   const billing = /Billing/.test(block.name);
   const profile = block.category === "profile";
-  const menu = [
-    "General",
-    "Profile",
-    "Notifications",
-    "Security",
-    "Connections",
-    "Billing",
-  ];
+  const menu = ["General", "Profile", "Notifications", "Security", "Connections", "Billing"];
   const actual =
     section === "General"
       ? integration
@@ -747,13 +612,7 @@ export function SettingsBlock({ block }: BlockProps) {
   return (
     <div className="mx-auto flex min-h-[570px] max-w-5xl flex-col gap-7 p-6 md:p-9">
       <Head
-        title={
-          profile
-            ? "Account settings"
-            : block.category === "form"
-              ? block.name
-              : "Settings"
-        }
+        title={profile ? "Account settings" : block.category === "form" ? block.name : "Settings"}
         description="Manage your account and workspace preferences."
         action=""
       />
@@ -765,13 +624,7 @@ export function SettingsBlock({ block }: BlockProps) {
             toast.success("Changes saved");
           }}
         >
-          {api ? (
-            <ApiKeys />
-          ) : security ? (
-            <SecuritySettings />
-          ) : (
-            <BusinessForm block={block} />
-          )}
+          {api ? <ApiKeys /> : security ? <SecuritySettings /> : <BusinessForm block={block} />}
           <Separator />
           <div className="flex justify-end gap-2">
             <Button type="reset" variant="outline">
@@ -834,14 +687,8 @@ export function SettingsBlock({ block }: BlockProps) {
               <ProfileFields />
             ) : (
               <FieldGroup>
-                <TextField
-                  label="Workspace name"
-                  defaultValue="Acme Workspace"
-                />
-                <TextField
-                  label="Workspace URL"
-                  defaultValue="acme.app/workspace"
-                />
+                <TextField label="Workspace name" defaultValue="Acme Workspace" />
+                <TextField label="Workspace URL" defaultValue="acme.app/workspace" />
                 <Field>
                   <FieldLabel>Workspace description</FieldLabel>
                   <Textarea defaultValue="A shared space for our team to plan, build and grow." />
@@ -856,10 +703,7 @@ export function SettingsBlock({ block }: BlockProps) {
                       "Français",
                     ]}
                   />
-                  <Pick
-                    label="Start of week"
-                    options={["Monday", "Sunday", "Saturday"]}
-                  />
+                  <Pick label="Start of week" options={["Monday", "Sunday", "Saturday"]} />
                 </div>
                 <ToggleRow
                   title="Public workspace"
@@ -887,12 +731,7 @@ export function WizardBlock({ block }: BlockProps) {
   const isBilling = /Billing|Upgrade|Transfer/.test(block.name);
   const steps = isBilling
     ? ["Choose your plan", "Billing details", "Review & confirm"]
-    : [
-        "Workspace details",
-        "Invite your team",
-        "Connect your tools",
-        "Ready to launch",
-      ];
+    : ["Workspace details", "Invite your team", "Connect your tools", "Ready to launch"];
   return (
     <div className="flex min-h-[620px] bg-background">
       <aside className="hidden w-64 shrink-0 flex-col border-r bg-muted/30 p-7 md:flex">
@@ -909,17 +748,13 @@ export function WizardBlock({ block }: BlockProps) {
               >
                 {i < step ? <Check className="size-3" /> : i + 1}
               </span>
-              <span
-                className={`text-sm ${i === step ? "font-medium" : "text-muted-foreground"}`}
-              >
+              <span className={`text-sm ${i === step ? "font-medium" : "text-muted-foreground"}`}>
                 {s}
               </span>
             </div>
           ))}
         </div>
-        <p className="mt-auto pt-12 text-xs text-muted-foreground">
-          Need help? support@acme.com
-        </p>
+        <p className="mt-auto pt-12 text-xs text-muted-foreground">Need help? support@acme.com</p>
       </aside>
       <div className="flex flex-1 items-center justify-center p-7">
         <div className="w-full max-w-lg">
@@ -945,13 +780,8 @@ export function WizardBlock({ block }: BlockProps) {
               <p className="text-xs text-muted-foreground">
                 Step {step + 1} of {steps.length}
               </p>
-              <Progress
-                className="my-4 h-1"
-                value={((step + 1) / steps.length) * 100}
-              />
-              <h2 className="mt-7 text-2xl font-semibold tracking-tight">
-                {steps[step]}
-              </h2>
+              <Progress className="my-4 h-1" value={((step + 1) / steps.length) * 100} />
+              <h2 className="mt-7 text-2xl font-semibold tracking-tight">{steps[step]}</h2>
               <p className="mb-7 mt-2 text-sm text-muted-foreground">
                 {step === 0
                   ? "Make this space your own. You can change these details later."
@@ -973,39 +803,31 @@ export function WizardBlock({ block }: BlockProps) {
                 {isBilling ? (
                   step === 0 ? (
                     <div className="grid gap-3">
-                      {[
-                        "Starter · $0 / month",
-                        "Pro · $29 / month",
-                        "Business · $99 / month",
-                      ].map((p, i) => (
-                        <label
-                          key={p}
-                          className="flex cursor-pointer items-center gap-3 rounded-lg border p-5 text-sm"
-                        >
-                          <Checkbox
-                            checked={selectedPlan === i}
-                            onCheckedChange={() => setSelectedPlan(i)}
-                            aria-label={p}
-                          />
-                          {p}
-                          {i === 1 && (
-                            <Badge variant="secondary" className="ml-auto">
-                              Popular
-                            </Badge>
-                          )}
-                        </label>
-                      ))}
+                      {["Starter · $0 / month", "Pro · $29 / month", "Business · $99 / month"].map(
+                        (p, i) => (
+                          <label
+                            key={p}
+                            className="flex cursor-pointer items-center gap-3 rounded-lg border p-5 text-sm"
+                          >
+                            <Checkbox
+                              checked={selectedPlan === i}
+                              onCheckedChange={() => setSelectedPlan(i)}
+                              aria-label={p}
+                            />
+                            {p}
+                            {i === 1 && (
+                              <Badge variant="secondary" className="ml-auto">
+                                Popular
+                              </Badge>
+                            )}
+                          </label>
+                        ),
+                      )}
                     </div>
                   ) : step === 1 ? (
                     <FieldGroup>
-                      <TextField
-                        label="Name on card"
-                        placeholder="Alex Morgan"
-                      />
-                      <TextField
-                        label="Card number"
-                        placeholder="4242 4242 4242 4242"
-                      />
+                      <TextField label="Name on card" placeholder="Alex Morgan" />
+                      <TextField label="Card number" placeholder="4242 4242 4242 4242" />
                       <div className="grid grid-cols-2 gap-4">
                         <TextField label="Expiry date" placeholder="MM / YY" />
                         <TextField label="CVC" placeholder="123" />
@@ -1016,28 +838,14 @@ export function WizardBlock({ block }: BlockProps) {
                   )
                 ) : step === 0 ? (
                   <FieldGroup>
-                    <TextField
-                      label="Workspace name"
-                      placeholder="Your company name"
-                    />
+                    <TextField label="Workspace name" placeholder="Your company name" />
                     <Pick
                       label="What best describes your role?"
-                      options={[
-                        "Designer",
-                        "Developer",
-                        "Product manager",
-                        "Founder",
-                        "Other",
-                      ]}
+                      options={["Designer", "Developer", "Product manager", "Founder", "Other"]}
                     />
                     <Pick
                       label="Team size"
-                      options={[
-                        "1–10 people",
-                        "11–50 people",
-                        "51–200 people",
-                        "200+ people",
-                      ]}
+                      options={["1–10 people", "11–50 people", "51–200 people", "200+ people"]}
                     />
                   </FieldGroup>
                 ) : step === 1 ? (
@@ -1052,25 +860,20 @@ export function WizardBlock({ block }: BlockProps) {
                       type="email"
                       placeholder="another@company.com"
                     />
-                    <Pick
-                      label="Default role"
-                      options={["Member", "Admin", "Viewer"]}
-                    />
+                    <Pick label="Default role" options={["Member", "Admin", "Viewer"]} />
                   </FieldGroup>
                 ) : step === 2 ? (
                   <Connections compact />
                 ) : (
                   <div className="flex flex-col gap-4 rounded-lg border p-6">
-                    {[
-                      "Workspace configured",
-                      "Team invitations ready",
-                      "Tools connected",
-                    ].map((t) => (
-                      <div key={t} className="flex gap-3 text-sm">
-                        <Check className="size-4" />
-                        {t}
-                      </div>
-                    ))}
+                    {["Workspace configured", "Team invitations ready", "Tools connected"].map(
+                      (t) => (
+                        <div key={t} className="flex gap-3 text-sm">
+                          <Check className="size-4" />
+                          {t}
+                        </div>
+                      ),
+                    )}
                   </div>
                 )}
                 <Separator />
@@ -1108,16 +911,12 @@ export function DialogBlock({ block }: BlockProps) {
   const cancel = /Cancel/.test(block.name);
   const content = (
     <div className="flex flex-col gap-6 py-4">
-      {/Cron|Deploy|Rollout|Firewall|SLO|Error Budget|Data|Connection|Audit/.test(
-        block.name,
-      ) && isSheet ? (
+      {/Cron|Deploy|Rollout|Firewall|SLO|Error Budget|Data|Connection|Audit/.test(block.name) &&
+      isSheet ? (
         <TechnicalPanel block={block} />
       ) : invite ? (
         <FieldGroup>
-          <TextField
-            label="Email addresses"
-            placeholder="name@company.com, name@company.com"
-          />
+          <TextField label="Email addresses" placeholder="name@company.com, name@company.com" />
           <Pick label="Role" options={["Member", "Admin", "Viewer"]} />
           <Field>
             <FieldLabel>Personal message</FieldLabel>
@@ -1125,9 +924,7 @@ export function DialogBlock({ block }: BlockProps) {
           </Field>
           <div className="flex items-center gap-2 text-sm">
             <Team />
-            <span className="text-muted-foreground">
-              12 people are already on your team
-            </span>
+            <span className="text-muted-foreground">12 people are already on your team</span>
           </div>
         </FieldGroup>
       ) : checklist ? (
@@ -1138,17 +935,12 @@ export function DialogBlock({ block }: BlockProps) {
             "Connect your integrations",
             "Publish your first project",
           ].map((t) => (
-            <div
-              key={t}
-              className="flex items-center gap-3 rounded-lg border p-3"
-            >
+            <div key={t} className="flex items-center gap-3 rounded-lg border p-3">
               <Checkbox
                 id={t}
                 checked={checked.includes(t)}
                 onCheckedChange={(v) =>
-                  setChecked(
-                    v ? [...checked, t] : checked.filter((x) => x !== t),
-                  )
+                  setChecked(v ? [...checked, t] : checked.filter((x) => x !== t))
                 }
               />
               <label htmlFor={t} className="text-sm">
@@ -1171,10 +963,7 @@ export function DialogBlock({ block }: BlockProps) {
             "I’m not using it enough",
             "Other reason",
           ].map((t, i) => (
-            <label
-              key={t}
-              className="flex items-center gap-3 rounded-lg border p-3 text-sm"
-            >
+            <label key={t} className="flex items-center gap-3 rounded-lg border p-3 text-sm">
               <Checkbox defaultChecked={!i} aria-label={t} />
               {t}
             </label>
@@ -1195,9 +984,7 @@ export function DialogBlock({ block }: BlockProps) {
               </Avatar>
               <div>
                 <p className="text-sm">{t}</p>
-                <p className="mt-1 text-xs text-muted-foreground">
-                  {i + 1} hours ago
-                </p>
+                <p className="mt-1 text-xs text-muted-foreground">{i + 1} hours ago</p>
               </div>
             </div>
           ))}
@@ -1205,8 +992,8 @@ export function DialogBlock({ block }: BlockProps) {
       ) : /Chat|Copilot/.test(block.name) ? (
         <>
           <div className="rounded-lg bg-muted p-4 text-sm leading-relaxed">
-            Hi Alex! I can help you explore your workspace, summarize activity,
-            and answer questions. What would you like to work on?
+            Hi Alex! I can help you explore your workspace, summarize activity, and answer
+            questions. What would you like to work on?
           </div>
           <Textarea
             placeholder="Ask a question…"
@@ -1225,9 +1012,7 @@ export function DialogBlock({ block }: BlockProps) {
           ].map(([t, k]) => (
             <div key={t} className="flex justify-between text-sm">
               <span>{t}</span>
-              <kbd className="rounded border bg-muted px-2 py-1 text-xs">
-                {k}
-              </kbd>
+              <kbd className="rounded border bg-muted px-2 py-1 text-xs">{k}</kbd>
             </div>
           ))}
         </div>
@@ -1248,10 +1033,7 @@ export function DialogBlock({ block }: BlockProps) {
             <Pick label="Status" options={["Active", "Draft", "Archived"]} />
             <Pick label="Visibility" options={["Private", "Team", "Public"]} />
           </div>
-          <Pick
-            label="Owner"
-            options={["Alex Morgan", "Olivia Rhye", "Phoenix Baker"]}
-          />
+          <Pick label="Owner" options={["Alex Morgan", "Olivia Rhye", "Phoenix Baker"]} />
         </FieldGroup>
       )}
       <div className="flex justify-end gap-2">
@@ -1290,9 +1072,7 @@ export function DialogBlock({ block }: BlockProps) {
       <Card className="w-full max-w-lg shadow-sm">
         <CardHeader>
           <CardTitle className="text-base">{block.name}</CardTitle>
-          <CardDescription>
-            Manage the details of your workspace.
-          </CardDescription>
+          <CardDescription>Manage the details of your workspace.</CardDescription>
         </CardHeader>
         <CardContent>{content}</CardContent>
       </Card>
@@ -1307,9 +1087,7 @@ export function DialogBlock({ block }: BlockProps) {
           <SheetContent className="w-full overflow-y-auto sm:max-w-lg">
             <SheetHeader>
               <SheetTitle>{block.name}</SheetTitle>
-              <SheetDescription>
-                Manage the details of your workspace.
-              </SheetDescription>
+              <SheetDescription>Manage the details of your workspace.</SheetDescription>
             </SheetHeader>
             <div className="px-6">{content}</div>
           </SheetContent>

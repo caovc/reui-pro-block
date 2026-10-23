@@ -1,10 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import type {
-  ClipboardEvent,
-  FormEvent,
-  KeyboardEvent,
-  MouseEvent,
-} from "react";
+import type { ClipboardEvent, FormEvent, KeyboardEvent, MouseEvent } from "react";
 import {
   AlignLeft,
   ArrowDownToLine,
@@ -41,11 +36,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   Select,
   SelectContent,
@@ -92,10 +83,7 @@ const initialRevisions: Revision[] = [
 function escapeHtml(value: string) {
   return value.replace(
     /[&<>"']/g,
-    (c) =>
-      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[
-        c
-      ] ?? c,
+    (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c] ?? c,
   );
 }
 function initialDocument(kind: number) {
@@ -158,26 +146,16 @@ export default function RichEditorBlock({ block }: BlockProps) {
   const [comment, setComment] = useState("");
   const [showResolved, setShowResolved] = useState(false);
   const [online, setOnline] = useState(true);
-  const [revisions, setRevisions] = useState<Revision[]>(
-    kind === 3 ? initialRevisions : [],
-  );
+  const [revisions, setRevisions] = useState<Revision[]>(kind === 3 ? initialRevisions : []);
   const [suggesting, setSuggesting] = useState(kind === 3);
   const [replacement, setReplacement] = useState("");
-  const [prompt, setPrompt] = useState(
-    "Make this more concise and actionable.",
-  );
+  const [prompt, setPrompt] = useState("Make this more concise and actionable.");
   const [suggestion, setSuggestion] = useState("");
   const [running, setRunning] = useState(false);
   const [trace, setTrace] = useState(0);
   const [aiBase, setAiBase] = useState("");
   const [panel, setPanel] = useState(
-    kind === 3
-      ? "review"
-      : kind === 4
-        ? "comments"
-        : kind === 5
-          ? "assistant"
-          : "outline",
+    kind === 3 ? "review" : kind === 4 ? "comments" : kind === 5 ? "assistant" : "outline",
   );
 
   useEffect(() => {
@@ -191,13 +169,11 @@ export default function RichEditorBlock({ block }: BlockProps) {
     setCanUndo(false);
     setCanRedo(false);
     setOutline(
-      Array.from(editor.current.querySelectorAll("h1,h2,h3")).map(
-        (node, index) => ({
-          title: node.textContent ?? "",
-          level: Number(node.tagName[1]),
-          index,
-        }),
-      ),
+      Array.from(editor.current.querySelectorAll("h1,h2,h3")).map((node, index) => ({
+        title: node.textContent ?? "",
+        level: Number(node.tagName[1]),
+        index,
+      })),
     );
     return () => {
       if (timer.current) clearInterval(timer.current);
@@ -215,21 +191,16 @@ export default function RichEditorBlock({ block }: BlockProps) {
     setDocumentHtml(html);
     setIsSaved(false);
     setOutline(
-      Array.from(editor.current?.querySelectorAll("h1,h2,h3") ?? []).map(
-        (node, index) => ({
-          title: node.textContent ?? "",
-          level: Number(node.tagName[1]),
-          index,
-        }),
-      ),
+      Array.from(editor.current?.querySelectorAll("h1,h2,h3") ?? []).map((node, index) => ({
+        title: node.textContent ?? "",
+        level: Number(node.tagName[1]),
+        index,
+      })),
     );
   }
   function saveSelection() {
     const selection = window.getSelection();
-    if (
-      selection?.rangeCount &&
-      editor.current?.contains(selection.anchorNode)
-    ) {
+    if (selection?.rangeCount && editor.current?.contains(selection.anchorNode)) {
       savedRange.current = selection.getRangeAt(0).cloneRange();
       setSelectedText(selection.toString());
       setActive({
@@ -244,10 +215,7 @@ export default function RichEditorBlock({ block }: BlockProps) {
     const selection = window.getSelection();
     if (!selection) return;
     selection.removeAllRanges();
-    if (
-      savedRange.current &&
-      editor.current?.contains(savedRange.current.commonAncestorContainer)
-    )
+    if (savedRange.current && editor.current?.contains(savedRange.current.commonAncestorContainer))
       selection.addRange(savedRange.current);
     else if (editor.current) {
       const range = document.createRange();
@@ -305,10 +273,8 @@ export default function RichEditorBlock({ block }: BlockProps) {
     setRevisions(
       ids.map((id) => ({
         id,
-        before:
-          root.querySelector(`del[data-revision="${id}"]`)?.textContent ?? "",
-        after:
-          root.querySelector(`ins[data-revision="${id}"]`)?.textContent ?? "",
+        before: root.querySelector(`del[data-revision="${id}"]`)?.textContent ?? "",
+        after: root.querySelector(`ins[data-revision="${id}"]`)?.textContent ?? "",
         author:
           revisions.find((item) => item.id === id)?.author ??
           initialRevisions.find((item) => item.id === id)?.author ??
@@ -339,12 +305,7 @@ export default function RichEditorBlock({ block }: BlockProps) {
     savedRange.current = null;
     refreshRevisionsFromDocument();
   }
-  function insertRevision(
-    range: Range,
-    id: string,
-    before: string,
-    after: string,
-  ) {
+  function insertRevision(range: Range, id: string, before: string, after: string) {
     range.deleteContents();
     const fragment = document.createDocumentFragment();
     if (before) {
@@ -385,11 +346,7 @@ export default function RichEditorBlock({ block }: BlockProps) {
     )
       return;
     const selection = window.getSelection();
-    if (
-      !selection?.rangeCount ||
-      !editor.current?.contains(selection.anchorNode)
-    )
-      return;
+    if (!selection?.rangeCount || !editor.current?.contains(selection.anchorNode)) return;
     const range = selection.getRangeAt(0);
     const parent =
       range.startContainer instanceof Element
@@ -401,10 +358,7 @@ export default function RichEditorBlock({ block }: BlockProps) {
     const before = selection.toString();
     const id = `typed-${documentHtml.length}-${revisions.length}`;
     insertRevision(range, id, before, event.data);
-    setRevisions([
-      ...revisions,
-      { id, before, after: event.data, author: "Alex Morgan" },
-    ]);
+    setRevisions([...revisions, { id, before, after: event.data, author: "Alex Morgan" }]);
   }
 
   // The native beforeinput event exposes inputType consistently for contenteditable.
@@ -426,11 +380,7 @@ export default function RichEditorBlock({ block }: BlockProps) {
     )
       return false;
     const selection = window.getSelection();
-    if (
-      !selection?.rangeCount ||
-      !editor.current?.contains(selection.anchorNode)
-    )
-      return false;
+    if (!selection?.rangeCount || !editor.current?.contains(selection.anchorNode)) return false;
     const range = selection.getRangeAt(0).cloneRange();
     const parent =
       range.startContainer instanceof Element
@@ -440,10 +390,7 @@ export default function RichEditorBlock({ block }: BlockProps) {
     if (range.collapsed && range.startContainer instanceof Text) {
       if (e.key === "Backspace" && range.startOffset > 0)
         range.setStart(range.startContainer, range.startOffset - 1);
-      else if (
-        e.key === "Delete" &&
-        range.endOffset < range.endContainer.textContent!.length
-      )
+      else if (e.key === "Delete" && range.endOffset < range.endContainer.textContent!.length)
         range.setEnd(range.endContainer, range.endOffset + 1);
     }
     const before = range.toString();
@@ -452,10 +399,7 @@ export default function RichEditorBlock({ block }: BlockProps) {
     savedRange.current = range;
     const id = `deleted-${documentHtml.length}-${revisions.length}`;
     insertRevision(range, id, before, "");
-    setRevisions([
-      ...revisions,
-      { id, before, after: "", author: "Alex Morgan" },
-    ]);
+    setRevisions([...revisions, { id, before, after: "", author: "Alex Morgan" }]);
     return true;
   }
   function onKeyDown(e: KeyboardEvent<HTMLDivElement>) {
@@ -499,10 +443,7 @@ export default function RichEditorBlock({ block }: BlockProps) {
       const before = selection.toString();
       const id = `paste-${documentHtml.length}-${revisions.length}`;
       insertRevision(selection.getRangeAt(0), id, before, text);
-      setRevisions([
-        ...revisions,
-        { id, before, after: text, author: "Alex Morgan" },
-      ]);
+      setRevisions([...revisions, { id, before, after: text, author: "Alex Morgan" }]);
     } else {
       document.execCommand("insertText", false, text);
       snapshot();
@@ -547,9 +488,7 @@ export default function RichEditorBlock({ block }: BlockProps) {
     if (!root) return;
     const changes = root.querySelectorAll(`[data-revision="${id}"]`);
     changes.forEach((node) => {
-      const keep =
-        (accept && node.tagName === "INS") ||
-        (!accept && node.tagName === "DEL");
+      const keep = (accept && node.tagName === "INS") || (!accept && node.tagName === "DEL");
       if (keep) node.replaceWith(...Array.from(node.childNodes));
       else node.remove();
     });
@@ -595,8 +534,7 @@ export default function RichEditorBlock({ block }: BlockProps) {
             .replace(
               /a more thoughtful product experience/g,
               "a clear, thoughtful product experience",
-            ) +
-          " Set a clear goal, share the first draft, and improve it together.";
+            ) + " Set a clear goal, share the first draft, and improve it together.";
     let index = 0;
     timer.current = setInterval(() => {
       index += 6;
@@ -614,10 +552,7 @@ export default function RichEditorBlock({ block }: BlockProps) {
     if (!suggestion || running) return;
     restoreSelection();
     if (selectedText) command("insertText", suggestion);
-    else
-      insertHtml(
-        `<h2>Suggested direction</h2><p>${escapeHtml(suggestion)}</p>`,
-      );
+    else insertHtml(`<h2>Suggested direction</h2><p>${escapeHtml(suggestion)}</p>`);
     setSuggestion("");
     toast.success("Suggestion applied to the document");
   }
@@ -631,9 +566,7 @@ export default function RichEditorBlock({ block }: BlockProps) {
     URL.revokeObjectURL(anchor.href);
     toast.success("HTML document downloaded");
   }
-  const plainText = documentHtml
-    .replace(/<[^>]*>/g, " ")
-    .replace(/&[^;]+;/g, " ");
+  const plainText = documentHtml.replace(/<[^>]*>/g, " ").replace(/&[^;]+;/g, " ");
   const words = plainText.trim().split(/\s+/).filter(Boolean).length;
   const showSidebar = kind > 1;
   const insertItems = [
@@ -654,12 +587,7 @@ export default function RichEditorBlock({ block }: BlockProps) {
       "insertHTML",
       "<table><tbody><tr><th>Column 1</th><th>Column 2</th><th>Column 3</th></tr><tr><td>Write here</td><td>Write here</td><td>Write here</td></tr><tr><td>Write here</td><td>Write here</td><td>Write here</td></tr></tbody></table><p><br></p>",
     ],
-    [
-      "Code block",
-      Code2,
-      "insertHTML",
-      "<pre><code>// Add your code here</code></pre><p><br></p>",
-    ],
+    ["Code block", Code2, "insertHTML", "<pre><code>// Add your code here</code></pre><p><br></p>"],
   ] as const;
   return (
     <div className="reui-editor flex min-h-[730px] flex-col bg-background">
@@ -747,14 +675,8 @@ export default function RichEditorBlock({ block }: BlockProps) {
           <Redo2 />
         </Button>
         <Separator orientation="vertical" className="mx-1 h-5" />
-        <Select
-          defaultValue="p"
-          onValueChange={(v) => command("formatBlock", v)}
-        >
-          <SelectTrigger
-            aria-label="Text style"
-            className="h-8 w-28 border-0 shadow-none"
-          >
+        <Select defaultValue="p" onValueChange={(v) => command("formatBlock", v)}>
+          <SelectTrigger aria-label="Text style" className="h-8 w-28 border-0 shadow-none">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -888,9 +810,7 @@ export default function RichEditorBlock({ block }: BlockProps) {
           </Button>
         )}
       </div>
-      <div
-        className={`grid flex-1 ${showSidebar && panel ? "xl:grid-cols-[1fr_290px]" : ""}`}
-      >
+      <div className={`grid flex-1 ${showSidebar && panel ? "xl:grid-cols-[1fr_290px]" : ""}`}>
         <main className="relative min-w-0 bg-muted/20 p-4 sm:p-7">
           {kind === 2 && (
             <div className="mx-auto mb-3 flex max-w-3xl items-center justify-between text-[10px] text-muted-foreground">
@@ -901,9 +821,7 @@ export default function RichEditorBlock({ block }: BlockProps) {
           {(slash || mentions) && (
             <div className="mx-auto mb-3 flex max-w-3xl flex-col gap-1 rounded-lg border bg-background p-3 shadow-sm">
               <div className="mb-1 flex items-center justify-between px-2 text-xs font-medium">
-                <span>
-                  {mentions ? "Mention a teammate" : "Insert a block"}
-                </span>
+                <span>{mentions ? "Mention a teammate" : "Insert a block"}</span>
                 <Button
                   size="icon-sm"
                   variant="ghost"
@@ -917,21 +835,19 @@ export default function RichEditorBlock({ block }: BlockProps) {
                 </Button>
               </div>
               {mentions
-                ? ["Olivia Rhye", "Phoenix Baker", "Lana Steiner"].map(
-                    (name) => (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="justify-start"
-                        key={name}
-                        onMouseDown={keepSelection}
-                        onClick={() => insertMention(name)}
-                      >
-                        <Users />
-                        {name}
-                      </Button>
-                    ),
-                  )
+                ? ["Olivia Rhye", "Phoenix Baker", "Lana Steiner"].map((name) => (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="justify-start"
+                      key={name}
+                      onMouseDown={keepSelection}
+                      onClick={() => insertMention(name)}
+                    >
+                      <Users />
+                      {name}
+                    </Button>
+                  ))
                 : insertItems.map(([label, Icon, action, value]) => (
                     <Button
                       variant="ghost"
@@ -969,11 +885,7 @@ export default function RichEditorBlock({ block }: BlockProps) {
                   pressed={active.italic}
                 />
                 {kind === 4 && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setPanel("comments")}
-                  >
+                  <Button variant="ghost" size="sm" onClick={() => setPanel("comments")}>
                     <MessageSquare />
                     Comment
                   </Button>
@@ -996,17 +908,13 @@ export default function RichEditorBlock({ block }: BlockProps) {
                   revisions.map((r) => ({
                     ...r,
                     after:
-                      root?.querySelector(`ins[data-revision="${r.id}"]`)
-                        ?.textContent ?? r.after,
+                      root?.querySelector(`ins[data-revision="${r.id}"]`)?.textContent ?? r.after,
                   })),
                 );
               }}
               onClick={(event) => {
                 const target = event.target;
-                if (
-                  target instanceof HTMLInputElement &&
-                  target.type === "checkbox"
-                ) {
+                if (target instanceof HTMLInputElement && target.type === "checkbox") {
                   if (target.checked) target.setAttribute("checked", "");
                   else target.removeAttribute("checked");
                   snapshot();
@@ -1028,10 +936,7 @@ export default function RichEditorBlock({ block }: BlockProps) {
                   <h3 className="text-xs font-semibold">On this page</h3>
                   <List className="size-4 text-muted-foreground" />
                 </div>
-                <nav
-                  className="flex flex-col gap-1"
-                  aria-label="Document outline"
-                >
+                <nav className="flex flex-col gap-1" aria-label="Document outline">
                   {outline.map((item) => (
                     <Button
                       variant="ghost"
@@ -1040,10 +945,7 @@ export default function RichEditorBlock({ block }: BlockProps) {
                       style={{ paddingLeft: 8 + (item.level - 1) * 10 }}
                       key={item.index}
                       onClick={() => {
-                        const node =
-                          editor.current?.querySelectorAll("h1,h2,h3")[
-                            item.index
-                          ];
+                        const node = editor.current?.querySelectorAll("h1,h2,h3")[item.index];
                         node?.scrollIntoView({
                           behavior: "smooth",
                           block: "center",
@@ -1063,8 +965,8 @@ export default function RichEditorBlock({ block }: BlockProps) {
                 </nav>
                 <Separator />
                 <p className="text-[10px] leading-5 text-muted-foreground">
-                  Use the formatting toolbar, type / for blocks, or @ to mention
-                  a teammate. Tables and headings are editable in place.
+                  Use the formatting toolbar, type / for blocks, or @ to mention a teammate. Tables
+                  and headings are editable in place.
                 </p>
               </>
             )}
@@ -1075,8 +977,8 @@ export default function RichEditorBlock({ block }: BlockProps) {
                   <Badge variant="secondary">{revisions.length}</Badge>
                 </div>
                 <p className="text-[10px] leading-5 text-muted-foreground">
-                  Review each change before finalizing the agreement. This
-                  review stays in your current session.
+                  Review each change before finalizing the agreement. This review stays in your
+                  current session.
                 </p>
                 {revisions.length === 0 && (
                   <div className="rounded-lg border p-4 text-xs text-muted-foreground">
@@ -1084,14 +986,9 @@ export default function RichEditorBlock({ block }: BlockProps) {
                   </div>
                 )}
                 {revisions.map((r) => (
-                  <div
-                    className="flex flex-col gap-3 rounded-lg border p-3"
-                    key={r.id}
-                  >
+                  <div className="flex flex-col gap-3 rounded-lg border p-3" key={r.id}>
                     <p className="text-xs font-medium">{r.author}</p>
-                    <p className="text-[10px] text-muted-foreground">
-                      Suggested a replacement
-                    </p>
+                    <p className="text-[10px] text-muted-foreground">Suggested a replacement</p>
                     <div className="rounded bg-muted/50 p-2 text-xs leading-6">
                       <del>{r.before}</del>
                       <br />
@@ -1139,11 +1036,7 @@ export default function RichEditorBlock({ block }: BlockProps) {
                       onChange={(e) => setReplacement(e.target.value)}
                       rows={3}
                     />
-                    <Button
-                      size="sm"
-                      type="submit"
-                      disabled={!replacement.trim() || !selectedText}
-                    >
+                    <Button size="sm" type="submit" disabled={!replacement.trim() || !selectedText}>
                       Suggest edit
                       <ArrowRight />
                     </Button>
@@ -1161,11 +1054,7 @@ export default function RichEditorBlock({ block }: BlockProps) {
                 </div>
                 <div className="flex items-center justify-between rounded-lg bg-muted/30 p-3 text-[10px]">
                   <span className="flex items-center gap-1.5">
-                    {online ? (
-                      <Wifi className="size-3" />
-                    ) : (
-                      <WifiOff className="size-3" />
-                    )}
+                    {online ? <Wifi className="size-3" /> : <WifiOff className="size-3" />}
                     {online ? "Local collaboration demo" : "Offline demo"}
                   </span>
                   <Switch
@@ -1183,18 +1072,12 @@ export default function RichEditorBlock({ block }: BlockProps) {
                 </div>
                 <label className="flex items-center justify-between text-[10px] text-muted-foreground">
                   Show resolved
-                  <Switch
-                    checked={showResolved}
-                    onCheckedChange={setShowResolved}
-                  />
+                  <Switch checked={showResolved} onCheckedChange={setShowResolved} />
                 </label>
                 {comments
                   .filter((c) => showResolved || !c.resolved)
                   .map((c) => (
-                    <div
-                      className="flex flex-col gap-3 rounded-lg border p-3"
-                      key={c.id}
-                    >
+                    <div className="flex flex-col gap-3 rounded-lg border p-3" key={c.id}>
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-medium">{c.author}</span>
                         <Button
@@ -1204,9 +1087,7 @@ export default function RichEditorBlock({ block }: BlockProps) {
                           onClick={() =>
                             setComments(
                               comments.map((v) =>
-                                v.id === c.id
-                                  ? { ...v, resolved: !v.resolved }
-                                  : v,
+                                v.id === c.id ? { ...v, resolved: !v.resolved } : v,
                               ),
                             )
                           }
@@ -1242,8 +1123,8 @@ export default function RichEditorBlock({ block }: BlockProps) {
                   </Button>
                 </form>
                 <p className="text-[10px] leading-5 text-muted-foreground">
-                  Presence and comments are simulated locally. No network
-                  collaboration service is connected.
+                  Presence and comments are simulated locally. No network collaboration service is
+                  connected.
                 </p>
               </>
             )}
@@ -1257,8 +1138,7 @@ export default function RichEditorBlock({ block }: BlockProps) {
                   <Badge variant="outline">Local demo</Badge>
                 </div>
                 <p className="text-[10px] leading-5 text-muted-foreground">
-                  Select a passage to work on, or improve the document’s
-                  introduction.
+                  Select a passage to work on, or improve the document’s introduction.
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {["Improve writing", "Summarize", "Expand"].map((action) => (
@@ -1274,9 +1154,7 @@ export default function RichEditorBlock({ block }: BlockProps) {
                   ))}
                 </div>
                 <Field>
-                  <FieldLabel htmlFor="assistant-prompt">
-                    Instructions
-                  </FieldLabel>
+                  <FieldLabel htmlFor="assistant-prompt">Instructions</FieldLabel>
                   <Textarea
                     id="assistant-prompt"
                     rows={3}
@@ -1285,11 +1163,7 @@ export default function RichEditorBlock({ block }: BlockProps) {
                     placeholder="How should we improve this?"
                   />
                 </Field>
-                <Button
-                  size="sm"
-                  disabled={running}
-                  onClick={() => runAssistant()}
-                >
+                <Button size="sm" disabled={running} onClick={() => runAssistant()}>
                   <Sparkles />
                   {running ? "Drafting suggestion…" : "Generate suggestion"}
                 </Button>
@@ -1297,23 +1171,21 @@ export default function RichEditorBlock({ block }: BlockProps) {
                   <>
                     <Separator />
                     <div className="flex flex-col gap-2">
-                      {[
-                        "Read selected context",
-                        "Draft a revision",
-                        "Prepare for your review",
-                      ].map((t, i) => (
-                        <p
-                          className="flex items-center gap-2 text-[10px] text-muted-foreground"
-                          key={t}
-                        >
-                          {trace > i ? (
-                            <Check className="size-3" />
-                          ) : (
-                            <span className="size-2.5 rounded-full border" />
-                          )}
-                          {t}
-                        </p>
-                      ))}
+                      {["Read selected context", "Draft a revision", "Prepare for your review"].map(
+                        (t, i) => (
+                          <p
+                            className="flex items-center gap-2 text-[10px] text-muted-foreground"
+                            key={t}
+                          >
+                            {trace > i ? (
+                              <Check className="size-3" />
+                            ) : (
+                              <span className="size-2.5 rounded-full border" />
+                            )}
+                            {t}
+                          </p>
+                        ),
+                      )}
                     </div>
                     <div className="rounded-lg border bg-muted/20 p-3">
                       <p className="mb-2 text-[10px] font-medium text-muted-foreground">
@@ -1337,11 +1209,7 @@ export default function RichEditorBlock({ block }: BlockProps) {
                           <X />
                           Discard
                         </Button>
-                        <Button
-                          size="sm"
-                          className="flex-1"
-                          onClick={applySuggestion}
-                        >
+                        <Button size="sm" className="flex-1" onClick={applySuggestion}>
                           <Check />
                           Apply suggestion
                         </Button>
@@ -1349,17 +1217,15 @@ export default function RichEditorBlock({ block }: BlockProps) {
                     )}
                     {aiBase && (
                       <details className="text-[10px] text-muted-foreground">
-                        <summary className="cursor-pointer">
-                          Original passage
-                        </summary>
+                        <summary className="cursor-pointer">Original passage</summary>
                         <p className="mt-2 leading-5">{aiBase}</p>
                       </details>
                     )}
                   </>
                 )}
                 <p className="mt-auto text-[10px] leading-5 text-muted-foreground">
-                  This assistant uses deterministic local text transformations.
-                  No AI API is connected.
+                  This assistant uses deterministic local text transformations. No AI API is
+                  connected.
                 </p>
               </>
             )}
@@ -1368,8 +1234,7 @@ export default function RichEditorBlock({ block }: BlockProps) {
       </div>
       <footer className="flex flex-wrap items-center justify-between gap-2 border-t px-5 py-3 text-[10px] text-muted-foreground">
         <span>
-          {words} words · {documentHtml.replace(/<[^>]*>/g, "").length}{" "}
-          characters
+          {words} words · {documentHtml.replace(/<[^>]*>/g, "").length} characters
         </span>
         <span>
           {kind === 3

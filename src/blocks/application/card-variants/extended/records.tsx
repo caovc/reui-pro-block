@@ -34,13 +34,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
-import {
-  Item,
-  ItemMedia,
-  ItemContent,
-  ItemTitle,
-  ItemDescription,
-} from "@/components/ui/item";
+import { Item, ItemMedia, ItemContent, ItemTitle, ItemDescription } from "@/components/ui/item";
 import binance from "@/blocks/application/assets/card-extended/binance.svg";
 import coinbase from "@/blocks/application/assets/card-extended/coinbase.svg";
 import { Stage, People, RecordMenu } from "./common";
@@ -78,11 +72,7 @@ export function InstalledIntegration() {
           <People />
         </FramePanel>
         <FramePanel fit className="p-3">
-          <Button
-            variant="outline"
-            className="w-full"
-            onClick={() => setGuide(true)}
-          >
+          <Button variant="outline" className="w-full" onClick={() => setGuide(true)}>
             Integration Guide
           </Button>
         </FramePanel>
@@ -91,9 +81,7 @@ export function InstalledIntegration() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Edit integration</DialogTitle>
-            <DialogDescription>
-              Update the installed app's local preview details.
-            </DialogDescription>
+            <DialogDescription>Update the installed app's local preview details.</DialogDescription>
           </DialogHeader>
           <form
             className="flex flex-col gap-5"
@@ -108,17 +96,10 @@ export function InstalledIntegration() {
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="integration-name">App name</FieldLabel>
-                <Input
-                  id="integration-name"
-                  name="title"
-                  defaultValue={title}
-                  required
-                />
+                <Input id="integration-name" name="title" defaultValue={title} required />
               </Field>
               <Field>
-                <FieldLabel htmlFor="integration-description">
-                  Description
-                </FieldLabel>
+                <FieldLabel htmlFor="integration-description">Description</FieldLabel>
                 <Textarea
                   id="integration-description"
                   name="description"
@@ -128,11 +109,7 @@ export function InstalledIntegration() {
               </Field>
               <Field orientation="horizontal">
                 <FieldLabel htmlFor="integration-live">Live status</FieldLabel>
-                <Switch
-                  id="integration-live"
-                  checked={live}
-                  onCheckedChange={setLive}
-                />
+                <Switch id="integration-live" checked={live} onCheckedChange={setLive} />
               </Field>
             </FieldGroup>
             <Button>Save integration</Button>
@@ -169,9 +146,7 @@ export function CryptoQuote() {
       <Frame>
         <FrameHeader className="flex-row flex-wrap items-center justify-between gap-2">
           <FrameTitle>Asset Overview</FrameTitle>
-          <span className="text-xs text-muted-foreground">
-            Updated Mar 3, 7:32 AM GMT+7
-          </span>
+          <span className="text-xs text-muted-foreground">Updated Mar 3, 7:32 AM GMT+7</span>
         </FrameHeader>
         <FramePanel className="extended-quote-panel">
           <div className="flex flex-col gap-3">
@@ -180,12 +155,8 @@ export function CryptoQuote() {
               BTS/USD | CRYPTOCURRENCY
             </p>
             <div className="flex flex-wrap items-center gap-2">
-              <h3 className="text-2xl font-semibold tracking-tight">
-                $93,725.75 USD
-              </h3>
-              <span className="text-xs text-success-foreground">
-                +2.42% (+$2,215.87)
-              </span>
+              <h3 className="text-2xl font-semibold tracking-tight">$93,725.75 USD</h3>
+              <span className="text-xs text-success-foreground">+2.42% (+$2,215.87)</span>
             </div>
           </div>
           <div className="flex shrink-0 gap-2">
@@ -252,19 +223,15 @@ export function JobRecommendation() {
             </span>
           </div>
           <FrameDescription>
-            Join the engineering team at CloudCore to build scalable cloud
-            platforms. Collaborate on backend systems, APIs, and modern
-            infrastructure to deliver enterprise solutions worldwide.
+            Join the engineering team at CloudCore to build scalable cloud platforms. Collaborate on
+            backend systems, APIs, and modern infrastructure to deliver enterprise solutions
+            worldwide.
           </FrameDescription>
           <div className="flex gap-2">
             <Button size="sm" onClick={() => setApply(true)}>
               {saved ? "Draft saved" : "Quick Apply"}
             </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setDetails(true)}
-            >
+            <Button variant="outline" size="sm" onClick={() => setDetails(true)}>
               View Details
             </Button>
           </div>
@@ -274,13 +241,11 @@ export function JobRecommendation() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Software Engineer</DialogTitle>
-            <DialogDescription>
-              Resend · Berlin, Germany · Hybrid
-            </DialogDescription>
+            <DialogDescription>Resend · Berlin, Germany · Hybrid</DialogDescription>
           </DialogHeader>
           <p className="text-sm text-muted-foreground">
-            Build reliable APIs, improve developer tooling, and collaborate with
-            product teams on scalable cloud systems.
+            Build reliable APIs, improve developer tooling, and collaborate with product teams on
+            scalable cloud systems.
           </p>
           <ul className="flex list-disc flex-col gap-2 pl-5 text-sm">
             <li>Experience building and testing backend services.</li>
@@ -321,12 +286,7 @@ export function JobRecommendation() {
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="applicant-name">Full name</FieldLabel>
-                <Input
-                  id="applicant-name"
-                  name="name"
-                  defaultValue={draft.name}
-                  required
-                />
+                <Input id="applicant-name" name="name" defaultValue={draft.name} required />
               </Field>
               <Field>
                 <FieldLabel htmlFor="applicant-email">Email</FieldLabel>

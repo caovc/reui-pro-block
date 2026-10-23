@@ -1,39 +1,32 @@
-"use client"
+"use client";
 
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
-import * as React from "react"
-import {
-  useCascaderActions,
-  useCascaderState,
-} from "@/components/reui/cascader/cascader-context"
-import { resolveCascaderSearchLabel } from "@/components/reui/cascader/cascader-i18n"
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import * as React from "react";
+import { useCascaderActions, useCascaderState } from "@/components/reui/cascader/cascader-context";
+import { resolveCascaderSearchLabel } from "@/components/reui/cascader/cascader-i18n";
 import {
   collapseCascaderPath,
   getCascaderFooterStops,
   getCascaderPath,
   isCascaderRtl,
-} from "@/components/reui/cascader/cascader-lib"
+} from "@/components/reui/cascader/cascader-lib";
 import type {
   CascaderCollapse,
   CascaderNode,
   CascaderValueDisplay,
-} from "@/components/reui/cascader/cascader-types"
-import { Combobox as ComboboxPrimitive } from "@base-ui/react"
-import { useDirection } from "@base-ui/react/direction-provider"
-import { Slot } from "radix-ui"
+} from "@/components/reui/cascader/cascader-types";
+import { Combobox as ComboboxPrimitive } from "@base-ui/react";
+import { useDirection } from "@base-ui/react/direction-provider";
+import { Slot } from "radix-ui";
 
-import { cn } from "cn"
+import { cn } from "cn";
 
 /* -------------------------------------------------------------------------- */
 /*                                  Separator                                 */
 /* -------------------------------------------------------------------------- */
 
 function PathChevron() {
-  return (
-    <ChevronRightIcon
-      className="size-3 shrink-0 opacity-50 rtl:-scale-x-100"
-     />
-  )
+  return <ChevronRightIcon className="size-3 shrink-0 opacity-50 rtl:-scale-x-100" />;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -56,14 +49,14 @@ function PathChevron() {
  */
 function cascaderSlotChild(
   child: React.ReactNode,
-  content: React.ReactNode
+  content: React.ReactNode,
 ): React.ReactElement | null {
-  if (!React.isValidElement(child)) return null
+  if (!React.isValidElement(child)) return null;
   return React.cloneElement(
     child as React.ReactElement<{ children?: React.ReactNode }>,
     undefined,
-    content
-  )
+    content,
+  );
 }
 
 /* -------------------------------------------------------------------------- */
@@ -71,20 +64,15 @@ function cascaderSlotChild(
 /* -------------------------------------------------------------------------- */
 
 export interface CascaderNavProps extends React.ComponentProps<"div"> {
-  asChild?: boolean
+  asChild?: boolean;
 }
 
 /**
  * Header: back control, search input, and the separator under them. The
  * breadcrumb belongs with the list below: it describes the rows, not the field.
  */
-function CascaderNav({
-  className,
-  asChild = false,
-  children,
-  ...props
-}: CascaderNavProps) {
-  const Comp = asChild ? Slot.Root : "div"
+function CascaderNav({ className, asChild = false, children, ...props }: CascaderNavProps) {
+  const Comp = asChild ? Slot.Root : "div";
 
   return (
     <Comp
@@ -94,44 +82,36 @@ function CascaderNav({
            so even padding read too tall. 6px beside the field, 4px above and
            below. */
         "border-border/60 flex shrink-0 flex-col gap-1 border-b px-1.5 py-1",
-        className
+        className,
       )}
       {...props}
     >
       {children}
     </Comp>
-  )
+  );
 }
 
 /* -------------------------------------------------------------------------- */
 /*                                    Back                                    */
 /* -------------------------------------------------------------------------- */
 
-export interface CascaderBackProps extends Omit<
-  React.ComponentProps<"button">,
-  "children"
-> {
-  asChild?: boolean
-  children?: React.ReactNode
+export interface CascaderBackProps extends Omit<React.ComponentProps<"button">, "children"> {
+  asChild?: boolean;
+  children?: React.ReactNode;
 }
 
 /** Pops one level. Renders nothing at the root, so no dead header space. */
-function CascaderBack({
-  className,
-  asChild = false,
-  children,
-  ...props
-}: CascaderBackProps) {
-  const { popLevel, labels, mode } = useCascaderActions()
-  const { path } = useCascaderState()
+function CascaderBack({ className, asChild = false, children, ...props }: CascaderBackProps) {
+  const { popLevel, labels, mode } = useCascaderActions();
+  const { path } = useCascaderState();
 
   // Returning early is safe only because the context read above is this
   // component's last hook: one below this line would change the hook count
   // between the root level and any deeper one.
-  const hidden = mode !== "drill" || path.length === 0
-  if (hidden) return null
+  const hidden = mode !== "drill" || path.length === 0;
+  if (hidden) return null;
 
-  const Comp = asChild ? Slot.Root : "button"
+  const Comp = asChild ? Slot.Root : "button";
 
   return (
     <Comp
@@ -143,38 +123,31 @@ function CascaderBack({
         "text-muted-foreground hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring/50 flex shrink-0 items-center justify-center rounded-md outline-hidden transition-colors focus-visible:ring-2",
         /* A notch under the row height: an affordance, not a second field. */
         "size-6",
-        className
+        className,
       )}
       {...props}
     >
-      {children ?? (
-        <ChevronLeftIcon
-          className="size-4 rtl:-scale-x-100"
-         />
-      )}
+      {children ?? <ChevronLeftIcon className="size-4 rtl:-scale-x-100" />}
     </Comp>
-  )
+  );
 }
 
 /* -------------------------------------------------------------------------- */
 /*                                 Breadcrumb                                 */
 /* -------------------------------------------------------------------------- */
 
-export interface CascaderBreadcrumbProps extends Omit<
-  React.ComponentProps<"nav">,
-  "children"
-> {
+export interface CascaderBreadcrumbProps extends Omit<React.ComponentProps<"nav">, "children"> {
   /** Maximum visible node segments before the middle collapses. */
-  maxSegments?: number
-  collapse?: CascaderCollapse
+  maxSegments?: number;
+  collapse?: CascaderCollapse;
   /** Clicking a segment navigates back to that level. Defaults to true. */
-  interactive?: boolean
-  asChild?: boolean
+  interactive?: boolean;
+  asChild?: boolean;
   /**
    * With `asChild`, the single element the trail renders into: the trail is
    * built here and becomes that element's children. Ignored without `asChild`.
    */
-  children?: React.ReactElement
+  children?: React.ReactElement;
 }
 
 /**
@@ -192,42 +165,36 @@ function CascaderBreadcrumb({
   children,
   ...props
 }: CascaderBreadcrumbProps) {
-  const { goToDepth, mode, labels } = useCascaderActions()
-  const { path, index } = useCascaderState()
+  const { goToDepth, mode, labels } = useCascaderActions();
+  const { path, index } = useCascaderState();
 
   // The WHOLE path, current level included; unresolvable entries drop out.
-  const nodes = path
-    .map((value) => index.byValue.get(value))
-    .filter(Boolean) as CascaderNode[]
-  const segments = collapseCascaderPath(nodes, { maxSegments, collapse })
+  const nodes = path.map((value) => index.byValue.get(value)).filter(Boolean) as CascaderNode[];
+  const segments = collapseCascaderPath(nodes, { maxSegments, collapse });
   // `collapseCascaderPath` never collapses the last node away, so this is
   // always the final segment - derived rather than assumed, so a `collapse`
   // mode that ever changes that cannot mark an ancestor as the current page.
-  const currentValue = nodes.length ? nodes[nodes.length - 1].value : null
+  const currentValue = nodes.length ? nodes[nodes.length - 1].value : null;
 
   // See `CascaderBack`: no hook may run below this early return.
-  const hidden = mode !== "drill" || nodes.length === 0
-  if (hidden) return null
+  const hidden = mode !== "drill" || nodes.length === 0;
+  if (hidden) return null;
 
   const goTo = (node: CascaderNode) => {
-    const depth = path.indexOf(node.value)
-    if (depth < 0) return
+    const depth = path.indexOf(node.value);
+    if (depth < 0) return;
     // `goToDepth`, not a bare `setPath`: it reports `reason: "breadcrumb"`,
     // clears the query and drops any pending navigation.
-    goToDepth(depth + 1)
-  }
+    goToDepth(depth + 1);
+  };
 
   const trail = segments.map((segment, i) => (
-    <React.Fragment
-      key={segment.type === "node" ? segment.node.value : `gap-${i}`}
-    >
+    <React.Fragment key={segment.type === "node" ? segment.node.value : `gap-${i}`}>
       {i > 0 ? <PathChevron /> : null}
       {segment.type === "ellipsis" ? (
         <span
           data-slot="cascader-breadcrumb-ellipsis"
-          title={segment.hidden
-            .map((n) => n.label)
-            .join(` ${labels.pathSeparator} `)}
+          title={segment.hidden.map((n) => n.label).join(` ${labels.pathSeparator} `)}
           className="shrink-0"
         >
           &hellip;
@@ -246,23 +213,21 @@ function CascaderBreadcrumb({
           data-slot="cascader-breadcrumb-item"
           /* The level on screen: a span because it goes nowhere, plus
              `aria-current="page"` so it is not read as one of a flat list. */
-          {...(segment.node.value === currentValue
-            ? { "aria-current": "page" as const }
-            : null)}
+          {...(segment.node.value === currentValue ? { "aria-current": "page" as const } : null)}
           className={cn(
             "max-w-32 truncate",
-            segment.node.value === currentValue && "text-foreground font-medium"
+            segment.node.value === currentValue && "text-foreground font-medium",
           )}
         >
           {segment.node.label}
         </span>
       )}
     </React.Fragment>
-  ))
+  ));
 
   // See `cascaderSlotChild`: the trail is built here, so `asChild` works only
   // if the consumer's element receives it.
-  const slotChild = asChild ? cascaderSlotChild(children, trail) : null
+  const slotChild = asChild ? cascaderSlotChild(children, trail) : null;
 
   const shared = {
     "data-slot": "cascader-breadcrumb",
@@ -273,16 +238,16 @@ function CascaderBreadcrumb({
       // its row inset. vega/mira/rhea `p-1`+`pl-2`, nova `p-1`+`pl-1.5`, maia
       // `p-1`+`pl-3`, lyra `pl-2`, luma/sera `p-1.5`+`pl-3`, per style-*.css.
       "px-2.5",
-      className
+      className,
     ),
     ...props,
-  }
+  };
 
   return slotChild ? (
     <Slot.Root {...shared}>{slotChild}</Slot.Root>
   ) : (
     <nav {...shared}>{trail}</nav>
-  )
+  );
 }
 
 /* -------------------------------------------------------------------------- */
@@ -291,13 +256,11 @@ function CascaderBreadcrumb({
 
 export interface CascaderInputProps extends ComboboxPrimitive.Input.Props {
   /** Renders the back control inline, before the field. Defaults to true. */
-  showBack?: boolean
+  showBack?: boolean;
 }
 
 /** Base UI hands its input handlers an event carrying the veto hook. */
-type CascaderInputKeyEvent = Parameters<
-  NonNullable<ComboboxPrimitive.Input.Props["onKeyDown"]>
->[0]
+type CascaderInputKeyEvent = Parameters<NonNullable<ComboboxPrimitive.Input.Props["onKeyDown"]>>[0];
 
 /**
  * Search field. MUST render inside the positioner: only there does Base UI skip
@@ -325,29 +288,25 @@ function CascaderInput({
     invalid,
     baseId,
     searchScope,
-  } = useCascaderActions()
-  const direction = useDirection()
-  const { currentParent, query, path, expanded, renderedItems, treeRows } =
-    useCascaderState()
+  } = useCascaderActions();
+  const direction = useDirection();
+  const { currentParent, query, path, expanded, renderedItems, treeRows } = useCascaderState();
 
   // Root wording under a global search: naming the level on screen would
   // promise a narrower search than the one that runs.
   const resolvedPlaceholder =
     placeholder ??
-    resolveCascaderSearchLabel(
-      labels,
-      searchScope === "global" ? undefined : currentParent?.label
-    )
+    resolveCascaderSearchLabel(labels, searchScope === "global" ? undefined : currentParent?.label);
 
   // Not `showBack`: `CascaderBack` renders nothing at the root or outside
   // drill mode, where the field's own leading `px-1.5` is wanted. Beside the
   // button it stacks with the row's `gap-1` into a 10px hole, hence `ps-0`.
-  const backVisible = showBack && mode === "drill" && path.length > 0
+  const backVisible = showBack && mode === "drill" && path.length > 0;
 
-  const hintId = `${baseId}-hint`
+  const hintId = `${baseId}-hint`;
   // Base UI names no list while inline; columns mode moves the real listbox to
   // the deepest panel, which is the `path.length` one.
-  const listId = `${baseId}-column-${mode === "columns" ? path.length : 0}`
+  const listId = `${baseId}-column-${mode === "columns" ? path.length : 0}`;
 
   // The direction the HINT is worded for. `handleKeyDown` re-reads
   // `isCascaderRtl` per keystroke; this is text on screen before any key, so
@@ -355,13 +314,13 @@ function CascaderInput({
   // second ref into Base UI's input). SSR renders the "ltr" default and
   // corrects on hydration. `direction` is the only dep: a `dir` attribute and
   // the stylesheet are declarations, not state, so nothing to resubscribe to.
-  const hintRef = React.useRef<HTMLSpanElement>(null)
-  const [hintDir, setHintDir] = React.useState<"ltr" | "rtl">("ltr")
+  const hintRef = React.useRef<HTMLSpanElement>(null);
+  const [hintDir, setHintDir] = React.useState<"ltr" | "rtl">("ltr");
   React.useLayoutEffect(() => {
-    const hint = hintRef.current
-    if (!hint) return
-    setHintDir(isCascaderRtl(hint, direction) ? "rtl" : "ltr")
-  }, [direction])
+    const hint = hintRef.current;
+    if (!hint) return;
+    setHintDir(isCascaderRtl(hint, direction) ? "rtl" : "ltr");
+  }, [direction]);
 
   /**
    * Moves the highlight to `targetIndex` in `treeRows`. Base UI has no
@@ -371,27 +330,25 @@ function CascaderInput({
    */
   const moveHighlightTo = (field: HTMLInputElement, targetIndex: number) => {
     const rowIndex = () => {
-      const highlighted = getHighlighted()
-      if (!highlighted) return -1
-      return treeRows.findIndex((row) => row.node.value === highlighted.value)
-    }
+      const highlighted = getHighlighted();
+      if (!highlighted) return -1;
+      return treeRows.findIndex((row) => row.node.value === highlighted.value);
+    };
 
-    let current = rowIndex()
+    let current = rowIndex();
     for (let step = 0; step < treeRows.length; step += 1) {
-      if (current === -1 || current === targetIndex) return
-      const key = current > targetIndex ? "ArrowUp" : "ArrowDown"
-      field.dispatchEvent(
-        new KeyboardEvent("keydown", { key, bubbles: true, cancelable: true })
-      )
-      const next = rowIndex()
+      if (current === -1 || current === targetIndex) return;
+      const key = current > targetIndex ? "ArrowUp" : "ArrowDown";
+      field.dispatchEvent(new KeyboardEvent("keydown", { key, bubbles: true, cancelable: true }));
+      const next = rowIndex();
       const progressed =
         key === "ArrowUp"
           ? next < current && next >= targetIndex
-          : next > current && next <= targetIndex
-      if (next === -1 || !progressed) return
-      current = next
+          : next > current && next <= targetIndex;
+      if (next === -1 || !progressed) return;
+      current = next;
     }
-  }
+  };
 
   /**
    * The tree pattern's two level keys; Base UI leaves both alone (list
@@ -405,92 +362,82 @@ function CascaderInput({
     caretAtStart: boolean,
     caretAtEnd: boolean,
     forwardKey: "ArrowLeft" | "ArrowRight",
-    backKey: "ArrowLeft" | "ArrowRight"
+    backKey: "ArrowLeft" | "ArrowRight",
   ) => {
-    const forward = event.key === forwardKey
-    if (!forward && event.key !== backKey) return
-    if (forward ? !caretAtEnd : !caretAtStart) return
+    const forward = event.key === forwardKey;
+    if (!forward && event.key !== backKey) return;
+    if (forward ? !caretAtEnd : !caretAtStart) return;
 
-    const highlighted = getHighlighted()
-    if (!highlighted) return
-    const rowIndex = treeRows.findIndex(
-      (row) => row.node.value === highlighted.value
-    )
-    if (rowIndex < 0) return
-    const row = treeRows[rowIndex]
+    const highlighted = getHighlighted();
+    if (!highlighted) return;
+    const rowIndex = treeRows.findIndex((row) => row.node.value === highlighted.value);
+    if (rowIndex < 0) return;
+    const row = treeRows[rowIndex];
 
     if (forward) {
-      if (!row.branch) return
-      event.preventDefault()
+      if (!row.branch) return;
+      event.preventDefault();
       if (!row.expanded) {
         // `navigate`, not `toggleExpanded`: it waits for an unloaded branch's
         // children, so the keyboard path in matches the expander.
-        navigate(row.node)
-        return
+        navigate(row.node);
+        return;
       }
       // `flattenCascaderTree` emits children right after their parent, so the
       // first child is the next row. The depth check covers an empty branch.
-      const child = treeRows[rowIndex + 1]
+      const child = treeRows[rowIndex + 1];
       if (child && child.depth === row.depth + 1) {
-        moveHighlightTo(field, rowIndex + 1)
+        moveHighlightTo(field, rowIndex + 1);
       }
-      return
+      return;
     }
 
     // A query holds every hit's ancestors open without adding them to
     // `expanded`, so the toggle would ADD such a row: it would open a disabled
     // one for good. That row moves to its parent instead, as a closed one does.
-    const heldByQuery = isDisabled(row.node) && !expanded.has(row.node.value)
+    const heldByQuery = isDisabled(row.node) && !expanded.has(row.node.value);
     if (row.branch && row.expanded && !heldByQuery) {
-      event.preventDefault()
-      toggleExpanded(row.node.value)
-      return
+      event.preventDefault();
+      toggleExpanded(row.node.value);
+      return;
     }
 
-    const parentValue = index.parentOf.get(row.node.value)
-    if (!parentValue) return
-    const parentIndex = treeRows.findIndex(
-      (entry) => entry.node.value === parentValue
-    )
-    if (parentIndex < 0) return
-    event.preventDefault()
-    moveHighlightTo(field, parentIndex)
-  }
+    const parentValue = index.parentOf.get(row.node.value);
+    if (!parentValue) return;
+    const parentIndex = treeRows.findIndex((entry) => entry.node.value === parentValue);
+    if (parentIndex < 0) return;
+    event.preventDefault();
+    moveHighlightTo(field, parentIndex);
+  };
 
   const handleKeyDown = (event: CascaderInputKeyEvent) => {
-    onKeyDown?.(event)
-    if (event.defaultPrevented) return
+    onKeyDown?.(event);
+    if (event.defaultPrevented) return;
 
-    const field = event.currentTarget
-    const caretAtStart = field.selectionStart === 0 && field.selectionEnd === 0
-    const caretAtEnd =
-      field.selectionStart === query.length &&
-      field.selectionEnd === query.length
+    const field = event.currentTarget;
+    const caretAtStart = field.selectionStart === 0 && field.selectionEnd === 0;
+    const caretAtEnd = field.selectionStart === query.length && field.selectionEnd === query.length;
 
     // ArrowDown at the END of the list hands real focus to the pinned footer,
     // the key a combobox is actually navigated with; Tab still works and still
     // skips the scroll area. An EMPTY list hands off at once, and the footer
     // owns the way back. Counted from state, so a windowed list still answers.
     if (event.key === "ArrowDown" && !event.altKey) {
-      const rowCount = mode === "tree" ? treeRows.length : renderedItems.length
+      const rowCount = mode === "tree" ? treeRows.length : renderedItems.length;
       const lastValue =
-        mode === "tree"
-          ? treeRows[rowCount - 1]?.node.value
-          : renderedItems[rowCount - 1]?.value
-      const highlighted = getHighlighted()
-      const atEnd =
-        rowCount === 0 ||
-        (highlighted != null && highlighted.value === lastValue)
+        mode === "tree" ? treeRows[rowCount - 1]?.node.value : renderedItems[rowCount - 1]?.value;
+      const highlighted = getHighlighted();
+      const atEnd = rowCount === 0 || (highlighted != null && highlighted.value === lastValue);
       if (atEnd) {
-        const panel = field.closest<HTMLElement>('[data-slot="cascader-panel"]')
-        const stop = panel ? getCascaderFooterStops(panel)[0] : undefined
+        const panel = field.closest<HTMLElement>('[data-slot="cascader-panel"]');
+        const stop = panel ? getCascaderFooterStops(panel)[0] : undefined;
         if (stop) {
-          event.preventDefault()
+          event.preventDefault();
           // Base UI's handler is deliberately NOT vetoed: its wrap's first
           // press CLEARS the highlight, so no stale row stays active behind the
           // focused command, and the emptied highlight completes the ring.
-          stop.focus()
-          return
+          stop.focus();
+          return;
         }
       }
     }
@@ -498,28 +445,21 @@ function CascaderInput({
     // The level keys are LOGICAL, not physical: in RTL, ArrowLeft opens a
     // branch and ArrowRight goes back. They act only at the caret edge, and
     // those guards do NOT mirror: `selectionStart === 0` is the logical start.
-    const rtl = isCascaderRtl(field, direction)
-    const forwardKey = rtl ? "ArrowLeft" : "ArrowRight"
-    const backKey = rtl ? "ArrowRight" : "ArrowLeft"
+    const rtl = isCascaderRtl(field, direction);
+    const forwardKey = rtl ? "ArrowLeft" : "ArrowRight";
+    const backKey = rtl ? "ArrowRight" : "ArrowLeft";
 
     if (mode === "tree") {
-      handleTreeKeyDown(
-        event,
-        field,
-        caretAtStart,
-        caretAtEnd,
-        forwardKey,
-        backKey
-      )
-      return
+      handleTreeKeyDown(event, field, caretAtStart, caretAtEnd, forwardKey, backKey);
+      return;
     }
 
     if (event.key === forwardKey && caretAtEnd) {
-      const highlighted = getHighlighted()
+      const highlighted = getHighlighted();
       if (highlighted && isBranch(highlighted)) {
-        event.preventDefault()
-        navigate(highlighted)
-        return
+        event.preventDefault();
+        navigate(highlighted);
+        return;
       }
     }
 
@@ -530,11 +470,11 @@ function CascaderInput({
       (event.key === "Backspace" && query.length === 0)
     ) {
       if (path.length > 0) {
-        event.preventDefault()
-        popLevel()
+        event.preventDefault();
+        popLevel();
       }
     }
-  }
+  };
 
   return (
     <div
@@ -544,7 +484,7 @@ function CascaderInput({
         /* Each style sizes a combobox search field only as a DIRECT child of
            the popup; this row is nested, so the ladder is mirrored here rather
            than hardcoding one height for all eight styles. */
-        "h-8"
+        "h-8",
       )}
     >
       {showBack ? <CascaderBack /> : null}
@@ -558,15 +498,13 @@ function CascaderInput({
         {...(mode === "tree" ? { "aria-haspopup": "tree" as const } : null)}
         /* Base UI omits BOTH `aria-expanded` and `aria-controls` while inline,
            and an embedded panel is permanently expanded, so supply both. */
-        {...(inline
-          ? { "aria-expanded": true, "aria-controls": listId }
-          : null)}
+        {...(inline ? { "aria-expanded": true, "aria-controls": listId } : null)}
         /* No trigger to carry the invalid state in the `inline` case. */
         {...(invalid ? { "aria-invalid": true, "data-invalid": "" } : null)}
         className={cn(
           "placeholder:text-muted-foreground h-full w-full min-w-0 flex-1 bg-transparent px-1.5 text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
           backVisible && "ps-0",
-          className
+          className,
         )}
         {...props}
       />
@@ -576,33 +514,29 @@ function CascaderInput({
         {labels.keyboardHint(mode, hintDir)}
       </span>
     </div>
-  )
+  );
 }
 
 /* -------------------------------------------------------------------------- */
 /*                                    Value                                   */
 /* -------------------------------------------------------------------------- */
 
-export interface CascaderValueProps extends Omit<
-  React.ComponentProps<"span">,
-  "children"
-> {
+export interface CascaderValueProps extends Omit<React.ComponentProps<"span">, "children"> {
   /** `path` shows the full trail, `leaf` only the node, `count` only a total. */
-  display?: CascaderValueDisplay
-  maxSegments?: number
-  collapse?: CascaderCollapse
-  separator?: React.ReactNode
+  display?: CascaderValueDisplay;
+  maxSegments?: number;
+  collapse?: CascaderCollapse;
+  separator?: React.ReactNode;
   /** Renders the selected node's icon before the trail. */
-  showIcon?: boolean
-  placeholder?: React.ReactNode
-  asChild?: boolean
+  showIcon?: boolean;
+  placeholder?: React.ReactNode;
+  asChild?: boolean;
   /**
    * A function replaces the whole rendering, receiving the resolved selection
    * and path; with `asChild`, the element the display renders into instead.
    */
   children?:
-    | ((selected: CascaderNode[], path: CascaderNode[]) => React.ReactNode)
-    | React.ReactElement
+    ((selected: CascaderNode[], path: CascaderNode[]) => React.ReactNode) | React.ReactElement;
 }
 
 /**
@@ -621,44 +555,36 @@ function CascaderValue({
   children,
   ...props
 }: CascaderValueProps) {
-  const { labels, multiple, resolveNode } = useCascaderActions()
-  const { index, selectedValues } = useCascaderState()
+  const { labels, multiple, resolveNode } = useCascaderActions();
+  const { index, selectedValues } = useCascaderState();
 
   // `resolveNode`, not `index.byValue`: a selection missing from `items` (async
   // children, a removed item) must still render a label, not an empty trigger.
-  const selected = selectedValues.map(resolveNode)
+  const selected = selectedValues.map(resolveNode);
 
-  const resolvedPath =
-    selectedValues.length === 1 ? getCascaderPath(index, selectedValues[0]) : []
+  const resolvedPath = selectedValues.length === 1 ? getCascaderPath(index, selectedValues[0]) : [];
   // No ancestor chain: fall back to the node so `display="path"` shows a leaf.
-  const path =
-    resolvedPath.length > 0
-      ? resolvedPath
-      : selected.length === 1
-        ? selected
-        : []
+  const path = resolvedPath.length > 0 ? resolvedPath : selected.length === 1 ? selected : [];
 
   // Split on the type, not on `asChild`, so passing the wrong one is a type
   // error at the call site instead of a silent no-op.
-  const renderContent = typeof children === "function" ? children : undefined
-  const slotElement = typeof children === "function" ? undefined : children
+  const renderContent = typeof children === "function" ? children : undefined;
+  const slotElement = typeof children === "function" ? undefined : children;
 
-  let content: React.ReactNode
+  let content: React.ReactNode;
 
   if (renderContent) {
-    content = renderContent(selected, path)
+    content = renderContent(selected, path);
   } else if (selectedValues.length === 0) {
-    content = (
-      <span className="text-muted-foreground truncate">{placeholder}</span>
-    )
+    content = <span className="text-muted-foreground truncate">{placeholder}</span>;
   } else if (display === "count" || (multiple && selectedValues.length > 1)) {
-    content = labels.selectedCount(selectedValues.length)
+    content = labels.selectedCount(selectedValues.length);
   } else {
-    const leaf = path[path.length - 1] ?? selected[0]
+    const leaf = path[path.length - 1] ?? selected[0];
     const segments =
       display === "leaf"
         ? [{ type: "node" as const, node: leaf }]
-        : collapseCascaderPath(path, { maxSegments, collapse })
+        : collapseCascaderPath(path, { maxSegments, collapse });
 
     content = (
       <>
@@ -671,57 +597,42 @@ function CascaderValue({
           </span>
         ) : null}
         {segments.map((segment, i) => (
-          <React.Fragment
-            key={segment.type === "node" ? segment.node.value : `gap-${i}`}
-          >
+          <React.Fragment key={segment.type === "node" ? segment.node.value : `gap-${i}`}>
             {i > 0 ? (separator ?? <PathChevron />) : null}
             {segment.type === "ellipsis" ? (
               <span
                 data-slot="cascader-value-ellipsis"
-                title={segment.hidden
-                  .map((n) => n.label)
-                  .join(` ${labels.pathSeparator} `)}
+                title={segment.hidden.map((n) => n.label).join(` ${labels.pathSeparator} `)}
                 className="text-muted-foreground shrink-0"
               >
                 &hellip;
               </span>
             ) : (
-              <span
-                className={cn(
-                  "truncate",
-                  i < segments.length - 1 && "text-muted-foreground"
-                )}
-              >
+              <span className={cn("truncate", i < segments.length - 1 && "text-muted-foreground")}>
                 {segment.node?.label}
               </span>
             )}
           </React.Fragment>
         ))}
       </>
-    )
+    );
   }
 
   // See `cascaderSlotChild`: `Slot.Root` cannot clone the Fragment the default
   // branch produces, so the consumer's element has to receive the content.
-  const slotChild = asChild ? cascaderSlotChild(slotElement, content) : null
+  const slotChild = asChild ? cascaderSlotChild(slotElement, content) : null;
 
   const shared = {
     "data-slot": "cascader-value",
     className: cn("flex min-w-0 items-center gap-1 truncate", className),
     ...props,
-  }
+  };
 
   return slotChild ? (
     <Slot.Root {...shared}>{slotChild}</Slot.Root>
   ) : (
     <span {...shared}>{content}</span>
-  )
+  );
 }
 
-export {
-  CascaderNav,
-  CascaderBack,
-  CascaderBreadcrumb,
-  CascaderInput,
-  CascaderValue,
-}
+export { CascaderNav, CascaderBack, CascaderBreadcrumb, CascaderInput, CascaderValue };

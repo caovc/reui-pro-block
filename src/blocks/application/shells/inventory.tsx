@@ -124,11 +124,7 @@ export default function InventoryShell() {
   const [usage, setUsage] = useState(74);
   const current = sections[section];
   return (
-    <div
-      className="shell-reference bg-muted/20"
-      data-shell-variant="8"
-      data-inner-hidden={hidden}
-    >
+    <div className="shell-reference bg-muted/20" data-shell-variant="8" data-inner-hidden={hidden}>
       <nav className="shell-icon-rail wide">
         <ReuiMark />
         <div className="mt-5 flex flex-col gap-1.5">
@@ -168,12 +164,7 @@ export default function InventoryShell() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuGroup>
-                  {[
-                    "New product",
-                    "New order",
-                    "New customer",
-                    "New report",
-                  ].map((n) => (
+                  {["New product", "New order", "New customer", "New report"].map((n) => (
                     <DropdownMenuItem key={n} onSelect={() => setCreate(true)}>
                       {n}
                     </DropdownMenuItem>
@@ -192,10 +183,7 @@ export default function InventoryShell() {
             >
               <div className="shell-scroll">
                 {current.groups.map((group) => (
-                  <section
-                    className="border-b px-2 py-3 last:border-b-0"
-                    key={group.title}
-                  >
+                  <section className="border-b px-2 py-3 last:border-b-0" key={group.title}>
                     <p className="mb-1.5 px-1 text-[9px] uppercase text-muted-foreground">
                       {group.title}
                     </p>
@@ -210,22 +198,14 @@ export default function InventoryShell() {
                         }}
                       >
                         <Box className="size-3.5" />
-                        <span className="min-w-0 flex-1 truncate text-left">
-                          {item}
-                        </span>
+                        <span className="min-w-0 flex-1 truncate text-left">{item}</span>
                         {item === "Customer Reviews" && (
-                          <Badge
-                            variant="outline"
-                            className="h-4 px-1 text-[9px]"
-                          >
+                          <Badge variant="outline" className="h-4 px-1 text-[9px]">
                             20
                           </Badge>
                         )}
                         {item === "Stock Alerts" && (
-                          <Badge
-                            variant="outline"
-                            className="h-4 px-1 text-[9px]"
-                          >
+                          <Badge variant="outline" className="h-4 px-1 text-[9px]">
                             4
                           </Badge>
                         )}
@@ -238,9 +218,7 @@ export default function InventoryShell() {
                 <NewsCard />
               ) : current.footer === "storage" ? (
                 <div className="border-t p-3">
-                  <p className="text-[10px] font-medium text-[var(--chart-4)]">
-                    Storage Usage
-                  </p>
+                  <p className="text-[10px] font-medium text-[var(--chart-4)]">Storage Usage</p>
                   <p className="mb-2 mt-1.5 text-[10px] leading-4 text-muted-foreground">
                     Warehouse capacity across all locations
                   </p>
@@ -253,8 +231,7 @@ export default function InventoryShell() {
                       <strong className="font-medium">{usage}%</strong> Used
                     </span>
                     <span>
-                      <strong className="font-medium">{100 - usage}%</strong>{" "}
-                      Free
+                      <strong className="font-medium">{100 - usage}%</strong> Free
                     </span>
                   </div>
                   <Button
@@ -277,10 +254,7 @@ export default function InventoryShell() {
                     ["Active customers", "2,450"],
                     ["Conversion", "4.2%"],
                   ].map(([name, value]) => (
-                    <div
-                      className="flex justify-between py-1.5 text-[10px]"
-                      key={name}
-                    >
+                    <div className="flex justify-between py-1.5 text-[10px]" key={name}>
                       <span className="text-muted-foreground">{name}</span>
                       <span>{value}</span>
                     </div>

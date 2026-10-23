@@ -1,30 +1,1335 @@
-import { useRef, useState } from 'react'
-import { ArrowDownToLine, Check, ChevronLeft, ChevronRight, Clock, Copy, CreditCard, FileImage, FileText, Folder, Grid2X2, HardDrive, Link, List, MapPin, MoreHorizontal, Plus, Share2, Star, Trash2, Truck, Upload } from 'lucide-react'
-import type { BlockProps } from '@/data/types'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { Field, FieldGroup, FieldLabel } from '@/components/ui/field'
-import { Progress } from '@/components/ui/progress'
-import { Switch } from '@/components/ui/switch'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from '@/components/ui/sheet'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { toast } from 'sonner'
-import { AddButton, BlockHeading, Metric, Person, Status } from './shared'
-import { people } from './data-utils'
+import { useRef, useState } from "react";
+import {
+  ArrowDownToLine,
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  Clock,
+  Copy,
+  CreditCard,
+  FileImage,
+  FileText,
+  Folder,
+  Grid2X2,
+  HardDrive,
+  Link,
+  List,
+  MapPin,
+  MoreHorizontal,
+  Plus,
+  Share2,
+  Star,
+  Trash2,
+  Truck,
+  Upload,
+} from "lucide-react";
+import type { BlockProps } from "@/data/types";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { Progress } from "@/components/ui/progress";
+import { Switch } from "@/components/ui/switch";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { toast } from "sonner";
+import { AddButton, BlockHeading, Metric, Person, Status } from "./shared";
+import { people } from "./data-utils";
 
-export function FilesBlock(){const initial=['Brand guidelines.pdf','Q4 product roadmap.fig','Project proposal.docx','Website assets.zip','Team photo.png','Budget 2026.xlsx','Release notes.md','Customer research.pdf'];const [files,setFiles]=useState(initial.map((name,i)=>({id:i,name,folder:i%3===0?'Design':'Documents',starred:i===0,deleted:false,size:[2.4,8.1,.8,24.6,4.2,1.3,.1,3.8][i]})));const [folder,setFolder]=useState('All files');const [view,setView]=useState('Grid');const [search,setSearch]=useState('');const [active,setActive]=useState<number|null>(null);const [share,setShare]=useState(false);const [email,setEmail]=useState('');const input=useRef<HTMLInputElement>(null);const current=files.filter(f=>(folder==='Trash'?f.deleted:!f.deleted)&&(folder==='All files'||folder==='Trash'||folder==='Starred'&&f.starred||f.folder===folder)&&f.name.toLowerCase().includes(search.toLowerCase()));function addFiles(list:FileList|null){if(!list)return;setFiles(s=>[...s,...Array.from(list).map((f,i)=>({id:Date.now()+i,name:f.name,folder:'Documents',starred:false,deleted:false,size:Math.round(f.size/1024/1024*10)/10}))]);toast.success('Files added to local preview')}function menu(id:number){return <DropdownMenu><DropdownMenuTrigger asChild><Button variant="ghost" size="icon" className="size-6" aria-label="File actions"><MoreHorizontal/></Button></DropdownMenuTrigger><DropdownMenuContent align="end"><DropdownMenuGroup><DropdownMenuItem onSelect={()=>setActive(id)}>View details</DropdownMenuItem><DropdownMenuItem onSelect={()=>setFiles(s=>s.map(f=>f.id===id?{...f,starred:!f.starred}:f))}>Toggle starred</DropdownMenuItem><DropdownMenuItem onSelect={()=>setFiles(s=>s.map(f=>f.id===id?{...f,folder:f.folder==='Design'?'Documents':'Design'}:f))}>Move to {files.find(f=>f.id===id)?.folder==='Design'?'Documents':'Design'}</DropdownMenuItem><DropdownMenuItem onSelect={()=>{setActive(id);setShare(true)}}>Share file</DropdownMenuItem><DropdownMenuItem onSelect={()=>{setFiles(s=>s.map(f=>f.id===id?{...f,deleted:!f.deleted}:f));toast.success(folder==='Trash'?'File restored':'Moved to trash')}}>{folder==='Trash'?'Restore file':'Move to trash'}</DropdownMenuItem></DropdownMenuGroup></DropdownMenuContent></DropdownMenu>}
- return <div className="overflow-hidden rounded-xl border bg-background"><div className="border-b p-5"><BlockHeading title="Drive Explorer" description="Keep your files organized and your team in sync."><Button variant="outline" size="sm" onClick={()=>{setFiles(s=>[...s,{id:Date.now(),name:'New folder',folder:'Documents',starred:false,deleted:false,size:0}]);toast.success('Folder created')}}><Plus/>New folder</Button><Button size="sm" onClick={()=>input.current?.click()}><Upload/>Upload files</Button><Input ref={input} type="file" multiple className="hidden" onChange={e=>addFiles(e.target.files)}/></BlockHeading></div><div className="flex min-h-[580px]"><aside className="hidden w-44 shrink-0 flex-col border-r bg-muted/20 p-3 sm:flex">{['All files','Starred','Design','Documents','Trash'].map((f,i)=><Button key={f} variant={folder===f?'secondary':'ghost'} className="mb-1 justify-start text-xs" onClick={()=>setFolder(f)}>{i===1?<Star/>:i===4?<Trash2/>:<Folder/>}{f}</Button>)}<div className="mt-auto p-2"><div className="mb-2 flex items-center gap-2 text-xs"><HardDrive className="size-3.5"/>Storage</div><Progress value={42} className="h-1.5"/><p className="mt-2 text-[10px] text-muted-foreground">4.2 GB of 10 GB used</p></div></aside><div className="min-w-0 flex-1 p-5"><div className="mb-5 flex flex-wrap items-center justify-between gap-3"><h3 className="text-sm font-medium">{folder}<span className="ml-2 text-xs text-muted-foreground">{current.length} items</span></h3><div className="flex gap-2"><Input aria-label="Search files" placeholder="Search files..." value={search} onChange={e=>setSearch(e.target.value)} className="h-8 max-w-44 text-xs"/><Button variant={view==='Grid'?'secondary':'outline'} size="icon" className="size-8" aria-label="Grid view" onClick={()=>setView('Grid')}><Grid2X2/></Button><Button variant={view==='List'?'secondary':'outline'} size="icon" className="size-8" aria-label="List view" onClick={()=>setView('List')}><List/></Button></div></div><div className={view==='Grid'?'grid gap-3 sm:grid-cols-2 xl:grid-cols-3':'flex flex-col divide-y rounded-lg border'}>{current.map(f=><div key={f.id} className={view==='Grid'?'rounded-lg border p-3':'flex items-center justify-between gap-3 p-3'}><button onClick={()=>setActive(f.id)} className={view==='Grid'?'flex h-28 w-full items-center justify-center rounded-lg bg-muted/40':'flex size-9 items-center justify-center rounded bg-muted/40'}>{f.name.endsWith('.png')?<FileImage className="size-8 text-muted-foreground"/>:f.name.endsWith('.zip')?<Folder className="size-8 text-muted-foreground"/>:<FileText className="size-8 text-muted-foreground"/>}</button><div className={`flex min-w-0 flex-1 items-center justify-between gap-1 ${view==='Grid'?'mt-3':''}`}><div className="min-w-0"><button onClick={()=>setActive(f.id)} className="max-w-full truncate text-left text-[11px] font-medium hover:underline">{f.name}</button><p className="mt-1 text-[10px] text-muted-foreground">{f.size} MB · Oct 22, 2026</p></div>{f.starred&&<Star className="size-3 shrink-0 fill-current text-muted-foreground"/>}{menu(f.id)}</div></div>)}</div>{!current.length&&<div className="py-24 text-center"><Folder className="mx-auto mb-3 size-8 text-muted-foreground"/><p className="text-xs text-muted-foreground">No files found in this view.</p></div>}</div></div><Sheet open={active!==null&&!share} onOpenChange={v=>!v&&setActive(null)}><SheetContent><SheetHeader><SheetTitle>{files.find(f=>f.id===active)?.name}</SheetTitle><SheetDescription>File details and version history</SheetDescription></SheetHeader><div className="p-5"><div className="flex h-44 items-center justify-center rounded-xl bg-muted"><FileText className="size-14 text-muted-foreground"/></div>{[['Owner','Olivia Rhye'],['Modified','Oct 22, 2026'],['Location',files.find(f=>f.id===active)?.folder??''],['Version','v3 · Current']].map(([k,v])=><div key={k} className="flex justify-between border-b py-4 text-xs"><span className="text-muted-foreground">{k}</span><span>{v}</span></div>)}</div><SheetFooter><Button onClick={()=>setShare(true)}><Share2/>Share file</Button></SheetFooter></SheetContent></Sheet><Dialog open={share} onOpenChange={setShare}><DialogContent><DialogHeader><DialogTitle>Share {files.find(f=>f.id===active)?.name}</DialogTitle><DialogDescription>Invite a team member to collaborate on this file.</DialogDescription></DialogHeader><FieldGroup><Field><FieldLabel htmlFor="share-email">Email address</FieldLabel><div className="flex gap-2"><Input id="share-email" type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="name@company.com"/><Button disabled={!email.includes('@')} onClick={()=>{toast.success('Sharing invite added in demo');setEmail('')}}>Invite</Button></div></Field></FieldGroup><DialogFooter><Button variant="outline" onClick={()=>{navigator.clipboard.writeText(`https://example.com/files/${active}`);toast.success('Demo link copied')}}><Link/>Copy link</Button></DialogFooter></DialogContent></Dialog></div>
+export function FilesBlock() {
+  const initial = [
+    "Brand guidelines.pdf",
+    "Q4 product roadmap.fig",
+    "Project proposal.docx",
+    "Website assets.zip",
+    "Team photo.png",
+    "Budget 2026.xlsx",
+    "Release notes.md",
+    "Customer research.pdf",
+  ];
+  const [files, setFiles] = useState(
+    initial.map((name, i) => ({
+      id: i,
+      name,
+      folder: i % 3 === 0 ? "Design" : "Documents",
+      starred: i === 0,
+      deleted: false,
+      size: [2.4, 8.1, 0.8, 24.6, 4.2, 1.3, 0.1, 3.8][i],
+    })),
+  );
+  const [folder, setFolder] = useState("All files");
+  const [view, setView] = useState("Grid");
+  const [search, setSearch] = useState("");
+  const [active, setActive] = useState<number | null>(null);
+  const [share, setShare] = useState(false);
+  const [email, setEmail] = useState("");
+  const input = useRef<HTMLInputElement>(null);
+  const current = files.filter(
+    (f) =>
+      (folder === "Trash" ? f.deleted : !f.deleted) &&
+      (folder === "All files" ||
+        folder === "Trash" ||
+        (folder === "Starred" && f.starred) ||
+        f.folder === folder) &&
+      f.name.toLowerCase().includes(search.toLowerCase()),
+  );
+  function addFiles(list: FileList | null) {
+    if (!list) return;
+    setFiles((s) => [
+      ...s,
+      ...Array.from(list).map((f, i) => ({
+        id: Date.now() + i,
+        name: f.name,
+        folder: "Documents",
+        starred: false,
+        deleted: false,
+        size: Math.round((f.size / 1024 / 1024) * 10) / 10,
+      })),
+    ]);
+    toast.success("Files added to local preview");
+  }
+  function menu(id: number) {
+    return (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="icon" className="size-6" aria-label="File actions">
+            <MoreHorizontal />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuGroup>
+            <DropdownMenuItem onSelect={() => setActive(id)}>View details</DropdownMenuItem>
+            <DropdownMenuItem
+              onSelect={() =>
+                setFiles((s) => s.map((f) => (f.id === id ? { ...f, starred: !f.starred } : f)))
+              }
+            >
+              Toggle starred
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onSelect={() =>
+                setFiles((s) =>
+                  s.map((f) =>
+                    f.id === id
+                      ? { ...f, folder: f.folder === "Design" ? "Documents" : "Design" }
+                      : f,
+                  ),
+                )
+              }
+            >
+              Move to {files.find((f) => f.id === id)?.folder === "Design" ? "Documents" : "Design"}
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onSelect={() => {
+                setActive(id);
+                setShare(true);
+              }}
+            >
+              Share file
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onSelect={() => {
+                setFiles((s) => s.map((f) => (f.id === id ? { ...f, deleted: !f.deleted } : f)));
+                toast.success(folder === "Trash" ? "File restored" : "Moved to trash");
+              }}
+            >
+              {folder === "Trash" ? "Restore file" : "Move to trash"}
+            </DropdownMenuItem>
+          </DropdownMenuGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    );
+  }
+  return (
+    <div className="overflow-hidden rounded-xl border bg-background">
+      <div className="border-b p-5">
+        <BlockHeading
+          title="Drive Explorer"
+          description="Keep your files organized and your team in sync."
+        >
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              setFiles((s) => [
+                ...s,
+                {
+                  id: Date.now(),
+                  name: "New folder",
+                  folder: "Documents",
+                  starred: false,
+                  deleted: false,
+                  size: 0,
+                },
+              ]);
+              toast.success("Folder created");
+            }}
+          >
+            <Plus />
+            New folder
+          </Button>
+          <Button size="sm" onClick={() => input.current?.click()}>
+            <Upload />
+            Upload files
+          </Button>
+          <Input
+            ref={input}
+            type="file"
+            multiple
+            className="hidden"
+            onChange={(e) => addFiles(e.target.files)}
+          />
+        </BlockHeading>
+      </div>
+      <div className="flex min-h-[580px]">
+        <aside className="hidden w-44 shrink-0 flex-col border-r bg-muted/20 p-3 sm:flex">
+          {["All files", "Starred", "Design", "Documents", "Trash"].map((f, i) => (
+            <Button
+              key={f}
+              variant={folder === f ? "secondary" : "ghost"}
+              className="mb-1 justify-start text-xs"
+              onClick={() => setFolder(f)}
+            >
+              {i === 1 ? <Star /> : i === 4 ? <Trash2 /> : <Folder />}
+              {f}
+            </Button>
+          ))}
+          <div className="mt-auto p-2">
+            <div className="mb-2 flex items-center gap-2 text-xs">
+              <HardDrive className="size-3.5" />
+              Storage
+            </div>
+            <Progress value={42} className="h-1.5" />
+            <p className="mt-2 text-[10px] text-muted-foreground">4.2 GB of 10 GB used</p>
+          </div>
+        </aside>
+        <div className="min-w-0 flex-1 p-5">
+          <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+            <h3 className="text-sm font-medium">
+              {folder}
+              <span className="ml-2 text-xs text-muted-foreground">{current.length} items</span>
+            </h3>
+            <div className="flex gap-2">
+              <Input
+                aria-label="Search files"
+                placeholder="Search files..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="h-8 max-w-44 text-xs"
+              />
+              <Button
+                variant={view === "Grid" ? "secondary" : "outline"}
+                size="icon"
+                className="size-8"
+                aria-label="Grid view"
+                onClick={() => setView("Grid")}
+              >
+                <Grid2X2 />
+              </Button>
+              <Button
+                variant={view === "List" ? "secondary" : "outline"}
+                size="icon"
+                className="size-8"
+                aria-label="List view"
+                onClick={() => setView("List")}
+              >
+                <List />
+              </Button>
+            </div>
+          </div>
+          <div
+            className={
+              view === "Grid"
+                ? "grid gap-3 sm:grid-cols-2 xl:grid-cols-3"
+                : "flex flex-col divide-y rounded-lg border"
+            }
+          >
+            {current.map((f) => (
+              <div
+                key={f.id}
+                className={
+                  view === "Grid"
+                    ? "rounded-lg border p-3"
+                    : "flex items-center justify-between gap-3 p-3"
+                }
+              >
+                <button
+                  onClick={() => setActive(f.id)}
+                  className={
+                    view === "Grid"
+                      ? "flex h-28 w-full items-center justify-center rounded-lg bg-muted/40"
+                      : "flex size-9 items-center justify-center rounded bg-muted/40"
+                  }
+                >
+                  {f.name.endsWith(".png") ? (
+                    <FileImage className="size-8 text-muted-foreground" />
+                  ) : f.name.endsWith(".zip") ? (
+                    <Folder className="size-8 text-muted-foreground" />
+                  ) : (
+                    <FileText className="size-8 text-muted-foreground" />
+                  )}
+                </button>
+                <div
+                  className={`flex min-w-0 flex-1 items-center justify-between gap-1 ${view === "Grid" ? "mt-3" : ""}`}
+                >
+                  <div className="min-w-0">
+                    <button
+                      onClick={() => setActive(f.id)}
+                      className="max-w-full truncate text-left text-[11px] font-medium hover:underline"
+                    >
+                      {f.name}
+                    </button>
+                    <p className="mt-1 text-[10px] text-muted-foreground">
+                      {f.size} MB · Oct 22, 2026
+                    </p>
+                  </div>
+                  {f.starred && (
+                    <Star className="size-3 shrink-0 fill-current text-muted-foreground" />
+                  )}
+                  {menu(f.id)}
+                </div>
+              </div>
+            ))}
+          </div>
+          {!current.length && (
+            <div className="py-24 text-center">
+              <Folder className="mx-auto mb-3 size-8 text-muted-foreground" />
+              <p className="text-xs text-muted-foreground">No files found in this view.</p>
+            </div>
+          )}
+        </div>
+      </div>
+      <Sheet open={active !== null && !share} onOpenChange={(v) => !v && setActive(null)}>
+        <SheetContent>
+          <SheetHeader>
+            <SheetTitle>{files.find((f) => f.id === active)?.name}</SheetTitle>
+            <SheetDescription>File details and version history</SheetDescription>
+          </SheetHeader>
+          <div className="p-5">
+            <div className="flex h-44 items-center justify-center rounded-xl bg-muted">
+              <FileText className="size-14 text-muted-foreground" />
+            </div>
+            {[
+              ["Owner", "Olivia Rhye"],
+              ["Modified", "Oct 22, 2026"],
+              ["Location", files.find((f) => f.id === active)?.folder ?? ""],
+              ["Version", "v3 · Current"],
+            ].map(([k, v]) => (
+              <div key={k} className="flex justify-between border-b py-4 text-xs">
+                <span className="text-muted-foreground">{k}</span>
+                <span>{v}</span>
+              </div>
+            ))}
+          </div>
+          <SheetFooter>
+            <Button onClick={() => setShare(true)}>
+              <Share2 />
+              Share file
+            </Button>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet>
+      <Dialog open={share} onOpenChange={setShare}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Share {files.find((f) => f.id === active)?.name}</DialogTitle>
+            <DialogDescription>Invite a team member to collaborate on this file.</DialogDescription>
+          </DialogHeader>
+          <FieldGroup>
+            <Field>
+              <FieldLabel htmlFor="share-email">Email address</FieldLabel>
+              <div className="flex gap-2">
+                <Input
+                  id="share-email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="name@company.com"
+                />
+                <Button
+                  disabled={!email.includes("@")}
+                  onClick={() => {
+                    toast.success("Sharing invite added in demo");
+                    setEmail("");
+                  }}
+                >
+                  Invite
+                </Button>
+              </div>
+            </Field>
+          </FieldGroup>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => {
+                navigator.clipboard.writeText(`https://example.com/files/${active}`);
+                toast.success("Demo link copied");
+              }}
+            >
+              <Link />
+              Copy link
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
 }
 
-export function BookingBlock({block}:BlockProps){const room=block.index===3;const [view,setView]=useState(block.index===1?'Week':'Day');const [day,setDay]=useState(22);const [bookings,setBookings]=useState(Array.from({length:10},(_,i)=>({id:i,name:people[i],service:['Haircut & style','Color treatment','Beard trim','Highlights','Consultation'][i%5],staff:people[(i+3)%12],time:`${9+Math.floor(i/2)}:${i%2===0?'00':'30'}`,status:i===2?'Checked in':'Confirmed',room:101+i})));const [active,setActive]=useState<number|null>(block.index===2?0:null);const [newOpen,setNewOpen]=useState(false);const [name,setName]=useState('');const [service,setService]=useState('Haircut & style');const [drag,setDrag]=useState<number|null>(null);return <div className="rounded-xl border bg-background p-5"><BlockHeading title={block.name} description={room?'Front desk · Rooms and reservations':'Your appointments and team schedule, in one place.'}><Button variant="outline" size="sm" onClick={()=>setDay(22)}>Today</Button><AddButton label={room?'New reservation':'New booking'} onClick={()=>setNewOpen(true)}/></BlockHeading>{block.index===0&&<div className="my-5 grid grid-cols-2 gap-3 md:grid-cols-4">{[['Appointments','24'],['Checked in',String(bookings.filter(b=>b.status==='Checked in').length)],['Available slots','8'],['Revenue today','$1,842']].map(([k,v])=><Metric key={k} title={k} value={v}/>)}</div>}<div className="my-5 flex items-center justify-between gap-3"><div className="flex items-center gap-2"><Button variant="outline" size="icon" className="size-7" aria-label="Previous day" onClick={()=>setDay(d=>d-1)}><ChevronLeft/></Button><h3 className="min-w-32 text-center text-xs font-medium">October {day}, 2026</h3><Button variant="outline" size="icon" className="size-7" aria-label="Next day" onClick={()=>setDay(d=>d+1)}><ChevronRight/></Button></div><Tabs value={view} onValueChange={setView}><TabsList>{['Day','Week','List'].map(v=><TabsTrigger value={v} key={v}>{v}</TabsTrigger>)}</TabsList></Tabs></div>{room?<div className="overflow-auto rounded-lg border"><div className="grid min-w-[650px] grid-cols-[90px_repeat(7,1fr)] bg-muted/30 text-center text-[10px]"><div className="border-r p-3">Room</div>{Array.from({length:7},(_,i)=><div key={i} className="p-3">Oct {day+i}</div>)}</div>{bookings.slice(0,8).map((b,i)=><div key={b.id} className="grid min-w-[650px] grid-cols-[90px_repeat(7,1fr)] border-t text-[10px]"><div className="border-r p-4 font-medium">Room {b.room}</div>{Array.from({length:7},(_,j)=><div key={j} className="relative min-h-16 border-r p-1" onDragOver={e=>e.preventDefault()} onDrop={()=>{if(drag!==null){setBookings(s=>s.map(x=>x.id===drag?{...x,room:b.room}:x));toast.success('Reservation moved')}}}>{j===i%3&&<button draggable onDragStart={()=>setDrag(b.id)} onClick={()=>setActive(b.id)} className="absolute left-1 top-2 z-10 flex h-11 w-[180%] items-center rounded-md border border-primary/20 bg-muted px-2 text-left">{b.name}<span className="ml-auto text-[8px] text-muted-foreground">2 nights</span></button>}</div>)}</div>)}</div>:view==='List'||block.index===0||block.index===2?<div className="overflow-auto rounded-lg border"><Table><TableHeader><TableRow>{['Time','Client','Service','Staff','Status',''].map((t,i)=><TableHead key={i} className="text-[11px]">{t}</TableHead>)}</TableRow></TableHeader><TableBody>{bookings.map(b=><TableRow key={b.id}><TableCell className="text-xs font-medium">{b.time}</TableCell><TableCell><button onClick={()=>setActive(b.id)}><Person name={b.name} small/></button></TableCell><TableCell className="text-xs">{b.service}</TableCell><TableCell className="text-xs text-muted-foreground">{b.staff}</TableCell><TableCell><Status value={b.status}/></TableCell><TableCell><Button variant="outline" size="sm" onClick={()=>{setBookings(s=>s.map(x=>x.id===b.id?{...x,status:x.status==='Checked in'?'Complete':'Checked in'}:x));toast.success(b.status==='Checked in'?'Appointment completed':'Client checked in')}}>{b.status==='Checked in'?'Complete':'Check in'}</Button></TableCell></TableRow>)}</TableBody></Table></div>:<div className="overflow-auto rounded-lg border"><div className="grid min-w-[600px] grid-cols-[55px_repeat(7,1fr)] bg-muted/20 text-center text-[10px]"><div className="p-3">GMT+8</div>{['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map((d,i)=><div key={d} className="border-l p-3">{d}<p className="mt-1 text-base font-medium">{day-3+i}</p></div>)}</div>{Array.from({length:8},(_,i)=><div key={i} className="grid min-w-[600px] grid-cols-[55px_repeat(7,1fr)] border-t"><div className="p-2 text-[9px] text-muted-foreground">{9+i}:00</div>{Array.from({length:7},(_,j)=><div key={j} className="h-16 border-l p-1">{(i+j)%4===0&&<button onClick={()=>setActive((i+j)%10)} className="h-full w-full rounded border border-primary/10 bg-muted p-2 text-left text-[9px]"><p className="font-medium">{people[(i+j)%12]}</p><p className="mt-1 text-muted-foreground">{bookings[(i+j)%10].service}</p></button>}</div>)}</div>)}</div>}<Sheet open={active!==null} onOpenChange={v=>!v&&setActive(null)}><SheetContent><SheetHeader><SheetTitle>{room?'Reservation details':'Appointment details'}</SheetTitle><SheetDescription>{bookings.find(b=>b.id===active)?.name} · October {day}, 2026</SheetDescription></SheetHeader><div className="flex flex-col gap-5 p-5"><Person name={bookings.find(b=>b.id===active)?.name??people[0]}/>{[['Service',bookings.find(b=>b.id===active)?.service??''],['Staff',bookings.find(b=>b.id===active)?.staff??''],['Time',bookings.find(b=>b.id===active)?.time??''],['Total',room?'$284.00':'$85.00']].map(([k,v])=><div key={k} className="flex justify-between border-b pb-3 text-xs"><span className="text-muted-foreground">{k}</span><span>{v}</span></div>)}<div><div className="mb-2 flex justify-between text-xs"><span>Deposit paid</span><span>$25 / $85</span></div><Progress value={29} className="h-1.5"/></div><FieldGroup><Field><FieldLabel>Staff notes</FieldLabel><Textarea placeholder="Add a note about this appointment..."/></Field></FieldGroup></div><SheetFooter><Button variant="outline" onClick={()=>{setBookings(s=>s.map(b=>b.id===active?{...b,status:'No-show'}:b));setActive(null);toast.success('Marked as no-show')}}>Mark no-show</Button><Button onClick={()=>{setBookings(s=>s.map(b=>b.id===active?{...b,status:'Checked in'}:b));setActive(null);toast.success('Checked in')}}>Check in</Button></SheetFooter></SheetContent></Sheet><Dialog open={newOpen} onOpenChange={setNewOpen}><DialogContent><DialogHeader><DialogTitle>{room?'New reservation':'New booking'}</DialogTitle><DialogDescription>Choose the client and service details.</DialogDescription></DialogHeader><FieldGroup><Field><FieldLabel htmlFor="booking-name">Client name</FieldLabel><Input id="booking-name" value={name} onChange={e=>setName(e.target.value)}/></Field><Field><FieldLabel htmlFor="booking-service">Service</FieldLabel><Input id="booking-service" value={service} onChange={e=>setService(e.target.value)}/></Field><Field><FieldLabel>Date</FieldLabel><Input type="date" defaultValue="2026-10-22"/></Field></FieldGroup><DialogFooter><Button disabled={!name.trim()} onClick={()=>{setBookings(s=>[...s,{id:Date.now(),name,service,staff:people[3],time:'14:30',status:'Confirmed',room:111}]);setNewOpen(false);setName('');toast.success('Booking created')}}>Confirm booking</Button></DialogFooter></DialogContent></Dialog></div>}
+export function BookingBlock({ block }: BlockProps) {
+  const room = block.index === 3;
+  const [view, setView] = useState(block.index === 1 ? "Week" : "Day");
+  const [day, setDay] = useState(22);
+  const [bookings, setBookings] = useState(
+    Array.from({ length: 10 }, (_, i) => ({
+      id: i,
+      name: people[i],
+      service: ["Haircut & style", "Color treatment", "Beard trim", "Highlights", "Consultation"][
+        i % 5
+      ],
+      staff: people[(i + 3) % 12],
+      time: `${9 + Math.floor(i / 2)}:${i % 2 === 0 ? "00" : "30"}`,
+      status: i === 2 ? "Checked in" : "Confirmed",
+      room: 101 + i,
+    })),
+  );
+  const [active, setActive] = useState<number | null>(block.index === 2 ? 0 : null);
+  const [newOpen, setNewOpen] = useState(false);
+  const [name, setName] = useState("");
+  const [service, setService] = useState("Haircut & style");
+  const [drag, setDrag] = useState<number | null>(null);
+  return (
+    <div className="rounded-xl border bg-background p-5">
+      <BlockHeading
+        title={block.name}
+        description={
+          room
+            ? "Front desk · Rooms and reservations"
+            : "Your appointments and team schedule, in one place."
+        }
+      >
+        <Button variant="outline" size="sm" onClick={() => setDay(22)}>
+          Today
+        </Button>
+        <AddButton
+          label={room ? "New reservation" : "New booking"}
+          onClick={() => setNewOpen(true)}
+        />
+      </BlockHeading>
+      {block.index === 0 && (
+        <div className="my-5 grid grid-cols-2 gap-3 md:grid-cols-4">
+          {[
+            ["Appointments", "24"],
+            ["Checked in", String(bookings.filter((b) => b.status === "Checked in").length)],
+            ["Available slots", "8"],
+            ["Revenue today", "$1,842"],
+          ].map(([k, v]) => (
+            <Metric key={k} title={k} value={v} />
+          ))}
+        </div>
+      )}
+      <div className="my-5 flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="icon"
+            className="size-7"
+            aria-label="Previous day"
+            onClick={() => setDay((d) => d - 1)}
+          >
+            <ChevronLeft />
+          </Button>
+          <h3 className="min-w-32 text-center text-xs font-medium">October {day}, 2026</h3>
+          <Button
+            variant="outline"
+            size="icon"
+            className="size-7"
+            aria-label="Next day"
+            onClick={() => setDay((d) => d + 1)}
+          >
+            <ChevronRight />
+          </Button>
+        </div>
+        <Tabs value={view} onValueChange={setView}>
+          <TabsList>
+            {["Day", "Week", "List"].map((v) => (
+              <TabsTrigger value={v} key={v}>
+                {v}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
+      </div>
+      {room ? (
+        <div className="overflow-auto rounded-lg border">
+          <div className="grid min-w-[650px] grid-cols-[90px_repeat(7,1fr)] bg-muted/30 text-center text-[10px]">
+            <div className="border-r p-3">Room</div>
+            {Array.from({ length: 7 }, (_, i) => (
+              <div key={i} className="p-3">
+                Oct {day + i}
+              </div>
+            ))}
+          </div>
+          {bookings.slice(0, 8).map((b, i) => (
+            <div
+              key={b.id}
+              className="grid min-w-[650px] grid-cols-[90px_repeat(7,1fr)] border-t text-[10px]"
+            >
+              <div className="border-r p-4 font-medium">Room {b.room}</div>
+              {Array.from({ length: 7 }, (_, j) => (
+                <div
+                  key={j}
+                  className="relative min-h-16 border-r p-1"
+                  onDragOver={(e) => e.preventDefault()}
+                  onDrop={() => {
+                    if (drag !== null) {
+                      setBookings((s) =>
+                        s.map((x) => (x.id === drag ? { ...x, room: b.room } : x)),
+                      );
+                      toast.success("Reservation moved");
+                    }
+                  }}
+                >
+                  {j === i % 3 && (
+                    <button
+                      draggable
+                      onDragStart={() => setDrag(b.id)}
+                      onClick={() => setActive(b.id)}
+                      className="absolute left-1 top-2 z-10 flex h-11 w-[180%] items-center rounded-md border border-primary/20 bg-muted px-2 text-left"
+                    >
+                      {b.name}
+                      <span className="ml-auto text-[8px] text-muted-foreground">2 nights</span>
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      ) : view === "List" || block.index === 0 || block.index === 2 ? (
+        <div className="overflow-auto rounded-lg border">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                {["Time", "Client", "Service", "Staff", "Status", ""].map((t, i) => (
+                  <TableHead key={i} className="text-[11px]">
+                    {t}
+                  </TableHead>
+                ))}
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {bookings.map((b) => (
+                <TableRow key={b.id}>
+                  <TableCell className="text-xs font-medium">{b.time}</TableCell>
+                  <TableCell>
+                    <button onClick={() => setActive(b.id)}>
+                      <Person name={b.name} small />
+                    </button>
+                  </TableCell>
+                  <TableCell className="text-xs">{b.service}</TableCell>
+                  <TableCell className="text-xs text-muted-foreground">{b.staff}</TableCell>
+                  <TableCell>
+                    <Status value={b.status} />
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setBookings((s) =>
+                          s.map((x) =>
+                            x.id === b.id
+                              ? {
+                                  ...x,
+                                  status: x.status === "Checked in" ? "Complete" : "Checked in",
+                                }
+                              : x,
+                          ),
+                        );
+                        toast.success(
+                          b.status === "Checked in" ? "Appointment completed" : "Client checked in",
+                        );
+                      }}
+                    >
+                      {b.status === "Checked in" ? "Complete" : "Check in"}
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      ) : (
+        <div className="overflow-auto rounded-lg border">
+          <div className="grid min-w-[600px] grid-cols-[55px_repeat(7,1fr)] bg-muted/20 text-center text-[10px]">
+            <div className="p-3">GMT+8</div>
+            {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((d, i) => (
+              <div key={d} className="border-l p-3">
+                {d}
+                <p className="mt-1 text-base font-medium">{day - 3 + i}</p>
+              </div>
+            ))}
+          </div>
+          {Array.from({ length: 8 }, (_, i) => (
+            <div key={i} className="grid min-w-[600px] grid-cols-[55px_repeat(7,1fr)] border-t">
+              <div className="p-2 text-[9px] text-muted-foreground">{9 + i}:00</div>
+              {Array.from({ length: 7 }, (_, j) => (
+                <div key={j} className="h-16 border-l p-1">
+                  {(i + j) % 4 === 0 && (
+                    <button
+                      onClick={() => setActive((i + j) % 10)}
+                      className="h-full w-full rounded border border-primary/10 bg-muted p-2 text-left text-[9px]"
+                    >
+                      <p className="font-medium">{people[(i + j) % 12]}</p>
+                      <p className="mt-1 text-muted-foreground">{bookings[(i + j) % 10].service}</p>
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      )}
+      <Sheet open={active !== null} onOpenChange={(v) => !v && setActive(null)}>
+        <SheetContent>
+          <SheetHeader>
+            <SheetTitle>{room ? "Reservation details" : "Appointment details"}</SheetTitle>
+            <SheetDescription>
+              {bookings.find((b) => b.id === active)?.name} · October {day}, 2026
+            </SheetDescription>
+          </SheetHeader>
+          <div className="flex flex-col gap-5 p-5">
+            <Person name={bookings.find((b) => b.id === active)?.name ?? people[0]} />
+            {[
+              ["Service", bookings.find((b) => b.id === active)?.service ?? ""],
+              ["Staff", bookings.find((b) => b.id === active)?.staff ?? ""],
+              ["Time", bookings.find((b) => b.id === active)?.time ?? ""],
+              ["Total", room ? "$284.00" : "$85.00"],
+            ].map(([k, v]) => (
+              <div key={k} className="flex justify-between border-b pb-3 text-xs">
+                <span className="text-muted-foreground">{k}</span>
+                <span>{v}</span>
+              </div>
+            ))}
+            <div>
+              <div className="mb-2 flex justify-between text-xs">
+                <span>Deposit paid</span>
+                <span>$25 / $85</span>
+              </div>
+              <Progress value={29} className="h-1.5" />
+            </div>
+            <FieldGroup>
+              <Field>
+                <FieldLabel>Staff notes</FieldLabel>
+                <Textarea placeholder="Add a note about this appointment..." />
+              </Field>
+            </FieldGroup>
+          </div>
+          <SheetFooter>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setBookings((s) =>
+                  s.map((b) => (b.id === active ? { ...b, status: "No-show" } : b)),
+                );
+                setActive(null);
+                toast.success("Marked as no-show");
+              }}
+            >
+              Mark no-show
+            </Button>
+            <Button
+              onClick={() => {
+                setBookings((s) =>
+                  s.map((b) => (b.id === active ? { ...b, status: "Checked in" } : b)),
+                );
+                setActive(null);
+                toast.success("Checked in");
+              }}
+            >
+              Check in
+            </Button>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet>
+      <Dialog open={newOpen} onOpenChange={setNewOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{room ? "New reservation" : "New booking"}</DialogTitle>
+            <DialogDescription>Choose the client and service details.</DialogDescription>
+          </DialogHeader>
+          <FieldGroup>
+            <Field>
+              <FieldLabel htmlFor="booking-name">Client name</FieldLabel>
+              <Input id="booking-name" value={name} onChange={(e) => setName(e.target.value)} />
+            </Field>
+            <Field>
+              <FieldLabel htmlFor="booking-service">Service</FieldLabel>
+              <Input
+                id="booking-service"
+                value={service}
+                onChange={(e) => setService(e.target.value)}
+              />
+            </Field>
+            <Field>
+              <FieldLabel>Date</FieldLabel>
+              <Input type="date" defaultValue="2026-10-22" />
+            </Field>
+          </FieldGroup>
+          <DialogFooter>
+            <Button
+              disabled={!name.trim()}
+              onClick={() => {
+                setBookings((s) => [
+                  ...s,
+                  {
+                    id: Date.now(),
+                    name,
+                    service,
+                    staff: people[3],
+                    time: "14:30",
+                    status: "Confirmed",
+                    room: 111,
+                  },
+                ]);
+                setNewOpen(false);
+                setName("");
+                toast.success("Booking created");
+              }}
+            >
+              Confirm booking
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}
 
-export function DetailBlock({block}:BlockProps){const member=block.category==='users';const billing=block.category==='billing';const shipping=block.category==='inventory';const receiving=shipping&&block.index===3;const [tab,setTab]=useState('Overview');const [stage,setStage]=useState(2);const [quantities,setQuantities]=useState([2,1,3]);const [note,setNote]=useState('');const [saved,setSaved]=useState(false);const [sessions,setSessions]=useState(['MacBook Pro · Chrome','iPhone 15 · Safari','Windows PC · Edge']);const [twoFactor,setTwoFactor]=useState(true);const [method,setMethod]=useState('Visa •••• 4242');const [deposit,setDeposit]=useState(false);const subtotal=quantities.reduce((s,q,i)=>s+q*[89,149,29][i],0);const sections=member?['Overview','Access','Authentication','Sessions','Activity']:billing?['Overview','Invoices','Subscription','Activity']:['Overview','Line items','Shipping','Activity'];return <div className="rounded-xl border bg-background"><div className="p-6"><BlockHeading title={block.name} description={member?'Workspace / Members / Olivia Rhye':billing?'Accounts / Linear Inc.':shipping?'Orders / ORD-2408':'CRM / Deals / Linear Enterprise'}><Status value={saved?'Complete':member?'Active':billing?'Past due':shipping?'In transit':'Negotiation'}/><Button size="sm" onClick={()=>{setSaved(true);toast.success(shipping?'Order updated':member?'Member updated':'Changes saved')}}>Save changes</Button></BlockHeading></div><div className="grid border-t md:grid-cols-[190px_1fr_260px]"><aside className="border-b bg-muted/15 p-4 md:border-b-0 md:border-r"><div className="mb-5 flex flex-col items-center gap-3 py-3"><Avatar className="size-14"><AvatarFallback>{member?'OR':billing?'LI':shipping?'PK':'LE'}</AvatarFallback></Avatar><div className="text-center"><p className="text-sm font-semibold">{member?'Olivia Rhye':billing?'Linear Inc.':shipping?'Order #ORD-2408':'Linear Enterprise'}</p><p className="mt-1 text-[10px] text-muted-foreground">{member?'olivia@acme.com':billing?'billing@linear.app':shipping?'Created Oct 20, 2026':'Expansion · $48,000 ARR'}</p></div></div>{sections.map(s=><Button key={s} variant={tab===s?'secondary':'ghost'} onClick={()=>setTab(s)} className="mb-1 w-full justify-start text-xs">{s}</Button>)}</aside><main className="min-w-0 p-6">{member&&tab==='Sessions'?<div className="flex flex-col gap-3"><h3 className="mb-2 text-sm font-semibold">Active sessions</h3>{sessions.map((s,i)=><div key={s} className="flex items-center justify-between rounded-lg border p-4"><div><p className="text-xs font-medium">{s}</p><p className="mt-1 text-[10px] text-muted-foreground">{i===0?'Current session':'Last active 2 hours ago'} · San Francisco, US</p></div><Button size="sm" variant="outline" disabled={i===0} onClick={()=>{setSessions(ss=>ss.filter(v=>v!==s));toast.success('Session signed out')}}>Sign out</Button></div>)}</div>:member&&tab==='Authentication'?<FieldGroup><Field className="flex-row items-center justify-between"><div><FieldLabel>Two-factor authentication</FieldLabel><p className="mt-1 text-[11px] text-muted-foreground">Require an additional verification factor.</p></div><Switch checked={twoFactor} onCheckedChange={setTwoFactor}/></Field><Field><FieldLabel>Sign-in method</FieldLabel><Input readOnly value="Google Workspace SSO"/></Field><Button variant="outline" onClick={()=>toast.success('Password reset link created in demo')}>Reset password</Button></FieldGroup>:member?<FieldGroup><Field><FieldLabel>Full name</FieldLabel><Input defaultValue="Olivia Rhye"/></Field><Field><FieldLabel>Email address</FieldLabel><Input type="email" defaultValue="olivia@acme.com"/></Field><Field><FieldLabel>Role</FieldLabel><div className="flex gap-2">{['Admin','Editor','Viewer'].map((s,i)=><Button key={s} size="sm" variant={stage===i?'default':'outline'} onClick={()=>setStage(i)}>{s}</Button>)}</div></Field><Field><FieldLabel>Teams</FieldLabel><div className="flex gap-2"><Badge variant="secondary">Engineering</Badge><Badge variant="secondary">Product</Badge></div></Field><Field><FieldLabel>Bio</FieldLabel><Textarea defaultValue="Building thoughtful product experiences with the team."/></Field></FieldGroup>:<><div className="mb-6 flex gap-1">{(shipping?['Confirmed','Processing','Shipped','Delivered']:billing?['Draft','Issued','Past due','Paid']:['Qualified','Proposal','Negotiation','Won']).map((s,i)=><button key={s} onClick={()=>setStage(i)} className={`flex-1 rounded-md border px-2 py-2 text-[10px] ${stage===i?'border-primary bg-primary text-primary-foreground':'bg-muted/30 text-muted-foreground'}`}>{s}</button>)}</div>{shipping&&block.index===8?<div className="flex flex-col gap-5">{['Shipment picked up','Departed origin facility','Arrived at sorting center','Out for delivery'].map((s,i)=><div key={s} className="flex items-start gap-3"><span className={`mt-1 flex size-6 items-center justify-center rounded-full border ${i<stage?'bg-primary text-primary-foreground':''}`}>{i<stage?<Check className="size-3"/>:<span className="text-[10px]">{i+1}</span>}</span><div className="flex-1"><p className="text-xs font-medium">{s}</p><p className="mt-1 text-[10px] text-muted-foreground">Oct {20+i}, 2026 · {i%2===0?'San Francisco':'Los Angeles'}, CA</p></div><span className="text-[10px] text-muted-foreground">10:{24+i*5}</span></div>)}</div>:billing&&tab==='Subscription'?<div className="rounded-lg border p-5"><Badge variant="secondary">Pro plan</Badge><p className="mt-4 text-3xl font-semibold">$348<span className="text-xs font-normal text-muted-foreground"> / month</span></p><p className="mt-2 text-xs text-muted-foreground">12 seats · Renews November 1, 2026</p><Button className="mt-5" variant="outline" onClick={()=>toast.success('Subscription updated in demo')}>Manage subscription</Button></div>:<div className="overflow-auto rounded-lg border"><Table><TableHeader><TableRow><TableHead className="text-[11px]">{shipping?'Product':billing?'Invoice':'Line item'}</TableHead><TableHead className="text-[11px]">{receiving?'Received':'Qty'}</TableHead><TableHead className="text-right text-[11px]">Amount</TableHead></TableRow></TableHeader><TableBody>{['Platform subscription','Additional workspace seats','Priority support'].map((s,i)=><TableRow key={s}><TableCell className="py-4"><p className="text-xs font-medium">{shipping?['Wireless headphones','Mechanical keyboard','USB-C adapter'][i]:s}</p><p className="mt-1 text-[10px] text-muted-foreground">{shipping?`SKU-104${i}`:`INV-2026-10${i}`}</p></TableCell><TableCell><Input aria-label={`Quantity for ${s}`} type="number" min="0" value={quantities[i]} onChange={e=>setQuantities(q=>q.map((v,j)=>j===i?Math.max(0,Number(e.target.value)):v))} className="h-8 w-16 text-xs"/></TableCell><TableCell className="text-right text-xs">${(quantities[i]*[89,149,29][i]).toFixed(2)}</TableCell></TableRow>)}</TableBody></Table></div>}<div className="mt-5 flex justify-end"><div className="flex w-56 flex-col gap-3 text-xs">{[['Subtotal',`$${subtotal.toFixed(2)}`],['Tax (10%)',`$${(subtotal*.1).toFixed(2)}`],['Total',`$${(subtotal*1.1).toFixed(2)}`]].map(([k,v])=><div key={k} className="flex justify-between border-b pb-2"><span className="text-muted-foreground">{k}</span><span className="font-medium">{v}</span></div>)}</div></div><FieldGroup className="mt-6"><Field><FieldLabel>{shipping?'Shipping notes':'Account notes'}</FieldLabel><Textarea value={note} onChange={e=>setNote(e.target.value)} placeholder="Add a note..."/></Field></FieldGroup></>}</main><aside className="border-t bg-muted/10 p-5 md:border-l md:border-t-0"><h3 className="mb-5 text-xs font-semibold">{shipping?'Shipping details':billing?'Payment details':'Activity'}</h3>{shipping?<div className="flex flex-col gap-4 text-xs"><Truck className="size-6 text-muted-foreground"/><p className="font-medium">Standard delivery</p><p className="leading-6 text-muted-foreground">Olivia Rhye<br/>123 Market Street<br/>San Francisco, CA 94103<br/>United States</p><div className="border-t pt-4"><p className="text-[10px] text-muted-foreground">Tracking number</p><button className="mt-1 flex items-center gap-2 text-xs" onClick={()=>{navigator.clipboard.writeText('1Z999AA10123456784');toast.success('Tracking number copied')}}>1Z999AA10123456784<Copy className="size-3"/></button></div><Input type="date" aria-label="Ship date" defaultValue="2026-10-22"/><Button variant="outline" size="sm" onClick={()=>{setSaved(true);toast.success('Shipping label generated in preview')}}><ArrowDownToLine/>Create label</Button></div>:billing?<div className="flex flex-col gap-4"><CreditCard className="size-6 text-muted-foreground"/><p className="text-xs font-medium">{method}</p><p className="text-[10px] text-muted-foreground">Expires 12/2028</p><Button variant="outline" size="sm" onClick={()=>setMethod(m=>m.startsWith('Visa')?'Mastercard •••• 8890':'Visa •••• 4242')}>Switch method</Button><Button size="sm" onClick={()=>{setDeposit(true);toast.success('Reminder recorded in demo')}}>{deposit?'Reminder sent':'Send reminder'}</Button></div>:<div className="flex flex-col gap-5">{['Profile updated','Role changed to Admin','Joined Engineering','Workspace invitation accepted'].map((s,i)=><div key={s} className="flex gap-2"><span className="mt-1 size-1.5 shrink-0 rounded-full bg-muted-foreground"/><div><p className="text-[11px]">{s}</p><p className="mt-1 text-[10px] text-muted-foreground">{i===0?'2 hours':`${i+1} days`} ago</p></div></div>)}</div>}</aside></div></div>}
+export function DetailBlock({ block }: BlockProps) {
+  const member = block.category === "users";
+  const billing = block.category === "billing";
+  const shipping = block.category === "inventory";
+  const receiving = shipping && block.index === 3;
+  const [tab, setTab] = useState("Overview");
+  const [stage, setStage] = useState(2);
+  const [quantities, setQuantities] = useState([2, 1, 3]);
+  const [note, setNote] = useState("");
+  const [saved, setSaved] = useState(false);
+  const [sessions, setSessions] = useState([
+    "MacBook Pro · Chrome",
+    "iPhone 15 · Safari",
+    "Windows PC · Edge",
+  ]);
+  const [twoFactor, setTwoFactor] = useState(true);
+  const [method, setMethod] = useState("Visa •••• 4242");
+  const [deposit, setDeposit] = useState(false);
+  const subtotal = quantities.reduce((s, q, i) => s + q * [89, 149, 29][i], 0);
+  const sections = member
+    ? ["Overview", "Access", "Authentication", "Sessions", "Activity"]
+    : billing
+      ? ["Overview", "Invoices", "Subscription", "Activity"]
+      : ["Overview", "Line items", "Shipping", "Activity"];
+  return (
+    <div className="rounded-xl border bg-background">
+      <div className="p-6">
+        <BlockHeading
+          title={block.name}
+          description={
+            member
+              ? "Workspace / Members / Olivia Rhye"
+              : billing
+                ? "Accounts / Linear Inc."
+                : shipping
+                  ? "Orders / ORD-2408"
+                  : "CRM / Deals / Linear Enterprise"
+          }
+        >
+          <Status
+            value={
+              saved
+                ? "Complete"
+                : member
+                  ? "Active"
+                  : billing
+                    ? "Past due"
+                    : shipping
+                      ? "In transit"
+                      : "Negotiation"
+            }
+          />
+          <Button
+            size="sm"
+            onClick={() => {
+              setSaved(true);
+              toast.success(
+                shipping ? "Order updated" : member ? "Member updated" : "Changes saved",
+              );
+            }}
+          >
+            Save changes
+          </Button>
+        </BlockHeading>
+      </div>
+      <div className="grid border-t md:grid-cols-[190px_1fr_260px]">
+        <aside className="border-b bg-muted/15 p-4 md:border-b-0 md:border-r">
+          <div className="mb-5 flex flex-col items-center gap-3 py-3">
+            <Avatar className="size-14">
+              <AvatarFallback>
+                {member ? "OR" : billing ? "LI" : shipping ? "PK" : "LE"}
+              </AvatarFallback>
+            </Avatar>
+            <div className="text-center">
+              <p className="text-sm font-semibold">
+                {member
+                  ? "Olivia Rhye"
+                  : billing
+                    ? "Linear Inc."
+                    : shipping
+                      ? "Order #ORD-2408"
+                      : "Linear Enterprise"}
+              </p>
+              <p className="mt-1 text-[10px] text-muted-foreground">
+                {member
+                  ? "olivia@acme.com"
+                  : billing
+                    ? "billing@linear.app"
+                    : shipping
+                      ? "Created Oct 20, 2026"
+                      : "Expansion · $48,000 ARR"}
+              </p>
+            </div>
+          </div>
+          {sections.map((s) => (
+            <Button
+              key={s}
+              variant={tab === s ? "secondary" : "ghost"}
+              onClick={() => setTab(s)}
+              className="mb-1 w-full justify-start text-xs"
+            >
+              {s}
+            </Button>
+          ))}
+        </aside>
+        <main className="min-w-0 p-6">
+          {member && tab === "Sessions" ? (
+            <div className="flex flex-col gap-3">
+              <h3 className="mb-2 text-sm font-semibold">Active sessions</h3>
+              {sessions.map((s, i) => (
+                <div key={s} className="flex items-center justify-between rounded-lg border p-4">
+                  <div>
+                    <p className="text-xs font-medium">{s}</p>
+                    <p className="mt-1 text-[10px] text-muted-foreground">
+                      {i === 0 ? "Current session" : "Last active 2 hours ago"} · San Francisco, US
+                    </p>
+                  </div>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    disabled={i === 0}
+                    onClick={() => {
+                      setSessions((ss) => ss.filter((v) => v !== s));
+                      toast.success("Session signed out");
+                    }}
+                  >
+                    Sign out
+                  </Button>
+                </div>
+              ))}
+            </div>
+          ) : member && tab === "Authentication" ? (
+            <FieldGroup>
+              <Field className="flex-row items-center justify-between">
+                <div>
+                  <FieldLabel>Two-factor authentication</FieldLabel>
+                  <p className="mt-1 text-[11px] text-muted-foreground">
+                    Require an additional verification factor.
+                  </p>
+                </div>
+                <Switch checked={twoFactor} onCheckedChange={setTwoFactor} />
+              </Field>
+              <Field>
+                <FieldLabel>Sign-in method</FieldLabel>
+                <Input readOnly value="Google Workspace SSO" />
+              </Field>
+              <Button
+                variant="outline"
+                onClick={() => toast.success("Password reset link created in demo")}
+              >
+                Reset password
+              </Button>
+            </FieldGroup>
+          ) : member ? (
+            <FieldGroup>
+              <Field>
+                <FieldLabel>Full name</FieldLabel>
+                <Input defaultValue="Olivia Rhye" />
+              </Field>
+              <Field>
+                <FieldLabel>Email address</FieldLabel>
+                <Input type="email" defaultValue="olivia@acme.com" />
+              </Field>
+              <Field>
+                <FieldLabel>Role</FieldLabel>
+                <div className="flex gap-2">
+                  {["Admin", "Editor", "Viewer"].map((s, i) => (
+                    <Button
+                      key={s}
+                      size="sm"
+                      variant={stage === i ? "default" : "outline"}
+                      onClick={() => setStage(i)}
+                    >
+                      {s}
+                    </Button>
+                  ))}
+                </div>
+              </Field>
+              <Field>
+                <FieldLabel>Teams</FieldLabel>
+                <div className="flex gap-2">
+                  <Badge variant="secondary">Engineering</Badge>
+                  <Badge variant="secondary">Product</Badge>
+                </div>
+              </Field>
+              <Field>
+                <FieldLabel>Bio</FieldLabel>
+                <Textarea defaultValue="Building thoughtful product experiences with the team." />
+              </Field>
+            </FieldGroup>
+          ) : (
+            <>
+              <div className="mb-6 flex gap-1">
+                {(shipping
+                  ? ["Confirmed", "Processing", "Shipped", "Delivered"]
+                  : billing
+                    ? ["Draft", "Issued", "Past due", "Paid"]
+                    : ["Qualified", "Proposal", "Negotiation", "Won"]
+                ).map((s, i) => (
+                  <button
+                    key={s}
+                    onClick={() => setStage(i)}
+                    className={`flex-1 rounded-md border px-2 py-2 text-[10px] ${stage === i ? "border-primary bg-primary text-primary-foreground" : "bg-muted/30 text-muted-foreground"}`}
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+              {shipping && block.index === 8 ? (
+                <div className="flex flex-col gap-5">
+                  {[
+                    "Shipment picked up",
+                    "Departed origin facility",
+                    "Arrived at sorting center",
+                    "Out for delivery",
+                  ].map((s, i) => (
+                    <div key={s} className="flex items-start gap-3">
+                      <span
+                        className={`mt-1 flex size-6 items-center justify-center rounded-full border ${i < stage ? "bg-primary text-primary-foreground" : ""}`}
+                      >
+                        {i < stage ? (
+                          <Check className="size-3" />
+                        ) : (
+                          <span className="text-[10px]">{i + 1}</span>
+                        )}
+                      </span>
+                      <div className="flex-1">
+                        <p className="text-xs font-medium">{s}</p>
+                        <p className="mt-1 text-[10px] text-muted-foreground">
+                          Oct {20 + i}, 2026 · {i % 2 === 0 ? "San Francisco" : "Los Angeles"}, CA
+                        </p>
+                      </div>
+                      <span className="text-[10px] text-muted-foreground">10:{24 + i * 5}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : billing && tab === "Subscription" ? (
+                <div className="rounded-lg border p-5">
+                  <Badge variant="secondary">Pro plan</Badge>
+                  <p className="mt-4 text-3xl font-semibold">
+                    $348<span className="text-xs font-normal text-muted-foreground"> / month</span>
+                  </p>
+                  <p className="mt-2 text-xs text-muted-foreground">
+                    12 seats · Renews November 1, 2026
+                  </p>
+                  <Button
+                    className="mt-5"
+                    variant="outline"
+                    onClick={() => toast.success("Subscription updated in demo")}
+                  >
+                    Manage subscription
+                  </Button>
+                </div>
+              ) : (
+                <div className="overflow-auto rounded-lg border">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead className="text-[11px]">
+                          {shipping ? "Product" : billing ? "Invoice" : "Line item"}
+                        </TableHead>
+                        <TableHead className="text-[11px]">
+                          {receiving ? "Received" : "Qty"}
+                        </TableHead>
+                        <TableHead className="text-right text-[11px]">Amount</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {[
+                        "Platform subscription",
+                        "Additional workspace seats",
+                        "Priority support",
+                      ].map((s, i) => (
+                        <TableRow key={s}>
+                          <TableCell className="py-4">
+                            <p className="text-xs font-medium">
+                              {shipping
+                                ? ["Wireless headphones", "Mechanical keyboard", "USB-C adapter"][i]
+                                : s}
+                            </p>
+                            <p className="mt-1 text-[10px] text-muted-foreground">
+                              {shipping ? `SKU-104${i}` : `INV-2026-10${i}`}
+                            </p>
+                          </TableCell>
+                          <TableCell>
+                            <Input
+                              aria-label={`Quantity for ${s}`}
+                              type="number"
+                              min="0"
+                              value={quantities[i]}
+                              onChange={(e) =>
+                                setQuantities((q) =>
+                                  q.map((v, j) =>
+                                    j === i ? Math.max(0, Number(e.target.value)) : v,
+                                  ),
+                                )
+                              }
+                              className="h-8 w-16 text-xs"
+                            />
+                          </TableCell>
+                          <TableCell className="text-right text-xs">
+                            ${(quantities[i] * [89, 149, 29][i]).toFixed(2)}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              )}
+              <div className="mt-5 flex justify-end">
+                <div className="flex w-56 flex-col gap-3 text-xs">
+                  {[
+                    ["Subtotal", `$${subtotal.toFixed(2)}`],
+                    ["Tax (10%)", `$${(subtotal * 0.1).toFixed(2)}`],
+                    ["Total", `$${(subtotal * 1.1).toFixed(2)}`],
+                  ].map(([k, v]) => (
+                    <div key={k} className="flex justify-between border-b pb-2">
+                      <span className="text-muted-foreground">{k}</span>
+                      <span className="font-medium">{v}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <FieldGroup className="mt-6">
+                <Field>
+                  <FieldLabel>{shipping ? "Shipping notes" : "Account notes"}</FieldLabel>
+                  <Textarea
+                    value={note}
+                    onChange={(e) => setNote(e.target.value)}
+                    placeholder="Add a note..."
+                  />
+                </Field>
+              </FieldGroup>
+            </>
+          )}
+        </main>
+        <aside className="border-t bg-muted/10 p-5 md:border-l md:border-t-0">
+          <h3 className="mb-5 text-xs font-semibold">
+            {shipping ? "Shipping details" : billing ? "Payment details" : "Activity"}
+          </h3>
+          {shipping ? (
+            <div className="flex flex-col gap-4 text-xs">
+              <Truck className="size-6 text-muted-foreground" />
+              <p className="font-medium">Standard delivery</p>
+              <p className="leading-6 text-muted-foreground">
+                Olivia Rhye
+                <br />
+                123 Market Street
+                <br />
+                San Francisco, CA 94103
+                <br />
+                United States
+              </p>
+              <div className="border-t pt-4">
+                <p className="text-[10px] text-muted-foreground">Tracking number</p>
+                <button
+                  className="mt-1 flex items-center gap-2 text-xs"
+                  onClick={() => {
+                    navigator.clipboard.writeText("1Z999AA10123456784");
+                    toast.success("Tracking number copied");
+                  }}
+                >
+                  1Z999AA10123456784
+                  <Copy className="size-3" />
+                </button>
+              </div>
+              <Input type="date" aria-label="Ship date" defaultValue="2026-10-22" />
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  setSaved(true);
+                  toast.success("Shipping label generated in preview");
+                }}
+              >
+                <ArrowDownToLine />
+                Create label
+              </Button>
+            </div>
+          ) : billing ? (
+            <div className="flex flex-col gap-4">
+              <CreditCard className="size-6 text-muted-foreground" />
+              <p className="text-xs font-medium">{method}</p>
+              <p className="text-[10px] text-muted-foreground">Expires 12/2028</p>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() =>
+                  setMethod((m) =>
+                    m.startsWith("Visa") ? "Mastercard •••• 8890" : "Visa •••• 4242",
+                  )
+                }
+              >
+                Switch method
+              </Button>
+              <Button
+                size="sm"
+                onClick={() => {
+                  setDeposit(true);
+                  toast.success("Reminder recorded in demo");
+                }}
+              >
+                {deposit ? "Reminder sent" : "Send reminder"}
+              </Button>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-5">
+              {[
+                "Profile updated",
+                "Role changed to Admin",
+                "Joined Engineering",
+                "Workspace invitation accepted",
+              ].map((s, i) => (
+                <div key={s} className="flex gap-2">
+                  <span className="mt-1 size-1.5 shrink-0 rounded-full bg-muted-foreground" />
+                  <div>
+                    <p className="text-[11px]">{s}</p>
+                    <p className="mt-1 text-[10px] text-muted-foreground">
+                      {i === 0 ? "2 hours" : `${i + 1} days`} ago
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </aside>
+      </div>
+    </div>
+  );
+}
 
-export function ItineraryBlock(){const [day,setDay]=useState('Day 1');const [stops,setStops]=useState([{id:1,time:'09:00',title:'Airport arrival & transfer',location:'London Heathrow Airport',duration:'60 min',cost:45},{id:2,time:'11:00',title:'Hotel check-in',location:'The Kensington Hotel',duration:'45 min',cost:280},{id:3,time:'13:00',title:'Lunch in Covent Garden',location:'Covent Garden, London',duration:'90 min',cost:35},{id:4,time:'15:00',title:'Guided city walking tour',location:'Westminster, London',duration:'120 min',cost:55}]);const [drag,setDrag]=useState<number|null>(null);const [preview,setPreview]=useState(false);return <div className="rounded-xl border bg-background p-6"><BlockHeading title="London City Escape" description="Itinerary builder · 4 travelers · Oct 22–25, 2026"><Button variant="outline" size="sm" onClick={()=>setPreview(v=>!v)}>{preview?'Edit itinerary':'Traveler preview'}</Button><Button size="sm" onClick={()=>toast.success('Itinerary published in demo')}>Publish itinerary</Button></BlockHeading><Tabs value={day} onValueChange={setDay}><TabsList className="my-6">{['Day 1','Day 2','Day 3','Day 4'].map(d=><TabsTrigger key={d} value={d}>{d}</TabsTrigger>)}</TabsList></Tabs><div className="grid gap-6 md:grid-cols-[1fr_280px]"><div className="flex flex-col gap-3">{stops.map((s,i)=><div draggable={!preview} key={s.id} onDragStart={()=>setDrag(i)} onDragOver={e=>e.preventDefault()} onDrop={()=>{if(drag===null)return;setStops(ss=>{const next=[...ss];next.splice(i,0,next.splice(drag,1)[0]);return next});setDrag(null)}} className="flex gap-4 rounded-lg border p-4">{!preview&&<div className="mt-1 text-muted-foreground"><MoreHorizontal className="size-4 cursor-grab"/></div>}<div className="w-12 shrink-0 text-xs font-medium">{s.time}</div><div className="flex-1"><h3 className="text-xs font-medium">{s.title}</h3><p className="mt-2 flex items-center gap-1 text-[11px] text-muted-foreground"><MapPin className="size-3"/>{s.location}</p><div className="mt-3 flex items-center gap-4 text-[10px] text-muted-foreground"><span className="flex items-center gap-1"><Clock className="size-3"/>{s.duration}</span><span>${s.cost} / person</span></div></div>{!preview&&<Button variant="ghost" size="icon" className="size-7" aria-label={`Remove ${s.title}`} onClick={()=>setStops(ss=>ss.filter(x=>x.id!==s.id))}><Trash2/></Button>}</div>)}{!preview&&<Button variant="outline" className="border-dashed" onClick={()=>setStops(s=>[...s,{id:Date.now(),time:'18:00',title:'New activity',location:'London, UK',duration:'60 min',cost:40}])}><Plus/>Add stop</Button>}</div><Card className="shadow-none"><CardHeader><CardTitle className="text-sm">Trip summary</CardTitle><CardDescription className="text-xs">{day} · London, United Kingdom</CardDescription></CardHeader><CardContent className="flex flex-col gap-4 text-xs"><div className="flex justify-between"><span className="text-muted-foreground">Stops</span><span>{stops.length}</span></div><div className="flex justify-between"><span className="text-muted-foreground">Per traveler</span><span>${stops.reduce((s,x)=>s+x.cost,0)}</span></div><div className="flex justify-between border-t pt-4"><span className="font-medium">Group total</span><strong>${stops.reduce((s,x)=>s+x.cost,0)*4}</strong></div><div className="rounded-lg bg-muted p-3 text-[11px] leading-5">Allow at least 30 minutes between activities for travel and rest.</div></CardContent></Card></div></div>}
+export function ItineraryBlock() {
+  const [day, setDay] = useState("Day 1");
+  const [stops, setStops] = useState([
+    {
+      id: 1,
+      time: "09:00",
+      title: "Airport arrival & transfer",
+      location: "London Heathrow Airport",
+      duration: "60 min",
+      cost: 45,
+    },
+    {
+      id: 2,
+      time: "11:00",
+      title: "Hotel check-in",
+      location: "The Kensington Hotel",
+      duration: "45 min",
+      cost: 280,
+    },
+    {
+      id: 3,
+      time: "13:00",
+      title: "Lunch in Covent Garden",
+      location: "Covent Garden, London",
+      duration: "90 min",
+      cost: 35,
+    },
+    {
+      id: 4,
+      time: "15:00",
+      title: "Guided city walking tour",
+      location: "Westminster, London",
+      duration: "120 min",
+      cost: 55,
+    },
+  ]);
+  const [drag, setDrag] = useState<number | null>(null);
+  const [preview, setPreview] = useState(false);
+  return (
+    <div className="rounded-xl border bg-background p-6">
+      <BlockHeading
+        title="London City Escape"
+        description="Itinerary builder · 4 travelers · Oct 22–25, 2026"
+      >
+        <Button variant="outline" size="sm" onClick={() => setPreview((v) => !v)}>
+          {preview ? "Edit itinerary" : "Traveler preview"}
+        </Button>
+        <Button size="sm" onClick={() => toast.success("Itinerary published in demo")}>
+          Publish itinerary
+        </Button>
+      </BlockHeading>
+      <Tabs value={day} onValueChange={setDay}>
+        <TabsList className="my-6">
+          {["Day 1", "Day 2", "Day 3", "Day 4"].map((d) => (
+            <TabsTrigger key={d} value={d}>
+              {d}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </Tabs>
+      <div className="grid gap-6 md:grid-cols-[1fr_280px]">
+        <div className="flex flex-col gap-3">
+          {stops.map((s, i) => (
+            <div
+              draggable={!preview}
+              key={s.id}
+              onDragStart={() => setDrag(i)}
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={() => {
+                if (drag === null) return;
+                setStops((ss) => {
+                  const next = [...ss];
+                  next.splice(i, 0, next.splice(drag, 1)[0]);
+                  return next;
+                });
+                setDrag(null);
+              }}
+              className="flex gap-4 rounded-lg border p-4"
+            >
+              {!preview && (
+                <div className="mt-1 text-muted-foreground">
+                  <MoreHorizontal className="size-4 cursor-grab" />
+                </div>
+              )}
+              <div className="w-12 shrink-0 text-xs font-medium">{s.time}</div>
+              <div className="flex-1">
+                <h3 className="text-xs font-medium">{s.title}</h3>
+                <p className="mt-2 flex items-center gap-1 text-[11px] text-muted-foreground">
+                  <MapPin className="size-3" />
+                  {s.location}
+                </p>
+                <div className="mt-3 flex items-center gap-4 text-[10px] text-muted-foreground">
+                  <span className="flex items-center gap-1">
+                    <Clock className="size-3" />
+                    {s.duration}
+                  </span>
+                  <span>${s.cost} / person</span>
+                </div>
+              </div>
+              {!preview && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="size-7"
+                  aria-label={`Remove ${s.title}`}
+                  onClick={() => setStops((ss) => ss.filter((x) => x.id !== s.id))}
+                >
+                  <Trash2 />
+                </Button>
+              )}
+            </div>
+          ))}
+          {!preview && (
+            <Button
+              variant="outline"
+              className="border-dashed"
+              onClick={() =>
+                setStops((s) => [
+                  ...s,
+                  {
+                    id: Date.now(),
+                    time: "18:00",
+                    title: "New activity",
+                    location: "London, UK",
+                    duration: "60 min",
+                    cost: 40,
+                  },
+                ])
+              }
+            >
+              <Plus />
+              Add stop
+            </Button>
+          )}
+        </div>
+        <Card className="shadow-none">
+          <CardHeader>
+            <CardTitle className="text-sm">Trip summary</CardTitle>
+            <CardDescription className="text-xs">{day} · London, United Kingdom</CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-4 text-xs">
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Stops</span>
+              <span>{stops.length}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Per traveler</span>
+              <span>${stops.reduce((s, x) => s + x.cost, 0)}</span>
+            </div>
+            <div className="flex justify-between border-t pt-4">
+              <span className="font-medium">Group total</span>
+              <strong>${stops.reduce((s, x) => s + x.cost, 0) * 4}</strong>
+            </div>
+            <div className="rounded-lg bg-muted p-3 text-[11px] leading-5">
+              Allow at least 30 minutes between activities for travel and rest.
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}

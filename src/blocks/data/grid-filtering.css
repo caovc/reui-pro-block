@@ -13,12 +13,8 @@
     font-size: 14px;
     font-weight: 400;
   }
-  .refined-filter-grid
-    [data-slot="data-grid-table"]
-    thead th:first-child,
-  .refined-filter-grid
-    [data-slot="data-grid-table"]
-    thead th:last-child {
+  .refined-filter-grid [data-slot="data-grid-table"] thead th:first-child,
+  .refined-filter-grid [data-slot="data-grid-table"] thead th:last-child {
     border-right: 0;
   }
   .refined-filter-grid td {

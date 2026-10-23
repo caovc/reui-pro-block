@@ -17,21 +17,13 @@ type SourcesProps = {
   onSelect: (index: number) => void;
 };
 
-export default function Sources({
-  sources,
-  selectedIndex = -1,
-  onSelect,
-}: SourcesProps) {
+export default function Sources({ sources, selectedIndex = -1, onSelect }: SourcesProps) {
   const entries = sources?.filter((index) => chatSources[index]);
   if (!entries?.length) return null;
   const numbered = entries.length === 3;
 
   return (
-    <section
-      className="flex min-w-0 flex-col gap-1.5"
-      role="group"
-      aria-label="Sources"
-    >
+    <section className="flex min-w-0 flex-col gap-1.5" role="group" aria-label="Sources">
       <h4 className="text-[13px]/[18.5714px] font-medium text-muted-foreground">
         <span className="tabular-nums">{entries.length}</span>{" "}
         {numbered ? "Sources" : "Documents Read"}
@@ -54,9 +46,7 @@ export default function Sources({
               <AttachmentContent>
                 <AttachmentTitle className="flex items-center gap-1.5 text-[13px]">
                   {numbered && (
-                    <span className="text-muted-foreground tabular-nums">
-                      {index + 1}
-                    </span>
+                    <span className="text-muted-foreground tabular-nums">{index + 1}</span>
                   )}
                   <span className="min-w-0 truncate">{source.title}</span>
                 </AttachmentTitle>

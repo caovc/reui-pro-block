@@ -70,9 +70,7 @@ export function CalendarSelect({
           const isYear =
             dropdown.name === "years" ||
             Boolean(dropdown["aria-label"]?.toLowerCase().includes("year")) ||
-            Boolean(
-              dropdown.options?.some((option) => Number(option.value) > 11),
-            );
+            Boolean(dropdown.options?.some((option) => Number(option.value) > 11));
           return (
             <Select
               value={String(dropdown.value)}
@@ -83,24 +81,17 @@ export function CalendarSelect({
             >
               <SelectTrigger
                 aria-label={isYear ? yearLabel : monthLabel}
-                className={cn(
-                  "first:grow",
-                  isYear ? yearTriggerClassName : monthTriggerClassName,
-                )}
+                className={cn("first:grow", isYear ? yearTriggerClassName : monthTriggerClassName)}
               >
                 <SelectValue>
                   {
                     dropdown.options?.find(
-                      (option) =>
-                        String(option.value) === String(dropdown.value),
+                      (option) => String(option.value) === String(dropdown.value),
                     )?.label
                   }
                 </SelectValue>
               </SelectTrigger>
-              <SelectContent
-                align="start"
-                className={cn("reui-reference", portalClassName)}
-              >
+              <SelectContent align="start" className={cn("reui-reference", portalClassName)}>
                 {dropdown.options?.map((option) => (
                   <SelectItem
                     disabled={option.disabled}
@@ -115,12 +106,7 @@ export function CalendarSelect({
           );
         },
         DropdownNav: (navigation: DropdownNavProps) => (
-          <div
-            className={cn(
-              "flex w-full items-center gap-2",
-              dropdownNavClassName,
-            )}
-          >
+          <div className={cn("flex w-full items-center gap-2", dropdownNavClassName)}>
             {navigation.children}
           </div>
         ),

@@ -1,44 +1,1131 @@
-import { Checkbox } from '@/components/ui/checkbox';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem, DropdownMenuCheckboxItem } from '@/components/ui/dropdown-menu';
-import { Frame, FramePanel, FrameHeader, FrameTitle, FrameDescription } from '@/components/reui/frame';
-import { PulseBoard } from './pulse-board';
-import { ReferenceGrid } from './reference-grid';
-import { useState } from 'react';
-import { Plus, ArrowUpRight, CheckCircle, Clock, Smile, Inbox, Filter, MoreHorizontal, Bell, BookOpen, SlidersHorizontal } from 'lucide-react';
-import { Badge } from '@/components/reui/badge';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
-import { toast } from 'sonner';
-import { Shell, Button, Input, Avatar, Modal, ReferenceSheet, Empty, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './shared';
-type TicketRecord={id:string,customer:string,email:string,agent:string,stage:string,due:string,queue:string,value:string,sla:string,subject:string};
-const initial:TicketRecord[]=[{id:'TCK-4863',customer:'Quanta Devices',email:'it@quantadevices.com',agent:'Jamal Reid',stage:'Escalated',due:'Today 14:00',queue:'Technical',value:'$91,200',sla:'Blocked',subject:'Nightly export has finished empty since the schema change'},{id:'TCK-4927',customer:'Apex Manufacturing',email:'billing@apexmfg.example',agent:'Priya Patel',stage:'Escalated',due:'Today 13:00',queue:'Billing',value:'$68,400',sla:'Blocked',subject:'Invoice adjustment for annual plan'},{id:'TCK-4821',customer:'Brightwave Media',email:'ops@brightwave.example',agent:'Priya Patel',stage:'Awaiting agent',due:'Today 18:00',queue:'Billing',value:'$38,240',sla:'At Risk',subject:'Payment method needs updating'},{id:'TCK-4914',customer:'Meridian Retail',email:'help@meridian.example',agent:'Diego Ramos',stage:'Pending customer',due:'Today 20:30',queue:'Technical',value:'$33,100',sla:'Delayed',subject:'Webhook deliveries not arriving'},{id:'TCK-4872',customer:'Atlas Freight',email:'accounts@atlas.example',agent:'Priya Patel',stage:'Triage',due:'Today 19:45',queue:'Billing',value:'$22,750',sla:'On Time',subject:'Adding seats to the enterprise plan'},{id:'TCK-4890',customer:'Cobalt Logistics',email:'team@cobaltlogistics.com',agent:'Diego Ramos',stage:'Awaiting agent',due:'Today 17:15',queue:'Account',value:'$15,900',sla:'At Risk',subject:'Role permissions did not carry over from the merged workspace'},
-{id:'TCK-4834',customer:'Ridgeline Energy',email:'support@ridgelineenergy.com',agent:'Sana Qureshi',stage:'In progress',due:'Today 16:30',queue:'Technical',value:'$12,480',sla:'Delayed',subject:'Technical support escalation'},
-{id:'TCK-4938',customer:'Cedar & Co',email:'desk@cedarandco.com',agent:'Diego Ramos',stage:'Triage',due:'Tomorrow 09:30',queue:'Account',value:'$8,750',sla:'On Time',subject:'Account support escalation'},
-{id:'TCK-4855',customer:'Orbit Software',email:'hello@orbitsoftware.dev',agent:'Omar Haddad',stage:'Pending customer',due:'Tomorrow 10:00',queue:'Onboarding',value:'$6,400',sla:'On Time',subject:'Onboarding support escalation'},
-{id:'TCK-4902',customer:'Vertex Health',email:'care@vertexhealth.io',agent:'Omar Haddad',stage:'In progress',due:'Tomorrow 12:00',queue:'Onboarding',value:'$4,300',sla:'On Time',subject:'Onboarding support escalation'}];
-function ResolutionChart(){return <svg viewBox="0 0 600 330" className="ct-chart" aria-label="First contact resolution increased from 58 to 70 percent"><defs><linearGradient id="pulse-fill" x1="0" y1="0" x2="0" y2="1"><stop stopColor="var(--ct-green)" stopOpacity=".15"/><stop offset="1" stopColor="var(--ct-green)" stopOpacity="0"/></linearGradient></defs>{[40,50,60,70,80].map((v,i)=><g key={v}><line x1="45" x2="590" y1={285-i*60} y2={285-i*60}/><text x="0" y={290-i*60}>{v}%</text></g>)}<path d="M45 177 L92 183 L138 168 L184 160 L231 166 L278 151 L324 140 L371 145 L418 127 L464 115 L511 111 L558 101 V285H45Z" fill="url(#pulse-fill)"/><path d="M45 177 L92 183 L138 168 L184 160 L231 166 L278 151 L324 140 L371 145 L418 127 L464 115 L511 111 L558 101" fill="none" stroke="var(--ct-green)" strokeWidth="2"/>{[177,183,168,160,166,151,140,145,127,115,111,101].map((y,i)=><circle key={i} cx={45+i*46.6} cy={y} r="3.2" stroke="var(--ct-green)" strokeWidth="2" fill="var(--background)"/>)}{['Mar 24','Apr 7','Apr 21','May 5','May 19','Jun 2'].map((t,i)=><text key={t} x={35+i*93} y="315">{t}</text>)}</svg>}
-export default function Pulse(){const [view,setView]=useState('Dashboard');const [query,setQuery]=useState('');const [tickets,setTickets]=useState(initial);const [filter,setFilter]=useState('All');const [selectedTickets,setSelectedTickets]=useState<string[]>([]);const [visibleColumns,setVisibleColumns]=useState<Record<string,boolean>>({});const [create,setCreate]=useState(false);const [selected,setSelected]=useState<TicketRecord|null>(null);const [editing,setEditing]=useState<TicketRecord|null>(null);const [article,setArticle]=useState('');const [page,setPage]=useState(1);const [layout,setLayout]=useState('Board');
- const filtered=tickets.filter(t=>Object.values(t).join(' ').toLowerCase().includes(query.toLowerCase())&&(filter==='All'||t.queue===filter||t.stage===filter||t.sla===filter));
- const table=<Frame><FrameHeader><div className="ct-between"><div><FrameTitle>{view==='Dashboard'?'Escalation Queue':'All tickets'}</FrameTitle><FrameDescription>{filtered.length} of {tickets.length} open {view==='Dashboard'?'escalations':'tickets'}</FrameDescription></div><Button onClick={()=>setCreate(true)}><Plus/>{view==='Dashboard'?'New escalation':'New ticket'}</Button></div></FrameHeader><FramePanel><div className="ct-toolbar mb-4"><Input placeholder="Search tickets…" aria-label="Search tickets" value={query} onChange={e=>{setQuery(e.target.value);setPage(1)}}/><Select value={filter} onValueChange={v=>{setFilter(v);setPage(1)}}><SelectTrigger aria-label="Filter ticket queue"><Filter/><SelectValue/></SelectTrigger><SelectContent>{['All','Blocked','At Risk','Delayed','On Time'].map(v=><SelectItem key={v} value={v}>{v==='All'?'Status':v}</SelectItem>)}</SelectContent></Select><div className="ct-grow"/><DropdownMenu><DropdownMenuTrigger asChild><Button variant="outline"><SlidersHorizontal/>Settings</Button></DropdownMenuTrigger><DropdownMenuContent>{['customer','stage','due','queue','value','sla'].map(key=><DropdownMenuCheckboxItem key={key} checked={visibleColumns[key]!==false} onCheckedChange={value=>setVisibleColumns(c=>({...c,[key]:value}))}>{key==='value'?'Account value':key[0].toUpperCase()+key.slice(1)}</DropdownMenuCheckboxItem>)}</DropdownMenuContent></DropdownMenu><DropdownMenu><DropdownMenuTrigger asChild><Button variant="outline"><MoreHorizontal/>Actions</Button></DropdownMenuTrigger><DropdownMenuContent><DropdownMenuItem disabled={!selectedTickets.length} onClick={()=>{setTickets(t=>t.filter(x=>!selectedTickets.includes(x.id)));setSelectedTickets([])}}>Delete selected</DropdownMenuItem><DropdownMenuItem disabled={!selectedTickets.length} onClick={()=>{setTickets(t=>t.map(x=>selectedTickets.includes(x.id)?{...x,stage:'Resolved',sla:'On Time'}:x));setSelectedTickets([])}}>Mark resolved</DropdownMenuItem></DropdownMenuContent></DropdownMenu>{view==='Tickets'&&<Button variant="outline" onClick={()=>setLayout(layout==='List'?'Board':'List')}>{layout==='List'?'Board view':'List view'}</Button>}</div>{layout==='Board'&&view==='Tickets'?<PulseBoard query={query} onCreate={()=>setCreate(true)} onOpen={(r,stage)=>setSelected({id:r[0],subject:r[2],customer:r[4],email:r[3].toLowerCase().replace(' ','.')+'@'+r[4].toLowerCase().replaceAll(' ','')+'.com',agent:r[5],stage,queue:'Technical',due:r[6],sla:stage==='SLA Risk'?'At Risk':'On Time',value:'—'})}/>:<ReferenceGrid columnVisibility={visibleColumns} rows={filtered.slice((page-1)*5,page*5)} onRowClick={setSelected} columns={[
-{id:'selection',title:'',header:<Checkbox aria-label="Select all escalations" checked={selectedTickets.length===filtered.length&&filtered.length>0} onCheckedChange={value=>setSelectedTickets(value?filtered.map(t=>t.id):[])}/>,render:t=><Checkbox aria-label={'Select '+t.id} checked={selectedTickets.includes(t.id)} onCheckedChange={value=>setSelectedTickets(s=>value?[...s,t.id]:s.filter(id=>id!==t.id))}/>},
-{id:'ticket',title:'Ticket',value:t=>t.id,render:t=><><b>{t.id}</b><small className="block ct-muted mt-1">{t.id==='TCK-4863'?'Phone':'Email'} · {t.agent}</small></>},
-{id:'customer',title:'Customer',value:t=>t.customer,render:t=><span className="ct-person"><Avatar name={t.customer}/><span>{t.customer}<small>{t.email}</small></span></span>},
-{id:'stage',title:'Stage',value:t=>t.stage,render:t=><>{t.stage}<div className="ct-progress"><span style={{width:t.stage==='Escalated'?'50%':'35%'}}/></div></>},
-{id:'due',title:'Due',value:t=>t.due,render:t=>t.due},
-{id:'queue',title:'Queue',value:t=>t.queue,render:t=><Badge variant="outline">{t.queue}</Badge>},
-{id:'value',title:'Account value',value:t=>t.value,render:t=>t.value},
-{id:'sla',title:'SLA',value:t=>t.sla,render:t=><Badge variant={t.sla==='Blocked'?'destructive-light':t.sla==='On Time'?'success-light':'warning-light'}>{t.sla}</Badge>},
-{id:'actions',title:'',render:t=><Button size="icon-sm" variant="ghost" aria-label={'Open '+t.id}><MoreHorizontal/></Button>}
-]}/>}{!filtered.length&&<Empty reset={()=>{setFilter('All');setQuery('')}}/>}<div className="ct-between mt-4 text-xs ct-muted"><span>{filtered.length?((page-1)*5+1):0} – {Math.min(page*5,filtered.length)} of {filtered.length}</span><div className="ct-toolbar"><Button size="sm" variant="outline" disabled={page===1} onClick={()=>setPage(p=>p-1)}>Previous</Button><Button size="sm" variant="outline" disabled={page*5>=filtered.length} onClick={()=>setPage(p=>p+1)}>Next</Button></div></div></FramePanel></Frame>;
- return <Shell kind="pulse" view={view} setView={v=>{setView(v);setQuery('');setFilter('All');setPage(1)}} query={query} setQuery={setQuery}>
- {view==='Dashboard'?<><div className="ct-heading"><p>Queue health, SLA risk and today's escalations.</p><span className="ct-subtle">● Updated just now</span></div><div className="ct-stats">{[['Unresolved','24','-8.3%','New, Open, Pending and On hold.','Unassigned: 6'],['Overdue','6','-12.5%','Past their first response target.','Breaching within 1h: 2'],['Solved today','38','+14.2%','18 resolved on first contact.','Median handle time: 1h 12m'],['CSAT','94.2%','+2.4%','From 118 of 402 surveys sent.','Response rate: 29%']].map((s,i)=>{const Icon=[Inbox,Clock,CheckCircle,Smile][i];return <Frame spacing="sm" key={s[0]}><FrameHeader><div className="ct-between"><FrameTitle>{s[0]}</FrameTitle><Icon size={16} className="ct-muted"/></div></FrameHeader><FramePanel><div className="ct-stat-value"><strong>{s[1]}</strong><Badge variant={i<2?'destructive-light':'success-light'}>{s[2]}</Badge></div><div className="ct-stat-note">{s[3]}<br/>{s[4]}</div></FramePanel></Frame>})}</div><div className="ct-two ct-section"><Frame><FrameHeader><div className="ct-between"><div><FrameTitle>Queue Load</FrameTitle><FrameDescription>Open tickets by queue</FrameDescription></div><Button size="sm" variant="outline" onClick={()=>setView('Tickets')}>View All</Button></div></FrameHeader><FramePanel><span className="ct-subtle">OPEN TICKETS</span><div className="ct-between"><strong className="text-2xl">24</strong><Badge variant="outline">4 Queues</Badge></div><div className="ct-queue-bar">{[37,29,21,13].map((n,i)=><span key={n} style={{width:n+'%',background:['var(--ct-purple)','var(--ct-blue)','var(--ct-orange)','var(--ct-green)'][i]}}/>)}</div><div className="ct-queue-stack">{[['Technical','Product faults and outages','9','Over SLA'],['Billing','Invoices, refunds and plans','7','Nearing SLA'],['Onboarding','Setup and migration help','5','Nearing SLA'],['Account','Access, seats and security','3','Within SLA']].map((q,i)=><button type="button" className="ct-queue-row" key={q[0]} onClick={()=>{setView('Tickets');setFilter(q[0])}}><span className="ct-queue-dot" style={{background:['var(--ct-purple)','var(--ct-blue)','var(--ct-orange)','var(--ct-green)'][i]}}/><span className="text-left">{q[0]}<small>{q[1]}</small></span><b>{q[2]}</b><Badge variant={i===0?'destructive-light':i===3?'success-light':'warning-light'}>{q[3]}</Badge></button>)}</div><p className="ct-subtle mt-4">Technical is past SLA; Account has spare capacity.</p></FramePanel></Frame><Frame><FrameHeader><div className="ct-between"><div><FrameTitle>First Contact Resolution</FrameTitle><FrameDescription>Weekly rate tracked against target</FrameDescription></div><span className="ct-chart-legend">First contact resolution</span></div></FrameHeader><FramePanel><ResolutionChart/></FramePanel><div className="ct-panel-foot ct-toolbar"><Bell size={16}/>First contact resolution drop <Badge variant="outline">Armed</Badge><span>Fires below 55% · 2 day window</span></div></Frame></div>{table}</>:
- view==='Tickets'?<><div className="ct-heading"><p>Every open ticket, by stage.</p><div className="ct-toolbar"><Button variant="outline" onClick={()=>setFilter(filter==='All'?'Technical':'All')}><Filter/>Filters</Button><Button onClick={()=>setCreate(true)}><Plus/>New ticket</Button></div></div><PulseBoard query={query} onCreate={()=>setCreate(true)} onOpen={(r,stage)=>setSelected({id:r[0],subject:r[2],customer:r[4],email:r[3].toLowerCase().replace(' ','.')+'@'+r[4].toLowerCase().replaceAll(' ','')+'.com',agent:r[5],stage,queue:'Technical',due:r[6],sla:stage==='SLA Risk'?'At Risk':'On Time',value:'—'})}/></>:
- view==='Contacts'||view==='Team'?<><div className="ct-heading"><div><h1>{view}</h1><p>{view==='Team'?'Your support team and their current workload.':'Customers and the conversations you have with them.'}</p></div></div><Frame><FramePanel><div className="ct-table-scroll"><Table><TableHeader><TableRow><TableHead>Name</TableHead><TableHead>Email</TableHead><TableHead>{view==='Team'?'Role':'Queue'}</TableHead><TableHead>Open tickets</TableHead></TableRow></TableHeader><TableBody>{initial.filter(t=>Object.values(t).join(' ').toLowerCase().includes(query.toLowerCase())).map((t,i)=><TableRow key={t.id}><TableCell><span className="ct-person"><Avatar name={view==='Team'?t.agent:t.customer}/>{view==='Team'?t.agent:t.customer}</span></TableCell><TableCell>{view==='Team'?t.agent.toLowerCase().replace(' ','.')+'@pulse.example':t.email}</TableCell><TableCell>{view==='Team'?i===0?'Admin':'Agent':t.queue}</TableCell><TableCell>{6-i}</TableCell></TableRow>)}</TableBody></Table></div></FramePanel></Frame></>:
- view==='Knowledge Base'?<><div className="ct-heading"><div><h1>Knowledge Base</h1><p>Answers, runbooks and guides for your team.</p></div></div><div className="ct-two">{['Getting started with your workspace','SLA clock pauses on waits','Account access and two-factor authentication','Billing, invoices and refunds','Escalating a critical incident','Importing customer contacts'].filter(a=>a.toLowerCase().includes(query.toLowerCase())).map(a=><Frame key={a}><FrameHeader><BookOpen/><FrameTitle>{a}</FrameTitle><FrameDescription>Help your customers find the right answer.</FrameDescription></FrameHeader><FramePanel><Button variant="outline" onClick={()=>setArticle(a)}>Read article<ArrowUpRight/></Button></FramePanel></Frame>)}</div></>:
- view==='Reports'?<><div className="ct-heading"><div><h1>Reports</h1><p>Understand your team's support performance.</p></div></div><Frame><FrameHeader><div className="ct-between"><div><FrameTitle>First Contact Resolution</FrameTitle><FrameDescription>Weekly rate tracked against target</FrameDescription></div><span className="ct-chart-legend">First contact resolution</span></div></FrameHeader><FramePanel><ResolutionChart/></FramePanel></Frame></>:
- <div className="ct-settings"><div className="ct-heading"><div><h1>Settings</h1><p>Your help desk, your way.</p></div></div><Frame><FrameHeader><FrameTitle>Workspace profile</FrameTitle></FrameHeader><FramePanel><form className="ct-form" onSubmit={e=>{e.preventDefault();toast.success('Help desk settings saved')}}><label>Workspace name<Input defaultValue="Help Desk" required/></label><label>Support email<Input type="email" defaultValue="support@pulse.example" required/></label><label>First response target<Select defaultValue="4"><SelectTrigger><SelectValue/></SelectTrigger><SelectContent>{['1','4','8','24'].map(n=><SelectItem key={n} value={n}>{n} hours</SelectItem>)}</SelectContent></Select></label><Button type="submit">Save changes</Button></form></FramePanel></Frame></div>}
- <ReferenceSheet title={editing?'Edit escalation':view==='Dashboard'?'New escalation':'New ticket'} width={512} open={create} onClose={()=>{setCreate(false);setEditing(null)}} footer={<><Button variant="outline" className="flex-1" onClick={()=>{setCreate(false);setEditing(null)}}>Cancel</Button><Button className="flex-1" type="submit" form="ct-escalation-form">{editing?'Save changes':'Raise escalation'}</Button></>}><form key={editing?.id||'new'} id="ct-escalation-form" className="ct-form" onSubmit={e=>{e.preventDefault();const f=new FormData(e.currentTarget);const ticket:TicketRecord={id:String(f.get('key')),customer:String(f.get('customer')),email:editing?.email||'',agent:String(f.get('agent')),stage:'Escalated',due:editing?.due||'Today',queue:String(f.get('queue')),value:editing?.value||'—',sla:String(f.get('sla')),subject:String(f.get('subject'))};setTickets(t=>editing?t.map(x=>x.id===editing.id?ticket:x):[ticket,...t]);setCreate(false);setEditing(null);setPage(1)}}><div className="ct-field-pair"><label>Ticket key<Input name="key" placeholder="TCK-4821" defaultValue={editing?.id} required/></label><label>SLA state<Select name="sla" defaultValue={editing?.sla} required><SelectTrigger><SelectValue placeholder="Select"/></SelectTrigger><SelectContent>{['Blocked','At Risk','Delayed','On Time'].map(v=><SelectItem value={v} key={v}>{v}</SelectItem>)}</SelectContent></Select></label></div><label>Requester<Input name="customer" defaultValue={editing?.customer} placeholder="Atlas Freight" required/></label><div className="ct-field-pair"><label>Queue<Select name="queue" defaultValue={editing?.queue} required><SelectTrigger><SelectValue placeholder="Select a queue"/></SelectTrigger><SelectContent>{['Technical','Billing','Onboarding','Account'].map(v=><SelectItem value={v} key={v}>{v}</SelectItem>)}</SelectContent></Select></label><label>Handling<Select name="handling" defaultValue={editing?'Manual':undefined}><SelectTrigger><SelectValue placeholder="Select a level"/></SelectTrigger><SelectContent>{['Manual','Automated','Priority'].map(v=><SelectItem value={v} key={v}>{v}</SelectItem>)}</SelectContent></Select></label></div><label>Assignee<Input name="agent" defaultValue={editing?.agent} placeholder="Priya Patel" required/></label><label>What is blocking it<Textarea name="subject" defaultValue={editing?.subject} placeholder="Invoice total disputed after the plan change" required/></label></form></ReferenceSheet>
- <ReferenceSheet title={selected?.id||'Ticket'} open={!!selected} onClose={()=>setSelected(null)} footer={<><Button variant="outline" onClick={()=>{setTickets(t=>t.filter(x=>x.id!==selected?.id));setSelected(null)}}>Delete</Button><Button onClick={()=>{setEditing(selected);setSelected(null);setCreate(true)}}>Edit</Button></>}>{selected&&<><section className="ct-detail-section"><h3>{selected.customer}<Badge variant={selected.sla==='Blocked'?'destructive-light':'warning-light'}>{selected.sla}</Badge><Badge variant="outline">Manual</Badge></h3><p>{selected.subject}</p></section><section className="ct-detail-section"><h4>TICKET</h4><dl><dt>Queue</dt><dd>{selected.queue}</dd><dt>Channel</dt><dd>{selected.id==='TCK-4863'?'Phone':'Email'}</dd><dt>Stage</dt><dd>{selected.stage}</dd><dt>Due by</dt><dd>{selected.due}</dd><dt>SLA left</dt><dd>{selected.sla==='Blocked'?'-25 min':'42 min'}</dd></dl></section><section className="ct-detail-section"><h4>HANDLING</h4><dl><dt>Assignee</dt><dd>{selected.agent}</dd><dt>Replies</dt><dd>11</dd><dt>Account value</dt><dd>{selected.value}</dd><dt>Contact</dt><dd>{selected.email}</dd></dl></section></>}</ReferenceSheet>
- <Modal title={article} open={!!article} onClose={()=>setArticle('')}><p>Use the workspace settings to manage access, response targets and team responsibilities. Assign each request to the right queue before escalating it.</p><p className="ct-muted">When a ticket is waiting for a customer, the SLA timer pauses. Once the customer replies, it resumes with the remaining time.</p><Button variant="outline" onClick={()=>{toast.success('Thanks for your feedback');setArticle('')}}>This was helpful</Button></Modal>
- </Shell>
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+  DropdownMenuItem,
+  DropdownMenuCheckboxItem,
+} from "@/components/ui/dropdown-menu";
+import {
+  Frame,
+  FramePanel,
+  FrameHeader,
+  FrameTitle,
+  FrameDescription,
+} from "@/components/reui/frame";
+import { PulseBoard } from "./pulse-board";
+import { ReferenceGrid } from "./reference-grid";
+import { useState } from "react";
+import {
+  Plus,
+  ArrowUpRight,
+  CheckCircle,
+  Clock,
+  Smile,
+  Inbox,
+  Filter,
+  MoreHorizontal,
+  Bell,
+  BookOpen,
+  SlidersHorizontal,
+} from "lucide-react";
+import { Badge } from "@/components/reui/badge";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
+import { toast } from "sonner";
+import {
+  Shell,
+  Button,
+  Input,
+  Avatar,
+  Modal,
+  ReferenceSheet,
+  Empty,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "./shared";
+type TicketRecord = {
+  id: string;
+  customer: string;
+  email: string;
+  agent: string;
+  stage: string;
+  due: string;
+  queue: string;
+  value: string;
+  sla: string;
+  subject: string;
+};
+const initial: TicketRecord[] = [
+  {
+    id: "TCK-4863",
+    customer: "Quanta Devices",
+    email: "it@quantadevices.com",
+    agent: "Jamal Reid",
+    stage: "Escalated",
+    due: "Today 14:00",
+    queue: "Technical",
+    value: "$91,200",
+    sla: "Blocked",
+    subject: "Nightly export has finished empty since the schema change",
+  },
+  {
+    id: "TCK-4927",
+    customer: "Apex Manufacturing",
+    email: "billing@apexmfg.example",
+    agent: "Priya Patel",
+    stage: "Escalated",
+    due: "Today 13:00",
+    queue: "Billing",
+    value: "$68,400",
+    sla: "Blocked",
+    subject: "Invoice adjustment for annual plan",
+  },
+  {
+    id: "TCK-4821",
+    customer: "Brightwave Media",
+    email: "ops@brightwave.example",
+    agent: "Priya Patel",
+    stage: "Awaiting agent",
+    due: "Today 18:00",
+    queue: "Billing",
+    value: "$38,240",
+    sla: "At Risk",
+    subject: "Payment method needs updating",
+  },
+  {
+    id: "TCK-4914",
+    customer: "Meridian Retail",
+    email: "help@meridian.example",
+    agent: "Diego Ramos",
+    stage: "Pending customer",
+    due: "Today 20:30",
+    queue: "Technical",
+    value: "$33,100",
+    sla: "Delayed",
+    subject: "Webhook deliveries not arriving",
+  },
+  {
+    id: "TCK-4872",
+    customer: "Atlas Freight",
+    email: "accounts@atlas.example",
+    agent: "Priya Patel",
+    stage: "Triage",
+    due: "Today 19:45",
+    queue: "Billing",
+    value: "$22,750",
+    sla: "On Time",
+    subject: "Adding seats to the enterprise plan",
+  },
+  {
+    id: "TCK-4890",
+    customer: "Cobalt Logistics",
+    email: "team@cobaltlogistics.com",
+    agent: "Diego Ramos",
+    stage: "Awaiting agent",
+    due: "Today 17:15",
+    queue: "Account",
+    value: "$15,900",
+    sla: "At Risk",
+    subject: "Role permissions did not carry over from the merged workspace",
+  },
+  {
+    id: "TCK-4834",
+    customer: "Ridgeline Energy",
+    email: "support@ridgelineenergy.com",
+    agent: "Sana Qureshi",
+    stage: "In progress",
+    due: "Today 16:30",
+    queue: "Technical",
+    value: "$12,480",
+    sla: "Delayed",
+    subject: "Technical support escalation",
+  },
+  {
+    id: "TCK-4938",
+    customer: "Cedar & Co",
+    email: "desk@cedarandco.com",
+    agent: "Diego Ramos",
+    stage: "Triage",
+    due: "Tomorrow 09:30",
+    queue: "Account",
+    value: "$8,750",
+    sla: "On Time",
+    subject: "Account support escalation",
+  },
+  {
+    id: "TCK-4855",
+    customer: "Orbit Software",
+    email: "hello@orbitsoftware.dev",
+    agent: "Omar Haddad",
+    stage: "Pending customer",
+    due: "Tomorrow 10:00",
+    queue: "Onboarding",
+    value: "$6,400",
+    sla: "On Time",
+    subject: "Onboarding support escalation",
+  },
+  {
+    id: "TCK-4902",
+    customer: "Vertex Health",
+    email: "care@vertexhealth.io",
+    agent: "Omar Haddad",
+    stage: "In progress",
+    due: "Tomorrow 12:00",
+    queue: "Onboarding",
+    value: "$4,300",
+    sla: "On Time",
+    subject: "Onboarding support escalation",
+  },
+];
+function ResolutionChart() {
+  return (
+    <svg
+      viewBox="0 0 600 330"
+      className="ct-chart"
+      aria-label="First contact resolution increased from 58 to 70 percent"
+    >
+      <defs>
+        <linearGradient id="pulse-fill" x1="0" y1="0" x2="0" y2="1">
+          <stop stopColor="var(--ct-green)" stopOpacity=".15" />
+          <stop offset="1" stopColor="var(--ct-green)" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      {[40, 50, 60, 70, 80].map((v, i) => (
+        <g key={v}>
+          <line x1="45" x2="590" y1={285 - i * 60} y2={285 - i * 60} />
+          <text x="0" y={290 - i * 60}>
+            {v}%
+          </text>
+        </g>
+      ))}
+      <path
+        d="M45 177 L92 183 L138 168 L184 160 L231 166 L278 151 L324 140 L371 145 L418 127 L464 115 L511 111 L558 101 V285H45Z"
+        fill="url(#pulse-fill)"
+      />
+      <path
+        d="M45 177 L92 183 L138 168 L184 160 L231 166 L278 151 L324 140 L371 145 L418 127 L464 115 L511 111 L558 101"
+        fill="none"
+        stroke="var(--ct-green)"
+        strokeWidth="2"
+      />
+      {[177, 183, 168, 160, 166, 151, 140, 145, 127, 115, 111, 101].map((y, i) => (
+        <circle
+          key={i}
+          cx={45 + i * 46.6}
+          cy={y}
+          r="3.2"
+          stroke="var(--ct-green)"
+          strokeWidth="2"
+          fill="var(--background)"
+        />
+      ))}
+      {["Mar 24", "Apr 7", "Apr 21", "May 5", "May 19", "Jun 2"].map((t, i) => (
+        <text key={t} x={35 + i * 93} y="315">
+          {t}
+        </text>
+      ))}
+    </svg>
+  );
+}
+export default function Pulse() {
+  const [view, setView] = useState("Dashboard");
+  const [query, setQuery] = useState("");
+  const [tickets, setTickets] = useState(initial);
+  const [filter, setFilter] = useState("All");
+  const [selectedTickets, setSelectedTickets] = useState<string[]>([]);
+  const [visibleColumns, setVisibleColumns] = useState<Record<string, boolean>>({});
+  const [create, setCreate] = useState(false);
+  const [selected, setSelected] = useState<TicketRecord | null>(null);
+  const [editing, setEditing] = useState<TicketRecord | null>(null);
+  const [article, setArticle] = useState("");
+  const [page, setPage] = useState(1);
+  const [layout, setLayout] = useState("Board");
+  const filtered = tickets.filter(
+    (t) =>
+      Object.values(t).join(" ").toLowerCase().includes(query.toLowerCase()) &&
+      (filter === "All" || t.queue === filter || t.stage === filter || t.sla === filter),
+  );
+  const table = (
+    <Frame>
+      <FrameHeader>
+        <div className="ct-between">
+          <div>
+            <FrameTitle>{view === "Dashboard" ? "Escalation Queue" : "All tickets"}</FrameTitle>
+            <FrameDescription>
+              {filtered.length} of {tickets.length} open{" "}
+              {view === "Dashboard" ? "escalations" : "tickets"}
+            </FrameDescription>
+          </div>
+          <Button onClick={() => setCreate(true)}>
+            <Plus />
+            {view === "Dashboard" ? "New escalation" : "New ticket"}
+          </Button>
+        </div>
+      </FrameHeader>
+      <FramePanel>
+        <div className="ct-toolbar mb-4">
+          <Input
+            placeholder="Search tickets…"
+            aria-label="Search tickets"
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              setPage(1);
+            }}
+          />
+          <Select
+            value={filter}
+            onValueChange={(v) => {
+              setFilter(v);
+              setPage(1);
+            }}
+          >
+            <SelectTrigger aria-label="Filter ticket queue">
+              <Filter />
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {["All", "Blocked", "At Risk", "Delayed", "On Time"].map((v) => (
+                <SelectItem key={v} value={v}>
+                  {v === "All" ? "Status" : v}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <div className="ct-grow" />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">
+                <SlidersHorizontal />
+                Settings
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              {["customer", "stage", "due", "queue", "value", "sla"].map((key) => (
+                <DropdownMenuCheckboxItem
+                  key={key}
+                  checked={visibleColumns[key] !== false}
+                  onCheckedChange={(value) => setVisibleColumns((c) => ({ ...c, [key]: value }))}
+                >
+                  {key === "value" ? "Account value" : key[0].toUpperCase() + key.slice(1)}
+                </DropdownMenuCheckboxItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline">
+                <MoreHorizontal />
+                Actions
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem
+                disabled={!selectedTickets.length}
+                onClick={() => {
+                  setTickets((t) => t.filter((x) => !selectedTickets.includes(x.id)));
+                  setSelectedTickets([]);
+                }}
+              >
+                Delete selected
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                disabled={!selectedTickets.length}
+                onClick={() => {
+                  setTickets((t) =>
+                    t.map((x) =>
+                      selectedTickets.includes(x.id)
+                        ? { ...x, stage: "Resolved", sla: "On Time" }
+                        : x,
+                    ),
+                  );
+                  setSelectedTickets([]);
+                }}
+              >
+                Mark resolved
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          {view === "Tickets" && (
+            <Button
+              variant="outline"
+              onClick={() => setLayout(layout === "List" ? "Board" : "List")}
+            >
+              {layout === "List" ? "Board view" : "List view"}
+            </Button>
+          )}
+        </div>
+        {layout === "Board" && view === "Tickets" ? (
+          <PulseBoard
+            query={query}
+            onCreate={() => setCreate(true)}
+            onOpen={(r, stage) =>
+              setSelected({
+                id: r[0],
+                subject: r[2],
+                customer: r[4],
+                email:
+                  r[3].toLowerCase().replace(" ", ".") +
+                  "@" +
+                  r[4].toLowerCase().replaceAll(" ", "") +
+                  ".com",
+                agent: r[5],
+                stage,
+                queue: "Technical",
+                due: r[6],
+                sla: stage === "SLA Risk" ? "At Risk" : "On Time",
+                value: "—",
+              })
+            }
+          />
+        ) : (
+          <ReferenceGrid
+            columnVisibility={visibleColumns}
+            rows={filtered.slice((page - 1) * 5, page * 5)}
+            onRowClick={setSelected}
+            columns={[
+              {
+                id: "selection",
+                title: "",
+                header: (
+                  <Checkbox
+                    aria-label="Select all escalations"
+                    checked={selectedTickets.length === filtered.length && filtered.length > 0}
+                    onCheckedChange={(value) =>
+                      setSelectedTickets(value ? filtered.map((t) => t.id) : [])
+                    }
+                  />
+                ),
+                render: (t) => (
+                  <Checkbox
+                    aria-label={"Select " + t.id}
+                    checked={selectedTickets.includes(t.id)}
+                    onCheckedChange={(value) =>
+                      setSelectedTickets((s) =>
+                        value ? [...s, t.id] : s.filter((id) => id !== t.id),
+                      )
+                    }
+                  />
+                ),
+              },
+              {
+                id: "ticket",
+                title: "Ticket",
+                value: (t) => t.id,
+                render: (t) => (
+                  <>
+                    <b>{t.id}</b>
+                    <small className="block ct-muted mt-1">
+                      {t.id === "TCK-4863" ? "Phone" : "Email"} · {t.agent}
+                    </small>
+                  </>
+                ),
+              },
+              {
+                id: "customer",
+                title: "Customer",
+                value: (t) => t.customer,
+                render: (t) => (
+                  <span className="ct-person">
+                    <Avatar name={t.customer} />
+                    <span>
+                      {t.customer}
+                      <small>{t.email}</small>
+                    </span>
+                  </span>
+                ),
+              },
+              {
+                id: "stage",
+                title: "Stage",
+                value: (t) => t.stage,
+                render: (t) => (
+                  <>
+                    {t.stage}
+                    <div className="ct-progress">
+                      <span style={{ width: t.stage === "Escalated" ? "50%" : "35%" }} />
+                    </div>
+                  </>
+                ),
+              },
+              { id: "due", title: "Due", value: (t) => t.due, render: (t) => t.due },
+              {
+                id: "queue",
+                title: "Queue",
+                value: (t) => t.queue,
+                render: (t) => <Badge variant="outline">{t.queue}</Badge>,
+              },
+              {
+                id: "value",
+                title: "Account value",
+                value: (t) => t.value,
+                render: (t) => t.value,
+              },
+              {
+                id: "sla",
+                title: "SLA",
+                value: (t) => t.sla,
+                render: (t) => (
+                  <Badge
+                    variant={
+                      t.sla === "Blocked"
+                        ? "destructive-light"
+                        : t.sla === "On Time"
+                          ? "success-light"
+                          : "warning-light"
+                    }
+                  >
+                    {t.sla}
+                  </Badge>
+                ),
+              },
+              {
+                id: "actions",
+                title: "",
+                render: (t) => (
+                  <Button size="icon-sm" variant="ghost" aria-label={"Open " + t.id}>
+                    <MoreHorizontal />
+                  </Button>
+                ),
+              },
+            ]}
+          />
+        )}
+        {!filtered.length && (
+          <Empty
+            reset={() => {
+              setFilter("All");
+              setQuery("");
+            }}
+          />
+        )}
+        <div className="ct-between mt-4 text-xs ct-muted">
+          <span>
+            {filtered.length ? (page - 1) * 5 + 1 : 0} – {Math.min(page * 5, filtered.length)} of{" "}
+            {filtered.length}
+          </span>
+          <div className="ct-toolbar">
+            <Button
+              size="sm"
+              variant="outline"
+              disabled={page === 1}
+              onClick={() => setPage((p) => p - 1)}
+            >
+              Previous
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              disabled={page * 5 >= filtered.length}
+              onClick={() => setPage((p) => p + 1)}
+            >
+              Next
+            </Button>
+          </div>
+        </div>
+      </FramePanel>
+    </Frame>
+  );
+  return (
+    <Shell
+      kind="pulse"
+      view={view}
+      setView={(v) => {
+        setView(v);
+        setQuery("");
+        setFilter("All");
+        setPage(1);
+      }}
+      query={query}
+      setQuery={setQuery}
+    >
+      {view === "Dashboard" ? (
+        <>
+          <div className="ct-heading">
+            <p>Queue health, SLA risk and today's escalations.</p>
+            <span className="ct-subtle">● Updated just now</span>
+          </div>
+          <div className="ct-stats">
+            {[
+              ["Unresolved", "24", "-8.3%", "New, Open, Pending and On hold.", "Unassigned: 6"],
+              [
+                "Overdue",
+                "6",
+                "-12.5%",
+                "Past their first response target.",
+                "Breaching within 1h: 2",
+              ],
+              [
+                "Solved today",
+                "38",
+                "+14.2%",
+                "18 resolved on first contact.",
+                "Median handle time: 1h 12m",
+              ],
+              ["CSAT", "94.2%", "+2.4%", "From 118 of 402 surveys sent.", "Response rate: 29%"],
+            ].map((s, i) => {
+              const Icon = [Inbox, Clock, CheckCircle, Smile][i];
+              return (
+                <Frame spacing="sm" key={s[0]}>
+                  <FrameHeader>
+                    <div className="ct-between">
+                      <FrameTitle>{s[0]}</FrameTitle>
+                      <Icon size={16} className="ct-muted" />
+                    </div>
+                  </FrameHeader>
+                  <FramePanel>
+                    <div className="ct-stat-value">
+                      <strong>{s[1]}</strong>
+                      <Badge variant={i < 2 ? "destructive-light" : "success-light"}>{s[2]}</Badge>
+                    </div>
+                    <div className="ct-stat-note">
+                      {s[3]}
+                      <br />
+                      {s[4]}
+                    </div>
+                  </FramePanel>
+                </Frame>
+              );
+            })}
+          </div>
+          <div className="ct-two ct-section">
+            <Frame>
+              <FrameHeader>
+                <div className="ct-between">
+                  <div>
+                    <FrameTitle>Queue Load</FrameTitle>
+                    <FrameDescription>Open tickets by queue</FrameDescription>
+                  </div>
+                  <Button size="sm" variant="outline" onClick={() => setView("Tickets")}>
+                    View All
+                  </Button>
+                </div>
+              </FrameHeader>
+              <FramePanel>
+                <span className="ct-subtle">OPEN TICKETS</span>
+                <div className="ct-between">
+                  <strong className="text-2xl">24</strong>
+                  <Badge variant="outline">4 Queues</Badge>
+                </div>
+                <div className="ct-queue-bar">
+                  {[37, 29, 21, 13].map((n, i) => (
+                    <span
+                      key={n}
+                      style={{
+                        width: n + "%",
+                        background: [
+                          "var(--ct-purple)",
+                          "var(--ct-blue)",
+                          "var(--ct-orange)",
+                          "var(--ct-green)",
+                        ][i],
+                      }}
+                    />
+                  ))}
+                </div>
+                <div className="ct-queue-stack">
+                  {[
+                    ["Technical", "Product faults and outages", "9", "Over SLA"],
+                    ["Billing", "Invoices, refunds and plans", "7", "Nearing SLA"],
+                    ["Onboarding", "Setup and migration help", "5", "Nearing SLA"],
+                    ["Account", "Access, seats and security", "3", "Within SLA"],
+                  ].map((q, i) => (
+                    <button
+                      type="button"
+                      className="ct-queue-row"
+                      key={q[0]}
+                      onClick={() => {
+                        setView("Tickets");
+                        setFilter(q[0]);
+                      }}
+                    >
+                      <span
+                        className="ct-queue-dot"
+                        style={{
+                          background: [
+                            "var(--ct-purple)",
+                            "var(--ct-blue)",
+                            "var(--ct-orange)",
+                            "var(--ct-green)",
+                          ][i],
+                        }}
+                      />
+                      <span className="text-left">
+                        {q[0]}
+                        <small>{q[1]}</small>
+                      </span>
+                      <b>{q[2]}</b>
+                      <Badge
+                        variant={
+                          i === 0
+                            ? "destructive-light"
+                            : i === 3
+                              ? "success-light"
+                              : "warning-light"
+                        }
+                      >
+                        {q[3]}
+                      </Badge>
+                    </button>
+                  ))}
+                </div>
+                <p className="ct-subtle mt-4">Technical is past SLA; Account has spare capacity.</p>
+              </FramePanel>
+            </Frame>
+            <Frame>
+              <FrameHeader>
+                <div className="ct-between">
+                  <div>
+                    <FrameTitle>First Contact Resolution</FrameTitle>
+                    <FrameDescription>Weekly rate tracked against target</FrameDescription>
+                  </div>
+                  <span className="ct-chart-legend">First contact resolution</span>
+                </div>
+              </FrameHeader>
+              <FramePanel>
+                <ResolutionChart />
+              </FramePanel>
+              <div className="ct-panel-foot ct-toolbar">
+                <Bell size={16} />
+                First contact resolution drop <Badge variant="outline">Armed</Badge>
+                <span>Fires below 55% · 2 day window</span>
+              </div>
+            </Frame>
+          </div>
+          {table}
+        </>
+      ) : view === "Tickets" ? (
+        <>
+          <div className="ct-heading">
+            <p>Every open ticket, by stage.</p>
+            <div className="ct-toolbar">
+              <Button
+                variant="outline"
+                onClick={() => setFilter(filter === "All" ? "Technical" : "All")}
+              >
+                <Filter />
+                Filters
+              </Button>
+              <Button onClick={() => setCreate(true)}>
+                <Plus />
+                New ticket
+              </Button>
+            </div>
+          </div>
+          <PulseBoard
+            query={query}
+            onCreate={() => setCreate(true)}
+            onOpen={(r, stage) =>
+              setSelected({
+                id: r[0],
+                subject: r[2],
+                customer: r[4],
+                email:
+                  r[3].toLowerCase().replace(" ", ".") +
+                  "@" +
+                  r[4].toLowerCase().replaceAll(" ", "") +
+                  ".com",
+                agent: r[5],
+                stage,
+                queue: "Technical",
+                due: r[6],
+                sla: stage === "SLA Risk" ? "At Risk" : "On Time",
+                value: "—",
+              })
+            }
+          />
+        </>
+      ) : view === "Contacts" || view === "Team" ? (
+        <>
+          <div className="ct-heading">
+            <div>
+              <h1>{view}</h1>
+              <p>
+                {view === "Team"
+                  ? "Your support team and their current workload."
+                  : "Customers and the conversations you have with them."}
+              </p>
+            </div>
+          </div>
+          <Frame>
+            <FramePanel>
+              <div className="ct-table-scroll">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Name</TableHead>
+                      <TableHead>Email</TableHead>
+                      <TableHead>{view === "Team" ? "Role" : "Queue"}</TableHead>
+                      <TableHead>Open tickets</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {initial
+                      .filter((t) =>
+                        Object.values(t).join(" ").toLowerCase().includes(query.toLowerCase()),
+                      )
+                      .map((t, i) => (
+                        <TableRow key={t.id}>
+                          <TableCell>
+                            <span className="ct-person">
+                              <Avatar name={view === "Team" ? t.agent : t.customer} />
+                              {view === "Team" ? t.agent : t.customer}
+                            </span>
+                          </TableCell>
+                          <TableCell>
+                            {view === "Team"
+                              ? t.agent.toLowerCase().replace(" ", ".") + "@pulse.example"
+                              : t.email}
+                          </TableCell>
+                          <TableCell>
+                            {view === "Team" ? (i === 0 ? "Admin" : "Agent") : t.queue}
+                          </TableCell>
+                          <TableCell>{6 - i}</TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              </div>
+            </FramePanel>
+          </Frame>
+        </>
+      ) : view === "Knowledge Base" ? (
+        <>
+          <div className="ct-heading">
+            <div>
+              <h1>Knowledge Base</h1>
+              <p>Answers, runbooks and guides for your team.</p>
+            </div>
+          </div>
+          <div className="ct-two">
+            {[
+              "Getting started with your workspace",
+              "SLA clock pauses on waits",
+              "Account access and two-factor authentication",
+              "Billing, invoices and refunds",
+              "Escalating a critical incident",
+              "Importing customer contacts",
+            ]
+              .filter((a) => a.toLowerCase().includes(query.toLowerCase()))
+              .map((a) => (
+                <Frame key={a}>
+                  <FrameHeader>
+                    <BookOpen />
+                    <FrameTitle>{a}</FrameTitle>
+                    <FrameDescription>Help your customers find the right answer.</FrameDescription>
+                  </FrameHeader>
+                  <FramePanel>
+                    <Button variant="outline" onClick={() => setArticle(a)}>
+                      Read article
+                      <ArrowUpRight />
+                    </Button>
+                  </FramePanel>
+                </Frame>
+              ))}
+          </div>
+        </>
+      ) : view === "Reports" ? (
+        <>
+          <div className="ct-heading">
+            <div>
+              <h1>Reports</h1>
+              <p>Understand your team's support performance.</p>
+            </div>
+          </div>
+          <Frame>
+            <FrameHeader>
+              <div className="ct-between">
+                <div>
+                  <FrameTitle>First Contact Resolution</FrameTitle>
+                  <FrameDescription>Weekly rate tracked against target</FrameDescription>
+                </div>
+                <span className="ct-chart-legend">First contact resolution</span>
+              </div>
+            </FrameHeader>
+            <FramePanel>
+              <ResolutionChart />
+            </FramePanel>
+          </Frame>
+        </>
+      ) : (
+        <div className="ct-settings">
+          <div className="ct-heading">
+            <div>
+              <h1>Settings</h1>
+              <p>Your help desk, your way.</p>
+            </div>
+          </div>
+          <Frame>
+            <FrameHeader>
+              <FrameTitle>Workspace profile</FrameTitle>
+            </FrameHeader>
+            <FramePanel>
+              <form
+                className="ct-form"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  toast.success("Help desk settings saved");
+                }}
+              >
+                <label>
+                  Workspace name
+                  <Input defaultValue="Help Desk" required />
+                </label>
+                <label>
+                  Support email
+                  <Input type="email" defaultValue="support@pulse.example" required />
+                </label>
+                <label>
+                  First response target
+                  <Select defaultValue="4">
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {["1", "4", "8", "24"].map((n) => (
+                        <SelectItem key={n} value={n}>
+                          {n} hours
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </label>
+                <Button type="submit">Save changes</Button>
+              </form>
+            </FramePanel>
+          </Frame>
+        </div>
+      )}
+      <ReferenceSheet
+        title={editing ? "Edit escalation" : view === "Dashboard" ? "New escalation" : "New ticket"}
+        width={512}
+        open={create}
+        onClose={() => {
+          setCreate(false);
+          setEditing(null);
+        }}
+        footer={
+          <>
+            <Button
+              variant="outline"
+              className="flex-1"
+              onClick={() => {
+                setCreate(false);
+                setEditing(null);
+              }}
+            >
+              Cancel
+            </Button>
+            <Button className="flex-1" type="submit" form="ct-escalation-form">
+              {editing ? "Save changes" : "Raise escalation"}
+            </Button>
+          </>
+        }
+      >
+        <form
+          key={editing?.id || "new"}
+          id="ct-escalation-form"
+          className="ct-form"
+          onSubmit={(e) => {
+            e.preventDefault();
+            const f = new FormData(e.currentTarget);
+            const ticket: TicketRecord = {
+              id: String(f.get("key")),
+              customer: String(f.get("customer")),
+              email: editing?.email || "",
+              agent: String(f.get("agent")),
+              stage: "Escalated",
+              due: editing?.due || "Today",
+              queue: String(f.get("queue")),
+              value: editing?.value || "—",
+              sla: String(f.get("sla")),
+              subject: String(f.get("subject")),
+            };
+            setTickets((t) =>
+              editing ? t.map((x) => (x.id === editing.id ? ticket : x)) : [ticket, ...t],
+            );
+            setCreate(false);
+            setEditing(null);
+            setPage(1);
+          }}
+        >
+          <div className="ct-field-pair">
+            <label>
+              Ticket key
+              <Input name="key" placeholder="TCK-4821" defaultValue={editing?.id} required />
+            </label>
+            <label>
+              SLA state
+              <Select name="sla" defaultValue={editing?.sla} required>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select" />
+                </SelectTrigger>
+                <SelectContent>
+                  {["Blocked", "At Risk", "Delayed", "On Time"].map((v) => (
+                    <SelectItem value={v} key={v}>
+                      {v}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </label>
+          </div>
+          <label>
+            Requester
+            <Input
+              name="customer"
+              defaultValue={editing?.customer}
+              placeholder="Atlas Freight"
+              required
+            />
+          </label>
+          <div className="ct-field-pair">
+            <label>
+              Queue
+              <Select name="queue" defaultValue={editing?.queue} required>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a queue" />
+                </SelectTrigger>
+                <SelectContent>
+                  {["Technical", "Billing", "Onboarding", "Account"].map((v) => (
+                    <SelectItem value={v} key={v}>
+                      {v}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </label>
+            <label>
+              Handling
+              <Select name="handling" defaultValue={editing ? "Manual" : undefined}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a level" />
+                </SelectTrigger>
+                <SelectContent>
+                  {["Manual", "Automated", "Priority"].map((v) => (
+                    <SelectItem value={v} key={v}>
+                      {v}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </label>
+          </div>
+          <label>
+            Assignee
+            <Input name="agent" defaultValue={editing?.agent} placeholder="Priya Patel" required />
+          </label>
+          <label>
+            What is blocking it
+            <Textarea
+              name="subject"
+              defaultValue={editing?.subject}
+              placeholder="Invoice total disputed after the plan change"
+              required
+            />
+          </label>
+        </form>
+      </ReferenceSheet>
+      <ReferenceSheet
+        title={selected?.id || "Ticket"}
+        open={!!selected}
+        onClose={() => setSelected(null)}
+        footer={
+          <>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setTickets((t) => t.filter((x) => x.id !== selected?.id));
+                setSelected(null);
+              }}
+            >
+              Delete
+            </Button>
+            <Button
+              onClick={() => {
+                setEditing(selected);
+                setSelected(null);
+                setCreate(true);
+              }}
+            >
+              Edit
+            </Button>
+          </>
+        }
+      >
+        {selected && (
+          <>
+            <section className="ct-detail-section">
+              <h3>
+                {selected.customer}
+                <Badge variant={selected.sla === "Blocked" ? "destructive-light" : "warning-light"}>
+                  {selected.sla}
+                </Badge>
+                <Badge variant="outline">Manual</Badge>
+              </h3>
+              <p>{selected.subject}</p>
+            </section>
+            <section className="ct-detail-section">
+              <h4>TICKET</h4>
+              <dl>
+                <dt>Queue</dt>
+                <dd>{selected.queue}</dd>
+                <dt>Channel</dt>
+                <dd>{selected.id === "TCK-4863" ? "Phone" : "Email"}</dd>
+                <dt>Stage</dt>
+                <dd>{selected.stage}</dd>
+                <dt>Due by</dt>
+                <dd>{selected.due}</dd>
+                <dt>SLA left</dt>
+                <dd>{selected.sla === "Blocked" ? "-25 min" : "42 min"}</dd>
+              </dl>
+            </section>
+            <section className="ct-detail-section">
+              <h4>HANDLING</h4>
+              <dl>
+                <dt>Assignee</dt>
+                <dd>{selected.agent}</dd>
+                <dt>Replies</dt>
+                <dd>11</dd>
+                <dt>Account value</dt>
+                <dd>{selected.value}</dd>
+                <dt>Contact</dt>
+                <dd>{selected.email}</dd>
+              </dl>
+            </section>
+          </>
+        )}
+      </ReferenceSheet>
+      <Modal title={article} open={!!article} onClose={() => setArticle("")}>
+        <p>
+          Use the workspace settings to manage access, response targets and team responsibilities.
+          Assign each request to the right queue before escalating it.
+        </p>
+        <p className="ct-muted">
+          When a ticket is waiting for a customer, the SLA timer pauses. Once the customer replies,
+          it resumes with the remaining time.
+        </p>
+        <Button
+          variant="outline"
+          onClick={() => {
+            toast.success("Thanks for your feedback");
+            setArticle("");
+          }}
+        >
+          This was helpful
+        </Button>
+      </Modal>
+    </Shell>
+  );
 }

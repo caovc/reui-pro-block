@@ -1,9 +1,5 @@
 import { useState } from "react";
-import {
-  Message,
-  MessageAvatar,
-  MessageContent,
-} from "@/components/ui/message";
+import { Message, MessageAvatar, MessageContent } from "@/components/ui/message";
 import { Bubble, BubbleContent } from "@/components/ui/bubble";
 import { Badge as ReuiBadge } from "@/components/reui/badge";
 import { ResponsiveAssistantPanel } from "./responsive-assistant";
@@ -54,13 +50,7 @@ import {
   WorkspaceMenu,
   toast,
 } from "./chrome";
-import {
-  AccountCard,
-  Choices,
-  GroupedNav,
-  PageTitle,
-  Sidebar,
-} from "./primitives";
+import { AccountCard, Choices, GroupedNav, PageTitle, Sidebar } from "./primitives";
 import { EventCreator } from "./calendar-panel";
 const models = ["GPT-4", "Claude", "Gemini"];
 const recent = [
@@ -78,14 +68,8 @@ export function ModelChat() {
   const [web, setWeb] = useState(false);
   const [thread, setThread] = useState("");
   return (
-    <div
-      className="shell-reference bg-muted/40 p-2 gap-2"
-      data-shell-variant="17"
-    >
-      <Sidebar
-        collapsed={collapsed}
-        className="rounded-xl border !bg-background !w-60"
-      >
+    <div className="shell-reference bg-muted/40 p-2 gap-2" data-shell-variant="17">
+      <Sidebar collapsed={collapsed} className="rounded-xl border !bg-background !w-60">
         <div className="flex h-10 items-center gap-2 px-1">
           <ReuiMark small />
           {!collapsed && <strong className="flex-1 text-sm">ReUI AI</strong>}
@@ -122,15 +106,7 @@ export function ModelChat() {
                   onClick={() => setModel(name)}
                   aria-pressed={model === name}
                 >
-                  <span
-                    className={
-                      i === 1
-                        ? "text-orange-500"
-                        : i === 2
-                          ? "text-blue-500"
-                          : ""
-                    }
-                  >
+                  <span className={i === 1 ? "text-orange-500" : i === 2 ? "text-blue-500" : ""}>
                     {["✺", "✳", "✦"][i]}
                   </span>
                   {name}
@@ -143,13 +119,7 @@ export function ModelChat() {
                 { label: "Recent", items: recent },
                 {
                   label: "Quick Actions",
-                  items: [
-                    "Favorites",
-                    "Clear History",
-                    "Chat History",
-                    "Templates",
-                    "AI Settings",
-                  ],
+                  items: ["Favorites", "Clear History", "Chat History", "Templates", "AI Settings"],
                 },
               ]}
               active={thread}
@@ -164,12 +134,7 @@ export function ModelChat() {
       </Sidebar>
       <main className="shell-content-frame rounded-xl border">
         <header className="shell-header">
-          <Choices
-            label="Choose model"
-            items={models}
-            value={model}
-            onChange={setModel}
-          />
+          <Choices label="Choose model" items={models} value={model} onChange={setModel} />
           <Button
             variant="outline"
             size="sm"
@@ -185,16 +150,9 @@ export function ModelChat() {
         <div className="shell-chat-welcome flex min-h-0 flex-1 flex-col items-center px-4 pt-20">
           <ReuiMark />
           <h1 className="mt-6 text-xl font-semibold">How Can I Help?</h1>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Start a chat or pick a prompt below.
-          </p>
+          <p className="mt-2 text-sm text-muted-foreground">Start a chat or pick a prompt below.</p>
           <div className="mt-8 grid w-full max-w-xl grid-cols-1 gap-3 sm:grid-cols-2">
-            {[
-              "Draft an email",
-              "Summarize a file",
-              "Write a function",
-              "Plan a trip",
-            ].map((v) => (
+            {["Draft an email", "Summarize a file", "Write a function", "Plan a trip"].map((v) => (
               <Button
                 variant="outline"
                 key={v}
@@ -206,9 +164,7 @@ export function ModelChat() {
               </Button>
             ))}
           </div>
-          {thread && (
-            <p className="mt-6 text-sm text-muted-foreground">{thread}</p>
-          )}
+          {thread && <p className="mt-6 text-sm text-muted-foreground">{thread}</p>}
         </div>
         <form
           className="mx-auto mb-2 w-[calc(100%-2rem)] max-w-2xl rounded-xl border p-3"
@@ -244,9 +200,7 @@ export function ModelChat() {
               <Globe />
               Search
             </Button>
-            <span className="ml-auto text-xs text-muted-foreground">
-              {model}
-            </span>
+            <span className="ml-auto text-xs text-muted-foreground">{model}</span>
             <Button
               type="button"
               variant="ghost"
@@ -304,12 +258,7 @@ export function Assistant({
           <Sparkles className="size-4" />
           {title}
         </span>
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          aria-label="Close assistant"
-          onClick={onClose}
-        >
+        <Button variant="ghost" size="icon-sm" aria-label="Close assistant" onClick={onClose}>
           <X />
         </Button>
       </header>
@@ -324,10 +273,7 @@ export function Assistant({
               )}
             </MessageAvatar>
             <MessageContent>
-              <Bubble
-                variant={m.who === "user" ? "default" : "muted"}
-                className="max-w-full"
-              >
+              <Bubble variant={m.who === "user" ? "default" : "muted"} className="max-w-full">
                 <BubbleContent>{m.text}</BubbleContent>
               </Bubble>
             </MessageContent>
@@ -335,19 +281,17 @@ export function Assistant({
         ))}
         <p className="pt-2 text-[11px] text-muted-foreground">Suggested</p>
         <div className="flex flex-wrap gap-1">
-          {["Summarize my day", "Plan the week", "Surface blockers"].map(
-            (v) => (
-              <Button
-                variant="outline"
-                size="sm"
-                className="h-6 px-2 text-[10px]"
-                key={v}
-                onClick={() => setDraft(v)}
-              >
-                {v}
-              </Button>
-            ),
-          )}
+          {["Summarize my day", "Plan the week", "Surface blockers"].map((v) => (
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-6 px-2 text-[10px]"
+              key={v}
+              onClick={() => setDraft(v)}
+            >
+              {v}
+            </Button>
+          ))}
         </div>
       </div>
       <form
@@ -400,10 +344,7 @@ export function TodoShell() {
       className="shell-reference reui-reference todo-shell gap-2 bg-muted/30 p-2"
       data-shell-variant="18"
     >
-      <Sidebar
-        collapsed={collapsed}
-        className="rounded-xl border !bg-background"
-      >
+      <Sidebar collapsed={collapsed} className="rounded-xl border !bg-background">
         <div className="flex h-10 items-center gap-2">
           <ReuiMark small />
           {!collapsed && <strong className="flex-1">ReUI</strong>}
@@ -416,11 +357,7 @@ export function TodoShell() {
             <PanelLeft />
           </Button>
         </div>
-        <Button
-          size="sm"
-          className="my-3 justify-start"
-          onClick={() => setCreate(true)}
-        >
+        <Button size="sm" className="my-3 justify-start" onClick={() => setCreate(true)}>
           <Plus />
           {!collapsed && "New Task"}
         </Button>
@@ -487,16 +424,9 @@ export function TodoShell() {
             <div className="h-full w-[56%] rounded bg-foreground" />
           </div>
           <p className="text-xs font-medium">Launch Campaign</p>
-          <p className="text-[10px] text-muted-foreground">
-            Next milestone in 3 days
-          </p>
+          <p className="text-[10px] text-muted-foreground">Next milestone in 3 days</p>
         </div>
-        <WorkspaceMenu
-          user
-          displayName="Mira Stone"
-          initial="Mira Stone"
-          subtitle="mira@reui.io"
-        />
+        <WorkspaceMenu user displayName="Mira Stone" initial="Mira Stone" subtitle="mira@reui.io" />
       </Sidebar>
       <main className="shell-content-frame rounded-xl border">
         <header className="shell-header border-b">
@@ -530,10 +460,7 @@ export function TodoShell() {
         {tasks.length > 0 && (
           <div className="p-4">
             {tasks.map((t) => (
-              <label
-                className="mb-2 flex items-center gap-2 rounded border p-3"
-                key={t}
-              >
+              <label className="mb-2 flex items-center gap-2 rounded border p-3" key={t}>
                 <input type="checkbox" />
                 {t}
               </label>
@@ -558,8 +485,7 @@ export function PlannerShell() {
   const [active, setActive] = useState("Events");
   const [events, setEvents] = useState(["Morning Standup", "Sprint Planning"]);
   const title =
-    date?.toLocaleDateString("en-US", { month: "long", year: "numeric" }) ??
-    "October 2026";
+    date?.toLocaleDateString("en-US", { month: "long", year: "numeric" }) ?? "October 2026";
   return (
     <div className="shell-reference bg-muted/30" data-shell-variant="19">
       <Sidebar collapsed={collapsed} className="!w-[272px]">
@@ -617,9 +543,7 @@ export function PlannerShell() {
             size="icon-sm"
             variant="ghost"
             aria-label="Previous month"
-            onClick={() =>
-              setDate((d) => new Date(2026, (d?.getMonth() ?? 9) - 1, 14))
-            }
+            onClick={() => setDate((d) => new Date(2026, (d?.getMonth() ?? 9) - 1, 14))}
           >
             <ChevronLeft />
           </Button>
@@ -627,17 +551,11 @@ export function PlannerShell() {
             size="icon-sm"
             variant="ghost"
             aria-label="Next month"
-            onClick={() =>
-              setDate((d) => new Date(2026, (d?.getMonth() ?? 9) + 1, 14))
-            }
+            onClick={() => setDate((d) => new Date(2026, (d?.getMonth() ?? 9) + 1, 14))}
           >
             <ChevronRight />
           </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setDate(new Date(2026, 9, 14))}
-          >
+          <Button variant="outline" size="sm" onClick={() => setDate(new Date(2026, 9, 14))}>
             Today
           </Button>
           <Choices
@@ -674,12 +592,7 @@ export function WebmailShell() {
             { label: "Labels", items: labels },
             {
               label: "Direct Messages",
-              items: [
-                "Nick Bold (You)",
-                "Sarah Chen",
-                "Marcus Lee",
-                "Add Teammates",
-              ],
+              items: ["Nick Bold (You)", "Sarah Chen", "Marcus Lee", "Add Teammates"],
             },
           ]}
           active={folder}
@@ -735,11 +648,7 @@ export function WebmailShell() {
           <header className="flex h-12 items-center justify-between px-3">
             <span>‹　›　Normal</span>
             <div className="flex gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setCompose(true)}
-              >
+              <Button variant="outline" size="sm" onClick={() => setCompose(true)}>
                 Reply All
               </Button>
               <Star className="size-4" />
@@ -749,30 +658,16 @@ export function WebmailShell() {
           <div className="flex flex-1 flex-col items-center justify-center text-center">
             <Mail className="mb-5 size-12 text-muted-foreground/30" />
             <h2 className="text-sm font-semibold">It's empty here</h2>
-            <p className="mt-2 text-xs text-muted-foreground">
-              Choose an email to view details
-            </p>
+            <p className="mt-2 text-xs text-muted-foreground">Choose an email to view details</p>
             <div className="mt-5 flex gap-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => toast("Ask AI selected")}
-              >
+              <Button variant="outline" size="sm" onClick={() => toast("Ask AI selected")}>
                 <Sparkles />
                 Ask AI
               </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setCompose(true)}
-              >
+              <Button variant="outline" size="sm" onClick={() => setCompose(true)}>
                 Send Email
               </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setCompose(true)}
-              >
+              <Button variant="outline" size="sm" onClick={() => setCompose(true)}>
                 <Plus />
                 New Email
               </Button>

@@ -99,13 +99,7 @@ export function FleetRail() {
       <ReuiMark small />
       <div className="fleet-rail-links">
         {icons.map(([name, Icon]) => (
-          <IconTile
-            asChild
-            size="xs"
-            variant="outline"
-            key={name}
-            className="fleet-rail-icon"
-          >
+          <IconTile asChild size="xs" variant="outline" key={name} className="fleet-rail-icon">
             <button
               aria-label={name}
               title={name}
@@ -165,10 +159,7 @@ export function FleetRail() {
         >
           <Settings />
         </Button>
-        <button
-          aria-label="Account menu for Shadcn"
-          onClick={() => toast("Account selected")}
-        >
+        <button aria-label="Account menu for Shadcn" onClick={() => toast("Account selected")}>
           <Face small />
         </button>
       </div>
@@ -196,10 +187,7 @@ export default function FleetCenter() {
     return () => window.removeEventListener("keydown", handler);
   }, []);
   return (
-    <div
-      className="shell-reference reui-reference fleet-center"
-      data-shell-variant="33"
-    >
+    <div className="shell-reference reui-reference fleet-center" data-shell-variant="33">
       <FleetRail />
       <Sidebar
         collapsed={collapsed}
@@ -254,16 +242,8 @@ export default function FleetCenter() {
           <div className="fleet-center-panel">
             <div className="fleet-view-grid">
               {pinned.map(([name, Icon]) => (
-                <IconTile
-                  asChild
-                  variant="solid"
-                  key={name}
-                  className="fleet-view-tile"
-                >
-                  <button
-                    aria-pressed={active === name}
-                    onClick={() => setActive(name)}
-                  >
+                <IconTile asChild variant="solid" key={name} className="fleet-view-tile">
+                  <button aria-pressed={active === name} onClick={() => setActive(name)}>
                     <Icon />
                     <span>{name}</span>
                   </button>
@@ -291,9 +271,7 @@ export default function FleetCenter() {
                       .map(([name, Icon]) => (
                         <DropdownMenuItem
                           key={name}
-                          onSelect={() =>
-                            setPinned((v) => [...v, [name, Icon]])
-                          }
+                          onSelect={() => setPinned((v) => [...v, [name, Icon]])}
                         >
                           <Icon />
                           {name}

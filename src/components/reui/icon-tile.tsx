@@ -2,10 +2,10 @@
 // Title: Icon Tile
 // Description: Square container that gives icons a consistent surface
 
-import { cva, type VariantProps } from "class-variance-authority"
-import { Slot } from "radix-ui"
+import { cva, type VariantProps } from "class-variance-authority";
+import { Slot } from "radix-ui";
 
-import { cn } from "cn"
+import { cn } from "cn";
 
 /**
  * CSS variable architecture:
@@ -85,8 +85,7 @@ const iconTileVariants = cva(
        * Luma and Rhea take the gentler quarter ratio; Maia stays at a third.
        */
       radius: {
-        default:
-          "[--icon-tile-radius:min(var(--radius-md),calc(var(--icon-tile-size)/3))]",
+        default: "[--icon-tile-radius:min(var(--radius-md),calc(var(--icon-tile-size)/3))]",
         full: "[--icon-tile-radius:calc(infinity*1px)]",
       },
     },
@@ -95,12 +94,12 @@ const iconTileVariants = cva(
       size: "default",
       radius: "default",
     },
-  }
-)
+  },
+);
 
 interface IconTileProps
   extends React.ComponentProps<"span">, VariantProps<typeof iconTileVariants> {
-  asChild?: boolean
+  asChild?: boolean;
 }
 
 function IconTile({
@@ -111,7 +110,7 @@ function IconTile({
   asChild = false,
   ...props
 }: IconTileProps) {
-  const Comp = asChild ? Slot.Root : "span"
+  const Comp = asChild ? Slot.Root : "span";
 
   return (
     <Comp
@@ -121,7 +120,7 @@ function IconTile({
       className={cn(iconTileVariants({ variant, size, radius, className }))}
       {...props}
     />
-  )
+  );
 }
 
-export { IconTile, iconTileVariants, type IconTileProps }
+export { IconTile, iconTileVariants, type IconTileProps };

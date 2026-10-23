@@ -41,8 +41,7 @@ import "./marketing-contact-faq.css";
 
 // The public demo links target #. Keep those interactions in the preview rather
 // than turning a placeholder into an external message or a new product flow.
-const stayInPreview = (event: MouseEvent<HTMLAnchorElement>) =>
-  event.preventDefault();
+const stayInPreview = (event: MouseEvent<HTMLAnchorElement>) => event.preventDefault();
 function DemoLink({
   children,
   className = "",
@@ -53,23 +52,12 @@ function DemoLink({
   label?: string;
 }) {
   return (
-    <a
-      href="#"
-      onClick={stayInPreview}
-      className={className}
-      aria-label={label}
-    >
+    <a href="#" onClick={stayInPreview} className={className} aria-label={label}>
       {children}
     </a>
   );
 }
-function SmallBadge({
-  children,
-  icon = false,
-}: {
-  children: ReactNode;
-  icon?: boolean;
-}) {
+function SmallBadge({ children, icon = false }: { children: ReactNode; icon?: boolean }) {
   return (
     <Badge variant="outline" radius="full" className="rm-badge">
       {icon && <CircleHelp />}
@@ -78,7 +66,11 @@ function SmallBadge({
   );
 }
 function IconTile({ children }: { children: ReactNode }) {
-  return <ReuiIconTile variant="elevated" className="rm-icon-tile">{children}</ReuiIconTile>;
+  return (
+    <ReuiIconTile variant="elevated" className="rm-icon-tile">
+      {children}
+    </ReuiIconTile>
+  );
 }
 function PreviewButton({
   children,
@@ -119,9 +111,7 @@ function AnswerList({
       <AccordionTrigger className="rm-answer-trigger">
         <span>{item.q}</span>
       </AccordionTrigger>
-      <AccordionContent className="rm-answer-content">
-        {item.answer}
-      </AccordionContent>
+      <AccordionContent className="rm-answer-content">{item.answer}</AccordionContent>
     </AccordionItem>
   ));
   return multiple ? (
@@ -133,12 +123,7 @@ function AnswerList({
       {rows}
     </Accordion>
   ) : (
-    <Accordion
-      type="single"
-      collapsible
-      defaultValue={items[0].q}
-      className="rm-answer-list"
-    >
+    <Accordion type="single" collapsible defaultValue={items[0].q} className="rm-answer-list">
       {rows}
     </Accordion>
   );
@@ -165,15 +150,11 @@ export function FAQ({ block }: BlockProps) {
               <h2>Answers Before You Ship</h2>
               <p>
                 Everything teams check when
-                <br className="rm-desktop-break" /> moving ReUI blocks to
-                production.
+                <br className="rm-desktop-break" /> moving ReUI blocks to production.
               </p>
             </div>
             <div className="rm-intro-support">
-              <p>
-                Not covered here? A real engineer answers implementation
-                questions directly.
-              </p>
+              <p>Not covered here? A real engineer answers implementation questions directly.</p>
               <PreviewButton small>
                 <MessageSquareText />
                 Talk to support
@@ -187,13 +168,11 @@ export function FAQ({ block }: BlockProps) {
                 aria-label="Filter questions by topic"
                 className="rm-topic-tabs"
               >
-                {["All", "Getting Started", "Licensing", "Updates"].map(
-                  (label) => (
-                    <TabsTrigger key={label} value={label}>
-                      {label}
-                    </TabsTrigger>
-                  ),
-                )}
+                {["All", "Getting Started", "Licensing", "Updates"].map((label) => (
+                  <TabsTrigger key={label} value={label}>
+                    {label}
+                  </TabsTrigger>
+                ))}
               </TabsList>
             </Tabs>
             <AnswerList key={topic} items={selected} multiple cards />
@@ -211,8 +190,7 @@ export function FAQ({ block }: BlockProps) {
               <h2>Questions Teams Ask</h2>
               <p>
                 Straight answers about adapting, owning,
-                <br className="rm-desktop-break" /> and shipping ReUI blocks to
-                production.
+                <br className="rm-desktop-break" /> and shipping ReUI blocks to production.
               </p>
             </div>
           </div>
@@ -228,10 +206,7 @@ export function FAQ({ block }: BlockProps) {
                 </IconTile>
                 <div>
                   <strong>Still have a question?</strong>
-                  <p>
-                    Bring your edge case to review and map it to one block and
-                    one owner.
-                  </p>
+                  <p>Bring your edge case to review and map it to one block and one owner.</p>
                 </div>
               </div>
               <PreviewButton small>Book a review</PreviewButton>
@@ -248,8 +223,8 @@ export function FAQ({ block }: BlockProps) {
             <span className="rm-eyebrow">FAQ</span>
             <h2>Questions, Answered</h2>
             <p>
-              Straight answers on source ownership, the shadcn stack, licensing,
-              and getting blocks into your product.
+              Straight answers on source ownership, the shadcn stack, licensing, and getting blocks
+              into your product.
             </p>
           </div>
           <div className="rm-open-answers">
@@ -295,9 +270,8 @@ export function FAQ({ block }: BlockProps) {
             </span>
             <h2>Questions, Answered</h2>
             <p>
-              The practical details teams check before building production
-              screens with ReUI blocks, from customizing primitives to ongoing
-              updates.
+              The practical details teams check before building production screens with ReUI blocks,
+              from customizing primitives to ongoing updates.
             </p>
           </div>
           <AnswerList items={all} />
@@ -331,8 +305,7 @@ export function FAQ({ block }: BlockProps) {
               <div>
                 <strong>Still Have Questions?</strong>
                 <p>
-                  Tell us your stack and timeline. A real engineer replies
-                  within a business day.
+                  Tell us your stack and timeline. A real engineer replies within a business day.
                 </p>
               </div>
               <PreviewButton primary small>
@@ -355,10 +328,7 @@ export function FAQ({ block }: BlockProps) {
       <section aria-label={block.name} className="rm-faq-section">
         <div className="rm-intro">
           <h2>Questions, Answered</h2>
-          <p>
-            Practical answers on production use, theming, licensing, and
-            support.
-          </p>
+          <p>Practical answers on production use, theming, licensing, and support.</p>
         </div>
         <Frame className="rm-frame rm-faq-tray">
           <FramePanel fit className="rm-frame-panel rm-tray-answers">
@@ -372,8 +342,7 @@ export function FAQ({ block }: BlockProps) {
               <div>
                 <strong>Still Have A Question?</strong>
                 <p>
-                  Bring your edge case to the team and we will map it to one
-                  block and one owner.
+                  Bring your edge case to the team and we will map it to one block and one owner.
                 </p>
               </div>
             </div>
@@ -423,9 +392,7 @@ const offices = [
 function ContactPanel({ topic = false }: { topic?: boolean }) {
   const id = useId();
   return (
-    <div
-      className={`rm-contact-art ${topic ? "rm-contact-photo" : "rm-contact-scope"}`}
-    >
+    <div className={`rm-contact-art ${topic ? "rm-contact-photo" : "rm-contact-scope"}`}>
       {topic ? (
         <>
           <img src={contactAbstract} alt="Studio workspace" />
@@ -444,12 +411,7 @@ function ContactPanel({ topic = false }: { topic?: boolean }) {
               <stop offset=".42" stopColor="oklch(47% 0.29 279)" />
               <stop offset="1" stopColor="oklch(61% 0.23 250)" />
             </linearGradient>
-            <pattern
-              id={`${id}-dots`}
-              width="18"
-              height="18"
-              patternUnits="userSpaceOnUse"
-            >
+            <pattern id={`${id}-dots`} width="18" height="18" patternUnits="userSpaceOnUse">
               <circle cx="1.5" cy="1.5" r="1.4" fill="currentColor" />
               <circle cx="12" cy="8" r=".9" fill="currentColor" />
             </pattern>
@@ -527,20 +489,10 @@ function ContactForm({ mode }: { mode: "brief" | "topic" | "short" }) {
   const [project, setProject] = useState(""),
     [timeline, setTimeline] = useState(""),
     [topic, setTopic] = useState("");
-  const field = (
-    label: string,
-    name: string,
-    placeholder: string,
-    type = "text",
-  ) => (
+  const field = (label: string, name: string, placeholder: string, type = "text") => (
     <div className="rm-field">
       <label htmlFor={`${id}-${name}`}>{label}</label>
-      <Input
-        id={`${id}-${name}`}
-        name={name}
-        type={type}
-        placeholder={placeholder}
-      />
+      <Input id={`${id}-${name}`} name={name} type={type} placeholder={placeholder} />
     </div>
   );
   const choice = (
@@ -554,18 +506,13 @@ function ContactForm({ mode }: { mode: "brief" | "topic" | "short" }) {
       <label htmlFor={`${id}-${label}`}>{label}</label>
       <Select value={value} onValueChange={setValue}>
         <SelectTrigger id={`${id}-${label}`} aria-label={label}>
-          <SelectValue placeholder={placeholder}>
-            {value || placeholder}
-          </SelectValue>
+          <SelectValue placeholder={placeholder}>{value || placeholder}</SelectValue>
         </SelectTrigger>
         <SelectContent className="reui-reference">
           {" "}
           <SelectGroup>
             {items.map((text) => (
-              <SelectItem
-                key={text}
-                value={text.toLowerCase().replaceAll(" ", "-")}
-              >
+              <SelectItem key={text} value={text.toLowerCase().replaceAll(" ", "-")}>
                 {text}
               </SelectItem>
             ))}
@@ -648,12 +595,7 @@ function ContactForm({ mode }: { mode: "brief" | "topic" | "short" }) {
                 "Timeline",
                 timeline,
                 setTimeline,
-                [
-                  "This month",
-                  "Next 30 days",
-                  "This quarter",
-                  "Still exploring",
-                ],
+                ["This month", "Next 30 days", "This quarter", "Still exploring"],
                 "Choose timing",
               )}
             </div>
@@ -710,18 +652,20 @@ function ContactForm({ mode }: { mode: "brief" | "topic" | "short" }) {
 }
 function OfficeGrain() {
   const id = useId();
-  return <svg className="rm-office-grain" aria-hidden="true">
-    <filter id={id}>
-      <feTurbulence type="fractalNoise" baseFrequency="0.5" numOctaves="5" stitchTiles="stitch" />
-      <feColorMatrix type="saturate" values="0" />
-      <feComponentTransfer>
-        <feFuncR type="linear" slope="0.08" />
-        <feFuncG type="linear" slope="0.08" />
-        <feFuncB type="linear" slope="0.08" />
-      </feComponentTransfer>
-    </filter>
-    <rect width="100%" height="100%" filter={`url(#${id})`} opacity="0.28" />
-  </svg>;
+  return (
+    <svg className="rm-office-grain" aria-hidden="true">
+      <filter id={id}>
+        <feTurbulence type="fractalNoise" baseFrequency="0.5" numOctaves="5" stitchTiles="stitch" />
+        <feColorMatrix type="saturate" values="0" />
+        <feComponentTransfer>
+          <feFuncR type="linear" slope="0.08" />
+          <feFuncG type="linear" slope="0.08" />
+          <feFuncB type="linear" slope="0.08" />
+        </feComponentTransfer>
+      </filter>
+      <rect width="100%" height="100%" filter={`url(#${id})`} opacity="0.28" />
+    </svg>
+  );
 }
 export function Contact({ block }: BlockProps) {
   const n = block.index + 1;
@@ -733,9 +677,8 @@ export function Contact({ block }: BlockProps) {
             <span className="rm-eyebrow">Help &amp; Contact</span>
             <h1>We're here to help</h1>
             <p>
-              Need assistance with your ReUI kit, have questions about
-              licensing, or want to upgrade your plan? We'll guide you through
-              the process.
+              Need assistance with your ReUI kit, have questions about licensing, or want to upgrade
+              your plan? We'll guide you through the process.
             </p>
           </div>
           <Frame className="rm-frame rm-mail-frame">
@@ -766,9 +709,7 @@ export function Contact({ block }: BlockProps) {
         <section aria-label={block.name} className="rm-contact-split">
           <div className="rm-form-pane">
             <div className="rm-intro">
-              <SmallBadge>
-                {n === 2 ? "Project Inquiry" : "Contact Us"}
-              </SmallBadge>
+              <SmallBadge>{n === 2 ? "Project Inquiry" : "Contact Us"}</SmallBadge>
               <h1>{n === 2 ? "Start A Project" : "Tell Us What You Need"}</h1>
               <p>
                 {n === 2 ? (
@@ -777,8 +718,7 @@ export function Contact({ block }: BlockProps) {
                   <>
                     Send a short note with the context, topic, or blocker.
                     <br />
-                    We will route it to the right person with a useful next
-                    step.
+                    We will route it to the right person with a useful next step.
                   </>
                 )}
               </p>
@@ -799,8 +739,8 @@ export function Contact({ block }: BlockProps) {
               <span className="rm-eyebrow">Offices</span>
               <h2>Find Us Around The World</h2>
               <p>
-                Three studios across three timezones, so there is usually
-                someone on the team online when you are.
+                Three studios across three timezones, so there is usually someone on the team online
+                when you are.
               </p>
             </div>
             <div className="rm-office-actions">
@@ -855,8 +795,8 @@ export function Contact({ block }: BlockProps) {
                 Next Interface
               </h2>
               <p>
-                Tell us what you are building and the team behind ReUI will
-                point you in the right direction.
+                Tell us what you are building and the team behind ReUI will point you in the right
+                direction.
               </p>
             </div>
             <div className="rm-contact-methods">
@@ -879,16 +819,13 @@ export function Contact({ block }: BlockProps) {
               ))}
             </div>
             <p className="rm-self-serve">
-              Prefer to self-serve?{" "}
-              <DemoLink>Browse the documentation</DemoLink>
+              Prefer to self-serve? <DemoLink>Browse the documentation</DemoLink>
             </p>
           </aside>
           <div className="rm-inquiry-form-pane">
             <div>
               <h3>Tell Us About Your Project</h3>
-              <p>
-                Share a few details and a real person gets back to you soon.
-              </p>
+              <p>Share a few details and a real person gets back to you soon.</p>
             </div>
             <ContactForm mode="short" />
           </div>
@@ -900,10 +837,7 @@ export function Contact({ block }: BlockProps) {
       <section aria-label={block.name}>
         <div className="rm-intro">
           <h2>Talk To The Team</h2>
-          <p>
-            Reach us however works best for you. A real person is always glad to
-            help.
-          </p>
+          <p>Reach us however works best for you. A real person is always glad to help.</p>
         </div>
         <Frame className="rm-frame rm-channel-frame">
           <div className="rm-channels">
@@ -949,10 +883,7 @@ export function Contact({ block }: BlockProps) {
         <div className="rm-channel-docs">
           <div>
             <h3>Still Have Questions?</h3>
-            <p>
-              The docs and FAQ cover installation, theming, and every block in
-              the library.
-            </p>
+            <p>The docs and FAQ cover installation, theming, and every block in the library.</p>
           </div>
           <div>
             <PreviewButton primary>

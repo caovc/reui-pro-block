@@ -1,17 +1,191 @@
-import { Badge } from '@/components/reui/badge'
-import { Frame, FrameHeader, FrameTitle, FrameDescription, FramePanel, FrameFooter } from '@/components/reui/frame'
-import type { ReactNode } from 'react'
-import { ArrowDownToLine, Copy, MoreHorizontal } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import { toast } from 'sonner'
-import { downloadCsv } from './data-utils'
-import { cn } from '@/lib/utils'
-export function ChartStage({children}:{children:ReactNode}){return <div className="flex min-h-[620px] w-full items-center justify-center p-3 sm:p-6">{children}</div>}
-export function ChartFrame({title,description,toolbar,footer,children,width='max-w-[900px]',plain=false}:{title:ReactNode;description:ReactNode;toolbar:ReactNode;footer?:ReactNode;children:ReactNode;width?:string;plain?:boolean}){const heading=<div className="flex flex-col gap-1"><FrameTitle className="flex items-center gap-2 text-sm font-semibold">{title}</FrameTitle><FrameDescription className="text-xs">{description}</FrameDescription></div>;const actions=<div className="flex flex-wrap items-center gap-2">{toolbar}</div>;return plain?<Card className={cn('w-full gap-0 overflow-hidden bg-background py-0 shadow-none',width)}><CardHeader className="flex min-h-15 flex-row flex-wrap items-center justify-between gap-3 px-4 py-3"><div className="flex flex-col gap-1"><CardTitle className="flex items-center gap-2 text-sm font-semibold">{title}</CardTitle><CardDescription className="text-xs">{description}</CardDescription></div>{actions}</CardHeader><CardContent className="px-0">{children}</CardContent>{footer&&<CardFooter className="flex flex-wrap items-center justify-between gap-2 px-4 py-2.5 text-xs text-muted-foreground">{footer}</CardFooter>}</Card>:<Frame className={cn('w-full overflow-hidden',width)}><FrameHeader className="flex min-h-15 flex-row flex-wrap items-center justify-between gap-3 px-3 py-2.5">{heading}{actions}</FrameHeader><FramePanel className="p-0">{children}</FramePanel>{footer&&<FrameFooter className="flex flex-row flex-wrap items-center justify-between gap-2 px-3 py-2.5 text-xs text-muted-foreground">{footer}</FrameFooter>}</Frame>}
-export function PeriodButtons({value,onChange,options,label='Period'}:{value:string;onChange:(v:string)=>void;options:string[];label?:string}){return <ToggleGroup type="single" value={value} onValueChange={v=>v&&onChange(v)} variant="outline" spacing={0} size="sm" aria-label={label}>{options.map(o=><ToggleGroupItem key={o} value={o} className="h-7 px-2 text-[13px]">{o}</ToggleGroupItem>)}</ToggleGroup>}
-export function ChartMore({title,rows,summary,children}:{title:string;rows:Record<string,unknown>[];summary?:string;children?:ReactNode}){return <DropdownMenu><DropdownMenuTrigger asChild><Button variant="outline" size="icon" className="size-7" aria-label="More actions"><MoreHorizontal/></Button></DropdownMenuTrigger><DropdownMenuContent align="end"><DropdownMenuGroup><DropdownMenuItem onSelect={()=>downloadCsv(title,rows)}><ArrowDownToLine/>Export CSV</DropdownMenuItem><DropdownMenuItem onSelect={()=>{navigator.clipboard.writeText(summary??title);toast.success('Summary copied')}}><Copy/>Copy summary</DropdownMenuItem>{children}</DropdownMenuGroup></DropdownMenuContent></DropdownMenu>}
-export function ChangePill({value,unit='%',goodDirection='up'}:{value:number;unit?:string;goodDirection?:'up'|'down'}){return <Badge variant={(goodDirection==='up'?value>=0:value<=0)?'success-light':'destructive-light'} className="gap-0.5 px-1 py-0.5 text-xs font-normal">{value>=0?'↗':'↘'} {value>0?'+':''}{value}{unit}</Badge>}
-export function UpdatedDot({children}:{children:ReactNode}){return <span className="flex items-center gap-2"><span className="size-1.5 rounded-full bg-emerald-500"/>{children}</span>}
+import { Badge } from "@/components/reui/badge";
+import {
+  Frame,
+  FrameHeader,
+  FrameTitle,
+  FrameDescription,
+  FramePanel,
+  FrameFooter,
+} from "@/components/reui/frame";
+import type { ReactNode } from "react";
+import { ArrowDownToLine, Copy, MoreHorizontal } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { toast } from "sonner";
+import { downloadCsv } from "./data-utils";
+import { cn } from "@/lib/utils";
+export function ChartStage({ children }: { children: ReactNode }) {
+  return (
+    <div className="flex min-h-[620px] w-full items-center justify-center p-3 sm:p-6">
+      {children}
+    </div>
+  );
+}
+export function ChartFrame({
+  title,
+  description,
+  toolbar,
+  footer,
+  children,
+  width = "max-w-[900px]",
+  plain = false,
+}: {
+  title: ReactNode;
+  description: ReactNode;
+  toolbar: ReactNode;
+  footer?: ReactNode;
+  children: ReactNode;
+  width?: string;
+  plain?: boolean;
+}) {
+  const heading = (
+    <div className="flex flex-col gap-1">
+      <FrameTitle className="flex items-center gap-2 text-sm font-semibold">{title}</FrameTitle>
+      <FrameDescription className="text-xs">{description}</FrameDescription>
+    </div>
+  );
+  const actions = <div className="flex flex-wrap items-center gap-2">{toolbar}</div>;
+  return plain ? (
+    <Card className={cn("w-full gap-0 overflow-hidden bg-background py-0 shadow-none", width)}>
+      <CardHeader className="flex min-h-15 flex-row flex-wrap items-center justify-between gap-3 px-4 py-3">
+        <div className="flex flex-col gap-1">
+          <CardTitle className="flex items-center gap-2 text-sm font-semibold">{title}</CardTitle>
+          <CardDescription className="text-xs">{description}</CardDescription>
+        </div>
+        {actions}
+      </CardHeader>
+      <CardContent className="px-0">{children}</CardContent>
+      {footer && (
+        <CardFooter className="flex flex-wrap items-center justify-between gap-2 px-4 py-2.5 text-xs text-muted-foreground">
+          {footer}
+        </CardFooter>
+      )}
+    </Card>
+  ) : (
+    <Frame className={cn("w-full overflow-hidden", width)}>
+      <FrameHeader className="flex min-h-15 flex-row flex-wrap items-center justify-between gap-3 px-3 py-2.5">
+        {heading}
+        {actions}
+      </FrameHeader>
+      <FramePanel className="p-0">{children}</FramePanel>
+      {footer && (
+        <FrameFooter className="flex flex-row flex-wrap items-center justify-between gap-2 px-3 py-2.5 text-xs text-muted-foreground">
+          {footer}
+        </FrameFooter>
+      )}
+    </Frame>
+  );
+}
+export function PeriodButtons({
+  value,
+  onChange,
+  options,
+  label = "Period",
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  options: string[];
+  label?: string;
+}) {
+  return (
+    <ToggleGroup
+      type="single"
+      value={value}
+      onValueChange={(v) => v && onChange(v)}
+      variant="outline"
+      spacing={0}
+      size="sm"
+      aria-label={label}
+    >
+      {options.map((o) => (
+        <ToggleGroupItem key={o} value={o} className="h-7 px-2 text-[13px]">
+          {o}
+        </ToggleGroupItem>
+      ))}
+    </ToggleGroup>
+  );
+}
+export function ChartMore({
+  title,
+  rows,
+  summary,
+  children,
+}: {
+  title: string;
+  rows: Record<string, unknown>[];
+  summary?: string;
+  children?: ReactNode;
+}) {
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" size="icon" className="size-7" aria-label="More actions">
+          <MoreHorizontal />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuGroup>
+          <DropdownMenuItem onSelect={() => downloadCsv(title, rows)}>
+            <ArrowDownToLine />
+            Export CSV
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onSelect={() => {
+              navigator.clipboard.writeText(summary ?? title);
+              toast.success("Summary copied");
+            }}
+          >
+            <Copy />
+            Copy summary
+          </DropdownMenuItem>
+          {children}
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+export function ChangePill({
+  value,
+  unit = "%",
+  goodDirection = "up",
+}: {
+  value: number;
+  unit?: string;
+  goodDirection?: "up" | "down";
+}) {
+  return (
+    <Badge
+      variant={
+        (goodDirection === "up" ? value >= 0 : value <= 0) ? "success-light" : "destructive-light"
+      }
+      className="gap-0.5 px-1 py-0.5 text-xs font-normal"
+    >
+      {value >= 0 ? "↗" : "↘"} {value > 0 ? "+" : ""}
+      {value}
+      {unit}
+    </Badge>
+  );
+}
+export function UpdatedDot({ children }: { children: ReactNode }) {
+  return (
+    <span className="flex items-center gap-2">
+      <span className="size-1.5 rounded-full bg-emerald-500" />
+      {children}
+    </span>
+  );
+}

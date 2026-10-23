@@ -33,10 +33,7 @@ export function EventCreator({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          size="sm"
-          className={wide ? "h-7 w-full justify-start text-xs" : "h-7 text-xs"}
-        >
+        <Button size="sm" className={wide ? "h-7 w-full justify-start text-xs" : "h-7 text-xs"}>
           <Plus />
           New Event
         </Button>
@@ -44,9 +41,7 @@ export function EventCreator({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>New event</DialogTitle>
-          <DialogDescription>
-            Add an event to your demo agenda.
-          </DialogDescription>
+          <DialogDescription>Add an event to your demo agenda.</DialogDescription>
         </DialogHeader>
         <form
           className="flex flex-col gap-5"
@@ -72,11 +67,7 @@ export function EventCreator({
             <div className="grid grid-cols-2 gap-4">
               <Field>
                 <FieldLabel htmlFor="shell-event-date">Date</FieldLabel>
-                <Input
-                  id="shell-event-date"
-                  type="date"
-                  defaultValue="2026-06-10"
-                />
+                <Input id="shell-event-date" type="date" defaultValue="2026-06-10" />
               </Field>
               <Field>
                 <FieldLabel htmlFor="shell-event-time">Time</FieldLabel>
@@ -107,21 +98,10 @@ export function CalendarContext({
   showTitle?: boolean;
   onToggleCalendars?: (enabled: string[]) => void;
 }) {
-  const [date, setDate] = useState<Date | undefined>(
-    new Date(2026, month, day),
-  );
-  const [accounts, setAccounts] = useState([
-    "nick@company.io",
-    "nick@gmail.com",
-  ]);
+  const [date, setDate] = useState<Date | undefined>(new Date(2026, month, day));
+  const [accounts, setAccounts] = useState(["nick@company.io", "nick@gmail.com"]);
   const [open, setOpen] = useState(["nick@company.io"]);
-  const [enabled, setEnabled] = useState([
-    "Work",
-    "Personal",
-    "Meetings",
-    "Family",
-    "Birthdays",
-  ]);
+  const [enabled, setEnabled] = useState(["Work", "Personal", "Meetings", "Family", "Birthdays"]);
   const [events, setEvents] = useState([
     { name: "Weekly Team Standup", time: "9:00 AM to 9:30 AM" },
     {
@@ -159,9 +139,7 @@ export function CalendarContext({
         />
         <Separator />
         <div className="p-3">
-          <p className="mb-2 text-[10px] uppercase text-muted-foreground">
-            My calendars
-          </p>
+          <p className="mb-2 text-[10px] uppercase text-muted-foreground">My calendars</p>
           <div className="flex flex-col gap-2">
             {accounts.map((email, i) => (
               <div key={email}>
@@ -172,9 +150,7 @@ export function CalendarContext({
                   aria-expanded={open.includes(email)}
                   onClick={() =>
                     setOpen(
-                      open.includes(email)
-                        ? open.filter((v) => v !== email)
-                        : [...open, email],
+                      open.includes(email) ? open.filter((v) => v !== email) : [...open, email],
                     )
                   }
                 >
@@ -186,35 +162,34 @@ export function CalendarContext({
                 </Button>
                 {open.includes(email) && (
                   <div className="mt-1 flex flex-col gap-3 px-3 py-2">
-                    {(i === 0
-                      ? ["Work", "Personal", "Meetings"]
-                      : ["Family", "Birthdays"]
-                    ).map((name, j) => (
-                      <div className="flex items-center gap-2" key={name}>
-                        <span
-                          className="size-1.5 rounded-full"
-                          style={{ background: calendarColors[i * 3 + j] }}
-                        />
-                        <Checkbox
-                          id={`calendar-${email}-${name}`}
-                          aria-label={`Toggle ${name}`}
-                          checked={enabled.includes(name)}
-                          onCheckedChange={(v) => {
-                            const next = v
-                              ? [...enabled, name]
-                              : enabled.filter((n) => n !== name);
-                            setEnabled(next);
-                            onToggleCalendars?.(next);
-                          }}
-                        />
-                        <label
-                          className="cursor-pointer text-xs"
-                          htmlFor={`calendar-${email}-${name}`}
-                        >
-                          {name}
-                        </label>
-                      </div>
-                    ))}
+                    {(i === 0 ? ["Work", "Personal", "Meetings"] : ["Family", "Birthdays"]).map(
+                      (name, j) => (
+                        <div className="flex items-center gap-2" key={name}>
+                          <span
+                            className="size-1.5 rounded-full"
+                            style={{ background: calendarColors[i * 3 + j] }}
+                          />
+                          <Checkbox
+                            id={`calendar-${email}-${name}`}
+                            aria-label={`Toggle ${name}`}
+                            checked={enabled.includes(name)}
+                            onCheckedChange={(v) => {
+                              const next = v
+                                ? [...enabled, name]
+                                : enabled.filter((n) => n !== name);
+                              setEnabled(next);
+                              onToggleCalendars?.(next);
+                            }}
+                          />
+                          <label
+                            className="cursor-pointer text-xs"
+                            htmlFor={`calendar-${email}-${name}`}
+                          >
+                            {name}
+                          </label>
+                        </div>
+                      ),
+                    )}
                   </div>
                 )}
               </div>
@@ -238,9 +213,7 @@ export function CalendarContext({
         <Separator />
         <div className="p-3">
           <div className="mb-3 flex items-center justify-between">
-            <p className="text-[10px] uppercase text-muted-foreground">
-              Up next
-            </p>
+            <p className="text-[10px] uppercase text-muted-foreground">Up next</p>
             <Badge variant="outline" className="h-4 px-1 text-[9px]">
               {events.length}
             </Badge>
@@ -261,12 +234,8 @@ export function CalendarContext({
                   style={{ background: calendarColors[(i * 2) % 5] }}
                 />
                 <span className="min-w-0 flex-1">
-                  <span className="block truncate text-xs font-medium">
-                    {event.name}
-                  </span>
-                  <span className="mt-1 block text-[10px] text-muted-foreground">
-                    {event.time}
-                  </span>
+                  <span className="block truncate text-xs font-medium">{event.name}</span>
+                  <span className="mt-1 block text-[10px] text-muted-foreground">{event.time}</span>
                 </span>
                 {i < 2 && (
                   <span className="flex -space-x-1">
@@ -286,10 +255,7 @@ export function CalendarContext({
         </div>
         <Separator />
         <div className="flex flex-col gap-1.5 p-3">
-          <EventCreator
-            wide
-            onCreate={(event) => setEvents([...events, event])}
-          />
+          <EventCreator wide onCreate={(event) => setEvents([...events, event])} />
           <Button
             variant="outline"
             size="sm"

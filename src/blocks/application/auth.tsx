@@ -146,9 +146,7 @@ export default function AuthBlock({ block }: BlockProps) {
   if (block.id === "auth-7") return <BlueprintMagicLink />;
   if (["auth-1", "auth-2", "auth-3", "auth-4"].includes(block.id))
     return <SplitAuth block={block} />;
-  if (
-    ["auth-15", "auth-16", "auth-17", "auth-19", "auth-20"].includes(block.id)
-  )
+  if (["auth-15", "auth-16", "auth-17", "auth-19", "auth-20"].includes(block.id))
     return <CenteredAuth block={block} />;
   return <GenericAuth block={block} />;
 }
@@ -229,8 +227,8 @@ function GenericAuth({ block }: BlockProps) {
             <Mail className="size-6" />
           </div>
           <p className="text-center text-sm text-muted-foreground">
-            Use the link to securely access your workspace. This preview shows
-            the confirmation state without sending an email.
+            Use the link to securely access your workspace. This preview shows the confirmation
+            state without sending an email.
           </p>
           <Button
             variant="outline"
@@ -253,13 +251,7 @@ function GenericAuth({ block }: BlockProps) {
       ) : (
         <>
           {(method === "picker" || !config.methods) && mode !== "reset" && (
-            <div
-              className={
-                config.providerRow
-                  ? "grid grid-cols-3 gap-2"
-                  : "flex flex-col gap-2"
-              }
-            >
+            <div className={config.providerRow ? "grid grid-cols-3 gap-2" : "flex flex-col gap-2"}>
               {config.providers.map((provider) => (
                 <Button
                   key={provider}
@@ -329,24 +321,18 @@ function GenericAuth({ block }: BlockProps) {
               }}
             >
               <ShieldCheck />
-              {method === "sso"
-                ? "Back to email sign-in"
-                : "Single sign-on (SSO)"}
+              {method === "sso" ? "Back to email sign-in" : "Single sign-on (SSO)"}
             </Button>
           )}
           {showForm && (
             <>
-              {config.providers.length > 0 &&
-                !config.methods &&
-                mode !== "reset" && (
-                  <div className="flex items-center gap-3">
-                    <Separator className="flex-1" />
-                    <span className="text-[11px] text-muted-foreground">
-                      Or with email
-                    </span>
-                    <Separator className="flex-1" />
-                  </div>
-                )}
+              {config.providers.length > 0 && !config.methods && mode !== "reset" && (
+                <div className="flex items-center gap-3">
+                  <Separator className="flex-1" />
+                  <span className="text-[11px] text-muted-foreground">Or with email</span>
+                  <Separator className="flex-1" />
+                </div>
+              )}
               {config.methods && (
                 <Button
                   size="sm"
@@ -378,9 +364,7 @@ function GenericAuth({ block }: BlockProps) {
                         : "You are signed in to the demo workspace.",
                     );
                     toast.success(
-                      signup
-                        ? "Your demo account is ready"
-                        : "Signed in to the demo workspace",
+                      signup ? "Your demo account is ready" : "Signed in to the demo workspace",
                     );
                   }
                 }}
@@ -388,21 +372,13 @@ function GenericAuth({ block }: BlockProps) {
                 <FieldGroup>
                   {signup && (
                     <Field>
-                      <FieldLabel htmlFor={`${block.id}-name`}>
-                        Full name
-                      </FieldLabel>
-                      <Input
-                        id={`${block.id}-name`}
-                        placeholder="Alex Morgan"
-                        required
-                      />
+                      <FieldLabel htmlFor={`${block.id}-name`}>Full name</FieldLabel>
+                      <Input id={`${block.id}-name`} placeholder="Alex Morgan" required />
                     </Field>
                   )}
                   {method === "backup" ? (
                     <Field>
-                      <FieldLabel htmlFor={`${block.id}-backup`}>
-                        Backup code
-                      </FieldLabel>
+                      <FieldLabel htmlFor={`${block.id}-backup`}>Backup code</FieldLabel>
                       <Input
                         id={`${block.id}-backup`}
                         placeholder="XXXX-XXXX"
@@ -414,20 +390,12 @@ function GenericAuth({ block }: BlockProps) {
                   ) : (
                     <Field>
                       <FieldLabel htmlFor={`${block.id}-email`}>
-                        {magic || signup || mode === "reset"
-                          ? "Work email"
-                          : "Email or username"}
+                        {magic || signup || mode === "reset" ? "Work email" : "Email or username"}
                       </FieldLabel>
                       <Input
                         id={`${block.id}-email`}
-                        type={
-                          magic || signup || mode === "reset" ? "email" : "text"
-                        }
-                        placeholder={
-                          magic || signup
-                            ? "you@company.com"
-                            : "Email or username"
-                        }
+                        type={magic || signup || mode === "reset" ? "email" : "text"}
+                        placeholder={magic || signup ? "you@company.com" : "Email or username"}
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
@@ -437,9 +405,7 @@ function GenericAuth({ block }: BlockProps) {
                   {!magic && mode !== "reset" && method !== "backup" && (
                     <Field>
                       <div className="flex items-center justify-between">
-                        <FieldLabel htmlFor={`${block.id}-pass`}>
-                          Password
-                        </FieldLabel>
+                        <FieldLabel htmlFor={`${block.id}-pass`}>Password</FieldLabel>
                         <Button
                           type="button"
                           variant="link"
@@ -456,9 +422,7 @@ function GenericAuth({ block }: BlockProps) {
                           type={show ? "text" : "password"}
                           placeholder="Enter your password"
                           minLength={6}
-                          autoComplete={
-                            signup ? "new-password" : "current-password"
-                          }
+                          autoComplete={signup ? "new-password" : "current-password"}
                           required
                           className="pr-10"
                         />
@@ -477,15 +441,10 @@ function GenericAuth({ block }: BlockProps) {
                   )}
                   {!magic &&
                     mode === "login" &&
-                    ["auth-4", "auth-8", "auth-14", "auth-20"].includes(
-                      block.id,
-                    ) && (
+                    ["auth-4", "auth-8", "auth-14", "auth-20"].includes(block.id) && (
                       <div className="flex items-center gap-2">
                         <Checkbox id={`${block.id}-remember`} />
-                        <label
-                          className="text-xs"
-                          htmlFor={`${block.id}-remember`}
-                        >
+                        <label className="text-xs" htmlFor={`${block.id}-remember`}>
                           Keep me signed in
                         </label>
                       </div>

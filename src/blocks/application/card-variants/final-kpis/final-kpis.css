@@ -44,15 +44,8 @@
 .final-kpi-mesh:after {
   mask-image: radial-gradient(ellipse at top left, black, transparent 85%);
   background-image:
-    linear-gradient(
-      color-mix(in oklab, var(--border) 60%, transparent) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      90deg,
-      color-mix(in oklab, var(--border) 60%, transparent) 1px,
-      transparent 1px
-    );
+    linear-gradient(color-mix(in oklab, var(--border) 60%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklab, var(--border) 60%, transparent) 1px, transparent 1px);
   background-size: 10px 10px;
 }
 .final-kpi-dots > *,

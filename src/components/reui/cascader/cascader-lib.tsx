@@ -5,16 +5,16 @@ import type {
   CascaderNode,
   CascaderPathSegment,
   CascaderSelectable,
-} from "@/components/reui/cascader/cascader-types"
+} from "@/components/reui/cascader/cascader-types";
 
 /** Root level key in `childrenOf`. NUL-prefixed so no real value collides. */
-export const CASCADER_ROOT_KEY = "\u0000root"
+export const CASCADER_ROOT_KEY = "\u0000root";
 
 /**
  * Paging pseudo-node prefix. Written as an escape sequence, not a raw 0x00
  * byte: a literal NUL makes this module read as binary and `grep -I` skips it.
  */
-export const CASCADER_MORE_PREFIX = "\u0000more:"
+export const CASCADER_MORE_PREFIX = "\u0000more:";
 
 /* -------------------------------------------------------------------------- */
 /*                                Scroll layout                               */
@@ -32,22 +32,21 @@ export const CASCADER_MORE_PREFIX = "\u0000more:"
  * default cap, so the common case sets no variable at all.
  */
 export const CASCADER_LIST_HEIGHT_CLASS =
-  "max-h-[min(var(--available-height,100vh),var(--cascader-max-height,24rem))]"
+  "max-h-[min(var(--available-height,100vh),var(--cascader-max-height,24rem))]";
 
 /**
  * Each style's list padding: rows take it as `padding`, the scrollport as
  * `scroll-padding` floored at 4px so lyra's `0` does not strand a row.
  * Mirrored per style from `registry/styles/style-*.css`; keep them in step.
  */
-export const CASCADER_LIST_PAD_CLASS =
-  "[--cascader-list-pad:4px]"
+export const CASCADER_LIST_PAD_CLASS = "[--cascader-list-pad:4px]";
 
 /** The scrollport: a `max-h-*` on the ScrollArea ROOT bounds nothing. */
 export const CASCADER_SCROLL_CLASS =
-  "size-full min-h-0 **:data-[slot=scroll-area-viewport]:h-full **:data-[slot=scroll-area-viewport]:overscroll-contain **:data-[slot=scroll-area-viewport]:scroll-py-[max(var(--cascader-list-pad,4px),4px)]"
+  "size-full min-h-0 **:data-[slot=scroll-area-viewport]:h-full **:data-[slot=scroll-area-viewport]:overscroll-contain **:data-[slot=scroll-area-viewport]:scroll-py-[max(var(--cascader-list-pad,4px),4px)]";
 
 /** The rows' box; `data-empty:p-0` keeps an empty state from double inset. */
-export const CASCADER_ROWS_CLASS = "p-(--cascader-list-pad,4px) data-empty:p-0"
+export const CASCADER_ROWS_CLASS = "p-(--cascader-list-pad,4px) data-empty:p-0";
 
 /* -------------------------------------------------------------------------- */
 /*                                  Tab order                                 */
@@ -59,35 +58,33 @@ export const CASCADER_ROWS_CLASS = "p-(--cascader-list-pad,4px) data-empty:p-0"
  * an unnamed stop per level that `ui/scroll-area.tsx` will not let us suppress.
  */
 const CASCADER_TAB_STOP_SELECTOR =
-  'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])'
+  'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
 
 /** The stop to step over: nothing here focuses the scrollport on purpose. */
-const CASCADER_TAB_SKIP_SELECTOR = '[data-slot="scroll-area-viewport"]'
+const CASCADER_TAB_SKIP_SELECTOR = '[data-slot="scroll-area-viewport"]';
 
 /** Out of the tab order whatever they contain; layout is never consulted. */
-const CASCADER_TAB_HIDDEN_SELECTOR = "[hidden],[inert],[aria-hidden='true']"
+const CASCADER_TAB_HIDDEN_SELECTOR = "[hidden],[inert],[aria-hidden='true']";
 
 /** The panel's real keyboard stops, in DOM order. */
 function getCascaderTabStops(panel: HTMLElement): HTMLElement[] {
-  const stops = Array.from(
-    panel.querySelectorAll<HTMLElement>(CASCADER_TAB_STOP_SELECTOR)
-  )
+  const stops = Array.from(panel.querySelectorAll<HTMLElement>(CASCADER_TAB_STOP_SELECTOR));
   return stops.filter(
     (stop) =>
       // Option and trail rows are real `<button>`s with `tabindex="-1"`.
       stop.getAttribute("tabindex") !== "-1" &&
       !stop.matches(CASCADER_TAB_SKIP_SELECTOR) &&
-      !stop.closest(CASCADER_TAB_HIDDEN_SELECTOR)
-  )
+      !stop.closest(CASCADER_TAB_HIDDEN_SELECTOR),
+  );
 }
 
 /** The footer's own stops; an `aria-disabled` command still counts as one. */
 export function getCascaderFooterStops(scope: HTMLElement): HTMLElement[] {
   const footer = scope.matches('[data-slot="cascader-footer"]')
     ? scope
-    : scope.querySelector<HTMLElement>('[data-slot="cascader-footer"]')
-  if (!footer) return []
-  return getCascaderTabStops(footer)
+    : scope.querySelector<HTMLElement>('[data-slot="cascader-footer"]');
+  if (!footer) return [];
+  return getCascaderTabStops(footer);
 }
 
 /**
@@ -96,44 +93,44 @@ export function getCascaderFooterStops(scope: HTMLElement): HTMLElement[] {
  * node that unmounts drops focus to the body.
  */
 export function focusCascaderHome(from: HTMLElement): void {
-  const panel = from.closest<HTMLElement>('[data-slot="cascader-panel"]')
+  const panel = from.closest<HTMLElement>('[data-slot="cascader-panel"]');
   const home =
     panel?.querySelector<HTMLElement>('[data-slot="cascader-input"]') ??
     from.closest<HTMLElement>('[data-slot="cascader-content"]') ??
-    panel
+    panel;
   // An inline panel with no search field is the last home left: make it
   // focusable for this, never a tab stop.
   if (home && home === panel && !home.hasAttribute("tabindex")) {
-    home.setAttribute("tabindex", "-1")
+    home.setAttribute("tabindex", "-1");
   }
-  home?.focus()
+  home?.focus();
 }
 
 /** Where Tab lands, or `null` to let the browser out: focus is never trapped. */
 export function getCascaderTabTarget(
   panel: HTMLElement,
   from: Element | null,
-  backwards: boolean
+  backwards: boolean,
 ): HTMLElement | null {
-  const stops = getCascaderTabStops(panel)
-  if (stops.length === 0 || !from) return null
+  const stops = getCascaderTabStops(panel);
+  if (stops.length === 0 || !from) return null;
 
-  const index = stops.indexOf(from as HTMLElement)
-  if (index !== -1) return stops[index + (backwards ? -1 : 1)] ?? null
+  const index = stops.indexOf(from as HTMLElement);
+  if (index !== -1) return stops[index + (backwards ? -1 : 1)] ?? null;
 
   if (backwards) {
     for (let i = stops.length - 1; i >= 0; i -= 1) {
-      const position = from.compareDocumentPosition(stops[i])
-      if (position & Node.DOCUMENT_POSITION_PRECEDING) return stops[i]
+      const position = from.compareDocumentPosition(stops[i]);
+      if (position & Node.DOCUMENT_POSITION_PRECEDING) return stops[i];
     }
-    return null
+    return null;
   }
 
   for (const stop of stops) {
-    const position = from.compareDocumentPosition(stop)
-    if (position & Node.DOCUMENT_POSITION_FOLLOWING) return stop
+    const position = from.compareDocumentPosition(stop);
+    if (position & Node.DOCUMENT_POSITION_FOLLOWING) return stop;
   }
-  return null
+  return null;
 }
 
 /**
@@ -141,14 +138,11 @@ export function getCascaderTabTarget(
  * unmounted it answers `"ltr"`, which would override a real `<html dir="rtl">`.
  */
 export function isCascaderRtl(element: Element, provided: string): boolean {
-  if (provided === "rtl") return true
-  const explicit = element.closest("[dir]")?.getAttribute("dir")?.toLowerCase()
-  if (explicit === "rtl") return true
-  if (explicit === "ltr") return false
-  return (
-    element.ownerDocument?.defaultView?.getComputedStyle(element).direction ===
-    "rtl"
-  )
+  if (provided === "rtl") return true;
+  const explicit = element.closest("[dir]")?.getAttribute("dir")?.toLowerCase();
+  if (explicit === "rtl") return true;
+  if (explicit === "ltr") return false;
+  return element.ownerDocument?.defaultView?.getComputedStyle(element).direction === "rtl";
 }
 
 /**
@@ -157,7 +151,7 @@ export function isCascaderRtl(element: Element, provided: string): boolean {
  */
 export function createCascaderMoreNode<T = unknown>(
   parentKey: string,
-  loadedCount = 0
+  loadedCount = 0,
 ): CascaderNode<T> {
   return {
     value: `${CASCADER_MORE_PREFIX}${parentKey}`,
@@ -165,38 +159,38 @@ export function createCascaderMoreNode<T = unknown>(
     label: "",
     // Feeds the row's "Loading more..." wording, with no second prop to thread.
     count: loadedCount,
-  }
+  };
 }
 
 export function isCascaderMoreNode<T>(node: CascaderNode<T>): boolean {
-  return node.value.startsWith(CASCADER_MORE_PREFIX)
+  return node.value.startsWith(CASCADER_MORE_PREFIX);
 }
 
 /** The level key a paging pseudo-node belongs to, or `null` for a real node. */
 export function getCascaderMoreParent<T>(node: CascaderNode<T>): string | null {
-  if (!isCascaderMoreNode(node)) return null
-  return node.value.slice(CASCADER_MORE_PREFIX.length)
+  if (!isCascaderMoreNode(node)) return null;
+  return node.value.slice(CASCADER_MORE_PREFIX.length);
 }
 
 /** Either input shape into one index. Cycle-guarded depths; first wins. */
 export function buildCascaderIndex<T = unknown>(
   items: readonly CascaderNode<T>[] | undefined,
-  getParent?: (node: CascaderNode<T>) => string | null | undefined
+  getParent?: (node: CascaderNode<T>) => string | null | undefined,
 ): CascaderIndex<T> {
-  const byValue = new Map<string, CascaderNode<T>>()
-  const childrenOf = new Map<string, CascaderNode<T>[]>()
-  const parentOf = new Map<string, string | null>()
-  const depthOf = new Map<string, number>()
-  const all: CascaderNode<T>[] = []
+  const byValue = new Map<string, CascaderNode<T>>();
+  const childrenOf = new Map<string, CascaderNode<T>[]>();
+  const parentOf = new Map<string, string | null>();
+  const depthOf = new Map<string, number>();
+  const all: CascaderNode<T>[] = [];
 
   const push = (parentKey: string, node: CascaderNode<T>) => {
-    const bucket = childrenOf.get(parentKey)
+    const bucket = childrenOf.get(parentKey);
     if (bucket) {
-      bucket.push(node)
+      bucket.push(node);
     } else {
-      childrenOf.set(parentKey, [node])
+      childrenOf.set(parentKey, [node]);
     }
-  }
+  };
 
   if (getParent) {
     for (const node of items ?? []) {
@@ -205,41 +199,40 @@ export function buildCascaderIndex<T = unknown>(
         if (process.env.NODE_ENV !== "production") {
           warnCascaderOnce(
             "nullish-entry",
-            "Ignored a null or undefined entry in `items` or `children`. Check the arrays you pass in."
-          )
+            "Ignored a null or undefined entry in `items` or `children`. Check the arrays you pass in.",
+          );
         }
-        continue
+        continue;
       }
-      if (byValue.has(node.value)) continue
-      byValue.set(node.value, node)
-      all.push(node)
+      if (byValue.has(node.value)) continue;
+      byValue.set(node.value, node);
+      all.push(node);
     }
 
     for (const node of all) {
-      const rawParent = getParent(node)
+      const rawParent = getParent(node);
       // An unknown parent makes the node a root rather than dropping the row.
-      const parent =
-        rawParent != null && byValue.has(rawParent) ? rawParent : null
-      parentOf.set(node.value, parent)
-      push(parent ?? CASCADER_ROOT_KEY, node)
+      const parent = rawParent != null && byValue.has(rawParent) ? rawParent : null;
+      parentOf.set(node.value, parent);
+      push(parent ?? CASCADER_ROOT_KEY, node);
     }
 
     for (const node of all) {
-      let depth = 0
-      let cursor = parentOf.get(node.value) ?? null
-      const seen = new Set<string>([node.value])
+      let depth = 0;
+      let cursor = parentOf.get(node.value) ?? null;
+      const seen = new Set<string>([node.value]);
       while (cursor != null && !seen.has(cursor)) {
-        seen.add(cursor)
-        depth += 1
-        cursor = parentOf.get(cursor) ?? null
+        seen.add(cursor);
+        depth += 1;
+        cursor = parentOf.get(cursor) ?? null;
       }
-      depthOf.set(node.value, depth)
+      depthOf.set(node.value, depth);
     }
   } else {
     const walk = (
       nodes: readonly CascaderNode<T>[] | undefined,
       parent: string | null,
-      depth: number
+      depth: number,
     ) => {
       for (const node of nodes ?? []) {
         // Same degradation as the flat path above.
@@ -247,21 +240,21 @@ export function buildCascaderIndex<T = unknown>(
           if (process.env.NODE_ENV !== "production") {
             warnCascaderOnce(
               "nullish-entry",
-              "Ignored a null or undefined entry in `items` or `children`. Check the arrays you pass in."
-            )
+              "Ignored a null or undefined entry in `items` or `children`. Check the arrays you pass in.",
+            );
           }
-          continue
+          continue;
         }
-        if (byValue.has(node.value)) continue
-        byValue.set(node.value, node)
-        parentOf.set(node.value, parent)
-        depthOf.set(node.value, depth)
-        all.push(node)
-        push(parent ?? CASCADER_ROOT_KEY, node)
-        if (node.children?.length) walk(node.children, node.value, depth + 1)
+        if (byValue.has(node.value)) continue;
+        byValue.set(node.value, node);
+        parentOf.set(node.value, parent);
+        depthOf.set(node.value, depth);
+        all.push(node);
+        push(parent ?? CASCADER_ROOT_KEY, node);
+        if (node.children?.length) walk(node.children, node.value, depth + 1);
       }
-    }
-    walk(items, null, 0)
+    };
+    walk(items, null, 0);
   }
 
   return {
@@ -271,20 +264,20 @@ export function buildCascaderIndex<T = unknown>(
     depthOf,
     roots: childrenOf.get(CASCADER_ROOT_KEY) ?? [],
     all,
-  }
+  };
 }
 
 /** One branch-flagged copy per node, so a re-merge keeps row identity. */
-const BRANCH_COPIES = new WeakMap<object, object>()
+const BRANCH_COPIES = new WeakMap<object, object>();
 
 function asCascaderBranch<T>(node: CascaderNode<T>): CascaderNode<T> {
-  if (node.hasChildren) return node
-  let copy = BRANCH_COPIES.get(node) as CascaderNode<T> | undefined
+  if (node.hasChildren) return node;
+  let copy = BRANCH_COPIES.get(node) as CascaderNode<T> | undefined;
   if (!copy) {
-    copy = { ...node, hasChildren: true }
-    BRANCH_COPIES.set(node, copy)
+    copy = { ...node, hasChildren: true };
+    BRANCH_COPIES.set(node, copy);
   }
-  return copy
+  return copy;
 }
 
 /**
@@ -304,133 +297,128 @@ export function mergeCascaderIndex<T = unknown>(
   pages: ReadonlyMap<string, readonly CascaderNode<T>[]>,
   detached?: ReadonlyMap<string, CascaderNode<T>>,
   links?: ReadonlyMap<string, string>,
-  paging?: ReadonlySet<string>
+  paging?: ReadonlySet<string>,
 ): CascaderIndex<T> {
   // Identity stability: every downstream `useMemo` is keyed on this index.
-  if (pages.size === 0 && !detached?.size) return base
+  if (pages.size === 0 && !detached?.size) return base;
 
-  const byValue = new Map(base.byValue)
-  const childrenOf = new Map(base.childrenOf)
-  const parentOf = new Map(base.parentOf)
-  const depthOf = new Map(base.depthOf)
+  const byValue = new Map(base.byValue);
+  const childrenOf = new Map(base.childrenOf);
+  const parentOf = new Map(base.parentOf);
+  const depthOf = new Map(base.depthOf);
 
   // Copy-on-write per bucket: only levels that got a page pay for a new array.
-  const copied = new Set<string>()
+  const copied = new Set<string>();
   const append = (parentKey: string, node: CascaderNode<T>) => {
-    let bucket = childrenOf.get(parentKey)
+    let bucket = childrenOf.get(parentKey);
     if (!copied.has(parentKey)) {
-      bucket = bucket ? bucket.slice() : []
-      childrenOf.set(parentKey, bucket)
-      copied.add(parentKey)
+      bucket = bucket ? bucket.slice() : [];
+      childrenOf.set(parentKey, bucket);
+      copied.add(parentKey);
     }
-    bucket!.push(node)
-  }
+    bucket!.push(node);
+  };
 
   const insert = (parentKey: string, nodes: readonly CascaderNode<T>[]) => {
     for (const node of nodes) {
-      if (byValue.has(node.value)) continue
-      byValue.set(node.value, node)
-      parentOf.set(
-        node.value,
-        parentKey === CASCADER_ROOT_KEY ? null : parentKey
-      )
-      append(parentKey, node)
-      if (node.children?.length) insert(node.value, node.children)
+      if (byValue.has(node.value)) continue;
+      byValue.set(node.value, node);
+      parentOf.set(node.value, parentKey === CASCADER_ROOT_KEY ? null : parentKey);
+      append(parentKey, node);
+      if (node.children?.length) insert(node.value, node.children);
     }
-  }
+  };
 
-  for (const [parentKey, nodes] of pages) insert(parentKey, nodes)
+  for (const [parentKey, nodes] of pages) insert(parentKey, nodes);
 
-  const pinned = new Set<string>()
-  const hidden = new Set<string>()
-  const linkParents = new Set(links?.values())
+  const pinned = new Set<string>();
+  const hidden = new Set<string>();
+  const linkParents = new Set(links?.values());
   for (const [value, parentKey] of links ?? []) {
-    const linked = detached?.get(value)
-    if (!linked || byValue.has(value)) continue
-    const node = linkParents.has(value) ? asCascaderBranch(linked) : linked
-    byValue.set(value, node)
-    parentOf.set(value, parentKey === CASCADER_ROOT_KEY ? null : parentKey)
+    const linked = detached?.get(value);
+    if (!linked || byValue.has(value)) continue;
+    const node = linkParents.has(value) ? asCascaderBranch(linked) : linked;
+    byValue.set(value, node);
+    parentOf.set(value, parentKey === CASCADER_ROOT_KEY ? null : parentKey);
     if (paging?.has(parentKey)) {
-      append(parentKey, node)
-      pinned.add(value)
+      append(parentKey, node);
+      pinned.add(value);
     } else if (pages.has(parentKey) || base.childrenOf.has(parentKey)) {
-      hidden.add(value)
+      hidden.add(value);
     }
   }
 
   for (const value of byValue.keys()) {
-    if (depthOf.has(value)) continue
-    let depth = 0
-    let cursor = parentOf.get(value) ?? null
-    const seen = new Set<string>([value])
+    if (depthOf.has(value)) continue;
+    let depth = 0;
+    let cursor = parentOf.get(value) ?? null;
+    const seen = new Set<string>([value]);
     while (cursor != null && !seen.has(cursor)) {
-      seen.add(cursor)
-      depth += 1
-      cursor = parentOf.get(cursor) ?? null
+      seen.add(cursor);
+      depth += 1;
+      cursor = parentOf.get(cursor) ?? null;
     }
-    depthOf.set(value, depth)
+    depthOf.set(value, depth);
   }
 
-  const roots = childrenOf.get(CASCADER_ROOT_KEY) ?? []
+  const roots = childrenOf.get(CASCADER_ROOT_KEY) ?? [];
 
   // Depth first over the MERGED tree, so `all` keeps document order.
-  const all: CascaderNode<T>[] = []
-  const visited = new Set<string>()
+  const all: CascaderNode<T>[] = [];
+  const visited = new Set<string>();
   const walk = (nodes: readonly CascaderNode<T>[]) => {
     for (const node of nodes) {
-      if (visited.has(node.value)) continue
-      visited.add(node.value)
-      all.push(node)
-      const children = childrenOf.get(node.value)
-      if (children?.length) walk(children)
+      if (visited.has(node.value)) continue;
+      visited.add(node.value);
+      all.push(node);
+      const children = childrenOf.get(node.value);
+      if (children?.length) walk(children);
     }
-  }
-  walk(roots)
+  };
+  walk(roots);
 
   // A page whose parent never arrived, or a linked node whose level has not
   // loaded, stays searchable rather than vanishing.
   for (const [value, node] of byValue) {
-    if (visited.has(value) || hidden.has(value)) continue
-    visited.add(value)
-    all.push(node)
+    if (visited.has(value) || hidden.has(value)) continue;
+    visited.add(value);
+    all.push(node);
   }
 
   if (detached) {
     for (const [value, node] of detached) {
-      if (byValue.has(value)) continue
-      byValue.set(value, node)
+      if (byValue.has(value)) continue;
+      byValue.set(value, node);
     }
   }
 
-  return { byValue, childrenOf, parentOf, depthOf, roots, all, pinned, hidden }
+  return { byValue, childrenOf, parentOf, depthOf, roots, all, pinned, hidden };
 }
 
 /** Per index, so a query does not rebuild it. */
-const LISTED_VALUES = new WeakMap<object, ReadonlySet<string>>()
+const LISTED_VALUES = new WeakMap<object, ReadonlySet<string>>();
 
 /**
  * Values reachable from the roots through `childrenOf`: the nodes a level can
  * show. A tree query keeps only these, or a resolved node no level lists left
  * its ancestors expanded over nothing.
  */
-export function getCascaderListedValues<T>(
-  index: CascaderIndex<T>
-): ReadonlySet<string> {
-  let listed = LISTED_VALUES.get(index)
-  if (listed) return listed
-  const seen = new Set<string>()
+export function getCascaderListedValues<T>(index: CascaderIndex<T>): ReadonlySet<string> {
+  let listed = LISTED_VALUES.get(index);
+  if (listed) return listed;
+  const seen = new Set<string>();
   const walk = (nodes: readonly CascaderNode<T>[]) => {
     for (const node of nodes) {
-      if (seen.has(node.value)) continue
-      seen.add(node.value)
-      const children = index.childrenOf.get(node.value)
-      if (children?.length) walk(children)
+      if (seen.has(node.value)) continue;
+      seen.add(node.value);
+      const children = index.childrenOf.get(node.value);
+      if (children?.length) walk(children);
     }
-  }
-  walk(index.roots)
-  listed = seen
-  LISTED_VALUES.set(index, listed)
-  return listed
+  };
+  walk(index.roots);
+  listed = seen;
+  LISTED_VALUES.set(index, listed);
+  return listed;
 }
 
 /**
@@ -441,37 +429,31 @@ export function getCascaderListedValues<T>(
 export function withCascaderMoreRow<T>(
   rows: readonly CascaderNode<T>[],
   more: CascaderNode<T>,
-  pinned?: ReadonlySet<string>
+  pinned?: ReadonlySet<string>,
 ): CascaderNode<T>[] {
-  const at = pinned?.size ? rows.findIndex((row) => pinned.has(row.value)) : -1
-  if (at === -1) return [...rows, more]
-  return [...rows.slice(0, at), more, ...rows.slice(at)]
+  const at = pinned?.size ? rows.findIndex((row) => pinned.has(row.value)) : -1;
+  if (at === -1) return [...rows, more];
+  return [...rows.slice(0, at), more, ...rows.slice(at)];
 }
 
 /** Children of `parent`, or the root level when `parent` is nullish. */
 export function getCascaderChildren<T>(
   index: CascaderIndex<T>,
-  parent?: string | null
+  parent?: string | null,
 ): CascaderNode<T>[] {
-  return index.childrenOf.get(parent ?? CASCADER_ROOT_KEY) ?? []
+  return index.childrenOf.get(parent ?? CASCADER_ROOT_KEY) ?? [];
 }
 
 /** A branch has known children, or `hasChildren` for an unfetched level. */
-export function isCascaderBranch<T>(
-  index: CascaderIndex<T>,
-  node: CascaderNode<T>
-): boolean {
-  if (node.hasChildren) return true
-  return (index.childrenOf.get(node.value)?.length ?? 0) > 0
+export function isCascaderBranch<T>(index: CascaderIndex<T>, node: CascaderNode<T>): boolean {
+  if (node.hasChildren) return true;
+  return (index.childrenOf.get(node.value)?.length ?? 0) > 0;
 }
 
 /** Trailing count for the default row. Explicit `count` wins over the tree. */
-export function getCascaderCount<T>(
-  index: CascaderIndex<T>,
-  node: CascaderNode<T>
-): number {
-  if (typeof node.count === "number") return node.count
-  return index.childrenOf.get(node.value)?.length ?? 0
+export function getCascaderCount<T>(index: CascaderIndex<T>, node: CascaderNode<T>): number {
+  if (typeof node.count === "number") return node.count;
+  return index.childrenOf.get(node.value)?.length ?? 0;
 }
 
 /**
@@ -480,57 +462,54 @@ export function getCascaderCount<T>(
  * server hit that omits the flag `items` sets is still caught. Ancestry is
  * `parentOf`: a detached hit the index has never placed answers for itself.
  */
-export function isCascaderDisabled<T>(
-  index: CascaderIndex<T>,
-  node: CascaderNode<T>
-): boolean {
-  if (node.disabled || index.byValue.get(node.value)?.disabled) return true
-  const seen = new Set<string>([node.value])
-  let cursor = index.parentOf.get(node.value) ?? null
+export function isCascaderDisabled<T>(index: CascaderIndex<T>, node: CascaderNode<T>): boolean {
+  if (node.disabled || index.byValue.get(node.value)?.disabled) return true;
+  const seen = new Set<string>([node.value]);
+  let cursor = index.parentOf.get(node.value) ?? null;
   while (cursor != null && !seen.has(cursor)) {
-    seen.add(cursor)
-    if (index.byValue.get(cursor)?.disabled) return true
-    cursor = index.parentOf.get(cursor) ?? null
+    seen.add(cursor);
+    if (index.byValue.get(cursor)?.disabled) return true;
+    cursor = index.parentOf.get(cursor) ?? null;
   }
-  return false
+  return false;
 }
 
 /** Whether a node may be committed as a selection. */
 export function isCascaderSelectable<T>(
   index: CascaderIndex<T>,
   node: CascaderNode<T>,
-  selectable: CascaderSelectable<T>
+  selectable: CascaderSelectable<T>,
 ): boolean {
   // Before the branches a consumer controls: `selectable="any"` says yes to
   // every node, and committing the paging row would select a level's name.
-  if (isCascaderMoreNode(node)) return false
+  if (isCascaderMoreNode(node)) return false;
   // Rows render this answer and their presses, keys, `commit`, `navigate` and
   // `navigateAt` check it, so a search lists a disabled subtree none of them
   // opens. The raw setters (`pushLevel`, `setPath`, `toggleExpanded`,
   // `setSelection`) do not ask.
-  if (isCascaderDisabled(index, node)) return false
-  if (typeof selectable === "function") return selectable(node)
-  if (selectable === "any") return true
-  return !isCascaderBranch(index, node)
+  if (isCascaderDisabled(index, node)) return false;
+  if (typeof selectable === "function") return selectable(node);
+  if (selectable === "any") return true;
+  return !isCascaderBranch(index, node);
 }
 
 /** Ancestor chain for `value`, root first. Empty while async data loads. */
 export function getCascaderPath<T>(
   index: CascaderIndex<T>,
-  value: string | null | undefined
+  value: string | null | undefined,
 ): CascaderNode<T>[] {
-  if (value == null) return []
-  const chain: CascaderNode<T>[] = []
-  const seen = new Set<string>()
-  let cursor: string | null | undefined = value
+  if (value == null) return [];
+  const chain: CascaderNode<T>[] = [];
+  const seen = new Set<string>();
+  let cursor: string | null | undefined = value;
   while (cursor != null && !seen.has(cursor)) {
-    seen.add(cursor)
-    const node = index.byValue.get(cursor)
-    if (!node) break
-    chain.push(node)
-    cursor = index.parentOf.get(cursor) ?? null
+    seen.add(cursor);
+    const node = index.byValue.get(cursor);
+    if (!node) break;
+    chain.push(node);
+    cursor = index.parentOf.get(cursor) ?? null;
   }
-  return chain.reverse()
+  return chain.reverse();
 }
 
 /**
@@ -538,42 +517,36 @@ export function getCascaderPath<T>(
  * "I" into "i" not "ı", so "ışık" would never match "IŞIK". Both sides fold here.
  */
 export function foldCascaderText(text: string): string {
-  return text.toLocaleLowerCase()
+  return text.toLocaleLowerCase();
 }
 
 /** Folds once so callers can hoist the cost out of a per-node loop. */
 export function normalizeCascaderQuery(query: string): string {
-  return foldCascaderText(query.trim())
+  return foldCascaderText(query.trim());
 }
 
 /** Case-insensitive substring over label and keywords; pre-fold the query. */
-export function matchesCascaderQuery<T>(
-  node: CascaderNode<T>,
-  normalized: string
-): boolean {
-  if (!normalized) return true
+export function matchesCascaderQuery<T>(node: CascaderNode<T>, normalized: string): boolean {
+  if (!normalized) return true;
   // Coerced, not trusted: a label-less node is malformed data, not a crash.
-  if (foldCascaderText(node.label ?? "").includes(normalized)) return true
+  if (foldCascaderText(node.label ?? "").includes(normalized)) return true;
   if (node.keywords) {
     for (const keyword of node.keywords) {
-      if (foldCascaderText(keyword).includes(normalized)) return true
+      if (foldCascaderText(keyword).includes(normalized)) return true;
     }
   }
-  return false
+  return false;
 }
 
 /** Filters one level in place-order. Returns the input when the query is empty. */
 export function filterCascaderLevel<T>(
   nodes: readonly CascaderNode<T>[],
   query: string,
-  matches: (
-    node: CascaderNode<T>,
-    normalized: string
-  ) => boolean = matchesCascaderQuery
+  matches: (node: CascaderNode<T>, normalized: string) => boolean = matchesCascaderQuery,
 ): CascaderNode<T>[] {
-  const normalized = normalizeCascaderQuery(query)
-  if (!normalized) return nodes as CascaderNode<T>[]
-  return nodes.filter((node) => matches(node, normalized))
+  const normalized = normalizeCascaderQuery(query);
+  if (!normalized) return nodes as CascaderNode<T>[];
+  return nodes.filter((node) => matches(node, normalized));
 }
 
 /** Searches every node, optionally under `within`, in one pass over `all`. */
@@ -581,51 +554,51 @@ export function searchCascaderDeep<T>(
   index: CascaderIndex<T>,
   query: string,
   options: {
-    within?: string | null
-    limit?: number
-    matches?: (node: CascaderNode<T>, normalized: string) => boolean
-  } = {}
+    within?: string | null;
+    limit?: number;
+    matches?: (node: CascaderNode<T>, normalized: string) => boolean;
+  } = {},
 ): CascaderNode<T>[] {
-  const normalized = normalizeCascaderQuery(query)
-  if (!normalized) return []
+  const normalized = normalizeCascaderQuery(query);
+  if (!normalized) return [];
 
-  const { within, limit = 200, matches = matchesCascaderQuery } = options
-  const results: CascaderNode<T>[] = []
+  const { within, limit = 200, matches = matchesCascaderQuery } = options;
+  const results: CascaderNode<T>[] = [];
 
   // One memoised ancestry map per query. The provisional `false` written on the
   // way up doubles as the cycle guard; the trail is promoted once `within` hits.
-  const ancestry = within == null ? null : new Map<string, boolean>()
+  const ancestry = within == null ? null : new Map<string, boolean>();
   const isWithin = (node: CascaderNode<T>) => {
-    if (within == null || !ancestry) return true
-    const trail: string[] = []
-    let answer = false
-    let cursor: string | null | undefined = index.parentOf.get(node.value)
+    if (within == null || !ancestry) return true;
+    const trail: string[] = [];
+    let answer = false;
+    let cursor: string | null | undefined = index.parentOf.get(node.value);
     while (cursor != null) {
       if (cursor === within) {
-        answer = true
-        break
+        answer = true;
+        break;
       }
-      const cached = ancestry.get(cursor)
+      const cached = ancestry.get(cursor);
       if (cached !== undefined) {
-        answer = cached
-        break
+        answer = cached;
+        break;
       }
-      ancestry.set(cursor, false)
-      trail.push(cursor)
-      cursor = index.parentOf.get(cursor) ?? null
+      ancestry.set(cursor, false);
+      trail.push(cursor);
+      cursor = index.parentOf.get(cursor) ?? null;
     }
-    if (answer) for (const value of trail) ancestry.set(value, true)
-    return answer
-  }
+    if (answer) for (const value of trail) ancestry.set(value, true);
+    return answer;
+  };
 
   for (const node of index.all) {
-    if (results.length >= limit) break
-    if (!matches(node, normalized)) continue
-    if (!isWithin(node)) continue
-    results.push(node)
+    if (results.length >= limit) break;
+    if (!matches(node, normalized)) continue;
+    if (!isWithin(node)) continue;
+    results.push(node);
   }
 
-  return results
+  return results;
 }
 
 /**
@@ -635,25 +608,17 @@ export function searchCascaderDeep<T>(
 export function flattenCascaderTree<T>(
   index: CascaderIndex<T>,
   expanded: ReadonlySet<string>,
-  sentinels?: ReadonlySet<string>
+  sentinels?: ReadonlySet<string>,
 ): CascaderFlatNode<T>[] {
-  const rows: CascaderFlatNode<T>[] = []
+  const rows: CascaderFlatNode<T>[] = [];
 
-  const walk = (
-    nodes: readonly CascaderNode<T>[],
-    parentKey: string,
-    depth: number
-  ) => {
+  const walk = (nodes: readonly CascaderNode<T>[], parentKey: string, depth: number) => {
     const items = sentinels?.has(parentKey)
-      ? withCascaderMoreRow(
-          nodes,
-          createCascaderMoreNode<T>(parentKey, nodes.length),
-          index.pinned
-        )
-      : nodes
-    const setSize = items.length
+      ? withCascaderMoreRow(nodes, createCascaderMoreNode<T>(parentKey, nodes.length), index.pinned)
+      : nodes;
+    const setSize = items.length;
     for (let i = 0; i < items.length; i += 1) {
-      const node = items[i]
+      const node = items[i];
       if (isCascaderMoreNode(node)) {
         rows.push({
           node,
@@ -662,11 +627,11 @@ export function flattenCascaderTree<T>(
           expanded: false,
           setSize,
           posInSet: i + 1,
-        })
-        continue
+        });
+        continue;
       }
-      const branch = isCascaderBranch(index, node)
-      const isExpanded = branch && expanded.has(node.value)
+      const branch = isCascaderBranch(index, node);
+      const isExpanded = branch && expanded.has(node.value);
       rows.push({
         node,
         depth,
@@ -674,50 +639,48 @@ export function flattenCascaderTree<T>(
         expanded: isExpanded,
         setSize,
         posInSet: i + 1,
-      })
+      });
       if (isExpanded) {
-        walk(index.childrenOf.get(node.value) ?? [], node.value, depth + 1)
+        walk(index.childrenOf.get(node.value) ?? [], node.value, depth + 1);
       }
     }
-  }
+  };
 
-  walk(index.roots, CASCADER_ROOT_KEY, 0)
-  return rows
+  walk(index.roots, CASCADER_ROOT_KEY, 0);
+  return rows;
 }
 
 /** Shortens a path; the ellipsis segment still carries the hidden nodes. */
 export function collapseCascaderPath<T>(
   path: readonly CascaderNode<T>[],
-  options: { maxSegments?: number; collapse?: CascaderCollapse } = {}
+  options: { maxSegments?: number; collapse?: CascaderCollapse } = {},
 ): CascaderPathSegment<T>[] {
-  const { maxSegments = 3, collapse = "middle" } = options
+  const { maxSegments = 3, collapse = "middle" } = options;
 
-  const asNodes = (
-    nodes: readonly CascaderNode<T>[]
-  ): CascaderPathSegment<T>[] =>
-    nodes.map((node) => ({ type: "node" as const, node }))
+  const asNodes = (nodes: readonly CascaderNode<T>[]): CascaderPathSegment<T>[] =>
+    nodes.map((node) => ({ type: "node" as const, node }));
 
   if (collapse === "none" || maxSegments <= 0 || path.length <= maxSegments) {
-    return asNodes(path)
+    return asNodes(path);
   }
 
   if (collapse === "start") {
-    const tail = path.slice(path.length - maxSegments)
+    const tail = path.slice(path.length - maxSegments);
     return [
       { type: "ellipsis", hidden: path.slice(0, path.length - maxSegments) },
       ...asNodes(tail),
-    ]
+    ];
   }
 
   // "middle": keep the root for orientation and as much of the tail as fits.
-  const head = path.slice(0, 1)
-  const tailCount = maxSegments - 1
-  const tail = path.slice(path.length - tailCount)
-  const hidden = path.slice(1, path.length - tailCount)
+  const head = path.slice(0, 1);
+  const tailCount = maxSegments - 1;
+  const tail = path.slice(path.length - tailCount);
+  const hidden = path.slice(1, path.length - tailCount);
 
-  if (hidden.length === 0) return asNodes(path)
+  if (hidden.length === 0) return asNodes(path);
 
-  return [...asNodes(head), { type: "ellipsis", hidden }, ...asNodes(tail)]
+  return [...asNodes(head), { type: "ellipsis", hidden }, ...asNodes(tail)];
 }
 
 /* -------------------------------------------------------------------------- */
@@ -725,7 +688,7 @@ export function collapseCascaderPath<T>(
 /* -------------------------------------------------------------------------- */
 
 /** Per index, so a press does not rebuild it. */
-const SELECTION_CHILDREN = new WeakMap<object, Map<string, unknown[]>>()
+const SELECTION_CHILDREN = new WeakMap<object, Map<string, unknown[]>>();
 
 /**
  * Children by parent, built from `parentOf`. Unlike `childrenOf` it also holds
@@ -733,24 +696,20 @@ const SELECTION_CHILDREN = new WeakMap<object, Map<string, unknown[]>>()
  * must see: unchecking an ancestor has to take it along. A `hidden` one is left
  * out, since its level loaded without it.
  */
-function getSelectionChildren<T>(
-  index: CascaderIndex<T>
-): Map<string, CascaderNode<T>[]> {
-  let map = SELECTION_CHILDREN.get(index) as
-    | Map<string, CascaderNode<T>[]>
-    | undefined
-  if (map) return map
-  map = new Map()
+function getSelectionChildren<T>(index: CascaderIndex<T>): Map<string, CascaderNode<T>[]> {
+  let map = SELECTION_CHILDREN.get(index) as Map<string, CascaderNode<T>[]> | undefined;
+  if (map) return map;
+  map = new Map();
   for (const [value, parent] of index.parentOf) {
-    const node = index.byValue.get(value)
-    if (!node || index.hidden?.has(value)) continue
-    const key = parent ?? CASCADER_ROOT_KEY
-    const bucket = map.get(key)
-    if (bucket) bucket.push(node)
-    else map.set(key, [node])
+    const node = index.byValue.get(value);
+    if (!node || index.hidden?.has(value)) continue;
+    const key = parent ?? CASCADER_ROOT_KEY;
+    const bucket = map.get(key);
+    if (bucket) bucket.push(node);
+    else map.set(key, [node]);
   }
-  SELECTION_CHILDREN.set(index, map)
-  return map
+  SELECTION_CHILDREN.set(index, map);
+  return map;
 }
 
 /**
@@ -760,23 +719,23 @@ function getSelectionChildren<T>(
  */
 export function collectCascaderSubtree<T>(
   index: CascaderIndex<T>,
-  value: string
+  value: string,
 ): CascaderNode<T>[] {
-  const root = index.byValue.get(value)
-  if (!root) return []
+  const root = index.byValue.get(value);
+  if (!root) return [];
 
-  const childrenOf = getSelectionChildren(index)
-  const out: CascaderNode<T>[] = []
-  const seen = new Set<string>()
+  const childrenOf = getSelectionChildren(index);
+  const out: CascaderNode<T>[] = [];
+  const seen = new Set<string>();
   const walk = (node: CascaderNode<T>) => {
-    if (seen.has(node.value)) return
-    seen.add(node.value)
-    out.push(node)
-    const children = childrenOf.get(node.value)
-    if (children) for (const child of children) walk(child)
-  }
-  walk(root)
-  return out
+    if (seen.has(node.value)) return;
+    seen.add(node.value);
+    out.push(node);
+    const children = childrenOf.get(node.value);
+    if (children) for (const child of children) walk(child);
+  };
+  walk(root);
+  return out;
 }
 
 /**
@@ -791,45 +750,45 @@ export function applyCascadeSelection<T>(
   selected: readonly string[],
   value: string,
   select: boolean,
-  isSelectable: (node: CascaderNode<T>) => boolean = () => true
+  isSelectable: (node: CascaderNode<T>) => boolean = () => true,
 ): string[] {
-  const next = new Set(selected)
-  const subtree = collectCascaderSubtree(index, value)
+  const next = new Set(selected);
+  const subtree = collectCascaderSubtree(index, value);
 
   // An unknown value still toggles itself, so an early async selection lands.
   if (subtree.length === 0) {
-    if (select) next.add(value)
-    else next.delete(value)
+    if (select) next.add(value);
+    else next.delete(value);
   }
 
   for (const node of subtree) {
     // The pressed node is exempt: it was committed, so it is selectable.
-    if (node.value !== value && !isSelectable(node)) continue
-    if (select) next.add(node.value)
-    else next.delete(node.value)
+    if (node.value !== value && !isSelectable(node)) continue;
+    if (select) next.add(node.value);
+    else next.delete(node.value);
   }
 
   // Bottom up: a parent can only answer once its children have.
-  const seen = new Set<string>([value])
-  let cursor = index.parentOf.get(value) ?? null
+  const seen = new Set<string>([value]);
+  let cursor = index.parentOf.get(value) ?? null;
   while (cursor != null && !seen.has(cursor)) {
-    seen.add(cursor)
-    const parent = index.byValue.get(cursor)
-    const children = getSelectionChildren(index).get(cursor) ?? []
-    const selectable = children.filter((child) => isSelectable(child))
+    seen.add(cursor);
+    const parent = index.byValue.get(cursor);
+    const children = getSelectionChildren(index).get(cursor) ?? [];
+    const selectable = children.filter((child) => isSelectable(child));
     const full =
       selectable.length > 0 &&
       selectable.every((child) => next.has(child.value)) &&
       // Never promote a node the consumer said may not be committed. Under
       // `selectable="leaf"` no branch qualifies, hence the `cascade` warning.
       !!parent &&
-      isSelectable(parent)
-    if (full) next.add(cursor)
-    else next.delete(cursor)
-    cursor = index.parentOf.get(cursor) ?? null
+      isSelectable(parent);
+    if (full) next.add(cursor);
+    else next.delete(cursor);
+    cursor = index.parentOf.get(cursor) ?? null;
   }
 
-  return Array.from(next)
+  return Array.from(next);
 }
 
 /**
@@ -838,51 +797,48 @@ export function applyCascadeSelection<T>(
  */
 export function getCascaderSelectedDescendants<T>(
   index: CascaderIndex<T>,
-  selected: readonly string[]
+  selected: readonly string[],
 ): Map<string, number> {
-  const counts = new Map<string, number>()
+  const counts = new Map<string, number>();
 
   for (const value of selected) {
-    const seen = new Set<string>([value])
-    let cursor = index.parentOf.get(value) ?? null
+    const seen = new Set<string>([value]);
+    let cursor = index.parentOf.get(value) ?? null;
     while (cursor != null && !seen.has(cursor)) {
-      seen.add(cursor)
-      counts.set(cursor, (counts.get(cursor) ?? 0) + 1)
-      cursor = index.parentOf.get(cursor) ?? null
+      seen.add(cursor);
+      counts.set(cursor, (counts.get(cursor) ?? 0) + 1);
+      cursor = index.parentOf.get(cursor) ?? null;
     }
   }
 
-  return counts
+  return counts;
 }
 
 /** The PARTIALLY selected values, read off counts the caller already holds. */
 export function getCascaderIndeterminateFrom(
   counts: ReadonlyMap<string, number>,
-  selected: readonly string[]
+  selected: readonly string[],
 ): Set<string> {
-  const selectedSet = new Set(selected)
-  const partial = new Set<string>()
+  const selectedSet = new Set(selected);
+  const partial = new Set<string>();
 
   for (const [value, count] of counts) {
-    if (count > 0 && !selectedSet.has(value)) partial.add(value)
+    if (count > 0 && !selectedSet.has(value)) partial.add(value);
   }
 
-  return partial
+  return partial;
 }
 
 /** The one-call form; the root uses the two halves above and its own counts. */
 export function getCascaderIndeterminate<T>(
   index: CascaderIndex<T>,
-  selected: readonly string[]
+  selected: readonly string[],
 ): Set<string> {
-  return getCascaderIndeterminateFrom(
-    getCascaderSelectedDescendants(index, selected),
-    selected
-  )
+  return getCascaderIndeterminateFrom(getCascaderSelectedDescendants(index, selected), selected);
 }
 
 /** How `getCascaderCheckedValues` condenses a full-closure selection. */
-export type CascaderCheckedStrategy = "all" | "parent" | "child"
+export type CascaderCheckedStrategy = "all" | "parent" | "child";
 
 /**
  * The cascade selection under a reporting strategy. DERIVED OUTPUT ONLY: the
@@ -893,47 +849,45 @@ export type CascaderCheckedStrategy = "all" | "parent" | "child"
 export function getCascaderCheckedValues<T>(
   index: CascaderIndex<T>,
   selected: readonly string[],
-  strategy: CascaderCheckedStrategy
+  strategy: CascaderCheckedStrategy,
 ): readonly string[] {
-  if (strategy === "all") return selected
+  if (strategy === "all") return selected;
 
-  const set = new Set(selected)
+  const set = new Set(selected);
   if (strategy === "parent") {
     return selected.filter((value) => {
-      const parent = index.parentOf.get(value)
-      return parent == null || !set.has(parent)
-    })
+      const parent = index.parentOf.get(value);
+      return parent == null || !set.has(parent);
+    });
   }
 
   // Parents of a selection, from `parentOf`: it holds the resolved chain
   // nodes no loaded level lists, which `childrenOf` misses.
-  const withSelectedChild = new Set<string>()
+  const withSelectedChild = new Set<string>();
   for (const value of selected) {
-    if (index.hidden?.has(value)) continue
-    const parent = index.parentOf.get(value)
-    if (parent != null) withSelectedChild.add(parent)
+    if (index.hidden?.has(value)) continue;
+    const parent = index.parentOf.get(value);
+    if (parent != null) withSelectedChild.add(parent);
   }
-  return selected.filter((value) => !withSelectedChild.has(value))
+  return selected.filter((value) => !withSelectedChild.has(value));
 }
 
 /** Values in `nodes` whose label collides, so the chip must show its path. */
-export function findAmbiguousCascaderLabels<T>(
-  nodes: readonly CascaderNode<T>[]
-): Set<string> {
-  const firstByLabel = new Map<string, string>()
-  const ambiguous = new Set<string>()
+export function findAmbiguousCascaderLabels<T>(nodes: readonly CascaderNode<T>[]): Set<string> {
+  const firstByLabel = new Map<string, string>();
+  const ambiguous = new Set<string>();
 
   for (const node of nodes) {
-    const first = firstByLabel.get(node.label)
+    const first = firstByLabel.get(node.label);
     if (first === undefined) {
-      firstByLabel.set(node.label, node.value)
-      continue
+      firstByLabel.set(node.label, node.value);
+      continue;
     }
-    ambiguous.add(node.value)
-    ambiguous.add(first)
+    ambiguous.add(node.value);
+    ambiguous.add(first);
   }
 
-  return ambiguous
+  return ambiguous;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -941,72 +895,72 @@ export function findAmbiguousCascaderLabels<T>(
 /* -------------------------------------------------------------------------- */
 
 /** Warnings already emitted. Module scoped, or they repeat once per render. */
-const CASCADER_WARNED = new Set<string>()
+const CASCADER_WARNED = new Set<string>();
 
 /** Warns once per `key`, never in production, never by throwing. */
 export function warnCascaderOnce(key: string, message: string): void {
-  if (process.env.NODE_ENV === "production") return
-  if (CASCADER_WARNED.has(key)) return
-  CASCADER_WARNED.add(key)
-  console.warn(`[Cascader] ${message}`)
+  if (process.env.NODE_ENV === "production") return;
+  if (CASCADER_WARNED.has(key)) return;
+  CASCADER_WARNED.add(key);
+  console.warn(`[Cascader] ${message}`);
 }
 
 /** Empties the ledger. Tests only; a warning is meant to be seen once. */
 export function resetCascaderWarnings(): void {
-  CASCADER_WARNED.clear()
+  CASCADER_WARNED.clear();
 }
 
 /** What a dev-time scan of the consumer's `items` found wrong with it. */
 export interface CascaderDataIssues {
   /** Values appearing more than once. First wins, so a duplicate drops a row. */
-  duplicates: string[]
+  duplicates: string[];
   /** Values on a `getParent` cycle. Depth is clamped, so the tree reads wrong. */
-  cycles: string[]
+  cycles: string[];
 }
 
 /** Dev-time scan, kept out of `buildCascaderIndex` so the build stays hot. */
 export function findCascaderDataIssues<T>(
   items: readonly CascaderNode<T>[] | undefined,
-  getParent?: (node: CascaderNode<T>) => string | null | undefined
+  getParent?: (node: CascaderNode<T>) => string | null | undefined,
 ): CascaderDataIssues {
-  const seen = new Set<string>()
-  const duplicates = new Set<string>()
-  const flat: CascaderNode<T>[] = []
+  const seen = new Set<string>();
+  const duplicates = new Set<string>();
+  const flat: CascaderNode<T>[] = [];
 
   const visit = (nodes: readonly CascaderNode<T>[] | undefined) => {
     for (const node of nodes ?? []) {
       // The build skips a nullish entry, and this runs BEFORE its warning.
-      if (node == null) continue
-      if (seen.has(node.value)) duplicates.add(node.value)
-      else seen.add(node.value)
-      flat.push(node)
+      if (node == null) continue;
+      if (seen.has(node.value)) duplicates.add(node.value);
+      else seen.add(node.value);
+      flat.push(node);
       // Flat mode walks them too: BOTH `children` and `getParent` is a bug.
-      if (node.children?.length) visit(node.children)
+      if (node.children?.length) visit(node.children);
     }
-  }
-  visit(items)
+  };
+  visit(items);
 
-  const cycles: string[] = []
+  const cycles: string[] = [];
   if (getParent) {
-    const parentOf = new Map<string, string | null>()
+    const parentOf = new Map<string, string | null>();
     for (const node of flat) {
-      if (parentOf.has(node.value)) continue
-      const raw = getParent(node)
-      parentOf.set(node.value, raw != null && seen.has(raw) ? raw : null)
+      if (parentOf.has(node.value)) continue;
+      const raw = getParent(node);
+      parentOf.set(node.value, raw != null && seen.has(raw) ? raw : null);
     }
     for (const node of flat) {
-      const walked = new Set<string>([node.value])
-      let cursor = parentOf.get(node.value) ?? null
+      const walked = new Set<string>([node.value]);
+      let cursor = parentOf.get(node.value) ?? null;
       while (cursor != null) {
         if (walked.has(cursor)) {
-          cycles.push(node.value)
-          break
+          cycles.push(node.value);
+          break;
         }
-        walked.add(cursor)
-        cursor = parentOf.get(cursor) ?? null
+        walked.add(cursor);
+        cursor = parentOf.get(cursor) ?? null;
       }
     }
   }
 
-  return { duplicates: Array.from(duplicates), cycles }
+  return { duplicates: Array.from(duplicates), cycles };
 }

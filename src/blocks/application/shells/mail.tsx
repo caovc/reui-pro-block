@@ -29,15 +29,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
-import {
-  Button,
-  Badge,
-  Face,
-  PlaceholderCanvas,
-  ReuiMark,
-  WorkspaceMenu,
-  toast,
-} from "./chrome";
+import { Button, Badge, Face, PlaceholderCanvas, ReuiMark, WorkspaceMenu, toast } from "./chrome";
 type MailItem = {
   id: number;
   sender: string;
@@ -80,8 +72,7 @@ const initialMail: MailItem[] = [
     id: 3,
     sender: "Emma Wilson",
     subject: "Partnership proposal · ReUI integration",
-    preview:
-      "We’ve been using ReUI for six months and would love to explore a formal partnership.",
+    preview: "We’ve been using ReUI for six months and would love to explore a formal partnership.",
     time: "Yesterday",
     unread: true,
     label: "Business",
@@ -90,8 +81,7 @@ const initialMail: MailItem[] = [
   {
     id: 4,
     sender: "GitHub",
-    subject:
-      "[keenthemes] Security advisory on rollup affects your repositories",
+    subject: "[keenthemes] Security advisory on rollup affects your repositories",
     preview:
       "A dependency security advisory affects one or more repositories. Review the recommended update.",
     time: "Yesterday",
@@ -101,8 +91,7 @@ const initialMail: MailItem[] = [
     id: 5,
     sender: "Stripe",
     subject: "Payment received · $299 from Acme Corp",
-    preview:
-      "A payment of $299 has been received. Your current account balance is $1,248.",
+    preview: "A payment of $299 has been received. Your current account balance is $1,248.",
     time: "Mon",
     label: "Finance",
   },
@@ -139,8 +128,7 @@ const initialMail: MailItem[] = [
     id: 9,
     sender: "Linear",
     subject: "Sprint review: 18 issues closed this week",
-    preview:
-      "Your team closed eighteen issues, moved five to review, and created eight new tasks.",
+    preview: "Your team closed eighteen issues, moved five to review, and created eight new tasks.",
     time: "Nov 21",
     starred: true,
   },
@@ -148,8 +136,7 @@ const initialMail: MailItem[] = [
     id: 10,
     sender: "James Kim",
     subject: "Figma Config 2025 · Speaker confirmation",
-    preview:
-      "Congratulations! Your session on production-ready design systems has been approved.",
+    preview: "Congratulations! Your session on production-ready design systems has been approved.",
     time: "Nov 20",
     label: "Events",
     action: ["Confirm Attendance"],
@@ -170,13 +157,9 @@ export default function MailInbox() {
   const [sort, setSort] = useState(false);
   const current = mails.find((m) => m.id === selected);
   const filtered = mails
+    .filter((m) => (folder === "Starred" ? m.starred : (m.folder ?? "Inbox") === folder))
     .filter((m) =>
-      folder === "Starred" ? m.starred : (m.folder ?? "Inbox") === folder,
-    )
-    .filter((m) =>
-      `${m.sender} ${m.subject} ${m.preview}`
-        .toLowerCase()
-        .includes(query.toLowerCase()),
+      `${m.sender} ${m.subject} ${m.preview}`.toLowerCase().includes(query.toLowerCase()),
     )
     .filter(
       (m) =>
@@ -201,11 +184,7 @@ export default function MailInbox() {
     setCompose(true);
   }
   return (
-    <div
-      className="shell-reference"
-      data-shell-variant="4"
-      data-panel-hidden={listHidden}
-    >
+    <div className="shell-reference" data-shell-variant="4" data-panel-hidden={listHidden}>
       <nav className="shell-icon-rail">
         <ReuiMark />
         <div className="mt-5 flex flex-col gap-1.5">
@@ -277,26 +256,15 @@ export default function MailInbox() {
               onChange={(e) => setQuery(e.target.value)}
             />
             <Tabs value={tab} onValueChange={setTab}>
-              <TabsList
-                variant="line"
-                className="h-7 w-full justify-start gap-2"
-              >
+              <TabsList variant="line" className="h-7 w-full justify-start gap-2">
                 {["All", "Unread", "Starred", "Files"].map((t) => (
-                  <TabsTrigger
-                    value={t}
-                    key={t}
-                    className="h-6 rounded-full px-2 text-[10px]"
-                  >
+                  <TabsTrigger value={t} key={t} className="h-6 rounded-full px-2 text-[10px]">
                     {t}
                     {t !== "All" && (
                       <span className="ml-1 text-[9px]">
                         {
                           mails.filter((m) =>
-                            t === "Unread"
-                              ? m.unread
-                              : t === "Starred"
-                                ? m.starred
-                                : m.file,
+                            t === "Unread" ? m.unread : t === "Starred" ? m.starred : m.file,
                           ).length
                         }
                       </span>
@@ -308,38 +276,24 @@ export default function MailInbox() {
           </div>
           <div className="shell-scroll">
             {filtered.map((m, i) => (
-              <div
-                key={m.id}
-                className={`border-b p-3 ${m.id === selected ? "bg-muted/30" : ""}`}
-              >
+              <div key={m.id} className={`border-b p-3 ${m.id === selected ? "bg-muted/30" : ""}`}>
                 <button
                   className="flex w-full gap-2 text-left"
                   onClick={() => {
                     setSelected(m.id);
-                    if (matchMedia("(max-width:767px)").matches)
-                      setListHidden(true);
-                    setMails(
-                      mails.map((v) =>
-                        v.id === m.id ? { ...v, unread: false } : v,
-                      ),
-                    );
+                    if (matchMedia("(max-width:767px)").matches) setListHidden(true);
+                    setMails(mails.map((v) => (v.id === m.id ? { ...v, unread: false } : v)));
                   }}
                 >
                   <div className="flex w-2 shrink-0 items-start pt-3">
-                    {m.unread && (
-                      <span className="size-1.5 rounded-full bg-foreground" />
-                    )}
+                    {m.unread && <span className="size-1.5 rounded-full bg-foreground" />}
                   </div>
                   <Face name={m.sender} index={i} />
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center justify-between gap-2">
-                      <span
-                        className={`truncate text-xs ${m.unread ? "font-semibold" : ""}`}
-                      >
+                      <span className={`truncate text-xs ${m.unread ? "font-semibold" : ""}`}>
                         {m.sender}
-                        {m.priority && (
-                          <span className="ml-0.5 text-destructive">!</span>
-                        )}
+                        {m.priority && <span className="ml-0.5 text-destructive">!</span>}
                       </span>
                       <span className="flex shrink-0 items-center gap-1 text-[10px] text-muted-foreground">
                         {m.starred && (
@@ -350,9 +304,7 @@ export default function MailInbox() {
                       </span>
                     </div>
                     <p className="mt-1 truncate text-[11px]">{m.subject}</p>
-                    <p className="mt-1 truncate text-[11px] text-muted-foreground">
-                      {m.preview}
-                    </p>
+                    <p className="mt-1 truncate text-[11px] text-muted-foreground">{m.preview}</p>
                   </div>
                 </button>
                 <div className="ml-12 mt-3 flex flex-wrap items-center gap-1.5">
@@ -364,24 +316,17 @@ export default function MailInbox() {
                     </div>
                   )}
                   {m.label && (
-                    <Badge
-                      variant="outline"
-                      className="h-4 rounded px-1 text-[9px] font-normal"
-                    >
+                    <Badge variant="outline" className="h-4 rounded px-1 text-[9px] font-normal">
                       {m.label}
                     </Badge>
                   )}
                   {m.action?.map((action) => (
                     <Button
                       key={action}
-                      variant={
-                        action.startsWith("View") ? "outline" : "default"
-                      }
+                      variant={action.startsWith("View") ? "outline" : "default"}
                       size="sm"
                       className="h-6 px-2 text-[10px]"
-                      onClick={() =>
-                        toast(`${action} selected`, { description: m.subject })
-                      }
+                      onClick={() => toast(`${action} selected`, { description: m.subject })}
                     >
                       {action}
                     </Button>
@@ -413,9 +358,7 @@ export default function MailInbox() {
           </div>
         </aside>
       )}
-      <main
-        className={`shell-content-frame ${!listHidden ? "max-md:hidden" : ""}`}
-      >
+      <main className={`shell-content-frame ${!listHidden ? "max-md:hidden" : ""}`}>
         <header className="shell-header border-b">
           <div className="flex min-w-0 items-center gap-1">
             <Button
@@ -449,12 +392,7 @@ export default function MailInbox() {
             </span>
           </div>
           <div className="flex shrink-0 items-center gap-1">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="h-6 text-[11px]"
-              onClick={openReply}
-            >
+            <Button variant="ghost" size="sm" className="h-6 text-[11px]" onClick={openReply}>
               <ReplyAll />
               Reply all
             </Button>
@@ -463,19 +401,11 @@ export default function MailInbox() {
               size="icon-sm"
               aria-label={current?.starred ? "Unstar message" : "Star message"}
               onClick={() =>
-                setMails(
-                  mails.map((m) =>
-                    m.id === selected ? { ...m, starred: !m.starred } : m,
-                  ),
-                )
+                setMails(mails.map((m) => (m.id === selected ? { ...m, starred: !m.starred } : m)))
               }
             >
               <Star
-                className={
-                  current?.starred
-                    ? "fill-[var(--chart-4)] text-[var(--chart-4)]"
-                    : ""
-                }
+                className={current?.starred ? "fill-[var(--chart-4)] text-[var(--chart-4)]" : ""}
               />
             </Button>
             <Button
@@ -492,11 +422,7 @@ export default function MailInbox() {
               size="icon-sm"
               aria-label="Delete message"
               onClick={() => {
-                setMails(
-                  mails.map((m) =>
-                    m.id === selected ? { ...m, folder: "Trash" } : m,
-                  ),
-                );
+                setMails(mails.map((m) => (m.id === selected ? { ...m, folder: "Trash" } : m)));
                 setSelected(mails.find((m) => m.id !== selected)?.id ?? 0);
                 toast("Message deleted in demo");
               }}
@@ -521,9 +447,7 @@ export default function MailInbox() {
             <DialogTitle>
               {subject.startsWith("Re:") ? "Reply to message" : "New message"}
             </DialogTitle>
-            <DialogDescription>
-              Messages remain in this local demo.
-            </DialogDescription>
+            <DialogDescription>Messages remain in this local demo.</DialogDescription>
           </DialogHeader>
           <form
             className="flex flex-col gap-5"

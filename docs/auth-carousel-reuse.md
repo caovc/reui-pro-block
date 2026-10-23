@@ -4,12 +4,12 @@ The previous Auth2 composed three handwritten cards around a custom `setInterval
 
 Before changing either consumer, the official free registry source was fetched and read:
 
-| Free source | Registry JSON SHA256 | Actual use |
-| --- | --- | --- |
-| [c-carousel-5](https://reui.io/r/radix-nova/c-carousel-5.json) | `7b4c8917f0e36e186554ae5722167f2ba9c3f494c40b7a5f1ac8d756c457207d` | Actual `Autoplay` plugin on upstream `Carousel`/`CarouselContent`/`CarouselItem` |
-| [c-carousel-11](https://reui.io/r/radix-nova/c-carousel-11.json) | `83814bfc3f06cc7fd57417a0fc5c6ab57ea3b55171ca9f281dfd4562cf75f65a` | Actual API `selectedScrollSnap`, `select` event and `scrollTo` dots; reInit subscription/cleanup follows free c-carousel-9 |
-| [c-carousel-9](https://reui.io/r/radix-nova/c-carousel-9.json) | `59c99e23ad9899d51d4dfaccb5cfff9dcf136b25808573e89cd91bf5b4703ce4` | Read for API lifecycle, with cleanup on reInit/select; paired thumbnail behavior is owned by the separate commerce migration |
-| [Rating](https://reui.io/r/radix-nova/rating.json) | Existing attributed official source | Actual read-only five-star fill implementation in Auth3; scoped CSS inherits the reference review panel color |
+| Free source                                                      | Registry JSON SHA256                                               | Actual use                                                                                                                   |
+| ---------------------------------------------------------------- | ------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| [c-carousel-5](https://reui.io/r/radix-nova/c-carousel-5.json)   | `7b4c8917f0e36e186554ae5722167f2ba9c3f494c40b7a5f1ac8d756c457207d` | Actual `Autoplay` plugin on upstream `Carousel`/`CarouselContent`/`CarouselItem`                                             |
+| [c-carousel-11](https://reui.io/r/radix-nova/c-carousel-11.json) | `83814bfc3f06cc7fd57417a0fc5c6ab57ea3b55171ca9f281dfd4562cf75f65a` | Actual API `selectedScrollSnap`, `select` event and `scrollTo` dots; reInit subscription/cleanup follows free c-carousel-9   |
+| [c-carousel-9](https://reui.io/r/radix-nova/c-carousel-9.json)   | `59c99e23ad9899d51d4dfaccb5cfff9dcf136b25808573e89cd91bf5b4703ce4` | Read for API lifecycle, with cleanup on reInit/select; paired thumbnail behavior is owned by the separate commerce migration |
+| [Rating](https://reui.io/r/radix-nova/rating.json)               | Existing attributed official source                                | Actual read-only five-star fill implementation in Auth3; scoped CSS inherits the reference review panel color                |
 
 REUI's free Carousel examples themselves import the stock shadcn Carousel; there is no separate enhanced REUI Carousel primitive to bypass. The source was installed with `npx shadcn@latest add carousel drawer --yes`; existing Button/Drawer were preserved when prompted. The actual Embla implementation now owns drag physics, loop geometry, centered snapping, keyboard arrows, selection and autoplay timing. No renamed wrapper or manually simulated carousel is claimed as reuse.
 

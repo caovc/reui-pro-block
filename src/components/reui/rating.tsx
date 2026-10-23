@@ -7,13 +7,13 @@
  * gain keyboard/ARIA attributes. Partial-fill, hover and click logic is upstream.
  * License: ./REUI-LICENSE.txt
  */
-"use client"
+"use client";
 
-import { useState } from "react"
-import { cva, type VariantProps } from "class-variance-authority"
+import { useState } from "react";
+import { cva, type VariantProps } from "class-variance-authority";
 
-import { cn } from "cn"
-import { Star } from "lucide-react"
+import { cn } from "cn";
+import { Star } from "lucide-react";
 
 const ratingVariants = cva("flex items-center", {
   variants: {
@@ -26,7 +26,7 @@ const ratingVariants = cva("flex items-center", {
   defaultVariants: {
     size: "default",
   },
-})
+});
 
 const starVariants = cva("", {
   variants: {
@@ -39,7 +39,7 @@ const starVariants = cva("", {
   defaultVariants: {
     size: "default",
   },
-})
+});
 
 const valueVariants = cva("text-muted-foreground w-5", {
   variants: {
@@ -52,7 +52,7 @@ const valueVariants = cva("text-muted-foreground w-5", {
   defaultVariants: {
     size: "default",
   },
-})
+});
 
 function Rating({
   rating,
@@ -69,59 +69,56 @@ function Rating({
     /**
      * Current rating value (supports decimal values for partial stars)
      */
-    rating: number
+    rating: number;
     /**
      * Maximum rating value (number of stars to show)
      */
-    maxRating?: number
+    maxRating?: number;
     /**
      * Whether to show the numeric rating value
      */
-    showValue?: boolean
+    showValue?: boolean;
     /**
      * Class name for the value span
      */
-    starClassName?: string
+    starClassName?: string;
     /**
      * Whether the rating is editable (clickable)
      */
-    editable?: boolean
+    editable?: boolean;
     /**
      * Callback function called when rating changes
      */
-    onRatingChange?: (rating: number) => void
+    onRatingChange?: (rating: number) => void;
   }) {
-  const [hoveredRating, setHoveredRating] = useState<number | null>(null)
-  const displayRating =
-    editable && hoveredRating !== null ? hoveredRating : rating
+  const [hoveredRating, setHoveredRating] = useState<number | null>(null);
+  const displayRating = editable && hoveredRating !== null ? hoveredRating : rating;
 
   const handleStarClick = (starRating: number) => {
     if (editable && onRatingChange) {
-      onRatingChange(starRating)
+      onRatingChange(starRating);
     }
-  }
+  };
 
   const handleStarMouseEnter = (starRating: number) => {
     if (editable) {
-      setHoveredRating(starRating)
+      setHoveredRating(starRating);
     }
-  }
+  };
 
   const handleStarMouseLeave = () => {
     if (editable) {
-      setHoveredRating(null)
+      setHoveredRating(null);
     }
-  }
+  };
 
   const renderStars = () => {
-    const stars = []
+    const stars = [];
 
     for (let i = 1; i <= maxRating; i++) {
-      const filled = displayRating >= i
-      const partiallyFilled = displayRating > i - 1 && displayRating < i
-      const fillPercentage = partiallyFilled
-        ? (displayRating - (i - 1)) * 100
-        : 0
+      const filled = displayRating >= i;
+      const partiallyFilled = displayRating > i - 1 && displayRating < i;
+      const fillPercentage = partiallyFilled ? (displayRating - (i - 1)) * 100 : 0;
 
       stars.push(
         <div
@@ -133,8 +130,8 @@ function Rating({
           aria-pressed={editable ? rating === i : undefined}
           onKeyDown={(event) => {
             if (editable && (event.key === "Enter" || event.key === " ")) {
-              event.preventDefault()
-              handleStarClick(i)
+              event.preventDefault();
+              handleStarClick(i);
             }
           }}
           onClick={() => handleStarClick(i)}
@@ -156,36 +153,26 @@ function Rating({
           >
             <Star
               data-slot="rating-star-filled"
-              className={cn(
-                starVariants({ size }),
-                "fill-yellow-400 text-yellow-400"
-              )}
+              className={cn(starVariants({ size }), "fill-yellow-400 text-yellow-400")}
             />
           </div>
-        </div>
-      )
+        </div>,
+      );
     }
 
-    return stars
-  }
+    return stars;
+  };
 
   return (
-    <div
-      data-slot="rating"
-      className={cn(ratingVariants({ size }), className)}
-      {...props}
-    >
+    <div data-slot="rating" className={cn(ratingVariants({ size }), className)} {...props}>
       <div className="flex items-center">{renderStars()}</div>
       {showValue && (
-        <span
-          data-slot="rating-value"
-          className={cn(valueVariants({ size }), starClassName)}
-        >
+        <span data-slot="rating-value" className={cn(valueVariants({ size }), starClassName)}>
           {displayRating.toFixed(1)}
         </span>
       )}
     </div>
-  )
+  );
 }
 
-export { Rating }
+export { Rating };

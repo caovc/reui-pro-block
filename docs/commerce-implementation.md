@@ -274,30 +274,30 @@ Official vendor code is MIT, Copyright (c) 2025 Keenthemes Inc. Preserve `src/co
 
 ### Per-entry reuse map
 
-| Audited entry | Actual official free implementation used in this correction | Product-specific composition retained |
-| --- | --- | --- |
-| Product Card 1 | Badge | Apparel-only photo grid and wishlist data |
-| Product Card 2 | Badge | Catalog filters, swatch finish mapping and sort |
-| Product Card 3 | Frame + FramePanel, Badge | Selected size, stock tooltip and local bag state |
-| Product Card 4 | Badge | Related-item data and paging state; carousel migration still outstanding below |
-| Product Card 5 | Frame + FramePanel, Badge, Rating | Cut-corner media layout, finish data and local specs/bag state |
-| Product Card 6 | Badge | Masonry placement and product hover information |
-| Product Card 7 | Badge | Arrival/inventory metadata; carousel migration still outstanding |
-| Product Card 8 | Badge, Rating | Category/status filters, sort and cart data |
-| Product Card 9 | Badge, Rating | Divided accessory collection and delivery metadata |
-| Product Card 10 | Badge | Lookbook tile content and informative size chips |
-| Product Detail 1 | Badge, Rating (including editable review form) | Shoe variant data, sold-out size and purchase state |
-| Product Detail 2 | Badge, Rating | Audio chapters/spec data and finish state |
-| Product Detail 3 | Badge, Rating, NumberField | Connector options, grouped specs and inventory |
-| Product Detail 4 | Badge, Rating | Ebook edition pricing, original sample and chapter contents |
-| Product Detail 5 | Badge, Rating, NumberField | Capacity/color/stock and local checkout state |
-| Product Detail 6 | Badge, Rating, NumberField | Bag capacity/stock and single-column chapter data |
-| Product Grid 1 | Badge | Named color/photo mapping; its public example specifically uses shadcn Card |
-| Product Grid 2 | Frame + FramePanel, Badge | Named color/photo and wishlist state |
-| Product Grid 3 | Badge, Rating | Per-product bag data and local review panel |
-| Product Grid 4 | Badge | Six numbered product stories/spec data |
-| Product Grid 5 | Badge | Per-product available sizes and local quick-buy state |
-| Product Grid 6 | Badge | Two-photo cross-fade, palette mapping and outfit data |
+| Audited entry    | Actual official free implementation used in this correction | Product-specific composition retained                                          |
+| ---------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| Product Card 1   | Badge                                                       | Apparel-only photo grid and wishlist data                                      |
+| Product Card 2   | Badge                                                       | Catalog filters, swatch finish mapping and sort                                |
+| Product Card 3   | Frame + FramePanel, Badge                                   | Selected size, stock tooltip and local bag state                               |
+| Product Card 4   | Badge                                                       | Related-item data and paging state; carousel migration still outstanding below |
+| Product Card 5   | Frame + FramePanel, Badge, Rating                           | Cut-corner media layout, finish data and local specs/bag state                 |
+| Product Card 6   | Badge                                                       | Masonry placement and product hover information                                |
+| Product Card 7   | Badge                                                       | Arrival/inventory metadata; carousel migration still outstanding               |
+| Product Card 8   | Badge, Rating                                               | Category/status filters, sort and cart data                                    |
+| Product Card 9   | Badge, Rating                                               | Divided accessory collection and delivery metadata                             |
+| Product Card 10  | Badge                                                       | Lookbook tile content and informative size chips                               |
+| Product Detail 1 | Badge, Rating (including editable review form)              | Shoe variant data, sold-out size and purchase state                            |
+| Product Detail 2 | Badge, Rating                                               | Audio chapters/spec data and finish state                                      |
+| Product Detail 3 | Badge, Rating, NumberField                                  | Connector options, grouped specs and inventory                                 |
+| Product Detail 4 | Badge, Rating                                               | Ebook edition pricing, original sample and chapter contents                    |
+| Product Detail 5 | Badge, Rating, NumberField                                  | Capacity/color/stock and local checkout state                                  |
+| Product Detail 6 | Badge, Rating, NumberField                                  | Bag capacity/stock and single-column chapter data                              |
+| Product Grid 1   | Badge                                                       | Named color/photo mapping; its public example specifically uses shadcn Card    |
+| Product Grid 2   | Frame + FramePanel, Badge                                   | Named color/photo and wishlist state                                           |
+| Product Grid 3   | Badge, Rating                                               | Per-product bag data and local review panel                                    |
+| Product Grid 4   | Badge                                                       | Six numbered product stories/spec data                                         |
+| Product Grid 5   | Badge                                                       | Per-product available sizes and local quick-buy state                          |
+| Product Grid 6   | Badge                                                       | Two-photo cross-fade, palette mapping and outfit data                          |
 
 This table describes concrete current reuse, not completion of every reusable pattern in the scope. Product-specific data, edition/size compatibility, stock limits, local cart totals and the original catalog page compositions have no equivalent turnkey free eCommerce block in the public free UI registry; they remain application composition over the reused primitives. Ordinary shadcn Card/Tabs/Dialog/Button controls remain where the corresponding official free REUI examples themselves compose those primitives.
 

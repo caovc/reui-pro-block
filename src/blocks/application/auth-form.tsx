@@ -29,9 +29,7 @@ export function PasswordAuthForm({
   outlinedLogo?: boolean;
 }) {
   const id = useId();
-  const [mode, setMode] = useState<
-    "login" | "reset" | "signup" | "sent" | "signed"
-  >(initialMode);
+  const [mode, setMode] = useState<"login" | "reset" | "signup" | "sent" | "signed">(initialMode);
   const [show, setShow] = useState(false);
   const [email, setEmail] = useState("");
   const [lastAction, setLastAction] = useState("Sign in");
@@ -63,11 +61,7 @@ export function PasswordAuthForm({
       </header>
       {confirmation ? (
         <div className="auth-detail-confirm" role="status">
-          {mode === "sent" ? (
-            <Mail className="size-7" />
-          ) : (
-            <Check className="size-7" />
-          )}
+          {mode === "sent" ? <Mail className="size-7" /> : <Check className="size-7" />}
           <Alert variant="success" className="text-left">
             <Check />
             <AlertTitle>
@@ -83,9 +77,7 @@ export function PasswordAuthForm({
           {mode === "sent" && (
             <Button
               variant="outline"
-              onClick={() =>
-                toast("Demo link prepared again", { description: email })
-              }
+              onClick={() => toast("Demo link prepared again", { description: email })}
             >
               Resend link
             </Button>
@@ -108,12 +100,7 @@ export function PasswordAuthForm({
             {mode === "signup" && (
               <Field className="gap-2">
                 <FieldLabel htmlFor={`${id}-name`}>Full name</FieldLabel>
-                <Input
-                  id={`${id}-name`}
-                  placeholder="Your name"
-                  autoComplete="name"
-                  required
-                />
+                <Input id={`${id}-name`} placeholder="Your name" autoComplete="name" required />
               </Field>
             )}
             <Field className="gap-2">
@@ -126,9 +113,7 @@ export function PasswordAuthForm({
                 id={`${id}-email`}
                 type={magic || mode !== "login" ? "email" : "text"}
                 placeholder={
-                  magic || mode !== "login"
-                    ? "you@company.com"
-                    : "Enter email or username"
+                  magic || mode !== "login" ? "you@company.com" : "Enter email or username"
                 }
                 autoComplete="username"
                 required
@@ -157,9 +142,7 @@ export function PasswordAuthForm({
                     id={`${id}-password`}
                     placeholder="Enter password"
                     type={show ? "text" : "password"}
-                    autoComplete={
-                      mode === "signup" ? "new-password" : "current-password"
-                    }
+                    autoComplete={mode === "signup" ? "new-password" : "current-password"}
                     minLength={mode === "signup" ? 8 : undefined}
                     required
                   />
@@ -177,9 +160,7 @@ export function PasswordAuthForm({
               </Field>
             )}
             {magic && mode === "login" && (
-              <p className="auth-detail-hint">
-                Your magic link stays active for 15 minutes.
-              </p>
+              <p className="auth-detail-hint">Your magic link stays active for 15 minutes.</p>
             )}
             <Button className="h-8 w-full rounded-lg" type="submit">
               {mode === "reset"
@@ -196,9 +177,7 @@ export function PasswordAuthForm({
               <FormDivider>{magic ? "or" : "Or continue with"}</FormDivider>
               <div
                 className={
-                  providerRow
-                    ? "auth-detail-providers-row"
-                    : "auth-detail-providers-stack"
+                  providerRow ? "auth-detail-providers-row" : "auth-detail-providers-stack"
                 }
               >
                 {providers.map((provider) => (
@@ -208,8 +187,7 @@ export function PasswordAuthForm({
                     className="h-8 rounded-lg"
                     onClick={() =>
                       toast(`${provider} sign-in selected`, {
-                        description:
-                          "Connect your own authentication service to use this method.",
+                        description: "Connect your own authentication service to use this method.",
                       })
                     }
                   >
@@ -232,11 +210,7 @@ export function PasswordAuthForm({
               )}
             </>
           ) : (
-            <Button
-              variant="link"
-              className="self-center text-xs"
-              onClick={() => setMode("login")}
-            >
+            <Button variant="link" className="self-center text-xs" onClick={() => setMode("login")}>
               <ArrowLeft />
               Back to sign in
             </Button>

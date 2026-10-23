@@ -60,10 +60,7 @@ function FluidArtwork() {
         </filter>
       </defs>
       <path fill="url(#auth-fluid-bg)" d="M0 0h600v720H0z" />
-      <path
-        d="M40-80C220 90 260 420 105 720L-60 780V-80Z"
-        fill="url(#auth-fluid-sheet)"
-      />
+      <path d="M40-80C220 90 260 420 105 720L-60 780V-80Z" fill="url(#auth-fluid-sheet)" />
       <path
         d="M40-80C220 90 260 420 105 720"
         fill="none"
@@ -71,10 +68,7 @@ function FluidArtwork() {
         strokeOpacity=".6"
         strokeWidth="3"
       />
-      <path
-        d="M150-70C310 100 468 367 443 790L730 790V50Z"
-        fill="url(#auth-fluid-fold)"
-      />
+      <path d="M150-70C310 100 468 367 443 790L730 790V50Z" fill="url(#auth-fluid-fold)" />
       <path
         d="M150-70C310 100 468 367 443 790"
         fill="none"
@@ -120,35 +114,28 @@ const reviews = [
     name: "Marcus Reid",
     role: "Product Lead, Orbit",
     initials: "MR",
-    quote:
-      "A reliable foundation makes a real difference when a small team has a lot to build.",
-    detail:
-      "The consistent details help us move quickly and keep the product feeling familiar.",
+    quote: "A reliable foundation makes a real difference when a small team has a lot to build.",
+    detail: "The consistent details help us move quickly and keep the product feeling familiar.",
   },
   {
     name: "Olivia Martin",
     role: "Co-founder, Layers",
     initials: "OM",
-    quote:
-      "It feels like our whole team is finally working from the same page.",
-    detail:
-      "From the first sign-in to our daily workflow, everything is clear and easy to find.",
+    quote: "It feels like our whole team is finally working from the same page.",
+    detail: "From the first sign-in to our daily workflow, everything is clear and easy to find.",
   },
   {
     name: "David Park",
     role: "Designer, Northstar",
     initials: "DP",
-    quote:
-      "Simple, thoughtful interfaces give us space to focus on our own product.",
-    detail:
-      "The little details add up to an experience we're proud to share with our customers.",
+    quote: "Simple, thoughtful interfaces give us space to focus on our own product.",
+    detail: "The little details add up to an experience we're proud to share with our customers.",
   },
   {
     name: "Emma Wilson",
     role: "Founder, Frame",
     initials: "EW",
-    quote:
-      "We found a workflow that fits the way our team already thinks and collaborates.",
+    quote: "We found a workflow that fits the way our team already thinks and collaborates.",
     detail:
       "Getting started was straightforward, and each new feature feels like part of the same system.",
   },
@@ -156,10 +143,8 @@ const reviews = [
     name: "Alex Morgan",
     role: "Engineering Lead, Nova",
     initials: "AM",
-    quote:
-      "A solid starting point for a team that values both speed and careful design.",
-    detail:
-      "We shipped our first version with confidence and kept improving from there.",
+    quote: "A solid starting point for a team that values both speed and careful design.",
+    detail: "We shipped our first version with confidence and kept improving from there.",
   },
 ];
 // Actual free REUI c-carousel-5 Autoplay and c-carousel-11 API/dot patterns.
@@ -298,24 +283,16 @@ function LegalFooter({ copyright = false }: { copyright?: boolean }) {
       <footer className="auth-split-legal">
         {copyright && <span>© 2026 ReUI. All rights reserved.</span>}
         <nav aria-label="Legal and support">
-          {(copyright
-            ? ["Terms", "Privacy", "Help"]
-            : ["Privacy", "Terms", "Status"]
-          ).map((label) => (
-            <Button
-              variant="link"
-              key={label}
-              onClick={() => setDocument(label)}
-            >
-              {label}
-            </Button>
-          ))}
+          {(copyright ? ["Terms", "Privacy", "Help"] : ["Privacy", "Terms", "Status"]).map(
+            (label) => (
+              <Button variant="link" key={label} onClick={() => setDocument(label)}>
+                {label}
+              </Button>
+            ),
+          )}
         </nav>
       </footer>
-      <Dialog
-        open={!!document}
-        onOpenChange={(open) => !open && setDocument("")}
-      >
+      <Dialog open={!!document} onOpenChange={(open) => !open && setDocument("")}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{document}</DialogTitle>
@@ -418,8 +395,7 @@ export default function SplitAuth({ block }: BlockProps) {
             />
             <blockquote>
               “A thoughtful foundation for teams
-              <br className="hidden xl:block" /> building their next great
-              product.”
+              <br className="hidden xl:block" /> building their next great product.”
             </blockquote>
             <figcaption>
               <strong>Sean</strong>
@@ -458,11 +434,7 @@ function SignupOutside() {
     <>
       <p className="auth-outside-signup">
         Need an account?{" "}
-        <Button
-          variant="link"
-          className="h-auto p-0 text-xs"
-          onClick={() => setOpen(true)}
-        >
+        <Button variant="link" className="h-auto p-0 text-xs" onClick={() => setOpen(true)}>
           Sign up
         </Button>
       </p>

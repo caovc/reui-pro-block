@@ -1,0 +1,11 @@
+node_modules/
+dist/
+dist-ssr/
+package-lock.json
+playwright-report/
+test-results/
+.qa/
+.playwright-cli/
+.codegraph/
+# Generated catalog data; authored TS/TSX and CSS are always formatted.
+src/data/catalog.json

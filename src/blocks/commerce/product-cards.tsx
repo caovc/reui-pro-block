@@ -14,33 +14,13 @@ import {
 import type { BlockProps } from "@/data/types";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/reui/badge";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import {
-  Empty,
-  EmptyHeader,
-  EmptyTitle,
-  EmptyDescription,
-} from "@/components/ui/empty";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Empty, EmptyHeader, EmptyTitle, EmptyDescription } from "@/components/ui/empty";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   Select,
   SelectContent,
@@ -50,34 +30,17 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { Rating as ReuiRating } from "@/components/reui/rating";
 import { Frame as ReuiFrame, FramePanel } from "@/components/reui/frame";
 import { photos, Money } from "./shared";
-import {
-  apparel,
-  arrivals,
-  devices,
-  accessories,
-  lookbook,
-} from "./product-data";
+import { apparel, arrivals, devices, accessories, lookbook } from "./product-data";
 import type { ShowcaseProduct } from "./product-data";
 
 // Each exported catalog entry has its own composition. These helpers only share
 // controls and typography; they do not choose a layout by changing a heading.
-function Crumbs({
-  items,
-  center = false,
-}: {
-  items: string[];
-  center?: boolean;
-}) {
+function Crumbs({ items, center = false }: { items: string[]; center?: boolean }) {
   return (
     <nav
       aria-label="Breadcrumb"
@@ -89,21 +52,13 @@ function Crumbs({
       {items.map((item, i) => (
         <span className="flex items-center gap-2" key={item}>
           {i > 0 && <ChevronRight className="size-3.5" />}
-          <span className={cn(i === items.length - 1 && "text-foreground")}>
-            {item}
-          </span>
+          <span className={cn(i === items.length - 1 && "text-foreground")}>{item}</span>
         </span>
       ))}
     </nav>
   );
 }
-function Wish({
-  product,
-  initial = false,
-}: {
-  product: ShowcaseProduct;
-  initial?: boolean;
-}) {
+function Wish({ product, initial = false }: { product: ShowcaseProduct; initial?: boolean }) {
   const [liked, setLiked] = useState(initial);
   return (
     <Button
@@ -138,12 +93,7 @@ function Price({
     </span>
   );
   return (
-    <div
-      className={cn(
-        "flex flex-wrap items-baseline gap-2 text-sm",
-        large && "text-xl",
-      )}
-    >
+    <div className={cn("flex flex-wrap items-baseline gap-2 text-sm", large && "text-xl")}>
       {reverse ? (
         <>
           {current}
@@ -158,13 +108,7 @@ function Price({
     </div>
   );
 }
-function Rating({
-  product,
-  showValue = true,
-}: {
-  product: ShowcaseProduct;
-  showValue?: boolean;
-}) {
+function Rating({ product, showValue = true }: { product: ShowcaseProduct; showValue?: boolean }) {
   return (
     <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
       <ReuiRating
@@ -187,9 +131,7 @@ function Sale({
   percentage?: number;
 }) {
   if (!product.compareAt) return null;
-  const percentage =
-    customPercentage ??
-    Math.round((1 - product.price / product.compareAt) * 100);
+  const percentage = customPercentage ?? Math.round((1 - product.price / product.compareAt) * 100);
   return (
     <Badge variant="destructive" radius="full">
       {words ? `${percentage}% OFF` : `-${percentage}%`}
@@ -219,19 +161,9 @@ function AddButton({
       disabled={product.soldOut}
       onClick={() => setAdded(!added)}
     >
-      {added ? (
-        <Check data-icon="inline-start" />
-      ) : (
-        <ShoppingBag data-icon="inline-start" />
-      )}
+      {added ? <Check data-icon="inline-start" /> : <ShoppingBag data-icon="inline-start" />}
       {!iconOnly &&
-        (product.soldOut
-          ? "Sold Out"
-          : added
-            ? "Added"
-            : cart
-              ? "Add to Cart"
-              : "Add to Bag")}
+        (product.soldOut ? "Sold Out" : added ? "Added" : cart ? "Add to Cart" : "Add to Bag")}
     </Button>
   );
 }
@@ -399,11 +331,7 @@ function ListingFilters({
         <div className="mb-1 flex items-center justify-between">
           <h3 className="text-xs font-medium text-muted-foreground">Filters</h3>
           {count > 0 && (
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => onChange({ ...initialFilters })}
-            >
+            <Button variant="ghost" size="sm" onClick={() => onChange({ ...initialFilters })}>
               Reset
             </Button>
           )}
@@ -418,9 +346,10 @@ function ListingFilters({
                 value: "all",
                 label: mode === "device" ? "All Categories" : "All categories",
               },
-              ...Array.from(new Set(products.map((p) => p.category))).map(
-                (c) => ({ value: c, label: c }),
-              ),
+              ...Array.from(new Set(products.map((p) => p.category))).map((c) => ({
+                value: c,
+                label: c,
+              })),
             ]}
           />
           {mode === "color" ? (
@@ -476,9 +405,7 @@ function ListingFilters({
           </Field>
           {mode === "color" && (
             <Field className="border-t pt-4">
-              <FieldLabel className="text-xs text-muted-foreground">
-                Color family
-              </FieldLabel>
+              <FieldLabel className="text-xs text-muted-foreground">Color family</FieldLabel>
               <ToggleGroup
                 type="multiple"
                 variant="outline"
@@ -518,11 +445,7 @@ function ListingFilters({
     </Popover>
   );
 }
-function sortAndFilter(
-  data: ShowcaseProduct[],
-  filters: FilterState,
-  sort: string,
-) {
+function sortAndFilter(data: ShowcaseProduct[], filters: FilterState, sort: string) {
   return data
     .filter(
       (p) =>
@@ -535,8 +458,7 @@ function sortAndFilter(
           (filters.price === "under100" && p.price < 100) ||
           (filters.price === "100to200" && p.price >= 100 && p.price <= 200) ||
           (filters.price === "over200" && p.price > 200)) &&
-        (!filters.colors.length ||
-          p.colors?.some((c) => filters.colors.includes(c.family))),
+        (!filters.colors.length || p.colors?.some((c) => filters.colors.includes(c.family))),
     )
     .sort((a, b) =>
       sort === "low"
@@ -559,19 +481,13 @@ function Sort({
 }) {
   return (
     <Select value={value} onValueChange={onChange}>
-      <SelectTrigger
-        aria-label="Sort products"
-        size="sm"
-        className="w-[175px] gap-2"
-      >
+      <SelectTrigger aria-label="Sort products" size="sm" className="w-[175px] gap-2">
         <span className="text-muted-foreground">Sort by:</span>
         <SelectValue />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectItem value="newest">
-            {devices ? "Featured" : "Newest"}
-          </SelectItem>
+          <SelectItem value="newest">{devices ? "Featured" : "Newest"}</SelectItem>
           <SelectItem value="low">Price: Low to High</SelectItem>
           <SelectItem value="high">Price: High to Low</SelectItem>
           {devices && <SelectItem value="rated">Highest Rated</SelectItem>}
@@ -605,12 +521,7 @@ function Header({
         )}
       >
         <div>
-          <div
-            className={cn(
-              "flex flex-wrap items-center gap-3",
-              center && "justify-center",
-            )}
-          >
+          <div className={cn("flex flex-wrap items-center gap-3", center && "justify-center")}>
             <h2
               className={cn(
                 "text-[30px] font-semibold leading-tight tracking-tight sm:text-[32px]",
@@ -627,9 +538,7 @@ function Header({
             </p>
           )}
         </div>
-        {children && (
-          <div className="flex flex-wrap items-center gap-2">{children}</div>
-        )}
+        {children && <div className="flex flex-wrap items-center gap-2">{children}</div>}
       </div>
     </header>
   );
@@ -702,9 +611,7 @@ function ApparelTile({
   const content = (
     <>
       <Caption
-        product={
-          bordered || colorways ? { ...product, badge: undefined } : product
-        }
+        product={bordered || colorways ? { ...product, badge: undefined } : product}
         stock={bordered && !colorways}
       />
       {colorways && product.colors && (
@@ -734,9 +641,7 @@ function ApparelTile({
         </div>
       )}
       <h3 className="text-base font-medium leading-6">{product.name}</h3>
-      <p className="text-sm leading-5 text-muted-foreground">
-        {product.description}
-      </p>
+      <p className="text-sm leading-5 text-muted-foreground">{product.description}</p>
       <div className="pt-1">
         <Price product={product} />
       </div>
@@ -745,9 +650,7 @@ function ApparelTile({
   return bordered ? (
     <Card className="gap-0 rounded-2xl p-0">
       {media}
-      <CardHeader className="flex flex-col items-stretch gap-3 p-4">
-        {content}
-      </CardHeader>
+      <CardHeader className="flex flex-col items-stretch gap-3 p-4">{content}</CardHeader>
     </Card>
   ) : (
     <article className="min-w-0">
@@ -794,13 +697,7 @@ function ColorwayCatalog() {
       </Header>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {items.map((p) => (
-          <ApparelTile
-            product={p}
-            index={apparel.indexOf(p)}
-            colorways
-            bordered
-            key={p.id}
-          />
+          <ApparelTile product={p} index={apparel.indexOf(p)} colorways bordered key={p.id} />
         ))}
         {!items.length && <EmptyProducts />}
       </div>
@@ -821,8 +718,7 @@ function SizeGuide({
           <DialogTitle>Find your fit</DialogTitle>
         </DialogHeader>
         <p className="text-sm text-muted-foreground">
-          Measurements in centimeters. Choose the size closest to your body
-          measurements.
+          Measurements in centimeters. Choose the size closest to your body measurements.
         </p>
         <table className="w-full text-left text-sm">
           <thead>
@@ -871,17 +767,11 @@ function QuickBuyCard() {
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="h-5 px-2 text-[10px]"
-                      >
+                      <Button variant="outline" size="sm" className="h-5 px-2 text-[10px]">
                         5 left
                       </Button>
                     </TooltipTrigger>
-                    <TooltipContent>
-                      Only 5 left in the selected size.
-                    </TooltipContent>
+                    <TooltipContent>Only 5 left in the selected size.</TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
               </div>
@@ -889,8 +779,8 @@ function QuickBuyCard() {
                 <h3 className="text-2xl leading-tight">Ribbed Tank Set</h3>
               </CardTitle>
               <CardDescription>
-                Soft ribbed layers for everyday movement, long travel days, and
-                easy weekend styling.
+                Soft ribbed layers for everyday movement, long travel days, and easy weekend
+                styling.
               </CardDescription>
             </CardHeader>
             <div className="flex flex-wrap items-center gap-2 pt-1">
@@ -901,11 +791,7 @@ function QuickBuyCard() {
               <div>
                 <div className="mb-3 flex items-center justify-between">
                   <span className="text-sm font-medium">Select Size</span>
-                  <Button
-                    variant="link"
-                    size="sm"
-                    onClick={() => setGuide(true)}
-                  >
+                  <Button variant="link" size="sm" onClick={() => setGuide(true)}>
                     Size guide
                   </Button>
                 </div>
@@ -917,11 +803,7 @@ function QuickBuyCard() {
                   className="grid w-full grid-cols-5 gap-2"
                 >
                   {["XS", "S", "M", "L", "XL"].map((s) => (
-                    <ToggleGroupItem
-                      className="relative h-10 rounded-lg"
-                      value={s}
-                      key={s}
-                    >
+                    <ToggleGroupItem className="relative h-10 rounded-lg" value={s} key={s}>
                       {s}
                       {size === s && (
                         <span className="absolute -right-1 -top-1 flex size-4 items-center justify-center rounded-full bg-foreground text-background">
@@ -966,9 +848,7 @@ function ProductsCarousel({ latest = false }: { latest?: boolean }) {
     <Frame center>
       <FreeProductRail
         title={latest ? "Latest Products" : "Similar Products"}
-        previousLabel={
-          latest ? "Previous latest products" : "Previous similar products"
-        }
+        previousLabel={latest ? "Previous latest products" : "Previous similar products"}
         nextLabel={latest ? "Next latest products" : "Next similar products"}
         showCount={!latest}
       >
@@ -983,13 +863,7 @@ function ProductsCarousel({ latest = false }: { latest?: boolean }) {
     </Frame>
   );
 }
-function ArrivalTile({
-  product,
-  index,
-}: {
-  product: ShowcaseProduct;
-  index: number;
-}) {
+function ArrivalTile({ product, index }: { product: ShowcaseProduct; index: number }) {
   return (
     <Card className="gap-0 p-0">
       <div className="group relative aspect-[4/5] overflow-hidden bg-muted">
@@ -1019,14 +893,10 @@ function ArrivalTile({
         <CardTitle>
           <h3>{product.name}</h3>
         </CardTitle>
-        <CardDescription className="truncate">
-          {product.description}
-        </CardDescription>
+        <CardDescription className="truncate">{product.description}</CardDescription>
         <div className="mt-1 flex flex-wrap items-center justify-between gap-2">
           <Price product={product} />
-          <span className="text-xs text-muted-foreground">
-            {product.arrival}
-          </span>
+          <span className="text-xs text-muted-foreground">{product.arrival}</span>
         </div>
       </CardHeader>
     </Card>
@@ -1060,8 +930,8 @@ function FeaturedProduct() {
                 <h3 className="text-2xl leading-tight">AirBuds White</h3>
               </CardTitle>
               <CardDescription className="leading-6">
-                Comfortable wireless sound, fast pairing, and a considered
-                design that goes wherever you do.
+                Comfortable wireless sound, fast pairing, and a considered design that goes wherever
+                you do.
               </CardDescription>
               <Rating product={product} />
             </CardHeader>
@@ -1070,11 +940,7 @@ function FeaturedProduct() {
               <Price product={product} large reverse />
             </div>
             <ul className="mt-3 flex flex-col gap-3 text-sm text-muted-foreground">
-              {[
-                "Open-Fit Comfort",
-                "Low-Latency Pairing",
-                "Slim Charging Case",
-              ].map((t) => (
+              {["Open-Fit Comfort", "Low-Latency Pairing", "Slim Charging Case"].map((t) => (
                 <li key={t} className="flex items-center gap-2">
                   <Check className="size-4 text-foreground" />
                   {t}
@@ -1085,11 +951,7 @@ function FeaturedProduct() {
               <div>
                 <div className="mb-3 flex items-center justify-between">
                   <span className="text-sm font-medium">Finish</span>
-                  <Button
-                    size="sm"
-                    variant="link"
-                    onClick={() => setSpecs(true)}
-                  >
+                  <Button size="sm" variant="link" onClick={() => setSpecs(true)}>
                     Tech Specs
                   </Button>
                 </div>
@@ -1101,11 +963,7 @@ function FeaturedProduct() {
                   className="grid w-full grid-cols-5 gap-2"
                 >
                   {["Pearl", "Frost", "Cloud", "Sand", "Mist"].map((f) => (
-                    <ToggleGroupItem
-                      className="relative h-10 rounded-lg px-1"
-                      value={f}
-                      key={f}
-                    >
+                    <ToggleGroupItem className="relative h-10 rounded-lg px-1" value={f} key={f}>
                       {f}
                       {finish === f && (
                         <span className="absolute -right-1 -top-1 flex size-4 items-center justify-center rounded-full bg-foreground text-background">
@@ -1125,11 +983,7 @@ function FeaturedProduct() {
                   )}
                   {added ? `${finish} added` : "Add to Bag"}
                 </Button>
-                <Button
-                  variant="outline"
-                  aria-pressed={liked}
-                  onClick={() => setLiked(!liked)}
-                >
+                <Button variant="outline" aria-pressed={liked} onClick={() => setLiked(!liked)}>
                   <Heart className={cn(liked && "fill-current")} />
                   {liked ? "Saved" : "Wishlist"}
                 </Button>
@@ -1201,22 +1055,14 @@ function MasonryGallery() {
         breadcrumb={["Shop", "Apparel", "Studio Mosaic"]}
         count={`${items.length} ${items.length === 1 ? "piece" : "pieces"}`}
       >
-        <ListingFilters
-          mode="masonry"
-          products={apparel}
-          filters={filters}
-          onChange={setFilters}
-        />
+        <ListingFilters mode="masonry" products={apparel} filters={filters} onChange={setFilters} />
         <Sort value={sort} onChange={setSort} />
       </Header>
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         {Array.from({ length: 4 }, (_, col) => (
           <div key={col} className="flex flex-col gap-4">
             {items
-              .slice(
-                col * Math.ceil(items.length / 4),
-                (col + 1) * Math.ceil(items.length / 4),
-              )
+              .slice(col * Math.ceil(items.length / 4), (col + 1) * Math.ceil(items.length / 4))
               .map((product) => (
                 <article
                   key={product.id}
@@ -1233,19 +1079,13 @@ function MasonryGallery() {
                       apparel.indexOf(product) === 1 && "opacity-100",
                     )}
                   >
-                    <Wish
-                      product={product}
-                      initial={apparel.indexOf(product) === 1}
-                    />
+                    <Wish product={product} initial={apparel.indexOf(product) === 1} />
                   </div>
                   <div className="absolute inset-x-3 bottom-3 translate-y-[calc(100%+1rem)] rounded-lg bg-background/95 p-4 opacity-0 shadow-sm backdrop-blur-md transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100">
                     <Caption product={product} stock tag emphasis />
-                    <h3 className="mt-3 text-sm font-semibold">
-                      {product.name}
-                    </h3>
+                    <h3 className="mt-3 text-sm font-semibold">{product.name}</h3>
                     <p className="mt-2 line-clamp-2 text-xs leading-5 text-muted-foreground">
-                      {product.description} A considered piece for a life in
-                      motion.
+                      {product.description} A considered piece for a life in motion.
                     </p>
                     <div className="mt-3">
                       <Price product={product} />
@@ -1271,12 +1111,7 @@ function RatedProductGrid() {
         breadcrumb={["Shop", "Tech Accessories", "Device Drops"]}
         count={`${items.length} ${items.length === 1 ? "device" : "devices"}`}
       >
-        <ListingFilters
-          mode="device"
-          products={devices}
-          filters={filters}
-          onChange={setFilters}
-        />
+        <ListingFilters mode="device" products={devices} filters={filters} onChange={setFilters} />
         <Sort value={sort} onChange={setSort} devices />
       </Header>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -1298,9 +1133,7 @@ function RatedProductGrid() {
               <CardTitle>
                 <h3>{p.name}</h3>
               </CardTitle>
-              <CardDescription className="line-clamp-2 leading-5">
-                {p.description}
-              </CardDescription>
+              <CardDescription className="line-clamp-2 leading-5">{p.description}</CardDescription>
             </CardHeader>
             <CardContent className="mt-auto flex flex-col gap-3 p-0">
               <Rating product={p} />
@@ -1375,9 +1208,7 @@ function FourColumnCatalog() {
             </div>
             <div className="flex flex-1 flex-col gap-4">
               <Caption product={p} tag />
-              <h3 className="text-xl font-semibold leading-6 tracking-tight">
-                {p.name}
-              </h3>
+              <h3 className="text-xl font-semibold leading-6 tracking-tight">{p.name}</h3>
               <Rating product={p} showValue={false} />
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <Price product={p} reverse />
@@ -1434,8 +1265,7 @@ function FashionLookbookGrid() {
                 variant={p.badge === "Trending" ? "destructive" : "secondary"}
                 className="absolute right-4 top-4"
                 style={{
-                  backgroundColor:
-                    p.badge === "Trending" ? "var(--destructive)" : "#e9a700",
+                  backgroundColor: p.badge === "Trending" ? "var(--destructive)" : "#e9a700",
                   color: "#fff",
                 }}
               >
@@ -1450,9 +1280,7 @@ function FashionLookbookGrid() {
                 <Tag className="size-3.5" />
                 {p.category} · {p.secondary}
               </div>
-              <p className="mt-3 text-sm font-medium leading-5">
-                {p.description}
-              </p>
+              <p className="mt-3 text-sm font-medium leading-5">{p.description}</p>
               <div className="mt-4 flex items-center justify-between gap-3">
                 <span className="text-xs text-muted-foreground">Sizes</span>
                 <div className="flex gap-1.5">

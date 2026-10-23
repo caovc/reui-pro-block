@@ -1,13 +1,5 @@
 import { useState } from "react";
-import {
-  ArrowLeft,
-  ArrowRight,
-  Check,
-  Eye,
-  EyeOff,
-  KeyRound,
-  Mail,
-} from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Eye, EyeOff, KeyRound, Mail } from "lucide-react";
 import type { BlockProps } from "@/data/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -32,9 +24,7 @@ export default function CenteredAuth({ block }: BlockProps) {
   const invite = block.id === "auth-19";
   const [email, setEmail] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [view, setView] = useState<
-    "login" | "email" | "reset" | "sent" | "signed"
-  >("login");
+  const [view, setView] = useState<"login" | "email" | "reset" | "sent" | "signed">("login");
   const [dialog, setDialog] = useState<
     | ""
     | "signup"
@@ -62,8 +52,7 @@ export default function CenteredAuth({ block }: BlockProps) {
         key={provider}
         onClick={() =>
           toast(`${provider} sign-in selected`, {
-            description:
-              "Demo preview. Connect your own authentication service.",
+            description: "Demo preview. Connect your own authentication service.",
           })
         }
       >
@@ -137,15 +126,11 @@ export default function CenteredAuth({ block }: BlockProps) {
         <div className="flex size-12 items-center justify-center rounded-full bg-muted">
           <Mail className="size-5" />
         </div>
-        <h1 className="text-2xl font-semibold tracking-tight">
-          Check your inbox
-        </h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Check your inbox</h1>
         <p className="text-sm leading-6 text-muted-foreground">
           We sent a secure sign-in link to {email}.
         </p>
-        <p className="text-xs text-muted-foreground">
-          Demo confirmation. No email was sent.
-        </p>
+        <p className="text-xs text-muted-foreground">Demo confirmation. No email was sent.</p>
         <Button
           variant="outline"
           className="h-8 w-full"
@@ -153,11 +138,7 @@ export default function CenteredAuth({ block }: BlockProps) {
         >
           Resend email
         </Button>
-        <Button
-          variant="ghost"
-          className="h-8"
-          onClick={() => setView("login")}
-        >
+        <Button variant="ghost" className="h-8" onClick={() => setView("login")}>
           <ArrowLeft />
           Back to sign in
         </Button>
@@ -202,8 +183,8 @@ export default function CenteredAuth({ block }: BlockProps) {
                     : "Demo verification complete"}
               </h2>
               <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                This action stays in the preview. No account, invitation or
-                authentication request was sent.
+                This action stays in the preview. No account, invitation or authentication request
+                was sent.
               </p>
               <Button className="mt-5" onClick={() => setDialog("")}>
                 Done
@@ -219,14 +200,8 @@ export default function CenteredAuth({ block }: BlockProps) {
             >
               {dialog === "signup" && (
                 <Field>
-                  <FieldLabel htmlFor="auth-workspace-name">
-                    Workspace name
-                  </FieldLabel>
-                  <Input
-                    id="auth-workspace-name"
-                    placeholder="Your team"
-                    required
-                  />
+                  <FieldLabel htmlFor="auth-workspace-name">Workspace name</FieldLabel>
+                  <Input id="auth-workspace-name" placeholder="Your team" required />
                 </Field>
               )}
               <Field>
@@ -238,9 +213,7 @@ export default function CenteredAuth({ block }: BlockProps) {
                   type={dialog === "backup" ? "text" : "email"}
                   value={dialogEmail}
                   onChange={(event) => setDialogEmail(event.target.value)}
-                  placeholder={
-                    dialog === "backup" ? "XXXX-XXXX" : "you@company.com"
-                  }
+                  placeholder={dialog === "backup" ? "XXXX-XXXX" : "you@company.com"}
                   minLength={dialog === "backup" ? 8 : undefined}
                   required
                   autoComplete={dialog === "backup" ? "one-time-code" : "email"}
@@ -261,16 +234,11 @@ export default function CenteredAuth({ block }: BlockProps) {
         ) : (
           <div className="space-y-4 text-sm leading-6 text-muted-foreground">
             <p>
-              These examples demonstrate sign-in layouts and local interface
-              states. Add your own account service, privacy policy and terms
-              when using them in a product.
+              These examples demonstrate sign-in layouts and local interface states. Add your own
+              account service, privacy policy and terms when using them in a product.
             </p>
             <Button variant="outline" asChild>
-              <a
-                href="https://github.com/caovc/reui-pro-block"
-                target="_blank"
-                rel="noreferrer"
-              >
+              <a href="https://github.com/caovc/reui-pro-block" target="_blank" rel="noreferrer">
                 Project documentation
                 <ArrowRight data-icon="inline-end" />
               </a>
@@ -330,12 +298,8 @@ export default function CenteredAuth({ block }: BlockProps) {
                     }}
                   >
                     {emailField({
-                      label:
-                        view === "reset" ? "Work email" : "Email or username",
-                      placeholder:
-                        view === "reset"
-                          ? "you@company.com"
-                          : "Email or username",
+                      label: view === "reset" ? "Work email" : "Email or username",
+                      placeholder: view === "reset" ? "you@company.com" : "Email or username",
                       username: view !== "reset",
                     })}
                     {view !== "reset" && (
@@ -371,9 +335,7 @@ export default function CenteredAuth({ block }: BlockProps) {
                             size="icon-xs"
                             className="absolute right-1 top-1 h-6 w-6"
                             type="button"
-                            aria-label={
-                              showPassword ? "Hide password" : "Show password"
-                            }
+                            aria-label={showPassword ? "Hide password" : "Show password"}
                             aria-pressed={showPassword}
                             onClick={() => setShowPassword(!showPassword)}
                           >
@@ -386,10 +348,7 @@ export default function CenteredAuth({ block }: BlockProps) {
                         </div>
                       </Field>
                     )}
-                    <Button
-                      className="mt-1 h-8 w-full rounded-lg"
-                      type="submit"
-                    >
+                    <Button className="mt-1 h-8 w-full rounded-lg" type="submit">
                       {view === "reset" ? "Send reset link" : "Sign in"}
                     </Button>
                   </form>
@@ -399,11 +358,7 @@ export default function CenteredAuth({ block }: BlockProps) {
           </Card>
           <div className="mt-5 text-center text-sm text-muted-foreground">
             {view === "reset" ? (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setView("login")}
-              >
+              <Button variant="ghost" size="sm" onClick={() => setView("login")}>
                 Back to sign in
               </Button>
             ) : (
@@ -434,9 +389,7 @@ export default function CenteredAuth({ block }: BlockProps) {
           ) : (
             <>
               <h1 className="mt-7 text-center text-xl font-medium tracking-tight">
-                {view === "email"
-                  ? "What's your email address?"
-                  : "Log in to ReUI"}
+                {view === "email" ? "What's your email address?" : "Log in to ReUI"}
               </h1>
               {view === "email" ? (
                 <>
@@ -456,11 +409,7 @@ export default function CenteredAuth({ block }: BlockProps) {
                       Continue with email
                     </Button>
                   </form>
-                  <Button
-                    variant="ghost"
-                    className="mt-5 h-8"
-                    onClick={() => setView("login")}
-                  >
+                  <Button variant="ghost" className="mt-5 h-8" onClick={() => setView("login")}>
                     Back to login
                   </Button>
                 </>
@@ -471,8 +420,7 @@ export default function CenteredAuth({ block }: BlockProps) {
                       className="h-8 rounded-lg"
                       onClick={() =>
                         toast("Google sign-in selected", {
-                          description:
-                            "Demo preview. No provider request was sent.",
+                          description: "Demo preview. No provider request was sent.",
                         })
                       }
                     >
@@ -497,8 +445,7 @@ export default function CenteredAuth({ block }: BlockProps) {
                       variant="outline"
                       onClick={() =>
                         toast("Passkey sign-in selected", {
-                          description:
-                            "Connect your WebAuthn service to verify credentials.",
+                          description: "Connect your WebAuthn service to verify credentials.",
                         })
                       }
                     >
@@ -583,8 +530,7 @@ export default function CenteredAuth({ block }: BlockProps) {
         </main>
         <footer className="w-full max-w-[520px] text-center text-xs leading-5 text-muted-foreground">
           <p>
-            By proceeding, you acknowledge that you have read, understood, and
-            agree to ReUI's{" "}
+            By proceeding, you acknowledge that you have read, understood, and agree to ReUI's{" "}
             <Button
               variant="link"
               className="h-auto p-0 text-xs underline underline-offset-4"
@@ -630,14 +576,9 @@ export default function CenteredAuth({ block }: BlockProps) {
         </div>
       </header>
       <main
-        className={cn(
-          "flex w-full flex-1 flex-col items-center px-6",
-          invite ? "pt-20" : "pt-11",
-        )}
+        className={cn("flex w-full flex-1 flex-col items-center px-6", invite ? "pt-20" : "pt-11")}
       >
-        <div
-          className={cn("w-full", invite ? "max-w-[420px]" : "max-w-[384px]")}
-        >
+        <div className={cn("w-full", invite ? "max-w-[420px]" : "max-w-[384px]")}>
           {invite ? (
             <>
               <Card className="rounded-2xl py-9 shadow-none">
@@ -646,12 +587,9 @@ export default function CenteredAuth({ block }: BlockProps) {
                     confirmation()
                   ) : (
                     <>
-                      <h1 className="text-2xl font-semibold tracking-tight">
-                        Welcome back
-                      </h1>
+                      <h1 className="text-2xl font-semibold tracking-tight">Welcome back</h1>
                       <p className="mt-1 text-sm leading-5 text-muted-foreground">
-                        Use your approved workspace email to receive a secure
-                        sign-in link.
+                        Use your approved workspace email to receive a secure sign-in link.
                       </p>
                       <div className="mb-6 mt-11 flex flex-col gap-3">
                         {providerButton("Google")}
@@ -669,10 +607,7 @@ export default function CenteredAuth({ block }: BlockProps) {
                           placeholder: "name@company.com",
                           icon: true,
                         })}
-                        <Button
-                          className="mt-5 h-8 w-full rounded-lg"
-                          type="submit"
-                        >
+                        <Button className="mt-5 h-8 w-full rounded-lg" type="submit">
                           Continue with email
                           <ArrowRight data-icon="inline-end" />
                         </Button>
@@ -693,8 +628,7 @@ export default function CenteredAuth({ block }: BlockProps) {
                     Back to building.
                   </h1>
                   <p className="mt-2 text-center text-sm leading-5 text-muted-foreground">
-                    Sign in to sync your team, tasks, and timelines across every
-                    surface.
+                    Sign in to sync your team, tasks, and timelines across every surface.
                   </p>
                   <div className="mt-6 flex flex-col gap-2.5">
                     {providerButton("Google")}
@@ -718,10 +652,7 @@ export default function CenteredAuth({ block }: BlockProps) {
                     }}
                   >
                     {emailField()}
-                    <Button
-                      className="mt-4 h-8 w-full rounded-lg"
-                      type="submit"
-                    >
+                    <Button className="mt-4 h-8 w-full rounded-lg" type="submit">
                       Continue
                       <ArrowRight data-icon="inline-end" />
                     </Button>
@@ -742,11 +673,9 @@ export default function CenteredAuth({ block }: BlockProps) {
             aria-label="Customers building with ReUI"
             className="flex flex-wrap items-center justify-center gap-x-9 gap-y-5 text-lg font-semibold tracking-tight text-muted-foreground"
           >
-            {["Anthropic", "Supabase", "NVIDIA", "Resend", "OpenAI"].map(
-              (name) => (
-                <li key={name}>{name}</li>
-              ),
-            )}
+            {["Anthropic", "Supabase", "NVIDIA", "Resend", "OpenAI"].map((name) => (
+              <li key={name}>{name}</li>
+            ))}
           </ul>
         </footer>
       )}

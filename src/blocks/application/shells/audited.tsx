@@ -14,18 +14,9 @@ import InventoryShell from "./inventory";
 import MailInbox from "./mail";
 import OperationsWorkbench from "./operations";
 import { CommunityShell, DualWorkspace, FavoritesShell } from "./workspaces";
-import {
-  ModelChat,
-  TodoShell,
-  PlannerShell,
-  WebmailShell,
-} from "./productivity";
+import { ModelChat, TodoShell, PlannerShell, WebmailShell } from "./productivity";
 import { MissionShell, OperationsShell } from "./fleet-consoles";
-import {
-  BoardWorkspace,
-  FleetHeroShell,
-  ObservabilityShell,
-} from "./specialized";
+import { BoardWorkspace, FleetHeroShell, ObservabilityShell } from "./specialized";
 import GlassWorkspace from "./glass-workspace";
 import ChatWorkspace from "./chat-workspace";
 import InvoiceQueue from "./invoice-queue";

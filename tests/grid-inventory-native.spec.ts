@@ -1,115 +1,156 @@
-import { test, expect } from '@playwright/test'
-const route = '/#/preview/data-grid/editing/data-grid-editing-2'
-const editPrice = 'Edit price for Everyday Cotton Tee'
-test('inventory uses official grid and numeric editor with invalid draft protection and Escape', async ({ page }) => {
-  await page.goto(route)
-  await expect(page.locator('[data-slot="data-grid-table"]')).toBeVisible()
-  await expect(page.locator('[data-slot="frame"]')).toHaveCount(1)
-  await page.getByRole('button', { name: editPrice, exact: true }).click()
-  await expect(page.locator('[data-slot="number-field"]')).toBeVisible()
-  const field = page.getByLabel(editPrice, { exact: true })
-  await field.fill('-1')
-  await expect(page.getByRole('alert')).toContainText('Price cannot be negative.')
-  await expect(page.getByRole('button', { name: 'Save changes', exact: true })).toBeDisabled()
-  await field.press('Escape')
-  await expect(page.getByRole('button', { name: editPrice, exact: true })).toHaveText('$28.00')
-  await expect(page.getByRole('status')).toHaveText('All changes saved')
-})
-test('native numeric draft preserves focus across keystrokes and commits before save', async ({ page }) => {
-  await page.goto(route)
-  await page.getByRole('button', { name: editPrice, exact: true }).click()
-  const field = page.getByLabel(editPrice, { exact: true })
-  await field.press('ControlOrMeta+A')
-  await field.pressSequentially('123.45')
-  await expect(field).toBeFocused()
-  await expect(field).toHaveValue('123.45')
-  await field.press('Enter')
-  await expect(page.getByRole('button', { name: editPrice, exact: true })).toHaveText('$123.45')
-  await expect(page.getByRole('status')).toHaveText('1 unsaved change')
-  await page.getByRole('button', { name: 'Save changes', exact: true }).click()
-  await expect(page.getByRole('status')).toHaveText('All changes saved')
-  await page.getByRole('button', { name: editPrice, exact: true }).click()
-  await page.getByLabel(editPrice, { exact: true }).fill('99')
-  await page.getByLabel(editPrice, { exact: true }).press('Enter')
-  await page.getByRole('button', { name: 'Discard', exact: true }).click()
-  await expect(page.getByRole('button', { name: editPrice, exact: true })).toHaveText('$123.45')
-})
-test('native search/status filtering and numeric sorting use inventory row model', async ({ page }) => {
-  await page.goto(route)
-  await page.locator('.inventory-toolbar').getByRole('button', { name: 'Status', exact: true }).click()
-  await page.getByText('Active', { exact: true }).last().click()
-  await page.keyboard.press('Escape')
-  await expect(page.locator('tbody tr')).toHaveCount(3)
-  await page.getByRole('button', { name: 'Price', exact: true }).click()
-  await page.getByRole('button', { name: 'Price', exact: true }).click()
-  await expect(page.locator('tbody tr').first()).toContainText('Trail Runner GTX')
-  await page.getByLabel('Search products', { exact: true }).fill('APP-1042')
-  await expect(page.locator('tbody tr')).toHaveCount(1)
-  await expect(page.locator('tbody tr')).toContainText('Everyday Cotton Tee')
-  await page.getByLabel('Search products', { exact: true }).fill('absent')
-  await expect(page.getByText('No products match your search.', { exact: true })).toBeVisible()
-})
-test('new product and duplicate remain editable beyond five records; delete can be discarded', async ({ page }) => {
-  await page.goto(route)
-  await page.getByRole('button', { name: 'Actions for Everyday Cotton Tee', exact: true }).click()
-  await page.getByRole('menuitem', { name: 'Duplicate', exact: true }).click()
-  await expect(page.locator('tbody tr')).toHaveCount(6)
-  const copy = page.locator('tbody tr').nth(1)
-  await expect(copy).toContainText('Everyday Cotton Tee Copy')
-  await expect(copy).toContainText('APP-1042-C')
-  await expect(copy.getByRole('button', { name: 'Edit status for Everyday Cotton Tee Copy', exact: true })).toHaveText('Draft')
-  await page.getByRole('button', { name: 'Actions for Everyday Cotton Tee Copy', exact: true }).click()
-  await page.getByRole('menuitem', { name: 'Delete', exact: true }).click()
-  await page.getByRole('button', { name: 'Delete product', exact: true }).click()
-  await expect(page.locator('tbody tr')).toHaveCount(5)
-  await page.getByRole('button', { name: 'Add product', exact: true }).click()
-  const name = page.getByRole('textbox', { name: 'Edit name for New product', exact: true })
-  await name.fill('Travel tote')
-  await name.press('Enter')
-  await expect(page.getByRole('button', { name: 'Edit name for Travel tote', exact: true })).toBeVisible()
-  await page.getByRole('button', { name: 'Discard', exact: true }).click()
-  await expect(page.locator('tbody tr')).toHaveCount(5)
-  await expect(page.getByRole('button', { name: 'Edit name for Travel tote', exact: true })).toHaveCount(0)
-})
-test('stock validates whole units and storefront switches join the draft state', async ({ page }) => {
-  await page.goto(route)
-  const label = 'Edit stock for Trail Runner GTX'
-  await page.getByRole('button', { name: label, exact: true }).click()
-  await page.getByLabel(label, { exact: true }).fill('1.5')
-  await expect(page.getByRole('alert')).toHaveText('Stock must be a non-negative whole number.')
-  await page.getByLabel(label, { exact: true }).fill('12')
-  await page.getByLabel(label, { exact: true }).press('Enter')
-  await expect(page.getByRole('button', { name: label, exact: true })).toHaveText('12')
-  await expect(page.getByRole('button', { name: label, exact: true }).getByLabel('Low stock')).toHaveCount(0)
-  const visible = page.getByLabel('Show Trail Runner GTX in storefront', { exact: true })
-  await visible.click()
-  await expect(visible).not.toBeChecked()
-  await page.getByRole('button', { name: 'Discard', exact: true }).click()
-  await expect(visible).toBeChecked()
-  await expect(page.getByRole('button', { name: label, exact: true })).toHaveText('7')
-})
-test('inventory retains internal scrolling at mobile width without page errors', async ({ page }) => {
-  const errors: string[] = []
-  page.on('pageerror', error => errors.push(error.message))
-  await page.setViewportSize({ width: 390, height: 844 })
-  await page.goto(route)
-  await expect(page.locator('[data-slot="data-grid-table"]')).toBeVisible()
-  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(391)
-  expect(errors).toEqual([])
-})
-test('inline category/status editors persist selections and confirmed deletion can be restored', async ({ page }) => {
-  await page.goto(route)
-  await page.getByRole('button', { name: 'Edit category for Everyday Cotton Tee', exact: true }).click()
-  await page.getByRole('option', { name: 'Bags', exact: true }).click()
-  await expect(page.getByRole('button', { name: 'Edit category for Everyday Cotton Tee', exact: true })).toHaveText('Bags')
-  await page.getByRole('button', { name: 'Edit status for Everyday Cotton Tee', exact: true }).click()
-  await page.getByRole('option', { name: 'Draft', exact: true }).click()
-  await expect(page.getByRole('button', { name: 'Edit status for Everyday Cotton Tee', exact: true })).toHaveText('Draft')
-  await page.getByRole('button', { name: 'Actions for Everyday Cotton Tee', exact: true }).click()
-  await page.getByRole('menuitem', { name: 'Delete', exact: true }).click()
-  await page.getByRole('button', { name: 'Delete product', exact: true }).click()
-  await expect(page.getByRole('button', { name: 'Edit name for Everyday Cotton Tee', exact: true })).toHaveCount(0)
-  await page.getByRole('button', { name: 'Discard', exact: true }).click()
-  await expect(page.getByRole('button', { name: 'Edit category for Everyday Cotton Tee', exact: true })).toHaveText('Apparel')
-  await expect(page.getByRole('button', { name: 'Edit status for Everyday Cotton Tee', exact: true })).toHaveText('Active')
-})
+import { test, expect } from "@playwright/test";
+const route = "/#/preview/data-grid/editing/data-grid-editing-2";
+const editPrice = "Edit price for Everyday Cotton Tee";
+test("inventory uses official grid and numeric editor with invalid draft protection and Escape", async ({
+  page,
+}) => {
+  await page.goto(route);
+  await expect(page.locator('[data-slot="data-grid-table"]')).toBeVisible();
+  await expect(page.locator('[data-slot="frame"]')).toHaveCount(1);
+  await page.getByRole("button", { name: editPrice, exact: true }).click();
+  await expect(page.locator('[data-slot="number-field"]')).toBeVisible();
+  const field = page.getByLabel(editPrice, { exact: true });
+  await field.fill("-1");
+  await expect(page.getByRole("alert")).toContainText("Price cannot be negative.");
+  await expect(page.getByRole("button", { name: "Save changes", exact: true })).toBeDisabled();
+  await field.press("Escape");
+  await expect(page.getByRole("button", { name: editPrice, exact: true })).toHaveText("$28.00");
+  await expect(page.getByRole("status")).toHaveText("All changes saved");
+});
+test("native numeric draft preserves focus across keystrokes and commits before save", async ({
+  page,
+}) => {
+  await page.goto(route);
+  await page.getByRole("button", { name: editPrice, exact: true }).click();
+  const field = page.getByLabel(editPrice, { exact: true });
+  await field.press("ControlOrMeta+A");
+  await field.pressSequentially("123.45");
+  await expect(field).toBeFocused();
+  await expect(field).toHaveValue("123.45");
+  await field.press("Enter");
+  await expect(page.getByRole("button", { name: editPrice, exact: true })).toHaveText("$123.45");
+  await expect(page.getByRole("status")).toHaveText("1 unsaved change");
+  await page.getByRole("button", { name: "Save changes", exact: true }).click();
+  await expect(page.getByRole("status")).toHaveText("All changes saved");
+  await page.getByRole("button", { name: editPrice, exact: true }).click();
+  await page.getByLabel(editPrice, { exact: true }).fill("99");
+  await page.getByLabel(editPrice, { exact: true }).press("Enter");
+  await page.getByRole("button", { name: "Discard", exact: true }).click();
+  await expect(page.getByRole("button", { name: editPrice, exact: true })).toHaveText("$123.45");
+});
+test("native search/status filtering and numeric sorting use inventory row model", async ({
+  page,
+}) => {
+  await page.goto(route);
+  await page
+    .locator(".inventory-toolbar")
+    .getByRole("button", { name: "Status", exact: true })
+    .click();
+  await page.getByText("Active", { exact: true }).last().click();
+  await page.keyboard.press("Escape");
+  await expect(page.locator("tbody tr")).toHaveCount(3);
+  await page.getByRole("button", { name: "Price", exact: true }).click();
+  await page.getByRole("button", { name: "Price", exact: true }).click();
+  await expect(page.locator("tbody tr").first()).toContainText("Trail Runner GTX");
+  await page.getByLabel("Search products", { exact: true }).fill("APP-1042");
+  await expect(page.locator("tbody tr")).toHaveCount(1);
+  await expect(page.locator("tbody tr")).toContainText("Everyday Cotton Tee");
+  await page.getByLabel("Search products", { exact: true }).fill("absent");
+  await expect(page.getByText("No products match your search.", { exact: true })).toBeVisible();
+});
+test("new product and duplicate remain editable beyond five records; delete can be discarded", async ({
+  page,
+}) => {
+  await page.goto(route);
+  await page.getByRole("button", { name: "Actions for Everyday Cotton Tee", exact: true }).click();
+  await page.getByRole("menuitem", { name: "Duplicate", exact: true }).click();
+  await expect(page.locator("tbody tr")).toHaveCount(6);
+  const copy = page.locator("tbody tr").nth(1);
+  await expect(copy).toContainText("Everyday Cotton Tee Copy");
+  await expect(copy).toContainText("APP-1042-C");
+  await expect(
+    copy.getByRole("button", { name: "Edit status for Everyday Cotton Tee Copy", exact: true }),
+  ).toHaveText("Draft");
+  await page
+    .getByRole("button", { name: "Actions for Everyday Cotton Tee Copy", exact: true })
+    .click();
+  await page.getByRole("menuitem", { name: "Delete", exact: true }).click();
+  await page.getByRole("button", { name: "Delete product", exact: true }).click();
+  await expect(page.locator("tbody tr")).toHaveCount(5);
+  await page.getByRole("button", { name: "Add product", exact: true }).click();
+  const name = page.getByRole("textbox", { name: "Edit name for New product", exact: true });
+  await name.fill("Travel tote");
+  await name.press("Enter");
+  await expect(
+    page.getByRole("button", { name: "Edit name for Travel tote", exact: true }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Discard", exact: true }).click();
+  await expect(page.locator("tbody tr")).toHaveCount(5);
+  await expect(
+    page.getByRole("button", { name: "Edit name for Travel tote", exact: true }),
+  ).toHaveCount(0);
+});
+test("stock validates whole units and storefront switches join the draft state", async ({
+  page,
+}) => {
+  await page.goto(route);
+  const label = "Edit stock for Trail Runner GTX";
+  await page.getByRole("button", { name: label, exact: true }).click();
+  await page.getByLabel(label, { exact: true }).fill("1.5");
+  await expect(page.getByRole("alert")).toHaveText("Stock must be a non-negative whole number.");
+  await page.getByLabel(label, { exact: true }).fill("12");
+  await page.getByLabel(label, { exact: true }).press("Enter");
+  await expect(page.getByRole("button", { name: label, exact: true })).toHaveText("12");
+  await expect(
+    page.getByRole("button", { name: label, exact: true }).getByLabel("Low stock"),
+  ).toHaveCount(0);
+  const visible = page.getByLabel("Show Trail Runner GTX in storefront", { exact: true });
+  await visible.click();
+  await expect(visible).not.toBeChecked();
+  await page.getByRole("button", { name: "Discard", exact: true }).click();
+  await expect(visible).toBeChecked();
+  await expect(page.getByRole("button", { name: label, exact: true })).toHaveText("7");
+});
+test("inventory retains internal scrolling at mobile width without page errors", async ({
+  page,
+}) => {
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto(route);
+  await expect(page.locator('[data-slot="data-grid-table"]')).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(391);
+  expect(errors).toEqual([]);
+});
+test("inline category/status editors persist selections and confirmed deletion can be restored", async ({
+  page,
+}) => {
+  await page.goto(route);
+  await page
+    .getByRole("button", { name: "Edit category for Everyday Cotton Tee", exact: true })
+    .click();
+  await page.getByRole("option", { name: "Bags", exact: true }).click();
+  await expect(
+    page.getByRole("button", { name: "Edit category for Everyday Cotton Tee", exact: true }),
+  ).toHaveText("Bags");
+  await page
+    .getByRole("button", { name: "Edit status for Everyday Cotton Tee", exact: true })
+    .click();
+  await page.getByRole("option", { name: "Draft", exact: true }).click();
+  await expect(
+    page.getByRole("button", { name: "Edit status for Everyday Cotton Tee", exact: true }),
+  ).toHaveText("Draft");
+  await page.getByRole("button", { name: "Actions for Everyday Cotton Tee", exact: true }).click();
+  await page.getByRole("menuitem", { name: "Delete", exact: true }).click();
+  await page.getByRole("button", { name: "Delete product", exact: true }).click();
+  await expect(
+    page.getByRole("button", { name: "Edit name for Everyday Cotton Tee", exact: true }),
+  ).toHaveCount(0);
+  await page.getByRole("button", { name: "Discard", exact: true }).click();
+  await expect(
+    page.getByRole("button", { name: "Edit category for Everyday Cotton Tee", exact: true }),
+  ).toHaveText("Apparel");
+  await expect(
+    page.getByRole("button", { name: "Edit status for Everyday Cotton Tee", exact: true }),
+  ).toHaveText("Active");
+});

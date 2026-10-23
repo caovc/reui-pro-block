@@ -12,10 +12,10 @@ Official free sources: [Frame](https://reui.io/docs/components/radix/frame), [Al
 
 ## Corrected structure and behavior
 
-| Entry | Correction | Available local behavior |
-| --- | --- | --- |
-| Auth5 | Separate header, marketing badge and 56px two-line headline; orange/pink/lilac moving light field; 416px actual Frame; Google/GitHub before the form; email/password without an invented name field; six-brand footer | Native email/password validation, show/hide password, local trial confirmation, sign-in dialog, provider feedback and policy dialogs |
-| Auth7 | Black blueprint canvas, 446px dashed construction frame/corner marks; outlined logo and 24px heading; email input with mail addon; no password or name field; three providers on a row; eight-brand second panel; external legal line | Local magic-link confirmation, resend feedback, return with email preserved, trial dialog and policy dialogs |
+| Entry | Correction                                                                                                                                                                                                                            | Available local behavior                                                                                                             |
+| ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| Auth5 | Separate header, marketing badge and 56px two-line headline; orange/pink/lilac moving light field; 416px actual Frame; Google/GitHub before the form; email/password without an invented name field; six-brand footer                 | Native email/password validation, show/hide password, local trial confirmation, sign-in dialog, provider feedback and policy dialogs |
+| Auth7 | Black blueprint canvas, 446px dashed construction frame/corner marks; outlined logo and 24px heading; email input with mail addon; no password or name field; three providers on a row; eight-brand second panel; external legal line | Local magic-link confirmation, resend feedback, return with email preserved, trial dialog and policy dialogs                         |
 
 Original public form submissions/providers and policy links are placeholders according to the public briefs. Local demo confirmation and dialogs are independent functional additions; they do not represent email delivery, OAuth redirects, account creation or accepted legal agreements.
 

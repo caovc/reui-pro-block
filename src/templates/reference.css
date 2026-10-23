@@ -14,16 +14,17 @@
 }
 
 /* Radix renders menus, dialogs and sheets outside the template root. */
-body:has(.template-surface) :is(
-  [data-slot="dialog-content"],
-  [data-slot="sheet-content"],
-  [data-slot="popover-content"],
-  [data-slot="dropdown-menu-content"],
-  [data-slot="dropdown-menu-sub-content"],
-  [data-slot="select-content"],
-  [data-slot="tooltip-content"],
-  [data-sonner-toaster]
-) {
+body:has(.template-surface)
+  :is(
+    [data-slot="dialog-content"],
+    [data-slot="sheet-content"],
+    [data-slot="popover-content"],
+    [data-slot="dropdown-menu-content"],
+    [data-slot="dropdown-menu-sub-content"],
+    [data-slot="select-content"],
+    [data-slot="tooltip-content"],
+    [data-sonner-toaster]
+  ) {
   --font-sans: "Inter", Arial, sans-serif;
   font-family: var(--font-sans);
 }

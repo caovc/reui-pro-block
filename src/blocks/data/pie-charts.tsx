@@ -1,23 +1,661 @@
-import { ReuiBudgetRose, ReuiDonut } from './reui-free-chart-primitives'
-import { cn } from '@/lib/utils'
-import { useState } from 'react'
-import { ArrowLeft, CalendarDays, ChevronRight, Globe2, Info, SlidersHorizontal } from 'lucide-react'
-import type { BlockProps } from '@/data/types'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/reui/badge'
-import { Toggle } from '@/components/ui/toggle'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuGroup, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import { ChartFrame, ChartMore, ChartStage, ChangePill, PeriodButtons, UpdatedDot } from './chart-chrome'
-import { compact, money } from './chart-math'
+import { ReuiBudgetRose, ReuiDonut } from "./reui-free-chart-primitives";
+import { cn } from "@/lib/utils";
+import { useState } from "react";
+import {
+  ArrowLeft,
+  CalendarDays,
+  ChevronRight,
+  Globe2,
+  Info,
+  SlidersHorizontal,
+} from "lucide-react";
+import type { BlockProps } from "@/data/types";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/reui/badge";
+import { Toggle } from "@/components/ui/toggle";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  ChartFrame,
+  ChartMore,
+  ChartStage,
+  ChangePill,
+  PeriodButtons,
+  UpdatedDot,
+} from "./chart-chrome";
+import { compact, money } from "./chart-math";
 
-function CapitalInflows(){const [period,setPeriod]=useState('Week');const [hover,setHover]=useState<number|null>(null);const total=period==='Week'?12.4:period==='Month'?49.8:584.2;const amounts=[4.6,4.1,1.9,1.8].map(v=>v/12.4*total);const names=['Northline Capital','Copper Market','Bridgewell Fund','Other Sources'];const colors=['#7417df','#9251f4','#cab1f9'];return <ChartStage><ChartFrame title={<><span>Capital Inflows</span><Tooltip><TooltipTrigger asChild><Button variant="ghost" size="icon" className="size-5" aria-label="About Capital Inflows"><Info/></Button></TooltipTrigger><TooltipContent>Settled transfers across tracked capital sources.</TooltipContent></Tooltip></>} description={`All sources, ${period==='Week'?'last 7 days':period==='Month'?'this month':'this year'}`} width="max-w-[576px]" toolbar={<><PeriodButtons value={period} onChange={setPeriod} options={['Week','Month','Year']}/><ChartMore title="Capital inflows" rows={names.map((source,i)=>({source,inflows:amounts[i]}))}/></>} footer={<><UpdatedDot>Updated 2 min ago · Settled transfers</UpdatedDot><span>USD, millions</span></>}><div className="p-4"><p className="text-xs text-muted-foreground">Total inflows</p><div className="mt-2 flex flex-wrap items-center gap-2"><strong className="text-3xl font-semibold tracking-tight">${total.toFixed(1)}M</strong><ChangePill value={6.9}/><span className="text-xs text-muted-foreground">vs ${(total/1.069).toFixed(1)}M the {period==='Week'?'7 days':period.toLowerCase()} before</span></div><div className="mt-4 grid items-center gap-5 sm:grid-cols-[164px_1fr]"><ReuiDonut label="Capital inflows by source" className="mx-auto size-44" pattern={[3]} rows={names.map((name,i)=>({name,value:amounts[i],color:i===3?'var(--muted-foreground)':colors[i]}))} innerRadius={52} outerRadius={76} active={hover} onActive={setHover} center={<><text y="-3" textAnchor="middle" fill="currentColor" fontSize="20" fontWeight="600">{hover===null?'85%':`${Math.round(amounts[hover]/total*100)}%`}</text><text y="20" textAnchor="middle" fill="var(--muted-foreground)" fontSize="10">{hover===null?'Top 3 sources':names[hover]}</text></>}/><div className="flex flex-col divide-y">{names.slice(0,3).map((name,i)=><div key={name} className="flex items-center justify-between gap-2 py-3 text-[13px]" onPointerEnter={()=>setHover(i)} onPointerLeave={()=>setHover(null)}><span className="flex min-w-0 items-center gap-2"><span className="size-2 shrink-0 rounded-full" style={{background:colors[i]}}/><span className="truncate">{name}</span></span><span className="ml-auto font-medium">${amounts[i].toFixed(1)}M</span><span className="text-muted-foreground">{Math.round(amounts[i]/total*100)}%</span><ChangePill value={[12.2,-6.8,18.7][i]}/></div>)}</div></div></div></ChartFrame></ChartStage>}
+function CapitalInflows() {
+  const [period, setPeriod] = useState("Week");
+  const [hover, setHover] = useState<number | null>(null);
+  const total = period === "Week" ? 12.4 : period === "Month" ? 49.8 : 584.2;
+  const amounts = [4.6, 4.1, 1.9, 1.8].map((v) => (v / 12.4) * total);
+  const names = ["Northline Capital", "Copper Market", "Bridgewell Fund", "Other Sources"];
+  const colors = ["#7417df", "#9251f4", "#cab1f9"];
+  return (
+    <ChartStage>
+      <ChartFrame
+        title={
+          <>
+            <span>Capital Inflows</span>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="size-5"
+                  aria-label="About Capital Inflows"
+                >
+                  <Info />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Settled transfers across tracked capital sources.</TooltipContent>
+            </Tooltip>
+          </>
+        }
+        description={`All sources, ${period === "Week" ? "last 7 days" : period === "Month" ? "this month" : "this year"}`}
+        width="max-w-[576px]"
+        toolbar={
+          <>
+            <PeriodButtons
+              value={period}
+              onChange={setPeriod}
+              options={["Week", "Month", "Year"]}
+            />
+            <ChartMore
+              title="Capital inflows"
+              rows={names.map((source, i) => ({ source, inflows: amounts[i] }))}
+            />
+          </>
+        }
+        footer={
+          <>
+            <UpdatedDot>Updated 2 min ago · Settled transfers</UpdatedDot>
+            <span>USD, millions</span>
+          </>
+        }
+      >
+        <div className="p-4">
+          <p className="text-xs text-muted-foreground">Total inflows</p>
+          <div className="mt-2 flex flex-wrap items-center gap-2">
+            <strong className="text-3xl font-semibold tracking-tight">${total.toFixed(1)}M</strong>
+            <ChangePill value={6.9} />
+            <span className="text-xs text-muted-foreground">
+              vs ${(total / 1.069).toFixed(1)}M the{" "}
+              {period === "Week" ? "7 days" : period.toLowerCase()} before
+            </span>
+          </div>
+          <div className="mt-4 grid items-center gap-5 sm:grid-cols-[164px_1fr]">
+            <ReuiDonut
+              label="Capital inflows by source"
+              className="mx-auto size-44"
+              pattern={[3]}
+              rows={names.map((name, i) => ({
+                name,
+                value: amounts[i],
+                color: i === 3 ? "var(--muted-foreground)" : colors[i],
+              }))}
+              innerRadius={52}
+              outerRadius={76}
+              active={hover}
+              onActive={setHover}
+              center={
+                <>
+                  <text
+                    y="-3"
+                    textAnchor="middle"
+                    fill="currentColor"
+                    fontSize="20"
+                    fontWeight="600"
+                  >
+                    {hover === null ? "85%" : `${Math.round((amounts[hover] / total) * 100)}%`}
+                  </text>
+                  <text y="20" textAnchor="middle" fill="var(--muted-foreground)" fontSize="10">
+                    {hover === null ? "Top 3 sources" : names[hover]}
+                  </text>
+                </>
+              }
+            />
+            <div className="flex flex-col divide-y">
+              {names.slice(0, 3).map((name, i) => (
+                <div
+                  key={name}
+                  className="flex items-center justify-between gap-2 py-3 text-[13px]"
+                  onPointerEnter={() => setHover(i)}
+                  onPointerLeave={() => setHover(null)}
+                >
+                  <span className="flex min-w-0 items-center gap-2">
+                    <span
+                      className="size-2 shrink-0 rounded-full"
+                      style={{ background: colors[i] }}
+                    />
+                    <span className="truncate">{name}</span>
+                  </span>
+                  <span className="ml-auto font-medium">${amounts[i].toFixed(1)}M</span>
+                  <span className="text-muted-foreground">
+                    {Math.round((amounts[i] / total) * 100)}%
+                  </span>
+                  <ChangePill value={[12.2, -6.8, 18.7][i]} />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </ChartFrame>
+    </ChartStage>
+  );
+}
 
-const browserRows=[{name:'Chrome',value:121380,color:'#7561e9',change:.9},{name:'Safari',value:42960,color:'#39a6e8',change:.7},{name:'Edge',value:18720,color:'#37b3a4',change:-.7},{name:'Firefox',value:10940,color:'#f28b21',change:-.6},{name:'Samsung Internet',value:4890,color:'#e84d91',change:.1},{name:'Other',value:6510,color:'#a1a1aa',change:-.3}]
-function BrowserUsage(){const [range,setRange]=useState('30D');const [compare,setCompare]=useState(false);const [selected,setSelected]=useState<string|null>(null);const [hover,setHover]=useState<number|null>(null);const [support,setSupport]=useState(true);const [hatch,setHatch]=useState(true);const factor=range==='7D'?.25:range==='90D'?2.8:1;const parent=browserRows.find(r=>r.name===selected);const rows=selected?[52,31,10,7].map((v,i)=>({name:i===3?'Older':String((selected==='Safari'?26:156)-i),value:Math.round((parent?.value??0)*v/100),color:`color-mix(in oklch, ${parent?.color} ${100-i*23}%,var(--background))`,change:0})):browserRows;const total=rows.reduce((s,r)=>s+r.value,0)*factor;return <ChartStage><ChartFrame title={<><span className="flex size-8 items-center justify-center rounded-lg border bg-background"><Globe2 className="size-4"/></span><span className="flex flex-col gap-1">Browser Usage<span className="text-xs font-normal text-muted-foreground">{selected?`${selected} visitors by version`:'Unique visitors by browser'}</span></span></>} description="" toolbar={<><PeriodButtons value={range} onChange={setRange} options={['7D','30D','90D']} label="Range"/><Toggle variant="outline" size="sm" pressed={compare} onPressedChange={setCompare} disabled={!!selected} className="h-7 text-[13px]">Compare</Toggle><DropdownMenu><DropdownMenuTrigger asChild><Button variant="outline" size="icon" className="size-7" aria-label="Display options"><SlidersHorizontal/></Button></DropdownMenuTrigger><DropdownMenuContent align="end"><DropdownMenuGroup><DropdownMenuCheckboxItem checked={support} onCheckedChange={setSupport}>Support line (1%)</DropdownMenuCheckboxItem><DropdownMenuCheckboxItem checked={hatch} onCheckedChange={setHatch}>Hatched slices</DropdownMenuCheckboxItem></DropdownMenuGroup></DropdownMenuContent></DropdownMenu><ChartMore title="Browser usage" rows={rows.map(r=>({browser:r.name,visitors:Math.round(r.value*factor),share:r.value/(total/factor)*100}))}/></>} footer={<><span>Sep 16 to Oct 15, 2026</span><span>{support?'Support line 1%':'All visitors'}</span></>}><div className="grid md:grid-cols-[350px_1fr]"><div className="flex items-center justify-center border-b p-5 md:border-b-0 md:border-r"><div className="relative w-full"><ReuiDonut label={selected?`${selected} visitors by version`:'Visitors by browser'} rows={rows.map(r=>({...r,value:Math.round(r.value*factor)}))} innerRadius={77} outerRadius={119} active={hover} onActive={setHover} onSelect={i=>{const r=rows[i];if(!selected&&r.name!=='Other'){setSelected(r.name);setHover(0)}}} pattern={hatch} center={<><text y="-21" textAnchor="middle" fill="var(--muted-foreground)" fontSize="13">{selected?`${selected} ${rows[hover??0].name}`:'Visitors'}</text><text y="19" textAnchor="middle" fill="currentColor" fontSize="30" fontWeight="600">{selected?`${(rows[hover??0].value/(total/factor)*100).toFixed(1)}%`:compact(total)}</text><text y="48" textAnchor="middle" fill="var(--muted-foreground)" fontSize="12">{selected?`${Math.round(rows[hover??0].value*factor).toLocaleString()} visitors`:'+3.5% vs before'}</text></>}/><svg viewBox="0 0 310 256" className="pointer-events-none absolute inset-0 size-full" aria-hidden="true">{support&&<circle cx="155" cy="128" r="74" fill="none" stroke="var(--border)" strokeDasharray="2 5"/>}{compare&&<circle cx="155" cy="128" r="67" fill="none" stroke="var(--muted-foreground)" strokeDasharray="2 4" opacity=".4"/>}</svg></div></div><div className="overflow-auto"><Table><TableHeader><TableRow><TableHead className="text-[13px]">{selected?<Button variant="ghost" size="sm" className="h-7 px-0 text-[13px]" aria-label={`${selected} versions, back to all browsers`} onClick={()=>{setSelected(null);setHover(null)}}><ArrowLeft/>{selected}</Button>:'Browser'}</TableHead><TableHead className="text-right text-[13px]">Visitors</TableHead><TableHead className="text-[13px]">Share</TableHead><TableHead className="text-[13px]">{selected?'Of All':'Change'}</TableHead><TableHead/></TableRow></TableHeader><TableBody>{rows.map((r,i)=><TableRow key={r.name} className="h-11" onPointerEnter={()=>setHover(i)} onPointerLeave={()=>setHover(null)}><TableCell className="whitespace-nowrap text-[13px]"><span className="mr-2 inline-block size-2 rounded-full" style={{background:r.color}}/>{r.name}</TableCell><TableCell className="text-right text-[13px] tabular-nums">{Math.round(r.value*factor).toLocaleString()}</TableCell><TableCell><div className="flex items-center gap-2"><div className="h-1.5 w-16 overflow-hidden rounded bg-muted"><div className="h-full" style={{width:`${r.value/(total/factor)*100}%`,background:r.color}}/></div><span className="text-[13px]">{(r.value/(total/factor)*100).toFixed(1)}%</span></div></TableCell><TableCell className="whitespace-nowrap text-[13px]">{selected?<span className="text-muted-foreground">{(r.value/205400*100).toFixed(1)}%</span>:<ChangePill value={r.change} unit=" pts"/>}</TableCell><TableCell>{!selected&&r.name!=='Other'&&<Button variant="ghost" size="icon" className="size-6" aria-label={`Open ${r.name} versions`} onClick={()=>{setSelected(r.name);setHover(0)}}><ChevronRight/></Button>}</TableCell></TableRow>)}<TableRow className="bg-muted/20"><TableCell className="text-[13px]">Total</TableCell><TableCell className="text-right text-[13px] font-medium">{Math.round(total).toLocaleString()}</TableCell><TableCell colSpan={3}/></TableRow></TableBody></Table></div></div></ChartFrame></ChartStage>}
+const browserRows = [
+  { name: "Chrome", value: 121380, color: "#7561e9", change: 0.9 },
+  { name: "Safari", value: 42960, color: "#39a6e8", change: 0.7 },
+  { name: "Edge", value: 18720, color: "#37b3a4", change: -0.7 },
+  { name: "Firefox", value: 10940, color: "#f28b21", change: -0.6 },
+  { name: "Samsung Internet", value: 4890, color: "#e84d91", change: 0.1 },
+  { name: "Other", value: 6510, color: "#a1a1aa", change: -0.3 },
+];
+function BrowserUsage() {
+  const [range, setRange] = useState("30D");
+  const [compare, setCompare] = useState(false);
+  const [selected, setSelected] = useState<string | null>(null);
+  const [hover, setHover] = useState<number | null>(null);
+  const [support, setSupport] = useState(true);
+  const [hatch, setHatch] = useState(true);
+  const factor = range === "7D" ? 0.25 : range === "90D" ? 2.8 : 1;
+  const parent = browserRows.find((r) => r.name === selected);
+  const rows = selected
+    ? [52, 31, 10, 7].map((v, i) => ({
+        name: i === 3 ? "Older" : String((selected === "Safari" ? 26 : 156) - i),
+        value: Math.round(((parent?.value ?? 0) * v) / 100),
+        color: `color-mix(in oklch, ${parent?.color} ${100 - i * 23}%,var(--background))`,
+        change: 0,
+      }))
+    : browserRows;
+  const total = rows.reduce((s, r) => s + r.value, 0) * factor;
+  return (
+    <ChartStage>
+      <ChartFrame
+        title={
+          <>
+            <span className="flex size-8 items-center justify-center rounded-lg border bg-background">
+              <Globe2 className="size-4" />
+            </span>
+            <span className="flex flex-col gap-1">
+              Browser Usage
+              <span className="text-xs font-normal text-muted-foreground">
+                {selected ? `${selected} visitors by version` : "Unique visitors by browser"}
+              </span>
+            </span>
+          </>
+        }
+        description=""
+        toolbar={
+          <>
+            <PeriodButtons
+              value={range}
+              onChange={setRange}
+              options={["7D", "30D", "90D"]}
+              label="Range"
+            />
+            <Toggle
+              variant="outline"
+              size="sm"
+              pressed={compare}
+              onPressedChange={setCompare}
+              disabled={!!selected}
+              className="h-7 text-[13px]"
+            >
+              Compare
+            </Toggle>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="size-7"
+                  aria-label="Display options"
+                >
+                  <SlidersHorizontal />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuGroup>
+                  <DropdownMenuCheckboxItem checked={support} onCheckedChange={setSupport}>
+                    Support line (1%)
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem checked={hatch} onCheckedChange={setHatch}>
+                    Hatched slices
+                  </DropdownMenuCheckboxItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <ChartMore
+              title="Browser usage"
+              rows={rows.map((r) => ({
+                browser: r.name,
+                visitors: Math.round(r.value * factor),
+                share: (r.value / (total / factor)) * 100,
+              }))}
+            />
+          </>
+        }
+        footer={
+          <>
+            <span>Sep 16 to Oct 15, 2026</span>
+            <span>{support ? "Support line 1%" : "All visitors"}</span>
+          </>
+        }
+      >
+        <div className="grid md:grid-cols-[350px_1fr]">
+          <div className="flex items-center justify-center border-b p-5 md:border-b-0 md:border-r">
+            <div className="relative w-full">
+              <ReuiDonut
+                label={selected ? `${selected} visitors by version` : "Visitors by browser"}
+                rows={rows.map((r) => ({ ...r, value: Math.round(r.value * factor) }))}
+                innerRadius={77}
+                outerRadius={119}
+                active={hover}
+                onActive={setHover}
+                onSelect={(i) => {
+                  const r = rows[i];
+                  if (!selected && r.name !== "Other") {
+                    setSelected(r.name);
+                    setHover(0);
+                  }
+                }}
+                pattern={hatch}
+                center={
+                  <>
+                    <text y="-21" textAnchor="middle" fill="var(--muted-foreground)" fontSize="13">
+                      {selected ? `${selected} ${rows[hover ?? 0].name}` : "Visitors"}
+                    </text>
+                    <text
+                      y="19"
+                      textAnchor="middle"
+                      fill="currentColor"
+                      fontSize="30"
+                      fontWeight="600"
+                    >
+                      {selected
+                        ? `${((rows[hover ?? 0].value / (total / factor)) * 100).toFixed(1)}%`
+                        : compact(total)}
+                    </text>
+                    <text y="48" textAnchor="middle" fill="var(--muted-foreground)" fontSize="12">
+                      {selected
+                        ? `${Math.round(rows[hover ?? 0].value * factor).toLocaleString()} visitors`
+                        : "+3.5% vs before"}
+                    </text>
+                  </>
+                }
+              />
+              <svg
+                viewBox="0 0 310 256"
+                className="pointer-events-none absolute inset-0 size-full"
+                aria-hidden="true"
+              >
+                {support && (
+                  <circle
+                    cx="155"
+                    cy="128"
+                    r="74"
+                    fill="none"
+                    stroke="var(--border)"
+                    strokeDasharray="2 5"
+                  />
+                )}
+                {compare && (
+                  <circle
+                    cx="155"
+                    cy="128"
+                    r="67"
+                    fill="none"
+                    stroke="var(--muted-foreground)"
+                    strokeDasharray="2 4"
+                    opacity=".4"
+                  />
+                )}
+              </svg>
+            </div>
+          </div>
+          <div className="overflow-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="text-[13px]">
+                    {selected ? (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-7 px-0 text-[13px]"
+                        aria-label={`${selected} versions, back to all browsers`}
+                        onClick={() => {
+                          setSelected(null);
+                          setHover(null);
+                        }}
+                      >
+                        <ArrowLeft />
+                        {selected}
+                      </Button>
+                    ) : (
+                      "Browser"
+                    )}
+                  </TableHead>
+                  <TableHead className="text-right text-[13px]">Visitors</TableHead>
+                  <TableHead className="text-[13px]">Share</TableHead>
+                  <TableHead className="text-[13px]">{selected ? "Of All" : "Change"}</TableHead>
+                  <TableHead />
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {rows.map((r, i) => (
+                  <TableRow
+                    key={r.name}
+                    className="h-11"
+                    onPointerEnter={() => setHover(i)}
+                    onPointerLeave={() => setHover(null)}
+                  >
+                    <TableCell className="whitespace-nowrap text-[13px]">
+                      <span
+                        className="mr-2 inline-block size-2 rounded-full"
+                        style={{ background: r.color }}
+                      />
+                      {r.name}
+                    </TableCell>
+                    <TableCell className="text-right text-[13px] tabular-nums">
+                      {Math.round(r.value * factor).toLocaleString()}
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <div className="h-1.5 w-16 overflow-hidden rounded bg-muted">
+                          <div
+                            className="h-full"
+                            style={{
+                              width: `${(r.value / (total / factor)) * 100}%`,
+                              background: r.color,
+                            }}
+                          />
+                        </div>
+                        <span className="text-[13px]">
+                          {((r.value / (total / factor)) * 100).toFixed(1)}%
+                        </span>
+                      </div>
+                    </TableCell>
+                    <TableCell className="whitespace-nowrap text-[13px]">
+                      {selected ? (
+                        <span className="text-muted-foreground">
+                          {((r.value / 205400) * 100).toFixed(1)}%
+                        </span>
+                      ) : (
+                        <ChangePill value={r.change} unit=" pts" />
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {!selected && r.name !== "Other" && (
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="size-6"
+                          aria-label={`Open ${r.name} versions`}
+                          onClick={() => {
+                            setSelected(r.name);
+                            setHover(0);
+                          }}
+                        >
+                          <ChevronRight />
+                        </Button>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                ))}
+                <TableRow className="bg-muted/20">
+                  <TableCell className="text-[13px]">Total</TableCell>
+                  <TableCell className="text-right text-[13px] font-medium">
+                    {Math.round(total).toLocaleString()}
+                  </TableCell>
+                  <TableCell colSpan={3} />
+                </TableRow>
+              </TableBody>
+            </Table>
+          </div>
+        </div>
+      </ChartFrame>
+    </ChartStage>
+  );
+}
 
-const cloudRows=[{name:'Compute',budget:240000,spent:206900,color:'#7a68f1'},{name:'Databases',budget:92000,spent:84900,color:'#39b6a5'},{name:'Storage',budget:78000,spent:55400,color:'#39a7e8'},{name:'AI and ML',budget:40000,spent:48400,color:'#e94d93'},{name:'Networking',budget:40000,spent:43400,color:'#efa900'},{name:'Observability',budget:38000,spent:23600,color:'#a169f5'}]
-function CloudSpend(){const [period,setPeriod]=useState('Last 30 days');const [selected,setSelected]=useState<number|null>(null);const [sort,setSort]=useState('Budget risk');const [hover,setHover]=useState<number|null>(null);const factor=period==='Last 7 days'?.24:period==='This quarter'?2.8:1;const total=cloudRows.reduce((s,r)=>s+r.spent,0)*factor;const budget=528000*factor;const active=selected===null?null:cloudRows[selected];const spend=active?active.spent*factor:total;const cap=active?active.budget*factor:budget;const ordered=cloudRows.map((r,i)=>({...r,index:i})).sort((a,b)=>sort==='Spend'?b.spent-a.spent:sort==='Name'?a.name.localeCompare(b.name):b.spent/b.budget-a.spent/a.budget);return <ChartStage><ChartFrame title="Cloud Spend" description={active?`${active.name} cost by service`:'Wedge width is budget, length is use'} toolbar={<><Select value={period} onValueChange={setPeriod}><SelectTrigger className="h-7 w-40 text-[13px]" aria-label="Period"><CalendarDays/><SelectValue/></SelectTrigger><SelectContent><SelectGroup>{['Last 7 days','Last 30 days','This quarter'].map(p=><SelectItem key={p} value={p}>{p}</SelectItem>)}</SelectGroup></SelectContent></Select><DropdownMenu><DropdownMenuTrigger asChild><Button variant="outline" size="icon" className="size-7" disabled={active!==null} aria-label="Sort categories"><SlidersHorizontal/></Button></DropdownMenuTrigger><DropdownMenuContent align="end"><DropdownMenuRadioGroup value={sort} onValueChange={setSort}>{['Budget risk','Spend','Name'].map(s=><DropdownMenuRadioItem key={s} value={s}>{s}</DropdownMenuRadioItem>)}</DropdownMenuRadioGroup></DropdownMenuContent></DropdownMenu><ChartMore title="Cloud spend" rows={cloudRows.map(r=>({category:r.name,budget:r.budget*factor,spent:r.spent*factor}))}/></>} footer={<><span>Sep 16 to Oct 15, 2026</span><span className="flex items-center gap-3"><span>⋯ Budget</span><span className="text-amber-600">━ At Risk</span><span className="text-rose-600">━ Over Budget</span></span></>}><div className="grid md:grid-cols-[1.25fr_1fr]"><div className="flex min-h-[420px] items-center justify-center border-b p-5 md:border-b-0 md:border-r"><ReuiBudgetRose rows={cloudRows} selected={selected} hover={hover} onSelect={i=>setSelected(selected===i?null:i)} onHover={setHover} spend={spend} cap={cap}/></div><div className="p-4">{active?<Button variant="ghost" size="sm" className="mb-2 h-7 px-0 text-xs" aria-label={`${active.name} services, back to all categories`} onClick={()=>setSelected(null)}><ArrowLeft/>{active.name}</Button>:<div className="flex justify-between text-xs text-muted-foreground"><span>Total Spend</span><span className="text-foreground">↗ +1.8%</span></div>}<div className="mt-4 flex items-baseline gap-2"><strong className="text-2xl font-semibold">{money(spend)}</strong><span className="text-[13px] text-muted-foreground">of {money(cap)} budget</span></div><div className="mt-4 h-1.5 overflow-hidden rounded bg-muted"><div className="h-full rounded bg-muted-foreground/50" style={{width:`${Math.min(100,spend/cap*100)}%`}}/></div><div className="mt-3 flex justify-between text-xs"><span>{Math.round(spend/cap*100)}% used</span><span className="text-muted-foreground">{money(Math.abs(cap-spend))} {spend>cap?'over':'left'}</span></div><div className="mb-2 mt-6 grid grid-cols-[1fr_70px_70px] text-xs text-muted-foreground"><span>{active?'Service':'Category'}</span><span className="text-right">Spent</span><span className="text-right">{active?'Share':'Left'}</span></div>{active?[['EC2 Instances','Kubernetes','Serverless Functions','Batch Compute'],['Managed PostgreSQL','DynamoDB','Redis Cache','Read Replicas'],['Object Storage','Block Volumes','Archive Storage','Backups'],['GPU Training','Model Inference','Vector Search','Notebooks'],['NAT Gateway','CDN Delivery','VPC Traffic','DNS Queries'],['Logs','Metrics','Traces','Alerting']][selected??0].map((s,i)=><div key={s} className="flex justify-between gap-3 border-b py-3 text-[13px]"><span>{s}</span><span className="ml-auto font-medium">{money(spend*[.566,.302,.089,.043][i])}</span><span className="w-12 text-right text-muted-foreground">{[56.6,30.2,8.9,4.3][i]}%</span></div>):ordered.map(r=><Button key={r.name} variant="ghost" className="h-10 w-full justify-start gap-2 px-0 text-[13px] font-normal" aria-label={`Open ${r.name}`} onClick={()=>setSelected(r.index)}><span className="size-2 rounded-full" style={{background:r.color}}/><span>{r.name}</span>{r.spent>r.budget?<Badge variant="outline" className="px-1 text-[8px] text-destructive">Over</Badge>:r.spent/r.budget>.9?<Badge variant="outline" className="px-1 text-[8px]">At risk</Badge>:null}<span className="ml-auto font-medium">{money(r.spent*factor)}</span><span className={cn('w-14 text-right',r.spent>r.budget?'text-destructive':'text-muted-foreground')}>{r.spent>r.budget?'-':''}{money(Math.abs(r.budget-r.spent)*factor)}</span><ChevronRight/></Button>)}</div></div></ChartFrame></ChartStage>}
-export default function PieChartBlock({block}:BlockProps){return block.id==='chart-13'?<CapitalInflows/>:block.id==='chart-27'?<BrowserUsage/>:<CloudSpend/>}
+const cloudRows = [
+  { name: "Compute", budget: 240000, spent: 206900, color: "#7a68f1" },
+  { name: "Databases", budget: 92000, spent: 84900, color: "#39b6a5" },
+  { name: "Storage", budget: 78000, spent: 55400, color: "#39a7e8" },
+  { name: "AI and ML", budget: 40000, spent: 48400, color: "#e94d93" },
+  { name: "Networking", budget: 40000, spent: 43400, color: "#efa900" },
+  { name: "Observability", budget: 38000, spent: 23600, color: "#a169f5" },
+];
+function CloudSpend() {
+  const [period, setPeriod] = useState("Last 30 days");
+  const [selected, setSelected] = useState<number | null>(null);
+  const [sort, setSort] = useState("Budget risk");
+  const [hover, setHover] = useState<number | null>(null);
+  const factor = period === "Last 7 days" ? 0.24 : period === "This quarter" ? 2.8 : 1;
+  const total = cloudRows.reduce((s, r) => s + r.spent, 0) * factor;
+  const budget = 528000 * factor;
+  const active = selected === null ? null : cloudRows[selected];
+  const spend = active ? active.spent * factor : total;
+  const cap = active ? active.budget * factor : budget;
+  const ordered = cloudRows
+    .map((r, i) => ({ ...r, index: i }))
+    .sort((a, b) =>
+      sort === "Spend"
+        ? b.spent - a.spent
+        : sort === "Name"
+          ? a.name.localeCompare(b.name)
+          : b.spent / b.budget - a.spent / a.budget,
+    );
+  return (
+    <ChartStage>
+      <ChartFrame
+        title="Cloud Spend"
+        description={
+          active ? `${active.name} cost by service` : "Wedge width is budget, length is use"
+        }
+        toolbar={
+          <>
+            <Select value={period} onValueChange={setPeriod}>
+              <SelectTrigger className="h-7 w-40 text-[13px]" aria-label="Period">
+                <CalendarDays />
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {["Last 7 days", "Last 30 days", "This quarter"].map((p) => (
+                    <SelectItem key={p} value={p}>
+                      {p}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="size-7"
+                  disabled={active !== null}
+                  aria-label="Sort categories"
+                >
+                  <SlidersHorizontal />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuRadioGroup value={sort} onValueChange={setSort}>
+                  {["Budget risk", "Spend", "Name"].map((s) => (
+                    <DropdownMenuRadioItem key={s} value={s}>
+                      {s}
+                    </DropdownMenuRadioItem>
+                  ))}
+                </DropdownMenuRadioGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <ChartMore
+              title="Cloud spend"
+              rows={cloudRows.map((r) => ({
+                category: r.name,
+                budget: r.budget * factor,
+                spent: r.spent * factor,
+              }))}
+            />
+          </>
+        }
+        footer={
+          <>
+            <span>Sep 16 to Oct 15, 2026</span>
+            <span className="flex items-center gap-3">
+              <span>⋯ Budget</span>
+              <span className="text-amber-600">━ At Risk</span>
+              <span className="text-rose-600">━ Over Budget</span>
+            </span>
+          </>
+        }
+      >
+        <div className="grid md:grid-cols-[1.25fr_1fr]">
+          <div className="flex min-h-[420px] items-center justify-center border-b p-5 md:border-b-0 md:border-r">
+            <ReuiBudgetRose
+              rows={cloudRows}
+              selected={selected}
+              hover={hover}
+              onSelect={(i) => setSelected(selected === i ? null : i)}
+              onHover={setHover}
+              spend={spend}
+              cap={cap}
+            />
+          </div>
+          <div className="p-4">
+            {active ? (
+              <Button
+                variant="ghost"
+                size="sm"
+                className="mb-2 h-7 px-0 text-xs"
+                aria-label={`${active.name} services, back to all categories`}
+                onClick={() => setSelected(null)}
+              >
+                <ArrowLeft />
+                {active.name}
+              </Button>
+            ) : (
+              <div className="flex justify-between text-xs text-muted-foreground">
+                <span>Total Spend</span>
+                <span className="text-foreground">↗ +1.8%</span>
+              </div>
+            )}
+            <div className="mt-4 flex items-baseline gap-2">
+              <strong className="text-2xl font-semibold">{money(spend)}</strong>
+              <span className="text-[13px] text-muted-foreground">of {money(cap)} budget</span>
+            </div>
+            <div className="mt-4 h-1.5 overflow-hidden rounded bg-muted">
+              <div
+                className="h-full rounded bg-muted-foreground/50"
+                style={{ width: `${Math.min(100, (spend / cap) * 100)}%` }}
+              />
+            </div>
+            <div className="mt-3 flex justify-between text-xs">
+              <span>{Math.round((spend / cap) * 100)}% used</span>
+              <span className="text-muted-foreground">
+                {money(Math.abs(cap - spend))} {spend > cap ? "over" : "left"}
+              </span>
+            </div>
+            <div className="mb-2 mt-6 grid grid-cols-[1fr_70px_70px] text-xs text-muted-foreground">
+              <span>{active ? "Service" : "Category"}</span>
+              <span className="text-right">Spent</span>
+              <span className="text-right">{active ? "Share" : "Left"}</span>
+            </div>
+            {active
+              ? [
+                  ["EC2 Instances", "Kubernetes", "Serverless Functions", "Batch Compute"],
+                  ["Managed PostgreSQL", "DynamoDB", "Redis Cache", "Read Replicas"],
+                  ["Object Storage", "Block Volumes", "Archive Storage", "Backups"],
+                  ["GPU Training", "Model Inference", "Vector Search", "Notebooks"],
+                  ["NAT Gateway", "CDN Delivery", "VPC Traffic", "DNS Queries"],
+                  ["Logs", "Metrics", "Traces", "Alerting"],
+                ][selected ?? 0].map((s, i) => (
+                  <div key={s} className="flex justify-between gap-3 border-b py-3 text-[13px]">
+                    <span>{s}</span>
+                    <span className="ml-auto font-medium">
+                      {money(spend * [0.566, 0.302, 0.089, 0.043][i])}
+                    </span>
+                    <span className="w-12 text-right text-muted-foreground">
+                      {[56.6, 30.2, 8.9, 4.3][i]}%
+                    </span>
+                  </div>
+                ))
+              : ordered.map((r) => (
+                  <Button
+                    key={r.name}
+                    variant="ghost"
+                    className="h-10 w-full justify-start gap-2 px-0 text-[13px] font-normal"
+                    aria-label={`Open ${r.name}`}
+                    onClick={() => setSelected(r.index)}
+                  >
+                    <span className="size-2 rounded-full" style={{ background: r.color }} />
+                    <span>{r.name}</span>
+                    {r.spent > r.budget ? (
+                      <Badge variant="outline" className="px-1 text-[8px] text-destructive">
+                        Over
+                      </Badge>
+                    ) : r.spent / r.budget > 0.9 ? (
+                      <Badge variant="outline" className="px-1 text-[8px]">
+                        At risk
+                      </Badge>
+                    ) : null}
+                    <span className="ml-auto font-medium">{money(r.spent * factor)}</span>
+                    <span
+                      className={cn(
+                        "w-14 text-right",
+                        r.spent > r.budget ? "text-destructive" : "text-muted-foreground",
+                      )}
+                    >
+                      {r.spent > r.budget ? "-" : ""}
+                      {money(Math.abs(r.budget - r.spent) * factor)}
+                    </span>
+                    <ChevronRight />
+                  </Button>
+                ))}
+          </div>
+        </div>
+      </ChartFrame>
+    </ChartStage>
+  );
+}
+export default function PieChartBlock({ block }: BlockProps) {
+  return block.id === "chart-13" ? (
+    <CapitalInflows />
+  ) : block.id === "chart-27" ? (
+    <BrowserUsage />
+  ) : (
+    <CloudSpend />
+  );
+}

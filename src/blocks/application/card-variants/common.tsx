@@ -71,13 +71,7 @@ export function CardStage({
 }) {
   return (
     <section className="refined-card-stage" data-card-variant={variant}>
-      <div
-        className={
-          narrow
-            ? "refined-card-content refined-narrow"
-            : "refined-card-content"
-        }
-      >
+      <div className={narrow ? "refined-card-content refined-narrow" : "refined-card-content"}>
         {children}
       </div>
     </section>
@@ -112,10 +106,7 @@ export function Avatars({ extra = 3 }: { extra?: number }) {
         [james, "James Park"],
         [emma, "Emma Wilson"],
       ].map(([src, name]) => (
-        <Avatar
-          className="-ml-1 size-6 border-2 border-background first:ml-0"
-          key={name}
-        >
+        <Avatar className="-ml-1 size-6 border-2 border-background first:ml-0" key={name}>
           <AvatarImage src={src} alt={name} />
           <AvatarFallback>
             {name
@@ -211,14 +202,8 @@ export function Actions({
       <DropdownMenuContent align="end">
         <DropdownMenuGroup>
           <DropdownMenuItem onSelect={onEdit}>Edit</DropdownMenuItem>
-          {onDuplicate && (
-            <DropdownMenuItem onSelect={onDuplicate}>
-              Duplicate
-            </DropdownMenuItem>
-          )}
-          {onCopy && (
-            <DropdownMenuItem onSelect={onCopy}>Copy link</DropdownMenuItem>
-          )}
+          {onDuplicate && <DropdownMenuItem onSelect={onDuplicate}>Duplicate</DropdownMenuItem>}
+          {onCopy && <DropdownMenuItem onSelect={onCopy}>Copy link</DropdownMenuItem>}
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>

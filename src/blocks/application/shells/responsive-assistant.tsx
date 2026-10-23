@@ -33,9 +33,7 @@ export function ResponsiveAssistantPanel({
     () => false,
   );
   const returnFocus = useRef(
-    typeof document === "undefined"
-      ? null
-      : (document.activeElement as HTMLElement | null),
+    typeof document === "undefined" ? null : (document.activeElement as HTMLElement | null),
   );
   if (mobile)
     return (
@@ -47,10 +45,7 @@ export function ResponsiveAssistantPanel({
       >
         <SheetContent
           showCloseButton={false}
-          className={cn(
-            "shell-reference reui-reference shell-assistant-dialog",
-            className,
-          )}
+          className={cn("shell-reference reui-reference shell-assistant-dialog", className)}
           onCloseAutoFocus={(e) => {
             e.preventDefault();
             returnFocus.current?.focus();
@@ -58,9 +53,7 @@ export function ResponsiveAssistantPanel({
         >
           <SheetHeader className="sr-only">
             <SheetTitle>{title}</SheetTitle>
-            <SheetDescription>
-              Conversation and suggested actions.
-            </SheetDescription>
+            <SheetDescription>Conversation and suggested actions.</SheetDescription>
           </SheetHeader>
           {children}
         </SheetContent>

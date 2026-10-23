@@ -56,10 +56,7 @@ const railItems: [string, ShellIcon][] = [
 ];
 function GlassCard({ small = false }: { small?: boolean }) {
   return (
-    <Frame
-      variant="ghost"
-      className={`glass-reference-card ${small ? "small" : ""}`}
-    >
+    <Frame variant="ghost" className={`glass-reference-card ${small ? "small" : ""}`}>
       <FramePanel>
         <span className="glass-reference-line" />
         {!small && <span className="glass-reference-line" />}
@@ -90,13 +87,7 @@ export default function GlassWorkspace() {
     }
   }, [theme, themeTouched]);
   const sectionButtons = railItems.map(([name, Icon]) => (
-    <IconTile
-      asChild
-      key={name}
-      variant="outline"
-      size="sm"
-      className="glass-rail-item"
-    >
+    <IconTile asChild key={name} variant="outline" size="sm" className="glass-rail-item">
       <button
         aria-label={name}
         title={name}
@@ -108,10 +99,7 @@ export default function GlassWorkspace() {
     </IconTile>
   ));
   return (
-    <div
-      className="shell-reference reui-reference glass-reference"
-      data-shell-variant="31"
-    >
+    <div className="shell-reference reui-reference glass-reference" data-shell-variant="31">
       <nav className="glass-reference-rail" aria-label="Workspace sections">
         <div className="glass-rail-pill glass-rail-brand">
           <ReuiMark small />
@@ -119,9 +107,7 @@ export default function GlassWorkspace() {
             <Search />
           </Button>
         </div>
-        <div className="glass-rail-pill glass-rail-sections">
-          {sectionButtons}
-        </div>
+        <div className="glass-rail-pill glass-rail-sections">{sectionButtons}</div>
         <div className="glass-rail-pill glass-rail-account">
           <Button variant="ghost" size="icon-sm" aria-label="Sign out">
             <LogOut />
@@ -132,24 +118,16 @@ export default function GlassWorkspace() {
                 <Face name="Kai Meyer" index={2} />
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent
-              side="right"
-              align="end"
-              className="reui-reference w-56"
-            >
+            <DropdownMenuContent side="right" align="end" className="reui-reference w-56">
               <DropdownMenuLabel>
                 <strong className="block text-sm font-medium">Kai Meyer</strong>
-                <span className="text-xs font-normal text-muted-foreground">
-                  kai@reui.io
-                </span>
+                <span className="text-xs font-normal text-muted-foreground">kai@reui.io</span>
               </DropdownMenuLabel>
               <DropdownMenuGroup>
                 <DropdownMenuItem>
                   <UserRound />
                   Profile
-                  <span className="ml-auto text-xs text-muted-foreground">
-                    ⇧⌘P
-                  </span>
+                  <span className="ml-auto text-xs text-muted-foreground">⇧⌘P</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <Settings />
@@ -208,19 +186,11 @@ export default function GlassWorkspace() {
         </Sheet>
       </div>
       <div className="glass-reference-columns">
-        <Tabs
-          value={tab}
-          onValueChange={setTab}
-          className="glass-reference-workspace"
-        >
+        <Tabs value={tab} onValueChange={setTab} className="glass-reference-workspace">
           <TabsList className="glass-reference-tabs">
             {["Operations", "Structure", "Insights"].map((name) => (
               <TabsTrigger value={name} key={name}>
-                <svg
-                  viewBox="0 0 264 44"
-                  preserveAspectRatio="none"
-                  aria-hidden="true"
-                >
+                <svg viewBox="0 0 264 44" preserveAspectRatio="none" aria-hidden="true">
                   <path d="M24 0H208C220 0 222 3 228 14L240 34C244 41 247 44 256 44H264H0V24C0 10 10 0 24 0Z" />
                 </svg>
                 <span>{name}</span>

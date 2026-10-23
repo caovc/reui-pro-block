@@ -21,10 +21,7 @@ import {
   type RowSelectionState,
   type SortingState,
 } from "@tanstack/react-table";
-import {
-  dataGridFeatures,
-  type DataGridFeatures,
-} from "@/components/reui/data-grid/data-grid";
+import { dataGridFeatures, type DataGridFeatures } from "@/components/reui/data-grid/data-grid";
 import { DataGridTableDndRowHandle } from "@/components/reui/data-grid/data-grid-table-dnd-rows";
 import { DataGridTableRowExpand } from "@/components/reui/data-grid/data-grid-table";
 import { DataGridColumnHeader } from "@/components/reui/data-grid/data-grid-column-header";
@@ -48,78 +45,14 @@ const owners = [
   "Ravi Menon",
 ];
 const backlog = [
-  [
-    "Realtime presence",
-    "Feature",
-    "Collaboration",
-    "Sprint 18",
-    "Jul 08",
-    "In Progress",
-    8,
-  ],
-  [
-    "SSO enforcement",
-    "Security",
-    "Identity",
-    "Sprint 18",
-    "Jul 10",
-    "In Review",
-    5,
-  ],
-  [
-    "Webhook retries",
-    "Improvement",
-    "Platform",
-    "Sprint 18",
-    "Jul 09",
-    "Ready",
-    2,
-  ],
-  [
-    "Audit log export",
-    "Improvement",
-    "Compliance",
-    "Sprint 19",
-    "Jul 12",
-    "Blocked",
-    3,
-  ],
-  [
-    "Billing usage meters",
-    "Feature",
-    "Revenue",
-    "Sprint 19",
-    "Jul 16",
-    "Planned",
-    13,
-  ],
-  [
-    "Search relevance",
-    "Research",
-    "Search",
-    "Discovery",
-    "Jul 18",
-    "Planned",
-    8,
-  ],
-  [
-    "Mobile offline mode",
-    "Feature",
-    "Mobile",
-    "Sprint 20",
-    "Jul 22",
-    "Planned",
-    13,
-  ],
-  [
-    "Token rotation",
-    "Security",
-    "Security",
-    "Sprint 20",
-    "Jul 24",
-    "Planned",
-    5,
-  ],
+  ["Realtime presence", "Feature", "Collaboration", "Sprint 18", "Jul 08", "In Progress", 8],
+  ["SSO enforcement", "Security", "Identity", "Sprint 18", "Jul 10", "In Review", 5],
+  ["Webhook retries", "Improvement", "Platform", "Sprint 18", "Jul 09", "Ready", 2],
+  ["Audit log export", "Improvement", "Compliance", "Sprint 19", "Jul 12", "Blocked", 3],
+  ["Billing usage meters", "Feature", "Revenue", "Sprint 19", "Jul 16", "Planned", 13],
+  ["Search relevance", "Research", "Search", "Discovery", "Jul 18", "Planned", 8],
+  ["Mobile offline mode", "Feature", "Mobile", "Sprint 20", "Jul 22", "Planned", 13],
+  ["Token rotation", "Security", "Security", "Sprint 20", "Jul 24", "Planned", 5],
 ].map((r, i) => ({
   id: i + 1,
   name: String(r[0]),
@@ -177,15 +110,7 @@ const rules = [
     620,
     false,
   ],
-  [
-    "Low signal",
-    "Likely spam",
-    "Risk",
-    "Score below 20",
-    "Move to spam",
-    38,
-    false,
-  ],
+  ["Low signal", "Likely spam", "Risk", "Score below 20", "Move to spam", 38, false],
   [
     "Refund requests",
     "Money back asks",
@@ -257,10 +182,7 @@ function RankedGrid({ routing }: { routing: boolean }) {
       },
     ];
   }
-  const data = useMemo<RankRecord[]>(
-    () => (routing ? rows : tasks),
-    [routing, rows, tasks],
-  );
+  const data = useMemo<RankRecord[]>(() => (routing ? rows : tasks), [routing, rows, tasks]);
   const columns = useMemo<ColumnDef<DataGridFeatures, RankRecord>[]>(
     () => [
       {
@@ -294,12 +216,7 @@ function RankedGrid({ routing }: { routing: boolean }) {
                   ? Zap
                   : Wrench;
           return (
-            <div
-              className={cn(
-                "flex items-center gap-3",
-                routing && !r.enabled && "opacity-40",
-              )}
-            >
+            <div className={cn("flex items-center gap-3", routing && !r.enabled && "opacity-40")}>
               <span className="rounded-md bg-muted/50 p-1.5">
                 <Icon className="size-3.5" />
               </span>
@@ -319,9 +236,7 @@ function RankedGrid({ routing }: { routing: boolean }) {
               accessorKey: "scope",
               header: "Scope",
               size: 120,
-              cell: ({ row: { original: r } }) => (
-                <StructureBadge value={r.scope!} />
-              ),
+              cell: ({ row: { original: r } }) => <StructureBadge value={r.scope!} />,
             },
             {
               accessorKey: "when",
@@ -336,12 +251,7 @@ function RankedGrid({ routing }: { routing: boolean }) {
               header: "Then",
               size: 210,
               cell: ({ row: { original: r } }) => (
-                <span
-                  className={cn(
-                    "flex items-center gap-1.5",
-                    !r.enabled && "opacity-40",
-                  )}
-                >
+                <span className={cn("flex items-center gap-1.5", !r.enabled && "opacity-40")}>
                   <Zap className="size-3" />
                   {r.then}
                 </span>
@@ -368,9 +278,7 @@ function RankedGrid({ routing }: { routing: boolean }) {
                   checked={!!r.enabled}
                   aria-label={`Enable ${r.name}`}
                   onCheckedChange={(v) =>
-                    setRows((a) =>
-                      a.map((b) => (b.id === r.id ? { ...b, enabled: v } : b)),
-                    )
+                    setRows((a) => a.map((b) => (b.id === r.id ? { ...b, enabled: v } : b)))
                   }
                 />
               ),
@@ -381,9 +289,7 @@ function RankedGrid({ routing }: { routing: boolean }) {
               accessorKey: "owner",
               header: "Owner",
               size: 180,
-              cell: ({ row: { original: r } }) => (
-                <StructurePerson name={r.owner!} />
-              ),
+              cell: ({ row: { original: r } }) => <StructurePerson name={r.owner!} />,
             },
             { accessorKey: "team", header: "Team", size: 170 },
             { accessorKey: "cycle", header: "Cycle", size: 140 },
@@ -392,9 +298,7 @@ function RankedGrid({ routing }: { routing: boolean }) {
               accessorKey: "status",
               header: "Status",
               size: 130,
-              cell: ({ row: { original: r } }) => (
-                <StructureBadge value={r.status!} />
-              ),
+              cell: ({ row: { original: r } }) => <StructureBadge value={r.status!} />,
             },
             {
               accessorKey: "effort",
@@ -403,9 +307,7 @@ function RankedGrid({ routing }: { routing: boolean }) {
               cell: ({ row: { original: r } }) => (
                 <span>
                   {r.effort}
-                  <span className="ml-1 text-xs text-muted-foreground">
-                    pts
-                  </span>
+                  <span className="ml-1 text-xs text-muted-foreground">pts</span>
                 </span>
               ),
             },
@@ -510,17 +412,15 @@ const top: DriveNode[] = [
     owner: "Mira Stone",
     modified: "Jul 17, 2026",
   },
-  ...["Engineering", "Brand Assets", "Finance", "Operations"].map(
-    (name, i) => ({
-      id: 5 + i,
-      name,
-      parent: null,
-      folder: true,
-      size: 0,
-      owner: owners[i + 3],
-      modified: "Jul 23, 2026",
-    }),
-  ),
+  ...["Engineering", "Brand Assets", "Finance", "Operations"].map((name, i) => ({
+    id: 5 + i,
+    name,
+    parent: null,
+    folder: true,
+    size: 0,
+    owner: owners[i + 3],
+    modified: "Jul 23, 2026",
+  })),
   {
     id: 9,
     name: "Company Handbook.pdf",
@@ -546,8 +446,8 @@ const driveSeed: DriveNode[] = [
       "Architecture.png",
     ][i % 8].replace(".", ` ${Math.floor(i / 8) + 1}.`),
     parent: [
-      2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6,
-      6, 6, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8,
+      2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7,
+      7, 7, 7, 8, 8, 8, 8,
     ][i],
     folder: false,
     size: Math.round((i * 15.7 + 1.36) * 100) / 100,
@@ -564,9 +464,7 @@ const folderTargets: Record<number, number> = {
   8: 83.1,
 };
 for (const [parent, target] of Object.entries(folderTargets)) {
-  const children = driveSeed.filter(
-    (r) => r.parent === Number(parent) && !r.folder,
-  );
+  const children = driveSeed.filter((r) => r.parent === Number(parent) && !r.folder);
   const total = children.reduce((a, r) => a + r.size, 0);
   let assigned = 0;
   children.forEach((r, i) => {
@@ -584,9 +482,7 @@ function DriveGrid() {
     [rowSelection, setRowSelection] = useState<RowSelectionState>({}),
     [sorting, setSorting] = useState<SortingState>([]);
   function descendants(id: number): number[] {
-    return nodes
-      .filter((r) => r.parent === id)
-      .flatMap((r) => [r.id, ...descendants(r.id)]);
+    return nodes.filter((r) => r.parent === id).flatMap((r) => [r.id, ...descendants(r.id)]);
   }
   function size(id: number): number {
     const n = nodes.find((r) => r.id === id);
@@ -599,9 +495,7 @@ function DriveGrid() {
     .map(Number);
   const tree = useMemo(() => {
     function nest(parent: number | null): DriveTreeNode[] {
-      return nodes
-        .filter((r) => r.parent === parent)
-        .map((r) => ({ ...r, children: nest(r.id) }));
+      return nodes.filter((r) => r.parent === parent).map((r) => ({ ...r, children: nest(r.id) }));
     }
     return nest(null);
   }, [nodes]);
@@ -629,9 +523,7 @@ function DriveGrid() {
     const all = new Set(ids.flatMap((id) => [id, ...descendants(id)]));
     setNodes((v) => v.filter((r) => !all.has(r.id)));
     setRowSelection((v) =>
-      Object.fromEntries(
-        Object.entries(v).filter(([i]) => !all.has(Number(i))),
-      ),
+      Object.fromEntries(Object.entries(v).filter(([i]) => !all.has(Number(i)))),
     );
   }
   const columns = useMemo<ColumnDef<DataGridFeatures, DriveTreeNode>[]>(
@@ -661,22 +553,14 @@ function DriveGrid() {
         cell: ({ row }) => (
           <Checkbox
             aria-label={`Select ${row.original.name}`}
-            checked={
-              row.getIsSelected()
-                ? true
-                : row.getIsSomeSelected()
-                  ? "indeterminate"
-                  : false
-            }
+            checked={row.getIsSelected() ? true : row.getIsSomeSelected() ? "indeterminate" : false}
             onCheckedChange={(v) => row.toggleSelected(!!v)}
           />
         ),
       },
       {
         accessorKey: "name",
-        header: ({ column }) => (
-          <DataGridColumnHeader column={column} title="Name" />
-        ),
+        header: ({ column }) => <DataGridColumnHeader column={column} title="Name" />,
         size: 400,
         cell: ({ row }) => (
           <div className="flex items-center gap-2">
@@ -686,28 +570,21 @@ function DriveGrid() {
             ) : (
               <File className="size-4 text-muted-foreground" />
             )}
-            <span className={row.original.folder ? "font-medium" : ""}>
-              {row.original.name}
-            </span>
+            <span className={row.original.folder ? "font-medium" : ""}>{row.original.name}</span>
           </div>
         ),
       },
       {
         id: "type",
-        accessorFn: (r) =>
-          r.folder ? "Folder" : r.name.split(".").pop()!.toUpperCase(),
-        header: ({ column }) => (
-          <DataGridColumnHeader column={column} title="Type" />
-        ),
+        accessorFn: (r) => (r.folder ? "Folder" : r.name.split(".").pop()!.toUpperCase()),
+        header: ({ column }) => <DataGridColumnHeader column={column} title="Type" />,
         size: 110,
         cell: ({ getValue }) => <StructureBadge value={String(getValue())} />,
       },
       {
         id: "size",
         accessorFn: (r) => size(r.id),
-        header: ({ column }) => (
-          <DataGridColumnHeader column={column} title="Size" />
-        ),
+        header: ({ column }) => <DataGridColumnHeader column={column} title="Size" />,
         size: 130,
         cell: ({ row }) => (
           <>
@@ -727,17 +604,13 @@ function DriveGrid() {
       },
       {
         accessorKey: "owner",
-        header: ({ column }) => (
-          <DataGridColumnHeader column={column} title="Owner" />
-        ),
+        header: ({ column }) => <DataGridColumnHeader column={column} title="Owner" />,
         size: 190,
         cell: ({ row }) => <StructurePerson name={row.original.owner} />,
       },
       {
         accessorKey: "modified",
-        header: ({ column }) => (
-          <DataGridColumnHeader column={column} title="Modified" />
-        ),
+        header: ({ column }) => <DataGridColumnHeader column={column} title="Modified" />,
         size: 150,
       },
       {
@@ -753,11 +626,7 @@ function DriveGrid() {
                     {
                       label: "Move to root",
                       onClick: () =>
-                        setNodes((v) =>
-                          v.map((n) =>
-                            n.id === r.id ? { ...n, parent: null } : n,
-                          ),
-                        ),
+                        setNodes((v) => v.map((n) => (n.id === r.id ? { ...n, parent: null } : n))),
                     },
                   ]
                 : []),
@@ -810,8 +679,7 @@ function DriveGrid() {
     onExpandedChange: (updater) =>
       setExpanded((v) => {
         const previous = Object.fromEntries(v.map((id) => [String(id), true]));
-        const next =
-          typeof updater === "function" ? updater(previous) : updater;
+        const next = typeof updater === "function" ? updater(previous) : updater;
         return next === true
           ? nodes.filter((r) => r.folder).map((r) => r.id)
           : Object.keys(next)
@@ -828,10 +696,7 @@ function DriveGrid() {
           <span className="ml-2">
             Used{" "}
             <b className="ml-1 text-foreground">
-              {(
-                nodes.filter((r) => !r.folder).reduce((a, r) => a + r.size, 0) /
-                1024
-              ).toFixed(2)}{" "}
+              {(nodes.filter((r) => !r.folder).reduce((a, r) => a + r.size, 0) / 1024).toFixed(2)}{" "}
               GB
             </b>
           </span>
@@ -842,9 +707,7 @@ function DriveGrid() {
           <Button
             size="sm"
             variant="outline"
-            onClick={() =>
-              setExpanded(nodes.filter((r) => r.folder).map((r) => r.id))
-            }
+            onClick={() => setExpanded(nodes.filter((r) => r.folder).map((r) => r.id))}
           >
             <ChevronsUpDown />
             Expand all
@@ -884,11 +747,7 @@ function DriveGrid() {
           >
             Download list
           </Button>
-          <Button
-            size="xs"
-            variant="destructive"
-            onClick={() => remove(checked)}
-          >
+          <Button size="xs" variant="destructive" onClick={() => remove(checked)}>
             Delete
           </Button>
           <Button size="xs" variant="ghost" onClick={() => setRowSelection({})}>

@@ -74,5 +74,5 @@ export const wallpaperAssets = [
   "https://overture-waitlist.reui.io/screenshots/patterns/phone-input-dark.png",
   "https://overture-waitlist.reui.io/screenshots/patterns/popover-dark.png",
   "https://overture-waitlist.reui.io/screenshots/patterns/checkbox-dark.png",
-  "https://overture-waitlist.reui.io/screenshots/patterns/collapsible-dark.png"
+  "https://overture-waitlist.reui.io/screenshots/patterns/collapsible-dark.png",
 ];

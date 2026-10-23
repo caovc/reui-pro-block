@@ -11,11 +11,7 @@ import {
   Webhook,
   X,
 } from "lucide-react";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   Dialog,
   DialogContent,
@@ -94,16 +90,13 @@ export function SystemMonitor() {
         <div className="flex items-center justify-between border-b px-3 py-2.5">
           <h3 className="text-xs font-medium">System Monitor</h3>
           <span className="text-[10px] text-muted-foreground">
-            {new Date(2026, 5, 10, 9, 24, 8 + phase).toLocaleTimeString(
-              "en-US",
-            )}
+            {new Date(2026, 5, 10, 9, 24, 8 + phase).toLocaleTimeString("en-US")}
           </span>
         </div>
         <div className="grid grid-cols-2">
           {metrics.map(([name, base, unit], i) => {
             const color = `var(--chart-${i + 1})`;
-            const value =
-              base + Math.sin(phase * 0.5 + i) * Math.min(2, base * 0.08);
+            const value = base + Math.sin(phase * 0.5 + i) * Math.min(2, base * 0.08);
             const points = Array.from(
               { length: 25 },
               (_, j) =>
@@ -115,9 +108,7 @@ export function SystemMonitor() {
                   <span className="text-muted-foreground">{name}</span>
                   <span style={{ color }}>
                     {value.toFixed(1)}
-                    <span className="ml-0.5 text-[8px] text-muted-foreground">
-                      {unit}
-                    </span>
+                    <span className="ml-0.5 text-[8px] text-muted-foreground">{unit}</span>
                   </span>
                 </div>
                 <svg
@@ -125,12 +116,7 @@ export function SystemMonitor() {
                   className="mt-3 h-9 w-full"
                   aria-label={`${name} usage trend`}
                 >
-                  <polyline
-                    points={points}
-                    fill="none"
-                    stroke={color}
-                    strokeWidth="1.5"
-                  />
+                  <polyline points={points} fill="none" stroke={color} strokeWidth="1.5" />
                 </svg>
               </div>
             );
@@ -148,24 +134,21 @@ export function SystemMonitor() {
         </Button>
         {expanded && (
           <div className="flex flex-col gap-3 px-3 pb-4">
-            {[
-              "Ingest Worker",
-              "Transform Pipeline",
-              "Query Engine",
-              "Export Service",
-            ].map((name, i) => (
-              <div key={name} className="flex items-center gap-2 text-[10px]">
-                <span
-                  className="size-1.5 rounded-full"
-                  style={{ background: `var(--chart-${i + 1})` }}
-                />
-                <span className="flex-1 text-muted-foreground">{name}</span>
-                <Progress value={[46, 98, 84, 22][i]} className="h-1 w-12" />
-                <span className="w-10 text-right text-[9px] text-muted-foreground">
-                  {[231, 493, 417, 107][i]}MB
-                </span>
-              </div>
-            ))}
+            {["Ingest Worker", "Transform Pipeline", "Query Engine", "Export Service"].map(
+              (name, i) => (
+                <div key={name} className="flex items-center gap-2 text-[10px]">
+                  <span
+                    className="size-1.5 rounded-full"
+                    style={{ background: `var(--chart-${i + 1})` }}
+                  />
+                  <span className="flex-1 text-muted-foreground">{name}</span>
+                  <Progress value={[46, 98, 84, 22][i]} className="h-1 w-12" />
+                  <span className="w-10 text-right text-[9px] text-muted-foreground">
+                    {[231, 493, 417, 107][i]}MB
+                  </span>
+                </div>
+              ),
+            )}
           </div>
         )}
         <p className="border-t px-3 py-1.5 text-[8px] text-muted-foreground">
@@ -222,8 +205,8 @@ export function NewsCard() {
             <DialogDescription>{articles[index][1]}</DialogDescription>
           </DialogHeader>
           <p className="text-sm leading-7 text-muted-foreground">
-            This preview demonstrates a dismissible workspace news card. Use the
-            sidebar’s account menu to try light and dark themes.
+            This preview demonstrates a dismissible workspace news card. Use the sidebar’s account
+            menu to try light and dark themes.
           </p>
           <Button onClick={() => setOpen(false)}>
             Back to workspace
@@ -266,16 +249,8 @@ export default function EnvironmentShell() {
           <div className="sidebar-expanded">
             <NewsCard />
           </div>
-          <WorkspaceMenu
-            collapsed={collapsed}
-            user
-            initial="Acme Inc"
-            subtitle="nick@reui.io"
-          />
-          <CollapseHandle
-            collapsed={collapsed}
-            onToggle={() => setCollapsed(!collapsed)}
-          />
+          <WorkspaceMenu collapsed={collapsed} user initial="Acme Inc" subtitle="nick@reui.io" />
+          <CollapseHandle collapsed={collapsed} onToggle={() => setCollapsed(!collapsed)} />
         </Sidebar>
         <main className="shell-content-frame">
           <PlaceholderCanvas />

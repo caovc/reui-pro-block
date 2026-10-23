@@ -1,30 +1,12 @@
 import ScheduleAgendas from "./schedule-agendas";
-import {
-  TimeRangePicker,
-  MeetingScheduler,
-  SessionBooking,
-} from "./schedule-booking";
+import { TimeRangePicker, MeetingScheduler, SessionBooking } from "./schedule-booking";
 import { useState } from "react";
-import {
-  ArrowRight,
-  CalendarDays,
-  Check,
-  ChevronDown,
-  Clock,
-  Globe,
-  Video,
-} from "lucide-react";
+import { ArrowRight, CalendarDays, Check, ChevronDown, Clock, Globe, Video } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar } from "@/components/ui/calendar";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -38,11 +20,7 @@ import {
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Head, Person, SmallTabs, Team, toast } from "./shared";
 import type { BlockProps } from "@/data/types";
 const times = [
@@ -123,8 +101,7 @@ function LegacyScheduleBlock({ block }: BlockProps) {
               Building better products, together.
             </CardTitle>
             <CardDescription>
-              A conversation about design, collaboration, and the details that
-              matter.
+              A conversation about design, collaboration, and the details that matter.
             </CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-5">
@@ -153,10 +130,9 @@ function LegacyScheduleBlock({ block }: BlockProps) {
             </Button>
             {overview && (
               <p className="text-sm leading-7 text-muted-foreground">
-                Join our product team for a practical session on turning great
-                ideas into thoughtful experiences. We’ll share the workflows,
-                decisions, and lessons that shape our everyday work. Bring your
-                questions — we’d love to hear from you.
+                Join our product team for a practical session on turning great ideas into thoughtful
+                experiences. We’ll share the workflows, decisions, and lessons that shape our
+                everyday work. Bring your questions — we’d love to hear from you.
               </p>
             )}
             <div className="grid gap-4 sm:grid-cols-2">
@@ -203,11 +179,7 @@ function LegacyScheduleBlock({ block }: BlockProps) {
           <FieldGroup>
             <Field>
               <FieldLabel htmlFor="schedule-name">Schedule title</FieldLabel>
-              <Input
-                id="schedule-name"
-                placeholder="e.g. Weekly design sync"
-                required
-              />
+              <Input id="schedule-name" placeholder="e.g. Weekly design sync" required />
             </Field>
             <Field>
               <FieldLabel>Description</FieldLabel>
@@ -216,22 +188,13 @@ function LegacyScheduleBlock({ block }: BlockProps) {
             <Field>
               <FieldLabel>Team members</FieldLabel>
               <div className="flex flex-col gap-3 rounded-lg border p-4">
-                {[
-                  "Olivia Rhye",
-                  "Phoenix Baker",
-                  "Lana Steiner",
-                  "Demi Wilkinson",
-                ].map((p) => (
+                {["Olivia Rhye", "Phoenix Baker", "Lana Steiner", "Demi Wilkinson"].map((p) => (
                   <div className="flex items-center gap-3" key={p}>
                     <Checkbox
                       id={p}
                       checked={selected.includes(p)}
                       onCheckedChange={(v) =>
-                        setSelected(
-                          v
-                            ? [...selected, p]
-                            : selected.filter((n) => n !== p),
-                        )
+                        setSelected(v ? [...selected, p] : selected.filter((n) => n !== p))
                       }
                     />
                     <label htmlFor={p} className="flex-1">
@@ -302,11 +265,7 @@ function LegacyScheduleBlock({ block }: BlockProps) {
               defaultMonth={new Date(2026, 9, 1)}
             />
             <div className="border-t pt-3">
-              <TimeSelect
-                label="Time"
-                value={slot || "09:00"}
-                onChange={setSlot}
-              />
+              <TimeSelect label="Time" value={slot || "09:00"} onChange={setSlot} />
             </div>
           </PopoverContent>
         </Popover>
@@ -339,11 +298,7 @@ function LegacyScheduleBlock({ block }: BlockProps) {
             <p className="mt-2 text-sm text-muted-foreground">
               {slot} · {duration} · Google Meet
             </p>
-            <Button
-              className="mt-6"
-              variant="outline"
-              onClick={() => setBooked(false)}
-            >
+            <Button className="mt-6" variant="outline" onClick={() => setBooked(false)}>
               Book another time
             </Button>
           </CardContent>
@@ -463,15 +418,9 @@ function LegacyScheduleBlock({ block }: BlockProps) {
                               })
                             }
                           >
-                            <p className="text-[10px] text-muted-foreground">
-                              {event.time}
-                            </p>
-                            <p className="mt-1 text-xs font-medium">
-                              {event.title}
-                            </p>
-                            <p className="mt-1 text-xs text-muted-foreground">
-                              {event.location}
-                            </p>
+                            <p className="text-[10px] text-muted-foreground">{event.time}</p>
+                            <p className="mt-1 text-xs font-medium">{event.title}</p>
+                            <p className="mt-1 text-xs text-muted-foreground">{event.location}</p>
                             <div className="mt-3 flex items-center justify-between">
                               <Badge variant="outline" className="text-[9px]">
                                 {n === 1 ? event.status : event.category}
@@ -502,22 +451,9 @@ function LegacyScheduleBlock({ block }: BlockProps) {
                   <SmallTabs
                     items={
                       n === 1
-                        ? [
-                            "All events",
-                            "Upcoming",
-                            "Pending",
-                            "Completed",
-                            "Cancelled",
-                          ]
+                        ? ["All events", "Upcoming", "Pending", "Completed", "Cancelled"]
                         : n === 8
-                          ? [
-                              "All events",
-                              "Sprint",
-                              "Standup",
-                              "Review",
-                              "Deadline",
-                              "Workshop",
-                            ]
+                          ? ["All events", "Sprint", "Standup", "Review", "Deadline", "Workshop"]
                           : ["All events", "Team", "Design"]
                     }
                     value={filter}

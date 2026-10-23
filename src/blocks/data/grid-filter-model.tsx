@@ -68,9 +68,7 @@ export function useFilteringTable<T extends { id: number }>({
 }) {
   const columnsRef = useRef(columns);
   columnsRef.current = columns;
-  const schema = JSON.stringify(
-    columns.map((c) => [c.id, c.key, c.width, c.className]),
-  );
+  const schema = JSON.stringify(columns.map((c) => [c.id, c.key, c.width, c.className]));
   // Keep the renderer function identity stable while its current block actions
   // are read from a ref. Data updates must not remount an open cell menu.
   const defs = useMemo<ColumnDef<DataGridFeatures, T>[]>(
@@ -92,9 +90,7 @@ export function useFilteringTable<T extends { id: number }>({
             <DataGridColumnHeader column={column} title={c.id} visibility />
           ),
         cell: ({ row }) =>
-          columnsRef.current
-            .find((current) => current.id === c.id)!
-            .cell(row.original, row),
+          columnsRef.current.find((current) => current.id === c.id)!.cell(row.original, row),
         enableSorting: !c.id.startsWith("_"),
         enableHiding: !c.id.startsWith("_") && c.id !== "Account",
         enableGlobalFilter: !c.id.startsWith("_"),
@@ -127,14 +123,8 @@ export function useFilteringTable<T extends { id: number }>({
       rowPinning: { top: activePinned.map(String), bottom: [] },
     },
     onSortingChange: (updater) => {
-      const next = functionalUpdate(updater, [
-        { id: sort.key, desc: !sort.asc },
-      ]);
-      onSort(
-        next[0]
-          ? { key: next[0].id, asc: !next[0].desc }
-          : { key: "", asc: true },
-      );
+      const next = functionalUpdate(updater, [{ id: sort.key, desc: !sort.asc }]);
+      onSort(next[0] ? { key: next[0].id, asc: !next[0].desc } : { key: "", asc: true });
       onPage?.(0);
     },
     onPaginationChange: (updater) => {
@@ -143,14 +133,9 @@ export function useFilteringTable<T extends { id: number }>({
       onPageSize?.(next.pageSize);
     },
     onRowSelectionChange: (updater) =>
-      onSelection?.(
-        Object.keys(functionalUpdate(updater, rowSelection)).map(Number),
-      ),
+      onSelection?.(Object.keys(functionalUpdate(updater, rowSelection)).map(Number)),
     onColumnVisibilityChange: (updater) => {
-      const next = functionalUpdate(
-        updater,
-        Object.fromEntries(hidden.map((id) => [id, false])),
-      );
+      const next = functionalUpdate(updater, Object.fromEntries(hidden.map((id) => [id, false])));
       onHidden?.(Object.keys(next).filter((id) => next[id] === false));
     },
     onRowPinningChange: (updater) =>
@@ -165,8 +150,7 @@ export function useFilteringTable<T extends { id: number }>({
       ]),
     getColumnCanGlobalFilter: () => true,
     globalFilterFn: (row, _id, value) =>
-      matchesRules(row.original, value.rules) &&
-      (!value.filter || value.filter(row.original)),
+      matchesRules(row.original, value.rules) && (!value.filter || value.filter(row.original)),
     columnResizeMode: "onChange",
     keepPinnedRows: true,
     autoResetPageIndex: false,
@@ -216,10 +200,7 @@ export function FilterGrid<T extends object>({
         width: resizable ? "fixed" : "auto",
       }}
       tableClassNames={{
-        base: cn(
-          "text-sm [&_th]:h-8 [&_th]:px-3 [&_td]:px-3 [&_td]:py-1.5",
-          className,
-        ),
+        base: cn("text-sm [&_th]:h-8 [&_th]:px-3 [&_td]:px-3 [&_td]:py-1.5", className),
         headerRow: "h-8",
       }}
     >

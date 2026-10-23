@@ -3,7 +3,7 @@ import type {
   FilterIssue,
   FilterIssueReason,
   FilterLabels,
-} from "@/components/reui/filters/filters-types"
+} from "@/components/reui/filters/filters-types";
 
 /**
  * The shipped English copy. `stepAnnouncement` (consumer-composed create
@@ -83,16 +83,14 @@ export const DEFAULT_FILTER_LABELS: FilterLabels = {
       : `${label} selected. ${cleared} other selections cleared.`,
   itemCount: (count) => `${count} items`,
   fieldsLabel: "Attributes",
-  resultsAnnouncement: (count) =>
-    count === 1 ? "1 result" : `${count} results`,
+  resultsAnnouncement: (count) => (count === 1 ? "1 result" : `${count} results`),
   actionsLabel: "Actions",
   stepAnnouncement: (step, label) => {
-    if (step === "field") return `Choose an attribute. ${label}`
-    if (step === "operator") return `Choose a condition for ${label}`
-    return `Enter a value for ${label}`
+    if (step === "field") return `Choose an attribute. ${label}`;
+    if (step === "operator") return `Choose a condition for ${label}`;
+    return `Enter a value for ${label}`;
   },
-  countAnnouncement: (count) =>
-    count === 1 ? "1 filter applied" : `${count} filters applied`,
+  countAnnouncement: (count) => (count === 1 ? "1 filter applied" : `${count} filters applied`),
   valueCount: (count) => `${count} selected`,
   valueDetail: (summary, values) => `${summary}: ${values.join(", ")}`,
   valueRange: (from, to) => `${from} to ${to}`,
@@ -107,20 +105,17 @@ export const DEFAULT_FILTER_LABELS: FilterLabels = {
   issueEmptyGroup: "This group has no conditions yet",
   // "Row", not "condition": an empty GROUP is counted here too and a group is
   // not a condition. Rule and group divs alike carry `data-slot="filter-row"`.
-  issueSummary: (count) =>
-    count === 1 ? "1 row needs attention" : `${count} rows need attention`,
-}
+  issueSummary: (count) => (count === 1 ? "1 row needs attention" : `${count} rows need attention`),
+};
 
 /**
  * Shallow merge over the defaults, like the cascader's. A deep merge would leak
  * the default back into a replaced function-valued label for the arguments the
  * consumer did not think about.
  */
-export function resolveFilterLabels(
-  labels?: Partial<FilterLabels>
-): FilterLabels {
-  if (!labels) return DEFAULT_FILTER_LABELS
-  return { ...DEFAULT_FILTER_LABELS, ...labels }
+export function resolveFilterLabels(labels?: Partial<FilterLabels>): FilterLabels {
+  if (!labels) return DEFAULT_FILTER_LABELS;
+  return { ...DEFAULT_FILTER_LABELS, ...labels };
 }
 
 /**
@@ -129,23 +124,20 @@ export function resolveFilterLabels(
  */
 export function filterIssueLabel(
   issue: Pick<FilterIssue, "reason" | "message"> | FilterIssueReason,
-  labels: FilterLabels
+  labels: FilterLabels,
 ): string {
-  const reason = typeof issue === "string" ? issue : issue.reason
-  if (typeof issue !== "string" && issue.message) return issue.message
-  if (reason === "missing-operator") return labels.issueOperator
-  if (reason === "incomplete-range") return labels.issueRange
-  if (reason === "reversed-range") return labels.issueRangeOrder
-  if (reason === "empty-group") return labels.issueEmptyGroup
-  return labels.issueValue
+  const reason = typeof issue === "string" ? issue : issue.reason;
+  if (typeof issue !== "string" && issue.message) return issue.message;
+  if (reason === "missing-operator") return labels.issueOperator;
+  if (reason === "incomplete-range") return labels.issueRange;
+  if (reason === "reversed-range") return labels.issueRangeOrder;
+  if (reason === "empty-group") return labels.issueEmptyGroup;
+  return labels.issueValue;
 }
 
 /** The search placeholder for a step's panel. */
-export function stepPlaceholder(
-  step: FilterDraftStep,
-  labels: FilterLabels
-): string {
-  if (step === "field") return labels.searchFields
-  if (step === "operator") return labels.searchOperators
-  return labels.searchOptions
+export function stepPlaceholder(step: FilterDraftStep, labels: FilterLabels): string {
+  if (step === "field") return labels.searchFields;
+  if (step === "operator") return labels.searchOperators;
+  return labels.searchOptions;
 }

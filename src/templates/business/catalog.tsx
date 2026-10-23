@@ -1,11 +1,399 @@
-import type { CatalogProduct } from './catalog-data';
-import { useFileUpload } from '@/hooks/use-file-upload';
-import { BusinessGrid } from './grid';
-import { useState } from 'react';
-import { Plus, X, SlidersHorizontal } from 'lucide-react';
-import { Textarea } from '@/components/ui/textarea';
-import { Button, Input, Panel, Table, TableHeader, TableHead, TableRow, TableBody, TableCell, exportCsv } from './shared';
-import { Choice, SimpleChoice, Tone } from './fidelity';
-import shirt from '@/blocks/commerce/assets/shirt.jpg';
-export function ProductCatalog({products,onCreate,onEdit}:{products:CatalogProduct[];onCreate:()=>void;onEdit:(p:CatalogProduct)=>void}){const[q,setQ]=useState('');const[status,setStatus]=useState('All statuses');const[filters,setFilters]=useState(false);const shown=products.filter(p=>(p.name+' '+p.vendor).toLowerCase().includes(q.toLowerCase())&&(status==='All statuses'||status===p.status));return <><div className="bt-heading"><h1>Products <span className="bt-count">{products.length}</span></h1><div className="bt-actions"><Button variant="outline" onClick={()=>exportCsv('products',[['Product','Vendor','Category','Stock','Price','Status'],...products.map(p=>[p.name,p.vendor,p.category,String(p.stock),p.price,p.status])])}>Export</Button><Button onClick={onCreate}><Plus/>New product</Button></div></div><section className="bt-catalog"><div className="bt-catalog-filter"><Button variant="outline" onClick={()=>setFilters(!filters)}><SlidersHorizontal/>Filters</Button><span>Product contains</span><Input value={q} onChange={e=>{setQ(e.target.value);}} placeholder="Name or vendor..." aria-label="Name or vendor"/><Button variant="ghost" size="icon-sm" aria-label="Clear product search" onClick={()=>setQ('')}><X/></Button>{filters&&<Choice label="Product status" value={status} onChange={setStatus} options={['All statuses','Active','Draft','Scheduled']}/>}<Button className="ml-auto" variant="ghost" onClick={()=>{setQ('');setStatus('All statuses')}}>Clear</Button></div><BusinessGrid headers={['Product','Category','Inventory','Price','Status']} selectable pageSize={8} rows={shown.map(p=>[<button key="product" className="bt-product-name text-left" onClick={()=>onEdit(p)}><img className="bt-product-image" src={p.image} alt=""/><span>{p.name}<small className="bt-table-sub">{p.vendor}</small></span></button>,p.category,<span key="inventory">{p.stock.toLocaleString()} in stock<small className="bt-table-sub">{p.variants} variants</small></span>,p.price,<Tone key="status" tone={p.status==='Active'?'green':p.status==='Draft'?'amber':'blue'}>{p.status}</Tone>])} onRow={i=>onEdit(shown[i])}/></section></>}
-export function ProductEditor({product,onCancel,onSave}:{product?:CatalogProduct;onCancel:()=>void;onSave:(p:CatalogProduct)=>void}){const[title,setTitle]=useState(product?.name??'');const[status,setStatus]=useState(product?.status??'Draft');const[category,setCategory]=useState(product?.category??'Apparel');const[vendor,setVendor]=useState(product?.vendor??'Manifest Atelier');const[variants,setVariants]=useState<{color:string;size:string;sku:string;price:string;inventory:string}[]>(product?.variantRows??[]);const[{files,isDragging,errors},upload]=useFileUpload({multiple:true,accept:'image/*',maxSize:10*1024*1024});return <form onSubmit={async e=>{e.preventDefault();let image=product?.image??shirt;const first=files[0]?.file;if(first instanceof File)image=await new Promise<string>((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result));reader.onerror=()=>reject(reader.error);reader.readAsDataURL(first)});onSave({name:title,vendor,category,status,stock:variants.length?variants.reduce((s,v)=>s+Number(v.inventory||0),0):product?.stock??0,variants:variants.length||product?.variants||0,price:variants[0]?'$'+variants[0].price:product?.price??'$0',image,variantRows:variants})}}><div className="bt-heading mb-4"><h1>{product?'Edit product':'New product'}</h1><div className="bt-actions"><Button type="button" variant="outline" onClick={onCancel}>Cancel</Button><Button type="submit" disabled={!title.trim()}>{product?'Save changes':'Create product'}</Button></div></div><div className="bt-product-editor"><div className="bt-stack"><Panel title="General"><label className="bt-editor-row"><span>Title<small>Storefront display name.</small></span><Input aria-label="Title" placeholder="e.g. AeroFlex Runner" value={title} onChange={e=>setTitle(e.target.value)} required/></label><label className="bt-editor-row"><span>Subtitle<small>A short tagline under the title.</small></span><Input placeholder="Optional"/></label><label className="bt-editor-row"><span>Description<small>Sales copy for the product page.</small></span><Textarea aria-label="Description" placeholder="Responsive knit running shoe with a cushioned midsole..." rows={4}/></label></Panel><Panel title="Media"><div className="bt-dropzone" data-dragging={isDragging} onDragEnter={upload.handleDragEnter} onDragLeave={upload.handleDragLeave} onDragOver={upload.handleDragOver} onDrop={upload.handleDrop}><input className="hidden" {...upload.getInputProps()}/><Button type="button" variant="outline" size="sm" onClick={upload.openFileDialog}><Plus/>Add files</Button><span>{files.length?files.map(f=>f.file.name).join(', '):'Drop product photos here or click to browse.'}</span></div>{errors.map(x=><p className="text-destructive text-xs" role="alert" key={x}>{x}</p>)}{files.length>0&&<div className="bt-upload-previews">{files.map(f=><div key={f.id}><img src={f.preview} alt={f.file.name}/><Button type="button" variant="ghost" size="icon-sm" aria-label={'Remove '+f.file.name} onClick={()=>upload.removeFile(f.id)}><X/></Button></div>)}</div>}</Panel><Panel title="Variants"><div className="flex justify-end mb-3"><Button type="button" variant="outline" onClick={()=>setVariants(v=>[...v,{color:'',size:'',sku:'',price:'',inventory:''}])}><Plus/>Add variant</Button></div><Table><TableHeader><TableRow>{['Color','Size','SKU','Price','Inventory',''].map((x,i)=><TableHead key={i}>{x}</TableHead>)}</TableRow></TableHeader><TableBody>{variants.length?variants.map((v,i)=><TableRow key={i}>{(['color','size','sku','price','inventory'] as const).map(k=><TableCell key={k}><Input aria-label={`Variant ${i+1} ${k}`} type={k==='price'||k==='inventory'?'number':'text'} min={0} value={v[k]} onChange={e=>setVariants(rows=>rows.map((r,j)=>j===i?{...r,[k]:e.target.value}:r))}/></TableCell>)}<TableCell><Button type="button" size="icon-sm" variant="ghost" aria-label="Remove variant" onClick={()=>setVariants(rows=>rows.filter((_,j)=>j!==i))}><X/></Button></TableCell></TableRow>):<TableRow><TableCell colSpan={6}><div className="bt-empty">{product?.variants?`${product.variants} existing variants · ${product.stock.toLocaleString()} in stock. Existing inventory is retained when saving.`:'No variants yet. Add one to get started.'}</div></TableCell></TableRow>}</TableBody></Table></Panel></div><div className="bt-stack"><Panel title="Status"><Choice label="Status" value={status} onChange={setStatus} options={['Draft','Active','Scheduled']}/></Panel><Panel title="Organization"><div className="bt-form"><label>Category<Choice label="Category" value={category} onChange={setCategory} options={['Apparel','Accessories','Activewear','Bags','Denim','Footwear','Outerwear']}/></label><label>Type<SimpleChoice label="Type" options={['Physical','Digital']}/></label><label>Vendor<Input value={vendor} onChange={e=>setVendor(e.target.value)}/></label><label>Collections<Input placeholder="Add a collection"/></label><label>Tags<Input placeholder="Add a tag"/></label></div></Panel></div></div></form>}
+import type { CatalogProduct } from "./catalog-data";
+import { useFileUpload } from "@/hooks/use-file-upload";
+import { BusinessGrid } from "./grid";
+import { useState } from "react";
+import { Plus, X, SlidersHorizontal } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Button,
+  Input,
+  Panel,
+  Table,
+  TableHeader,
+  TableHead,
+  TableRow,
+  TableBody,
+  TableCell,
+  exportCsv,
+} from "./shared";
+import { Choice, SimpleChoice, Tone } from "./fidelity";
+import shirt from "@/blocks/commerce/assets/shirt.jpg";
+export function ProductCatalog({
+  products,
+  onCreate,
+  onEdit,
+}: {
+  products: CatalogProduct[];
+  onCreate: () => void;
+  onEdit: (p: CatalogProduct) => void;
+}) {
+  const [q, setQ] = useState("");
+  const [status, setStatus] = useState("All statuses");
+  const [filters, setFilters] = useState(false);
+  const shown = products.filter(
+    (p) =>
+      (p.name + " " + p.vendor).toLowerCase().includes(q.toLowerCase()) &&
+      (status === "All statuses" || status === p.status),
+  );
+  return (
+    <>
+      <div className="bt-heading">
+        <h1>
+          Products <span className="bt-count">{products.length}</span>
+        </h1>
+        <div className="bt-actions">
+          <Button
+            variant="outline"
+            onClick={() =>
+              exportCsv("products", [
+                ["Product", "Vendor", "Category", "Stock", "Price", "Status"],
+                ...products.map((p) => [
+                  p.name,
+                  p.vendor,
+                  p.category,
+                  String(p.stock),
+                  p.price,
+                  p.status,
+                ]),
+              ])
+            }
+          >
+            Export
+          </Button>
+          <Button onClick={onCreate}>
+            <Plus />
+            New product
+          </Button>
+        </div>
+      </div>
+      <section className="bt-catalog">
+        <div className="bt-catalog-filter">
+          <Button variant="outline" onClick={() => setFilters(!filters)}>
+            <SlidersHorizontal />
+            Filters
+          </Button>
+          <span>Product contains</span>
+          <Input
+            value={q}
+            onChange={(e) => {
+              setQ(e.target.value);
+            }}
+            placeholder="Name or vendor..."
+            aria-label="Name or vendor"
+          />
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            aria-label="Clear product search"
+            onClick={() => setQ("")}
+          >
+            <X />
+          </Button>
+          {filters && (
+            <Choice
+              label="Product status"
+              value={status}
+              onChange={setStatus}
+              options={["All statuses", "Active", "Draft", "Scheduled"]}
+            />
+          )}
+          <Button
+            className="ml-auto"
+            variant="ghost"
+            onClick={() => {
+              setQ("");
+              setStatus("All statuses");
+            }}
+          >
+            Clear
+          </Button>
+        </div>
+        <BusinessGrid
+          headers={["Product", "Category", "Inventory", "Price", "Status"]}
+          selectable
+          pageSize={8}
+          rows={shown.map((p) => [
+            <button key="product" className="bt-product-name text-left" onClick={() => onEdit(p)}>
+              <img className="bt-product-image" src={p.image} alt="" />
+              <span>
+                {p.name}
+                <small className="bt-table-sub">{p.vendor}</small>
+              </span>
+            </button>,
+            p.category,
+            <span key="inventory">
+              {p.stock.toLocaleString()} in stock
+              <small className="bt-table-sub">{p.variants} variants</small>
+            </span>,
+            p.price,
+            <Tone
+              key="status"
+              tone={p.status === "Active" ? "green" : p.status === "Draft" ? "amber" : "blue"}
+            >
+              {p.status}
+            </Tone>,
+          ])}
+          onRow={(i) => onEdit(shown[i])}
+        />
+      </section>
+    </>
+  );
+}
+export function ProductEditor({
+  product,
+  onCancel,
+  onSave,
+}: {
+  product?: CatalogProduct;
+  onCancel: () => void;
+  onSave: (p: CatalogProduct) => void;
+}) {
+  const [title, setTitle] = useState(product?.name ?? "");
+  const [status, setStatus] = useState(product?.status ?? "Draft");
+  const [category, setCategory] = useState(product?.category ?? "Apparel");
+  const [vendor, setVendor] = useState(product?.vendor ?? "Manifest Atelier");
+  const [variants, setVariants] = useState<
+    { color: string; size: string; sku: string; price: string; inventory: string }[]
+  >(product?.variantRows ?? []);
+  const [{ files, isDragging, errors }, upload] = useFileUpload({
+    multiple: true,
+    accept: "image/*",
+    maxSize: 10 * 1024 * 1024,
+  });
+  return (
+    <form
+      onSubmit={async (e) => {
+        e.preventDefault();
+        let image = product?.image ?? shirt;
+        const first = files[0]?.file;
+        if (first instanceof File)
+          image = await new Promise<string>((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(String(reader.result));
+            reader.onerror = () => reject(reader.error);
+            reader.readAsDataURL(first);
+          });
+        onSave({
+          name: title,
+          vendor,
+          category,
+          status,
+          stock: variants.length
+            ? variants.reduce((s, v) => s + Number(v.inventory || 0), 0)
+            : (product?.stock ?? 0),
+          variants: variants.length || product?.variants || 0,
+          price: variants[0] ? "$" + variants[0].price : (product?.price ?? "$0"),
+          image,
+          variantRows: variants,
+        });
+      }}
+    >
+      <div className="bt-heading mb-4">
+        <h1>{product ? "Edit product" : "New product"}</h1>
+        <div className="bt-actions">
+          <Button type="button" variant="outline" onClick={onCancel}>
+            Cancel
+          </Button>
+          <Button type="submit" disabled={!title.trim()}>
+            {product ? "Save changes" : "Create product"}
+          </Button>
+        </div>
+      </div>
+      <div className="bt-product-editor">
+        <div className="bt-stack">
+          <Panel title="General">
+            <label className="bt-editor-row">
+              <span>
+                Title<small>Storefront display name.</small>
+              </span>
+              <Input
+                aria-label="Title"
+                placeholder="e.g. AeroFlex Runner"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                required
+              />
+            </label>
+            <label className="bt-editor-row">
+              <span>
+                Subtitle<small>A short tagline under the title.</small>
+              </span>
+              <Input placeholder="Optional" />
+            </label>
+            <label className="bt-editor-row">
+              <span>
+                Description<small>Sales copy for the product page.</small>
+              </span>
+              <Textarea
+                aria-label="Description"
+                placeholder="Responsive knit running shoe with a cushioned midsole..."
+                rows={4}
+              />
+            </label>
+          </Panel>
+          <Panel title="Media">
+            <div
+              className="bt-dropzone"
+              data-dragging={isDragging}
+              onDragEnter={upload.handleDragEnter}
+              onDragLeave={upload.handleDragLeave}
+              onDragOver={upload.handleDragOver}
+              onDrop={upload.handleDrop}
+            >
+              <input className="hidden" {...upload.getInputProps()} />
+              <Button type="button" variant="outline" size="sm" onClick={upload.openFileDialog}>
+                <Plus />
+                Add files
+              </Button>
+              <span>
+                {files.length
+                  ? files.map((f) => f.file.name).join(", ")
+                  : "Drop product photos here or click to browse."}
+              </span>
+            </div>
+            {errors.map((x) => (
+              <p className="text-destructive text-xs" role="alert" key={x}>
+                {x}
+              </p>
+            ))}
+            {files.length > 0 && (
+              <div className="bt-upload-previews">
+                {files.map((f) => (
+                  <div key={f.id}>
+                    <img src={f.preview} alt={f.file.name} />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon-sm"
+                      aria-label={"Remove " + f.file.name}
+                      onClick={() => upload.removeFile(f.id)}
+                    >
+                      <X />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </Panel>
+          <Panel title="Variants">
+            <div className="flex justify-end mb-3">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() =>
+                  setVariants((v) => [
+                    ...v,
+                    { color: "", size: "", sku: "", price: "", inventory: "" },
+                  ])
+                }
+              >
+                <Plus />
+                Add variant
+              </Button>
+            </div>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  {["Color", "Size", "SKU", "Price", "Inventory", ""].map((x, i) => (
+                    <TableHead key={i}>{x}</TableHead>
+                  ))}
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {variants.length ? (
+                  variants.map((v, i) => (
+                    <TableRow key={i}>
+                      {(["color", "size", "sku", "price", "inventory"] as const).map((k) => (
+                        <TableCell key={k}>
+                          <Input
+                            aria-label={`Variant ${i + 1} ${k}`}
+                            type={k === "price" || k === "inventory" ? "number" : "text"}
+                            min={0}
+                            value={v[k]}
+                            onChange={(e) =>
+                              setVariants((rows) =>
+                                rows.map((r, j) => (j === i ? { ...r, [k]: e.target.value } : r)),
+                              )
+                            }
+                          />
+                        </TableCell>
+                      ))}
+                      <TableCell>
+                        <Button
+                          type="button"
+                          size="icon-sm"
+                          variant="ghost"
+                          aria-label="Remove variant"
+                          onClick={() => setVariants((rows) => rows.filter((_, j) => j !== i))}
+                        >
+                          <X />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={6}>
+                      <div className="bt-empty">
+                        {product?.variants
+                          ? `${product.variants} existing variants · ${product.stock.toLocaleString()} in stock. Existing inventory is retained when saving.`
+                          : "No variants yet. Add one to get started."}
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </Panel>
+        </div>
+        <div className="bt-stack">
+          <Panel title="Status">
+            <Choice
+              label="Status"
+              value={status}
+              onChange={setStatus}
+              options={["Draft", "Active", "Scheduled"]}
+            />
+          </Panel>
+          <Panel title="Organization">
+            <div className="bt-form">
+              <label>
+                Category
+                <Choice
+                  label="Category"
+                  value={category}
+                  onChange={setCategory}
+                  options={[
+                    "Apparel",
+                    "Accessories",
+                    "Activewear",
+                    "Bags",
+                    "Denim",
+                    "Footwear",
+                    "Outerwear",
+                  ]}
+                />
+              </label>
+              <label>
+                Type
+                <SimpleChoice label="Type" options={["Physical", "Digital"]} />
+              </label>
+              <label>
+                Vendor
+                <Input value={vendor} onChange={(e) => setVendor(e.target.value)} />
+              </label>
+              <label>
+                Collections
+                <Input placeholder="Add a collection" />
+              </label>
+              <label>
+                Tags
+                <Input placeholder="Add a tag" />
+              </label>
+            </div>
+          </Panel>
+        </div>
+      </div>
+    </form>
+  );
+}

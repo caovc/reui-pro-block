@@ -4,9 +4,7 @@ test("dispatch presets retain live header order, resize and reset inside the new
   page,
 }) => {
   await page.goto("/#/preview/data-grid/drag-drop/data-grid-drag-drop-3");
-  await expect(
-    page.getByRole("heading", { name: "Dispatch Layout" }),
-  ).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Dispatch Layout" })).toBeVisible();
   await page.getByRole("button", { name: "Risk", exact: true }).click();
   await expect(page.getByRole("columnheader").first()).toContainText("Status");
   const column = page.locator('th[data-col-id="wave"]');
@@ -24,9 +22,7 @@ test("dispatch presets retain live header order, resize and reset inside the new
     .toBeGreaterThan(originalWidth + 20);
   await page.getByRole("button", { name: "Reset", exact: true }).click();
   await expect(page.getByRole("columnheader").first()).toContainText("Wave");
-  await expect
-    .poll(async () => (await column.boundingBox())!.width)
-    .toBe(originalWidth);
+  await expect.poll(async () => (await column.boundingBox())!.width).toBe(originalWidth);
   expect(
     await page
       .getByRole("region", { name: "Dispatch Layout" })
@@ -49,12 +45,8 @@ test("inventory retains invalid-cell save protection and Escape restores the sav
     exact: true,
   });
   await field.fill("-1");
-  await expect(
-    page.getByRole("button", { name: "Save changes", exact: true }),
-  ).toBeDisabled();
-  await expect(page.getByRole("alert")).toContainText(
-    "Price cannot be negative.",
-  );
+  await expect(page.getByRole("button", { name: "Save changes", exact: true })).toBeDisabled();
+  await expect(page.getByRole("alert")).toContainText("Price cannot be negative.");
   await field.press("Escape");
   await expect(
     page.getByRole("button", {
@@ -76,14 +68,10 @@ test("treasury actual transactions roll up while plan and variance remain indepe
     }),
   });
   await expect(cash.getByRole("cell").nth(1)).toContainText("$243,000");
-  await page
-    .getByRole("button", { name: "New Transaction", exact: true })
-    .click();
+  await page.getByRole("button", { name: "New Transaction", exact: true }).click();
   await page.getByLabel("Description", { exact: true }).fill("QA income");
   await page.getByLabel("Amount (USD)", { exact: true }).fill("1000");
-  await page
-    .getByRole("button", { name: "Add transaction", exact: true })
-    .click();
+  await page.getByRole("button", { name: "Add transaction", exact: true }).click();
   await expect(cash.getByRole("cell").nth(1)).toContainText("$244,000");
   await page.getByRole("tab", { name: "Plan", exact: true }).click();
   await expect(cash.getByRole("cell").nth(1)).toContainText("$248,000");

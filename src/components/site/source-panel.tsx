@@ -42,19 +42,13 @@ export function SourcePanel({
       <section aria-label="Installation" className="source-installation">
         <div className="source-section-heading">
           <h3>Installation</h3>
-          <Button
-            variant="outline"
-            size="sm"
-            disabled={downloading}
-            onClick={download}
-          >
+          <Button variant="outline" size="sm" disabled={downloading} onClick={download}>
             <ArrowDownToLine />
             {downloading ? "Preparing…" : "Download starter"}
           </Button>
         </div>
         <p>
-          Download and extract <strong>{block.id}.zip</strong>, open its folder,
-          then run:
+          Download and extract <strong>{block.id}.zip</strong>, open its folder, then run:
         </p>
         <CodeBlock
           code={command}
@@ -77,46 +71,34 @@ export function SourcePanel({
             </div>
             <CodeBlockCopyButton
               labels={{ copy: "Copy installation commands", copied: "Copied" }}
-              onCopyError={() =>
-                toast.error("Could not copy installation commands")
-              }
+              onCopyError={() => toast.error("Could not copy installation commands")}
             />
           </CodeBlockHeader>
         </CodeBlock>
       </section>
       <section aria-label="Block source">
         <div className="source-section-heading">
-          <h3>Code</h3>
+          <h3>Block implementation</h3>
           <span>React · TypeScript</span>
         </div>
-        <CodeViewer
-          key={`${block.group}/${block.id}`}
-          block={block}
-          dark={dark}
-        />
+        <p className="mb-4 text-sm text-muted-foreground">
+          Full implementation with imports, demo data and interactions. Shared components and the
+          usage example are available in the file selector.
+        </p>
+        <CodeViewer key={`${block.group}/${block.id}`} block={block} dark={dark} />
       </section>
       <details className="preset-source">
         <summary>Theme CSS · current customization</summary>
         <p>
-          Append this CSS after the starter’s existing theme. Apply the{" "}
-          <code>dark</code> class to the root element for dark mode.
+          Append this CSS after the starter’s existing theme. Apply the <code>dark</code> class to
+          the root element for dark mode.
         </p>
-        <CodeBlock
-          code={themeCSS(theme)}
-          language="css"
-          showLineNumbers
-          label="Theme CSS"
-        >
+        <CodeBlock code={themeCSS(theme)} language="css" showLineNumbers label="Theme CSS">
           <CodeBlockHeader>
             <span>preview-theme.css</span>
             <div className="flex">
-              <CodeBlockDownloadButton
-                filename="preview-theme.css"
-                label="Download theme CSS"
-              />
-              <CodeBlockCopyButton
-                onCopyError={() => toast.error("Could not copy theme CSS")}
-              />
+              <CodeBlockDownloadButton filename="preview-theme.css" label="Download theme CSS" />
+              <CodeBlockCopyButton onCopyError={() => toast.error("Could not copy theme CSS")} />
             </div>
           </CodeBlockHeader>
         </CodeBlock>

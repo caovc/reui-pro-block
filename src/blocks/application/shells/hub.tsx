@@ -30,54 +30,15 @@ import {
   WorkspaceMenu,
   toast,
 } from "./chrome";
-import {
-  CalendarContext,
-  EventCreator,
-  calendarColors,
-} from "./calendar-panel";
+import { CalendarContext, EventCreator, calendarColors } from "./calendar-panel";
 const agenda = [
-  [
-    "Today",
-    "Morning Standup",
-    "9:00 AM to 9:15 AM",
-    "Meeting",
-    "Zoom · Room A",
-    3,
-  ],
-  [
-    "Today",
-    "Sprint Planning",
-    "10:00 AM to 11:00 AM",
-    "Meeting",
-    "Conf Room B",
-    2,
-  ],
-  [
-    "Today",
-    "Lunch with Sarah",
-    "12:30 PM to 1:30 PM",
-    "Personal",
-    "The Coffee House, 3rd Ave",
-    1,
-  ],
+  ["Today", "Morning Standup", "9:00 AM to 9:15 AM", "Meeting", "Zoom · Room A", 3],
+  ["Today", "Sprint Planning", "10:00 AM to 11:00 AM", "Meeting", "Conf Room B", 2],
+  ["Today", "Lunch with Sarah", "12:30 PM to 1:30 PM", "Personal", "The Coffee House, 3rd Ave", 1],
   ["Today", "Code Review Session", "3:00 PM to 4:00 PM", "Meeting", "", 2],
-  [
-    "Tomorrow",
-    "Client Presentation",
-    "9:30 AM to 10:30 AM",
-    "Meeting",
-    "Google Meet",
-    2,
-  ],
+  ["Tomorrow", "Client Presentation", "9:30 AM to 10:30 AM", "Meeting", "Google Meet", 2],
   ["Tomorrow", "Design Sync", "2:00 PM to 2:45 PM", "Meeting", "", 2],
-  [
-    "This week",
-    "Team Retrospective",
-    "11:00 AM to 12:00 PM",
-    "Meeting",
-    "Conf Room A",
-    3,
-  ],
+  ["This week", "Team Retrospective", "11:00 AM to 12:00 PM", "Meeting", "Conf Room A", 3],
   ["This week", "1:1 with Manager", "4:00 PM to 4:30 PM", "Meeting", "Zoom", 1],
 ] as const;
 const initialContacts = [
@@ -149,15 +110,10 @@ function SchedulePanel() {
       <div className="shell-scroll">
         {["Today", "Tomorrow", "This week"].map((group) => (
           <section key={group} className="border-b p-3">
-            <p className="mb-3 text-[10px] uppercase text-muted-foreground">
-              {group}
-            </p>
+            <p className="mb-3 text-[10px] uppercase text-muted-foreground">{group}</p>
             <div className="flex flex-col gap-2">
               {agenda
-                .filter(
-                  (a) =>
-                    a[0] === group && (!meetingsOnly || a[3] === "Meeting"),
-                )
+                .filter((a) => a[0] === group && (!meetingsOnly || a[3] === "Meeting"))
                 .map((event, i) => (
                   <button
                     key={event[1]}
@@ -172,16 +128,11 @@ function SchedulePanel() {
                       <span className="min-w-0 flex-1 truncate text-xs font-medium">
                         {event[1]}
                       </span>
-                      <Badge
-                        variant="outline"
-                        className="h-4 rounded px-1 text-[9px]"
-                      >
+                      <Badge variant="outline" className="h-4 rounded px-1 text-[9px]">
                         {event[3]}
                       </Badge>
                     </span>
-                    <span className="text-[10px] text-muted-foreground">
-                      {event[2]}
-                    </span>
+                    <span className="text-[10px] text-muted-foreground">{event[2]}</span>
                     {event[4] && (
                       <span className="flex items-center gap-1 text-[10px] text-muted-foreground">
                         <MapPin className="size-3" />
@@ -208,9 +159,7 @@ function SchedulePanel() {
                     onClick={() => toast(e.name)}
                   >
                     <p className="text-xs font-medium">{e.name}</p>
-                    <p className="mt-1 text-[10px] text-muted-foreground">
-                      {e.time}
-                    </p>
+                    <p className="mt-1 text-[10px] text-muted-foreground">{e.time}</p>
                   </button>
                 ))}
             </div>
@@ -252,17 +201,13 @@ function ContactsPanel() {
       <div className="shell-scroll">
         {["Design", "Engineering", "Management"].map((group) => (
           <section className="px-4 py-4" key={group}>
-            <p className="mb-4 text-[10px] uppercase text-muted-foreground">
-              {group}
-            </p>
+            <p className="mb-4 text-[10px] uppercase text-muted-foreground">{group}</p>
             <div className="flex flex-col gap-5">
               {contacts
                 .filter(
                   (c) =>
                     c.group === group &&
-                    `${c.name} ${c.role}`
-                      .toLowerCase()
-                      .includes(query.toLowerCase()),
+                    `${c.name} ${c.role}`.toLowerCase().includes(query.toLowerCase()),
                 )
                 .map((person, i) => (
                   <div className="flex items-center gap-2" key={person.name}>
@@ -272,9 +217,7 @@ function ContactsPanel() {
                       presence={person.status as "online" | "away" | "offline"}
                     />
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-xs font-medium">
-                        {person.name}
-                      </p>
+                      <p className="truncate text-xs font-medium">{person.name}</p>
                       <p className="mt-1 truncate text-[10px] text-muted-foreground">
                         {person.role}
                       </p>
@@ -286,8 +229,7 @@ function ContactsPanel() {
                       aria-label={`Message ${person.name}`}
                       onClick={() =>
                         toast(`Message ${person.name}`, {
-                          description:
-                            "Direct messaging selected in this demo.",
+                          description: "Direct messaging selected in this demo.",
                         })
                       }
                     >
@@ -344,13 +286,7 @@ export default function CalendarHub() {
   const [hidden, setHidden] = useState(false);
   const [period, setPeriod] = useState(5);
   const [view, setView] = useState("Week");
-  const [enabled, setEnabled] = useState([
-    "Work",
-    "Personal",
-    "Meetings",
-    "Family",
-    "Birthdays",
-  ]);
+  const [enabled, setEnabled] = useState(["Work", "Personal", "Meetings", "Family", "Birthdays"]);
   const month = new Date(2026, period, 1).toLocaleDateString("en-US", {
     month: "long",
     year: "numeric",
@@ -362,11 +298,7 @@ export default function CalendarHub() {
     ["Notifications", Bell],
   ] as const;
   return (
-    <div
-      className="shell-reference"
-      data-shell-variant="5"
-      data-panel-hidden={hidden}
-    >
+    <div className="shell-reference" data-shell-variant="5" data-panel-hidden={hidden}>
       <nav className="shell-icon-rail">
         <ReuiMark />
         <div className="mt-5 flex flex-col gap-1.5">
@@ -407,10 +339,7 @@ export default function CalendarHub() {
           ) : (
             <Notifications feed />
           )}
-          <CollapseHandle
-            collapsed={hidden}
-            onToggle={() => setHidden(!hidden)}
-          />
+          <CollapseHandle collapsed={hidden} onToggle={() => setHidden(!hidden)} />
         </aside>
       )}
       <main className={`shell-content-frame ${!hidden ? "max-md:hidden" : ""}`}>
@@ -484,11 +413,7 @@ export default function CalendarHub() {
                 </DropdownMenuGroup>
               </DropdownMenuContent>
             </DropdownMenu>
-            <EventCreator
-              onCreate={(event) =>
-                toast.success(`${event.name} added to ${month}`)
-              }
-            />
+            <EventCreator onCreate={(event) => toast.success(`${event.name} added to ${month}`)} />
           </div>
         </header>
         <PlaceholderCanvas solid />

@@ -1,23 +1,761 @@
-import { InventoryBars, TrainingBars, TransitBars } from './bar-reui-plots'
-import { ReuiIsometricBar } from './reui-free-chart-primitives'
-import { useEffect, useId, useState } from 'react'
-import { CircleDollarSign, Palette } from 'lucide-react'
-import { toast } from 'sonner'
-import { Button } from '@/components/ui/button'
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { ChartFrame, ChartMore, ChartStage, ChangePill, PeriodButtons, UpdatedDot } from './chart-chrome'
-import { BarChoiceMenu, BarExpand, BarFilterMenu, BarIconButton, BarLayers, BarLegend, BarPicker, BarStats, Hatch } from './bar-primitives'
-import { barColors, duration, useBarNarrow } from './bar-chart-utils'
-const funds=['WaveMark Capital','Envato Finances','QBridge Tech','Neon Liquidity','Stripe Treasury','ETH Reserve Pool']
-const fundColors=['#3bb2a6','#edbd00','#a572ed','#42b2e4','#e58ab2','#aeb7c7']
-const fundTotals=[7.6,6.7,9.1,11.7,14.3,11.9]
-const fundShares=[.553,.222,.086,.063,.038,.038]
-export function FundInflows(){const [range,setRange]=useState('All Years'),[fund,setFund]=useState('All Funds'),[mode,setMode]=useState('By Fund'),[selected,setSelected]=useState(4),[labels,setLabels]=useState(true),[estimate,setEstimate]=useState(true),[grid,setGrid]=useState(true),[revision,setRevision]=useState(0);const id=useId().replaceAll(':','');const narrow=useBarNarrow();const totals=fundTotals.map(v=>+(v*(fund==='All Funds'?1:fundShares[funds.indexOf(fund)])).toFixed(2));const indices=range==='Last 3 Years'?[3,4,5]:[0,1,2,3,4,5];const runrate=15.9*(fund==='All Funds'?1:fundShares[funds.indexOf(fund)]);const top=selected===5?runrate:totals[selected];const plot=<svg viewBox="0 0 1000 420" className="h-[330px] w-full sm:h-[410px]" preserveAspectRatio="none" role="radiogroup" aria-label="Inflows by year"><defs><Hatch id={`${id}-estimate`} color="var(--muted-foreground)"/></defs>{grid&&[0,5,10,15,20].map(v=><g key={v}><line x1="65" x2="980" y1={330-v*14} y2={330-v*14} stroke="var(--border)" strokeOpacity=".6"/><text x="53" y={334-v*14} fontSize={narrow?26:12} textAnchor="end" fill="var(--muted-foreground)">${v?`${v}M`:'0'}</text></g>)}<path d="M65 330H980L990 319H76Z" fill="var(--muted)"/><path d="M65 330H980V337H65Z" fill="var(--border)"/>{indices.map((j,i)=>{const x=90+i*880/indices.length,w=indices.length===6?77:135;const scale=14;let base=330;const isOpen=j===5;return <g key={j} role="radio" tabIndex={0} aria-checked={selected===j} aria-label={`${2021+j}: $${totals[j].toFixed(1)}M${isOpen?' booked, $15.9M run-rate':''}`} onClick={()=>setSelected(j)} onKeyDown={e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();setSelected(j)}}} style={{cursor:'pointer'}} opacity={selected===j?1:.45}>{(mode==='Total'||fund!=='All Funds'?[1]:fundShares).map((share,k)=>{const h=totals[j]*share*scale,y=base-h;base=y;const color=fund!=='All Funds'?fundColors[funds.indexOf(fund)]:mode==='Total'?fundColors[0]:fundColors[k];return <ReuiIsometricBar key={k} x={x} y={y} width={w} height={h} fill={color}/>})}{isOpen&&estimate&&<g><rect x={x} y={330-runrate*scale} width={w} height={(runrate-totals[j])*scale} fill={`url(#${id}-estimate)`}/><path d={`M${x} ${330-runrate*scale}l13 -13h${w}l-13 13Z`} fill="var(--muted)"/></g>}{labels&&<text x={x+w/2} y={330-(isOpen&&estimate?runrate:totals[j])*scale-25} textAnchor="middle" fill="currentColor" fontSize={narrow?25:13}>{`$${isOpen&&estimate?runrate.toFixed(1):totals[j].toFixed(1)}M${isOpen&&estimate?' est.':''}`}</text>}<text x={x+w/2} y="363" textAnchor="middle" fill="currentColor" fontSize={narrow?26:13}>{2021+j}{isOpen&&<tspan x={x+w/2} dy="19" fontSize={narrow?20:11}>YTD</tspan>}</text></g>})}</svg>;return <ChartStage><ChartFrame title="Capital Inflows" description="Net new capital by year across 6 funds" width="max-w-[1024px]" toolbar={<><BarPicker label="Year range" value={range} onChange={setRange} options={['All Years','Last 3 Years']}/><BarPicker label="Fund shown" value={fund} onChange={setFund} options={['All Funds',...funds]} disabled={mode==='Total'}/><BarChoiceMenu label="Prism display" value={mode} onChange={v=>{setMode(v);if(v==='Total')setFund('All Funds')}} options={['By Fund','Total']}/><BarLayers layers={[{name:'Value labels',checked:labels,set:setLabels},{name:'Run-rate estimate',checked:estimate,set:setEstimate},{name:'Gridlines',checked:grid,set:setGrid}]}/><BarIconButton label="Refresh inflows" onClick={()=>{setRevision(r=>r+1);toast.success('Inflows refreshed')}}/><ChartMore title="Yearly fund inflows" rows={indices.map(j=>({year:2021+j,inflowsM:totals[j],runRateM:j===5?15.9:''}))}/></>} footer={<><span>USD · Demo figures, unaudited</span><span>Booked through Sep 30, 2026 · Synced {revision?'just now':'2h ago'}</span></>}><BarStats items={[{label:`${2021+selected} Inflows`,value:`$${(selected===5?totals[selected]:top).toFixed(1)}M`,detail:<><ChangePill value={selected===0?0:+((totals[selected]/totals[Math.max(0,selected-1)]-1)*100).toFixed(1)}/> vs {2020+selected}</>},{label:'Top Fund',value:'55.3%',detail:<span className="flex items-center gap-1"><CircleDollarSign className="size-4"/>WaveMark Capital</span>},{label:'2026 Run-rate',value:`$${runrate.toFixed(1)}M`,detail:<><ChangePill value={10.7}/> vs 2025</>},{label:'Yearly Growth',value:'+17.2%',detail:'Compounded since 2021'}]}/><div className="px-2 pt-7">{plot}</div>{mode==='By Fund'?<ToggleGroup type="single" value={fund==='All Funds'?'':fund} onValueChange={v=>setFund(v||'All Funds')} aria-label="Isolate a fund" className="flex flex-wrap justify-center gap-1 px-3 pb-4">{funds.map((f,i)=><ToggleGroupItem key={f} value={f} className="h-7 px-1 text-xs font-normal"><span className="size-1.5 rounded-full" style={{background:fundColors[i]}}/>{f}</ToggleGroupItem>)}</ToggleGroup>:<p className="pb-5 text-center text-xs text-muted-foreground">All 6 funds combined</p>}</ChartFrame></ChartStage>}
-const trainingMinutes=[312,334,352,268,386,362,441,322,458,487,351,259],lastMinutes=[255,276,356,236,318,371,358,281,377,390,318,268],planMinutes=[300,330,370,280,375,405,435,315,450,480,375,270]
-const trainingDistance=[48.5,51.8,54.6,41.1,60.2,56.7,68.8,49.5,71.4,75.8,54.2,40.1]
-export function TrainingVolume(){const [metric,setMetric]=useState('Time'),[compare,setCompare]=useState('Last Block'),[week,setWeek]=useState(11),[grid,setGrid]=useState(true),[hatch,setHatch]=useState(true),[revision,setRevision]=useState(0);const values=(metric==='Time'?trainingMinutes:trainingDistance).map(v=>v+revision*(metric==='Time'?1:.1));const prior=metric==='Time'?lastMinutes:lastMinutes.map(v=>v*.155);const plan=metric==='Time'?planMinutes:planMinutes.map(v=>v*.155);const comparison=compare==='Training Plan'?plan:prior;const max=metric==='Time'?540:90;const format=(v:number)=>metric==='Time'?duration(v*60):`${v.toFixed(1)} km`;const plot=<div role="application" aria-label={`Weekly running ${metric.toLowerCase()}. Arrow keys move between weeks.`} tabIndex={0} onKeyDown={e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();setWeek(w=>(w+(e.key==='ArrowRight'?1:11))%12)}}}><TrainingBars values={values} comparison={comparison} compare={compare} max={max} metric={metric} week={week} onWeek={setWeek} grid={grid} pattern={hatch} format={format}/></div>;return <ChartStage><ChartFrame title="Training Volume" description={<span><span style={{color:barColors.green}}>↗ 13.9%</span> vs last block</span>} plain width="max-w-[1024px]" toolbar={<><PeriodButtons label="Metric" value={metric} onChange={setMetric} options={['Time','Distance']}/><BarLayers layers={[{name:'Gridlines',checked:grid,set:setGrid},{name:'Patterned bars',checked:hatch,set:setHatch}]}/><BarChoiceMenu label="Compare against" value={compare} onChange={setCompare} options={['Last Block','Training Plan','No Comparison']} icon/><BarIconButton label="Refresh data" onClick={()=>setRevision(r=>r+1)}/><BarExpand title="Training Volume">{plot}</BarExpand><ChartMore title="Training volume" rows={values.map((v,i)=>({week:i+1,metric,value:v,comparison:compare==='No Comparison'?'':comparison[i]}))}/></>} footer={<><span>This Block <strong className="font-normal text-foreground">{format(values.reduce((sum,v)=>sum+v,0))}</strong></span>{compare!=='No Comparison'&&<span>{compare} <strong className="font-normal text-foreground">{format(comparison.reduce((sum,v)=>sum+v,0))}</strong></span>}</>}><div className="flex flex-wrap items-center justify-between gap-3 px-4 pb-4 pt-2 text-xs"><span className="flex items-center gap-2"><span className="size-2 rounded-sm" style={{background:barColors.purple}}/>Week {week+1}<span className="text-muted-foreground">{week===11?'Sep 22 to 28':`Training week ${week+1}`}</span></span><span className="flex items-center gap-2"><strong>{format(values[week])}</strong>{compare!=='No Comparison'&&<span style={{color:values[week]>=comparison[week]?barColors.green:barColors.red}}>{((values[week]/comparison[week]-1)*100).toFixed(1)}% <span className="text-muted-foreground">vs {compare.toLowerCase()}</span></span>}</span></div>{plot}</ChartFrame></ChartStage>}
-const stockNames=['Electronics','Apparel','Home','Beauty','Health','Sports','Toys','Automotive','Garden','Grocery','Books','Office'],stockValues=[342,876,512,629,458,781,394,925,647,532,803,271],stockDays=[52,18,27,22,31,20,43,16,24,12,19,57],warehouses=['Reno DC','Columbus DC','Savannah DC']
-export function InventoryVelocity(){const [period,setPeriod]=useState('Last 30 days'),[selected,setSelected]=useState(warehouses),[sort,setSort]=useState('Catalog order'),[accent,setAccent]=useState(barColors.blue),[focus,setFocus]=useState<number|null>(null),[revision,setRevision]=useState(0);const factor=selected.reduce((s,w)=>s+(w==='Savannah DC'?.3:.35),0)*(period==='Last 7 days'?1.08:period==='Last 90 days'?.93:1);const values=stockValues.map(v=>Math.round(v*factor)+revision);const total=values.reduce((s,v)=>s+v,0);const order=stockNames.map((name,i)=>({name,i})).sort((a,b)=>sort==='Highest velocity'?values[b.i]-values[a.i]:sort==='Lowest velocity'?values[a.i]-values[b.i]:sort==='Most stock'?stockDays[b.i]-stockDays[a.i]:a.i-b.i);const color=(i:number)=>stockDays[i]>=50?barColors.muted:stockDays[i]>=30?barColors.yellow:accent;return <ChartStage><ChartFrame title="Inventory Velocity" description="Units sold per day by category" width="max-w-[1024px]" toolbar={<><BarPicker label="Period" value={period} onChange={setPeriod} options={['Last 7 days','Last 30 days','Last 90 days']}/><BarFilterMenu label="Warehouses" names={warehouses} selected={selected} onChange={setSelected}/><BarChoiceMenu label="Sort categories" value={sort} onChange={setSort} options={['Catalog order','Highest velocity','Lowest velocity','Most stock']} icon/><DropdownMenu><DropdownMenuTrigger asChild><Button variant="outline" size="icon" className="size-7" aria-label="Bar color"><Palette/></Button></DropdownMenuTrigger><DropdownMenuContent><DropdownMenuRadioGroup value={accent} onValueChange={v=>setAccent(v as typeof accent)}>{[barColors.blue,barColors.purple,barColors.green].map((c,i)=><DropdownMenuRadioItem key={c} value={c}>{['Blue','Purple','Green'][i]}</DropdownMenuRadioItem>)}</DropdownMenuRadioGroup></DropdownMenuContent></DropdownMenu><BarIconButton label="Refresh data" onClick={()=>setRevision(r=>r+1)}/><ChartMore title="Inventory velocity" rows={order.map(r=>({category:r.name,unitsPerDay:values[r.i],daysOfSupply:stockDays[r.i]}))}/></>} footer={<><UpdatedDot>Synced {revision?'just now':'12 min ago'} · {selected.length} of 3 warehouses</UpdatedDot><span>Sep 12 to Oct 11</span></>}><div className="grid border-b md:grid-cols-[1fr_2fr]"><div className="border-b p-4 md:border-b-0 md:border-r"><p className="text-xs text-muted-foreground">Units per Day</p><p className="my-3 flex items-center gap-2 text-3xl font-semibold">{total.toLocaleString()}<ChangePill value={13.5}/></p><p className="text-xs text-muted-foreground">vs {Math.round(6316*factor).toLocaleString()} a day in the prior 30 days</p></div><div className="p-4"><div className="flex justify-between gap-3 text-xs text-muted-foreground"><span>Stock Health</span><span>24.5 days of supply<span className="hidden sm:inline">, 175.3K on hand</span></span></div><div className="my-6 flex h-1.5 gap-1 overflow-hidden rounded">{[8,2,2].map((v,i)=><span key={i} className="rounded" style={{flex:v,background:[accent,barColors.yellow,barColors.muted][i]}}/>)}</div><div className="flex flex-col gap-3 text-xs sm:flex-row sm:gap-5">{['8 Healthy','2 Watch','2 Slow'].map((t,i)=><span key={t} className="flex items-center gap-1.5"><span className="size-1.5 rounded-full" style={{background:[accent,barColors.yellow,barColors.muted][i]}}/>{t}<span className="text-muted-foreground">{['under 30 days','Toys and Health','Office and Electronics'][i]}</span></span>)}</div></div></div><BarLegend items={['Healthy','Watch','Slow'].map((name,i)=>({name,color:[accent,barColors.yellow,barColors.muted][i]}))}/><InventoryBars rows={order.map(r=>({name:r.name,index:r.i,value:values[r.i],days:stockDays[r.i],color:color(r.i)}))} onFocus={setFocus}/>{focus!==null&&<div role="status" className="border-t p-3 text-xs">{stockNames[focus]} · {values[focus]} units per day · {stockDays[focus]} days of supply · {selected.join(', ')||'No warehouses selected'}</div>}</ChartFrame></ChartStage>}
-const regions=['Africa','Latin America','Asia Pacific','Middle East','North America','Europe'],regionShort=['AFR','LATAM','APAC','ME','NAM','EUR'],medianRoad=[2.4,1.3,-.1,-.4,-1.1,-1.6],medianRail=[3.4,1.9,.4,-.3,-1.4,-2.2],p90Road=[3.5,1.9,1.3,-.7,-1.3,-1.8],p90Rail=[4.2,1.9,2.2,.3,-2.5,-3.1]
-export function TransitTargets(){const [metric,setMetric]=useState('Median'),[sort,setSort]=useState('Most Behind'),[grid,setGrid]=useState(true),[labels,setLabels]=useState(true),[live,setLive]=useState(true),[revision,setRevision]=useState(0),[focus,setFocus]=useState<number|null>(null);useEffect(()=>{if(!live)return;const timer=setInterval(()=>setRevision(r=>r+1),18000);return()=>clearInterval(timer)},[live]);const road=(metric==='Median'?medianRoad:p90Road).map(v=>v-revision*.02),rail=(metric==='Median'?medianRail:p90Rail).map(v=>v-revision*.015);const order=regions.map((name,i)=>({name,i})).sort((a,b)=>sort==='Region'?a.name.localeCompare(b.name):sort==='Most Ahead'?road[a.i]+rail[a.i]-road[b.i]-rail[b.i]:road[b.i]+rail[b.i]-road[a.i]-rail[a.i]);const gap=(v:number)=>`${v<0?'−':'+'}${Math.abs(v).toFixed(1)} d`;const plot=<div className="px-3 pb-4"><TransitBars rows={order.map(r=>({name:r.name,short:regionShort[r.i],index:r.i,road:road[r.i],rail:rail[r.i]}))} metric={metric} grid={grid} labels={labels} focus={focus} onFocus={setFocus}/>{focus!==null&&<p role="status" className="mt-1 text-xs text-muted-foreground">{regions[focus]} · Road {gap(road[focus])} · Rail {gap(rail[focus])} · {[1590,3000,9790,2370,7080,8900][focus].toLocaleString()} shipments</p>}</div>;return <ChartStage><ChartFrame title={<>Transit vs Target<ChangePill value={metric==='Median'?-3.5:-2.7} goodDirection="down"/></>} description={`${metric} door-to-door days against target`} width="max-w-[1024px]" toolbar={<><PeriodButtons label="Statistic" value={metric} onChange={setMetric} options={['Median','P90']}/><BarChoiceMenu label="Sort regions" value={sort} onChange={setSort} options={['Most Behind','Most Ahead','Region']}/><BarLayers layers={[{name:'Value labels',checked:labels,set:setLabels},{name:'Gridlines',checked:grid,set:setGrid},{name:'Live carrier feed',checked:live,set:setLive}]}/><BarIconButton label="Refresh data" onClick={()=>{setRevision(r=>r+1);toast.success('Carrier samples refreshed')}}/><BarExpand title="Transit vs Target">{plot}</BarExpand><ChartMore title="Transit vs target" rows={order.map(r=>({region:r.name,roadGap:road[r.i],railGap:rail[r.i],statistic:metric}))}/></>} footer={<><UpdatedDot>{live?'Live':'Paused'} · {(32730+revision*12).toLocaleString()} shipments</UpdatedDot><span>{road.filter(v=>v<=0).length+rail.filter(v=>v<=0).length} of 12 lanes on target</span></>}><div className="flex flex-wrap gap-x-5 gap-y-2 px-4 py-4 text-xs text-muted-foreground"><span><span style={{color:barColors.blue}}>●</span> Road Freight <strong className="font-normal text-foreground">{metric==='Median'?'4.5':'7.0'} d</strong> target</span><span><span style={{color:'#efb125'}}>●</span> Rail Freight <strong className="font-normal text-foreground">{metric==='Median'?'7.0':'11.0'} d</strong> target</span></div>{plot}</ChartFrame></ChartStage>}
+import { InventoryBars, TrainingBars, TransitBars } from "./bar-reui-plots";
+import { ReuiIsometricBar } from "./reui-free-chart-primitives";
+import { useEffect, useId, useState } from "react";
+import { CircleDollarSign, Palette } from "lucide-react";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  ChartFrame,
+  ChartMore,
+  ChartStage,
+  ChangePill,
+  PeriodButtons,
+  UpdatedDot,
+} from "./chart-chrome";
+import {
+  BarChoiceMenu,
+  BarExpand,
+  BarFilterMenu,
+  BarIconButton,
+  BarLayers,
+  BarLegend,
+  BarPicker,
+  BarStats,
+  Hatch,
+} from "./bar-primitives";
+import { barColors, duration, useBarNarrow } from "./bar-chart-utils";
+const funds = [
+  "WaveMark Capital",
+  "Envato Finances",
+  "QBridge Tech",
+  "Neon Liquidity",
+  "Stripe Treasury",
+  "ETH Reserve Pool",
+];
+const fundColors = ["#3bb2a6", "#edbd00", "#a572ed", "#42b2e4", "#e58ab2", "#aeb7c7"];
+const fundTotals = [7.6, 6.7, 9.1, 11.7, 14.3, 11.9];
+const fundShares = [0.553, 0.222, 0.086, 0.063, 0.038, 0.038];
+export function FundInflows() {
+  const [range, setRange] = useState("All Years"),
+    [fund, setFund] = useState("All Funds"),
+    [mode, setMode] = useState("By Fund"),
+    [selected, setSelected] = useState(4),
+    [labels, setLabels] = useState(true),
+    [estimate, setEstimate] = useState(true),
+    [grid, setGrid] = useState(true),
+    [revision, setRevision] = useState(0);
+  const id = useId().replaceAll(":", "");
+  const narrow = useBarNarrow();
+  const totals = fundTotals.map(
+    (v) => +(v * (fund === "All Funds" ? 1 : fundShares[funds.indexOf(fund)])).toFixed(2),
+  );
+  const indices = range === "Last 3 Years" ? [3, 4, 5] : [0, 1, 2, 3, 4, 5];
+  const runrate = 15.9 * (fund === "All Funds" ? 1 : fundShares[funds.indexOf(fund)]);
+  const top = selected === 5 ? runrate : totals[selected];
+  const plot = (
+    <svg
+      viewBox="0 0 1000 420"
+      className="h-[330px] w-full sm:h-[410px]"
+      preserveAspectRatio="none"
+      role="radiogroup"
+      aria-label="Inflows by year"
+    >
+      <defs>
+        <Hatch id={`${id}-estimate`} color="var(--muted-foreground)" />
+      </defs>
+      {grid &&
+        [0, 5, 10, 15, 20].map((v) => (
+          <g key={v}>
+            <line
+              x1="65"
+              x2="980"
+              y1={330 - v * 14}
+              y2={330 - v * 14}
+              stroke="var(--border)"
+              strokeOpacity=".6"
+            />
+            <text
+              x="53"
+              y={334 - v * 14}
+              fontSize={narrow ? 26 : 12}
+              textAnchor="end"
+              fill="var(--muted-foreground)"
+            >
+              ${v ? `${v}M` : "0"}
+            </text>
+          </g>
+        ))}
+      <path d="M65 330H980L990 319H76Z" fill="var(--muted)" />
+      <path d="M65 330H980V337H65Z" fill="var(--border)" />
+      {indices.map((j, i) => {
+        const x = 90 + (i * 880) / indices.length,
+          w = indices.length === 6 ? 77 : 135;
+        const scale = 14;
+        let base = 330;
+        const isOpen = j === 5;
+        return (
+          <g
+            key={j}
+            role="radio"
+            tabIndex={0}
+            aria-checked={selected === j}
+            aria-label={`${2021 + j}: $${totals[j].toFixed(1)}M${isOpen ? " booked, $15.9M run-rate" : ""}`}
+            onClick={() => setSelected(j)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                setSelected(j);
+              }
+            }}
+            style={{ cursor: "pointer" }}
+            opacity={selected === j ? 1 : 0.45}
+          >
+            {(mode === "Total" || fund !== "All Funds" ? [1] : fundShares).map((share, k) => {
+              const h = totals[j] * share * scale,
+                y = base - h;
+              base = y;
+              const color =
+                fund !== "All Funds"
+                  ? fundColors[funds.indexOf(fund)]
+                  : mode === "Total"
+                    ? fundColors[0]
+                    : fundColors[k];
+              return <ReuiIsometricBar key={k} x={x} y={y} width={w} height={h} fill={color} />;
+            })}
+            {isOpen && estimate && (
+              <g>
+                <rect
+                  x={x}
+                  y={330 - runrate * scale}
+                  width={w}
+                  height={(runrate - totals[j]) * scale}
+                  fill={`url(#${id}-estimate)`}
+                />
+                <path
+                  d={`M${x} ${330 - runrate * scale}l13 -13h${w}l-13 13Z`}
+                  fill="var(--muted)"
+                />
+              </g>
+            )}
+            {labels && (
+              <text
+                x={x + w / 2}
+                y={330 - (isOpen && estimate ? runrate : totals[j]) * scale - 25}
+                textAnchor="middle"
+                fill="currentColor"
+                fontSize={narrow ? 25 : 13}
+              >{`$${isOpen && estimate ? runrate.toFixed(1) : totals[j].toFixed(1)}M${isOpen && estimate ? " est." : ""}`}</text>
+            )}
+            <text
+              x={x + w / 2}
+              y="363"
+              textAnchor="middle"
+              fill="currentColor"
+              fontSize={narrow ? 26 : 13}
+            >
+              {2021 + j}
+              {isOpen && (
+                <tspan x={x + w / 2} dy="19" fontSize={narrow ? 20 : 11}>
+                  YTD
+                </tspan>
+              )}
+            </text>
+          </g>
+        );
+      })}
+    </svg>
+  );
+  return (
+    <ChartStage>
+      <ChartFrame
+        title="Capital Inflows"
+        description="Net new capital by year across 6 funds"
+        width="max-w-[1024px]"
+        toolbar={
+          <>
+            <BarPicker
+              label="Year range"
+              value={range}
+              onChange={setRange}
+              options={["All Years", "Last 3 Years"]}
+            />
+            <BarPicker
+              label="Fund shown"
+              value={fund}
+              onChange={setFund}
+              options={["All Funds", ...funds]}
+              disabled={mode === "Total"}
+            />
+            <BarChoiceMenu
+              label="Prism display"
+              value={mode}
+              onChange={(v) => {
+                setMode(v);
+                if (v === "Total") setFund("All Funds");
+              }}
+              options={["By Fund", "Total"]}
+            />
+            <BarLayers
+              layers={[
+                { name: "Value labels", checked: labels, set: setLabels },
+                { name: "Run-rate estimate", checked: estimate, set: setEstimate },
+                { name: "Gridlines", checked: grid, set: setGrid },
+              ]}
+            />
+            <BarIconButton
+              label="Refresh inflows"
+              onClick={() => {
+                setRevision((r) => r + 1);
+                toast.success("Inflows refreshed");
+              }}
+            />
+            <ChartMore
+              title="Yearly fund inflows"
+              rows={indices.map((j) => ({
+                year: 2021 + j,
+                inflowsM: totals[j],
+                runRateM: j === 5 ? 15.9 : "",
+              }))}
+            />
+          </>
+        }
+        footer={
+          <>
+            <span>USD · Demo figures, unaudited</span>
+            <span>Booked through Sep 30, 2026 · Synced {revision ? "just now" : "2h ago"}</span>
+          </>
+        }
+      >
+        <BarStats
+          items={[
+            {
+              label: `${2021 + selected} Inflows`,
+              value: `$${(selected === 5 ? totals[selected] : top).toFixed(1)}M`,
+              detail: (
+                <>
+                  <ChangePill
+                    value={
+                      selected === 0
+                        ? 0
+                        : +(
+                            (totals[selected] / totals[Math.max(0, selected - 1)] - 1) *
+                            100
+                          ).toFixed(1)
+                    }
+                  />{" "}
+                  vs {2020 + selected}
+                </>
+              ),
+            },
+            {
+              label: "Top Fund",
+              value: "55.3%",
+              detail: (
+                <span className="flex items-center gap-1">
+                  <CircleDollarSign className="size-4" />
+                  WaveMark Capital
+                </span>
+              ),
+            },
+            {
+              label: "2026 Run-rate",
+              value: `$${runrate.toFixed(1)}M`,
+              detail: (
+                <>
+                  <ChangePill value={10.7} /> vs 2025
+                </>
+              ),
+            },
+            { label: "Yearly Growth", value: "+17.2%", detail: "Compounded since 2021" },
+          ]}
+        />
+        <div className="px-2 pt-7">{plot}</div>
+        {mode === "By Fund" ? (
+          <ToggleGroup
+            type="single"
+            value={fund === "All Funds" ? "" : fund}
+            onValueChange={(v) => setFund(v || "All Funds")}
+            aria-label="Isolate a fund"
+            className="flex flex-wrap justify-center gap-1 px-3 pb-4"
+          >
+            {funds.map((f, i) => (
+              <ToggleGroupItem key={f} value={f} className="h-7 px-1 text-xs font-normal">
+                <span className="size-1.5 rounded-full" style={{ background: fundColors[i] }} />
+                {f}
+              </ToggleGroupItem>
+            ))}
+          </ToggleGroup>
+        ) : (
+          <p className="pb-5 text-center text-xs text-muted-foreground">All 6 funds combined</p>
+        )}
+      </ChartFrame>
+    </ChartStage>
+  );
+}
+const trainingMinutes = [312, 334, 352, 268, 386, 362, 441, 322, 458, 487, 351, 259],
+  lastMinutes = [255, 276, 356, 236, 318, 371, 358, 281, 377, 390, 318, 268],
+  planMinutes = [300, 330, 370, 280, 375, 405, 435, 315, 450, 480, 375, 270];
+const trainingDistance = [48.5, 51.8, 54.6, 41.1, 60.2, 56.7, 68.8, 49.5, 71.4, 75.8, 54.2, 40.1];
+export function TrainingVolume() {
+  const [metric, setMetric] = useState("Time"),
+    [compare, setCompare] = useState("Last Block"),
+    [week, setWeek] = useState(11),
+    [grid, setGrid] = useState(true),
+    [hatch, setHatch] = useState(true),
+    [revision, setRevision] = useState(0);
+  const values = (metric === "Time" ? trainingMinutes : trainingDistance).map(
+    (v) => v + revision * (metric === "Time" ? 1 : 0.1),
+  );
+  const prior = metric === "Time" ? lastMinutes : lastMinutes.map((v) => v * 0.155);
+  const plan = metric === "Time" ? planMinutes : planMinutes.map((v) => v * 0.155);
+  const comparison = compare === "Training Plan" ? plan : prior;
+  const max = metric === "Time" ? 540 : 90;
+  const format = (v: number) => (metric === "Time" ? duration(v * 60) : `${v.toFixed(1)} km`);
+  const plot = (
+    <div
+      role="application"
+      aria-label={`Weekly running ${metric.toLowerCase()}. Arrow keys move between weeks.`}
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+          e.preventDefault();
+          setWeek((w) => (w + (e.key === "ArrowRight" ? 1 : 11)) % 12);
+        }
+      }}
+    >
+      <TrainingBars
+        values={values}
+        comparison={comparison}
+        compare={compare}
+        max={max}
+        metric={metric}
+        week={week}
+        onWeek={setWeek}
+        grid={grid}
+        pattern={hatch}
+        format={format}
+      />
+    </div>
+  );
+  return (
+    <ChartStage>
+      <ChartFrame
+        title="Training Volume"
+        description={
+          <span>
+            <span style={{ color: barColors.green }}>↗ 13.9%</span> vs last block
+          </span>
+        }
+        plain
+        width="max-w-[1024px]"
+        toolbar={
+          <>
+            <PeriodButtons
+              label="Metric"
+              value={metric}
+              onChange={setMetric}
+              options={["Time", "Distance"]}
+            />
+            <BarLayers
+              layers={[
+                { name: "Gridlines", checked: grid, set: setGrid },
+                { name: "Patterned bars", checked: hatch, set: setHatch },
+              ]}
+            />
+            <BarChoiceMenu
+              label="Compare against"
+              value={compare}
+              onChange={setCompare}
+              options={["Last Block", "Training Plan", "No Comparison"]}
+              icon
+            />
+            <BarIconButton label="Refresh data" onClick={() => setRevision((r) => r + 1)} />
+            <BarExpand title="Training Volume">{plot}</BarExpand>
+            <ChartMore
+              title="Training volume"
+              rows={values.map((v, i) => ({
+                week: i + 1,
+                metric,
+                value: v,
+                comparison: compare === "No Comparison" ? "" : comparison[i],
+              }))}
+            />
+          </>
+        }
+        footer={
+          <>
+            <span>
+              This Block{" "}
+              <strong className="font-normal text-foreground">
+                {format(values.reduce((sum, v) => sum + v, 0))}
+              </strong>
+            </span>
+            {compare !== "No Comparison" && (
+              <span>
+                {compare}{" "}
+                <strong className="font-normal text-foreground">
+                  {format(comparison.reduce((sum, v) => sum + v, 0))}
+                </strong>
+              </span>
+            )}
+          </>
+        }
+      >
+        <div className="flex flex-wrap items-center justify-between gap-3 px-4 pb-4 pt-2 text-xs">
+          <span className="flex items-center gap-2">
+            <span className="size-2 rounded-sm" style={{ background: barColors.purple }} />
+            Week {week + 1}
+            <span className="text-muted-foreground">
+              {week === 11 ? "Sep 22 to 28" : `Training week ${week + 1}`}
+            </span>
+          </span>
+          <span className="flex items-center gap-2">
+            <strong>{format(values[week])}</strong>
+            {compare !== "No Comparison" && (
+              <span
+                style={{
+                  color: values[week] >= comparison[week] ? barColors.green : barColors.red,
+                }}
+              >
+                {((values[week] / comparison[week] - 1) * 100).toFixed(1)}%{" "}
+                <span className="text-muted-foreground">vs {compare.toLowerCase()}</span>
+              </span>
+            )}
+          </span>
+        </div>
+        {plot}
+      </ChartFrame>
+    </ChartStage>
+  );
+}
+const stockNames = [
+    "Electronics",
+    "Apparel",
+    "Home",
+    "Beauty",
+    "Health",
+    "Sports",
+    "Toys",
+    "Automotive",
+    "Garden",
+    "Grocery",
+    "Books",
+    "Office",
+  ],
+  stockValues = [342, 876, 512, 629, 458, 781, 394, 925, 647, 532, 803, 271],
+  stockDays = [52, 18, 27, 22, 31, 20, 43, 16, 24, 12, 19, 57],
+  warehouses = ["Reno DC", "Columbus DC", "Savannah DC"];
+export function InventoryVelocity() {
+  const [period, setPeriod] = useState("Last 30 days"),
+    [selected, setSelected] = useState(warehouses),
+    [sort, setSort] = useState("Catalog order"),
+    [accent, setAccent] = useState(barColors.blue),
+    [focus, setFocus] = useState<number | null>(null),
+    [revision, setRevision] = useState(0);
+  const factor =
+    selected.reduce((s, w) => s + (w === "Savannah DC" ? 0.3 : 0.35), 0) *
+    (period === "Last 7 days" ? 1.08 : period === "Last 90 days" ? 0.93 : 1);
+  const values = stockValues.map((v) => Math.round(v * factor) + revision);
+  const total = values.reduce((s, v) => s + v, 0);
+  const order = stockNames
+    .map((name, i) => ({ name, i }))
+    .sort((a, b) =>
+      sort === "Highest velocity"
+        ? values[b.i] - values[a.i]
+        : sort === "Lowest velocity"
+          ? values[a.i] - values[b.i]
+          : sort === "Most stock"
+            ? stockDays[b.i] - stockDays[a.i]
+            : a.i - b.i,
+    );
+  const color = (i: number) =>
+    stockDays[i] >= 50 ? barColors.muted : stockDays[i] >= 30 ? barColors.yellow : accent;
+  return (
+    <ChartStage>
+      <ChartFrame
+        title="Inventory Velocity"
+        description="Units sold per day by category"
+        width="max-w-[1024px]"
+        toolbar={
+          <>
+            <BarPicker
+              label="Period"
+              value={period}
+              onChange={setPeriod}
+              options={["Last 7 days", "Last 30 days", "Last 90 days"]}
+            />
+            <BarFilterMenu
+              label="Warehouses"
+              names={warehouses}
+              selected={selected}
+              onChange={setSelected}
+            />
+            <BarChoiceMenu
+              label="Sort categories"
+              value={sort}
+              onChange={setSort}
+              options={["Catalog order", "Highest velocity", "Lowest velocity", "Most stock"]}
+              icon
+            />
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="icon" className="size-7" aria-label="Bar color">
+                  <Palette />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuRadioGroup
+                  value={accent}
+                  onValueChange={(v) => setAccent(v as typeof accent)}
+                >
+                  {[barColors.blue, barColors.purple, barColors.green].map((c, i) => (
+                    <DropdownMenuRadioItem key={c} value={c}>
+                      {["Blue", "Purple", "Green"][i]}
+                    </DropdownMenuRadioItem>
+                  ))}
+                </DropdownMenuRadioGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <BarIconButton label="Refresh data" onClick={() => setRevision((r) => r + 1)} />
+            <ChartMore
+              title="Inventory velocity"
+              rows={order.map((r) => ({
+                category: r.name,
+                unitsPerDay: values[r.i],
+                daysOfSupply: stockDays[r.i],
+              }))}
+            />
+          </>
+        }
+        footer={
+          <>
+            <UpdatedDot>
+              Synced {revision ? "just now" : "12 min ago"} · {selected.length} of 3 warehouses
+            </UpdatedDot>
+            <span>Sep 12 to Oct 11</span>
+          </>
+        }
+      >
+        <div className="grid border-b md:grid-cols-[1fr_2fr]">
+          <div className="border-b p-4 md:border-b-0 md:border-r">
+            <p className="text-xs text-muted-foreground">Units per Day</p>
+            <p className="my-3 flex items-center gap-2 text-3xl font-semibold">
+              {total.toLocaleString()}
+              <ChangePill value={13.5} />
+            </p>
+            <p className="text-xs text-muted-foreground">
+              vs {Math.round(6316 * factor).toLocaleString()} a day in the prior 30 days
+            </p>
+          </div>
+          <div className="p-4">
+            <div className="flex justify-between gap-3 text-xs text-muted-foreground">
+              <span>Stock Health</span>
+              <span>
+                24.5 days of supply<span className="hidden sm:inline">, 175.3K on hand</span>
+              </span>
+            </div>
+            <div className="my-6 flex h-1.5 gap-1 overflow-hidden rounded">
+              {[8, 2, 2].map((v, i) => (
+                <span
+                  key={i}
+                  className="rounded"
+                  style={{ flex: v, background: [accent, barColors.yellow, barColors.muted][i] }}
+                />
+              ))}
+            </div>
+            <div className="flex flex-col gap-3 text-xs sm:flex-row sm:gap-5">
+              {["8 Healthy", "2 Watch", "2 Slow"].map((t, i) => (
+                <span key={t} className="flex items-center gap-1.5">
+                  <span
+                    className="size-1.5 rounded-full"
+                    style={{ background: [accent, barColors.yellow, barColors.muted][i] }}
+                  />
+                  {t}
+                  <span className="text-muted-foreground">
+                    {["under 30 days", "Toys and Health", "Office and Electronics"][i]}
+                  </span>
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+        <BarLegend
+          items={["Healthy", "Watch", "Slow"].map((name, i) => ({
+            name,
+            color: [accent, barColors.yellow, barColors.muted][i],
+          }))}
+        />
+        <InventoryBars
+          rows={order.map((r) => ({
+            name: r.name,
+            index: r.i,
+            value: values[r.i],
+            days: stockDays[r.i],
+            color: color(r.i),
+          }))}
+          onFocus={setFocus}
+        />
+        {focus !== null && (
+          <div role="status" className="border-t p-3 text-xs">
+            {stockNames[focus]} · {values[focus]} units per day · {stockDays[focus]} days of supply
+            · {selected.join(", ") || "No warehouses selected"}
+          </div>
+        )}
+      </ChartFrame>
+    </ChartStage>
+  );
+}
+const regions = [
+    "Africa",
+    "Latin America",
+    "Asia Pacific",
+    "Middle East",
+    "North America",
+    "Europe",
+  ],
+  regionShort = ["AFR", "LATAM", "APAC", "ME", "NAM", "EUR"],
+  medianRoad = [2.4, 1.3, -0.1, -0.4, -1.1, -1.6],
+  medianRail = [3.4, 1.9, 0.4, -0.3, -1.4, -2.2],
+  p90Road = [3.5, 1.9, 1.3, -0.7, -1.3, -1.8],
+  p90Rail = [4.2, 1.9, 2.2, 0.3, -2.5, -3.1];
+export function TransitTargets() {
+  const [metric, setMetric] = useState("Median"),
+    [sort, setSort] = useState("Most Behind"),
+    [grid, setGrid] = useState(true),
+    [labels, setLabels] = useState(true),
+    [live, setLive] = useState(true),
+    [revision, setRevision] = useState(0),
+    [focus, setFocus] = useState<number | null>(null);
+  useEffect(() => {
+    if (!live) return;
+    const timer = setInterval(() => setRevision((r) => r + 1), 18000);
+    return () => clearInterval(timer);
+  }, [live]);
+  const road = (metric === "Median" ? medianRoad : p90Road).map((v) => v - revision * 0.02),
+    rail = (metric === "Median" ? medianRail : p90Rail).map((v) => v - revision * 0.015);
+  const order = regions
+    .map((name, i) => ({ name, i }))
+    .sort((a, b) =>
+      sort === "Region"
+        ? a.name.localeCompare(b.name)
+        : sort === "Most Ahead"
+          ? road[a.i] + rail[a.i] - road[b.i] - rail[b.i]
+          : road[b.i] + rail[b.i] - road[a.i] - rail[a.i],
+    );
+  const gap = (v: number) => `${v < 0 ? "−" : "+"}${Math.abs(v).toFixed(1)} d`;
+  const plot = (
+    <div className="px-3 pb-4">
+      <TransitBars
+        rows={order.map((r) => ({
+          name: r.name,
+          short: regionShort[r.i],
+          index: r.i,
+          road: road[r.i],
+          rail: rail[r.i],
+        }))}
+        metric={metric}
+        grid={grid}
+        labels={labels}
+        focus={focus}
+        onFocus={setFocus}
+      />
+      {focus !== null && (
+        <p role="status" className="mt-1 text-xs text-muted-foreground">
+          {regions[focus]} · Road {gap(road[focus])} · Rail {gap(rail[focus])} ·{" "}
+          {[1590, 3000, 9790, 2370, 7080, 8900][focus].toLocaleString()} shipments
+        </p>
+      )}
+    </div>
+  );
+  return (
+    <ChartStage>
+      <ChartFrame
+        title={
+          <>
+            Transit vs Target
+            <ChangePill value={metric === "Median" ? -3.5 : -2.7} goodDirection="down" />
+          </>
+        }
+        description={`${metric} door-to-door days against target`}
+        width="max-w-[1024px]"
+        toolbar={
+          <>
+            <PeriodButtons
+              label="Statistic"
+              value={metric}
+              onChange={setMetric}
+              options={["Median", "P90"]}
+            />
+            <BarChoiceMenu
+              label="Sort regions"
+              value={sort}
+              onChange={setSort}
+              options={["Most Behind", "Most Ahead", "Region"]}
+            />
+            <BarLayers
+              layers={[
+                { name: "Value labels", checked: labels, set: setLabels },
+                { name: "Gridlines", checked: grid, set: setGrid },
+                { name: "Live carrier feed", checked: live, set: setLive },
+              ]}
+            />
+            <BarIconButton
+              label="Refresh data"
+              onClick={() => {
+                setRevision((r) => r + 1);
+                toast.success("Carrier samples refreshed");
+              }}
+            />
+            <BarExpand title="Transit vs Target">{plot}</BarExpand>
+            <ChartMore
+              title="Transit vs target"
+              rows={order.map((r) => ({
+                region: r.name,
+                roadGap: road[r.i],
+                railGap: rail[r.i],
+                statistic: metric,
+              }))}
+            />
+          </>
+        }
+        footer={
+          <>
+            <UpdatedDot>
+              {live ? "Live" : "Paused"} · {(32730 + revision * 12).toLocaleString()} shipments
+            </UpdatedDot>
+            <span>
+              {road.filter((v) => v <= 0).length + rail.filter((v) => v <= 0).length} of 12 lanes on
+              target
+            </span>
+          </>
+        }
+      >
+        <div className="flex flex-wrap gap-x-5 gap-y-2 px-4 py-4 text-xs text-muted-foreground">
+          <span>
+            <span style={{ color: barColors.blue }}>●</span> Road Freight{" "}
+            <strong className="font-normal text-foreground">
+              {metric === "Median" ? "4.5" : "7.0"} d
+            </strong>{" "}
+            target
+          </span>
+          <span>
+            <span style={{ color: "#efb125" }}>●</span> Rail Freight{" "}
+            <strong className="font-normal text-foreground">
+              {metric === "Median" ? "7.0" : "11.0"} d
+            </strong>{" "}
+            target
+          </span>
+        </div>
+        {plot}
+      </ChartFrame>
+    </ChartStage>
+  );
+}

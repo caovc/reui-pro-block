@@ -45,16 +45,11 @@ export function normalizeTheme(value: unknown): PreviewTheme {
   const result = { ...defaultTheme };
   if (!value || typeof value !== "object") return result;
   const record = value as Record<string, unknown>;
-  for (const key of Object.keys(
-    themeOptions,
-  ) as (keyof typeof themeOptions)[]) {
+  for (const key of Object.keys(themeOptions) as (keyof typeof themeOptions)[]) {
     if ((themeOptions[key] as readonly unknown[]).includes(record[key]))
       result[key] = record[key] as string;
   }
-  if (
-    typeof record.custom === "string" &&
-    /^#[0-9a-f]{6}$/i.test(record.custom)
-  )
+  if (typeof record.custom === "string" && /^#[0-9a-f]{6}$/i.test(record.custom))
     result.custom = record.custom;
   // Preserve links created by the previous preview toolbar.
   if (record.accent === "green") result.accent = "emerald";
@@ -63,9 +58,7 @@ export function normalizeTheme(value: unknown): PreviewTheme {
 export function readTheme(params: URLSearchParams): PreviewTheme {
   try {
     const preset = params.get("preset");
-    return normalizeTheme(
-      preset ? JSON.parse(preset) : Object.fromEntries(params),
-    );
+    return normalizeTheme(preset ? JSON.parse(preset) : Object.fromEntries(params));
   } catch {
     return { ...defaultTheme };
   }
@@ -90,11 +83,7 @@ export function loadTheme(): PreviewTheme {
     return { ...defaultTheme };
   }
 }
-export function isThemeDark(
-  theme: PreviewTheme,
-  inherited: boolean,
-  system: boolean,
-) {
+export function isThemeDark(theme: PreviewTheme, inherited: boolean, system: boolean) {
   return (
     theme.mode === "dark" ||
     (theme.mode === "inherit" && inherited) ||
@@ -170,13 +159,8 @@ ${
 export function applyTheme(theme: PreviewTheme, dark: boolean) {
   document.documentElement.classList.toggle("dark", dark);
   document.documentElement.style.colorScheme = dark ? "dark" : "light";
-  if (theme.radius === "default")
-    document.documentElement.style.removeProperty("--radius");
-  else
-    document.documentElement.style.setProperty(
-      "--radius",
-      `${theme.radius}rem`,
-    );
+  if (theme.radius === "default") document.documentElement.style.removeProperty("--radius");
+  else document.documentElement.style.setProperty("--radius", `${theme.radius}rem`);
   document.documentElement.dataset.accent = theme.accent;
   let style = document.getElementById("preview-preset");
   if (!style) {

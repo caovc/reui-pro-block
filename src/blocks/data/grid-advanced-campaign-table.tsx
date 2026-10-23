@@ -12,15 +12,7 @@ import {
 import { DataGridTableDnd } from "@/components/reui/data-grid/data-grid-table-dnd";
 import { DataGridTable } from "@/components/reui/data-grid/data-grid-table";
 type Campaign = (typeof campaignPerformanceRows)[number];
-type ColumnKey =
-  | "name"
-  | "status"
-  | "spend"
-  | "conversions"
-  | "trend"
-  | "cpa"
-  | "roas"
-  | "buyers";
+type ColumnKey = "name" | "status" | "spend" | "conversions" | "trend" | "cpa" | "roas" | "buyers";
 const initialOrder: ColumnKey[] = [
   "name",
   "status",
@@ -98,7 +90,7 @@ export default function PerformanceCampaignTable({
   tab: string;
   page: number;
   pageSize: number;
-  onPaginationChange:(page:{pageIndex:number;pageSize:number})=>void;
+  onPaginationChange: (page: { pageIndex: number; pageSize: number }) => void;
   onDuplicate: (row: Campaign) => void;
   onDelete: (row: Campaign) => void;
 }) {
@@ -158,13 +150,7 @@ export default function PerformanceCampaignTable({
       case "status":
         return (
           <DotBadge
-            tone={
-              row.status === "Live"
-                ? "good"
-                : row.status === "Limited"
-                  ? "warn"
-                  : "muted"
-            }
+            tone={row.status === "Live" ? "good" : row.status === "Limited" ? "warn" : "muted"}
           >
             {row.status}
           </DotBadge>
@@ -194,9 +180,7 @@ export default function PerformanceCampaignTable({
             <span
               className={cn(
                 "mt-0.5 block text-xs",
-                row.conversionChange.startsWith("-")
-                  ? "text-rose-500"
-                  : "text-emerald-500",
+                row.conversionChange.startsWith("-") ? "text-rose-500" : "text-emerald-500",
               )}
             >
               {row.conversionChange}
@@ -212,9 +196,7 @@ export default function PerformanceCampaignTable({
             <span
               className={cn(
                 "mt-0.5 block text-xs",
-                row.cpaChange.startsWith("-")
-                  ? "text-emerald-500"
-                  : "text-rose-500",
+                row.cpaChange.startsWith("-") ? "text-emerald-500" : "text-rose-500",
               )}
             >
               {row.cpaChange}
@@ -231,9 +213,7 @@ export default function PerformanceCampaignTable({
               />
               <span className="absolute -top-1 left-1/3 h-3.5 w-px bg-foreground" />
             </div>
-            <span className="text-xs text-muted-foreground">
-              {row.roas.toFixed(1)}x
-            </span>
+            <span className="text-xs text-muted-foreground">{row.roas.toFixed(1)}x</span>
           </div>
         );
       case "buyers":
@@ -269,9 +249,7 @@ export default function PerformanceCampaignTable({
                   ? "indeterminate"
                   : false
             }
-            onCheckedChange={(value) =>
-              table.toggleAllPageRowsSelected(!!value)
-            }
+            onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           />
         ),
         cell: ({ row }) => (
@@ -282,38 +260,162 @@ export default function PerformanceCampaignTable({
           />
         ),
       },
-      ...(targets ? [
-        {id:"channel",accessorKey:"channel",header:"Channel",size:100,cell:({row})=><DotBadge tone={row.original.channel==="Search"?"blue":row.original.channel==="Shopping"?"warn":"violet"}>{row.original.channel}</DotBadge>} satisfies DomainColumn<Campaign>,
-        {id:"name",accessorKey:"name",header:"Campaign",size:300,enableHiding:false,cell:({row})=><span className="font-medium">{row.original.name}</span>} satisfies DomainColumn<Campaign>,
-        {id:"roasGroup",meta:{headerTitle:"ROAS"},header:()=> <span>ROAS <span className="text-xs font-normal">↑ Higher is better</span></span>,columns:[
-          {id:"roasTarget",accessorFn:(r:Campaign)=>Number(target||r.roasTarget),header:"Target",size:100,cell:({row})=><span className="text-muted-foreground">{Number(target||row.original.roasTarget)}x</span>},
-          {id:"roas",accessorKey:"roas",header:"Actual",size:110,cell:({row})=><span className={cn("block rounded px-2 py-1 font-medium",row.original.roas>=Number(target||row.original.roasTarget)?"bg-emerald-500/10":"bg-rose-500/10")}>{row.original.roas.toFixed(2)}x</span>},
-          {id:"roasDelta",accessorFn:(r:Campaign)=>(r.roas/Number(target||r.roasTarget)-1)*100,header:"vs Target",size:130,cell:({row})=><TargetDelta value={(row.original.roas/Number(target||row.original.roasTarget)-1)*100}/>},
-        ]} satisfies DomainColumn<Campaign>,
-        {id:"cpaGroup",meta:{headerTitle:"CPA"},header:()=> <span>CPA <span className="text-xs font-normal">↓ Lower is better</span></span>,columns:[
-          {id:"cpaTarget",accessorKey:"cpaTarget",header:"Target",size:100,cell:({row})=><span className="text-muted-foreground">${row.original.cpaTarget}</span>},
-          {id:"cpa",accessorKey:"cpa",header:"Actual",size:110,cell:({row})=><span className={cn("block rounded px-2 py-1",row.original.cpa<=row.original.cpaTarget?"bg-emerald-500/10":"bg-rose-500/10")}>${row.original.cpa.toFixed(2)}</span>},
-          {id:"cpaDelta",accessorFn:(r:Campaign)=>(r.cpa/r.cpaTarget-1)*100,header:"vs Target",size:130,cell:({row})=><TargetDelta inverse value={(row.original.cpa/row.original.cpaTarget-1)*100}/>},
-        ]} satisfies DomainColumn<Campaign>,
-      ] : initialOrder.map(
-        (key) =>
-          ({
-            id: key,
-            accessorFn: (row: Campaign) =>
-              key === "trend" ? row.spend : row[key],
-            header: labels[key],
-            size: initialWidths[key],
-            minSize: 72,
-            maxSize: 520,
-            enableHiding: key !== "name",
-            cell: ({ row }) => cell(row.original, key),
-            meta: {
-              headerClassName: `reui-col-${key}`,
-              cellClassName: key === "name" ? "max-w-0 truncate" : "",
-            },
-          }) satisfies DomainColumn<Campaign>,
-      )),
-      ...(targets?[{id:"status",accessorKey:"status",enableHiding:false},{id:"spend",accessorKey:"spend",enableHiding:false}] as DomainColumn<Campaign>[]:[]),
+      ...(targets
+        ? [
+            {
+              id: "channel",
+              accessorKey: "channel",
+              header: "Channel",
+              size: 100,
+              cell: ({ row }) => (
+                <DotBadge
+                  tone={
+                    row.original.channel === "Search"
+                      ? "blue"
+                      : row.original.channel === "Shopping"
+                        ? "warn"
+                        : "violet"
+                  }
+                >
+                  {row.original.channel}
+                </DotBadge>
+              ),
+            } satisfies DomainColumn<Campaign>,
+            {
+              id: "name",
+              accessorKey: "name",
+              header: "Campaign",
+              size: 300,
+              enableHiding: false,
+              cell: ({ row }) => <span className="font-medium">{row.original.name}</span>,
+            } satisfies DomainColumn<Campaign>,
+            {
+              id: "roasGroup",
+              meta: { headerTitle: "ROAS" },
+              header: () => (
+                <span>
+                  ROAS <span className="text-xs font-normal">↑ Higher is better</span>
+                </span>
+              ),
+              columns: [
+                {
+                  id: "roasTarget",
+                  accessorFn: (r: Campaign) => Number(target || r.roasTarget),
+                  header: "Target",
+                  size: 100,
+                  cell: ({ row }) => (
+                    <span className="text-muted-foreground">
+                      {Number(target || row.original.roasTarget)}x
+                    </span>
+                  ),
+                },
+                {
+                  id: "roas",
+                  accessorKey: "roas",
+                  header: "Actual",
+                  size: 110,
+                  cell: ({ row }) => (
+                    <span
+                      className={cn(
+                        "block rounded px-2 py-1 font-medium",
+                        row.original.roas >= Number(target || row.original.roasTarget)
+                          ? "bg-emerald-500/10"
+                          : "bg-rose-500/10",
+                      )}
+                    >
+                      {row.original.roas.toFixed(2)}x
+                    </span>
+                  ),
+                },
+                {
+                  id: "roasDelta",
+                  accessorFn: (r: Campaign) => (r.roas / Number(target || r.roasTarget) - 1) * 100,
+                  header: "vs Target",
+                  size: 130,
+                  cell: ({ row }) => (
+                    <TargetDelta
+                      value={
+                        (row.original.roas / Number(target || row.original.roasTarget) - 1) * 100
+                      }
+                    />
+                  ),
+                },
+              ],
+            } satisfies DomainColumn<Campaign>,
+            {
+              id: "cpaGroup",
+              meta: { headerTitle: "CPA" },
+              header: () => (
+                <span>
+                  CPA <span className="text-xs font-normal">↓ Lower is better</span>
+                </span>
+              ),
+              columns: [
+                {
+                  id: "cpaTarget",
+                  accessorKey: "cpaTarget",
+                  header: "Target",
+                  size: 100,
+                  cell: ({ row }) => (
+                    <span className="text-muted-foreground">${row.original.cpaTarget}</span>
+                  ),
+                },
+                {
+                  id: "cpa",
+                  accessorKey: "cpa",
+                  header: "Actual",
+                  size: 110,
+                  cell: ({ row }) => (
+                    <span
+                      className={cn(
+                        "block rounded px-2 py-1",
+                        row.original.cpa <= row.original.cpaTarget
+                          ? "bg-emerald-500/10"
+                          : "bg-rose-500/10",
+                      )}
+                    >
+                      ${row.original.cpa.toFixed(2)}
+                    </span>
+                  ),
+                },
+                {
+                  id: "cpaDelta",
+                  accessorFn: (r: Campaign) => (r.cpa / r.cpaTarget - 1) * 100,
+                  header: "vs Target",
+                  size: 130,
+                  cell: ({ row }) => (
+                    <TargetDelta
+                      inverse
+                      value={(row.original.cpa / row.original.cpaTarget - 1) * 100}
+                    />
+                  ),
+                },
+              ],
+            } satisfies DomainColumn<Campaign>,
+          ]
+        : initialOrder.map(
+            (key) =>
+              ({
+                id: key,
+                accessorFn: (row: Campaign) => (key === "trend" ? row.spend : row[key]),
+                header: labels[key],
+                size: initialWidths[key],
+                minSize: 72,
+                maxSize: 520,
+                enableHiding: key !== "name",
+                cell: ({ row }) => cell(row.original, key),
+                meta: {
+                  headerClassName: `reui-col-${key}`,
+                  cellClassName: key === "name" ? "max-w-0 truncate" : "",
+                },
+              }) satisfies DomainColumn<Campaign>,
+          )),
+      ...(targets
+        ? ([
+            { id: "status", accessorKey: "status", enableHiding: false },
+            { id: "spend", accessorKey: "spend", enableHiding: false },
+          ] as DomainColumn<Campaign>[])
+        : []),
       {
         id: "actions",
         size: 42,
@@ -354,7 +456,7 @@ export default function PerformanceCampaignTable({
           row.original.name.toLowerCase().includes(String(value).toLowerCase()),
       },
     ],
-    [rows, selected,targets,target],
+    [rows, selected, targets, target],
   );
   const filters = [
     ...(status !== "All statuses" ? [{ id: "status", value: status }] : []),
@@ -373,16 +475,19 @@ export default function PerformanceCampaignTable({
     onSortingChange: (next) => {
       const value = next[0];
       setSort(
-        value
-          ? { key: value.id as keyof Campaign, asc: !value.desc }
-          : { key: "id", asc: true },
+        value ? { key: value.id as keyof Campaign, asc: !value.desc } : { key: "id", asc: true },
       );
     },
     pagination: { pageIndex: page, pageSize },
     onPaginationChange,
     hidden,
     onHiddenChange: setHidden,
-    alwaysHidden: ["channelFilter", "segment", "nameFilter",...(targets?["status","spend"]:[])],
+    alwaysHidden: [
+      "channelFilter",
+      "segment",
+      "nameFilter",
+      ...(targets ? ["status", "spend"] : []),
+    ],
     selection: selected.map(String),
     onSelectionChange: (ids) => setSelected(ids.map(Number)),
     getRowId: (row) => String(row.id),
@@ -390,7 +495,7 @@ export default function PerformanceCampaignTable({
   return (
     <DomainGridSurface
       table={table}
-      paginationControls={{noun:"campaigns",sizes:[10,25,50]}}
+      paginationControls={{ noun: "campaigns", sizes: [10, 25, 50] }}
       layout={{
         dense: compact,
         cellBorder: columnLines,
@@ -423,4 +528,20 @@ export default function PerformanceCampaignTable({
   );
 }
 
-function TargetDelta({value,inverse=false}:{value:number;inverse?:boolean}){const good=inverse?value<=0:value>=0;return <div className="flex items-center gap-2"><span className={cn("text-xs tabular-nums",good?"text-emerald-500":"text-rose-500")}>{value>=0?"+":""}{value.toFixed(1)}%</span><span className="relative h-1.5 w-14 rounded bg-muted"><span className={cn("absolute top-0 h-1.5 rounded",good?"bg-emerald-500":"bg-rose-500")} style={{width:`${Math.min(100,Math.abs(value))}%`}}/></span></div>;}
+function TargetDelta({ value, inverse = false }: { value: number; inverse?: boolean }) {
+  const good = inverse ? value <= 0 : value >= 0;
+  return (
+    <div className="flex items-center gap-2">
+      <span className={cn("text-xs tabular-nums", good ? "text-emerald-500" : "text-rose-500")}>
+        {value >= 0 ? "+" : ""}
+        {value.toFixed(1)}%
+      </span>
+      <span className="relative h-1.5 w-14 rounded bg-muted">
+        <span
+          className={cn("absolute top-0 h-1.5 rounded", good ? "bg-emerald-500" : "bg-rose-500")}
+          style={{ width: `${Math.min(100, Math.abs(value))}%` }}
+        />
+      </span>
+    </div>
+  );
+}

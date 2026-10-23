@@ -24,15 +24,8 @@
 .profile-card-mesh:after {
   mask-image: linear-gradient(#000, transparent);
   background-image:
-    linear-gradient(
-      color-mix(in oklab, var(--border) 40%, transparent) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      90deg,
-      color-mix(in oklab, var(--border) 40%, transparent) 1px,
-      transparent 1px
-    );
+    linear-gradient(color-mix(in oklab, var(--border) 40%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklab, var(--border) 40%, transparent) 1px, transparent 1px);
   background-size: 5px 5px;
 }
 .profile-card-dots > *,

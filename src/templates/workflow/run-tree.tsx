@@ -1,13 +1,265 @@
-import {useState,useMemo} from 'react';
-import {Bot,Play,Wrench,MoreHorizontal,Clock,ShieldCheck,Settings2} from 'lucide-react';
-import {useTable,type ColumnDef,type ExpandedState} from '@tanstack/react-table';
-import {DataGrid,DataGridContainer,dataGridFeatures,type DataGridFeatures} from '@/components/reui/data-grid/data-grid';
-import {DataGridTable,DataGridTableRowExpand} from '@/components/reui/data-grid/data-grid-table';
-import {DataGridScrollArea} from '@/components/reui/data-grid/data-grid-scroll-area';
-import {DataGridColumnHeader} from '@/components/reui/data-grid/data-grid-column-header';
-import {DataGridColumnVisibility} from '@/components/reui/data-grid/data-grid-column-visibility';
-import {IconTile} from '@/components/reui/icon-tile';
-import {Panel,Input,Button,Segments,Status,ExportButton} from './shared';
-type Run={id:string;name:string;reference:string;tokens:string;spend:number;time:string;risk:string;level:number;steps?:number;children?:Run[]};
-const data:Run[]=['Refund Triage','Invoice Reconciler','Support Router','Contract Reader'].map((name,i)=>({id:`agent-${i}`,name,reference:`agt_${name.toLowerCase().replaceAll(' ','_')}`,tokens:['48.4K','60.5K','57.9K','62.3K'][i],spend:[4.82,3.76,6.59,5.68][i],time:'59.8s',risk:i===0?'Failed':'Clean',level:0,steps:16,children:[{id:`run-${i}`,name:'chained run',reference:`RUN-00${49+i}`,tokens:'9.1K',spend:.74,time:'13.1s',risk:'Clean',level:1,steps:4,children:['Check policy constraints','Call orders.read','Decide whether to escalate','Call payments.refund'].map((name,j)=>({id:`step-${i}-${j}`,name,reference:`Step ${j+1}`,tokens:['4.0K','0.8K','2.1K','2.1K'][j],spend:[.32,.07,.17,.17][j],time:['2.2s','2.0s','7.6s','1.3s'][j],risk:'Clean',level:2}))}]}));
-export function RunTree({open,initialRisk=false}:{open:(name:string)=>void;initialRisk?:boolean}){const[query,setQuery]=useState('');const[depth,setDepth]=useState('All');const[expanded,setExpanded]=useState<ExpandedState>({'agent-0':true,'run-0':true});const[risk,setRisk]=useState(initialRisk);const columns=useMemo<ColumnDef<DataGridFeatures,Run>[]>(()=>[{accessorKey:'name',size:440,header:({column})=><DataGridColumnHeader column={column} title="Agent / run / step"/>,cell:({row})=>{const r=row.original;const Icon=r.level===0?Bot:r.level===1?Play:Wrench;return <div className="wf-tree-name" style={{paddingLeft:r.level*22}}><DataGridTableRowExpand row={row}/><IconTile size="xs" variant="frame"><Icon/></IconTile><button className="wf-text-button" onClick={()=>open(r.name)}><strong>{r.name}</strong></button>{r.steps&&<Status>{r.steps} steps</Status>}</div>}},{accessorKey:'reference',size:130,header:({column})=><DataGridColumnHeader column={column} title="Reference"/>,cell:({getValue})=><code>{String(getValue())}</code>},{accessorKey:'tokens',size:110,header:({column})=><DataGridColumnHeader column={column} title="Tokens"/>},{accessorKey:'spend',size:185,header:({column})=><DataGridColumnHeader column={column} title="Spend"/>,cell:({row})=><div className="wf-tree-spend">{row.original.level<2&&<><span className="wf-spend-ring" style={{'--spent':`${row.original.spend/20.84*100}%`} as React.CSSProperties}/><small>{Math.round(row.original.spend/20.84*100)}%</small></>}<strong>${row.original.spend.toFixed(2)}</strong></div>},{accessorKey:'time',size:115,header:({column})=><DataGridColumnHeader column={column} title="Time"/>,cell:({row})=><Status><Clock className="size-3"/>{row.original.time}</Status>},{accessorKey:'risk',size:105,header:({column})=><DataGridColumnHeader column={column} title="Risk"/>,cell:({row})=><Status>{row.original.risk}</Status>},{id:'actions',size:45,cell:({row})=><Button variant="ghost" size="icon-sm" aria-label={`Inspect ${row.original.name}`} onClick={()=>open(row.original.name)}><MoreHorizontal/></Button>}],[open]);const table=useTable({features:dataGridFeatures,data:data.filter(r=>(r.name.toLowerCase().includes(query.toLowerCase())||r.children?.some(c=>c.children?.some(x=>x.name.toLowerCase().includes(query.toLowerCase()))))&&(!risk||r.risk==='Failed')),columns,getRowId:r=>r.id,getSubRows:r=>r.children,manualPagination:true,autoResetExpanded:false,state:{expanded},onExpandedChange:setExpanded});return <Panel className="wf-edge-table wf-run-tree" title="Run Tree" description="Atlas · All environments · sample of recent runs" action={<div className="wf-inline wf-tree-totals"><span>Workspace spend <Status>$20.84</Status></span><span>Total time <Status>4.0m</Status></span><span>Failed <Status>6</Status></span><ExportButton name="agent-runs" rows={data}/></div>}><DataGrid table={table} recordCount={data.length} tableLayout={{rowBorder:true,headerBorder:true,width:'auto',columnsVisibility:true}} tableClassNames={{base:'wf-official-grid wf-tree-grid',bodyRow:'h-12'}}><div className="wf-table-controls"><Input aria-label="Search steps" placeholder="Search steps…" value={query} onChange={e=>setQuery(e.target.value)}/><span>Depth</span><Segments items={['Collapse','1','2','All']} value={depth} onChange={v=>{setDepth(v);setExpanded(v==='Collapse'?{}:v==='1'?Object.fromEntries(data.map(r=>[r.id,true])):true)}}/><Button variant={risk?'secondary':'outline'} size="sm" onClick={()=>setRisk(!risk)}><ShieldCheck/>Risk</Button><DataGridColumnVisibility table={table} trigger={<Button variant="outline" size="sm"><Settings2/>Display</Button>}/></div><DataGridContainer className="rounded-none border-0"><DataGridScrollArea orientation="horizontal"><DataGridTable/></DataGridScrollArea></DataGridContainer></DataGrid></Panel>}
+import { useState, useMemo } from "react";
+import { Bot, Play, Wrench, MoreHorizontal, Clock, ShieldCheck, Settings2 } from "lucide-react";
+import { useTable, type ColumnDef, type ExpandedState } from "@tanstack/react-table";
+import {
+  DataGrid,
+  DataGridContainer,
+  dataGridFeatures,
+  type DataGridFeatures,
+} from "@/components/reui/data-grid/data-grid";
+import { DataGridTable, DataGridTableRowExpand } from "@/components/reui/data-grid/data-grid-table";
+import { DataGridScrollArea } from "@/components/reui/data-grid/data-grid-scroll-area";
+import { DataGridColumnHeader } from "@/components/reui/data-grid/data-grid-column-header";
+import { DataGridColumnVisibility } from "@/components/reui/data-grid/data-grid-column-visibility";
+import { IconTile } from "@/components/reui/icon-tile";
+import { Panel, Input, Button, Segments, Status, ExportButton } from "./shared";
+type Run = {
+  id: string;
+  name: string;
+  reference: string;
+  tokens: string;
+  spend: number;
+  time: string;
+  risk: string;
+  level: number;
+  steps?: number;
+  children?: Run[];
+};
+const data: Run[] = [
+  "Refund Triage",
+  "Invoice Reconciler",
+  "Support Router",
+  "Contract Reader",
+].map((name, i) => ({
+  id: `agent-${i}`,
+  name,
+  reference: `agt_${name.toLowerCase().replaceAll(" ", "_")}`,
+  tokens: ["48.4K", "60.5K", "57.9K", "62.3K"][i],
+  spend: [4.82, 3.76, 6.59, 5.68][i],
+  time: "59.8s",
+  risk: i === 0 ? "Failed" : "Clean",
+  level: 0,
+  steps: 16,
+  children: [
+    {
+      id: `run-${i}`,
+      name: "chained run",
+      reference: `RUN-00${49 + i}`,
+      tokens: "9.1K",
+      spend: 0.74,
+      time: "13.1s",
+      risk: "Clean",
+      level: 1,
+      steps: 4,
+      children: [
+        "Check policy constraints",
+        "Call orders.read",
+        "Decide whether to escalate",
+        "Call payments.refund",
+      ].map((name, j) => ({
+        id: `step-${i}-${j}`,
+        name,
+        reference: `Step ${j + 1}`,
+        tokens: ["4.0K", "0.8K", "2.1K", "2.1K"][j],
+        spend: [0.32, 0.07, 0.17, 0.17][j],
+        time: ["2.2s", "2.0s", "7.6s", "1.3s"][j],
+        risk: "Clean",
+        level: 2,
+      })),
+    },
+  ],
+}));
+export function RunTree({
+  open,
+  initialRisk = false,
+}: {
+  open: (name: string) => void;
+  initialRisk?: boolean;
+}) {
+  const [query, setQuery] = useState("");
+  const [depth, setDepth] = useState("All");
+  const [expanded, setExpanded] = useState<ExpandedState>({ "agent-0": true, "run-0": true });
+  const [risk, setRisk] = useState(initialRisk);
+  const columns = useMemo<ColumnDef<DataGridFeatures, Run>[]>(
+    () => [
+      {
+        accessorKey: "name",
+        size: 440,
+        header: ({ column }) => <DataGridColumnHeader column={column} title="Agent / run / step" />,
+        cell: ({ row }) => {
+          const r = row.original;
+          const Icon = r.level === 0 ? Bot : r.level === 1 ? Play : Wrench;
+          return (
+            <div className="wf-tree-name" style={{ paddingLeft: r.level * 22 }}>
+              <DataGridTableRowExpand row={row} />
+              <IconTile size="xs" variant="frame">
+                <Icon />
+              </IconTile>
+              <button className="wf-text-button" onClick={() => open(r.name)}>
+                <strong>{r.name}</strong>
+              </button>
+              {r.steps && <Status>{r.steps} steps</Status>}
+            </div>
+          );
+        },
+      },
+      {
+        accessorKey: "reference",
+        size: 130,
+        header: ({ column }) => <DataGridColumnHeader column={column} title="Reference" />,
+        cell: ({ getValue }) => <code>{String(getValue())}</code>,
+      },
+      {
+        accessorKey: "tokens",
+        size: 110,
+        header: ({ column }) => <DataGridColumnHeader column={column} title="Tokens" />,
+      },
+      {
+        accessorKey: "spend",
+        size: 185,
+        header: ({ column }) => <DataGridColumnHeader column={column} title="Spend" />,
+        cell: ({ row }) => (
+          <div className="wf-tree-spend">
+            {row.original.level < 2 && (
+              <>
+                <span
+                  className="wf-spend-ring"
+                  style={
+                    { "--spent": `${(row.original.spend / 20.84) * 100}%` } as React.CSSProperties
+                  }
+                />
+                <small>{Math.round((row.original.spend / 20.84) * 100)}%</small>
+              </>
+            )}
+            <strong>${row.original.spend.toFixed(2)}</strong>
+          </div>
+        ),
+      },
+      {
+        accessorKey: "time",
+        size: 115,
+        header: ({ column }) => <DataGridColumnHeader column={column} title="Time" />,
+        cell: ({ row }) => (
+          <Status>
+            <Clock className="size-3" />
+            {row.original.time}
+          </Status>
+        ),
+      },
+      {
+        accessorKey: "risk",
+        size: 105,
+        header: ({ column }) => <DataGridColumnHeader column={column} title="Risk" />,
+        cell: ({ row }) => <Status>{row.original.risk}</Status>,
+      },
+      {
+        id: "actions",
+        size: 45,
+        cell: ({ row }) => (
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            aria-label={`Inspect ${row.original.name}`}
+            onClick={() => open(row.original.name)}
+          >
+            <MoreHorizontal />
+          </Button>
+        ),
+      },
+    ],
+    [open],
+  );
+  const table = useTable({
+    features: dataGridFeatures,
+    data: data.filter(
+      (r) =>
+        (r.name.toLowerCase().includes(query.toLowerCase()) ||
+          r.children?.some((c) =>
+            c.children?.some((x) => x.name.toLowerCase().includes(query.toLowerCase())),
+          )) &&
+        (!risk || r.risk === "Failed"),
+    ),
+    columns,
+    getRowId: (r) => r.id,
+    getSubRows: (r) => r.children,
+    manualPagination: true,
+    autoResetExpanded: false,
+    state: { expanded },
+    onExpandedChange: setExpanded,
+  });
+  return (
+    <Panel
+      className="wf-edge-table wf-run-tree"
+      title="Run Tree"
+      description="Atlas · All environments · sample of recent runs"
+      action={
+        <div className="wf-inline wf-tree-totals">
+          <span>
+            Workspace spend <Status>$20.84</Status>
+          </span>
+          <span>
+            Total time <Status>4.0m</Status>
+          </span>
+          <span>
+            Failed <Status>6</Status>
+          </span>
+          <ExportButton name="agent-runs" rows={data} />
+        </div>
+      }
+    >
+      <DataGrid
+        table={table}
+        recordCount={data.length}
+        tableLayout={{
+          rowBorder: true,
+          headerBorder: true,
+          width: "auto",
+          columnsVisibility: true,
+        }}
+        tableClassNames={{ base: "wf-official-grid wf-tree-grid", bodyRow: "h-12" }}
+      >
+        <div className="wf-table-controls">
+          <Input
+            aria-label="Search steps"
+            placeholder="Search steps…"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+          <span>Depth</span>
+          <Segments
+            items={["Collapse", "1", "2", "All"]}
+            value={depth}
+            onChange={(v) => {
+              setDepth(v);
+              setExpanded(
+                v === "Collapse"
+                  ? {}
+                  : v === "1"
+                    ? Object.fromEntries(data.map((r) => [r.id, true]))
+                    : true,
+              );
+            }}
+          />
+          <Button variant={risk ? "secondary" : "outline"} size="sm" onClick={() => setRisk(!risk)}>
+            <ShieldCheck />
+            Risk
+          </Button>
+          <DataGridColumnVisibility
+            table={table}
+            trigger={
+              <Button variant="outline" size="sm">
+                <Settings2 />
+                Display
+              </Button>
+            }
+          />
+        </div>
+        <DataGridContainer className="rounded-none border-0">
+          <DataGridScrollArea orientation="horizontal">
+            <DataGridTable />
+          </DataGridScrollArea>
+        </DataGridContainer>
+      </DataGrid>
+    </Panel>
+  );
+}

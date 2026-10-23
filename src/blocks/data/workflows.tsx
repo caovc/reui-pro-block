@@ -1,42 +1,1466 @@
-import { useState } from 'react'
-import { ArrowLeft, ArrowRight, Bot, CalendarDays, Check, ChevronRight, Copy, CreditCard, FileText, Mail, MoreHorizontal, Plus, Search, Shield, Upload, User, X } from 'lucide-react'
-import type { BlockProps } from '@/data/types'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Field, FieldDescription, FieldGroup, FieldLabel } from '@/components/ui/field'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Switch } from '@/components/ui/switch'
-import { Progress } from '@/components/ui/progress'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { toast } from 'sonner'
-import { AddButton, BlockHeading, Person, Status } from './shared'
-import { companies, downloadCsv, people } from './data-utils'
+import { useState } from "react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Bot,
+  CalendarDays,
+  Check,
+  ChevronRight,
+  Copy,
+  CreditCard,
+  FileText,
+  Mail,
+  MoreHorizontal,
+  Plus,
+  Search,
+  Shield,
+  Upload,
+  User,
+  X,
+} from "lucide-react";
+import type { BlockProps } from "@/data/types";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Switch } from "@/components/ui/switch";
+import { Progress } from "@/components/ui/progress";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { toast } from "sonner";
+import { AddButton, BlockHeading, Person, Status } from "./shared";
+import { companies, downloadCsv, people } from "./data-utils";
 
-export function SettingsBlock({block}:BlockProps){
- const [tab,setTab]=useState('General');const [saved,setSaved]=useState(true);const [timeout,setTimeoutValue]=useState('120');const [threshold,setThreshold]=useState('80');const [name,setName]=useState(block.category==='agents'?'Research assistant':block.name);const [mode,setMode]=useState('Balanced');const [reveal,setReveal]=useState(false);const [connected,setConnected]=useState([true,true,false]);const [toggles,setToggles]=useState<Record<string,boolean>>({});const [prompt,setPrompt]=useState('You are a helpful assistant for our support team. Use the knowledge base to answer questions accurately. Always cite the source and ask for clarification when needed.')
- const security=/SSO|SCIM/.test(block.name);const routing=/Routing/.test(block.name);const providers=/Provider|Connections/.test(block.name);const flags=/Feature Flags/.test(block.name);const promptEditor=/Prompt Editor/.test(block.name);const reorder=/Reorder/.test(block.name);const alerts=/Alert/.test(block.name)
- const flip=(key:string)=>{setToggles(s=>({...s,[key]:!(s[key]??true)}));setSaved(false)}
- function save(){if(!name.trim()||Number(timeout)<30||Number(timeout)>900||!threshold.trim()){toast.error('Enter a name, threshold, and a timeout between 30 and 900 seconds.');return}setSaved(true);toast.success('Settings saved')}
- return <div className="mx-auto w-full rounded-xl border bg-background p-6"><BlockHeading title={block.name} description={security?'Manage identity, provisioning, and organization access policies.':reorder?'Set stock thresholds and automate your replenishment workflow.':'Configure workspace behavior and preferences.'}><Badge variant={saved?'outline':'secondary'}>{saved?'Saved':'Unsaved changes'}</Badge><Button size="sm" onClick={save}>Save changes</Button></BlockHeading><Tabs value={tab} onValueChange={setTab}><TabsList className="my-6">{(promptEditor?['General','System prompt','Variables','Evaluations','Access']:security?['General','Identity providers','Provisioning','Policies']:['General','Configuration','Notifications','Activity']).map(t=><TabsTrigger value={t} key={t}>{t}</TabsTrigger>)}</TabsList></Tabs>
- {providers||security?<div className="flex flex-col gap-5">{(security?['Okta','Microsoft Entra ID','Google Workspace']:['OpenAI','Anthropic','Google AI']).map((p,i)=><div key={p} className="flex flex-wrap items-center justify-between gap-3 rounded-lg border p-4"><div className="flex items-center gap-3"><div className="flex size-10 items-center justify-center rounded-xl border bg-muted/30"><Bot className="size-5"/></div><div><h3 className="text-xs font-medium">{p}</h3><p className="mt-1 text-[11px] text-muted-foreground">{connected[i]?'Connected · Last checked 2 minutes ago':'Connect your workspace account'}</p></div></div><div className="flex items-center gap-3"><Badge variant="outline">Priority {i+1}</Badge>{connected[i]?<><Switch checked={toggles[p]??true} onCheckedChange={()=>flip(p)} aria-label={`Enable ${p}`}/><Button variant="outline" size="sm" onClick={()=>toast.success(`${p} connection test successful`)}>Test connection</Button></>:<Button size="sm" onClick={()=>{setConnected(c=>c.map((v,j)=>j===i?true:v));toast.success(`${p} connected in demo`)}}>Connect</Button>}</div></div>)}{security&&<Card className="shadow-none"><CardHeader><CardTitle className="text-sm">SCIM provisioning</CardTitle><CardDescription className="text-xs">Keep team memberships in sync with your identity provider.</CardDescription></CardHeader><CardContent><FieldGroup><Field><FieldLabel>SCIM endpoint</FieldLabel><div className="flex gap-2"><Input readOnly value="https://api.acme.dev/scim/v2"/><Button variant="outline" size="icon" aria-label="Copy SCIM endpoint" onClick={()=>{navigator.clipboard.writeText('https://api.acme.dev/scim/v2');toast.success('Endpoint copied')}}><Copy/></Button></div></Field><Field><FieldLabel>Provisioning token</FieldLabel><div className="flex gap-2"><Input readOnly type={reveal?'text':'password'} value="scim_demo_workspace_24a8"/><Button variant="outline" onClick={()=>setReveal(v=>!v)}>{reveal?'Hide':'Reveal'}</Button><Button variant="outline" onClick={()=>toast.success('Demo token rotated')}>Rotate</Button></div></Field></FieldGroup></CardContent></Card>}</div>:
- routing?<div className="grid gap-4 md:grid-cols-2">{['Low risk','Standard','High risk','Restricted'].map((tier,i)=><Card key={tier} className="shadow-none"><CardHeader className="flex-row items-center justify-between"><CardTitle className="text-sm">{tier}</CardTitle><Badge variant="outline">Tier {i+1}</Badge></CardHeader><CardContent className="flex flex-col gap-4">{['Allow external tools','Require citations','Human approval','Log all requests'].map((rule,j)=><div key={rule} className="flex items-center justify-between gap-3 text-xs"><span>{rule}</span><Switch aria-label={`${tier}: ${rule}`} checked={toggles[`${i}-${j}`]??j>0} disabled={i===3&&j===2} onCheckedChange={()=>flip(`${i}-${j}`)}/></div>)}<FieldGroup><Field><FieldLabel>Fallback model</FieldLabel><Select defaultValue={i===3?'none':'GPT-4.1'} onValueChange={()=>setSaved(false)}><SelectTrigger><SelectValue/></SelectTrigger><SelectContent><SelectGroup>{['GPT-4.1','Claude Sonnet','Gemini Pro','none'].map(v=><SelectItem key={v} value={v}>{v==='none'?'No fallback':v}</SelectItem>)}</SelectGroup></SelectContent></Select></Field></FieldGroup></CardContent></Card>)}</div>:
- flags?<div className="flex flex-col gap-5">{['AI search suggestions','Smart document summaries','Auto-generated replies','Semantic file search','Workspace copilot'].map((f,i)=><div key={f} className="flex items-center justify-between rounded-lg border p-4"><div><h3 className="text-xs font-medium">{f}</h3><p className="mt-1 font-mono text-[10px] text-muted-foreground">{f.toLowerCase().replaceAll(' ','_')}</p></div><div className="flex items-center gap-4"><Badge variant="outline">{['Production','Beta','Development'][i%3]}</Badge><Switch checked={toggles[f]??i<3} onCheckedChange={()=>flip(f)} aria-label={`Enable ${f}`}/></div></div>)}</div>:
- <div className="grid gap-8 md:grid-cols-[1fr_280px]"><FieldGroup><Field data-invalid={!name.trim()}><FieldLabel htmlFor="config-name">{reorder?'Product name':alerts?'Rule name':'Name'}</FieldLabel><Input id="config-name" value={name} aria-invalid={!name.trim()} onChange={e=>{setName(e.target.value);setSaved(false)}}/></Field>{promptEditor?<Field><FieldLabel htmlFor="system-prompt">System prompt</FieldLabel><Textarea id="system-prompt" value={prompt} onChange={e=>{setPrompt(e.target.value);setSaved(false)}} className="min-h-52 font-mono text-xs"/><FieldDescription>Use {'{{variables}}'} to insert dynamic context.</FieldDescription></Field>:<Field><FieldLabel htmlFor="config-description">Description</FieldLabel><Textarea id="config-description" defaultValue="Workspace configuration for the production environment." onChange={()=>setSaved(false)}/></Field>}<div className="grid grid-cols-2 gap-4"><Field data-invalid={Number(timeout)<30||Number(timeout)>900}><FieldLabel htmlFor="config-timeout">{reorder?'Lead time (days)':'Timeout (seconds)'}</FieldLabel><Input id="config-timeout" type="number" value={timeout} aria-invalid={Number(timeout)<30||Number(timeout)>900} onChange={e=>{setTimeoutValue(e.target.value);setSaved(false)}}/><FieldDescription>Allowed range: 30–900</FieldDescription></Field><Field data-invalid={!threshold.trim()}><FieldLabel htmlFor="config-threshold">{reorder?'Reorder point':'Alert threshold'}</FieldLabel><Input id="config-threshold" type="number" value={threshold} onChange={e=>{setThreshold(e.target.value);setSaved(false)}}/></Field></div><Field><FieldLabel>Model / mode</FieldLabel><Select value={mode} onValueChange={v=>{setMode(v);setSaved(false)}}><SelectTrigger><SelectValue/></SelectTrigger><SelectContent><SelectGroup>{['Balanced','Fast','High quality'].map(v=><SelectItem key={v} value={v}>{v}</SelectItem>)}</SelectGroup></SelectContent></Select></Field><div className="border-t pt-4">{(reorder?['Automatic reorder','Notify purchasing team','Require approval over $1,000']:alerts?['Email notifications','Slack notifications','Quiet hours']:['Enable automatic retries','Save execution history','Send completion notifications']).map(t=><div key={t} className="flex items-center justify-between py-3 text-xs"><span>{t}</span><Switch checked={toggles[t]??true} onCheckedChange={()=>flip(t)} aria-label={t}/></div>)}<div className="flex items-center justify-between border-t py-3 text-xs"><span className="flex items-center gap-2"><Shield className="size-3.5"/>Mask sensitive data<Badge variant="outline">Organization policy</Badge></span><Switch checked disabled aria-label="Mask sensitive data (locked)"/></div></div></FieldGroup><div className="flex flex-col gap-4"><Card className="gap-3 shadow-none"><CardHeader><CardTitle className="text-sm">Configuration summary</CardTitle></CardHeader><CardContent className="flex flex-col gap-4 text-xs"><div className="flex justify-between"><span className="text-muted-foreground">Environment</span><Status value="Production"/></div><div className="flex justify-between"><span className="text-muted-foreground">Mode</span><span>{mode}</span></div><div className="flex justify-between"><span className="text-muted-foreground">Timeout</span><span>{timeout}s</span></div><div className="flex justify-between"><span className="text-muted-foreground">Last modified</span><span>Just now</span></div></CardContent></Card><Alert><Shield/><AlertTitle className="text-xs">Workspace policies apply</AlertTitle><AlertDescription className="text-[11px]">Some settings are managed by your organization administrator.</AlertDescription></Alert></div></div>}</div>
+export function SettingsBlock({ block }: BlockProps) {
+  const [tab, setTab] = useState("General");
+  const [saved, setSaved] = useState(true);
+  const [timeout, setTimeoutValue] = useState("120");
+  const [threshold, setThreshold] = useState("80");
+  const [name, setName] = useState(block.category === "agents" ? "Research assistant" : block.name);
+  const [mode, setMode] = useState("Balanced");
+  const [reveal, setReveal] = useState(false);
+  const [connected, setConnected] = useState([true, true, false]);
+  const [toggles, setToggles] = useState<Record<string, boolean>>({});
+  const [prompt, setPrompt] = useState(
+    "You are a helpful assistant for our support team. Use the knowledge base to answer questions accurately. Always cite the source and ask for clarification when needed.",
+  );
+  const security = /SSO|SCIM/.test(block.name);
+  const routing = /Routing/.test(block.name);
+  const providers = /Provider|Connections/.test(block.name);
+  const flags = /Feature Flags/.test(block.name);
+  const promptEditor = /Prompt Editor/.test(block.name);
+  const reorder = /Reorder/.test(block.name);
+  const alerts = /Alert/.test(block.name);
+  const flip = (key: string) => {
+    setToggles((s) => ({ ...s, [key]: !(s[key] ?? true) }));
+    setSaved(false);
+  };
+  function save() {
+    if (!name.trim() || Number(timeout) < 30 || Number(timeout) > 900 || !threshold.trim()) {
+      toast.error("Enter a name, threshold, and a timeout between 30 and 900 seconds.");
+      return;
+    }
+    setSaved(true);
+    toast.success("Settings saved");
+  }
+  return (
+    <div className="mx-auto w-full rounded-xl border bg-background p-6">
+      <BlockHeading
+        title={block.name}
+        description={
+          security
+            ? "Manage identity, provisioning, and organization access policies."
+            : reorder
+              ? "Set stock thresholds and automate your replenishment workflow."
+              : "Configure workspace behavior and preferences."
+        }
+      >
+        <Badge variant={saved ? "outline" : "secondary"}>
+          {saved ? "Saved" : "Unsaved changes"}
+        </Badge>
+        <Button size="sm" onClick={save}>
+          Save changes
+        </Button>
+      </BlockHeading>
+      <Tabs value={tab} onValueChange={setTab}>
+        <TabsList className="my-6">
+          {(promptEditor
+            ? ["General", "System prompt", "Variables", "Evaluations", "Access"]
+            : security
+              ? ["General", "Identity providers", "Provisioning", "Policies"]
+              : ["General", "Configuration", "Notifications", "Activity"]
+          ).map((t) => (
+            <TabsTrigger value={t} key={t}>
+              {t}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </Tabs>
+      {providers || security ? (
+        <div className="flex flex-col gap-5">
+          {(security
+            ? ["Okta", "Microsoft Entra ID", "Google Workspace"]
+            : ["OpenAI", "Anthropic", "Google AI"]
+          ).map((p, i) => (
+            <div
+              key={p}
+              className="flex flex-wrap items-center justify-between gap-3 rounded-lg border p-4"
+            >
+              <div className="flex items-center gap-3">
+                <div className="flex size-10 items-center justify-center rounded-xl border bg-muted/30">
+                  <Bot className="size-5" />
+                </div>
+                <div>
+                  <h3 className="text-xs font-medium">{p}</h3>
+                  <p className="mt-1 text-[11px] text-muted-foreground">
+                    {connected[i]
+                      ? "Connected · Last checked 2 minutes ago"
+                      : "Connect your workspace account"}
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <Badge variant="outline">Priority {i + 1}</Badge>
+                {connected[i] ? (
+                  <>
+                    <Switch
+                      checked={toggles[p] ?? true}
+                      onCheckedChange={() => flip(p)}
+                      aria-label={`Enable ${p}`}
+                    />
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => toast.success(`${p} connection test successful`)}
+                    >
+                      Test connection
+                    </Button>
+                  </>
+                ) : (
+                  <Button
+                    size="sm"
+                    onClick={() => {
+                      setConnected((c) => c.map((v, j) => (j === i ? true : v)));
+                      toast.success(`${p} connected in demo`);
+                    }}
+                  >
+                    Connect
+                  </Button>
+                )}
+              </div>
+            </div>
+          ))}
+          {security && (
+            <Card className="shadow-none">
+              <CardHeader>
+                <CardTitle className="text-sm">SCIM provisioning</CardTitle>
+                <CardDescription className="text-xs">
+                  Keep team memberships in sync with your identity provider.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <FieldGroup>
+                  <Field>
+                    <FieldLabel>SCIM endpoint</FieldLabel>
+                    <div className="flex gap-2">
+                      <Input readOnly value="https://api.acme.dev/scim/v2" />
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        aria-label="Copy SCIM endpoint"
+                        onClick={() => {
+                          navigator.clipboard.writeText("https://api.acme.dev/scim/v2");
+                          toast.success("Endpoint copied");
+                        }}
+                      >
+                        <Copy />
+                      </Button>
+                    </div>
+                  </Field>
+                  <Field>
+                    <FieldLabel>Provisioning token</FieldLabel>
+                    <div className="flex gap-2">
+                      <Input
+                        readOnly
+                        type={reveal ? "text" : "password"}
+                        value="scim_demo_workspace_24a8"
+                      />
+                      <Button variant="outline" onClick={() => setReveal((v) => !v)}>
+                        {reveal ? "Hide" : "Reveal"}
+                      </Button>
+                      <Button variant="outline" onClick={() => toast.success("Demo token rotated")}>
+                        Rotate
+                      </Button>
+                    </div>
+                  </Field>
+                </FieldGroup>
+              </CardContent>
+            </Card>
+          )}
+        </div>
+      ) : routing ? (
+        <div className="grid gap-4 md:grid-cols-2">
+          {["Low risk", "Standard", "High risk", "Restricted"].map((tier, i) => (
+            <Card key={tier} className="shadow-none">
+              <CardHeader className="flex-row items-center justify-between">
+                <CardTitle className="text-sm">{tier}</CardTitle>
+                <Badge variant="outline">Tier {i + 1}</Badge>
+              </CardHeader>
+              <CardContent className="flex flex-col gap-4">
+                {[
+                  "Allow external tools",
+                  "Require citations",
+                  "Human approval",
+                  "Log all requests",
+                ].map((rule, j) => (
+                  <div key={rule} className="flex items-center justify-between gap-3 text-xs">
+                    <span>{rule}</span>
+                    <Switch
+                      aria-label={`${tier}: ${rule}`}
+                      checked={toggles[`${i}-${j}`] ?? j > 0}
+                      disabled={i === 3 && j === 2}
+                      onCheckedChange={() => flip(`${i}-${j}`)}
+                    />
+                  </div>
+                ))}
+                <FieldGroup>
+                  <Field>
+                    <FieldLabel>Fallback model</FieldLabel>
+                    <Select
+                      defaultValue={i === 3 ? "none" : "GPT-4.1"}
+                      onValueChange={() => setSaved(false)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          {["GPT-4.1", "Claude Sonnet", "Gemini Pro", "none"].map((v) => (
+                            <SelectItem key={v} value={v}>
+                              {v === "none" ? "No fallback" : v}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </Field>
+                </FieldGroup>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      ) : flags ? (
+        <div className="flex flex-col gap-5">
+          {[
+            "AI search suggestions",
+            "Smart document summaries",
+            "Auto-generated replies",
+            "Semantic file search",
+            "Workspace copilot",
+          ].map((f, i) => (
+            <div key={f} className="flex items-center justify-between rounded-lg border p-4">
+              <div>
+                <h3 className="text-xs font-medium">{f}</h3>
+                <p className="mt-1 font-mono text-[10px] text-muted-foreground">
+                  {f.toLowerCase().replaceAll(" ", "_")}
+                </p>
+              </div>
+              <div className="flex items-center gap-4">
+                <Badge variant="outline">{["Production", "Beta", "Development"][i % 3]}</Badge>
+                <Switch
+                  checked={toggles[f] ?? i < 3}
+                  onCheckedChange={() => flip(f)}
+                  aria-label={`Enable ${f}`}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="grid gap-8 md:grid-cols-[1fr_280px]">
+          <FieldGroup>
+            <Field data-invalid={!name.trim()}>
+              <FieldLabel htmlFor="config-name">
+                {reorder ? "Product name" : alerts ? "Rule name" : "Name"}
+              </FieldLabel>
+              <Input
+                id="config-name"
+                value={name}
+                aria-invalid={!name.trim()}
+                onChange={(e) => {
+                  setName(e.target.value);
+                  setSaved(false);
+                }}
+              />
+            </Field>
+            {promptEditor ? (
+              <Field>
+                <FieldLabel htmlFor="system-prompt">System prompt</FieldLabel>
+                <Textarea
+                  id="system-prompt"
+                  value={prompt}
+                  onChange={(e) => {
+                    setPrompt(e.target.value);
+                    setSaved(false);
+                  }}
+                  className="min-h-52 font-mono text-xs"
+                />
+                <FieldDescription>
+                  Use {"{{variables}}"} to insert dynamic context.
+                </FieldDescription>
+              </Field>
+            ) : (
+              <Field>
+                <FieldLabel htmlFor="config-description">Description</FieldLabel>
+                <Textarea
+                  id="config-description"
+                  defaultValue="Workspace configuration for the production environment."
+                  onChange={() => setSaved(false)}
+                />
+              </Field>
+            )}
+            <div className="grid grid-cols-2 gap-4">
+              <Field data-invalid={Number(timeout) < 30 || Number(timeout) > 900}>
+                <FieldLabel htmlFor="config-timeout">
+                  {reorder ? "Lead time (days)" : "Timeout (seconds)"}
+                </FieldLabel>
+                <Input
+                  id="config-timeout"
+                  type="number"
+                  value={timeout}
+                  aria-invalid={Number(timeout) < 30 || Number(timeout) > 900}
+                  onChange={(e) => {
+                    setTimeoutValue(e.target.value);
+                    setSaved(false);
+                  }}
+                />
+                <FieldDescription>Allowed range: 30–900</FieldDescription>
+              </Field>
+              <Field data-invalid={!threshold.trim()}>
+                <FieldLabel htmlFor="config-threshold">
+                  {reorder ? "Reorder point" : "Alert threshold"}
+                </FieldLabel>
+                <Input
+                  id="config-threshold"
+                  type="number"
+                  value={threshold}
+                  onChange={(e) => {
+                    setThreshold(e.target.value);
+                    setSaved(false);
+                  }}
+                />
+              </Field>
+            </div>
+            <Field>
+              <FieldLabel>Model / mode</FieldLabel>
+              <Select
+                value={mode}
+                onValueChange={(v) => {
+                  setMode(v);
+                  setSaved(false);
+                }}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {["Balanced", "Fast", "High quality"].map((v) => (
+                      <SelectItem key={v} value={v}>
+                        {v}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </Field>
+            <div className="border-t pt-4">
+              {(reorder
+                ? ["Automatic reorder", "Notify purchasing team", "Require approval over $1,000"]
+                : alerts
+                  ? ["Email notifications", "Slack notifications", "Quiet hours"]
+                  : [
+                      "Enable automatic retries",
+                      "Save execution history",
+                      "Send completion notifications",
+                    ]
+              ).map((t) => (
+                <div key={t} className="flex items-center justify-between py-3 text-xs">
+                  <span>{t}</span>
+                  <Switch
+                    checked={toggles[t] ?? true}
+                    onCheckedChange={() => flip(t)}
+                    aria-label={t}
+                  />
+                </div>
+              ))}
+              <div className="flex items-center justify-between border-t py-3 text-xs">
+                <span className="flex items-center gap-2">
+                  <Shield className="size-3.5" />
+                  Mask sensitive data<Badge variant="outline">Organization policy</Badge>
+                </span>
+                <Switch checked disabled aria-label="Mask sensitive data (locked)" />
+              </div>
+            </div>
+          </FieldGroup>
+          <div className="flex flex-col gap-4">
+            <Card className="gap-3 shadow-none">
+              <CardHeader>
+                <CardTitle className="text-sm">Configuration summary</CardTitle>
+              </CardHeader>
+              <CardContent className="flex flex-col gap-4 text-xs">
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Environment</span>
+                  <Status value="Production" />
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Mode</span>
+                  <span>{mode}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Timeout</span>
+                  <span>{timeout}s</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Last modified</span>
+                  <span>Just now</span>
+                </div>
+              </CardContent>
+            </Card>
+            <Alert>
+              <Shield />
+              <AlertTitle className="text-xs">Workspace policies apply</AlertTitle>
+              <AlertDescription className="text-[11px]">
+                Some settings are managed by your organization administrator.
+              </AlertDescription>
+            </Alert>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
 
-export function WizardBlock({block}:BlockProps){const importCsv=/CSV Import/.test(block.name);const plan=/Plan Change/.test(block.name);const safety=/Safety/.test(block.name);const invoice=/Invoice/.test(block.name);const steps=importCsv?['Upload file','Map columns','Validate data','Handle duplicates','Review import']:plan?['Select plan','Billing preferences','Review changes']:invoice?['Customer','Line items','Payment terms','Review']:safety?['Policy details','Rules','Coverage','Review']:['Details','Tools','Conditions','Review','Publish'];const [step,setStep]=useState(0);const [name,setName]=useState('');const [uploaded,setUploaded]=useState(false);const [tier,setTier]=useState('Pro');const [quantity,setQuantity]=useState('5');const [done,setDone]=useState(false);const [rows,setRows]=useState(['Platform subscription','Additional seats']);const [date,setDate]=useState('2026-11-01');const total=Number(quantity||0)*(tier==='Enterprise'?99:tier==='Pro'?29:9);function next(){if(step===0&&!importCsv&&!plan&&!name.trim()){toast.error(`Enter ${invoice?'a customer':'a name'} to continue`);return}if(step===0&&importCsv&&!uploaded){toast.error('Choose a CSV file to continue');return}if(step===steps.length-1){setDone(true);toast.success(importCsv?'24 records imported':invoice?'Invoice saved as draft':plan?'Plan change scheduled':'Configuration published')}else setStep(s=>s+1)}return <div className="overflow-hidden rounded-xl border bg-background"><div className="border-b p-6"><BlockHeading title={block.name} description="Complete the steps below to configure your workspace."/></div><div className="grid min-h-[540px] md:grid-cols-[220px_1fr_280px]"><aside className="flex gap-2 overflow-auto border-b bg-muted/20 p-5 md:flex-col md:border-b-0 md:border-r">{steps.map((s,i)=><button key={s} className={`flex min-w-max items-center gap-3 rounded-lg p-2 text-left text-xs ${step===i?'bg-muted font-medium':'text-muted-foreground'}`} onClick={()=>i<step&&setStep(i)}><span className={`flex size-6 items-center justify-center rounded-full border text-[10px] ${i<step?'bg-primary text-primary-foreground':''}`}>{i<step?<Check className="size-3"/>:i+1}</span>{s}</button>)}</aside><main className="p-6">{done?<div className="flex min-h-80 flex-col items-center justify-center text-center"><div className="mb-5 flex size-12 items-center justify-center rounded-full bg-muted"><Check className="size-6"/></div><h3 className="text-lg font-semibold">{importCsv?'Import complete':invoice?'Invoice draft saved':'You’re all set'}</h3><p className="mt-2 text-xs text-muted-foreground">Your changes have been saved in this preview.</p><Button variant="outline" className="mt-5" onClick={()=>{setDone(false);setStep(0)}}>Start again</Button></div>:<><h3 className="mb-1 text-sm font-semibold">{steps[step]}</h3><p className="mb-6 text-xs text-muted-foreground">Step {step+1} of {steps.length}</p>{importCsv&&step===0?<label className="flex min-h-52 cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border border-dashed bg-muted/10 p-6"><Upload className="size-7 text-muted-foreground"/><span className="text-xs font-medium">{uploaded?'contacts-import.csv is ready':'Click to upload a CSV file'}</span><span className="text-[10px] text-muted-foreground">Up to 10 MB · CSV format</span><Input type="file" accept=".csv,text/csv" className="max-w-64 text-xs" onChange={e=>setUploaded(!!e.target.files?.length)}/><Button type="button" variant="outline" size="sm" onClick={()=>setUploaded(true)}>Use sample CSV</Button></label>:importCsv&&step===1?<div className="flex flex-col gap-3">{['Full name','Email address','Company','Job title','Phone number'].map(n=><div key={n} className="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-xs"><span>{n}</span><ArrowRight className="size-3.5 text-muted-foreground"/><Select defaultValue={n}><SelectTrigger><SelectValue/></SelectTrigger><SelectContent><SelectGroup>{['Full name','Email address','Company','Job title','Phone number','Skip column'].map(s=><SelectItem key={s} value={s}>{s}</SelectItem>)}</SelectGroup></SelectContent></Select></div>)}</div>:plan?<div className="flex flex-col gap-3">{['Starter','Pro','Enterprise'].map((t,i)=><button key={t} onClick={()=>setTier(t)} className={`flex items-center justify-between rounded-lg border p-4 text-left ${tier===t?'ring-1 ring-primary':''}`}><div><h4 className="text-xs font-semibold">{t}</h4><p className="mt-1 text-[11px] text-muted-foreground">{['For small teams','For growing workspaces','Advanced organization controls'][i]}</p></div><span className="text-lg font-semibold">${[9,29,99][i]}<span className="text-[10px] font-normal text-muted-foreground">/seat</span></span></button>)}<FieldGroup className="mt-3"><Field><FieldLabel>Seats</FieldLabel><Input type="number" min="1" value={quantity} onChange={e=>setQuantity(e.target.value)}/></Field><Field><FieldLabel>Apply changes</FieldLabel><Select defaultValue="At renewal"><SelectTrigger><SelectValue/></SelectTrigger><SelectContent><SelectGroup><SelectItem value="Immediately">Immediately</SelectItem><SelectItem value="At renewal">At renewal</SelectItem></SelectGroup></SelectContent></Select></Field></FieldGroup></div>:invoice&&step===1?<div className="flex flex-col gap-3">{rows.map((r,i)=><div key={i} className="flex gap-2"><Input aria-label={`Item ${i+1}`} value={r} onChange={e=>setRows(s=>s.map((v,j)=>j===i?e.target.value:v))}/><Input aria-label={`Quantity ${i+1}`} type="number" defaultValue={1} className="w-16"/><Input aria-label={`Price ${i+1}`} type="number" defaultValue={i===0?149:29} className="w-24"/><Button size="icon" variant="ghost" aria-label={`Remove item ${i+1}`} onClick={()=>setRows(s=>s.filter((_,j)=>j!==i))}><X/></Button></div>)}<Button variant="outline" size="sm" className="self-start" onClick={()=>setRows(s=>[...s,'New item'])}><Plus/>Add line item</Button></div>:step===steps.length-1||importCsv&&step===2?<div className="flex flex-col gap-4"><Alert><Check/><AlertTitle className="text-xs">Ready for review</AlertTitle><AlertDescription className="text-[11px]">{importCsv?'24 valid records · 2 duplicates will be updated':'All required fields are complete. Review your configuration before continuing.'}</AlertDescription></Alert>{['Name','Status','Owner','Created'].map((s,i)=><div key={s} className="flex justify-between border-b py-3 text-xs"><span className="text-muted-foreground">{s}</span><span>{[name||'contacts-import.csv','Ready','Olivia Rhye','Oct 22, 2026'][i]}</span></div>)}</div>:<FieldGroup><Field data-invalid={step===0&&!name}><FieldLabel htmlFor="wizard-name">{invoice?'Customer':importCsv?'Duplicate handling':'Name'}</FieldLabel><Input id="wizard-name" placeholder={invoice?'Search or enter customer name':'Enter a name'} value={name} onChange={e=>setName(e.target.value)}/></Field><Field><FieldLabel>Description</FieldLabel><Textarea placeholder="Describe the purpose and requirements..."/></Field><Field><FieldLabel>{invoice?'Due date':'Effective date'}</FieldLabel><Input type="date" value={date} onChange={e=>setDate(e.target.value)}/></Field>{!invoice&&['Read workspace documents','Search connected sources','Create draft records','Require approval for external actions'].map((t,i)=><label key={t} className="flex items-center gap-2 text-xs"><Checkbox defaultChecked={i<2}/>{t}</label>)}</FieldGroup>}</>}</main><aside className="border-t bg-muted/10 p-5 md:border-l md:border-t-0"><h3 className="text-xs font-medium">Live summary</h3><div className="mt-5 flex flex-col gap-4 text-xs">{(plan?[['Selected plan',tier],['Seats',quantity],['Monthly total',`$${total.toLocaleString()}`],['Credit applied','−$24.17']]:invoice?[['Customer',name||'Not selected'],['Line items',String(rows.length)],['Subtotal','$178.00'],['Tax','$17.80'],['Total','$195.80']]:[['Name',name||'Untitled'],['Current step',steps[step]],['Owner','Olivia Rhye'],['Status',done?'Published':'Draft']]).map(([k,v])=><div key={k} className="flex justify-between gap-3"><span className="text-muted-foreground">{k}</span><span className="text-right font-medium">{v}</span></div>)}<Progress value={done?100:(step/steps.length)*100} className="mt-4 h-1.5"/></div></aside></div>{!done&&<div className="flex justify-between border-t p-4"><Button variant="outline" disabled={step===0} onClick={()=>setStep(s=>s-1)}><ArrowLeft/>Back</Button><Button onClick={next}>{step===steps.length-1?importCsv?'Import records':invoice?'Save draft':'Confirm changes':'Continue'}<ArrowRight/></Button></div>}</div>}
+export function WizardBlock({ block }: BlockProps) {
+  const importCsv = /CSV Import/.test(block.name);
+  const plan = /Plan Change/.test(block.name);
+  const safety = /Safety/.test(block.name);
+  const invoice = /Invoice/.test(block.name);
+  const steps = importCsv
+    ? ["Upload file", "Map columns", "Validate data", "Handle duplicates", "Review import"]
+    : plan
+      ? ["Select plan", "Billing preferences", "Review changes"]
+      : invoice
+        ? ["Customer", "Line items", "Payment terms", "Review"]
+        : safety
+          ? ["Policy details", "Rules", "Coverage", "Review"]
+          : ["Details", "Tools", "Conditions", "Review", "Publish"];
+  const [step, setStep] = useState(0);
+  const [name, setName] = useState("");
+  const [uploaded, setUploaded] = useState(false);
+  const [tier, setTier] = useState("Pro");
+  const [quantity, setQuantity] = useState("5");
+  const [done, setDone] = useState(false);
+  const [rows, setRows] = useState(["Platform subscription", "Additional seats"]);
+  const [date, setDate] = useState("2026-11-01");
+  const total = Number(quantity || 0) * (tier === "Enterprise" ? 99 : tier === "Pro" ? 29 : 9);
+  function next() {
+    if (step === 0 && !importCsv && !plan && !name.trim()) {
+      toast.error(`Enter ${invoice ? "a customer" : "a name"} to continue`);
+      return;
+    }
+    if (step === 0 && importCsv && !uploaded) {
+      toast.error("Choose a CSV file to continue");
+      return;
+    }
+    if (step === steps.length - 1) {
+      setDone(true);
+      toast.success(
+        importCsv
+          ? "24 records imported"
+          : invoice
+            ? "Invoice saved as draft"
+            : plan
+              ? "Plan change scheduled"
+              : "Configuration published",
+      );
+    } else setStep((s) => s + 1);
+  }
+  return (
+    <div className="overflow-hidden rounded-xl border bg-background">
+      <div className="border-b p-6">
+        <BlockHeading
+          title={block.name}
+          description="Complete the steps below to configure your workspace."
+        />
+      </div>
+      <div className="grid min-h-[540px] md:grid-cols-[220px_1fr_280px]">
+        <aside className="flex gap-2 overflow-auto border-b bg-muted/20 p-5 md:flex-col md:border-b-0 md:border-r">
+          {steps.map((s, i) => (
+            <button
+              key={s}
+              className={`flex min-w-max items-center gap-3 rounded-lg p-2 text-left text-xs ${step === i ? "bg-muted font-medium" : "text-muted-foreground"}`}
+              onClick={() => i < step && setStep(i)}
+            >
+              <span
+                className={`flex size-6 items-center justify-center rounded-full border text-[10px] ${i < step ? "bg-primary text-primary-foreground" : ""}`}
+              >
+                {i < step ? <Check className="size-3" /> : i + 1}
+              </span>
+              {s}
+            </button>
+          ))}
+        </aside>
+        <main className="p-6">
+          {done ? (
+            <div className="flex min-h-80 flex-col items-center justify-center text-center">
+              <div className="mb-5 flex size-12 items-center justify-center rounded-full bg-muted">
+                <Check className="size-6" />
+              </div>
+              <h3 className="text-lg font-semibold">
+                {importCsv ? "Import complete" : invoice ? "Invoice draft saved" : "You’re all set"}
+              </h3>
+              <p className="mt-2 text-xs text-muted-foreground">
+                Your changes have been saved in this preview.
+              </p>
+              <Button
+                variant="outline"
+                className="mt-5"
+                onClick={() => {
+                  setDone(false);
+                  setStep(0);
+                }}
+              >
+                Start again
+              </Button>
+            </div>
+          ) : (
+            <>
+              <h3 className="mb-1 text-sm font-semibold">{steps[step]}</h3>
+              <p className="mb-6 text-xs text-muted-foreground">
+                Step {step + 1} of {steps.length}
+              </p>
+              {importCsv && step === 0 ? (
+                <label className="flex min-h-52 cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border border-dashed bg-muted/10 p-6">
+                  <Upload className="size-7 text-muted-foreground" />
+                  <span className="text-xs font-medium">
+                    {uploaded ? "contacts-import.csv is ready" : "Click to upload a CSV file"}
+                  </span>
+                  <span className="text-[10px] text-muted-foreground">
+                    Up to 10 MB · CSV format
+                  </span>
+                  <Input
+                    type="file"
+                    accept=".csv,text/csv"
+                    className="max-w-64 text-xs"
+                    onChange={(e) => setUploaded(!!e.target.files?.length)}
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setUploaded(true)}
+                  >
+                    Use sample CSV
+                  </Button>
+                </label>
+              ) : importCsv && step === 1 ? (
+                <div className="flex flex-col gap-3">
+                  {["Full name", "Email address", "Company", "Job title", "Phone number"].map(
+                    (n) => (
+                      <div
+                        key={n}
+                        className="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-xs"
+                      >
+                        <span>{n}</span>
+                        <ArrowRight className="size-3.5 text-muted-foreground" />
+                        <Select defaultValue={n}>
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              {[
+                                "Full name",
+                                "Email address",
+                                "Company",
+                                "Job title",
+                                "Phone number",
+                                "Skip column",
+                              ].map((s) => (
+                                <SelectItem key={s} value={s}>
+                                  {s}
+                                </SelectItem>
+                              ))}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    ),
+                  )}
+                </div>
+              ) : plan ? (
+                <div className="flex flex-col gap-3">
+                  {["Starter", "Pro", "Enterprise"].map((t, i) => (
+                    <button
+                      key={t}
+                      onClick={() => setTier(t)}
+                      className={`flex items-center justify-between rounded-lg border p-4 text-left ${tier === t ? "ring-1 ring-primary" : ""}`}
+                    >
+                      <div>
+                        <h4 className="text-xs font-semibold">{t}</h4>
+                        <p className="mt-1 text-[11px] text-muted-foreground">
+                          {
+                            [
+                              "For small teams",
+                              "For growing workspaces",
+                              "Advanced organization controls",
+                            ][i]
+                          }
+                        </p>
+                      </div>
+                      <span className="text-lg font-semibold">
+                        ${[9, 29, 99][i]}
+                        <span className="text-[10px] font-normal text-muted-foreground">/seat</span>
+                      </span>
+                    </button>
+                  ))}
+                  <FieldGroup className="mt-3">
+                    <Field>
+                      <FieldLabel>Seats</FieldLabel>
+                      <Input
+                        type="number"
+                        min="1"
+                        value={quantity}
+                        onChange={(e) => setQuantity(e.target.value)}
+                      />
+                    </Field>
+                    <Field>
+                      <FieldLabel>Apply changes</FieldLabel>
+                      <Select defaultValue="At renewal">
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectItem value="Immediately">Immediately</SelectItem>
+                            <SelectItem value="At renewal">At renewal</SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </Field>
+                  </FieldGroup>
+                </div>
+              ) : invoice && step === 1 ? (
+                <div className="flex flex-col gap-3">
+                  {rows.map((r, i) => (
+                    <div key={i} className="flex gap-2">
+                      <Input
+                        aria-label={`Item ${i + 1}`}
+                        value={r}
+                        onChange={(e) =>
+                          setRows((s) => s.map((v, j) => (j === i ? e.target.value : v)))
+                        }
+                      />
+                      <Input
+                        aria-label={`Quantity ${i + 1}`}
+                        type="number"
+                        defaultValue={1}
+                        className="w-16"
+                      />
+                      <Input
+                        aria-label={`Price ${i + 1}`}
+                        type="number"
+                        defaultValue={i === 0 ? 149 : 29}
+                        className="w-24"
+                      />
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        aria-label={`Remove item ${i + 1}`}
+                        onClick={() => setRows((s) => s.filter((_, j) => j !== i))}
+                      >
+                        <X />
+                      </Button>
+                    </div>
+                  ))}
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="self-start"
+                    onClick={() => setRows((s) => [...s, "New item"])}
+                  >
+                    <Plus />
+                    Add line item
+                  </Button>
+                </div>
+              ) : step === steps.length - 1 || (importCsv && step === 2) ? (
+                <div className="flex flex-col gap-4">
+                  <Alert>
+                    <Check />
+                    <AlertTitle className="text-xs">Ready for review</AlertTitle>
+                    <AlertDescription className="text-[11px]">
+                      {importCsv
+                        ? "24 valid records · 2 duplicates will be updated"
+                        : "All required fields are complete. Review your configuration before continuing."}
+                    </AlertDescription>
+                  </Alert>
+                  {["Name", "Status", "Owner", "Created"].map((s, i) => (
+                    <div key={s} className="flex justify-between border-b py-3 text-xs">
+                      <span className="text-muted-foreground">{s}</span>
+                      <span>
+                        {[name || "contacts-import.csv", "Ready", "Olivia Rhye", "Oct 22, 2026"][i]}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <FieldGroup>
+                  <Field data-invalid={step === 0 && !name}>
+                    <FieldLabel htmlFor="wizard-name">
+                      {invoice ? "Customer" : importCsv ? "Duplicate handling" : "Name"}
+                    </FieldLabel>
+                    <Input
+                      id="wizard-name"
+                      placeholder={invoice ? "Search or enter customer name" : "Enter a name"}
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    />
+                  </Field>
+                  <Field>
+                    <FieldLabel>Description</FieldLabel>
+                    <Textarea placeholder="Describe the purpose and requirements..." />
+                  </Field>
+                  <Field>
+                    <FieldLabel>{invoice ? "Due date" : "Effective date"}</FieldLabel>
+                    <Input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+                  </Field>
+                  {!invoice &&
+                    [
+                      "Read workspace documents",
+                      "Search connected sources",
+                      "Create draft records",
+                      "Require approval for external actions",
+                    ].map((t, i) => (
+                      <label key={t} className="flex items-center gap-2 text-xs">
+                        <Checkbox defaultChecked={i < 2} />
+                        {t}
+                      </label>
+                    ))}
+                </FieldGroup>
+              )}
+            </>
+          )}
+        </main>
+        <aside className="border-t bg-muted/10 p-5 md:border-l md:border-t-0">
+          <h3 className="text-xs font-medium">Live summary</h3>
+          <div className="mt-5 flex flex-col gap-4 text-xs">
+            {(plan
+              ? [
+                  ["Selected plan", tier],
+                  ["Seats", quantity],
+                  ["Monthly total", `$${total.toLocaleString()}`],
+                  ["Credit applied", "−$24.17"],
+                ]
+              : invoice
+                ? [
+                    ["Customer", name || "Not selected"],
+                    ["Line items", String(rows.length)],
+                    ["Subtotal", "$178.00"],
+                    ["Tax", "$17.80"],
+                    ["Total", "$195.80"],
+                  ]
+                : [
+                    ["Name", name || "Untitled"],
+                    ["Current step", steps[step]],
+                    ["Owner", "Olivia Rhye"],
+                    ["Status", done ? "Published" : "Draft"],
+                  ]
+            ).map(([k, v]) => (
+              <div key={k} className="flex justify-between gap-3">
+                <span className="text-muted-foreground">{k}</span>
+                <span className="text-right font-medium">{v}</span>
+              </div>
+            ))}
+            <Progress value={done ? 100 : (step / steps.length) * 100} className="mt-4 h-1.5" />
+          </div>
+        </aside>
+      </div>
+      {!done && (
+        <div className="flex justify-between border-t p-4">
+          <Button variant="outline" disabled={step === 0} onClick={() => setStep((s) => s - 1)}>
+            <ArrowLeft />
+            Back
+          </Button>
+          <Button onClick={next}>
+            {step === steps.length - 1
+              ? importCsv
+                ? "Import records"
+                : invoice
+                  ? "Save draft"
+                  : "Confirm changes"
+              : "Continue"}
+            <ArrowRight />
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+}
 
-export function TimelineBlock({block}:BlockProps){const [filter,setFilter]=useState('All');const [expanded,setExpanded]=useState<number[]>([]);const [note,setNote]=useState('');const [notes,setNotes]=useState<string[]>([]);const types=['Call','Email','Meeting','Note','Task','Email'];return <div className="mx-auto w-full max-w-4xl rounded-xl border bg-background p-6"><BlockHeading title={block.name} description="Track conversations, decisions, and account activity."><Button variant="outline" size="sm" onClick={()=>downloadCsv(block.name,types.map((t,i)=>({type:t,owner:people[i],date:'2026-10-22'})))}>Export activity</Button></BlockHeading><Tabs value={filter} onValueChange={setFilter}><TabsList className="my-5">{['All','Call','Email','Meeting','Note'].map(t=><TabsTrigger value={t} key={t}>{t}</TabsTrigger>)}</TabsList></Tabs><div className="flex gap-2 rounded-lg border p-3"><Input aria-label="Add activity note" placeholder="Add a note to the timeline..." value={note} onChange={e=>setNote(e.target.value)}/><Button disabled={!note.trim()} onClick={()=>{setNotes(s=>[note,...s]);setNote('');toast.success('Note added')}}><Plus/>Add note</Button></div><p className="mb-5 mt-7 text-[11px] font-medium text-muted-foreground">TODAY · OCT 22, 2026</p>{notes.map((n,i)=><div key={i} className="mb-4 rounded-lg border p-4"><p className="text-xs">{n}</p><p className="mt-2 text-[10px] text-muted-foreground">Olivia Rhye · Just now</p></div>)}{types.map((t,i)=>(filter==='All'||filter===t)&&<div key={i} className="flex gap-4"><div className="flex flex-col items-center"><span className="flex size-8 items-center justify-center rounded-full border bg-muted/40">{t==='Call'?<User className="size-3.5"/>:t==='Email'?<Mail className="size-3.5"/>:t==='Meeting'?<CalendarDays className="size-3.5"/>:<FileText className="size-3.5"/>}</span><div className="my-1 min-h-7 w-px flex-1 bg-border"/></div><div className="min-w-0 flex-1 pb-6"><div className="flex items-start justify-between gap-3"><div className="text-xs"><span className="font-medium">{people[i]}</span><span className="text-muted-foreground"> {['completed a call with','sent a follow-up to','scheduled a meeting with','added a note for','created a task for','shared a proposal with'][i]} </span><span className="font-medium">{companies[i]}</span></div><span className="shrink-0 text-[10px] text-muted-foreground">{10+i}:24 AM</span></div><button onClick={()=>setExpanded(s=>s.includes(i)?s.filter(x=>x!==i):[...s,i])} className="mt-2 flex items-center gap-1 text-[11px] text-muted-foreground"><ChevronRight className={`size-3 ${expanded.includes(i)?'rotate-90':''}`}/>{['Discovery call · 32 min','Re: Updated proposal','Product walkthrough · Tomorrow','Account review notes','Prepare pricing proposal','Q4 expansion opportunity'][i]}</button>{expanded.includes(i)&&<div className="mt-3 rounded-lg border bg-muted/10 p-4 text-xs leading-6">Discussed the project scope, timeline, and next steps. The team is aligned on the proposed approach. Follow up with the updated proposal by Friday.<div className="mt-2"><Status value="Complete"/></div></div>}</div></div>)}</div>}
+export function TimelineBlock({ block }: BlockProps) {
+  const [filter, setFilter] = useState("All");
+  const [expanded, setExpanded] = useState<number[]>([]);
+  const [note, setNote] = useState("");
+  const [notes, setNotes] = useState<string[]>([]);
+  const types = ["Call", "Email", "Meeting", "Note", "Task", "Email"];
+  return (
+    <div className="mx-auto w-full max-w-4xl rounded-xl border bg-background p-6">
+      <BlockHeading
+        title={block.name}
+        description="Track conversations, decisions, and account activity."
+      >
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() =>
+            downloadCsv(
+              block.name,
+              types.map((t, i) => ({ type: t, owner: people[i], date: "2026-10-22" })),
+            )
+          }
+        >
+          Export activity
+        </Button>
+      </BlockHeading>
+      <Tabs value={filter} onValueChange={setFilter}>
+        <TabsList className="my-5">
+          {["All", "Call", "Email", "Meeting", "Note"].map((t) => (
+            <TabsTrigger value={t} key={t}>
+              {t}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </Tabs>
+      <div className="flex gap-2 rounded-lg border p-3">
+        <Input
+          aria-label="Add activity note"
+          placeholder="Add a note to the timeline..."
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+        />
+        <Button
+          disabled={!note.trim()}
+          onClick={() => {
+            setNotes((s) => [note, ...s]);
+            setNote("");
+            toast.success("Note added");
+          }}
+        >
+          <Plus />
+          Add note
+        </Button>
+      </div>
+      <p className="mb-5 mt-7 text-[11px] font-medium text-muted-foreground">
+        TODAY · OCT 22, 2026
+      </p>
+      {notes.map((n, i) => (
+        <div key={i} className="mb-4 rounded-lg border p-4">
+          <p className="text-xs">{n}</p>
+          <p className="mt-2 text-[10px] text-muted-foreground">Olivia Rhye · Just now</p>
+        </div>
+      ))}
+      {types.map(
+        (t, i) =>
+          (filter === "All" || filter === t) && (
+            <div key={i} className="flex gap-4">
+              <div className="flex flex-col items-center">
+                <span className="flex size-8 items-center justify-center rounded-full border bg-muted/40">
+                  {t === "Call" ? (
+                    <User className="size-3.5" />
+                  ) : t === "Email" ? (
+                    <Mail className="size-3.5" />
+                  ) : t === "Meeting" ? (
+                    <CalendarDays className="size-3.5" />
+                  ) : (
+                    <FileText className="size-3.5" />
+                  )}
+                </span>
+                <div className="my-1 min-h-7 w-px flex-1 bg-border" />
+              </div>
+              <div className="min-w-0 flex-1 pb-6">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="text-xs">
+                    <span className="font-medium">{people[i]}</span>
+                    <span className="text-muted-foreground">
+                      {" "}
+                      {
+                        [
+                          "completed a call with",
+                          "sent a follow-up to",
+                          "scheduled a meeting with",
+                          "added a note for",
+                          "created a task for",
+                          "shared a proposal with",
+                        ][i]
+                      }{" "}
+                    </span>
+                    <span className="font-medium">{companies[i]}</span>
+                  </div>
+                  <span className="shrink-0 text-[10px] text-muted-foreground">{10 + i}:24 AM</span>
+                </div>
+                <button
+                  onClick={() =>
+                    setExpanded((s) => (s.includes(i) ? s.filter((x) => x !== i) : [...s, i]))
+                  }
+                  className="mt-2 flex items-center gap-1 text-[11px] text-muted-foreground"
+                >
+                  <ChevronRight className={`size-3 ${expanded.includes(i) ? "rotate-90" : ""}`} />
+                  {
+                    [
+                      "Discovery call · 32 min",
+                      "Re: Updated proposal",
+                      "Product walkthrough · Tomorrow",
+                      "Account review notes",
+                      "Prepare pricing proposal",
+                      "Q4 expansion opportunity",
+                    ][i]
+                  }
+                </button>
+                {expanded.includes(i) && (
+                  <div className="mt-3 rounded-lg border bg-muted/10 p-4 text-xs leading-6">
+                    Discussed the project scope, timeline, and next steps. The team is aligned on
+                    the proposed approach. Follow up with the updated proposal by Friday.
+                    <div className="mt-2">
+                      <Status value="Complete" />
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          ),
+      )}
+    </div>
+  );
+}
 
-export function BoardBlock({block}:BlockProps){const stages=block.name==='Forecast Call'?['Pipeline','Best case','Commit','Omit']:['New','Qualified','Proposal','Negotiation','Won'];const [cards,setCards]=useState(companies.slice(0,10).map((name,i)=>({id:i,name,stage:i%stages.length,value:[24500,48000,12800,72000,32000][i%5],owner:people[i],confidence:42+i*5})));const [drag,setDrag]=useState<number|null>(null);const [search,setSearch]=useState('');const [selected,setSelected]=useState<number|null>(null);const [newOpen,setNewOpen]=useState(false);const [newName,setNewName]=useState('');const [view,setView]=useState('Board');return <div className="w-full rounded-xl border bg-background p-5"><BlockHeading title={block.name} description="Manage your pipeline and move deals forward."><Badge variant="outline">{cards.length} deals</Badge><AddButton label="Add deal" onClick={()=>setNewOpen(true)}/></BlockHeading><div className="my-5 flex flex-wrap items-center justify-between gap-3"><Tabs value={view} onValueChange={setView}><TabsList>{['Board','Table','Timeline'].map(t=><TabsTrigger key={t} value={t}>{t}</TabsTrigger>)}</TabsList></Tabs><div className="relative"><Search className="absolute left-2.5 top-2.5 size-3.5 text-muted-foreground"/><Input aria-label="Search deals" placeholder="Search deals..." value={search} onChange={e=>setSearch(e.target.value)} className="h-8 pl-8 text-xs"/></div></div><div className={view==='Board'?'grid gap-3 overflow-auto md:grid-cols-5':'flex flex-col gap-2'}>{stages.map((stage,i)=><div key={stage} onDragOver={e=>e.preventDefault()} onDrop={()=>{setCards(cs=>cs.map(c=>c.id===drag?{...c,stage:i}:c));setDrag(null);toast.success(`Deal moved to ${stage}`)}} className={`min-w-36 rounded-lg ${view==='Board'?'bg-muted/40 p-2.5':'border p-3'}`}><div className="mb-3 flex items-center justify-between gap-1"><div className="flex items-center gap-2 text-[11px] font-medium"><span className="size-2 rounded-full" style={{background:['var(--chart-1)','var(--chart-2)','var(--chart-3)','var(--chart-4)','var(--chart-5)'][i]}}/>{stage}<span className="text-muted-foreground">{cards.filter(c=>c.stage===i).length}</span></div><Button size="icon" variant="ghost" className="size-5" aria-label={`Add deal to ${stage}`} onClick={()=>{setNewName('');setNewOpen(true)}}><Plus/></Button></div>{cards.filter(c=>c.stage===i&&c.name.toLowerCase().includes(search.toLowerCase())).map(c=><button key={c.id} draggable onDragStart={()=>setDrag(c.id)} onClick={()=>setSelected(c.id)} className={`mb-2 w-full rounded-lg border bg-background p-3 text-left shadow-xs hover:border-muted-foreground/40 ${view==='Board'?'':'flex items-center justify-between gap-4'}`}><div className="flex items-center justify-between"><span className="text-xs font-medium">{c.name}</span><MoreHorizontal className="size-3 text-muted-foreground"/></div><p className="my-3 text-base font-semibold">${c.value.toLocaleString()}</p><div className="mb-3"><div className="mb-1.5 flex justify-between text-[9px] text-muted-foreground"><span>Confidence</span><span>{c.confidence}%</span></div><Progress value={c.confidence} className="h-1"/></div><div className="flex items-center justify-between gap-2"><Person name={c.owner} small/><span className="text-[9px] text-muted-foreground">Oct {24+c.id}</span></div></button>)}<p className="px-1 pt-1 text-[10px] text-muted-foreground">${cards.filter(c=>c.stage===i).reduce((s,c)=>s+c.value,0).toLocaleString()}</p></div>)}</div><Dialog open={selected!==null} onOpenChange={v=>!v&&setSelected(null)}><DialogContent><DialogHeader><DialogTitle>{cards.find(c=>c.id===selected)?.name} · Expansion deal</DialogTitle><DialogDescription>Manage the deal stage and account ownership.</DialogDescription></DialogHeader><FieldGroup><Field><FieldLabel>Stage</FieldLabel><Select value={String(cards.find(c=>c.id===selected)?.stage??0)} onValueChange={v=>setCards(cs=>cs.map(c=>c.id===selected?{...c,stage:Number(v)}:c))}><SelectTrigger><SelectValue/></SelectTrigger><SelectContent><SelectGroup>{stages.map((s,i)=><SelectItem key={s} value={String(i)}>{s}</SelectItem>)}</SelectGroup></SelectContent></Select></Field><Field><FieldLabel>Next step</FieldLabel><Textarea defaultValue="Schedule a follow-up call and share the updated proposal."/></Field></FieldGroup><DialogFooter><Button onClick={()=>{setSelected(null);toast.success('Deal updated')}}>Save changes</Button></DialogFooter></DialogContent></Dialog><Dialog open={newOpen} onOpenChange={setNewOpen}><DialogContent><DialogHeader><DialogTitle>Create deal</DialogTitle><DialogDescription>Add a new opportunity to your pipeline.</DialogDescription></DialogHeader><FieldGroup><Field><FieldLabel htmlFor="deal-company">Company</FieldLabel><Input id="deal-company" value={newName} onChange={e=>setNewName(e.target.value)}/></Field></FieldGroup><DialogFooter><Button disabled={!newName.trim()} onClick={()=>{setCards(cs=>[...cs,{id:Date.now(),name:newName,stage:0,value:12000,owner:people[0],confidence:25}]);setNewOpen(false);toast.success('Deal created')}}>Create deal</Button></DialogFooter></DialogContent></Dialog></div>}
+export function BoardBlock({ block }: BlockProps) {
+  const stages =
+    block.name === "Forecast Call"
+      ? ["Pipeline", "Best case", "Commit", "Omit"]
+      : ["New", "Qualified", "Proposal", "Negotiation", "Won"];
+  const [cards, setCards] = useState(
+    companies.slice(0, 10).map((name, i) => ({
+      id: i,
+      name,
+      stage: i % stages.length,
+      value: [24500, 48000, 12800, 72000, 32000][i % 5],
+      owner: people[i],
+      confidence: 42 + i * 5,
+    })),
+  );
+  const [drag, setDrag] = useState<number | null>(null);
+  const [search, setSearch] = useState("");
+  const [selected, setSelected] = useState<number | null>(null);
+  const [newOpen, setNewOpen] = useState(false);
+  const [newName, setNewName] = useState("");
+  const [view, setView] = useState("Board");
+  return (
+    <div className="w-full rounded-xl border bg-background p-5">
+      <BlockHeading title={block.name} description="Manage your pipeline and move deals forward.">
+        <Badge variant="outline">{cards.length} deals</Badge>
+        <AddButton label="Add deal" onClick={() => setNewOpen(true)} />
+      </BlockHeading>
+      <div className="my-5 flex flex-wrap items-center justify-between gap-3">
+        <Tabs value={view} onValueChange={setView}>
+          <TabsList>
+            {["Board", "Table", "Timeline"].map((t) => (
+              <TabsTrigger key={t} value={t}>
+                {t}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
+        <div className="relative">
+          <Search className="absolute left-2.5 top-2.5 size-3.5 text-muted-foreground" />
+          <Input
+            aria-label="Search deals"
+            placeholder="Search deals..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="h-8 pl-8 text-xs"
+          />
+        </div>
+      </div>
+      <div
+        className={
+          view === "Board" ? "grid gap-3 overflow-auto md:grid-cols-5" : "flex flex-col gap-2"
+        }
+      >
+        {stages.map((stage, i) => (
+          <div
+            key={stage}
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={() => {
+              setCards((cs) => cs.map((c) => (c.id === drag ? { ...c, stage: i } : c)));
+              setDrag(null);
+              toast.success(`Deal moved to ${stage}`);
+            }}
+            className={`min-w-36 rounded-lg ${view === "Board" ? "bg-muted/40 p-2.5" : "border p-3"}`}
+          >
+            <div className="mb-3 flex items-center justify-between gap-1">
+              <div className="flex items-center gap-2 text-[11px] font-medium">
+                <span
+                  className="size-2 rounded-full"
+                  style={{
+                    background: [
+                      "var(--chart-1)",
+                      "var(--chart-2)",
+                      "var(--chart-3)",
+                      "var(--chart-4)",
+                      "var(--chart-5)",
+                    ][i],
+                  }}
+                />
+                {stage}
+                <span className="text-muted-foreground">
+                  {cards.filter((c) => c.stage === i).length}
+                </span>
+              </div>
+              <Button
+                size="icon"
+                variant="ghost"
+                className="size-5"
+                aria-label={`Add deal to ${stage}`}
+                onClick={() => {
+                  setNewName("");
+                  setNewOpen(true);
+                }}
+              >
+                <Plus />
+              </Button>
+            </div>
+            {cards
+              .filter((c) => c.stage === i && c.name.toLowerCase().includes(search.toLowerCase()))
+              .map((c) => (
+                <button
+                  key={c.id}
+                  draggable
+                  onDragStart={() => setDrag(c.id)}
+                  onClick={() => setSelected(c.id)}
+                  className={`mb-2 w-full rounded-lg border bg-background p-3 text-left shadow-xs hover:border-muted-foreground/40 ${view === "Board" ? "" : "flex items-center justify-between gap-4"}`}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-medium">{c.name}</span>
+                    <MoreHorizontal className="size-3 text-muted-foreground" />
+                  </div>
+                  <p className="my-3 text-base font-semibold">${c.value.toLocaleString()}</p>
+                  <div className="mb-3">
+                    <div className="mb-1.5 flex justify-between text-[9px] text-muted-foreground">
+                      <span>Confidence</span>
+                      <span>{c.confidence}%</span>
+                    </div>
+                    <Progress value={c.confidence} className="h-1" />
+                  </div>
+                  <div className="flex items-center justify-between gap-2">
+                    <Person name={c.owner} small />
+                    <span className="text-[9px] text-muted-foreground">Oct {24 + c.id}</span>
+                  </div>
+                </button>
+              ))}
+            <p className="px-1 pt-1 text-[10px] text-muted-foreground">
+              $
+              {cards
+                .filter((c) => c.stage === i)
+                .reduce((s, c) => s + c.value, 0)
+                .toLocaleString()}
+            </p>
+          </div>
+        ))}
+      </div>
+      <Dialog open={selected !== null} onOpenChange={(v) => !v && setSelected(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{cards.find((c) => c.id === selected)?.name} · Expansion deal</DialogTitle>
+            <DialogDescription>Manage the deal stage and account ownership.</DialogDescription>
+          </DialogHeader>
+          <FieldGroup>
+            <Field>
+              <FieldLabel>Stage</FieldLabel>
+              <Select
+                value={String(cards.find((c) => c.id === selected)?.stage ?? 0)}
+                onValueChange={(v) =>
+                  setCards((cs) =>
+                    cs.map((c) => (c.id === selected ? { ...c, stage: Number(v) } : c)),
+                  )
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {stages.map((s, i) => (
+                      <SelectItem key={s} value={String(i)}>
+                        {s}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </Field>
+            <Field>
+              <FieldLabel>Next step</FieldLabel>
+              <Textarea defaultValue="Schedule a follow-up call and share the updated proposal." />
+            </Field>
+          </FieldGroup>
+          <DialogFooter>
+            <Button
+              onClick={() => {
+                setSelected(null);
+                toast.success("Deal updated");
+              }}
+            >
+              Save changes
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      <Dialog open={newOpen} onOpenChange={setNewOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Create deal</DialogTitle>
+            <DialogDescription>Add a new opportunity to your pipeline.</DialogDescription>
+          </DialogHeader>
+          <FieldGroup>
+            <Field>
+              <FieldLabel htmlFor="deal-company">Company</FieldLabel>
+              <Input
+                id="deal-company"
+                value={newName}
+                onChange={(e) => setNewName(e.target.value)}
+              />
+            </Field>
+          </FieldGroup>
+          <DialogFooter>
+            <Button
+              disabled={!newName.trim()}
+              onClick={() => {
+                setCards((cs) => [
+                  ...cs,
+                  {
+                    id: Date.now(),
+                    name: newName,
+                    stage: 0,
+                    value: 12000,
+                    owner: people[0],
+                    confidence: 25,
+                  },
+                ]);
+                setNewOpen(false);
+                toast.success("Deal created");
+              }}
+            >
+              Create deal
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}
 
-export function PermissionBlock({block}:BlockProps){const [matrix,setMatrix]=useState<Record<string,boolean>>({});const [roles,setRoles]=useState(['Owner','Admin','Editor','Member','Guest']);const [newRole,setNewRole]=useState('');const [open,setOpen]=useState(false);const agent=block.category==='agents';const columns=agent?['Auto run','Approval','Blocked']:roles;const groups=agent?['Search workspace','Read documents','Create tickets','Send email','Update records','Issue refunds','Manage members','Run code']:['Workspace settings','Manage members','Projects','Documents','Billing','Integrations','API access','Audit log'];return <div className="w-full rounded-xl border bg-background p-6"><BlockHeading title={block.name} description="Define exactly what each role can access."><Button variant="outline" size="sm" onClick={()=>setOpen(true)}><Plus/>New role</Button><Button size="sm" onClick={()=>toast.success('Permissions saved')}>Save changes</Button></BlockHeading><div className="mt-6 overflow-auto rounded-lg border"><Table><TableHeader><TableRow className="bg-muted/30"><TableHead className="w-64 text-[11px]">{agent?'Tool':'Permission'}</TableHead>{columns.map(c=><TableHead key={c} className="text-center text-[11px]">{c}{c==='Owner'&&<Shield className="ml-1 inline size-3"/>}</TableHead>)}</TableRow></TableHeader><TableBody>{groups.map((g,i)=><TableRow key={g}><TableCell className="py-4 text-xs"><span className="font-medium">{g}</span><p className="mt-1 text-[10px] text-muted-foreground">{agent?'Tool access policy':'Read, create, and manage'}</p></TableCell>{columns.map((c,j)=><TableCell key={c} className="text-center"><Checkbox aria-label={`${g}: ${c}`} disabled={c==='Owner'} checked={matrix[`${i}-${j}`]??(agent?j===i%3:j===0||j<3&&i<5)} onCheckedChange={v=>setMatrix(s=>({...s,[`${i}-${j}`]:!!v}))}/></TableCell>)}</TableRow>)}</TableBody></Table></div><p className="mt-4 text-[11px] text-muted-foreground">Owner permissions are managed by your organization and cannot be changed.</p><Dialog open={open} onOpenChange={setOpen}><DialogContent><DialogHeader><DialogTitle>Create a role</DialogTitle><DialogDescription>Start with no permissions, then configure access.</DialogDescription></DialogHeader><FieldGroup><Field><FieldLabel htmlFor="new-role">Role name</FieldLabel><Input id="new-role" value={newRole} onChange={e=>setNewRole(e.target.value)}/></Field></FieldGroup><DialogFooter><Button disabled={!newRole.trim()} onClick={()=>{setRoles(s=>[...s,newRole]);setNewRole('');setOpen(false)}}>Create role</Button></DialogFooter></DialogContent></Dialog></div>}
+export function PermissionBlock({ block }: BlockProps) {
+  const [matrix, setMatrix] = useState<Record<string, boolean>>({});
+  const [roles, setRoles] = useState(["Owner", "Admin", "Editor", "Member", "Guest"]);
+  const [newRole, setNewRole] = useState("");
+  const [open, setOpen] = useState(false);
+  const agent = block.category === "agents";
+  const columns = agent ? ["Auto run", "Approval", "Blocked"] : roles;
+  const groups = agent
+    ? [
+        "Search workspace",
+        "Read documents",
+        "Create tickets",
+        "Send email",
+        "Update records",
+        "Issue refunds",
+        "Manage members",
+        "Run code",
+      ]
+    : [
+        "Workspace settings",
+        "Manage members",
+        "Projects",
+        "Documents",
+        "Billing",
+        "Integrations",
+        "API access",
+        "Audit log",
+      ];
+  return (
+    <div className="w-full rounded-xl border bg-background p-6">
+      <BlockHeading title={block.name} description="Define exactly what each role can access.">
+        <Button variant="outline" size="sm" onClick={() => setOpen(true)}>
+          <Plus />
+          New role
+        </Button>
+        <Button size="sm" onClick={() => toast.success("Permissions saved")}>
+          Save changes
+        </Button>
+      </BlockHeading>
+      <div className="mt-6 overflow-auto rounded-lg border">
+        <Table>
+          <TableHeader>
+            <TableRow className="bg-muted/30">
+              <TableHead className="w-64 text-[11px]">{agent ? "Tool" : "Permission"}</TableHead>
+              {columns.map((c) => (
+                <TableHead key={c} className="text-center text-[11px]">
+                  {c}
+                  {c === "Owner" && <Shield className="ml-1 inline size-3" />}
+                </TableHead>
+              ))}
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {groups.map((g, i) => (
+              <TableRow key={g}>
+                <TableCell className="py-4 text-xs">
+                  <span className="font-medium">{g}</span>
+                  <p className="mt-1 text-[10px] text-muted-foreground">
+                    {agent ? "Tool access policy" : "Read, create, and manage"}
+                  </p>
+                </TableCell>
+                {columns.map((c, j) => (
+                  <TableCell key={c} className="text-center">
+                    <Checkbox
+                      aria-label={`${g}: ${c}`}
+                      disabled={c === "Owner"}
+                      checked={
+                        matrix[`${i}-${j}`] ?? (agent ? j === i % 3 : j === 0 || (j < 3 && i < 5))
+                      }
+                      onCheckedChange={(v) => setMatrix((s) => ({ ...s, [`${i}-${j}`]: !!v }))}
+                    />
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+      <p className="mt-4 text-[11px] text-muted-foreground">
+        Owner permissions are managed by your organization and cannot be changed.
+      </p>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Create a role</DialogTitle>
+            <DialogDescription>Start with no permissions, then configure access.</DialogDescription>
+          </DialogHeader>
+          <FieldGroup>
+            <Field>
+              <FieldLabel htmlFor="new-role">Role name</FieldLabel>
+              <Input id="new-role" value={newRole} onChange={(e) => setNewRole(e.target.value)} />
+            </Field>
+          </FieldGroup>
+          <DialogFooter>
+            <Button
+              disabled={!newRole.trim()}
+              onClick={() => {
+                setRoles((s) => [...s, newRole]);
+                setNewRole("");
+                setOpen(false);
+              }}
+            >
+              Create role
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}
 
-export function PlansBlock({block}:BlockProps){const [period,setPeriod]=useState('Monthly');const [selected,setSelected]=useState('Pro');const [active,setActive]=useState<Record<string,boolean>>({Starter:true,Pro:true,Enterprise:true});const [seats,setSeats]=useState('12');return <div className="rounded-xl border bg-background p-6"><BlockHeading title={block.name} description="Flexible plans that grow with your team."><Tabs value={period} onValueChange={setPeriod}><TabsList>{['Monthly','Annual'].map(p=><TabsTrigger key={p} value={p}>{p}</TabsTrigger>)}</TabsList></Tabs></BlockHeading><div className="mt-6 grid gap-4 md:grid-cols-3">{['Starter','Pro','Enterprise'].map((p,i)=><Card key={p} className={`shadow-none ${selected===p?'ring-1 ring-primary':''}`}><CardHeader><div className="flex items-center justify-between"><CardTitle className="text-base">{p}</CardTitle>{selected===p&&<Badge variant="secondary">Current plan</Badge>}</div><CardDescription className="text-xs">{['Everything you need to get started','More power for growing teams','Advanced controls for organizations'][i]}</CardDescription><div className="pt-4 text-3xl font-semibold">${period==='Annual'?[7,24,79][i]:[9,29,99][i]}<span className="text-xs font-normal text-muted-foreground"> / seat / month</span></div></CardHeader><CardContent className="flex flex-col gap-3">{['Unlimited projects',`${[5,50,500][i]} team members`,`${[10,100,1000][i]} GB storage`,i>0?'Advanced analytics':'Basic analytics',i>1?'SSO and audit logs':'Community support'].map(f=><div key={f} className="flex items-center gap-2 text-xs"><Check className="size-3.5"/>{f}</div>)}{block.index===1&&<div className="flex items-center justify-between border-t pt-4 text-xs"><span>Plan is active</span><Switch checked={active[p]} onCheckedChange={v=>setActive(s=>({...s,[p]:v}))}/></div>}</CardContent><CardFooter><Button variant={selected===p?'outline':'default'} className="w-full" disabled={!active[p]} onClick={()=>{setSelected(p);toast.success(`${p} plan selected in preview`)}}>{selected===p?'Manage plan':`Select ${p}`}</Button></CardFooter></Card>)}</div><div className="mt-6 grid gap-5 md:grid-cols-2"><Card className="shadow-none"><CardHeader><CardTitle className="text-sm">Current usage</CardTitle><CardDescription className="text-xs">Your workspace resets on November 1.</CardDescription></CardHeader><CardContent className="flex flex-col gap-4">{[['Team seats',12,50],['Storage',42,100],['API requests',24500,100000]].map(([n,v,m])=><div key={String(n)}><div className="mb-2 flex justify-between text-xs"><span>{n}</span><span className="text-muted-foreground">{Number(v).toLocaleString()} / {Number(m).toLocaleString()}</span></div><Progress value={Number(v)/Number(m)*100} className="h-1.5"/></div>)}</CardContent></Card><Card className="shadow-none"><CardHeader><CardTitle className="text-sm">Payment method</CardTitle><CardDescription className="text-xs">Manage your default billing details.</CardDescription></CardHeader><CardContent><div className="flex items-center gap-3 rounded-lg border p-4"><CreditCard className="size-6 text-muted-foreground"/><div className="flex-1 text-xs"><p className="font-medium">Visa ending in 4242</p><p className="mt-1 text-[11px] text-muted-foreground">Expires 12/2028</p></div><Button size="sm" variant="outline" onClick={()=>toast.success('Demo payment method is up to date')}>Update</Button></div><FieldGroup className="mt-4"><Field><FieldLabel htmlFor="billing-seats">Team seats</FieldLabel><Input id="billing-seats" type="number" min="1" value={seats} onChange={e=>setSeats(e.target.value)}/></Field></FieldGroup></CardContent></Card></div></div>}
+export function PlansBlock({ block }: BlockProps) {
+  const [period, setPeriod] = useState("Monthly");
+  const [selected, setSelected] = useState("Pro");
+  const [active, setActive] = useState<Record<string, boolean>>({
+    Starter: true,
+    Pro: true,
+    Enterprise: true,
+  });
+  const [seats, setSeats] = useState("12");
+  return (
+    <div className="rounded-xl border bg-background p-6">
+      <BlockHeading title={block.name} description="Flexible plans that grow with your team.">
+        <Tabs value={period} onValueChange={setPeriod}>
+          <TabsList>
+            {["Monthly", "Annual"].map((p) => (
+              <TabsTrigger key={p} value={p}>
+                {p}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
+      </BlockHeading>
+      <div className="mt-6 grid gap-4 md:grid-cols-3">
+        {["Starter", "Pro", "Enterprise"].map((p, i) => (
+          <Card key={p} className={`shadow-none ${selected === p ? "ring-1 ring-primary" : ""}`}>
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <CardTitle className="text-base">{p}</CardTitle>
+                {selected === p && <Badge variant="secondary">Current plan</Badge>}
+              </div>
+              <CardDescription className="text-xs">
+                {
+                  [
+                    "Everything you need to get started",
+                    "More power for growing teams",
+                    "Advanced controls for organizations",
+                  ][i]
+                }
+              </CardDescription>
+              <div className="pt-4 text-3xl font-semibold">
+                ${period === "Annual" ? [7, 24, 79][i] : [9, 29, 99][i]}
+                <span className="text-xs font-normal text-muted-foreground"> / seat / month</span>
+              </div>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-3">
+              {[
+                "Unlimited projects",
+                `${[5, 50, 500][i]} team members`,
+                `${[10, 100, 1000][i]} GB storage`,
+                i > 0 ? "Advanced analytics" : "Basic analytics",
+                i > 1 ? "SSO and audit logs" : "Community support",
+              ].map((f) => (
+                <div key={f} className="flex items-center gap-2 text-xs">
+                  <Check className="size-3.5" />
+                  {f}
+                </div>
+              ))}
+              {block.index === 1 && (
+                <div className="flex items-center justify-between border-t pt-4 text-xs">
+                  <span>Plan is active</span>
+                  <Switch
+                    checked={active[p]}
+                    onCheckedChange={(v) => setActive((s) => ({ ...s, [p]: v }))}
+                  />
+                </div>
+              )}
+            </CardContent>
+            <CardFooter>
+              <Button
+                variant={selected === p ? "outline" : "default"}
+                className="w-full"
+                disabled={!active[p]}
+                onClick={() => {
+                  setSelected(p);
+                  toast.success(`${p} plan selected in preview`);
+                }}
+              >
+                {selected === p ? "Manage plan" : `Select ${p}`}
+              </Button>
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+      <div className="mt-6 grid gap-5 md:grid-cols-2">
+        <Card className="shadow-none">
+          <CardHeader>
+            <CardTitle className="text-sm">Current usage</CardTitle>
+            <CardDescription className="text-xs">
+              Your workspace resets on November 1.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-4">
+            {[
+              ["Team seats", 12, 50],
+              ["Storage", 42, 100],
+              ["API requests", 24500, 100000],
+            ].map(([n, v, m]) => (
+              <div key={String(n)}>
+                <div className="mb-2 flex justify-between text-xs">
+                  <span>{n}</span>
+                  <span className="text-muted-foreground">
+                    {Number(v).toLocaleString()} / {Number(m).toLocaleString()}
+                  </span>
+                </div>
+                <Progress value={(Number(v) / Number(m)) * 100} className="h-1.5" />
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+        <Card className="shadow-none">
+          <CardHeader>
+            <CardTitle className="text-sm">Payment method</CardTitle>
+            <CardDescription className="text-xs">
+              Manage your default billing details.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center gap-3 rounded-lg border p-4">
+              <CreditCard className="size-6 text-muted-foreground" />
+              <div className="flex-1 text-xs">
+                <p className="font-medium">Visa ending in 4242</p>
+                <p className="mt-1 text-[11px] text-muted-foreground">Expires 12/2028</p>
+              </div>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => toast.success("Demo payment method is up to date")}
+              >
+                Update
+              </Button>
+            </div>
+            <FieldGroup className="mt-4">
+              <Field>
+                <FieldLabel htmlFor="billing-seats">Team seats</FieldLabel>
+                <Input
+                  id="billing-seats"
+                  type="number"
+                  min="1"
+                  value={seats}
+                  onChange={(e) => setSeats(e.target.value)}
+                />
+              </Field>
+            </FieldGroup>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}

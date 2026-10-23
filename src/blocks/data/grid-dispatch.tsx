@@ -18,10 +18,7 @@ import {
   type ColumnFiltersState,
   type SortingState,
 } from "@tanstack/react-table";
-import {
-  dataGridFeatures,
-  type DataGridFeatures,
-} from "@/components/reui/data-grid/data-grid";
+import { dataGridFeatures, type DataGridFeatures } from "@/components/reui/data-grid/data-grid";
 import { DataGridColumnHeader } from "@/components/reui/data-grid/data-grid-column-header";
 import { DataGridColumnFilter } from "@/components/reui/data-grid/data-grid-column-filter";
 import { StructureGrid } from "./grid-structure-model";
@@ -29,8 +26,7 @@ import { StructureFrame } from "./grid-structure-ui";
 import { cn } from "@/lib/utils";
 import "./grid-specialized.css";
 
-type Field =
-  "wave" | "status" | "dock" | "carrier" | "orders" | "capacity" | "exceptions";
+type Field = "wave" | "status" | "dock" | "carrier" | "orders" | "capacity" | "exceptions";
 type Wave = {
   id: string;
   name: string;
@@ -169,33 +165,9 @@ const labels: Record<Field, string> = {
   exceptions: "Exceptions",
 };
 const presets: Record<string, Field[]> = {
-  Dispatch: [
-    "wave",
-    "status",
-    "dock",
-    "carrier",
-    "orders",
-    "capacity",
-    "exceptions",
-  ],
-  Dock: [
-    "dock",
-    "wave",
-    "carrier",
-    "orders",
-    "capacity",
-    "status",
-    "exceptions",
-  ],
-  Risk: [
-    "status",
-    "exceptions",
-    "wave",
-    "orders",
-    "capacity",
-    "dock",
-    "carrier",
-  ],
+  Dispatch: ["wave", "status", "dock", "carrier", "orders", "capacity", "exceptions"],
+  Dock: ["dock", "wave", "carrier", "orders", "capacity", "status", "exceptions"],
+  Risk: ["status", "exceptions", "wave", "orders", "capacity", "dock", "carrier"],
 };
 const defaultWidths: Record<Field, number> = {
   wave: 172,
@@ -212,9 +184,7 @@ function WaveCell({ field, wave }: { field: Field; wave: Wave }): ReactNode {
     return (
       <div>
         <p className="font-medium">{wave.id}</p>
-        <p className="mt-0.5 truncate text-xs text-muted-foreground">
-          {wave.name}
-        </p>
+        <p className="mt-0.5 truncate text-xs text-muted-foreground">{wave.name}</p>
       </div>
     );
   if (field === "status")
@@ -239,9 +209,7 @@ function WaveCell({ field, wave }: { field: Field; wave: Wave }): ReactNode {
     return (
       <div>
         <p>Dock {wave.dock}</p>
-        <p className="mt-0.5 truncate text-xs text-muted-foreground">
-          {wave.note}
-        </p>
+        <p className="mt-0.5 truncate text-xs text-muted-foreground">{wave.note}</p>
       </div>
     );
   if (field === "carrier") {
@@ -271,12 +239,9 @@ function WaveCell({ field, wave }: { field: Field; wave: Wave }): ReactNode {
     return (
       <div>
         <p className="tabular-nums">
-          {wave.orders}{" "}
-          <span className="text-xs text-muted-foreground">orders</span>
+          {wave.orders} <span className="text-xs text-muted-foreground">orders</span>
         </p>
-        <p className="mt-0.5 text-xs text-muted-foreground">
-          {wave.units.toLocaleString()} units
-        </p>
+        <p className="mt-0.5 text-xs text-muted-foreground">{wave.units.toLocaleString()} units</p>
       </div>
     );
   if (field === "capacity")
@@ -333,17 +298,13 @@ export default function DispatchGrid() {
       next.splice(current.indexOf(target), 0, field);
       return next;
     });
-    setAnnouncement(
-      `${labels[field]} moved to position ${order.indexOf(target) + 1}`,
-    );
+    setAnnouncement(`${labels[field]} moved to position ${order.indexOf(target) + 1}`);
   }
   function shift(field: Field, offset: number) {
     const target = order[order.indexOf(field) + offset];
     if (target) move(field, target);
   }
-  const reviewCount = waves.filter(
-    (w) => w.status === "At Risk" || w.status === "Hold",
-  ).length;
+  const reviewCount = waves.filter((w) => w.status === "At Risk" || w.status === "Hold").length;
   const columns = useMemo<ColumnDef<DataGridFeatures, Wave>[]>(
     () =>
       presets.Dispatch.map((field) => ({
@@ -359,10 +320,7 @@ export default function DispatchGrid() {
         header: ({ column }) => (
           <div
             onKeyDown={(event) => {
-              if (
-                event.altKey &&
-                (event.key === "ArrowLeft" || event.key === "ArrowRight")
-              ) {
+              if (event.altKey && (event.key === "ArrowLeft" || event.key === "ArrowRight")) {
                 event.preventDefault();
                 shift(field, event.key === "ArrowLeft" ? -1 : 1);
               }
@@ -376,9 +334,10 @@ export default function DispatchGrid() {
                   <DataGridColumnFilter
                     column={column}
                     title="Status"
-                    options={["Ready", "At Risk", "Locked", "Hold"].map(
-                      (value) => ({ label: value, value }),
-                    )}
+                    options={["Ready", "At Risk", "Locked", "Hold"].map((value) => ({
+                      label: value,
+                      value,
+                    }))}
                   />
                 ) : undefined
               }
@@ -386,9 +345,7 @@ export default function DispatchGrid() {
           </div>
         ),
         filterFn: (row, id, value) =>
-          !Array.isArray(value) ||
-          !value.length ||
-          value.includes(String(row.getValue(id))),
+          !Array.isArray(value) || !value.length || value.includes(String(row.getValue(id))),
         cell: ({ row }) => <WaveCell field={field} wave={row.original} />,
       })),
     [order],
@@ -477,9 +434,8 @@ export default function DispatchGrid() {
       />
       <div className="flex flex-wrap items-center justify-between gap-2 border-t px-3 py-[6.5px] text-xs text-muted-foreground">
         <span>
-          {reviewCount} waves need review,{" "}
-          {waves.reduce((sum, wave) => sum + wave.exceptions, 0)} exceptions
-          open
+          {reviewCount} waves need review, {waves.reduce((sum, wave) => sum + wave.exceptions, 0)}{" "}
+          exceptions open
         </span>
         <span className="flex items-center gap-1.5">
           <GripVertical className="size-3" />

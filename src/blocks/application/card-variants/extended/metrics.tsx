@@ -10,13 +10,7 @@ import {
 import { FramePanel } from "@/components/reui/frame";
 import { Badge } from "@/components/reui/badge";
 import { IconTile } from "@/components/reui/icon-tile";
-import {
-  Item,
-  ItemMedia,
-  ItemContent,
-  ItemTitle,
-  ItemDescription,
-} from "@/components/ui/item";
+import { Item, ItemMedia, ItemContent, ItemTitle, ItemDescription } from "@/components/ui/item";
 import { Stage, GridFrame } from "./common";
 
 export function AccountBalances() {
@@ -67,14 +61,10 @@ export function AccountBalances() {
             <div className="flex flex-col gap-1">
               <p className="text-sm text-muted-foreground">Balance (USD)</p>
               <p className="flex flex-wrap items-baseline gap-1.5">
-                <span className="text-xl font-semibold tracking-tight">
-                  {balance}
-                </span>
+                <span className="text-xl font-semibold tracking-tight">{balance}</span>
                 <span
                   className={
-                    delta >= 0
-                      ? "text-sm text-success-foreground"
-                      : "text-sm text-destructive"
+                    delta >= 0 ? "text-sm text-success-foreground" : "text-sm text-destructive"
                   }
                 >
                   {delta > 0 ? "+" : ""}
@@ -137,10 +127,7 @@ export function SharedKpis() {
               <p className="mt-2 text-xs text-muted-foreground">{label}</p>
             </div>
             <div className="flex flex-wrap items-center gap-1.5">
-              <Badge
-                variant={up ? "success-light" : "destructive-light"}
-                size="sm"
-              >
+              <Badge variant={up ? "success-light" : "destructive-light"} size="sm">
                 {up ? <TrendingUp /> : <TrendingDown />}
                 {delta}
               </Badge>
@@ -183,10 +170,7 @@ function DecorativeArea({ index }: { index: number }) {
         fill="#dedafa"
         fillOpacity=".8"
       />
-      <polygon
-        points={`0,${start} 100,${end} 100,145 0,145`}
-        fill={`url(#extended-area-${id})`}
-      />
+      <polygon points={`0,${start} 100,${end} 100,145 0,145`} fill={`url(#extended-area-${id})`} />
     </svg>
   );
 }
@@ -201,8 +185,7 @@ export function KpiAreaCards() {
             fraction: "",
             delta: "239",
             up: true,
-            description:
-              "Tracks overall orders placed within the selected timeframe",
+            description: "Tracks overall orders placed within the selected timeframe",
             icon: ShoppingBag,
           },
           {
@@ -220,8 +203,7 @@ export function KpiAreaCards() {
             fraction: ".50",
             delta: "$17",
             up: true,
-            description:
-              "Average revenue earned per order during reporting period",
+            description: "Average revenue earned per order during reporting period",
             icon: CircleDollarSign,
           },
           {
@@ -230,42 +212,31 @@ export function KpiAreaCards() {
             fraction: ".21",
             delta: "$3K",
             up: true,
-            description:
-              "Current available balance based on latest account activity",
+            description: "Current available balance based on latest account activity",
             icon: ChartNoAxesColumnIncreasing,
           },
-        ].map(
-          (
-            { label, value, fraction, delta, up, description, icon: Icon },
-            index,
-          ) => (
-            <FramePanel className="extended-area-cell" key={label}>
-              <div className="flex flex-col gap-7 p-4">
-                <Icon className="size-5 text-muted-foreground" />
-                <div>
-                  <h3 className="text-sm text-muted-foreground">{label}</h3>
-                  <div className="mt-2 flex flex-wrap items-center gap-1.5">
-                    <p className="extended-shared-value">
-                      {value}
-                      <span className="extended-kpi-fraction">{fraction}</span>
-                    </p>
-                    <Badge
-                      variant={up ? "success-light" : "warning-light"}
-                      size="sm"
-                    >
-                      {up ? <TrendingUp /> : <TrendingDown />}
-                      {delta}
-                    </Badge>
-                  </div>
+        ].map(({ label, value, fraction, delta, up, description, icon: Icon }, index) => (
+          <FramePanel className="extended-area-cell" key={label}>
+            <div className="flex flex-col gap-7 p-4">
+              <Icon className="size-5 text-muted-foreground" />
+              <div>
+                <h3 className="text-sm text-muted-foreground">{label}</h3>
+                <div className="mt-2 flex flex-wrap items-center gap-1.5">
+                  <p className="extended-shared-value">
+                    {value}
+                    <span className="extended-kpi-fraction">{fraction}</span>
+                  </p>
+                  <Badge variant={up ? "success-light" : "warning-light"} size="sm">
+                    {up ? <TrendingUp /> : <TrendingDown />}
+                    {delta}
+                  </Badge>
                 </div>
-                <p className="text-sm leading-5 text-muted-foreground">
-                  {description}
-                </p>
               </div>
-              <DecorativeArea index={index} />
-            </FramePanel>
-          ),
-        )}
+              <p className="text-sm leading-5 text-muted-foreground">{description}</p>
+            </div>
+            <DecorativeArea index={index} />
+          </FramePanel>
+        ))}
       </GridFrame>
     </Stage>
   );

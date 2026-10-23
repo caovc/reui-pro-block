@@ -43,38 +43,19 @@ import {
   Sidebar,
 } from "./primitives";
 import { CalendarContext } from "./calendar-panel";
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable";
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 const communityGroups = [
   {
     label: "General",
-    items: [
-      "Dashboards",
-      "Public Profiles",
-      "Account Settings",
-      "Network",
-      "Authentication",
-    ],
+    items: ["Dashboards", "Public Profiles", "Account Settings", "Network", "Authentication"],
   },
   {
     label: "Custom Feed",
-    items: [
-      "Create a custom feed",
-      "New order received",
-      "New customer registered",
-    ],
+    items: ["Create a custom feed", "New order received", "New customer registered"],
   },
   {
     label: "Communities",
-    items: [
-      "Create a community",
-      "Designers Hub",
-      "React Guild",
-      "Node Runtime",
-    ],
+    items: ["Create a community", "Designers Hub", "React Guild", "Node Runtime"],
   },
   {
     label: "Resources",
@@ -135,12 +116,7 @@ export function CommunityShell() {
           className="!w-60 border-r !bg-background"
           label="Community navigation"
         >
-          <GroupedNav
-            groups={communityGroups}
-            active={active}
-            onSelect={setActive}
-            query={query}
-          />
+          <GroupedNav groups={communityGroups} active={active} onSelect={setActive} query={query} />
           <FooterLinks collapsed={collapsed} onSelect={setActive} />
         </Sidebar>
         <main className="shell-content-frame">
@@ -160,23 +136,19 @@ export function CommunityShell() {
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuGroup>
-                  {["Popular", "Latest", "Following", "Trending"].map(
-                    (name) => (
-                      <DropdownMenuItem
-                        key={name}
-                        onSelect={(e) => {
-                          e.preventDefault();
-                          setFilters((v) =>
-                            v.includes(name)
-                              ? v.filter((n) => n !== name)
-                              : [...v, name],
-                          );
-                        }}
-                      >
-                        {filters.includes(name) ? "✓" : "○"} {name}
-                      </DropdownMenuItem>
-                    ),
-                  )}
+                  {["Popular", "Latest", "Following", "Trending"].map((name) => (
+                    <DropdownMenuItem
+                      key={name}
+                      onSelect={(e) => {
+                        e.preventDefault();
+                        setFilters((v) =>
+                          v.includes(name) ? v.filter((n) => n !== name) : [...v, name],
+                        );
+                      }}
+                    >
+                      {filters.includes(name) ? "✓" : "○"} {name}
+                    </DropdownMenuItem>
+                  ))}
                 </DropdownMenuGroup>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -232,11 +204,7 @@ export function DualWorkspace({ variant }: { variant: 14 | 16 }) {
               <PanelLeft />
             </Button>
           </div>
-          <GroupedNav
-            groups={sourceGroups}
-            active={active}
-            onSelect={setActive}
-          />
+          <GroupedNav groups={sourceGroups} active={active} onSelect={setActive} />
           <CollapseHandle
             collapsed={false}
             label="secondary navigation"
@@ -261,11 +229,7 @@ export function DualWorkspace({ variant }: { variant: 14 | 16 }) {
             <div className="hidden sm:block">
               <SearchPalette onSelect={setActive} />
             </div>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setActive("Reports")}
-            >
+            <Button variant="outline" size="sm" onClick={() => setActive("Reports")}>
               Reports
             </Button>
             <Button size="sm" onClick={() => setCreate(true)}>
@@ -298,9 +262,7 @@ export function DualWorkspace({ variant }: { variant: 14 | 16 }) {
                     aria-pressed={action === name}
                     key={String(name)}
                     className="h-7 px-2 text-xs"
-                    onClick={() =>
-                      setAction(action === name ? "" : String(name))
-                    }
+                    onClick={() => setAction(action === name ? "" : String(name))}
                   >
                     <Icon />
                     {name === "Search" ? "" : String(name)}
@@ -325,13 +287,7 @@ export function FavoritesShell() {
   const [collapsed, setCollapsed] = useState(false);
   const [active, setActive] = useState("Dashboard");
   const [workspace, setWorkspace] = useState("Mint");
-  const [pinned, setPinned] = useState([
-    "Tasks",
-    "Notes",
-    "Contacts",
-    "Companies",
-    "Company",
-  ]);
+  const [pinned, setPinned] = useState(["Tasks", "Notes", "Contacts", "Companies", "Company"]);
   return (
     <div className="shell-reference flex-col" data-shell-variant="15">
       <header className="shell-header shell-dark !min-h-10">
@@ -362,10 +318,7 @@ export function FavoritesShell() {
         </div>
       </header>
       <div className="flex min-h-0 flex-1">
-        <Sidebar
-          collapsed={collapsed}
-          className="!w-[248px] border-r !bg-background"
-        >
+        <Sidebar collapsed={collapsed} className="!w-[248px] border-r !bg-background">
           <div className="flex h-12 items-center justify-between">
             <Choices
               label="Workspaces"
@@ -394,43 +347,30 @@ export function FavoritesShell() {
           />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button
-                className="shell-nav-button justify-start"
-                variant="ghost"
-              >
+              <Button className="shell-nav-button justify-start" variant="ghost">
                 <Ellipsis />
                 {!collapsed && "More"}
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuGroup>
-                {[
-                  "Tasks",
-                  "Notes",
-                  "Contacts",
-                  "Companies",
-                  "Company",
-                  "Reports",
-                  "Activity",
-                ].map((name) => (
-                  <DropdownMenuItem
-                    key={name}
-                    onSelect={(e) => {
-                      e.preventDefault();
-                      setPinned((v) =>
-                        v.includes(name)
-                          ? v.filter((n) => n !== name)
-                          : [...v, name],
-                      );
-                    }}
-                  >
-                    <Pin />
-                    {name}
-                    <span className="ml-auto">
-                      {pinned.includes(name) ? "✓" : "+"}
-                    </span>
-                  </DropdownMenuItem>
-                ))}
+                {["Tasks", "Notes", "Contacts", "Companies", "Company", "Reports", "Activity"].map(
+                  (name) => (
+                    <DropdownMenuItem
+                      key={name}
+                      onSelect={(e) => {
+                        e.preventDefault();
+                        setPinned((v) =>
+                          v.includes(name) ? v.filter((n) => n !== name) : [...v, name],
+                        );
+                      }}
+                    >
+                      <Pin />
+                      {name}
+                      <span className="ml-auto">{pinned.includes(name) ? "✓" : "+"}</span>
+                    </DropdownMenuItem>
+                  ),
+                )}
               </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -447,29 +387,17 @@ export function FavoritesShell() {
             />
           )}
           <div className="mt-auto flex border-t">
-            <Button
-              variant="ghost"
-              className="flex-1"
-              onClick={() => toast("Invite selected")}
-            >
+            <Button variant="ghost" className="flex-1" onClick={() => toast("Invite selected")}>
               Invite
             </Button>
-            <Button
-              variant="ghost"
-              className="flex-1"
-              onClick={() => toast("Help selected")}
-            >
+            <Button variant="ghost" className="flex-1" onClick={() => toast("Help selected")}>
               Help
             </Button>
           </div>
         </Sidebar>
         <main className="shell-content-frame">
           <PageTitle title={active}>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setActive("Reports")}
-            >
+            <Button variant="outline" size="sm" onClick={() => setActive("Reports")}>
               Reports
             </Button>
           </PageTitle>
@@ -482,19 +410,12 @@ export function FavoritesShell() {
 export function WorkbenchShell() {
   const [collapsed, setCollapsed] = useState(false);
   const [active, setActive] = useState("Today");
-  const [regions, setRegions] = useState([
-    "Navigation",
-    "Details",
-    "Workbench",
-    "Calendar",
-  ]);
+  const [regions, setRegions] = useState(["Navigation", "Details", "Workbench", "Calendar"]);
   const [tab, setTab] = useState("Settings");
   const [view, setView] = useState("Overview");
   const [expanded, setExpanded] = useState(false);
   const toggle = (name: string) =>
-    setRegions((v) =>
-      v.includes(name) ? v.filter((n) => n !== name) : [...v, name],
-    );
+    setRegions((v) => (v.includes(name) ? v.filter((n) => n !== name) : [...v, name]));
   return (
     <div className="shell-reference" data-shell-variant="11">
       {regions.includes("Navigation") && (
@@ -516,14 +437,7 @@ export function WorkbenchShell() {
             groups={[
               {
                 label: "Workspace",
-                items: [
-                  "Today",
-                  "Handoffs",
-                  "Follow-ups",
-                  "Brief Queue",
-                  "Accounts",
-                  "Insights",
-                ],
+                items: ["Today", "Handoffs", "Follow-ups", "Brief Queue", "Accounts", "Insights"],
               },
               {
                 label: "Operators",
@@ -547,18 +461,10 @@ export function WorkbenchShell() {
         <header className="shell-header border-b">
           <Breadcrumbs items={["Atlas Desk", "Production"]} />
           <div className="flex gap-1">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => toast("Help selected")}
-            >
+            <Button variant="ghost" size="sm" onClick={() => toast("Help selected")}>
               Help
             </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => toast("Ask ReUI selected")}
-            >
+            <Button variant="outline" size="sm" onClick={() => toast("Ask ReUI selected")}>
               <Sparkles />
               Ask ReUI
             </Button>
@@ -595,13 +501,7 @@ export function WorkbenchShell() {
               <div className="flex min-w-0 flex-1 flex-col">
                 <Segments
                   label="Workspace views"
-                  items={[
-                    "Overview",
-                    "Activity",
-                    "Briefs",
-                    "Timeline",
-                    "Files",
-                  ]}
+                  items={["Overview", "Activity", "Briefs", "Timeline", "Files"]}
                   value={view}
                   onChange={setView}
                 />
@@ -655,14 +555,7 @@ export function WorkbenchShell() {
                   <ContentCards layout="table" />
                   <Segments
                     label="Workbench tabs"
-                    items={[
-                      "Settings",
-                      "Webhooks",
-                      "Events",
-                      "Logs",
-                      "Health",
-                      "Inspector",
-                    ]}
+                    items={["Settings", "Webhooks", "Events", "Logs", "Health", "Inspector"]}
                     value={tab}
                     onChange={setTab}
                   />

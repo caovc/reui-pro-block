@@ -1516,10 +1516,7 @@
     font-size: 24px;
     line-height: 32px;
   }
-  .rm-faq-2
-    .rm-two-answer-columns
-    .rm-answer-list:first-child
-    .rm-answer-row:last-child {
+  .rm-faq-2 .rm-two-answer-columns .rm-answer-list:first-child .rm-answer-row:last-child {
     border-bottom: 0;
   }
   .rm-faq-3 .rm-intro {

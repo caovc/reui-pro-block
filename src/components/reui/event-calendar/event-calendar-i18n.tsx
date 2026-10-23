@@ -4,119 +4,106 @@
 import type {
   CalendarView,
   EventCalendarDateRange,
-} from "@/components/reui/event-calendar/event-calendar-types"
-import {
-  format,
-  isSameMonth,
-  isSameYear,
-  subMilliseconds,
-  type Locale,
-} from "date-fns"
+} from "@/components/reui/event-calendar/event-calendar-types";
+import { format, isSameMonth, isSameYear, subMilliseconds, type Locale } from "date-fns";
 
 interface EventCalendarI18nConfig {
   labels: {
-    today: string
-    previous: string
-    next: string
-    addEvent: string
-    allDay: string
-    more: (count: number) => string
-    noEvents: string
-    loading: string
-    event: string
-    events: (count: number) => string
-    selectView: string
-    week: (weekNumber: number) => string
-    resources: string
-    goToDate: string
+    today: string;
+    previous: string;
+    next: string;
+    addEvent: string;
+    allDay: string;
+    more: (count: number) => string;
+    noEvents: string;
+    loading: string;
+    event: string;
+    events: (count: number) => string;
+    selectView: string;
+    week: (weekNumber: number) => string;
+    resources: string;
+    goToDate: string;
     /** Cursor hint while a drag/resize hovers a rejected position. */
-    dropNotAllowed: string
+    dropNotAllowed: string;
     /** Aria-label suffix on chip segments that continue past the cell. */
-    continues: string
+    continues: string;
     /** Agenda label for the first day of a multi-day event. */
-    timeFrom: (time: string) => string
+    timeFrom: (time: string) => string;
     /** Agenda label for the last day of a multi-day event. */
-    timeUntil: (time: string) => string
+    timeUntil: (time: string) => string;
     /** View-switcher shortcut hint characters, per view. */
-    viewShortcuts: Record<CalendarView, string>
+    viewShortcuts: Record<CalendarView, string>;
     /** Aria-label of the agenda day collapse/expand toggle. */
-    toggleDayEvents: (count: number, expanded: boolean) => string
+    toggleDayEvents: (count: number, expanded: boolean) => string;
     /** Aria-label of the agenda event details toggle. */
-    eventDetails: (title: string) => string
+    eventDetails: (title: string) => string;
     /** Compact "+N" overflow (agenda summary dot stack). */
-    moreCompact: (count: number) => string
+    moreCompact: (count: number) => string;
     /** Joins a bounded from-to time span. */
-    timeRange: (from: string, to: string) => string
-  }
+    timeRange: (from: string, to: string) => string;
+  };
   viewNames: {
-    month: string
-    week: string
-    day: string
-    days: (count: number) => string
-    agenda: string
-    resource: string
-  }
+    month: string;
+    week: string;
+    day: string;
+    days: (count: number) => string;
+    agenda: string;
+    resource: string;
+  };
   /** date-fns format strings, applied with the calendar `locale`. */
   formats: {
-    monthTitle: string
+    monthTitle: string;
     /** Undefined = smart cross-month range via functions.formatTitle. */
-    weekTitle?: string
-    dayTitle: string
+    weekTitle?: string;
+    dayTitle: string;
     /** Undefined = smart range label via functions.formatTitle. */
-    agendaTitle?: string
-    monthDayHeader: string
+    agendaTitle?: string;
+    monthDayHeader: string;
     /** Narrow variant used by the month view below the compact breakpoint. */
-    monthDayHeaderNarrow: string
-    timeGridDayHeader: string
-    agendaDayHeader: string
+    monthDayHeaderNarrow: string;
+    timeGridDayHeader: string;
+    agendaDayHeader: string;
     /** Agenda date-gutter day number. */
-    agendaDayNumber: string
+    agendaDayNumber: string;
     /** Agenda date-gutter weekday label. */
-    agendaWeekday: string
+    agendaWeekday: string;
     /** "+N more" popover day header. */
-    moreDayHeader: string
+    moreDayHeader: string;
     /** Month cell aria-label date. */
-    monthCellAriaLabel: string
+    monthCellAriaLabel: string;
     /** Time-grid day column aria-label date. */
-    dayAria: string
+    dayAria: string;
     /** Undefined = the resource view title falls back to dayTitle. */
-    resourceTitle?: string
-    timeGutter: string
+    resourceTitle?: string;
+    timeGutter: string;
     /** Sub-hour gutter labels (interval below 60 minutes). */
-    timeGutterMinute: string
-    eventTime: string
-    monthCellDay: string
-  }
+    timeGutterMinute: string;
+    eventTime: string;
+    monthCellDay: string;
+  };
   functions: {
     formatTitle: (
       view: CalendarView,
       ctx: {
-        date: Date
-        activeRange: EventCalendarDateRange
-        visibleRange: EventCalendarDateRange
-        locale?: Locale
-      }
-    ) => string
+        date: Date;
+        activeRange: EventCalendarDateRange;
+        visibleRange: EventCalendarDateRange;
+        locale?: Locale;
+      },
+    ) => string;
     formatEventTime: (
       start: Date,
       end: Date,
       allDay: boolean,
       /** date-fns options (the calendar `locale`); trailing so a 3-arg override still fits. */
-      opts?: { locale?: Locale }
-    ) => string
-    formatDayRange: (
-      range: EventCalendarDateRange,
-      opts?: { locale?: Locale }
-    ) => string
+      opts?: { locale?: Locale },
+    ) => string;
+    formatDayRange: (range: EventCalendarDateRange, opts?: { locale?: Locale }) => string;
     /** Chip native tooltip text; return undefined to drop the attribute. */
-    formatEventLabel?: (title: string, timeLabel: string) => string | undefined
+    formatEventLabel?: (title: string, timeLabel: string) => string | undefined;
     /** Chip aria-label composition. */
-    formatEventAriaLabel?: (
-      title: string,
-      timeLabel: string,
-      continues: boolean
-    ) => string
-  }
+    formatEventAriaLabel?: (title: string, timeLabel: string, continues: boolean) => string;
+  };
 }
 
 const DEFAULT_LABELS: EventCalendarI18nConfig["labels"] = {
@@ -150,7 +137,7 @@ const DEFAULT_LABELS: EventCalendarI18nConfig["labels"] = {
   eventDetails: (title) => title,
   moreCompact: (count) => `+${count}`,
   timeRange: (from, to) => `${from} - ${to}`,
-}
+};
 
 const DEFAULT_VIEW_NAMES: EventCalendarI18nConfig["viewNames"] = {
   month: "Month",
@@ -159,7 +146,7 @@ const DEFAULT_VIEW_NAMES: EventCalendarI18nConfig["viewNames"] = {
   days: (count) => (count === 1 ? "1 day" : `${count} days`),
   agenda: "Agenda",
   resource: "Time Grid",
-}
+};
 
 const DEFAULT_FORMATS: EventCalendarI18nConfig["formats"] = {
   monthTitle: "MMMM yyyy",
@@ -180,7 +167,7 @@ const DEFAULT_FORMATS: EventCalendarI18nConfig["formats"] = {
   timeGutterMinute: "h:mm a",
   eventTime: "h:mm a",
   monthCellDay: "d",
-}
+};
 
 /**
  * Default formatting functions BOUND to a config's labels/formats, so that
@@ -188,63 +175,58 @@ const DEFAULT_FORMATS: EventCalendarI18nConfig["formats"] = {
  * formats.monthTitle without replacing formatTitle still sees it applied).
  */
 function makeDefaultFunctions(
-  cfg: Pick<EventCalendarI18nConfig, "labels" | "formats">
+  cfg: Pick<EventCalendarI18nConfig, "labels" | "formats">,
 ): EventCalendarI18nConfig["functions"] {
   return {
     formatTitle: (view, { date, activeRange, locale }) => {
-      const opts = { locale }
+      const opts = { locale };
       if (view === "month") {
-        return format(date, cfg.formats.monthTitle, opts)
+        return format(date, cfg.formats.monthTitle, opts);
       }
       if (view === "resource") {
-        return format(
-          date,
-          cfg.formats.resourceTitle ?? cfg.formats.dayTitle,
-          opts
-        )
+        return format(date, cfg.formats.resourceTitle ?? cfg.formats.dayTitle, opts);
       }
       if (view === "day") {
-        return format(date, cfg.formats.dayTitle, opts)
+        return format(date, cfg.formats.dayTitle, opts);
       }
       if (view === "week" && cfg.formats.weekTitle) {
-        return format(date, cfg.formats.weekTitle, opts)
+        return format(date, cfg.formats.weekTitle, opts);
       }
       if (view === "agenda" && cfg.formats.agendaTitle) {
-        return format(date, cfg.formats.agendaTitle, opts)
+        return format(date, cfg.formats.agendaTitle, opts);
       }
       // week / days / agenda: smart range label, last day is activeRange.end - 1ms.
       // subMilliseconds keeps the zoned date type (a plain new Date(ms)
       // would flip the label to the machine zone near midnight)
-      const rangeEnd = subMilliseconds(activeRange.end, 1)
-      const start = activeRange.start
+      const rangeEnd = subMilliseconds(activeRange.end, 1);
+      const start = activeRange.start;
       if (isSameMonth(start, rangeEnd)) {
-        return `${format(start, "MMMM d", opts)} - ${format(rangeEnd, "d, yyyy", opts)}`
+        return `${format(start, "MMMM d", opts)} - ${format(rangeEnd, "d, yyyy", opts)}`;
       }
       if (isSameYear(start, rangeEnd)) {
-        return `${format(start, "MMM d", opts)} - ${format(rangeEnd, "MMM d, yyyy", opts)}`
+        return `${format(start, "MMM d", opts)} - ${format(rangeEnd, "MMM d, yyyy", opts)}`;
       }
-      return `${format(start, "MMM d, yyyy", opts)} - ${format(rangeEnd, "MMM d, yyyy", opts)}`
+      return `${format(start, "MMM d, yyyy", opts)} - ${format(rangeEnd, "MMM d, yyyy", opts)}`;
     },
     formatEventTime: (start, end, allDay, opts) => {
-      if (allDay) return cfg.labels.allDay
-      const fmt = cfg.formats.eventTime
+      if (allDay) return cfg.labels.allDay;
+      const fmt = cfg.formats.eventTime;
       // Multi-day timed events carry the date on both sides. Compare calendar
       // days off the last rendered instant (end is exclusive, so a 14:00 to
       // midnight event still ends on the start day). Elapsed ms would miss an
       // exactly-24h event and a DST day that only runs 23 hours.
-      const lastInstant =
-        end.getTime() - 1 >= start.getTime() ? subMilliseconds(end, 1) : start
+      const lastInstant = end.getTime() - 1 >= start.getTime() ? subMilliseconds(end, 1) : start;
       if (format(start, "yyyy-MM-dd") !== format(lastInstant, "yyyy-MM-dd")) {
-        return `${format(start, `MMM d, ${fmt}`, opts)} - ${format(end, `MMM d, ${fmt}`, opts)}`
+        return `${format(start, `MMM d, ${fmt}`, opts)} - ${format(end, `MMM d, ${fmt}`, opts)}`;
       }
-      return `${format(start, fmt, opts)} - ${format(end, fmt, opts)}`
+      return `${format(start, fmt, opts)} - ${format(end, fmt, opts)}`;
     },
     formatDayRange: (range, opts) => {
       // subMilliseconds keeps the zoned date type, same reason as formatTitle
-      const rangeEnd = subMilliseconds(range.end, 1)
-      return `${format(range.start, "MMM d", opts)} - ${format(rangeEnd, "MMM d", opts)}`
+      const rangeEnd = subMilliseconds(range.end, 1);
+      return `${format(range.start, "MMM d", opts)} - ${format(rangeEnd, "MMM d", opts)}`;
     },
-  }
+  };
 }
 
 const DEFAULT_EVENT_CALENDAR_I18N: EventCalendarI18nConfig = {
@@ -255,7 +237,7 @@ const DEFAULT_EVENT_CALENDAR_I18N: EventCalendarI18nConfig = {
     labels: DEFAULT_LABELS,
     formats: DEFAULT_FORMATS,
   }),
-}
+};
 
 /**
  * One level deeper than `Partial`, because the merge below is per nested
@@ -263,8 +245,8 @@ const DEFAULT_EVENT_CALENDAR_I18N: EventCalendarI18nConfig = {
  * other 22. Unknown keys are still rejected by the excess property check.
  */
 type EventCalendarI18nOverrides = {
-  [K in keyof EventCalendarI18nConfig]?: Partial<EventCalendarI18nConfig[K]>
-}
+  [K in keyof EventCalendarI18nConfig]?: Partial<EventCalendarI18nConfig[K]>;
+};
 
 /**
  * Shallow merge per nested object, matching the filters.tsx i18n contract:
@@ -272,13 +254,11 @@ type EventCalendarI18nOverrides = {
  * functions are re-bound to the MERGED labels/formats; explicit `functions`
  * overrides still win.
  */
-function mergeEventCalendarI18n(
-  overrides?: EventCalendarI18nOverrides
-): EventCalendarI18nConfig {
-  if (!overrides) return DEFAULT_EVENT_CALENDAR_I18N
-  const labels = { ...DEFAULT_LABELS, ...overrides.labels }
-  const viewNames = { ...DEFAULT_VIEW_NAMES, ...overrides.viewNames }
-  const formats = { ...DEFAULT_FORMATS, ...overrides.formats }
+function mergeEventCalendarI18n(overrides?: EventCalendarI18nOverrides): EventCalendarI18nConfig {
+  if (!overrides) return DEFAULT_EVENT_CALENDAR_I18N;
+  const labels = { ...DEFAULT_LABELS, ...overrides.labels };
+  const viewNames = { ...DEFAULT_VIEW_NAMES, ...overrides.viewNames };
+  const formats = { ...DEFAULT_FORMATS, ...overrides.formats };
   return {
     labels,
     viewNames,
@@ -287,8 +267,8 @@ function mergeEventCalendarI18n(
       ...makeDefaultFunctions({ labels, formats }),
       ...overrides.functions,
     },
-  }
+  };
 }
 
-export { DEFAULT_EVENT_CALENDAR_I18N, mergeEventCalendarI18n }
-export type { EventCalendarI18nConfig, EventCalendarI18nOverrides }
+export { DEFAULT_EVENT_CALENDAR_I18N, mergeEventCalendarI18n };
+export type { EventCalendarI18nConfig, EventCalendarI18nOverrides };

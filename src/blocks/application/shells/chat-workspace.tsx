@@ -19,22 +19,10 @@ import {
   Star,
   Trash2,
 } from "lucide-react";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Switch } from "@/components/ui/switch";
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable";
-import {
-  Message,
-  MessageAvatar,
-  MessageContent,
-} from "@/components/ui/message";
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
+import { Message, MessageAvatar, MessageContent } from "@/components/ui/message";
 import { Bubble, BubbleContent } from "@/components/ui/bubble";
 import {
   Button,
@@ -62,10 +50,7 @@ const threads = [
 const artifacts = ["Release summary", "Revenue dashboard", "API documentation"];
 function ChatPlaceholders() {
   return (
-    <div
-      className="chat-reference-canvas"
-      aria-label="Conversation placeholders"
-    >
+    <div className="chat-reference-canvas" aria-label="Conversation placeholders">
       <div className="chat-reference-turns" aria-hidden="true">
         {[0, 1, 2, 3].map((i) => (
           <div className="chat-reference-turn" key={i}>
@@ -77,16 +62,7 @@ function ChatPlaceholders() {
                     variant="muted"
                     className="chat-empty-user"
                     style={{
-                      width:
-                        i === 0
-                          ? 208
-                          : i === 1
-                            ? j
-                              ? 144
-                              : 288
-                            : i === 2
-                              ? 176
-                              : 256,
+                      width: i === 0 ? 208 : i === 1 ? (j ? 144 : 288) : i === 2 ? 176 : 256,
                     }}
                   >
                     <BubbleContent />
@@ -99,14 +75,11 @@ function ChatPlaceholders() {
                 <MessageAvatar className="chat-empty-avatar" />
                 <MessageContent>
                   <div className="chat-empty-answer">
-                    {(i === 1
-                      ? [100, 100, 84, 50]
-                      : i === 2
-                        ? [100, 84, 60]
-                        : [100, 92, 67]
-                    ).map((w, j) => (
-                      <span key={j} style={{ width: `${w}%` }} />
-                    ))}
+                    {(i === 1 ? [100, 100, 84, 50] : i === 2 ? [100, 84, 60] : [100, 92, 67]).map(
+                      (w, j) => (
+                        <span key={j} style={{ width: `${w}%` }} />
+                      ),
+                    )}
                   </div>
                 </MessageContent>
               </Message>
@@ -136,11 +109,7 @@ function ThreadRow({
 }) {
   return (
     <div className={`chat-thread-row group ${active === name ? "active" : ""}`}>
-      <Button
-        variant="ghost"
-        className="chat-thread-label"
-        onClick={() => onSelect(name)}
-      >
+      <Button variant="ghost" className="chat-thread-label" onClick={() => onSelect(name)}>
         <span>{name}</span>
       </Button>
       <div className="chat-thread-actions">
@@ -154,11 +123,7 @@ function ThreadRow({
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon-xs"
-              aria-label={`Thread actions for ${name}`}
-            >
+            <Button variant="ghost" size="icon-xs" aria-label={`Thread actions for ${name}`}>
               <MoreHorizontal />
             </Button>
           </DropdownMenuTrigger>
@@ -199,15 +164,10 @@ export default function ChatWorkspace() {
   const [model, setModel] = useState("Claude Sonnet 5");
   const [memory, setMemory] = useState(true);
   const pin = (name: string) =>
-    setPinned((v) =>
-      v.includes(name) ? v.filter((n) => n !== name) : [...v, name],
-    );
+    setPinned((v) => (v.includes(name) ? v.filter((n) => n !== name) : [...v, name]));
 
   return (
-    <div
-      className="shell-reference reui-reference chat-workspace"
-      data-shell-variant="21"
-    >
+    <div className="shell-reference reui-reference chat-workspace" data-shell-variant="21">
       <ResizablePanelGroup orientation="horizontal" key={String(collapsed)}>
         <ResizablePanel
           defaultSize={collapsed ? "48px" : "248px"}
@@ -222,12 +182,7 @@ export default function ChatWorkspace() {
             <header className="chat-workspace-brand">
               <ReuiMark small />
               {!collapsed && <strong>ReUI Chat</strong>}
-              <SearchPalette
-                iconOnly
-                collapsed={collapsed}
-                routes={threads}
-                onSelect={setActive}
-              />
+              <SearchPalette iconOnly collapsed={collapsed} routes={threads} onSelect={setActive} />
               <Button
                 variant="ghost"
                 size="icon-sm"
@@ -260,11 +215,7 @@ export default function ChatWorkspace() {
                 {["Pinned", "Recent"].map((group) => (
                   <DropdownMenu key={group}>
                     <DropdownMenuTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="icon-sm"
-                        aria-label={`${group} chats`}
-                      >
+                      <Button variant="ghost" size="icon-sm" aria-label={`${group} chats`}>
                         {group === "Pinned" ? <Pin /> : <Clock />}
                       </Button>
                     </DropdownMenuTrigger>
@@ -272,15 +223,10 @@ export default function ChatWorkspace() {
                       <DropdownMenuGroup>
                         {threads
                           .filter((t) =>
-                            group === "Pinned"
-                              ? pinned.includes(t)
-                              : !pinned.includes(t),
+                            group === "Pinned" ? pinned.includes(t) : !pinned.includes(t),
                           )
                           .map((name) => (
-                            <DropdownMenuItem
-                              key={name}
-                              onSelect={() => setActive(name)}
-                            >
+                            <DropdownMenuItem key={name} onSelect={() => setActive(name)}>
                               {name}
                             </DropdownMenuItem>
                           ))}
@@ -299,10 +245,7 @@ export default function ChatWorkspace() {
                     onChange={setTab}
                   />
                 </div>
-                <nav
-                  className="chat-primary-navigation"
-                  aria-label="Chat navigation"
-                >
+                <nav className="chat-primary-navigation" aria-label="Chat navigation">
                   <Button variant="ghost" onClick={() => setActive("New Chat")}>
                     <Plus />
                     New Chat
@@ -314,11 +257,7 @@ export default function ChatWorkspace() {
                       ["Customize", Settings2, undefined],
                     ] as const
                   ).map(([name, Icon, count]) => (
-                    <Button
-                      variant="ghost"
-                      key={name}
-                      onClick={() => setActive(name)}
-                    >
+                    <Button variant="ghost" key={name} onClick={() => setActive(name)}>
                       <Icon />
                       <span>{name}</span>
                       {count && <small>{count}</small>}
@@ -338,19 +277,13 @@ export default function ChatWorkspace() {
                         />
                       ))
                     : ["Pinned", "Recent"].map((group) => (
-                        <Collapsible
-                          defaultOpen
-                          key={group}
-                          className="chat-thread-group"
-                        >
+                        <Collapsible defaultOpen key={group} className="chat-thread-group">
                           <CollapsibleTrigger className="chat-group-heading">
                             <span>{group}</span>
                             <span>
                               {
                                 threads.filter((t) =>
-                                  group === "Pinned"
-                                    ? pinned.includes(t)
-                                    : !pinned.includes(t),
+                                  group === "Pinned" ? pinned.includes(t) : !pinned.includes(t),
                                 ).length
                               }
                             </span>
@@ -359,9 +292,7 @@ export default function ChatWorkspace() {
                           <CollapsibleContent>
                             {threads
                               .filter((t) =>
-                                group === "Pinned"
-                                  ? pinned.includes(t)
-                                  : !pinned.includes(t),
+                                group === "Pinned" ? pinned.includes(t) : !pinned.includes(t),
                               )
                               .map((name) => (
                                 <ThreadRow
@@ -387,12 +318,7 @@ export default function ChatWorkspace() {
                   ["Help", CircleHelp],
                 ] as const
               ).map(([name, Icon]) => (
-                <Button
-                  variant="ghost"
-                  key={name}
-                  aria-label={name}
-                  onClick={() => toast(name)}
-                >
+                <Button variant="ghost" key={name} aria-label={name} onClick={() => toast(name)}>
                   <Icon />
                   {!collapsed && name}
                 </Button>
@@ -441,21 +367,13 @@ export default function ChatWorkspace() {
                     </DropdownMenuGroup>
                     <div className="flex items-center justify-between gap-3 border-t p-2 text-xs">
                       <span>Memory</span>
-                      <Switch
-                        checked={memory}
-                        onCheckedChange={setMemory}
-                        aria-label="Memory"
-                      />
+                      <Switch checked={memory} onCheckedChange={setMemory} aria-label="Memory" />
                     </div>
                   </DropdownMenuContent>
                 </DropdownMenu>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="icon-sm"
-                      aria-label="Chat options"
-                    >
+                    <Button variant="ghost" size="icon-sm" aria-label="Chat options">
                       <MoreHorizontal />
                     </Button>
                   </DropdownMenuTrigger>

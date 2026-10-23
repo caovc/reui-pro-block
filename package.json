@@ -11,7 +11,12 @@
     "test": "playwright test",
     "test:site": "playwright test tests/site.spec.ts",
     "test:catalog": "playwright test tests/catalog.spec.ts",
-    "catalog:update": "python3 scripts/catalog.py"
+    "catalog:update": "python3 scripts/catalog.py",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "format:staged": "git-format-staged -f 'prettier --ignore-unknown --stdin-filepath \"{}\"' '*.ts' '*.tsx' '*.js' '*.mjs' '*.cjs' '*.css' '*.json' '*.md' '*.yml' '*.yaml' '*.html'",
+    "prepare": "husky",
+    "test:tooling": "node --test tests/*.test.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
@@ -57,7 +62,10 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.2",
+    "git-format-staged": "4.0.2",
+    "husky": "9.1.7",
     "oxlint": "^1.88.0",
+    "prettier": "3.9.10",
     "typescript": "~6.0.3",
     "vite": "^8.3.4"
   }

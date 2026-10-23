@@ -50,9 +50,7 @@ function SectionNav({
   onChange: (s: string) => void;
   security?: boolean;
 }) {
-  const names = security
-    ? ["Security", "Incidents", "Threats", "Assets", "Reports"]
-    : sections;
+  const names = security ? ["Security", "Incidents", "Threats", "Assets", "Reports"] : sections;
   return (
     <>
       <div
@@ -79,12 +77,7 @@ function SectionNav({
         })}
       </div>
       <div className="lg:hidden">
-        <Choices
-          label="Sections"
-          items={names}
-          value={value}
-          onChange={onChange}
-        />
+        <Choices label="Sections" items={names} value={value} onChange={onChange} />
       </div>
     </>
   );
@@ -117,21 +110,13 @@ function OperationsSettings({
           {onCounts && (
             <label className="flex items-center justify-between gap-8">
               Show counts
-              <Switch
-                checked={showCounts}
-                onCheckedChange={onCounts}
-                aria-label="Show counts"
-              />
+              <Switch checked={showCounts} onCheckedChange={onCounts} aria-label="Show counts" />
             </label>
           )}
           {onStatus && (
             <label className="flex items-center justify-between gap-8">
               Show status
-              <Switch
-                checked={showStatus}
-                onCheckedChange={onStatus}
-                aria-label="Show status"
-              />
+              <Switch checked={showStatus} onCheckedChange={onStatus} aria-label="Show status" />
             </label>
           )}
         </div>
@@ -146,11 +131,7 @@ export function OperationsShell({
 }) {
   const [section, setSection] = useState(variant === 26 ? "Security" : "Fleet");
   const [active, setActive] = useState(
-    variant === 23
-      ? "Stations"
-      : variant === 27
-        ? "Security Center"
-        : "Overview",
+    variant === 23 ? "Stations" : variant === 27 ? "Security Center" : "Overview",
   );
   const [collapsed, setCollapsed] = useState(false);
   const [query, setQuery] = useState("");
@@ -181,11 +162,7 @@ export function OperationsShell({
   const inset = variant === 28;
   const treeOnly = variant === 32;
   const title =
-    variant === 32
-      ? "Fleet Protection"
-      : variant === 30
-        ? "Mission Control Center"
-        : active;
+    variant === 32 ? "Fleet Protection" : variant === 30 ? "Mission Control Center" : active;
   function scan() {
     setScanning(true);
     window.setTimeout(() => setScanning(false), 1600);
@@ -235,9 +212,7 @@ export function OperationsShell({
               <SectionNav value={section} onChange={setSection} />
             )}
           </div>
-          {variant === 26 && (
-            <SectionNav security value={section} onChange={setSection} />
-          )}
+          {variant === 26 && <SectionNav security value={section} onChange={setSection} />}
           <div className="flex shrink-0 items-center gap-1">
             <div className="hidden md:block">
               <SearchPalette
@@ -265,12 +240,7 @@ export function OperationsShell({
               <WorkspaceMenu collapsed user />
             </div>
             {variant === 26 ? (
-              <Button
-                variant="outline"
-                size="sm"
-                disabled={scanning}
-                onClick={scan}
-              >
+              <Button variant="outline" size="sm" disabled={scanning} onClick={scan}>
                 <Activity className={scanning ? "animate-spin" : ""} />
                 {scanning ? "Scanning…" : "Run Scan"}
               </Button>
@@ -278,19 +248,13 @@ export function OperationsShell({
               <Button
                 variant={variant === 32 ? "default" : "outline"}
                 size="sm"
-                onClick={() =>
-                  setCreate(variant === 30 ? "Onboard robot" : "New mission")
-                }
+                onClick={() => setCreate(variant === 30 ? "Onboard robot" : "New mission")}
               >
                 {variant === 30 ? "Onboard Robot" : "New Mission"}
               </Button>
             )}
             {variant === 32 && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setAssistant((v) => !v)}
-              >
+              <Button variant="outline" size="sm" onClick={() => setAssistant((v) => !v)}>
                 <Sparkles />
                 Open Chat
               </Button>
@@ -301,9 +265,7 @@ export function OperationsShell({
       <div
         className={`flex min-h-0 flex-1 ${inset ? "m-2 rounded-2xl border bg-background overflow-hidden" : ""}`}
       >
-        {(treeOnly || variant === 33) && (
-          <Rail active={active} onChange={setActive} />
-        )}
+        {(treeOnly || variant === 33) && <Rail active={active} onChange={setActive} />}
         {variant !== 30 && variant !== 26 && !treeOnly && (
           <Sidebar
             collapsed={collapsed}
@@ -329,11 +291,7 @@ export function OperationsShell({
             )}
             {variant === 33 ? (
               <>
-                <NavSearch
-                  label="Search scopes"
-                  value={query}
-                  onChange={setQuery}
-                />
+                <NavSearch label="Search scopes" value={query} onChange={setQuery} />
                 <div className="grid grid-cols-3 gap-2 p-3">
                   {tiles.map((name) => (
                     <Button
@@ -348,11 +306,7 @@ export function OperationsShell({
                   ))}
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        className="h-16"
-                        aria-label="Pin view"
-                      >
+                      <Button variant="ghost" className="h-16" aria-label="Pin view">
                         <Plus />
                       </Button>
                     </DropdownMenuTrigger>
@@ -439,11 +393,7 @@ export function OperationsShell({
                       key={name}
                       variant={active === name ? "outline" : "secondary"}
                       className="h-16 flex-col gap-1 text-[10px] font-normal"
-                      onClick={() =>
-                        name === "Add"
-                          ? setCreate("Add section")
-                          : setActive(name)
-                      }
+                      onClick={() => (name === "Add" ? setCreate("Add section") : setActive(name))}
                     >
                       <Grid2X2 />
                       {name}
@@ -460,9 +410,7 @@ export function OperationsShell({
               </>
             ) : (
               <>
-                {variant === 27 && (
-                  <NavSearch value={query} onChange={setQuery} />
-                )}
+                {variant === 27 && <NavSearch value={query} onChange={setQuery} />}
                 <GroupedNav
                   indented={variant === 23}
                   query={query}
@@ -482,12 +430,7 @@ export function OperationsShell({
                           },
                           {
                             label: "Mission Control",
-                            items: [
-                              "Missions",
-                              "Requests",
-                              "Schedules",
-                              "Issue Reports",
-                            ],
+                            items: ["Missions", "Requests", "Schedules", "Issue Reports"],
                           },
                           {
                             label: "System Tools",
@@ -532,33 +475,23 @@ export function OperationsShell({
                   <div className="flex flex-wrap items-center gap-2">
                     <h1 className="text-xl font-medium">{title}</h1>
                     <div className="flex gap-1">
-                      {["342 Robots", "58 Missions", "12 Stations"].map(
-                        (name) => (
-                          <Badge
-                            variant="outline"
-                            className="text-[10px]"
-                            key={name}
-                          >
-                            {name}
-                          </Badge>
-                        ),
-                      )}
+                      {["342 Robots", "58 Missions", "12 Stations"].map((name) => (
+                        <Badge variant="outline" className="text-[10px]" key={name}>
+                          {name}
+                        </Badge>
+                      ))}
                     </div>
                   </div>
                   <p className="mt-2 text-xs text-muted-foreground">
-                    Track robot status, capacity, assignments, health, and
-                    activity across your entire operating fleet.
+                    Track robot status, capacity, assignments, health, and activity across your
+                    entire operating fleet.
                   </p>
                 </div>
                 <div className="flex gap-2">
                   <Button size="sm" onClick={() => setCreate("New mission")}>
                     New Mission
                   </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => setAssistant((v) => !v)}
-                  >
+                  <Button size="sm" variant="outline" onClick={() => setAssistant((v) => !v)}>
                     <Sparkles />
                     Open Chat
                   </Button>
@@ -632,7 +565,13 @@ const assignments = [
   {
     name: "Dock C112",
     status: "Running late",
-    events: ["Cargo scanned", "Delay detected", "Checkpoint reached", "Route changed by Chris", "Battery dropped"],
+    events: [
+      "Cargo scanned",
+      "Delay detected",
+      "Checkpoint reached",
+      "Route changed by Chris",
+      "Battery dropped",
+    ],
   },
   { name: "Pip W92", status: "On time", events: ["Route started"] },
   { name: "Humble P028", status: "2 Failed", events: ["Connection lost"] },
@@ -645,9 +584,7 @@ export function MissionShell() {
   const [groups, setGroups] = useState(["Active"]);
   const [expanded, setExpanded] = useState(["Dock C112"]);
   const [create, setCreate] = useState(false);
-  const visible = assignments.filter((a) =>
-    a.name.toLowerCase().includes(query.toLowerCase()),
-  );
+  const visible = assignments.filter((a) => a.name.toLowerCase().includes(query.toLowerCase()));
   return (
     <div className="shell-reference flex-col" data-shell-variant="25">
       <header className="shell-header border-b">
@@ -701,23 +638,14 @@ export function MissionShell() {
                     Onboarding
                   </Button>
                 </div>
-                <div
-                  className="mt-4 flex h-5 gap-0.5"
-                  aria-label="Mission distribution"
-                >
+                <div className="mt-4 flex h-5 gap-0.5" aria-label="Mission distribution">
                   {Array.from({ length: 84 }, (_, i) => (
                     <span
                       key={i}
                       className="w-1 rounded"
                       style={{
                         background:
-                          i < 38
-                            ? "#8b5cf6"
-                            : i < 43
-                              ? "#10b981"
-                              : i < 72
-                                ? "#cbd5e1"
-                                : "#fb7185",
+                          i < 38 ? "#8b5cf6" : i < 43 ? "#10b981" : i < 72 ? "#cbd5e1" : "#fb7185",
                       }}
                     />
                   ))}
@@ -744,9 +672,7 @@ export function MissionShell() {
                       aria-expanded={groups.includes(group)}
                       onClick={() =>
                         setGroups((v) =>
-                          v.includes(group)
-                            ? v.filter((s) => s !== group)
-                            : [...v, group],
+                          v.includes(group) ? v.filter((s) => s !== group) : [...v, group],
                         )
                       }
                     >
@@ -793,8 +719,7 @@ export function MissionShell() {
                                   <p>24m　3.8km　76%　Checking　Mark</p>
                                   {a.events.map((event, i) => (
                                     <p key={event}>
-                                      15:{String(i + 5).padStart(2, "0")} ·{" "}
-                                      {event}
+                                      15:{String(i + 5).padStart(2, "0")} · {event}
                                     </p>
                                   ))}
                                   <Button

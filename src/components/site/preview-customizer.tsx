@@ -9,20 +9,9 @@ import {
   SelectGroup,
   SelectItem,
 } from "@/components/ui/select";
-import {
-  Frame,
-  FrameHeader,
-  FrameTitle,
-  FramePanel,
-} from "@/components/reui/frame";
+import { Frame, FrameHeader, FrameTitle, FramePanel } from "@/components/reui/frame";
 import { ColorPicker } from "@/components/reui/color-picker";
-import {
-  accents,
-  defaultTheme,
-  themeCSS,
-  themeOptions,
-  type PreviewTheme,
-} from "./preview-theme";
+import { accents, defaultTheme, themeCSS, themeOptions, type PreviewTheme } from "./preview-theme";
 
 const labels: Record<string, string> = {
   geist: "Geist",
@@ -90,14 +79,11 @@ export function PreviewCustomizer({
       await navigator.clipboard.writeText(value);
       toast.success(message);
     } catch {
-      toast.error(
-        "Clipboard unavailable. Try again with clipboard access enabled.",
-      );
+      toast.error("Clipboard unavailable. Try again with clipboard access enabled.");
     }
   }
   function shuffle() {
-    const pick = (values: readonly string[]) =>
-      values[Math.floor(Math.random() * values.length)];
+    const pick = (values: readonly string[]) => values[Math.floor(Math.random() * values.length)];
     onChange({
       ...theme,
       base: pick(themeOptions.base),
@@ -108,20 +94,11 @@ export function PreviewCustomizer({
     });
   }
   return (
-    <aside
-      id="preview-customizer"
-      aria-label="Preview customization"
-      className="preset-sidebar"
-    >
+    <aside id="preview-customizer" aria-label="Preview customization" className="preset-sidebar">
       <Frame spacing="sm" className="preset-frame">
         <FrameHeader className="flex-row items-center justify-between">
           <FrameTitle>Customize</FrameTitle>
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            aria-label="Close customizer"
-            onClick={onClose}
-          >
+          <Button variant="ghost" size="icon-sm" aria-label="Close customizer" onClick={onClose}>
             <X />
           </Button>
         </FrameHeader>
@@ -148,11 +125,7 @@ export function PreviewCustomizer({
             <span>Custom accent</span>
             <ColorPicker
               aria-label="Custom accent"
-              value={
-                theme.custom ||
-                accents[theme.accent as keyof typeof accents] ||
-                null
-              }
+              value={theme.custom || accents[theme.accent as keyof typeof accents] || null}
               format="hex"
               onValueChange={(v) => v && update("custom", v)}
             />
@@ -210,18 +183,12 @@ export function PreviewCustomizer({
               <Shuffle />
               Shuffle
             </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => onChange({ ...defaultTheme })}
-            >
+            <Button variant="outline" size="sm" onClick={() => onChange({ ...defaultTheme })}>
               <RotateCcw />
               Reset
             </Button>
           </div>
-          <p>
-            Settings apply to the live preview and are saved on this device.
-          </p>
+          <p>Settings apply to the live preview and are saved on this device.</p>
         </div>
       </Frame>
     </aside>

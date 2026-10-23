@@ -1,69 +1,1328 @@
-import { useEffect, useState } from 'react'
-import { ArrowRight, Check, Copy, Zap, Truck, Star, Quote, CheckCircle2, X, Plus, ShoppingBag } from 'lucide-react'
-import type { BlockProps } from '@/data/types'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
+import { useEffect, useState } from "react";
+import {
+  ArrowRight,
+  Check,
+  Copy,
+  Zap,
+  Truck,
+  Star,
+  Quote,
+  CheckCircle2,
+  X,
+  Plus,
+  ShoppingBag,
+} from "lucide-react";
+import type { BlockProps } from "@/data/types";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
-import { Progress } from '@/components/ui/progress'
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import { Separator } from '@/components/ui/separator'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { cn } from '@/lib/utils'
-import { products, photos, Money, Stars, SectionHeading, PageArrows, CartButton } from './shared'
+import { Progress } from "@/components/ui/progress";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { Separator } from "@/components/ui/separator";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
+import { products, photos, Money, Stars, SectionHeading, PageArrows, CartButton } from "./shared";
 
-export function Coupons({block}:BlockProps) {
- const i=block.index,[copied,setCopied]=useState(''),[filter,setFilter]=useState('All offers'),[shop,setShop]=useState(false)
- const offers=[{title:'A little something for you.',value:'20% off',code:'WELCOME20',category:'New customers'},{title:'Your space, reimagined.',value:'$30 off',code:'HOME30',category:'Home'},{title:'Make it a weekend.',value:'15% off',code:'WEEKEND15',category:'Clothing'},{title:'The more, the better.',value:'Buy 2, save 25%',code:'BETTER25',category:'Clothing'},{title:'Shipping’s on us.',value:'Free delivery',code:'SHIPFREE',category:'All orders'},{title:'Just for members.',value:'Early access',code:'FIRSTLOOK',category:'Members'}]
- const copy=async(code:string)=>{try{await navigator.clipboard.writeText(code);setCopied(code)}catch{setCopied(`Select and copy: ${code}`)}}
- if(i>=4)return <div className="flex min-h-72 items-center py-10"><div className={cn('flex w-full flex-wrap items-center justify-center gap-4 border-y bg-muted/50 px-8 py-5 text-sm',i===5&&'bg-foreground text-background')}>{i===4?<Truck className="size-5"/>:<Zap className="size-5"/>}<p>{i===4?'A little perk for your everyday. Free shipping on orders over $75.':'The weekend edit. Save 25% on your next favorite.'}</p><Button variant={i===5?'secondary':'outline'} size="sm" onClick={()=>copy(i===4?'SHIPFREE':'WEEKEND25')}><Copy data-icon="inline-start"/>{copied|| (i===4?'SHIPFREE':'WEEKEND25')}</Button></div></div>
- return <div className="mx-auto w-full max-w-5xl p-6 sm:p-10">{i===1?<><SectionHeading title="Good things, better prices." description="A few thoughtful offers, just for you."/><ToggleGroup type="single" value={filter} onValueChange={v=>v&&setFilter(v)} className="mb-6 justify-start">{['All offers','Clothing','Home','Members'].map(f=><ToggleGroupItem value={f} key={f}>{f}</ToggleGroupItem>)}</ToggleGroup><div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{offers.filter(o=>filter==='All offers'||o.category===filter).map(o=><article className="flex flex-col gap-5 rounded-xl border bg-card p-5" key={o.code}><Badge variant="secondary" className="self-start">{o.category}</Badge><div><p className="text-3xl font-semibold tracking-tight">{o.value}</p><h3 className="mt-2 text-sm text-muted-foreground">{o.title}</h3></div><Separator/><p className="text-xs text-muted-foreground">Valid through October 31, 2026.</p><Button variant="outline" onClick={()=>copy(o.code)}><Copy data-icon="inline-start"/>{copied===o.code?'Copied!':o.code}</Button></article>)}</div></>:<div className={cn('overflow-hidden rounded-xl border bg-card',i===3?'mx-auto max-w-md':'grid md:grid-cols-2')}><div className="flex flex-col items-start gap-5 p-7 sm:p-10"><Badge variant="secondary">{i===2?'Members get first look':'A little thank you'}</Badge><h2 className="text-3xl font-semibold leading-tight tracking-tight">{i===2?'The next chapter. Yours first.':i===3?'A thoughtful offer.':'Your first order, with a little extra.'}</h2><p className="text-sm leading-6 text-muted-foreground">{i===2?'Early access to our new collection. Discover what’s next, 48 hours before everyone else.':'Enjoy 20% off the things that make your everyday better. New essentials, same considered details.'}</p><div className="flex w-full items-center justify-between gap-4 rounded-lg border border-dashed bg-muted/30 px-4 py-3"><code className="font-mono text-sm tracking-widest">WELCOME20</code><Button variant="ghost" size="sm" onClick={()=>copy('WELCOME20')}>{copied==='WELCOME20'?<Check/>:<Copy/>}{copied==='WELCOME20'?'Copied':'Copy code'}</Button></div>{i===3&&<ul className="flex flex-col gap-2 text-xs text-muted-foreground">{['Minimum order $75','One use per customer','Valid on full-price items'].map(t=><li key={t} className="flex gap-2"><Check className="size-3"/>{t}</li>)}</ul>}<Button onClick={()=>setShop(!shop)}>{shop?'Offer saved to your bag':'Save this offer'}<ArrowRight data-icon="inline-end"/></Button><p className="text-xs text-muted-foreground">One good thing leads to another. Ends October 31.</p></div>{i!==3&&<img src={i===2?photos.room:photos.chair} className="h-full min-h-80 w-full object-cover" alt="Thoughtfully designed home collection"/>}</div>}</div>
+export function Coupons({ block }: BlockProps) {
+  const i = block.index,
+    [copied, setCopied] = useState(""),
+    [filter, setFilter] = useState("All offers"),
+    [shop, setShop] = useState(false);
+  const offers = [
+    {
+      title: "A little something for you.",
+      value: "20% off",
+      code: "WELCOME20",
+      category: "New customers",
+    },
+    { title: "Your space, reimagined.", value: "$30 off", code: "HOME30", category: "Home" },
+    { title: "Make it a weekend.", value: "15% off", code: "WEEKEND15", category: "Clothing" },
+    {
+      title: "The more, the better.",
+      value: "Buy 2, save 25%",
+      code: "BETTER25",
+      category: "Clothing",
+    },
+    {
+      title: "Shipping’s on us.",
+      value: "Free delivery",
+      code: "SHIPFREE",
+      category: "All orders",
+    },
+    { title: "Just for members.", value: "Early access", code: "FIRSTLOOK", category: "Members" },
+  ];
+  const copy = async (code: string) => {
+    try {
+      await navigator.clipboard.writeText(code);
+      setCopied(code);
+    } catch {
+      setCopied(`Select and copy: ${code}`);
+    }
+  };
+  if (i >= 4)
+    return (
+      <div className="flex min-h-72 items-center py-10">
+        <div
+          className={cn(
+            "flex w-full flex-wrap items-center justify-center gap-4 border-y bg-muted/50 px-8 py-5 text-sm",
+            i === 5 && "bg-foreground text-background",
+          )}
+        >
+          {i === 4 ? <Truck className="size-5" /> : <Zap className="size-5" />}
+          <p>
+            {i === 4
+              ? "A little perk for your everyday. Free shipping on orders over $75."
+              : "The weekend edit. Save 25% on your next favorite."}
+          </p>
+          <Button
+            variant={i === 5 ? "secondary" : "outline"}
+            size="sm"
+            onClick={() => copy(i === 4 ? "SHIPFREE" : "WEEKEND25")}
+          >
+            <Copy data-icon="inline-start" />
+            {copied || (i === 4 ? "SHIPFREE" : "WEEKEND25")}
+          </Button>
+        </div>
+      </div>
+    );
+  return (
+    <div className="mx-auto w-full max-w-5xl p-6 sm:p-10">
+      {i === 1 ? (
+        <>
+          <SectionHeading
+            title="Good things, better prices."
+            description="A few thoughtful offers, just for you."
+          />
+          <ToggleGroup
+            type="single"
+            value={filter}
+            onValueChange={(v) => v && setFilter(v)}
+            className="mb-6 justify-start"
+          >
+            {["All offers", "Clothing", "Home", "Members"].map((f) => (
+              <ToggleGroupItem value={f} key={f}>
+                {f}
+              </ToggleGroupItem>
+            ))}
+          </ToggleGroup>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {offers
+              .filter((o) => filter === "All offers" || o.category === filter)
+              .map((o) => (
+                <article className="flex flex-col gap-5 rounded-xl border bg-card p-5" key={o.code}>
+                  <Badge variant="secondary" className="self-start">
+                    {o.category}
+                  </Badge>
+                  <div>
+                    <p className="text-3xl font-semibold tracking-tight">{o.value}</p>
+                    <h3 className="mt-2 text-sm text-muted-foreground">{o.title}</h3>
+                  </div>
+                  <Separator />
+                  <p className="text-xs text-muted-foreground">Valid through October 31, 2026.</p>
+                  <Button variant="outline" onClick={() => copy(o.code)}>
+                    <Copy data-icon="inline-start" />
+                    {copied === o.code ? "Copied!" : o.code}
+                  </Button>
+                </article>
+              ))}
+          </div>
+        </>
+      ) : (
+        <div
+          className={cn(
+            "overflow-hidden rounded-xl border bg-card",
+            i === 3 ? "mx-auto max-w-md" : "grid md:grid-cols-2",
+          )}
+        >
+          <div className="flex flex-col items-start gap-5 p-7 sm:p-10">
+            <Badge variant="secondary">
+              {i === 2 ? "Members get first look" : "A little thank you"}
+            </Badge>
+            <h2 className="text-3xl font-semibold leading-tight tracking-tight">
+              {i === 2
+                ? "The next chapter. Yours first."
+                : i === 3
+                  ? "A thoughtful offer."
+                  : "Your first order, with a little extra."}
+            </h2>
+            <p className="text-sm leading-6 text-muted-foreground">
+              {i === 2
+                ? "Early access to our new collection. Discover what’s next, 48 hours before everyone else."
+                : "Enjoy 20% off the things that make your everyday better. New essentials, same considered details."}
+            </p>
+            <div className="flex w-full items-center justify-between gap-4 rounded-lg border border-dashed bg-muted/30 px-4 py-3">
+              <code className="font-mono text-sm tracking-widest">WELCOME20</code>
+              <Button variant="ghost" size="sm" onClick={() => copy("WELCOME20")}>
+                {copied === "WELCOME20" ? <Check /> : <Copy />}
+                {copied === "WELCOME20" ? "Copied" : "Copy code"}
+              </Button>
+            </div>
+            {i === 3 && (
+              <ul className="flex flex-col gap-2 text-xs text-muted-foreground">
+                {["Minimum order $75", "One use per customer", "Valid on full-price items"].map(
+                  (t) => (
+                    <li key={t} className="flex gap-2">
+                      <Check className="size-3" />
+                      {t}
+                    </li>
+                  ),
+                )}
+              </ul>
+            )}
+            <Button onClick={() => setShop(!shop)}>
+              {shop ? "Offer saved to your bag" : "Save this offer"}
+              <ArrowRight data-icon="inline-end" />
+            </Button>
+            <p className="text-xs text-muted-foreground">
+              One good thing leads to another. Ends October 31.
+            </p>
+          </div>
+          {i !== 3 && (
+            <img
+              src={i === 2 ? photos.room : photos.chair}
+              className="h-full min-h-80 w-full object-cover"
+              alt="Thoughtfully designed home collection"
+            />
+          )}
+        </div>
+      )}
+    </div>
+  );
 }
 
-export function Comparison({block}:BlockProps) {
- const i=block.index,[selected,setSelected]=useState<number[]>(i===0?[0,1,2,3,4,5]:i===1?[1,5]:[1,4]),[focus,setFocus]=useState(1),[page,setPage]=useState(0)
- const choices=products.slice(0,6),shown=i===0?choices.filter((_,j)=>selected.includes(j)):i===1||i===5?selected.map(j=>choices[j]):i===4?[choices[focus]]:choices.slice(page*3,page*3+3)
- const toggle=(j:number)=>setSelected(selected.includes(j)?selected.filter(n=>n!==j):selected.length<4?[...selected,j]:selected)
- const numericValue=(product:typeof choices[number],row:number)=>row===0?product.price:row===1?product.rating:row===4?2+choices.indexOf(product)%3:0
- const wins=(product:typeof choices[number],row:number)=>{
-  if(i!==1||![0,1,4].includes(row)||shown.length!==2)return false
-  const value=numericValue(product,row),other=numericValue(shown.find(p=>p!==product)??product,row)
-  return row===1?value>other:value<other
- }
- return <div className="mx-auto max-w-6xl p-6 sm:p-10"><SectionHeading title={i===2?'The considered shortlist':i===3?'The best of the collection':i===5?'Find your perfect fit':'Compare the details'} description={i===1?'Choose two products. The little differences become a little clearer.':'A closer look makes all the difference.'} action={i===3?<PageArrows onPrevious={()=>setPage(Math.max(0,page-1))} onNext={()=>setPage((page+1)%2)}/>:i===0?<Button variant="outline" size="sm" onClick={()=>setSelected([0,1,2,3,4,5])}>Reset comparison</Button>:i===1?<Button variant="outline" size="sm" onClick={()=>setSelected([...selected].reverse())}>Swap products</Button>:undefined}/>
- {i===5&&<><div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">{choices.map((p,j)=><div key={p.name} className={cn('flex items-center gap-3 rounded-lg border p-3 text-left',selected.includes(j)&&'border-foreground bg-muted/40')}><img className="size-12 rounded-md object-cover" src={p.image} alt=""/><div className="min-w-0 flex-1"><p className="text-xs font-medium">{p.name}</p><p className="mt-1 text-xs text-muted-foreground"><Money value={p.price}/></p></div><Button variant={selected.includes(j)?'secondary':'outline'} size="sm" disabled={!selected.includes(j)&&selected.length===4} onClick={()=>toggle(j)}>{selected.includes(j)?<Check data-icon="inline-start"/>:<Plus data-icon="inline-start"/>}{selected.includes(j)?'Selected':'Compare'}</Button></div>)}</div><div className="mb-6 rounded-xl border bg-muted/20 p-4"><div className="mb-4 flex items-center justify-between"><span className="text-sm font-medium">Your comparison <Badge variant="secondary">{selected.length} / 4</Badge></span><Button variant="ghost" size="sm" disabled={!selected.length} onClick={()=>setSelected([])}>Clear all</Button></div><div className="grid grid-cols-2 gap-3 sm:grid-cols-4">{Array.from({length:4},(_,j)=>selected[j]!==undefined?<div key={j} className="relative flex items-center gap-2 rounded-lg border bg-background p-3"><img className="size-9 rounded object-cover" src={choices[selected[j]].image} alt=""/><span className="min-w-0 flex-1 text-[10px] font-medium">{choices[selected[j]].name}</span><Button variant="ghost" size="icon-sm" aria-label={`Remove ${choices[selected[j]].name} from slots`} onClick={()=>toggle(selected[j])}><X/></Button></div>:<div key={j} className="flex min-h-16 items-center justify-center gap-2 rounded-lg border border-dashed text-xs text-muted-foreground"><Plus className="size-3"/>Add a product</div>)}</div></div></>}
- {i===0||i===1||i===5?<div className="overflow-auto rounded-xl border"><table className="w-full min-w-[580px] text-sm"><thead><tr><th scope="col" className="sticky left-0 min-w-36 bg-background p-4 text-left align-top font-medium">{i===5?`${selected.length} products selected`:'The essentials'}</th>{shown.map((p,j)=><th key={i===1?j:p.name} scope="col" className="min-w-44 p-4 text-left font-normal">{i===1?<Select value={String(selected[j])} onValueChange={v=>setSelected(selected.map((s,k)=>k===j?Number(v):s))}><SelectTrigger><SelectValue/></SelectTrigger><SelectContent><SelectGroup>{choices.map((x,k)=><SelectItem key={x.name} value={String(k)}>{x.name}</SelectItem>)}</SelectGroup></SelectContent></Select>:<div className="flex items-center justify-between gap-2"><span className="text-xs font-medium">{p.name}</span>{i===0&&<Button variant="ghost" size="icon-sm" aria-label={`Remove ${p.name} from comparison`} onClick={()=>setSelected(selected.filter(n=>choices[n].name!==p.name))}><X/></Button>}</div>}<img src={p.image} className="my-4 aspect-square w-full rounded-md bg-muted object-cover" alt={p.name}/><CartButton compact/></th>)}</tr></thead><tbody>{['Price','Rating','Materials','Warranty','Delivery','Returns'].map((label,row)=><tr className="border-t" key={label}><th scope="row" className="sticky left-0 bg-background p-4 text-left font-normal text-muted-foreground">{label}</th>{shown.map((product,j)=><td key={i===1?j:product.name} className={cn('p-4',wins(product,row)&&'bg-emerald-500/5')}><div className="flex flex-col items-start gap-1.5">{row===0?<Money value={product.price}/>:row===1?<Stars rating={product.rating}/>:row===2?'Premium quality':row===3?'2 years':row===4?`${numericValue(product,row)} business days`:'30 days'}{wins(product,row)&&<Badge variant="secondary" className="text-[9px]"><Check data-icon="inline-start"/>{row===0?'Better value':row===1?'Top rated':'Faster delivery'}</Badge>}</div></td>)}</tr>)}</tbody></table>{shown.length===0&&<p className="p-10 text-center text-sm text-muted-foreground">Choose products above to see their details side by side.</p>}</div>:i===4?<div className="grid gap-6 md:grid-cols-[1.2fr_1fr]"><div className="rounded-xl border p-5"><img src={choices[focus].image} alt={choices[focus].name} className="aspect-[4/3] w-full rounded-lg object-cover"/><div className="mt-5 flex items-center justify-between"><h3 className="font-medium">{choices[focus].name}</h3><Money value={choices[focus].price}/></div><div className="mt-4"><CartButton/></div></div><div className="flex flex-col gap-3">{choices.filter((_,j)=>j!==focus).slice(0,3).map(p=><div key={p.name} className="flex items-center gap-4 rounded-xl border p-4"><img className="size-16 rounded-md object-cover" src={p.image} alt=""/><div className="flex-1"><p className="text-sm font-medium">{p.name}</p><p className="mt-1 text-xs text-muted-foreground">{p.price>choices[focus].price?'+':'−'}<Money value={Math.abs(p.price-choices[focus].price)}/> vs selected</p></div><Button variant="outline" size="sm" onClick={()=>setFocus(choices.indexOf(p))}>Switch</Button></div>)}</div></div>:<div className="grid gap-5 md:grid-cols-3">{shown.map((p,j)=><article key={p.name} className="flex flex-col gap-4 rounded-xl border bg-card p-5">{j===0&&<Badge className="self-start" variant="secondary">Editor’s choice</Badge>}<img src={p.image} alt={p.name} className="aspect-square w-full rounded-lg bg-muted object-cover"/><div><h3 className="font-medium">{i===3?`#${page*3+j+1} `:''}{p.name}</h3><div className="mt-2"><Stars rating={p.rating}/></div></div>{i===3?<div className="flex flex-col gap-3">{['Design','Quality','Value','Comfort','Durability'].map((s,k)=><div key={s}><div className="mb-1 flex justify-between text-xs"><span>{s}</span><span>{(9.5-j*.2-k*.1).toFixed(1)}</span></div><Progress value={95-j*2-k}/></div>)}</div>:<><ul className="flex flex-col gap-2 text-sm text-muted-foreground">{['Excellent everyday quality','Thoughtfully designed','Free shipping included'].map(t=><li className="flex gap-2" key={t}><Check className="size-4"/>{t}</li>)}<li className="flex gap-2 text-muted-foreground/60"><X className="size-4"/><del>Express delivery included</del></li></ul><div className="grid grid-cols-2 gap-2">{[['Materials','Premium'],['Returns','30 days'],['Warranty','2 years'],['Fit','Everyday']].map(([a,b])=><div className="rounded-md bg-muted/40 p-2 text-[10px]" key={a}><span className="text-muted-foreground">{a}</span><p className="mt-1 font-medium">{b}</p></div>)}</div></>}<div className="mt-auto flex items-center justify-between pt-2"><Money value={p.price}/><CartButton compact/></div></article>)}</div>}
- </div>
+export function Comparison({ block }: BlockProps) {
+  const i = block.index,
+    [selected, setSelected] = useState<number[]>(
+      i === 0 ? [0, 1, 2, 3, 4, 5] : i === 1 ? [1, 5] : [1, 4],
+    ),
+    [focus, setFocus] = useState(1),
+    [page, setPage] = useState(0);
+  const choices = products.slice(0, 6),
+    shown =
+      i === 0
+        ? choices.filter((_, j) => selected.includes(j))
+        : i === 1 || i === 5
+          ? selected.map((j) => choices[j])
+          : i === 4
+            ? [choices[focus]]
+            : choices.slice(page * 3, page * 3 + 3);
+  const toggle = (j: number) =>
+    setSelected(
+      selected.includes(j)
+        ? selected.filter((n) => n !== j)
+        : selected.length < 4
+          ? [...selected, j]
+          : selected,
+    );
+  const numericValue = (product: (typeof choices)[number], row: number) =>
+    row === 0
+      ? product.price
+      : row === 1
+        ? product.rating
+        : row === 4
+          ? 2 + (choices.indexOf(product) % 3)
+          : 0;
+  const wins = (product: (typeof choices)[number], row: number) => {
+    if (i !== 1 || ![0, 1, 4].includes(row) || shown.length !== 2) return false;
+    const value = numericValue(product, row),
+      other = numericValue(shown.find((p) => p !== product) ?? product, row);
+    return row === 1 ? value > other : value < other;
+  };
+  return (
+    <div className="mx-auto max-w-6xl p-6 sm:p-10">
+      <SectionHeading
+        title={
+          i === 2
+            ? "The considered shortlist"
+            : i === 3
+              ? "The best of the collection"
+              : i === 5
+                ? "Find your perfect fit"
+                : "Compare the details"
+        }
+        description={
+          i === 1
+            ? "Choose two products. The little differences become a little clearer."
+            : "A closer look makes all the difference."
+        }
+        action={
+          i === 3 ? (
+            <PageArrows
+              onPrevious={() => setPage(Math.max(0, page - 1))}
+              onNext={() => setPage((page + 1) % 2)}
+            />
+          ) : i === 0 ? (
+            <Button variant="outline" size="sm" onClick={() => setSelected([0, 1, 2, 3, 4, 5])}>
+              Reset comparison
+            </Button>
+          ) : i === 1 ? (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setSelected([...selected].reverse())}
+            >
+              Swap products
+            </Button>
+          ) : undefined
+        }
+      />
+      {i === 5 && (
+        <>
+          <div className="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {choices.map((p, j) => (
+              <div
+                key={p.name}
+                className={cn(
+                  "flex items-center gap-3 rounded-lg border p-3 text-left",
+                  selected.includes(j) && "border-foreground bg-muted/40",
+                )}
+              >
+                <img className="size-12 rounded-md object-cover" src={p.image} alt="" />
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs font-medium">{p.name}</p>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    <Money value={p.price} />
+                  </p>
+                </div>
+                <Button
+                  variant={selected.includes(j) ? "secondary" : "outline"}
+                  size="sm"
+                  disabled={!selected.includes(j) && selected.length === 4}
+                  onClick={() => toggle(j)}
+                >
+                  {selected.includes(j) ? (
+                    <Check data-icon="inline-start" />
+                  ) : (
+                    <Plus data-icon="inline-start" />
+                  )}
+                  {selected.includes(j) ? "Selected" : "Compare"}
+                </Button>
+              </div>
+            ))}
+          </div>
+          <div className="mb-6 rounded-xl border bg-muted/20 p-4">
+            <div className="mb-4 flex items-center justify-between">
+              <span className="text-sm font-medium">
+                Your comparison <Badge variant="secondary">{selected.length} / 4</Badge>
+              </span>
+              <Button
+                variant="ghost"
+                size="sm"
+                disabled={!selected.length}
+                onClick={() => setSelected([])}
+              >
+                Clear all
+              </Button>
+            </div>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {Array.from({ length: 4 }, (_, j) =>
+                selected[j] !== undefined ? (
+                  <div
+                    key={j}
+                    className="relative flex items-center gap-2 rounded-lg border bg-background p-3"
+                  >
+                    <img
+                      className="size-9 rounded object-cover"
+                      src={choices[selected[j]].image}
+                      alt=""
+                    />
+                    <span className="min-w-0 flex-1 text-[10px] font-medium">
+                      {choices[selected[j]].name}
+                    </span>
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      aria-label={`Remove ${choices[selected[j]].name} from slots`}
+                      onClick={() => toggle(selected[j])}
+                    >
+                      <X />
+                    </Button>
+                  </div>
+                ) : (
+                  <div
+                    key={j}
+                    className="flex min-h-16 items-center justify-center gap-2 rounded-lg border border-dashed text-xs text-muted-foreground"
+                  >
+                    <Plus className="size-3" />
+                    Add a product
+                  </div>
+                ),
+              )}
+            </div>
+          </div>
+        </>
+      )}
+      {i === 0 || i === 1 || i === 5 ? (
+        <div className="overflow-auto rounded-xl border">
+          <table className="w-full min-w-[580px] text-sm">
+            <thead>
+              <tr>
+                <th
+                  scope="col"
+                  className="sticky left-0 min-w-36 bg-background p-4 text-left align-top font-medium"
+                >
+                  {i === 5 ? `${selected.length} products selected` : "The essentials"}
+                </th>
+                {shown.map((p, j) => (
+                  <th
+                    key={i === 1 ? j : p.name}
+                    scope="col"
+                    className="min-w-44 p-4 text-left font-normal"
+                  >
+                    {i === 1 ? (
+                      <Select
+                        value={String(selected[j])}
+                        onValueChange={(v) =>
+                          setSelected(selected.map((s, k) => (k === j ? Number(v) : s)))
+                        }
+                      >
+                        <SelectTrigger>
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            {choices.map((x, k) => (
+                              <SelectItem key={x.name} value={String(k)}>
+                                {x.name}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    ) : (
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="text-xs font-medium">{p.name}</span>
+                        {i === 0 && (
+                          <Button
+                            variant="ghost"
+                            size="icon-sm"
+                            aria-label={`Remove ${p.name} from comparison`}
+                            onClick={() =>
+                              setSelected(selected.filter((n) => choices[n].name !== p.name))
+                            }
+                          >
+                            <X />
+                          </Button>
+                        )}
+                      </div>
+                    )}
+                    <img
+                      src={p.image}
+                      className="my-4 aspect-square w-full rounded-md bg-muted object-cover"
+                      alt={p.name}
+                    />
+                    <CartButton compact />
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {["Price", "Rating", "Materials", "Warranty", "Delivery", "Returns"].map(
+                (label, row) => (
+                  <tr className="border-t" key={label}>
+                    <th
+                      scope="row"
+                      className="sticky left-0 bg-background p-4 text-left font-normal text-muted-foreground"
+                    >
+                      {label}
+                    </th>
+                    {shown.map((product, j) => (
+                      <td
+                        key={i === 1 ? j : product.name}
+                        className={cn("p-4", wins(product, row) && "bg-emerald-500/5")}
+                      >
+                        <div className="flex flex-col items-start gap-1.5">
+                          {row === 0 ? (
+                            <Money value={product.price} />
+                          ) : row === 1 ? (
+                            <Stars rating={product.rating} />
+                          ) : row === 2 ? (
+                            "Premium quality"
+                          ) : row === 3 ? (
+                            "2 years"
+                          ) : row === 4 ? (
+                            `${numericValue(product, row)} business days`
+                          ) : (
+                            "30 days"
+                          )}
+                          {wins(product, row) && (
+                            <Badge variant="secondary" className="text-[9px]">
+                              <Check data-icon="inline-start" />
+                              {row === 0
+                                ? "Better value"
+                                : row === 1
+                                  ? "Top rated"
+                                  : "Faster delivery"}
+                            </Badge>
+                          )}
+                        </div>
+                      </td>
+                    ))}
+                  </tr>
+                ),
+              )}
+            </tbody>
+          </table>
+          {shown.length === 0 && (
+            <p className="p-10 text-center text-sm text-muted-foreground">
+              Choose products above to see their details side by side.
+            </p>
+          )}
+        </div>
+      ) : i === 4 ? (
+        <div className="grid gap-6 md:grid-cols-[1.2fr_1fr]">
+          <div className="rounded-xl border p-5">
+            <img
+              src={choices[focus].image}
+              alt={choices[focus].name}
+              className="aspect-[4/3] w-full rounded-lg object-cover"
+            />
+            <div className="mt-5 flex items-center justify-between">
+              <h3 className="font-medium">{choices[focus].name}</h3>
+              <Money value={choices[focus].price} />
+            </div>
+            <div className="mt-4">
+              <CartButton />
+            </div>
+          </div>
+          <div className="flex flex-col gap-3">
+            {choices
+              .filter((_, j) => j !== focus)
+              .slice(0, 3)
+              .map((p) => (
+                <div key={p.name} className="flex items-center gap-4 rounded-xl border p-4">
+                  <img className="size-16 rounded-md object-cover" src={p.image} alt="" />
+                  <div className="flex-1">
+                    <p className="text-sm font-medium">{p.name}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {p.price > choices[focus].price ? "+" : "−"}
+                      <Money value={Math.abs(p.price - choices[focus].price)} /> vs selected
+                    </p>
+                  </div>
+                  <Button variant="outline" size="sm" onClick={() => setFocus(choices.indexOf(p))}>
+                    Switch
+                  </Button>
+                </div>
+              ))}
+          </div>
+        </div>
+      ) : (
+        <div className="grid gap-5 md:grid-cols-3">
+          {shown.map((p, j) => (
+            <article key={p.name} className="flex flex-col gap-4 rounded-xl border bg-card p-5">
+              {j === 0 && (
+                <Badge className="self-start" variant="secondary">
+                  Editor’s choice
+                </Badge>
+              )}
+              <img
+                src={p.image}
+                alt={p.name}
+                className="aspect-square w-full rounded-lg bg-muted object-cover"
+              />
+              <div>
+                <h3 className="font-medium">
+                  {i === 3 ? `#${page * 3 + j + 1} ` : ""}
+                  {p.name}
+                </h3>
+                <div className="mt-2">
+                  <Stars rating={p.rating} />
+                </div>
+              </div>
+              {i === 3 ? (
+                <div className="flex flex-col gap-3">
+                  {["Design", "Quality", "Value", "Comfort", "Durability"].map((s, k) => (
+                    <div key={s}>
+                      <div className="mb-1 flex justify-between text-xs">
+                        <span>{s}</span>
+                        <span>{(9.5 - j * 0.2 - k * 0.1).toFixed(1)}</span>
+                      </div>
+                      <Progress value={95 - j * 2 - k} />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <>
+                  <ul className="flex flex-col gap-2 text-sm text-muted-foreground">
+                    {[
+                      "Excellent everyday quality",
+                      "Thoughtfully designed",
+                      "Free shipping included",
+                    ].map((t) => (
+                      <li className="flex gap-2" key={t}>
+                        <Check className="size-4" />
+                        {t}
+                      </li>
+                    ))}
+                    <li className="flex gap-2 text-muted-foreground/60">
+                      <X className="size-4" />
+                      <del>Express delivery included</del>
+                    </li>
+                  </ul>
+                  <div className="grid grid-cols-2 gap-2">
+                    {[
+                      ["Materials", "Premium"],
+                      ["Returns", "30 days"],
+                      ["Warranty", "2 years"],
+                      ["Fit", "Everyday"],
+                    ].map(([a, b]) => (
+                      <div className="rounded-md bg-muted/40 p-2 text-[10px]" key={a}>
+                        <span className="text-muted-foreground">{a}</span>
+                        <p className="mt-1 font-medium">{b}</p>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+              <div className="mt-auto flex items-center justify-between pt-2">
+                <Money value={p.price} />
+                <CartButton compact />
+              </div>
+            </article>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 }
 
-export function Reviews({block}:BlockProps) {
- const i=block.index,[page,setPage]=useState(0),[topic,setTopic]=useState('All reviews'),[helpful,setHelpful]=useState<string[]>([])
- const reviews=[{name:'Alex Morgan',initials:'AM',title:'The kind of quality you can feel.',body:'Everything about this feels considered. The materials, the finish, even the packaging. It has become one of those things I reach for every day.',topic:'Quality'}, {name:'Jamie Chen',initials:'JC',title:'Simple, thoughtful, just right.',body:'I was looking for something that would last. This is exactly that. Beautifully made, and it arrived sooner than expected.',topic:'Delivery'},{name:'Taylor Brooks',initials:'TB',title:'Even better in person.',body:'The photos don’t quite do it justice. A lovely addition to my everyday routine. Already thinking about my next order.',topic:'Design'},{name:'Sam Rivera',initials:'SR',title:'A new favorite.',body:'Really happy with this purchase. Great attention to detail and friendly support when I had a question about sizing.',topic:'Support'}]
- const shown=reviews.filter(r=>topic==='All reviews'||r.topic===topic),carousel=[0,4].includes(i)
- return <div className="mx-auto max-w-5xl p-6 sm:p-10"><SectionHeading title={i===4?'Good things, from good people.':'Loved in the everyday.'} description="Honest thoughts from our community." action={carousel?<PageArrows onPrevious={()=>setPage((page+3)%4)} onNext={()=>setPage((page+1)%4)}/>:undefined}/>{i===1&&<ToggleGroup type="single" value={topic} onValueChange={v=>v&&setTopic(v)} className="mb-6 justify-start">{['All reviews','Quality','Design','Delivery','Support'].map(t=><ToggleGroupItem value={t} key={t}>{t}</ToggleGroupItem>)}</ToggleGroup>}{i===2&&<div className="mb-8 grid gap-6 rounded-xl border p-6 sm:grid-cols-[1fr_2fr]"><div><span className="text-5xl font-semibold tracking-tight">4.9</span><div className="my-3 flex gap-1">{[1,2,3,4,5].map(n=><Star key={n} className="size-4 fill-amber-400 text-amber-400"/>)}</div><p className="text-xs text-muted-foreground">Based on 248 verified reviews</p></div><div className="flex flex-col gap-3">{[5,4,3,2,1].map((n,j)=><div className="flex items-center gap-3 text-xs" key={n}><span>{n} stars</span><Progress value={[83,12,3,1,1][j]} className="flex-1"/><span className="w-8 text-right text-muted-foreground">{[83,12,3,1,1][j]}%</span></div>)}</div></div>}
- <div className={cn('grid gap-5',!carousel&&'md:grid-cols-2')}>{(carousel?[reviews[page]]:shown).map(r=><article className={cn('flex flex-col gap-4 rounded-xl border bg-card p-6',i===3&&'border-x-0 border-b-0 border-t-2 rounded-none',carousel&&'p-8 sm:p-12')} key={r.name}><div className="flex gap-1">{[1,2,3,4,5].map(n=><Star key={n} className="size-3.5 fill-amber-400 text-amber-400"/>)}</div>{i===3&&<Quote className="size-7 text-muted-foreground"/>}<h3 className={cn('font-medium',carousel&&'text-xl')}>{r.title}</h3><p className={cn('text-sm leading-7 text-muted-foreground',carousel&&'max-w-2xl text-base')}>{r.body}</p><div className="mt-3 flex items-center gap-3"><span className="flex size-9 items-center justify-center rounded-full bg-muted text-xs font-medium">{r.initials}</span><div><p className="text-sm font-medium">{r.name}</p><p className="mt-0.5 flex items-center gap-1 text-xs text-muted-foreground"><CheckCircle2 className="size-3"/>Verified buyer</p></div>{!carousel&&<Button variant="ghost" size="sm" className="ml-auto" onClick={()=>setHelpful(helpful.includes(r.name)?helpful.filter(n=>n!==r.name):[...helpful,r.name])}>{helpful.includes(r.name)?'Thanks!':'Helpful'}</Button>}</div></article>)}</div></div>
+export function Reviews({ block }: BlockProps) {
+  const i = block.index,
+    [page, setPage] = useState(0),
+    [topic, setTopic] = useState("All reviews"),
+    [helpful, setHelpful] = useState<string[]>([]);
+  const reviews = [
+    {
+      name: "Alex Morgan",
+      initials: "AM",
+      title: "The kind of quality you can feel.",
+      body: "Everything about this feels considered. The materials, the finish, even the packaging. It has become one of those things I reach for every day.",
+      topic: "Quality",
+    },
+    {
+      name: "Jamie Chen",
+      initials: "JC",
+      title: "Simple, thoughtful, just right.",
+      body: "I was looking for something that would last. This is exactly that. Beautifully made, and it arrived sooner than expected.",
+      topic: "Delivery",
+    },
+    {
+      name: "Taylor Brooks",
+      initials: "TB",
+      title: "Even better in person.",
+      body: "The photos don’t quite do it justice. A lovely addition to my everyday routine. Already thinking about my next order.",
+      topic: "Design",
+    },
+    {
+      name: "Sam Rivera",
+      initials: "SR",
+      title: "A new favorite.",
+      body: "Really happy with this purchase. Great attention to detail and friendly support when I had a question about sizing.",
+      topic: "Support",
+    },
+  ];
+  const shown = reviews.filter((r) => topic === "All reviews" || r.topic === topic),
+    carousel = [0, 4].includes(i);
+  return (
+    <div className="mx-auto max-w-5xl p-6 sm:p-10">
+      <SectionHeading
+        title={i === 4 ? "Good things, from good people." : "Loved in the everyday."}
+        description="Honest thoughts from our community."
+        action={
+          carousel ? (
+            <PageArrows
+              onPrevious={() => setPage((page + 3) % 4)}
+              onNext={() => setPage((page + 1) % 4)}
+            />
+          ) : undefined
+        }
+      />
+      {i === 1 && (
+        <ToggleGroup
+          type="single"
+          value={topic}
+          onValueChange={(v) => v && setTopic(v)}
+          className="mb-6 justify-start"
+        >
+          {["All reviews", "Quality", "Design", "Delivery", "Support"].map((t) => (
+            <ToggleGroupItem value={t} key={t}>
+              {t}
+            </ToggleGroupItem>
+          ))}
+        </ToggleGroup>
+      )}
+      {i === 2 && (
+        <div className="mb-8 grid gap-6 rounded-xl border p-6 sm:grid-cols-[1fr_2fr]">
+          <div>
+            <span className="text-5xl font-semibold tracking-tight">4.9</span>
+            <div className="my-3 flex gap-1">
+              {[1, 2, 3, 4, 5].map((n) => (
+                <Star key={n} className="size-4 fill-amber-400 text-amber-400" />
+              ))}
+            </div>
+            <p className="text-xs text-muted-foreground">Based on 248 verified reviews</p>
+          </div>
+          <div className="flex flex-col gap-3">
+            {[5, 4, 3, 2, 1].map((n, j) => (
+              <div className="flex items-center gap-3 text-xs" key={n}>
+                <span>{n} stars</span>
+                <Progress value={[83, 12, 3, 1, 1][j]} className="flex-1" />
+                <span className="w-8 text-right text-muted-foreground">
+                  {[83, 12, 3, 1, 1][j]}%
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+      <div className={cn("grid gap-5", !carousel && "md:grid-cols-2")}>
+        {(carousel ? [reviews[page]] : shown).map((r) => (
+          <article
+            className={cn(
+              "flex flex-col gap-4 rounded-xl border bg-card p-6",
+              i === 3 && "border-x-0 border-b-0 border-t-2 rounded-none",
+              carousel && "p-8 sm:p-12",
+            )}
+            key={r.name}
+          >
+            <div className="flex gap-1">
+              {[1, 2, 3, 4, 5].map((n) => (
+                <Star key={n} className="size-3.5 fill-amber-400 text-amber-400" />
+              ))}
+            </div>
+            {i === 3 && <Quote className="size-7 text-muted-foreground" />}
+            <h3 className={cn("font-medium", carousel && "text-xl")}>{r.title}</h3>
+            <p
+              className={cn(
+                "text-sm leading-7 text-muted-foreground",
+                carousel && "max-w-2xl text-base",
+              )}
+            >
+              {r.body}
+            </p>
+            <div className="mt-3 flex items-center gap-3">
+              <span className="flex size-9 items-center justify-center rounded-full bg-muted text-xs font-medium">
+                {r.initials}
+              </span>
+              <div>
+                <p className="text-sm font-medium">{r.name}</p>
+                <p className="mt-0.5 flex items-center gap-1 text-xs text-muted-foreground">
+                  <CheckCircle2 className="size-3" />
+                  Verified buyer
+                </p>
+              </div>
+              {!carousel && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="ml-auto"
+                  onClick={() =>
+                    setHelpful(
+                      helpful.includes(r.name)
+                        ? helpful.filter((n) => n !== r.name)
+                        : [...helpful, r.name],
+                    )
+                  }
+                >
+                  {helpful.includes(r.name) ? "Thanks!" : "Helpful"}
+                </Button>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  );
 }
 
-export function ShopHero({block}:BlockProps) {
- const i=block.index,[tab,setTab]=useState('Everyday'),[saved,setSaved]=useState(false),[bag,setBag]=useState<Record<string,number>>({}),[showBag,setShowBag]=useState(false),[remaining,setRemaining]=useState(8078),[selectedCollection,setSelectedCollection]=useState('')
- useEffect(()=>{if(i!==2)return;const timer=setInterval(()=>setRemaining(value=>Math.max(0,value-1)),1000);return()=>clearInterval(timer)},[i])
- const collections=[{name:'Everyday',image:photos.jacket,title:'Good things. Every day.',text:'The pieces you reach for, again and again.',status:'Available now'},{name:'For the home',image:photos.room,title:'Make room for the everyday.',text:'Objects that feel right, right where you live.',status:'New collection'},{name:'On the move',image:photos.bag,title:'Take the longer way.',text:'Thoughtful companions for your next chapter.',status:'Coming soon'}]
- const active=collections.find(c=>c.name===tab)??collections[0]
- const add=(name:string)=>setBag(current=>({...current,[name]:(current[name]??0)+1}))
- const bagCount=Object.values(bag).reduce((sum,count)=>sum+count,0)
- const clock=[Math.floor(remaining/3600),Math.floor(remaining%3600/60),remaining%60].map(n=>String(n).padStart(2,'0')).join(':')
- const action=(name:string)=>{setSelectedCollection(name);setSaved(false)}
- const productTile=(product:typeof products[number],large=false)=><article className={cn('group relative overflow-hidden rounded-xl bg-muted',large?'min-h-[450px] md:row-span-2':'min-h-56')} key={product.name}><img src={product.image} alt={product.name} className="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105"/><div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/65 to-transparent"/><div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5 text-white"><div><Badge variant="secondary">{product.category}</Badge><h3 className={cn('mt-3 font-medium',large?'text-2xl':'text-lg')}>{product.name}</h3><p className="mt-2 text-sm opacity-80"><Money value={product.price}/></p></div><Button size="icon" variant="secondary" aria-label={`Add ${product.name} to bag`} onClick={()=>add(product.name)}>{bag[product.name]?<Check/>:<Plus/>}</Button></div>{bag[product.name]>0&&<Badge variant="secondary" className="absolute right-4 top-4">{bag[product.name]} in bag</Badge>}</article>
- const bagDialog=<Dialog open={showBag} onOpenChange={setShowBag}><DialogContent><DialogHeader><DialogTitle>Your shopping bag ({bagCount})</DialogTitle></DialogHeader>{bagCount===0?<p className="py-6 text-sm text-muted-foreground">A little room for something good. Add a piece from the collection.</p>:<><div className="flex flex-col gap-4">{Object.entries(bag).filter(([,qty])=>qty>0).map(([name,qty])=>{const product=products.find(p=>p.name===name)!;return <div key={name} className="flex items-center gap-3"><img className="size-12 rounded-md object-cover" src={product.image} alt=""/><div className="flex-1 text-sm"><p className="font-medium">{name}</p><p className="mt-1 text-xs text-muted-foreground">Qty {qty} · <Money value={product.price*qty}/></p></div><Button size="icon-sm" variant="ghost" aria-label={`Remove ${name} from bag`} onClick={()=>setBag(current=>({...current,[name]:0}))}><X/></Button></div>})}</div><Separator/><div className="flex justify-between text-sm font-medium"><span>Subtotal</span><Money value={Object.entries(bag).reduce((sum,[name,qty])=>sum+(products.find(p=>p.name===name)?.price??0)*qty,0)}/></div><p className="text-xs text-muted-foreground">Your selections stay in this local preview. No order has been placed.</p></>}</DialogContent></Dialog>
- const collectionPanel=selectedCollection&&<div className="mt-6 rounded-xl border p-5"><div className="mb-5 flex items-center justify-between"><div><Badge variant="secondary">Now browsing</Badge><h3 className="mt-2 text-lg font-medium">{selectedCollection}</h3></div><Button variant="ghost" size="icon-sm" aria-label="Close collection" onClick={()=>setSelectedCollection('')}><X/></Button></div><div className="grid grid-cols-2 gap-4 sm:grid-cols-4">{products.filter(p=>selectedCollection.toLowerCase().includes('home')?p.category==='Home':selectedCollection==='Sale'?p.old>p.price:p.category!=='Home').slice(0,4).map(p=><div key={p.name}><img src={p.image} alt={p.name} className="aspect-square w-full rounded-lg object-cover"/><p className="mt-3 text-xs font-medium">{p.name}</p><div className="mt-2 flex items-center justify-between gap-2"><span className="text-xs"><Money value={p.price}/></span><Button size="icon-sm" variant="outline" aria-label={`Add ${p.name} from collection`} onClick={()=>add(p.name)}>{bag[p.name]?<Check/>:<Plus/>}</Button></div></div>)}</div></div>
- const header=<div className="mb-6 flex items-center justify-between"><span className="text-sm font-semibold tracking-[.2em]">FORMA / STUDIO</span><Button variant="outline" size="sm" onClick={()=>setShowBag(true)}><ShoppingBag data-icon="inline-start"/>Bag <Badge variant="secondary">{bagCount}</Badge></Button></div>
- const subhead=<div className="mb-7 flex flex-wrap items-end justify-between gap-4"><div><p className="text-xs text-muted-foreground">A considered collection / 2026</p><h2 className="mt-3 max-w-xl text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">Made for the way you live.</h2></div><p className="max-w-xs text-sm leading-6 text-muted-foreground">Nothing extra. Just the pieces that make your everyday feel a little better.</p></div>
- if(i===0)return <section className="mx-auto w-full max-w-6xl p-5 sm:p-8">{header}{subhead}<div className="grid gap-3 md:grid-cols-[1.4fr_1fr] md:grid-rows-2">{productTile(products[4],true)}{productTile(products[1])}{productTile(products[2])}</div><p className="mt-5 text-center text-xs text-muted-foreground">Responsibly made · Thoughtful details · Free shipping over $75</p>{bagDialog}</section>
- if(i===1)return <section className="mx-auto w-full max-w-6xl p-5 sm:p-8">{header}<div className="grid gap-3 md:grid-cols-3"><div className="relative min-h-96 overflow-hidden rounded-xl bg-muted md:col-span-2 md:row-span-2"><img src={photos.room} alt="A thoughtfully furnished living room" className="absolute inset-0 size-full object-cover"/><div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"/><div className="absolute bottom-8 left-7 right-7 text-white"><Badge variant="secondary">The living collection</Badge><h2 className="mt-4 max-w-sm text-4xl font-semibold leading-tight tracking-tight">Make yourself<br/>at home.</h2><p className="mt-4 max-w-xs text-sm leading-6 opacity-80">Considered objects for a life well lived.</p><Button variant="secondary" className="mt-5" onClick={()=>action('For the home')}>Explore the collection<ArrowRight data-icon="inline-end"/></Button></div></div>{productTile(products[6])}{productTile(products[4])}<div className="flex flex-wrap items-center justify-between gap-5 rounded-xl bg-foreground p-6 text-background md:col-span-3"><div><Badge variant="secondary">The weekend edit</Badge><h3 className="mt-3 text-xl font-medium">A few favorites. A little less.</h3></div><Button variant="secondary" onClick={()=>action('Sale')}>Shop up to 30% off<ArrowRight data-icon="inline-end"/></Button></div></div>{collectionPanel}{bagDialog}</section>
- if(i===2)return <section className="mx-auto w-full max-w-6xl p-5 sm:p-8">{header}<div className="relative flex min-h-[420px] items-center overflow-hidden rounded-xl bg-muted"><img src={photos.chair} alt="Featured lounge chair" className="absolute inset-0 size-full object-cover object-center"/><div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/35 to-transparent"/><div className="relative flex max-w-lg flex-col items-start gap-5 p-7 text-white sm:p-10"><Badge variant="secondary">Ends this weekend</Badge><h2 className="text-4xl font-semibold leading-tight tracking-tight">Good things.<br/>A little less.</h2><p className="max-w-xs text-sm leading-6 opacity-80">Save up to 30% on a few of our everyday favorites. Just for a little while.</p><div className="rounded-lg border border-white/20 bg-white/10 px-5 py-3 backdrop-blur-sm"><p className="text-[9px] uppercase tracking-widest opacity-70">Time left to make it yours</p><p className="mt-1 font-mono text-2xl tracking-[.15em]" role="timer" aria-label="Sale countdown">{clock}</p></div><Button variant="secondary" onClick={()=>action('Sale')}>Shop the weekend edit<ArrowRight data-icon="inline-end"/></Button></div></div><div className="mt-3 grid gap-3 sm:grid-cols-3">{[{title:'Everyday essentials',image:photos.shirt,detail:'Up to 20% off'},{title:'Objects for living',image:photos.lamp,detail:'A softer light'},{title:'On the move',image:photos.bag,detail:'Ready for the weekend'}].map(tile=><button className="group relative min-h-44 overflow-hidden rounded-xl text-left" key={tile.title} onClick={()=>action(tile.title==='Objects for living'?'For the home':tile.title)}><img src={tile.image} alt={tile.title} className="absolute inset-0 size-full object-cover transition-transform group-hover:scale-105"/><div className="absolute inset-0 bg-gradient-to-t from-black/65 to-transparent"/><div className="absolute bottom-4 left-4 text-white"><h3 className="text-sm font-medium">{tile.title}</h3><p className="mt-1 text-xs opacity-80">{tile.detail}</p></div><ArrowRight className="absolute bottom-5 right-4 size-4 text-white"/></button>)}</div>{collectionPanel}{bagDialog}</section>
- if(i===3)return <section className="mx-auto w-full max-w-6xl p-5 sm:p-8">{header}{subhead}<div className="grid grid-cols-2 gap-4 lg:grid-cols-4">{[{name:'The everyday edit',image:photos.shirt,count:48},{name:'For the home',image:photos.room,count:32},{name:'On the move',image:photos.bag,count:24},{name:'A softer light',image:photos.lamp,count:18}].map((c,j)=><button key={c.name} onClick={()=>action(c.name)} className="group text-left"><div className="relative aspect-[3/4] overflow-hidden rounded-lg"><img src={c.image} alt={c.name} className="size-full object-cover transition-transform duration-500 group-hover:scale-105"/><span className="absolute right-3 top-3 flex size-7 items-center justify-center rounded-full bg-background text-[10px]">0{j+1}</span></div><div className="mt-4 flex items-center justify-between gap-2"><h3 className="text-sm font-medium">{c.name}</h3><ArrowRight className="size-3.5"/></div><p className="mt-1 text-xs text-muted-foreground">{c.count} considered pieces</p></button>)}</div>{collectionPanel}{bagDialog}</section>
- if(i===4)return <section className="w-full p-5 sm:p-8">{header}<div className="grid min-h-[550px] gap-3 md:grid-cols-2">{[{title:'Made for the everyday.',name:'Everyday',image:photos.jacket,description:'The pieces that feel like you.'},{title:'A place to call yours.',name:'For the home',image:photos.room,description:'Bring a little intention home.'}].map((c,j)=><article key={c.name} className="group relative min-h-[440px] overflow-hidden rounded-xl"><img src={c.image} alt={c.name} className="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105"/><div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent"/><div className="absolute inset-x-0 bottom-0 flex flex-col items-start gap-4 p-7 text-white sm:p-10"><Badge variant="secondary">Collection 0{j+1}</Badge><h2 className="max-w-sm text-3xl font-semibold tracking-tight sm:text-4xl">{c.title}</h2><p className="text-sm opacity-80">{c.description}</p><Button variant="secondary" onClick={()=>action(c.name)}>Explore {j===0?'the edit':'the collection'}<ArrowRight data-icon="inline-end"/></Button></div></article>)}</div>{collectionPanel}{bagDialog}</section>
- if(i===6)return <section className="w-full p-5 sm:p-8">{header}<ToggleGroup type="single" value={tab} onValueChange={v=>v&&setTab(v)} className="mb-4 flex-wrap justify-start">{collections.map((c,j)=><ToggleGroupItem value={c.name} key={c.name} className="h-auto gap-3 p-3"><img src={c.image} className="size-9 rounded object-cover" alt=""/><span className="text-left"><span className="block text-[9px] text-muted-foreground">0{j+1} / {c.status}</span><span className="mt-1 block text-xs">{c.name}</span></span></ToggleGroupItem>)}</ToggleGroup><div className="relative min-h-[500px] overflow-hidden rounded-xl"><img src={active.image} alt={active.name} className="absolute inset-0 size-full object-cover"/><div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent"/><div className="relative flex min-h-[500px] max-w-xl flex-col items-start justify-center gap-5 p-7 text-white sm:p-12"><Badge variant="secondary">{active.status}</Badge><h2 className="text-4xl font-semibold tracking-tight">{active.title}</h2><p className="text-sm opacity-80">{active.text}</p><Button variant="secondary" onClick={()=>active.status==='Coming soon'?setSaved(!saved):action(active.name)}>{active.status==='Coming soon'?(saved?'Reminder saved':'Remind me when it arrives'):'Explore the collection'}{saved&&active.status==='Coming soon'?<Check data-icon="inline-end"/>:<ArrowRight data-icon="inline-end"/>}</Button></div></div>{collectionPanel}{bagDialog}</section>
- if(i===7)return <section className="w-full">{header}<div className="grid min-h-[600px] grid-cols-1 sm:grid-cols-2">{[photos.room,photos.chair,photos.bag,photos.lamp].map((src,j)=><button className="group relative min-h-64 overflow-hidden text-left" key={src} onClick={()=>action(j===0||j===1?'For the home':j===2?'Everyday':'A softer light')}><img src={src} alt={['Living room','Furniture','Travel accessories','Lighting'][j]} className="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105"/><div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"/><div className="absolute bottom-6 left-6 right-6 text-white"><span className="flex items-center gap-2 text-[10px]"><span className={cn('size-1.5 rounded-full',j===3?'bg-amber-300':'bg-emerald-300')}/>{j===3?'Limited edition':'Available now'}</span><h2 className="mt-3 text-2xl font-semibold">{['Spaces to live in','Objects to keep','Ready for anywhere','A softer light'][j]}</h2><p className="mt-2 flex justify-between text-xs opacity-80"><span>From ${[48,95,38,65][j]}</span><ArrowRight className="size-4"/></p></div></button>)}</div>{collectionPanel}{bagDialog}</section>
- return <section className="mx-auto w-full max-w-6xl p-5 sm:p-8">{header}<div className="grid overflow-hidden rounded-xl bg-muted md:grid-cols-2"><div className="flex flex-col items-start justify-center gap-6 p-7 sm:p-12"><Badge variant="outline">FORMA / STUDIO EDITION 06</Badge><h2 className="text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">Less, but better.<br/>Made to be yours.</h2><p className="max-w-sm text-sm leading-7 text-muted-foreground">A quieter approach to the things you wear and the spaces you live in. Discover the pieces that feel right.</p><div className="flex flex-wrap gap-3"><Button onClick={()=>action('Everyday')}>Shop the edit<ArrowRight data-icon="inline-end"/></Button><Button variant="outline" onClick={()=>action('Sale')}>Explore the sale</Button></div><p className="text-xs text-muted-foreground">Responsibly made · Considered from the start</p><span className="mt-5 flex size-20 items-center justify-center rounded-full border border-foreground/25 text-center text-[9px] leading-4 tracking-widest">THOUGHTFULLY<br/>MADE<br/>SINCE 2020</span></div><img src={photos.jacket} alt="The seasonal studio edit" className="h-full min-h-[480px] w-full object-cover"/></div>{collectionPanel}{bagDialog}</section>
+export function ShopHero({ block }: BlockProps) {
+  const i = block.index,
+    [tab, setTab] = useState("Everyday"),
+    [saved, setSaved] = useState(false),
+    [bag, setBag] = useState<Record<string, number>>({}),
+    [showBag, setShowBag] = useState(false),
+    [remaining, setRemaining] = useState(8078),
+    [selectedCollection, setSelectedCollection] = useState("");
+  useEffect(() => {
+    if (i !== 2) return;
+    const timer = setInterval(() => setRemaining((value) => Math.max(0, value - 1)), 1000);
+    return () => clearInterval(timer);
+  }, [i]);
+  const collections = [
+    {
+      name: "Everyday",
+      image: photos.jacket,
+      title: "Good things. Every day.",
+      text: "The pieces you reach for, again and again.",
+      status: "Available now",
+    },
+    {
+      name: "For the home",
+      image: photos.room,
+      title: "Make room for the everyday.",
+      text: "Objects that feel right, right where you live.",
+      status: "New collection",
+    },
+    {
+      name: "On the move",
+      image: photos.bag,
+      title: "Take the longer way.",
+      text: "Thoughtful companions for your next chapter.",
+      status: "Coming soon",
+    },
+  ];
+  const active = collections.find((c) => c.name === tab) ?? collections[0];
+  const add = (name: string) =>
+    setBag((current) => ({ ...current, [name]: (current[name] ?? 0) + 1 }));
+  const bagCount = Object.values(bag).reduce((sum, count) => sum + count, 0);
+  const clock = [Math.floor(remaining / 3600), Math.floor((remaining % 3600) / 60), remaining % 60]
+    .map((n) => String(n).padStart(2, "0"))
+    .join(":");
+  const action = (name: string) => {
+    setSelectedCollection(name);
+    setSaved(false);
+  };
+  const productTile = (product: (typeof products)[number], large = false) => (
+    <article
+      className={cn(
+        "group relative overflow-hidden rounded-xl bg-muted",
+        large ? "min-h-[450px] md:row-span-2" : "min-h-56",
+      )}
+      key={product.name}
+    >
+      <img
+        src={product.image}
+        alt={product.name}
+        className="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105"
+      />
+      <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/65 to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5 text-white">
+        <div>
+          <Badge variant="secondary">{product.category}</Badge>
+          <h3 className={cn("mt-3 font-medium", large ? "text-2xl" : "text-lg")}>{product.name}</h3>
+          <p className="mt-2 text-sm opacity-80">
+            <Money value={product.price} />
+          </p>
+        </div>
+        <Button
+          size="icon"
+          variant="secondary"
+          aria-label={`Add ${product.name} to bag`}
+          onClick={() => add(product.name)}
+        >
+          {bag[product.name] ? <Check /> : <Plus />}
+        </Button>
+      </div>
+      {bag[product.name] > 0 && (
+        <Badge variant="secondary" className="absolute right-4 top-4">
+          {bag[product.name]} in bag
+        </Badge>
+      )}
+    </article>
+  );
+  const bagDialog = (
+    <Dialog open={showBag} onOpenChange={setShowBag}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Your shopping bag ({bagCount})</DialogTitle>
+        </DialogHeader>
+        {bagCount === 0 ? (
+          <p className="py-6 text-sm text-muted-foreground">
+            A little room for something good. Add a piece from the collection.
+          </p>
+        ) : (
+          <>
+            <div className="flex flex-col gap-4">
+              {Object.entries(bag)
+                .filter(([, qty]) => qty > 0)
+                .map(([name, qty]) => {
+                  const product = products.find((p) => p.name === name)!;
+                  return (
+                    <div key={name} className="flex items-center gap-3">
+                      <img className="size-12 rounded-md object-cover" src={product.image} alt="" />
+                      <div className="flex-1 text-sm">
+                        <p className="font-medium">{name}</p>
+                        <p className="mt-1 text-xs text-muted-foreground">
+                          Qty {qty} · <Money value={product.price * qty} />
+                        </p>
+                      </div>
+                      <Button
+                        size="icon-sm"
+                        variant="ghost"
+                        aria-label={`Remove ${name} from bag`}
+                        onClick={() => setBag((current) => ({ ...current, [name]: 0 }))}
+                      >
+                        <X />
+                      </Button>
+                    </div>
+                  );
+                })}
+            </div>
+            <Separator />
+            <div className="flex justify-between text-sm font-medium">
+              <span>Subtotal</span>
+              <Money
+                value={Object.entries(bag).reduce(
+                  (sum, [name, qty]) =>
+                    sum + (products.find((p) => p.name === name)?.price ?? 0) * qty,
+                  0,
+                )}
+              />
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Your selections stay in this local preview. No order has been placed.
+            </p>
+          </>
+        )}
+      </DialogContent>
+    </Dialog>
+  );
+  const collectionPanel = selectedCollection && (
+    <div className="mt-6 rounded-xl border p-5">
+      <div className="mb-5 flex items-center justify-between">
+        <div>
+          <Badge variant="secondary">Now browsing</Badge>
+          <h3 className="mt-2 text-lg font-medium">{selectedCollection}</h3>
+        </div>
+        <Button
+          variant="ghost"
+          size="icon-sm"
+          aria-label="Close collection"
+          onClick={() => setSelectedCollection("")}
+        >
+          <X />
+        </Button>
+      </div>
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+        {products
+          .filter((p) =>
+            selectedCollection.toLowerCase().includes("home")
+              ? p.category === "Home"
+              : selectedCollection === "Sale"
+                ? p.old > p.price
+                : p.category !== "Home",
+          )
+          .slice(0, 4)
+          .map((p) => (
+            <div key={p.name}>
+              <img
+                src={p.image}
+                alt={p.name}
+                className="aspect-square w-full rounded-lg object-cover"
+              />
+              <p className="mt-3 text-xs font-medium">{p.name}</p>
+              <div className="mt-2 flex items-center justify-between gap-2">
+                <span className="text-xs">
+                  <Money value={p.price} />
+                </span>
+                <Button
+                  size="icon-sm"
+                  variant="outline"
+                  aria-label={`Add ${p.name} from collection`}
+                  onClick={() => add(p.name)}
+                >
+                  {bag[p.name] ? <Check /> : <Plus />}
+                </Button>
+              </div>
+            </div>
+          ))}
+      </div>
+    </div>
+  );
+  const header = (
+    <div className="mb-6 flex items-center justify-between">
+      <span className="text-sm font-semibold tracking-[.2em]">FORMA / STUDIO</span>
+      <Button variant="outline" size="sm" onClick={() => setShowBag(true)}>
+        <ShoppingBag data-icon="inline-start" />
+        Bag <Badge variant="secondary">{bagCount}</Badge>
+      </Button>
+    </div>
+  );
+  const subhead = (
+    <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p className="text-xs text-muted-foreground">A considered collection / 2026</p>
+        <h2 className="mt-3 max-w-xl text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
+          Made for the way you live.
+        </h2>
+      </div>
+      <p className="max-w-xs text-sm leading-6 text-muted-foreground">
+        Nothing extra. Just the pieces that make your everyday feel a little better.
+      </p>
+    </div>
+  );
+  if (i === 0)
+    return (
+      <section className="mx-auto w-full max-w-6xl p-5 sm:p-8">
+        {header}
+        {subhead}
+        <div className="grid gap-3 md:grid-cols-[1.4fr_1fr] md:grid-rows-2">
+          {productTile(products[4], true)}
+          {productTile(products[1])}
+          {productTile(products[2])}
+        </div>
+        <p className="mt-5 text-center text-xs text-muted-foreground">
+          Responsibly made · Thoughtful details · Free shipping over $75
+        </p>
+        {bagDialog}
+      </section>
+    );
+  if (i === 1)
+    return (
+      <section className="mx-auto w-full max-w-6xl p-5 sm:p-8">
+        {header}
+        <div className="grid gap-3 md:grid-cols-3">
+          <div className="relative min-h-96 overflow-hidden rounded-xl bg-muted md:col-span-2 md:row-span-2">
+            <img
+              src={photos.room}
+              alt="A thoughtfully furnished living room"
+              className="absolute inset-0 size-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+            <div className="absolute bottom-8 left-7 right-7 text-white">
+              <Badge variant="secondary">The living collection</Badge>
+              <h2 className="mt-4 max-w-sm text-4xl font-semibold leading-tight tracking-tight">
+                Make yourself
+                <br />
+                at home.
+              </h2>
+              <p className="mt-4 max-w-xs text-sm leading-6 opacity-80">
+                Considered objects for a life well lived.
+              </p>
+              <Button variant="secondary" className="mt-5" onClick={() => action("For the home")}>
+                Explore the collection
+                <ArrowRight data-icon="inline-end" />
+              </Button>
+            </div>
+          </div>
+          {productTile(products[6])}
+          {productTile(products[4])}
+          <div className="flex flex-wrap items-center justify-between gap-5 rounded-xl bg-foreground p-6 text-background md:col-span-3">
+            <div>
+              <Badge variant="secondary">The weekend edit</Badge>
+              <h3 className="mt-3 text-xl font-medium">A few favorites. A little less.</h3>
+            </div>
+            <Button variant="secondary" onClick={() => action("Sale")}>
+              Shop up to 30% off
+              <ArrowRight data-icon="inline-end" />
+            </Button>
+          </div>
+        </div>
+        {collectionPanel}
+        {bagDialog}
+      </section>
+    );
+  if (i === 2)
+    return (
+      <section className="mx-auto w-full max-w-6xl p-5 sm:p-8">
+        {header}
+        <div className="relative flex min-h-[420px] items-center overflow-hidden rounded-xl bg-muted">
+          <img
+            src={photos.chair}
+            alt="Featured lounge chair"
+            className="absolute inset-0 size-full object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/35 to-transparent" />
+          <div className="relative flex max-w-lg flex-col items-start gap-5 p-7 text-white sm:p-10">
+            <Badge variant="secondary">Ends this weekend</Badge>
+            <h2 className="text-4xl font-semibold leading-tight tracking-tight">
+              Good things.
+              <br />A little less.
+            </h2>
+            <p className="max-w-xs text-sm leading-6 opacity-80">
+              Save up to 30% on a few of our everyday favorites. Just for a little while.
+            </p>
+            <div className="rounded-lg border border-white/20 bg-white/10 px-5 py-3 backdrop-blur-sm">
+              <p className="text-[9px] uppercase tracking-widest opacity-70">
+                Time left to make it yours
+              </p>
+              <p
+                className="mt-1 font-mono text-2xl tracking-[.15em]"
+                role="timer"
+                aria-label="Sale countdown"
+              >
+                {clock}
+              </p>
+            </div>
+            <Button variant="secondary" onClick={() => action("Sale")}>
+              Shop the weekend edit
+              <ArrowRight data-icon="inline-end" />
+            </Button>
+          </div>
+        </div>
+        <div className="mt-3 grid gap-3 sm:grid-cols-3">
+          {[
+            { title: "Everyday essentials", image: photos.shirt, detail: "Up to 20% off" },
+            { title: "Objects for living", image: photos.lamp, detail: "A softer light" },
+            { title: "On the move", image: photos.bag, detail: "Ready for the weekend" },
+          ].map((tile) => (
+            <button
+              className="group relative min-h-44 overflow-hidden rounded-xl text-left"
+              key={tile.title}
+              onClick={() =>
+                action(tile.title === "Objects for living" ? "For the home" : tile.title)
+              }
+            >
+              <img
+                src={tile.image}
+                alt={tile.title}
+                className="absolute inset-0 size-full object-cover transition-transform group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/65 to-transparent" />
+              <div className="absolute bottom-4 left-4 text-white">
+                <h3 className="text-sm font-medium">{tile.title}</h3>
+                <p className="mt-1 text-xs opacity-80">{tile.detail}</p>
+              </div>
+              <ArrowRight className="absolute bottom-5 right-4 size-4 text-white" />
+            </button>
+          ))}
+        </div>
+        {collectionPanel}
+        {bagDialog}
+      </section>
+    );
+  if (i === 3)
+    return (
+      <section className="mx-auto w-full max-w-6xl p-5 sm:p-8">
+        {header}
+        {subhead}
+        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+          {[
+            { name: "The everyday edit", image: photos.shirt, count: 48 },
+            { name: "For the home", image: photos.room, count: 32 },
+            { name: "On the move", image: photos.bag, count: 24 },
+            { name: "A softer light", image: photos.lamp, count: 18 },
+          ].map((c, j) => (
+            <button key={c.name} onClick={() => action(c.name)} className="group text-left">
+              <div className="relative aspect-[3/4] overflow-hidden rounded-lg">
+                <img
+                  src={c.image}
+                  alt={c.name}
+                  className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <span className="absolute right-3 top-3 flex size-7 items-center justify-center rounded-full bg-background text-[10px]">
+                  0{j + 1}
+                </span>
+              </div>
+              <div className="mt-4 flex items-center justify-between gap-2">
+                <h3 className="text-sm font-medium">{c.name}</h3>
+                <ArrowRight className="size-3.5" />
+              </div>
+              <p className="mt-1 text-xs text-muted-foreground">{c.count} considered pieces</p>
+            </button>
+          ))}
+        </div>
+        {collectionPanel}
+        {bagDialog}
+      </section>
+    );
+  if (i === 4)
+    return (
+      <section className="w-full p-5 sm:p-8">
+        {header}
+        <div className="grid min-h-[550px] gap-3 md:grid-cols-2">
+          {[
+            {
+              title: "Made for the everyday.",
+              name: "Everyday",
+              image: photos.jacket,
+              description: "The pieces that feel like you.",
+            },
+            {
+              title: "A place to call yours.",
+              name: "For the home",
+              image: photos.room,
+              description: "Bring a little intention home.",
+            },
+          ].map((c, j) => (
+            <article
+              key={c.name}
+              className="group relative min-h-[440px] overflow-hidden rounded-xl"
+            >
+              <img
+                src={c.image}
+                alt={c.name}
+                className="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 flex flex-col items-start gap-4 p-7 text-white sm:p-10">
+                <Badge variant="secondary">Collection 0{j + 1}</Badge>
+                <h2 className="max-w-sm text-3xl font-semibold tracking-tight sm:text-4xl">
+                  {c.title}
+                </h2>
+                <p className="text-sm opacity-80">{c.description}</p>
+                <Button variant="secondary" onClick={() => action(c.name)}>
+                  Explore {j === 0 ? "the edit" : "the collection"}
+                  <ArrowRight data-icon="inline-end" />
+                </Button>
+              </div>
+            </article>
+          ))}
+        </div>
+        {collectionPanel}
+        {bagDialog}
+      </section>
+    );
+  if (i === 6)
+    return (
+      <section className="w-full p-5 sm:p-8">
+        {header}
+        <ToggleGroup
+          type="single"
+          value={tab}
+          onValueChange={(v) => v && setTab(v)}
+          className="mb-4 flex-wrap justify-start"
+        >
+          {collections.map((c, j) => (
+            <ToggleGroupItem value={c.name} key={c.name} className="h-auto gap-3 p-3">
+              <img src={c.image} className="size-9 rounded object-cover" alt="" />
+              <span className="text-left">
+                <span className="block text-[9px] text-muted-foreground">
+                  0{j + 1} / {c.status}
+                </span>
+                <span className="mt-1 block text-xs">{c.name}</span>
+              </span>
+            </ToggleGroupItem>
+          ))}
+        </ToggleGroup>
+        <div className="relative min-h-[500px] overflow-hidden rounded-xl">
+          <img
+            src={active.image}
+            alt={active.name}
+            className="absolute inset-0 size-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent" />
+          <div className="relative flex min-h-[500px] max-w-xl flex-col items-start justify-center gap-5 p-7 text-white sm:p-12">
+            <Badge variant="secondary">{active.status}</Badge>
+            <h2 className="text-4xl font-semibold tracking-tight">{active.title}</h2>
+            <p className="text-sm opacity-80">{active.text}</p>
+            <Button
+              variant="secondary"
+              onClick={() =>
+                active.status === "Coming soon" ? setSaved(!saved) : action(active.name)
+              }
+            >
+              {active.status === "Coming soon"
+                ? saved
+                  ? "Reminder saved"
+                  : "Remind me when it arrives"
+                : "Explore the collection"}
+              {saved && active.status === "Coming soon" ? (
+                <Check data-icon="inline-end" />
+              ) : (
+                <ArrowRight data-icon="inline-end" />
+              )}
+            </Button>
+          </div>
+        </div>
+        {collectionPanel}
+        {bagDialog}
+      </section>
+    );
+  if (i === 7)
+    return (
+      <section className="w-full">
+        {header}
+        <div className="grid min-h-[600px] grid-cols-1 sm:grid-cols-2">
+          {[photos.room, photos.chair, photos.bag, photos.lamp].map((src, j) => (
+            <button
+              className="group relative min-h-64 overflow-hidden text-left"
+              key={src}
+              onClick={() =>
+                action(
+                  j === 0 || j === 1 ? "For the home" : j === 2 ? "Everyday" : "A softer light",
+                )
+              }
+            >
+              <img
+                src={src}
+                alt={["Living room", "Furniture", "Travel accessories", "Lighting"][j]}
+                className="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+              <div className="absolute bottom-6 left-6 right-6 text-white">
+                <span className="flex items-center gap-2 text-[10px]">
+                  <span
+                    className={cn(
+                      "size-1.5 rounded-full",
+                      j === 3 ? "bg-amber-300" : "bg-emerald-300",
+                    )}
+                  />
+                  {j === 3 ? "Limited edition" : "Available now"}
+                </span>
+                <h2 className="mt-3 text-2xl font-semibold">
+                  {
+                    [
+                      "Spaces to live in",
+                      "Objects to keep",
+                      "Ready for anywhere",
+                      "A softer light",
+                    ][j]
+                  }
+                </h2>
+                <p className="mt-2 flex justify-between text-xs opacity-80">
+                  <span>From ${[48, 95, 38, 65][j]}</span>
+                  <ArrowRight className="size-4" />
+                </p>
+              </div>
+            </button>
+          ))}
+        </div>
+        {collectionPanel}
+        {bagDialog}
+      </section>
+    );
+  return (
+    <section className="mx-auto w-full max-w-6xl p-5 sm:p-8">
+      {header}
+      <div className="grid overflow-hidden rounded-xl bg-muted md:grid-cols-2">
+        <div className="flex flex-col items-start justify-center gap-6 p-7 sm:p-12">
+          <Badge variant="outline">FORMA / STUDIO EDITION 06</Badge>
+          <h2 className="text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
+            Less, but better.
+            <br />
+            Made to be yours.
+          </h2>
+          <p className="max-w-sm text-sm leading-7 text-muted-foreground">
+            A quieter approach to the things you wear and the spaces you live in. Discover the
+            pieces that feel right.
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <Button onClick={() => action("Everyday")}>
+              Shop the edit
+              <ArrowRight data-icon="inline-end" />
+            </Button>
+            <Button variant="outline" onClick={() => action("Sale")}>
+              Explore the sale
+            </Button>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            Responsibly made · Considered from the start
+          </p>
+          <span className="mt-5 flex size-20 items-center justify-center rounded-full border border-foreground/25 text-center text-[9px] leading-4 tracking-widest">
+            THOUGHTFULLY
+            <br />
+            MADE
+            <br />
+            SINCE 2020
+          </span>
+        </div>
+        <img
+          src={photos.jacket}
+          alt="The seasonal studio edit"
+          className="h-full min-h-[480px] w-full object-cover"
+        />
+      </div>
+      {collectionPanel}
+      {bagDialog}
+    </section>
+  );
 }

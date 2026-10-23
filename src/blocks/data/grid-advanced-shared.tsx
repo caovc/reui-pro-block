@@ -1,60 +1,66 @@
 import { Badge } from "@/components/reui/badge";
-import { Frame,FramePanel } from "@/components/reui/frame";
-import { NumberField,NumberFieldGroup,NumberFieldInput } from "@/components/reui/number-field";
+import { Frame, FramePanel } from "@/components/reui/frame";
+import { NumberField, NumberFieldGroup, NumberFieldInput } from "@/components/reui/number-field";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
-Dialog,
-DialogContent,
-DialogDescription,
-DialogFooter,
-DialogHeader,
-DialogTitle,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
 } from "@/components/ui/dialog";
 import {
-DropdownMenu,
-DropdownMenuCheckboxItem,
-DropdownMenuContent,
-DropdownMenuGroup,
-DropdownMenuItem,
-DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import {
-Select,
-SelectContent,
-SelectItem,
-SelectTrigger,
-SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import {
-ArrowDownToLine,
-ArrowUpDown,
-Check,
-ChevronDown,
-ChevronRight,
-Columns3,
-Copy,
-Ellipsis,
-Plus,
-Search,
-SlidersHorizontal,
-Trash2
+  ArrowDownToLine,
+  ArrowUpDown,
+  Check,
+  ChevronDown,
+  ChevronRight,
+  Columns3,
+  Copy,
+  Ellipsis,
+  Plus,
+  Search,
+  SlidersHorizontal,
+  Trash2,
 } from "lucide-react";
 import {
-useState,
-type ClipboardEventHandler,
-type KeyboardEventHandler,
-type ReactNode,
+  useState,
+  type ClipboardEventHandler,
+  type KeyboardEventHandler,
+  type ReactNode,
 } from "react";
 import { downloadCsv } from "./data-utils";
 import { gridAvatarAssets } from "./grid-base-assets";
 export {
-ArrowUpDown,Badge,Button,Checkbox,ChevronDown,
-ChevronRight,Input,Plus,
-Search,
-SlidersHorizontal
+  ArrowUpDown,
+  Badge,
+  Button,
+  Checkbox,
+  ChevronDown,
+  ChevronRight,
+  Input,
+  Plus,
+  Search,
+  SlidersHorizontal,
 };
 export function GridFrame({
   title,
@@ -76,7 +82,10 @@ export function GridFrame({
   onPaste?: ClipboardEventHandler<HTMLElement>;
 }) {
   return (
-    <Frame dense variant="ghost" role="region"
+    <Frame
+      dense
+      variant="ghost"
+      role="region"
       aria-label={title}
       onKeyDown={onKeyDown}
       onPaste={onPaste}
@@ -86,21 +95,19 @@ export function GridFrame({
       )}
     >
       <FramePanel className="overflow-hidden border-0 rounded-none p-0 shadow-none">
-      <header className="flex flex-wrap items-center justify-between gap-3 border-b bg-muted/20 px-4 py-2">
-        <div>
-          <h2 className="text-sm font-semibold tracking-tight">{title}</h2>
-          {description && (
-            <p className="mt-0.5 text-xs leading-4 text-muted-foreground">
-              {description}
-            </p>
-          )}
-        </div>
-        <div className="flex flex-wrap items-center gap-2">
-          {summary}
-          {actions}
-        </div>
-      </header>
-      {children}
+        <header className="flex flex-wrap items-center justify-between gap-3 border-b bg-muted/20 px-4 py-2">
+          <div>
+            <h2 className="text-sm font-semibold tracking-tight">{title}</h2>
+            {description && (
+              <p className="mt-0.5 text-xs leading-4 text-muted-foreground">{description}</p>
+            )}
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            {summary}
+            {actions}
+          </div>
+        </header>
+        {children}
       </FramePanel>
     </Frame>
   );
@@ -146,10 +153,7 @@ export function Choice({
 }) {
   return (
     <Select value={value} onValueChange={onChange}>
-      <SelectTrigger
-        aria-label={label}
-        className={cn("h-8 min-w-24 text-sm", className)}
-      >
+      <SelectTrigger aria-label={label} className={cn("h-8 min-w-24 text-sm", className)}>
         <SelectValue />
       </SelectTrigger>
       <SelectContent>
@@ -172,10 +176,7 @@ export function GridTabs({
   items: (string | { name: string; count: number })[];
 }) {
   return (
-    <div
-      className="flex flex-wrap items-center gap-4 border-b px-3"
-      role="tablist"
-    >
+    <div className="flex flex-wrap items-center gap-4 border-b px-3" role="tablist">
       {items.map((item) => {
         const name = typeof item === "string" ? item : item.name;
         return (
@@ -193,9 +194,7 @@ export function GridTabs({
           >
             {name}
             {typeof item !== "string" && (
-              <span className="rounded bg-muted px-1 text-xs">
-                {item.count}
-              </span>
+              <span className="rounded bg-muted px-1 text-xs">{item.count}</span>
             )}
           </button>
         );
@@ -233,18 +232,13 @@ export function TableOptions({
               key={c}
               checked={!hidden.includes(c)}
               onSelect={(e) => e.preventDefault()}
-              onCheckedChange={(v) =>
-                setHidden(v ? hidden.filter((x) => x !== c) : [...hidden, c])
-              }
+              onCheckedChange={(v) => setHidden(v ? hidden.filter((x) => x !== c) : [...hidden, c])}
             >
               {c}
             </DropdownMenuCheckboxItem>
           ))}
           {setDensity && (
-            <DropdownMenuCheckboxItem
-              checked={density}
-              onCheckedChange={(v) => setDensity(v)}
-            >
+            <DropdownMenuCheckboxItem checked={density} onCheckedChange={(v) => setDensity(v)}>
               Compact rows
             </DropdownMenuCheckboxItem>
           )}
@@ -253,13 +247,7 @@ export function TableOptions({
     </DropdownMenu>
   );
 }
-export function ExportRows({
-  name,
-  rows,
-}: {
-  name: string;
-  rows: Record<string, unknown>[];
-}) {
+export function ExportRows({ name, rows }: { name: string; rows: Record<string, unknown>[] }) {
   return (
     <Button
       size="sm"
@@ -286,19 +274,13 @@ export function RowMenu({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          aria-label={`Actions for ${name}`}
-          variant="ghost"
-          size="icon-xs"
-        >
+        <Button aria-label={`Actions for ${name}`} variant="ghost" size="icon-xs">
           <Ellipsis className="size-3.5" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuGroup>
-          {onEdit && (
-            <DropdownMenuItem onSelect={onEdit}>Edit details</DropdownMenuItem>
-          )}
+          {onEdit && <DropdownMenuItem onSelect={onEdit}>Edit details</DropdownMenuItem>}
           {onDuplicate && (
             <DropdownMenuItem onSelect={onDuplicate}>
               <Copy />
@@ -345,9 +327,10 @@ export function AddRecord({
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              const values = Object.fromEntries(
-                new FormData(e.currentTarget).entries(),
-              ) as Record<string, string>;
+              const values = Object.fromEntries(new FormData(e.currentTarget).entries()) as Record<
+                string,
+                string
+              >;
               onSave(values);
               setOpen(false);
             }}
@@ -356,20 +339,11 @@ export function AddRecord({
             {fields.map((f) => (
               <label key={f.name} className="block space-y-1.5 text-sm">
                 <span>{f.label}</span>
-                <Input
-                  required
-                  name={f.name}
-                  type={f.type || "text"}
-                  defaultValue={f.value}
-                />
+                <Input required name={f.name} type={f.type || "text"} defaultValue={f.value} />
               </label>
             ))}
             <DialogFooter>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setOpen(false)}
-              >
+              <Button type="button" variant="outline" onClick={() => setOpen(false)}>
                 Cancel
               </Button>
               <Button type="submit">Create</Button>
@@ -444,29 +418,16 @@ export function Spark({
 }) {
   const vals = Array.from(
     { length: 32 },
-    (_, i) =>
-      14 +
-      Math.sin(i * 1.6 + seed) * 3 +
-      Math.cos(i * 0.5 + seed) * 5 -
-      i * 0.12,
+    (_, i) => 14 + Math.sin(i * 1.6 + seed) * 3 + Math.cos(i * 0.5 + seed) * 5 - i * 0.12,
   );
-  const path = vals
-    .map((v, i) => `${i === 0 ? "M" : "L"}${i * 4},${v}`)
-    .join(" ");
+  const path = vals.map((v, i) => `${i === 0 ? "M" : "L"}${i * 4},${v}`).join(" ");
   return (
-    <svg
-      viewBox="0 0 124 32"
-      className="h-7 w-32"
-      role="img"
-      aria-label="Revenue trend"
-    >
+    <svg viewBox="0 0 124 32" className="h-7 w-32" role="img" aria-label="Revenue trend">
       <path d={`${path} L124 30 L0 30 Z`} fill={color} opacity=".08" />
       <path d={path} fill="none" stroke={color} strokeWidth="1.5" />
       {secondary && (
         <path
-          d={vals
-            .map((v, i) => `${i === 0 ? "M" : "L"}${i * 4},${v * 0.6 + 9}`)
-            .join(" ")}
+          d={vals.map((v, i) => `${i === 0 ? "M" : "L"}${i * 4},${v * 0.6 + 9}`).join(" ")}
           fill="none"
           stroke="#b3a0fa"
           strokeWidth="1.25"
@@ -525,10 +486,8 @@ export function TinyAvatar({
           className="size-full rounded-full object-cover"
           src={
             Object.values(gridAvatarAssets)[
-              Array.from(name).reduce(
-                (sum, char) => sum + char.charCodeAt(0),
-                0,
-              ) % Object.values(gridAvatarAssets).length
+              Array.from(name).reduce((sum, char) => sum + char.charCodeAt(0), 0) %
+                Object.values(gridAvatarAssets).length
             ]
           }
         />
@@ -558,9 +517,7 @@ export function CheckCell({
       onClick={onChange}
       className={cn(
         "rounded p-1",
-        checked
-          ? "text-emerald-500"
-          : "text-muted-foreground hover:text-foreground",
+        checked ? "text-emerald-500" : "text-muted-foreground hover:text-foreground",
       )}
     >
       {checked ? (
@@ -572,6 +529,38 @@ export function CheckCell({
   );
 }
 
-export function NumericField({value,onValueChange,label,min,max,step=1,className}:{value:number;onValueChange:(value:number)=>void;label:string;min?:number;max?:number;step?:number;className?:string}){
- return <NumberField value={value} onValueChange={v=>{if(v!==null)onValueChange(v);}} min={min} max={max} step={step} size="sm" className={className}><NumberFieldGroup className="h-7"><NumberFieldInput aria-label={label} className="text-[13px] text-blue-500"/></NumberFieldGroup></NumberField>;
+export function NumericField({
+  value,
+  onValueChange,
+  label,
+  min,
+  max,
+  step = 1,
+  className,
+}: {
+  value: number;
+  onValueChange: (value: number) => void;
+  label: string;
+  min?: number;
+  max?: number;
+  step?: number;
+  className?: string;
+}) {
+  return (
+    <NumberField
+      value={value}
+      onValueChange={(v) => {
+        if (v !== null) onValueChange(v);
+      }}
+      min={min}
+      max={max}
+      step={step}
+      size="sm"
+      className={className}
+    >
+      <NumberFieldGroup className="h-7">
+        <NumberFieldInput aria-label={label} className="text-[13px] text-blue-500" />
+      </NumberFieldGroup>
+    </NumberField>
+  );
 }

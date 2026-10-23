@@ -5,12 +5,7 @@ import RichEditorBlock from "./editor";
 import ScheduleBlock from "./schedule";
 import CardsBlock from "./cards";
 import { SettingsBlock, WizardBlock, DialogBlock } from "./forms";
-import {
-  DashboardBlock,
-  StatsBlock,
-  NavBlock,
-  ListBlock,
-} from "./workspace";
+import { DashboardBlock, StatsBlock, NavBlock, ListBlock } from "./workspace";
 import AppShell from "./shells/audited";
 import {
   CalendarBlock,

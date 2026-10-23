@@ -1,10 +1,4 @@
-import {
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  type KeyboardEvent,
-} from "react";
+import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import {
   Columns3,
   Download,
@@ -45,19 +39,11 @@ import {
   DataGridTableFootRowCell,
 } from "@/components/reui/data-grid/data-grid-table";
 import type { BlockProps } from "@/data/types";
-import {
-  NumberField,
-  NumberFieldGroup,
-  NumberFieldInput,
-} from "@/components/reui/number-field";
+import { NumberField, NumberFieldGroup, NumberFieldInput } from "@/components/reui/number-field";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   Select,
   SelectContent,
@@ -75,12 +61,7 @@ import {
 import { cn } from "@/lib/utils";
 import { downloadCsv } from "./data-utils";
 import { toast } from "sonner";
-import {
-  FilterBar,
-  firstRule,
-  matchesRules,
-  type FilterRule,
-} from "./grid-filter-controls";
+import { FilterBar, firstRule, matchesRules, type FilterRule } from "./grid-filter-controls";
 import { StructureGrid } from "./grid-structure-model";
 import {
   StructureBadge,
@@ -159,14 +140,7 @@ const taskFields: Field[] = [
     key: "status",
     title: "Status",
     kind: "status",
-    options: [
-      "Backlog",
-      "Ready",
-      "In progress",
-      "In review",
-      "Blocked",
-      "Shipped",
-    ],
+    options: ["Backlog", "Ready", "In progress", "In review", "Blocked", "Shipped"],
   },
   { key: "assignee", title: "Assignees", kind: "person" },
   { key: "due", title: "Due", kind: "date" },
@@ -263,9 +237,7 @@ function seedRows(stock: boolean): SheetRow[] {
           id: i + 1,
           task:
             taskTitles[i % taskTitles.length] +
-            (i >= taskTitles.length
-              ? ` · Phase ${Math.floor(i / taskTitles.length) + 1}`
-              : ""),
+            (i >= taskTitles.length ? ` · Phase ${Math.floor(i / taskTitles.length) + 1}` : ""),
           status: taskStatuses[i % 13],
           assignee: taskOwners[i % 13],
           due:
@@ -296,8 +268,7 @@ function seedRows(stock: boolean): SheetRow[] {
     seeded.forEach((r, i) => {
       if (shipped.includes(i)) r.status = "Shipped";
       else if (blocked.includes(i)) r.status = "Blocked";
-      else if (r.status === "Shipped" || r.status === "Blocked")
-        r.status = "Ready";
+      else if (r.status === "Shipped" || r.status === "Blocked") r.status = "Ready";
     });
     const tail = seeded.filter((r, i) => i >= 22 && r.status !== "Shipped");
     let remaining =
@@ -346,9 +317,7 @@ export default function SpreadsheetGrid({ block }: BlockProps) {
     [filterOpen, setFilterOpen] = useState(false),
     [loaded, setLoaded] = useState(25),
     [loading, setLoading] = useState(false),
-    [snapshot, setSnapshot] = useState<DataGridCellSelectionSnapshot | null>(
-      null,
-    ),
+    [snapshot, setSnapshot] = useState<DataGridCellSelectionSnapshot | null>(null),
     [editing, setEditing] = useState<{
       request: DataGridCellEditRequest<SheetRow>;
       value: string;
@@ -367,28 +336,18 @@ export default function SpreadsheetGrid({ block }: BlockProps) {
     },
     [],
   );
-  function applyBatch(
-    current: SheetRow[],
-    details: DataGridCellsChangeDetails<SheetRow>,
-  ) {
+  function applyBatch(current: SheetRow[], details: DataGridCellsChangeDetails<SheetRow>) {
     return current.map((row) => {
       const changes = details.changes.filter((c) => c.rowId === String(row.id));
       if (!changes.length) return row;
       const next = { ...row };
-      for (const c of changes)
-        next[c.columnId] = c.value as string | number | boolean;
+      for (const c of changes) next[c.columnId] = c.value as string | number | boolean;
       if (stock) next.value = Number(next.quantity) * Number(next.cost);
       return next;
     });
   }
-  function commit(
-    next: SheetRow[],
-    details?: DataGridCellsChangeDetails<SheetRow>,
-  ) {
-    setHistory((v) => [
-      ...v.slice(-49),
-      { before: rows, after: next, details },
-    ]);
+  function commit(next: SheetRow[], details?: DataGridCellsChangeDetails<SheetRow>) {
+    setHistory((v) => [...v.slice(-49), { before: rows, after: next, details }]);
     setFuture([]);
     setRows(next);
   }
@@ -403,9 +362,7 @@ export default function SpreadsheetGrid({ block }: BlockProps) {
     const entry = history.at(-1);
     if (!entry) return;
     setRows((current) =>
-      entry.details
-        ? applyBatch(current, invertDataGridCellsChange(entry.details!))
-        : entry.before,
+      entry.details ? applyBatch(current, invertDataGridCellsChange(entry.details!)) : entry.before,
     );
     setHistory((v) => v.slice(0, -1));
     setFuture((v) => [entry, ...v]);
@@ -414,9 +371,7 @@ export default function SpreadsheetGrid({ block }: BlockProps) {
   function redo() {
     const entry = future[0];
     if (!entry) return;
-    setRows((current) =>
-      entry.details ? applyBatch(current, entry.details!) : entry.after,
-    );
+    setRows((current) => (entry.details ? applyBatch(current, entry.details!) : entry.after));
     setFuture((v) => v.slice(1));
     setHistory((v) => [...v, entry]);
     setEditing(null);
@@ -433,8 +388,7 @@ export default function SpreadsheetGrid({ block }: BlockProps) {
         return undefined;
       return +raw;
     }
-    if (field.kind === "date" && raw && !/^\d{4}-\d{2}-\d{2}$/.test(raw))
-      return undefined;
+    if (field.kind === "date" && raw && !/^\d{4}-\d{2}-\d{2}$/.test(raw)) return undefined;
     if (field.options && !field.options.includes(raw)) return undefined;
     return raw;
   }
@@ -502,8 +456,7 @@ export default function SpreadsheetGrid({ block }: BlockProps) {
   function renderValue(row: SheetRow, field: Field) {
     const value = String(row[field.key] ?? "");
     const active =
-      editing?.request.rowId === String(row.id) &&
-      editing.request.columnId === field.key;
+      editing?.request.rowId === String(row.id) && editing.request.columnId === field.key;
     if (active && editing) {
       if (field.options)
         return (
@@ -515,10 +468,7 @@ export default function SpreadsheetGrid({ block }: BlockProps) {
             }}
             onValueChange={(value) => writeValue(row, field.key, value)}
           >
-            <SelectTrigger
-              className="h-7 text-xs"
-              aria-label={`Edit ${field.title}`}
-            >
+            <SelectTrigger className="h-7 text-xs" aria-label={`Edit ${field.title}`}>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -661,9 +611,7 @@ export default function SpreadsheetGrid({ block }: BlockProps) {
             className="rounded-full"
             aria-label={`Complete ${value}`}
             checked={row.status === "Shipped"}
-            onCheckedChange={(v) =>
-              writeValue(row, "status", v ? "Shipped" : "Ready")
-            }
+            onCheckedChange={(v) => writeValue(row, "status", v ? "Shipped" : "Ready")}
           />
           <span
             className={cn(
@@ -678,9 +626,7 @@ export default function SpreadsheetGrid({ block }: BlockProps) {
     return (
       <span className="truncate tabular-nums">
         {value}
-        {field.key === "points" && (
-          <span className="text-xs text-muted-foreground">pt</span>
-        )}
+        {field.key === "points" && <span className="text-xs text-muted-foreground">pt</span>}
       </span>
     );
   }
@@ -753,11 +699,7 @@ export default function SpreadsheetGrid({ block }: BlockProps) {
         header: ({ column }) => (
           <div className="space-y-1 py-1">
             <div className="flex items-center gap-1">
-              {stock && (
-                <span className="rounded bg-muted px-1 text-xs">
-                  {field.letter}
-                </span>
-              )}
+              {stock && <span className="rounded bg-muted px-1 text-xs">{field.letter}</span>}
               <DataGridColumnHeader column={column} title={field.title} />
             </div>
             {stock && filterOpen && (
@@ -777,33 +719,26 @@ export default function SpreadsheetGrid({ block }: BlockProps) {
             .includes(String(value).toLowerCase()),
         meta: {
           headerTitle: field.title,
-          cellClassName:
-            field.kind === "number" || field.kind === "currency"
-              ? "tabular-nums"
-              : "",
+          cellClassName: field.kind === "number" || field.kind === "currency" ? "tabular-nums" : "",
           cellEdit: {
             editable: field.key !== "value",
             parse: (raw) => parse(raw, field),
             format: (value) => String(value ?? ""),
-            clearValue:
-              field.kind === "number" || field.kind === "currency" ? 0 : "",
+            clearValue: field.kind === "number" || field.kind === "currency" ? 0 : "",
             ...(field.kind === "text" ? { control: "text" as const } : {}),
           },
         },
         cell: ({ row }) => (
           <ContextMenu.Root>
             <ContextMenu.Trigger asChild>
-              <div className="flex min-h-7 items-center">
-                {renderValue(row.original, field)}
-              </div>
+              <div className="flex min-h-7 items-center">{renderValue(row.original, field)}</div>
             </ContextMenu.Trigger>
             <ContextMenu.Portal>
               <ContextMenu.Content className="z-50 min-w-44 rounded-lg border bg-popover p-1 text-sm shadow-md">
                 {[
                   {
                     title: "Edit cell",
-                    action: () =>
-                      api.current?.focusCell(row.id, field.key, { edit: true }),
+                    action: () => api.current?.focusCell(row.id, field.key, { edit: true }),
                   },
                   { title: "Fill range down", action: fillDown },
                   {
@@ -823,8 +758,7 @@ export default function SpreadsheetGrid({ block }: BlockProps) {
                   },
                   {
                     title: "Delete row",
-                    action: () =>
-                      commit(rows.filter((r) => r.id !== row.original.id)),
+                    action: () => commit(rows.filter((r) => r.id !== row.original.id)),
                   },
                 ].map((item) => (
                   <ContextMenu.Item
@@ -862,17 +796,12 @@ export default function SpreadsheetGrid({ block }: BlockProps) {
     onSortingChange: setSorting,
     onRowSelectionChange: setRowSelection,
     globalFilterFn: (row) =>
-      Object.values(row.original)
-        .join(" ")
-        .toLowerCase()
-        .includes(search.toLowerCase()) &&
+      Object.values(row.original).join(" ").toLowerCase().includes(search.toLowerCase()) &&
       (stock || matchesRules(row.original, rules)),
   });
   const filtered = table.getFilteredRowModel().rows.map((r) => r.original),
     selected = table.getSelectedRowModel().rows.map((r) => r.original),
-    visibleFields = fields.filter((f) =>
-      table.getColumn(f.key)?.getIsVisible(),
-    ),
+    visibleFields = fields.filter((f) => table.getColumn(f.key)?.getIsVisible()),
     bound = snapshot?.activeBound;
   function fetchMore() {
     if (stock || pending.current || loaded >= filtered.length) return;
@@ -903,14 +832,10 @@ export default function SpreadsheetGrid({ block }: BlockProps) {
     const text = [
       visibleFields.map((f) => f.title).join("\t"),
       ...source.map((r) =>
-        visibleFields
-          .map((f) => String(r[f.key] ?? "").replace(/[\t\n]/g, " "))
-          .join("\t"),
+        visibleFields.map((f) => String(r[f.key] ?? "").replace(/[\t\n]/g, " ")).join("\t"),
       ),
     ].join("\n");
-    const url = URL.createObjectURL(
-      new Blob([text], { type: "text/tab-separated-values" }),
-    );
+    const url = URL.createObjectURL(new Blob([text], { type: "text/tab-separated-values" }));
     const link = document.createElement("a");
     link.href = url;
     link.download = "reorder-plan.tsv";
@@ -933,14 +858,10 @@ export default function SpreadsheetGrid({ block }: BlockProps) {
       {table.getVisibleLeafColumns().map((column) => {
         const field = fields.find((f) => f.key === column.id);
         return (
-          <DataGridTableFootRowCell
-            key={column.id}
-            className="text-right text-xs"
-          >
+          <DataGridTableFootRowCell key={column.id} className="text-right text-xs">
             {field?.key === "sku" ? (
               `${filtered.length} lines`
-            ) : field &&
-              (field.kind === "number" || field.kind === "currency") ? (
+            ) : field && (field.kind === "number" || field.kind === "currency") ? (
               <>
                 <span className="mr-1 text-muted-foreground">Sum</span>
                 {field.kind === "currency"
@@ -951,9 +872,7 @@ export default function SpreadsheetGrid({ block }: BlockProps) {
                         currency: "USD",
                         maximumFractionDigits: 0,
                       })
-                  : filtered
-                      .reduce((a, r) => a + Number(r[field.key] || 0), 0)
-                      .toLocaleString()}
+                  : filtered.reduce((a, r) => a + Number(r[field.key] || 0), 0).toLocaleString()}
               </>
             ) : null}
           </DataGridTableFootRowCell>
@@ -969,8 +888,7 @@ export default function SpreadsheetGrid({ block }: BlockProps) {
           stock ? (
             <>
               <span className="text-rose-500">
-                {rows.filter((r) => +r.onhand < +r.reorder).length} below
-                reorder point
+                {rows.filter((r) => +r.onhand < +r.reorder).length} below reorder point
               </span>{" "}
               · {rows.filter((r) => r.status === "Review").length} to review · $
               {(
@@ -982,11 +900,8 @@ export default function SpreadsheetGrid({ block }: BlockProps) {
             </>
           ) : (
             <>
-              {rows.filter((r) => r.status === "Shipped").length} of{" "}
-              {rows.length} done ·{" "}
-              {rows
-                .filter((r) => r.status !== "Shipped")
-                .reduce((a, r) => a + Number(r.points), 0)}{" "}
+              {rows.filter((r) => r.status === "Shipped").length} of {rows.length} done ·{" "}
+              {rows.filter((r) => r.status !== "Shipped").reduce((a, r) => a + Number(r.points), 0)}{" "}
               points open ·{" "}
               <span className="text-rose-500">
                 {rows.filter((r) => r.status === "Blocked").length} blocked
@@ -1085,17 +1000,12 @@ export default function SpreadsheetGrid({ block }: BlockProps) {
               </PopoverTrigger>
               <PopoverContent align="end">
                 {fields.map((f) => (
-                  <label
-                    key={f.key}
-                    className="flex items-center justify-between gap-3 text-xs"
-                  >
+                  <label key={f.key} className="flex items-center justify-between gap-3 text-xs">
                     {f.title}
                     <Checkbox
                       aria-label={`Show ${f.title} column`}
                       checked={table.getColumn(f.key)?.getIsVisible()}
-                      onCheckedChange={(v) =>
-                        table.getColumn(f.key)?.toggleVisibility(!!v)
-                      }
+                      onCheckedChange={(v) => table.getColumn(f.key)?.toggleVisibility(!!v)}
                     />
                   </label>
                 ))}
@@ -1145,17 +1055,11 @@ export default function SpreadsheetGrid({ block }: BlockProps) {
               <PopoverContent align="end">
                 <label className="flex items-center justify-between text-xs">
                   Compact rows
-                  <Checkbox
-                    checked={compact}
-                    onCheckedChange={(v) => setCompact(!!v)}
-                  />
+                  <Checkbox checked={compact} onCheckedChange={(v) => setCompact(!!v)} />
                 </label>
                 <label className="flex items-center justify-between text-xs">
                   Cell borders
-                  <Checkbox
-                    checked={gridLines}
-                    onCheckedChange={(v) => setGridLines(!!v)}
-                  />
+                  <Checkbox checked={gridLines} onCheckedChange={(v) => setGridLines(!!v)} />
                 </label>
                 <Button
                   size="xs"
@@ -1170,11 +1074,7 @@ export default function SpreadsheetGrid({ block }: BlockProps) {
             {stock && (
               <Popover>
                 <PopoverTrigger asChild>
-                  <Button
-                    size="icon-sm"
-                    variant="outline"
-                    aria-label="Export reorder plan"
-                  >
+                  <Button size="icon-sm" variant="outline" aria-label="Export reorder plan">
                     <Download />
                   </Button>
                 </PopoverTrigger>
@@ -1183,10 +1083,7 @@ export default function SpreadsheetGrid({ block }: BlockProps) {
                     variant="ghost"
                     size="sm"
                     onClick={() =>
-                      downloadCsv(
-                        "Reorder plan",
-                        selected.length ? selected : filtered,
-                      )
+                      downloadCsv("Reorder plan", selected.length ? selected : filtered)
                     }
                   >
                     Export CSV
@@ -1205,21 +1102,10 @@ export default function SpreadsheetGrid({ block }: BlockProps) {
             <StructureSelect
               label="Bulk stock status"
               value="Set status"
-              options={[
-                "Set status",
-                "Covered",
-                "Review",
-                "Approved",
-                "Ordered",
-                "Hold",
-              ]}
+              options={["Set status", "Covered", "Review", "Approved", "Ordered", "Hold"]}
               onChange={setCheckedStatus}
             />
-            <Button
-              size="xs"
-              variant="ghost"
-              onClick={() => table.resetRowSelection()}
-            >
+            <Button size="xs" variant="ghost" onClick={() => table.resetRowSelection()}>
               Clear
             </Button>
           </div>
@@ -1262,9 +1148,7 @@ export default function SpreadsheetGrid({ block }: BlockProps) {
               : `${table.getRowModel().rows.length} of ${filtered.length} tasks`}
           </span>
           <span>
-            {stock
-              ? "Shift-click for a range · ⌘/Ctrl Z to undo"
-              : "1 overdue · 27 due this week"}
+            {stock ? "Shift-click for a range · ⌘/Ctrl Z to undo" : "1 overdue · 27 due this week"}
           </span>
         </footer>
       </StructureFrame>
@@ -1274,17 +1158,13 @@ export default function SpreadsheetGrid({ block }: BlockProps) {
             <SheetTitle>
               {detail ? String(detail[stock ? "item" : "task"]) : "Row details"}
             </SheetTitle>
-            <SheetDescription>
-              Edit this record in the spreadsheet.
-            </SheetDescription>
+            <SheetDescription>Edit this record in the spreadsheet.</SheetDescription>
           </SheetHeader>
           <div className="space-y-4 p-4">
             {detail &&
               fields.map((f) => (
                 <div key={f.key}>
-                  <label className="text-xs text-muted-foreground">
-                    {f.title}
-                  </label>
+                  <label className="text-xs text-muted-foreground">{f.title}</label>
                   <p className="mt-1 text-sm">{String(detail[f.key] ?? "—")}</p>
                 </div>
               ))}

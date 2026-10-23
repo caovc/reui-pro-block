@@ -167,13 +167,7 @@ export function ScopeTree({
 }) {
   const [data, setData] = useState(() => {
     const rows = structuredClone(
-      networkTree
-        ? network
-        : scope === "Assets"
-          ? assets
-          : scope === "Events"
-            ? events
-            : security,
+      networkTree ? network : scope === "Assets" ? assets : scope === "Events" ? events : security,
     );
     if (fleetTree) {
       rows[0].name = "Fleet";
@@ -196,33 +190,16 @@ export function ScopeTree({
     } else if (consoleTree && scope !== "Endpoints") {
       const sections: Record<string, string[]> = {
         Code: ["Repositories", "Dependencies", "Pull Requests", "Code Scans"],
-        Network: [
-          "Network Segments",
-          "Gateways",
-          "Connections",
-          "Traffic Rules",
-        ],
-        Perimeter: [
-          "Firewalls",
-          "Access Points",
-          "External Assets",
-          "Policies",
-        ],
-        Platforms: [
-          "Cloud Accounts",
-          "Kubernetes",
-          "Virtual Machines",
-          "Services",
-        ],
+        Network: ["Network Segments", "Gateways", "Connections", "Traffic Rules"],
+        Perimeter: ["Firewalls", "Access Points", "External Assets", "Policies"],
+        Platforms: ["Cloud Accounts", "Kubernetes", "Virtual Machines", "Services"],
         Compliance: ["Frameworks", "Controls", "Evidence", "Assessments"],
       };
-      return (sections[scope] ?? ["Overview", "Draft Scopes"]).map(
-        (name, i) => ({
-          name,
-          count: [24, 12, 8, 6][i],
-          children: [{ name: "Overview" }, { name: "Activity" }],
-        }),
-      );
+      return (sections[scope] ?? ["Overview", "Draft Scopes"]).map((name, i) => ({
+        name,
+        count: [24, 12, 8, 6][i],
+        children: [{ name: "Overview" }, { name: "Activity" }],
+      }));
     }
     return rows;
   });
@@ -236,9 +213,7 @@ export function ScopeTree({
     "Endpoint Security",
     "Threat Detection",
   ]);
-  const [active, setActive] = useState(
-    networkTree ? "Scheduled" : "Suspicious Activity",
-  );
+  const [active, setActive] = useState(networkTree ? "Scheduled" : "Suspicious Activity");
   const drag = useRef<{ parent: string; name: string } | null>(null);
   const [draft, setDraft] = useState(0);
   function add(name: string) {
@@ -299,23 +274,16 @@ export function ScopeTree({
     drag.current = null;
   }
   const matches = (r: ScopeRow): boolean =>
-    r.name.toLowerCase().includes(query.toLowerCase()) ||
-    Boolean(r.children?.some(matches));
+    r.name.toLowerCase().includes(query.toLowerCase()) || Boolean(r.children?.some(matches));
   const records = useMemo(() => {
     const result: Record<
       string,
       ScopeRow & { childIds?: string[]; parent: string; level: number }
     > = {};
-    function flatten(
-      rows: ScopeRow[],
-      parent: string,
-      level: number,
-    ): string[] {
+    function flatten(rows: ScopeRow[], parent: string, level: number): string[] {
       return rows.filter(matches).map((row) => {
         const id = parent === "__root__" ? row.name : `${parent}/${row.name}`;
-        const children = row.children
-          ? flatten(row.children, id, level + 1)
-          : undefined;
+        const children = row.children ? flatten(row.children, id, level + 1) : undefined;
         result[id] = {
           ...row,
           parent: parent.split("/").pop()!,
@@ -332,10 +300,7 @@ export function ScopeTree({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, query]);
   const expandedIds = useMemo(
-    () =>
-      Object.keys(records).filter(
-        (id) => query || expanded.includes(records[id].name),
-      ),
+    () => Object.keys(records).filter((id) => query || expanded.includes(records[id].name)),
     [records, query, expanded],
   );
   const tree = useTree<(typeof records)[string]>({
@@ -343,17 +308,14 @@ export function ScopeTree({
     state: { expandedItems: expandedIds },
     setExpandedItems: (action) =>
       setExpanded((names) => {
-        const ids = Object.keys(records).filter((id) =>
-          names.includes(records[id].name),
-        );
+        const ids = Object.keys(records).filter((id) => names.includes(records[id].name));
         const next = typeof action === "function" ? action(ids) : action;
         return next.map((id) => records[id].name);
       }),
     initialState: {
       focusedItem:
-        Object.keys(records).find(
-          (id) => records[id].name === "Suspicious Activity",
-        ) ?? Object.keys(records)[0],
+        Object.keys(records).find((id) => records[id].name === "Suspicious Activity") ??
+        Object.keys(records)[0],
     },
     getItemName: (item) => item.getItemData().name,
     isItemFolder: (item) => item.getItemData().childIds !== undefined,
@@ -372,11 +334,7 @@ export function ScopeTree({
   }, [records, tree]);
   const rowIcons = [LayoutDashboard, ScanSearch, ShieldAlert, Activity];
   return (
-    <div
-      className="shell-scroll p-2"
-      role="region"
-      aria-label={`${scope} scope tree`}
-    >
+    <div className="shell-scroll p-2" role="region" aria-label={`${scope} scope tree`}>
       <p className="mb-2 px-1 text-[11px] text-muted-foreground">
         {fleetTree
           ? "Operational Scope"
@@ -405,20 +363,15 @@ export function ScopeTree({
                 ? rowIcons[
                     Math.max(
                       0,
-                      [
-                        "Overview",
-                        "Suspicious Activity",
-                        "Incidents",
-                        "Anomalies",
-                      ].indexOf(row.name),
+                      ["Overview", "Suspicious Activity", "Incidents", "Anomalies"].indexOf(
+                        row.name,
+                      ),
                     )
                   ]
                 : undefined;
-          const status =
-            fleetTree && row.name === "Depots" ? undefined : row.status;
+          const status = fleetTree && row.name === "Depots" ? undefined : row.status;
           const canAdd =
-            (row.count !== undefined &&
-              !["Risks", "Quarantined", "Tasks"].includes(row.name)) ||
+            (row.count !== undefined && !["Risks", "Quarantined", "Tasks"].includes(row.name)) ||
             status === "Add";
           return (
             <TreeItem key={item.getId()} item={item} asChild>
@@ -450,17 +403,10 @@ export function ScopeTree({
                         e.dataTransfer.setData("text/plain", row.name);
                       }}
                       onKeyDown={(e) => {
-                        if (
-                          e.altKey &&
-                          ["ArrowUp", "ArrowDown"].includes(e.key)
-                        ) {
+                        if (e.altKey && ["ArrowUp", "ArrowDown"].includes(e.key)) {
                           e.preventDefault();
                           e.stopPropagation();
-                          reorder(
-                            row.parent,
-                            row.name,
-                            e.key === "ArrowUp" ? -1 : 1,
-                          );
+                          reorder(row.parent, row.name, e.key === "ArrowUp" ? -1 : 1);
                         }
                       }}
                     >
@@ -507,9 +453,7 @@ export function ScopeTree({
         })}
       </Tree>
       {!data.some(matches) && (
-        <p className="py-8 text-center text-xs text-muted-foreground">
-          No matching scopes.
-        </p>
+        <p className="py-8 text-center text-xs text-muted-foreground">No matching scopes.</p>
       )}
     </div>
   );
@@ -548,9 +492,7 @@ export function ScopePanel({
               aria-label="Scope tabs"
             >
               {scopes.map((name, i) => {
-                const Icon = [Shield, Code2, Network, Globe, Layers, FileCheck][
-                  i % 6
-                ];
+                const Icon = [Shield, Code2, Network, Globe, Layers, FileCheck][i % 6];
                 return (
                   <Button
                     key={name}
@@ -569,12 +511,7 @@ export function ScopePanel({
               })}
             </div>
           ) : (
-            <Segments
-              label="Scope tabs"
-              items={scopes}
-              value={scope}
-              onChange={setScope}
-            />
+            <Segments label="Scope tabs" items={scopes} value={scope} onChange={setScope} />
           )}
         </div>
         {dynamic && (

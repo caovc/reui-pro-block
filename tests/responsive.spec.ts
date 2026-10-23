@@ -7,14 +7,9 @@ for (const group of [...new Set(catalog.map((c) => c.group))]) {
     const overflowing: string[] = [];
     for (const category of catalog.filter((c) => c.group === group)) {
       const block = category.blocks[0];
-      await page.goto(
-        `./#/preview/${block.group}/${block.category}/${block.id}`,
-      );
+      await page.goto(`./#/preview/${block.group}/${block.category}/${block.id}`);
       await expect
-        .poll(
-          async () =>
-            (await page.locator(".isolated-preview").innerText()).length,
-        )
+        .poll(async () => (await page.locator(".isolated-preview").innerText()).length)
         .toBeGreaterThan(3);
       const dimensions = await page.evaluate(() => ({
         width: window.innerWidth,

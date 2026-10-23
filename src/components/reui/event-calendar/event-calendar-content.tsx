@@ -1,25 +1,25 @@
 // Title: Event Calendar Content
 // Description: Active-view switchboard rendering month, week, day, N-days, or agenda; swappable per view via the components prop.
 
-"use client"
+"use client";
 
-import { type ComponentType, type HTMLAttributes, type ReactNode } from "react"
+import { type ComponentType, type HTMLAttributes, type ReactNode } from "react";
 import {
   useEventCalendarSelector,
   useEventCalendarViewConfig,
-} from "@/components/reui/event-calendar/event-calendar"
-import { EventCalendarAgendaView } from "@/components/reui/event-calendar/event-calendar-agenda-view"
-import { EventCalendarMonthView } from "@/components/reui/event-calendar/event-calendar-month-view"
-import { EventCalendarResourceView } from "@/components/reui/event-calendar/event-calendar-resource-view"
+} from "@/components/reui/event-calendar/event-calendar";
+import { EventCalendarAgendaView } from "@/components/reui/event-calendar/event-calendar-agenda-view";
+import { EventCalendarMonthView } from "@/components/reui/event-calendar/event-calendar-month-view";
+import { EventCalendarResourceView } from "@/components/reui/event-calendar/event-calendar-resource-view";
 import {
   EventCalendarDaysView,
   EventCalendarDayView,
   EventCalendarWeekView,
-} from "@/components/reui/event-calendar/event-calendar-time-grid"
-import type { CalendarView } from "@/components/reui/event-calendar/event-calendar-types"
-import { Slot } from "radix-ui"
+} from "@/components/reui/event-calendar/event-calendar-time-grid";
+import type { CalendarView } from "@/components/reui/event-calendar/event-calendar-types";
+import { Slot } from "radix-ui";
 
-import { cn } from "cn"
+import { cn } from "cn";
 
 const DEFAULT_VIEW_COMPONENTS: Record<CalendarView, ComponentType> = {
   month: EventCalendarMonthView,
@@ -28,14 +28,14 @@ const DEFAULT_VIEW_COMPONENTS: Record<CalendarView, ComponentType> = {
   days: EventCalendarDaysView,
   agenda: EventCalendarAgendaView,
   resource: EventCalendarResourceView,
-}
+};
 
 interface EventCalendarContentProps extends HTMLAttributes<HTMLDivElement> {
   /** Swap individual view implementations. */
-  components?: Partial<Record<CalendarView, ComponentType>>
+  components?: Partial<Record<CalendarView, ComponentType>>;
   /** Replaces the switchboard entirely; read useEventCalendarView() inside. */
-  children?: ReactNode
-  asChild?: boolean
+  children?: ReactNode;
+  asChild?: boolean;
 }
 
 function EventCalendarContent({
@@ -45,20 +45,20 @@ function EventCalendarContent({
   children,
   ...props
 }: EventCalendarContentProps) {
-  const viewConfig = useEventCalendarViewConfig()
-  const view = useEventCalendarSelector((state) => state.view)
-  const loading = useEventCalendarSelector((state) => state.loading)
+  const viewConfig = useEventCalendarViewConfig();
+  const view = useEventCalendarSelector((state) => state.view);
+  const loading = useEventCalendarSelector((state) => state.loading);
 
   const resolved = {
     ...DEFAULT_VIEW_COMPONENTS,
     ...viewConfig.components,
     ...components,
-  }
+  };
   // A spread copies keys that hold `undefined`, so `components={{ month: isPro
   // ? ProMonth : undefined }}` would erase the default and render <undefined />.
-  const ActiveView = resolved[view] ?? DEFAULT_VIEW_COMPONENTS[view]
+  const ActiveView = resolved[view] ?? DEFAULT_VIEW_COMPONENTS[view];
 
-  const Comp = asChild ? Slot.Root : "div"
+  const Comp = asChild ? Slot.Root : "div";
 
   return (
     <Comp
@@ -69,14 +69,14 @@ function EventCalendarContent({
         "relative flex min-h-0 min-w-0 flex-1 flex-col",
         "data-loading:pointer-events-none data-loading:opacity-60",
         viewConfig.classNames?.content,
-        className
+        className,
       )}
       {...props}
     >
       {children ?? <ActiveView />}
     </Comp>
-  )
+  );
 }
 
-export { DEFAULT_VIEW_COMPONENTS, EventCalendarContent }
-export type { EventCalendarContentProps }
+export { DEFAULT_VIEW_COMPONENTS, EventCalendarContent };
+export type { EventCalendarContentProps };

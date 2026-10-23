@@ -53,20 +53,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { downloadCsv } from "./data-utils";
-import {
-  billingSeed,
-  automationSeed,
-  renewalSeed,
-  riskSeed,
-} from "./grid-filtering-data";
+import { billingSeed, automationSeed, renewalSeed, riskSeed } from "./grid-filtering-data";
 import {
   FilterBar,
   FilteringSettings,
@@ -101,22 +92,16 @@ const usd = (n: number) =>
     maximumFractionDigits: 0,
   });
 const avatars: Record<string, string> = {
-  "Emil Novak":
-    "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=96&h=96&dpr=2&q=80",
-  "Priya Nair":
-    "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=96&h=96&dpr=2&q=80",
-  "Maya Patel":
-    "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=96&h=96&dpr=2&q=80",
-  "Nora Ibrahim":
-    "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=96&h=96&dpr=2&q=80",
-  "Sarah Chen":
-    "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=96&h=96&dpr=2&q=80",
+  "Emil Novak": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=96&h=96&dpr=2&q=80",
+  "Priya Nair": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=96&h=96&dpr=2&q=80",
+  "Maya Patel": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=96&h=96&dpr=2&q=80",
+  "Nora Ibrahim": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=96&h=96&dpr=2&q=80",
+  "Sarah Chen": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=96&h=96&dpr=2&q=80",
   "Michael Rodriguez":
     "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=96&h=96&dpr=2&q=80",
   "Emma Wilson":
     "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=96&h=96&dpr=2&q=80",
-  "Daniel Kim":
-    "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=96&h=96&dpr=2&q=80",
+  "Daniel Kim": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=96&h=96&dpr=2&q=80",
   "Priya Patel":
     "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=96&h=96&dpr=2&q=80",
   "Alex Johnson":
@@ -131,9 +116,7 @@ function Portrait({ name, small = false }: { name: string; small?: boolean }) {
             ? undefined
             : name === "Nora Ibrahim"
               ? noraPortrait
-              : gridAvatarAssets[
-                  avatars[name]?.split("photo-")[1]?.split("?")[0]
-                ]
+              : gridAvatarAssets[avatars[name]?.split("photo-")[1]?.split("?")[0]]
         }
         alt={name}
       />
@@ -177,8 +160,7 @@ function Brand({ name, tile = false }: { name: string; tile?: boolean }) {
           alt=""
           className={cn(
             "size-5 object-contain",
-            ["OpenAI", "Anthropic", "Prisma", "Convex"].includes(name) &&
-              "dark:invert",
+            ["OpenAI", "Anthropic", "Prisma", "Convex"].includes(name) && "dark:invert",
           )}
         />
       ) : name === "Stripe" ? (
@@ -247,10 +229,8 @@ function DotBadge({
       variant="outline"
       className={cn(
         "gap-1 rounded-[5px] px-1 py-0 text-xs font-normal leading-[18px]",
-        tone === "Critical" &&
-          "border-rose-500/15 bg-rose-500/10 text-rose-700 dark:text-rose-400",
-        tone === "High" &&
-          "border-amber-500/15 bg-amber-500/10 text-amber-700 dark:text-amber-400",
+        tone === "Critical" && "border-rose-500/15 bg-rose-500/10 text-rose-700 dark:text-rose-400",
+        tone === "High" && "border-amber-500/15 bg-amber-500/10 text-amber-700 dark:text-amber-400",
         tone === "Medium" &&
           "border-violet-500/15 bg-violet-500/10 text-violet-700 dark:text-violet-400",
         tone === "Low" && "border-transparent bg-muted",
@@ -309,9 +289,7 @@ function Frame({
       >
         <div>
           <FrameTitle className="leading-5">{title}</FrameTitle>
-          <FrameDescription className="mt-0.5 text-xs">
-            {subtitle}
-          </FrameDescription>
+          <FrameDescription className="mt-0.5 text-xs">{subtitle}</FrameDescription>
         </div>
         {action}
       </FrameHeader>
@@ -342,19 +320,14 @@ function Details({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>
-            Record details in this interactive preview.
-          </DialogDescription>
+          <DialogDescription>Record details in this interactive preview.</DialogDescription>
         </DialogHeader>
         <dl className="max-h-[60vh] space-y-3 overflow-y-auto text-sm">
           {data &&
             Object.entries(data)
               .filter(([k]) => k !== "id")
               .map(([key, value]) => (
-                <div
-                  key={key}
-                  className="grid grid-cols-[100px_1fr] gap-4 border-b pb-2"
-                >
+                <div key={key} className="grid grid-cols-[100px_1fr] gap-4 border-b pb-2">
                   <dt className="capitalize text-muted-foreground">{key}</dt>
                   <dd className="break-words">
                     {Array.isArray(value) ? value.join(", ") : String(value)}
@@ -374,12 +347,8 @@ function BillingGrid() {
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(5);
   const [loading, setLoading] = useState(false);
-  const [details, setDetails] = useState<(typeof billingSeed)[number] | null>(
-    null,
-  );
-  const [dispute, setDispute] = useState<(typeof billingSeed)[number] | null>(
-    null,
-  );
+  const [details, setDetails] = useState<(typeof billingSeed)[number] | null>(null);
+  const [dispute, setDispute] = useState<(typeof billingSeed)[number] | null>(null);
   const [create, setCreate] = useState(false);
   const { sort, setSort } = useSorting("Reference", false);
   const fields: FilterField[] = [
@@ -442,9 +411,7 @@ function BillingGrid() {
       width: 132,
       cell: (r) => (
         <>
-          <span className="font-mono text-xs tracking-tight">
-            {r.reference}
-          </span>
+          <span className="font-mono text-xs tracking-tight">{r.reference}</span>
           <div className="grid-secondary">{r.date}</div>
         </>
       ),
@@ -495,10 +462,7 @@ function BillingGrid() {
       width: 120,
       cell: (r) => (
         <>
-          <Badge
-            variant="secondary"
-            className="rounded-md px-1.5 py-0 text-xs font-normal"
-          >
+          <Badge variant="secondary" className="rounded-md px-1.5 py-0 text-xs font-normal">
             {r.channel}
           </Badge>
         </>
@@ -510,12 +474,7 @@ function BillingGrid() {
       width: 130,
       cell: (r) => (
         <>
-          <span
-            className={cn(
-              "font-medium tabular-nums",
-              r.amount > 0 && "text-emerald-500",
-            )}
-          >
+          <span className={cn("font-medium tabular-nums", r.amount > 0 && "text-emerald-500")}>
             {r.amount < 0 ? "−" : "+"}
             {Math.abs(r.amount).toLocaleString("en-US", {
               style: "currency",
@@ -533,11 +492,7 @@ function BillingGrid() {
         <>
           <DotBadge
             dot={false}
-            tone={
-              r.status === "Failed" || r.status === "Disputed"
-                ? "Critical"
-                : "default"
-            }
+            tone={r.status === "Failed" || r.status === "Disputed" ? "Critical" : "default"}
           >
             <span
               className={
@@ -561,29 +516,18 @@ function BillingGrid() {
         <>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                aria-label={`Actions for ${r.reference}`}
-              >
+              <Button variant="ghost" size="icon-sm" aria-label={`Actions for ${r.reference}`}>
                 <Ellipsis />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuGroup>
-                <DropdownMenuItem onSelect={() => setDetails(r)}>
-                  View details
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onSelect={() => downloadCsv(`receipt-${r.reference}`, [r])}
-                >
+                <DropdownMenuItem onSelect={() => setDetails(r)}>View details</DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => downloadCsv(`receipt-${r.reference}`, [r])}>
                   Download receipt
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  disabled={r.status === "Disputed"}
-                  onSelect={() => setDispute(r)}
-                >
+                <DropdownMenuItem disabled={r.status === "Disputed"} onSelect={() => setDispute(r)}>
                   Dispute transaction
                 </DropdownMenuItem>
               </DropdownMenuGroup>
@@ -649,11 +593,7 @@ function BillingGrid() {
                 >
                   Export selected
                 </Button>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => setSelected([])}
-                >
+                <Button size="sm" variant="ghost" onClick={() => setSelected([])}>
                   Clear selection
                 </Button>
               </div>
@@ -663,11 +603,7 @@ function BillingGrid() {
           <FilterPager />
         </Frame>
       </FilterGrid>
-      <Details
-        title="Transaction details"
-        data={details}
-        close={() => setDetails(null)}
-      />
+      <Details title="Transaction details" data={details} close={() => setDetails(null)} />
       <AlertDialog
         open={!!dispute}
         onOpenChange={(v) => {
@@ -686,9 +622,7 @@ function BillingGrid() {
             <AlertDialogAction
               onClick={() => {
                 setRows((rs) =>
-                  rs.map((r) =>
-                    r.id === dispute?.id ? { ...r, status: "Disputed" } : r,
-                  ),
+                  rs.map((r) => (r.id === dispute?.id ? { ...r, status: "Disputed" } : r)),
                 );
                 setDispute(null);
                 toast.success("Transaction flagged for review");
@@ -703,9 +637,7 @@ function BillingGrid() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>New transaction</DialogTitle>
-            <DialogDescription>
-              Add a transaction to this preview ledger.
-            </DialogDescription>
+            <DialogDescription>Add a transaction to this preview ledger.</DialogDescription>
           </DialogHeader>
           <form
             onSubmit={(e) => {
@@ -755,12 +687,8 @@ function AutomationGrid() {
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(5);
   const [selected, setSelected] = useState<number[]>([]);
-  const [details, setDetails] = useState<
-    (typeof automationSeed)[number] | null
-  >(null);
-  const [archive, setArchive] = useState<
-    (typeof automationSeed)[number] | null
-  >(null);
+  const [details, setDetails] = useState<(typeof automationSeed)[number] | null>(null);
+  const [archive, setArchive] = useState<(typeof automationSeed)[number] | null>(null);
   const [create, setCreate] = useState(false);
   const { sort, setSort } = useSorting("Last updated", false);
   const fields: FilterField[] = [
@@ -870,14 +798,8 @@ function AutomationGrid() {
       cell: (r) => (
         <>
           <div className="flex items-center gap-2">
-            <Rating
-              rating={r.score}
-              size="sm"
-              className="gap-0 [&_svg]:size-4"
-            />
-            <span className="text-xs text-muted-foreground">
-              {r.score.toFixed(1)}
-            </span>
+            <Rating rating={r.score} size="sm" className="gap-0 [&_svg]:size-4" />
+            <span className="text-xs text-muted-foreground">{r.score.toFixed(1)}</span>
           </div>
         </>
       ),
@@ -910,22 +832,14 @@ function AutomationGrid() {
         <>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                aria-label={`Actions for ${r.name}`}
-              >
+              <Button variant="ghost" size="icon-sm" aria-label={`Actions for ${r.name}`}>
                 <MoreVertical />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-52">
               <DropdownMenuGroup>
-                <DropdownMenuItem onSelect={() => setDetails(r)}>
-                  View details
-                </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => setDetails(r)}>
-                  Edit workflow
-                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => setDetails(r)}>View details</DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => setDetails(r)}>Edit workflow</DropdownMenuItem>
                 <div className="flex items-center justify-between px-2 py-2 text-sm">
                   Enabled
                   <Switch
@@ -947,10 +861,7 @@ function AutomationGrid() {
                   />
                 </div>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  variant="destructive"
-                  onSelect={() => setArchive(r)}
-                >
+                <DropdownMenuItem variant="destructive" onSelect={() => setArchive(r)}>
                   <Trash2 />
                   Archive
                 </DropdownMenuItem>
@@ -973,8 +884,7 @@ function AutomationGrid() {
     onPage: setPage,
     pageSize,
     onPageSize: setPageSize,
-    filter: (r) =>
-      tab === "All" || r.status === tabs.find((t) => t.label === tab)?.status,
+    filter: (r) => tab === "All" || r.status === tabs.find((t) => t.label === tab)?.status,
   });
   return (
     <>
@@ -988,8 +898,7 @@ function AutomationGrid() {
           title="Automation Library"
           subtitle={
             <>
-              {rows.length} workflows{" "}
-              <span className="mx-1 text-border">•</span>
+              {rows.length} workflows <span className="mx-1 text-border">•</span>
               {rows.filter((r) => r.status === "Live").length} live
               <span className="mx-1 text-border">•</span>
               {rows.filter((r) => r.status === "Needs approval").length} review
@@ -1026,10 +935,7 @@ function AutomationGrid() {
                 >
                   <span>{t.label}</span>
                   <span className="rounded-md bg-muted px-1.5 text-xs font-normal text-muted-foreground">
-                    {
-                      filtered.filter((r) => !t.status || r.status === t.status)
-                        .length
-                    }
+                    {filtered.filter((r) => !t.status || r.status === t.status).length}
                   </span>
                 </button>
               ))}
@@ -1050,22 +956,14 @@ function AutomationGrid() {
                   variant="outline"
                   onClick={() => {
                     setRows((rs) =>
-                      rs.map((r) =>
-                        selected.includes(r.id)
-                          ? { ...r, status: "Paused" }
-                          : r,
-                      ),
+                      rs.map((r) => (selected.includes(r.id) ? { ...r, status: "Paused" } : r)),
                     );
                     setSelected([]);
                   }}
                 >
                   Pause selected
                 </Button>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => setSelected([])}
-                >
+                <Button size="sm" variant="ghost" onClick={() => setSelected([])}>
                   Clear selection
                 </Button>
               </div>
@@ -1074,11 +972,7 @@ function AutomationGrid() {
           </div>
         </Frame>
       </FilterGrid>
-      <Details
-        title="Workflow details"
-        data={details}
-        close={() => setDetails(null)}
-      />
+      <Details title="Workflow details" data={details} close={() => setDetails(null)} />
       <AlertDialog
         open={!!archive}
         onOpenChange={(v) => {
@@ -1110,17 +1004,13 @@ function AutomationGrid() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>New workflow</DialogTitle>
-            <DialogDescription>
-              Create a draft in this preview.
-            </DialogDescription>
+            <DialogDescription>Create a draft in this preview.</DialogDescription>
           </DialogHeader>
           <form
             className="space-y-4"
             onSubmit={(e) => {
               e.preventDefault();
-              const name = String(
-                new FormData(e.currentTarget).get("name") ?? "",
-              ).trim();
+              const name = String(new FormData(e.currentTarget).get("name") ?? "").trim();
               if (!name) return;
               setRows((rs) => [
                 {
@@ -1167,11 +1057,7 @@ function Health({ value, caption }: { value: number; caption?: string }) {
           <div
             className={cn(
               "h-full",
-              value < 55
-                ? "bg-rose-500"
-                : value < 75
-                  ? "bg-amber-500"
-                  : "bg-emerald-500",
+              value < 55 ? "bg-rose-500" : value < 75 ? "bg-amber-500" : "bg-emerald-500",
             )}
             style={{ width: `${value}%` }}
           />
@@ -1216,9 +1102,7 @@ function RenewalsGrid() {
   const [compact, setCompact] = useState(true);
   const [owner, setOwner] = useState("Maya Patel");
   const [stage, setStage] = useState("Preparing");
-  const [details, setDetails] = useState<(typeof renewalSeed)[number] | null>(
-    null,
-  );
+  const [details, setDetails] = useState<(typeof renewalSeed)[number] | null>(null);
   const { sort, setSort } = useSorting("Renewal");
   const owners = [...new Set(rows.map((r) => r.owner))];
   const stages = [...new Set(rows.map((r) => r.stage))];
@@ -1279,13 +1163,7 @@ function RenewalsGrid() {
           ) : c === "Renewal" ? (
             <>
               <span
-                className={
-                  r.days <= 21
-                    ? "text-red-500"
-                    : r.days <= 30
-                      ? "text-amber-500"
-                      : ""
-                }
+                className={r.days <= 21 ? "text-red-500" : r.days <= 30 ? "text-amber-500" : ""}
               >
                 {r.days <= 30 ? `Due in ${r.days}d` : `${r.days}d out`}
               </span>
@@ -1294,12 +1172,7 @@ function RenewalsGrid() {
           ) : c === "ARR" ? (
             <>
               <span className="font-medium tabular-nums">{usd(r.amount)}</span>
-              <div
-                className={cn(
-                  "grid-secondary",
-                  r.upside > 0 && "text-emerald-500",
-                )}
-              >
+              <div className={cn("grid-secondary", r.upside > 0 && "text-emerald-500")}>
                 {r.upside ? "+" : ""}
                 {usd(r.upside)} upside
               </div>
@@ -1333,9 +1206,7 @@ function RenewalsGrid() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuGroup>
-                <DropdownMenuItem onSelect={() => setDetails(r)}>
-                  Open account
-                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => setDetails(r)}>Open account</DropdownMenuItem>
                 <DropdownMenuItem
                   onSelect={() => {
                     setRows((rs) =>
@@ -1354,9 +1225,7 @@ function RenewalsGrid() {
                 >
                   Escalate review
                 </DropdownMenuItem>
-                <DropdownMenuItem
-                  onSelect={() => downloadCsv(`renewal-brief-${r.name}`, [r])}
-                >
+                <DropdownMenuItem onSelect={() => downloadCsv(`renewal-brief-${r.name}`, [r])}>
                   Create brief
                 </DropdownMenuItem>
               </DropdownMenuGroup>
@@ -1397,11 +1266,7 @@ function RenewalsGrid() {
           action={
             <Button
               size="sm"
-              onClick={() =>
-                toast.info(
-                  "New renewal brief ready to connect to your workspace",
-                )
-              }
+              onClick={() => toast.info("New renewal brief ready to connect to your workspace")}
             >
               <Plus />
               New transaction
@@ -1433,24 +1298,12 @@ function RenewalsGrid() {
           {selected.length > 0 && (
             <div className="flex flex-wrap items-center gap-2 border-b bg-muted/25 px-5 py-3">
               <strong className="mr-2">{selected.length} selected</strong>
-              <Choice
-                label="Assign owner"
-                value={owner}
-                change={setOwner}
-                options={owners}
-              />
-              <Choice
-                label="Set stage"
-                value={stage}
-                change={setStage}
-                options={stages}
-              />
+              <Choice label="Assign owner" value={owner} change={setOwner} options={owners} />
+              <Choice label="Set stage" value={stage} change={setStage} options={stages} />
               <Button
                 onClick={() => {
                   setRows((rs) =>
-                    rs.map((r) =>
-                      selected.includes(r.id) ? { ...r, owner, stage } : r,
-                    ),
+                    rs.map((r) => (selected.includes(r.id) ? { ...r, owner, stage } : r)),
                   );
                   setSelected([]);
                   toast.success("Selected renewals updated");
@@ -1468,11 +1321,7 @@ function RenewalsGrid() {
           </div>
         </Frame>
       </FilterGrid>
-      <Details
-        title="Renewal account"
-        data={details}
-        close={() => setDetails(null)}
-      />
+      <Details title="Renewal account" data={details} close={() => setDetails(null)} />
     </>
   );
 }
@@ -1495,9 +1344,7 @@ function RiskGrid() {
   const [compact, setCompact] = useState(true);
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(7);
-  const [details, setDetails] = useState<(typeof riskSeed)[number] | null>(
-    null,
-  );
+  const [details, setDetails] = useState<(typeof riskSeed)[number] | null>(null);
   const [plan, setPlan] = useState<(typeof riskSeed)[number] | null>(null);
   const [notes, setNotes] = useState<Record<number, string>>({});
   const { sort, setSort } = useSorting("Renewal");
@@ -1529,10 +1376,7 @@ function RiskGrid() {
         <Button
           size="icon-sm"
           variant="ghost"
-          className={cn(
-            "opacity-45 hover:opacity-100",
-            row.getIsPinned() && "opacity-100",
-          )}
+          className={cn("opacity-45 hover:opacity-100", row.getIsPinned() && "opacity-100")}
           aria-label={`${row.getIsPinned() ? "Unpin" : "Pin"} ${r.name}`}
           aria-pressed={!!row.getIsPinned()}
           onClick={() => {
@@ -1540,9 +1384,7 @@ function RiskGrid() {
             setPage(0);
           }}
         >
-          <Pin
-            className={cn("size-3.5", row.getIsPinned() && "fill-current")}
-          />
+          <Pin className={cn("size-3.5", row.getIsPinned() && "fill-current")} />
         </Button>
       ),
     },
@@ -1595,10 +1437,7 @@ function RiskGrid() {
               {r.signals.slice(0, 2).map((s) => (
                 <span
                   key={s}
-                  className={cn(
-                    "rounded px-1.5 text-xs leading-5",
-                    signalColors[s] ?? "bg-muted",
-                  )}
+                  className={cn("rounded px-1.5 text-xs leading-5", signalColors[s] ?? "bg-muted")}
                 >
                   {s}
                 </span>
@@ -1613,9 +1452,7 @@ function RiskGrid() {
                       +{r.signals.length - 2}
                     </button>
                   </TooltipTrigger>
-                  <TooltipContent>
-                    {r.signals.slice(2).join(", ")}
-                  </TooltipContent>
+                  <TooltipContent>{r.signals.slice(2).join(", ")}</TooltipContent>
                 </Tooltip>
               )}
             </div>
@@ -1627,10 +1464,7 @@ function RiskGrid() {
             <>
               {r.date}
               <div
-                className={cn(
-                  "grid-secondary",
-                  r.days < 21 ? "text-rose-500" : "text-amber-500",
-                )}
+                className={cn("grid-secondary", r.days < 21 ? "text-rose-500" : "text-amber-500")}
               >
                 {r.days} days left
               </div>
@@ -1665,19 +1499,13 @@ function RiskGrid() {
         <>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                aria-label={`Actions for ${r.name}`}
-              >
+              <Button variant="ghost" size="icon-sm" aria-label={`Actions for ${r.name}`}>
                 <Ellipsis />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuGroup>
-                <DropdownMenuItem onSelect={() => setDetails(r)}>
-                  Open account
-                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => setDetails(r)}>Open account</DropdownMenuItem>
                 <DropdownMenuItem onSelect={() => setPlan(r)}>
                   Save plan
                   {notes[r.id] && <Check className="ml-auto" />}
@@ -1686,9 +1514,7 @@ function RiskGrid() {
                   onSelect={() => {
                     setRows((rs) =>
                       rs.map((row) =>
-                        row.id === r.id
-                          ? { ...row, stage: "Executive Review" }
-                          : row,
+                        row.id === r.id ? { ...row, stage: "Executive Review" } : row,
                       ),
                     );
                     toast.success("Account moved to Executive Review");
@@ -1696,9 +1522,7 @@ function RiskGrid() {
                 >
                   Executive review
                 </DropdownMenuItem>
-                <DropdownMenuItem
-                  onSelect={() => row.pin(row.getIsPinned() ? false : "top")}
-                >
+                <DropdownMenuItem onSelect={() => row.pin(row.getIsPinned() ? false : "top")}>
                   {pinned.includes(r.id) ? <PinOff /> : <Pin />}
                   {pinned.includes(r.id) ? "Unpin account" : "Pin account"}
                 </DropdownMenuItem>
@@ -1740,11 +1564,10 @@ function RiskGrid() {
           subtitle={
             <>
               {rows.length} renewals <span className="text-border">•</span> $
-              {Math.round(total / 1e6)}M ARR{" "}
-              <span className="text-border">•</span>{" "}
+              {Math.round(total / 1e6)}M ARR <span className="text-border">•</span>{" "}
               {rows.filter((r) => r.health < 40).length} critical{" "}
-              <span className="text-border">•</span>{" "}
-              {rows.filter((r) => r.days <= 30).length} in 30d
+              <span className="text-border">•</span> {rows.filter((r) => r.days <= 30).length} in
+              30d
             </>
           }
           action={
@@ -1757,9 +1580,7 @@ function RiskGrid() {
           <div className="border-t border-b">
             <FilterBar
               className="px-5 py-3"
-              clearLabel={
-                rules.some((r) => r.values.length > 0) ? "Clear filters" : ""
-              }
+              clearLabel={rules.some((r) => r.values.length > 0) ? "Clear filters" : ""}
               fields={fields}
               rules={rules}
               onChange={(r) => {
@@ -1769,15 +1590,7 @@ function RiskGrid() {
             >
               <FilteringSettings
                 table={table}
-                columns={[
-                  "Stage",
-                  "Owner",
-                  "Signals",
-                  "Health",
-                  "ARR",
-                  "Renewal",
-                  "Alerts",
-                ]}
+                columns={["Stage", "Owner", "Signals", "Health", "ARR", "Renewal", "Alerts"]}
                 hidden={hidden}
                 onHidden={setHidden}
                 compact={compact}
@@ -1796,11 +1609,7 @@ function RiskGrid() {
                 <span>{pinned.length} renewals stay on top</span>
               </div>
               <span>
-                {usd(
-                  rows
-                    .filter((r) => pinned.includes(r.id))
-                    .reduce((s, r) => s + r.amount, 0),
-                )}{" "}
+                {usd(rows.filter((r) => pinned.includes(r.id)).reduce((s, r) => s + r.amount, 0))}{" "}
                 ARR pinned
               </span>
             </div>
@@ -1808,11 +1617,7 @@ function RiskGrid() {
           <FilterTable /> <FilterPager />
         </Frame>
       </FilterGrid>
-      <Details
-        title="Account risk overview"
-        data={details}
-        close={() => setDetails(null)}
-      />
+      <Details title="Account risk overview" data={details} close={() => setDetails(null)} />
       <Dialog
         open={!!plan}
         onOpenChange={(v) => {
@@ -1832,16 +1637,10 @@ function RiskGrid() {
             onSubmit={(e) => {
               e.preventDefault();
               if (!plan) return;
-              const note = String(
-                new FormData(e.currentTarget).get("note") ?? "",
-              ).trim();
+              const note = String(new FormData(e.currentTarget).get("note") ?? "").trim();
               if (!note) return;
               setNotes((s) => ({ ...s, [plan.id]: note }));
-              setRows((rs) =>
-                rs.map((r) =>
-                  r.id === plan.id ? { ...r, stage: "Save Plan" } : r,
-                ),
-              );
+              setRows((rs) => rs.map((r) => (r.id === plan.id ? { ...r, stage: "Save Plan" } : r)));
               setPlan(null);
               toast.success("Recovery plan saved");
             }}

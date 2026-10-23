@@ -1,27 +1,11 @@
 import { useState } from "react";
-import {
-  Check,
-  Copy,
-  Gift,
-  Mail,
-  Mic,
-  Plus,
-  Settings,
-  Trash2,
-  Video,
-} from "lucide-react";
+import { Check, Copy, Gift, Mail, Mic, Plus, Settings, Trash2, Video } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -35,10 +19,7 @@ import { Separator } from "@/components/ui/separator";
 import { Person, toast } from "./shared";
 import type { BlockMeta } from "@/data/types";
 export default function AccountPanel({ block }: { block: BlockMeta }) {
-  const [accounts, setAccounts] = useState([
-    "alex@acme.com",
-    "alex.morgan@gmail.com",
-  ]);
+  const [accounts, setAccounts] = useState(["alex@acme.com", "alex.morgan@gmail.com"]);
   const [copied, setCopied] = useState(false);
   const [role, setRole] = useState("Member");
   const [permissions, setPermissions] = useState([
@@ -104,11 +85,7 @@ export default function AccountPanel({ block }: { block: BlockMeta }) {
                       aria-label={p}
                       checked={permissions.includes(p)}
                       onCheckedChange={(v) =>
-                        setPermissions(
-                          v
-                            ? [...permissions, p]
-                            : permissions.filter((n) => n !== p),
-                        )
+                        setPermissions(v ? [...permissions, p] : permissions.filter((n) => n !== p))
                       }
                     />
                   </TableCell>
@@ -162,10 +139,7 @@ export default function AccountPanel({ block }: { block: BlockMeta }) {
         <Button
           variant="outline"
           onClick={() => {
-            setAccounts([
-              ...accounts,
-              `new-account-${accounts.length + 1}@acme.com`,
-            ]);
+            setAccounts([...accounts, `new-account-${accounts.length + 1}@acme.com`]);
             toast.success("Demo mailbox connected");
           }}
         >
@@ -180,12 +154,9 @@ export default function AccountPanel({ block }: { block: BlockMeta }) {
         <Card className="shadow-none">
           <CardHeader>
             <Gift className="mb-3 size-7" />
-            <CardTitle className="text-lg">
-              Good things are better shared.
-            </CardTitle>
+            <CardTitle className="text-lg">Good things are better shared.</CardTitle>
             <CardDescription className="leading-6">
-              Invite a friend to Acme and you’ll both get $25 in account credits
-              when they join Pro.
+              Invite a friend to Acme and you’ll both get $25 in account credits when they join Pro.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -201,9 +172,7 @@ export default function AccountPanel({ block }: { block: BlockMeta }) {
                 size="icon"
                 aria-label="Copy referral link"
                 onClick={() => {
-                  navigator.clipboard?.writeText(
-                    "https://acme.example/invite/alex-m",
-                  );
+                  navigator.clipboard?.writeText("https://acme.example/invite/alex-m");
                   setCopied(true);
                   toast.success("Referral link copied");
                 }}
@@ -233,9 +202,7 @@ export default function AccountPanel({ block }: { block: BlockMeta }) {
                 sub={["Joined Oct 12", "Joined Oct 15", "Invited Oct 20"][i]}
                 compact
               />
-              <Badge variant="outline">
-                {i < 2 ? "Reward earned" : "Pending"}
-              </Badge>
+              <Badge variant="outline">{i < 2 ? "Reward earned" : "Pending"}</Badge>
             </div>
           ))}
         </div>
@@ -288,9 +255,7 @@ export default function AccountPanel({ block }: { block: BlockMeta }) {
           </Button>
           {active && (
             <div className="mt-4">
-              <p className="mb-3 text-xs text-muted-foreground">
-                Recording in progress…
-              </p>
+              <p className="mb-3 text-xs text-muted-foreground">Recording in progress…</p>
               <Progress value={42} />
             </div>
           )}
@@ -301,9 +266,7 @@ export default function AccountPanel({ block }: { block: BlockMeta }) {
           <Settings className="size-5" />
           <div>
             <p className="text-sm font-medium">Connected calendar</p>
-            <p className="mt-1 text-xs text-muted-foreground">
-              alex@acme.com · Google Calendar
-            </p>
+            <p className="mt-1 text-xs text-muted-foreground">alex@acme.com · Google Calendar</p>
           </div>
         </div>
         <Badge variant="outline">Connected</Badge>

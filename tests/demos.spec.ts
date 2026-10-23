@@ -2,33 +2,21 @@ import { test, expect } from "@playwright/test";
 import catalog from "../src/data/catalog.json" with { type: "json" };
 const items = catalog.flatMap((c) => c.blocks);
 function route(category: string, name?: RegExp) {
-  const block = items.find(
-    (b) => b.category === category && (!name || name.test(b.name)),
-  )!;
+  const block = items.find((b) => b.category === category && (!name || name.test(b.name)))!;
   return `./#/preview/${block.group}/${block.category}/${block.id}`;
 }
-test("magic link form validates and changes to sent state", async ({
-  page,
-}) => {
+test("magic link form validates and changes to sent state", async ({ page }) => {
   await page.goto(route("auth", /Centered Magic Link/));
-  await page
-    .getByLabel("Work email", { exact: true })
-    .fill("preview@example.com");
-  await page
-    .getByRole("button", { name: "Send magic link", exact: true })
-    .click();
-  await expect(
-    page.getByRole("heading", { name: "Check your inbox" }),
-  ).toBeVisible();
+  await page.getByLabel("Work email", { exact: true }).fill("preview@example.com");
+  await page.getByRole("button", { name: "Send magic link", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Check your inbox" })).toBeVisible();
   await expect(
     page.getByText("We sent a secure sign-in link to preview@example.com."),
   ).toBeVisible();
   await page.getByRole("button", { name: "Back to sign in" }).click();
   await expect(page.getByLabel("Work email", { exact: true })).toBeVisible();
 });
-test("label grid validates inline creation and preserves the new label", async ({
-  page,
-}) => {
+test("label grid validates inline creation and preserves the new label", async ({ page }) => {
   await page.goto(route("editing"));
   await page.getByRole("button", { name: "Add label", exact: true }).click();
   await page.getByLabel("Label name", { exact: true }).fill("Engineering");
@@ -36,52 +24,36 @@ test("label grid validates inline creation and preserves the new label", async (
   await expect(page.getByRole("alert")).toContainText("already exists");
   await page.getByLabel("Label name", { exact: true }).fill("QA preview label");
   await page.getByRole("button", { name: "Create label", exact: true }).click();
-  await expect(
-    page.getByText("QA preview label", { exact: true }),
-  ).toBeVisible();
+  await expect(page.getByText("QA preview label", { exact: true })).toBeVisible();
 });
 test("calendar creates a visible event", async ({ page }) => {
   await page.goto(route("event-calendar"));
   await page.getByRole("button", { name: /Add event|New event/ }).click();
-  await page
-    .getByLabel("Event title", { exact: true })
-    .fill("QA release review");
+  await page.getByLabel("Event title", { exact: true }).fill("QA release review");
   await page.getByLabel("Day", { exact: true }).fill("22");
   await page.getByRole("button", { name: "Create event", exact: true }).click();
-  await expect(
-    page.getByRole("button", { name: /QA release review/ }),
-  ).toBeVisible();
+  await expect(page.getByRole("button", { name: /QA release review/ })).toBeVisible();
 });
-test("AI composer sends a message and renders a demo answer", async ({
-  page,
-}) => {
+test("AI composer sends a message and renders a demo answer", async ({ page }) => {
   await page.goto(route("ai-chat"));
   await page
     .getByRole("textbox", { name: "Message", exact: true })
     .fill("Summarize the release checklist");
   await page.getByRole("button", { name: "Send message", exact: true }).click();
-  await expect(
-    page.getByText("Summarize the release checklist", { exact: true }),
-  ).toBeVisible();
+  await expect(page.getByText("Summarize the release checklist", { exact: true })).toBeVisible();
   await expect(page.getByText(/Here’s your release summary/)).toBeVisible();
-  await expect(
-    page.getByRole("textbox", { name: "Message", exact: true }),
-  ).toBeEmpty();
+  await expect(page.getByRole("textbox", { name: "Message", exact: true })).toBeEmpty();
 });
 test("cart quantities update the order total", async ({ page }) => {
   await page.goto(route("shopping-cart"));
   const before = await page.locator(".isolated-preview").innerText();
-  const increase = page
-    .getByRole("button", { name: /Increase|Add one/ })
-    .first();
+  const increase = page.getByRole("button", { name: /Increase|Add one/ }).first();
   await increase.click();
   await expect
     .poll(async () => await page.locator(".isolated-preview").innerText())
     .not.toBe(before);
 });
-test("FAQ categories and accordion expose selected answers", async ({
-  page,
-}) => {
+test("FAQ categories and accordion expose selected answers", async ({ page }) => {
   await page.goto(route("faq"));
   await page.getByRole("tab", { name: "Licensing", exact: true }).click();
   await expect(
@@ -104,29 +76,19 @@ test("FAQ categories and accordion expose selected answers", async ({
   await expect(question).toHaveAttribute("aria-expanded", "true");
 });
 
-test("payment grid windows rows and loads another batch on scroll", async ({
-  page,
-}) => {
+test("payment grid windows rows and loads another batch on scroll", async ({ page }) => {
   await page.goto(route("virtualization"));
-  await expect(
-    page.getByText("25 of 10,000 loaded", { exact: true }),
-  ).toBeVisible();
+  await expect(page.getByText("25 of 10,000 loaded", { exact: true })).toBeVisible();
   expect(await page.locator("tbody tr[data-row-id]").count()).toBeLessThan(28);
-  await page
-    .locator('[data-slot="data-grid-table-viewport"]')
-    .evaluate((element) => {
-      element.scrollTop = element.scrollHeight;
-      element.dispatchEvent(new Event("scroll"));
-    });
-  await expect(
-    page.getByText("50 of 10,000 loaded", { exact: true }),
-  ).toBeVisible();
+  await page.locator('[data-slot="data-grid-table-viewport"]').evaluate((element) => {
+    element.scrollTop = element.scrollHeight;
+    element.dispatchEvent(new Event("scroll"));
+  });
+  await expect(page.getByText("50 of 10,000 loaded", { exact: true })).toBeVisible();
   expect(await page.locator("tbody tr[data-row-id]").count()).toBeLessThan(28);
 });
 
-test("whiteboard draws shapes with undo, redo and SVG export", async ({
-  page,
-}) => {
+test("whiteboard draws shapes with undo, redo and SVG export", async ({ page }) => {
   await page.goto(route("whiteboard", /Design Review/));
   const canvas = page.getByRole("application", {
     name: "Checkout Review drawing canvas",
@@ -152,9 +114,7 @@ test("whiteboard draws shapes with undo, redo and SVG export", async ({
   expect((await download).suggestedFilename()).toBe("Checkout Review.svg");
 });
 
-test("sprint planning updates capacity, linked decisions and presentation", async ({
-  page,
-}) => {
+test("sprint planning updates capacity, linked decisions and presentation", async ({ page }) => {
   await page.goto(route("whiteboard", /Sprint Planning/));
   await expect(page.getByText("26 of 31 pts", { exact: true })).toBeVisible();
   const card = page.locator('[data-shape="story-0-0"]');
@@ -171,65 +131,40 @@ test("sprint planning updates capacity, linked decisions and presentation", asyn
   const scale = await page
     .locator(".wb-canvas")
     .evaluate((element) => (element as SVGSVGElement).getScreenCTM()!.a);
-  await page.mouse.move(
-    bounds.x + bounds.width / 2,
-    bounds.y + bounds.height / 2,
-  );
+  await page.mouse.move(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
   await page.mouse.down();
-  await page.mouse.move(
-    bounds.x + bounds.width / 2 + 1050 * scale,
-    bounds.y + bounds.height / 2,
-    { steps: 12 },
-  );
+  await page.mouse.move(bounds.x + bounds.width / 2 + 1050 * scale, bounds.y + bounds.height / 2, {
+    steps: 12,
+  });
   await page.mouse.up();
   await expect(page.getByText("21 of 31 pts", { exact: true })).toBeVisible();
   await expect(page.getByText("19 pts parked", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Add to log", exact: true }).click();
-  await expect(page.getByRole("tabpanel")).toContainText(
-    "Apple Pay sheet · 8 pts",
+  await expect(page.getByRole("tabpanel")).toContainText("Apple Pay sheet · 8 pts");
+  await page.getByRole("button", { name: "Mark done", exact: true }).last().click();
+  await expect(page.getByRole("button", { name: "Done", exact: true })).toHaveAttribute(
+    "aria-pressed",
+    "true",
   );
-  await page
-    .getByRole("button", { name: "Mark done", exact: true })
-    .last()
-    .click();
-  await expect(
-    page.getByRole("button", { name: "Done", exact: true }),
-  ).toHaveAttribute("aria-pressed", "true");
   await page.getByRole("tab", { name: "Plan", exact: true }).click();
-  await page
-    .getByRole("button", { name: "Add a card to Receipts", exact: true })
-    .click();
-  await page
-    .getByLabel("Shape text", { exact: true })
-    .fill("Tax receipt\n3 pts");
+  await page.getByRole("button", { name: "Add a card to Receipts", exact: true }).click();
+  await page.getByLabel("Shape text", { exact: true }).fill("Tax receipt\n3 pts");
   await page.getByRole("button", { name: "Save text", exact: true }).click();
   await expect(page.getByText("24 of 31 pts", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Present", exact: true }).click();
-  await expect(page.locator(".wb-root")).toHaveAttribute(
-    "data-presenting",
-    "true",
-  );
-  await expect(
-    page.getByText("Presenting · Sprint Goal, 1 of 6", { exact: true }),
-  ).toBeVisible();
+  await expect(page.locator(".wb-root")).toHaveAttribute("data-presenting", "true");
+  await expect(page.getByText("Presenting · Sprint Goal, 1 of 6", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Next frame", exact: true }).click();
-  await expect(
-    page.getByText("Presenting · Risks, 2 of 6", { exact: true }),
-  ).toBeVisible();
+  await expect(page.getByText("Presenting · Risks, 2 of 6", { exact: true })).toBeVisible();
   await page.getByRole("button", { name: "End", exact: true }).click();
-  await expect(page.locator(".wb-root")).toHaveAttribute(
-    "data-presenting",
-    "false",
-  );
+  await expect(page.locator(".wb-root")).toHaveAttribute("data-presenting", "false");
 });
 
 for (const [id, name, panelLabel, cardId] of [
   ["whiteboard-1", "Checkout Review", "Board panel", "goal0"],
   ["whiteboard-2", "Sprint 42 Planning", "Planning panel", "story-0-0"],
 ]) {
-  test(`${id} keeps notes readable and supports panning on a phone`, async ({
-    page,
-  }) => {
+  test(`${id} keeps notes readable and supports panning on a phone`, async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 720 });
     await page.goto(`./#/preview/application/whiteboard/${id}`);
     await page.getByRole("button", { name: panelLabel, exact: true }).click();
@@ -237,21 +172,15 @@ for (const [id, name, panelLabel, cardId] of [
       name: `${name} drawing canvas`,
     });
     const card = page.locator(`[data-shape="${cardId}"]`);
-    await expect
-      .poll(async () => (await card.boundingBox())?.width || 0)
-      .toBeGreaterThan(130);
+    await expect.poll(async () => (await card.boundingBox())?.width || 0).toBeGreaterThan(130);
     const before = (await card.boundingBox())!;
     await page.getByRole("radio", { name: "Hand", exact: true }).click();
     await page.mouse.move(230, 590);
     await page.mouse.down();
     await page.mouse.move(280, 620, { steps: 6 });
     await page.mouse.up();
-    await expect
-      .poll(async () => (await card.boundingBox())!.x - before.x)
-      .toBeGreaterThan(45);
+    await expect.poll(async () => (await card.boundingBox())!.x - before.x).toBeGreaterThan(45);
     await expect(canvas).toBeVisible();
-    expect(
-      await page.evaluate(() => document.documentElement.scrollWidth),
-    ).toBe(390);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(390);
   });
 }

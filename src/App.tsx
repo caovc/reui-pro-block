@@ -20,37 +20,16 @@ import {
   X,
 } from "lucide-react";
 import { toast } from "sonner";
-import {
-  categories,
-  blocks,
-  groups,
-  blockKey,
-  blockHref,
-  categoryHref,
-} from "@/data/catalog";
+import { categories, blocks, groups, blockKey, blockHref, categoryHref } from "@/data/catalog";
 import type { BlockMeta, CategoryMeta } from "@/data/types";
 import { BlockRenderer } from "@/blocks/renderer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Tooltip,
-  TooltipTrigger,
-  TooltipContent,
-} from "@/components/ui/tooltip";
-import {
-  Sheet,
-  SheetContent,
-  SheetTitle,
-  SheetDescription,
-} from "@/components/ui/sheet";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
+import { Sheet, SheetContent, SheetTitle, SheetDescription } from "@/components/ui/sheet";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import {
   Empty,
   EmptyHeader,
@@ -72,10 +51,12 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { templates, templateCategories } from "@/templates/catalog";
-import { PreviewPanel, IsolatedPreview } from '@/components/site/block-preview';
-const TemplateGallery = lazy(() => import('@/templates/gallery'));
-const TemplateWorkspace = lazy(() => import('@/templates/workspace'));
-const TemplatePreview = lazy(() => import('@/templates/renderer').then(module => ({ default: module.TemplateRenderer })));
+import { PreviewPanel, IsolatedPreview } from "@/components/site/block-preview";
+const TemplateGallery = lazy(() => import("@/templates/gallery"));
+const TemplateWorkspace = lazy(() => import("@/templates/workspace"));
+const TemplatePreview = lazy(() =>
+  import("@/templates/renderer").then((module) => ({ default: module.TemplateRenderer })),
+);
 
 function useStored<T>(key: string, fallback: T) {
   const [value, setValue] = useState<T>(() => {
@@ -102,13 +83,7 @@ function useHash() {
   }, []);
   return hash;
 }
-function IconTip({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
+function IconTip({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <Tooltip>
       <TooltipTrigger asChild>{children}</TooltipTrigger>
@@ -141,9 +116,7 @@ function Miniature({ block }: { block: BlockMeta }) {
   }, []);
   const [width, setWidth] = useState(320);
   useEffect(() => {
-    const observer = new ResizeObserver((entries) =>
-      setWidth(entries[0].contentRect.width),
-    );
+    const observer = new ResizeObserver((entries) => setWidth(entries[0].contentRect.width));
     if (ref.current) observer.observe(ref.current);
     return () => observer.disconnect();
   }, []);
@@ -215,22 +188,12 @@ function BlockTile({
     </div>
   );
 }
-function NoResults({
-  clear,
-  favorites = false,
-}: {
-  clear: () => void;
-  favorites?: boolean;
-}) {
+function NoResults({ clear, favorites = false }: { clear: () => void; favorites?: boolean }) {
   return (
     <Empty className="empty-results">
       <EmptyHeader>
-        <EmptyMedia variant="icon">
-          {favorites ? <Heart /> : <Search />}
-        </EmptyMedia>
-        <EmptyTitle>
-          {favorites ? "Your collection starts here" : "No matching blocks"}
-        </EmptyTitle>
+        <EmptyMedia variant="icon">{favorites ? <Heart /> : <Search />}</EmptyMedia>
+        <EmptyTitle>{favorites ? "Your collection starts here" : "No matching blocks"}</EmptyTitle>
         <EmptyDescription>
           {favorites
             ? "Save blocks with the heart button to find them here."
@@ -258,9 +221,7 @@ export default function App() {
   const [about, setAbout] = useState(false);
   const [page, setPage] = useState(1);
   const segments = hash.split("?")[0].split("/").filter(Boolean);
-  const category = categories.find(
-    (c) => c.group === segments[1] && c.id === segments[2],
-  );
+  const category = categories.find((c) => c.group === segments[1] && c.id === segments[2]);
   const block = blocks.find((b) => blockKey(b) === segments.slice(1).join("/"));
   const isFavoritePage = segments[0] === "favorites";
   const isCategory = segments[0] === "category" && category;
@@ -282,11 +243,13 @@ export default function App() {
   useEffect(() => {
     if (isolated) return;
     if (isTemplateWorkspace) return;
-    document.title = isTemplates ? "Templates — REUI" : isBlock
-      ? `${block.name} — REUI Blocks`
-      : isCategory
-        ? `${category.name} — REUI Blocks`
-        : "REUI Blocks — Open component collection";
+    document.title = isTemplates
+      ? "Templates — REUI"
+      : isBlock
+        ? `${block.name} — REUI Blocks`
+        : isCategory
+          ? `${category.name} — REUI Blocks`
+          : "REUI Blocks — Open component collection";
   }, [isolated, isBlock, isCategory, block, category, isTemplates, isTemplateWorkspace]);
   useEffect(() => {
     const listener = (e: KeyboardEvent) => {
@@ -305,9 +268,7 @@ export default function App() {
   function toggleFavorite(b: BlockMeta) {
     const key = blockKey(b);
     setFavorites((current) =>
-      current.includes(key)
-        ? current.filter((k) => k !== key)
-        : [...current, key],
+      current.includes(key) ? current.filter((k) => k !== key) : [...current, key],
     );
   }
   function clear() {
@@ -315,14 +276,9 @@ export default function App() {
     setGroup("all");
     location.hash = "/";
   }
-  const match = (text: string) =>
-    text.toLowerCase().includes(query.trim().toLowerCase());
+  const match = (text: string) => text.toLowerCase().includes(query.trim().toLowerCase());
   const filteredCategories = categories
-    .filter(
-      (c) =>
-        (group === "all" || c.group === group) &&
-        match(`${c.name} ${c.groupLabel}`),
-    )
+    .filter((c) => (group === "all" || c.group === group) && match(`${c.name} ${c.groupLabel}`))
     .sort((a, b) => a.name.localeCompare(b.name));
   const visibleBlocks = (
     isFavoritePage
@@ -335,30 +291,55 @@ export default function App() {
       match(`${b.name} ${b.category} ${b.id}`) &&
       (group === "all" || isCategory || b.group === group),
   );
-  const showBlockResults = Boolean(
-    isCategory || isFavoritePage || query.trim(),
-  );
+  const showBlockResults = Boolean(isCategory || isFavoritePage || query.trim());
   const currentCategory = isBlock
     ? categories.find((c) => c.group === block.group && c.id === block.category)
     : category;
   const related = currentCategory?.blocks || [];
   const blockIndex = block ? related.findIndex((b) => b.id === block.id) : -1;
-  const total = showBlockResults
-    ? visibleBlocks.length
-    : filteredCategories.length;
+  const total = showBlockResults ? visibleBlocks.length : filteredCategories.length;
   const limit = 18;
   const displayed = showBlockResults
     ? visibleBlocks.slice(0, page * limit)
     : filteredCategories.slice(0, page * limit);
   if (isolated) return <IsolatedPreview key={hash} block={block} />;
-  if (segments[0] === 'template-preview') return <Suspense fallback={<Skeleton className="h-96 w-full"/>}><TemplatePreview id={segments[1]}/></Suspense>;
-  if (isTemplates && segments[1]) return <Suspense fallback={<div className="p-8" role="status">Loading template…</div>}><TemplateWorkspace key={segments[1]} id={segments[1]} dark={dark} onThemeChange={() => setDark(!dark)}/></Suspense>;
+  if (segments[0] === "template-preview")
+    return (
+      <Suspense fallback={<Skeleton className="h-96 w-full" />}>
+        <TemplatePreview id={segments[1]} />
+      </Suspense>
+    );
+  if (isTemplates && segments[1])
+    return (
+      <Suspense
+        fallback={
+          <div className="p-8" role="status">
+            Loading template…
+          </div>
+        }
+      >
+        <TemplateWorkspace
+          key={segments[1]}
+          id={segments[1]}
+          dark={dark}
+          onThemeChange={() => setDark(!dark)}
+        />
+      </Suspense>
+    );
   const sidebarContent = (
     <>
       <div className="sidebar-top">
         <Button variant={isTemplates ? "secondary" : "ghost"} className="justify-start" asChild>
-          <a href="#/templates" onClick={() => setSidebar(false)} aria-current={isTemplates ? "page" : undefined}>
-            <Monitor data-icon="inline-start" />Templates<Badge variant="outline" className="ml-auto">18</Badge>
+          <a
+            href="#/templates"
+            onClick={() => setSidebar(false)}
+            aria-current={isTemplates ? "page" : undefined}
+          >
+            <Monitor data-icon="inline-start" />
+            Templates
+            <Badge variant="outline" className="ml-auto">
+              18
+            </Badge>
           </a>
         </Button>
         <Button variant={isTemplates ? "ghost" : "secondary"} className="justify-start" asChild>
@@ -374,9 +355,7 @@ export default function App() {
           <a href="#/favorites" onClick={() => setSidebar(false)}>
             <Heart data-icon="inline-start" />
             Favorites
-            <span className="ml-auto text-xs text-muted-foreground">
-              {favorites.length}
-            </span>
+            <span className="ml-auto text-xs text-muted-foreground">{favorites.length}</span>
           </a>
         </Button>
       </div>
@@ -386,9 +365,7 @@ export default function App() {
           <Select
             value={currentCategory.group}
             onValueChange={(value) => {
-              const next = categories.find(
-                (category) => category.group === value,
-              );
+              const next = categories.find((category) => category.group === value);
               if (next) location.hash = categoryHref(next).slice(1);
             }}
           >
@@ -410,62 +387,77 @@ export default function App() {
         </div>
       )}
       <div className="sidebar-categories">
-        {isTemplates ? templateCategories.filter(name => name !== 'All Templates').map(name => <section key={name}><h3>{name}<span>{templates.filter(t => t.category === name).length}</span></h3>{templates.filter(t => t.category === name).map(template => <a key={template.id} className="sidebar-link" href={`#/templates/${template.id}`} onClick={() => setSidebar(false)}>{template.name}<ArrowRight className="size-3"/></a>)}</section>) : groups
-          .filter(
-            (g) =>
-              g.id !== "all" &&
-              (!currentCategory || g.id === currentCategory.group),
-          )
-          .map((g) => (
-            <section key={g.id}>
-              <h3>
-                {g.name}
-                <span>{g.count}</span>
-              </h3>
-              {categories
-                .filter((c) => c.group === g.id)
-                .map((c) => (
-                  <div key={c.id}>
-                    <a
-                      className={cn(
-                        "sidebar-link",
-                        currentCategory?.group === c.group &&
-                          currentCategory?.id === c.id &&
-                          "active",
-                      )}
-                      href={categoryHref(c)}
-                      onClick={() => setSidebar(false)}
-                    >
-                      {c.name}
-                      <span>{c.count}</span>
-                    </a>
-                    {currentCategory?.group === c.group &&
-                      currentCategory?.id === c.id && (
-                        <div className="sidebar-blocks">
-                          {c.blocks.map((item) => (
-                            <a
-                              key={item.id}
-                              href={blockHref(item)}
-                              className={cn(
-                                "sidebar-block-link",
-                                isBlock && item.id === block.id && "active",
-                              )}
-                              onClick={() => setSidebar(false)}
-                              aria-current={
-                                isBlock && item.id === block.id
-                                  ? "page"
-                                  : undefined
-                              }
-                            >
-                              {item.name}
-                            </a>
-                          ))}
-                        </div>
-                      )}
-                  </div>
-                ))}
-            </section>
-          ))}
+        {isTemplates
+          ? templateCategories
+              .filter((name) => name !== "All Templates")
+              .map((name) => (
+                <section key={name}>
+                  <h3>
+                    {name}
+                    <span>{templates.filter((t) => t.category === name).length}</span>
+                  </h3>
+                  {templates
+                    .filter((t) => t.category === name)
+                    .map((template) => (
+                      <a
+                        key={template.id}
+                        className="sidebar-link"
+                        href={`#/templates/${template.id}`}
+                        onClick={() => setSidebar(false)}
+                      >
+                        {template.name}
+                        <ArrowRight className="size-3" />
+                      </a>
+                    ))}
+                </section>
+              ))
+          : groups
+              .filter((g) => g.id !== "all" && (!currentCategory || g.id === currentCategory.group))
+              .map((g) => (
+                <section key={g.id}>
+                  <h3>
+                    {g.name}
+                    <span>{g.count}</span>
+                  </h3>
+                  {categories
+                    .filter((c) => c.group === g.id)
+                    .map((c) => (
+                      <div key={c.id}>
+                        <a
+                          className={cn(
+                            "sidebar-link",
+                            currentCategory?.group === c.group &&
+                              currentCategory?.id === c.id &&
+                              "active",
+                          )}
+                          href={categoryHref(c)}
+                          onClick={() => setSidebar(false)}
+                        >
+                          {c.name}
+                          <span>{c.count}</span>
+                        </a>
+                        {currentCategory?.group === c.group && currentCategory?.id === c.id && (
+                          <div className="sidebar-blocks">
+                            {c.blocks.map((item) => (
+                              <a
+                                key={item.id}
+                                href={blockHref(item)}
+                                className={cn(
+                                  "sidebar-block-link",
+                                  isBlock && item.id === block.id && "active",
+                                )}
+                                onClick={() => setSidebar(false)}
+                                aria-current={isBlock && item.id === block.id ? "page" : undefined}
+                              >
+                                {item.name}
+                              </a>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                </section>
+              ))}
       </div>
     </>
   );
@@ -482,12 +474,14 @@ export default function App() {
             Blocks
             <ChevronDown className="size-3" />
           </a>
-          <a className={isTemplates ? "nav-active" : ""} href="#/templates" aria-current={isTemplates ? "page" : undefined}>Templates<Badge variant="secondary">18</Badge></a>
           <a
-            href="https://ui.shadcn.com/docs/components"
-            target="_blank"
-            rel="noreferrer"
+            className={isTemplates ? "nav-active" : ""}
+            href="#/templates"
+            aria-current={isTemplates ? "page" : undefined}
           >
+            Templates<Badge variant="secondary">18</Badge>
+          </a>
+          <a href="https://ui.shadcn.com/docs/components" target="_blank" rel="noreferrer">
             Components
             <ExternalLink className="size-3" />
           </a>
@@ -499,7 +493,13 @@ export default function App() {
           <Button
             variant="outline"
             className="search-trigger"
-            onClick={() => isTemplates ? document.querySelector<HTMLInputElement>('[aria-label="Search templates"]')?.focus() : setSearchOpen(true)}
+            onClick={() =>
+              isTemplates
+                ? document
+                    .querySelector<HTMLInputElement>('[aria-label="Search templates"]')
+                    ?.focus()
+                : setSearchOpen(true)
+            }
           >
             <Search data-icon="inline-start" />
             <span>{isTemplates ? "Search templates..." : "Search blocks..."}</span>
@@ -526,7 +526,11 @@ export default function App() {
             </a>
           </Button>
           <Button variant="outline" className="hidden sm:flex" asChild>
-            <a href={isTemplates ? "https://reui.io/templates" : "https://reui.io/blocks"} target="_blank" rel="noopener noreferrer">
+            <a
+              href={isTemplates ? "https://reui.io/templates" : "https://reui.io/blocks"}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               REUI reference
               <ArrowRight data-icon="inline-end" />
             </a>
@@ -560,30 +564,29 @@ export default function App() {
                 <span>{currentCategory?.groupLabel}</span>
                 <ChevronRight />
                 {isBlock ? (
-                  <a href={categoryHref(currentCategory!)}>
-                    {currentCategory?.name}
-                  </a>
+                  <a href={categoryHref(currentCategory!)}>{currentCategory?.name}</a>
                 ) : (
                   <span className="text-foreground">{category?.name}</span>
                 )}
               </>
             )}
           </div>
-          {isTemplates ? <Suspense fallback={<Skeleton className="h-96 w-full"/>}><TemplateGallery dark={dark}/></Suspense> : isBlock ? (
+          {isTemplates ? (
+            <Suspense fallback={<Skeleton className="h-96 w-full" />}>
+              <TemplateGallery dark={dark} />
+            </Suspense>
+          ) : isBlock ? (
             <>
               <div className="block-heading">
                 <div>
-                  <a
-                    className="back-link"
-                    href={categoryHref(currentCategory!)}
-                  >
+                  <a className="back-link" href={categoryHref(currentCategory!)}>
                     <ArrowLeft className="size-3.5" />
                     All {currentCategory?.name} blocks
                   </a>
                   <h1>{block.name}</h1>
                   <p>
-                    Built with ReUI and shadcn/ui. Explore the interactions, customize
-                    the theme, and make it yours.
+                    Built with ReUI and shadcn/ui. Explore the interactions, customize the theme,
+                    and make it yours.
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
@@ -596,9 +599,7 @@ export default function App() {
                       onClick={() => toggleFavorite(block)}
                     >
                       <Heart
-                        className={cn(
-                          favorites.includes(blockKey(block)) && "fill-current",
-                        )}
+                        className={cn(favorites.includes(blockKey(block)) && "fill-current")}
                       />
                     </Button>
                   </IconTip>
@@ -648,11 +649,7 @@ export default function App() {
                 <span>
                   {blockIndex + 1} / {related.length}
                 </span>
-                <Button
-                  variant="outline"
-                  asChild
-                  disabled={blockIndex >= related.length - 1}
-                >
+                <Button variant="outline" asChild disabled={blockIndex >= related.length - 1}>
                   {blockIndex < related.length - 1 ? (
                     <a href={blockHref(related[blockIndex + 1])}>
                       {related[blockIndex + 1].name}
@@ -723,9 +720,7 @@ export default function App() {
                   <Input
                     aria-label="Search blocks"
                     placeholder={
-                      isCategory
-                        ? `Search ${category.name.toLowerCase()}...`
-                        : "Search blocks..."
+                      isCategory ? `Search ${category.name.toLowerCase()}...` : "Search blocks..."
                     }
                     value={query}
                     onChange={(e) => {
@@ -766,10 +761,7 @@ export default function App() {
                 <div className="catalog-grid">
                   {displayed.map((item) =>
                     "blocks" in item ? (
-                      <CategoryTile
-                        key={`${item.group}/${item.id}`}
-                        category={item}
-                      />
+                      <CategoryTile key={`${item.group}/${item.id}`} category={item} />
                     ) : (
                       <BlockTile
                         key={blockKey(item)}
@@ -783,11 +775,7 @@ export default function App() {
               )}
               {page * limit < total && (
                 <div className="load-more">
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    onClick={() => setPage((n) => n + 1)}
-                  >
+                  <Button variant="outline" size="lg" onClick={() => setPage((n) => n + 1)}>
                     Show more {showBlockResults ? "blocks" : "categories"}
                     <ChevronDown data-icon="inline-end" />
                   </Button>
@@ -803,8 +791,7 @@ export default function App() {
               <Mark small />
               <span>REUI Blocks</span>
               <span className="footer-note">
-                Independent collection · Free components, thoughtful
-                compositions.
+                Independent collection · Free components, thoughtful compositions.
               </span>
             </div>
             <Button variant="ghost" size="sm" onClick={() => setAbout(true)}>
@@ -843,18 +830,12 @@ export default function App() {
             <div className="p-2">
               {(searchQuery.trim()
                 ? blocks.filter((b) =>
-                    `${b.name} ${b.category}`
-                      .toLowerCase()
-                      .includes(searchQuery.toLowerCase()),
+                    `${b.name} ${b.category}`.toLowerCase().includes(searchQuery.toLowerCase()),
                   )
                 : blocks.filter((b) =>
-                    [
-                      "dashboard",
-                      "auth",
-                      "product-card",
-                      "ai-chat",
-                      "pricing",
-                    ].includes(b.category),
+                    ["dashboard", "auth", "product-card", "ai-chat", "pricing"].includes(
+                      b.category,
+                    ),
                   )
               )
                 .slice(0, 30)
@@ -874,11 +855,7 @@ export default function App() {
                     <span>
                       {b.name}
                       <small>
-                        {
-                          categories.find(
-                            (c) => c.group === b.group && c.id === b.category,
-                          )?.name
-                        }
+                        {categories.find((c) => c.group === b.group && c.id === b.category)?.name}
                       </small>
                     </span>
                     <ArrowRight className="ml-auto size-3.5 text-muted-foreground" />
@@ -886,9 +863,7 @@ export default function App() {
                 ))}
               {searchQuery &&
                 !blocks.some((b) =>
-                  `${b.name} ${b.category}`
-                    .toLowerCase()
-                    .includes(searchQuery.toLowerCase()),
+                  `${b.name} ${b.category}`.toLowerCase().includes(searchQuery.toLowerCase()),
                 ) && (
                   <p className="p-8 text-center text-sm text-muted-foreground">
                     No blocks found. Try “dashboard” or “login”.
@@ -906,48 +881,36 @@ export default function App() {
         <DialogContent>
           <DialogTitle>Made to be explored. Built to be yours.</DialogTitle>
           <DialogDescription>
-            An independent component collection inspired by REUI’s public block
-            catalog.
+            An independent component collection inspired by REUI’s public block catalog.
           </DialogDescription>
           <div className="about-content">
             <p>
-              Browse all 662 reference entries across 78 categories. Every entry
-              opens an interactive local implementation with its actual source
-              files and dependencies.
+              Browse all 662 reference entries across 78 categories. Every entry opens an
+              interactive local implementation with its actual source files and dependencies.
             </p>
             <p>
-              Blocks share composable layout families. Names, structure,
-              interactions, and demo content vary by entry; these are
-              independent recreations and are not pixel-identical copies of the
-              original Pro library.
+              Blocks share composable layout families. Names, structure, interactions, and demo
+              content vary by entry; these are independent recreations and are not pixel-identical
+              copies of the original Pro library.
             </p>
             <p>
-              Use the Code tab to inspect files. Download source includes the
-              entry wrapper, family modules, and shadcn primitives. Install the
-              dependencies from the repository’s package.json and use its
-              Tailwind theme.
+              Use the Code tab to inspect files. Download source includes the entry wrapper, family
+              modules, and shadcn primitives. Install the dependencies from the repository’s
+              package.json and use its Tailwind theme.
             </p>
             <p>
-              Forms, payments, authentication, and AI responses run as local
-              demos. Connect your own services for production.
+              Forms, payments, authentication, and AI responses run as local demos. Connect your own
+              services for production.
             </p>
             <div className="flex gap-2">
               <Button asChild>
-                <a
-                  href="https://github.com/caovc/reui-pro-block"
-                  target="_blank"
-                  rel="noreferrer"
-                >
+                <a href="https://github.com/caovc/reui-pro-block" target="_blank" rel="noreferrer">
                   <Github data-icon="inline-start" />
                   Repository
                 </a>
               </Button>
               <Button variant="outline" asChild>
-                <a
-                  href="https://reui.io/blocks"
-                  target="_blank"
-                  rel="noreferrer"
-                >
+                <a href="https://reui.io/blocks" target="_blank" rel="noreferrer">
                   Original reference
                   <ExternalLink data-icon="inline-end" />
                 </a>

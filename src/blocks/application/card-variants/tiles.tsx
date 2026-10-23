@@ -28,10 +28,7 @@ export function BrandLogoGrid() {
       <div className="refined-brand-grid">
         {["Resend", "Stripe", "Supabase", "OpenAI", "Anthropic"].map((name) => (
           <Frame key={name} variant="inverse">
-            <FramePanel
-              className="flex h-[104px] items-center justify-center"
-              fit
-            >
+            <FramePanel className="flex h-[104px] items-center justify-center" fit>
               <IconTile variant="elevated" size="xl">
                 <Brand name={name} />
               </IconTile>
@@ -73,10 +70,7 @@ export function FeatureHighlights() {
     <CardStage variant={2}>
       <FramedGrid>
         {features.map(({ title, description, icon: Icon }) => (
-          <FramePanel
-            key={title}
-            className="refined-pattern flex flex-col gap-5"
-          >
+          <FramePanel key={title} className="refined-pattern flex flex-col gap-5">
             <IconTile variant="elevated">
               <Icon />
             </IconTile>
@@ -86,9 +80,7 @@ export function FeatureHighlights() {
                   {title}
                 </LocalLink>
               </FrameTitle>
-              <FrameDescription className="text-xs">
-                {description}
-              </FrameDescription>
+              <FrameDescription className="text-xs">{description}</FrameDescription>
             </div>
           </FramePanel>
         ))}
@@ -111,8 +103,7 @@ const integrations = [
     brand: "PayPal",
     title: "PayPal Checkout Flow",
     tier: "Regular",
-    description:
-      "Optimized payment processing for speed, reliability, and global reach.",
+    description: "Optimized payment processing for speed, reliability, and global reach.",
     left: Zap,
     right: Shield,
   },
@@ -130,53 +121,42 @@ export function IntegrationConnector() {
   return (
     <CardStage variant={5}>
       <div className="refined-connect-grid">
-        {integrations.map(
-          (
-            { brand, title, tier, description, left: Left, right: Right },
-            i,
-          ) => (
-            <Frame key={brand} variant="inverse">
-              <FramePanel className="refined-connector refined-pattern" fit>
-                <IconTile variant="elevated">
-                  <Left />
-                </IconTile>
-                <IconTile variant="elevated" size="xl">
-                  <Brand name={brand} />
-                </IconTile>
-                <IconTile variant="elevated">
-                  <Right />
-                </IconTile>
-              </FramePanel>
-              <FrameFooter className="gap-2 px-3 pb-3 pt-2">
-                <div className="flex items-start justify-between gap-2">
-                  <FrameTitle>
-                    <LocalLink
-                      title={title}
-                      description={`${description} This integration is a local preview.`}
-                    >
-                      {title}
-                    </LocalLink>
-                  </FrameTitle>
-                  <Badge
-                    variant={
-                      i === 0
-                        ? "info-light"
-                        : i === 1
-                          ? "warning-light"
-                          : "success-light"
-                    }
-                    size="sm"
+        {integrations.map(({ brand, title, tier, description, left: Left, right: Right }, i) => (
+          <Frame key={brand} variant="inverse">
+            <FramePanel className="refined-connector refined-pattern" fit>
+              <IconTile variant="elevated">
+                <Left />
+              </IconTile>
+              <IconTile variant="elevated" size="xl">
+                <Brand name={brand} />
+              </IconTile>
+              <IconTile variant="elevated">
+                <Right />
+              </IconTile>
+            </FramePanel>
+            <FrameFooter className="gap-2 px-3 pb-3 pt-2">
+              <div className="flex items-start justify-between gap-2">
+                <FrameTitle>
+                  <LocalLink
+                    title={title}
+                    description={`${description} This integration is a local preview.`}
                   >
-                    {tier}
-                  </Badge>
-                </div>
-                <FrameDescription className="line-clamp-2 text-xs leading-5">
-                  {description}
-                </FrameDescription>
-              </FrameFooter>
-            </Frame>
-          ),
-        )}
+                    {title}
+                  </LocalLink>
+                </FrameTitle>
+                <Badge
+                  variant={i === 0 ? "info-light" : i === 1 ? "warning-light" : "success-light"}
+                  size="sm"
+                >
+                  {tier}
+                </Badge>
+              </div>
+              <FrameDescription className="line-clamp-2 text-xs leading-5">
+                {description}
+              </FrameDescription>
+            </FrameFooter>
+          </Frame>
+        ))}
       </div>
     </CardStage>
   );
@@ -205,18 +185,11 @@ export function NumberedSetup() {
     <CardStage variant={6}>
       <FramedGrid>
         {steps.map(({ title, description }, i) => (
-          <FramePanel
-            key={title}
-            className="flex min-h-[200px] flex-col justify-between gap-16"
-          >
-            <h3 className="text-sm font-normal text-muted-foreground/60">
-              0.{i + 1}
-            </h3>
+          <FramePanel key={title} className="flex min-h-[200px] flex-col justify-between gap-16">
+            <h3 className="text-sm font-normal text-muted-foreground/60">0.{i + 1}</h3>
             <div className="flex flex-col gap-2">
               <FrameTitle>{title}</FrameTitle>
-              <FrameDescription className="text-xs leading-5">
-                {description}
-              </FrameDescription>
+              <FrameDescription className="text-xs leading-5">{description}</FrameDescription>
             </div>
           </FramePanel>
         ))}
@@ -236,10 +209,7 @@ export function NoticeCards() {
     <CardStage variant={11}>
       <FramedGrid>
         {notices.map(({ title, body }) => (
-          <FramePanel
-            key={title}
-            className="refined-pattern flex flex-col gap-4"
-          >
+          <FramePanel key={title} className="refined-pattern flex flex-col gap-4">
             <h3 className="text-xs font-medium">{title}</h3>
             <p className="text-sm leading-6">{body}</p>
           </FramePanel>
@@ -277,14 +247,12 @@ export function QuickLinkTiles() {
 const partners = [
   {
     title: "Sponsors",
-    description:
-      "Checkout built for speed and consistent transaction high performance.",
+    description: "Checkout built for speed and consistent transaction high performance.",
     brands: ["MongoDB", "Hotmart", "Discord", "Solana"],
   },
   {
     title: "Affiliates",
-    description:
-      "Authorized partners promoting our services in multiple regions.",
+    description: "Authorized partners promoting our services in multiple regions.",
     brands: ["Redis", "Supabase", "Stripe", "AppStore"],
   },
 ];
@@ -303,11 +271,7 @@ export function PartnerShowcase() {
             <div className="flex gap-3 pt-1">
               {brands.map((name) => (
                 <IconTile variant="elevated" key={name}>
-                  {name === "Hotmart" ? (
-                    <Flame className="text-warning" />
-                  ) : (
-                    <Brand name={name} />
-                  )}
+                  {name === "Hotmart" ? <Flame className="text-warning" /> : <Brand name={name} />}
                 </IconTile>
               ))}
             </div>

@@ -19,11 +19,7 @@ import {
 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable";
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 import {
   Button,
   Badge,
@@ -78,15 +74,8 @@ function RecordPane() {
   const [view, setView] = useState("Overview");
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <Tabs
-        className="min-h-0 flex-1 gap-0"
-        value={view}
-        onValueChange={setView}
-      >
-        <TabsList
-          variant="line"
-          className="h-11 w-full shrink-0 justify-start gap-1 border-b px-3"
-        >
+      <Tabs className="min-h-0 flex-1 gap-0" value={view} onValueChange={setView}>
+        <TabsList variant="line" className="h-11 w-full shrink-0 justify-start gap-1 border-b px-3">
           {["Overview", "Activity", "Briefs", "Calls"].map((n, i) => (
             <TabsTrigger key={n} value={n} className="h-10 px-2 text-[11px]">
               <Square className="size-3" />
@@ -100,11 +89,7 @@ function RecordPane() {
           ))}
         </TabsList>
         {["Overview", "Activity", "Briefs", "Calls"].map((n) => (
-          <TabsContent
-            value={n}
-            key={n}
-            className="flex min-h-0 overflow-hidden"
-          >
+          <TabsContent value={n} key={n} className="flex min-h-0 overflow-hidden">
             <SkeletonLines cards={n === "Overview" || n === "Briefs"} />
           </TabsContent>
         ))}
@@ -128,12 +113,7 @@ function DetailPane({ onClose }: { onClose: () => void }) {
             </Badge>
           </TabsTrigger>
         </TabsList>
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          aria-label="Hide detail sidebar"
-          onClick={onClose}
-        >
+        <Button variant="ghost" size="icon-sm" aria-label="Hide detail sidebar" onClick={onClose}>
           <PanelRight />
         </Button>
       </div>
@@ -164,14 +144,7 @@ function Workbench({
   onExpand: () => void;
 }) {
   const [tab, setTab] = useState("Settings");
-  const names = [
-    "Settings",
-    "Webhooks",
-    "Events",
-    "Logs",
-    "Health",
-    "Inspector",
-  ];
+  const names = ["Settings", "Webhooks", "Events", "Logs", "Health", "Inspector"];
   return (
     <div className="flex h-full min-h-0 flex-col">
       <div className="flex h-10 shrink-0 items-center justify-between border-b px-4">
@@ -203,21 +176,13 @@ function Workbench({
           </Button>
         </div>
       </div>
-      <Tabs
-        value={tab}
-        onValueChange={setTab}
-        className="min-h-0 flex-1 flex-col-reverse gap-0"
-      >
+      <Tabs value={tab} onValueChange={setTab} className="min-h-0 flex-1 flex-col-reverse gap-0">
         <TabsList
           variant="line"
           className="h-11 w-full shrink-0 justify-start overflow-x-auto border-t px-4"
         >
           {names.map((name, i) => (
-            <TabsTrigger
-              value={name}
-              key={name}
-              className="h-10 shrink-0 px-2 text-[11px]"
-            >
+            <TabsTrigger value={name} key={name} className="h-10 shrink-0 px-2 text-[11px]">
               {name}
               {i > 1 && i < 5 && (
                 <Badge variant="outline" className="h-4 px-1 text-[9px]">
@@ -264,8 +229,7 @@ export default function OperationsShell() {
     const media = matchMedia("(max-width:767px)");
     const update = () => {
       setCompact(media.matches);
-      if (media.matches)
-        setRegions((v) => v.filter((n) => n !== "details" && n !== "context"));
+      if (media.matches) setRegions((v) => v.filter((n) => n !== "details" && n !== "context"));
     };
     media.addEventListener("change", update);
     return () => media.removeEventListener("change", update);
@@ -275,25 +239,15 @@ export default function OperationsShell() {
   const [note, setNote] = useState(false);
   const [expanded, setExpanded] = useState(false);
   function toggle(name: string) {
-    setRegions(
-      regions.includes(name)
-        ? regions.filter((n) => n !== name)
-        : [...regions, name],
-    );
+    setRegions(regions.includes(name) ? regions.filter((n) => n !== name) : [...regions, name]);
   }
   return (
     <div className="shell-reference" data-shell-variant="11">
       {regions.includes("workspace") && (
-        <Sidebar
-          collapsed={collapsed}
-          className="border-r"
-          label="Operations navigation"
-        >
+        <Sidebar collapsed={collapsed} className="border-r" label="Operations navigation">
           <div className="flex h-9 items-center gap-2 px-2">
             <ReuiMark />
-            {!collapsed && (
-              <span className="sidebar-expanded text-xs font-medium">ReUI</span>
-            )}
+            {!collapsed && <span className="sidebar-expanded text-xs font-medium">ReUI</span>}
           </div>
           <div className="mt-3 px-0">
             <SearchPalette collapsed={collapsed} onSelect={setActive} />
@@ -328,10 +282,7 @@ export default function OperationsShell() {
             />
           </div>
           <WorkspaceMenu collapsed={collapsed} initial="Codex" />
-          <CollapseHandle
-            collapsed={collapsed}
-            onToggle={() => setCollapsed(!collapsed)}
-          />
+          <CollapseHandle collapsed={collapsed} onToggle={() => setCollapsed(!collapsed)} />
         </Sidebar>
       )}
       <main className="shell-content-frame">
@@ -369,9 +320,7 @@ export default function OperationsShell() {
               variant={regions.includes("context") ? "secondary" : "ghost"}
               size="icon-sm"
               aria-label={
-                regions.includes("context")
-                  ? "Close context panel"
-                  : "Open context panel"
+                regions.includes("context") ? "Close context panel" : "Open context panel"
               }
               onClick={() => toggle("context")}
             >
@@ -425,11 +374,7 @@ export default function OperationsShell() {
               size="icon-sm"
               aria-label="Collapse all sidebars"
               onClick={() =>
-                setRegions(
-                  regions.length
-                    ? []
-                    : ["workspace", "details", "context", "workbench"],
-                )
+                setRegions(regions.length ? [] : ["workspace", "details", "context", "workbench"])
               }
             >
               <Square />
@@ -437,27 +382,16 @@ export default function OperationsShell() {
           </div>
         </div>
         <div className="min-h-0 flex-1">
-          <ResizablePanelGroup
-            orientation="vertical"
-            key={expanded ? "expanded" : "normal"}
-          >
+          <ResizablePanelGroup orientation="vertical" key={expanded ? "expanded" : "normal"}>
             <ResizablePanel
               id="record"
-              defaultSize={
-                regions.includes("workbench")
-                  ? expanded
-                    ? "20%"
-                    : "64%"
-                  : "100%"
-              }
+              defaultSize={regions.includes("workbench") ? (expanded ? "20%" : "64%") : "100%"}
               minSize="15%"
             >
               <ResizablePanelGroup orientation="horizontal">
                 <ResizablePanel
                   id="main-record"
-                  defaultSize={
-                    regions.includes("details") && !compact ? "62%" : "100%"
-                  }
+                  defaultSize={regions.includes("details") && !compact ? "62%" : "100%"}
                   minSize="25%"
                 >
                   <RecordPane />
@@ -475,11 +409,7 @@ export default function OperationsShell() {
             {regions.includes("workbench") && (
               <>
                 <ResizableHandle withHandle />
-                <ResizablePanel
-                  id="workbench"
-                  defaultSize={expanded ? "80%" : "36%"}
-                  minSize="18%"
-                >
+                <ResizablePanel id="workbench" defaultSize={expanded ? "80%" : "36%"} minSize="18%">
                   <Workbench
                     onClose={() => toggle("workbench")}
                     expanded={expanded}
@@ -505,9 +435,7 @@ export default function OperationsShell() {
         <SheetContent className="gap-0 p-0">
           <SheetHeader className="sr-only">
             <SheetTitle>Record details</SheetTitle>
-            <SheetDescription>
-              Details and comments for the current record.
-            </SheetDescription>
+            <SheetDescription>Details and comments for the current record.</SheetDescription>
           </SheetHeader>
           <DetailPane onClose={() => toggle("details")} />
         </SheetContent>
@@ -521,9 +449,7 @@ export default function OperationsShell() {
         <SheetContent className="gap-0 p-0">
           <SheetHeader className="sr-only">
             <SheetTitle>Calendar context</SheetTitle>
-            <SheetDescription>
-              Calendar accounts and upcoming events.
-            </SheetDescription>
+            <SheetDescription>Calendar accounts and upcoming events.</SheetDescription>
           </SheetHeader>
           <CalendarContext />
         </SheetContent>

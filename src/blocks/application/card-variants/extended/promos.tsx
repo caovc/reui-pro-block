@@ -1,11 +1,6 @@
 import { useState } from "react";
 import { CheckCircle2, Zap } from "lucide-react";
-import {
-  Frame,
-  FramePanel,
-  FrameTitle,
-  FrameDescription,
-} from "@/components/reui/frame";
+import { Frame, FramePanel, FrameTitle, FrameDescription } from "@/components/reui/frame";
 import { Badge } from "@/components/reui/badge";
 import { IconTile } from "@/components/reui/icon-tile";
 import { Alert, AlertTitle, AlertDescription } from "@/components/reui/alert";
@@ -18,13 +13,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import {
-  Field,
-  FieldGroup,
-  FieldLabel,
-  FieldSet,
-  FieldLegend,
-} from "@/components/ui/field";
+import { Field, FieldGroup, FieldLabel, FieldSet, FieldLegend } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import aurora from "@/blocks/application/assets/card-extended/gradient-aurora.svg";
@@ -42,10 +31,7 @@ export function UpsellPromo() {
     <Stage id={22} width={288}>
       <Frame>
         <FramePanel className="flex flex-col items-center gap-6 px-4 py-7 text-center">
-          <div
-            className="extended-promo-art"
-            aria-label="Two abstract product preview thumbnails"
-          >
+          <div className="extended-promo-art" aria-label="Two abstract product preview thumbnails">
             {[
               [aurora, "Abstract aurora preview"],
               [prism, "Abstract prism preview"],
@@ -94,17 +80,11 @@ export function MonitoringPromo() {
             <h3 className="text-6xl font-semibold tracking-tighter">24</h3>
             <div>
               <p className="text-xs text-muted-foreground">Monitoring</p>
-              <span className="text-3xl font-medium text-muted-foreground/40">
-                /7
-              </span>
+              <span className="text-3xl font-medium text-muted-foreground/40">/7</span>
             </div>
           </div>
           <div className="extended-monitor-logo left-[224px] top-8">
-            <IconTile
-              variant="elevated"
-              size="xl"
-              className="[--icon-tile-size:--spacing(18)]"
-            >
+            <IconTile variant="elevated" size="xl" className="[--icon-tile-size:--spacing(18)]">
               <span
                 className="size-6 bg-current"
                 role="img"
@@ -118,29 +98,17 @@ export function MonitoringPromo() {
             </IconTile>
           </div>
           <div className="extended-monitor-logo left-[314px] top-8">
-            <IconTile
-              variant="elevated"
-              size="xl"
-              className="[--icon-tile-size:--spacing(18)]"
-            >
+            <IconTile variant="elevated" size="xl" className="[--icon-tile-size:--spacing(18)]">
               <img src={gemini} alt="Gemini logo" />
             </IconTile>
           </div>
           <div className="extended-monitor-logo left-[104px] top-[124px]">
-            <IconTile
-              variant="elevated"
-              size="xl"
-              className="[--icon-tile-size:--spacing(18)]"
-            >
+            <IconTile variant="elevated" size="xl" className="[--icon-tile-size:--spacing(18)]">
               <img src={cursor} alt="Cursor logo" />
             </IconTile>
           </div>
           <div className="extended-monitor-logo left-[194px] top-[124px]">
-            <IconTile
-              variant="elevated"
-              size="xl"
-              className="[--icon-tile-size:--spacing(18)]"
-            >
+            <IconTile variant="elevated" size="xl" className="[--icon-tile-size:--spacing(18)]">
               <img src={n8n} alt="n8n logo" />
             </IconTile>
           </div>
@@ -148,8 +116,7 @@ export function MonitoringPromo() {
         <FramePanel className="flex flex-col items-center gap-5 px-9 py-8 text-center">
           <FrameTitle className="text-lg">Always On Watch</FrameTitle>
           <FrameDescription className="text-foreground">
-            Get continuous oversight of market activity with automated tools
-            running day and night.
+            Get continuous oversight of market activity with automated tools running day and night.
           </FrameDescription>
           <Button size="sm" onClick={() => setOpen(true)}>
             {name ? "Monitoring configured" : "Start Monitoring"}
@@ -161,8 +128,8 @@ export function MonitoringPromo() {
           <CheckCircle2 />
           <AlertTitle>{name}</AlertTitle>
           <AlertDescription>
-            Local monitor configured for {tools.join(", ") || "no services"}. No
-            background polling is running.
+            Local monitor configured for {tools.join(", ") || "no services"}. No background polling
+            is running.
           </AlertDescription>
         </Alert>
       )}
@@ -171,8 +138,7 @@ export function MonitoringPromo() {
           <DialogHeader>
             <DialogTitle>Configure monitoring demo</DialogTitle>
             <DialogDescription>
-              Prepare a local monitor configuration. Connect your backend to run
-              real checks.
+              Prepare a local monitor configuration. Connect your backend to run real checks.
             </DialogDescription>
           </DialogHeader>
           <form
@@ -216,16 +182,10 @@ export function MonitoringPromo() {
                         id={`monitor-${tool}`}
                         checked={tools.includes(tool)}
                         onCheckedChange={(v) =>
-                          setTools(
-                            v
-                              ? [...tools, tool]
-                              : tools.filter((s) => s !== tool),
-                          )
+                          setTools(v ? [...tools, tool] : tools.filter((s) => s !== tool))
                         }
                       />
-                      <FieldLabel htmlFor={`monitor-${tool}`}>
-                        {tool}
-                      </FieldLabel>
+                      <FieldLabel htmlFor={`monitor-${tool}`}>{tool}</FieldLabel>
                     </Field>
                   ))}
                 </div>

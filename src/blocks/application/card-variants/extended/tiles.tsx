@@ -28,26 +28,19 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import {
-  Item,
-  ItemContent,
-  ItemTitle,
-  ItemDescription,
-} from "@/components/ui/item";
+import { Item, ItemContent, ItemTitle, ItemDescription } from "@/components/ui/item";
 import { Stage, GridFrame, ContentLink } from "./common";
 const shortcuts = [
   {
     title: "Recent Orders Overview",
-    description:
-      "Track and review all recent purchases, updates, and status changes in one place.",
+    description: "Track and review all recent purchases, updates, and status changes in one place.",
     action: "View Orders",
     icon: ShoppingBag,
     tone: "bg-success text-white",
   },
   {
     title: "Active Opportunities Pipeline",
-    description:
-      "Monitor ongoing deals, check potential revenue, and update opportunity stages.",
+    description: "Monitor ongoing deals, check potential revenue, and update opportunity stages.",
     action: "Open Pipeline",
     icon: TrendingUp,
     tone: "bg-info text-white",
@@ -62,8 +55,7 @@ const shortcuts = [
   },
   {
     title: "Integration Settings & Sync",
-    description:
-      "Manage connections with third-party tools and ensure data stays in sync.",
+    description: "Manage connections with third-party tools and ensure data stays in sync.",
     action: "Manage Integrations",
     icon: Settings2,
     tone: "bg-warning text-warning-foreground",
@@ -81,14 +73,8 @@ export function ShortcutLauncher() {
             <Item className="p-0">
               <ItemContent className="gap-3">
                 <ItemTitle>{title}</ItemTitle>
-                <ItemDescription className="text-xs leading-5">
-                  {description}
-                </ItemDescription>
-                <ContentLink
-                  title={title}
-                  description={description}
-                  className="text-xs"
-                >
+                <ItemDescription className="text-xs leading-5">{description}</ItemDescription>
+                <ContentLink title={title} description={description} className="text-xs">
                   {action}
                   <ChevronRight />
                 </ContentLink>
@@ -111,15 +97,13 @@ const sources = [
   },
   {
     label: "Revenue",
-    description:
-      "Get instant insights into earnings and cash flow performance.",
+    description: "Get instant insights into earnings and cash flow performance.",
     url: "https://nexo.io/earn/crypto-detailed-portfolio",
     icon: TrendingUp,
   },
   {
     label: "Shipments",
-    description:
-      "Stay on top of deliveries and track shipment statuses efficiently.",
+    description: "Stay on top of deliveries and track shipment statuses efficiently.",
     url: "https://www.educare.io/platform/analytics/exports",
     icon: Package,
   },
@@ -157,28 +141,22 @@ export function SourceLinks() {
 const guides = [
   {
     title: "Ordering & Billing Guide",
-    description:
-      "Step-by-step instructions for checkout, invoices, taxes, and returns.",
+    description: "Step-by-step instructions for checkout, invoices, taxes, and returns.",
     articles: ["Place an order guide", "Request a refund guide"],
     icon: ShoppingBag,
     tone: "bg-success text-white",
   },
   {
     title: "Configuration & Integrations",
-    description:
-      "Setup for accounts, permissions, webhooks, and third-party connections.",
+    description: "Setup for accounts, permissions, webhooks, and third-party connections.",
     articles: ["Connect Slack and Trello", "Create API keys securely"],
     icon: Settings2,
     tone: "bg-warning text-warning-foreground",
   },
   {
     title: "Media Library Introduction",
-    description:
-      "Basics for uploading images, organizing folders, and optimizing delivery.",
-    articles: [
-      "Upload and organize assets",
-      "Image optimization best practices",
-    ],
+    description: "Basics for uploading images, organizing folders, and optimizing delivery.",
+    articles: ["Upload and organize assets", "Image optimization best practices"],
     icon: BookOpen,
     tone: "bg-info text-white",
   },
@@ -233,11 +211,7 @@ export function HelpGuides() {
               </FrameTitle>
               <FrameDescription>{description}</FrameDescription>
             </div>
-            <div
-              className="mt-auto"
-              role="list"
-              aria-label={`${title} articles`}
-            >
+            <div className="mt-auto" role="list" aria-label={`${title} articles`}>
               {articles.map((name) => (
                 <Item
                   key={name}
@@ -267,9 +241,7 @@ export function HelpGuides() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{article}</DialogTitle>
-            <DialogDescription>
-              Example help article · local preview
-            </DialogDescription>
+            <DialogDescription>Example help article · local preview</DialogDescription>
           </DialogHeader>
           <ol className="flex list-decimal flex-col gap-3 pl-5 text-sm">
             {(articleCopy[article ?? ""] ?? []).map((step) => (
@@ -306,9 +278,7 @@ const projects = [
   },
 ];
 export function ProjectDeadlines() {
-  const [sharing, setSharing] = useState<(typeof projects)[number] | null>(
-    null,
-  );
+  const [sharing, setSharing] = useState<(typeof projects)[number] | null>(null);
   const [copied, setCopied] = useState(false);
   const url = sharing
     ? `${location.origin}${location.pathname}#/preview/application/card/card-21?project=${encodeURIComponent(sharing.title)}`
@@ -364,9 +334,7 @@ export function ProjectDeadlines() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Share project</DialogTitle>
-            <DialogDescription>
-              {sharing?.title} · sample preview link
-            </DialogDescription>
+            <DialogDescription>{sharing?.title} · sample preview link</DialogDescription>
           </DialogHeader>
           <Input aria-label="Project share link" readOnly value={url} />
           <Button
@@ -396,22 +364,19 @@ export function LinkedMetrics() {
           {
             label: "Total Orders",
             title: "Analytics",
-            description:
-              "Track every order and monitor growth trends with real-time updates.",
+            description: "Track every order and monitor growth trends with real-time updates.",
             icon: ShoppingBag,
           },
           {
             label: "Revenue",
             title: "Financial Summary",
-            description:
-              "Get instant insights into earnings and cash flow performance.",
+            description: "Get instant insights into earnings and cash flow performance.",
             icon: TrendingUp,
           },
           {
             label: "Shipments",
             title: "Logistics",
-            description:
-              "Stay on top of deliveries and track shipment statuses efficiently.",
+            description: "Stay on top of deliveries and track shipment statuses efficiently.",
             icon: Package,
           },
         ].map(({ label, title, description, icon: Icon }) => (
@@ -428,9 +393,7 @@ export function LinkedMetrics() {
                   {title}
                 </ContentLink>
               </FrameTitle>
-              <FrameDescription className="text-xs leading-5">
-                {description}
-              </FrameDescription>
+              <FrameDescription className="text-xs leading-5">{description}</FrameDescription>
             </FramePanel>
           </Frame>
         ))}

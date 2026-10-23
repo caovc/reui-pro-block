@@ -1,39 +1,956 @@
-import { useState } from 'react'
-import { ArrowUp, Bot, Check, ChevronDown, Code, Copy, FileText, Layers, MessageSquare, Mic, Paperclip, Pause, Play, Plus, Search, Sparkles, ThumbsDown, ThumbsUp, X } from 'lucide-react'
-import type { BlockProps } from '@/data/types'
-import { Button } from '@/components/ui/button'
-import { Textarea } from '@/components/ui/textarea'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Progress } from '@/components/ui/progress'
-import { Slider } from '@/components/ui/slider'
-import { Switch } from '@/components/ui/switch'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-import { Field, FieldGroup, FieldLabel } from '@/components/ui/field'
-import { toast } from 'sonner'
-import { BlockHeading, Metric, Person, Status } from './shared'
-import BranchingChat from './branching-chat'
+import { useState } from "react";
+import {
+  ArrowUp,
+  Bot,
+  Check,
+  ChevronDown,
+  Code,
+  Copy,
+  FileText,
+  Layers,
+  MessageSquare,
+  Mic,
+  Paperclip,
+  Pause,
+  Play,
+  Plus,
+  Search,
+  Sparkles,
+  ThumbsDown,
+  ThumbsUp,
+  X,
+} from "lucide-react";
+import type { BlockProps } from "@/data/types";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Progress } from "@/components/ui/progress";
+import { Slider } from "@/components/ui/slider";
+import { Switch } from "@/components/ui/switch";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
+import { toast } from "sonner";
+import { BlockHeading, Metric, Person, Status } from "./shared";
+import BranchingChat from "./branching-chat";
 
-
-const prompts=['Catch me up on the 3.4 release since Monday','Turn these notes into a clear project plan','Review the latest customer feedback','Find the decisions from our last team meeting']
-const tools=['Search connected sources','Read project documentation','Analyze findings','Prepare a draft','Review and publish']
-type Message={role:'user'|'assistant';text:string}
-function reply(prompt:string){return /release/i.test(prompt)?'Here’s your release summary. The team shipped the updated navigation, resolved 12 accessibility issues, and improved dashboard load time by 28%. The remaining release tasks are documentation review and final QA. I recommend confirming the rollout owner before publishing.':/plan/i.test(prompt)?'I’ve organized this into three milestones: 1. Confirm the requirements and success criteria. 2. Build and review the first implementation. 3. Validate the experience with the team and prepare the launch. Start with a short discovery session, then assign an owner to each milestone.':/feedback/i.test(prompt)?'The strongest themes in the latest feedback are faster onboarding, clearer account settings, and more flexible exports. Customers particularly appreciate the new project views. I suggest prioritizing onboarding improvements because they affect every new workspace.':'I found the relevant context in the project documentation and team notes. The current direction is to keep the scope focused, validate the main workflow first, and review the outcome with the team before the next milestone.'}
-export function ChatBlock({block}:BlockProps){
- return block.id === 'ai-chat-9' ? <BranchingChat/> : <StandardChatBlock block={block}/>
+const prompts = [
+  "Catch me up on the 3.4 release since Monday",
+  "Turn these notes into a clear project plan",
+  "Review the latest customer feedback",
+  "Find the decisions from our last team meeting",
+];
+const tools = [
+  "Search connected sources",
+  "Read project documentation",
+  "Analyze findings",
+  "Prepare a draft",
+  "Review and publish",
+];
+type Message = { role: "user" | "assistant"; text: string };
+function reply(prompt: string) {
+  return /release/i.test(prompt)
+    ? "Here’s your release summary. The team shipped the updated navigation, resolved 12 accessibility issues, and improved dashboard load time by 28%. The remaining release tasks are documentation review and final QA. I recommend confirming the rollout owner before publishing."
+    : /plan/i.test(prompt)
+      ? "I’ve organized this into three milestones: 1. Confirm the requirements and success criteria. 2. Build and review the first implementation. 3. Validate the experience with the team and prepare the launch. Start with a short discovery session, then assign an owner to each milestone."
+      : /feedback/i.test(prompt)
+        ? "The strongest themes in the latest feedback are faster onboarding, clearer account settings, and more flexible exports. Customers particularly appreciate the new project views. I suggest prioritizing onboarding improvements because they affect every new workspace."
+        : "I found the relevant context in the project documentation and team notes. The current direction is to keep the scope focused, validate the main workflow first, and review the outcome with the team before the next milestone.";
 }
-function StandardChatBlock({block}:BlockProps){
- const [messages,setMessages]=useState<Message[]>([]);const [draft,setDraft]=useState('');const [model,setModel]=useState('Auto');const [effort,setEffort]=useState('Instant');const [scope,setScope]=useState('All apps');const [open,setOpen]=useState(true);const [voice,setVoice]=useState(false);const [inserted,setInserted]=useState(false);const [thinking,setThinking]=useState(false);const [vote,setVote]=useState('');const [attached,setAttached]=useState(false)
- const idx=block.index;const docked=[1,3,5,7,11,12].includes(idx);const comparison=idx===6;const receipts=idx===10;const popup=idx===12
- function send(text=draft){if(!text.trim())return;setMessages(m=>[...m,{role:'user',text},{role:'assistant',text:reply(text)}]);setDraft('');setVoice(false)}
- const composer=<div className="rounded-xl border bg-background p-3 shadow-sm">{attached&&<Badge variant="secondary" className="mb-2 gap-1"><FileText className="size-3"/>release-notes.md<Button size="icon" variant="ghost" className="size-5" aria-label="Remove attachment" onClick={()=>setAttached(false)}><X/></Button></Badge>}<Textarea value={draft} onChange={e=>setDraft(e.target.value)} onKeyDown={e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}}} placeholder={idx===4?'Ask across your connected apps...':'Ask anything, or describe a task...'} aria-label="Message" className="min-h-20 resize-none border-0 px-1 py-1 text-xs shadow-none focus-visible:ring-0"/><div className="mt-2 flex items-center justify-between gap-2"><div className="flex items-center gap-1"><Button variant="ghost" size="icon" className="size-7" aria-label="Attach a source" onClick={()=>setAttached(v=>!v)}><Paperclip/></Button><DropdownMenu><DropdownMenuTrigger asChild><Button size="sm" variant="ghost" className="h-7 text-[11px]">{idx===4||idx===9?scope:model}<ChevronDown/></Button></DropdownMenuTrigger><DropdownMenuContent><DropdownMenuGroup>{(idx===4||idx===9?['All apps','Google Drive','Slack','Notion','GitHub','Linear']:['Auto','GPT-4.1','Claude Sonnet','Gemini Pro']).map(m=><DropdownMenuItem key={m} onSelect={()=>idx===4||idx===9?setScope(m):setModel(m)}>{m}</DropdownMenuItem>)}</DropdownMenuGroup></DropdownMenuContent></DropdownMenu>{idx===0&&<div className="flex items-center gap-1"><Switch aria-label="Extended thinking" checked={thinking} onCheckedChange={setThinking} className="scale-75"/><span className="text-[10px] text-muted-foreground">Think</span></div>}</div><div className="flex items-center gap-1"><Button variant={voice?'secondary':'ghost'} size="icon" className="size-7" aria-label="Voice input demo" onClick={()=>{setVoice(v=>!v);if(!voice)setDraft('Help me organize my schedule for tomorrow')}}><Mic/></Button><Button size="icon" className="size-7 rounded-full" disabled={!draft.trim()} aria-label="Send message" onClick={()=>send()}><ArrowUp/></Button></div></div></div>
- const transcript=<div className="flex flex-col gap-6">{messages.map((m,i)=><div key={i} className={m.role==='user'?'ml-auto max-w-[85%] rounded-xl bg-muted px-4 py-3 text-xs leading-6':'text-xs leading-6'}>{m.role==='assistant'&&<div className="mb-2 flex items-center gap-2 font-medium"><Bot className="size-4"/>Assistant{receipts&&<Badge variant="outline" className="ml-auto text-[9px]">{model} · 842 tokens · 1.2s</Badge>}</div>}<p>{m.text}</p>{m.role==='assistant'&&<><div className="mt-3 flex flex-wrap gap-1.5">{['Project documentation','Team notes'].map((s,j)=><Badge key={s} variant="outline" className="font-normal">{j+1}. {s}</Badge>)}</div>{idx===5&&<div className="mt-3 flex flex-col gap-2 rounded-lg border p-3">{tools.slice(0,3).map((t,j)=><label key={t} className="flex items-center gap-2"><Checkbox defaultChecked={j===0}/>{t}</label>)}</div>}{idx===9&&<div className="my-3 flex flex-col gap-2">{['Onboarding','Account settings','Exports'].map((s,j)=><div key={s} className="flex items-center gap-3"><span className="w-28 text-[10px]">{s}</span><Progress value={85-j*23} className="h-1.5"/><span>{85-j*23}%</span></div>)}</div>}<div className="mt-2 flex items-center gap-1">{[[Copy,'Copy answer'],[ThumbsUp,'Helpful'],[ThumbsDown,'Not helpful']].map(([Icon,label])=>{const I=Icon as typeof Copy;return <Button key={String(label)} variant="ghost" size="icon" className="size-6" aria-label={String(label)} onClick={()=>{if(label==='Copy answer')navigator.clipboard.writeText(m.text);toast.success(label==='Copy answer'?'Answer copied':'Feedback recorded')}}><I/></Button>})}{idx===1&&<Button variant="outline" size="sm" className="ml-auto h-6 text-[10px]" onClick={()=>{setInserted(true);toast.success('Inserted into draft')}}>Insert into draft</Button>}</div></>}</div>)}</div>
- const welcome=<div className="flex h-full min-h-64 flex-col items-center justify-center text-center"><div className="mb-5 flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground"><Sparkles className="size-5"/></div><h2 className="text-xl font-semibold tracking-tight">{idx===2?'Where should we start?':idx===4?'What should I look through?':idx===9?'Turn your files into answers.':'How can I help you today?'}</h2><p className="mt-2 max-w-md text-xs leading-5 text-muted-foreground">{idx===4?'Search your connected tools and get answers with context.':'A little context goes a long way. Ask a question or start with a suggestion.'}</p><div className={`mt-7 grid gap-2 ${docked?'':'sm:grid-cols-2'}`}>{prompts.slice(0,docked?2:4).map((p,i)=><Button key={p} variant="outline" className="h-auto max-w-72 justify-start whitespace-normal px-3 py-3 text-left text-[11px] font-normal" onClick={()=>setDraft(p)}>{[<FileText key="f"/>,<Layers key="l"/>,<Search key="s"/>,<Code key="c"/>][i]}{p}</Button>)}</div></div>
- const panel=<div className={`flex min-w-0 flex-1 flex-col bg-background ${docked?'border-l':''}`}><div className="flex h-13 items-center justify-between border-b px-4"><div className="flex items-center gap-2 text-xs font-medium"><Sparkles className="size-4"/>{docked?'Assistant':block.name}</div><div className="flex gap-1"><Button variant="ghost" size="icon" className="size-7" aria-label="New chat" onClick={()=>{setMessages([]);setDraft('')}}><Plus/></Button>{docked&&<Button variant="ghost" size="icon" className="size-7" aria-label="Close assistant" onClick={()=>setOpen(false)}><X/></Button>}</div></div><div className="flex-1 overflow-auto p-5">{messages.length?transcript:welcome}{voice&&<div className="mt-4 flex items-center justify-center gap-1 rounded-lg bg-muted p-4">{Array.from({length:25},(_,i)=><span key={i} className="w-1 rounded-full bg-primary" style={{height:8+Math.sin(i)*10+Math.cos(i*3)*8}}/>)}<span className="ml-3 text-xs">Voice input demo</span></div>}</div><div className="p-4">{idx===2&&<div className="mb-2 flex justify-center"><Tabs value={effort} onValueChange={setEffort}><TabsList className="h-7">{['Instant','Extended','Deep'].map(e=><TabsTrigger value={e} key={e} className="text-[10px]">{e}</TabsTrigger>)}</TabsList></Tabs></div>}{composer}<p className="mt-2 text-center text-[9px] text-muted-foreground">Local demo responses. Review important information.</p></div></div>
- if(comparison)return <div className="overflow-hidden rounded-xl border bg-background"><div className="p-5"><BlockHeading title="Compare models" description="One prompt. Two perspectives."><Badge variant="outline">Side by side</Badge></BlockHeading></div><div className="grid min-h-80 divide-y border-y md:grid-cols-2 md:divide-x md:divide-y-0">{['GPT-4.1','Claude Sonnet'].map((m,i)=><div key={m} className="p-5"><div className="flex items-center justify-between"><h3 className="text-xs font-medium">{m}</h3><Badge variant="secondary">{i===0?'Model A':'Model B'}</Badge></div><div className="min-h-48 py-6 text-xs leading-6">{messages.length?`${i===0?'Here is a focused overview. ':'Let’s break this down. '}${messages[messages.length-1].text}`:<span className="text-muted-foreground">Send a prompt below to compare responses.</span>}</div><div className="flex items-center justify-between border-t pt-3 text-[10px] text-muted-foreground"><span>{i===0?'1.2s · 84 tokens/s · $0.004':'1.6s · 72 tokens/s · $0.003'}</span><Button size="sm" variant={vote===m?'default':'outline'} disabled={!messages.length} onClick={()=>{setVote(m);toast.success(`Voted for ${m}`)}}>{vote===m?<Check/>:<ThumbsUp/>}Prefer {i===0?'A':'B'}</Button></div></div>)}</div><div className="p-4">{composer}</div></div>
- return <div className={`relative flex overflow-hidden rounded-xl border bg-background ${docked?'min-h-[600px]':'min-h-[620px]'}`}>{!docked&&idx===0&&<aside className="hidden w-48 shrink-0 flex-col border-r bg-muted/25 p-4 md:flex"><Button size="sm" variant="outline" onClick={()=>setMessages([])}><Plus/>New chat</Button><p className="mb-3 mt-7 text-[10px] text-muted-foreground">Recent conversations</p>{['Release preparation','Q4 project planning','Customer insights','Team standup notes'].map(t=><Button key={t} variant="ghost" className="mb-1 justify-start px-2 text-[11px]" onClick={()=>send(t)}><MessageSquare/>{t}</Button>)}<div className="mt-auto"><Progress value={38} className="h-1"/><p className="mt-2 text-[10px] text-muted-foreground">38% context used</p></div></aside>}{docked&&<div className={`min-w-0 flex-1 bg-muted/15 p-7 ${open?'hidden md:block':''}`}><div className="flex items-center justify-between"><h2 className="text-lg font-semibold">{idx===11?'Getting started':idx===7?'My calendar':'Release notes'}</h2><Button variant="outline" size="sm" onClick={()=>setOpen(true)}><Sparkles/>Ask AI</Button></div><p className="mt-2 text-xs text-muted-foreground">Workspace / {idx===11?'Documentation':'Drafts'}</p>{idx===7?<div className="mt-8 grid grid-cols-5 gap-1">{Array.from({length:25},(_,i)=><div key={i} className="flex h-16 items-start rounded border bg-background p-2 text-[10px] text-muted-foreground">{i+1}{i%5===1&&<span className="ml-2 rounded bg-muted p-1">Team sync</span>}</div>)}</div>:<article className="mt-9 flex flex-col gap-5 text-xs leading-6"><h3 className="text-xl font-semibold">{idx===11?'Build your first workspace':'What’s new in version 3.4'}</h3><p>Bring your team, projects, and workflows together in one place. This guide covers the latest improvements and the steps you need to get started.</p><div className="h-px bg-border"/><h4 className="font-semibold">{idx===11?'Create a project':'A better way to navigate'}</h4><p>Find what you need faster with a refreshed sidebar, keyboard shortcuts, and connected search across your workspace.</p>{inserted&&<div className="rounded-lg border bg-background p-4"><Badge variant="secondary">Inserted by Assistant</Badge><p className="mt-2">{messages.at(-1)?.text}</p><Button size="sm" variant="ghost" onClick={()=>setInserted(false)}>Undo insertion</Button></div>}</article>}</div>}{open?<div className={`flex ${docked?'w-full md:w-[370px]':'w-full'} ${popup?'md:my-12 md:mr-5 md:rounded-xl md:border md:shadow-lg':''}`}>{panel}</div>:<Button className="absolute bottom-5 right-5 rounded-full" onClick={()=>setOpen(true)}><MessageSquare/>Ask AI</Button>}</div>
+export function ChatBlock({ block }: BlockProps) {
+  return block.id === "ai-chat-9" ? <BranchingChat /> : <StandardChatBlock block={block} />;
 }
-export function ActivityBlock({block}:BlockProps){const [view,setView]=useState('Summary');const [running,setRunning]=useState(true);const [steps,setSteps]=useState(['Complete','Complete','Awaiting approval','Queued','Queued']);const [selected,setSelected]=useState<number|null>(null);const audit=block.index===3;const report=block.index===4;const research=block.index===2;return <div className="mx-auto w-full max-w-3xl rounded-xl border bg-background p-6"><BlockHeading title={block.name} description="Run #RUN-2408 · Started 2 minutes ago"><Status value={running?'In progress':'Complete'}/><Button size="sm" variant="outline" onClick={()=>{setRunning(v=>!v);toast.success(running?'Run paused':'Run resumed')}}>{running?<Pause/>:<Play/>}{running?'Pause':'Resume'}</Button></BlockHeading><div className="my-5 flex items-center justify-between border-y py-4"><Person name="Olivia Rhye" small/><span className="text-[11px] text-muted-foreground">12 tools called · 4 files reviewed</span></div><p className="mb-5 text-xs leading-6">Review the latest release changes, summarize the findings, and prepare a draft for the team.</p><Tabs value={view} onValueChange={setView}><TabsList className="mb-5">{['Summary','Detailed','Raw'].map(t=><TabsTrigger key={t} value={t}>{t}</TabsTrigger>)}</TabsList></Tabs>{view==='Raw'?<pre className="overflow-auto rounded-lg bg-muted p-4 text-[10px] leading-6">{steps.map((s,i)=>`[${new Date(2026,9,22,10,i*2).toISOString()}] ${tools[i]} :: ${s}`).join('\n')}</pre>:<div className="flex flex-col">{tools.map((t,i)=><div key={t} className="flex gap-3"><div className="flex flex-col items-center"><span className={`flex size-6 shrink-0 items-center justify-center rounded-full border ${steps[i]==='Complete'?'bg-primary text-primary-foreground':'bg-background'}`}>{steps[i]==='Complete'?<Check className="size-3"/>:<span className="text-[10px]">{i+1}</span>}</span>{i<4&&<div className="my-1 min-h-8 w-px flex-1 bg-border"/>}</div><div className="min-w-0 flex-1 pb-6"><div className="flex items-center justify-between gap-2"><button className="text-left text-xs font-medium" onClick={()=>setSelected(selected===i?null:i)}>{audit?['GitHub.search_code','Drive.read_document','Linear.list_issues','Slack.search_messages','Notion.update_page'][i]:t}</button><Status value={report&&i===3?'Skipped':steps[i]}/></div><p className="mt-1 text-[11px] leading-5 text-muted-foreground">{research?['Searched 12 sources for relevant changes','Read project notes and release documentation','Cross-checked the findings against the repository','Prepared a source-backed summary','Ready for a final team review'][i]:['Read 3 relevant sources from the workspace','Found 12 changes across 4 project files','Publishing changes requires your approval','The draft is ready for review','Waiting for preceding steps'][i]}</p>{(view==='Detailed'||selected===i)&&<pre className="mt-2 overflow-auto rounded bg-muted p-3 text-[10px]">{JSON.stringify({step:i+1,status:steps[i],duration:`${340+i*214}ms`,scope:audit?'read:workspace':'project/release-3.4'},null,2)}</pre>}{i===2&&!research&&steps[i]==='Awaiting approval'&&<div className="mt-3 flex gap-2"><Button size="sm" onClick={()=>{setSteps(s=>s.map((x,j)=>j===2?'Complete':j>2?'Ready':x));toast.success(audit?'Access granted':'Action approved')}}><Check/>{audit?'Grant access':'Approve'}</Button><Button variant="outline" size="sm" onClick={()=>{setSteps(s=>s.map((x,j)=>j===2?'Denied':x));toast.success('Action denied')}}>Deny</Button><Button variant="ghost" size="sm" onClick={()=>{setSelected(i);setSteps(s=>s.map((x,j)=>j===2?'Needs revision':x))}}>Revise</Button></div>}{report&&i===3&&<Button variant="outline" size="sm" className="mt-2" onClick={()=>{setSteps(s=>s.map((x,j)=>j===3?'Complete':x));toast.success('Step retried successfully')}}>Retry step</Button>}</div></div>)}</div>}<div className="flex items-center justify-between border-t pt-4 text-[11px] text-muted-foreground"><span>{research?'Confidence: High · 12 sources verified':'Changes are local to this demo'}</span><Button variant="ghost" size="sm" onClick={()=>{setSteps(['Complete','Complete','Awaiting approval','Queued','Queued']);setRunning(true)}}>Reset run</Button></div></div>}
-export function UsageBlock({block}:BlockProps){const [tokens,setTokens]=useState([40]);const [model,setModel]=useState('Balanced');const [power,setPower]=useState('Balanced');const [enabled,setEnabled]=useState(true);const [scope,setScope]=useState('Model');const [node,setNode]=useState(0);const cost=tokens[0]*(model==='Premium'?8:model==='Balanced'?3:.5);const hardware=block.index>1;return <div className="w-full rounded-xl border bg-background p-6"><BlockHeading title={block.name} description={hardware?'Workspace infrastructure · 3 nodes connected':'Plan, monitor, and optimize your AI usage.'}><Badge variant="outline">October 2026</Badge></BlockHeading>{hardware?<div className="mt-6 grid gap-6 md:grid-cols-[1fr_1fr]"><div className="flex min-h-80 flex-col items-center justify-center rounded-xl bg-muted/35 p-6"><div className="relative flex h-44 w-64 -skew-y-6 flex-col gap-2 rounded-xl border-2 bg-background p-4 shadow-xl">{Array.from({length:block.index===3?4:3},(_,i)=><button key={i} onClick={()=>setNode(i)} aria-label={`Inspect GPU ${i+1}`} className={`flex h-10 items-center justify-between rounded border px-3 ${i===node?'bg-primary/10 ring-1 ring-primary':'bg-muted'}`}><span className="flex gap-1">{Array.from({length:12},(_,j)=><span key={j} className="h-4 w-1 rounded-sm bg-muted-foreground/30"/>)}</span><span className={`size-2 rounded-full ${enabled?'bg-emerald-500':'bg-muted-foreground'}`}/></button>)}</div><p className="mt-8 text-xs font-medium">{block.index===3?'GPU server · 192 GB VRAM':`Edge inference node 0${node+1}`}</p><p className="mt-1 text-[10px] text-muted-foreground">Click a module to inspect</p></div><div className="flex flex-col gap-5"><div className="grid grid-cols-2 gap-3"><Metric title="Memory used" value={`${48+node*12} GB`}/><Metric title="Temperature" value={`${power==='Performance'?74:52+node*3}°C`}/></div><FieldGroup><Field><FieldLabel>Power mode</FieldLabel><div className="grid grid-cols-3 gap-2">{['Eco','Balanced','Performance'].map(p=><Button key={p} size="sm" variant={power===p?'default':'outline'} onClick={()=>setPower(p)}>{p}</Button>)}</div></Field><Field><FieldLabel>Context window · {tokens[0]}K</FieldLabel><Slider value={tokens} onValueChange={setTokens} max={128} min={8} step={8}/></Field><Field className="flex-row items-center justify-between"><FieldLabel>Inference enabled</FieldLabel><Switch checked={enabled} onCheckedChange={setEnabled}/></Field></FieldGroup><div className="rounded-lg border p-4"><h3 className="text-xs font-medium">Loaded models</h3>{['Llama 3.3 70B','Qwen 2.5 32B','Embedding model'].map((m,i)=><div key={m} className="mt-3 flex items-center justify-between text-xs"><span>{m}</span><Badge variant="secondary">{[42,24,2][i]} GB</Badge></div>)}</div></div></div>:<div className="mt-6 grid gap-6 md:grid-cols-[1fr_320px]"><div className="flex flex-col gap-6">{block.index===0?<><FieldGroup><Field><FieldLabel>Monthly token volume · {tokens[0]} million</FieldLabel><Slider value={tokens} onValueChange={setTokens} max={200} min={1} step={1}/><div className="flex justify-between text-[10px] text-muted-foreground"><span>1M</span><span>50M</span><span>100M</span><span>200M</span></div></Field></FieldGroup><div className="grid gap-3 sm:grid-cols-3">{['Economy','Balanced','Premium'].map((m,i)=><button key={m} onClick={()=>setModel(m)} className={`rounded-lg border p-4 text-left ${model===m?'ring-1 ring-primary':'hover:bg-muted/40'}`}><Bot className="mb-4 size-5"/><h3 className="text-xs font-medium">{m}</h3><p className="mt-2 text-[11px] text-muted-foreground">{['Fast everyday tasks','Quality and speed','Complex reasoning'][i]}</p><p className="mt-4 text-xs font-semibold">${[.5,3,8][i]} / 1M tokens</p></button>)}</div><div className="flex items-center justify-between rounded-lg border p-4"><div><h3 className="text-xs font-medium">Prompt caching</h3><p className="mt-1 text-[11px] text-muted-foreground">Reduce spend for repeated context</p></div><Switch checked={enabled} onCheckedChange={setEnabled}/></div></>:<><Tabs value={scope} onValueChange={setScope}><TabsList>{['Model','Team','Agent','API key'].map(s=><TabsTrigger value={s} key={s}>{s}</TabsTrigger>)}</TabsList></Tabs><div className="grid grid-cols-2 gap-3">{['GPT-4.1','Claude Sonnet','Gemini Pro','Llama 3.3'].map((m,i)=><button key={m} className={`rounded-lg border p-5 text-left ${node===i?'ring-1 ring-primary':''}`} onClick={()=>setNode(i)}><div className="flex justify-between text-xs font-medium"><span>{scope==='Model'?m:scope==='Team'?['Engineering','Design','Marketing','Support'][i]:`${scope} ${i+1}`}</span><Bot className="size-4 text-muted-foreground"/></div><p className="mt-5 text-2xl font-semibold">${[428,284,196,72][i]}</p><Progress value={[78,52,35,14][i]} className="mt-3 h-1.5"/><p className="mt-2 text-[10px] text-muted-foreground">{[78,52,35,14][i]}% of monthly cap</p></button>)}</div></>}</div><Card className="gap-4 shadow-none"><CardHeader><CardDescription>Projected monthly spend</CardDescription><CardTitle className="text-4xl">${block.index===0?Math.round(cost*(enabled?.8:1)).toLocaleString():'1,207'}</CardTitle><p className="text-[10px] text-muted-foreground">Based on your current configuration</p></CardHeader><CardContent className="flex flex-col gap-4 text-xs"><div className="flex justify-between"><span className="text-muted-foreground">Token usage</span><span>{tokens[0]}M tokens</span></div><div className="flex justify-between"><span className="text-muted-foreground">Selected model</span><span>{model}</span></div><div className="flex justify-between"><span className="text-muted-foreground">Cache savings</span><span>{enabled?'−20%':'Off'}</span></div><div className="border-t pt-4"><div className="mb-2 flex justify-between"><span>Monthly budget</span><span>$2,000</span></div><Progress value={Math.min(100,cost/20)} className="h-1.5"/></div><Button onClick={()=>toast.success('Usage plan saved')}>Save plan</Button></CardContent></Card></div>}</div>}
+function StandardChatBlock({ block }: BlockProps) {
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [draft, setDraft] = useState("");
+  const [model, setModel] = useState("Auto");
+  const [effort, setEffort] = useState("Instant");
+  const [scope, setScope] = useState("All apps");
+  const [open, setOpen] = useState(true);
+  const [voice, setVoice] = useState(false);
+  const [inserted, setInserted] = useState(false);
+  const [thinking, setThinking] = useState(false);
+  const [vote, setVote] = useState("");
+  const [attached, setAttached] = useState(false);
+  const idx = block.index;
+  const docked = [1, 3, 5, 7, 11, 12].includes(idx);
+  const comparison = idx === 6;
+  const receipts = idx === 10;
+  const popup = idx === 12;
+  function send(text = draft) {
+    if (!text.trim()) return;
+    setMessages((m) => [...m, { role: "user", text }, { role: "assistant", text: reply(text) }]);
+    setDraft("");
+    setVoice(false);
+  }
+  const composer = (
+    <div className="rounded-xl border bg-background p-3 shadow-sm">
+      {attached && (
+        <Badge variant="secondary" className="mb-2 gap-1">
+          <FileText className="size-3" />
+          release-notes.md
+          <Button
+            size="icon"
+            variant="ghost"
+            className="size-5"
+            aria-label="Remove attachment"
+            onClick={() => setAttached(false)}
+          >
+            <X />
+          </Button>
+        </Badge>
+      )}
+      <Textarea
+        value={draft}
+        onChange={(e) => setDraft(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            send();
+          }
+        }}
+        placeholder={
+          idx === 4 ? "Ask across your connected apps..." : "Ask anything, or describe a task..."
+        }
+        aria-label="Message"
+        className="min-h-20 resize-none border-0 px-1 py-1 text-xs shadow-none focus-visible:ring-0"
+      />
+      <div className="mt-2 flex items-center justify-between gap-2">
+        <div className="flex items-center gap-1">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="size-7"
+            aria-label="Attach a source"
+            onClick={() => setAttached((v) => !v)}
+          >
+            <Paperclip />
+          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button size="sm" variant="ghost" className="h-7 text-[11px]">
+                {idx === 4 || idx === 9 ? scope : model}
+                <ChevronDown />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuGroup>
+                {(idx === 4 || idx === 9
+                  ? ["All apps", "Google Drive", "Slack", "Notion", "GitHub", "Linear"]
+                  : ["Auto", "GPT-4.1", "Claude Sonnet", "Gemini Pro"]
+                ).map((m) => (
+                  <DropdownMenuItem
+                    key={m}
+                    onSelect={() => (idx === 4 || idx === 9 ? setScope(m) : setModel(m))}
+                  >
+                    {m}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          {idx === 0 && (
+            <div className="flex items-center gap-1">
+              <Switch
+                aria-label="Extended thinking"
+                checked={thinking}
+                onCheckedChange={setThinking}
+                className="scale-75"
+              />
+              <span className="text-[10px] text-muted-foreground">Think</span>
+            </div>
+          )}
+        </div>
+        <div className="flex items-center gap-1">
+          <Button
+            variant={voice ? "secondary" : "ghost"}
+            size="icon"
+            className="size-7"
+            aria-label="Voice input demo"
+            onClick={() => {
+              setVoice((v) => !v);
+              if (!voice) setDraft("Help me organize my schedule for tomorrow");
+            }}
+          >
+            <Mic />
+          </Button>
+          <Button
+            size="icon"
+            className="size-7 rounded-full"
+            disabled={!draft.trim()}
+            aria-label="Send message"
+            onClick={() => send()}
+          >
+            <ArrowUp />
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+  const transcript = (
+    <div className="flex flex-col gap-6">
+      {messages.map((m, i) => (
+        <div
+          key={i}
+          className={
+            m.role === "user"
+              ? "ml-auto max-w-[85%] rounded-xl bg-muted px-4 py-3 text-xs leading-6"
+              : "text-xs leading-6"
+          }
+        >
+          {m.role === "assistant" && (
+            <div className="mb-2 flex items-center gap-2 font-medium">
+              <Bot className="size-4" />
+              Assistant
+              {receipts && (
+                <Badge variant="outline" className="ml-auto text-[9px]">
+                  {model} · 842 tokens · 1.2s
+                </Badge>
+              )}
+            </div>
+          )}
+          <p>{m.text}</p>
+          {m.role === "assistant" && (
+            <>
+              <div className="mt-3 flex flex-wrap gap-1.5">
+                {["Project documentation", "Team notes"].map((s, j) => (
+                  <Badge key={s} variant="outline" className="font-normal">
+                    {j + 1}. {s}
+                  </Badge>
+                ))}
+              </div>
+              {idx === 5 && (
+                <div className="mt-3 flex flex-col gap-2 rounded-lg border p-3">
+                  {tools.slice(0, 3).map((t, j) => (
+                    <label key={t} className="flex items-center gap-2">
+                      <Checkbox defaultChecked={j === 0} />
+                      {t}
+                    </label>
+                  ))}
+                </div>
+              )}
+              {idx === 9 && (
+                <div className="my-3 flex flex-col gap-2">
+                  {["Onboarding", "Account settings", "Exports"].map((s, j) => (
+                    <div key={s} className="flex items-center gap-3">
+                      <span className="w-28 text-[10px]">{s}</span>
+                      <Progress value={85 - j * 23} className="h-1.5" />
+                      <span>{85 - j * 23}%</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <div className="mt-2 flex items-center gap-1">
+                {[
+                  [Copy, "Copy answer"],
+                  [ThumbsUp, "Helpful"],
+                  [ThumbsDown, "Not helpful"],
+                ].map(([Icon, label]) => {
+                  const I = Icon as typeof Copy;
+                  return (
+                    <Button
+                      key={String(label)}
+                      variant="ghost"
+                      size="icon"
+                      className="size-6"
+                      aria-label={String(label)}
+                      onClick={() => {
+                        if (label === "Copy answer") navigator.clipboard.writeText(m.text);
+                        toast.success(
+                          label === "Copy answer" ? "Answer copied" : "Feedback recorded",
+                        );
+                      }}
+                    >
+                      <I />
+                    </Button>
+                  );
+                })}
+                {idx === 1 && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="ml-auto h-6 text-[10px]"
+                    onClick={() => {
+                      setInserted(true);
+                      toast.success("Inserted into draft");
+                    }}
+                  >
+                    Insert into draft
+                  </Button>
+                )}
+              </div>
+            </>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+  const welcome = (
+    <div className="flex h-full min-h-64 flex-col items-center justify-center text-center">
+      <div className="mb-5 flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+        <Sparkles className="size-5" />
+      </div>
+      <h2 className="text-xl font-semibold tracking-tight">
+        {idx === 2
+          ? "Where should we start?"
+          : idx === 4
+            ? "What should I look through?"
+            : idx === 9
+              ? "Turn your files into answers."
+              : "How can I help you today?"}
+      </h2>
+      <p className="mt-2 max-w-md text-xs leading-5 text-muted-foreground">
+        {idx === 4
+          ? "Search your connected tools and get answers with context."
+          : "A little context goes a long way. Ask a question or start with a suggestion."}
+      </p>
+      <div className={`mt-7 grid gap-2 ${docked ? "" : "sm:grid-cols-2"}`}>
+        {prompts.slice(0, docked ? 2 : 4).map((p, i) => (
+          <Button
+            key={p}
+            variant="outline"
+            className="h-auto max-w-72 justify-start whitespace-normal px-3 py-3 text-left text-[11px] font-normal"
+            onClick={() => setDraft(p)}
+          >
+            {[<FileText key="f" />, <Layers key="l" />, <Search key="s" />, <Code key="c" />][i]}
+            {p}
+          </Button>
+        ))}
+      </div>
+    </div>
+  );
+  const panel = (
+    <div className={`flex min-w-0 flex-1 flex-col bg-background ${docked ? "border-l" : ""}`}>
+      <div className="flex h-13 items-center justify-between border-b px-4">
+        <div className="flex items-center gap-2 text-xs font-medium">
+          <Sparkles className="size-4" />
+          {docked ? "Assistant" : block.name}
+        </div>
+        <div className="flex gap-1">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="size-7"
+            aria-label="New chat"
+            onClick={() => {
+              setMessages([]);
+              setDraft("");
+            }}
+          >
+            <Plus />
+          </Button>
+          {docked && (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="size-7"
+              aria-label="Close assistant"
+              onClick={() => setOpen(false)}
+            >
+              <X />
+            </Button>
+          )}
+        </div>
+      </div>
+      <div className="flex-1 overflow-auto p-5">
+        {messages.length ? transcript : welcome}
+        {voice && (
+          <div className="mt-4 flex items-center justify-center gap-1 rounded-lg bg-muted p-4">
+            {Array.from({ length: 25 }, (_, i) => (
+              <span
+                key={i}
+                className="w-1 rounded-full bg-primary"
+                style={{ height: 8 + Math.sin(i) * 10 + Math.cos(i * 3) * 8 }}
+              />
+            ))}
+            <span className="ml-3 text-xs">Voice input demo</span>
+          </div>
+        )}
+      </div>
+      <div className="p-4">
+        {idx === 2 && (
+          <div className="mb-2 flex justify-center">
+            <Tabs value={effort} onValueChange={setEffort}>
+              <TabsList className="h-7">
+                {["Instant", "Extended", "Deep"].map((e) => (
+                  <TabsTrigger value={e} key={e} className="text-[10px]">
+                    {e}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </Tabs>
+          </div>
+        )}
+        {composer}
+        <p className="mt-2 text-center text-[9px] text-muted-foreground">
+          Local demo responses. Review important information.
+        </p>
+      </div>
+    </div>
+  );
+  if (comparison)
+    return (
+      <div className="overflow-hidden rounded-xl border bg-background">
+        <div className="p-5">
+          <BlockHeading title="Compare models" description="One prompt. Two perspectives.">
+            <Badge variant="outline">Side by side</Badge>
+          </BlockHeading>
+        </div>
+        <div className="grid min-h-80 divide-y border-y md:grid-cols-2 md:divide-x md:divide-y-0">
+          {["GPT-4.1", "Claude Sonnet"].map((m, i) => (
+            <div key={m} className="p-5">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xs font-medium">{m}</h3>
+                <Badge variant="secondary">{i === 0 ? "Model A" : "Model B"}</Badge>
+              </div>
+              <div className="min-h-48 py-6 text-xs leading-6">
+                {messages.length ? (
+                  `${i === 0 ? "Here is a focused overview. " : "Let’s break this down. "}${messages[messages.length - 1].text}`
+                ) : (
+                  <span className="text-muted-foreground">
+                    Send a prompt below to compare responses.
+                  </span>
+                )}
+              </div>
+              <div className="flex items-center justify-between border-t pt-3 text-[10px] text-muted-foreground">
+                <span>
+                  {i === 0 ? "1.2s · 84 tokens/s · $0.004" : "1.6s · 72 tokens/s · $0.003"}
+                </span>
+                <Button
+                  size="sm"
+                  variant={vote === m ? "default" : "outline"}
+                  disabled={!messages.length}
+                  onClick={() => {
+                    setVote(m);
+                    toast.success(`Voted for ${m}`);
+                  }}
+                >
+                  {vote === m ? <Check /> : <ThumbsUp />}Prefer {i === 0 ? "A" : "B"}
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="p-4">{composer}</div>
+      </div>
+    );
+  return (
+    <div
+      className={`relative flex overflow-hidden rounded-xl border bg-background ${docked ? "min-h-[600px]" : "min-h-[620px]"}`}
+    >
+      {!docked && idx === 0 && (
+        <aside className="hidden w-48 shrink-0 flex-col border-r bg-muted/25 p-4 md:flex">
+          <Button size="sm" variant="outline" onClick={() => setMessages([])}>
+            <Plus />
+            New chat
+          </Button>
+          <p className="mb-3 mt-7 text-[10px] text-muted-foreground">Recent conversations</p>
+          {[
+            "Release preparation",
+            "Q4 project planning",
+            "Customer insights",
+            "Team standup notes",
+          ].map((t) => (
+            <Button
+              key={t}
+              variant="ghost"
+              className="mb-1 justify-start px-2 text-[11px]"
+              onClick={() => send(t)}
+            >
+              <MessageSquare />
+              {t}
+            </Button>
+          ))}
+          <div className="mt-auto">
+            <Progress value={38} className="h-1" />
+            <p className="mt-2 text-[10px] text-muted-foreground">38% context used</p>
+          </div>
+        </aside>
+      )}
+      {docked && (
+        <div className={`min-w-0 flex-1 bg-muted/15 p-7 ${open ? "hidden md:block" : ""}`}>
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold">
+              {idx === 11 ? "Getting started" : idx === 7 ? "My calendar" : "Release notes"}
+            </h2>
+            <Button variant="outline" size="sm" onClick={() => setOpen(true)}>
+              <Sparkles />
+              Ask AI
+            </Button>
+          </div>
+          <p className="mt-2 text-xs text-muted-foreground">
+            Workspace / {idx === 11 ? "Documentation" : "Drafts"}
+          </p>
+          {idx === 7 ? (
+            <div className="mt-8 grid grid-cols-5 gap-1">
+              {Array.from({ length: 25 }, (_, i) => (
+                <div
+                  key={i}
+                  className="flex h-16 items-start rounded border bg-background p-2 text-[10px] text-muted-foreground"
+                >
+                  {i + 1}
+                  {i % 5 === 1 && <span className="ml-2 rounded bg-muted p-1">Team sync</span>}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <article className="mt-9 flex flex-col gap-5 text-xs leading-6">
+              <h3 className="text-xl font-semibold">
+                {idx === 11 ? "Build your first workspace" : "What’s new in version 3.4"}
+              </h3>
+              <p>
+                Bring your team, projects, and workflows together in one place. This guide covers
+                the latest improvements and the steps you need to get started.
+              </p>
+              <div className="h-px bg-border" />
+              <h4 className="font-semibold">
+                {idx === 11 ? "Create a project" : "A better way to navigate"}
+              </h4>
+              <p>
+                Find what you need faster with a refreshed sidebar, keyboard shortcuts, and
+                connected search across your workspace.
+              </p>
+              {inserted && (
+                <div className="rounded-lg border bg-background p-4">
+                  <Badge variant="secondary">Inserted by Assistant</Badge>
+                  <p className="mt-2">{messages.at(-1)?.text}</p>
+                  <Button size="sm" variant="ghost" onClick={() => setInserted(false)}>
+                    Undo insertion
+                  </Button>
+                </div>
+              )}
+            </article>
+          )}
+        </div>
+      )}
+      {open ? (
+        <div
+          className={`flex ${docked ? "w-full md:w-[370px]" : "w-full"} ${popup ? "md:my-12 md:mr-5 md:rounded-xl md:border md:shadow-lg" : ""}`}
+        >
+          {panel}
+        </div>
+      ) : (
+        <Button className="absolute bottom-5 right-5 rounded-full" onClick={() => setOpen(true)}>
+          <MessageSquare />
+          Ask AI
+        </Button>
+      )}
+    </div>
+  );
+}
+export function ActivityBlock({ block }: BlockProps) {
+  const [view, setView] = useState("Summary");
+  const [running, setRunning] = useState(true);
+  const [steps, setSteps] = useState([
+    "Complete",
+    "Complete",
+    "Awaiting approval",
+    "Queued",
+    "Queued",
+  ]);
+  const [selected, setSelected] = useState<number | null>(null);
+  const audit = block.index === 3;
+  const report = block.index === 4;
+  const research = block.index === 2;
+  return (
+    <div className="mx-auto w-full max-w-3xl rounded-xl border bg-background p-6">
+      <BlockHeading title={block.name} description="Run #RUN-2408 · Started 2 minutes ago">
+        <Status value={running ? "In progress" : "Complete"} />
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={() => {
+            setRunning((v) => !v);
+            toast.success(running ? "Run paused" : "Run resumed");
+          }}
+        >
+          {running ? <Pause /> : <Play />}
+          {running ? "Pause" : "Resume"}
+        </Button>
+      </BlockHeading>
+      <div className="my-5 flex items-center justify-between border-y py-4">
+        <Person name="Olivia Rhye" small />
+        <span className="text-[11px] text-muted-foreground">
+          12 tools called · 4 files reviewed
+        </span>
+      </div>
+      <p className="mb-5 text-xs leading-6">
+        Review the latest release changes, summarize the findings, and prepare a draft for the team.
+      </p>
+      <Tabs value={view} onValueChange={setView}>
+        <TabsList className="mb-5">
+          {["Summary", "Detailed", "Raw"].map((t) => (
+            <TabsTrigger key={t} value={t}>
+              {t}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </Tabs>
+      {view === "Raw" ? (
+        <pre className="overflow-auto rounded-lg bg-muted p-4 text-[10px] leading-6">
+          {steps
+            .map(
+              (s, i) => `[${new Date(2026, 9, 22, 10, i * 2).toISOString()}] ${tools[i]} :: ${s}`,
+            )
+            .join("\n")}
+        </pre>
+      ) : (
+        <div className="flex flex-col">
+          {tools.map((t, i) => (
+            <div key={t} className="flex gap-3">
+              <div className="flex flex-col items-center">
+                <span
+                  className={`flex size-6 shrink-0 items-center justify-center rounded-full border ${steps[i] === "Complete" ? "bg-primary text-primary-foreground" : "bg-background"}`}
+                >
+                  {steps[i] === "Complete" ? (
+                    <Check className="size-3" />
+                  ) : (
+                    <span className="text-[10px]">{i + 1}</span>
+                  )}
+                </span>
+                {i < 4 && <div className="my-1 min-h-8 w-px flex-1 bg-border" />}
+              </div>
+              <div className="min-w-0 flex-1 pb-6">
+                <div className="flex items-center justify-between gap-2">
+                  <button
+                    className="text-left text-xs font-medium"
+                    onClick={() => setSelected(selected === i ? null : i)}
+                  >
+                    {audit
+                      ? [
+                          "GitHub.search_code",
+                          "Drive.read_document",
+                          "Linear.list_issues",
+                          "Slack.search_messages",
+                          "Notion.update_page",
+                        ][i]
+                      : t}
+                  </button>
+                  <Status value={report && i === 3 ? "Skipped" : steps[i]} />
+                </div>
+                <p className="mt-1 text-[11px] leading-5 text-muted-foreground">
+                  {research
+                    ? [
+                        "Searched 12 sources for relevant changes",
+                        "Read project notes and release documentation",
+                        "Cross-checked the findings against the repository",
+                        "Prepared a source-backed summary",
+                        "Ready for a final team review",
+                      ][i]
+                    : [
+                        "Read 3 relevant sources from the workspace",
+                        "Found 12 changes across 4 project files",
+                        "Publishing changes requires your approval",
+                        "The draft is ready for review",
+                        "Waiting for preceding steps",
+                      ][i]}
+                </p>
+                {(view === "Detailed" || selected === i) && (
+                  <pre className="mt-2 overflow-auto rounded bg-muted p-3 text-[10px]">
+                    {JSON.stringify(
+                      {
+                        step: i + 1,
+                        status: steps[i],
+                        duration: `${340 + i * 214}ms`,
+                        scope: audit ? "read:workspace" : "project/release-3.4",
+                      },
+                      null,
+                      2,
+                    )}
+                  </pre>
+                )}
+                {i === 2 && !research && steps[i] === "Awaiting approval" && (
+                  <div className="mt-3 flex gap-2">
+                    <Button
+                      size="sm"
+                      onClick={() => {
+                        setSteps((s) =>
+                          s.map((x, j) => (j === 2 ? "Complete" : j > 2 ? "Ready" : x)),
+                        );
+                        toast.success(audit ? "Access granted" : "Action approved");
+                      }}
+                    >
+                      <Check />
+                      {audit ? "Grant access" : "Approve"}
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setSteps((s) => s.map((x, j) => (j === 2 ? "Denied" : x)));
+                        toast.success("Action denied");
+                      }}
+                    >
+                      Deny
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => {
+                        setSelected(i);
+                        setSteps((s) => s.map((x, j) => (j === 2 ? "Needs revision" : x)));
+                      }}
+                    >
+                      Revise
+                    </Button>
+                  </div>
+                )}
+                {report && i === 3 && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="mt-2"
+                    onClick={() => {
+                      setSteps((s) => s.map((x, j) => (j === 3 ? "Complete" : x)));
+                      toast.success("Step retried successfully");
+                    }}
+                  >
+                    Retry step
+                  </Button>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+      <div className="flex items-center justify-between border-t pt-4 text-[11px] text-muted-foreground">
+        <span>
+          {research ? "Confidence: High · 12 sources verified" : "Changes are local to this demo"}
+        </span>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => {
+            setSteps(["Complete", "Complete", "Awaiting approval", "Queued", "Queued"]);
+            setRunning(true);
+          }}
+        >
+          Reset run
+        </Button>
+      </div>
+    </div>
+  );
+}
+export function UsageBlock({ block }: BlockProps) {
+  const [tokens, setTokens] = useState([40]);
+  const [model, setModel] = useState("Balanced");
+  const [power, setPower] = useState("Balanced");
+  const [enabled, setEnabled] = useState(true);
+  const [scope, setScope] = useState("Model");
+  const [node, setNode] = useState(0);
+  const cost = tokens[0] * (model === "Premium" ? 8 : model === "Balanced" ? 3 : 0.5);
+  const hardware = block.index > 1;
+  return (
+    <div className="w-full rounded-xl border bg-background p-6">
+      <BlockHeading
+        title={block.name}
+        description={
+          hardware
+            ? "Workspace infrastructure · 3 nodes connected"
+            : "Plan, monitor, and optimize your AI usage."
+        }
+      >
+        <Badge variant="outline">October 2026</Badge>
+      </BlockHeading>
+      {hardware ? (
+        <div className="mt-6 grid gap-6 md:grid-cols-[1fr_1fr]">
+          <div className="flex min-h-80 flex-col items-center justify-center rounded-xl bg-muted/35 p-6">
+            <div className="relative flex h-44 w-64 -skew-y-6 flex-col gap-2 rounded-xl border-2 bg-background p-4 shadow-xl">
+              {Array.from({ length: block.index === 3 ? 4 : 3 }, (_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setNode(i)}
+                  aria-label={`Inspect GPU ${i + 1}`}
+                  className={`flex h-10 items-center justify-between rounded border px-3 ${i === node ? "bg-primary/10 ring-1 ring-primary" : "bg-muted"}`}
+                >
+                  <span className="flex gap-1">
+                    {Array.from({ length: 12 }, (_, j) => (
+                      <span key={j} className="h-4 w-1 rounded-sm bg-muted-foreground/30" />
+                    ))}
+                  </span>
+                  <span
+                    className={`size-2 rounded-full ${enabled ? "bg-emerald-500" : "bg-muted-foreground"}`}
+                  />
+                </button>
+              ))}
+            </div>
+            <p className="mt-8 text-xs font-medium">
+              {block.index === 3 ? "GPU server · 192 GB VRAM" : `Edge inference node 0${node + 1}`}
+            </p>
+            <p className="mt-1 text-[10px] text-muted-foreground">Click a module to inspect</p>
+          </div>
+          <div className="flex flex-col gap-5">
+            <div className="grid grid-cols-2 gap-3">
+              <Metric title="Memory used" value={`${48 + node * 12} GB`} />
+              <Metric
+                title="Temperature"
+                value={`${power === "Performance" ? 74 : 52 + node * 3}°C`}
+              />
+            </div>
+            <FieldGroup>
+              <Field>
+                <FieldLabel>Power mode</FieldLabel>
+                <div className="grid grid-cols-3 gap-2">
+                  {["Eco", "Balanced", "Performance"].map((p) => (
+                    <Button
+                      key={p}
+                      size="sm"
+                      variant={power === p ? "default" : "outline"}
+                      onClick={() => setPower(p)}
+                    >
+                      {p}
+                    </Button>
+                  ))}
+                </div>
+              </Field>
+              <Field>
+                <FieldLabel>Context window · {tokens[0]}K</FieldLabel>
+                <Slider value={tokens} onValueChange={setTokens} max={128} min={8} step={8} />
+              </Field>
+              <Field className="flex-row items-center justify-between">
+                <FieldLabel>Inference enabled</FieldLabel>
+                <Switch checked={enabled} onCheckedChange={setEnabled} />
+              </Field>
+            </FieldGroup>
+            <div className="rounded-lg border p-4">
+              <h3 className="text-xs font-medium">Loaded models</h3>
+              {["Llama 3.3 70B", "Qwen 2.5 32B", "Embedding model"].map((m, i) => (
+                <div key={m} className="mt-3 flex items-center justify-between text-xs">
+                  <span>{m}</span>
+                  <Badge variant="secondary">{[42, 24, 2][i]} GB</Badge>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="mt-6 grid gap-6 md:grid-cols-[1fr_320px]">
+          <div className="flex flex-col gap-6">
+            {block.index === 0 ? (
+              <>
+                <FieldGroup>
+                  <Field>
+                    <FieldLabel>Monthly token volume · {tokens[0]} million</FieldLabel>
+                    <Slider value={tokens} onValueChange={setTokens} max={200} min={1} step={1} />
+                    <div className="flex justify-between text-[10px] text-muted-foreground">
+                      <span>1M</span>
+                      <span>50M</span>
+                      <span>100M</span>
+                      <span>200M</span>
+                    </div>
+                  </Field>
+                </FieldGroup>
+                <div className="grid gap-3 sm:grid-cols-3">
+                  {["Economy", "Balanced", "Premium"].map((m, i) => (
+                    <button
+                      key={m}
+                      onClick={() => setModel(m)}
+                      className={`rounded-lg border p-4 text-left ${model === m ? "ring-1 ring-primary" : "hover:bg-muted/40"}`}
+                    >
+                      <Bot className="mb-4 size-5" />
+                      <h3 className="text-xs font-medium">{m}</h3>
+                      <p className="mt-2 text-[11px] text-muted-foreground">
+                        {["Fast everyday tasks", "Quality and speed", "Complex reasoning"][i]}
+                      </p>
+                      <p className="mt-4 text-xs font-semibold">${[0.5, 3, 8][i]} / 1M tokens</p>
+                    </button>
+                  ))}
+                </div>
+                <div className="flex items-center justify-between rounded-lg border p-4">
+                  <div>
+                    <h3 className="text-xs font-medium">Prompt caching</h3>
+                    <p className="mt-1 text-[11px] text-muted-foreground">
+                      Reduce spend for repeated context
+                    </p>
+                  </div>
+                  <Switch checked={enabled} onCheckedChange={setEnabled} />
+                </div>
+              </>
+            ) : (
+              <>
+                <Tabs value={scope} onValueChange={setScope}>
+                  <TabsList>
+                    {["Model", "Team", "Agent", "API key"].map((s) => (
+                      <TabsTrigger value={s} key={s}>
+                        {s}
+                      </TabsTrigger>
+                    ))}
+                  </TabsList>
+                </Tabs>
+                <div className="grid grid-cols-2 gap-3">
+                  {["GPT-4.1", "Claude Sonnet", "Gemini Pro", "Llama 3.3"].map((m, i) => (
+                    <button
+                      key={m}
+                      className={`rounded-lg border p-5 text-left ${node === i ? "ring-1 ring-primary" : ""}`}
+                      onClick={() => setNode(i)}
+                    >
+                      <div className="flex justify-between text-xs font-medium">
+                        <span>
+                          {scope === "Model"
+                            ? m
+                            : scope === "Team"
+                              ? ["Engineering", "Design", "Marketing", "Support"][i]
+                              : `${scope} ${i + 1}`}
+                        </span>
+                        <Bot className="size-4 text-muted-foreground" />
+                      </div>
+                      <p className="mt-5 text-2xl font-semibold">${[428, 284, 196, 72][i]}</p>
+                      <Progress value={[78, 52, 35, 14][i]} className="mt-3 h-1.5" />
+                      <p className="mt-2 text-[10px] text-muted-foreground">
+                        {[78, 52, 35, 14][i]}% of monthly cap
+                      </p>
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
+          <Card className="gap-4 shadow-none">
+            <CardHeader>
+              <CardDescription>Projected monthly spend</CardDescription>
+              <CardTitle className="text-4xl">
+                $
+                {block.index === 0
+                  ? Math.round(cost * (enabled ? 0.8 : 1)).toLocaleString()
+                  : "1,207"}
+              </CardTitle>
+              <p className="text-[10px] text-muted-foreground">
+                Based on your current configuration
+              </p>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-4 text-xs">
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Token usage</span>
+                <span>{tokens[0]}M tokens</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Selected model</span>
+                <span>{model}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Cache savings</span>
+                <span>{enabled ? "−20%" : "Off"}</span>
+              </div>
+              <div className="border-t pt-4">
+                <div className="mb-2 flex justify-between">
+                  <span>Monthly budget</span>
+                  <span>$2,000</span>
+                </div>
+                <Progress value={Math.min(100, cost / 20)} className="h-1.5" />
+              </div>
+              <Button onClick={() => toast.success("Usage plan saved")}>Save plan</Button>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+    </div>
+  );
+}

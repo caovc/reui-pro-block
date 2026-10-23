@@ -1,170 +1,895 @@
-.shell-reference { display:flex; min-width:0; height:100dvh; min-height:740px; font-size:13px; line-height:1.45; overflow:hidden; background:var(--background); color:var(--foreground); }
-.shell-reference button { cursor:pointer; }
-.shell-reference [data-slot=button] { font-size:13px; }
-.shell-reference .shell-nav-button { height:32px; min-height:32px; width:100%; gap:8px; padding-left:8px; padding-right:8px; border-radius:7px; font-size:13px; font-weight:400; }
-.shell-reference .shell-nav-button svg { width:15px; height:15px; }
-.shell-reference .shell-section-label { padding:12px 8px 5px; color:var(--muted-foreground); font-size:11px; }
-.shell-reference .shell-sidebar { position:relative; flex-shrink:0; display:flex; flex-direction:column; width:248px; padding:8px; background:color-mix(in oklab,var(--muted) 25%,var(--background)); transition:width 180ms ease; }
-.shell-reference .shell-sidebar.collapsed { width:48px!important; padding-left:5px; padding-right:5px; }
-.shell-reference .shell-header { display:flex; flex-shrink:0; min-height:49px; align-items:center; justify-content:space-between; gap:12px; padding:0 16px; }
-.shell-reference .shell-placeholder-canvas { display:flex; flex:1; min-height:0; flex-direction:column; gap:16px; padding:16px; }
-.shell-reference .shell-placeholder { border:1px dashed color-mix(in oklab,var(--border) 42%,transparent); border-radius:9px; background:color-mix(in oklab,var(--muted) 16%,var(--background)); }
-.shell-reference .shell-placeholder-canvas.solid .shell-placeholder { border-style:solid; border-color:color-mix(in oklab,var(--border) 75%,transparent); border-radius:16px; }
-.shell-reference .shell-content-frame { display:flex; min-width:0; flex:1; flex-direction:column; overflow:hidden; background:var(--background); }
-.shell-reference .shell-content-frame.inset { margin:8px 8px 8px 0; border:1px solid color-mix(in oklab,var(--border) 50%,transparent); border-radius:16px; box-shadow:0 1px 2px color-mix(in oklab,var(--foreground) 5%,transparent); }
-.shell-reference .shell-collapse-handle { position:absolute; top:50%; right:-14px; z-index:5; display:flex; width:14px; height:48px; padding:0; background:transparent; transform:translateY(-50%); }
-.shell-reference .shell-collapse-handle span { width:1px; height:16px; background:var(--muted-foreground); opacity:.65; }
-.shell-reference .shell-collapse-handle:hover span { width:3px; height:30px; border-radius:3px; }
-.shell-reference .shell-usage-card { margin:12px 8px 5px; border:1px solid color-mix(in oklab,var(--border) 65%,transparent); border-radius:14px; background:color-mix(in oklab,var(--muted) 13%,var(--background)); }
-.shell-reference .shell-dark { --background:#171717;--foreground:#f5f5f5;--card:#171717;--card-foreground:#f5f5f5;--muted:#28282b;--muted-foreground:#a1a1aa;--border:#3f3f46;--input:#363638;--secondary:#28282b;--secondary-foreground:#f5f5f5;--accent:#28282b;--accent-foreground:#f5f5f5;--primary:#f5f5f5;--primary-foreground:#171717;--popover:#222225;--popover-foreground:#f5f5f5;background:#171717;color:#f5f5f5; }
-.shell-reference .shell-icon-rail { position:relative; display:flex; width:48px; flex-shrink:0; flex-direction:column; align-items:center; gap:4px; border-right:1px solid var(--border); padding:10px 5px; background:color-mix(in oklab,var(--muted) 20%,var(--background)); }
-.shell-reference .shell-icon-rail.wide { width:64px; border-right:0; padding-top:20px; }
-.shell-reference .shell-icon-rail [data-slot=button] { height:30px; width:30px; padding:0; border-radius:7px; }
-.shell-reference .shell-secondary { position:relative; display:flex; width:302px; min-width:0; flex-shrink:0; flex-direction:column; border-right:1px solid var(--border); background:var(--background); }
-.shell-reference .shell-context { width:280px; flex-shrink:0; display:flex; min-height:0; flex-direction:column; border-left:1px solid var(--border); background:var(--background); }
-.shell-reference .shell-scroll { flex:1; min-height:0; overflow-y:auto; scrollbar-width:thin; scrollbar-color:color-mix(in oklab,var(--muted-foreground) 25%,transparent) transparent; }
-.shell-reference .shell-placeholder-line { height:10px; border-radius:5px; background:color-mix(in oklab,var(--muted) 35%,transparent); }
-@media(max-width:767px){.shell-reference{min-height:740px}.shell-reference .shell-sidebar{width:48px!important;padding-left:5px;padding-right:5px}.shell-reference .shell-sidebar .sidebar-expanded{display:none}.shell-reference .shell-context{display:none}.shell-reference .shell-secondary{width:245px}.shell-reference .shell-header{padding:0 12px}.shell-reference .shell-placeholder-canvas{padding:12px;gap:12px}.shell-reference .shell-placeholder-canvas>.grid{gap:10px;grid-template-columns:repeat(3,minmax(0,1fr))}.shell-reference .shell-placeholder{border-radius:7px}.shell-reference .shell-content-frame.inset{border-radius:12px;margin:6px 6px 6px 0}}
-@media(prefers-reduced-motion:reduce){.shell-reference .shell-sidebar{transition:none}}
+.shell-reference {
+  display: flex;
+  min-width: 0;
+  height: 100dvh;
+  min-height: 740px;
+  font-size: 13px;
+  line-height: 1.45;
+  overflow: hidden;
+  background: var(--background);
+  color: var(--foreground);
+}
+.shell-reference button {
+  cursor: pointer;
+}
+.shell-reference [data-slot="button"] {
+  font-size: 13px;
+}
+.shell-reference .shell-nav-button {
+  height: 32px;
+  min-height: 32px;
+  width: 100%;
+  gap: 8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 400;
+}
+.shell-reference .shell-nav-button svg {
+  width: 15px;
+  height: 15px;
+}
+.shell-reference .shell-section-label {
+  padding: 12px 8px 5px;
+  color: var(--muted-foreground);
+  font-size: 11px;
+}
+.shell-reference .shell-sidebar {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  width: 248px;
+  padding: 8px;
+  background: color-mix(in oklab, var(--muted) 25%, var(--background));
+  transition: width 180ms ease;
+}
+.shell-reference .shell-sidebar.collapsed {
+  width: 48px !important;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.shell-reference .shell-header {
+  display: flex;
+  flex-shrink: 0;
+  min-height: 49px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 16px;
+}
+.shell-reference .shell-placeholder-canvas {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+}
+.shell-reference .shell-placeholder {
+  border: 1px dashed color-mix(in oklab, var(--border) 42%, transparent);
+  border-radius: 9px;
+  background: color-mix(in oklab, var(--muted) 16%, var(--background));
+}
+.shell-reference .shell-placeholder-canvas.solid .shell-placeholder {
+  border-style: solid;
+  border-color: color-mix(in oklab, var(--border) 75%, transparent);
+  border-radius: 16px;
+}
+.shell-reference .shell-content-frame {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--background);
+}
+.shell-reference .shell-content-frame.inset {
+  margin: 8px 8px 8px 0;
+  border: 1px solid color-mix(in oklab, var(--border) 50%, transparent);
+  border-radius: 16px;
+  box-shadow: 0 1px 2px color-mix(in oklab, var(--foreground) 5%, transparent);
+}
+.shell-reference .shell-collapse-handle {
+  position: absolute;
+  top: 50%;
+  right: -14px;
+  z-index: 5;
+  display: flex;
+  width: 14px;
+  height: 48px;
+  padding: 0;
+  background: transparent;
+  transform: translateY(-50%);
+}
+.shell-reference .shell-collapse-handle span {
+  width: 1px;
+  height: 16px;
+  background: var(--muted-foreground);
+  opacity: 0.65;
+}
+.shell-reference .shell-collapse-handle:hover span {
+  width: 3px;
+  height: 30px;
+  border-radius: 3px;
+}
+.shell-reference .shell-usage-card {
+  margin: 12px 8px 5px;
+  border: 1px solid color-mix(in oklab, var(--border) 65%, transparent);
+  border-radius: 14px;
+  background: color-mix(in oklab, var(--muted) 13%, var(--background));
+}
+.shell-reference .shell-dark {
+  --background: #171717;
+  --foreground: #f5f5f5;
+  --card: #171717;
+  --card-foreground: #f5f5f5;
+  --muted: #28282b;
+  --muted-foreground: #a1a1aa;
+  --border: #3f3f46;
+  --input: #363638;
+  --secondary: #28282b;
+  --secondary-foreground: #f5f5f5;
+  --accent: #28282b;
+  --accent-foreground: #f5f5f5;
+  --primary: #f5f5f5;
+  --primary-foreground: #171717;
+  --popover: #222225;
+  --popover-foreground: #f5f5f5;
+  background: #171717;
+  color: #f5f5f5;
+}
+.shell-reference .shell-icon-rail {
+  position: relative;
+  display: flex;
+  width: 48px;
+  flex-shrink: 0;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  border-right: 1px solid var(--border);
+  padding: 10px 5px;
+  background: color-mix(in oklab, var(--muted) 20%, var(--background));
+}
+.shell-reference .shell-icon-rail.wide {
+  width: 64px;
+  border-right: 0;
+  padding-top: 20px;
+}
+.shell-reference .shell-icon-rail [data-slot="button"] {
+  height: 30px;
+  width: 30px;
+  padding: 0;
+  border-radius: 7px;
+}
+.shell-reference .shell-secondary {
+  position: relative;
+  display: flex;
+  width: 302px;
+  min-width: 0;
+  flex-shrink: 0;
+  flex-direction: column;
+  border-right: 1px solid var(--border);
+  background: var(--background);
+}
+.shell-reference .shell-context {
+  width: 280px;
+  flex-shrink: 0;
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  border-left: 1px solid var(--border);
+  background: var(--background);
+}
+.shell-reference .shell-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklab, var(--muted-foreground) 25%, transparent) transparent;
+}
+.shell-reference .shell-placeholder-line {
+  height: 10px;
+  border-radius: 5px;
+  background: color-mix(in oklab, var(--muted) 35%, transparent);
+}
+@media (max-width: 767px) {
+  .shell-reference {
+    min-height: 740px;
+  }
+  .shell-reference .shell-sidebar {
+    width: 48px !important;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  .shell-reference .shell-sidebar .sidebar-expanded {
+    display: none;
+  }
+  .shell-reference .shell-context {
+    display: none;
+  }
+  .shell-reference .shell-secondary {
+    width: 245px;
+  }
+  .shell-reference .shell-header {
+    padding: 0 12px;
+  }
+  .shell-reference .shell-placeholder-canvas {
+    padding: 12px;
+    gap: 12px;
+  }
+  .shell-reference .shell-placeholder-canvas > .grid {
+    gap: 10px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .shell-reference .shell-placeholder {
+    border-radius: 7px;
+  }
+  .shell-reference .shell-content-frame.inset {
+    border-radius: 12px;
+    margin: 6px 6px 6px 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .shell-reference .shell-sidebar {
+    transition: none;
+  }
+}
 /* Shell chrome uses the reference's 14px text and 32px navigation rows. */
-.shell-reference{font-size:14px;min-height:560px}
-.shell-reference [data-slot=button]{font-size:13px}
-.shell-reference .shell-nav-button{font-size:14px}
-.shell-reference .shell-section-label{font-size:12px}
-.shell-reference .shell-mobile-trigger{display:none}
-.shell-reference .shell-card-canvas{display:flex;min-width:0;min-height:0;flex:1;flex-direction:column;gap:16px;padding:16px;overflow:auto;scrollbar-width:thin}
-.shell-reference .shell-summary-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
-.shell-reference .shell-body-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;min-height:0;flex:1}
-.shell-reference .shell-skeleton-card{display:flex;min-width:0;min-height:160px;flex-direction:column;gap:12px;border:1px solid color-mix(in oklab,var(--border) 75%,transparent);border-radius:14px;padding:16px;background:var(--background)}
-.shell-reference .shell-skeleton-card.summary{min-height:128px}
-.shell-reference .shell-skeleton-line{height:14px;flex-shrink:0;border-radius:8px;background:color-mix(in oklab,var(--muted) 55%,var(--background))}
-.shell-reference .shell-skeleton-line.short{width:50%}
-.shell-reference .shell-skeleton-block{min-height:70px;flex:1;border-radius:7px;background:color-mix(in oklab,var(--muted) 55%,var(--background))}
-.shell-reference .layout-three .shell-summary-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
-.shell-reference .layout-three .shell-body-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
-.shell-reference .layout-four .shell-summary-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
-.shell-reference .layout-four .shell-body-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
-.shell-reference .layout-rows .shell-summary-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
-.shell-reference .layout-rows .shell-body-grid{display:flex;flex-direction:column}
-.shell-reference .layout-rows .shell-skeleton-card:not(.summary){min-height:200px}
-.shell-reference .layout-invoice .shell-summary-grid{padding:16px;border:1px solid #eed8e5;border-radius:14px;outline:12px solid #f6f2ff;outline-offset:-1px;margin:14px 10px 10px}
-.shell-reference .layout-invoice .shell-skeleton-card.summary{min-height:250px}
-.shell-reference .layout-invoice .shell-body-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
-.shell-reference .layout-split .shell-summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-.shell-reference .layout-split .shell-body-grid{grid-template-columns:1fr}
-.shell-reference .shell-chat-skeleton{margin:48px auto 0;width:min(85%,760px);overflow:hidden}
-.shell-reference .shell-scope-panel{width:304px;flex-shrink:0}
-.shell-reference .shell-scope-panel .shell-segments{gap:0;overflow-x:auto;scrollbar-width:none}
-.shell-reference .shell-scope-panel .shell-segments button{flex:1;white-space:nowrap;padding-left:6px;padding-right:6px;font-size:11px}
-.shell-reference .shell-mail-panes{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.55fr);gap:12px;min-width:0;flex:1;padding:8px 0}
-.shell-reference .shell-color-wash{background:radial-gradient(at 0 0,#f6e9fc,transparent 50%),radial-gradient(at 50% 50%,#dcfce7,transparent 70%),radial-gradient(at 100% 100%,#fde5dd,transparent 60%),#f6faf7}
-.shell-color-wash{background:radial-gradient(at 0 0,#f6e9fc,transparent 50%),radial-gradient(at 50% 50%,#dcfce7,transparent 70%),radial-gradient(at 100% 100%,#fde5dd,transparent 60%),#f6faf7!important}
-.shell-reference .shell-glass-rail{width:48px;border:0;background:transparent;padding-top:18px}
-.shell-reference .shell-glass-rail>div:not(:last-child){border:1px solid #ffffff70;border-radius:28px;padding:8px 4px;background:#ffffff40;backdrop-filter:blur(14px)}
-.shell-reference .shell-folder-tab{height:46px;flex:1;max-width:240px;padding:0 24px;border-radius:24px 24px 0 0;background:#ffffff60;color:var(--muted-foreground);font-size:12px;clip-path:polygon(0 0,88% 0,100% 100%,0 100%)}
-.shell-reference .shell-folder-tab.active{background:var(--background);color:var(--foreground)}
-.shell-fleet-hero{position:relative;background:#f4f4f3!important}
-.shell-reference .shell-hero-scene{position:absolute;inset:0 0 auto;height:390px;overflow:hidden;background:radial-gradient(ellipse at 15% 10%,#fff6da,transparent 30%),linear-gradient(20deg,#b89479,#4e6b6f 45%,#e4bea2 65%,#96876b)}
-.shell-reference .shell-hero-scene:after{content:'';position:absolute;inset:auto 0 0;height:100px;background:linear-gradient(transparent,#f4f4f3);mask-image:repeating-linear-gradient(90deg,#000 0 12px,#0009 12px 24px)}
-.shell-reference .shell-demo-robot{position:absolute;right:24%;top:105px;width:180px;height:220px;border-radius:45% 45% 30% 30%;background:linear-gradient(100deg,#c5d4c2,#edf4dc 45%,#80928b);box-shadow:20px 30px 30px #2c35354a;transform:rotate(-10deg)}
-.shell-reference .robot-face{position:absolute;left:15px;top:24px;width:150px;height:100px;display:flex;align-items:center;justify-content:center;gap:20px;border-radius:45%;background:linear-gradient(#0f2429,#101a1d);box-shadow:inset 0 0 10px #000}
-.shell-reference .robot-face span{width:25px;height:12px;border-radius:50% 50% 0 0;border:4px solid #2beaf4;border-bottom:0;box-shadow:0 -3px 8px #2beaf4}
-@media(max-width:767px){
- .shell-reference{min-height:560px}
- .shell-reference .shell-desktop-sidebar,.shell-reference .shell-desktop-rail{display:none!important}
- .shell-reference .shell-mobile-trigger{display:flex;position:fixed;left:8px;bottom:12px;z-index:30;width:36px;height:36px;border:1px solid var(--border);border-radius:10px;background:var(--background);box-shadow:0 2px 6px #0001}
- .shell-reference .shell-mobile-trigger+button{bottom:56px}
- .shell-reference.shell-drawer{min-height:0;height:100dvh;font-size:14px}
- .shell-reference .shell-card-canvas{padding:12px;gap:12px}
- .shell-reference .shell-summary-grid,.shell-reference .layout-three .shell-summary-grid,.shell-reference .layout-four .shell-summary-grid,.shell-reference .layout-rows .shell-summary-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
- .shell-reference .shell-body-grid,.shell-reference .layout-three .shell-body-grid,.shell-reference .layout-four .shell-body-grid{grid-template-columns:1fr;gap:12px}
- .shell-reference .shell-skeleton-card{min-height:180px;padding:12px}
- .shell-reference .shell-skeleton-card.summary{min-height:100px}
- .shell-reference .shell-scope-panel{width:192px}
- .shell-reference .shell-mission-panel{width:100%}
- .shell-reference .shell-mission-panel+main{display:none}
- .shell-reference .shell-order-panel{width:180px}
- .shell-reference .shell-mail-panes{grid-template-columns:1fr;padding:8px}
- .shell-reference .shell-assistant{position:fixed;inset:8px 8px 8px auto;z-index:40;width:min(340px,calc(100vw - 16px));box-shadow:-8px 0 30px #0002}
- .shell-reference .shell-folder-tab{padding:0 12px}
- .shell-reference .shell-access-request{top:64px;right:8px;width:220px}
- .shell-reference .shell-header{min-width:0;gap:6px;padding-left:10px;padding-right:10px}
- .shell-reference .shell-header [data-slot=button]{font-size:11px;gap:4px;padding-left:7px;padding-right:7px}
+.shell-reference {
+  font-size: 14px;
+  min-height: 560px;
 }
-.shell-reference h1{font-size:14px;font-weight:500;line-height:1.5;letter-spacing:normal}
-.shell-reference[data-shell-variant="17"] h1,.shell-reference[data-shell-variant="30"] h1{font-size:20px;font-weight:600;letter-spacing:-.4px}
-.shell-reference[data-shell-variant="1"] .shell-header,.shell-reference[data-shell-variant="2"] .shell-header,.shell-reference[data-shell-variant="3"] .shell-header,.shell-reference[data-shell-variant="6"] .shell-header,.shell-reference[data-shell-variant="9"] .shell-header,.shell-reference[data-shell-variant="10"] .shell-header{min-height:32px}
-.shell-reference[data-shell-variant="3"] .shell-sidebar,.shell-reference[data-shell-variant="9"] .shell-sidebar,.shell-reference[data-shell-variant="10"] .shell-sidebar{width:256px;padding-top:16px}
-.shell-reference [data-slot=button][aria-expanded=true]:not([aria-haspopup]){background:transparent}
-.shell-reference .shell-placeholder-canvas.solid .shell-placeholder{background:color-mix(in oklab,var(--muted) 28%,var(--background));border-radius:12px;border-color:color-mix(in oklab,var(--border) 65%,transparent)}
-.shell-reference[data-shell-variant="18"] .shell-placeholder{border-style:solid;background:color-mix(in oklab,var(--muted) 28%,var(--background));border-color:color-mix(in oklab,var(--border) 65%,transparent)}
-.shell-reference .shell-usage-card [data-slot=progress-indicator]{background:#00bc7d}
-.shell-reference[data-shell-variant="1"] .shell-nav-button:has([aria-label="Observability"]){color:inherit}
-.shell-reference .shell-card-foot{display:flex;align-items:center;justify-content:space-between;margin:0 -16px -16px;padding:9px 16px;background:var(--muted);opacity:.55;border-top:1px solid var(--border);border-radius:0 0 14px 14px}
-.shell-reference .layout-security .shell-summary-grid,.shell-reference .layout-fleet .shell-summary-grid,.shell-reference .layout-workbench .shell-summary-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
-.shell-reference .layout-security .shell-body-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
-.shell-reference .layout-workbench .shell-summary-grid .summary{min-height:100px;border-style:dashed}
-.shell-reference .layout-workbench .shell-body-grid{grid-template-columns:1fr}
-.shell-reference .layout-fleet .shell-body-grid{display:flex;flex-direction:column}
-.shell-reference .layout-fleet .shell-body-grid .shell-skeleton-card{min-height:140px}
-.shell-reference .layout-fleet .shell-body-grid .shell-skeleton-card:nth-child(2){min-height:280px}
-.shell-reference .shell-console-canvas{display:grid;grid-template-columns:minmax(220px,1fr) minmax(0,2.3fr);flex:1;min-height:0;gap:24px;padding:24px;overflow:auto}
-.shell-reference .shell-console-stats{display:flex;flex-direction:column;gap:20px}
-.shell-reference .shell-console-body{display:flex;flex-direction:column;gap:60px;padding:24px;border:1px solid var(--border);border-radius:16px}
-.shell-reference .shell-invoice-canvas{flex:1;min-width:0;padding:20px;display:flex;flex-direction:column;gap:16px;overflow:auto}
-.shell-reference .shell-invoice-focus{border-radius:12px;background:#f7f2ff;padding:12px}
-.shell-reference .shell-invoice-focus>.shell-skeleton-line{margin-bottom:12px}
-.shell-reference .shell-invoice-form{display:grid;grid-template-columns:2fr 1fr;gap:16px;min-height:290px;padding:16px;border:1px solid #e7b7cf;border-radius:12px;background:var(--background)}
-.shell-reference[data-shell-variant="23"] .shell-sidebar .shell-nav-button{padding-left:32px;color:var(--muted-foreground);font-size:12px}
-.shell-reference[data-shell-variant="23"] .shell-sidebar .shell-nav-button svg{display:none}
-.shell-reference[data-shell-variant="23"] .shell-section-label{color:var(--foreground);font-weight:500}
-.shell-reference[data-shell-variant="24"] .shell-sidebar,.shell-reference[data-shell-variant="28"] .shell-sidebar{width:208px!important}
-.shell-reference[data-shell-variant="26"] .shell-scope-panel{width:304px}
-.shell-reference[data-shell-variant="30"] .shell-segments{background:transparent;justify-content:flex-start}
-.shell-reference[data-shell-variant="29"] .shell-content-frame{border:1px solid var(--border);border-radius:14px;margin:8px 8px 8px 0}
-.shell-reference[data-shell-variant="33"] .shell-desktop-sidebar{width:288px!important}
-@media(max-width:767px){
- .shell-reference .shell-console-canvas{grid-template-columns:1fr;padding:12px}
- .shell-reference .shell-console-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
- .shell-reference .shell-console-body{gap:30px;padding:12px}
- .shell-reference .shell-invoice-canvas{padding:10px}
- .shell-reference .shell-invoice-form{grid-template-columns:1fr}
- .shell-reference .shell-invoice-form>.shell-skeleton-card{display:none}
- .shell-reference .shell-card-foot{margin:0 -12px -12px;padding:8px 12px}
- .shell-reference[data-shell-variant="26"] .shell-scope-panel{width:192px}
+.shell-reference [data-slot="button"] {
+  font-size: 13px;
 }
-.shell-reference .shell-sidebar.collapsed{overflow:hidden}
-.shell-reference .shell-sidebar.collapsed .shell-section-label{display:none}
-.shell-reference .shell-sidebar.collapsed .shell-nav-button>span{display:none}
-.shell-reference .shell-sidebar.collapsed input{display:none}
-.shell-reference .shell-glass-top{display:grid;grid-template-columns:1fr 1.2fr;gap:24px;min-height:0;flex:1}
-.shell-reference .shell-glass-lower{display:flex;min-height:0;flex:1}
-.shell-reference .shell-glass-lower>.shell-skeleton-card{flex:1}
-.shell-reference[data-shell-variant="16"] .shell-sidebar{width:232px!important}
-.shell-reference[data-shell-variant="16"] .shell-header{min-height:72px}
-.shell-reference[data-shell-variant="21"] .shell-nav-button{font-size:13px}
-.shell-reference[data-shell-variant="27"] .shell-content-frame{margin:8px 8px 8px 0;border:1px solid var(--border);border-radius:14px}
-.shell-reference[data-shell-variant="28"] .layout-four .shell-body-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
-.shell-reference[data-shell-variant="28"] .layout-four .shell-body-grid>.shell-skeleton-card:nth-child(5),.shell-reference[data-shell-variant="28"] .layout-four .shell-body-grid>.shell-skeleton-card:nth-child(6){grid-column:span 2}
-@media(max-width:767px){.shell-reference .shell-glass-top{grid-template-columns:1fr;gap:12px}.shell-reference[data-shell-variant="28"] .layout-four .shell-body-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.shell-reference[data-shell-variant="28"] .layout-four .shell-body-grid>.shell-skeleton-card:nth-child(5),.shell-reference[data-shell-variant="28"] .layout-four .shell-body-grid>.shell-skeleton-card:nth-child(6){grid-column:span 1}}
+.shell-reference .shell-nav-button {
+  font-size: 14px;
+}
+.shell-reference .shell-section-label {
+  font-size: 12px;
+}
+.shell-reference .shell-mobile-trigger {
+  display: none;
+}
+.shell-reference .shell-card-canvas {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  overflow: auto;
+  scrollbar-width: thin;
+}
+.shell-reference .shell-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+.shell-reference .shell-body-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  min-height: 0;
+  flex: 1;
+}
+.shell-reference .shell-skeleton-card {
+  display: flex;
+  min-width: 0;
+  min-height: 160px;
+  flex-direction: column;
+  gap: 12px;
+  border: 1px solid color-mix(in oklab, var(--border) 75%, transparent);
+  border-radius: 14px;
+  padding: 16px;
+  background: var(--background);
+}
+.shell-reference .shell-skeleton-card.summary {
+  min-height: 128px;
+}
+.shell-reference .shell-skeleton-line {
+  height: 14px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background: color-mix(in oklab, var(--muted) 55%, var(--background));
+}
+.shell-reference .shell-skeleton-line.short {
+  width: 50%;
+}
+.shell-reference .shell-skeleton-block {
+  min-height: 70px;
+  flex: 1;
+  border-radius: 7px;
+  background: color-mix(in oklab, var(--muted) 55%, var(--background));
+}
+.shell-reference .layout-three .shell-summary-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.shell-reference .layout-three .shell-body-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.shell-reference .layout-four .shell-summary-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.shell-reference .layout-four .shell-body-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.shell-reference .layout-rows .shell-summary-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.shell-reference .layout-rows .shell-body-grid {
+  display: flex;
+  flex-direction: column;
+}
+.shell-reference .layout-rows .shell-skeleton-card:not(.summary) {
+  min-height: 200px;
+}
+.shell-reference .layout-invoice .shell-summary-grid {
+  padding: 16px;
+  border: 1px solid #eed8e5;
+  border-radius: 14px;
+  outline: 12px solid #f6f2ff;
+  outline-offset: -1px;
+  margin: 14px 10px 10px;
+}
+.shell-reference .layout-invoice .shell-skeleton-card.summary {
+  min-height: 250px;
+}
+.shell-reference .layout-invoice .shell-body-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.shell-reference .layout-split .shell-summary-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.shell-reference .layout-split .shell-body-grid {
+  grid-template-columns: 1fr;
+}
+.shell-reference .shell-chat-skeleton {
+  margin: 48px auto 0;
+  width: min(85%, 760px);
+  overflow: hidden;
+}
+.shell-reference .shell-scope-panel {
+  width: 304px;
+  flex-shrink: 0;
+}
+.shell-reference .shell-scope-panel .shell-segments {
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.shell-reference .shell-scope-panel .shell-segments button {
+  flex: 1;
+  white-space: nowrap;
+  padding-left: 6px;
+  padding-right: 6px;
+  font-size: 11px;
+}
+.shell-reference .shell-mail-panes {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.55fr);
+  gap: 12px;
+  min-width: 0;
+  flex: 1;
+  padding: 8px 0;
+}
+.shell-reference .shell-color-wash {
+  background:
+    radial-gradient(at 0 0, #f6e9fc, transparent 50%),
+    radial-gradient(at 50% 50%, #dcfce7, transparent 70%),
+    radial-gradient(at 100% 100%, #fde5dd, transparent 60%), #f6faf7;
+}
+.shell-color-wash {
+  background:
+    radial-gradient(at 0 0, #f6e9fc, transparent 50%),
+    radial-gradient(at 50% 50%, #dcfce7, transparent 70%),
+    radial-gradient(at 100% 100%, #fde5dd, transparent 60%), #f6faf7 !important;
+}
+.shell-reference .shell-glass-rail {
+  width: 48px;
+  border: 0;
+  background: transparent;
+  padding-top: 18px;
+}
+.shell-reference .shell-glass-rail > div:not(:last-child) {
+  border: 1px solid #ffffff70;
+  border-radius: 28px;
+  padding: 8px 4px;
+  background: #ffffff40;
+  backdrop-filter: blur(14px);
+}
+.shell-reference .shell-folder-tab {
+  height: 46px;
+  flex: 1;
+  max-width: 240px;
+  padding: 0 24px;
+  border-radius: 24px 24px 0 0;
+  background: #ffffff60;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  clip-path: polygon(0 0, 88% 0, 100% 100%, 0 100%);
+}
+.shell-reference .shell-folder-tab.active {
+  background: var(--background);
+  color: var(--foreground);
+}
+.shell-fleet-hero {
+  position: relative;
+  background: #f4f4f3 !important;
+}
+.shell-reference .shell-hero-scene {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 390px;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 15% 10%, #fff6da, transparent 30%),
+    linear-gradient(20deg, #b89479, #4e6b6f 45%, #e4bea2 65%, #96876b);
+}
+.shell-reference .shell-hero-scene:after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 100px;
+  background: linear-gradient(transparent, #f4f4f3);
+  mask-image: repeating-linear-gradient(90deg, #000 0 12px, #0009 12px 24px);
+}
+.shell-reference .shell-demo-robot {
+  position: absolute;
+  right: 24%;
+  top: 105px;
+  width: 180px;
+  height: 220px;
+  border-radius: 45% 45% 30% 30%;
+  background: linear-gradient(100deg, #c5d4c2, #edf4dc 45%, #80928b);
+  box-shadow: 20px 30px 30px #2c35354a;
+  transform: rotate(-10deg);
+}
+.shell-reference .robot-face {
+  position: absolute;
+  left: 15px;
+  top: 24px;
+  width: 150px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  border-radius: 45%;
+  background: linear-gradient(#0f2429, #101a1d);
+  box-shadow: inset 0 0 10px #000;
+}
+.shell-reference .robot-face span {
+  width: 25px;
+  height: 12px;
+  border-radius: 50% 50% 0 0;
+  border: 4px solid #2beaf4;
+  border-bottom: 0;
+  box-shadow: 0 -3px 8px #2beaf4;
+}
+@media (max-width: 767px) {
+  .shell-reference {
+    min-height: 560px;
+  }
+  .shell-reference .shell-desktop-sidebar,
+  .shell-reference .shell-desktop-rail {
+    display: none !important;
+  }
+  .shell-reference .shell-mobile-trigger {
+    display: flex;
+    position: fixed;
+    left: 8px;
+    bottom: 12px;
+    z-index: 30;
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--background);
+    box-shadow: 0 2px 6px #0001;
+  }
+  .shell-reference .shell-mobile-trigger + button {
+    bottom: 56px;
+  }
+  .shell-reference.shell-drawer {
+    min-height: 0;
+    height: 100dvh;
+    font-size: 14px;
+  }
+  .shell-reference .shell-card-canvas {
+    padding: 12px;
+    gap: 12px;
+  }
+  .shell-reference .shell-summary-grid,
+  .shell-reference .layout-three .shell-summary-grid,
+  .shell-reference .layout-four .shell-summary-grid,
+  .shell-reference .layout-rows .shell-summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .shell-reference .shell-body-grid,
+  .shell-reference .layout-three .shell-body-grid,
+  .shell-reference .layout-four .shell-body-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .shell-reference .shell-skeleton-card {
+    min-height: 180px;
+    padding: 12px;
+  }
+  .shell-reference .shell-skeleton-card.summary {
+    min-height: 100px;
+  }
+  .shell-reference .shell-scope-panel {
+    width: 192px;
+  }
+  .shell-reference .shell-mission-panel {
+    width: 100%;
+  }
+  .shell-reference .shell-mission-panel + main {
+    display: none;
+  }
+  .shell-reference .shell-order-panel {
+    width: 180px;
+  }
+  .shell-reference .shell-mail-panes {
+    grid-template-columns: 1fr;
+    padding: 8px;
+  }
+  .shell-reference .shell-assistant {
+    position: fixed;
+    inset: 8px 8px 8px auto;
+    z-index: 40;
+    width: min(340px, calc(100vw - 16px));
+    box-shadow: -8px 0 30px #0002;
+  }
+  .shell-reference .shell-folder-tab {
+    padding: 0 12px;
+  }
+  .shell-reference .shell-access-request {
+    top: 64px;
+    right: 8px;
+    width: 220px;
+  }
+  .shell-reference .shell-header {
+    min-width: 0;
+    gap: 6px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .shell-reference .shell-header [data-slot="button"] {
+    font-size: 11px;
+    gap: 4px;
+    padding-left: 7px;
+    padding-right: 7px;
+  }
+}
+.shell-reference h1 {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: normal;
+}
+.shell-reference[data-shell-variant="17"] h1,
+.shell-reference[data-shell-variant="30"] h1 {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.4px;
+}
+.shell-reference[data-shell-variant="1"] .shell-header,
+.shell-reference[data-shell-variant="2"] .shell-header,
+.shell-reference[data-shell-variant="3"] .shell-header,
+.shell-reference[data-shell-variant="6"] .shell-header,
+.shell-reference[data-shell-variant="9"] .shell-header,
+.shell-reference[data-shell-variant="10"] .shell-header {
+  min-height: 32px;
+}
+.shell-reference[data-shell-variant="3"] .shell-sidebar,
+.shell-reference[data-shell-variant="9"] .shell-sidebar,
+.shell-reference[data-shell-variant="10"] .shell-sidebar {
+  width: 256px;
+  padding-top: 16px;
+}
+.shell-reference [data-slot="button"][aria-expanded="true"]:not([aria-haspopup]) {
+  background: transparent;
+}
+.shell-reference .shell-placeholder-canvas.solid .shell-placeholder {
+  background: color-mix(in oklab, var(--muted) 28%, var(--background));
+  border-radius: 12px;
+  border-color: color-mix(in oklab, var(--border) 65%, transparent);
+}
+.shell-reference[data-shell-variant="18"] .shell-placeholder {
+  border-style: solid;
+  background: color-mix(in oklab, var(--muted) 28%, var(--background));
+  border-color: color-mix(in oklab, var(--border) 65%, transparent);
+}
+.shell-reference .shell-usage-card [data-slot="progress-indicator"] {
+  background: #00bc7d;
+}
+.shell-reference[data-shell-variant="1"] .shell-nav-button:has([aria-label="Observability"]) {
+  color: inherit;
+}
+.shell-reference .shell-card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 -16px -16px;
+  padding: 9px 16px;
+  background: var(--muted);
+  opacity: 0.55;
+  border-top: 1px solid var(--border);
+  border-radius: 0 0 14px 14px;
+}
+.shell-reference .layout-security .shell-summary-grid,
+.shell-reference .layout-fleet .shell-summary-grid,
+.shell-reference .layout-workbench .shell-summary-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.shell-reference .layout-security .shell-body-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.shell-reference .layout-workbench .shell-summary-grid .summary {
+  min-height: 100px;
+  border-style: dashed;
+}
+.shell-reference .layout-workbench .shell-body-grid {
+  grid-template-columns: 1fr;
+}
+.shell-reference .layout-fleet .shell-body-grid {
+  display: flex;
+  flex-direction: column;
+}
+.shell-reference .layout-fleet .shell-body-grid .shell-skeleton-card {
+  min-height: 140px;
+}
+.shell-reference .layout-fleet .shell-body-grid .shell-skeleton-card:nth-child(2) {
+  min-height: 280px;
+}
+.shell-reference .shell-console-canvas {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) minmax(0, 2.3fr);
+  flex: 1;
+  min-height: 0;
+  gap: 24px;
+  padding: 24px;
+  overflow: auto;
+}
+.shell-reference .shell-console-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.shell-reference .shell-console-body {
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+.shell-reference .shell-invoice-canvas {
+  flex: 1;
+  min-width: 0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow: auto;
+}
+.shell-reference .shell-invoice-focus {
+  border-radius: 12px;
+  background: #f7f2ff;
+  padding: 12px;
+}
+.shell-reference .shell-invoice-focus > .shell-skeleton-line {
+  margin-bottom: 12px;
+}
+.shell-reference .shell-invoice-form {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 16px;
+  min-height: 290px;
+  padding: 16px;
+  border: 1px solid #e7b7cf;
+  border-radius: 12px;
+  background: var(--background);
+}
+.shell-reference[data-shell-variant="23"] .shell-sidebar .shell-nav-button {
+  padding-left: 32px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.shell-reference[data-shell-variant="23"] .shell-sidebar .shell-nav-button svg {
+  display: none;
+}
+.shell-reference[data-shell-variant="23"] .shell-section-label {
+  color: var(--foreground);
+  font-weight: 500;
+}
+.shell-reference[data-shell-variant="24"] .shell-sidebar,
+.shell-reference[data-shell-variant="28"] .shell-sidebar {
+  width: 208px !important;
+}
+.shell-reference[data-shell-variant="26"] .shell-scope-panel {
+  width: 304px;
+}
+.shell-reference[data-shell-variant="30"] .shell-segments {
+  background: transparent;
+  justify-content: flex-start;
+}
+.shell-reference[data-shell-variant="29"] .shell-content-frame {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  margin: 8px 8px 8px 0;
+}
+.shell-reference[data-shell-variant="33"] .shell-desktop-sidebar {
+  width: 288px !important;
+}
+@media (max-width: 767px) {
+  .shell-reference .shell-console-canvas {
+    grid-template-columns: 1fr;
+    padding: 12px;
+  }
+  .shell-reference .shell-console-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .shell-reference .shell-console-body {
+    gap: 30px;
+    padding: 12px;
+  }
+  .shell-reference .shell-invoice-canvas {
+    padding: 10px;
+  }
+  .shell-reference .shell-invoice-form {
+    grid-template-columns: 1fr;
+  }
+  .shell-reference .shell-invoice-form > .shell-skeleton-card {
+    display: none;
+  }
+  .shell-reference .shell-card-foot {
+    margin: 0 -12px -12px;
+    padding: 8px 12px;
+  }
+  .shell-reference[data-shell-variant="26"] .shell-scope-panel {
+    width: 192px;
+  }
+}
+.shell-reference .shell-sidebar.collapsed {
+  overflow: hidden;
+}
+.shell-reference .shell-sidebar.collapsed .shell-section-label {
+  display: none;
+}
+.shell-reference .shell-sidebar.collapsed .shell-nav-button > span {
+  display: none;
+}
+.shell-reference .shell-sidebar.collapsed input {
+  display: none;
+}
+.shell-reference .shell-glass-top {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 24px;
+  min-height: 0;
+  flex: 1;
+}
+.shell-reference .shell-glass-lower {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+}
+.shell-reference .shell-glass-lower > .shell-skeleton-card {
+  flex: 1;
+}
+.shell-reference[data-shell-variant="16"] .shell-sidebar {
+  width: 232px !important;
+}
+.shell-reference[data-shell-variant="16"] .shell-header {
+  min-height: 72px;
+}
+.shell-reference[data-shell-variant="21"] .shell-nav-button {
+  font-size: 13px;
+}
+.shell-reference[data-shell-variant="27"] .shell-content-frame {
+  margin: 8px 8px 8px 0;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+.shell-reference[data-shell-variant="28"] .layout-four .shell-body-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.shell-reference[data-shell-variant="28"]
+  .layout-four
+  .shell-body-grid
+  > .shell-skeleton-card:nth-child(5),
+.shell-reference[data-shell-variant="28"]
+  .layout-four
+  .shell-body-grid
+  > .shell-skeleton-card:nth-child(6) {
+  grid-column: span 2;
+}
+@media (max-width: 767px) {
+  .shell-reference .shell-glass-top {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .shell-reference[data-shell-variant="28"] .layout-four .shell-body-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .shell-reference[data-shell-variant="28"]
+    .layout-four
+    .shell-body-grid
+    > .shell-skeleton-card:nth-child(5),
+  .shell-reference[data-shell-variant="28"]
+    .layout-four
+    .shell-body-grid
+    > .shell-skeleton-card:nth-child(6) {
+    grid-column: span 1;
+  }
+}
 
 /* Narrow-screen adaptations for the individually audited 1–12 shell batch. */
-@media(max-width:767px){
- .shell-reference[data-shell-variant="4"][data-panel-hidden="false"]>.shell-content-frame,.shell-reference[data-shell-variant="5"][data-panel-hidden="false"]>.shell-content-frame{display:none}
- .shell-reference[data-shell-variant="4"]>.shell-secondary,.shell-reference[data-shell-variant="5"]>.shell-secondary{width:calc(100vw - 48px)!important}
- .shell-reference[data-shell-variant="8"][data-inner-hidden="false"] .inventory-canvas{display:none}
- .shell-reference[data-shell-variant="8"][data-inner-hidden="false"] .shell-secondary{width:100%!important}
- .shell-reference[data-shell-variant="8"] .shell-content-frame.inset{margin:6px 6px 6px 0}
- .shell-reference[data-shell-variant="11"] .shell-header{gap:4px;padding-left:6px;padding-right:6px}
- .shell-reference[data-shell-variant="11"] [aria-label="Switch organization"]>span.truncate{max-width:65px}
- .shell-reference[data-shell-variant="11"] [aria-label="Switch environment"]>span.truncate{max-width:62px}
+@media (max-width: 767px) {
+  .shell-reference[data-shell-variant="4"][data-panel-hidden="false"] > .shell-content-frame,
+  .shell-reference[data-shell-variant="5"][data-panel-hidden="false"] > .shell-content-frame {
+    display: none;
+  }
+  .shell-reference[data-shell-variant="4"] > .shell-secondary,
+  .shell-reference[data-shell-variant="5"] > .shell-secondary {
+    width: calc(100vw - 48px) !important;
+  }
+  .shell-reference[data-shell-variant="8"][data-inner-hidden="false"] .inventory-canvas {
+    display: none;
+  }
+  .shell-reference[data-shell-variant="8"][data-inner-hidden="false"] .shell-secondary {
+    width: 100% !important;
+  }
+  .shell-reference[data-shell-variant="8"] .shell-content-frame.inset {
+    margin: 6px 6px 6px 0;
+  }
+  .shell-reference[data-shell-variant="11"] .shell-header {
+    gap: 4px;
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+  .shell-reference[data-shell-variant="11"] [aria-label="Switch organization"] > span.truncate {
+    max-width: 65px;
+  }
+  .shell-reference[data-shell-variant="11"] [aria-label="Switch environment"] > span.truncate {
+    max-width: 62px;
+  }
 }
 
-.shell-reference .shell-hero-scene{height:420px}
-.shell-reference .shell-hero-scene:after{height:110px;mask-image:none;background:linear-gradient(transparent,#f4f4f3)}
-.shell-reference .shell-hero-pixels{position:absolute;inset:auto 0 0;height:140px}
-.shell-reference .shell-hero-pixels span{position:absolute;background:#f4f4f3}
+.shell-reference .shell-hero-scene {
+  height: 420px;
+}
+.shell-reference .shell-hero-scene:after {
+  height: 110px;
+  mask-image: none;
+  background: linear-gradient(transparent, #f4f4f3);
+}
+.shell-reference .shell-hero-pixels {
+  position: absolute;
+  inset: auto 0 0;
+  height: 140px;
+}
+.shell-reference .shell-hero-pixels span {
+  position: absolute;
+  background: #f4f4f3;
+}
 
-.shell-fleet-hero>.shell-content-frame{position:relative;z-index:1}
-.shell-reference.shell-drawer>.mb-3.flex{padding-right:28px}
-.shell-fleet-hero>.shell-content-frame{background:transparent!important}
+.shell-fleet-hero > .shell-content-frame {
+  position: relative;
+  z-index: 1;
+}
+.shell-reference.shell-drawer > .mb-3.flex {
+  padding-right: 28px;
+}
+.shell-fleet-hero > .shell-content-frame {
+  background: transparent !important;
+}

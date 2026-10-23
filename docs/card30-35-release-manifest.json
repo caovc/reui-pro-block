@@ -2,14 +2,7 @@
   "milestone": "Card30–35 actual-free-first dedicated KPI variants",
   "frozenAt": "2026-10-23 Asia/Shanghai",
   "gitWrites": "none; root coordinates staging/commit/push/deploy",
-  "scope": [
-    "card-30",
-    "card-31",
-    "card-32",
-    "card-33",
-    "card-34",
-    "card-35"
-  ],
+  "scope": ["card-30", "card-31", "card-32", "card-33", "card-34", "card-35"],
   "dispatcher": "Adds ./card-variants/final-kpis import and exact /^card-3[0-5]$/ branch after existing first29 dispatch; remaining behavior preserved.",
   "validation": {
     "scopedTypeScript": "passed",

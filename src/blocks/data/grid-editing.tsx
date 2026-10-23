@@ -1,14 +1,5 @@
 import { useMemo, useState } from "react";
-import {
-  Check,
-  Copy,
-  Pencil,
-  Plus,
-  Tag,
-  Trash2,
-  TriangleAlert,
-  X,
-} from "lucide-react";
+import { Check, Copy, Pencil, Plus, Tag, Trash2, TriangleAlert, X } from "lucide-react";
 import type { BlockProps } from "@/data/types";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,28 +7,12 @@ import {
   ColorPickerContent,
   ColorPickerTrigger,
 } from "@/components/reui/color-picker";
-import {
-  NumberField,
-  NumberFieldGroup,
-  NumberFieldInput,
-} from "@/components/reui/number-field";
+import { NumberField, NumberFieldGroup, NumberFieldInput } from "@/components/reui/number-field";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import {
-  useTable,
-  type ColumnDef,
-  type ColumnFiltersState,
-} from "@tanstack/react-table";
-import {
-  dataGridFeatures,
-  type DataGridFeatures,
-} from "@/components/reui/data-grid/data-grid";
+import { useTable, type ColumnDef, type ColumnFiltersState } from "@tanstack/react-table";
+import { dataGridFeatures, type DataGridFeatures } from "@/components/reui/data-grid/data-grid";
 import { DataGridColumnFilter } from "@/components/reui/data-grid/data-grid-column-filter";
 import { DataGridTableDndRowHandle } from "@/components/reui/data-grid/data-grid-table-dnd-rows";
 import { StructureGrid } from "./grid-structure-model";
@@ -108,20 +83,14 @@ function LabelManager() {
       return;
     }
     if (
-      rows.some(
-        (r) =>
-          r.id !== form.id &&
-          r.name.toLowerCase() === form.name.trim().toLowerCase(),
-      )
+      rows.some((r) => r.id !== form.id && r.name.toLowerCase() === form.name.trim().toLowerCase())
     ) {
       setError("A label with this name already exists.");
       return;
     }
     setRows((v) =>
       v.some((r) => r.id === form.id)
-        ? v.map((r) =>
-            r.id === form.id ? { ...form, name: form.name.trim() } : r,
-          )
+        ? v.map((r) => (r.id === form.id ? { ...form, name: form.name.trim() } : r))
         : [...v, { ...form, name: form.name.trim() }],
     );
     setForm(null);
@@ -137,9 +106,7 @@ function LabelManager() {
       return next;
     });
   }
-  const columns = useMemo<
-    ColumnDef<DataGridFeatures, (typeof initialLabels)[number]>[]
-  >(
+  const columns = useMemo<ColumnDef<DataGridFeatures, (typeof initialLabels)[number]>[]>(
     () => [
       {
         id: "drag",
@@ -154,11 +121,7 @@ function LabelManager() {
         size: 680,
         cell: ({ row }) => (
           <div className="flex items-center gap-2">
-            <Tag
-              className="size-3.5"
-              fill={row.original.color}
-              stroke={row.original.color}
-            />
+            <Tag className="size-3.5" fill={row.original.color} stroke={row.original.color} />
             <span>{row.original.name}</span>
           </div>
         ),
@@ -202,10 +165,7 @@ function LabelManager() {
     manualPagination: true,
   });
   return (
-    <section
-      aria-label="Labels"
-      className="mx-auto w-full max-w-[832px] text-sm"
-    >
+    <section aria-label="Labels" className="mx-auto w-full max-w-[832px] text-sm">
       <header className="mb-4 flex items-center justify-between gap-3">
         <div>
           <h2 className="text-lg font-semibold">Labels</h2>
@@ -277,26 +237,16 @@ function LabelManager() {
             </p>
           )}
           <div className="flex justify-end gap-2">
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => setForm(null)}
-            >
+            <Button type="button" variant="outline" size="sm" onClick={() => setForm(null)}>
               Cancel
             </Button>
             <Button size="sm" type="submit">
-              {rows.some((r) => r.id === form.id)
-                ? "Save label"
-                : "Create label"}
+              {rows.some((r) => r.id === form.id) ? "Save label" : "Create label"}
             </Button>
           </div>
         </form>
       )}
-      <AlertDialog
-        open={deleting !== null}
-        onOpenChange={(v) => !v && setDeleting(null)}
-      >
+      <AlertDialog open={deleting !== null} onOpenChange={(v) => !v && setDeleting(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Delete label?</AlertDialogTitle>
@@ -471,9 +421,7 @@ function IntakeGrid() {
         ) : (
           <NumberField
             value={row[key] === "" ? null : Number(row[key])}
-            onValueChange={(value) =>
-              update(row.id, key, value === null ? "" : String(value))
-            }
+            onValueChange={(value) => update(row.id, key, value === null ? "" : String(value))}
             className="w-28"
           >
             <NumberFieldGroup>
@@ -492,10 +440,7 @@ function IntakeGrid() {
           </NumberField>
         )}
         {requestError(row) && (
-          <p
-            role="alert"
-            className="mt-1 max-w-48 whitespace-normal text-[10px] text-destructive"
-          >
+          <p role="alert" className="mt-1 max-w-48 whitespace-normal text-[10px] text-destructive">
             {requestError(row)}
           </p>
         )}
@@ -571,9 +516,7 @@ function IntakeGrid() {
         accessorKey: "status",
         header: "Status",
         filterFn: (row, id, value) =>
-          !Array.isArray(value) ||
-          !value.length ||
-          value.includes(row.getValue(id)),
+          !Array.isArray(value) || !value.length || value.includes(row.getValue(id)),
         size: 140,
         cell: ({ row: { original: r } }) => (
           <IntakeChoice
@@ -588,9 +531,7 @@ function IntakeGrid() {
         accessorKey: "priority",
         header: "Priority",
         filterFn: (row, id, value) =>
-          !Array.isArray(value) ||
-          !value.length ||
-          value.includes(row.getValue(id)),
+          !Array.isArray(value) || !value.length || value.includes(row.getValue(id)),
         size: 140,
         cell: ({ row: { original: r } }) => (
           <IntakeChoice
@@ -698,11 +639,7 @@ function IntakeGrid() {
         table={table}
         toolbar={
           <StructureToolbar>
-            <StructureSearch
-              value={search}
-              onChange={setSearch}
-              placeholder="Search requests..."
-            />
+            <StructureSearch value={search} onChange={setSearch} placeholder="Search requests..." />
             <div className="ml-auto flex gap-2">
               <DataGridColumnFilter
                 column={table.getColumn("status")}
@@ -811,13 +748,9 @@ function PlansGrid() {
   const error = draft
     ? !draft.name.trim()
       ? "Plan name is required."
-      : !draft.price.trim() ||
-          !Number.isFinite(+draft.price) ||
-          +draft.price < 0
+      : !draft.price.trim() || !Number.isFinite(+draft.price) || +draft.price < 0
         ? "Price must be zero or more."
-        : !draft.seats.trim() ||
-            !Number.isSafeInteger(+draft.seats) ||
-            +draft.seats < 1
+        : !draft.seats.trim() || !Number.isSafeInteger(+draft.seats) || +draft.seats < 1
           ? "Seats must be a positive whole number."
           : ""
     : "";
@@ -827,16 +760,11 @@ function PlansGrid() {
   }
   function save() {
     if (!draft || error) return;
-    setRows((v) =>
-      isNew ? [...v, draft] : v.map((r) => (r.id === draft.id ? draft : r)),
-    );
+    setRows((v) => (isNew ? [...v, draft] : v.map((r) => (r.id === draft.id ? draft : r))));
     setDraft(null);
     toast.success("Plan saved in this preview");
   }
-  const data = useMemo(
-    () => [...rows, ...(isNew && draft ? [draft] : [])],
-    [rows, isNew, draft],
-  );
+  const data = useMemo(() => [...rows, ...(isNew && draft ? [draft] : [])], [rows, isNew, draft]);
   const columns = useMemo<ColumnDef<DataGridFeatures, Plan>[]>(
     () => [
       {
@@ -862,100 +790,89 @@ function PlansGrid() {
           );
         },
       },
-      ...(
-        [
-          "audience",
-          "price",
-          "seats",
-          "trial",
-          "visibility",
-          "featured",
-        ] as const
-      ).map((key): ColumnDef<DataGridFeatures, Plan> => ({
-        accessorKey: key,
-        header: {
-          audience: "Audience",
-          price: "Price",
-          seats: "Seats",
-          trial: "Trial",
-          visibility: "Visibility",
-          featured: "Featured",
-        }[key],
-        size: key === "audience" ? 220 : 120,
-        cell: ({ row: { original: source } }) => {
-          const r = draft?.id === source.id ? draft : source;
-          const editing = draft?.id === r.id;
-          if (editing) {
-            if (key === "featured")
+      ...(["audience", "price", "seats", "trial", "visibility", "featured"] as const).map(
+        (key): ColumnDef<DataGridFeatures, Plan> => ({
+          accessorKey: key,
+          header: {
+            audience: "Audience",
+            price: "Price",
+            seats: "Seats",
+            trial: "Trial",
+            visibility: "Visibility",
+            featured: "Featured",
+          }[key],
+          size: key === "audience" ? 220 : 120,
+          cell: ({ row: { original: source } }) => {
+            const r = draft?.id === source.id ? draft : source;
+            const editing = draft?.id === r.id;
+            if (editing) {
+              if (key === "featured")
+                return (
+                  <Switch
+                    aria-label="Featured plan"
+                    checked={r.featured}
+                    onCheckedChange={(v) => setDraft({ ...r, featured: v })}
+                  />
+                );
+              if (key === "price" || key === "seats")
+                return (
+                  <NumberField
+                    value={r[key] === "" ? null : Number(r[key])}
+                    onValueChange={(value) =>
+                      setDraft({
+                        ...r,
+                        [key]: value === null ? "" : String(value),
+                      })
+                    }
+                    className="w-24"
+                  >
+                    <NumberFieldGroup>
+                      <NumberFieldInput
+                        aria-label={key === "price" ? "Monthly price" : "Plan seats"}
+                      />
+                    </NumberFieldGroup>
+                  </NumberField>
+                );
               return (
-                <Switch
-                  aria-label="Featured plan"
-                  checked={r.featured}
-                  onCheckedChange={(v) => setDraft({ ...r, featured: v })}
+                <StructureSelect
+                  label={
+                    key === "trial"
+                      ? "Trial length"
+                      : key === "audience"
+                        ? "Plan audience"
+                        : "Plan visibility"
+                  }
+                  value={r[key]}
+                  onChange={(v) => setDraft({ ...r, [key]: v })}
+                  options={
+                    key === "audience"
+                      ? ["Individuals", "Teams", "Companies"]
+                      : key === "trial"
+                        ? ["No trial", "7-day", "14-day", "30-day"]
+                        : ["Public", "Private"]
+                  }
                 />
               );
-            if (key === "price" || key === "seats")
-              return (
-                <NumberField
-                  value={r[key] === "" ? null : Number(r[key])}
-                  onValueChange={(value) =>
-                    setDraft({
-                      ...r,
-                      [key]: value === null ? "" : String(value),
-                    })
-                  }
-                  className="w-24"
-                >
-                  <NumberFieldGroup>
-                    <NumberFieldInput
-                      aria-label={
-                        key === "price" ? "Monthly price" : "Plan seats"
-                      }
-                    />
-                  </NumberFieldGroup>
-                </NumberField>
+            }
+            if (key === "audience" || key === "visibility")
+              return <StructureBadge value={String(r[key])} dot={key === "audience"} />;
+            if (key === "featured")
+              return r.featured ? (
+                <StructureBadge value="Featured" />
+              ) : (
+                <span className="text-muted-foreground">Off</span>
               );
-            return (
-              <StructureSelect
-                label={
-                  key === "trial"
-                    ? "Trial length"
-                    : key === "audience"
-                      ? "Plan audience"
-                      : "Plan visibility"
-                }
-                value={r[key]}
-                onChange={(v) => setDraft({ ...r, [key]: v })}
-                options={
-                  key === "audience"
-                    ? ["Individuals", "Teams", "Companies"]
-                    : key === "trial"
-                      ? ["No trial", "7-day", "14-day", "30-day"]
-                      : ["Public", "Private"]
-                }
-              />
-            );
-          }
-          if (key === "audience" || key === "visibility")
-            return (
-              <StructureBadge value={String(r[key])} dot={key === "audience"} />
-            );
-          if (key === "featured")
-            return r.featured ? (
-              <StructureBadge value="Featured" />
-            ) : (
-              <span className="text-muted-foreground">Off</span>
-            );
-          if (key === "price")
-            return (
-              <span>
-                ${r.price}
-                <span className="text-xs text-muted-foreground"> /mo</span>
-              </span>
-            );
-          return String(r[key]);
-        },
-      })),
+            if (key === "price")
+              return (
+                <span>
+                  ${r.price}
+                  <span className="text-xs text-muted-foreground"> /mo</span>
+                </span>
+              );
+            return String(r[key]);
+          },
+        }),
+      ),
       {
         id: "actions",
         header: "",
@@ -964,12 +881,7 @@ function PlansGrid() {
           <div className="flex gap-1">
             {draft?.id === r.id ? (
               <>
-                <Button
-                  aria-label="Save plan"
-                  size="icon-xs"
-                  disabled={!!error}
-                  onClick={save}
-                >
+                <Button aria-label="Save plan" size="icon-xs" disabled={!!error} onClick={save}>
                   <Check />
                 </Button>
                 <Button
@@ -1081,12 +993,10 @@ function PlansGrid() {
         </p>
       )}
       <footer className="border-t bg-muted/15 px-4 py-3 text-xs text-muted-foreground">
-        {rows.length} plans ·{" "}
-        {rows.filter((r) => r.visibility === "Public").length} public{" "}
+        {rows.length} plans · {rows.filter((r) => r.visibility === "Public").length} public{" "}
         {draft && (
           <span className="ml-3">
-            Editing {draft.name || "new plan"} — save or cancel to edit another
-            plan.
+            Editing {draft.name || "new plan"} — save or cancel to edit another plan.
           </span>
         )}
       </footer>

@@ -47,11 +47,7 @@ export function AuthMark({
 }) {
   return (
     <div className="inline-flex items-center gap-2 text-sm font-medium">
-      <svg
-        aria-hidden="true"
-        viewBox="0 0 32 32"
-        className={large ? "size-10" : "size-8"}
-      >
+      <svg aria-hidden="true" viewBox="0 0 32 32" className={large ? "size-10" : "size-8"}>
         <rect
           x={outlined ? 0.5 : 0}
           y={outlined ? 0.5 : 0}
@@ -68,12 +64,7 @@ export function AuthMark({
           strokeWidth="2.7"
           strokeLinecap="round"
         />
-        <circle
-          cx="23"
-          cy="9"
-          r="1.7"
-          fill={outlined ? "currentColor" : "var(--background)"}
-        />
+        <circle cx="23" cy="9" r="1.7" fill={outlined ? "currentColor" : "var(--background)"} />
       </svg>
       {wordmark && "ReUI"}
     </div>

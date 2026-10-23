@@ -116,8 +116,7 @@ export const chatThreads: ChatThread[] = [
     group: "Earlier",
   },
 ];
-const wrap = (text: string) =>
-  text.replace(/(.{1,48})(?:\s+|$)/g, "$1\n").trim();
+const wrap = (text: string) => text.replace(/(.{1,48})(?:\s+|$)/g, "$1\n").trim();
 const highlights = (includeNumber: boolean) =>
   `## Highlights\n\n${wrap(`Everyday work feels easier in 3.4. Refund updates arrive promptly with clearer confirmation, workspace access follows the latest team changes automatically, and ${includeNumber ? "exports with more than 40,000 rows" : "large project exports"} complete reliably without a second attempt. Teams spend less time checking status and more time moving their work forward.`)}`;
 
@@ -254,8 +253,7 @@ export function seedChatTree(): ChatTree {
     language: "yaml",
     filename: "changelog-3.4.yaml",
     sources: [0, 1, 2],
-    after:
-      "The previous introduction started with the outcome. We can use that approach here too.",
+    after: "The previous introduction started with the outcome. We can use that approach here too.",
   });
   const second = add(analysis, {
     id: "release-u1",
@@ -321,8 +319,7 @@ export function chatPath(tree: ChatTree, root: string): ChatNode[] {
   let node = tree.nodes[root];
   while (node?.children.length) {
     const chosen = tree.selection[node.id];
-    node =
-      tree.nodes[node.children.includes(chosen) ? chosen : node.children[0]];
+    node = tree.nodes[node.children.includes(chosen) ? chosen : node.children[0]];
     if (node) path.push(node);
   }
   return path;

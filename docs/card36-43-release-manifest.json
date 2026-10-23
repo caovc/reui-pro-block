@@ -1,16 +1,7 @@
 {
   "milestone": "Card36–43 actual-free-first final dedicated card variants",
   "frozenAt": "2026-10-23 Asia/Shanghai",
-  "scope": [
-    "card-36",
-    "card-37",
-    "card-38",
-    "card-39",
-    "card-40",
-    "card-41",
-    "card-42",
-    "card-43"
-  ],
+  "scope": ["card-36", "card-37", "card-38", "card-39", "card-40", "card-41", "card-42", "card-43"],
   "gitWrites": "none; root coordinates staging/commit/push/deploy",
   "dispatcher": "Adds ./card-variants/final-profiles import and /^card-(3[6-9]|4[0-3])$/ branch after accepted first35; no other dispatcher edits.",
   "productionCandidate": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/reui-card36-43-release-0ygr2rhr",

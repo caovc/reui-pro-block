@@ -1,7 +1,7 @@
-import { cva, type VariantProps } from "class-variance-authority"
-import { Slot } from "radix-ui"
+import { cva, type VariantProps } from "class-variance-authority";
+import { Slot } from "radix-ui";
 
-import { cn } from "cn"
+import { cn } from "cn";
 
 const badgeVariants = cva(
   [
@@ -35,20 +35,14 @@ const badgeVariants = cva(
           "border-invert/15 bg-invert/10 text-foreground dark:border-invert/45 dark:bg-invert/35 dark:text-invert-foreground",
         "focus-light":
           "border-focus/15 bg-focus/10 text-focus-foreground dark:border-focus/25 dark:bg-focus/15 dark:text-focus",
-        "primary-outline":
-          "bg-background border-border text-primary dark:bg-input/30",
-        "warning-outline":
-          "bg-background border-border text-warning-foreground dark:bg-input/30",
-        "success-outline":
-          "bg-background border-border text-success-foreground dark:bg-input/30",
-        "info-outline":
-          "bg-background border-border text-info-foreground dark:bg-input/30",
+        "primary-outline": "bg-background border-border text-primary dark:bg-input/30",
+        "warning-outline": "bg-background border-border text-warning-foreground dark:bg-input/30",
+        "success-outline": "bg-background border-border text-success-foreground dark:bg-input/30",
+        "info-outline": "bg-background border-border text-info-foreground dark:bg-input/30",
         "destructive-outline":
           "bg-background border-border text-destructive-foreground dark:bg-input/30",
-        "invert-outline":
-          "bg-background border-border text-invert-foreground dark:bg-input/30",
-        "focus-outline":
-          "bg-background border-border text-focus-foreground dark:bg-input/30",
+        "invert-outline": "bg-background border-border text-invert-foreground dark:bg-input/30",
+        "focus-outline": "bg-background border-border text-focus-foreground dark:bg-input/30",
       },
       size: {
         xs: "px-1 py-0.25 text-[0.6rem] leading-none h-4 min-w-4 gap-1",
@@ -59,8 +53,7 @@ const badgeVariants = cva(
       },
       /** `default`: active style radius. `full`: pill radius. */
       radius: {
-        default:
-          "rounded-sm",
+        default: "rounded-sm",
         full: "rounded-full",
       },
     },
@@ -69,23 +62,15 @@ const badgeVariants = cva(
       size: "default",
       radius: "default",
     },
-  }
-)
+  },
+);
 
-interface BadgeProps
-  extends React.ComponentProps<"span">, VariantProps<typeof badgeVariants> {
-  asChild?: boolean
+interface BadgeProps extends React.ComponentProps<"span">, VariantProps<typeof badgeVariants> {
+  asChild?: boolean;
 }
 
-function Badge({
-  className,
-  variant,
-  size,
-  radius,
-  asChild = false,
-  ...props
-}: BadgeProps) {
-  const Comp = asChild ? Slot.Root : "span"
+function Badge({ className, variant, size, radius, asChild = false, ...props }: BadgeProps) {
+  const Comp = asChild ? Slot.Root : "span";
 
   return (
     <Comp
@@ -93,7 +78,7 @@ function Badge({
       className={cn(badgeVariants({ variant, size, radius, className }))}
       {...props}
     />
-  )
+  );
 }
 
-export { Badge, badgeVariants, type BadgeProps }
+export { Badge, badgeVariants, type BadgeProps };

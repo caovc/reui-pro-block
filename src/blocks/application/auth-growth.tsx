@@ -77,36 +77,23 @@ function LegalLinks({ trial = false }: { trial?: boolean }) {
   return (
     <>
       <p className="growth-legal">
-        {trial
-          ? "By signing up, you agree to our "
-          : "By continuing, you agree to our "}
-        <Button
-          type="button"
-          variant="link"
-          onClick={() => setDocument("Terms of Service")}
-        >
+        {trial ? "By signing up, you agree to our " : "By continuing, you agree to our "}
+        <Button type="button" variant="link" onClick={() => setDocument("Terms of Service")}>
           Terms of Service
         </Button>{" "}
         and{" "}
-        <Button
-          type="button"
-          variant="link"
-          onClick={() => setDocument("Privacy Policy")}
-        >
+        <Button type="button" variant="link" onClick={() => setDocument("Privacy Policy")}>
           Privacy Policy
         </Button>
         .
       </p>
-      <Dialog
-        open={!!document}
-        onOpenChange={(open) => !open && setDocument("")}
-      >
+      <Dialog open={!!document} onOpenChange={(open) => !open && setDocument("")}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{document}</DialogTitle>
             <DialogDescription>
-              Sample policy information for this component preview. Add your own
-              organization’s policies before using this form in a product.
+              Sample policy information for this component preview. Add your own organization’s
+              policies before using this form in a product.
             </DialogDescription>
           </DialogHeader>
           <Button onClick={() => setDocument("")}>Done</Button>
@@ -126,13 +113,9 @@ function AccountDialog({ trial = false }: { trial?: boolean }) {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>
-              {trial ? "Start your free trial" : "Sign in to ReUI"}
-            </DialogTitle>
+            <DialogTitle>{trial ? "Start your free trial" : "Sign in to ReUI"}</DialogTitle>
             <DialogDescription>
-              {trial
-                ? "Explore the local account form."
-                : "Continue to your workspace."}
+              {trial ? "Explore the local account form." : "Continue to your workspace."}
             </DialogDescription>
           </DialogHeader>
           <PasswordAuthForm
@@ -151,9 +134,7 @@ function GrowthForm({ trial = false }: { trial?: boolean }) {
   const [email, setEmail] = useState("");
   const [show, setShow] = useState(false);
   const [sent, setSent] = useState(false);
-  const providers: Provider[] = trial
-    ? ["Google", "GitHub"]
-    : ["Google", "Apple", "GitHub"];
+  const providers: Provider[] = trial ? ["Google", "GitHub"] : ["Google", "Apple", "GitHub"];
   const oauth = (
     <div className={trial ? "growth-provider-stack" : "growth-provider-row"}>
       {providers.map((provider) => (
@@ -163,8 +144,7 @@ function GrowthForm({ trial = false }: { trial?: boolean }) {
           key={provider}
           onClick={() =>
             toast(`${provider} sign-in selected`, {
-              description:
-                "Connect your authentication provider to complete this flow.",
+              description: "Connect your authentication provider to complete this flow.",
             })
           }
         >
@@ -179,9 +159,7 @@ function GrowthForm({ trial = false }: { trial?: boolean }) {
       <section className="growth-confirmation" role="status">
         <Alert variant="success">
           <Check />
-          <AlertTitle>
-            {trial ? "Your trial preview is ready" : "Check your inbox"}
-          </AlertTitle>
+          <AlertTitle>{trial ? "Your trial preview is ready" : "Check your inbox"}</AlertTitle>
           <AlertDescription>
             {trial
               ? `Demo workspace prepared for ${email}.`
@@ -192,9 +170,7 @@ function GrowthForm({ trial = false }: { trial?: boolean }) {
         {!trial && (
           <Button
             variant="outline"
-            onClick={() =>
-              toast("Demo sign-in link prepared again", { description: email })
-            }
+            onClick={() => toast("Demo sign-in link prepared again", { description: email })}
           >
             Resend link
           </Button>
@@ -220,10 +196,7 @@ function GrowthForm({ trial = false }: { trial?: boolean }) {
         }}
       >
         <Field className="gap-2">
-          <FieldLabel
-            className={trial ? "" : "sr-only"}
-            htmlFor={`${id}-email`}
-          >
+          <FieldLabel className={trial ? "" : "sr-only"} htmlFor={`${id}-email`}>
             {trial ? "Work email" : "Email address"}
           </FieldLabel>
           <InputGroup>
@@ -312,8 +285,8 @@ export function FreeTrialSignup() {
             grow your <em>product</em>.
           </h1>
           <p>
-            Bring your ideas to life with thoughtfully crafted components. A
-            stronger foundation for everything your team is building next.
+            Bring your ideas to life with thoughtfully crafted components. A stronger foundation for
+            everything your team is building next.
           </p>
         </section>
         <Frame className="growth-trial-frame">

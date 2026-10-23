@@ -172,10 +172,7 @@ function ResourceLinks({ onSelect }: { onSelect: (s: string) => void }) {
                 </Badge>
               )}
             </Button>
-            <RowActions
-              name={name}
-              onRemove={() => setItems(items.filter((v) => v !== name))}
-            />
+            <RowActions name={name} onRemove={() => setItems(items.filter((v) => v !== name))} />
           </div>
         ))}
     </div>
@@ -212,11 +209,7 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
       : variant === 2
         ? ["VC Workspace", "CN @shadcn", active === "Overview" ? "Projects" : active]
         : variant === 10
-          ? [
-              workspace,
-              "Nick Bold",
-              active === "Dashboard" ? "Overview" : active,
-            ]
+          ? [workspace, "Nick Bold", active === "Dashboard" ? "Overview" : active]
           : apps
             ? ["Dashboards", active]
             : ["Home", active === "Dashboard" ? "Overview" : active];
@@ -229,19 +222,13 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
         collapsed={collapsed}
         className={` ${collapsed ? "collapsed" : ""} ${dark ? "shell-dark" : ""} ${floating ? "m-2 rounded-xl border !w-60 shadow-sm" : ""} ${apps ? "!w-60 border-r" : ""} ${variant === 1 ? "!w-64 border-r" : ""}`}
       >
-        <div
-          className={`mb-3 flex h-10 shrink-0 items-center gap-2 px-2 ${apps ? "h-12" : ""}`}
-        >
+        <div className={`mb-3 flex h-10 shrink-0 items-center gap-2 px-2 ${apps ? "h-12" : ""}`}>
           <ReuiMark />
           {!collapsed && (
             <>
               <div className="sidebar-expanded min-w-0 flex-1">
                 <p className="text-[13px] font-medium">ReUI</p>
-                {apps && (
-                  <p className="mt-0.5 text-[10px] text-muted-foreground">
-                    Pro plan
-                  </p>
-                )}
+                {apps && <p className="mt-0.5 text-[10px] text-muted-foreground">Pro plan</p>}
               </div>
               {[3, 6, 9, 10].includes(variant) && (
                 <div className="sidebar-expanded">
@@ -252,21 +239,14 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
                 <div className="sidebar-expanded">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="icon-sm"
-                        aria-label="Switch workspace"
-                      >
+                      <Button variant="ghost" size="icon-sm" aria-label="Switch workspace">
                         <Ellipsis />
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                       <DropdownMenuGroup>
                         {["ReUI", "Acme Inc", "Atlas"].map((n) => (
-                          <DropdownMenuItem
-                            key={n}
-                            onSelect={() => setWorkspace(n)}
-                          >
+                          <DropdownMenuItem key={n} onSelect={() => setWorkspace(n)}>
                             {n}
                           </DropdownMenuItem>
                         ))}
@@ -329,13 +309,7 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
           ) : (
             <Navigation
               items={nav}
-              initialExpanded={
-                variant === 1
-                  ? ["Pipelines"]
-                  : variant === 2
-                    ? ["Customers"]
-                    : []
-              }
+              initialExpanded={variant === 1 ? ["Pipelines"] : variant === 2 ? ["Customers"] : []}
               collapsed={collapsed}
               active={active}
               onSelect={setActive}
@@ -383,9 +357,7 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
               collapsed={collapsed}
               title={variant === 9 ? "AI Credits" : "Spending Limit"}
               description={
-                variant === 9
-                  ? "Usage resets at the end of your billing cycle."
-                  : undefined
+                variant === 9 ? "Usage resets at the end of your billing cycle." : undefined
               }
               upgrade={variant === 9}
             />
@@ -407,22 +379,13 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
                         ? "Atlas"
                         : "Claude"
               }
-              subtitle={
-                variant === 9
-                  ? "Acme Corp"
-                  : variant === 10
-                    ? "Atlas"
-                    : undefined
-              }
+              subtitle={variant === 9 ? "Acme Corp" : variant === 10 ? "Atlas" : undefined}
               top={variant === 1}
               onName={setWorkspace}
             />
           </div>
         )}
-        <CollapseHandle
-          collapsed={collapsed}
-          onToggle={() => setCollapsed(!collapsed)}
-        />
+        <CollapseHandle collapsed={collapsed} onToggle={() => setCollapsed(!collapsed)} />
       </Sidebar>
       <div className={`shell-content-frame ${inset ? "inset" : ""}`}>
         <header
@@ -433,27 +396,19 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
             {variant === 6 && (
               <>
                 <div className="mr-2 flex -space-x-1">
-                  {["Nick Johnson", "Alex Johnson", "Sarah Chen"].map(
-                    (n, i) => (
-                      <Face key={n} name={n} index={i} small />
-                    ),
-                  )}
+                  {["Nick Johnson", "Alex Johnson", "Sarah Chen"].map((n, i) => (
+                    <Face key={n} name={n} index={i} small />
+                  ))}
                 </div>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="icon-sm"
-                      aria-label="More options"
-                    >
+                    <Button variant="ghost" size="icon-sm" aria-label="More options">
                       <Ellipsis />
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
                     <DropdownMenuGroup>
-                      <DropdownMenuItem
-                        onSelect={() => toast("Workspace refreshed")}
-                      >
+                      <DropdownMenuItem onSelect={() => toast("Workspace refreshed")}>
                         Refresh
                       </DropdownMenuItem>
                       <DropdownMenuItem onSelect={() => setNewItem(true)}>
@@ -465,9 +420,7 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
                 <Button
                   variant={context ? "secondary" : "ghost"}
                   size="icon-sm"
-                  aria-label={
-                    context ? "Close context panel" : "Open context panel"
-                  }
+                  aria-label={context ? "Close context panel" : "Open context panel"}
                   onClick={() => setContext(!context)}
                 >
                   <PanelRight />
@@ -477,41 +430,26 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
             {variant === 10 && (
               <>
                 <label className="mr-2 hidden items-center gap-2 text-xs sm:flex">
-                  <Switch
-                    checked={auto}
-                    onCheckedChange={setAuto}
-                    aria-label="Auto refresh"
-                  />
+                  <Switch checked={auto} onCheckedChange={setAuto} aria-label="Auto refresh" />
                   Auto Refresh
                 </label>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="icon-sm"
-                      aria-label="More options"
-                    >
+                    <Button variant="ghost" size="icon-sm" aria-label="More options">
                       <Ellipsis />
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
                     <DropdownMenuGroup>
                       {["Refresh", "Export", "Settings"].map((n) => (
-                        <DropdownMenuItem
-                          key={n}
-                          onSelect={() => toast(`${n} selected`)}
-                        >
+                        <DropdownMenuItem key={n} onSelect={() => toast(`${n} selected`)}>
                           {n}
                         </DropdownMenuItem>
                       ))}
                     </DropdownMenuGroup>
                   </DropdownMenuContent>
                 </DropdownMenu>
-                <Button
-                  size="sm"
-                  className="ml-1 h-7 text-xs"
-                  onClick={() => setNewItem(true)}
-                >
+                <Button size="sm" className="ml-1 h-7 text-xs" onClick={() => setNewItem(true)}>
                   <Plus />
                   New order
                 </Button>
@@ -531,9 +469,7 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
           <div className="flex flex-wrap items-center justify-between gap-3 px-6 pb-1 pt-5">
             <div>
               <h1 className="text-xl font-semibold tracking-tight">{active}</h1>
-              <p className="mt-1 text-xs text-muted-foreground">
-                Your workspace at a glance.
-              </p>
+              <p className="mt-1 text-xs text-muted-foreground">Your workspace at a glance.</p>
             </div>
             <div className="flex gap-2">
               <Button
@@ -541,10 +477,9 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
                 size="sm"
                 className="h-7 text-xs"
                 onClick={() => {
-                  const blob = new Blob(
-                    ["Workspace report\nStatus: ready\nDate: 2026-06-10"],
-                    { type: "text/plain" },
-                  );
+                  const blob = new Blob(["Workspace report\nStatus: ready\nDate: 2026-06-10"], {
+                    type: "text/plain",
+                  });
                   const a = document.createElement("a");
                   a.href = URL.createObjectURL(blob);
                   a.download = "workspace-report.txt";
@@ -554,11 +489,7 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
               >
                 Export
               </Button>
-              <Button
-                size="sm"
-                className="h-7 text-xs"
-                onClick={() => setNewItem(true)}
-              >
+              <Button size="sm" className="h-7 text-xs" onClick={() => setNewItem(true)}>
                 <Plus />
                 New Report
               </Button>
@@ -572,18 +503,16 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
               2026 © <span className="text-foreground">ReUI</span>
             </span>
             <div className="flex gap-3">
-              {["Docs", "Changelog", "Support", "Privacy", "Status"].map(
-                (n) => (
-                  <Button
-                    key={n}
-                    variant="link"
-                    className="h-auto p-0 text-[10px] font-normal text-muted-foreground"
-                    onClick={() => toast(`${n} selected`)}
-                  >
-                    {n}
-                  </Button>
-                ),
-              )}
+              {["Docs", "Changelog", "Support", "Privacy", "Status"].map((n) => (
+                <Button
+                  key={n}
+                  variant="link"
+                  className="h-auto p-0 text-[10px] font-normal text-muted-foreground"
+                  onClick={() => toast(`${n} selected`)}
+                >
+                  {n}
+                </Button>
+              ))}
             </div>
           </footer>
         )}

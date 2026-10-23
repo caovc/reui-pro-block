@@ -8,8 +8,7 @@ export const money = (value: number) =>
     currency: "USD",
     maximumFractionDigits: 0,
   });
-export const headClass =
-  "h-8 px-3 text-[13px] font-normal text-muted-foreground";
+export const headClass = "h-8 px-3 text-[13px] font-normal text-muted-foreground";
 export const cellClass = "px-3 py-1.5 text-sm";
 export function useGridSorting() {
   const [state, setState] = useState<{ key: string; asc: boolean }>({
@@ -37,10 +36,7 @@ export function useGridSorting() {
       }),
     );
   }
-  function sortRows<T>(
-    rows: T[],
-    value: (row: T, key: string) => string | number,
-  ): T[] {
+  function sortRows<T>(rows: T[], value: (row: T, key: string) => string | number): T[] {
     if (!state.key) return rows;
     return [...rows].sort((a, b) => {
       const x = value(a, state.key),

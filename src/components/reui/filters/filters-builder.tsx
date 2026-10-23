@@ -1,50 +1,46 @@
-"use client"
+"use client";
 
-import { ListFilterPlusIcon } from "lucide-react"
-import * as React from "react"
+import { ListFilterPlusIcon } from "lucide-react";
+import * as React from "react";
 import {
   Cascader,
   CascaderEmpty,
   CascaderList,
   CascaderPanel,
   CascaderStatus,
-} from "@/components/reui/cascader/cascader"
-import { CascaderFooter } from "@/components/reui/cascader/cascader-footer"
+} from "@/components/reui/cascader/cascader";
+import { CascaderFooter } from "@/components/reui/cascader/cascader-footer";
 import {
   CascaderBreadcrumb,
   CascaderInput,
   CascaderNav,
-} from "@/components/reui/cascader/cascader-nav"
+} from "@/components/reui/cascader/cascader-nav";
 import type {
   CascaderActionItem,
   CascaderLabels,
   CascaderNode,
-} from "@/components/reui/cascader/cascader-types"
-import { CascaderVirtualItems } from "@/components/reui/cascader/cascader-virtual"
+} from "@/components/reui/cascader/cascader-types";
+import { CascaderVirtualItems } from "@/components/reui/cascader/cascader-virtual";
 import {
   filterControlSizes,
   filterReadOnlyProps,
   useFilterActions,
   useFilterFocusStore,
   useFilterState,
-} from "@/components/reui/filters/filters-context"
+} from "@/components/reui/filters/filters-context";
 import {
   FILTER_FIELD_PICKER_CLASS,
   getFilterField,
   getFilterFieldCount,
   joinFilterPath,
   splitFilterPath,
-} from "@/components/reui/filters/filters-lib"
-import { getDefaultFilterOperator } from "@/components/reui/filters/filters-operators"
-import type { FilterField } from "@/components/reui/filters/filters-types"
+} from "@/components/reui/filters/filters-lib";
+import { getDefaultFilterOperator } from "@/components/reui/filters/filters-operators";
+import type { FilterField } from "@/components/reui/filters/filters-types";
 
-import { cn } from "cn"
-import { Button } from "@/components/ui/button"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
+import { cn } from "cn";
+import { Button } from "@/components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 /**
  * Projects ONLY the field tree: operators or values as nodes would force the
@@ -52,10 +48,10 @@ import {
  */
 function toCascaderNodes<V, O>(
   fields: readonly FilterField<V, O>[],
-  parentPath: string[] = []
+  parentPath: string[] = [],
 ): CascaderNode<FilterField<V, O>>[] {
   return fields.map((field) => {
-    const path = [...parentPath, field.id]
+    const path = [...parentPath, field.id];
     const node: CascaderNode<FilterField<V, O>> = {
       value: joinFilterPath(path),
       label: field.label,
@@ -64,29 +60,29 @@ function toCascaderNodes<V, O>(
       keywords: field.keywords,
       disabled: field.disabled,
       data: field,
-    }
+    };
     if (field.fields?.length) {
-      node.children = toCascaderNodes(field.fields, path)
-      node.count = getFilterFieldCount(field)
+      node.children = toCascaderNodes(field.fields, path);
+      node.count = getFilterFieldCount(field);
     }
-    return node
-  })
+    return node;
+  });
 }
 
 export interface FilterFieldPickerProps {
   /** The level being browsed. Not the chosen field. */
-  path: string[]
-  onPathChange: (path: string[]) => void
-  query: string
-  onQueryChange: (query: string) => void
+  path: string[];
+  onPathChange: (path: string[]) => void;
+  query: string;
+  onQueryChange: (query: string) => void;
   /** A field was chosen, with its starting operator already resolved. */
-  onSelect: (path: string[], defaultOperator: string | null) => void
+  onSelect: (path: string[], defaultOperator: string | null) => void;
   /** Viewport height before the list scrolls. */
-  maxHeight?: number
+  maxHeight?: number;
   /** Cascader-only strings; the `FilterLabels` bridge below covers the rest. */
-  labels?: Partial<CascaderLabels>
+  labels?: Partial<CascaderLabels>;
   /** Pinned footer rows, OUT of the option ring so arrows never land on one. */
-  actions?: CascaderActionItem[]
+  actions?: CascaderActionItem[];
 }
 
 /**
@@ -103,12 +99,9 @@ export function FilterFieldPicker<V, O>({
   labels: labelsProp,
   actions: actionItems,
 }: FilterFieldPickerProps) {
-  const actions = useFilterActions<V, O>()
+  const actions = useFilterActions<V, O>();
 
-  const items = React.useMemo(
-    () => toCascaderNodes(actions.index.roots),
-    [actions.index]
-  )
+  const items = React.useMemo(() => toCascaderNodes(actions.index.roots), [actions.index]);
 
   // Bridges `FilterLabels` onto the cascader's own key names. `labelsProp` is
   // spread LAST, so a consumer override always wins.
@@ -126,8 +119,8 @@ export function FilterFieldPicker<V, O>({
       actionsLabel: actions.labels.actionsLabel,
       ...labelsProp,
     }),
-    [actions.labels, labelsProp]
-  )
+    [actions.labels, labelsProp],
+  );
 
   return (
     <Cascader
@@ -151,13 +144,10 @@ export function FilterFieldPicker<V, O>({
       onInputValueChange={onQueryChange}
       value=""
       onValueChange={(value) => {
-        const nextPath = splitFilterPath(value)
-        const field = getFilterField(actions.index, nextPath)
-        if (!field) return
-        onSelect(
-          nextPath,
-          getDefaultFilterOperator(field, actions.resolveOperators(field))
-        )
+        const nextPath = splitFilterPath(value);
+        const field = getFilterField(actions.index, nextPath);
+        if (!field) return;
+        onSelect(nextPath, getDefaultFilterOperator(field, actions.resolveOperators(field)));
       }}
       labels={cascaderLabels}
       actions={actionItems}
@@ -180,34 +170,30 @@ export function FilterFieldPicker<V, O>({
         <CascaderStatus />
       </CascaderPanel>
     </Cascader>
-  )
+  );
 }
 
 function FieldStep<V, O>() {
-  const actions = useFilterActions<V, O>()
-  const { draft } = useFilterState<V>()
+  const actions = useFilterActions<V, O>();
+  const { draft } = useFilterState<V>();
 
   return (
     <FilterFieldPicker<V, O>
       path={draft?.cascaderPath ?? []}
-      onPathChange={(next) =>
-        actions.dispatchDraft({ type: "setCascaderPath", path: next })
-      }
+      onPathChange={(next) => actions.dispatchDraft({ type: "setCascaderPath", path: next })}
       query={draft?.query ?? ""}
-      onQueryChange={(query) =>
-        actions.dispatchDraft({ type: "setQuery", query })
-      }
+      onQueryChange={(query) => actions.dispatchDraft({ type: "setQuery", query })}
       onSelect={(path, defaultOperator) =>
         actions.dispatchDraft({ type: "selectField", path, defaultOperator })
       }
     />
-  )
+  );
 }
 
 export interface FiltersBuilderProps {
   /** Replaces the default Add filter button. */
-  trigger?: React.ReactNode
-  className?: string
+  trigger?: React.ReactNode;
+  className?: string;
 }
 
 /**
@@ -215,29 +201,25 @@ export interface FiltersBuilderProps {
  * the rule and opens the operator menu on the new chip. `open` derives from the
  * draft and `openCreate` is gated, so read-only and disabled shut every route.
  */
-export function FiltersBuilder<V, O>({
-  trigger,
-  className,
-}: FiltersBuilderProps) {
-  const actions = useFilterActions<V, O>()
-  const sizes = filterControlSizes(actions)
-  const { draft, ruleCount } = useFilterState<V>()
-  const focusStore = useFilterFocusStore()
-  const open = draft !== null && draft.ruleId === null
+export function FiltersBuilder<V, O>({ trigger, className }: FiltersBuilderProps) {
+  const actions = useFilterActions<V, O>();
+  const sizes = filterControlSizes(actions);
+  const { draft, ruleCount } = useFilterState<V>();
+  const focusStore = useFilterFocusStore();
+  const open = draft !== null && draft.ruleId === null;
   // The HANDOFF close, the one that must not FADE: the panel is a 224px card
   // dissolving over the very menu the user is now meant to read.
-  const committing =
-    draft !== null && draft.ruleId === null && draft.status === "ready"
+  const committing = draft !== null && draft.ruleId === null && draft.status === "ready";
   // LATCHED, because `committing` is true for one render only, before the exit
   // it suppresses begins. Adjusted during render; an effect is one frame late.
-  const [instantExit, setInstantExit] = React.useState(false)
-  if (committing && !instantExit) setInstantExit(true)
-  else if (open && !committing && instantExit) setInstantExit(false)
+  const [instantExit, setInstantExit] = React.useState(false);
+  if (committing && !instantExit) setInstantExit(true);
+  else if (open && !committing && instantExit) setInstantExit(false);
   // Icon-only once chips sit beside it. Both states come off ONE size ladder,
   // so they share height and radius in every style at every bar size. The
   // hardcoded `icon`/`default` pair this replaced IS the `default` rung, so it
   // drifted the moment the bar was `sm`.
-  const compact = ruleCount > 0
+  const compact = ruleCount > 0;
 
   // The focus handoff to the new chip, and THE ONE PLACE the twins cannot share
   // an implementation. Radix opens the chip's popover FIRST, so this one's
@@ -246,27 +228,27 @@ export function FiltersBuilder<V, O>({
   // frame. Suppressed ONLY on the handoff close, so every other close keeps its
   // restore; LATCHED because the chip consumes `autoOpen` before this popover
   // unmounts.
-  const handoffRef = React.useRef(false)
+  const handoffRef = React.useRef(false);
   React.useEffect(() => {
-    if (!open) return
-    handoffRef.current = false
+    if (!open) return;
+    handoffRef.current = false;
     return focusStore.subscribe(() => {
-      if (focusStore.getSnapshot().autoOpen) handoffRef.current = true
-    })
-  }, [focusStore, open])
+      if (focusStore.getSnapshot().autoOpen) handoffRef.current = true;
+    });
+  }, [focusStore, open]);
 
   const onCloseAutoFocus = (event: Event) => {
-    if (!handoffRef.current) return
-    handoffRef.current = false
-    event.preventDefault()
-  }
+    if (!handoffRef.current) return;
+    handoffRef.current = false;
+    event.preventDefault();
+  };
 
   return (
     <Popover
       open={open}
       onOpenChange={(next) => {
-        if (!next) actions.closeDraft()
-        else actions.openCreate()
+        if (!next) actions.closeDraft();
+        else actions.openCreate();
       }}
     >
       <PopoverTrigger
@@ -288,8 +270,7 @@ export function FiltersBuilder<V, O>({
             className="transition-[color,background-color,border-color,box-shadow]"
           >
             {/* No filter-plus glyph in phosphor or remixicon. */}
-            <ListFilterPlusIcon
-             />
+            <ListFilterPlusIcon />
             {compact ? null : actions.labels.addFilter}
           </Button>
         )}
@@ -310,17 +291,17 @@ export function FiltersBuilder<V, O>({
           instantExit &&
             cn(
               "data-ending-style:animate-none data-ending-style:transition-none",
-              "data-[state=closed]:animate-none data-[state=closed]:transition-none"
+              "data-[state=closed]:animate-none data-[state=closed]:transition-none",
             ),
           actions.fieldPickerClassName,
-          className
+          className,
         )}
       >
         <FieldStep<V, O> />
       </PopoverContent>
     </Popover>
-  )
+  );
 }
 
 /** Exported for custom field pickers. */
-export { toCascaderNodes }
+export { toCascaderNodes };

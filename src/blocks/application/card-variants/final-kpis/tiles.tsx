@@ -17,20 +17,10 @@ import {
   TrendingUp,
   Truck,
 } from "lucide-react";
-import {
-  Frame,
-  FramePanel,
-  FrameTitle,
-  FrameDescription,
-} from "@/components/reui/frame";
+import { Frame, FramePanel, FrameTitle, FrameDescription } from "@/components/reui/frame";
 import { Badge } from "@/components/reui/badge";
 import { IconTile } from "@/components/reui/icon-tile";
-import {
-  Alert,
-  AlertTitle,
-  AlertDescription,
-  AlertAction,
-} from "@/components/reui/alert";
+import { Alert, AlertTitle, AlertDescription, AlertAction } from "@/components/reui/alert";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -49,12 +39,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import {
-  Item,
-  ItemContent,
-  ItemTitle,
-  ItemDescription,
-} from "@/components/ui/item";
+import { Item, ItemContent, ItemTitle, ItemDescription } from "@/components/ui/item";
 import { Stage, GridFrame, ContentLink } from "../extended/common";
 import "./final-kpis.css";
 type Tile = {
@@ -117,9 +102,7 @@ function EditableTiles({ inventoryMode = false }: { inventoryMode?: boolean }) {
   const [tiles, setTiles] = useState(inventoryMode ? inventory : logistics);
   const [editing, setEditing] = useState<Tile | null>(null);
   const [removing, setRemoving] = useState<Tile | null>(null);
-  const [removed, setRemoved] = useState<{ tile: Tile; index: number } | null>(
-    null,
-  );
+  const [removed, setRemoved] = useState<{ tile: Tile; index: number } | null>(null);
   const [copied, setCopied] = useState("");
   const id = inventoryMode ? 33 : 30;
   return (
@@ -137,27 +120,19 @@ function EditableTiles({ inventoryMode = false }: { inventoryMode?: boolean }) {
                 <IconTile
                   variant={inventoryMode ? "elevated" : "frame"}
                   size="sm"
-                  className={
-                    inventoryMode ? "final-gloss bg-zinc-950 text-white" : ""
-                  }
+                  className={inventoryMode ? "final-gloss bg-zinc-950 text-white" : ""}
                 >
                   <Icon />
                 </IconTile>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="icon-xs"
-                      aria-label={`${tile.name} actions`}
-                    >
+                    <Button variant="ghost" size="icon-xs" aria-label={`${tile.name} actions`}>
                       <Ellipsis />
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuGroup>
-                      <DropdownMenuItem onSelect={() => setEditing(tile)}>
-                        Edit
-                      </DropdownMenuItem>
+                      <DropdownMenuItem onSelect={() => setEditing(tile)}>Edit</DropdownMenuItem>
                       <DropdownMenuItem
                         onSelect={async () => {
                           try {
@@ -176,10 +151,7 @@ function EditableTiles({ inventoryMode = false }: { inventoryMode?: boolean }) {
                     </DropdownMenuGroup>
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
-                      <DropdownMenuItem
-                        variant="destructive"
-                        onSelect={() => setRemoving(tile)}
-                      >
+                      <DropdownMenuItem variant="destructive" onSelect={() => setRemoving(tile)}>
                         <Trash2 />
                         Delete
                       </DropdownMenuItem>
@@ -198,17 +170,13 @@ function EditableTiles({ inventoryMode = false }: { inventoryMode?: boolean }) {
                         {tile.name}
                       </ContentLink>
                     </ItemTitle>
-                    <ItemDescription className="text-xs">
-                      {tile.value}
-                    </ItemDescription>
+                    <ItemDescription className="text-xs">{tile.value}</ItemDescription>
                   </ItemContent>
                 </Item>
               ) : (
                 <>
                   <div>
-                    <FrameTitle className="text-xl tracking-tight">
-                      {tile.value}
-                    </FrameTitle>
+                    <FrameTitle className="text-xl tracking-tight">{tile.value}</FrameTitle>
                     <FrameDescription className="mt-1 text-xs text-muted-foreground/60">
                       {tile.name}
                     </FrameDescription>
@@ -231,9 +199,7 @@ function EditableTiles({ inventoryMode = false }: { inventoryMode?: boolean }) {
       </GridFrame>
       {copied && (
         <p role="status" className="mt-3 text-xs text-muted-foreground">
-          {copied === "Clipboard unavailable"
-            ? copied
-            : `Preview link copied for ${copied}.`}
+          {copied === "Clipboard unavailable" ? copied : `Preview link copied for ${copied}.`}
         </p>
       )}
       {removed && (
@@ -286,9 +252,7 @@ function EditableTiles({ inventoryMode = false }: { inventoryMode?: boolean }) {
                         ...tile,
                         name: String(d.get("name")),
                         value: String(d.get("value")),
-                        status: inventoryMode
-                          ? undefined
-                          : String(d.get("status")),
+                        status: inventoryMode ? undefined : String(d.get("status")),
                       }
                     : tile,
                 ),
@@ -299,31 +263,16 @@ function EditableTiles({ inventoryMode = false }: { inventoryMode?: boolean }) {
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="metric-name">Metric label</FieldLabel>
-                <Input
-                  id="metric-name"
-                  name="name"
-                  defaultValue={editing?.name}
-                  required
-                />
+                <Input id="metric-name" name="name" defaultValue={editing?.name} required />
               </Field>
               <Field>
                 <FieldLabel htmlFor="metric-value">Display value</FieldLabel>
-                <Input
-                  id="metric-value"
-                  name="value"
-                  defaultValue={editing?.value}
-                  required
-                />
+                <Input id="metric-value" name="value" defaultValue={editing?.value} required />
               </Field>
               {!inventoryMode && (
                 <Field>
                   <FieldLabel htmlFor="metric-status">Status text</FieldLabel>
-                  <Input
-                    id="metric-status"
-                    name="status"
-                    defaultValue={editing?.status}
-                    required
-                  />
+                  <Input id="metric-status" name="status" defaultValue={editing?.status} required />
                 </Field>
               )}
             </FieldGroup>
@@ -356,9 +305,7 @@ function EditableTiles({ inventoryMode = false }: { inventoryMode?: boolean }) {
                     tile: removing,
                     index: tiles.findIndex((t) => t.id === removing.id),
                   });
-                  setTiles((current) =>
-                    current.filter((t) => t.id !== removing.id),
-                  );
+                  setTiles((current) => current.filter((t) => t.id !== removing.id));
                 }
                 setRemoving(null);
               }}
@@ -419,9 +366,7 @@ export function AudienceReach() {
               </IconTile>
               <Item className="p-0">
                 <ItemContent>
-                  <ItemTitle className="text-3xl font-semibold tracking-tight">
-                    {value}
-                  </ItemTitle>
+                  <ItemTitle className="text-3xl font-semibold tracking-tight">{value}</ItemTitle>
                   <ItemDescription>{name}</ItemDescription>
                 </ItemContent>
               </Item>

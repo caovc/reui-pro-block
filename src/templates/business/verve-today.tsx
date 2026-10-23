@@ -1,7 +1,229 @@
-import { useState } from 'react';
-import { CalendarDays, Clock, MoreHorizontal, Video } from 'lucide-react';
-import { Textarea } from '@/components/ui/textarea';
-import { Button, Input, Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, toast } from './shared';
-import { Choice, Tone } from './fidelity';
-const initial=[['Brightwave Media - Proposal Walkthrough','10:00 AM CET','45 min','Walk Priya through the Pro Annual proposal and the seat tiers her team asked for after the demo.','Proposal'],['Helio Manufacturing - Redline Review','11:30 AM CET','30 min','Close out the two open points on the MSA: the liability cap and the data retention window.','Contract'],['Cobalt Logistics - Renewal Review','02:00 PM CET','60 min','Take Elena the multi-year option she asked for, so she has something for her CFO before the board meets.','Renewal'],['Orbit Software - Kickoff Planning','04:00 PM CET','30 min',"Ryan’s board cleared the contract on Friday and wants onboarding started before August for a team of 40.",'Onboarding'],['Summit Retail Group - Multi-site Pricing','05:00 PM CET','45 min','Bring Nora the tiered multi-site quote behind the 27% ask, so the regional leads can sign before their board meets.','Pricing'],['Meridian Bank - Renewal Terms','05:30 PM CET','30 min','Take the security team through SOC 2 and the flat renewal, so the strategic logo commits before quarter-end.','Compliance']];
-export default function VerveToday({open,onOpenChange}:{open:boolean;onOpenChange:(v:boolean)=>void}){const[meetings,setMeetings]=useState(initial);const[account,setAccount]=useState('Brightwave Media');const[type,setType]=useState('Discovery');const[duration,setDuration]=useState('30 min');const[detail,setDetail]=useState<string[]|null>(null);return <><div className="bt-meetings">{meetings.map(m=><article className="bt-meeting" key={m[0]}><header><Video size={14}/>Meeting<Button variant="ghost" size="icon-sm" aria-label={'Meeting options for '+m[0]} onClick={()=>setDetail(m)}><MoreHorizontal/></Button></header><div><h2>{m[0]}</h2><div className="bt-pills"><CalendarDays size={14}/>{m[1]}<Clock size={14}/>{m[2]}</div><p>{m[3]}</p><div className="bt-meeting-people"><span className="bt-avatar">MS</span><span className="bt-avatar">PR</span><span className="bt-avatar">LG</span><Tone tone="neutral">{m[4]}</Tone></div></div><footer><Button variant="ghost" onClick={()=>toast('Joining meeting',{description:'Connect this to your video provider.'})}><Video/>Join Meeting</Button></footer></article>)}</div><Dialog open={open} onOpenChange={onOpenChange}><DialogContent className="bt-meeting-dialog"><DialogHeader><DialogTitle>New meeting</DialogTitle><DialogDescription>Put a call on the calendar and set the agenda.</DialogDescription></DialogHeader><form className="bt-form" onSubmit={e=>{e.preventDefault();const v=new FormData(e.currentTarget);setMeetings(rows=>[[String(v.get('meeting')),String(v.get('start'))+' CET',duration,String(v.get('agenda')),type],...rows]);onOpenChange(false)}}><label>Meeting<Input name="meeting" required placeholder="Meeting title"/></label><div className="bt-grid-2"><label>Account<Choice label="Account" value={account} onChange={setAccount} options={initial.map(m=>m[0].split(' - ')[0])}/></label><label>Type<Choice label="Type" value={type} onChange={setType} options={['Discovery','Proposal','Contract','Renewal','Onboarding','Pricing','Compliance']}/></label></div><div className="bt-grid-2"><label>Date<Input type="date" name="date" defaultValue="2026-07-18"/></label><label>Start<Input type="time" name="start" defaultValue="10:00"/></label></div><label>Duration<Choice label="Duration" value={duration} onChange={setDuration} options={['15 min','30 min','45 min','60 min']}/></label><label>Attendees<Input defaultValue="Mira Stone, Priya Raman"/></label><label>Location<Input defaultValue="Google Meet"/></label><label>Agenda<Textarea name="agenda" rows={3}/></label><DialogFooter><Button type="button" variant="outline" onClick={()=>onOpenChange(false)}>Cancel</Button><Button type="submit">Schedule meeting</Button></DialogFooter></form></DialogContent></Dialog><Dialog open={!!detail} onOpenChange={v=>!v&&setDetail(null)}><DialogContent><DialogHeader><DialogTitle>{detail?.[0]}</DialogTitle><DialogDescription>{detail?.[1]} · {detail?.[2]}</DialogDescription></DialogHeader><p>{detail?.[3]}</p><Button onClick={()=>setDetail(null)}>Close</Button></DialogContent></Dialog></>}
+import { useState } from "react";
+import { CalendarDays, Clock, MoreHorizontal, Video } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Button,
+  Input,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  toast,
+} from "./shared";
+import { Choice, Tone } from "./fidelity";
+const initial = [
+  [
+    "Brightwave Media - Proposal Walkthrough",
+    "10:00 AM CET",
+    "45 min",
+    "Walk Priya through the Pro Annual proposal and the seat tiers her team asked for after the demo.",
+    "Proposal",
+  ],
+  [
+    "Helio Manufacturing - Redline Review",
+    "11:30 AM CET",
+    "30 min",
+    "Close out the two open points on the MSA: the liability cap and the data retention window.",
+    "Contract",
+  ],
+  [
+    "Cobalt Logistics - Renewal Review",
+    "02:00 PM CET",
+    "60 min",
+    "Take Elena the multi-year option she asked for, so she has something for her CFO before the board meets.",
+    "Renewal",
+  ],
+  [
+    "Orbit Software - Kickoff Planning",
+    "04:00 PM CET",
+    "30 min",
+    "Ryan’s board cleared the contract on Friday and wants onboarding started before August for a team of 40.",
+    "Onboarding",
+  ],
+  [
+    "Summit Retail Group - Multi-site Pricing",
+    "05:00 PM CET",
+    "45 min",
+    "Bring Nora the tiered multi-site quote behind the 27% ask, so the regional leads can sign before their board meets.",
+    "Pricing",
+  ],
+  [
+    "Meridian Bank - Renewal Terms",
+    "05:30 PM CET",
+    "30 min",
+    "Take the security team through SOC 2 and the flat renewal, so the strategic logo commits before quarter-end.",
+    "Compliance",
+  ],
+];
+export default function VerveToday({
+  open,
+  onOpenChange,
+}: {
+  open: boolean;
+  onOpenChange: (v: boolean) => void;
+}) {
+  const [meetings, setMeetings] = useState(initial);
+  const [account, setAccount] = useState("Brightwave Media");
+  const [type, setType] = useState("Discovery");
+  const [duration, setDuration] = useState("30 min");
+  const [detail, setDetail] = useState<string[] | null>(null);
+  return (
+    <>
+      <div className="bt-meetings">
+        {meetings.map((m) => (
+          <article className="bt-meeting" key={m[0]}>
+            <header>
+              <Video size={14} />
+              Meeting
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                aria-label={"Meeting options for " + m[0]}
+                onClick={() => setDetail(m)}
+              >
+                <MoreHorizontal />
+              </Button>
+            </header>
+            <div>
+              <h2>{m[0]}</h2>
+              <div className="bt-pills">
+                <CalendarDays size={14} />
+                {m[1]}
+                <Clock size={14} />
+                {m[2]}
+              </div>
+              <p>{m[3]}</p>
+              <div className="bt-meeting-people">
+                <span className="bt-avatar">MS</span>
+                <span className="bt-avatar">PR</span>
+                <span className="bt-avatar">LG</span>
+                <Tone tone="neutral">{m[4]}</Tone>
+              </div>
+            </div>
+            <footer>
+              <Button
+                variant="ghost"
+                onClick={() =>
+                  toast("Joining meeting", { description: "Connect this to your video provider." })
+                }
+              >
+                <Video />
+                Join Meeting
+              </Button>
+            </footer>
+          </article>
+        ))}
+      </div>
+      <Dialog open={open} onOpenChange={onOpenChange}>
+        <DialogContent className="bt-meeting-dialog">
+          <DialogHeader>
+            <DialogTitle>New meeting</DialogTitle>
+            <DialogDescription>Put a call on the calendar and set the agenda.</DialogDescription>
+          </DialogHeader>
+          <form
+            className="bt-form"
+            onSubmit={(e) => {
+              e.preventDefault();
+              const v = new FormData(e.currentTarget);
+              setMeetings((rows) => [
+                [
+                  String(v.get("meeting")),
+                  String(v.get("start")) + " CET",
+                  duration,
+                  String(v.get("agenda")),
+                  type,
+                ],
+                ...rows,
+              ]);
+              onOpenChange(false);
+            }}
+          >
+            <label>
+              Meeting
+              <Input name="meeting" required placeholder="Meeting title" />
+            </label>
+            <div className="bt-grid-2">
+              <label>
+                Account
+                <Choice
+                  label="Account"
+                  value={account}
+                  onChange={setAccount}
+                  options={initial.map((m) => m[0].split(" - ")[0])}
+                />
+              </label>
+              <label>
+                Type
+                <Choice
+                  label="Type"
+                  value={type}
+                  onChange={setType}
+                  options={[
+                    "Discovery",
+                    "Proposal",
+                    "Contract",
+                    "Renewal",
+                    "Onboarding",
+                    "Pricing",
+                    "Compliance",
+                  ]}
+                />
+              </label>
+            </div>
+            <div className="bt-grid-2">
+              <label>
+                Date
+                <Input type="date" name="date" defaultValue="2026-07-18" />
+              </label>
+              <label>
+                Start
+                <Input type="time" name="start" defaultValue="10:00" />
+              </label>
+            </div>
+            <label>
+              Duration
+              <Choice
+                label="Duration"
+                value={duration}
+                onChange={setDuration}
+                options={["15 min", "30 min", "45 min", "60 min"]}
+              />
+            </label>
+            <label>
+              Attendees
+              <Input defaultValue="Mira Stone, Priya Raman" />
+            </label>
+            <label>
+              Location
+              <Input defaultValue="Google Meet" />
+            </label>
+            <label>
+              Agenda
+              <Textarea name="agenda" rows={3} />
+            </label>
+            <DialogFooter>
+              <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
+                Cancel
+              </Button>
+              <Button type="submit">Schedule meeting</Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+      <Dialog open={!!detail} onOpenChange={(v) => !v && setDetail(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{detail?.[0]}</DialogTitle>
+            <DialogDescription>
+              {detail?.[1]} · {detail?.[2]}
+            </DialogDescription>
+          </DialogHeader>
+          <p>{detail?.[3]}</p>
+          <Button onClick={() => setDetail(null)}>Close</Button>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+}

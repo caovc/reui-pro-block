@@ -33,13 +33,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import {
-  Item,
-  ItemContent,
-  ItemTitle,
-  ItemDescription,
-  ItemActions,
-} from "@/components/ui/item";
+import { Item, ItemContent, ItemTitle, ItemDescription, ItemActions } from "@/components/ui/item";
 import jenny from "@/blocks/application/assets/schedule-emma-wilson.jpg";
 import ralph from "@/blocks/application/assets/schedule-james-park.jpg";
 import ari from "@/blocks/application/assets/schedule-sarah-chen.jpg";
@@ -136,8 +130,7 @@ export function CustomerProfile() {
           <DialogHeader>
             <DialogTitle>Disconnect Jenny Klabber?</DialogTitle>
             <DialogDescription>
-              Change the connection in this local preview. No contact or account
-              data is sent.
+              Change the connection in this local preview. No contact or account data is sent.
             </DialogDescription>
           </DialogHeader>
           <div className="flex justify-end gap-2">
@@ -167,15 +160,13 @@ const projects = [
 type Project = (typeof projects)[number];
 // Independent UI miniatures replace the reference's remote Unsplash project photos.
 // Surfaces and status chips remain real free Frame/Badge rather than image extracts.
-const thumbnailData = [28, 49, 40, 65, 44, 76, 62, 88].map(
-  (visitors, index) => ({ period: index + 1, visitors }),
-);
+const thumbnailData = [28, 49, 40, 65, 44, 76, 62, 88].map((visitors, index) => ({
+  period: index + 1,
+  visitors,
+}));
 function ProjectThumbnail({ kind }: { kind: Project["kind"] }) {
   return (
-    <div
-      className={`profile-project-thumb profile-project-${kind}`}
-      aria-hidden="true"
-    >
+    <div className={`profile-project-thumb profile-project-${kind}`} aria-hidden="true">
       <div className="profile-project-appbar">
         <span />
         <span />
@@ -201,9 +192,7 @@ function ProjectThumbnail({ kind }: { kind: Project["kind"] }) {
             <div className="grid grid-cols-3 gap-1">
               {["26.4k", "8.2k", "+12%"].map((value) => (
                 <Frame variant="ghost" dense key={value}>
-                  <FramePanel className="p-1 text-[5px] font-medium">
-                    {value}
-                  </FramePanel>
+                  <FramePanel className="p-1 text-[5px] font-medium">{value}</FramePanel>
                 </Frame>
               ))}
             </div>
@@ -251,16 +240,9 @@ export function ContributorPortfolio() {
     <Stage id={43} width={400}>
       <Frame variant="ghost" dense>
         <FramePanel className="flex flex-col gap-4 p-4">
-          <div
-            className="profile-card-cover"
-            aria-label="Abstract muted cover banner"
-            role="img"
-          />
+          <div className="profile-card-cover" aria-label="Abstract muted cover banner" role="img" />
           <Item className="profile-portfolio-info relative -mt-11 items-end gap-3 p-0">
-            <Avatar
-              className="size-20 data-[size=lg]:size-20 ring-4 ring-background"
-              size="lg"
-            >
+            <Avatar className="size-20 data-[size=lg]:size-20 ring-4 ring-background" size="lg">
               <AvatarImage src={ralph} alt="Ralph Edwards" />
               <AvatarFallback>RE</AvatarFallback>
               <AvatarBadge
@@ -294,11 +276,7 @@ export function ContributorPortfolio() {
               </Button>
             </ItemActions>
           </Item>
-          <ScrollArea
-            type="always"
-            className="w-full"
-            aria-label="Project portfolio"
-          >
+          <ScrollArea type="always" className="w-full" aria-label="Project portfolio">
             <div className="flex w-max gap-2 pb-3">
               {projects.map((p) => (
                 <Frame key={p.id} variant="ghost" dense>
@@ -313,9 +291,7 @@ export function ContributorPortfolio() {
                         <ProjectThumbnail kind={p.kind} />
                       </AspectRatio>
                       <div className="flex flex-col gap-0.5 p-2">
-                        <h3 className="truncate text-sm font-medium">
-                          {p.title}
-                        </h3>
+                        <h3 className="truncate text-sm font-medium">{p.title}</h3>
                         <p className="text-xs font-normal text-muted-foreground">
                           Project ID: {p.id}
                         </p>
@@ -339,26 +315,21 @@ export function ContributorPortfolio() {
         <Alert variant="success" className="mt-3">
           <CheckCircle2 />
           <AlertTitle>Message draft saved</AlertTitle>
-          <AlertDescription>
-            This preview did not send a message.
-          </AlertDescription>
+          <AlertDescription>This preview did not send a message.</AlertDescription>
         </Alert>
       ) : null}
       <Dialog open={profileOpen} onOpenChange={setProfileOpen}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Ralph Edwards</DialogTitle>
-            <DialogDescription>
-              Independent contributor profile · local example
-            </DialogDescription>
+            <DialogDescription>Independent contributor profile · local example</DialogDescription>
           </DialogHeader>
           <p className="flex items-center gap-2 text-sm">
             <MapPin className="size-4" />
             Sacramento, California
           </p>
           <p className="text-sm text-muted-foreground">
-            Product designer focused on analytics interfaces, checkout flows and
-            developer tools.
+            Product designer focused on analytics interfaces, checkout flows and developer tools.
           </p>
           <ul className="list-disc space-y-2 pl-5 text-sm">
             {projects.map((p) => (
@@ -388,8 +359,7 @@ export function ContributorPortfolio() {
             </AspectRatio>
           ) : null}
           <p className="text-sm text-muted-foreground">
-            This is a local portfolio sample. No external project service is
-            connected.
+            This is a local portfolio sample. No external project service is connected.
           </p>
         </DialogContent>
       </Dialog>
@@ -418,12 +388,7 @@ export function ContributorPortfolio() {
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="portfolio-name">Your name</FieldLabel>
-                <Input
-                  id="portfolio-name"
-                  name="name"
-                  defaultValue={draft.name}
-                  required
-                />
+                <Input id="portfolio-name" name="name" defaultValue={draft.name} required />
               </Field>
               <Field>
                 <FieldLabel htmlFor="portfolio-email">Your email</FieldLabel>

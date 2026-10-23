@@ -1,13 +1,539 @@
-import { useEffect, useId, useState } from 'react'
-import { Lightbulb, Pause, Play } from 'lucide-react'
-import type { BlockProps } from '@/data/types'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
-import { Slider } from '@/components/ui/slider'
-import { DropdownMenuCheckboxItem } from '@/components/ui/dropdown-menu'
-import { ChartFrame, ChartMore, ChartStage, PeriodButtons } from './chart-chrome'
-const serviceNames=['api-gateway','auth','billing-api','search','webhooks','ingest-worker','realtime','notifications','file-storage','reports','exports','ledger-sync','sync-engine','audit-log'];const traffics=[412,268,154,131,118,96,88,61,47,33,21,14,9,4];const currentRunways=[4.4,24,2,19,8,27,3.4,31,20,28,3,8.1,8.7,31];const baselineRunways=[10,24,4.7,24,12,31,8.7,31,24,29,6,17,11,31]
-function ErrorRunway(){const [mode,setMode]=useState('Current');const [selected,setSelected]=useState(2);const [hover,setHover]=useState<number|null>(null);const [live,setLive]=useState(true);const [weights,setWeights]=useState(true);const [t,setT]=useState(0);const id=useId().replaceAll(':','');useEffect(()=>{if(!live)return;const timer=setInterval(()=>setT(v=>v+1),8000);return()=>clearInterval(timer)},[live]);const values=(mode==='Current'?currentRunways:baselineRunways).map((v,i)=>v>=30?31:Math.max(.5,v+Math.sin(t*.7+i)*t*.008));const order=values.map((v,i)=>({v,i})).sort((a,b)=>a.v-b.v);const critical=values.filter(v=>v<7).length;const watched=values.filter(v=>v>=7&&v<14).length;const rank=(i:number)=>order.findIndex(s=>s.i===i);const color=(i:number)=>values[i]<7?'#d8342d':values[i]<14?'#d6b514':'#3ab18a';const service=hover??selected;const riskTraffic=traffics.reduce((s,n,i)=>s+(values[i]<7?n:0),0)/1456*100;const textDays=(v:number)=>v>=30?'30d+':`${v<10?v.toFixed(1):Math.round(v)}d`;return <ChartStage><ChartFrame title={<>Error Budget Runway<Badge variant="outline" className="gap-1 px-1 text-[11px] font-normal"><span className={`size-1 rounded-full ${live?'bg-emerald-500':'bg-muted-foreground'}`}/>{live?'Live':'Paused'}</Badge></>} description="Days until each service breaks its 30-day SLO" width="max-w-[1152px]" toolbar={<><PeriodButtons label="Runway at" value={mode} onChange={setMode} options={['Current','Baseline']}/><ChartMore title="Error budget runway" rows={serviceNames.map((name,i)=>({service:name,trafficM:traffics[i],runwayDays:values[i]}))}><DropdownMenuCheckboxItem checked={live} onCheckedChange={setLive}>Live updates</DropdownMenuCheckboxItem><DropdownMenuCheckboxItem checked={weights} onCheckedChange={setWeights}>Weight by traffic</DropdownMenuCheckboxItem></ChartMore></>} footer={<><span className="flex items-center gap-2"><span className="font-mono text-[13px] text-foreground">{serviceNames[service]}</span><Badge variant="outline" className="gap-1 px-1 text-[11px] font-normal"><span className="size-1.5 rounded-full" style={{background:color(service)}}/>{values[service]<7?'Critical':values[service]<14?'Watch':'Healthy'}</Badge></span><span>Payments <span className="ml-3">Burning <strong className="text-foreground">{(30/Math.max(4,values[service])*0.45).toFixed(1)}×</strong></span><span className="ml-3">Out in <strong className="text-foreground">{textDays(values[service])}</strong></span></span></>}><dl className="grid grid-cols-2 divide-x divide-y border-b px-0 py-4 md:grid-cols-4 md:divide-y-0">{[['At Risk',`${critical} / 14`,`${watched} watch · ${14-critical-watched} healthy`],['Runs Out First',textDays(order[0].v),`${serviceNames[order[0].i]} at 3.4×`],['Traffic at Risk',`${Math.round(riskTraffic)}%`,'of 1,456M req/day'],['Budget Left','52%','']].map(([name,value,detail],i)=><div key={name} className="px-4"><dt className="flex justify-between text-xs text-muted-foreground"><span>{name}</span><Badge variant="outline" className="px-1 text-[11px] font-normal">{i===1?'+0.1d':'Steady'}</Badge></dt><dd className="mt-2 text-2xl font-semibold tracking-tight">{value}</dd><dd className="mt-2 text-xs text-muted-foreground">{detail||<span className="block h-1 w-full bg-muted"><span className="block h-full w-[52%] bg-emerald-500/70"/></span>}</dd></div>)}</dl><div className="overflow-auto px-3 pb-5 pt-4"><svg viewBox="0 0 1120 500" className="block min-w-[690px] w-full" role="img" aria-label="Error budget runway: traffic order on the left and runway order on the right"><text x="100" y="17" textAnchor="middle" fill="var(--muted-foreground)" fontSize="12">Service, by traffic</text><text x="970" y="17" textAnchor="middle" fill="var(--muted-foreground)" fontSize="12">Runway, {mode.toLowerCase()} burn</text>{['Critical','Watch','Healthy'].map((n,i)=><g key={n}><circle cx={476+i*65} cy="14" r="3.5" fill={['#d8342d','#d6b514','#3ab18a'][i]}/><text x={485+i*65} y="18" fill="var(--muted-foreground)" fontSize="11">{n}</text></g>)}<defs>{serviceNames.map((n,i)=><linearGradient key={n} id={`${id}-runway-${i}`} x1="0" x2="1" y1="0" y2="0"><stop offset="0%" stopColor={color(i)} stopOpacity={values[i]<7?.35:.15}/><stop offset="100%" stopColor={color(i)} stopOpacity={values[i]<14?1:.5}/></linearGradient>)}</defs>{serviceNames.map((n,i)=>{const y1=45+i*32,y2=45+rank(i)*32;const d=`M160 ${y1} C 480 ${y1}, 600 ${y2}, 930 ${y2}`;return <g key={n} onPointerEnter={()=>setHover(i)} onPointerLeave={()=>setHover(null)} onClick={()=>setSelected(i)} role="button" tabIndex={0} aria-label={`${n}: ${textDays(values[i])} error budget remaining`} onKeyDown={e=>(e.key==='Enter'||e.key===' ')&&setSelected(i)} style={{cursor:'pointer'}} opacity={hover===null||hover===i?1:.16}><text x="112" y={y1+4} textAnchor="end" fill="currentColor" fontFamily="monospace" fontSize="12">{n}</text><text x="151" y={y1+4} textAnchor="end" fill="var(--muted-foreground)" fontSize="12">{traffics[i]}M</text><path d={d} fill="none" stroke={`url(#${id}-runway-${i})`} strokeWidth={weights?Math.max(1.5,traffics[i]/52):3} strokeLinecap="round"/>{values[i]<14&&[.34,.66].map(p=><circle key={p} cx={(1-p)**3*160+3*(1-p)**2*p*480+3*(1-p)*p*p*600+p**3*930} cy={y1+(y2-y1)*(3*p*p-2*p*p*p)} r="2.6" fill={color(i)} stroke="var(--background)" strokeWidth=".8"/>)}<text x="940" y={y2+4} fill="currentColor" fontSize="12">{textDays(values[i])}</text><path d={`M990 ${y2} H1080`} stroke="var(--muted)" strokeWidth="5"/><path d={`M990 ${y2} H${990+Math.min(values[i]/30,1)*90}`} stroke={color(i)} strokeWidth="5" strokeLinecap="round" opacity=".7"/></g>})}</svg></div></ChartFrame></ChartStage>}
-const channels=['Paid Search','Paid Social','Organic Search','Direct','Content','Affiliates','Referrals','Newsletter','Partner Directory','Webinars','Events'];const signups=[4820,3910,3240,2560,2150,1730,1480,1260,980,640,410];const finalRetention=[19,7,28,37,22,10,49,32,40,39,32];const curves=[.55,.8,1.1,.9,1.35,.6,1.6,1.1,1.5,1.25,1.7]
-function RetentionCrossover(){const [day,setDay]=useState([30]);const [playing,setPlaying]=useState(false);const [selected,setSelected]=useState(6);const [hover,setHover]=useState<number|null>(null);const [weights,setWeights]=useState(true);const [rings,setRings]=useState(true);const id=useId().replaceAll(':','');useEffect(()=>{if(!playing)return;const timer=setInterval(()=>setDay(d=>[d[0]>=45?1:d[0]+1]),650);return()=>clearInterval(timer)},[playing]);const values=finalRetention.map((v,i)=>Math.max(1,Math.round(100-(100-v)*(day[0]/30)**curves[i])));const order=values.map((v,i)=>({v,i})).sort((a,b)=>b.v-a.v||a.i-b.i);const rank=(i:number)=>order.findIndex(s=>s.i===i);const change=(i:number)=>i-rank(i);const color=(i:number)=>change(i)>0?'#3ab18a':change(i)<0?'#d8342d':'#898989';const focus=hover??selected;const currentDay=day[0];return <ChartStage><ChartFrame title={<>Retention Crossover<Badge variant="outline" className="px-1 text-xs font-normal">23,180 signups</Badge></>} description="Which channels keep the users they bring" width="max-w-[1152px]" toolbar={<><div className="mr-3 flex items-center gap-4"><div className="w-16 text-[13px]">Day {currentDay}<p className="mt-1 text-xs text-muted-foreground">{currentDay<7?'Discovery':currentDay<21?'Activation':'Habit'}</p></div><div className="relative w-40 sm:w-80"><div className="pointer-events-none absolute inset-x-0 top-1/2 flex -translate-y-1/2 justify-between">{Array.from({length:36},(_,i)=><span key={i} className="w-px bg-muted-foreground/50" style={{height:i%6===0?15:7}}/>)}</div><Slider aria-label="Days since signup" value={day} onValueChange={setDay} min={1} max={45} step={1} className="[&_[data-slot=slider-range]]:bg-transparent [&_[data-slot=slider-track]]:bg-transparent"/></div></div><Button variant="outline" size="sm" className="h-7 text-[13px]" aria-pressed={playing} onClick={()=>setPlaying(v=>!v)}>{playing?<Pause/>:<Play/>}{playing?'Pause':'Play'}</Button><ChartMore title="Retention crossover" rows={channels.map((channel,i)=>({channel,signups:signups[i],day:currentDay,retention:values[i],rank:rank(i)+1}))}><DropdownMenuCheckboxItem checked={weights} onCheckedChange={setWeights}>Weight by signups</DropdownMenuCheckboxItem><DropdownMenuCheckboxItem checked={rings} onCheckedChange={setRings}>Show crossing rings</DropdownMenuCheckboxItem></ChartMore></>} footer={<><span className="flex items-center gap-2"><Lightbulb className="size-3.5"/><span><strong className="font-normal text-foreground">{channels[focus]}</strong> keeps <strong className="font-normal text-foreground">{values[focus]}%</strong> of its users at Day {currentDay}, Paid Search keeps {values[0]}%</span></span><span>{channels.filter((_,i)=>change(i)!==0).length} of 11 channels moved</span></>}><div className="overflow-auto p-4"><svg viewBox="0 0 1120 470" className="block min-w-[690px] w-full" role="img" aria-label="Acquisition channels: signup order on the left and retention order on the right"><text x="180" y="20" fill="var(--muted-foreground)" fontSize="12">Signups</text><text x="970" y="20" textAnchor="middle" fill="var(--muted-foreground)" fontSize="12">Kept at Day {currentDay}</text><text x="1090" y="20" textAnchor="end" fill="var(--muted-foreground)" fontSize="12">Places</text>{['Climbs','Falls','Holds'].map((n,i)=><g key={n}><circle cx={520+i*65} cy="16" r="3.5" fill={['#3ab18a','#d8342d','#898989'][i]}/><text x={529+i*65} y="20" fill="var(--muted-foreground)" fontSize="11">{n}</text></g>)}<defs>{channels.map((n,i)=><linearGradient key={n} id={`${id}-retention-${i}`} x1="0" x2="1" y1="0" y2="0"><stop offset="0%" stopColor="#a1a1a1" stopOpacity=".6"/><stop offset="100%" stopColor={color(i)} stopOpacity="1"/></linearGradient>)}</defs>{channels.map((n,i)=>{const y1=62+i*35,y2=62+rank(i)*35;const d=`M235 ${y1} C520 ${y1},650 ${y2},950 ${y2}`;const move=change(i);return <g key={n} opacity={hover===null||hover===i?1:.12} onPointerEnter={()=>setHover(i)} onPointerLeave={()=>setHover(null)} onClick={()=>setSelected(i)} role="button" tabIndex={0} aria-label={`${n}: ${values[i]}% kept at day ${currentDay}`} onKeyDown={e=>(e.key==='Enter'||e.key===' ')&&setSelected(i)} style={{cursor:'pointer'}}><text x="120" y={y1+4} fill="currentColor" textAnchor="end" fontSize="12">{n}</text><text x="160" y={y1+4} fill="var(--muted-foreground)" textAnchor="end" fontSize="12">{signups[i].toLocaleString()}</text><path d={`M172 ${y1} H${172+signups[i]/4820*50}`} stroke="var(--muted-foreground)" strokeOpacity=".45" strokeWidth="5" strokeLinecap="round"/><path d={d} fill="none" stroke={`url(#${id}-retention-${i})`} strokeWidth={weights?Math.max(1.5,signups[i]/650):3} strokeLinecap="round"/><circle cx="235" cy={y1} r="5" fill="var(--background)" stroke="var(--muted-foreground)" strokeOpacity=".5"/><circle cx="950" cy={y2} r="3.5" fill="var(--background)" stroke={color(i)}/>{rings&&hover===i&&channels.flatMap((_,j)=>{if(i===j)return [];const otherStart=62+j*35,otherEnd=62+rank(j)*35;const delta=(y2-y1)-(otherEnd-otherStart);if(!delta)return [];const q=(otherStart-y1)/delta;if(q<=0||q>=1)return [];let low=0,high=1;for(let n=0;n<18;n++){const mid=(low+high)/2;if(3*mid*mid-2*mid*mid*mid<q)low=mid;else high=mid}const p=(low+high)/2;const x=(1-p)**3*235+3*(1-p)**2*p*520+3*(1-p)*p*p*650+p**3*950;return <circle key={j} cx={x} cy={y1+(y2-y1)*q} r="6" fill="var(--background)" stroke={color(i)} strokeWidth="1.5"/>})}<path d={`M962 ${y2} H1010`} stroke="var(--muted)" strokeWidth="5"/><path d={`M962 ${y2} H${962+values[i]/70*48}`} stroke={color(i)} strokeWidth="5" strokeLinecap="round" opacity=".8"/><text x="1045" y={y2+4} fill="currentColor" textAnchor="end" fontSize="12">{values[i]}%</text><text x="1095" y={y2+4} fill={color(i)} textAnchor="end" fontSize="12">{move>0?'+':''}{move}</text></g>})}</svg></div></ChartFrame></ChartStage>}
-export default function SlopeChartBlock({block}:BlockProps){return block.id==='chart-50'?<ErrorRunway/>:<RetentionCrossover/>}
+import { useEffect, useId, useState } from "react";
+import { Lightbulb, Pause, Play } from "lucide-react";
+import type { BlockProps } from "@/data/types";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Slider } from "@/components/ui/slider";
+import { DropdownMenuCheckboxItem } from "@/components/ui/dropdown-menu";
+import { ChartFrame, ChartMore, ChartStage, PeriodButtons } from "./chart-chrome";
+const serviceNames = [
+  "api-gateway",
+  "auth",
+  "billing-api",
+  "search",
+  "webhooks",
+  "ingest-worker",
+  "realtime",
+  "notifications",
+  "file-storage",
+  "reports",
+  "exports",
+  "ledger-sync",
+  "sync-engine",
+  "audit-log",
+];
+const traffics = [412, 268, 154, 131, 118, 96, 88, 61, 47, 33, 21, 14, 9, 4];
+const currentRunways = [4.4, 24, 2, 19, 8, 27, 3.4, 31, 20, 28, 3, 8.1, 8.7, 31];
+const baselineRunways = [10, 24, 4.7, 24, 12, 31, 8.7, 31, 24, 29, 6, 17, 11, 31];
+function ErrorRunway() {
+  const [mode, setMode] = useState("Current");
+  const [selected, setSelected] = useState(2);
+  const [hover, setHover] = useState<number | null>(null);
+  const [live, setLive] = useState(true);
+  const [weights, setWeights] = useState(true);
+  const [t, setT] = useState(0);
+  const id = useId().replaceAll(":", "");
+  useEffect(() => {
+    if (!live) return;
+    const timer = setInterval(() => setT((v) => v + 1), 8000);
+    return () => clearInterval(timer);
+  }, [live]);
+  const values = (mode === "Current" ? currentRunways : baselineRunways).map((v, i) =>
+    v >= 30 ? 31 : Math.max(0.5, v + Math.sin(t * 0.7 + i) * t * 0.008),
+  );
+  const order = values.map((v, i) => ({ v, i })).sort((a, b) => a.v - b.v);
+  const critical = values.filter((v) => v < 7).length;
+  const watched = values.filter((v) => v >= 7 && v < 14).length;
+  const rank = (i: number) => order.findIndex((s) => s.i === i);
+  const color = (i: number) => (values[i] < 7 ? "#d8342d" : values[i] < 14 ? "#d6b514" : "#3ab18a");
+  const service = hover ?? selected;
+  const riskTraffic = (traffics.reduce((s, n, i) => s + (values[i] < 7 ? n : 0), 0) / 1456) * 100;
+  const textDays = (v: number) => (v >= 30 ? "30d+" : `${v < 10 ? v.toFixed(1) : Math.round(v)}d`);
+  return (
+    <ChartStage>
+      <ChartFrame
+        title={
+          <>
+            Error Budget Runway
+            <Badge variant="outline" className="gap-1 px-1 text-[11px] font-normal">
+              <span
+                className={`size-1 rounded-full ${live ? "bg-emerald-500" : "bg-muted-foreground"}`}
+              />
+              {live ? "Live" : "Paused"}
+            </Badge>
+          </>
+        }
+        description="Days until each service breaks its 30-day SLO"
+        width="max-w-[1152px]"
+        toolbar={
+          <>
+            <PeriodButtons
+              label="Runway at"
+              value={mode}
+              onChange={setMode}
+              options={["Current", "Baseline"]}
+            />
+            <ChartMore
+              title="Error budget runway"
+              rows={serviceNames.map((name, i) => ({
+                service: name,
+                trafficM: traffics[i],
+                runwayDays: values[i],
+              }))}
+            >
+              <DropdownMenuCheckboxItem checked={live} onCheckedChange={setLive}>
+                Live updates
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem checked={weights} onCheckedChange={setWeights}>
+                Weight by traffic
+              </DropdownMenuCheckboxItem>
+            </ChartMore>
+          </>
+        }
+        footer={
+          <>
+            <span className="flex items-center gap-2">
+              <span className="font-mono text-[13px] text-foreground">{serviceNames[service]}</span>
+              <Badge variant="outline" className="gap-1 px-1 text-[11px] font-normal">
+                <span className="size-1.5 rounded-full" style={{ background: color(service) }} />
+                {values[service] < 7 ? "Critical" : values[service] < 14 ? "Watch" : "Healthy"}
+              </Badge>
+            </span>
+            <span>
+              Payments{" "}
+              <span className="ml-3">
+                Burning{" "}
+                <strong className="text-foreground">
+                  {((30 / Math.max(4, values[service])) * 0.45).toFixed(1)}×
+                </strong>
+              </span>
+              <span className="ml-3">
+                Out in <strong className="text-foreground">{textDays(values[service])}</strong>
+              </span>
+            </span>
+          </>
+        }
+      >
+        <dl className="grid grid-cols-2 divide-x divide-y border-b px-0 py-4 md:grid-cols-4 md:divide-y-0">
+          {[
+            [
+              "At Risk",
+              `${critical} / 14`,
+              `${watched} watch · ${14 - critical - watched} healthy`,
+            ],
+            ["Runs Out First", textDays(order[0].v), `${serviceNames[order[0].i]} at 3.4×`],
+            ["Traffic at Risk", `${Math.round(riskTraffic)}%`, "of 1,456M req/day"],
+            ["Budget Left", "52%", ""],
+          ].map(([name, value, detail], i) => (
+            <div key={name} className="px-4">
+              <dt className="flex justify-between text-xs text-muted-foreground">
+                <span>{name}</span>
+                <Badge variant="outline" className="px-1 text-[11px] font-normal">
+                  {i === 1 ? "+0.1d" : "Steady"}
+                </Badge>
+              </dt>
+              <dd className="mt-2 text-2xl font-semibold tracking-tight">{value}</dd>
+              <dd className="mt-2 text-xs text-muted-foreground">
+                {detail || (
+                  <span className="block h-1 w-full bg-muted">
+                    <span className="block h-full w-[52%] bg-emerald-500/70" />
+                  </span>
+                )}
+              </dd>
+            </div>
+          ))}
+        </dl>
+        <div className="overflow-auto px-3 pb-5 pt-4">
+          <svg
+            viewBox="0 0 1120 500"
+            className="block min-w-[690px] w-full"
+            role="img"
+            aria-label="Error budget runway: traffic order on the left and runway order on the right"
+          >
+            <text x="100" y="17" textAnchor="middle" fill="var(--muted-foreground)" fontSize="12">
+              Service, by traffic
+            </text>
+            <text x="970" y="17" textAnchor="middle" fill="var(--muted-foreground)" fontSize="12">
+              Runway, {mode.toLowerCase()} burn
+            </text>
+            {["Critical", "Watch", "Healthy"].map((n, i) => (
+              <g key={n}>
+                <circle
+                  cx={476 + i * 65}
+                  cy="14"
+                  r="3.5"
+                  fill={["#d8342d", "#d6b514", "#3ab18a"][i]}
+                />
+                <text x={485 + i * 65} y="18" fill="var(--muted-foreground)" fontSize="11">
+                  {n}
+                </text>
+              </g>
+            ))}
+            <defs>
+              {serviceNames.map((n, i) => (
+                <linearGradient key={n} id={`${id}-runway-${i}`} x1="0" x2="1" y1="0" y2="0">
+                  <stop
+                    offset="0%"
+                    stopColor={color(i)}
+                    stopOpacity={values[i] < 7 ? 0.35 : 0.15}
+                  />
+                  <stop offset="100%" stopColor={color(i)} stopOpacity={values[i] < 14 ? 1 : 0.5} />
+                </linearGradient>
+              ))}
+            </defs>
+            {serviceNames.map((n, i) => {
+              const y1 = 45 + i * 32,
+                y2 = 45 + rank(i) * 32;
+              const d = `M160 ${y1} C 480 ${y1}, 600 ${y2}, 930 ${y2}`;
+              return (
+                <g
+                  key={n}
+                  onPointerEnter={() => setHover(i)}
+                  onPointerLeave={() => setHover(null)}
+                  onClick={() => setSelected(i)}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`${n}: ${textDays(values[i])} error budget remaining`}
+                  onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && setSelected(i)}
+                  style={{ cursor: "pointer" }}
+                  opacity={hover === null || hover === i ? 1 : 0.16}
+                >
+                  <text
+                    x="112"
+                    y={y1 + 4}
+                    textAnchor="end"
+                    fill="currentColor"
+                    fontFamily="monospace"
+                    fontSize="12"
+                  >
+                    {n}
+                  </text>
+                  <text
+                    x="151"
+                    y={y1 + 4}
+                    textAnchor="end"
+                    fill="var(--muted-foreground)"
+                    fontSize="12"
+                  >
+                    {traffics[i]}M
+                  </text>
+                  <path
+                    d={d}
+                    fill="none"
+                    stroke={`url(#${id}-runway-${i})`}
+                    strokeWidth={weights ? Math.max(1.5, traffics[i] / 52) : 3}
+                    strokeLinecap="round"
+                  />
+                  {values[i] < 14 &&
+                    [0.34, 0.66].map((p) => (
+                      <circle
+                        key={p}
+                        cx={
+                          (1 - p) ** 3 * 160 +
+                          3 * (1 - p) ** 2 * p * 480 +
+                          3 * (1 - p) * p * p * 600 +
+                          p ** 3 * 930
+                        }
+                        cy={y1 + (y2 - y1) * (3 * p * p - 2 * p * p * p)}
+                        r="2.6"
+                        fill={color(i)}
+                        stroke="var(--background)"
+                        strokeWidth=".8"
+                      />
+                    ))}
+                  <text x="940" y={y2 + 4} fill="currentColor" fontSize="12">
+                    {textDays(values[i])}
+                  </text>
+                  <path d={`M990 ${y2} H1080`} stroke="var(--muted)" strokeWidth="5" />
+                  <path
+                    d={`M990 ${y2} H${990 + Math.min(values[i] / 30, 1) * 90}`}
+                    stroke={color(i)}
+                    strokeWidth="5"
+                    strokeLinecap="round"
+                    opacity=".7"
+                  />
+                </g>
+              );
+            })}
+          </svg>
+        </div>
+      </ChartFrame>
+    </ChartStage>
+  );
+}
+const channels = [
+  "Paid Search",
+  "Paid Social",
+  "Organic Search",
+  "Direct",
+  "Content",
+  "Affiliates",
+  "Referrals",
+  "Newsletter",
+  "Partner Directory",
+  "Webinars",
+  "Events",
+];
+const signups = [4820, 3910, 3240, 2560, 2150, 1730, 1480, 1260, 980, 640, 410];
+const finalRetention = [19, 7, 28, 37, 22, 10, 49, 32, 40, 39, 32];
+const curves = [0.55, 0.8, 1.1, 0.9, 1.35, 0.6, 1.6, 1.1, 1.5, 1.25, 1.7];
+function RetentionCrossover() {
+  const [day, setDay] = useState([30]);
+  const [playing, setPlaying] = useState(false);
+  const [selected, setSelected] = useState(6);
+  const [hover, setHover] = useState<number | null>(null);
+  const [weights, setWeights] = useState(true);
+  const [rings, setRings] = useState(true);
+  const id = useId().replaceAll(":", "");
+  useEffect(() => {
+    if (!playing) return;
+    const timer = setInterval(() => setDay((d) => [d[0] >= 45 ? 1 : d[0] + 1]), 650);
+    return () => clearInterval(timer);
+  }, [playing]);
+  const values = finalRetention.map((v, i) =>
+    Math.max(1, Math.round(100 - (100 - v) * (day[0] / 30) ** curves[i])),
+  );
+  const order = values.map((v, i) => ({ v, i })).sort((a, b) => b.v - a.v || a.i - b.i);
+  const rank = (i: number) => order.findIndex((s) => s.i === i);
+  const change = (i: number) => i - rank(i);
+  const color = (i: number) => (change(i) > 0 ? "#3ab18a" : change(i) < 0 ? "#d8342d" : "#898989");
+  const focus = hover ?? selected;
+  const currentDay = day[0];
+  return (
+    <ChartStage>
+      <ChartFrame
+        title={
+          <>
+            Retention Crossover
+            <Badge variant="outline" className="px-1 text-xs font-normal">
+              23,180 signups
+            </Badge>
+          </>
+        }
+        description="Which channels keep the users they bring"
+        width="max-w-[1152px]"
+        toolbar={
+          <>
+            <div className="mr-3 flex items-center gap-4">
+              <div className="w-16 text-[13px]">
+                Day {currentDay}
+                <p className="mt-1 text-xs text-muted-foreground">
+                  {currentDay < 7 ? "Discovery" : currentDay < 21 ? "Activation" : "Habit"}
+                </p>
+              </div>
+              <div className="relative w-40 sm:w-80">
+                <div className="pointer-events-none absolute inset-x-0 top-1/2 flex -translate-y-1/2 justify-between">
+                  {Array.from({ length: 36 }, (_, i) => (
+                    <span
+                      key={i}
+                      className="w-px bg-muted-foreground/50"
+                      style={{ height: i % 6 === 0 ? 15 : 7 }}
+                    />
+                  ))}
+                </div>
+                <Slider
+                  aria-label="Days since signup"
+                  value={day}
+                  onValueChange={setDay}
+                  min={1}
+                  max={45}
+                  step={1}
+                  className="[&_[data-slot=slider-range]]:bg-transparent [&_[data-slot=slider-track]]:bg-transparent"
+                />
+              </div>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-7 text-[13px]"
+              aria-pressed={playing}
+              onClick={() => setPlaying((v) => !v)}
+            >
+              {playing ? <Pause /> : <Play />}
+              {playing ? "Pause" : "Play"}
+            </Button>
+            <ChartMore
+              title="Retention crossover"
+              rows={channels.map((channel, i) => ({
+                channel,
+                signups: signups[i],
+                day: currentDay,
+                retention: values[i],
+                rank: rank(i) + 1,
+              }))}
+            >
+              <DropdownMenuCheckboxItem checked={weights} onCheckedChange={setWeights}>
+                Weight by signups
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem checked={rings} onCheckedChange={setRings}>
+                Show crossing rings
+              </DropdownMenuCheckboxItem>
+            </ChartMore>
+          </>
+        }
+        footer={
+          <>
+            <span className="flex items-center gap-2">
+              <Lightbulb className="size-3.5" />
+              <span>
+                <strong className="font-normal text-foreground">{channels[focus]}</strong> keeps{" "}
+                <strong className="font-normal text-foreground">{values[focus]}%</strong> of its
+                users at Day {currentDay}, Paid Search keeps {values[0]}%
+              </span>
+            </span>
+            <span>{channels.filter((_, i) => change(i) !== 0).length} of 11 channels moved</span>
+          </>
+        }
+      >
+        <div className="overflow-auto p-4">
+          <svg
+            viewBox="0 0 1120 470"
+            className="block min-w-[690px] w-full"
+            role="img"
+            aria-label="Acquisition channels: signup order on the left and retention order on the right"
+          >
+            <text x="180" y="20" fill="var(--muted-foreground)" fontSize="12">
+              Signups
+            </text>
+            <text x="970" y="20" textAnchor="middle" fill="var(--muted-foreground)" fontSize="12">
+              Kept at Day {currentDay}
+            </text>
+            <text x="1090" y="20" textAnchor="end" fill="var(--muted-foreground)" fontSize="12">
+              Places
+            </text>
+            {["Climbs", "Falls", "Holds"].map((n, i) => (
+              <g key={n}>
+                <circle
+                  cx={520 + i * 65}
+                  cy="16"
+                  r="3.5"
+                  fill={["#3ab18a", "#d8342d", "#898989"][i]}
+                />
+                <text x={529 + i * 65} y="20" fill="var(--muted-foreground)" fontSize="11">
+                  {n}
+                </text>
+              </g>
+            ))}
+            <defs>
+              {channels.map((n, i) => (
+                <linearGradient key={n} id={`${id}-retention-${i}`} x1="0" x2="1" y1="0" y2="0">
+                  <stop offset="0%" stopColor="#a1a1a1" stopOpacity=".6" />
+                  <stop offset="100%" stopColor={color(i)} stopOpacity="1" />
+                </linearGradient>
+              ))}
+            </defs>
+            {channels.map((n, i) => {
+              const y1 = 62 + i * 35,
+                y2 = 62 + rank(i) * 35;
+              const d = `M235 ${y1} C520 ${y1},650 ${y2},950 ${y2}`;
+              const move = change(i);
+              return (
+                <g
+                  key={n}
+                  opacity={hover === null || hover === i ? 1 : 0.12}
+                  onPointerEnter={() => setHover(i)}
+                  onPointerLeave={() => setHover(null)}
+                  onClick={() => setSelected(i)}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`${n}: ${values[i]}% kept at day ${currentDay}`}
+                  onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && setSelected(i)}
+                  style={{ cursor: "pointer" }}
+                >
+                  <text x="120" y={y1 + 4} fill="currentColor" textAnchor="end" fontSize="12">
+                    {n}
+                  </text>
+                  <text
+                    x="160"
+                    y={y1 + 4}
+                    fill="var(--muted-foreground)"
+                    textAnchor="end"
+                    fontSize="12"
+                  >
+                    {signups[i].toLocaleString()}
+                  </text>
+                  <path
+                    d={`M172 ${y1} H${172 + (signups[i] / 4820) * 50}`}
+                    stroke="var(--muted-foreground)"
+                    strokeOpacity=".45"
+                    strokeWidth="5"
+                    strokeLinecap="round"
+                  />
+                  <path
+                    d={d}
+                    fill="none"
+                    stroke={`url(#${id}-retention-${i})`}
+                    strokeWidth={weights ? Math.max(1.5, signups[i] / 650) : 3}
+                    strokeLinecap="round"
+                  />
+                  <circle
+                    cx="235"
+                    cy={y1}
+                    r="5"
+                    fill="var(--background)"
+                    stroke="var(--muted-foreground)"
+                    strokeOpacity=".5"
+                  />
+                  <circle cx="950" cy={y2} r="3.5" fill="var(--background)" stroke={color(i)} />
+                  {rings &&
+                    hover === i &&
+                    channels.flatMap((_, j) => {
+                      if (i === j) return [];
+                      const otherStart = 62 + j * 35,
+                        otherEnd = 62 + rank(j) * 35;
+                      const delta = y2 - y1 - (otherEnd - otherStart);
+                      if (!delta) return [];
+                      const q = (otherStart - y1) / delta;
+                      if (q <= 0 || q >= 1) return [];
+                      let low = 0,
+                        high = 1;
+                      for (let n = 0; n < 18; n++) {
+                        const mid = (low + high) / 2;
+                        if (3 * mid * mid - 2 * mid * mid * mid < q) low = mid;
+                        else high = mid;
+                      }
+                      const p = (low + high) / 2;
+                      const x =
+                        (1 - p) ** 3 * 235 +
+                        3 * (1 - p) ** 2 * p * 520 +
+                        3 * (1 - p) * p * p * 650 +
+                        p ** 3 * 950;
+                      return (
+                        <circle
+                          key={j}
+                          cx={x}
+                          cy={y1 + (y2 - y1) * q}
+                          r="6"
+                          fill="var(--background)"
+                          stroke={color(i)}
+                          strokeWidth="1.5"
+                        />
+                      );
+                    })}
+                  <path d={`M962 ${y2} H1010`} stroke="var(--muted)" strokeWidth="5" />
+                  <path
+                    d={`M962 ${y2} H${962 + (values[i] / 70) * 48}`}
+                    stroke={color(i)}
+                    strokeWidth="5"
+                    strokeLinecap="round"
+                    opacity=".8"
+                  />
+                  <text x="1045" y={y2 + 4} fill="currentColor" textAnchor="end" fontSize="12">
+                    {values[i]}%
+                  </text>
+                  <text x="1095" y={y2 + 4} fill={color(i)} textAnchor="end" fontSize="12">
+                    {move > 0 ? "+" : ""}
+                    {move}
+                  </text>
+                </g>
+              );
+            })}
+          </svg>
+        </div>
+      </ChartFrame>
+    </ChartStage>
+  );
+}
+export default function SlopeChartBlock({ block }: BlockProps) {
+  return block.id === "chart-50" ? <ErrorRunway /> : <RetentionCrossover />;
+}

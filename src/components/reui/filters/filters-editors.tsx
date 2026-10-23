@@ -1,44 +1,35 @@
-"use client"
+"use client";
 
-import { CheckIcon, XIcon } from "lucide-react"
-import * as React from "react"
+import { CheckIcon, XIcon } from "lucide-react";
+import * as React from "react";
 import {
   Cascader,
   CascaderEmpty,
   CascaderList,
   CascaderPanel,
   CascaderStatus,
-} from "@/components/reui/cascader/cascader"
-import type {
-  CascaderItemState,
-  CascaderProps,
-} from "@/components/reui/cascader/cascader"
+} from "@/components/reui/cascader/cascader";
+import type { CascaderItemState, CascaderProps } from "@/components/reui/cascader/cascader";
 import {
   useCascaderActions,
   useCascaderHighlight,
-} from "@/components/reui/cascader/cascader-context"
-import { CascaderFooter } from "@/components/reui/cascader/cascader-footer"
-import { CascaderItems } from "@/components/reui/cascader/cascader-item"
-import {
-  CascaderInput,
-  CascaderNav,
-} from "@/components/reui/cascader/cascader-nav"
-import type {
-  CascaderActionItem,
-  CascaderNode,
-} from "@/components/reui/cascader/cascader-types"
+} from "@/components/reui/cascader/cascader-context";
+import { CascaderFooter } from "@/components/reui/cascader/cascader-footer";
+import { CascaderItems } from "@/components/reui/cascader/cascader-item";
+import { CascaderInput, CascaderNav } from "@/components/reui/cascader/cascader-nav";
+import type { CascaderActionItem, CascaderNode } from "@/components/reui/cascader/cascader-types";
 import {
   FilterActionsContext,
   filterControlSizes,
   type FilterResolutionStore,
-} from "@/components/reui/filters/filters-context"
+} from "@/components/reui/filters/filters-context";
 import {
   applyFilterExclusiveSelection,
   filterFilterOptions,
   joinFilterPath,
   normalizeFilterQuery,
   warnFilterOnce,
-} from "@/components/reui/filters/filters-lib"
+} from "@/components/reui/filters/filters-lib";
 import type {
   AnyFilterEditor,
   FilterEditorProps,
@@ -50,23 +41,23 @@ import type {
   FilterOperator,
   FilterOption,
   FilterOptionsState,
-} from "@/components/reui/filters/filters-types"
+} from "@/components/reui/filters/filters-types";
 
-import { cn } from "cn"
-import { Button } from "@/components/ui/button"
-import { ButtonGroup } from "@/components/ui/button-group"
-import { Input } from "@/components/ui/input"
+import { cn } from "cn";
+import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
+import { Input } from "@/components/ui/input";
 
 /* -------------------------------------------------------------------------- */
 /*                              The options service                           */
 /* -------------------------------------------------------------------------- */
 
 interface OptionsInternalState<O> {
-  items: FilterOption<O>[]
-  loading: boolean
-  error: boolean
-  hasMore: boolean
-  cursor?: string
+  items: FilterOption<O>[];
+  loading: boolean;
+  error: boolean;
+  hasMore: boolean;
+  cursor?: string;
 }
 
 const IDLE: OptionsInternalState<never> = {
@@ -74,11 +65,11 @@ const IDLE: OptionsInternalState<never> = {
   loading: false,
   error: false,
   hasMore: false,
-}
+};
 
 /** Stable no-op subscription, for a hook running outside a `Filters` root. */
-const emptySubscribe = () => () => {}
-const zeroVersion = () => 0
+const emptySubscribe = () => () => {};
+const zeroVersion = () => 0;
 
 /**
  * The joined path of a field, from the schema index. Keyed by PATH, not field
@@ -86,17 +77,17 @@ const zeroVersion = () => 0
  */
 function filterFieldKey<V, O>(
   field: FilterField<V, O> | undefined,
-  index: FilterIndex | undefined
+  index: FilterIndex | undefined,
 ): string | null {
-  if (!field) return null
+  if (!field) return null;
   if (index) {
     for (const entry of index.all) {
       if ((entry.field as unknown) === (field as unknown)) {
-        return joinFilterPath(entry.path)
+        return joinFilterPath(entry.path);
       }
     }
   }
-  return `#${field.id}`
+  return `#${field.id}`;
 }
 
 /**
@@ -109,145 +100,136 @@ function filterFieldKey<V, O>(
 export function useFilterOptions<V, O>(
   field: FilterField<V, O> | undefined,
   enabled: boolean,
-  debounceMs = 250
+  debounceMs = 250,
 ): FilterOptionsState<O> {
-  const [query, setQueryState] = React.useState("")
+  const [query, setQueryState] = React.useState("");
   const [state, setState] = React.useState<OptionsInternalState<O>>(
-    IDLE as OptionsInternalState<O>
-  )
+    IDLE as OptionsInternalState<O>,
+  );
 
-  const cache = React.useRef(new Map<string, FilterOption<O>>())
-  const requestId = React.useRef(0)
-  const abortRef = React.useRef<AbortController | null>(null)
+  const cache = React.useRef(new Map<string, FilterOption<O>>());
+  const requestId = React.useRef(0);
+  const abortRef = React.useRef<AbortController | null>(null);
 
   // Read directly, so this degrades outside a `Filters` root instead of throwing.
-  const actionsContext = React.useContext(FilterActionsContext)
-  const shared: FilterResolutionStore | null =
-    actionsContext?.resolution ?? null
-  const sharedKey = filterFieldKey(field, actionsContext?.index)
+  const actionsContext = React.useContext(FilterActionsContext);
+  const shared: FilterResolutionStore | null = actionsContext?.resolution ?? null;
+  const sharedKey = filterFieldKey(field, actionsContext?.index);
 
   // Re-render when a label lands ANYWHERE under this root, not just here.
   React.useSyncExternalStore(
     shared ? shared.subscribe : emptySubscribe,
     shared ? shared.getVersion : zeroVersion,
-    shared ? shared.getVersion : zeroVersion
-  )
+    shared ? shared.getVersion : zeroVersion,
+  );
 
-  const staticOptions = field?.options
-  const loadOptions = field?.loadOptions
-  const isAsync = Boolean(loadOptions)
+  const staticOptions = field?.options;
+  const loadOptions = field?.loadOptions;
+  const isAsync = Boolean(loadOptions);
 
   // Seeded in an effect, not during render, so the render stays pure.
   React.useEffect(() => {
-    if (!staticOptions) return
-    for (const option of staticOptions) cache.current.set(option.value, option)
-    if (shared && sharedKey) shared.set(sharedKey, staticOptions)
-  }, [staticOptions, shared, sharedKey])
+    if (!staticOptions) return;
+    for (const option of staticOptions) cache.current.set(option.value, option);
+    if (shared && sharedKey) shared.set(sharedKey, staticOptions);
+  }, [staticOptions, shared, sharedKey]);
 
   React.useEffect(() => {
-    for (const option of state.items) cache.current.set(option.value, option)
+    for (const option of state.items) cache.current.set(option.value, option);
     if (shared && sharedKey && state.items.length) {
-      shared.set(sharedKey, state.items)
+      shared.set(sharedKey, state.items);
     }
-  }, [state.items, shared, sharedKey])
+  }, [state.items, shared, sharedKey]);
 
   const run = React.useCallback(
     async (nextQuery: string, cursor: string | undefined, append: boolean) => {
-      if (!loadOptions) return
+      if (!loadOptions) return;
 
-      abortRef.current?.abort()
-      const controller = new AbortController()
-      abortRef.current = controller
-      const id = ++requestId.current
+      abortRef.current?.abort();
+      const controller = new AbortController();
+      abortRef.current = controller;
+      const id = ++requestId.current;
 
       setState((previous) => ({
         ...previous,
         loading: true,
         error: false,
         items: append ? previous.items : [],
-      }))
+      }));
 
       try {
         const result = await loadOptions(nextQuery, {
           signal: controller.signal,
           cursor,
-        })
+        });
         // A superseded request must not write; the id, not the abort, decides.
-        if (id !== requestId.current) return
+        if (id !== requestId.current) return;
 
-        const normalized: FilterLoadResult<O> = Array.isArray(result)
-          ? { items: result }
-          : result
+        const normalized: FilterLoadResult<O> = Array.isArray(result) ? { items: result } : result;
 
         setState((previous) => ({
-          items: append
-            ? [...previous.items, ...normalized.items]
-            : normalized.items,
+          items: append ? [...previous.items, ...normalized.items] : normalized.items,
           loading: false,
           error: false,
           hasMore: normalized.hasMore ?? Boolean(normalized.nextCursor),
           cursor: normalized.nextCursor,
-        }))
+        }));
       } catch (error) {
-        if (id !== requestId.current) return
-        if ((error as Error)?.name === "AbortError") return
+        if (id !== requestId.current) return;
+        if ((error as Error)?.name === "AbortError") return;
         setState((previous) => ({
           ...previous,
           loading: false,
           error: true,
           hasMore: false,
-        }))
+        }));
       }
     },
-    [loadOptions]
-  )
+    [loadOptions],
+  );
 
   React.useEffect(() => {
-    if (!enabled || !isAsync) return
-    const timer = setTimeout(
-      () => void run(query, undefined, false),
-      debounceMs
-    )
-    return () => clearTimeout(timer)
-  }, [enabled, isAsync, query, debounceMs, run])
+    if (!enabled || !isAsync) return;
+    const timer = setTimeout(() => void run(query, undefined, false), debounceMs);
+    return () => clearTimeout(timer);
+  }, [enabled, isAsync, query, debounceMs, run]);
 
   React.useEffect(() => {
-    return () => abortRef.current?.abort()
-  }, [])
+    return () => abortRef.current?.abort();
+  }, []);
 
-  const normalizedQuery = normalizeFilterQuery(query)
+  const normalizedQuery = normalizeFilterQuery(query);
 
   // Async results are server-filtered; re-filtering hides what the label omits.
   const items = React.useMemo(() => {
-    if (isAsync) return state.items
-    return filterFilterOptions(staticOptions ?? [], normalizedQuery)
-  }, [isAsync, state.items, staticOptions, normalizedQuery])
+    if (isAsync) return state.items;
+    return filterFilterOptions(staticOptions ?? [], normalizedQuery);
+  }, [isAsync, state.items, staticOptions, normalizedQuery]);
 
-  const setQuery = React.useCallback((next: string) => setQueryState(next), [])
+  const setQuery = React.useCallback((next: string) => setQueryState(next), []);
 
   const loadMore = React.useCallback(() => {
-    if (!state.hasMore || state.loading) return
-    void run(query, state.cursor, true)
-  }, [state.hasMore, state.loading, state.cursor, query, run])
+    if (!state.hasMore || state.loading) return;
+    void run(query, state.cursor, true);
+  }, [state.hasMore, state.loading, state.cursor, query, run]);
 
   const retry = React.useCallback(() => {
-    void run(query, undefined, false)
-  }, [query, run])
+    void run(query, undefined, false);
+  }, [query, run]);
 
   const resolve = React.useCallback(
     (value: string) => {
       // The ref cache cannot be the only tier: a ref write triggers no render,
       // so the chip would paint the raw value and never repaint. The shared
       // store holds other instances' pages and re-renders this one on a gain.
-      const declared = staticOptions?.find((option) => option.value === value)
-      if (declared) return declared
-      const fromShared =
-        shared && sharedKey ? shared.get(sharedKey, value) : undefined
-      if (fromShared) return fromShared as FilterOption<O>
-      return cache.current.get(value)
+      const declared = staticOptions?.find((option) => option.value === value);
+      if (declared) return declared;
+      const fromShared = shared && sharedKey ? shared.get(sharedKey, value) : undefined;
+      if (fromShared) return fromShared as FilterOption<O>;
+      return cache.current.get(value);
     },
-    [staticOptions, shared, sharedKey]
-  )
+    [staticOptions, shared, sharedKey],
+  );
 
   return {
     items,
@@ -259,7 +241,7 @@ export function useFilterOptions<V, O>(
     loadMore,
     retry,
     resolve,
-  }
+  };
 }
 
 /**
@@ -269,32 +251,31 @@ export function useFilterOptions<V, O>(
  */
 export function useFilterValueResolution<V, O>(
   field: FilterField<V, O> | undefined,
-  values: readonly unknown[]
+  values: readonly unknown[],
 ): void {
-  const actionsContext = React.useContext(FilterActionsContext)
-  const shared: FilterResolutionStore | null =
-    actionsContext?.resolution ?? null
-  const sharedKey = filterFieldKey(field, actionsContext?.index)
-  const resolveValues = field?.resolveValues
-  const staticOptions = field?.options
+  const actionsContext = React.useContext(FilterActionsContext);
+  const shared: FilterResolutionStore | null = actionsContext?.resolution ?? null;
+  const sharedKey = filterFieldKey(field, actionsContext?.index);
+  const resolveValues = field?.resolveValues;
+  const staticOptions = field?.options;
   // Keyed by CONTENT; NUL cannot occur inside a real stored value.
-  const valuesKey = values.map((entry) => String(entry)).join("\u0000")
+  const valuesKey = values.map((entry) => String(entry)).join("\u0000");
 
   React.useEffect(() => {
-    if (!resolveValues || !shared || !sharedKey || valuesKey === "") return
+    if (!resolveValues || !shared || !sharedKey || valuesKey === "") return;
     const missing = valuesKey.split("\u0000").filter((value) => {
-      if (staticOptions?.some((option) => option.value === value)) return false
-      return shared.get(sharedKey, value) === undefined
-    })
-    const wanted = shared.claim(sharedKey, missing)
-    if (wanted.length === 0) return
+      if (staticOptions?.some((option) => option.value === value)) return false;
+      return shared.get(sharedKey, value) === undefined;
+    });
+    const wanted = shared.claim(sharedKey, missing);
+    if (wanted.length === 0) return;
 
     // No unmount guard: the store outlives the component.
     void Promise.resolve(resolveValues(wanted)).then(
       (options) => shared.set(sharedKey, options),
-      () => shared.release(sharedKey, wanted)
-    )
-  }, [resolveValues, shared, sharedKey, valuesKey, staticOptions])
+      () => shared.release(sharedKey, wanted),
+    );
+  }, [resolveValues, shared, sharedKey, valuesKey, staticOptions]);
 }
 
 /* -------------------------------------------------------------------------- */
@@ -306,13 +287,7 @@ export function useFilterValueResolution<V, O>(
  * editor inside a Base UI composite would inherit its `aria-activedescendant`
  * and arrow keys, which is hostile to a colour picker or a slider.
  */
-function EditorPanel({
-  children,
-  className,
-}: {
-  children: React.ReactNode
-  className?: string
-}) {
+function EditorPanel({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
     <div
       data-slot="filter-editor"
@@ -322,12 +297,12 @@ function EditorPanel({
            becomes an inline style no consumer class can beat. 16rem is the
            256px the menu has always used. */
         "[--cascader-max-height:16rem]",
-        className
+        className,
       )}
     >
       {children}
     </div>
-  )
+  );
 }
 
 function EditorFooter({
@@ -336,16 +311,16 @@ function EditorFooter({
   labels,
   host,
 }: Pick<FilterEditorProps, "labels" | "host"> & {
-  onCancel: () => void
-  onCommit: () => void
+  onCancel: () => void;
+  onCommit: () => void;
 }) {
   // The ONE ladder, not a hardcoded rung: `size="sm"` here measured 4px short
   // of the bar's own controls at `size="default"` in all eight styles.
-  const actions = React.useContext(FilterActionsContext)
-  const sizes = filterControlSizes({ size: actions?.size ?? "default" })
+  const actions = React.useContext(FilterActionsContext);
+  const sizes = filterControlSizes({ size: actions?.size ?? "default" });
 
   // The create host advances on commit and has Back; amend must offer discard.
-  if (host === "create") return null
+  if (host === "create") return null;
   return (
     <div className="flex items-center justify-end gap-1.5 pt-1">
       <Button variant="ghost" size={sizes.button} onClick={onCancel}>
@@ -355,7 +330,7 @@ function EditorFooter({
         {labels.apply}
       </Button>
     </div>
-  )
+  );
 }
 
 /**
@@ -364,8 +339,7 @@ function EditorFooter({
  * to one bottom-only edge - `border-b-input`, not transparent, since the
  * buttons are the trailing edge and the rule would stop mid-panel.
  */
-const EDITOR_FIELD_GROUP =
-  "w-full"
+const EDITOR_FIELD_GROUP = "w-full";
 
 /**
  * Confirm and cancel, an OUTLINE pair FUSED onto the field's trailing edge.
@@ -378,8 +352,8 @@ function EditorCommitButtons({
   onCommit,
   labels,
 }: Pick<FilterEditorProps, "labels"> & {
-  onCancel: () => void
-  onCommit: () => void
+  onCancel: () => void;
+  onCommit: () => void;
 }) {
   return (
     <>
@@ -390,9 +364,7 @@ function EditorCommitButtons({
         aria-label={labels.apply}
         onClick={onCommit}
       >
-        <CheckIcon
-          aria-hidden="true"
-         />
+        <CheckIcon aria-hidden="true" />
       </Button>
       <Button
         type="button"
@@ -401,31 +373,29 @@ function EditorCommitButtons({
         aria-label={labels.discard}
         onClick={onCancel}
       >
-        <XIcon
-          aria-hidden="true"
-         />
+        <XIcon aria-hidden="true" />
       </Button>
     </>
-  )
+  );
 }
 
 function useCommitKeys(commit: () => void, cancel: () => void) {
   return React.useCallback(
     (event: React.KeyboardEvent) => {
       if (event.key === "Enter" && !event.nativeEvent.isComposing) {
-        event.preventDefault()
-        commit()
-        return
+        event.preventDefault();
+        commit();
+        return;
       }
       if (event.key === "Escape") {
-        event.preventDefault()
+        event.preventDefault();
         // Stop here so a surrounding dialog does not also close.
-        event.stopPropagation()
-        cancel()
+        event.stopPropagation();
+        cancel();
       }
     },
-    [commit, cancel]
-  )
+    [commit, cancel],
+  );
 }
 
 /* -------------------------------------------------------------------------- */
@@ -442,7 +412,7 @@ export function FilterTextEditor<V, O>({
   host,
   field,
 }: FilterEditorProps<V, O>) {
-  const onKeyDown = useCommitKeys(() => commit(), cancel)
+  const onKeyDown = useCommitKeys(() => commit(), cancel);
   return (
     // A width, not shrink-to-fit: the popover is `w-auto`, so an unsized box
     // changes width between the hosts. `w-72` is measured - it holds about 23
@@ -450,9 +420,7 @@ export function FilterTextEditor<V, O>({
     // for an email, and `w-80` was the widest control in a bar of compact
     // chips. Capped at the viewport because `w-80` is 320px and a 360px phone
     // has 40px to spare. A `w-*` on the field wins.
-    <EditorPanel
-      className={cn("w-72 max-w-[calc(100vw-2rem)] min-w-0", field.className)}
-    >
+    <EditorPanel className={cn("w-72 max-w-[calc(100vw-2rem)] min-w-0", field.className)}>
       <ButtonGroup className={EDITOR_FIELD_GROUP}>
         <Input
           {...autoFocusProps}
@@ -467,15 +435,11 @@ export function FilterTextEditor<V, O>({
           the LAST child, so a group with nothing fused draws the bare field.
         */}
         {host === "create" ? null : (
-          <EditorCommitButtons
-            labels={labels}
-            onCancel={cancel}
-            onCommit={() => commit()}
-          />
+          <EditorCommitButtons labels={labels} onCancel={cancel} onCommit={() => commit()} />
         )}
       </ButtonGroup>
     </EditorPanel>
-  )
+  );
 }
 
 export function FilterNumberEditor<V, O>({
@@ -488,7 +452,7 @@ export function FilterNumberEditor<V, O>({
   host,
   field,
 }: FilterEditorProps<V, O>) {
-  const onKeyDown = useCommitKeys(() => commit(), cancel)
+  const onKeyDown = useCommitKeys(() => commit(), cancel);
   return (
     // Deliberately not the text editor's `w-72`: number values are short by
     // construction, and a wide box around "42" is the opposite defect.
@@ -501,21 +465,17 @@ export function FilterNumberEditor<V, O>({
           placeholder={field.placeholder}
           aria-label={field.label}
           onChange={(event) => {
-            const raw = event.target.value
-            onValueChange((raw === "" ? undefined : Number(raw)) as V)
+            const raw = event.target.value;
+            onValueChange((raw === "" ? undefined : Number(raw)) as V);
           }}
           onKeyDown={onKeyDown}
         />
         {host === "create" ? null : (
-          <EditorCommitButtons
-            labels={labels}
-            onCancel={cancel}
-            onCommit={() => commit()}
-          />
+          <EditorCommitButtons labels={labels} onCancel={cancel} onCommit={() => commit()} />
         )}
       </ButtonGroup>
     </EditorPanel>
-  )
+  );
 }
 
 export function FilterRangeEditor<V, O>({
@@ -528,14 +488,14 @@ export function FilterRangeEditor<V, O>({
   host,
   field,
 }: FilterEditorProps<V, O>) {
-  const tuple = (Array.isArray(value) ? value : []) as unknown[]
-  const onKeyDown = useCommitKeys(() => commit(), cancel)
+  const tuple = (Array.isArray(value) ? value : []) as unknown[];
+  const onKeyDown = useCommitKeys(() => commit(), cancel);
 
   const update = (index: 0 | 1, raw: string) => {
-    const next = [tuple[0], tuple[1]]
-    next[index] = raw === "" ? undefined : Number(raw)
-    onValueChange(next as V)
-  }
+    const next = [tuple[0], tuple[1]];
+    next[index] = raw === "" ? undefined : Number(raw);
+    onValueChange(next as V);
+  };
 
   return (
     <EditorPanel>
@@ -548,9 +508,7 @@ export function FilterRangeEditor<V, O>({
           onChange={(event) => update(0, event.target.value)}
           onKeyDown={onKeyDown}
         />
-        <span className="text-muted-foreground text-xs">
-          {labels.rangeSeparator}
-        </span>
+        <span className="text-muted-foreground text-xs">{labels.rangeSeparator}</span>
         <Input
           type="number"
           value={tuple[1] === undefined ? "" : String(tuple[1])}
@@ -559,14 +517,9 @@ export function FilterRangeEditor<V, O>({
           onKeyDown={onKeyDown}
         />
       </div>
-      <EditorFooter
-        host={host}
-        labels={labels}
-        onCancel={cancel}
-        onCommit={() => commit()}
-      />
+      <EditorFooter host={host} labels={labels} onCancel={cancel} onCommit={() => commit()} />
     </EditorPanel>
-  )
+  );
 }
 
 /* -------------------------------------------------------------------------- */
@@ -575,18 +528,18 @@ export function FilterRangeEditor<V, O>({
 
 /** One row. The shape both the operator menu and the option editors hand over. */
 export interface FilterListItem {
-  value: string
-  label: string
-  icon?: React.ReactNode
-  description?: string
-  keywords?: string[]
-  disabled?: boolean
+  value: string;
+  label: string;
+  icon?: React.ReactNode;
+  description?: string;
+  keywords?: string[];
+  disabled?: boolean;
   /**
    * A None row, from `FilterOption.exclusive`. LAYOUT only: what a pick DOES is
    * `applyFilterExclusiveSelection`, in the option editor's handler. A consumer
    * composing `FilterMenu` into an editor of their own owns the same call.
    */
-  exclusive?: boolean
+  exclusive?: boolean;
 }
 
 /**
@@ -596,7 +549,7 @@ export interface FilterListItem {
  * reads the LIVE selection, so unticking a pinned row drew a second line.
  */
 interface FilterMenuMeta {
-  divider?: boolean
+  divider?: boolean;
   /**
    * Carries `FilterListItem.exclusive` down to the row. The rule above it is
    * `aria-hidden`, so the row's accessible name is the only channel arriving
@@ -606,23 +559,23 @@ interface FilterMenuMeta {
    * styles the row through: the cascader's row element takes no attribute of
    * ours, so `:has([data-slot=filter-menu-exclusive-hint])` selects it.
    */
-  exclusive?: boolean
+  exclusive?: boolean;
 }
 
 /** Joins a selection into one comparable key; NUL cannot occur in a value. */
-const PIN_SEPARATOR = "\u0000"
+const PIN_SEPARATOR = "\u0000";
 
 /** A bound on a race: each attempt costs one task and stops on success. */
-const MAX_PIN_RESTORE_ATTEMPTS = 4
+const MAX_PIN_RESTORE_ATTEMPTS = 4;
 
 interface PendingPinRestore {
   /** The row the user was on when the rows moved. Tracked by VALUE, never index. */
-  value: string
+  value: string;
   /** The index it sat at, which is the half of the signature Base UI keeps. */
-  index: number
+  index: number;
   /** The order the rows landed in, so the target's new position is known. */
-  order: string[]
-  attempts: number
+  order: string[];
+  attempts: number;
 }
 
 /**
@@ -638,150 +591,142 @@ function FilterMenuPinKeeper({
   order,
   items,
 }: {
-  order: string[]
+  order: string[];
   /** The data the order was derived from, by identity. */
-  items: FilterListItem[]
+  items: FilterListItem[];
 }) {
-  const { baseId } = useCascaderActions()
-  const highlight = useCascaderHighlight()
+  const { baseId } = useCascaderActions();
+  const highlight = useCascaderHighlight();
   const previousRef = React.useRef<{
-    order: string[]
-    items: FilterListItem[]
-  } | null>(null)
-  const pendingRef = React.useRef<PendingPinRestore | null>(null)
-  const timerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null)
+    order: string[];
+    items: FilterListItem[];
+  } | null>(null);
+  const pendingRef = React.useRef<PendingPinRestore | null>(null);
+  const timerRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // From the render: on the reordering commit a ref still holds the OLD row.
-  const highlightedValue = highlight.value
-  const highlightedIndex = highlight.index
+  const highlightedValue = highlight.value;
+  const highlightedIndex = highlight.index;
 
   const stop = React.useCallback(() => {
-    pendingRef.current = null
-    if (timerRef.current === null) return
-    clearTimeout(timerRef.current)
-    timerRef.current = null
-  }, [])
+    pendingRef.current = null;
+    if (timerRef.current === null) return;
+    clearTimeout(timerRef.current);
+    timerRef.current = null;
+  }, []);
 
   const startRestore = React.useCallback(() => {
     const attempt = () => {
-      timerRef.current = null
-      const pending = pendingRef.current
-      if (!pending) return
+      timerRef.current = null;
+      const pending = pendingRef.current;
+      if (!pending) return;
 
-      const target = pending.order.indexOf(pending.value)
+      const target = pending.order.indexOf(pending.value);
       const rows = document
         .getElementById(`${baseId}-column-0`)
-        ?.querySelectorAll<HTMLElement>('[data-slot="cascader-item"]')
+        ?.querySelectorAll<HTMLElement>('[data-slot="cascader-item"]');
       // A WINDOWED list renders a subset, so row N is not order[N]. Leave it.
       if (target < 0 || !rows || rows.length !== pending.order.length) {
-        stop()
-        return
+        stop();
+        return;
       }
 
-      rows[target]?.dispatchEvent(
-        new MouseEvent("mousemove", { bubbles: true })
-      )
+      rows[target]?.dispatchEvent(new MouseEvent("mousemove", { bubbles: true }));
 
-      pending.attempts += 1
+      pending.attempts += 1;
       if (pending.attempts >= MAX_PIN_RESTORE_ATTEMPTS) {
-        stop()
-        return
+        stop();
+        return;
       }
-      timerRef.current = setTimeout(attempt, 0)
-    }
+      timerRef.current = setTimeout(attempt, 0);
+    };
 
-    timerRef.current = setTimeout(attempt, 0)
-  }, [baseId, stop])
+    timerRef.current = setTimeout(attempt, 0);
+  }, [baseId, stop]);
 
   // No dependency list: the arm must run on the commit that reorders the rows.
   React.useLayoutEffect(() => {
-    const previous = previousRef.current
-    previousRef.current = { order, items }
+    const previous = previousRef.current;
+    previousRef.current = { order, items };
 
-    if (!previous || previous.order === order) return
+    if (!previous || previous.order === order) return;
     // New DATA (a page, a query) is Base UI's to highlight; only a re-pin is ours.
-    if (previous.items !== items) return
-    if (!highlightedValue) return
+    if (previous.items !== items) return;
+    if (!highlightedValue) return;
     // Content, not identity: a re-pin can leave the rows in the same order.
-    if (isSameOrder(previous.order, order)) return
+    if (isSameOrder(previous.order, order)) return;
 
     pendingRef.current = {
       value: highlightedValue,
       index: highlightedIndex,
       order,
       attempts: 0,
-    }
-  })
+    };
+  });
 
   React.useEffect(() => {
-    const pending = pendingRef.current
-    if (!pending) return
+    const pending = pendingRef.current;
+    if (!pending) return;
 
     // Back where it belongs, or moved by the user: either way the arm is spent.
-    if (
-      highlightedValue === pending.value ||
-      highlightedIndex !== pending.index
-    ) {
-      stop()
-      return
+    if (highlightedValue === pending.value || highlightedIndex !== pending.index) {
+      stop();
+      return;
     }
     // Already chasing this one; a second chain would double every dispatch.
-    if (pending.attempts > 0 || timerRef.current !== null) return
-    startRestore()
-  }, [highlightedValue, highlightedIndex, startRestore, stop])
+    if (pending.attempts > 0 || timerRef.current !== null) return;
+    startRestore();
+  }, [highlightedValue, highlightedIndex, startRestore, stop]);
 
-  React.useEffect(() => stop, [stop])
+  React.useEffect(() => stop, [stop]);
 
-  return null
+  return null;
 }
 
 /** Element-wise, because the arrays are rebuilt on every selection change. */
 function isSameOrder(a: string[], b: string[]) {
-  if (a.length !== b.length) return false
+  if (a.length !== b.length) return false;
   for (let index = 0; index < a.length; index += 1) {
-    if (a[index] !== b[index]) return false
+    if (a[index] !== b[index]) return false;
   }
-  return true
+  return true;
 }
 
 export interface FilterMenuProps {
-  items: FilterListItem[]
+  items: FilterListItem[];
   /** Committed values. Drives the check mark and the pinned group. */
-  selected: string[]
-  multiple?: boolean
+  selected: string[];
+  multiple?: boolean;
   /** Receives the FULL next selection, so no caller re-derives it. */
-  onSelectionChange: (values: string[]) => void
-  labels: FilterLabels
-  ariaLabel: string
-  searchPlaceholder?: string
+  onSelectionChange: (values: string[]) => void;
+  labels: FilterLabels;
+  ariaLabel: string;
+  searchPlaceholder?: string;
   /** Whether the search field is VISIBLE. It is always rendered regardless. */
-  searchable?: boolean
+  searchable?: boolean;
   /**
    * Viewport height before the list scrolls, in pixels. Omitted on purpose by
    * the option editors: it becomes an inline style a consumer's `className`
    * cannot outrank, so the panel publishes `--cascader-max-height` instead.
    */
-  maxHeight?: number
+  maxHeight?: number;
   /**
    * Pin selected rows above the rest, with a full-bleed rule between them. Off
    * by default; the option editors read `FilterField.pinSelected` per field.
    */
-  pinSelected?: boolean
+  pinSelected?: boolean;
   /**
    * Order INSIDE each group, plus WHEN the partition is taken. Declaration
    * order by default, so the partition is stable rather than a re-sort.
    */
-  sortSelected?: "none" | "label" | "snapshot"
+  sortSelected?: "none" | "label" | "snapshot";
   /** The caller already filtered `items`, so the cascader must not re-filter. */
-  preFiltered?: boolean
-  autoFocusProps?: FilterEditorProps["autoFocusProps"]
+  preFiltered?: boolean;
+  autoFocusProps?: FilterEditorProps["autoFocusProps"];
   /** Controlled query. Pair it with `onQueryChange` to filter outside. */
-  query?: string
-  onQueryChange?: (query: string) => void
-  state?: Pick<
-    FilterOptionsState<unknown>,
-    "loading" | "error" | "hasMore" | "loadMore" | "retry"
-  >
+  query?: string;
+  onQueryChange?: (query: string) => void;
+  state?: Pick<FilterOptionsState<unknown>, "loading" | "error" | "hasMore" | "loadMore" | "retry">;
 }
 
 /**
@@ -812,33 +757,29 @@ export function FilterMenu({
    * The pin set as a KEY, not an array: `selected` is a fresh array on most
    * renders, so a memo depending on it re-partitions every render.
    */
-  const liveKey = pinSelected ? selected.join(PIN_SEPARATOR) : ""
+  const liveKey = pinSelected ? selected.join(PIN_SEPARATOR) : "";
 
   /**
    * The same set, frozen at OPEN, for `sortSelected: "snapshot"`. LIVE is the
    * default: "your picks, then the rest" is about the CURRENT selection, and
    * `FilterMenuPinKeeper` pays for rows moving under the pointer.
    */
-  const [snapshotKey] = React.useState(() => liveKey)
+  const [snapshotKey] = React.useState(() => liveKey);
   // `pinSelected` re-checked here, not just through `liveKey`: `snapshotKey` is
   // frozen at MOUNT, so a menu that lost the prop would keep partitioning.
-  const pinnedKey = !pinSelected
-    ? ""
-    : sortSelected === "snapshot"
-      ? snapshotKey
-      : liveKey
+  const pinnedKey = !pinSelected ? "" : sortSelected === "snapshot" ? snapshotKey : liveKey;
 
   // Uncontrolled unless the caller owns the query, as an option service does.
-  const [ownQuery, setOwnQuery] = React.useState("")
-  const currentQuery = query ?? ownQuery
-  const setQuery = onQueryChange ?? setOwnQuery
+  const [ownQuery, setOwnQuery] = React.useState("");
+  const currentQuery = query ?? ownQuery;
+  const setQuery = onQueryChange ?? setOwnQuery;
 
   /**
    * Memoized on the SELECTION, not the query: folding the query in re-sorted
    * 4,000 rows on every keystroke, for a one pixel rule.
    */
   const partitioned = React.useMemo(() => {
-    const pinned = new Set(pinnedKey ? pinnedKey.split(PIN_SEPARATOR) : [])
+    const pinned = new Set(pinnedKey ? pinnedKey.split(PIN_SEPARATOR) : []);
 
     /*
       Exclusive rows come out BEFORE the pin partition; their position is fixed.
@@ -847,17 +788,11 @@ export function FilterMenu({
       means the pinned group counts ordinary picks only, which is also why
       picking None draws no pin rule: it clears every other pick.
     */
-    const exclusive = items.filter((item) => item.exclusive)
-    const values = exclusive.length
-      ? items.filter((item) => !item.exclusive)
-      : items
+    const exclusive = items.filter((item) => item.exclusive);
+    const values = exclusive.length ? items.filter((item) => !item.exclusive) : items;
 
-    const chosen = pinned.size
-      ? values.filter((item) => pinned.has(item.value))
-      : []
-    const rest = pinned.size
-      ? values.filter((item) => !pinned.has(item.value))
-      : values
+    const chosen = pinned.size ? values.filter((item) => pinned.has(item.value)) : [];
+    const rest = pinned.size ? values.filter((item) => !pinned.has(item.value)) : values;
 
     // The SCHEMA's order inside each group unless the field asks otherwise:
     // option order is usually semantic.
@@ -868,9 +803,9 @@ export function FilterMenu({
             [...rest].sort((a, b) => a.label.localeCompare(b.label)),
             [...exclusive].sort((a, b) => a.label.localeCompare(b.label)),
           ]
-        : [chosen, rest, exclusive]
+        : [chosen, rest, exclusive];
 
-    const rows = [...ordered[0], ...ordered[1], ...ordered[2]]
+    const rows = [...ordered[0], ...ordered[1], ...ordered[2]];
 
     return {
       chosenCount: chosen.length,
@@ -888,44 +823,36 @@ export function FilterMenu({
         // Only exclusive rows carry `data`, so the ordinary 4,000 keep theirs.
         data: item.exclusive ? { exclusive: true } : undefined,
       })),
-    }
-  }, [items, pinnedKey, sortSelected])
+    };
+  }, [items, pinnedKey, sortSelected]);
 
   // No rule under a query: "your picks, then the rest" is about the WHOLE list.
-  const dividerAt =
-    partitioned.chosenCount && !currentQuery.trim()
-      ? partitioned.chosenCount
-      : -1
+  const dividerAt = partitioned.chosenCount && !currentQuery.trim() ? partitioned.chosenCount : -1;
 
   // Survives a search, unlike the pin rule: it is a fact about the row.
-  const exclusiveDividerAt = partitioned.exclusiveAt
+  const exclusiveDividerAt = partitioned.exclusiveAt;
 
   const nodes = React.useMemo<CascaderNode<FilterMenuMeta>[]>(() => {
-    const total = partitioned.nodes.length
+    const total = partitioned.nodes.length;
     // Only a boundary with rows on BOTH sides is one: a rule on row 0 would
     // be a line above the top of the list.
-    const marks = [dividerAt, exclusiveDividerAt].filter(
-      (index) => index > 0 && index < total
-    )
-    if (marks.length === 0) return partitioned.nodes
+    const marks = [dividerAt, exclusiveDividerAt].filter((index) => index > 0 && index < total);
+    if (marks.length === 0) return partitioned.nodes;
     // Rows rewritten, not rebuilt: copying 4,000 objects would undo the split.
-    const next = partitioned.nodes.slice()
+    const next = partitioned.nodes.slice();
     for (const index of marks) {
       // MERGED, never replaced: the two boundaries usually fall on one row, and
       // overwriting `data` dropped the flag the accessible name is built from.
       next[index] = {
         ...next[index],
         data: { ...next[index].data, divider: true },
-      }
+      };
     }
-    return next
-  }, [partitioned, dividerAt, exclusiveDividerAt])
+    return next;
+  }, [partitioned, dividerAt, exclusiveDividerAt]);
 
   const renderItem = React.useCallback(
-    (
-      node: CascaderNode<FilterMenuMeta>,
-      itemState: CascaderItemState<FilterMenuMeta>
-    ) => (
+    (node: CascaderNode<FilterMenuMeta>, itemState: CascaderItemState<FilterMenuMeta>) => (
       <>
         {node.data?.divider ? (
           <span
@@ -982,13 +909,13 @@ export function FilterMenu({
               /* Pinned on the svg AND its descendants: every style repaints
                  icons in a highlighted row with `**:text-accent-foreground`. */
               className="text-foreground! **:text-foreground!"
-             />
+            />
           </span>
         ) : null}
       </>
     ),
-    [labels.exclusiveHint]
-  )
+    [labels.exclusiveHint],
+  );
 
   const cascaderLabels = React.useMemo(
     () => ({
@@ -1008,8 +935,8 @@ export function FilterMenu({
       resultsAnnouncement: labels.resultsAnnouncement,
       actionsLabel: labels.actionsLabel,
     }),
-    [labels, ariaLabel, searchPlaceholder]
-  )
+    [labels, ariaLabel, searchPlaceholder],
+  );
 
   /**
    * Paging and retry in the pinned footer, never a row: a row would join the
@@ -1017,7 +944,7 @@ export function FilterMenu({
    */
   const actions = React.useMemo<CascaderActionItem[]>(() => {
     if (state?.error) {
-      return [{ value: "retry", label: labels.retry, onSelect: state.retry }]
+      return [{ value: "retry", label: labels.retry, onSelect: state.retry }];
     }
     if (state?.hasMore) {
       return [
@@ -1027,10 +954,10 @@ export function FilterMenu({
           disabled: state.loading,
           onSelect: state.loadMore,
         },
-      ]
+      ];
     }
-    return []
-  }, [state, labels])
+    return [];
+  }, [state, labels]);
 
   const shared = {
     // Inline and pinned open with a no-op handler, so the unconditional
@@ -1047,7 +974,7 @@ export function FilterMenu({
     actions,
     // The option service is the ONE filter when it owns the query.
     ...(preFiltered ? { filter: () => true } : null),
-  }
+  };
 
   const cascaderProps: CascaderProps<FilterMenuMeta> = multiple
     ? {
@@ -1059,9 +986,8 @@ export function FilterMenu({
     : {
         ...shared,
         value: selected[0] ?? "",
-        onValueChange: (value: string) =>
-          onSelectionChange(value ? [value] : []),
-      }
+        onValueChange: (value: string) => onSelectionChange(value ? [value] : []),
+      };
 
   return (
     <Cascader {...cascaderProps}>
@@ -1076,7 +1002,7 @@ export function FilterMenu({
             /* The nav's divider is `border-border/60` and the group separator
                is a full-opacity `bg-border`; two strengths read as a mistake. */
             "border-border",
-            !searchable && "sr-only"
+            !searchable && "sr-only",
           )}
         >
           <CascaderInput
@@ -1086,11 +1012,7 @@ export function FilterMenu({
           />
         </CascaderNav>
         <CascaderEmpty>
-          {state?.error
-            ? labels.error
-            : state?.loading
-              ? labels.loading
-              : labels.empty}
+          {state?.error ? labels.error : state?.loading ? labels.loading : labels.empty}
         </CascaderEmpty>
         {/*
           Plain rows, DELIBERATELY not `CascaderVirtualItems`: windowing stands
@@ -1121,34 +1043,23 @@ export function FilterMenu({
         ) : null}
       </CascaderPanel>
     </Cascader>
-  )
+  );
 }
 
 /* -------------------------------------------------------------------------- */
 /*                              Option based editors                          */
 /* -------------------------------------------------------------------------- */
 
-function OptionEditor<V, O>(
-  props: FilterEditorProps<V, O> & { multiple: boolean }
-) {
-  const {
-    multiple,
-    options,
-    labels,
-    autoFocusProps,
-    commit,
-    cancel,
-    onValueChange,
-    value,
-    field,
-  } = props
+function OptionEditor<V, O>(props: FilterEditorProps<V, O> & { multiple: boolean }) {
+  const { multiple, options, labels, autoFocusProps, commit, cancel, onValueChange, value, field } =
+    props;
 
   const selected = React.useMemo(() => {
-    if (value === undefined || value === null) return []
-    return (Array.isArray(value) ? value : [value]) as string[]
-  }, [value])
+    if (value === undefined || value === null) return [];
+    return (Array.isArray(value) ? value : [value]) as string[];
+  }, [value]);
 
-  const announce = React.useContext(FilterActionsContext)?.announce
+  const announce = React.useContext(FilterActionsContext)?.announce;
 
   return (
     /*
@@ -1168,8 +1079,8 @@ function OptionEditor<V, O>(
             loaded page, where the menu holds only the rows on screen.
           */
           const values = applyFilterExclusiveSelection(raw, selected, (value) =>
-            Boolean(options.resolve(value)?.exclusive)
-          )
+            Boolean(options.resolve(value)?.exclusive),
+          );
 
           /*
             Identity is the test: the rule hands back `raw` itself unless it
@@ -1177,15 +1088,12 @@ function OptionEditor<V, O>(
             moved, and nobody is on the rows that lost their check marks.
           */
           if (values !== raw && announce) {
-            const arrived = values.find((entry) => !selected.includes(entry))
-            const cleared = raw.length - values.length
+            const arrived = values.find((entry) => !selected.includes(entry));
+            const cleared = raw.length - values.length;
             if (arrived !== undefined && cleared > 0) {
               announce(
-                labels.exclusiveAnnouncement(
-                  options.resolve(arrived)?.label ?? arrived,
-                  cleared
-                )
-              )
+                labels.exclusiveAnnouncement(options.resolve(arrived)?.label ?? arrived, cleared),
+              );
             }
           } else if (values === raw && raw.length > 1) {
             /*
@@ -1195,10 +1103,10 @@ function OptionEditor<V, O>(
             */
             const hasNoneRow =
               options.items.some((item) => item.exclusive) ||
-              Boolean(field.options?.some((option) => option.exclusive))
+              Boolean(field.options?.some((option) => option.exclusive));
             const unresolved = hasNoneRow
               ? raw.find((entry) => options.resolve(entry) === undefined)
-              : undefined
+              : undefined;
             if (unresolved !== undefined) {
               warnFilterOnce(
                 `exclusive-unresolved:${field.id}`,
@@ -1207,25 +1115,25 @@ function OptionEditor<V, O>(
                   `cannot tell whether it is the exclusive one and has left ` +
                   `it in place. Declare the exclusive option in the field's ` +
                   `\`options\` even when the rest of the list is async, or ` +
-                  `cover stored values with \`resolveValues\`.`
-              )
+                  `cover stored values with \`resolveValues\`.`,
+              );
             }
           }
 
           if (!multiple) {
-            const next = values[0]
+            const next = values[0];
             // Base UI deselects the committed row; an empty filter is no gain.
             if (next === undefined) {
-              cancel()
-              return
+              cancel();
+              return;
             }
-            onValueChange(next as V)
-            commit(next as V)
-            return
+            onValueChange(next as V);
+            commit(next as V);
+            return;
           }
-          onValueChange(values as V)
+          onValueChange(values as V);
           // Every toggle commits with the popover open: several picks, one gesture.
-          commit(values as V, { close: false })
+          commit(values as V, { close: false });
         }}
         labels={labels}
         ariaLabel={field.label}
@@ -1243,15 +1151,15 @@ function OptionEditor<V, O>(
         autoFocusProps={autoFocusProps}
       />
     </EditorPanel>
-  )
+  );
 }
 
 export function FilterSelectEditor<V, O>(props: FilterEditorProps<V, O>) {
-  return <OptionEditor {...props} multiple={false} />
+  return <OptionEditor {...props} multiple={false} />;
 }
 
 export function FilterMultiSelectEditor<V, O>(props: FilterEditorProps<V, O>) {
-  return <OptionEditor {...props} multiple />
+  return <OptionEditor {...props} multiple />;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1265,7 +1173,7 @@ export function FilterMultiSelectEditor<V, O>(props: FilterEditorProps<V, O>) {
 const BOOLEAN_ITEMS: FilterListItem[] = [
   { value: "true", label: "True" },
   { value: "false", label: "False" },
-]
+];
 
 export function FilterBooleanEditor<V, O>({
   value,
@@ -1284,10 +1192,10 @@ export function FilterBooleanEditor<V, O>({
         onSelectionChange={(values) => {
           /* Deselecting the committed row leaves nothing to filter on, so it is
              a no-op rather than a commit of `false`. */
-          if (values.length === 0) return
-          const next = (values[0] === "true") as V
-          onValueChange(next)
-          commit(next)
+          if (values.length === 0) return;
+          const next = (values[0] === "true") as V;
+          onValueChange(next);
+          commit(next);
         }}
         labels={labels}
         ariaLabel={field.label}
@@ -1297,7 +1205,7 @@ export function FilterBooleanEditor<V, O>({
         autoFocusProps={autoFocusProps}
       />
     </EditorPanel>
-  )
+  );
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1307,7 +1215,7 @@ export function FilterBooleanEditor<V, O>({
 export type {
   AnyFilterEditor,
   FilterEditorRegistry,
-} from "@/components/reui/filters/filters-types"
+} from "@/components/reui/filters/filters-types";
 
 export const DEFAULT_FILTER_EDITORS: FilterEditorRegistry = {
   text: FilterTextEditor,
@@ -1316,7 +1224,7 @@ export const DEFAULT_FILTER_EDITORS: FilterEditorRegistry = {
   select: FilterSelectEditor,
   multiselect: FilterMultiSelectEditor,
   boolean: FilterBooleanEditor,
-}
+};
 
 /**
  * Picks the editor for a (field, operator) pair: the field's own `editor`, then
@@ -1326,24 +1234,24 @@ export const DEFAULT_FILTER_EDITORS: FilterEditorRegistry = {
 export function resolveFilterEditor<V, O>(
   field: FilterField<V, O>,
   operator: FilterOperator | undefined,
-  editors: FilterEditorRegistry
+  editors: FilterEditorRegistry,
 ): AnyFilterEditor | undefined {
   if (typeof field.editor === "function") {
     // The one place a consumer's typed editor meets the erased registry.
-    return field.editor as unknown as AnyFilterEditor
+    return field.editor as unknown as AnyFilterEditor;
   }
   if (typeof field.editor === "string") {
-    const named = editors[field.editor]
-    if (named) return named
+    const named = editors[field.editor];
+    if (named) return named;
   }
 
-  const arity = operator?.arity ?? "one"
-  if (arity === "none") return undefined
-  if (arity === "range") return editors.range
+  const arity = operator?.arity ?? "one";
+  if (arity === "none") return undefined;
+  if (arity === "range") return editors.range;
   if (arity === "many") {
     // An option-backed field gets checkboxes; anything else receives an array.
-    if (field.options || field.loadOptions) return editors.multiselect
+    if (field.options || field.loadOptions) return editors.multiselect;
   }
 
-  return editors[field.type ?? "text"] ?? editors.text
+  return editors[field.type ?? "text"] ?? editors.text;
 }

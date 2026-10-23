@@ -10,12 +10,7 @@ function Line({
   height?: number;
   className?: string;
 }) {
-  return (
-    <span
-      className={`fidelity-placeholder ${className}`}
-      style={{ width, height }}
-    />
-  );
+  return <span className={`fidelity-placeholder ${className}`} style={{ width, height }} />;
 }
 function FleetRow({ expanded = false }: { expanded?: boolean }) {
   return (
@@ -153,11 +148,7 @@ export function InvoicePlaceholders() {
               <hr />
               <Line width="42%" />
               <Line width="88%" />
-              <Line
-                className="invoice-placeholder-stamp"
-                width="65%"
-                height={12}
-              />
+              <Line className="invoice-placeholder-stamp" width="65%" height={12} />
               <Line height={28} />
             </div>
           </aside>

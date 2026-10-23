@@ -48,9 +48,7 @@ export function CompanySnapshot() {
           { label: "Date Founded", value: "Nov 2018", icon: CalendarDays },
         ].map(({ label, value, icon: Icon }) => (
           <FramePanel key={label} className="flex min-w-0 flex-col gap-4">
-            <h3 className="text-sm font-normal text-muted-foreground">
-              {label}
-            </h3>
+            <h3 className="text-sm font-normal text-muted-foreground">{label}</h3>
             <p className="flex items-center gap-2 text-base font-medium">
               <Icon className="size-4 shrink-0 text-green-600" />
               {value}
@@ -94,9 +92,7 @@ export function FitnessStats() {
         ].map(([value, unit, label]) => (
           <FramePanel key={label} className="flex min-w-0 flex-col gap-5">
             <p className="flex flex-wrap items-baseline gap-0.5">
-              <span className="text-[28px] leading-tight tracking-tight">
-                {value}
-              </span>
+              <span className="text-[28px] leading-tight tracking-tight">{value}</span>
               <span className="text-base text-muted-foreground/50">{unit}</span>
             </p>
             <p className="text-sm text-muted-foreground">{label}</p>

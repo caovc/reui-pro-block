@@ -43,21 +43,14 @@ export function StructureFrame({
       dense
       role="region"
       aria-label={title}
-      className={cn(
-        "mx-auto w-full min-w-0 max-w-[1216px] overflow-hidden text-sm",
-        className,
-      )}
+      className={cn("mx-auto w-full min-w-0 max-w-[1216px] overflow-hidden text-sm", className)}
     >
       <FrameHeader className="flex-row flex-wrap items-center justify-between gap-3 px-4 py-3">
         <div>
           <FrameTitle>
             <h2 className="text-sm font-semibold tracking-tight">{title}</h2>
           </FrameTitle>
-          {subtitle && (
-            <FrameDescription className="mt-1 text-xs">
-              {subtitle}
-            </FrameDescription>
-          )}
+          {subtitle && <FrameDescription className="mt-1 text-xs">{subtitle}</FrameDescription>}
         </div>
         <div className="flex flex-wrap gap-2">{actions}</div>
       </FrameHeader>
@@ -68,11 +61,7 @@ export function StructureFrame({
   );
 }
 export function StructureToolbar({ children }: { children: ReactNode }) {
-  return (
-    <div className="flex flex-wrap items-center gap-2 border-y px-4 py-3">
-      {children}
-    </div>
-  );
+  return <div className="flex flex-wrap items-center gap-2 border-y px-4 py-3">{children}</div>;
 }
 export function StructureSearch({
   value,
@@ -113,10 +102,7 @@ export function StructureSelect({
 }) {
   return (
     <Select value={value} onValueChange={onChange}>
-      <SelectTrigger
-        aria-label={label}
-        className={cn("h-8 min-w-24 text-sm", className)}
-      >
+      <SelectTrigger aria-label={label} className={cn("h-8 min-w-24 text-sm", className)}>
         <SelectValue />
       </SelectTrigger>
       <SelectContent>
@@ -129,13 +115,7 @@ export function StructureSelect({
     </Select>
   );
 }
-export function StructureBadge({
-  value,
-  dot = false,
-}: {
-  value: string;
-  dot?: boolean;
-}) {
+export function StructureBadge({ value, dot = false }: { value: string; dot?: boolean }) {
   const color = /blocked|critical|urgent|exception|flagged|^hold$/i.test(value)
     ? "border-rose-500/15 bg-rose-500/10 text-rose-600 dark:text-rose-400"
     : /review|draft|high|pending|delayed|medium/i.test(value)
@@ -146,22 +126,13 @@ export function StructureBadge({
           ? "border-violet-500/15 bg-violet-500/10 text-violet-700 dark:text-violet-400"
           : "border-border bg-muted/40 text-foreground";
   return (
-    <Badge
-      variant="outline"
-      className={cn("gap-1 rounded px-1.5 py-0 text-xs font-normal", color)}
-    >
+    <Badge variant="outline" className={cn("gap-1 rounded px-1.5 py-0 text-xs font-normal", color)}>
       {dot && <span className="size-1 rounded-full bg-current" />}
       {value}
     </Badge>
   );
 }
-export function StructurePerson({
-  name,
-  detail,
-}: {
-  name: string;
-  detail?: string;
-}) {
+export function StructurePerson({ name, detail }: { name: string; detail?: string }) {
   return (
     <div className="flex items-center gap-2">
       <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-muted text-[9px] text-muted-foreground">
@@ -173,9 +144,7 @@ export function StructurePerson({
       </span>
       <div>
         <span className="block text-sm">{name}</span>
-        {detail && (
-          <span className="block text-xs text-muted-foreground">{detail}</span>
-        )}
+        {detail && <span className="block text-xs text-muted-foreground">{detail}</span>}
       </div>
     </div>
   );
@@ -197,11 +166,7 @@ export function StructureMenu({
       <DropdownMenuContent align="end">
         <DropdownMenuGroup>
           {items.map((i) => (
-            <DropdownMenuItem
-              key={i.label}
-              disabled={i.disabled}
-              onSelect={i.onClick}
-            >
+            <DropdownMenuItem key={i.label} disabled={i.disabled} onSelect={i.onClick}>
               {i.label}
             </DropdownMenuItem>
           ))}
@@ -262,12 +227,7 @@ export function SavedState({
             : "All changes saved"}
       </span>
       <div className="flex gap-2">
-        <Button
-          variant="outline"
-          size="sm"
-          disabled={!dirty}
-          onClick={onDiscard}
-        >
+        <Button variant="outline" size="sm" disabled={!dirty} onClick={onDiscard}>
           Discard
         </Button>
         <Button size="sm" disabled={!dirty || invalid} onClick={onSave}>

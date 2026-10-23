@@ -1,28 +1,256 @@
 /** Cart domain models composed with the original official free REUI NumberField. */
-import { useState } from 'react'
-import { ArrowRight, Check, LockKeyhole, Minus, ShieldCheck, Tag, Trash2, Truck } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from '@/components/ui/input-group'
-import { Badge } from '@/components/reui/badge'
-import { Alert, AlertDescription, AlertTitle } from '@/components/reui/alert'
-import { NumberField, NumberFieldDecrement, NumberFieldGroup, NumberFieldIncrement, NumberFieldInput } from '@/components/reui/number-field'
-import { cn } from '@/lib/utils'
-import jacket from './assets/jacket.jpg'
-import shirt from './assets/shirt.jpg'
-import headphones from './assets/headphones.jpg'
-import shoes from './assets/shoes.jpg'
-import bag from './assets/bag.jpg'
-import lamp from './assets/lamp.jpg'
-import plant from './assets/plant.jpg'
-export const cartPhotos={jacket,shirt,headphones,shoes,bag,lamp,plant}
-export const money=(value:number)=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(value)
-export interface CartItem{id:string;name:string;price:number;qty:number;detail:string;category?:string;image:string;description?:string;stock?:number}
-export function useCart(initial:CartItem[]){const [items,setItems]=useState(initial);const update=(id:string,qty:number)=>setItems(prev=>qty<1?prev.filter(i=>i.id!==id):prev.map(i=>i.id===id?{...i,qty}:i));const remove=(id:string)=>update(id,0);const count=items.reduce((sum,i)=>sum+i.qty,0),subtotal=items.reduce((sum,i)=>sum+i.qty*i.price,0);return {items,setItems,update,remove,count,subtotal}}
-export function Quantity({item,onChange,removeAtOne=false,compact=false}:{item:CartItem;onChange:(value:number)=>void;removeAtOne?:boolean;compact?:boolean}){return <NumberField value={item.qty} onValueChange={v=>onChange(v??1)} min={removeAtOne?0:1} max={item.stock??20} size={compact?'sm':'default'} className={cn('w-28 shrink-0',compact&&'w-24')}><NumberFieldGroup><NumberFieldDecrement aria-label={`${item.qty===1&&removeAtOne?'Remove':'Decrease quantity of'} ${item.name}`}>{item.qty===1&&removeAtOne?<Trash2/>:<Minus/>}</NumberFieldDecrement><NumberFieldInput aria-label={`Quantity of ${item.name}`}/><NumberFieldIncrement aria-label={`Increase quantity of ${item.name}`}/></NumberFieldGroup></NumberField>}
-export function PromoField({code,onApply,applied,onRemove,error}:{code:string;onApply:(code:string)=>void;applied?:string;onRemove?:()=>void;error?:string}){const [draft,setDraft]=useState(code);return <div className="space-y-3"><InputGroup className="h-10"><InputGroupAddon><Tag/></InputGroupAddon><InputGroupInput aria-label="Promo code" value={draft} placeholder="Enter promo code" onChange={e=>setDraft(e.target.value)}/><InputGroupAddon align="inline-end"><InputGroupButton onClick={()=>onApply(draft)} disabled={!draft.trim()}>Apply</InputGroupButton></InputGroupAddon></InputGroup>{applied&&<div className="flex flex-wrap items-center justify-between gap-2"><Badge variant="success-light"><Check className="size-3"/>{applied}</Badge>{onRemove&&<Button size="sm" variant="ghost" onClick={onRemove}>Remove discount</Button>}</div>}{error&&<p role="alert" className="text-xs text-destructive">{error}</p>}</div>}
-export function CartTotals({rows,total}:{rows:[string,string][];total:number}){return <dl className="space-y-3 text-sm">{rows.map(([label,value])=><div key={label} className="flex items-center justify-between gap-4"><dt className="text-muted-foreground">{label}</dt><dd className={label.toLowerCase().includes('discount')?'text-success':''}>{value}</dd></div>)}<div className="flex items-center justify-between border-t pt-4 font-medium"><dt>Total</dt><dd className="text-xl font-semibold tabular-nums" data-cart-total>{money(total)}</dd></div></dl>}
-export function PaymentMarks(){return <div className="flex flex-wrap justify-center gap-2">{['VISA','Mastercard','AMEX','Discover','PayPal','Apple Pay'].map(s=><Badge key={s} variant="outline" size="sm" className="bg-background">{s}</Badge>)}</div>}
-export function CartTrust(){return <div className="flex flex-wrap justify-center gap-5 border-t pt-6 text-xs text-muted-foreground">{[[ShieldCheck,'Secure payments'],[Truck,'Reliable delivery'],[LockKeyhole,'Protected checkout']].map(([Icon,label])=>{const I=Icon as typeof Truck;return <span key={String(label)} className="flex items-center gap-2"><I className="size-4"/>{label as string}</span>})}</div>}
-export function CartCheckout({total,disabled=false,label='Proceed to checkout',method}:{total:number;disabled?:boolean;label?:string;method?:string}){const [open,setOpen]=useState(false);return <><Button className="w-full" disabled={disabled} onClick={()=>setOpen(true)}>{label}<ArrowRight/></Button><Dialog open={open} onOpenChange={setOpen}><DialogContent><DialogHeader><DialogTitle>Review your checkout</DialogTitle><DialogDescription>Your cart is ready for the next step. This preview keeps checkout local.</DialogDescription></DialogHeader><Alert variant="success"><Check/><AlertTitle>{money(total)} order total</AlertTitle><AlertDescription>{method?`${method} selected. `:''}No payment was processed. Your cart and selected quantities are preserved.</AlertDescription></Alert><Button onClick={()=>setOpen(false)}>Continue shopping</Button></DialogContent></Dialog></>}
-export function CartEmpty({onReset}:{onReset:()=>void}){return <div className="rounded-xl border border-dashed px-6 py-14 text-center"><h3 className="font-semibold">Your cart is empty</h3><p className="mt-2 text-sm text-muted-foreground">Add a few favorites to continue.</p><Button variant="outline" className="mt-5" onClick={onReset}>Restore demo items</Button></div>}
+import { useState } from "react";
+import {
+  ArrowRight,
+  Check,
+  LockKeyhole,
+  Minus,
+  ShieldCheck,
+  Tag,
+  Trash2,
+  Truck,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "@/components/ui/input-group";
+import { Badge } from "@/components/reui/badge";
+import { Alert, AlertDescription, AlertTitle } from "@/components/reui/alert";
+import {
+  NumberField,
+  NumberFieldDecrement,
+  NumberFieldGroup,
+  NumberFieldIncrement,
+  NumberFieldInput,
+} from "@/components/reui/number-field";
+import { cn } from "@/lib/utils";
+import jacket from "./assets/jacket.jpg";
+import shirt from "./assets/shirt.jpg";
+import headphones from "./assets/headphones.jpg";
+import shoes from "./assets/shoes.jpg";
+import bag from "./assets/bag.jpg";
+import lamp from "./assets/lamp.jpg";
+import plant from "./assets/plant.jpg";
+export const cartPhotos = { jacket, shirt, headphones, shoes, bag, lamp, plant };
+export const money = (value: number) =>
+  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
+export interface CartItem {
+  id: string;
+  name: string;
+  price: number;
+  qty: number;
+  detail: string;
+  category?: string;
+  image: string;
+  description?: string;
+  stock?: number;
+}
+export function useCart(initial: CartItem[]) {
+  const [items, setItems] = useState(initial);
+  const update = (id: string, qty: number) =>
+    setItems((prev) =>
+      qty < 1
+        ? prev.filter((i) => i.id !== id)
+        : prev.map((i) => (i.id === id ? { ...i, qty } : i)),
+    );
+  const remove = (id: string) => update(id, 0);
+  const count = items.reduce((sum, i) => sum + i.qty, 0),
+    subtotal = items.reduce((sum, i) => sum + i.qty * i.price, 0);
+  return { items, setItems, update, remove, count, subtotal };
+}
+export function Quantity({
+  item,
+  onChange,
+  removeAtOne = false,
+  compact = false,
+}: {
+  item: CartItem;
+  onChange: (value: number) => void;
+  removeAtOne?: boolean;
+  compact?: boolean;
+}) {
+  return (
+    <NumberField
+      value={item.qty}
+      onValueChange={(v) => onChange(v ?? 1)}
+      min={removeAtOne ? 0 : 1}
+      max={item.stock ?? 20}
+      size={compact ? "sm" : "default"}
+      className={cn("w-28 shrink-0", compact && "w-24")}
+    >
+      <NumberFieldGroup>
+        <NumberFieldDecrement
+          aria-label={`${item.qty === 1 && removeAtOne ? "Remove" : "Decrease quantity of"} ${item.name}`}
+        >
+          {item.qty === 1 && removeAtOne ? <Trash2 /> : <Minus />}
+        </NumberFieldDecrement>
+        <NumberFieldInput aria-label={`Quantity of ${item.name}`} />
+        <NumberFieldIncrement aria-label={`Increase quantity of ${item.name}`} />
+      </NumberFieldGroup>
+    </NumberField>
+  );
+}
+export function PromoField({
+  code,
+  onApply,
+  applied,
+  onRemove,
+  error,
+}: {
+  code: string;
+  onApply: (code: string) => void;
+  applied?: string;
+  onRemove?: () => void;
+  error?: string;
+}) {
+  const [draft, setDraft] = useState(code);
+  return (
+    <div className="space-y-3">
+      <InputGroup className="h-10">
+        <InputGroupAddon>
+          <Tag />
+        </InputGroupAddon>
+        <InputGroupInput
+          aria-label="Promo code"
+          value={draft}
+          placeholder="Enter promo code"
+          onChange={(e) => setDraft(e.target.value)}
+        />
+        <InputGroupAddon align="inline-end">
+          <InputGroupButton onClick={() => onApply(draft)} disabled={!draft.trim()}>
+            Apply
+          </InputGroupButton>
+        </InputGroupAddon>
+      </InputGroup>
+      {applied && (
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <Badge variant="success-light">
+            <Check className="size-3" />
+            {applied}
+          </Badge>
+          {onRemove && (
+            <Button size="sm" variant="ghost" onClick={onRemove}>
+              Remove discount
+            </Button>
+          )}
+        </div>
+      )}
+      {error && (
+        <p role="alert" className="text-xs text-destructive">
+          {error}
+        </p>
+      )}
+    </div>
+  );
+}
+export function CartTotals({ rows, total }: { rows: [string, string][]; total: number }) {
+  return (
+    <dl className="space-y-3 text-sm">
+      {rows.map(([label, value]) => (
+        <div key={label} className="flex items-center justify-between gap-4">
+          <dt className="text-muted-foreground">{label}</dt>
+          <dd className={label.toLowerCase().includes("discount") ? "text-success" : ""}>
+            {value}
+          </dd>
+        </div>
+      ))}
+      <div className="flex items-center justify-between border-t pt-4 font-medium">
+        <dt>Total</dt>
+        <dd className="text-xl font-semibold tabular-nums" data-cart-total>
+          {money(total)}
+        </dd>
+      </div>
+    </dl>
+  );
+}
+export function PaymentMarks() {
+  return (
+    <div className="flex flex-wrap justify-center gap-2">
+      {["VISA", "Mastercard", "AMEX", "Discover", "PayPal", "Apple Pay"].map((s) => (
+        <Badge key={s} variant="outline" size="sm" className="bg-background">
+          {s}
+        </Badge>
+      ))}
+    </div>
+  );
+}
+export function CartTrust() {
+  return (
+    <div className="flex flex-wrap justify-center gap-5 border-t pt-6 text-xs text-muted-foreground">
+      {[
+        [ShieldCheck, "Secure payments"],
+        [Truck, "Reliable delivery"],
+        [LockKeyhole, "Protected checkout"],
+      ].map(([Icon, label]) => {
+        const I = Icon as typeof Truck;
+        return (
+          <span key={String(label)} className="flex items-center gap-2">
+            <I className="size-4" />
+            {label as string}
+          </span>
+        );
+      })}
+    </div>
+  );
+}
+export function CartCheckout({
+  total,
+  disabled = false,
+  label = "Proceed to checkout",
+  method,
+}: {
+  total: number;
+  disabled?: boolean;
+  label?: string;
+  method?: string;
+}) {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <Button className="w-full" disabled={disabled} onClick={() => setOpen(true)}>
+        {label}
+        <ArrowRight />
+      </Button>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Review your checkout</DialogTitle>
+            <DialogDescription>
+              Your cart is ready for the next step. This preview keeps checkout local.
+            </DialogDescription>
+          </DialogHeader>
+          <Alert variant="success">
+            <Check />
+            <AlertTitle>{money(total)} order total</AlertTitle>
+            <AlertDescription>
+              {method ? `${method} selected. ` : ""}No payment was processed. Your cart and selected
+              quantities are preserved.
+            </AlertDescription>
+          </Alert>
+          <Button onClick={() => setOpen(false)}>Continue shopping</Button>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+}
+export function CartEmpty({ onReset }: { onReset: () => void }) {
+  return (
+    <div className="rounded-xl border border-dashed px-6 py-14 text-center">
+      <h3 className="font-semibold">Your cart is empty</h3>
+      <p className="mt-2 text-sm text-muted-foreground">Add a few favorites to continue.</p>
+      <Button variant="outline" className="mt-5" onClick={onReset}>
+        Restore demo items
+      </Button>
+    </div>
+  );
+}

@@ -6,16 +6,16 @@
 
 The first reconstruction used shadcn/native tables and separate array filtering, sorting, paging, drag and range state. That architecture did not satisfy the project requirement. It has been replaced with real official free ReUI Data Grid composition over **TanStack Table v9** (`@tanstack/react-table` 9.3.1), including the old generic solution fallback.
 
-| Responsibility | Actual implementation |
-| --- | --- |
-| Models | Original domain records + `ColumnDef` + `useTable({features:dataGridFeatures,...})`; native filtered/sorted/paginated/expanded/selected/pinned models and column APIs |
-| Tables | Official `DataGridTable`; grouped domain bands compose official table primitives over actual model rows |
-| Dragging | Official `DataGridTableDnd` / `DataGridTableDndRows` and handles; real column order or domain row order updates |
-| Long feeds | Official `DataGridTableVirtual`, asynchronous mock batches and real row models; custom window/spacer implementation removed |
-| Spreadsheet | Official `DataGridCellSelection`, `meta.cellEdit`, clipboard changes, fill/range protocols and inverse changes for undo |
-| Filters and columns | Official `Filters` / Cascader / editors / chip menus, `DataGridColumnFilter`, `DataGridColumnHeader` and `DataGridColumnVisibility` |
-| Pagination | Official `DataGridPagination` in the same DataGrid provider as the actual table; unpaged grids disable pagination over their complete data |
-| Other primitives | Official Frame, Badge, Rating, NumberField, ColorPicker, IconTile and Cascader used for their real behavior |
+| Responsibility      | Actual implementation                                                                                                                                                 |
+| ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Models              | Original domain records + `ColumnDef` + `useTable({features:dataGridFeatures,...})`; native filtered/sorted/paginated/expanded/selected/pinned models and column APIs |
+| Tables              | Official `DataGridTable`; grouped domain bands compose official table primitives over actual model rows                                                               |
+| Dragging            | Official `DataGridTableDnd` / `DataGridTableDndRows` and handles; real column order or domain row order updates                                                       |
+| Long feeds          | Official `DataGridTableVirtual`, asynchronous mock batches and real row models; custom window/spacer implementation removed                                           |
+| Spreadsheet         | Official `DataGridCellSelection`, `meta.cellEdit`, clipboard changes, fill/range protocols and inverse changes for undo                                               |
+| Filters and columns | Official `Filters` / Cascader / editors / chip menus, `DataGridColumnFilter`, `DataGridColumnHeader` and `DataGridColumnVisibility`                                   |
+| Pagination          | Official `DataGridPagination` in the same DataGrid provider as the actual table; unpaged grids disable pagination over their complete data                            |
+| Other primitives    | Official Frame, Badge, Rating, NumberField, ColorPicker, IconTile and Cascader used for their real behavior                                                           |
 
 No paid Pro source was fetched. Official free source, license, registry provenance and installation adapters are recorded in `reui-data-grid-foundation.md` and `reui-data-grid-provenance.json`. The architecture is not established merely by installing a dependency or adding a wrapper: browser checks require the official table viewport and rendered native model rows on every route.
 

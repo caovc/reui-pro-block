@@ -126,9 +126,7 @@ export function KpiReports() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{report?.report}</DialogTitle>
-            <DialogDescription>
-              Sample report details for this local preview.
-            </DialogDescription>
+            <DialogDescription>Sample report details for this local preview.</DialogDescription>
           </DialogHeader>
           <div className="rounded-xl border p-5">
             <p className="text-3xl font-semibold">{report?.value}</p>
@@ -140,9 +138,7 @@ export function KpiReports() {
             variant="outline"
             onClick={() => {
               const data = new Blob(
-                [
-                  `Report,Value,Trend\n${report?.report},${report?.value},${report?.trend}\n`,
-                ],
+                [`Report,Value,Trend\n${report?.report},${report?.value},${report?.trend}\n`],
                 { type: "text/csv" },
               );
               const url = URL.createObjectURL(data);
@@ -301,9 +297,7 @@ export function ReportUpdates() {
                 </FrameTitle>
               </div>
               <div className="flex flex-col gap-3">
-                <FrameDescription className="!text-sm">
-                  {r.description}
-                </FrameDescription>
+                <FrameDescription className="!text-sm">{r.description}</FrameDescription>
                 <Separator />
                 <div className="flex flex-wrap gap-1.5">
                   {r.tags.map((tag) => {
@@ -334,9 +328,7 @@ export function ReportUpdates() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Edit report</DialogTitle>
-            <DialogDescription>
-              Changes are kept in this local preview.
-            </DialogDescription>
+            <DialogDescription>Changes are kept in this local preview.</DialogDescription>
           </DialogHeader>
           {editing && (
             <form
@@ -361,17 +353,10 @@ export function ReportUpdates() {
               <FieldGroup>
                 <Field>
                   <FieldLabel htmlFor="report-title">Report title</FieldLabel>
-                  <Input
-                    id="report-title"
-                    name="title"
-                    required
-                    defaultValue={editing.title}
-                  />
+                  <Input id="report-title" name="title" required defaultValue={editing.title} />
                 </Field>
                 <Field>
-                  <FieldLabel htmlFor="report-description">
-                    Description
-                  </FieldLabel>
+                  <FieldLabel htmlFor="report-description">Description</FieldLabel>
                   <Textarea
                     id="report-description"
                     name="description"

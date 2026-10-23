@@ -8,11 +8,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
 import Autoplay from "embla-carousel-autoplay";
 import { Pause, Play } from "lucide-react";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from "@/components/ui/carousel";
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import type { CarouselApi } from "@/components/ui/carousel";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/reui/badge";
@@ -95,8 +91,7 @@ export function FreeProductGallery({
                   className="size-full object-cover"
                   style={{
                     objectPosition: `${20 + index * 15}% center`,
-                    transform:
-                      index > 0 ? `scale(${1 + index * 0.06})` : undefined,
+                    transform: index > 0 ? `scale(${1 + index * 0.06})` : undefined,
                     ...style,
                   }}
                 />
@@ -105,12 +100,7 @@ export function FreeProductGallery({
           ))}
         </CarouselContent>
       </Carousel>
-      <div
-        className={cn(
-          "min-w-0 mt-3",
-          vertical && "col-start-1 row-start-1 mt-0",
-        )}
-      >
+      <div className={cn("min-w-0 mt-3", vertical && "col-start-1 row-start-1 mt-0")}>
         {lookInside && (
           <div className="mb-2 flex justify-between text-[10px] tracking-[.16em] text-muted-foreground">
             <span>LOOK INSIDE</span>
@@ -127,10 +117,7 @@ export function FreeProductGallery({
           aria-label={`${name} thumbnails`}
         >
           <CarouselContent
-            className={cn(
-              "-ml-2 py-1",
-              vertical && "ml-0 -mt-2 h-70 flex-col py-0 sm:h-90",
-            )}
+            className={cn("-ml-2 py-1", vertical && "ml-0 -mt-2 h-70 flex-col py-0 sm:h-90")}
           >
             {images.map((src, index) => (
               <CarouselItem
@@ -240,33 +227,22 @@ export function FreeReviewCarousel({
     >
       <CarouselContent className="ml-0" aria-live={playing ? "off" : "polite"}>
         {reviews.map((review, index) => (
-          <CarouselItem
-            key={review.name}
-            className="pl-0"
-            aria-hidden={current !== index}
-          >
+          <CarouselItem key={review.name} className="pl-0" aria-hidden={current !== index}>
             <div className="mb-4 flex items-center gap-2">
               <Rating rating={review.rating ?? 4.7} size="sm" showValue />
               <Badge variant="success-light" size="xs">
                 Verified
               </Badge>
             </div>
-            {review.title && (
-              <h3 className="mb-3 text-base font-semibold">{review.title}</h3>
-            )}
+            {review.title && <h3 className="mb-3 text-base font-semibold">{review.title}</h3>}
             <blockquote
-              className={cn(
-                "leading-7",
-                segments ? "text-lg font-medium sm:text-xl" : "text-sm",
-              )}
+              className={cn("leading-7", segments ? "text-lg font-medium sm:text-xl" : "text-sm")}
             >
               {review.text}
             </blockquote>
             <p className="mt-5 text-xs">
               <strong>{review.name}</strong>
-              <span className="ml-2 text-muted-foreground">
-                · {review.date ?? "1 week ago"}
-              </span>
+              <span className="ml-2 text-muted-foreground">· {review.date ?? "1 week ago"}</span>
             </p>
           </CarouselItem>
         ))}
@@ -292,9 +268,7 @@ export function FreeReviewCarousel({
           variant="ghost"
           aria-label={playing ? "Pause reviews" : "Play reviews"}
           className="ml-2 size-6"
-          onClick={() =>
-            playing ? plugin.current.stop() : plugin.current.play()
-          }
+          onClick={() => (playing ? plugin.current.stop() : plugin.current.play())}
         >
           {playing ? <Pause className="size-3" /> : <Play className="size-3" />}
         </Button>
@@ -375,27 +349,15 @@ import {
 } from "@/components/ui/carousel";
 function RailPrevious({ label }: { label: string }) {
   return (
-    <RailPreviousControl
-      className="static inset-auto m-0 translate-none"
-      aria-label={label}
-    />
+    <RailPreviousControl className="static inset-auto m-0 translate-none" aria-label={label} />
   );
 }
 function RailNext({ label }: { label: string }) {
-  return (
-    <RailNextControl
-      className="static inset-auto m-0 translate-none"
-      aria-label={label}
-    />
-  );
+  return <RailNextControl className="static inset-auto m-0 translate-none" aria-label={label} />;
 }
 
 /** Free c-carousel-8 inset controls + c-carousel-11 dots, with product-specific photographs. */
-export function FreeCardImageCarousel({
-  images,
-}: {
-  images: { src: string; alt: string }[];
-}) {
+export function FreeCardImageCarousel({ images }: { images: { src: string; alt: string }[] }) {
   const [api, setApi] = useState<CarouselApi>(),
     [current, setCurrent] = useState(0);
   useEffect(() => {
@@ -418,11 +380,7 @@ export function FreeCardImageCarousel({
     >
       <CarouselContent className="ml-0">
         {images.map((image, index) => (
-          <CarouselItem
-            className="pl-0"
-            key={image.alt}
-            aria-hidden={current !== index}
-          >
+          <CarouselItem className="pl-0" key={image.alt} aria-hidden={current !== index}>
             <img
               src={image.src}
               alt={image.alt}
@@ -431,16 +389,8 @@ export function FreeCardImageCarousel({
           </CarouselItem>
         ))}
       </CarouselContent>
-      <RailPreviousControl
-        variant="secondary"
-        className="left-2"
-        aria-label="Previous slide"
-      />
-      <RailNextControl
-        variant="secondary"
-        className="right-2"
-        aria-label="Next slide"
-      />
+      <RailPreviousControl variant="secondary" className="left-2" aria-label="Previous slide" />
+      <RailNextControl variant="secondary" className="right-2" aria-label="Next slide" />
       <div className="absolute inset-x-0 bottom-3 flex justify-center gap-1.5">
         {images.map((image, index) => (
           <button

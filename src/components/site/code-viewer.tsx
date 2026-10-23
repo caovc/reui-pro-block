@@ -20,22 +20,12 @@ import {
 } from "@/components/ui/select";
 import "./code-viewer.css";
 
-export function CodeViewer({
-  block,
-  dark,
-}: {
-  block: BlockMeta;
-  dark: boolean;
-}) {
+export function CodeViewer({ block, dark }: { block: BlockMeta; dark: boolean }) {
   const files = useMemo(() => blockFiles(block), [block]);
   const names = Object.keys(files);
   const [selected, setSelected] = useState(names[0]);
   const filename = selected in files ? selected : names[0];
-  const language = filename.endsWith(".css")
-    ? "css"
-    : filename.endsWith(".json")
-      ? "json"
-      : "tsx";
+  const language = filename.endsWith(".css") ? "css" : filename.endsWith(".json") ? "json" : "tsx";
   return (
     <CodeBlock
       code={files[filename]}
@@ -48,10 +38,7 @@ export function CodeViewer({
         <div className="flex min-w-0 items-center gap-2">
           <FileCode2 className="size-4 shrink-0 text-muted-foreground" />
           <Select value={filename} onValueChange={setSelected}>
-            <SelectTrigger
-              className="max-w-[min(45vw,480px)]"
-              aria-label="Source file"
-            >
+            <SelectTrigger className="max-w-[min(45vw,480px)]" aria-label="Source file">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -79,9 +66,7 @@ export function CodeViewer({
           />
           <CodeBlockCopyButton
             labels={{ copy: "Copy", copied: "Copied" }}
-            onCopyError={() =>
-              toast.error("Clipboard unavailable. Use Download source file.")
-            }
+            onCopyError={() => toast.error("Clipboard unavailable. Use Download source file.")}
           />
         </div>
       </CodeBlockHeader>

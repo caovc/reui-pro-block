@@ -1,15 +1,233 @@
-import {useState} from 'react';
-import {Plus,ChevronDown} from 'lucide-react';
-import {EventCalendar} from '@/components/reui/event-calendar/event-calendar';
-import {EventCalendarNav} from '@/components/reui/event-calendar/event-calendar-nav';
-import {EventCalendarContent} from '@/components/reui/event-calendar/event-calendar-content';
-import type {CalendarEvent} from '@/components/reui/event-calendar/event-calendar-types';
-import {Checkbox} from '@/components/ui/checkbox';
-import {Button,Input} from './shared';
-import {SideForm,Choice} from './controls';
-import {Popover,PopoverContent,PopoverTrigger} from '@/components/ui/popover';
-const data=[['1:1 with Leo',1,11,'Meetings'],['Weekly planning',5,9.5,'Work'],['Design review',6,10,'Work'],['Weekly planning',12,9.5,'Work'],['Roadmap review',13,13,'Work'],['Focus block',14,14,'Personal'],['Client call: Northstar',16,15,'Meetings'],['Weekly planning',19,9.5,'Work'],['Interview: System design',20,10,'Meetings'],['Quarterly planning',22,13,'Work'],['Monthly review',27,10,'Work']];
-export function TempoCalendar(){const[events,setEvents]=useState<CalendarEvent<{calendar:string}>[]>(()=>[...data.map(([title,day,hour,calendar],i)=>({id:`EV-${i}`,title:String(title),start:new Date(2026,6,Number(day)+1,Math.floor(Number(hour)),Number(hour)%1*60),end:new Date(2026,6,Number(day)+1,Math.floor(Number(hour))+1,Number(hour)%1*60),color:calendar==='Work'?'#8b5cf6':calendar==='Personal'?'#14b8a6':'#3b82f6',data:{calendar:String(calendar)}})),{id:'EV-time-off',title:'Time off',start:new Date(2026,6,1),end:new Date(2026,6,4),allDay:true,color:'#00bc86',data:{calendar:'Personal'}},{id:'EV-offsite',title:'Offsite',start:new Date(2026,6,9),end:new Date(2026,6,11),allDay:true,color:'#ff2056',data:{calendar:'Work'}},{id:'EV-release',title:'Release day',start:new Date(2026,6,30),end:new Date(2026,6,31),allDay:true,color:'#3b82f6',data:{calendar:'Meetings'}}]);const[date,setDate]=useState(new Date(2026,6,15));const[shown,setShown]=useState(['Work','Personal','Meetings']);const[selected,setSelected]=useState<CalendarEvent<{calendar:string}>|null>(null);const[open,setOpen]=useState(false);return <div className="wf-calendar-layout"><EventCalendar events={events.filter(e=>shown.includes(e.data?.calendar||'Work'))} onEventsChange={next=>setEvents(next)} date={date} onDateChange={setDate} defaultView="month" offDays classNames={{monthRow:'wf-calendar-month-row'}} weekStartsOn={1} onEventClick={occurrence=>{setSelected(occurrence.event);setOpen(true)}} onSlotClick={slot=>{setSelected({id:'',title:'',start:slot.date,end:slot.end||new Date(slot.date.getTime()+3600000),data:{calendar:'Work'}});setOpen(true)}}><EventCalendarNav><span className="wf-calendar-native-nav"><CalendarNav/></span><Popover><PopoverTrigger asChild><Button variant="outline" size="sm"><span className="wf-calendar-color-dots">●●●</span>Calendars<ChevronDown/></Button></PopoverTrigger><PopoverContent className="wf-calendar-filters">{['Work','Personal','Meetings'].map(name=><label key={name}><Checkbox checked={shown.includes(name)} onCheckedChange={v=>setShown(v?[...shown,name]:shown.filter(n=>n!==name))}/>{name}</label>)}</PopoverContent></Popover><Button size="sm" onClick={()=>{setSelected(null);setOpen(true)}}><Plus/>Add event</Button></EventCalendarNav><EventCalendarContent/></EventCalendar><CalendarEventForm key={selected?.id||String(open)} record={selected} open={open} onClose={()=>setOpen(false)} onSave={event=>{setEvents(selected?.id?events.map(e=>e.id===selected.id?event:e):[...events,{...event,id:`EV-${events.length+1}`}]);setOpen(false)}}/></div>}
-function CalendarNav(){return <EventCalendarNav className="p-0"/>}
-function CalendarEventForm({record,open,onClose,onSave}:{record:CalendarEvent<{calendar:string}>|null;open:boolean;onClose:()=>void;onSave:(value:CalendarEvent<{calendar:string}>)=>void}){const[title,setTitle]=useState(record?.title||'');const[start,setStart]=useState(record?toInput(record.start):'2026-07-15T09:00');const[end,setEnd]=useState(record?toInput(record.end):'2026-07-15T10:00');const[calendar,setCalendar]=useState(record?.data?.calendar||'Work');return <SideForm title={record?.id?'Edit event':'New event'} description="Set a title, schedule, and calendar." open={open} onClose={onClose} submit={record?.id?'Save event':'Create event'} onSubmit={()=>{if(title.trim())onSave({id:record?.id||'',title,start:new Date(start),end:new Date(end),data:{calendar},color:calendar==='Work'?'#8b5cf6':calendar==='Personal'?'#14b8a6':'#3b82f6'})}}><label>Title<Input required value={title} onChange={e=>setTitle(e.target.value)} placeholder="Event title"/></label><label>Starts<Input required type="datetime-local" value={start} onChange={e=>setStart(e.target.value)}/></label><label>Ends<Input required type="datetime-local" min={start} value={end} onChange={e=>setEnd(e.target.value)}/></label><label>Calendar<Choice label="Calendar" value={calendar} onChange={setCalendar} items={['Work','Personal','Meetings']}/></label></SideForm>}
-function toInput(d:Date){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}T${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`}
+import { useState } from "react";
+import { Plus, ChevronDown } from "lucide-react";
+import { EventCalendar } from "@/components/reui/event-calendar/event-calendar";
+import { EventCalendarNav } from "@/components/reui/event-calendar/event-calendar-nav";
+import { EventCalendarContent } from "@/components/reui/event-calendar/event-calendar-content";
+import type { CalendarEvent } from "@/components/reui/event-calendar/event-calendar-types";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Button, Input } from "./shared";
+import { SideForm, Choice } from "./controls";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+const data = [
+  ["1:1 with Leo", 1, 11, "Meetings"],
+  ["Weekly planning", 5, 9.5, "Work"],
+  ["Design review", 6, 10, "Work"],
+  ["Weekly planning", 12, 9.5, "Work"],
+  ["Roadmap review", 13, 13, "Work"],
+  ["Focus block", 14, 14, "Personal"],
+  ["Client call: Northstar", 16, 15, "Meetings"],
+  ["Weekly planning", 19, 9.5, "Work"],
+  ["Interview: System design", 20, 10, "Meetings"],
+  ["Quarterly planning", 22, 13, "Work"],
+  ["Monthly review", 27, 10, "Work"],
+];
+export function TempoCalendar() {
+  const [events, setEvents] = useState<CalendarEvent<{ calendar: string }>[]>(() => [
+    ...data.map(([title, day, hour, calendar], i) => ({
+      id: `EV-${i}`,
+      title: String(title),
+      start: new Date(2026, 6, Number(day) + 1, Math.floor(Number(hour)), (Number(hour) % 1) * 60),
+      end: new Date(
+        2026,
+        6,
+        Number(day) + 1,
+        Math.floor(Number(hour)) + 1,
+        (Number(hour) % 1) * 60,
+      ),
+      color: calendar === "Work" ? "#8b5cf6" : calendar === "Personal" ? "#14b8a6" : "#3b82f6",
+      data: { calendar: String(calendar) },
+    })),
+    {
+      id: "EV-time-off",
+      title: "Time off",
+      start: new Date(2026, 6, 1),
+      end: new Date(2026, 6, 4),
+      allDay: true,
+      color: "#00bc86",
+      data: { calendar: "Personal" },
+    },
+    {
+      id: "EV-offsite",
+      title: "Offsite",
+      start: new Date(2026, 6, 9),
+      end: new Date(2026, 6, 11),
+      allDay: true,
+      color: "#ff2056",
+      data: { calendar: "Work" },
+    },
+    {
+      id: "EV-release",
+      title: "Release day",
+      start: new Date(2026, 6, 30),
+      end: new Date(2026, 6, 31),
+      allDay: true,
+      color: "#3b82f6",
+      data: { calendar: "Meetings" },
+    },
+  ]);
+  const [date, setDate] = useState(new Date(2026, 6, 15));
+  const [shown, setShown] = useState(["Work", "Personal", "Meetings"]);
+  const [selected, setSelected] = useState<CalendarEvent<{ calendar: string }> | null>(null);
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="wf-calendar-layout">
+      <EventCalendar
+        events={events.filter((e) => shown.includes(e.data?.calendar || "Work"))}
+        onEventsChange={(next) => setEvents(next)}
+        date={date}
+        onDateChange={setDate}
+        defaultView="month"
+        offDays
+        classNames={{ monthRow: "wf-calendar-month-row" }}
+        weekStartsOn={1}
+        onEventClick={(occurrence) => {
+          setSelected(occurrence.event);
+          setOpen(true);
+        }}
+        onSlotClick={(slot) => {
+          setSelected({
+            id: "",
+            title: "",
+            start: slot.date,
+            end: slot.end || new Date(slot.date.getTime() + 3600000),
+            data: { calendar: "Work" },
+          });
+          setOpen(true);
+        }}
+      >
+        <EventCalendarNav>
+          <span className="wf-calendar-native-nav">
+            <CalendarNav />
+          </span>
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="outline" size="sm">
+                <span className="wf-calendar-color-dots">●●●</span>Calendars
+                <ChevronDown />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="wf-calendar-filters">
+              {["Work", "Personal", "Meetings"].map((name) => (
+                <label key={name}>
+                  <Checkbox
+                    checked={shown.includes(name)}
+                    onCheckedChange={(v) =>
+                      setShown(v ? [...shown, name] : shown.filter((n) => n !== name))
+                    }
+                  />
+                  {name}
+                </label>
+              ))}
+            </PopoverContent>
+          </Popover>
+          <Button
+            size="sm"
+            onClick={() => {
+              setSelected(null);
+              setOpen(true);
+            }}
+          >
+            <Plus />
+            Add event
+          </Button>
+        </EventCalendarNav>
+        <EventCalendarContent />
+      </EventCalendar>
+      <CalendarEventForm
+        key={selected?.id || String(open)}
+        record={selected}
+        open={open}
+        onClose={() => setOpen(false)}
+        onSave={(event) => {
+          setEvents(
+            selected?.id
+              ? events.map((e) => (e.id === selected.id ? event : e))
+              : [...events, { ...event, id: `EV-${events.length + 1}` }],
+          );
+          setOpen(false);
+        }}
+      />
+    </div>
+  );
+}
+function CalendarNav() {
+  return <EventCalendarNav className="p-0" />;
+}
+function CalendarEventForm({
+  record,
+  open,
+  onClose,
+  onSave,
+}: {
+  record: CalendarEvent<{ calendar: string }> | null;
+  open: boolean;
+  onClose: () => void;
+  onSave: (value: CalendarEvent<{ calendar: string }>) => void;
+}) {
+  const [title, setTitle] = useState(record?.title || "");
+  const [start, setStart] = useState(record ? toInput(record.start) : "2026-07-15T09:00");
+  const [end, setEnd] = useState(record ? toInput(record.end) : "2026-07-15T10:00");
+  const [calendar, setCalendar] = useState(record?.data?.calendar || "Work");
+  return (
+    <SideForm
+      title={record?.id ? "Edit event" : "New event"}
+      description="Set a title, schedule, and calendar."
+      open={open}
+      onClose={onClose}
+      submit={record?.id ? "Save event" : "Create event"}
+      onSubmit={() => {
+        if (title.trim())
+          onSave({
+            id: record?.id || "",
+            title,
+            start: new Date(start),
+            end: new Date(end),
+            data: { calendar },
+            color:
+              calendar === "Work" ? "#8b5cf6" : calendar === "Personal" ? "#14b8a6" : "#3b82f6",
+          });
+      }}
+    >
+      <label>
+        Title
+        <Input
+          required
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="Event title"
+        />
+      </label>
+      <label>
+        Starts
+        <Input
+          required
+          type="datetime-local"
+          value={start}
+          onChange={(e) => setStart(e.target.value)}
+        />
+      </label>
+      <label>
+        Ends
+        <Input
+          required
+          type="datetime-local"
+          min={start}
+          value={end}
+          onChange={(e) => setEnd(e.target.value)}
+        />
+      </label>
+      <label>
+        Calendar
+        <Choice
+          label="Calendar"
+          value={calendar}
+          onChange={setCalendar}
+          items={["Work", "Personal", "Meetings"]}
+        />
+      </label>
+    </SideForm>
+  );
+}
+function toInput(d: Date) {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}T${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+}
