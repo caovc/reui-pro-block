@@ -26,25 +26,19 @@ test("magic link form validates and changes to sent state", async ({
   await page.getByRole("button", { name: "Back to sign in" }).click();
   await expect(page.getByLabel("Work email", { exact: true })).toBeVisible();
 });
-test("grid edit, search and bulk selection update visible records", async ({
+test("label grid validates inline creation and preserves the new label", async ({
   page,
 }) => {
   await page.goto(route("editing"));
-  await page.getByRole("button", { name: "New row", exact: true }).click();
-  await page.locator("#record-name").fill("QA preview record");
-  await page.getByRole("button", { name: "Save changes", exact: true }).click();
-  await page
-    .getByLabel("Search records", { exact: true })
-    .fill("QA preview record");
+  await page.getByRole("button", { name: "Add label", exact: true }).click();
+  await page.getByLabel("Label name", { exact: true }).fill("Engineering");
+  await page.getByRole("button", { name: "Create label", exact: true }).click();
+  await expect(page.getByRole("alert")).toContainText("already exists");
+  await page.getByLabel("Label name", { exact: true }).fill("QA preview label");
+  await page.getByRole("button", { name: "Create label", exact: true }).click();
   await expect(
-    page.getByRole("button", { name: "QA preview record", exact: true }),
+    page.getByText("QA preview label", { exact: true }),
   ).toBeVisible();
-  await page
-    .getByRole("checkbox", { name: "Select all visible records", exact: true })
-    .check();
-  await expect(page.getByText("1 selected", { exact: true })).toBeVisible();
-  await page.getByRole("button", { name: "Delete", exact: true }).click();
-  await expect(page.getByText("No records match your search.")).toBeVisible();
 });
 test("calendar creates a visible event", async ({ page }) => {
   await page.goto(route("event-calendar"));
@@ -110,25 +104,24 @@ test("FAQ categories and accordion expose selected answers", async ({
   await expect(question).toHaveAttribute("aria-expanded", "true");
 });
 
-test("virtual grid windows 1200 rows as the scroll position changes", async ({
+test("payment grid windows rows and loads another batch on scroll", async ({
   page,
 }) => {
   await page.goto(route("virtualization"));
   await expect(
-    page.getByText("Rows 1–16 of 1,200 · Scroll to browse"),
+    page.getByText("25 of 10,000 loaded", { exact: true }),
   ).toBeVisible();
-  const mountedBefore = await page.locator("tbody tr").count();
-  expect(mountedBefore).toBeLessThan(25);
+  expect(await page.locator("tbody tr[data-row-id]").count()).toBeLessThan(28);
   await page
-    .locator("div.overflow-auto")
-    .filter({ has: page.locator("table") })
-    .first()
+    .locator('[data-slot="data-grid-table-viewport"]')
     .evaluate((element) => {
-      element.scrollTop = 5600;
+      element.scrollTop = element.scrollHeight;
       element.dispatchEvent(new Event("scroll"));
     });
-  await expect(page.getByText(/Rows 98–113 of 1,200/)).toBeVisible();
-  expect(await page.locator("tbody tr").count()).toBeLessThan(25);
+  await expect(
+    page.getByText("50 of 10,000 loaded", { exact: true }),
+  ).toBeVisible();
+  expect(await page.locator("tbody tr[data-row-id]").count()).toBeLessThan(28);
 });
 
 test("whiteboard draws shapes with undo, redo and SVG export", async ({

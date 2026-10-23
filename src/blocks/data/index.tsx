@@ -1,3 +1,13 @@
+import FilteringGrid from './grid-filtering';
+import BaseGrid from './grid-base';
+import ColumnsGrid from './grid-columns';
+import AdvancedGrid from './grid-advanced';
+import GroupingGrid from './grid-grouping';
+import DragDropGrid from './grid-drag-drop';
+import EditingGrid from './grid-editing';
+import ExpansionGrid from './grid-expansion';
+import VirtualGrid from './grid-virtualization';
+import './grid-refinement.css';
 import type { BlockProps } from '@/data/types'
 import { BookingBlock, DetailBlock, FilesBlock, ItineraryBlock } from './business'
 import DigitalTwinBlock from './digital-twin'
@@ -15,7 +25,30 @@ import SankeyChartBlock from './sankey-charts'
 import { ActivityBlock, ChatBlock, UsageBlock } from './ai'
 import { BoardBlock, PermissionBlock, PlansBlock, SettingsBlock, TimelineBlock, WizardBlock } from './workflows'
 export default function DataBlock({block}:BlockProps){
- if(block.group==='data-grid')return <GridBlock block={block}/>
+ if (block.group === "data-grid") {
+    const refined = {
+      base: BaseGrid,
+      columns: ColumnsGrid,
+      advanced: AdvancedGrid,
+      grouping: GroupingGrid,
+      filtering: FilteringGrid,
+      "drag-drop": DragDropGrid,
+      editing: EditingGrid,
+      expansion: ExpansionGrid,
+      virtualization: VirtualGrid,
+    }[block.category];
+    const Refined = refined || GridBlock;
+    const previous = [
+      "data-grid-drag-drop-3",
+      "data-grid-editing-2",
+      "data-grid-expansion-2",
+    ].includes(block.id);
+    return (
+      <main className={`data-grid-refinement min-w-0 w-full ${previous ? block.id === 'data-grid-editing-2' ? 'px-12 sm:px-6' : 'px-8 sm:px-6' : 'px-3 py-8 sm:px-6 sm:py-12'}`}>
+        {previous ? <GridBlock block={block} /> : <Refined block={block} />}
+      </main>
+    );
+  }
  if(block.id==='chart-16')return <GenerationMix/>
  if(block.group==='chart'&&block.category==='area-chart')return <AreaPanel block={block}/>
  if(block.group==='chart'&&block.category==='pie-chart')return <PieChartBlock block={block}/>

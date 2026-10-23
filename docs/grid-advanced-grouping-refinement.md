@@ -1,0 +1,47 @@
+# Data Grid Advanced / Grouping refinement
+
+Owner: child `grid_advanced_grouping`; parent coordinates integration and Git. Date: 2026-10-22.
+
+## Public reference evidence
+
+Inspected all 16 public 1080×720 thumbnails and all 16 live previews at 1440×1000. Live URLs follow `https://reui.io/preview/base/<id>?embed=1`; briefs follow `https://reui.io/blocks/data-grid/<category>/<id>`. No paid component source was fetched. Public campaign performance, campaign target, store P&L and product KPI tables were paged through; their displayed records were transcribed into `grid-advanced-seeds.ts` (30/30/28/29 records).
+
+Screenshots, rendered DOM and public interaction notes are under `/tmp/reui-grid-advanced-reference/`. Public behavior directly inspected includes campaign settings, stock Stage Orders/value changes, stock details/category controls and per-column filters. Other local interactions follow the public briefs and are independently implemented; their exact parity is not asserted.
+
+## Actual free-component migration
+
+The earlier hand-written tables have been replaced. `grid-advanced-model-grid.tsx` creates real TanStack v9 `useTable({features:dataGridFeatures,data,columns,...})` instances. Raw domain accessors feed filtering, sorting, pagination, visibility, order, sizing, selection and expansion; JSX is only a cell renderer. A column renderer registry preserves component identity during state changes, and data revisions invalidate cached accessor values. Search uses field values rather than serialized property keys. Page clamping uses actual model page count.
+
+`DomainGridSurface` uses official free `DataGrid`, `DataGridContainer`, `DataGridTable`, `DataGridColumnHeader` and `DataGridPagination`. The pagination controls live in the same DataGrid provider and mutate that table's state. `DomainGroupedGrid` composes official table viewport/base/head/body/row/cell/footer primitives while iterating the actual native `getRowModel()`; grouped domain nodes use `getSubRows`, `getRowId` and `expanded`.
+
+| Entry | Real model and free API | Preserved domain behavior / public structure |
+| --- | --- | --- |
+| advanced-1 | Raw 30 campaigns, native column/accessor definitions, filters/sort/page/select/visibility/size/order; official Table Dnd and ColumnHeader menus | Six metrics, real status/channel facets, sparkline/CPA/ROAS/buyer cells, bulk pause, create/remove, CSV, appearance and reset |
+| advanced-2 | Raw 28 stores, native search/region filter/sort/page/select/visibility | Four region cards, net-sales plan bars, YoY/prior figures, profit ranks/deltas, totals and create/remove |
+| advanced-3 | Raw 30 target records, native grouped column definitions and per-column filtering; native sort/page/select | Funnel tabs, separate ROAS and CPA target/actual/delta groups and live ROAS target; repeated channel labels replace public merged row spans |
+| advanced-4 | Native SLO data/accessors, team/status/search filter, selection and row click | Shared objective/window, selectable SVG lollipop and linked details; generated series remain independent |
+| advanced-5 | Real retailer nodes and door `subRows`, native expanded/select/filter/page state | Decisions, per-check controls, readiness, door details, bulk approval and CSV |
+| advanced-6 | Transposed property records × category ColumnDefs; free CellSelection controller, range selection/clipboard, cellEdit and onCellsChange | Targets/tolerances/case costs/min/value/order cells, share details, suppliers, copy settings, stage/revert/submit and CSV |
+| advanced-7 | Finance group/line/computed nodes with actual subRows; free CellSelection/editor/clipboard protocol and onCellsChange | Assumptions, annual overrides, effective rent, section totals, NOI/cash flow/ROI, 5/10 years, focus, undo/reset; actual amortized principal informs ROI |
+| advanced-8 | Raw 29 product records, native period-sensitive accessors, status/search/sort/page/visibility | Product photos, revenue/profit, dual series, promo calendar, KPI segments and margin guardrail |
+| advanced-9 | Kitchen records × 21 dynamic date ColumnDefs, native filter/sort/select/page | Three-week navigation, service/status facets, date-cell booking/editing, bulk booking and coverage |
+| grouping-1 | Actual stage parent nodes and task subRows, native expanded/search/signal/select/visibility | Roadmap stage bands, category/date/owner/progress/signal cells, task create and completion |
+| grouping-2 | Actual region/account subRows, native expanded/search/health/sort/visibility | ARR group subtotals, owners, health, NRR, renewals and CSV; search and summaries use the same predicate |
+| grouping-3 | Actual regrouped signal subRows, raw numeric heatmap accessors | Intake/booking/hold-risk group modes, aggregate heatmap cells, notes, risk/search and CSV |
+| grouping-4 | Original nested Part records, native getSubRows/depth/expanded/filter/sort | Recursive $1,179.31 BOM roll-up, depth controls, ancestor search, lead time/supply and CSV |
+| grouping-5 | Original Employee tree, native getSubRows/expanded/row selection | Cascading selection across collapsed descendants; native deselectParents cleans ancestor state and indeterminate checkboxes |
+| grouping-6 | Actual stage/desk/issue parent nodes, native model; repeated headers compose official free primitives | Editorial fields, colored bands, real regrouping, group add/remove, placement/search, sort and visibility |
+| grouping-7 | Actual studio stage nodes and engagement subRows, native expanded/sort/filter/select | Repeated headers, brand/crew/milestones, segmented meters and bulk move to ready |
+| expansion-2 / Treasury | Existing Treasury raw hierarchy migrated to real getSubRows/expanded; native filter/sort/page and official footer/Pagination | Actual/Plan/Variance, date range, match/callout tooltips, transaction totals and closing-cash roll-up; footer/Expand All derive from table row models |
+
+## Other free primitives
+
+Frames now actually compose official free `Frame` and `FramePanel`; badges use `reui/badge`. Financing assumptions, stock share targets/tolerances and Treasury transaction amount use official `NumberField`, `NumberFieldGroup` and `NumberFieldInput`. Basic buttons, selection, popovers, dialogs and selects are the same free Radix/shadcn primitives the installed official ReUI grid composes. Native grid Dnd handles column movement; native expanded rows handle hierarchy. Standalone star Rating and standalone Tree/Sortable would not match these cells' meanings. Campaign's two simple facets remain Select controls rather than introducing a compound-filter builder absent from this public layout. Sparklines, lollipop, heatmap color, promo markers and segmented completion meters are domain-specific rendering.
+
+## Validation and remaining fidelity limits
+
+After the native migration, the existing 32 Playwright cases passed in 1.3 minutes: workflows, real pointer column resize/native move/reset, two-dimensional clipboard/undo, and all 16 entries at 390×844 without browser errors or document overflow. All 16 desktop routes were separately inspected for actual data rows and screenshots; no page errors occurred. Scope TypeScript had zero diagnostics. The parent completed the immutable production build, 93-case integrated Grid verification, 96 desktop/mobile route checks and two actual source ZIP builds; see `grid-official-migration.md` for results and the targeted rerun after shared-host timeouts.
+
+Independent read-only agents also verified Stock Mix edit/reopen returns the new accessor value, share-popover input keeps focus, Wholesale check-cell Space retains focus, Roadmap checkbox Space retains focus, and region owner search/subtotals/search-then-collapse agree. Browser tooling used shell Playwright because the Browser plugin is unavailable.
+
+This is not a pixel-perfect parity claim. Public merged channel row spans are repeated channel labels in the free grouped-column table. Some wholesale/roadmap/editorial/cohort/studio secondary records are independently seeded. Sparkline/SLO series and promo schedules are deterministic reconstructions. Portrait assignments differ. Product photos retain public remote endpoints, so image availability remains network-dependent. Spreadsheet range visuals and editor interaction are now the official free DataGrid's behavior rather than a reconstruction of an unverified paid controller. Public-frame/header density and summary positions were compared, including 28px financial rows and 1216px frames, but every secondary popup state has not been pixel-diffed.
