@@ -1,0 +1,22 @@
+{
+  "base": "b5d8d880134e90b87c1288f474302e8db564ff4c",
+  "files": {
+    "src/blocks/data/bar-burn-plots.tsx": "37fe9c3748629bf98d47185e41049d856a9777f803fcf0f795a49fe9d95ad14e",
+    "src/blocks/data/bar-slo-sync.tsx": "b96d63f840a3a5af6bc2e16adc280b127a501abc5776d2916ac18683f3baa85f",
+    "src/blocks/data/slope-charts.tsx": "6c25b2745d550bcbdac39df41391f2b5aa49434ce9d5e07a0e964ca5e61d3a53",
+    "src/blocks/data/sankey-charts.tsx": "d42908f9996cc5aaf87b74e834e6e00fc0dc0bddfb78a1285866bb0829d71b42",
+    "tests/burn-free-refinement.spec.ts": "257ebfc6f82aaa92dd0255e8130c2385e5d95b2037879ec747781d6d69dbf34b",
+    "docs/data-implementation.md": "0fee63e180bde2845befc1bd81a0e8f8869e0e345094594567f5d4094654f83f",
+    "docs/primary-progress.md": "06a253672762a1a1dff0cc46088baadfaaff54e090b5c4d01ed294038331aaa5",
+    "docs/plans/2026-10-22-reui-blocks-design.md": "df68c22caba8443b7dc38cdc4366a3b7dcb635601486d70af0652ece0de68c0c"
+  },
+  "verification": {
+    "build": "strict TypeScript+Vite passed",
+    "format": "full oxfmt check686 files passed",
+    "tooling": "3/3",
+    "production": "8/8 Burn+site browser cases10.5s,1worker; upstream agent28 prior regressions and4 final production passed",
+    "starter": "actual UI downloaded198file chart43 ZIP independently built;1440/390 computed Frame styles match full preview; no errors/overflow/broken images"
+  },
+  "actualFreeReuse": "c-chart1/12 native BarChart/Bar/axes/Tooltip geometry, actual REUI Badge in Slope/Sankey",
+  "customGaps": "Signed floating-bar lollipop shape, incident/forecast/readout annotations remain consumer extensions. Public hourly1x display floor retained; Windows meters use true0.1–100log. See data ledger for visual differences."
+}

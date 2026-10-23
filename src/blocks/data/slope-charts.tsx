@@ -2,7 +2,7 @@ import { useEffect, useId, useState } from "react";
 import { Lightbulb, Pause, Play } from "lucide-react";
 import type { BlockProps } from "@/data/types";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/components/reui/badge";
 import { Slider } from "@/components/ui/slider";
 import { DropdownMenuCheckboxItem } from "@/components/ui/dropdown-menu";
 import { ChartFrame, ChartMore, ChartStage, PeriodButtons } from "./chart-chrome";

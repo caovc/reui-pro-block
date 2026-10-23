@@ -1,4 +1,4 @@
-import { useId, useState } from "react";
+import { useState } from "react";
 import {
   Activity,
   BellOff,
@@ -54,8 +54,9 @@ import {
   BarStats,
   ToneBadge,
 } from "./bar-primitives";
-import { barColors, clockHour, duration, useBarNarrow } from "./bar-chart-utils";
+import { barColors, clockHour, duration } from "./bar-chart-utils";
 import { HourColumns, type HourColumn } from "./bar-hour-columns";
+import { BurnPlot, BurnWindowMeter } from "./bar-burn-plots";
 function MuteBurn({
   muted,
   onChange,
@@ -122,8 +123,6 @@ export function BudgetBurn() {
     [range, setRange] = useState<[number, number] | null>(null),
     [drag, setDrag] = useState<number | null>(null),
     [incident, setIncident] = useState(false);
-  const id = useId().replaceAll(":", ""),
-    narrow = useBarNarrow();
   const index = sloNames.indexOf(slo),
     healthy = index >= 4;
   const remaining = Array.from({ length: forecast ? 36 : 29 }, (_, i) =>
@@ -147,7 +146,6 @@ export function BudgetBurn() {
           ? 100 - i * 1.7
           : 66 - (i - 20) * 5,
   );
-  const y = (v: number) => 175 - v * 0.95;
   const pick = (i: number, extend = false) => {
     setDay(i);
     if (extend) setRange([range?.[0] ?? day, i]);
@@ -226,6 +224,7 @@ export function BudgetBurn() {
         }
       >
         <BarStats
+          className="[&>div:first-child]:col-span-2 md:[&>div:first-child]:col-span-1 md:grid-cols-[1.5fr_1fr_1fr_1fr_1fr] [&>div]:py-3"
           items={[
             {
               label: "Budget",
@@ -273,157 +272,23 @@ export function BudgetBurn() {
           }}
           className="px-3 pt-6"
         >
-          <svg
-            viewBox="0 0 1100 315"
-            className="h-[300px] w-full"
-            preserveAspectRatio="none"
-            role="img"
-            aria-label={`${slo} daily budget remaining`}
-            onPointerMove={(e) => {
-              if (drag === null) return;
-              const r = e.currentTarget.getBoundingClientRect(),
-                i = Math.max(
-                  0,
-                  Math.min(
-                    remaining.length - 1,
-                    Math.round(
-                      ((((e.clientX - r.left) / r.width) * 1100 - 25) / 1050) *
-                        (remaining.length - 1),
-                    ),
-                  ),
-                );
-              setDay(i);
-              setRange([drag, i]);
+          <BurnPlot
+            values={remaining}
+            mode="budget"
+            active={day}
+            onActive={setDay}
+            selected={selected}
+            even={even}
+            label={`${slo} daily budget remaining`}
+            onDragStart={(i) => {
+              setDrag(i);
+              setRange([i, i]);
             }}
-            onPointerUp={(e) => {
-              setDrag(null);
-              e.currentTarget.releasePointerCapture(e.pointerId);
+            onDragMove={(i) => {
+              if (drag !== null) setRange([drag, i]);
             }}
-          >
-            <defs>
-              <linearGradient id={`${id}-over`} x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor={barColors.red} stopOpacity=".06" />
-                <stop offset="100%" stopColor={barColors.red} stopOpacity="0" />
-              </linearGradient>
-            </defs>
-            <rect x="12" y="175" width="1075" height="100" fill={`url(#${id}-over)`} />
-            <line x1="12" x2="1087" y1="175" y2="175" stroke="var(--border)" />
-            <line
-              x1="12"
-              x2="1087"
-              y1={y(25)}
-              y2={y(25)}
-              stroke={barColors.yellow}
-              strokeDasharray="3 4"
-            />
-            <text x="12" y={y(25) - 7} fontSize={narrow ? 27 : 12} fill="#8e732d">
-              Warn 25%
-            </text>
-            <text x="12" y="188" fontSize={narrow ? 25 : 12} fill={barColors.red}>
-              Over budget
-            </text>
-            {selected && (
-              <rect
-                x={25 + (selected[0] / (remaining.length - 1)) * 1050 - 10}
-                y="40"
-                width={((selected[1] - selected[0]) / (remaining.length - 1)) * 1050 + 20}
-                height="230"
-                fill="var(--primary)"
-                opacity=".07"
-              />
-            )}
-            {remaining.map((v, i) => {
-              const x = 25 + (i / (remaining.length - 1)) * 1050,
-                cy = y(v),
-                color = v < 0 ? barColors.red : v < 25 ? barColors.yellow : "#6cbea2";
-              return (
-                <g
-                  key={i}
-                  role="button"
-                  tabIndex={-1}
-                  aria-label={`Day ${i + 1}: ${Math.round(v)}% remaining${i > 28 ? ", forecast" : ""}`}
-                  onPointerEnter={() => setDay(i)}
-                  onPointerDown={(e) => {
-                    e.preventDefault();
-                    setDrag(i);
-                    setDay(i);
-                    setRange([i, i]);
-                    e.currentTarget.ownerSVGElement?.setPointerCapture(e.pointerId);
-                  }}
-                  style={{ cursor: "crosshair" }}
-                >
-                  {day === i && (
-                    <rect
-                      x={x - 12}
-                      y="35"
-                      width="24"
-                      height="240"
-                      rx="12"
-                      fill="var(--muted)"
-                      opacity=".7"
-                    />
-                  )}
-                  <line
-                    x1={x}
-                    x2={x}
-                    y1="175"
-                    y2={cy}
-                    stroke="var(--muted-foreground)"
-                    strokeOpacity=".3"
-                    strokeDasharray={i > 28 ? "2 3" : undefined}
-                  />
-                  {even && (
-                    <path
-                      d={`M${x - 4} ${y(100 - (i * 100) / 30)}h8`}
-                      stroke="var(--muted-foreground)"
-                      strokeOpacity=".5"
-                    />
-                  )}
-                  <circle
-                    cx={x}
-                    cy={cy}
-                    r="4"
-                    fill={i > 28 ? "var(--background)" : color}
-                    stroke={color}
-                    strokeWidth="1.3"
-                  />
-                  {[20, 25].includes(i) && (
-                    <circle cx={x} cy={cy} r="7" fill="none" stroke={barColors.red} opacity=".4" />
-                  )}
-                  {((!narrow && [0, 7, 14, 20, 21, 25, 28, 35].includes(i)) ||
-                    (narrow && [0, 14, 20, 28, 35].includes(i))) && (
-                    <text
-                      x={x}
-                      y="300"
-                      fontSize={narrow ? 28 : 12}
-                      textAnchor="middle"
-                      fill="var(--muted-foreground)"
-                    >
-                      {i === 0 ? "Sep 1" : i === 35 ? "Oct 6" : i + 1}
-                    </text>
-                  )}
-                </g>
-              );
-            })}
-            <rect
-              x={Math.min(945, Math.max(20, 25 + (day / (remaining.length - 1)) * 1050 - 60))}
-              y="12"
-              width="135"
-              height="28"
-              rx="14"
-              fill="var(--foreground)"
-            />
-            <text
-              x={Math.min(945, Math.max(20, 25 + (day / (remaining.length - 1)) * 1050 - 60)) + 67}
-              y="30"
-              fontSize={narrow ? 22 : 12}
-              textAnchor="middle"
-              fill="var(--background)"
-            >
-              {Math.abs(Math.round(remaining[day]))}% {remaining[day] < 0 ? "over" : "left"} ·{" "}
-              {day === 28 ? "Today" : `Day ${day + 1}`}
-            </text>
-          </svg>
+            onDragEnd={() => setDrag(null)}
+          />
           {selected && (
             <div
               role="status"
@@ -455,8 +320,7 @@ export function SloBurnRate() {
   const [range, setRange] = useState("72h"),
     [muted, setMuted] = useState(false),
     [hour, setHour] = useState(71);
-  const narrow = useBarNarrow(),
-    count = range === "72h" ? 72 : 24;
+  const count = range === "72h" ? 72 : 24;
   const rates = Array.from({ length: 72 }, (_, i) =>
     i === 71
       ? 18
@@ -473,7 +337,6 @@ export function SloBurnRate() {
                 : 0.16 + (Math.sin(i * 1.7) + 1) * 0.14,
   ).slice(72 - count);
   const active = Math.min(hour, count - 1);
-  const y = (v: number) => 273 - ((Math.log10(Math.max(1, v)) + 1) / 3) * 232;
   return (
     <ChartStage>
       <ChartFrame
@@ -553,28 +416,7 @@ export function SloBurnRate() {
               ].map(([name, value]) => (
                 <div key={name} className="flex items-center gap-3 text-xs">
                   <span className="w-6 text-muted-foreground">{name}</span>
-                  <div
-                    className="relative h-1 flex-1 rounded bg-muted"
-                    role="img"
-                    aria-label={`${name}: ${value} times burn rate`}
-                  >
-                    <span
-                      className="absolute -top-1 h-3 border-l border-dashed border-muted-foreground/30"
-                      style={{ left: "33.3%" }}
-                    />
-                    <span
-                      className="absolute -top-1 size-2.5 rounded-full border border-background"
-                      style={{
-                        left: `${((Math.log10(Number(value)) + 1) / 3) * 100}%`,
-                        background:
-                          Number(value) > 14.4
-                            ? barColors.red
-                            : Number(value) > 1
-                              ? barColors.yellow
-                              : "var(--muted-foreground)",
-                      }}
-                    />
-                  </div>
+                  <BurnWindowMeter label={String(name)} value={Number(value)} />
                   <span className="w-10 text-right font-medium">
                     {Number(value) < 1 ? Number(value).toFixed(2) : value}×
                   </span>
@@ -631,99 +473,13 @@ export function SloBurnRate() {
           }}
           className="px-3"
         >
-          <svg
-            viewBox="0 0 1100 330"
-            className="h-[285px] w-full"
-            preserveAspectRatio="none"
-            role="img"
-            aria-label={`Log scale burn rates for the last ${count} hours`}
-          >
-            {[1, 14.4].map((v) => (
-              <g key={v}>
-                <line
-                  x1="12"
-                  x2="1087"
-                  y1={y(v)}
-                  y2={y(v)}
-                  stroke={v > 1 ? barColors.red : "var(--muted-foreground)"}
-                  strokeOpacity=".5"
-                  strokeDasharray={v > 1 ? "3 4" : undefined}
-                />
-                <text
-                  x="12"
-                  y={y(v) - 8}
-                  fontSize={narrow ? 27 : 12}
-                  fill={v > 1 ? barColors.red : "var(--muted-foreground)"}
-                >
-                  {v > 1 ? "Page 14.4×" : "Pace 1×"}
-                </text>
-              </g>
-            ))}
-            {rates.map((v, i) => {
-              const x = 25 + (i / (count - 1)) * 1050,
-                color =
-                  v > 14.4 ? barColors.red : v > 1 ? barColors.yellow : "var(--muted-foreground)";
-              return (
-                <g
-                  key={i}
-                  onPointerEnter={() => setHour(i)}
-                  role="button"
-                  tabIndex={-1}
-                  aria-label={`Hour ${i + 1}: ${v.toFixed(2)} times burn`}
-                >
-                  <line
-                    x1={x}
-                    x2={x}
-                    y1={y(1)}
-                    y2={y(v)}
-                    stroke="var(--muted-foreground)"
-                    opacity=".35"
-                  />
-                  <circle
-                    cx={x}
-                    cy={y(v)}
-                    r={v >= 1 ? 4 : 1.5}
-                    fill={color}
-                    opacity={v >= 1 ? 1 : 0.4}
-                  />
-                  {active === i && (
-                    <>
-                      <circle cx={x} cy={y(v)} r="7" fill="none" stroke={color} opacity=".3" />
-                      <rect
-                        x={Math.min(985, Math.max(10, x - 40))}
-                        y={Math.max(10, y(v) - 40)}
-                        width="90"
-                        height="26"
-                        rx="13"
-                        fill="var(--foreground)"
-                      />
-                      <text
-                        x={Math.min(985, Math.max(10, x - 40)) + 45}
-                        y={Math.max(10, y(v) - 40) + 17}
-                        textAnchor="middle"
-                        fontSize={narrow ? 23 : 12}
-                        fill="var(--background)"
-                      >
-                        {v >= 1 ? v.toFixed(1) : v.toFixed(2)}×{i === count - 1 ? " · Now" : ""}
-                      </text>
-                    </>
-                  )}
-                </g>
-              );
-            })}
-            {[0, 0.5, 1].map((p) => (
-              <text
-                key={p}
-                x={25 + p * 1050}
-                y="315"
-                fontSize={narrow ? 28 : 12}
-                textAnchor={p === 0 ? "start" : p === 1 ? "end" : "middle"}
-                fill="var(--muted-foreground)"
-              >
-                {p === 0 ? (range === "72h" ? "Sep 27" : "Sep 29") : p === 1 ? "Now" : "28"}
-              </text>
-            ))}
-          </svg>
+          <BurnPlot
+            values={rates}
+            mode="rate"
+            active={active}
+            onActive={setHour}
+            label={`Log scale burn rates for the last ${count} hours`}
+          />
         </div>
       </ChartFrame>
     </ChartStage>

@@ -1,7 +1,7 @@
 import { useId, useState } from "react";
 import type { BlockProps } from "@/data/types";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/components/reui/badge";
 import {
   Select,
   SelectContent,

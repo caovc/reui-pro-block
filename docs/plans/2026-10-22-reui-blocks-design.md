@@ -25,9 +25,9 @@ React + TypeScript + Vite + Tailwind v4; shadcn Radix primitives, Lucide icons. 
 - [x] Parallel implementation with file ownership and shared interfaces.
 - [x] Integrate every public entry; expose source dependencies.
 - [x] Validate types/build/lint and catalog coverage.
-- [ ] Browser QA: search, category navigation, every category renders, theme, mobile, favorites, code copy and demo actions.
+- [x] Browser QA of the site controls and complete route-render smoke; per-entry visual/state audit remains separate below.
 - [ ] Fix visual/runtime issues, document fidelity limitations.
-- [ ] Create public repository under authenticated GitHub account; deploy GitHub Pages via Actions; verify live URL.
+- [x] Public GitHub repository and Pages established and live URL verified. Every subsequent milestone still requires its own CI/deployment result.
 
 ## Acceptance
 
