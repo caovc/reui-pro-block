@@ -37,7 +37,7 @@ Preview: https://caovc.github.io/reui-pro-block/
 | Primary                   | Release integration, real starter verification, CI/Pages; AppShell M4 and Category integration |
 | Application agent         | Navbar10–13;7–9 integrated,6 free ButtonGroup follow-up frozen                                 |
 | Data agent                | AI Chat1–3 integrated; next4–6 in independent modules                                          |
-| Commerce agent            | All8 Shop Hero functional leaves; next Category Card1–3 in independent modules                 |
+| Commerce agent            | All8 Shop Heroes and Category1–3 functional; Category4–6 in independent modules                |
 | Source/export coordinator | Diagnose source/ZIP/site CI failures within original source scope                              |
 | Grid coordinator          | Diagnose two Grid CI failures; preserve previous filter-focus correction                       |
 
@@ -92,3 +92,9 @@ Latest verified Pages release isf95cd62, run39931031669:887/887 browser cases, b
 ## Navbar6 whole free dashboard action group
 
 Navbar6 now actually reuses the whole official free c-button-group52 DashboardActions composition for Refresh/Share/More, native ButtonGroup separator and export menu. This corrects the prior split controls despite their partial free dropdown reuse. Existing date/compare/refresh/CSV/PNG/share application handlers are preserved byte-for-byte; Embed remains a documented extension. Root passed47/47 production checks onChat89, rebuilt onAppShellM4/Nav7–9 and passed39/39 latest cumulative production checks. Actual336-file starter independently built/rendered at1440/390 with refresh spin/count and selected-date/Compare CSV values; source/copy/file/ZIP bytes match. Public original visual comparison remains pending.
+
+## Category Card discovery milestone
+
+Category Card1–3 now have independent browse grid, filterable collection and paged carousel leaves. Actual free Card7/8, Breadcrumb1, InputGroup25, Popover3, Select1, Switch2, ToggleGroup5, Pagination1, Carousel1/11 and Empty2 compositions reuse the published CollectionBrowser/SaveProvider. The missing Pagination primitive is the official Radix Nova upstream with mechanical alias/icon substitutions and MIT attribution; existing shared primitives/dependencies are unchanged. Root passed78/78 production checks including all8 Shop Heroes/global/site/source, then39/39 after AppShellM4/Nav7–9 integration; latest Navbar6 cumulative27/27 production checks passed. Three actual184-file starters independently built/rendered at1440/390 with filtering, saved-state sharing and carousel navigation. Source/copy/file/ZIP leaves agree. Eight overlapping collections correctly derive15/30/60 pieces; public visual comparison remains pending for all6, and4–6 implementation remains queued.
+
+Native Edge accessibility and screenshot capture resumed after Mac unlock. Activity1 desktop question-gate composition is now observed and materially differs from the current independent approval layout; the audit records the compact header/persistent sequence/inline gate/footer follow-up. The attempted phone screenshot captured a different foreground Mesh tab, so Activity1 mobile/lifecycle remains pending. No official screenshots or assets are added to distributions.

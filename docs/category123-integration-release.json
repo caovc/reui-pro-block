@@ -1,0 +1,131 @@
+{
+  "status": "READY / frozen; no child Git writes",
+  "frozenAt": "2026-10-23T09:51:11.484056+00:00",
+  "baseHead": "671e3967513921f3496d28984114e3dcef01f28e",
+  "integrationPatchPreparedAgainst": "89a4f1cec484ed8de5a92a2bfd2c1e4451da2003",
+  "snapshot": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/reui-category123-wrt274_h",
+  "production": "http://127.0.0.1:5420",
+  "integrationPatch": "/tmp/reui-category123-integration.patch",
+  "catalogAudit": "All6 official Category Card names/count matched; public brief read for1–6; only1–3 refined,4–6 still pending.",
+  "leafMapping": {
+    "category-card-1": "category-card-variants/browse-grid",
+    "category-card-2": "category-card-variants/filterable-collections",
+    "category-card-3": "category-card-variants/category-carousel"
+  },
+  "router": "CategoryCardVariants only index<3. Preserve CategoryBrowser for4–6 and all Shop1–8. Source fallback category-card-variants/index.",
+  "verification": [
+    "Strict TypeScript+Vite production build PASS",
+    "20/20 focused production tests PASS,38.8s,1worker, no timeout/retry/force changes",
+    "2/2 source graph checks PASS",
+    "Actual source defaults/copy/single-file/starter bytes identical for all3 leaves",
+    "3 actual UI-downloaded ZIPs184files each independently strict-built",
+    "6 standalone1440/390 checks PASS: no errors/overflow; original images decode; saved-state shared across navigation; native carousel second page opens60pieces; actual filter combination2results",
+    "Heading sizes36/38.88px desktop and30/32.4px mobile; four desktop columns, provisional2-column mobile carousel",
+    "Scoped oxfmt and oxlint PASS without warnings/errors",
+    "Official Pagination body transpiles identically after documented alias/icon substitutions",
+    "Actual local desktop/mobile/state screenshots directly inspected"
+  ],
+  "officialFreeReuse": [
+    "c-card-7 Card/Content/media/Badge/action composition",
+    "existing c-card-8 ShopImageCard actual implementation",
+    "c-breadcrumb-1 native catalog navigation",
+    "c-input-group-25 actual Search/results addon",
+    "c-popover-3,c-select-1,c-switch-2,c-toggle-group-5 actual native controls",
+    "c-pagination-1 actual page composition + coordinated officialmissing Radix Nova Pagination primitive",
+    "c-carousel-1 full-page composition,c-carousel-11 selected snap/listener API + actual installed Embla",
+    "c-empty-2 real reset",
+    "existing CollectionBrowser/SaveProvider c-item-2,c-tabs-9,c-scroll-area-1,c-toggle-10,REUI Badge/Alert"
+  ],
+  "newSharedPagination": {
+    "path": "src/components/ui/pagination.tsx",
+    "rootAuthorized": true,
+    "registry": "https://ui.shadcn.com/r/styles/radix-nova/pagination.json",
+    "rawSourceSha256": "80a7dcb83c56727a765f0a3775bc534b543b49c5dbf90c5f7f729db6ab01e813",
+    "adaptations": "Only Button registry alias and IconPlaceholder→equivalent Lucide, MIT/provenance comments and oxfmt; no dependency changes, no existing shared overwrites."
+  },
+  "limitations": [
+    "Public rendered desktop/mobile/state visual comparison remains pending; no foreground Edge competition, browser screenshot connection unavailable. Metadata/free-source functional refinement only.",
+    "Original independently drawn still lifes and fictional Bricklane copy/fit/availability replace upstream photo/copy. Exact type/spacing/breakpoints not claimed.",
+    "Eight overlapping collections consume existing60samplepieces; counts15/30/60 are accurate per collection but not additive inventory.",
+    "Category4–6 audited only and still use existing generic renderer until next batch."
+  ],
+  "priorShopFrozenManifests": {
+    "/tmp/reui-shop-hero3-ready-manifest.json": {
+      "unchanged": true,
+      "files": 11
+    },
+    "/tmp/reui-shop-hero45-ready-manifest.json": {
+      "unchanged": true,
+      "files": 8
+    },
+    "/tmp/reui-shop-hero678-ready-manifest.json": {
+      "unchanged": true,
+      "files": 10
+    }
+  },
+  "standalones": [
+    {
+      "n": 1,
+      "folder": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-category-card1-export-PziKwj",
+      "entries": 184,
+      "preview": "http://127.0.0.1:5421"
+    },
+    {
+      "n": 2,
+      "folder": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-category-card2-export-zwxZL1",
+      "entries": 184,
+      "preview": "http://127.0.0.1:5422"
+    },
+    {
+      "n": 3,
+      "folder": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-category-card3-export-8v1VPH",
+      "entries": 184,
+      "preview": "http://127.0.0.1:5423"
+    }
+  ],
+  "evidence": {
+    "build": "/tmp/reui-category123-final-build.log",
+    "productionTests": "/tmp/reui-category123-final-tests.log",
+    "initialTests": "/tmp/reui-category123-initial-tests.log",
+    "sourceTests": "/tmp/reui-category123-source-tests.log",
+    "standaloneRuntime": "/tmp/reui-category123-export-runtime.json",
+    "screenshots": "/tmp/reui-category-card{1,2,3}-export-{desktop,mobile-viewport}.png + export-state-mobile.png",
+    "officialPaginationCache": "/tmp/reui-category-pagination-source/registry.json"
+  },
+  "readOnlyDependencies": {
+    "src/blocks/commerce/shop-hero-variants/image-card.tsx": "faeb23fea88479454a0ae1310f9ee321b06960b2286d965334e51b85f9ce6b18",
+    "src/blocks/commerce/shop-hero-variants/collection-data.ts": "9d261a797c183eea791fea07ff2c30285530402b3e00fe23c4da0b24d64e96d1",
+    "src/blocks/commerce/shop-hero-variants/collection-dialog.tsx": "6c0f5f55c98ef994a12410710d1eb3d7a74baf7a087a3d9b521a46a1948b3282",
+    "src/blocks/commerce/shop-hero-variants/collection-saved.ts": "c91e5eb66246357fa77120264bc5e6fd38a0a606640b2e98ce5f79bb737a2553",
+    "src/blocks/commerce/wishlist-artwork.ts": "7b8bb57f425418cee9392010dc57708cacb1a26452210ce3aa5605736c2639b6",
+    "src/components/reui/badge.tsx": "aa775fdd1638b34a843f5ece24236705d152cc36ea5edce62a62fe5601dde664",
+    "src/components/ui/carousel.tsx": "d718b75f59c7e664f3b813c99f8db17bb30446f0014d900c7587ae2de6b78ad5",
+    "src/components/ui/button.tsx": "c7bf8a91479cfd7a7e07b988188a0a74e8bb44c2f6e4c7748f4c075b6621e644"
+  },
+  "files": {
+    "src/blocks/commerce/category-card-variants/breadcrumb.tsx": "9a506b09ad6f07dc8b1ac6cf4725e4eca7a8ccd024c006b129baa3e6cc6923d4",
+    "src/blocks/commerce/category-card-variants/browse-grid.tsx": "9042632e9863fa6fd018ac0444ee7b1c6963768f1adc1d3a6df39a54c460c9e1",
+    "src/blocks/commerce/category-card-variants/category-carousel.tsx": "f061722708220b46ba92466b38e6c85549a7b4c54d675761d6568821f1b83850",
+    "src/blocks/commerce/category-card-variants/collection-card.tsx": "6037f5944ea1fe876a858bf72c156dbac431da954a29670b2af82a8d6926e1d3",
+    "src/blocks/commerce/category-card-variants/data.ts": "e4ffc9ce319c20446b7c22ae812e9e7045097f7f363cdd5a330d89fbbfb5517b",
+    "src/blocks/commerce/category-card-variants/filterable-collections.tsx": "1ba0bc1be5d4a4d2f1338bddb1614bc5ae1ceca324cd2457b5a8de2a0f65e2e5",
+    "src/blocks/commerce/category-card-variants/filters.tsx": "be118d84c913ceb07799ce25127129fa81438d762756650341195073668a77d4",
+    "src/blocks/commerce/category-card-variants/index.tsx": "235f631cb36dc4da4ae86775b540cac3b3688780a96a9784bb3342f583c611e6",
+    "src/components/ui/pagination.tsx": "dab09c2c917ba9183024fa8113d1a5617f09ab95dfa1cbb308aff6d017a0494d",
+    "tests/category-card-discovery.spec.ts": "288369624ca98952249641f9f1e1625978c006a34cc4bd46da0e79196cc69055",
+    "docs/category-card-discovery-refinement.md": "b27a44c01254521b9a53aaf2fa537de2ff62f65fa927329004b29713702a03fd"
+  },
+  "rootIntegration": {
+    "base": "10562141b5d79ce0f12b13c135480de336a15e04",
+    "build": "Strict TypeScript+Vite PASS clean89 +cumulativeada +Navbar105",
+    "production": "78/78 baseline89 1.7m;39/39 cumulativeada58.6s;27/27 latest10540.6s;all one worker",
+    "logs": [
+      "/tmp/bricklane-category123-root-production.log",
+      "/tmp/bricklane-category123-latest-root-production.log",
+      "/tmp/bricklane-category123-navbar6-root-production.log"
+    ],
+    "format": "Full926 files format/tooling3/lint0 PASS baseline before Root docs",
+    "visual": "Root inspected actual390 FilterableCollections starter screenshot; all public1–3 matching pending",
+    "deployment": "Own CI/Pages pending; latest verified livef95cd62"
+  }
+}

@@ -223,6 +223,10 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
     return paths("application", application[block.category]);
   }
   if (block.group === "ecommerce" || block.group === "marketing") {
+    if (block.category === "category-card" && block.index < 3) {
+      const module = ["browse-grid", "filterable-collections", "category-carousel"][block.index];
+      return paths("commerce", `category-card-variants/${module}`, "category-card-variants/index");
+    }
     if (block.category === "shop-hero" && block.index < 3) {
       const module = ["live-cart", "bento", "countdown"][block.index];
       return paths("commerce", `shop-hero-variants/${module}`, "shop-hero-variants/index");
