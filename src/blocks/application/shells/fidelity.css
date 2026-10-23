@@ -2396,7 +2396,7 @@
 .shell-reference[data-shell-variant="13"] > .shell-header {
   min-height: 54px;
 }
-.shell-reference[data-shell-variant="17"] .model-chat-pinned [data-slot="sidebar-menu-button"] {
+.shell-reference .model-chat-pinned [data-slot="sidebar-menu-button"] {
   display: grid;
   grid-template-columns: 16px minmax(0, 1fr);
   height: 60px;
@@ -2743,4 +2743,140 @@
 }
 .shell-reference[data-shell-variant="28"] .console-content-28 {
   padding-top: 23px;
+}
+
+/* Native floating/inset productivity shells, including their compact content trigger. */
+.shell-reference:is([data-shell-variant="17"], [data-shell-variant="18"]) {
+  padding: 0;
+  gap: 0;
+}
+.productivity-sidebar > [data-slot="sidebar-inner"] {
+  background: var(--background);
+}
+.productivity-brand-row {
+  display: flex;
+  width: 100%;
+  min-height: 32px;
+  align-items: center;
+  gap: 8px;
+}
+.shell-reference .productivity-sidebar [data-slot="sidebar-header"] {
+  min-height: 48px;
+  padding: 7px;
+  justify-content: center;
+}
+.shell-reference .productivity-sidebar .reui-sidebar-content {
+  padding: 8px;
+  overflow: auto;
+}
+.shell-reference [data-collapsible="icon"] .productivity-sidebar .reui-sidebar-content {
+  overflow: hidden;
+}
+.shell-reference .productivity-main {
+  margin: 8px 8px 8px 0;
+}
+.shell-reference[data-shell-variant="17"] .model-new-chat {
+  margin-top: 0;
+  flex-shrink: 0;
+}
+.shell-reference[data-shell-variant="17"] .shell-chat-welcome {
+  padding-top: 56px;
+}
+.shell-reference[data-shell-variant="17"] .shell-header {
+  min-height: 56px;
+}
+.shell-reference[data-shell-variant="17"] [data-slot="sidebar-footer"] {
+  padding-bottom: 12px;
+}
+.shell-reference[data-shell-variant="18"] .productivity-sidebar [data-slot="sidebar-header"] {
+  min-height: 56px;
+}
+.shell-reference[data-shell-variant="18"] .todo-assistant {
+  margin: 8px 8px 8px 0;
+}
+.shell-reference[data-shell-variant="18"] .todo-focus {
+  margin: 0 0 8px;
+}
+.shell-reference[data-shell-variant="18"] .shell-placeholder-canvas > .grid > .shell-placeholder {
+  height: auto;
+  aspect-ratio: 16 / 9;
+}
+.shell-reference[data-shell-variant="18"] [data-collapsible="icon"] .todo-add-tag,
+.shell-reference[data-shell-variant="18"] [data-collapsible="icon"] .shell-section-label {
+  display: none;
+}
+.shell-reference[data-shell-variant="20"] .shell-mail-panes {
+  margin: 0;
+  padding: 12px 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  grid-template-columns: minmax(0, 386px) minmax(0, 1fr);
+  gap: 10px;
+}
+.shell-reference[data-shell-variant="20"] > nav {
+  width: 44px;
+}
+.shell-reference .webmail-sidebar [data-slot="sidebar-header"] {
+  gap: 8px;
+  padding: 8px;
+}
+.webmail-sidebar [data-slot="sidebar-footer"] [data-slot="sidebar-group"] {
+  margin-bottom: 0;
+}
+.webmail-sidebar [data-slot="sidebar-footer"] .shell-nav-button {
+  height: 28px;
+  font-size: 12px;
+}
+[data-collapsible="icon"] .webmail-sidebar [data-slot="sidebar-footer"] .shell-nav-button {
+  height: 32px;
+}
+@media (max-width: 767px) {
+  .shell-reference:is([data-shell-variant="17"], [data-shell-variant="18"]) .productivity-main {
+    margin-left: 8px;
+  }
+  .shell-reference[data-shell-variant="20"] .shell-mail-panes {
+    padding: 8px;
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.shell-reference[data-shell-variant="17"]:has([data-collapsible="icon"]) .shell-header {
+  padding-left: 12px;
+}
+.shell-reference .webmail-sidebar [data-slot="sidebar-header"] {
+  padding: 4px 8px 12px;
+}
+.webmail-sidebar [data-slot="sidebar-header"] [data-slot="avatar"] {
+  width: 32px;
+  height: 32px;
+}
+.webmail-sidebar [data-slot="sidebar-group-label"] {
+  height: 32px;
+  min-height: 32px;
+  padding: 0 8px;
+  font-size: 12px;
+}
+.shell-reference .productivity-sidebar [data-slot="sidebar-footer"] {
+  margin-top: 0;
+}
+.productivity-sidebar [data-slot="sidebar-footer"]:before {
+  display: none;
+}
+/* Favorites uses the same actual Header/Footer slots, without a squeezed switcher. */
+.shell-reference[data-shell-variant="15"] .shell-sidebar {
+  padding: 0;
+}
+.shell-reference[data-shell-variant="15"] .reui-sidebar-content {
+  padding: 8px;
+}
+.shell-reference[data-shell-variant="15"] [data-slot="sidebar-footer"] {
+  padding: 0;
+  gap: 0;
+}
+.shell-reference[data-shell-variant="11"]
+  .shell-sidebar.collapsed
+  .reui-sidebar-content
+  > div:first-child {
+  padding-inline: 0;
+  justify-content: center;
 }

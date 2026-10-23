@@ -1,0 +1,77 @@
+{
+  "owner": {
+    "scope": "Native productivity floating/inset, favorites compact controls and fixed section sidebar",
+    "base": "868696ec1fd2f7109edb560c46f47f6d947aee39",
+    "candidateBase": "1056214",
+    "candidate": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/reui-sidebar-9s1m92y7",
+    "frozen": "/tmp/appshell-m5-frozen",
+    "files": [
+      {
+        "path": "src/blocks/application/shells/productivity.tsx",
+        "sha256": "614af3aed867771811b8fcecb028e5743d0a9a022ad70225f9e5ce87ecb7d8b2"
+      },
+      {
+        "path": "src/blocks/application/shells/primitives.tsx",
+        "sha256": "a01738cfc18c588ff1a6ce5d03a91e055b20d2ffdd0d20ca231866ddc5d334c1"
+      },
+      {
+        "path": "src/blocks/application/shells/fleet-consoles.tsx",
+        "sha256": "0e114038349749dd2594e0c7d097fd9169eff4e665357a158ea044dc95f20681"
+      },
+      {
+        "path": "src/blocks/application/shells/workspaces.tsx",
+        "sha256": "f76007224b5a764c644300ba8333c31fafe2c6e582d2b38e43592c61990afef7"
+      },
+      {
+        "path": "src/blocks/application/shells/fidelity.css",
+        "sha256": "153ef4b4828fbac7a91a3aabd3e5b44f5cc4ba86fc1b34cc1c50e3c8e58b75be"
+      },
+      {
+        "path": "tests/appshell-collapse-geometry.spec.ts",
+        "sha256": "b2b5a0a235a09e6ab808f6725a62c148f731bfe8e17f204408bccec4af1f3d54"
+      },
+      {
+        "path": "tests/appshell-productivity-geometry.spec.ts",
+        "sha256": "8252f07b37ffd8f118f8f87cbf2507e21f55d03bd4c3b8807cff431c2cd90917"
+      },
+      {
+        "path": "docs/appshell-sidebar-migration.md",
+        "sha256": "29fe5989b0a96e46573c9b34a7edd74b99f1b1153e3edf2d6c045656c41e9792"
+      }
+    ],
+    "validation": {
+      "build": "/tmp/appshell-m5-latest-build.log",
+      "tests": "/tmp/appshell-m5-latest-tests.log",
+      "result": "84/84 PASS, 1 worker, 2.0m",
+      "finalTargeted": "/tmp/appshell-m5-final-targeted.log",
+      "finalTargetedResult": "9/9 PASS after mobile pinned style correction",
+      "export": "/tmp/appshell-m5-export",
+      "exportFiles": 351,
+      "exportSource": "/tmp/appshell-m5-export.log",
+      "exportBuild": "/tmp/appshell-m5-export-build.log",
+      "exportRender": "/tmp/appshell-m5-export-proof.log",
+      "evidence": "/Users/caov/.codex/visualizations/2026/10/22/01a162bd-7057-7ad2-bc44-77cefb07d2ca/productivity-native/evidence.json"
+    },
+    "remaining": [
+      "Original branding/local licensed portraits and local decorative artwork intentionally differ.",
+      "Product actions remain local demonstration state; no authenticated backend is implied.",
+      "All-theme/every nested product menu pixel equality is not certified."
+    ]
+  },
+  "root": {
+    "base": "c28b6271997f270321ce3fbde27a6cb73e9a857c",
+    "strictBuild": "PASS with candidate-only isolated .tmp TypeScript caches; committed tsconfigs unchanged",
+    "production": "99 passed (2.9m);1worker, stable completed build",
+    "logs": [
+      "/tmp/bricklane-shell-m5-root-production.log",
+      "/tmp/bricklane-shell-m5-isolated-cache-build.log",
+      "/tmp/bricklane-shell-m5-stable-root-production.log"
+    ],
+    "visual": "Root inspected actual17 collapsed screenshot; complete36-shell/all-theme pixel parity not claimed",
+    "deployment": "Own CI/Pages pending; latest verified livef95cd62",
+    "retainedFirstFailure": {
+      "trace": "/tmp/bricklane-shell-m5-root-results/appshell-collapse-geometry-db8c4-ens-beside-the-compact-rail/trace.zip",
+      "cause": "Root concurrently rebuilt same dist; trace network records main document4244/ HTTP404 and blank application. Stable-output run follows completed build, with no app/test/timeout/retry changes."
+    }
+  }
+}

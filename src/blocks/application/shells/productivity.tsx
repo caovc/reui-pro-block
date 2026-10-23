@@ -1,12 +1,19 @@
-import { SidebarCollection } from "@/components/reui/sidebar";
+import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
+import { SidebarCollection, SidebarRailButton } from "@/components/reui/sidebar";
 import { AppShellInset, useShellSidebarState } from "@/components/reui/layout";
 import { useState } from "react";
 import { Message, MessageAvatar, MessageContent } from "@/components/ui/message";
 import { Bubble, BubbleContent } from "@/components/ui/bubble";
-import { Badge as ReuiBadge } from "@/components/reui/badge";
 import { ResponsiveAssistantPanel } from "./responsive-assistant";
 import {
   CalendarDays,
+  Archive,
+  BarChart3,
+  UserRound,
+  Shield,
+  CircleAlert,
+  CircleHelp,
+  MessageSquare,
   Check,
   ChevronDown,
   Code2,
@@ -24,7 +31,6 @@ import {
   Clock,
   Globe,
   Inbox,
-  List,
   Mail,
   Mic,
   PanelLeft,
@@ -66,7 +72,7 @@ import {
   WorkspaceMenu,
   toast,
 } from "./chrome";
-import { Choices, GroupedNav, PageTitle, Sidebar } from "./primitives";
+import { Choices, PageTitle, Sidebar } from "./primitives";
 import { EventCreator } from "./calendar-panel";
 const models = ["GPT-4", "Claude", "Gemini"];
 const recent = [
@@ -78,36 +84,51 @@ const recent = [
   "Optimize SQL query",
 ];
 export function ModelChat() {
-  const [collapsed, setCollapsed] = useShellSidebarState();
+  const { isMobile } = useSidebar();
+  const [collapsed] = useShellSidebarState();
   const [model, setModel] = useState("GPT-4");
   const [draft, setDraft] = useState("");
   const [web, setWeb] = useState(false);
   const [thread, setThread] = useState(recent[0]);
   const [history, setHistory] = useState(recent);
   return (
-    <div className="shell-reference bg-muted/40 p-2 gap-2" data-shell-variant="17">
-      <Sidebar width={240} collapsed={collapsed} className="rounded-xl border !bg-background ">
-        <div className="flex h-10 items-center gap-2 px-1">
-          <ReuiMark small />
-          {!collapsed && <strong className="flex-1 text-sm">Bricklane AI</strong>}
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            aria-label="Toggle Sidebar"
-            onClick={() => setCollapsed((v) => !v)}
-          >
-            <PanelLeft />
-          </Button>
-        </div>
+    <div className="shell-reference bg-muted/40" data-shell-variant="17">
+      <Sidebar
+        width={255}
+        variant="floating"
+        collapsed={collapsed}
+        className="productivity-sidebar model-chat-sidebar"
+        header={
+          <div className="productivity-brand-row">
+            <ReuiMark />
+            {!collapsed && (
+              <>
+                <strong className="flex-1 text-sm">Bricklane AI</strong>
+                {!isMobile && <SidebarTrigger aria-label="Toggle Sidebar" />}
+              </>
+            )}
+          </div>
+        }
+        footer={
+          <WorkspaceMenu
+            collapsed={collapsed}
+            user
+            displayName="AI Assistant"
+            initial="AI Assistant"
+            subtitle="Always here to help"
+          />
+        }
+      >
         <Button
           size="sm"
-          className="my-3 justify-between rounded-full"
+          aria-label="New Chat"
+          className={`model-new-chat mb-4 justify-between rounded-full ${collapsed ? "size-8 p-0 justify-center" : "h-8"}`}
           onClick={() => {
             setDraft("");
             setThread("");
           }}
         >
-          New Chat
+          {!collapsed && "New Chat"}
           <Sparkles />
         </Button>
         {!collapsed && (
@@ -152,80 +173,76 @@ export function ModelChat() {
               active={thread}
               onSelect={setThread}
             />
-            <Navigation
-              label="Quick Actions"
-              items={[
-                { label: "Favorites", icon: Star, badge: "2" },
-                { label: "Clear History", icon: Trash2 },
-                { label: "Chat History", icon: History },
-                { label: "Templates", icon: FileText, badge: "5" },
-                { label: "AI Settings", icon: SlidersHorizontal },
-              ]}
-              active={thread}
-              onSelect={(value) => {
-                setThread(value);
-                if (value === "Clear History") {
-                  setHistory([]);
-                  setThread("");
-                  toast.success("Chat history cleared");
-                }
-              }}
-            />
           </>
         )}
-        <div className="mt-auto">
-          <WorkspaceMenu
-            user
-            displayName="AI Assistant"
-            initial="AI Assistant"
-            subtitle="Always here to help"
-          />
-        </div>
+        <Navigation
+          label="Quick Actions"
+          collapsed={collapsed}
+          items={[
+            { label: "Favorites", icon: Star, badge: "2" },
+            { label: "Clear History", icon: Trash2 },
+            { label: "Chat History", icon: History },
+            { label: "Templates", icon: FileText, badge: "5" },
+            { label: "AI Settings", icon: SlidersHorizontal },
+          ]}
+          active={thread}
+          onSelect={(value) => {
+            setThread(value);
+            if (value === "Clear History") {
+              setHistory([]);
+              setThread("");
+              toast.success("Chat history cleared");
+            }
+          }}
+        />
       </Sidebar>
-      <AppShellInset className="shell-content-frame rounded-xl border">
+      <AppShellInset className="shell-content-frame productivity-main rounded-xl border">
         <header className="shell-header">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" aria-label="Choose model">
-                {model}
-                <ChevronDown />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-72">
-              <DropdownMenuGroup>
-                {models.map((name, i) => (
-                  <DropdownMenuItem
-                    key={name}
-                    aria-label={name}
-                    className="items-start p-3"
-                    onSelect={() => setModel(name)}
-                  >
-                    <span className="mt-0.5">{["✺", "✳", "✦"][i]}</span>
-                    <div className="flex-1">
-                      <p className="flex items-center gap-2 font-medium">
-                        {name}
-                        {i < 2 && (
-                          <Badge variant="secondary" className="text-[10px]">
-                            {i === 0 ? "Default" : "Fast"}
-                          </Badge>
-                        )}
-                      </p>
-                      <p className="mt-1 text-xs text-muted-foreground">
-                        {
-                          [
-                            "Most capable for complex reasoning.",
-                            "Thoughtful, great for long writing.",
-                            "Fast multimodal answers and search.",
-                          ][i]
-                        }
-                      </p>
-                    </div>
-                    {model === name && <Check className="size-4" />}
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <div className="flex items-center gap-2">
+            {collapsed && !isMobile && <SidebarTrigger aria-label="Expand sidebar" />}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm" aria-label="Choose model">
+                  {model}
+                  <ChevronDown />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="w-72">
+                <DropdownMenuGroup>
+                  {models.map((name, i) => (
+                    <DropdownMenuItem
+                      key={name}
+                      aria-label={name}
+                      className="items-start p-3"
+                      onSelect={() => setModel(name)}
+                    >
+                      <span className="mt-0.5">{["✺", "✳", "✦"][i]}</span>
+                      <div className="flex-1">
+                        <p className="flex items-center gap-2 font-medium">
+                          {name}
+                          {i < 2 && (
+                            <Badge variant="secondary" className="text-[10px]">
+                              {i === 0 ? "Default" : "Fast"}
+                            </Badge>
+                          )}
+                        </p>
+                        <p className="mt-1 text-xs text-muted-foreground">
+                          {
+                            [
+                              "Most capable for complex reasoning.",
+                              "Thoughtful, great for long writing.",
+                              "Fast multimodal answers and search.",
+                            ][i]
+                          }
+                        </p>
+                      </div>
+                      {model === name && <Check className="size-4" />}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
           <Button
             variant="outline"
             size="sm"
@@ -424,111 +441,112 @@ export function Assistant({
   );
 }
 export function TodoShell() {
-  const [collapsed, setCollapsed] = useShellSidebarState();
+  const { isMobile } = useSidebar();
+  const [collapsed] = useShellSidebarState();
   const [active, setActive] = useState("All Tasks");
   const [assistant, setAssistant] = useState(true);
   const [create, setCreate] = useState(false);
   const [tasks, setTasks] = useState<string[]>([]);
   return (
-    <div
-      className="shell-reference reui-reference todo-shell gap-2 bg-muted/30 p-2"
-      data-shell-variant="18"
-    >
-      <Sidebar width={236} collapsed={collapsed} className="rounded-xl border !bg-background">
-        <div className="flex h-10 items-center gap-2">
-          <ReuiMark small />
-          {!collapsed && <strong className="flex-1">Bricklane</strong>}
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            aria-label="Toggle Sidebar"
-            onClick={() => setCollapsed((v) => !v)}
-          >
-            <PanelLeft />
-          </Button>
-        </div>
-        <Button size="sm" className="my-3 justify-start" onClick={() => setCreate(true)}>
-          <Plus />
-          {!collapsed && "New Task"}
-        </Button>
-        <p className="shell-section-label">My Lists</p>
-        <nav className="todo-lists" aria-label="Task lists">
-          {(
-            [
-              ["All Tasks", ListChecks, 42],
-              ["Today", CalendarDays, 6],
-              ["Upcoming", Clock, 14],
-              ["Priority", Flag, 4],
-              ["Completed", CircleCheck, 18],
-            ] as const
-          ).map(([name, Icon, count]) => (
-            <Button
-              className="shell-nav-button justify-start"
-              variant={active === name ? "secondary" : "ghost"}
-              key={name}
-              aria-label={name}
-              onClick={() => setActive(name)}
-            >
-              <Icon />
-              <span>{name}</span>
-              <ReuiBadge variant="secondary" size="sm" className="ml-auto">
-                {count}
-              </ReuiBadge>
-            </Button>
-          ))}
-        </nav>
-        <p className="shell-section-label">Tags</p>
-        <div className="todo-tags flex flex-wrap gap-1 px-2">
-          {["Work", "Personal", "Team", "Goals"].map((tag, i) => (
-            <Button
-              key={tag}
-              variant="outline"
-              size="sm"
-              className="h-6 px-2 text-[11px]"
-              onClick={() => setActive(tag)}
-            >
-              <span
-                className="size-1 rounded-full"
-                style={{
-                  background: ["#f43f5e", "#10b981", "#f59e0b", "#3b82f6"][i],
-                }}
-              />
-              {tag}
-            </Button>
-          ))}
-        </div>
+    <div className="shell-reference reui-reference todo-shell bg-muted/30" data-shell-variant="18">
+      <Sidebar
+        width={250}
+        variant="floating"
+        collapsed={collapsed}
+        className="productivity-sidebar todo-sidebar"
+        header={
+          <div className="productivity-brand-row">
+            <ReuiMark />
+            {!collapsed && <strong className="flex-1">Bricklane</strong>}
+          </div>
+        }
+        footer={
+          <>
+            {" "}
+            {!collapsed && (
+              <div className="todo-focus mt-auto mb-2 rounded-lg border p-3">
+                <p className="flex justify-between text-[11px] text-muted-foreground">
+                  Focus Progress<span className="text-foreground">18 / 32</span>
+                </p>
+                <div className="my-3 h-1 rounded bg-muted">
+                  <div className="h-full w-[56%] rounded bg-foreground" />
+                </div>
+                <p className="text-xs font-medium">Launch Campaign</p>
+                <p className="text-[10px] text-muted-foreground">Next milestone in 3 days</p>
+              </div>
+            )}
+            <WorkspaceMenu
+              collapsed={collapsed}
+              user
+              displayName="Mira Stone"
+              initial="Mira Stone"
+              subtitle="mira@bricklane.demo"
+            />
+          </>
+        }
+      >
         <Button
-          variant="outline"
           size="sm"
-          className="todo-add-tag"
+          aria-label="New Task"
+          className={`todo-new-task ${collapsed ? "mb-3 size-8 justify-center p-0" : "my-2 h-7 justify-start"}`}
           onClick={() => setCreate(true)}
         >
           <Plus />
-          Add Tag
+          {!collapsed && "New Task"}
         </Button>
-        <div className="todo-focus mt-auto mb-2 rounded-lg border p-3">
-          <p className="flex justify-between text-[11px] text-muted-foreground">
-            Focus Progress<span className="text-foreground">18 / 32</span>
-          </p>
-          <div className="my-3 h-1 rounded bg-muted">
-            <div className="h-full w-[56%] rounded bg-foreground" />
-          </div>
-          <p className="text-xs font-medium">Launch Campaign</p>
-          <p className="text-[10px] text-muted-foreground">Next milestone in 3 days</p>
+        <div className="todo-lists">
+          <Navigation
+            label="My Lists"
+            collapsed={collapsed}
+            items={[
+              { label: "All Tasks", icon: ListChecks, badge: "42" },
+              { label: "Today", icon: CalendarDays, badge: "6" },
+              { label: "Upcoming", icon: Clock, badge: "14" },
+              { label: "Priority", icon: Flag, badge: "4" },
+              { label: "Completed", icon: CircleCheck, badge: "18" },
+            ]}
+            active={active}
+            onSelect={setActive}
+          />
         </div>
-        <WorkspaceMenu user displayName="Mira Stone" initial="Mira Stone" subtitle="mira@reui.io" />
+        {!collapsed && (
+          <>
+            <p className="shell-section-label">Tags</p>
+            <div className="todo-tags flex flex-wrap gap-1 px-2">
+              {["Work", "Personal", "Team", "Goals"].map((tag, i) => (
+                <Button
+                  key={tag}
+                  variant="outline"
+                  size="sm"
+                  className="h-6 px-2 text-[11px]"
+                  onClick={() => setActive(tag)}
+                >
+                  <span
+                    className="size-1 rounded-full"
+                    style={{
+                      background: ["#f43f5e", "#10b981", "#f59e0b", "#3b82f6"][i],
+                    }}
+                  />
+                  {tag}
+                </Button>
+              ))}
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              className="todo-add-tag"
+              onClick={() => setCreate(true)}
+            >
+              <Plus />
+              Add Tag
+            </Button>
+          </>
+        )}
       </Sidebar>
-      <AppShellInset className="shell-content-frame rounded-xl border">
+      <AppShellInset className="shell-content-frame productivity-main rounded-xl border">
         <header className="shell-header border-b">
           <div className="flex min-w-0 items-center gap-3">
-            <Button
-              variant="ghost"
-              size="icon-sm"
-              aria-label="Toggle Sidebar"
-              onClick={() => setCollapsed((v) => !v)}
-            >
-              <PanelLeft />
-            </Button>
+            {!isMobile && <SidebarTrigger aria-label="Toggle Sidebar" />}
             <h1>{active}</h1>
           </div>
           <div className="ml-auto flex items-center gap-2">
@@ -696,6 +714,8 @@ export function PlannerShell() {
   );
 }
 export function WebmailShell() {
+  const [collapsed] = useShellSidebarState();
+  const { isMobile } = useSidebar();
   const [folder, setFolder] = useState("Inbox");
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("Categories");
@@ -704,39 +724,98 @@ export function WebmailShell() {
   const [labels, setLabels] = useState(["Archive", "Snoozed", "Spam", "Trash"]);
   return (
     <div className="shell-reference bg-muted/25" data-shell-variant="20">
-      <Sidebar width={240} className="!bg-transparent">
-        <WorkspaceMenu user initial="Nick Bold" subtitle="nick@reui.io" />
-        <Button className="my-3 h-8" onClick={() => setCompose(true)}>
-          <Mail />
-          New Mail
-        </Button>
-        <GroupedNav
-          groups={[
-            { label: "Mail", items: ["Inbox", "Draft", "Sent"] },
-            { label: "Labels", items: labels },
-            {
-              label: "Direct Messages",
-              items: ["Nick Bold (You)", "Sarah Chen", "Marcus Lee", "Add Teammates"],
-            },
+      <Sidebar
+        width={240}
+        variant="inset"
+        className="productivity-sidebar webmail-sidebar"
+        header={
+          <>
+            <WorkspaceMenu
+              collapsed={collapsed}
+              user
+              initial="Nick Bold"
+              subtitle="nick@bricklane.demo"
+            />
+            <Button className="h-7" aria-label="New Mail" onClick={() => setCompose(true)}>
+              <Mail />
+              {!collapsed && "New Mail"}
+            </Button>
+          </>
+        }
+        footer={
+          <Navigation
+            label=""
+            collapsed={collapsed}
+            items={[
+              { label: "Support", icon: CircleHelp },
+              { label: "Settings", icon: Settings },
+              { label: "Feedback", icon: MessageSquare },
+            ]}
+            active={folder}
+            onSelect={setFolder}
+          />
+        }
+      >
+        <Navigation
+          label="Mail"
+          collapsed={collapsed}
+          items={[
+            { label: "Inbox", icon: Inbox, badge: "3" },
+            { label: "Draft", icon: FileText, badge: "45" },
+            { label: "Sent", icon: Send, badge: "9" },
           ]}
           active={folder}
           onSelect={setFolder}
         />
-        <Button variant="ghost" size="sm" onClick={() => setLabel(true)}>
-          <Plus />
-          Create label
-        </Button>
-        <div className="mt-auto">
-          <GroupedNav
-            groups={[{ label: "", items: ["Support", "Settings", "Feedback"] }]}
+        <div className="relative mt-6">
+          <Navigation
+            label="Labels"
+            collapsed={collapsed}
+            items={labels.map((name, i) => ({
+              label: name,
+              icon: [Archive, Clock, CircleAlert, Trash2][i % 4],
+              badge: String([12, 4, 3, 34][i % 4]),
+            }))}
             active={folder}
             onSelect={setFolder}
           />
+          {!collapsed && (
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              className="absolute right-0 top-0 size-7"
+              aria-label="Create label"
+              onClick={() => setLabel(true)}
+            >
+              <Plus />
+            </Button>
+          )}
         </div>
+        <SidebarCollection
+          label="Direct Messages"
+          rows={["Nick Bold (You)", "Sarah Chen", "Marcus Lee"].map((name, i) => ({
+            label: name,
+            icon: <Face name={name} index={i} small presence="online" />,
+          }))}
+          onSelect={setFolder}
+        />
+        <Button
+          variant="ghost"
+          size="sm"
+          className="justify-start"
+          aria-label="Add Teammates"
+          onClick={() =>
+            toast("Invite teammates selected", { description: "Local workspace demo." })
+          }
+        >
+          <Plus />
+          {!collapsed && "Add Teammates"}
+        </Button>
       </Sidebar>
       <AppShellInset className="shell-mail-panes">
         <section className="flex min-w-0 flex-col rounded-xl border bg-background">
-          <header className="flex h-12 items-center gap-2 px-3">
+          <header className="flex h-12 items-center gap-2 px-2">
+            {!isMobile && <SidebarTrigger aria-label="Toggle Sidebar" />}
             <Input
               className="h-7 min-w-0"
               aria-label="Search mail"
@@ -800,18 +879,30 @@ export function WebmailShell() {
         </section>
       </AppShellInset>
       <nav className="hidden w-10 flex-col items-center gap-3 p-2 lg:flex">
-        {[Clock, List, Settings, Users, Plus].map((Icon, i) => (
-          <Button
-            variant="outline"
-            size="icon-sm"
-            className="size-7"
-            aria-label={`Mail shortcut ${i + 1}`}
-            key={i}
-            onClick={() => toast("Mail shortcut selected")}
-          >
-            <Icon />
-          </Button>
-        ))}
+        {[
+          ["Profile", UserRound],
+          ["Analytics", BarChart3],
+          ["Settings", Settings],
+          ["Team", Users],
+          ["Security", Shield],
+          ["Add tool", Plus],
+        ].map(([name, Icon]) => {
+          const label = String(name);
+          const Shortcut = Icon as typeof Settings;
+          return (
+            <SidebarRailButton key={label} label={label}>
+              <Button
+                variant="outline"
+                size="icon-sm"
+                className="size-7"
+                aria-label={`Mail ${label.toLowerCase()}`}
+                onClick={() => toast(`${label} selected`)}
+              >
+                <Shortcut />
+              </Button>
+            </SidebarRailButton>
+          );
+        })}
       </nav>
       <Dialog open={compose} onOpenChange={setCompose}>
         <DialogContent>

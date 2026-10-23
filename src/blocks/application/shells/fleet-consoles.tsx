@@ -1,6 +1,8 @@
 import { ReuiSidebar } from "@/components/reui/sidebar";
 import { AppShellInset, useShellSidebarState } from "@/components/reui/layout";
 import { useState } from "react";
+import type { ComponentProps } from "react";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import {
   Activity,
   ChevronDown,
@@ -121,6 +123,15 @@ function OperationsSettings({
         </div>
       </DropdownMenuContent>
     </DropdownMenu>
+  );
+}
+function FleetSidebar({ fixed, ...props }: ComponentProps<typeof Sidebar> & { fixed?: boolean }) {
+  return fixed ? (
+    <SidebarProvider keyboardShortcut={false} className="contents">
+      <Sidebar {...props} collapsible="none" />
+    </SidebarProvider>
+  ) : (
+    <Sidebar {...props} />
   );
 }
 export function OperationsShell({
@@ -267,7 +278,8 @@ export function OperationsShell({
       >
         {(treeOnly || variant === 33) && <Rail active={active} onChange={setActive} />}
         {variant !== 30 && variant !== 26 && !treeOnly && (
-          <Sidebar
+          <FleetSidebar
+            fixed={variant === 28}
             width={
               variant === 33 ? 288 : scopes ? 224 : variant === 24 || variant === 28 ? 208 : 256
             }
@@ -492,7 +504,7 @@ export function OperationsShell({
                 {variant !== 23 && <AccountCard />}
               </>
             )}
-          </Sidebar>
+          </FleetSidebar>
         )}
         <div className="shell-console-surface flex min-h-0 min-w-0 flex-1">
           {scopes && (

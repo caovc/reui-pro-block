@@ -414,7 +414,7 @@ export function DualWorkspace({ variant }: { variant: 14 | 16 }) {
   );
 }
 export function FavoritesShell() {
-  const [collapsed, setCollapsed] = useShellSidebarState();
+  const [collapsed] = useShellSidebarState();
   const [active, setActive] = useState("Dashboard");
   const [workspace, setWorkspace] = useState("Mint");
   const [pinned, setPinned] = useState(["Tasks", "Notes", "Contacts", "Companies", "Company"]);
@@ -448,23 +448,48 @@ export function FavoritesShell() {
         </div>
       </header>
       <div className="flex min-h-0 flex-1">
-        <Sidebar width={248} collapsed={collapsed} className="border-r !bg-background">
-          <div className="flex h-12 items-center justify-between">
-            <Choices
-              label="Workspaces"
-              value={workspace}
-              items={["Mint", "Studio", "Nova", "Orbit"]}
-              onChange={setWorkspace}
-            />
-            <Button
-              variant="ghost"
-              size="icon-sm"
-              aria-label="Toggle Sidebar"
-              onClick={() => setCollapsed((v) => !v)}
+        <Sidebar
+          width={248}
+          collapsed={collapsed}
+          className="border-r !bg-background"
+          header={
+            <div
+              className={`flex h-[38px] items-center ${collapsed ? "justify-center" : "justify-between"}`}
             >
-              <PanelLeft />
-            </Button>
-          </div>
+              {!collapsed && (
+                <Choices
+                  label="Workspaces"
+                  value={workspace}
+                  items={["Mint", "Studio", "Nova", "Orbit"]}
+                  onChange={setWorkspace}
+                />
+              )}
+              <SidebarTrigger aria-label="Toggle Sidebar" className="hidden md:inline-flex" />
+            </div>
+          }
+          footer={
+            <div className={`flex border-t p-1 ${collapsed ? "flex-col items-center gap-1" : ""}`}>
+              <Button
+                variant="ghost"
+                aria-label="Invite"
+                className={collapsed ? "size-9 p-0" : "h-9 flex-1 gap-2"}
+                onClick={() => toast("Invite selected")}
+              >
+                <Users />
+                {!collapsed && "Invite"}
+              </Button>
+              <Button
+                variant="ghost"
+                aria-label="Help"
+                className={collapsed ? "size-9 p-0" : "h-9 flex-1 gap-2"}
+                onClick={() => toast("Help selected")}
+              >
+                <CircleHelp />
+                {!collapsed && "Help"}
+              </Button>
+            </div>
+          }
+        >
           <Navigation
             label=""
             items={["Dashboard", ...pinned].map((label) => ({
@@ -528,14 +553,6 @@ export function FavoritesShell() {
               onSelect={setActive}
             />
           )}
-          <div className="mt-auto flex border-t">
-            <Button variant="ghost" className="flex-1" onClick={() => toast("Invite selected")}>
-              Invite
-            </Button>
-            <Button variant="ghost" className="flex-1" onClick={() => toast("Help selected")}>
-              Help
-            </Button>
-          </div>
         </Sidebar>
         <AppShellInset className="shell-content-frame">
           <PageTitle title={active}>

@@ -6,7 +6,7 @@ test("icon collapse shrinks the painted panel and its layout spacer together", a
   test.setTimeout(120000);
   await page.setViewportSize({ width: 1280, height: 900 });
   for (const n of [
-    1, 2, 3, 6, 7, 9, 10, 11, 12, 13, 15, 17, 18, 19, 20, 21, 23, 24, 27, 28, 29, 33, 36,
+    1, 2, 3, 6, 7, 9, 10, 11, 12, 13, 15, 17, 18, 19, 20, 21, 23, 24, 27, 29, 33, 36,
   ]) {
     await test.step(`AppShell ${n}`, async () => {
       await page.goto(preview(n));
@@ -38,7 +38,7 @@ test("icon collapse shrinks the painted panel and its layout spacer together", a
       }
       await expect(sidebar).toHaveAttribute("data-collapsible", "icon");
       // Native floating/inset panels include outer padding and a 2px border allowance.
-      const padded = [2, 3, 9, 10].includes(n);
+      const padded = [2, 3, 9, 10, 17, 18, 20].includes(n);
       const icon = n === 9 ? 50 : 48;
       await expect
         .poll(async () => (await panel.boundingBox())?.width)

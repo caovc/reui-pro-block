@@ -173,7 +173,7 @@ export function Sidebar({
   footer?: ReactNode;
   rail?: ReactNode;
   variant?: "sidebar" | "floating" | "inset";
-  collapsible?: "icon" | "offcanvas";
+  collapsible?: "icon" | "offcanvas" | "none";
 }) {
   const { state, isMobile, triggerRef } = useSidebar();
   const compact = collapsible === "icon" && !isMobile && (collapsed ?? state === "collapsed");
@@ -181,7 +181,7 @@ export function Sidebar({
     <>
       <ReuiSidebar
         width={width}
-        collapsible={collapsible}
+        collapsible={isMobile && collapsible === "none" ? "offcanvas" : collapsible}
         variant={variant}
         gapWidth={gapWidth}
         header={header}
