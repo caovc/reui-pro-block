@@ -1,0 +1,25 @@
+.ct-free-drive-tree {
+  gap: 5px;
+}
+.ct-free-drive-tree [data-slot="tree-item"] {
+  min-height: 33px;
+  text-align: left;
+}
+.ct-free-drive-tree [data-slot="tree-item-label"] {
+  min-height: 33px;
+  padding: 6px 8px;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 400;
+}
+.ct-free-drive-tree [data-slot="tree-item"][aria-current="page"] [data-slot="tree-item-label"] {
+  background: var(--accent);
+}
+.ct-free-drive-tree [data-slot="tree-item"][data-folder="false"] [data-slot="tree-item-label"] {
+  padding-left: 8px;
+}
+.ct-free-drive-tree [data-slot="tree-item-label"] span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

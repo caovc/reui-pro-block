@@ -1,3 +1,4 @@
+import { OrderEditor } from "./order-editor";
 import { catalogSeed, type CatalogProduct } from "./catalog-data";
 import { useState } from "react";
 import { MoreHorizontal, Star } from "lucide-react";
@@ -27,11 +28,11 @@ import {
 } from "./shared";
 import { ProductCatalog, ProductEditor } from "./catalog";
 import { Auth } from "./auth";
-import bag from "@/blocks/commerce/assets/bag.jpg";
-import jacket from "@/blocks/commerce/assets/jacket.jpg";
-import shoes from "@/blocks/commerce/assets/shoes.jpg";
-import shirt from "@/blocks/commerce/assets/shirt.jpg";
-import headphones from "@/blocks/commerce/assets/headphones.jpg";
+import bag from "./assets/product-4.svg";
+import jacket from "./assets/product-6.svg";
+import shoes from "./assets/product-3.svg";
+import shirt from "./assets/product-1.svg";
+import headphones from "./assets/product-8.svg";
 type Product = {
   name: string;
   sku: string;
@@ -93,6 +94,7 @@ export default function CommerceTemplate({ id }: { id: string }) {
   const [catalog, setCatalog] = useState(catalogSeed);
   const [editing, setEditing] = useState<CatalogProduct | undefined>();
   const [editor, setEditor] = useState(false);
+  const [orderEditor, setOrderEditor] = useState(false);
   const [detail, setDetail] = useState<Product | null>(null);
   const [orders, setOrders] = useState([
     ["#MF-1038", "Maya Thompson", "$189.00", "Paid", "Unfulfilled"],
@@ -193,16 +195,18 @@ export default function CommerceTemplate({ id }: { id: string }) {
     <Shell
       id={id}
       brand="Manifest Store"
-      active={active}
+      active={editor ? "Products" : orderEditor ? "Orders" : active}
       setActive={(x) => {
         setActive(x);
         setQuery("");
         setEditor(false);
+        setOrderEditor(false);
       }}
       items={items}
       top={
         <span>
-          Manifest Store <span className="text-muted-foreground"> / </span> {active}
+          Manifest Store <span className="text-muted-foreground"> / </span>{" "}
+          {editor ? "Products" : orderEditor ? "Orders" : active}
         </span>
       }
       footer={
@@ -215,7 +219,32 @@ export default function CommerceTemplate({ id }: { id: string }) {
         </div>
       }
     >
-      {editor ? (
+      {orderEditor ? (
+        <OrderEditor
+          products={catalog}
+          customers={customers}
+          onCancel={() => {
+            setOrderEditor(false);
+            setActive("Orders");
+          }}
+          onSave={(order) => {
+            setOrders((current) => [
+              [
+                `#MF-${1039 + current.length}`,
+                order.customer,
+                `$${(order.total / 100).toFixed(2)}`,
+                "Pending",
+                "Unfulfilled",
+              ],
+              ...current,
+            ]);
+            setOrderEditor(false);
+            setActive("Orders");
+            setQuery("");
+            toast.success("Order created");
+          }}
+        />
+      ) : editor ? (
         <ProductEditor
           product={editing}
           onCancel={() => setEditor(false)}
@@ -258,7 +287,8 @@ export default function CommerceTemplate({ id }: { id: string }) {
               if (["Dashboard", "Products", "Inventory"].includes(active)) {
                 setEditing(undefined);
                 setEditor(true);
-              } else setCreate(true);
+              } else if (active === "Orders") setOrderEditor(true);
+              else setCreate(true);
             }}
             date="Sep 23 - Oct 22"
             onExport={() =>

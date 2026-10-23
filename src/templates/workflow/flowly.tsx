@@ -1,3 +1,4 @@
+import { useFlowlyAgentsModel } from "./workflow-models";
 import { useState } from "react";
 import FlowCanvas from "@/blocks/application/flow-gantt-flow";
 import { FlowlyAgents } from "./flowly-agents";
@@ -90,6 +91,7 @@ const seed = [
   },
 ];
 export default function Flowly() {
+  const agentRecords = useFlowlyAgentsModel();
   const [view, setView] = useState("Dashboard");
   const [extraWorkflows, setExtraWorkflows] = useState<WorkflowRecord[]>([]);
   const [rows, setRows] = useState(seed);
@@ -489,6 +491,7 @@ export default function Flowly() {
         </div>
       ) : view === "Agents" ? (
         <FlowlyAgents
+          records={agentRecords}
           onOpen={(name) => {
             setSelected(name);
             setView("Agent Builder");

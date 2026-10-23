@@ -1,3 +1,8 @@
+import {
+  lucentServices,
+  type useLucentSecurityModel,
+  type useLucentIntegrationsModel,
+} from "./workflow-models";
 import { useState, type ReactNode } from "react";
 import { ExternalLink, Plus, Zap } from "lucide-react";
 import {
@@ -52,12 +57,8 @@ function Setting({
     </div>
   );
 }
-export function LucentSecurity() {
-  const [policies, setPolicies] = useState<Record<string, boolean>>({
-    password: true,
-    magic: true,
-  });
-  const [timeout, setTimeoutValue] = useState("4 hours");
+export function LucentSecurity({ model }: { model: ReturnType<typeof useLucentSecurityModel> }) {
+  const { policies, setPolicies, timeout, setTimeoutValue } = model;
   function toggle(id: string, title: string) {
     return (
       <Switch
@@ -132,49 +133,15 @@ export function LucentSecurity() {
     </div>
   );
 }
-const services = [
-  {
-    name: "Slack",
-    description: "Releases, on-call alerts, and approvals in your channels.",
-    connected: true,
-  },
-  {
-    name: "Stripe",
-    description: "Payment API incidents and failed webhook retries routed to on-call.",
-    connected: false,
-  },
-  { name: "Supabase", description: "DB and auth events for live dashboards.", connected: true },
-  {
-    name: "Automation",
-    description: "Automation runs: successes and failures in one place.",
-    connected: true,
-  },
-  {
-    name: "Zoom",
-    description: "Incident bridges opened automatically when a Critical incident is declared.",
-    connected: false,
-  },
-  { name: "Loom", description: "Async walkthroughs and feedback in one queue.", connected: true },
-  {
-    name: "Discord",
-    description: "Status updates pushed to your community server while an incident is open.",
-    connected: false,
-  },
-  { name: "Gemini", description: "AI for documents and content workflows.", connected: false },
-  {
-    name: "Spotify",
-    description: "Now-playing status shared to the team's release-day channel.",
-    connected: false,
-  },
-];
-export function LucentIntegrations() {
-  const [connections, setConnections] = useState(
-    Object.fromEntries(services.map((s) => [s.name, s.connected])),
-  );
+export function LucentIntegrations({
+  model,
+}: {
+  model: ReturnType<typeof useLucentIntegrationsModel>;
+}) {
+  const { connections, setConnections, webhooks, setWebhooks } = model;
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [url, setUrl] = useState("");
-  const [webhooks, setWebhooks] = useState<{ name: string; url: string }[]>([]);
   return (
     <div className="wf-lucent-settings">
       <div className="wf-page-heading">
@@ -188,7 +155,7 @@ export function LucentIntegrations() {
         </Button>
       </div>
       <div className="wf-grid wf-three wf-integration-grid">
-        {services.map((service) => (
+        {lucentServices.map((service) => (
           <Frame dense spacing="sm" key={service.name}>
             <FramePanel>
               <div className="wf-inline wf-between">

@@ -1,3 +1,11 @@
+import {
+  AtlasRoles,
+  AtlasAccess,
+  AtlasAudit,
+  useAtlasRoleState,
+  useAtlasAccessState,
+  useAtlasAuditState,
+} from "./atlas-access";
 import AtlasUsers from "./atlas-users";
 import { useState } from "react";
 import { CircleHelp, Settings, Users } from "lucide-react";
@@ -19,6 +27,9 @@ import {
   exportCsv,
 } from "./shared";
 export default function Atlas() {
+  const roleState = useAtlasRoleState();
+  const accessState = useAtlasAccessState();
+  const auditState = useAtlasAuditState();
   const [active, setActive] = useState("Dashboard");
   const [newUser, setNewUser] = useState(false);
   const [users, setUsers] = useState([
@@ -65,6 +76,27 @@ export default function Atlas() {
     >
       {["Users", "All Users"].includes(active) ? (
         <AtlasUsers />
+      ) : active === "Roles & Permissions" ? (
+        <>
+          <div className="bt-atlas-crumb">
+            Dashboard <span>›</span> Users <span>›</span> Roles & Permissions
+          </div>
+          <AtlasRoles model={roleState} />
+        </>
+      ) : active === "Access Control" ? (
+        <>
+          <div className="bt-atlas-crumb">
+            Dashboard <span>›</span> Users <span>›</span> Access Control
+          </div>
+          <AtlasAccess model={accessState} />
+        </>
+      ) : active === "Audit Log" ? (
+        <>
+          <div className="bt-atlas-crumb">
+            Dashboard <span>›</span> Users <span>›</span> Audit Log
+          </div>
+          <AtlasAudit model={auditState} />
+        </>
       ) : active === "Settings" ? (
         <SettingsPage brand="Bricklane" />
       ) : (

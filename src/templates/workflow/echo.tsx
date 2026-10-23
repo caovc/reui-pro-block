@@ -1,3 +1,5 @@
+import { useEchoScheduledModel } from "./workflow-models";
+import { echoArtifacts } from "./echo-artifact-data";
 import { demoAvatar } from "@/lib/demo-artwork";
 import { useState } from "react";
 import {
@@ -35,6 +37,7 @@ import { Sheet, SheetContent, SheetTitle, SheetDescription } from "@/components/
 import { toast } from "sonner";
 import { EchoProjects } from "./echo-projects";
 import { EchoScheduled } from "./echo-scheduled";
+import { EchoArtifactList, EchoArtifactPanel } from "./echo-artifacts";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 const recent = [
   "Stripe webhook 500s on charge.refunded",
@@ -51,9 +54,11 @@ const recent = [
   "Feature flag cleanup after 3.4",
 ];
 export default function Echo() {
+  const scheduledRecords = useEchoScheduledModel();
   const [view, setView] = useState("New chat");
   const [collapsed, setCollapsed] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
+  const [artifactIndex, setArtifactIndex] = useState<number | null>(null);
   const [group, setGroup] = useState("Chats");
   const [mode, setMode] = useState("Create");
   const [input, setInput] = useState("");
@@ -129,59 +134,71 @@ export default function Echo() {
         value={group}
         onChange={(x) => {
           setGroup(x);
-          if (x === "Artifacts") setView("Artifacts");
+          if (x === "Chats") setArtifactIndex(null);
         }}
       />
-      <nav className="echo-nav">
-        <Button
-          variant="secondary"
-          className="justify-start"
-          onClick={() => {
-            setView("New chat");
-            setMessages([]);
-            setOpen(false);
+      {group === "Chats" ? (
+        <>
+          <nav className="echo-nav">
+            <Button
+              variant="secondary"
+              className="justify-start"
+              onClick={() => {
+                setView("New chat");
+                setMessages([]);
+                setOpen(false);
+              }}
+            >
+              <Plus />
+              New Chat
+            </Button>
+            {[
+              { label: "Projects", icon: Folder, count: projects.length },
+              { label: "Scheduled", icon: Clock, count: scheduled.length },
+              { label: "Settings", icon: Settings },
+            ].map(({ label, icon: Icon, count }) => (
+              <Button
+                key={label}
+                variant="ghost"
+                className="justify-start"
+                onClick={() => {
+                  setView(label);
+                  setOpen(false);
+                }}
+              >
+                <Icon />
+                {label}
+                <span className="ml-auto">{count}</span>
+              </Button>
+            ))}
+          </nav>
+          <div className="echo-history">
+            {["Pinned", "Today", "Yesterday"].map((x, i) => (
+              <section key={x}>
+                <p>
+                  {x}
+                  <span>{i === 0 ? 3 : i === 1 ? 4 : 5}</span>
+                </p>
+                {recent
+                  .slice(i === 0 ? 0 : i === 1 ? 3 : 7, i === 0 ? 3 : i === 1 ? 7 : 12)
+                  .map((t) => (
+                    <button key={t} onClick={() => selectChat(t)}>
+                      {t}
+                    </button>
+                  ))}
+              </section>
+            ))}
+          </div>
+        </>
+      ) : (
+        <EchoArtifactList
+          selected={artifactIndex}
+          onSelect={(index) => {
+            selectChat(echoArtifacts[index].chat);
+            setArtifactIndex(index);
           }}
-        >
-          <Plus />
-          New Chat
-        </Button>
-        {[
-          { label: "Projects", icon: Folder, count: projects.length },
-          { label: "Scheduled", icon: Clock, count: scheduled.length },
-          { label: "Settings", icon: Settings },
-        ].map(({ label, icon: Icon, count }) => (
-          <Button
-            key={label}
-            variant="ghost"
-            className="justify-start"
-            onClick={() => {
-              setView(label);
-              setOpen(false);
-            }}
-          >
-            <Icon />
-            {label}
-            <span className="ml-auto">{count}</span>
-          </Button>
-        ))}
-      </nav>
-      <div className="echo-history">
-        {["Pinned", "Today", "Yesterday"].map((x, i) => (
-          <section key={x}>
-            <p>
-              {x}
-              <span>{i === 0 ? 3 : i === 1 ? 4 : 5}</span>
-            </p>
-            {recent
-              .slice(i === 0 ? 0 : i === 1 ? 3 : 7, i === 0 ? 3 : i === 1 ? 7 : 12)
-              .map((t) => (
-                <button key={t} onClick={() => selectChat(t)}>
-                  {t}
-                </button>
-              ))}
-          </section>
-        ))}
-      </div>
+        />
+      )}
       <div className="echo-footer">
         <Button variant="ghost" onClick={() => setView("Documentation")}>
           <BookOpen />
@@ -307,7 +324,7 @@ export default function Echo() {
             onDelete={(name) => setProjects(projects.filter((p) => p !== name))}
           />
         ) : view === "Scheduled" ? (
-          <EchoScheduled onOpen={selectChat} />
+          <EchoScheduled records={scheduledRecords} onOpen={selectChat} />
         ) : view === "Artifacts" ? (
           <div className="wf-content">
             <h1>Artifacts</h1>
@@ -487,6 +504,16 @@ export default function Echo() {
           </>
         )}
       </main>
+      {artifactIndex !== null && (
+        <EchoArtifactPanel
+          index={artifactIndex}
+          onSelect={(index) => {
+            selectChat(echoArtifacts[index].chat);
+            setArtifactIndex(index);
+          }}
+          onClose={() => setArtifactIndex(null)}
+        />
+      )}
       <CreateDialog
         title={`New ${view === "Projects" ? "project" : "scheduled task"}`}
         open={create && view !== "Projects"}

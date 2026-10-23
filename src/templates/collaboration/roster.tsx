@@ -1,3 +1,5 @@
+import { MiniTrend } from "@/blocks/data/sparkline-primitives";
+import { RosterHiring, useRosterHiringState } from "./roster-hiring";
 import {
   Frame,
   FrameHeader,
@@ -27,7 +29,6 @@ import {
   Modal,
   ReferenceSheet,
   Empty,
-  Sparkline,
   Export,
   Table,
   TableBody,
@@ -101,9 +102,9 @@ const baseEvents: Record<number, string> = {
 };
 export default function Roster() {
   const [view, setView] = useState("Dashboard");
+  const hiringState = useRosterHiringState();
   const [query, setQuery] = useState("");
   const [period, setPeriod] = useState("Year");
-  const month = 6;
   const [people, setPeople] = useState(initialPeople);
   const [pending, setPending] = useState(requests);
   const [modal, setModal] = useState("");
@@ -111,10 +112,7 @@ export default function Roster() {
   const [events, setEvents] = useState(baseEvents);
   const [eventDay, setEventDay] = useState(0);
   const [saved, setSaved] = useState(false);
-  const monthName = new Date(2026, month, 1).toLocaleDateString("en", {
-    month: "long",
-    year: "numeric",
-  });
+  const monthName = "Jul 1, 2026 - Jul 30, 2026";
   const calendar = (
     <RosterCalendar
       events={events}
@@ -197,16 +195,18 @@ export default function Roster() {
       query={query}
       setQuery={setQuery}
       extra={
-        <>
-          <Button size="sm" variant="outline" onClick={() => setView("Time")}>
-            <CalendarDays />
-            {monthName}
-          </Button>
-          <Export
-            rows={[["Name", "Department", "Role", "Location", "Type"], ...people]}
-            name="roster-people"
-          />
-        </>
+        view === "Dashboard" ? (
+          <>
+            <Button size="sm" variant="outline" onClick={() => setView("Time")}>
+              <CalendarDays />
+              {monthName}
+            </Button>
+            <Export
+              rows={[["Name", "Department", "Role", "Location", "Type"], ...people]}
+              name="roster-people"
+            />
+          </>
+        ) : undefined
       }
     >
       {view === "Dashboard" ? (
@@ -261,7 +261,20 @@ export default function Roster() {
                             ↗ {s[2]}
                           </Badge>
                         </span>
-                        <Sparkline color={i === 3 ? "#ef4444" : "var(--ct-green)"} seed={i} />
+                        <MiniTrend
+                          label={s[0] + " trend"}
+                          values={
+                            [
+                              [52, 48, 45, 35, 43, 52, 47, 52, 57, 62],
+                              [38, 40, 58, 70, 65, 47, 35, 42, 61, 45],
+                              [45, 43, 51, 58, 62, 65, 58, 51, 55, 48],
+                              [54, 48, 57, 42, 46, 41, 40, 47, 48, 43],
+                            ][i]
+                          }
+                          color={i === 3 ? "#ef4444" : "var(--ct-green)"}
+                          height={60}
+                          domain={[20, 75]}
+                        />
                       </div>
                     </div>
                   );
@@ -413,41 +426,7 @@ export default function Roster() {
           {calendar}
         </>
       ) : view === "Hiring" ? (
-        <>
-          <div className="ct-heading">
-            <div>
-              <h1>Hiring pipeline</h1>
-              <p>Candidates by stage. 36 candidates across 5 open roles.</p>
-            </div>
-            <Button onClick={() => setModal("Add candidate")}>
-              <Plus />
-              Add candidate
-            </Button>
-          </div>
-          <div className="ct-board">
-            {["Sourced", "Screening", "Interview", "Offer"].map((stage, i) => (
-              <div className="ct-board-col" key={stage}>
-                <h3>
-                  {stage}
-                  <Badge variant="outline">{[11, 10, 5, 5][i]}</Badge>
-                </h3>
-                {people.slice(i, i + 3).map((p) => (
-                  <Frame key={p[0]} spacing="sm">
-                    <FrameHeader>
-                      <FrameTitle>{p[0]}</FrameTitle>
-                      <FrameDescription>{p[2]}</FrameDescription>
-                    </FrameHeader>
-                    <FramePanel>
-                      <Button size="sm" variant="outline" onClick={() => setDetail([...p, stage])}>
-                        Review application
-                      </Button>
-                    </FramePanel>
-                  </Frame>
-                ))}
-              </div>
-            ))}
-          </div>
-        </>
+        <RosterHiring query={query} state={hiringState} />
       ) : (
         <div className="ct-settings">
           <div className="ct-heading">

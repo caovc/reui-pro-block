@@ -99,3 +99,29 @@ These findings are not marked resolved until their corresponding page and intera
 - Actual downloaded Flowly and Pulse starter ZIPs contain 113 and 87 files respectively and each passes an independent TypeScript/Vite build. The dependency-closure browser tests use the real downloaded ZIPs and TypeScript's parser to check local imports.
 
 The fixed combined candidate passes its production build. Of 49 browser cases, the first run passed 48 and identified a missing accessible heading after Flowly creation. The title was corrected without changing its appearance; the failed case and three related workflow cases then passed. The existing flow assertion was retained.
+
+### Domain pages and document reuse milestone
+
+Atlas now has separate Roles, Access and Audit pages; Verve has distinct Quick Stats, Attainment and Quota Plan pages; Cohort Hiring uses five actual Kanban stages. Miro has separate patient, doctor-visit and payment views. Roster uses real hierarchical DataGrid expansion and candidate-specific Kanban stages. Drive uses the free Tree and derives inherited access from the parent folder.
+
+Flux Flags has its own registry; Tempo Analytics uses ReuiDonut and a cohort grid. Echo Artifacts preserves the conversation while changing its sidebar. Mesh Documents directly reuses the repository's existing RichEditorBlock with original replacement content and two optional input props. The shared undo/redo fix refreshes the outline; default standalone behavior has a compatibility test.
+
+The fixed combined candidate passed 67 browser cases and a strict production build. Actual Echo (126 files), Roster (102 files) and Miro (119 files) source ZIPs each passed an independent TypeScript/Vite build. Eighteen desktop dark-theme states rendered without page errors or document overflow. Product/marketing corrections and cross-navigation state checks form later milestones.
+
+#### Free-editor lookup and specific gap
+
+Checked on 2026-10-23:
+
+- The [official free component index](https://reui.io/components) lists Code Block, Color Picker, Frame, Button Group and Textarea among its families. No complete document-editor family was found in that index.
+- [Free c-color-picker-10](https://reui.io/components/color-picker/c-color-picker-10) supplies color/highlight toolbar controls for a static paragraph. Its agent notes require connecting those values to an editor's commands, and direct complete writing surfaces to Rich Text Editor blocks.
+- The [official Rich Text Editor block page](https://reui.io/blocks/application/rich-text-editor) identifies its document/wiki editors as Pro or Ultimate blocks on Tiptap. This is reference material, not free registry source used here.
+
+This milestone consequently reuses the repository's independently implemented Pro Block. It does not claim an official free editor implementation. The retained custom contentEditable engine supplies document editing, undo/redo and outline behavior that the checked free examples do not supply. Its toolbar layout still differs from Mesh's minimal document interface. This reuse does not establish Tiptap or original Pro source equivalence; available free primitives remain preferred for surrounding layout, status, grids and navigation.
+
+### Final round-two release verification
+
+The final candidate based on 13ddf79 passes the strict production build and all 77 template browser cases. Tests include page identity and font checks, desktop/mobile document width, forbidden original-media requests, creation/editing, independent record actions, cross-Dashboard state retention, real ZIP dependency closure and original editor compatibility. Final Flowly (127 files), Surge (118 files) and Filespace (109 files) ZIPs each build independently. Scope oxfmt passes; oxlint has no errors and reports two development-only Fast Refresh export warnings for shared model hooks.
+
+Final corrections include complete product metadata/media persistence, free DataGrid variants, full-page order editing with free NumberField and cent-based 8% tax/shipping calculation, one-click Atlas approval, all changed domain models retained across navigation, and narrow-view typography, KPI stacking, authentication buttons and file-name metadata/actions. Local original branding and media are intentional differences.
+
+Remaining observed scope: Pulse Knowledge Base and Reports, Roster approvals and parts of settings, Cohort People, Flux Evals/Memory/Providers/Costs, Tempo AI Ops and several infrastructure routes are still simplified. Some chart series, precise dimensions and editor chrome differ. This pass does not claim complete page-by-page or pixel equivalence. Details and state evidence are kept in the three family HANDOFF.md files under the temporary audit directory. Git push and Pages status are checked separately from these local results.

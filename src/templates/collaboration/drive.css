@@ -759,3 +759,102 @@
   background: var(--foreground);
   opacity: 1;
 }
+.ct-inherited-alert {
+  margin-top: 12px;
+  background: var(--muted);
+}
+.ct-inherited-alert [data-slot="alert-title"] {
+  font-size: 12px;
+  font-weight: 400;
+}
+.ct-inherited-alert [data-slot="alert-action"] > button {
+  height: 26px;
+  font-size: 12px;
+  padding: 0 8px;
+}
+.ct-inherited-label {
+  display: inline-block;
+  font-size: 10px;
+  color: var(--muted-foreground);
+}
+.ct-inherited-footer {
+  flex-basis: 100%;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.ct-reference-sheet:has(.ct-inherited-alert) .ct-sheet-footer {
+  flex-wrap: wrap;
+}
+.ct-drive-mobile-meta {
+  display: none;
+}
+@media (max-width: 540px) {
+  .ct-drive-table table {
+    min-width: 0;
+    width: 100%;
+    table-layout: auto;
+  }
+  .ct-drive-table th:nth-child(n + 3):nth-child(-n + 6),
+  .ct-drive-table td:nth-child(n + 3):nth-child(-n + 6) {
+    display: none;
+  }
+  .ct-drive-table th:first-child,
+  .ct-drive-table td:first-child {
+    width: 40px;
+    padding-left: 16px;
+    padding-right: 8px;
+  }
+  .ct-drive-table th:last-child,
+  .ct-drive-table td:last-child {
+    width: 38px;
+    padding-left: 4px;
+    padding-right: 12px;
+  }
+  .ct-drive-table td:nth-child(2) {
+    width: auto;
+    padding-left: 8px;
+    padding-right: 4px;
+  }
+  .ct-drive-filename {
+    min-width: 0;
+    gap: 7px;
+  }
+  .ct-drive-filename > button:first-child {
+    min-width: 0;
+    gap: 10px;
+  }
+  .ct-drive-filetext {
+    min-width: 0;
+  }
+  .ct-drive-title {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 235px;
+  }
+  .ct-drive-mobile-meta {
+    display: block;
+    color: var(--muted-foreground);
+    font-weight: 400;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  .ct-drive-table td {
+    height: 50px;
+  }
+}
+@media (max-width: 540px) {
+  .ct-drive-login .ct-two {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .ct-drive-login [data-slot="card"] {
+    padding: 32px 24px;
+    gap: 24px;
+  }
+  .ct-login-heading {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}

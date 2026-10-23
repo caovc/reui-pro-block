@@ -1,0 +1,151 @@
+.ct-hiring-heading {
+  margin-bottom: 14px;
+}
+.ct-hiring-heading h1 {
+  font-size: 20px;
+  font-weight: 600;
+}
+.ct-hiring-heading > button {
+  width: 224px;
+}
+.ct-hiring-scroll {
+  width: 100%;
+  overflow: auto;
+  padding-bottom: 10px;
+}
+.ct-hiring-board {
+  display: flex;
+  width: max-content;
+  align-items: flex-start;
+  gap: 12px;
+}
+.ct-hiring-column {
+  width: 296px;
+  flex: 0 0 296px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 6px;
+  background: color-mix(in srgb, var(--muted) 40%, var(--background));
+}
+.ct-hiring-column h2 {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 5px 16px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.ct-hiring-column h2 small {
+  color: var(--muted-foreground);
+  font-weight: 400;
+}
+.ct-hiring-stage {
+  width: 9px;
+  height: 9px;
+  background: #90a1b8;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.ct-stage-1 {
+  background: #00a5ed;
+}
+.ct-stage-2 {
+  background: #9655ff;
+}
+.ct-stage-3 {
+  background: #ffa100;
+}
+.ct-stage-4 {
+  background: #00b989;
+}
+.ct-candidate-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  text-align: left;
+  gap: 6px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--background);
+}
+.ct-hiring-column [data-slot="kanban-column-content"] {
+  gap: 8px;
+}
+.ct-candidate-card .ct-person {
+  gap: 10px;
+  margin-bottom: 4px;
+}
+.ct-candidate-card .ct-avatar {
+  width: 28px;
+  height: 28px;
+}
+.ct-candidate-card strong {
+  font-size: 16px;
+  font-weight: 600;
+}
+.ct-candidate-card .ct-person small {
+  font-size: 14px;
+}
+.ct-candidate-meta {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 14px;
+}
+.ct-candidate-meta svg {
+  width: 15px;
+  height: 15px;
+  color: var(--muted-foreground);
+}
+.ct-candidate-meta > span,
+.ct-candidate-match > span {
+  color: var(--muted-foreground);
+}
+.ct-candidate-match {
+  font-size: 14px;
+  margin-bottom: -5px;
+}
+.ct-candidate-match b {
+  color: #9655ff;
+  font-weight: 600;
+}
+.ct-candidate-card [data-slot="progress"] {
+  height: 6px;
+}
+.ct-match-blue [data-slot="progress-indicator"] {
+  background: #00a5ed;
+}
+.ct-match-purple [data-slot="progress-indicator"] {
+  background: #9655ff;
+}
+.ct-candidate-foot {
+  margin-top: 4px;
+  font-size: 14px;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+}
+.ct-candidate-foot .ct-hiring-stage {
+  width: 5px;
+  height: 5px;
+}
+.ct-candidate-foot [data-slot="badge"] {
+  font-size: 12px;
+  padding: 0 5px;
+}
+.ct-candidate-stalled {
+  background: #fff8e7;
+  color: #985900;
+  border: 1px solid #ffe5af;
+  border-radius: 4px;
+  padding: 0 5px;
+}
+@media (max-width: 600px) {
+  .ct-hiring-heading {
+    align-items: center;
+  }
+  .ct-hiring-heading > button {
+    width: 180px;
+  }
+}

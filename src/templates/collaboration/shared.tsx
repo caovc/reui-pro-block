@@ -1,3 +1,6 @@
+import { SidebarNavigation } from "@/components/reui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import "./navigation.css";
 import { BrandGlyph } from "@/components/brand-mark";
 import { demoAvatar, demoPanel } from "@/lib/demo-artwork";
 import { useState, type ReactNode } from "react";
@@ -143,7 +146,6 @@ export function Shell({
 }) {
   const [mobile, setMobile] = useState(false);
   const [invite, setInvite] = useState(false);
-  const [peopleNav, setPeopleNav] = useState(false);
   const nav =
     kind === "roster"
       ? ["Dashboard", "Approvals", "People", "Hiring", "Time", "Settings"]
@@ -161,46 +163,25 @@ export function Shell({
         />
         <kbd>⌘K</kbd>
       </div>
-      <p className="ct-nav-label">{kind === "roster" ? "Workspace" : "Platform"}</p>
-      <nav className="ct-nav">
-        {nav.map((n, i) => {
-          const Icon = kind === "roster" ? icons[i] : pulseIcons[i];
-          return (
-            <Button
-              type="button"
-              key={n}
-              variant={n === view ? "secondary" : "ghost"}
-              className="justify-start"
-              aria-current={n === view ? "page" : undefined}
-              onClick={() => {
-                if (kind === "roster" && n === "People") setPeopleNav(!peopleNav);
-                else {
-                  setView(n);
-                  setMobile(false);
-                  setQuery("");
-                }
-              }}
-            >
-              <Icon />
-              {n}
-              {n === "Tickets" && <span className="ml-auto">24</span>}
-            </Button>
-          );
+      <SidebarNavigation
+        className="ct-free-navigation"
+        label={kind === "roster" ? "Workspace" : "Platform"}
+        active={kind === "roster" && view === "People" ? "Directory" : view}
+        items={nav.map((name, index) => {
+          const Icon = kind === "roster" ? icons[index] : pulseIcons[index];
+          return {
+            label: name,
+            icon: <Icon />,
+            badge: name === "Tickets" ? "24" : undefined,
+            children: kind === "roster" && name === "People" ? ["Directory", "Import"] : undefined,
+          };
         })}
-        {kind === "roster" && peopleNav && (
-          <div className="ct-nav-sub">
-            <Button
-              variant={view === "People" ? "secondary" : "ghost"}
-              onClick={() => setView("People")}
-            >
-              Directory
-            </Button>
-            <Button variant="ghost" onClick={() => setView("Import")}>
-              Import
-            </Button>
-          </div>
-        )}
-      </nav>
+        onSelect={(name) => {
+          setView(name === "Directory" ? "People" : name);
+          setMobile(false);
+          setQuery("");
+        }}
+      />
       {kind === "roster" ? (
         <>
           <p className="ct-nav-label">Headcount by department</p>
@@ -278,94 +259,96 @@ export function Shell({
     </>
   );
   return (
-    <div className={"ct-app ct-" + kind}>
-      {kind === "pulse" && (
-        <header className="ct-global">
-          <Mark />
-          <b>Help Desk</b>
-          <ChevronDown size={12} />
-          <span className="ct-muted">/</span>
-          <span>All products</span>
-          <ChevronDown size={12} />
-          <div className="ct-grow" />
-          <Avatar name="Mira Stone" />
-          <Avatar name="Leo Grant" />
-          <span className="ct-muted">+7</span>
-          <Button variant="outline" onClick={() => setInvite(true)}>
-            <Users />
-            Invite
-          </Button>
-        </header>
-      )}
-      <div className="ct-app-body">
-        <aside className="ct-sidebar">
-          {kind === "roster" && (
-            <div className="ct-side-brand">
-              <Mark />
-              <b>Roster</b>
-              <div className="ct-grow" />
+    <SidebarProvider className="ct-navigation-provider">
+      <div className={"ct-app ct-" + kind}>
+        {kind === "pulse" && (
+          <header className="ct-global">
+            <Mark />
+            <b>Help Desk</b>
+            <ChevronDown size={12} />
+            <span className="ct-muted">/</span>
+            <span>All products</span>
+            <ChevronDown size={12} />
+            <div className="ct-grow" />
+            <Avatar name="Mira Stone" />
+            <Avatar name="Leo Grant" />
+            <span className="ct-muted">+7</span>
+            <Button variant="outline" onClick={() => setInvite(true)}>
+              <Users />
+              Invite
+            </Button>
+          </header>
+        )}
+        <div className="ct-app-body">
+          <aside className="ct-sidebar">
+            {kind === "roster" && (
+              <div className="ct-side-brand">
+                <Mark />
+                <b>Roster</b>
+                <div className="ct-grow" />
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  aria-label="Notifications"
+                  onClick={() => toast("You are all caught up")}
+                >
+                  <Bell />
+                </Button>
+                <PanelLeft size={15} />
+              </div>
+            )}
+            {side}
+          </aside>
+          <main className="ct-main">
+            <header className="ct-pagebar">
               <Button
                 variant="ghost"
-                size="icon-sm"
-                aria-label="Notifications"
-                onClick={() => toast("You are all caught up")}
+                size="icon"
+                className="ct-mobile-menu"
+                aria-label="Open navigation"
+                onClick={() => setMobile(true)}
               >
-                <Bell />
+                <Menu />
               </Button>
-              <PanelLeft size={15} />
-            </div>
-          )}
-          {side}
-        </aside>
-        <main className="ct-main">
-          <header className="ct-pagebar">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="ct-mobile-menu"
-              aria-label="Open navigation"
-              onClick={() => setMobile(true)}
-            >
-              <Menu />
-            </Button>
-            <Home size={15} />
-            <span>{kind === "roster" ? "People" : "Home"}</span>
-            {(kind === "roster" || view !== "Dashboard") && (
-              <>
-                <span className="ct-muted">{kind === "roster" ? "–" : "/"}</span>
-                <b>{view}</b>
-              </>
-            )}
-            <div className="ct-grow" />
-            {extra}
-          </header>
-          {children}
-        </main>
+              <Home size={15} />
+              <span>{kind === "roster" ? "People" : "Home"}</span>
+              {(kind === "roster" || view !== "Dashboard") && (
+                <>
+                  <span className="ct-muted">{kind === "roster" ? "–" : "/"}</span>
+                  <b>{view === "People" ? "Directory" : view}</b>
+                </>
+              )}
+              <div className="ct-grow" />
+              {extra}
+            </header>
+            {children}
+          </main>
+        </div>
+        <Sheet open={mobile} onOpenChange={setMobile}>
+          <SheetContent side="left">
+            <SheetTitle>{kind === "roster" ? "Roster" : "Help Desk"}</SheetTitle>
+            <SheetDescription>Workspace navigation</SheetDescription>
+            {side}
+          </SheetContent>
+        </Sheet>
+        <Modal title="Invite a teammate" open={invite} onClose={() => setInvite(false)}>
+          <form
+            className="ct-form"
+            onSubmit={(e) => {
+              e.preventDefault();
+              setInvite(false);
+              toast.success("Invitation prepared for your teammate");
+            }}
+          >
+            <label>
+              Email
+              <Input type="email" required placeholder="name@company.com" />
+            </label>
+            <Button type="submit">Invite teammate</Button>
+          </form>
+        </Modal>
       </div>
-      <Sheet open={mobile} onOpenChange={setMobile}>
-        <SheetContent side="left">
-          <SheetTitle>{kind === "roster" ? "Roster" : "Help Desk"}</SheetTitle>
-          <SheetDescription>Workspace navigation</SheetDescription>
-          {side}
-        </SheetContent>
-      </Sheet>
-      <Modal title="Invite a teammate" open={invite} onClose={() => setInvite(false)}>
-        <form
-          className="ct-form"
-          onSubmit={(e) => {
-            e.preventDefault();
-            setInvite(false);
-            toast.success("Invitation prepared for your teammate");
-          }}
-        >
-          <label>
-            Email
-            <Input type="email" required placeholder="name@company.com" />
-          </label>
-          <Button type="submit">Invite teammate</Button>
-        </form>
-      </Modal>
-    </div>
+    </SidebarProvider>
   );
 }
 export function Empty({ reset }: { reset: () => void }) {

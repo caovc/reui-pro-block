@@ -1,0 +1,49 @@
+.ct-navigation-provider {
+  display: block;
+  min-height: 0;
+  width: 100%;
+}
+.ct-free-navigation [data-slot="sidebar-group-label"] {
+  height: 22px;
+  padding: 0 8px;
+  margin-bottom: 8px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 400;
+}
+.ct-free-navigation [data-slot="sidebar-menu"] {
+  gap: 2px;
+}
+.ct-free-navigation [data-slot="sidebar-menu-button"] {
+  height: 32px;
+  font-size: 14px;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 8px;
+}
+.ct-free-navigation [data-slot="sidebar-menu-button"][data-active="true"] {
+  background: var(--accent);
+  font-weight: 500;
+}
+.ct-free-navigation [data-slot="sidebar-menu-button"] > svg {
+  width: 16px;
+  height: 16px;
+}
+.ct-free-navigation [data-slot="sidebar-menu-sub"] {
+  margin-left: 15px;
+  padding-left: 14px;
+  gap: 2px;
+}
+.ct-free-navigation [data-slot="sidebar-menu-sub-button"] {
+  height: 30px;
+  font-size: 13px;
+}
+.ct-free-navigation [data-slot="sidebar-menu-sub-button"][data-active="true"] {
+  background: var(--accent);
+}
+.ct-roster .ct-free-navigation [data-slot="sidebar-menu-button"][data-active="true"],
+.ct-roster .ct-free-navigation [data-slot="sidebar-menu-sub-button"][data-active="true"] {
+  background: var(--background);
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 4%);
+}

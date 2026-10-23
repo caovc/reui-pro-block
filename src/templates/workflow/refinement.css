@@ -1,0 +1,215 @@
+.wf-flags-refined [data-slot="frame-panel-header"] {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.wf-flags-refined [data-slot="frame-panel"] {
+  padding: 0;
+}
+.wf-flags-refined .wf-segments {
+  justify-content: flex-start;
+  padding: 8px 16px;
+  background: transparent;
+  border-radius: 0;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+}
+.wf-refinement-filter {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.wf-refinement-filter input {
+  max-width: 280px;
+}
+.wf-related-heading {
+  margin-top: 28px;
+}
+.wf-flag-related {
+  display: block;
+  text-align: left;
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+  width: 100%;
+}
+.wf-flag-related small {
+  display: block;
+  color: var(--muted-foreground);
+  margin: 4px 0;
+}
+.wf-mesh-document {
+  margin: -16px;
+}
+.wf-mesh-document .document-editor {
+  min-height: calc(100dvh - var(--template-toolbar-height, 0px) - 50px);
+}
+@media (max-width: 640px) {
+  .wf-mesh-document {
+    margin: -12px;
+  }
+}
+.wf-tempo-reports [data-slot="frame-panel-header"] {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.wf-funnel-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+.wf-funnel-metrics p {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  min-height: 32px;
+}
+.wf-funnel-metrics strong {
+  display: block;
+  font-size: 24px;
+  margin: 8px 0;
+}
+.wf-funnel-stages {
+  display: flex;
+  height: 240px;
+  align-items: end;
+  gap: 20px;
+  padding: 24px 12px 0;
+}
+.wf-funnel-stages > div {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  align-items: center;
+}
+.wf-funnel-stages > div > div {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  border-radius: 4px 4px 0 0;
+  overflow: hidden;
+}
+.wf-funnel-stages i {
+  flex: 1;
+  background: var(--chart-1);
+}
+.wf-funnel-stages i:nth-child(2) {
+  background: var(--chart-2);
+}
+.wf-funnel-stages i:nth-child(3) {
+  background: var(--chart-3);
+}
+.wf-funnel-stages i:nth-child(4) {
+  background: var(--chart-4);
+}
+.wf-funnel-stages small {
+  color: var(--muted-foreground);
+  margin-top: 10px;
+}
+.wf-segment-table {
+  margin-top: 20px;
+}
+.wf-segment-table [data-slot="frame-panel"] {
+  padding: 0;
+}
+.wf-segment-table [data-slot="frame-panel-header"] {
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.wf-segment-table [data-slot="frame-panel-header"] label > span {
+  display: none;
+}
+@media (max-width: 640px) {
+  .wf-funnel-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .wf-segment-table [data-slot="frame-panel-header"] > div {
+    flex-wrap: wrap;
+  }
+}
+@media (max-width: 640px) {
+  .wf-mesh .wf-header-actions > button[aria-label="Notifications"] {
+    display: none;
+  }
+  .wf-mesh .wf-header-actions {
+    gap: 4px;
+  }
+  .wf-mesh .wf-header-actions > button {
+    padding-inline: 8px;
+  }
+}
+.echo-artifact-list {
+  flex: 1;
+  padding-top: 20px;
+  overflow: auto;
+}
+.echo-artifact-list p {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  padding: 0 8px 12px;
+}
+.echo-artifact-list button {
+  display: flex;
+  width: 100%;
+  gap: 8px;
+  padding: 8px;
+  align-items: center;
+  border-radius: 8px;
+  text-align: left;
+}
+.echo-artifact-list button.active {
+  background: var(--muted);
+}
+.echo-artifact-list button span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.echo-artifact-panel {
+  width: 42%;
+  min-width: 0;
+  flex: none;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  margin: 58px 4px 4px 0;
+  background: var(--background);
+  overflow: hidden;
+  height: calc(100dvh - var(--template-toolbar-height, 0px) - 62px);
+}
+.echo-artifact-panel > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.echo-artifact-code {
+  overflow: auto;
+  height: calc(100% - 70px);
+  padding: 16px;
+}
+.echo-root:has(.echo-artifact-panel) .echo-main {
+  width: 0;
+  min-width: 0;
+}
+.echo-root:has(.echo-artifact-panel) .echo-header {
+  min-width: 0;
+}
+@media (max-width: 640px) {
+  .echo-artifact-panel {
+    position: fixed;
+    z-index: 30;
+    inset: 50px 4px 4px;
+    width: auto;
+    height: auto;
+    margin: 0;
+  }
+}

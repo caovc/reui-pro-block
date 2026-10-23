@@ -27,6 +27,7 @@ import {
   Users,
 } from "lucide-react";
 import MeshCanvas from "./mesh-canvas";
+import { MeshDocuments } from "./mesh-documents";
 import { Person } from "./controls";
 import { blocks } from "@/data/catalog";
 import {
@@ -41,7 +42,6 @@ import {
   ExportButton,
   WorkspaceSettings,
 } from "./shared";
-import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { ProjectBoard } from "./boards";
 import { WorkflowGrid, type WorkflowField } from "./grid";
@@ -61,9 +61,6 @@ export default function Mesh() {
   const [resolved, setResolved] = useState<string[]>([]);
   const [mode, setMode] = useState("Due date");
   const [newTask, setNewTask] = useState(false);
-  const [doc, setDoc] = useState(
-    "Route Planner Product Brief\n\nHelp drivers plan better routes, reduce planning time by 30%, and work reliably offline.\n\nBeta launch: November 4\nGeneral availability: November 19\n\nSuccess criteria\n• 200 drivers in the beta program\n• Reliable maps on older phones\n• Clear re-routing explanations",
-  );
   const actions = [
     ["1 blocked task", "dispatcher override rules", "Nudge"],
     ["1 due today", "stop list designs", "Check"],
@@ -359,22 +356,7 @@ export default function Mesh() {
       ) : view === "Projects" ? (
         <ProjectBoard kind="mesh" createOpen={newTask} onCreateClose={() => setNewTask(false)} />
       ) : view === "Documents" ? (
-        <Panel
-          title="Route Planner Product Brief"
-          description="Shared document · Saved locally in this session"
-          action={
-            <Button variant="outline" size="sm" onClick={() => toast.success("Document saved")}>
-              Save document
-            </Button>
-          }
-        >
-          <Textarea
-            aria-label="Document content"
-            className="wf-document"
-            value={doc}
-            onChange={(e) => setDoc(e.target.value)}
-          />
-        </Panel>
+        <MeshDocuments />
       ) : view === "Settings" ? (
         <WorkspaceSettings />
       ) : (

@@ -1,3 +1,6 @@
+import { Alert, AlertTitle, AlertAction } from "@/components/reui/alert";
+import { sharedDriveFiles, folderDriveFiles } from "./drive-fixtures";
+import { DriveFolderTree } from "./drive-tree";
 import { DriveFilePanels } from "./drive-panels";
 import { ReferenceGrid } from "./reference-grid";
 import { useState } from "react";
@@ -103,8 +106,10 @@ const seeds: FileRecord[] = [
   parent: i === 1 ? "Spring Campaign" : "My Drive",
 }));
 const fileboxSeeds: FileRecord[] = [
+  ["Brand Library", "Theo Park", "Folder", "384.0 KB", "4 days ago"],
+  ["Spring Campaign", "Leo Grant", "Folder", "387.1 KB", "Today"],
   ["brand-tokens.json", "Kenji Tan", "JSON", "3.07 KB", "2 weeks ago"],
-  ["Client Deliverables", "Priya Patel", "Folder", "1.24 MB", "Last week"],
+  ["Client Deliverables", "Priya Patel", "Folder", "501.7 KB", "Today"],
   ["New Hire Onboarding.pdf", "Mira Stone", "PDF", "69.3 KB", "Last month"],
   ["Partner Media Kit.zip", "Elijah Morgan", "ZIP", "161.1 KB", "3 weeks ago"],
   ["Product Design", "Sana Qureshi", "Folder", "1.51 MB", "Last week"],
@@ -122,16 +127,6 @@ const fileboxSeeds: FileRecord[] = [
   star: false,
   parent: "My Drive",
 }));
-const folders = [
-  "Client Deliverables",
-  "Northwind Rebrand",
-  "Harbor Coffee",
-  "Brand Library",
-  "Spring Campaign",
-  "Studio Operations",
-  "Product Design",
-  "Samples",
-];
 function FileIcon({ type }: { type: string }) {
   const Icon =
     type === "Folder" ? Folder : type === "MP4" ? Video : type === "PDF" ? FileText : Image;
@@ -223,7 +218,7 @@ function Login({ onLogin }: { onLogin: () => void }) {
                 >
                   <label>
                     Email or username
-                    <Input type="email" defaultValue="alex.rivera@reui.io" required />
+                    <Input type="email" defaultValue="alex.rivera@bricklane.example" required />
                   </label>
                   <div className="ct-form-field">
                     <span className="ct-between">
@@ -263,7 +258,11 @@ function Login({ onLogin }: { onLogin: () => void }) {
 export default function Drive({ id }: { id: string }) {
   const [signed, setSigned] = useState(id !== "filebox");
   const [view, setView] = useState("Favourites");
-  const [files, setFiles] = useState<FileRecord[]>(id === "filebox" ? fileboxSeeds : seeds);
+  const [files, setFiles] = useState<FileRecord[]>(() => [
+    ...(id === "filebox" ? fileboxSeeds : seeds),
+    ...sharedDriveFiles,
+    ...folderDriveFiles,
+  ]);
   const [query, setQuery] = useState("");
   const [type, setType] = useState("All types");
   const [layout, setLayout] = useState("list");
@@ -298,17 +297,26 @@ export default function Drive({ id }: { id: string }) {
     },
     onError: (errors) => errors.forEach((error) => toast.error(error)),
   });
-  const shared = shares[target?.id || ""] ?? {
+  const parentFolder =
+    target && target.parent !== "My Drive"
+      ? files.find((file) => file.type === "Folder" && file.name === target.parent && !file.deleted)
+      : undefined;
+  const inherited = !!parentFolder;
+  const shareOwner = parentFolder?.owner || target?.owner || "Alex Rivera";
+  const permissionKey = parentFolder?.id || target?.id || "";
+  const productionTeam = target?.parent === "Spring Campaign" || target?.name === "Spring Campaign";
+  const teamName = productionTeam ? "Post Production" : "Client Services";
+  const shared = shares[permissionKey] ?? {
     people: [
-      ["Priya Patel", "priya.patel@reui.io", "Owner"],
-      ["Nora Vale", "nora.vale@reui.io", "Can edit"],
-      ["Theo Park", "theo.park@reui.io", "Can view"],
-    ],
-    team: "Can view",
+      [shareOwner, shareOwner.toLowerCase().replaceAll(" ", ".") + "@bricklane.example", "Owner"],
+      ["Nora Vale", "nora.vale@bricklane.example", "Can edit"],
+      ["Theo Park", "theo.park@bricklane.example", "Can view"],
+    ].filter(([name], index, people) => people.findIndex((person) => person[0] === name) === index),
+    team: productionTeam ? "Can comment" : "Can view",
     restriction: "Restricted",
   };
   function changeShare(change: Partial<typeof shared>) {
-    if (target) setShares((s) => ({ ...s, [target.id]: { ...shared, ...change } }));
+    if (target) setShares((s) => ({ ...s, [permissionKey]: { ...shared, ...change } }));
   }
   if (!signed)
     return (
@@ -325,9 +333,13 @@ export default function Drive({ id }: { id: string }) {
         (view === "Bin" ? f.deleted : !f.deleted) &&
         (view === "Favourites"
           ? f.star
-          : view === "Recent" || view === "Shared With Me" || view === "Bin"
-            ? true
-            : f.parent === view) &&
+          : view === "Shared With Me"
+            ? f.parent === "Shared With Me"
+            : view === "Recent"
+              ? ["Today", "Yesterday"].includes(f.modified)
+              : view === "Bin"
+                ? true
+                : f.parent === view) &&
         (type === "All types" || f.type === type) &&
         f.name.toLowerCase().includes(query.toLowerCase()),
     )
@@ -337,31 +349,6 @@ export default function Drive({ id }: { id: string }) {
     setQuery("");
     setSelected([]);
     setMobile(false);
-    if (!files.some((f) => f.parent === name)) {
-      setFiles((f) => [
-        ...f,
-        {
-          id: "folder-content-" + name,
-          name: name + " — Project brief.pdf",
-          owner: "Alex Rivera",
-          type: "PDF",
-          size: "128 KB",
-          modified: "Today",
-          star: false,
-          parent: name,
-        },
-        {
-          id: "folder-assets-" + name,
-          name: "Design assets",
-          owner: "Theo Park",
-          type: "Folder",
-          size: "12 items",
-          modified: "Yesterday",
-          star: false,
-          parent: name,
-        },
-      ]);
-    }
   }
   function openFile(f: FileRecord) {
     if (f.type === "Folder") openFolder(f.name);
@@ -377,25 +364,11 @@ export default function Drive({ id }: { id: string }) {
   }
   const side = (
     <>
-      <nav className="ct-drive-tree">
-        <Button variant="ghost" className="justify-start" onClick={() => setView("My Drive")}>
-          <ChevronDown />
-          <Folder />
-          My Drive
-        </Button>
-        {folders.map((f, i) => (
-          <Button
-            key={f}
-            variant={view === f ? "secondary" : "ghost"}
-            className={"justify-start " + (i === 1 || i === 2 ? "ct-nested-folder" : "")}
-            onClick={() => openFolder(f)}
-          >
-            {![1, 2, 5, 6, 7].includes(i) && <ChevronRight />}
-            <Folder />
-            {f}
-          </Button>
-        ))}
-      </nav>
+      <DriveFolderTree
+        folders={files.filter((file) => file.type === "Folder" && !file.deleted)}
+        view={view}
+        onNavigate={(name) => (name === "My Drive" ? setView(name) : openFolder(name))}
+      />
       <div className="ct-drive-side-bottom">
         {[
           ["Shared With Me", Users],
@@ -420,14 +393,12 @@ export default function Drive({ id }: { id: string }) {
         <div className="ct-storage">
           <div className="ct-between">
             <b>Storage</b>
-            <span>{id === "filebox" ? "0% full" : "63% full"}</span>
+            <span>63% full</span>
           </div>
           <div className="ct-progress">
-            <span
-              style={{ width: id === "filebox" ? "0%" : "63%", background: "var(--foreground)" }}
-            />
+            <span style={{ width: "63%", background: "var(--foreground)" }} />
           </div>
-          <p>643.6 MB of {id === "filebox" ? "2.00 TB" : "1.00 GB"} used</p>
+          <p>643.6 MB of 1.00 GB used</p>
           <Button variant="outline" onClick={() => setModal("Get More Storage")}>
             Get More Storage
           </Button>
@@ -469,7 +440,7 @@ export default function Drive({ id }: { id: string }) {
             <Menu />
           </Button>
           <span className="ct-drive-dot" />
-          <b>ReUI</b>
+          <b>Bricklane</b>
           <ChevronDown size={12} />
           <span className="ct-muted">/</span>
           <span>{view}</span>
@@ -610,8 +581,8 @@ export default function Drive({ id }: { id: string }) {
                   {[
                     ["Samples", "241.3 KB", "6 items"],
                     ["Product Design", "1.51 MB", "36 items"],
-                    ["Client Deliverables", "1.24 MB", "33 items"],
-                    ["Studio Operations", "315.7 KB", "6 items"],
+                    ["Spring Campaign", "387.1 KB", "10 items"],
+                    ["Client Deliverables", "501.7 KB", "13 items"],
                   ].map(([name, size, count]) => (
                     <button type="button" onClick={() => openFolder(name)} key={name}>
                       <Folder size={28} />
@@ -659,7 +630,25 @@ export default function Drive({ id }: { id: string }) {
                         <div className="ct-drive-filename">
                           <button type="button" onClick={() => openFile(f)}>
                             <FileIcon type={f.type} />
-                            <span>{f.name}</span>
+                            <span className="ct-drive-filetext">
+                              <span className="ct-drive-title">{f.name}</span>
+                              <small className="ct-drive-mobile-meta">
+                                {f.type} ·{" "}
+                                {f.type === "Folder"
+                                  ? {
+                                      "Client Deliverables": "13 items",
+                                      "Northwind Rebrand": "6 items",
+                                      "Brand Library": "8 items",
+                                      "Spring Campaign": "10 items",
+                                      "Studio Operations": "6 items",
+                                      "Product Design": "36 items",
+                                      Samples: "6 items",
+                                      "Harbor Coffee": "4 items",
+                                    }[f.name] || "0 items"
+                                  : f.size}{" "}
+                                · {f.modified}
+                              </small>
+                            </span>
                           </button>
                           <button
                             type="button"
@@ -837,6 +826,7 @@ export default function Drive({ id }: { id: string }) {
           <>
             <Select
               value={shared.restriction}
+              disabled={inherited}
               onValueChange={(restriction) => changeShare({ restriction })}
             >
               <SelectTrigger>
@@ -856,15 +846,43 @@ export default function Drive({ id }: { id: string }) {
             >
               Copy Link
             </Button>
+            {inherited && (
+              <small className="ct-inherited-footer">Managed in {target?.parent}</small>
+            )}
           </>
         }
       >
+        {inherited && (
+          <Alert className="ct-inherited-alert">
+            <Folder />
+            <AlertTitle>Inherits access from {target?.parent}</AlertTitle>
+            <AlertAction>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  if (parentFolder) setTarget(parentFolder);
+                  setInvite(false);
+                }}
+              >
+                Manage
+              </Button>
+            </AlertAction>
+          </Alert>
+        )}
         <section className="ct-detail-section">
           <div className="ct-between">
             <h4>
               PEOPLE WITH ACCESS <span>{shared.people.length} people</span>
             </h4>
-            <Button size="sm" variant="outline" onClick={() => setInvite(!invite)}>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => {
+                if (parentFolder) setTarget(parentFolder);
+                setInvite(!invite);
+              }}
+            >
               Invite
             </Button>
           </div>
@@ -891,12 +909,18 @@ export default function Drive({ id }: { id: string }) {
               <span>
                 <b>{name}</b>
                 <small>{email}</small>
+                {inherited && access !== "Owner" && (
+                  <small className="ct-inherited-label">
+                    {name === "Theo Park" ? "Pending · " : ""}Inherited
+                  </small>
+                )}
               </span>
               {access === "Owner" ? (
                 <span className="ct-subtle">Owner</span>
               ) : (
                 <Select
                   value={access}
+                  disabled={inherited}
                   onValueChange={(value) =>
                     changeShare({
                       people:
@@ -928,15 +952,23 @@ export default function Drive({ id }: { id: string }) {
           <div className="ct-share-member">
             <Users size={24} />
             <span>
-              <b>Client Services</b>
-              <small>6 members</small>
+              <b>{teamName}</b>
+              <small>
+                {productionTeam ? "8 members" : "6 members"}
+                {inherited ? " · Inherited" : ""}
+              </small>
             </span>
-            <Select value={shared.team} onValueChange={(team) => changeShare({ team })}>
-              <SelectTrigger aria-label="Client Services access">
+            <Select
+              value={shared.team}
+              disabled={inherited}
+              onValueChange={(team) => changeShare({ team })}
+            >
+              <SelectTrigger aria-label={teamName + " access"}>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="Can view">Can view</SelectItem>
+                <SelectItem value="Can comment">Can comment</SelectItem>
                 <SelectItem value="Can edit">Can edit</SelectItem>
               </SelectContent>
             </Select>
@@ -1127,7 +1159,7 @@ export default function Drive({ id }: { id: string }) {
             </label>
             <label>
               Workspace
-              <Input defaultValue="ReUI" required />
+              <Input defaultValue="Bricklane" required />
             </label>
             <Button type="submit">Save changes</Button>
             {id === "filebox" && (

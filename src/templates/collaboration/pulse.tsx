@@ -1,4 +1,4 @@
-import { PulseDirectory } from "./pulse-directory";
+import { PulseDirectory, initialDirectoryRecords } from "./pulse-directory";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
@@ -227,6 +227,8 @@ function ResolutionChart() {
 }
 export default function Pulse() {
   const [view, setView] = useState("Dashboard");
+  const [contactRecords, setContactRecords] = useState(() => initialDirectoryRecords(false));
+  const [memberRecords, setMemberRecords] = useState(() => initialDirectoryRecords(true));
   const [query, setQuery] = useState("");
   const [tickets, setTickets] = useState(initial);
   const [filter, setFilter] = useState("All");
@@ -734,7 +736,14 @@ export default function Pulse() {
           />
         </>
       ) : view === "Contacts" || view === "Team" ? (
-        <PulseDirectory key={view} team={view === "Team"} query={query} setQuery={setQuery} />
+        <PulseDirectory
+          key={view}
+          team={view === "Team"}
+          query={query}
+          setQuery={setQuery}
+          rows={view === "Team" ? memberRecords : contactRecords}
+          setRows={view === "Team" ? setMemberRecords : setContactRecords}
+        />
       ) : view === "Knowledge Base" ? (
         <>
           <div className="ct-heading">

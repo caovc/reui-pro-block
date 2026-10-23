@@ -6,10 +6,10 @@ import commerce8 from "./assets/product-4.svg";
 import commerce9 from "./assets/product-5.svg";
 import commerce10 from "./assets/product-6.svg";
 import commerce11 from "./assets/product-7.svg";
-import bag from "@/blocks/commerce/assets/bag.jpg";
-import jacket from "@/blocks/commerce/assets/jacket.jpg";
-import shoes from "@/blocks/commerce/assets/shoes.jpg";
-import shirt from "@/blocks/commerce/assets/shirt.jpg";
+import bag from "./assets/product-4.svg";
+import jacket from "./assets/product-6.svg";
+import shoes from "./assets/product-3.svg";
+import shirt from "./assets/product-1.svg";
 export type CatalogProduct = {
   name: string;
   vendor: string;
@@ -19,6 +19,12 @@ export type CatalogProduct = {
   price: string;
   status: string;
   image: string;
+  subtitle?: string;
+  description?: string;
+  productType?: string;
+  collections?: string;
+  tags?: string;
+  media?: { src: string; name: string }[];
   variantRows?: { color: string; size: string; sku: string; price: string; inventory: string }[];
 };
 export const catalogSeed: CatalogProduct[] = [
@@ -38,6 +44,26 @@ export const catalogSeed: CatalogProduct[] = [
   variants: Number(variants),
   price: String(price),
   status: String(status),
+  variantRows: Array.from({ length: Number(variants) }, (_, index) => ({
+    color: ["Black", "Olive", "Navy"][index % 3],
+    size: ["XS", "S", "M", "L", "XL"][index % 5],
+    sku: `${String(name)
+      .split(" ")
+      .map((part) => part[0])
+      .join("")
+      .toUpperCase()}-${String(index + 1).padStart(3, "0")}`,
+    price: String(
+      Number(String(price).match(/[0-9.]+/)?.[0] ?? 0) +
+        (index % 2 && String(price).includes("–")
+          ? Number(String(price).match(/\$([0-9.]+)$/)?.[1] ?? 0) -
+            Number(String(price).match(/[0-9.]+/)?.[0] ?? 0)
+          : 0),
+    ),
+    inventory: String(
+      Math.floor(Number(stock) / Number(variants)) +
+        (index < Number(stock) % Number(variants) ? 1 : 0),
+    ),
+  })),
   image:
     [commerce4, commerce5, commerce6, commerce7, commerce8, commerce9, commerce10, commerce11][
       Number(stock) === 1226

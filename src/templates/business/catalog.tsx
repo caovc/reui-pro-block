@@ -4,20 +4,9 @@ import { BusinessGrid } from "./grid";
 import { useState } from "react";
 import { Plus, X, SlidersHorizontal } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Button,
-  Input,
-  Panel,
-  Table,
-  TableHeader,
-  TableHead,
-  TableRow,
-  TableBody,
-  TableCell,
-  exportCsv,
-} from "./shared";
-import { Choice, SimpleChoice, Tone } from "./fidelity";
-import shirt from "@/blocks/commerce/assets/shirt.jpg";
+import { Button, Input, Panel, exportCsv } from "./shared";
+import { Choice, Tone } from "./fidelity";
+import shirt from "./assets/product-1.svg";
 export function ProductCatalog({
   products,
   onCreate,
@@ -150,6 +139,15 @@ export function ProductEditor({
 }) {
   const [title, setTitle] = useState(product?.name ?? "");
   const [status, setStatus] = useState(product?.status ?? "Draft");
+  const [subtitle, setSubtitle] = useState(product?.subtitle ?? "");
+  const [description, setDescription] = useState(product?.description ?? "");
+  const [productType, setProductType] = useState(product?.productType ?? "Physical");
+  const [collections, setCollections] = useState(product?.collections ?? "");
+  const [tags, setTags] = useState(product?.tags ?? "");
+  const [media, setMedia] = useState(
+    product?.media ?? (product ? [{ src: product.image, name: "Product image" }] : []),
+  );
+  const [variantsEdited, setVariantsEdited] = useState(false);
   const [category, setCategory] = useState(product?.category ?? "Apparel");
   const [vendor, setVendor] = useState(product?.vendor ?? "Manifest Atelier");
   const [variants, setVariants] = useState<
@@ -164,25 +162,45 @@ export function ProductEditor({
     <form
       onSubmit={async (e) => {
         e.preventDefault();
-        let image = product?.image ?? shirt;
-        const first = files[0]?.file;
-        if (first instanceof File)
-          image = await new Promise<string>((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => resolve(String(reader.result));
-            reader.onerror = () => reject(reader.error);
-            reader.readAsDataURL(first);
-          });
+        const uploaded = await Promise.all(
+          files
+            .filter((entry) => entry.file instanceof File)
+            .map(async (entry) => ({
+              name: entry.file.name,
+              src: await new Promise<string>((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(String(reader.result));
+                reader.onerror = () => reject(reader.error);
+                reader.readAsDataURL(entry.file as File);
+              }),
+            })),
+        );
+        const allMedia = [...media, ...uploaded];
+        const image = allMedia[0]?.src ?? shirt;
+        const prices = variants.map((variant) => Number(variant.price || 0));
+        const variantPrice = prices.length
+          ? Math.min(...prices) === Math.max(...prices)
+            ? `$${Math.min(...prices)}`
+            : `$${Math.min(...prices)} – $${Math.max(...prices)}`
+          : "$0";
         onSave({
           name: title,
+          subtitle,
+          description,
+          productType,
+          collections,
+          tags,
+          media: allMedia,
           vendor,
           category,
           status,
           stock: variants.length
             ? variants.reduce((s, v) => s + Number(v.inventory || 0), 0)
-            : (product?.stock ?? 0),
-          variants: variants.length || product?.variants || 0,
-          price: variants[0] ? "$" + variants[0].price : (product?.price ?? "$0"),
+            : variantsEdited
+              ? 0
+              : (product?.stock ?? 0),
+          variants: variants.length || (variantsEdited ? 0 : product?.variants || 0),
+          price: variantsEdited ? variantPrice : (product?.price ?? variantPrice),
           image,
           variantRows: variants,
         });
@@ -218,13 +236,20 @@ export function ProductEditor({
               <span>
                 Subtitle<small>A short tagline under the title.</small>
               </span>
-              <Input placeholder="Optional" />
+              <Input
+                aria-label="Subtitle"
+                placeholder="Optional"
+                value={subtitle}
+                onChange={(event) => setSubtitle(event.target.value)}
+              />
             </label>
             <label className="bt-editor-row">
               <span>
                 Description<small>Sales copy for the product page.</small>
               </span>
               <Textarea
+                value={description}
+                onChange={(event) => setDescription(event.target.value)}
                 aria-label="Description"
                 placeholder="Responsive knit running shoe with a cushioned midsole..."
                 rows={4}
@@ -256,6 +281,24 @@ export function ProductEditor({
                 {x}
               </p>
             ))}
+            {media.length > 0 && (
+              <div className="bt-upload-previews">
+                {media.map((item, index) => (
+                  <div key={`${item.name}-${index}`}>
+                    <img src={item.src} alt={item.name} />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon-sm"
+                      aria-label={`Remove existing media ${index + 1}`}
+                      onClick={() => setMedia((current) => current.filter((_, i) => i !== index))}
+                    >
+                      <X />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
             {files.length > 0 && (
               <div className="bt-upload-previews">
                 {files.map((f) => (
@@ -280,70 +323,63 @@ export function ProductEditor({
               <Button
                 type="button"
                 variant="outline"
-                onClick={() =>
+                onClick={() => {
+                  setVariantsEdited(true);
                   setVariants((v) => [
                     ...v,
                     { color: "", size: "", sku: "", price: "", inventory: "" },
-                  ])
-                }
+                  ]);
+                }}
               >
                 <Plus />
                 Add variant
               </Button>
             </div>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  {["Color", "Size", "SKU", "Price", "Inventory", ""].map((x, i) => (
-                    <TableHead key={i}>{x}</TableHead>
-                  ))}
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {variants.length ? (
-                  variants.map((v, i) => (
-                    <TableRow key={i}>
-                      {(["color", "size", "sku", "price", "inventory"] as const).map((k) => (
-                        <TableCell key={k}>
-                          <Input
-                            aria-label={`Variant ${i + 1} ${k}`}
-                            type={k === "price" || k === "inventory" ? "number" : "text"}
-                            min={0}
-                            value={v[k]}
-                            onChange={(e) =>
-                              setVariants((rows) =>
-                                rows.map((r, j) => (j === i ? { ...r, [k]: e.target.value } : r)),
-                              )
-                            }
-                          />
-                        </TableCell>
-                      ))}
-                      <TableCell>
-                        <Button
-                          type="button"
-                          size="icon-sm"
-                          variant="ghost"
-                          aria-label="Remove variant"
-                          onClick={() => setVariants((rows) => rows.filter((_, j) => j !== i))}
-                        >
-                          <X />
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={6}>
-                      <div className="bt-empty">
-                        {product?.variants
-                          ? `${product.variants} existing variants · ${product.stock.toLocaleString()} in stock. Existing inventory is retained when saving.`
-                          : "No variants yet. Add one to get started."}
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
+            {variants.length ? (
+              <BusinessGrid
+                headers={["Color", "Size", "SKU", "Price", "Inventory", ""]}
+                className="bt-product-variant-grid"
+                rows={variants.map((variant, index) => [
+                  ...(["color", "size", "sku", "price", "inventory"] as const).map((key) => (
+                    <Input
+                      key={key}
+                      aria-label={`Variant ${index + 1} ${key}`}
+                      type={key === "price" || key === "inventory" ? "number" : "text"}
+                      min={0}
+                      step={key === "price" ? "0.01" : undefined}
+                      value={variant[key]}
+                      onChange={(event) => {
+                        setVariantsEdited(true);
+                        setVariants((current) =>
+                          current.map((row, rowIndex) =>
+                            rowIndex === index ? { ...row, [key]: event.target.value } : row,
+                          ),
+                        );
+                      }}
+                    />
+                  )),
+                  <Button
+                    type="button"
+                    size="icon-sm"
+                    variant="ghost"
+                    key="remove"
+                    aria-label={`Remove variant ${index + 1}`}
+                    onClick={() => {
+                      setVariantsEdited(true);
+                      setVariants((current) => current.filter((_, rowIndex) => rowIndex !== index));
+                    }}
+                  >
+                    <X />
+                  </Button>,
+                ])}
+              />
+            ) : (
+              <div className="bt-empty">
+                {product?.variants && !variantsEdited
+                  ? `${product.variants} existing variants · ${product.stock.toLocaleString()} in stock. Existing inventory is retained when saving.`
+                  : "No variants yet. Add one to get started."}
+              </div>
+            )}
           </Panel>
         </div>
         <div className="bt-stack">
@@ -376,19 +412,38 @@ export function ProductEditor({
               </label>
               <label>
                 Type
-                <SimpleChoice label="Type" options={["Physical", "Digital"]} />
+                <Choice
+                  label="Type"
+                  value={productType}
+                  onChange={setProductType}
+                  options={["Physical", "Digital"]}
+                />
               </label>
               <label>
                 Vendor
-                <Input value={vendor} onChange={(e) => setVendor(e.target.value)} />
+                <Input
+                  aria-label="Vendor"
+                  value={vendor}
+                  onChange={(e) => setVendor(e.target.value)}
+                />
               </label>
               <label>
                 Collections
-                <Input placeholder="Add a collection" />
+                <Input
+                  aria-label="Collections"
+                  placeholder="Add a collection"
+                  value={collections}
+                  onChange={(event) => setCollections(event.target.value)}
+                />
               </label>
               <label>
                 Tags
-                <Input placeholder="Add a tag" />
+                <Input
+                  aria-label="Tags"
+                  placeholder="Add a tag"
+                  value={tags}
+                  onChange={(event) => setTags(event.target.value)}
+                />
               </label>
             </div>
           </Panel>

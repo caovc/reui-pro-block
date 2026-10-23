@@ -119,7 +119,11 @@ function FormatButton({
   );
 }
 
-export default function RichEditorBlock({ block }: BlockProps) {
+export default function RichEditorBlock({
+  block,
+  initialHtml,
+  documentTitle,
+}: BlockProps & { initialHtml?: string; documentTitle?: string }) {
   const kind = Number(block.id.split("-").pop());
   const editor = useRef<HTMLDivElement>(null);
   const savedRange = useRef<Range | null>(null);
@@ -160,7 +164,7 @@ export default function RichEditorBlock({ block }: BlockProps) {
 
   useEffect(() => {
     if (!editor.current) return;
-    const html = initialDocument(kind);
+    const html = initialHtml ?? initialDocument(kind);
     editor.current.innerHTML = html;
     history.current = [html];
     future.current = [];
@@ -178,7 +182,7 @@ export default function RichEditorBlock({ block }: BlockProps) {
     return () => {
       if (timer.current) clearInterval(timer.current);
     };
-  }, [block.id, kind]);
+  }, [block.id, kind, initialHtml]);
 
   function snapshot() {
     const html = editor.current?.innerHTML ?? "";
@@ -190,6 +194,9 @@ export default function RichEditorBlock({ block }: BlockProps) {
     setCanRedo(future.current.length > 0);
     setDocumentHtml(html);
     setIsSaved(false);
+    refreshOutline();
+  }
+  function refreshOutline() {
     setOutline(
       Array.from(editor.current?.querySelectorAll("h1,h2,h3") ?? []).map((node, index) => ({
         title: node.textContent ?? "",
@@ -292,6 +299,7 @@ export default function RichEditorBlock({ block }: BlockProps) {
     setIsSaved(false);
     savedRange.current = null;
     refreshRevisionsFromDocument();
+    refreshOutline();
   }
   function redo() {
     if (!future.current.length || !editor.current) return;
@@ -304,6 +312,7 @@ export default function RichEditorBlock({ block }: BlockProps) {
     setIsSaved(false);
     savedRange.current = null;
     refreshRevisionsFromDocument();
+    refreshOutline();
   }
   function insertRevision(range: Range, id: string, before: string, after: string) {
     range.deleteContents();
@@ -557,7 +566,7 @@ export default function RichEditorBlock({ block }: BlockProps) {
     toast.success("Suggestion applied to the document");
   }
   function download() {
-    const html = `<!doctype html><html lang="en"><meta charset="utf-8"><title>${escapeHtml(block.name)}</title><body>${editor.current?.innerHTML ?? ""}</body></html>`;
+    const html = `<!doctype html><html lang="en"><meta charset="utf-8"><title>${escapeHtml(documentTitle ?? block.name)}</title><body>${editor.current?.innerHTML ?? ""}</body></html>`;
     const blob = new Blob([html], { type: "text/html" });
     const anchor = document.createElement("a");
     anchor.href = URL.createObjectURL(blob);
@@ -595,7 +604,7 @@ export default function RichEditorBlock({ block }: BlockProps) {
         <div className="flex items-center gap-3">
           <FileText className="size-4 text-muted-foreground" />
           <div>
-            <h2 className="text-sm font-semibold">{block.name}</h2>
+            <h2 className="text-sm font-semibold">{documentTitle ?? block.name}</h2>
             <p className="mt-1 text-[10px] text-muted-foreground">
               {isSaved
                 ? "All changes saved"

@@ -1,6 +1,6 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { IconTile } from "@/components/reui/icon-tile";
-import { useState } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 import { Plus, Filter, Settings2, MoreHorizontal, Building2 } from "lucide-react";
 import { DomainRecordGrid, type DomainField } from "@/blocks/data/grid-advanced-model-grid";
 import {
@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, Button, Input, ReferenceSheet } from "./shared";
 
-type DirectoryRecord = {
+export type DirectoryRecord = {
   id: string;
   name: string;
   email: string;
@@ -182,7 +182,7 @@ const blank: DirectoryRecord = {
   teams: "Tier 1",
   status: "Active",
 };
-function initialRecords(team: boolean): DirectoryRecord[] {
+export function initialDirectoryRecords(team: boolean): DirectoryRecord[] {
   return team
     ? members.map(([name, title, role, access, teams, status], i) => ({
         ...blank,
@@ -240,12 +240,15 @@ export function PulseDirectory({
   team,
   query,
   setQuery,
+  rows,
+  setRows,
 }: {
   team: boolean;
   query: string;
   setQuery: (value: string) => void;
+  rows: DirectoryRecord[];
+  setRows: Dispatch<SetStateAction<DirectoryRecord[]>>;
 }) {
-  const [rows, setRows] = useState(() => initialRecords(team));
   const [hidden, setHidden] = useState<string[]>([]);
   const [filter, setFilter] = useState("All");
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });

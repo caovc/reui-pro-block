@@ -1,3 +1,4 @@
+import { ClinicSidebar, ClinicWorkspace, useClinicRecords } from "./miro-workspace";
 import { Agenda, AppointmentCalendar } from "./miro-calendar";
 import { IconTile } from "@/components/reui/icon-tile";
 import { DayBreakdown, BookingSheet } from "./miro-detail";
@@ -35,6 +36,9 @@ type Appointment = {
   end?: string;
 };
 export default function Miro() {
+  const clinicRecords = useClinicRecords();
+  const [clinicCreate, setClinicCreate] = useState(false);
+  const [clinicRecord, setClinicRecord] = useState<string | null>(null);
   const [active, setActive] = useState("Dashboard");
   const [query, setQuery] = useState("");
   const [create, setCreate] = useState(false);
@@ -80,7 +84,10 @@ export default function Miro() {
       id="miro"
       brand="Miro"
       active={active}
-      setActive={setActive}
+      setActive={(page) => {
+        setActive(page);
+        setClinicRecord(null);
+      }}
       items={[
         "Dashboard",
         "Appointments",
@@ -95,16 +102,32 @@ export default function Miro() {
         <span className="bt-clinic-header">
           <strong>{active === "Dashboard" ? "Clinic Dashboard" : active}</strong>
           <span>
-            <Button variant="outline" onClick={() => toast.success("Clinic report prepared")}>
-              Export
-            </Button>
-            <Button onClick={() => navigator.clipboard?.writeText(location.href)}>Share</Button>
+            {["Customers", "Staff", "Payments"].includes(active) ? (
+              <Button
+                onClick={() => (active === "Staff" ? setCreate(true) : setClinicCreate(true))}
+              >
+                {active === "Customers"
+                  ? "+ Add Patient"
+                  : active === "Staff"
+                    ? "+ New visit"
+                    : "+ New invoice"}
+              </Button>
+            ) : (
+              <>
+                <Button variant="outline" onClick={() => toast.success("Clinic report prepared")}>
+                  Export
+                </Button>
+                <Button onClick={() => navigator.clipboard?.writeText(location.href)}>Share</Button>
+              </>
+            )}
           </span>
         </span>
       }
       aside={
         active === "Appointments" ? (
           <Agenda bookings={appointments.slice(5)} onCreate={() => setCreate(true)} />
+        ) : ["Customers", "Staff", "Payments"].includes(active) ? (
+          <ClinicSidebar active={active} data={clinicRecords} onSelect={setClinicRecord} />
         ) : (
           <>
             <div className="bt-row">
@@ -169,6 +192,17 @@ export default function Miro() {
     >
       {active === "Settings" ? (
         <SettingsPage brand="Miro Clinic" />
+      ) : ["Customers", "Staff", "Payments"].includes(active) ? (
+        <ClinicWorkspace
+          active={active}
+          data={clinicRecords}
+          record={clinicRecord}
+          onRecord={setClinicRecord}
+          onBook={() => setCreate(true)}
+          bookings={appointments.slice(5)}
+          create={clinicCreate}
+          onCreateChange={setClinicCreate}
+        />
       ) : (
         <>
           <Heading
@@ -345,51 +379,7 @@ export default function Miro() {
                 </Panel>
               )}
             </>
-          ) : active === "Customers" ? (
-            <Panel title="Patient directory" description="Treatment history and contact details">
-              <DataTable
-                columns={["Patient", "Email", "Next visit", "Balance"]}
-                rows={appointments.map((a) => [
-                  a.patient,
-                  a.patient.toLowerCase().replace(" ", ".") + "@example.com",
-                  a.time,
-                  "$0.00",
-                ])}
-                onRow={(i) =>
-                  toast(
-                    `${appointments[i].patient}: ${appointments[i].procedure} · ${appointments[i].doctor}`,
-                  )
-                }
-              />
-            </Panel>
-          ) : active === "Staff" ? (
-            <Panel title="Clinical team" description="Dentists and available chair time">
-              <DataTable
-                columns={["Name", "Specialty", "Chair", "Open time"]}
-                rows={doctors.map((d, i) => [
-                  d,
-                  ["Restorative", "Hygiene", "Surgery", "General", "Cosmetic"][i],
-                  String(i + 1),
-                  ["6h 45m", "6h", "7h 15m", "3h", "4h 30m"][i],
-                ])}
-                onRow={() => setCreate(true)}
-              />
-            </Panel>
-          ) : (
-            <Panel title="Invoice ledger" description="Invoices derived from patient treatments">
-              <DataTable
-                columns={["Invoice", "Patient", "Treatment", "Amount", "Status"]}
-                rows={appointments.map((a, i) => [
-                  "INV-" + (2041 + i),
-                  a.patient,
-                  a.procedure,
-                  ["$120", "$95", "$650", "$180", "$280"][i % 5],
-                  i === 2 ? "Unpaid" : "Paid",
-                ])}
-                onRow={(i) => toast(`Invoice INV-${2041 + i} ready to print`)}
-              />
-            </Panel>
-          )}
+          ) : null}
         </>
       )}
       <BookingSheet

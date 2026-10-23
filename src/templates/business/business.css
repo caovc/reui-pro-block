@@ -3049,3 +3049,1150 @@
   height: 32px;
   font-size: 13px;
 }
+
+/* Reference-explored role matrix, quota plan, and CRM reporting pages. */
+.bt-permission-panel > [data-slot="frame-panel"],
+.bt-quota-plan > [data-slot="frame-panel"],
+.bt-attainment > [data-slot="frame-panel"] {
+  padding: 0;
+}
+.bt-permission-panel [data-slot="tabs-list"] {
+  display: flex;
+  overflow-x: auto;
+  max-width: 100%;
+  padding: 0 16px;
+}
+.bt-permission-panel [data-slot="tabs-trigger"] {
+  flex-shrink: 0;
+  gap: 8px;
+  min-height: 44px;
+}
+.bt-permission-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-block: 1px solid var(--border);
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.bt-permission-summary .bt-pills {
+  flex-wrap: wrap;
+}
+.bt-permission-grid th:first-child {
+  width: 300px;
+  min-width: 280px;
+}
+.bt-permission-grid td:not(:first-child),
+.bt-permission-grid th:not(:first-child) {
+  text-align: center;
+  border-left: 1px solid var(--border);
+}
+.bt-permission-grid [data-slot="switch"][data-state="checked"] {
+  background: var(--bt-green);
+}
+.bt-permission-grid .bt-table-sub {
+  margin-top: 3px;
+}
+.bt-save-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.bt-save-footer > span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.bt-save-footer > span svg {
+  color: var(--bt-green);
+}
+.bt-access-panel [data-slot="alert"] {
+  margin-bottom: 16px;
+}
+.bt-access-panel .bt-official-grid td:nth-child(4) {
+  max-width: 320px;
+  min-width: 200px;
+  white-space: normal;
+}
+.bt-quota-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+  gap: 16px;
+}
+.bt-quota-toolbar > input {
+  max-width: 320px;
+}
+.bt-quota-toolbar [data-slot="select-trigger"] {
+  width: 130px;
+}
+.bt-inline-input {
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  height: 26px;
+  border-color: transparent;
+  font-size: 14px;
+}
+.bt-inline-input:hover,
+.bt-inline-input:focus-visible {
+  border-color: var(--border);
+}
+.bt-quota-name {
+  width: 180px;
+  font-weight: 500;
+}
+.bt-inline-currency {
+  display: flex;
+  align-items: center;
+  max-width: 120px;
+}
+.bt-inline-currency input {
+  width: 100px;
+  font-variant-numeric: tabular-nums;
+}
+.bt-confidence {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.bt-confidence > span {
+  display: flex;
+  gap: 3px;
+}
+.bt-confidence i {
+  width: 15px;
+  height: 6px;
+  border-radius: 3px;
+}
+.bt-quota-plan [data-slot="switch"] {
+  width: 24px;
+  height: 14px;
+  padding: 1px;
+}
+.bt-quota-plan [data-slot="switch-thumb"] {
+  width: 12px;
+  height: 12px;
+}
+.bt-quick-grid {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+.bt-quick-grid > .bt-panel {
+  min-width: 0;
+}
+.bt-quick-grid > .bt-panel:first-child > [data-slot="frame-panel"] {
+  padding: 20px;
+}
+.bt-source-totals {
+  display: flex;
+  gap: 40px;
+  margin: 0 0 20px;
+}
+.bt-source-totals small {
+  display: block;
+  color: var(--muted-foreground);
+  font-size: 11px;
+}
+.bt-source-totals strong {
+  display: block;
+  font-size: 24px;
+  margin-top: 4px;
+}
+.bt-source-bar {
+  display: flex;
+  gap: 2px;
+  height: 10px;
+  background: var(--muted);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.bt-source-bar i {
+  border-radius: 8px;
+}
+.bt-source-list {
+  display: grid;
+  gap: 8px;
+}
+.bt-source-list > div {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.bt-source-list > div > i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.bt-source-list > div > span:last-child {
+  margin-left: auto;
+  text-align: right;
+}
+.bt-source-list small {
+  display: block;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.bt-source-note {
+  padding-top: 8px;
+  color: var(--muted-foreground);
+  font-size: 11px;
+}
+.bt-stage-list {
+  display: grid;
+  gap: 12px;
+  padding: 0 0 70px;
+}
+.bt-stage-list > div {
+  height: 32px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+.bt-stage-list > div > span:first-child {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 24px;
+}
+.bt-stage-list i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-left: 12px;
+  position: relative;
+}
+.bt-stage-list > div > span:nth-of-type(2),
+.bt-stage-list strong {
+  position: relative;
+}
+.bt-stage-list strong {
+  margin-left: auto;
+  padding-right: 4px;
+}
+.bt-quick-stats .bt-time-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  align-items: center;
+}
+.bt-time-cell i {
+  width: 45px;
+  height: 4px;
+  background: var(--bt-green);
+  border-radius: 3px;
+}
+.bt-time-cell small {
+  color: var(--muted-foreground);
+  font-size: 10px;
+}
+.bt-attainment-tabs {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--border);
+}
+.bt-attainment-filter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+}
+.bt-attainment-filter > input {
+  width: 260px;
+}
+.bt-attainment-filter > button {
+  width: 180px;
+}
+.bt-attainment-filter > span {
+  margin-left: auto;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.bt-attainment .bt-official-grid td:not(:first-child),
+.bt-attainment .bt-official-grid th:not(:first-child) {
+  text-align: right;
+}
+.bt-attainment-totals {
+  display: grid;
+  grid-template-columns: 300px repeat(5, minmax(100px, 1fr));
+  min-width: 800px;
+  background: var(--muted);
+  padding: 12px;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.bt-attainment-totals strong {
+  color: var(--foreground);
+  font-size: 14px;
+  font-weight: 400;
+}
+.bt-attainment {
+  overflow: auto;
+}
+.bt-verve .bt-source-donut {
+  width: 150px;
+  height: 150px;
+  flex-shrink: 0;
+}
+
+.bt-verve .bt-content:has(.bt-quota-plan) > .bt-heading .bt-actions > button:first-child {
+  display: none;
+}
+@media (max-width: 800px) {
+  .bt-quick-grid {
+    grid-template-columns: 1fr;
+  }
+  .bt-quota-toolbar {
+    flex-wrap: wrap;
+  }
+  .bt-quota-toolbar > input {
+    max-width: none;
+  }
+  .bt-attainment-filter {
+    flex-wrap: wrap;
+  }
+  .bt-attainment-filter > span {
+    margin-left: 0;
+  }
+}
+.bt-cohort .bt-content:has(.bt-cohort-hiring) > .bt-heading {
+  display: none;
+}
+.bt-hiring-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+.bt-hiring-heading > button {
+  width: 225px;
+}
+.bt-hiring-board {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  overflow-x: auto;
+  padding: 0 4px 14px;
+  gap: 12px;
+}
+.bt-hiring-column {
+  flex: 0 0 298px;
+  min-width: 298px;
+  padding: 5px;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--muted) 40%, var(--background));
+  border-radius: 16px;
+}
+.bt-hiring-column > header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 7px 14px;
+}
+.bt-hiring-column > header > i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.bt-hiring-column > header > small {
+  color: var(--muted-foreground);
+}
+.bt-hiring-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 90px;
+}
+.bt-hiring-card {
+  padding: 14px 12px 12px;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  background: var(--background);
+  cursor: default;
+}
+.bt-candidate-title {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.bt-candidate-title > img {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+}
+.bt-candidate-title > button:not([data-slot="kanban-item-handle"]) {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  text-align: left;
+}
+.bt-candidate-title strong {
+  font-size: 16px;
+}
+.bt-candidate-title span {
+  color: var(--muted-foreground);
+}
+.bt-candidate-title [data-slot="kanban-item-handle"] {
+  margin-left: auto;
+  color: var(--muted-foreground);
+  cursor: grab;
+}
+.bt-candidate-meta {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.bt-candidate-meta p {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.bt-candidate-meta p > svg,
+.bt-candidate-meta p > span {
+  color: var(--muted-foreground);
+}
+.bt-match-score {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  color: var(--muted-foreground);
+}
+.bt-match-score > i {
+  flex-basis: 100%;
+  height: 6px;
+  border-radius: 4px;
+  background: var(--muted);
+  margin-top: 3px;
+  overflow: hidden;
+}
+.bt-match-score > i > span {
+  display: block;
+  height: 100%;
+  border-radius: 4px;
+}
+.bt-hiring-card footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-top: 12px;
+}
+.bt-hiring-card footer > small {
+  font-size: 13px;
+  color: var(--muted-foreground);
+}
+.bt-candidate-sheet .bt-form {
+  margin-top: 24px;
+}
+@media (max-width: 600px) {
+  .bt-hiring-heading > button {
+    width: 190px;
+  }
+  .bt-hiring-column {
+    flex-basis: 278px;
+    min-width: 278px;
+  }
+}
+
+.bt-atlas .bt-permission-panel,
+.bt-atlas .bt-access-panel,
+.bt-atlas .bt-audit-panel {
+  padding: 0;
+  gap: 0;
+}
+.bt-atlas .bt-permission-panel > [data-slot="frame-panel"],
+.bt-atlas .bt-audit-panel > [data-slot="frame-panel"] {
+  padding: 0 !important;
+}
+.bt-atlas .bt-permission-panel > [data-slot="frame-panel-header"],
+.bt-atlas .bt-access-panel > [data-slot="frame-panel-header"],
+.bt-atlas .bt-audit-panel > [data-slot="frame-panel-header"] {
+  padding: 20px 16px;
+}
+.bt-permission-grid [data-slot="switch"] {
+  width: 24px;
+  height: 14px;
+  padding: 1px;
+}
+.bt-permission-grid [data-slot="switch-thumb"] {
+  width: 12px;
+  height: 12px;
+}
+.bt-verve .bt-content:has(.bt-goal-page) > .bt-heading > div:first-child {
+  display: block;
+}
+.bt-quick-grid > .bt-panel {
+  padding: 0;
+  gap: 0;
+}
+.bt-quick-grid > .bt-panel > [data-slot="frame-panel-header"] {
+  padding: 20px 20px 16px;
+}
+.bt-quick-grid > .bt-panel > [data-slot="frame-panel"] {
+  padding: 0 20px 20px;
+}
+.bt-quick-grid > .bt-panel:first-child > [data-slot="frame-panel"] {
+  padding: 0 20px 20px;
+}
+.bt-quick-grid .bt-panel-heading > button {
+  width: 112px;
+  flex-shrink: 0;
+}
+.bt-quick-grid .bt-panel-heading > div {
+  min-width: 0;
+}
+.bt-quick-grid .bt-panel-heading > div:first-child {
+  flex: 1;
+}
+.bt-quick-grid .bt-source-list > div {
+  padding: 10px 12px;
+}
+.bt-quick-stats > .bt-panel > [data-slot="frame-panel"] {
+  padding: 0;
+}
+.bt-quota-plan .bt-grid-toolbar {
+  padding: 12px 20px;
+}
+.bt-quota-plan .bt-official-grid td {
+  height: 56px;
+}
+.bt-attainment .bt-official-grid td {
+  height: 37px;
+}
+.bt-audit-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid var(--border);
+}
+.bt-audit-metrics > div {
+  padding: 16px;
+  border-right: 1px solid var(--border);
+}
+.bt-audit-metrics strong,
+.bt-audit-metrics small {
+  display: block;
+  font-size: 12px;
+}
+.bt-audit-metrics small {
+  color: var(--muted-foreground);
+  margin-top: 3px;
+}
+.bt-audit-metrics b {
+  display: block;
+  font-size: 26px;
+  margin-top: 8px;
+}
+.bt-audit-panel .bt-grid-toolbar {
+  padding: 16px;
+}
+.bt-audit-detail {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 14px;
+  font-size: 14px;
+}
+.bt-audit-detail dt {
+  color: var(--muted-foreground);
+}
+@media (max-width: 600px) {
+  .bt-audit-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+/* Clinic secondary workspaces, explored against the public Customers/Staff/Payments routes. */
+.bt-patient-nav {
+  display: grid;
+  gap: 8px;
+}
+.bt-patient-nav h3 {
+  margin: 4px 0;
+  color: var(--muted-foreground);
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+.bt-patient-nav > button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 0;
+  text-align: left;
+}
+.bt-patient-nav > button > img {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+}
+.bt-patient-nav > button > span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 12px;
+}
+.bt-patient-nav small {
+  display: block;
+  font-size: 10px;
+  color: var(--muted-foreground);
+}
+.bt-clinic-load {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  font-size: 12px;
+  padding: 4px 0;
+}
+.bt-clinic-load > small {
+  width: 100%;
+}
+.bt-invoice-nav > button {
+  border-left: 2px solid var(--border);
+  padding-left: 10px;
+  margin-bottom: 6px;
+}
+.bt-invoice-nav [data-slot="badge"] {
+  align-self: flex-start;
+}
+.bt-clinic-page-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+.bt-clinic-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.bt-clinic-metrics > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+}
+.bt-clinic-metrics strong {
+  display: block;
+  font-size: 13px;
+}
+.bt-clinic-metrics small {
+  display: block;
+  margin-top: 3px;
+  font-size: 11px;
+  color: var(--muted-foreground);
+}
+.bt-clinic-metrics b {
+  display: block;
+  margin-top: 12px;
+  font-size: 26px;
+}
+.bt-clinic-metric-ring {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+}
+.bt-clinic-records {
+  padding: 0;
+  gap: 0;
+}
+.bt-clinic-records > [data-slot="frame-panel-header"] {
+  padding: 16px;
+}
+.bt-clinic-records > [data-slot="frame-panel"] {
+  padding: 0;
+}
+.bt-clinic-records .bt-grid-toolbar {
+  padding: 12px 16px;
+}
+.bt-clinic-filter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+.bt-clinic-filter > span {
+  white-space: nowrap;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.bt-clinic-filter input {
+  max-width: 240px;
+}
+.bt-clinic-filter > [data-slot="select-trigger"] {
+  width: 140px;
+}
+.bt-clinic-person {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+  white-space: nowrap;
+}
+.bt-clinic-person > img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+.bt-clinic-person small {
+  display: block;
+  font-size: 11px;
+  color: var(--muted-foreground);
+  margin-top: 3px;
+}
+.bt-clinic-details {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 20px;
+  padding: 24px 0 32px;
+}
+.bt-clinic-details dt {
+  color: var(--muted-foreground);
+}
+.bt-patient-profile {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 28px 0 14px;
+}
+.bt-patient-profile > img {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+}
+.bt-patient-profile strong {
+  display: block;
+  margin-bottom: 5px;
+}
+.bt-clinic-staff-board {
+  display: flex;
+  align-items: flex-start;
+  overflow: auto;
+  width: 100%;
+  gap: 12px;
+  padding-bottom: 16px;
+}
+.bt-clinic-staff-column {
+  flex: 0 0 270px;
+  min-width: 270px;
+  padding: 6px;
+  background: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+.bt-clinic-staff-column > header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 4px 14px;
+  font-size: 13px;
+}
+.bt-clinic-staff-column > header > img {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+.bt-clinic-staff-column > header > [data-slot="badge"] {
+  margin-left: auto;
+}
+.bt-clinic-staff-column [data-slot="kanban-column-content"] {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.bt-staff-visit {
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--background);
+}
+.bt-staff-visit > .bt-pills {
+  justify-content: space-between;
+  font-size: 10px;
+}
+.bt-staff-visit [data-slot="kanban-item-handle"] {
+  margin-left: auto;
+  cursor: grab;
+}
+.bt-staff-visit > button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  margin-top: 12px;
+  width: 100%;
+}
+.bt-staff-visit > button > small {
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.bt-staff-visit > button > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 7px;
+  font-size: 12px;
+}
+.bt-staff-visit > button img {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+.bt-staff-visit b {
+  display: block;
+  font-size: 12px;
+  margin-top: 3px;
+  font-weight: 500;
+}
+@media (max-width: 1050px) {
+  .bt-clinic-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .bt-clinic-filter {
+    flex-wrap: wrap;
+  }
+  .bt-clinic-filter input {
+    max-width: none;
+  }
+}
+@media (max-width: 500px) {
+  .bt-clinic-metrics {
+    gap: 10px;
+  }
+  .bt-clinic-metrics > div {
+    padding: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .bt-clinic-metric-ring {
+    width: 48px;
+    height: 48px;
+  }
+}
+.bt-clinic-metrics > div {
+  display: block;
+  padding: 16px;
+}
+.bt-clinic-metric-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.bt-clinic-metric-label > span {
+  min-width: 0;
+}
+.bt-clinic-metric-label > span small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 135px;
+}
+.bt-clinic-metric-label > [data-slot="badge"] {
+  margin-left: auto;
+  padding-inline: 4px;
+  font-size: 10px;
+}
+.bt-clinic-metric-label > [data-slot="icon-tile"] {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+}
+.bt-clinic-metric-value {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14px;
+}
+.bt-clinic-metric-value b {
+  margin: 0;
+  font-size: 24px;
+}
+.bt-clinic-metric-value > div {
+  width: 72px;
+}
+.bt-treatment-billed {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 24px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  margin-bottom: 14px;
+}
+.bt-treatment-billed > div {
+  display: flex;
+  gap: 14px;
+  padding-top: 8px;
+}
+.bt-treatment-billed strong {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+.bt-treatment-billed small {
+  display: block;
+  color: var(--muted-foreground);
+  font-size: 11px;
+  margin-top: 8px;
+  letter-spacing: 0.4px;
+}
+.bt-treatment-billed b {
+  display: block;
+  font-size: 30px;
+  line-height: 1.2;
+}
+.bt-treatment-billed p {
+  color: var(--muted-foreground);
+  margin-top: 8px;
+  font-size: 13px;
+}
+.bt-treatment-billed > dl {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding-left: 24px;
+  border-left: 1px solid var(--border);
+}
+.bt-treatment-billed dt {
+  font-size: 11px;
+  color: var(--muted-foreground);
+  letter-spacing: 0.5px;
+}
+.bt-treatment-billed dd {
+  font-size: 20px;
+  font-weight: 600;
+}
+.bt-treatment-billed > dl small {
+  margin-top: 0;
+}
+.bt-clinic-records > [data-slot="frame-panel-header"] {
+  padding: 12px 16px;
+}
+.bt-clinic-records > [data-slot="frame-panel"] {
+  padding: 0 !important;
+}
+.bt-clinic-records .bt-grid-toolbar {
+  padding: 8px 16px;
+  border-block: 1px solid var(--border);
+}
+.bt-clinic-records .bt-official-grid td {
+  height: 51px;
+}
+.bt-miro .bt-sidebar:has(.bt-patient-nav) > strong:first-of-type {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  flex-shrink: 0;
+  margin-inline: -16px;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--border);
+}
+.bt-miro .bt-sidebar:has(.bt-patient-nav) {
+  gap: 14px;
+}
+.bt-miro .bt-sidebar:has(.bt-patient-nav) > [aria-label="Search patient directory"] {
+  flex-shrink: 0;
+}
+.bt-clinic-staff-column {
+  padding: 6px;
+  background: color-mix(in srgb, var(--muted) 35%, var(--background));
+}
+.bt-clinic-staff-column > header {
+  padding: 8px 4px 14px;
+}
+.bt-staff-visit > button > .bt-staff-patient-time {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 8px;
+  gap: 8px;
+}
+.bt-staff-patient-time > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.bt-staff-visit > button {
+  gap: 4px;
+}
+.bt-staff-patient-time > b {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 5px;
+  border: 1px solid color-mix(in srgb, var(--bt-cyan) 45%, var(--border));
+  background: color-mix(in srgb, var(--bt-cyan) 10%, var(--background));
+  border-radius: 7px;
+  font-size: 11px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.bt-staff-visit.bt-visit-in-chair {
+  border-color: #f2be38;
+  background: color-mix(in srgb, #fff0b9 12%, var(--background));
+}
+.bt-staff-visit.bt-visit-unpaid {
+  border-color: #ff7f90;
+  background: color-mix(in srgb, #ffb4c0 8%, var(--background));
+}
+@media (max-width: 1050px) {
+  .bt-clinic-metric-label > [data-slot="badge"] {
+    display: none;
+  }
+}
+@media (max-width: 700px) {
+  .bt-treatment-billed {
+    grid-template-columns: 1fr;
+  }
+  .bt-treatment-billed > dl {
+    border-left: 0;
+    border-top: 1px solid var(--border);
+    padding: 16px 0 0;
+  }
+}
+/* Commerce new-order layout and domain calculations follow the explored public order editor. */
+.bt-order-page > .bt-heading {
+  margin-bottom: 16px;
+}
+.bt-order-page > .bt-heading h1 {
+  font-weight: 600;
+}
+.bt-order-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+}
+.bt-order-editor .bt-stack {
+  gap: 16px;
+}
+.bt-order-editor .bt-panel > [data-slot="frame-panel-header"] {
+  padding: 10px 16px;
+}
+.bt-order-editor .bt-panel > [data-slot="frame-panel"] {
+  padding: 16px;
+}
+.bt-order-editor .bt-panel:has(.bt-order-grid) > [data-slot="frame-panel"] {
+  padding: 0;
+}
+.bt-order-grid th:first-child,
+.bt-order-grid td:first-child {
+  min-width: 240px;
+}
+.bt-order-grid th:nth-child(2),
+.bt-order-grid td:nth-child(2) {
+  min-width: 190px;
+}
+.bt-order-grid td:nth-child(3) {
+  min-width: 85px;
+  width: 85px;
+}
+.bt-order-grid td:nth-child(4),
+.bt-order-grid td:nth-child(5) {
+  min-width: 100px;
+}
+.bt-order-grid [data-slot="select-trigger"] {
+  width: 100%;
+}
+.bt-order-grid [data-slot="number-field"] {
+  width: 80px;
+}
+.bt-order-summary {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+.bt-order-summary p {
+  font-size: 13px;
+  color: var(--muted-foreground);
+  margin-top: 12px;
+}
+.bt-order-summary p + p {
+  margin-top: 5px;
+}
+.bt-order-totals {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: linear-gradient(
+    120deg,
+    color-mix(in srgb, #fff3d2 24%, var(--background)),
+    var(--background)
+  );
+  display: grid;
+  gap: 12px;
+  font-size: 14px;
+}
+.bt-order-totals > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.bt-order-totals > div:last-child {
+  font-weight: 600;
+}
+@media (max-width: 900px) {
+  .bt-order-summary {
+    grid-template-columns: 1fr;
+  }
+}
+.bt-order-editor .bt-panel > [data-slot="frame-panel-header"] {
+  height: auto;
+  min-height: 58px;
+}
+@media (max-width: 760px) {
+  .bt-order-editor .bt-panel-heading {
+    align-items: flex-start;
+  }
+  .bt-order-editor .bt-panel-heading > .bt-pills {
+    flex-wrap: wrap;
+  }
+}
+.bt-order-page > .bt-heading {
+  height: auto;
+  min-height: 50px;
+}
+.bt-order-editor > .bt-stack:first-child > .bt-panel:first-child .bt-panel-heading {
+  position: relative;
+}
+.bt-order-editor
+  > .bt-stack:first-child
+  > .bt-panel:first-child
+  .bt-panel-heading
+  > [data-slot="badge"] {
+  position: absolute;
+  left: 74px;
+  top: 0;
+}

@@ -1,3 +1,4 @@
+import { CohortHiring, useCohortHiringState } from "./cohort-hiring";
 import CohortCalendar from "./cohort-calendar";
 import CohortApprovals from "./cohort-approvals";
 import {
@@ -85,6 +86,7 @@ const initialPeople = [
   ["Priya Nair", "Sales", "Account Executive", "Singapore", "On leave"],
 ];
 export default function Cohort() {
+  const hiringState = useCohortHiringState();
   const [logged, setLogged] = useState(false);
   const [active, setActive] = useState("Dashboard");
   const [period, setPeriod] = useState("Year");
@@ -266,35 +268,7 @@ export default function Cohort() {
           ) : active === "Time" ? (
             calendar
           ) : (
-            <Panel title="Hiring pipeline" description="Candidates by stage.">
-              <div className="bt-deal-board">
-                {[
-                  ["Sourced", "12", "Avery Foster", "Jordan Hayes"],
-                  ["Screening", "10", "Elena Martin", "Oliver Brooks"],
-                  ["Interview", "5", "Samira Khan", "Elliot Park"],
-                  ["Offer", "5", "Joon-ho Park", "Sofia Rossi"],
-                ].map(([stage, count, ...names]) => (
-                  <section className="bt-deal-column" key={stage}>
-                    <header>
-                      <strong>{stage}</strong>
-                      <Badge variant="secondary">{count}</Badge>
-                    </header>
-                    {names.map((name) => (
-                      <div className="bt-info" key={name}>
-                        <strong>{name}</strong>Senior Engineer
-                        <Button
-                          variant="link"
-                          size="sm"
-                          onClick={() => setEvent(`${name} · Senior Engineer · ${stage}`)}
-                        >
-                          View application
-                        </Button>
-                      </div>
-                    ))}
-                  </section>
-                ))}
-              </div>
-            </Panel>
+            <CohortHiring model={hiringState} />
           )}
         </>
       )}

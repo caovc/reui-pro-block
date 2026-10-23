@@ -1813,3 +1813,227 @@
     top: 58px;
   }
 }
+/* The console reuses the project's compact ReUI chart compositions. */
+.ct-console-stats {
+  margin-top: 14px;
+}
+.ct-console-stats small {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.ct-console-stats small svg {
+  width: 12px;
+  height: 12px;
+}
+.ct-console-stats strong {
+  font-size: 36px;
+}
+.ct-console-stats [data-chart] svg {
+  height: 100%;
+}
+.ct-console-throughput-summary {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0 14px;
+}
+.ct-console-throughput-summary span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.ct-console-throughput-summary b {
+  font-size: 16px;
+}
+.ct-console-throughput-summary small {
+  font-size: 11px;
+  color: #999;
+}
+.ct-console-chart-times {
+  display: flex;
+  justify-content: space-between;
+  color: #999;
+  font-size: 10px;
+  margin-top: 4px;
+}
+.ct-console-panel:has(.ct-console-throughput-summary) {
+  min-height: 380px;
+}
+.ct-lime-mobile-break {
+  display: none;
+}
+@media (max-width: 540px) {
+  .ct-lime-header .ct-lime-cta {
+    display: none;
+  }
+  .ct-lime-header .ct-lime-theme {
+    display: inline-flex;
+  }
+  .ct-lime-header .ct-toolbar {
+    gap: 16px;
+  }
+  .ct-lime-hero {
+    margin-top: 47px;
+  }
+  .ct-lime-hero h1 .ct-lime-desktop-break,
+  .ct-lime-intro > p br {
+    display: none;
+  }
+  .ct-lime-hero h1 .ct-lime-mobile-break {
+    display: initial;
+  }
+  .ct-lime-intro {
+    margin-top: 52px;
+    gap: 44px;
+    margin-bottom: 84px;
+  }
+  .ct-lime-intro > p {
+    font-size: 18px;
+    line-height: 28px;
+  }
+  .ct-lime-intro > div {
+    width: 100%;
+    gap: 24px;
+  }
+  .ct-lime-intro .ct-toolbar {
+    flex-direction: column;
+    width: 100%;
+    gap: 13px;
+  }
+  .ct-lime-intro .ct-toolbar > button {
+    width: 100%;
+  }
+  .ct-lime-intro small {
+    flex-wrap: nowrap;
+    font-size: 14px;
+    gap: 8px;
+  }
+  .ct-lime-social-copy {
+    flex: 1;
+    line-height: 21px;
+  }
+  .ct-lime-people {
+    flex-shrink: 0;
+    margin-right: 0;
+  }
+  .ct-console-bar {
+    height: 32px;
+    padding: 4px 10px;
+  }
+  .ct-console-bar > span:not(:first-child) {
+    display: none;
+  }
+  .ct-console-bar > .ct-console-status {
+    display: inline-block;
+    margin-left: auto;
+    font-size: 0;
+  }
+  .ct-console-status b {
+    font-size: 10px;
+  }
+  .ct-console-body aside {
+    display: flex;
+    flex-direction: column;
+    width: 32px;
+    padding: 6px 2px;
+  }
+  .ct-console-body aside > small {
+    display: none;
+  }
+  .ct-console-body aside > button {
+    padding: 6px;
+    font-size: 0;
+  }
+  .ct-console-search {
+    padding: 6px;
+    border: 0;
+    font-size: 0;
+  }
+  .ct-console-body aside svg {
+    width: 12px;
+    height: 12px;
+  }
+  .ct-console-stats strong {
+    font-size: 22px;
+  }
+}
+@media (max-width: 540px) {
+  .ct-overture main {
+    margin-top: 40px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 80px;
+  }
+  .ct-overture .ct-early {
+    font-size: 12px;
+    line-height: 20px;
+    padding: 3px 10px;
+  }
+  .ct-overture h1 {
+    font-size: 20px;
+    line-height: 26px;
+    letter-spacing: 0;
+    margin-top: 32px;
+    max-width: 350px;
+  }
+  .ct-overture main > p {
+    font-size: 14px;
+    line-height: 28px;
+    margin-top: 24px;
+  }
+  .ct-feature-pills {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 24px;
+    margin-bottom: 52px;
+  }
+  .ct-feature-pills > span {
+    width: 200px;
+    height: 32px;
+    padding: 6px 14px;
+    justify-content: flex-start;
+    font-size: 12px;
+  }
+  .ct-waitlist {
+    height: auto;
+    flex-direction: column;
+    align-items: stretch;
+    border-radius: 32px;
+    width: calc(100% + 8px);
+    max-width: none;
+    padding: 4px;
+  }
+  .ct-waitlist input {
+    width: 100%;
+    height: 44px;
+    padding-left: 18px;
+  }
+  .ct-waitlist button {
+    width: 100%;
+    height: 40px;
+  }
+  .ct-overture main > small {
+    font-size: 12px;
+    line-height: 20px;
+    margin-top: 16px;
+  }
+  .ct-wait-count {
+    bottom: 14px;
+    right: 12px;
+    padding: 6px 8px;
+    gap: 8px;
+    border-radius: 12px;
+  }
+  .ct-wait-count > span {
+    width: 28px;
+    height: 28px;
+  }
+  .ct-wait-count b {
+    font-size: 16px;
+  }
+  .ct-wait-count small {
+    margin-top: 0;
+  }
+}

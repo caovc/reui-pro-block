@@ -1,3 +1,4 @@
+import { useTempoReportsModel } from "./workflow-models";
 import { useState } from "react";
 import {
   Activity,
@@ -27,6 +28,7 @@ import {
   Detail,
   WorkspaceSettings,
 } from "./shared";
+import { TempoReports } from "./tempo-reports";
 import { TempoCalendar } from "./tempo-calendar";
 import { toast } from "sonner";
 import { WorkflowGrid, type WorkflowField } from "./grid";
@@ -95,7 +97,9 @@ const seed = [
   },
 ];
 export default function Tempo() {
+  const segmentRecords = useTempoReportsModel();
   const [view, setView] = useState("Home");
+  const [reportView, setReportView] = useState("Analytics");
   const [period, setPeriod] = useState("Week");
   const [rows, setRows] = useState(seed);
   const [query, setQuery] = useState("");
@@ -259,6 +263,21 @@ export default function Tempo() {
       }
       extra={
         <>
+          {view === "Reports" && (
+            <div className="wf-task-subnav">
+              {["Activity", "Analytics"].map((label) => (
+                <Button
+                  key={label}
+                  variant={reportView === label ? "secondary" : "ghost"}
+                  size="sm"
+                  onClick={() => setReportView(label)}
+                >
+                  {label}
+                </Button>
+              ))}
+            </div>
+          )}
+
           <div className="wf-nav-group">
             <p>Saved Views</p>
             {[
@@ -302,7 +321,13 @@ export default function Tempo() {
         </>
       }
     >
-      {view === "Home" || view === "Reports" ? (
+      {view === "Reports" ? (
+        reportView === "Activity" ? (
+          <TempoCalendar />
+        ) : (
+          <TempoReports records={segmentRecords} />
+        )
+      ) : view === "Home" ? (
         <>
           <Panel
             title="Performance Overview"

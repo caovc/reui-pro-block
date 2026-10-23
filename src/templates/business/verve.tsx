@@ -1,3 +1,12 @@
+import {
+  VerveQuotaPlan,
+  VerveQuickStats,
+  VerveAttainment,
+  useVerveQuotaState,
+  useVerveLogState,
+  useVerveTargetState,
+} from "./verve-goals";
+import { ReuiDonut } from "@/blocks/data/reui-free-chart-primitives";
 import VervePipeline from "./verve-pipeline";
 import { IconTile } from "@/components/reui/icon-tile";
 import VerveToday from "./verve-today";
@@ -41,6 +50,10 @@ const reps = [
   ["Owen Clarke", "Account Executive", "78%", "7h", "2", "Watch"],
 ];
 export default function Verve() {
+  const quotaState = useVerveQuotaState();
+  const logState = useVerveLogState();
+  const targetState = useVerveTargetState();
+  const [donutActive, setDonutActive] = useState<number | null>(null);
   const [active, setActive] = useState("Dashboard");
   const [period, setPeriod] = useState("Week");
   const [query, setQuery] = useState("");
@@ -170,7 +183,13 @@ export default function Verve() {
         <>
           <Heading
             title={"Home › CRM › " + active}
-            date="Jun 22 to Jul 12, 2026"
+            date={
+              active === "Quick Stats"
+                ? "This week"
+                : active === "Attainment"
+                  ? "This quarter"
+                  : "Jun 22 to Jul 12, 2026"
+            }
             action={
               active === "Pipeline" ? "Add deal" : active === "Today" ? "New meeting" : undefined
             }
@@ -182,7 +201,13 @@ export default function Verve() {
               ])
             }
           />
-          {["Dashboard", "Quick Stats", "Attainment", "Quota Plan", "Reports"].includes(active) ? (
+          {active === "Quota Plan" ? (
+            <VerveQuotaPlan model={quotaState} />
+          ) : active === "Quick Stats" ? (
+            <VerveQuickStats model={logState} />
+          ) : active === "Attainment" ? (
+            <VerveAttainment model={targetState} />
+          ) : ["Dashboard", "Reports"].includes(active) ? (
             <>
               <div className="bt-grid-4">
                 {[
@@ -336,14 +361,38 @@ export default function Verve() {
                     action={<Period value={period} onChange={setPeriod} />}
                   >
                     <div className="bt-donut-layout">
-                      <div className="bt-donut">
-                        <span>
-                          Sourced
-                          <strong>
-                            {period === "Week" ? "$842K" : period === "Month" ? "$1.24M" : "$4.82M"}
-                          </strong>
-                        </span>
-                      </div>
+                      <ReuiDonut
+                        label="Pipeline source distribution"
+                        rows={[
+                          { name: "Inbound", value: 47, color: "#00b981" },
+                          { name: "Outbound", value: 23, color: "#3485f6" },
+                          { name: "Partner", value: 25, color: "#f2a200" },
+                          { name: "Other", value: 5, color: "var(--muted)" },
+                        ]}
+                        active={donutActive}
+                        onActive={setDonutActive}
+                        innerRadius={49}
+                        outerRadius={70}
+                        className="bt-source-donut"
+                        center={
+                          <text textAnchor="middle">
+                            <tspan x="0" dy="-5" className="fill-muted-foreground text-[11px]">
+                              Sourced
+                            </tspan>
+                            <tspan
+                              x="0"
+                              dy="19"
+                              className="fill-foreground text-base font-semibold"
+                            >
+                              {period === "Week"
+                                ? "$842K"
+                                : period === "Month"
+                                  ? "$1.24M"
+                                  : "$4.82M"}
+                            </tspan>
+                          </text>
+                        }
+                      />
                       <div>
                         {[
                           ["Inbound", "$396K", "47%"],

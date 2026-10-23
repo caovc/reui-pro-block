@@ -1,3 +1,4 @@
+import { useFluxFlagsModel } from "./workflow-models";
 import { useState } from "react";
 import {
   Activity,
@@ -33,6 +34,7 @@ import { IconTile } from "@/components/reui/icon-tile";
 import { Choice } from "./controls";
 import { RunTree } from "./run-tree";
 import { ApprovalInbox } from "./approvals";
+import { FluxFlags } from "./flux-flags";
 const agentSeed = ["Refund Triage", "Invoice Reconciler", "Support Router", "Contract Reader"];
 const incidents = [
   {
@@ -61,6 +63,7 @@ const incidents = [
   },
 ];
 export default function Flux() {
+  const flagRecords = useFluxFlagsModel();
   const [view, setView] = useState("Overview");
   const [agents] = useState(agentSeed);
   const [riskOnly, setRiskOnly] = useState(false);
@@ -235,6 +238,8 @@ export default function Flux() {
         tree
       ) : view === "Settings" ? (
         <WorkspaceSettings />
+      ) : view === "Flags" ? (
+        <FluxFlags records={flagRecords} />
       ) : view === "Approvals" ? (
         <ApprovalInbox />
       ) : view === "Tools" || view === "Providers" ? (

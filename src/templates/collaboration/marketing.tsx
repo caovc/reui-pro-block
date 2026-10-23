@@ -1,3 +1,4 @@
+import { ConsoleMetrics, ConsoleThroughput } from "./marketing-console-charts";
 import { GitHubMark as Github } from "@/components/icons/github-mark";
 import { LimelightTestimonials } from "./limelight-testimonials";
 import { portraitAssets } from "./photo-assets";
@@ -32,7 +33,7 @@ import {
 } from "@/components/ui/accordion";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { Button, Input, Modal, Sparkline, Mark } from "./shared";
+import { Button, Input, Modal, Mark } from "./shared";
 import "./marketing.css";
 import { wallpaperAssets } from "./wallpaper-assets";
 const cues = [
@@ -113,27 +114,7 @@ function Console({ cue = 0 }: { cue?: number }) {
                     ))}
                   </div>
                 </div>
-                <div className="ct-console-stats">
-                  {[
-                    [
-                      "Runs completed",
-                      period === "Week" ? "58,247" : period === "Month" ? "251,580" : "2,852,270",
-                      "8.2%",
-                    ],
-                    ["Active pipelines", "38", "2"],
-                    ["Median latency", "214ms", "18ms"],
-                    ["Error rate", "0.14%", "0.03"],
-                  ].map((s, i) => (
-                    <div key={s[0]}>
-                      <small>{s[0]}</small>
-                      <strong>
-                        {s[1]}
-                        <em>↗ {s[2]}</em>
-                      </strong>
-                      <Sparkline color="#eddf00" seed={i} />
-                    </div>
-                  ))}
-                </div>
+                <ConsoleMetrics period={period} />
                 <div className="ct-console-foot">
                   Every delta compares with the previous {period.toLowerCase()}.
                   <button type="button" onClick={() => setTab("Runs")}>
@@ -145,29 +126,7 @@ function Console({ cue = 0 }: { cue?: number }) {
                 <div className="ct-console-panel">
                   <b>Throughput</b>
                   <p>Runs started per hour, last 24 hours</p>
-                  <svg
-                    viewBox="0 0 300 150"
-                    className="ct-console-graph"
-                    aria-label="Throughput chart"
-                  >
-                    <path
-                      d="M0 120L20 110L40 116L60 80L80 91L100 45L120 61L140 40L160 55L180 20L200 32L220 15L240 27L260 40L280 22L300 14"
-                      stroke="#eddf00"
-                      fill="none"
-                      strokeWidth="2"
-                    />
-                    {[40, 80, 120].map((y) => (
-                      <line
-                        key={y}
-                        x1="0"
-                        x2="300"
-                        y1={y}
-                        y2={y}
-                        stroke="#333"
-                        strokeDasharray="3 3"
-                      />
-                    ))}
-                  </svg>
+                  <ConsoleThroughput />
                 </div>
                 <div className="ct-console-panel">
                   <b>Run schedule</b>
@@ -437,14 +396,13 @@ function Limelight() {
         <section id="lime-home" className="ct-lime-hero">
           <h1>
             Run the whole <span>show</span>
-            <br />
-            from one console.
+            <br className="ct-lime-desktop-break" /> from <br className="ct-lime-mobile-break" />
+            one console.
           </h1>
           <div className="ct-lime-intro">
             <p>
               One console for the tools, the data, and the routine work between them.
-              <br />
-              Typed end to end, automated on your cues.
+              <br /> Typed end to end, automated on your cues.
             </p>
             <div>
               <div className="ct-toolbar">
@@ -467,7 +425,9 @@ function Limelight() {
                     <img key={n} src={portraitAssets[n - 1]} alt="" />
                   ))}
                 </span>
-                <b>2,400+ teams</b> run production on Limelight
+                <span className="ct-lime-social-copy">
+                  <b>2,400+ teams</b> run production on Limelight
+                </span>
               </small>
             </div>
           </div>

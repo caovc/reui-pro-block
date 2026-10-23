@@ -6,7 +6,7 @@ import { demoAvatar } from "@/lib/demo-artwork";
 const userAvatar = demoAvatar("Nick Bold");
 /* Shared template primitives and small data helpers intentionally share one module. */
 /* eslint-disable react/only-export-components */
-import { useState, type ReactNode, type ComponentProps } from "react";
+import { createContext, useContext, useState, type ReactNode, type ComponentProps } from "react";
 import {
   Search,
   Plus,
@@ -138,6 +138,7 @@ export function Mark() {
   );
 }
 
+const NavigationCloseContext = createContext<() => void>(() => {});
 export function NavItems({
   items,
   active,
@@ -149,12 +150,16 @@ export function NavItems({
   onSelect: (value: string) => void;
   atlas?: boolean;
 }) {
+  const closeNavigation = useContext(NavigationCloseContext);
   return (
     <nav className="bt-nav bt-reui-navigation">
       <SidebarNavigation
         collapsed={false}
         active={active}
-        onSelect={onSelect}
+        onSelect={(value) => {
+          onSelect(value);
+          closeNavigation();
+        }}
         items={items.map((label) => {
           const Icon = icons[label as keyof typeof icons] ?? FileText;
           return {
@@ -309,110 +314,116 @@ function ShellContent({
     </>
   );
   return (
-    <div
-      className={`bt-app bt-${id} ${rail ? "bt-has-rail" : ""} ${collapsed ? "bt-collapsed" : ""}`}
-    >
-      {rail && (
-        <div className="bt-icon-rail">
-          <Mark />
-          {items.map((item) => {
-            const Icon = icons[item as keyof typeof icons] ?? FileText;
-            return (
-              <Button
-                type="button"
-                key={item}
-                variant={active === item ? "secondary" : "ghost"}
-                size="icon"
-                aria-label={item}
-                title={item}
-                onClick={() => setActive(item)}
-              >
-                <Icon />
-              </Button>
-            );
-          })}
-          <div className="bt-rail-end">
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              aria-label="Notifications"
-              onClick={() => toast("You are all caught up")}
-            >
-              <Bell />
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              aria-label="Settings"
-              onClick={() => setActive("Settings")}
-            >
-              <Settings />
-            </Button>
-          </div>
-        </div>
-      )}
-      <aside className="bt-sidebar">{nav}</aside>
-      <div className="bt-main">
-        <header className="bt-topbar">
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            className="bt-mobile-menu"
-            aria-label="Open menu"
-            onClick={() => setMobile(true)}
-          >
-            <Menu />
-          </Button>
-          {collapsed && (
-            <Button
-              variant="ghost"
-              size="icon"
-              aria-label="Expand sidebar"
-              onClick={() => setCollapsed(false)}
-            >
-              <Menu />
-            </Button>
-          )}
-          <span>{top ?? active}</span>
-          <div className="bt-topbar-right">
-            {["surge", "manifest"].includes(id) ? (
-              <Button variant="outline" size="sm">
-                ◉ Store <Badge variant="warning-light">Attention</Badge>
-              </Button>
-            ) : (
+    <NavigationCloseContext.Provider value={() => setMobile(false)}>
+      <div
+        className={`bt-app bt-${id} ${rail ? "bt-has-rail" : ""} ${collapsed ? "bt-collapsed" : ""}`}
+      >
+        {rail && (
+          <div className="bt-icon-rail">
+            <Mark />
+            {items.map((item) => {
+              const Icon = icons[item as keyof typeof icons] ?? FileText;
+              return (
+                <Button
+                  type="button"
+                  key={item}
+                  variant={active === item ? "secondary" : "ghost"}
+                  size="icon"
+                  aria-label={item}
+                  title={item}
+                  onClick={() => setActive(item)}
+                >
+                  <Icon />
+                </Button>
+              );
+            })}
+            <div className="bt-rail-end">
               <Button
                 type="button"
                 variant="ghost"
                 size="icon"
                 aria-label="Notifications"
-                onClick={() => toast("No new notifications")}
+                onClick={() => toast("You are all caught up")}
               >
                 <Bell />
               </Button>
-            )}
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                aria-label="Settings"
+                onClick={() => setActive("Settings")}
+              >
+                <Settings />
+              </Button>
+            </div>
           </div>
-        </header>
-        <div className="bt-content">{children}</div>
+        )}
+        <aside className="bt-sidebar">{nav}</aside>
+        <div className="bt-main">
+          <header className="bt-topbar">
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className="bt-mobile-menu"
+              aria-label="Open menu"
+              onClick={() => setMobile(true)}
+            >
+              <Menu />
+            </Button>
+            {collapsed && (
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label="Expand sidebar"
+                onClick={() => setCollapsed(false)}
+              >
+                <Menu />
+              </Button>
+            )}
+            <span>{top ?? active}</span>
+            <div className="bt-topbar-right">
+              {["surge", "manifest"].includes(id) ? (
+                <Button variant="outline" size="sm">
+                  ◉ Store <Badge variant="warning-light">Attention</Badge>
+                </Button>
+              ) : (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  aria-label="Notifications"
+                  onClick={() => toast("No new notifications")}
+                >
+                  <Bell />
+                </Button>
+              )}
+            </div>
+          </header>
+          <div className="bt-content">{children}</div>
+        </div>
+        <Sheet open={mobile} onOpenChange={setMobile}>
+          <SheetContent side="left">
+            <SheetTitle>{brand}</SheetTitle>
+            <SheetDescription>Workspace navigation</SheetDescription>
+            {id === "verve" && aside ? (
+              aside
+            ) : (
+              <NavItems
+                atlas={id === "atlas"}
+                items={items}
+                active={active}
+                onSelect={(x) => {
+                  setActive(x);
+                  setMobile(false);
+                }}
+              />
+            )}
+          </SheetContent>
+        </Sheet>
       </div>
-      <Sheet open={mobile} onOpenChange={setMobile}>
-        <SheetContent side="left">
-          <SheetTitle>{brand}</SheetTitle>
-          <SheetDescription>Workspace navigation</SheetDescription>
-          <NavItems
-            atlas={id === "atlas"}
-            items={items}
-            active={active}
-            onSelect={(x) => {
-              setActive(x);
-              setMobile(false);
-            }}
-          />
-        </SheetContent>
-      </Sheet>
-    </div>
+    </NavigationCloseContext.Provider>
   );
 }
 export function Heading({
@@ -602,6 +613,7 @@ export function RecordDialog({
                 name={f.name}
                 aria-label={f.label}
                 type={f.type ?? "text"}
+                step={f.type === "number" ? "any" : undefined}
                 required
                 defaultValue={f.value ?? ""}
               />

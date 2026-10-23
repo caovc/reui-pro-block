@@ -1,3 +1,4 @@
+import { useLucentSecurityModel, useLucentIntegrationsModel } from "./workflow-models";
 import { LucentSecurity, LucentIntegrations } from "./lucent-settings";
 import { useState } from "react";
 import {
@@ -48,6 +49,8 @@ const initialFlags = [
   "Async migration runner",
 ];
 export default function Lucent() {
+  const securityModel = useLucentSecurityModel();
+  const integrationModel = useLucentIntegrationsModel();
   const [view, setView] = useState("Overview");
   const [period, setPeriod] = useState("30 days");
   const [query, setQuery] = useState("");
@@ -422,11 +425,11 @@ export default function Lucent() {
       ) : view === "Delivery" ? (
         <Deployments />
       ) : view === "Security" ? (
-        <LucentSecurity />
+        <LucentSecurity model={securityModel} />
       ) : view === "Settings" ? (
         <WorkspaceSettings />
       ) : view === "Integrations" ? (
-        <LucentIntegrations />
+        <LucentIntegrations model={integrationModel} />
       ) : (
         <>
           {deploymentList}

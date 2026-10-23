@@ -1,3 +1,4 @@
+import type { ScheduledTask, useEchoScheduledModel } from "./workflow-models";
 import { useState } from "react";
 import {
   CalendarClock,
@@ -32,62 +33,6 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 
-type ScheduledTask = {
-  id: number;
-  name: string;
-  prompt: string;
-  repeat: string;
-  time: string;
-  status: string;
-  next: string;
-};
-const initial: ScheduledTask[] = [
-  {
-    id: 1,
-    name: "Rate limit review",
-    prompt: "Review rate limit changes and summarize findings.",
-    repeat: "Daily",
-    time: "Afternoon",
-    status: "Active",
-    next: "Tomorrow at 3:00 PM",
-  },
-  {
-    id: 2,
-    name: "Churn by plan tier",
-    prompt: "Summarize churn by plan tier.",
-    repeat: "Weekly",
-    time: "Morning",
-    status: "Active",
-    next: "October 30 at 9:00 AM",
-  },
-  {
-    id: 3,
-    name: "Weekly billing digest",
-    prompt: "Create a weekly billing digest.",
-    repeat: "Weekly",
-    time: "Morning",
-    status: "Paused",
-    next: "",
-  },
-  {
-    id: 4,
-    name: "Audit log export limits",
-    prompt: "Review audit log export limits.",
-    repeat: "Monthly",
-    time: "Morning",
-    status: "Active",
-    next: "November 22 at 9:00 AM",
-  },
-  {
-    id: 5,
-    name: "Admin 3.4 release watch",
-    prompt: "Watch the Admin 3.4 release.",
-    repeat: "Daily",
-    time: "Morning",
-    status: "Completed",
-    next: "",
-  },
-];
 const suggestions = [
   {
     name: "Incident recap",
@@ -110,8 +55,14 @@ const suggestions = [
     icon: Package,
   },
 ];
-export function EchoScheduled({ onOpen }: { onOpen: (name: string) => void }) {
-  const [tasks, setTasks] = useState(initial);
+export function EchoScheduled({
+  onOpen,
+  records,
+}: {
+  onOpen: (name: string) => void;
+  records: ReturnType<typeof useEchoScheduledModel>;
+}) {
+  const [tasks, setTasks] = records;
   const [filter, setFilter] = useState("All");
   const [editing, setEditing] = useState<number | null>(null);
   const [open, setOpen] = useState(false);
