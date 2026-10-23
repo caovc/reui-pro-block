@@ -1,0 +1,104 @@
+{
+  "milestone": "Navbar6 whole actual official free DashboardActions52 migration",
+  "authorization": "Root explicit next independent analytics-only grant after Navbar7–9 freeze; other frozen source unchanged.",
+  "testedArchiveBase": "671e3967513921f3496d28984114e3dcef01f28e",
+  "files": [
+    {
+      "path": "src/blocks/application/navbar-variants/toolbars/analytics.tsx",
+      "sha256": "41f7ab0009498bf10b9e4095e071ec34a9893e621d6a2d70124276025f729e66"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/toolbars/free/dashboard-actions.tsx",
+      "sha256": "ce29542b6ae1cf6b6a675a8a08314ab8f54e1513b43680849efa753f4bb5c74a"
+    },
+    {
+      "path": "tests/navbar6-dashboard-actions.spec.ts",
+      "sha256": "9bc8b010ef1693fc959632a226538d46175255947c72ae4f2dd0474c22230e1d"
+    },
+    {
+      "path": "docs/navbar6-dashboard-actions-implementation.md",
+      "sha256": "b39b15b2142b214717ed3f76b6bb05c7bb01430771b4e0afd8c067b6032e09b0"
+    }
+  ],
+  "supersedesOnly": {
+    "path": "src/blocks/application/navbar-variants/toolbars/analytics.tsx",
+    "baseSha256": "8dd4b38c2d98444e20821deda0627f1d38eb3a0343af370fa42947f191fd790e",
+    "newSha256": "41f7ab0009498bf10b9e4095e071ec34a9893e621d6a2d70124276025f729e66",
+    "stateAndHandlersByteForBytePreserved": true,
+    "unchangedPrefixSha256": "5fae1f60fe11caa037e1675e005892764b191c7c33120c94582bebbfe62fc0b2"
+  },
+  "actualOfficialFreeSource": {
+    "name": "c-button-group-52",
+    "url": "https://reui.io/r/radix-nova/c-button-group-52.json",
+    "upstreamSourceSha256": "c1c0f9712b5fa5d9bb1b4da017c2ea84410a479d451ffd8eb8fd5ad5ceec7c3d",
+    "license": "MIT (c) Keenthemes",
+    "reuse": "Whole actual ButtonGroup/ButtonGroupSeparator/Refresh/Share/nativeDropdown+Edit/CSV/PNG tree, styles and menu dimensions; not only renamed import.",
+    "adapters": [
+      "mechanical Lucide icons",
+      "existing callbacks and accessible labels",
+      "existing refresh disabled/spin state",
+      "existing Embed extension added as native menu row"
+    ]
+  },
+  "scope": "Only analytics consumer plus new actual free52 adapter/test/ledger/manifest. No router/source-targets/shared UI/package edits; no frozen1–5/7–9 changes. Old free13 file untouched.",
+  "integration": "No additional hook needed. Existing actual analytics source target stays same; static import automatically resolves new real adapter in Code/copy/singlefile/ZIP.",
+  "verification": {
+    "candidate": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/reui-navbar6-actions-production-1jhpgi77",
+    "strictBuild": {
+      "result": "PASS TypeScript + Vite",
+      "log": "/tmp/reui-navbar6-actions-build.log"
+    },
+    "productionTests": {
+      "result": "22/22 PASS23.5s",
+      "tests": [
+        "tests/navbar6-dashboard-actions.spec.ts new5",
+        "tests/navbar-toolbars.spec.ts unchanged17"
+      ],
+      "workers": 1,
+      "timeoutMs": 30000,
+      "retryChange": false,
+      "log": "/tmp/reui-navbar6-actions-tests.log",
+      "output": "/tmp/reui-navbar6-actions-results"
+    },
+    "coverage": [
+      "actual whole joined group at1440/390",
+      "native refresh busy/counter and no overflow",
+      "native keyboard menu focus/CSV selection",
+      "retained22date+Compare in actualCSV",
+      "share realclipboard",
+      "edit localnotice",
+      "actualPNGsignature",
+      "retainedEmbed",
+      "exact defaultleaf/copy/singlefile/ZIP adapter+consumer bytes",
+      "unchanged4/5 regression and6 date/auto refresh/search/source behaviors"
+    ],
+    "screenshots": [
+      "/tmp/reui-navbar6-actions-audit/navbar-6-1440.png",
+      "/tmp/reui-navbar6-actions-audit/navbar-6-390.png",
+      "/tmp/reui-navbar6-actions-audit/navbar-6-menu-1440.png",
+      "/tmp/reui-navbar6-actions-audit/navbar-6-menu-390.png"
+    ],
+    "inspectedLocalScreenshots": ["1440 whole upper actionstrip", "390 actual opened menu"],
+    "actualDownloadedZip": {
+      "path": "/tmp/reui-navbar6-actions-audit/navbar-6-source.zip",
+      "sha256": "73dc460ccf5a0e1bb0a310959114341f6b29abd353934a23fc5a446a507d080d",
+      "files": 336,
+      "bytes": 3576531,
+      "extracted": "/tmp/reui-navbar6-actions-realzip-JhCu5K",
+      "independentBuild": "PASS",
+      "buildLog": "/tmp/reui-navbar6-actions-zip-build.log",
+      "standaloneRender": "1440/390 actual groupedRefresh computed animation spin +localcounter,Calendar22+Compare CSVstate PASS; zero errors/overflow",
+      "renderLog": "/tmp/reui-navbar6-actions-zip-render.log"
+    },
+    "scopedOxfmtOxlint": "PASS exact source/test/ledger; manifest separately formatted",
+    "previousPublishingFreeze": "All previous17file Navbar7–9 payload hashes rechecked unchanged"
+  },
+  "remainingDifferences": [
+    "Original public Navbar6 rendered desktop/mobile/state comparison still pending",
+    "ManualRefresh now in complete free52 upper group; placement requires later original visual comparison",
+    "Existing local-only fixtures/refreshes/originalsamplePNG/no backend unchanged",
+    "Embed intentionally extends free52 menu",
+    "Global preview artwork/MIT/OFL untouched"
+  ],
+  "publication": "READY five-file payload; Root owns serial staging/commit/push and CI/Pages. Child made no Git writes."
+}

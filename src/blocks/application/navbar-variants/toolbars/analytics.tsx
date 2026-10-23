@@ -1,7 +1,7 @@
 import { downloadContent } from "./download";
 import { useEffect, useRef, useState } from "react";
 import { format } from "date-fns";
-import { Copy, RefreshCw, Share2 } from "lucide-react";
+import { Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { Field, FieldLabel } from "@/components/ui/field";
@@ -15,7 +15,7 @@ import { ToolbarSearch } from "./free/search";
 import { ToolbarDatePicker } from "./free/single-date";
 import { RefreshSelect } from "./free/refresh-select";
 import { CompareToggle } from "./free/compare-toggle";
-import { AnalyticsMenu } from "./free/analytics-menu";
+import { DashboardActions } from "./free/dashboard-actions";
 import { PlaceholderPanel, ToolbarNotice, ToolbarScene } from "./support";
 
 export default function AnalyticsToolbarNavbar() {
@@ -94,11 +94,12 @@ export default function AnalyticsToolbarNavbar() {
           />
           <div className="toolbar-actions">
             <ToolbarSearch onSelect={(file) => setNotice(`Selected ${file} locally.`)} />
-            <Button variant="outline" size="sm" onClick={() => setShareOpen(true)}>
-              <Share2 data-icon="inline-start" />
-              Share
-            </Button>
-            <AnalyticsMenu onAction={action} />
+            <DashboardActions
+              refreshing={refreshing}
+              onRefresh={refresh}
+              onShare={() => setShareOpen(true)}
+              onAction={action}
+            />
             <PersonAvatar name="Maya Stone" />
           </div>
         </div>
@@ -111,15 +112,6 @@ export default function AnalyticsToolbarNavbar() {
           <div className="toolbar-actions">
             <span className="text-xs text-muted-foreground">Auto refresh</span>
             <RefreshSelect value={autoRefresh} onChange={setAutoRefresh} />
-            <Button
-              variant="ghost"
-              size="icon-sm"
-              aria-label="Refresh dashboard"
-              disabled={refreshing}
-              onClick={refresh}
-            >
-              <RefreshCw className={refreshing ? "animate-spin" : undefined} />
-            </Button>
           </div>
         </div>
       </header>
