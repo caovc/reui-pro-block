@@ -1,0 +1,225 @@
+{
+  "checkedOn": "2026-10-23",
+  "access": "Official free c-* registry examples only. No Pro source or assets.",
+  "sources": [
+    {
+      "name": "c-input-group-18",
+      "registryDependencies": ["dropdown-menu", "field", "input-group", "kbd"],
+      "dependencies": [],
+      "jsonSha256": "3e321e51630f36351546acb8ae66a69926b72aae1825d4311d8a443429c67862",
+      "files": [
+        {
+          "path": "c-input-group-18.tsx",
+          "lines": 110,
+          "sha256": "72dea7555df2b24adc24f6adf05cd92d4825d5c4d9cb2aa87312d9000b2db9e4"
+        }
+      ],
+      "registryUrl": "https://reui.io/r/radix-nova/c-input-group-18.json",
+      "scope": "adapted-in-chat-1-3"
+    },
+    {
+      "name": "c-input-group-19",
+      "registryDependencies": ["dropdown-menu", "field", "input-group"],
+      "dependencies": [],
+      "jsonSha256": "19f7588f096038380a6e0538e34e3ec66cf4a413b02ae04e72f62b58e9937bb3",
+      "files": [
+        {
+          "path": "c-input-group-19.tsx",
+          "lines": 115,
+          "sha256": "b3e4fa83a6d9926eb8b83c2c1993416134dae8456ce7abf8409ca9cecd4fcf3c"
+        }
+      ],
+      "registryUrl": "https://reui.io/r/radix-nova/c-input-group-19.json",
+      "scope": "adapted-in-chat-1-3"
+    },
+    {
+      "name": "c-message-4",
+      "registryDependencies": ["bubble", "button", "message"],
+      "dependencies": [],
+      "jsonSha256": "81b7bb7f4074aa3c27969505bbd1d2686e5c3dce86d2c559a180c261d4712137",
+      "files": [
+        {
+          "path": "c-message-4.tsx",
+          "lines": 180,
+          "sha256": "6c981d691ec35ea4f6286cd5932cd9f215ddca50c50558190aac4af4cd2a76de"
+        }
+      ],
+      "registryUrl": "https://reui.io/r/radix-nova/c-message-4.json",
+      "scope": "adapted-in-chat-1-3"
+    },
+    {
+      "name": "c-message-7",
+      "registryDependencies": ["bubble", "button", "marker", "message", "spinner"],
+      "dependencies": [],
+      "jsonSha256": "2b212feee48c9de74452fc8c8229e8309521bce52c748fcd6adb4159fc869ebc",
+      "files": [
+        {
+          "path": "c-message-7.tsx",
+          "lines": 119,
+          "sha256": "0fad30710c4e2d883fa8fcc85e9c30ba1d13afa68d3fc88ced8d5a616edae04f"
+        }
+      ],
+      "registryUrl": "https://reui.io/r/radix-nova/c-message-7.json",
+      "scope": "adapted-in-chat-1-3"
+    },
+    {
+      "name": "c-message-scroller-2",
+      "registryDependencies": [
+        "avatar",
+        "@reui/badge",
+        "bubble",
+        "button",
+        "card",
+        "message",
+        "message-scroller",
+        "spinner"
+      ],
+      "dependencies": [],
+      "jsonSha256": "ec12e4b76f32f4d51095505e2200e3f2928c78412947186f8c2cf22e1e14c4d1",
+      "files": [
+        {
+          "path": "c-message-scroller-2.tsx",
+          "lines": 247,
+          "sha256": "56bd470c6448e23da8bbd4f3a59c7968988a0365a90393bbb6d7a8266c53e901"
+        }
+      ],
+      "registryUrl": "https://reui.io/r/radix-nova/c-message-scroller-2.json",
+      "scope": "adapted-in-chat-1-3"
+    },
+    {
+      "name": "c-message-scroller-3",
+      "registryDependencies": [
+        "avatar",
+        "bubble",
+        "card",
+        "input-group",
+        "message",
+        "message-scroller"
+      ],
+      "dependencies": [],
+      "jsonSha256": "f250b6bdd4fe9ef1d2ab7728d4add2cd05abcbf0e2b6859c9d7e099d059e0118",
+      "files": [
+        {
+          "path": "c-message-scroller-3.tsx",
+          "lines": 279,
+          "sha256": "f854da5859ca3eb60b7194f6ba1f324f9e7c1362687bdbabfc47f018249df66c"
+        }
+      ],
+      "registryUrl": "https://reui.io/r/radix-nova/c-message-scroller-3.json",
+      "scope": "adapted-in-chat-1-3"
+    },
+    {
+      "name": "c-message-scroller-4",
+      "registryDependencies": ["bubble", "card", "marker", "message", "message-scroller", "tabs"],
+      "dependencies": [],
+      "jsonSha256": "c9f206030b22e6e164322c69266c57d9d7d0f7feac7c71f15b81704d2fcaad8e",
+      "files": [
+        {
+          "path": "c-message-scroller-4.tsx",
+          "lines": 191,
+          "sha256": "6ef3d5232bcd6758887b2c203c3e8758c1d8da2668b425e4b70601279d5a8dd4"
+        }
+      ],
+      "registryUrl": "https://reui.io/r/radix-nova/c-message-scroller-4.json",
+      "scope": "adapted-in-chat-1-3"
+    },
+    {
+      "name": "c-attachment-2",
+      "registryDependencies": ["attachment", "field", "input-group"],
+      "dependencies": [],
+      "jsonSha256": "0ae3bd65cee7b08a1abb21641c71a9051f001a47ddbcb1fe6ebce32a764d76d3",
+      "files": [
+        {
+          "path": "c-attachment-2.tsx",
+          "lines": 240,
+          "sha256": "64c51c496dc78fb75658e4996b3c4e4e52d589767bca0c51ad01c22bbe2cf000"
+        }
+      ],
+      "registryUrl": "https://reui.io/r/radix-nova/c-attachment-2.json",
+      "scope": "adapted-in-chat-1-3"
+    },
+    {
+      "name": "c-code-block-4",
+      "registryDependencies": ["avatar", "@reui/code-block", "@reui/frame"],
+      "dependencies": [],
+      "jsonSha256": "7e8686b917232672f246deeab283dbde3b666bf0042ca284f6d492e521251d84",
+      "files": [
+        {
+          "path": "c-code-block-4.tsx",
+          "lines": 99,
+          "sha256": "1f3c8871f6ab5d0414c3e5f5fbdcb5ce76c68e0a937aa4d67e05d76d8ca2dfcf"
+        }
+      ],
+      "registryUrl": "https://reui.io/r/radix-nova/c-code-block-4.json",
+      "scope": "adapted-in-chat-1-3"
+    },
+    {
+      "name": "c-bubble-6",
+      "registryDependencies": ["bubble", "button", "card"],
+      "dependencies": [],
+      "jsonSha256": "ba5dbcef2dd8e1262995287330548e615a0bb92e22aeee44a790094119d5981a",
+      "files": [
+        {
+          "path": "c-bubble-6.tsx",
+          "lines": 113,
+          "sha256": "2d9e5a16835b630bb9072e5e144611e375f60128e83963c7324e06a928993695"
+        }
+      ],
+      "registryUrl": "https://reui.io/r/radix-nova/c-bubble-6.json",
+      "scope": "audited-only"
+    },
+    {
+      "name": "c-bubble-7",
+      "registryDependencies": ["bubble"],
+      "dependencies": [],
+      "jsonSha256": "7ca758a5b6c2471f1c83b8a4da224f4dc534b133236987038c709ff8cf2f26c0",
+      "files": [
+        {
+          "path": "c-bubble-7.tsx",
+          "lines": 58,
+          "sha256": "3080514fde506b3c0697330a24ce09b52ae127680561447de1636dc8f3956cd1"
+        }
+      ],
+      "registryUrl": "https://reui.io/r/radix-nova/c-bubble-7.json",
+      "scope": "adapted-in-chat-1-3"
+    },
+    {
+      "name": "c-questionnaire-1",
+      "registryDependencies": ["button", "card", "questionnaire"],
+      "dependencies": [],
+      "jsonSha256": "075b2299d62e8d2869e79498454bfcf4c27407d55e38324135a1061c97f063da",
+      "files": [
+        {
+          "path": "c-questionnaire-1.tsx",
+          "lines": 247,
+          "sha256": "dd3e6d6938c289294968efb12b222889a8391e4e31ee664aa3313c17723a14a9"
+        }
+      ],
+      "registryUrl": "https://reui.io/r/radix-nova/c-questionnaire-1.json",
+      "scope": "adapted-in-chat-1-3"
+    },
+    {
+      "name": "c-questionnaire-7",
+      "registryDependencies": ["avatar", "button", "card", "questionnaire"],
+      "dependencies": ["cn"],
+      "jsonSha256": "7791447be8f7466bace3138e03c322e47d8d605247f7c405f07553524c2a48cd",
+      "files": [
+        {
+          "path": "c-questionnaire-7.tsx",
+          "lines": 394,
+          "sha256": "3c3981d624927e36c7d8e7fa60bf92e28ebde4ab0c89ebddd57f4a6d92a57989"
+        }
+      ],
+      "registryUrl": "https://reui.io/r/radix-nova/c-questionnaire-7.json",
+      "scope": "audited-only"
+    }
+  ],
+  "questionnaire": {
+    "documentation": "https://reui.io/components/questionnaire.md",
+    "delegatedUpstream": "https://ui.shadcn.com/docs/components/radix/questionnaire.md",
+    "officialCommand": "npx shadcn@latest add questionnaire --yes --overwrite",
+    "execution": "isolated scratch; only NEW src/components/ui/questionnaire.tsx copied",
+    "originalSourceSha256": "55f270a3ff5206462c33717bab642ecfa2863a5d0c2f7e6adaea7d8f10350961",
+    "compatibility": "Existing Button/buttonVariants and cn/@shadcn/react; no package, lock or existing UI changes."
+  }
+}

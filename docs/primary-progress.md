@@ -36,7 +36,7 @@ Preview: https://caovc.github.io/reui-pro-block/
 | ------------------------- | ------------------------------------------------------------------------------------------ |
 | Primary                   | Release integration, real starter verification, CI/Pages; Sidebar and AI Usage integration |
 | Application agent         | Navbar7–9 and free ButtonGroup follow-up, independently frozen for integration             |
-| Data agent                | AI Chat1–3 ready; next4–6 in independent modules                                           |
+| Data agent                | AI Chat1–3 integrated; next4–6 in independent modules                                      |
 | Commerce agent            | All8 Shop Hero functional leaves; next Category Card1–3 in independent modules             |
 | Source/export coordinator | Diagnose source/ZIP/site CI failures within original source scope                          |
 | Grid coordinator          | Diagnose two Grid CI failures; preserve previous filter-focus correction                   |
@@ -72,3 +72,7 @@ Navbar4–6 now have independent admin, workflow and analytics leaves composed f
 ## Shop Hero release/switcher/quilt milestone
 
 Shop Hero6–8 complete the eight independent functional entries with actual free c-card8/c-tabs9/c-badge22/c-dialog1 and the published catalog helpers. Native tab geometry and image-corner regressions exposed real mobile defects, now fixed locally without force clicks or timeout/retry changes. Root passed strict build,58/58 cumulative production checks and full formatting/tooling/lint. Three actual175-file starters independently built and rendered at1440/390 with exact discount arithmetic, native reminder state, zero image corners and no errors/overflow. Public visual comparison for2–8 remains pending, with original artwork and local metadata/delivery differences explicit. Root also passed17/17 default-CI URL checks after preserving the deployment subdirectory in three test suites.
+
+## AI Chat initial milestone
+
+AI Chat1–3 now have independent copilot, document-docked and welcome compositions using actual free ReUI InputGroup, Attachment, Message/Scroller, CodeBlock and Questionnaire examples. Required answers, keyboard progression and FormData remain owned by the official delegated Questionnaire primitive. Local threads, streaming/stop, history/model/effort/context, exact document insert/undo and answer-derived plans have explicit application state. The actual230-file starter independently built/rendered at1440/390; source/copy/single-file/ZIP leaves agree. Root strict build,56/56 production checks, full formatting/tooling/lint passed. Public visual matching remains pending for1–3, and remote AI/recording are not connected.

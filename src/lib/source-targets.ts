@@ -338,6 +338,10 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
     return paths("data", modules[block.category] ?? "charts");
   }
   if (block.group === "ai-agents") {
+    if (block.category === "ai-chat" && variant <= 3) {
+      const module = ["ai-chat-copilot", "ai-chat-docked", "ai-chat-welcome"][variant - 1];
+      return paths("data", module, "ai-chat-initial-variants");
+    }
     if (block.category === "agent-activity") {
       const modules = [
         "agent-activity-approval",

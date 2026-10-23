@@ -1,0 +1,118 @@
+{
+  "milestone": "AI Chat1–3 independent actual free compositions",
+  "integrationBase": "671e3967513921f3496d28984114e3dcef01f28e",
+  "files": [
+    {
+      "path": "docs/ai-chat-free-sources.json",
+      "sha256": "de4810c1db9a757797c4d646f70044c040d34aff1c15fb879f04d1f4f99701e1",
+      "bytes": 7940
+    },
+    {
+      "path": "docs/ai-chat-refinement.md",
+      "sha256": "11f8050e21763bbb2bdf6c667790f953b07ccdb5e9621e2a80dccae5b6cbf957",
+      "bytes": 21406
+    },
+    {
+      "path": "src/blocks/data/ai-chat-composer.tsx",
+      "sha256": "0fd0e116e7b48e0ff0be7168526514cc120ceafc27f137d1eb0388cf047bd702",
+      "bytes": 12061
+    },
+    {
+      "path": "src/blocks/data/ai-chat-copilot.tsx",
+      "sha256": "02d80ddccae75c6cb2da502453dcd56fa989a7548adf92b125622e0e1114ba42",
+      "bytes": 8506
+    },
+    {
+      "path": "src/blocks/data/ai-chat-docked.tsx",
+      "sha256": "4474b76290441b8b5c2bf4c8bbc31fb4e0fd1658ff5063ed7401df79a2f58e6e",
+      "bytes": 10028
+    },
+    {
+      "path": "src/blocks/data/ai-chat-draft.ts",
+      "sha256": "73df2b7b8d3e9e992d515692f8329f09f6e36b551b9f0e127e9d9ee1a17a7387",
+      "bytes": 1211
+    },
+    {
+      "path": "src/blocks/data/ai-chat-history.tsx",
+      "sha256": "f728d5842261d78ea6055ed98a7abb67e401665190fd602fe73e8829954ba64d",
+      "bytes": 4584
+    },
+    {
+      "path": "src/blocks/data/ai-chat-initial-variants.tsx",
+      "sha256": "c4ab83dbb649c495cf94b58e634d9ea09c8ad6e30e9f28110b9d4bfe5be27fc2",
+      "bytes": 540
+    },
+    {
+      "path": "src/blocks/data/ai-chat-questionnaire.tsx",
+      "sha256": "a17d028b745b8a4f1411e124d48e5a11c7027774c075d9673c453b11073e687f",
+      "bytes": 3743
+    },
+    {
+      "path": "src/blocks/data/ai-chat-session.ts",
+      "sha256": "494a81084cc35e77013640c5ab9c115e6923730d253b1de0449538992d542b77",
+      "bytes": 15629
+    },
+    {
+      "path": "src/blocks/data/ai-chat-transcript.tsx",
+      "sha256": "5b3d68ee0c73208346aa9424790fa5378c4542c09d8eea408bfe827c16caa4c8",
+      "bytes": 10037
+    },
+    {
+      "path": "src/blocks/data/ai-chat-welcome.tsx",
+      "sha256": "cb991ccb26aa25817571297c42073da7a3a9d2f356a3bc7b49b0dab1116d7d5d",
+      "bytes": 7060
+    },
+    {
+      "path": "src/components/ui/questionnaire.tsx",
+      "sha256": "137e38aad56b3fd61219cdaab322641b8dbde5675a0db3fe314ecf6d65c0c582",
+      "bytes": 10996
+    },
+    {
+      "path": "tests/ai-chat-initial-model.spec.ts",
+      "sha256": "03be30f880cd38454bc49969309734e556838de9688bf2f75f09c296a55f6aa3",
+      "bytes": 3698
+    },
+    {
+      "path": "tests/ai-chat-initial-source.spec.ts",
+      "sha256": "958d3df8310da21ee9d8b0c79e48b6d33d669e51d720ec0c1878d3f8673744fe",
+      "bytes": 5160
+    },
+    {
+      "path": "tests/ai-chat-initial.spec.ts",
+      "sha256": "1b658fe2901470307c436e83872be380c2167911401c43bc14496976a5c1c1cd",
+      "bytes": 13099
+    }
+  ],
+  "officialFreeReuse": [
+    "c-input-group18/19 actual composer",
+    "c-attachment2 context tray",
+    "c-message4/7 and c-message-scroller2/3/4 transcript",
+    "c-code-block4 and official markdown fence renderer",
+    "c-questionnaire1 with official delegated shadcn Questionnaire primitive"
+  ],
+  "upstreamQuestionnaire": {
+    "originalSHA256": "55f270a3ff5206462c33717bab642ecfa2863a5d0c2f7e6adaea7d8f10350961",
+    "formattedSHA256": "137e38aad56b3fd61219cdaab322641b8dbde5675a0db3fe314ecf6d65c0c582",
+    "change": "New primitive only, upstream formatting normalization, existing dependencies retained"
+  },
+  "rootValidation": {
+    "build": "PASS strict TypeScript + Vite",
+    "format": "PASS all914 files before root docs",
+    "tooling": "3/3 PASS",
+    "lint": "0 errors; existing vendor warnings",
+    "production": "56/56 PASS,2.2m,one worker; all initial Chat, Branching9, Activity, Usage, global/site/source",
+    "log": "/tmp/bricklane-chat123-root-production.log"
+  },
+  "ownerValidation": {
+    "production": "16/16 PASS,1worker,18.7s",
+    "actualStarter": "230 files, independently strict built and rendered at1440/390",
+    "evidence": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/reui-ai-chat-initial-ready-hsixxk_5/evidence",
+    "rootInspection": "Actual standalone390 plan screenshot inspected; source components reviewed"
+  },
+  "limitations": [
+    "Public original desktop/mobile/menu/lifecycle visual comparison pending for1–3.",
+    "Original Bricklane fixture labels and local synthetic responses replace upstream content.",
+    "Custom application state handles threads, context, effort, insert/undo and plan results; no AI API, recording or remote persistence."
+  ],
+  "deployment": "Pending cumulative CI/Pages; latest verified live46dbee4"
+}
