@@ -1,46 +1,777 @@
-import { useEffect, useState } from 'react'
-import type { CSSProperties, ReactNode } from 'react'
-import { Check, ChevronLeft, ChevronRight, Heart, Pause, Play, RotateCcw, ShieldCheck, ShoppingBag, Truck } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/reui/badge'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Label } from '@/components/ui/label'
-import { Progress } from '@/components/ui/progress'
-import { Rating } from '@/components/reui/rating'
-import { NumberField, NumberFieldGroup, NumberFieldDecrement, NumberFieldInput, NumberFieldIncrement } from '@/components/reui/number-field'
-import { cn } from '@/lib/utils'
-import { photos, Money } from './shared'
-import coffee from './assets/detail-grid/coffee.jpg'
-import coffeePour from './assets/detail-grid/coffee-pour.jpg'
-import books from './assets/detail-grid/books.jpg'
-import reading from './assets/detail-grid/reading.jpg'
-import library from './assets/detail-grid/library.jpg'
-import ceramics from './assets/detail-grid/ceramics.jpg'
-import bagSlate from './assets/detail-grid/bag-slate.jpg'
-import bagTan from './assets/detail-grid/bag-tan.jpg'
+import { FreeProductRail, FreeReviewCarousel } from "./product-carousels";
+import { useState } from "react";
+import type { ReactNode } from "react";
+import {
+  Check,
+  ChevronRight,
+  Heart,
+  RotateCcw,
+  ShieldCheck,
+  ShoppingBag,
+  Truck,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/reui/badge";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Progress } from "@/components/ui/progress";
+import { Rating } from "@/components/reui/rating";
+import {
+  NumberField,
+  NumberFieldGroup,
+  NumberFieldDecrement,
+  NumberFieldInput,
+  NumberFieldIncrement,
+} from "@/components/reui/number-field";
+import { cn } from "@/lib/utils";
+import { photos, Money } from "./shared";
+import coffee from "./assets/detail-grid/coffee.jpg";
+import coffeePour from "./assets/detail-grid/coffee-pour.jpg";
+import books from "./assets/detail-grid/books.jpg";
+import reading from "./assets/detail-grid/reading.jpg";
+import library from "./assets/detail-grid/library.jpg";
+import ceramics from "./assets/detail-grid/ceramics.jpg";
+import bagSlate from "./assets/detail-grid/bag-slate.jpg";
+import bagTan from "./assets/detail-grid/bag-tan.jpg";
 
-export const surfacePhotos={...photos,coffee,coffeePour,books,reading,library,ceramics,bagSlate,bagTan}
-export function ProductFrame({children,narrow=false}:{children:ReactNode;narrow?:boolean}){return <main className={cn('mx-auto min-h-svh w-full max-w-6xl px-5 py-10 text-sm sm:px-8 sm:py-12',narrow&&'max-w-3xl')}>{children}</main>}
-export function Breadcrumbs({items}:{items:string[]}){return <nav aria-label="Breadcrumb" className="mb-8 flex flex-wrap items-center gap-2 text-xs text-muted-foreground sm:text-sm">{['Shop',...items].map((item,i)=><span key={item} className={cn('flex items-center gap-2',i===items.length&&'text-foreground')}>{i>0&&<ChevronRight className="size-3"/>}{item}</span>)}</nav>}
-export function ProductPrice({price,old,label,large=false}:{price:number;old?:number;label?:string;large?:boolean}){return <div className={cn('flex flex-wrap items-center gap-2 text-base',large&&'text-2xl')}><strong><Money value={price}/></strong>{old&&<del className="text-muted-foreground"><Money value={old}/></del>}{label&&<Badge variant="destructive" radius="full">{label}</Badge>}</div>}
-export function RatingStars({rating=4.7,count,reviewAction}:{rating?:number;count?:string;reviewAction?:()=>void}){return <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground"><Rating rating={rating} size="sm" showValue aria-label={`${rating} out of 5 stars`}/>{count&&(reviewAction?<button className="underline-offset-4 hover:underline" onClick={reviewAction}>({count})</button>:<span>({count})</span>)}</div>}
-export function ProductWish({name,initial=false,words=false,className}:{name:string;initial?:boolean;words?:boolean;className?:string}){const[liked,setLiked]=useState(initial);return <Button variant="outline" size={words?'default':'icon-sm'} className={cn('bg-background/85',className)} aria-label={`${liked?'Remove':'Add'} ${name} ${liked?'from':'to'} wishlist`} aria-pressed={liked} onClick={()=>setLiked(!liked)}><Heart className={cn(liked&&'fill-destructive text-destructive')}/>{words&&(liked?'Saved to Wishlist':'Wishlist')}</Button>}
-export type ColorOption={name:string;value:string;image?:string}
-export function ColorPicker({colors,value,onChange,name='Color',compact=false}:{colors:ColorOption[];value:string;onChange:(value:string)=>void;name?:string;compact?:boolean}){return <div className="space-y-3"><p className={cn('text-sm',compact&&'sr-only')}>{name}: <span className="text-muted-foreground">{value}</span></p><div className="flex flex-wrap gap-2" role="group" aria-label={name}>{colors.map(c=><button key={c.name} aria-label={c.name} aria-pressed={value===c.name} title={c.name} onClick={()=>onChange(c.name)} style={{backgroundColor:c.value}} className={cn('size-7 rounded-full border ring-offset-2 ring-offset-background',compact&&'size-4',value===c.name?'ring-1 ring-foreground':'ring-0')}/>)}</div></div>}
-export function Quantity({value,onChange,max=10}:{value:number;onChange:(value:number)=>void;max?:number}){return <NumberField value={value} onValueChange={value=>onChange(value??1)} min={1} max={max} step={1} className="w-28 shrink-0"><NumberFieldGroup><NumberFieldDecrement aria-label="Decrease quantity"/><NumberFieldInput aria-label="Quantity"/><NumberFieldIncrement aria-label="Increase quantity"/></NumberFieldGroup></NumberField>}
-export function CartAction({name,detail,quantity=1,price,children='Add to Cart',className,disabled=false}:{name:string;detail?:string;quantity?:number;price:number;children?:ReactNode;className?:string;disabled?:boolean}){const[open,setOpen]=useState(false);const[added,setAdded]=useState(false);return <><Button className={className} disabled={disabled} onClick={()=>{setAdded(true);setOpen(true)}}>{added?<Check/>:<ShoppingBag/>}{added?'Added to Bag':children}</Button><Dialog open={open} onOpenChange={setOpen}><DialogContent><DialogHeader><DialogTitle>Added to your bag</DialogTitle><DialogDescription>This is a local storefront preview.</DialogDescription></DialogHeader><div className="rounded-lg border p-4"><p className="font-semibold">{name}</p>{detail&&<p className="mt-1 text-sm text-muted-foreground">{detail}</p>}<div className="mt-5 flex justify-between text-sm"><span>{quantity} × <Money value={price}/></span><strong><Money value={quantity*price}/></strong></div></div><Button onClick={()=>setOpen(false)}>Continue shopping</Button></DialogContent></Dialog></>}
-export function TrustRow({simple=false}:{simple?:boolean}){return simple?<p className="text-xs leading-6 text-muted-foreground">Free 2-day shipping over $99 <span className="mx-1">·</span> 30-day returns <span className="mx-1">·</span> 2-year warranty</p>:<div className="grid grid-cols-3 gap-2">{[[Truck,'Free shipping'],[RotateCcw,'30-day returns'],[ShieldCheck,'2-year warranty']].map(([Icon,label])=>{const Mark=Icon as typeof Truck;return <div key={String(label)} className="flex flex-col items-center gap-2 rounded-lg border border-dashed px-1 py-3 text-center text-[11px] sm:text-xs"><Mark className="size-4"/>{String(label)}</div>})}</div>}
-export function ProductGallery({name,images,vertical=false,lookInside=false,aspect='aspect-square',style}:{name:string;images:string[];vertical?:boolean;lookInside?:boolean;aspect?:string;style?:CSSProperties}){const[active,setActive]=useState(0);return <div className={cn('min-w-0',vertical&&'grid grid-cols-[48px_minmax(0,1fr)] items-start gap-3 sm:grid-cols-[64px_minmax(0,1fr)] sm:gap-4')}><div className={cn('overflow-hidden rounded-lg bg-muted',aspect,vertical&&'col-start-2 row-start-1')}><img data-gallery-image src={images[active]} alt={`${name} — view ${active+1}`} className="size-full object-cover transition-opacity duration-300" style={{objectPosition:`${20+active*15}% center`,transform:active>0?`scale(${1+active*.06})`:undefined,...style}}/></div><div className={cn('mt-3',vertical&&'col-start-1 row-start-1 mt-0')}>{lookInside&&<div className="mb-2 flex justify-between text-[10px] tracking-[.16em] text-muted-foreground"><span>LOOK INSIDE</span><output>{String(active+1).padStart(2,'0')} / {String(images.length).padStart(2,'0')}</output></div>}<div className={cn('grid gap-2',vertical?'grid-cols-1':images.length===6?'grid-cols-6':'grid-cols-5')}>{images.map((src,i)=><div key={i}><button aria-label={lookInside?`Show ${['Cover','Foreword','Chapter 1','Workbook','Audiobook'][i]} preview`:`Show image ${i+1} of ${images.length}`} aria-pressed={active===i} onClick={()=>setActive(i)} className={cn('aspect-square w-full overflow-hidden rounded-md border border-transparent bg-muted outline-none focus-visible:ring-2 focus-visible:ring-ring',active===i&&'border-foreground ring-1 ring-foreground ring-offset-2 ring-offset-background')}><img src={src} alt="" className="size-full object-cover" style={{objectPosition:`${25+i*12}% center`}}/></button>{lookInside&&<p className="mt-1 truncate text-center text-[8px] tracking-wide text-muted-foreground sm:text-[10px]">{['COVER','FOREWORD','CHAPTER 1','WORKBOOK','AUDIOBOOK'][i]}</p>}</div>)}</div></div></div>}
-export function SpecRows({groups}:{groups:{title:string;rows:string[][]}[]}){return <div className="overflow-hidden rounded-lg border"><table className="w-full text-left text-xs sm:text-sm"><tbody>{groups.map(g=><SpecGroup key={g.title} title={g.title} rows={g.rows}/>)}</tbody></table></div>}
-function SpecGroup({title,rows}:{title:string;rows:string[][]}){return <><tr className="bg-muted/50"><th colSpan={2} className="px-4 py-2 text-[10px] font-semibold uppercase tracking-wide">{title}</th></tr>{rows.map(([label,value])=><tr className="border-t" key={label}><td className="w-[34%] px-4 py-2.5 text-muted-foreground">{label}</td><td className="px-4 py-2.5">{value}</td></tr>)}</>}
-export function ReviewForm({onReview}:{onReview?:(review:Review)=>void}={}){const[open,setOpen]=useState(false),[sent,setSent]=useState(false),[name,setName]=useState(''),[text,setText]=useState(''),[rating,setRating]=useState(5);return <><Button size="sm" variant="outline" onClick={()=>{setSent(false);setOpen(true)}}>Write A Review</Button><Dialog open={open} onOpenChange={setOpen}><DialogContent><DialogHeader><DialogTitle>{sent?'Thank you for your review':'Write a review'}</DialogTitle><DialogDescription>{sent?'Your review was submitted in this local demo.':'Share your experience with the product.'}</DialogDescription></DialogHeader>{sent?<div className="space-y-4"><p className="font-semibold">{name}</p><blockquote className="text-sm leading-6">{text}</blockquote><Button onClick={()=>setOpen(false)}>Done</Button></div>:<form className="space-y-4" onSubmit={e=>{e.preventDefault();onReview?.({name,text,rating,date:'Just now',title:'Your review'});setSent(true)}}><div className="space-y-2"><Label htmlFor="review-name">Your name</Label><Input id="review-name" required value={name} onChange={e=>setName(e.target.value)}/></div><div className="space-y-2"><Label htmlFor="review-rating">Rating</Label><Rating id="review-rating" aria-label="Your rating" rating={rating} onRatingChange={setRating} editable showValue/></div><div className="space-y-2"><Label htmlFor="review-text">Your review</Label><Textarea id="review-text" required minLength={12} value={text} onChange={e=>setText(e.target.value)}/></div><Button type="submit">Submit review</Button></form>}</DialogContent></Dialog></>}
-export type Review={name:string;title?:string;text:string;date?:string;rating?:number}
-export const audioReviews:Review[]=[{name:'Mira Okonkwo',title:'Replaced my studio cans on day three',text:'Clear vocals, a comfortable fit and enough battery to get through a working week. The noise reduction makes the train ride much quieter.',date:'3 weeks ago'},{name:'Theo Larsen',title:'Lives in my carry-on now',text:'The folding shape fits neatly into my bag. I can switch from a laptop to a phone without interrupting the day.',date:'1 month ago'},{name:'Priya Anand',title:'Multipoint actually works',text:'Soft pads and simple controls. The connection has been reliable through calls, music and long walks.',date:'2 months ago'},{name:'Jules Akinyemi',title:'Made for the long session',text:'A considered everyday pair. I especially appreciate the replaceable pads and the quick charging.',date:'2 weeks ago'}]
-export function ReviewSummary({rating=4.7,count='412',barsOnly=false}:{rating?:number;count?:string;barsOnly?:boolean}){return <div className="space-y-3">{!barsOnly&&<><div><strong className="text-4xl tracking-tight">{rating}</strong><span className="ml-2 text-xs text-muted-foreground">/ 5</span></div><RatingStars rating={rating} count={`${count} verified reviews`}/></>}<div className="space-y-2">{[76,18,4,1.5,.5].map((value,i)=><div className="grid grid-cols-[22px_1fr_28px] items-center gap-3 text-[10px] text-muted-foreground" key={i}><span>{5-i}★</span><Progress value={value} className="h-1"/><span className="text-right">{Math.max(1,Math.round(Number(count.replaceAll(',',''))*value/100))}</span></div>)}</div></div>}
-export function ReviewCarousel({reviews=audioReviews,segments=false}:{reviews?:Review[];segments?:boolean}){const[active,setActive]=useState(0),[playing,setPlaying]=useState(true);useEffect(()=>{if(!playing)return;const timer=setInterval(()=>setActive(i=>(i+1)%reviews.length),6500);return()=>clearInterval(timer)},[playing,reviews.length]);const review=reviews[active];return <div className="min-w-0" aria-label="Featured reviews"><div aria-live={playing?'off':'polite'}><div className="mb-4 flex items-center gap-2"><RatingStars/><Badge variant="success-light" size="xs">Verified</Badge></div>{review.title&&<h3 className="mb-3 text-base font-semibold">{review.title}</h3>}<blockquote className={cn('leading-7',segments?'text-lg font-medium sm:text-xl':'text-sm')}>{review.text}</blockquote><p className="mt-5 text-xs"><strong>{review.name}</strong><span className="ml-2 text-muted-foreground">· {review.date??'1 week ago'}</span></p></div><div className="mt-5 flex items-center gap-1.5">{reviews.map((r,i)=><button aria-label={`Go to review ${i+1} of ${reviews.length}: ${r.name}`} aria-pressed={active===i} onClick={()=>{setActive(i);setPlaying(false)}} className={cn('h-1.5 rounded-full transition-all',segments?'flex-1':'w-1.5',active===i?'bg-foreground':'bg-muted-foreground/25',active===i&&!segments&&'w-5')} key={r.name}/>)}<Button size="icon-sm" variant="ghost" aria-label={playing?'Pause reviews':'Play reviews'} className="ml-2 size-6" onClick={()=>setPlaying(!playing)}>{playing?<Pause className="size-3"/>:<Play className="size-3"/>}</Button></div></div>}
-export function ReviewsSection({count='412',rating=4.7,title='What Buyers Are Saying',reviews=audioReviews}:{count?:string;rating?:number;title?:string;reviews?:Review[]}){const[all,setAll]=useState(false),[submitted,setSubmitted]=useState<Review[]>([]);return <section className="space-y-7"><div><p className="mb-2 text-[10px] tracking-widest text-muted-foreground">REVIEWS</p><h2 className="text-2xl font-semibold tracking-tight">{title}</h2></div><div className="grid gap-8 rounded-lg border p-4 sm:grid-cols-[140px_1fr]"><div><strong className="text-3xl">{rating}</strong><span className="text-xs text-muted-foreground"> / 5</span><RatingStars rating={rating}/><p className="mt-1 text-xs text-muted-foreground">Based on {count} reviews</p></div><ReviewSummary rating={rating} count={count} barsOnly/></div><div className="flex items-center justify-between"><p className="text-[10px] tracking-wide text-muted-foreground">RECENT REVIEWS</p><ReviewForm onReview={review=>setSubmitted(items=>[review,...items])}/></div><div className="divide-y">{[...submitted,...reviews].slice(0,all?reviews.length+submitted.length:3).map(r=><article className="py-5 first:pt-0" key={r.name}><div className="flex items-center gap-2 text-xs"><span className="flex size-6 items-center justify-center rounded-full bg-muted font-semibold">{r.name.split(' ').map(n=>n[0]).join('')}</span><strong>{r.name}</strong><Badge variant="success-light" size="xs">Verified</Badge><span className="ml-auto text-muted-foreground">{r.date}</span></div><div className="my-2 flex flex-wrap items-center gap-2"><RatingStars rating={r.rating??4.7}/>{r.title&&<strong className="text-xs">{r.title}</strong>}</div><p className="text-sm leading-6 text-muted-foreground">{r.text}</p></article>)}</div><Button variant="ghost" size="sm" onClick={()=>setAll(!all)}>{all?'Show fewer reviews':`See All ${count} Reviews`} <ChevronRight/></Button></section>}
-export function RelatedProducts({kind='audio',paged=false}:{kind?:'audio'|'shoes'|'coffee'|'bags';paged?:boolean}){const[page,setPage]=useState(0);const names=kind==='shoes'?['Trail Runner Z2','Sport Performance Pro','Heritage Court Low','Modern Street Elite','Alpine Trekker Mid','Pulse Sensor Trainer','Cloud Stride 2','Studio Knit Slip-On']:kind==='coffee'?['Drift Gooseneck Kettle','Drift Hand Grinder','Drift Paper Filters','Drift Brew Scale']:kind==='bags'?['Mariner Laptop Sleeve','Drift Card Holder','Mariner Shoulder Strap','Drift Leather Care Kit']:['Atlas Mini True Wireless','Echo Studio Open-Back','Loop Travel Hard Case','Replacement Ear Pads'];const prices=kind==='coffee'?[119,79,12,59]:kind==='bags'?[129,79,89,39]:kind==='audio'?[199,449,39,29]:[142,155,118,175];const src=kind==='shoes'?photos.shoes:kind==='coffee'?coffee:kind==='bags'?photos.bag:photos.headphones;return <section><div className="mb-6 flex flex-wrap items-center justify-between gap-3"><h2 className="text-xl font-semibold">You May Also Like {paged&&<span className="ml-2 rounded-full bg-muted px-2 py-1 text-xs font-normal">{page+1} / 2</span>}</h2>{paged&&<div className="flex gap-2"><Button aria-label="Previous related products" size="icon-sm" variant="outline" disabled={page===0} onClick={()=>setPage(0)}><ChevronLeft/></Button><Button aria-label="Next related products" size="icon-sm" variant="outline" disabled={page===1} onClick={()=>setPage(1)}><ChevronRight/></Button></div>}</div><div className="grid grid-cols-2 gap-4 sm:grid-cols-4">{names.slice(page*4,page*4+4).map((name,i)=><article key={name} className={cn("overflow-hidden rounded-lg",kind==='shoes'&&'border')}><div className="group relative aspect-square overflow-hidden rounded-lg bg-muted"><img src={src} alt={name} loading="lazy" className="size-full object-cover" style={{objectPosition:`${i*25}% center`}}/><div className="absolute right-2 top-2 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100"><ProductWish name={name} initial={i===1}/></div></div><div className={cn("space-y-2 pt-3",kind==='shoes'&&'p-3')}><p className="text-[10px] text-muted-foreground">{kind==='shoes'?'Lifestyle · Running':kind==='coffee'?'Coffee · Accessories':'Accessories'}</p><h3 className="text-sm font-medium">{name}</h3><ProductPrice price={prices[i]}/></div></article>)}</div></section>}
+export const surfacePhotos = {
+  ...photos,
+  coffee,
+  coffeePour,
+  books,
+  reading,
+  library,
+  ceramics,
+  bagSlate,
+  bagTan,
+};
+export function ProductFrame({
+  children,
+  narrow = false,
+}: {
+  children: ReactNode;
+  narrow?: boolean;
+}) {
+  return (
+    <main
+      className={cn(
+        "mx-auto min-h-svh w-full max-w-6xl px-5 py-10 text-sm sm:px-8 sm:py-12",
+        narrow && "max-w-3xl",
+      )}
+    >
+      {children}
+    </main>
+  );
+}
+export function Breadcrumbs({ items }: { items: string[] }) {
+  return (
+    <nav
+      aria-label="Breadcrumb"
+      className="mb-8 flex flex-wrap items-center gap-2 text-xs text-muted-foreground sm:text-sm"
+    >
+      {["Shop", ...items].map((item, i) => (
+        <span
+          key={item}
+          className={cn(
+            "flex items-center gap-2",
+            i === items.length && "text-foreground",
+          )}
+        >
+          {i > 0 && <ChevronRight className="size-3" />}
+          {item}
+        </span>
+      ))}
+    </nav>
+  );
+}
+export function ProductPrice({
+  price,
+  old,
+  label,
+  large = false,
+}: {
+  price: number;
+  old?: number;
+  label?: string;
+  large?: boolean;
+}) {
+  return (
+    <div
+      className={cn(
+        "flex flex-wrap items-center gap-2 text-base",
+        large && "text-2xl",
+      )}
+    >
+      <strong>
+        <Money value={price} />
+      </strong>
+      {old && (
+        <del className="text-muted-foreground">
+          <Money value={old} />
+        </del>
+      )}
+      {label && (
+        <Badge variant="destructive" radius="full">
+          {label}
+        </Badge>
+      )}
+    </div>
+  );
+}
+export function RatingStars({
+  rating = 4.7,
+  count,
+  reviewAction,
+}: {
+  rating?: number;
+  count?: string;
+  reviewAction?: () => void;
+}) {
+  return (
+    <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+      <Rating
+        rating={rating}
+        size="sm"
+        showValue
+        aria-label={`${rating} out of 5 stars`}
+      />
+      {count &&
+        (reviewAction ? (
+          <button
+            className="underline-offset-4 hover:underline"
+            onClick={reviewAction}
+          >
+            ({count})
+          </button>
+        ) : (
+          <span>({count})</span>
+        ))}
+    </div>
+  );
+}
+export function ProductWish({
+  name,
+  initial = false,
+  words = false,
+  className,
+}: {
+  name: string;
+  initial?: boolean;
+  words?: boolean;
+  className?: string;
+}) {
+  const [liked, setLiked] = useState(initial);
+  return (
+    <Button
+      variant="outline"
+      size={words ? "default" : "icon-sm"}
+      className={cn("bg-background/85", className)}
+      aria-label={`${liked ? "Remove" : "Add"} ${name} ${liked ? "from" : "to"} wishlist`}
+      aria-pressed={liked}
+      onClick={() => setLiked(!liked)}
+    >
+      <Heart className={cn(liked && "fill-destructive text-destructive")} />
+      {words && (liked ? "Saved to Wishlist" : "Wishlist")}
+    </Button>
+  );
+}
+export type ColorOption = { name: string; value: string; image?: string };
+export function ColorPicker({
+  colors,
+  value,
+  onChange,
+  name = "Color",
+  compact = false,
+}: {
+  colors: ColorOption[];
+  value: string;
+  onChange: (value: string) => void;
+  name?: string;
+  compact?: boolean;
+}) {
+  return (
+    <div className="space-y-3">
+      <p className={cn("text-sm", compact && "sr-only")}>
+        {name}: <span className="text-muted-foreground">{value}</span>
+      </p>
+      <div className="flex flex-wrap gap-2" role="group" aria-label={name}>
+        {colors.map((c) => (
+          <button
+            key={c.name}
+            aria-label={c.name}
+            aria-pressed={value === c.name}
+            title={c.name}
+            onClick={() => onChange(c.name)}
+            style={{ backgroundColor: c.value }}
+            className={cn(
+              "size-7 rounded-full border ring-offset-2 ring-offset-background",
+              compact && "size-4",
+              value === c.name ? "ring-1 ring-foreground" : "ring-0",
+            )}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+export function Quantity({
+  value,
+  onChange,
+  max = 10,
+}: {
+  value: number;
+  onChange: (value: number) => void;
+  max?: number;
+}) {
+  return (
+    <NumberField
+      value={value}
+      onValueChange={(value) => onChange(value ?? 1)}
+      min={1}
+      max={max}
+      step={1}
+      className="w-28 shrink-0"
+    >
+      <NumberFieldGroup>
+        <NumberFieldDecrement aria-label="Decrease quantity" />
+        <NumberFieldInput aria-label="Quantity" />
+        <NumberFieldIncrement aria-label="Increase quantity" />
+      </NumberFieldGroup>
+    </NumberField>
+  );
+}
+export function CartAction({
+  name,
+  detail,
+  quantity = 1,
+  price,
+  children = "Add to Cart",
+  className,
+  disabled = false,
+}: {
+  name: string;
+  detail?: string;
+  quantity?: number;
+  price: number;
+  children?: ReactNode;
+  className?: string;
+  disabled?: boolean;
+}) {
+  const [open, setOpen] = useState(false);
+  const [added, setAdded] = useState(false);
+  return (
+    <>
+      <Button
+        className={className}
+        disabled={disabled}
+        onClick={() => {
+          setAdded(true);
+          setOpen(true);
+        }}
+      >
+        {added ? <Check /> : <ShoppingBag />}
+        {added ? "Added to Bag" : children}
+      </Button>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Added to your bag</DialogTitle>
+            <DialogDescription>
+              This is a local storefront preview.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="rounded-lg border p-4">
+            <p className="font-semibold">{name}</p>
+            {detail && (
+              <p className="mt-1 text-sm text-muted-foreground">{detail}</p>
+            )}
+            <div className="mt-5 flex justify-between text-sm">
+              <span>
+                {quantity} × <Money value={price} />
+              </span>
+              <strong>
+                <Money value={quantity * price} />
+              </strong>
+            </div>
+          </div>
+          <Button onClick={() => setOpen(false)}>Continue shopping</Button>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+}
+export function TrustRow({ simple = false }: { simple?: boolean }) {
+  return simple ? (
+    <p className="text-xs leading-6 text-muted-foreground">
+      Free 2-day shipping over $99 <span className="mx-1">·</span> 30-day
+      returns <span className="mx-1">·</span> 2-year warranty
+    </p>
+  ) : (
+    <div className="grid grid-cols-3 gap-2">
+      {[
+        [Truck, "Free shipping"],
+        [RotateCcw, "30-day returns"],
+        [ShieldCheck, "2-year warranty"],
+      ].map(([Icon, label]) => {
+        const Mark = Icon as typeof Truck;
+        return (
+          <div
+            key={String(label)}
+            className="flex flex-col items-center gap-2 rounded-lg border border-dashed px-1 py-3 text-center text-[11px] sm:text-xs"
+          >
+            <Mark className="size-4" />
+            {String(label)}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+export { FreeProductGallery as ProductGallery } from "./product-carousels";
+export function SpecRows({
+  groups,
+}: {
+  groups: { title: string; rows: string[][] }[];
+}) {
+  return (
+    <div className="overflow-hidden rounded-lg border">
+      <table className="w-full text-left text-xs sm:text-sm">
+        <tbody>
+          {groups.map((g) => (
+            <SpecGroup key={g.title} title={g.title} rows={g.rows} />
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+function SpecGroup({ title, rows }: { title: string; rows: string[][] }) {
+  return (
+    <>
+      <tr className="bg-muted/50">
+        <th
+          colSpan={2}
+          className="px-4 py-2 text-[10px] font-semibold uppercase tracking-wide"
+        >
+          {title}
+        </th>
+      </tr>
+      {rows.map(([label, value]) => (
+        <tr className="border-t" key={label}>
+          <td className="w-[34%] px-4 py-2.5 text-muted-foreground">{label}</td>
+          <td className="px-4 py-2.5">{value}</td>
+        </tr>
+      ))}
+    </>
+  );
+}
+export function ReviewForm({
+  onReview,
+}: { onReview?: (review: Review) => void } = {}) {
+  const [open, setOpen] = useState(false),
+    [sent, setSent] = useState(false),
+    [name, setName] = useState(""),
+    [text, setText] = useState(""),
+    [rating, setRating] = useState(5);
+  return (
+    <>
+      <Button
+        size="sm"
+        variant="outline"
+        onClick={() => {
+          setSent(false);
+          setOpen(true);
+        }}
+      >
+        Write A Review
+      </Button>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>
+              {sent ? "Thank you for your review" : "Write a review"}
+            </DialogTitle>
+            <DialogDescription>
+              {sent
+                ? "Your review was submitted in this local demo."
+                : "Share your experience with the product."}
+            </DialogDescription>
+          </DialogHeader>
+          {sent ? (
+            <div className="space-y-4">
+              <p className="font-semibold">{name}</p>
+              <blockquote className="text-sm leading-6">{text}</blockquote>
+              <Button onClick={() => setOpen(false)}>Done</Button>
+            </div>
+          ) : (
+            <form
+              className="space-y-4"
+              onSubmit={(e) => {
+                e.preventDefault();
+                onReview?.({
+                  name,
+                  text,
+                  rating,
+                  date: "Just now",
+                  title: "Your review",
+                });
+                setSent(true);
+              }}
+            >
+              <div className="space-y-2">
+                <Label htmlFor="review-name">Your name</Label>
+                <Input
+                  id="review-name"
+                  required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="review-rating">Rating</Label>
+                <Rating
+                  id="review-rating"
+                  aria-label="Your rating"
+                  rating={rating}
+                  onRatingChange={setRating}
+                  editable
+                  showValue
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="review-text">Your review</Label>
+                <Textarea
+                  id="review-text"
+                  required
+                  minLength={12}
+                  value={text}
+                  onChange={(e) => setText(e.target.value)}
+                />
+              </div>
+              <Button type="submit">Submit review</Button>
+            </form>
+          )}
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+}
+export type Review = {
+  name: string;
+  title?: string;
+  text: string;
+  date?: string;
+  rating?: number;
+};
+export const audioReviews: Review[] = [
+  {
+    name: "Mira Okonkwo",
+    title: "Replaced my studio cans on day three",
+    text: "Clear vocals, a comfortable fit and enough battery to get through a working week. The noise reduction makes the train ride much quieter.",
+    date: "3 weeks ago",
+  },
+  {
+    name: "Theo Larsen",
+    title: "Lives in my carry-on now",
+    text: "The folding shape fits neatly into my bag. I can switch from a laptop to a phone without interrupting the day.",
+    date: "1 month ago",
+  },
+  {
+    name: "Priya Anand",
+    title: "Multipoint actually works",
+    text: "Soft pads and simple controls. The connection has been reliable through calls, music and long walks.",
+    date: "2 months ago",
+  },
+  {
+    name: "Jules Akinyemi",
+    title: "Made for the long session",
+    text: "A considered everyday pair. I especially appreciate the replaceable pads and the quick charging.",
+    date: "2 weeks ago",
+  },
+];
+export function ReviewSummary({
+  rating = 4.7,
+  count = "412",
+  barsOnly = false,
+}: {
+  rating?: number;
+  count?: string;
+  barsOnly?: boolean;
+}) {
+  return (
+    <div className="space-y-3">
+      {!barsOnly && (
+        <>
+          <div>
+            <strong className="text-4xl tracking-tight">{rating}</strong>
+            <span className="ml-2 text-xs text-muted-foreground">/ 5</span>
+          </div>
+          <RatingStars rating={rating} count={`${count} verified reviews`} />
+        </>
+      )}
+      <div className="space-y-2">
+        {[76, 18, 4, 1.5, 0.5].map((value, i) => (
+          <div
+            className="grid grid-cols-[22px_1fr_28px] items-center gap-3 text-[10px] text-muted-foreground"
+            key={i}
+          >
+            <span>{5 - i}★</span>
+            <Progress value={value} className="h-1" />
+            <span className="text-right">
+              {Math.max(
+                1,
+                Math.round((Number(count.replaceAll(",", "")) * value) / 100),
+              )}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+export function ReviewCarousel({
+  reviews = audioReviews,
+  segments = false,
+}: {
+  reviews?: Review[];
+  segments?: boolean;
+}) {
+  return <FreeReviewCarousel reviews={reviews} segments={segments} />;
+}
+export function ReviewsSection({
+  count = "412",
+  rating = 4.7,
+  title = "What Buyers Are Saying",
+  reviews = audioReviews,
+}: {
+  count?: string;
+  rating?: number;
+  title?: string;
+  reviews?: Review[];
+}) {
+  const [all, setAll] = useState(false),
+    [submitted, setSubmitted] = useState<Review[]>([]);
+  return (
+    <section className="space-y-7">
+      <div>
+        <p className="mb-2 text-[10px] tracking-widest text-muted-foreground">
+          REVIEWS
+        </p>
+        <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
+      </div>
+      <div className="grid gap-8 rounded-lg border p-4 sm:grid-cols-[140px_1fr]">
+        <div>
+          <strong className="text-3xl">{rating}</strong>
+          <span className="text-xs text-muted-foreground"> / 5</span>
+          <RatingStars rating={rating} />
+          <p className="mt-1 text-xs text-muted-foreground">
+            Based on {count} reviews
+          </p>
+        </div>
+        <ReviewSummary rating={rating} count={count} barsOnly />
+      </div>
+      <div className="flex items-center justify-between">
+        <p className="text-[10px] tracking-wide text-muted-foreground">
+          RECENT REVIEWS
+        </p>
+        <ReviewForm
+          onReview={(review) => setSubmitted((items) => [review, ...items])}
+        />
+      </div>
+      <div className="divide-y">
+        {[...submitted, ...reviews]
+          .slice(0, all ? reviews.length + submitted.length : 3)
+          .map((r) => (
+            <article className="py-5 first:pt-0" key={r.name}>
+              <div className="flex items-center gap-2 text-xs">
+                <span className="flex size-6 items-center justify-center rounded-full bg-muted font-semibold">
+                  {r.name
+                    .split(" ")
+                    .map((n) => n[0])
+                    .join("")}
+                </span>
+                <strong>{r.name}</strong>
+                <Badge variant="success-light" size="xs">
+                  Verified
+                </Badge>
+                <span className="ml-auto text-muted-foreground">{r.date}</span>
+              </div>
+              <div className="my-2 flex flex-wrap items-center gap-2">
+                <RatingStars rating={r.rating ?? 4.7} />
+                {r.title && <strong className="text-xs">{r.title}</strong>}
+              </div>
+              <p className="text-sm leading-6 text-muted-foreground">
+                {r.text}
+              </p>
+            </article>
+          ))}
+      </div>
+      <Button variant="ghost" size="sm" onClick={() => setAll(!all)}>
+        {all ? "Show fewer reviews" : `See All ${count} Reviews`}{" "}
+        <ChevronRight />
+      </Button>
+    </section>
+  );
+}
+export function RelatedProducts({
+  kind = "audio",
+  paged = false,
+}: {
+  kind?: "audio" | "shoes" | "coffee" | "bags";
+  paged?: boolean;
+}) {
+  const names =
+    kind === "shoes"
+      ? [
+          "Trail Runner Z2",
+          "Sport Performance Pro",
+          "Heritage Court Low",
+          "Modern Street Elite",
+          "Alpine Trekker Mid",
+          "Pulse Sensor Trainer",
+          "Cloud Stride 2",
+          "Studio Knit Slip-On",
+        ]
+      : kind === "coffee"
+        ? [
+            "Drift Gooseneck Kettle",
+            "Drift Hand Grinder",
+            "Drift Paper Filters",
+            "Drift Brew Scale",
+          ]
+        : kind === "bags"
+          ? [
+              "Mariner Laptop Sleeve",
+              "Drift Card Holder",
+              "Mariner Shoulder Strap",
+              "Drift Leather Care Kit",
+            ]
+          : [
+              "Atlas Mini True Wireless",
+              "Echo Studio Open-Back",
+              "Loop Travel Hard Case",
+              "Replacement Ear Pads",
+            ];
+  const prices =
+    kind === "coffee"
+      ? [119, 79, 12, 59]
+      : kind === "bags"
+        ? [129, 79, 89, 39]
+        : kind === "audio"
+          ? [199, 449, 39, 29]
+          : [142, 155, 118, 175];
+  const src =
+    kind === "shoes"
+      ? photos.shoes
+      : kind === "coffee"
+        ? coffee
+        : kind === "bags"
+          ? photos.bag
+          : photos.headphones;
+  const tiles = names.map((name, i) => (
+    <article
+      key={name}
+      className={cn("overflow-hidden rounded-lg", kind === "shoes" && "border")}
+    >
+      <div className="group relative aspect-square overflow-hidden rounded-lg bg-muted">
+        <img
+          src={src}
+          alt={name}
+          loading="lazy"
+          className="size-full object-cover"
+          style={{ objectPosition: `${i * 25}% center` }}
+        />
+        <div className="absolute right-2 top-2 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100">
+          <ProductWish name={name} initial={i === 1} />
+        </div>
+      </div>
+      <div className={cn("space-y-2 pt-3", kind === "shoes" && "p-3")}>
+        <p className="text-[10px] text-muted-foreground">
+          {kind === "shoes"
+            ? "Lifestyle · Running"
+            : kind === "coffee"
+              ? "Coffee · Accessories"
+              : "Accessories"}
+        </p>
+        <h3 className="text-sm font-medium">{name}</h3>
+        <ProductPrice price={prices[i % 4]} />
+      </div>
+    </article>
+  ));
+  if (paged)
+    return (
+      <section>
+        <FreeProductRail
+          title="You May Also Like"
+          previousLabel="Previous related products"
+          nextLabel="Next related products"
+          showCount
+          itemClassName="basis-full"
+          slidesToScroll={1}
+        >
+          {[
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-4" key="first">
+              {tiles.slice(0, 4)}
+            </div>,
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-4" key="second">
+              {tiles.slice(4, 8)}
+            </div>,
+          ]}
+        </FreeProductRail>
+      </section>
+    );
+  return (
+    <section>
+      <h2 className="mb-6 text-xl font-semibold">You May Also Like</h2>
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">{tiles}</div>
+    </section>
+  );
+}
 
-export function AllReviewsButton({count,reviews=audioReviews,label}:{count:string;reviews?:Review[];label?:string}){const[open,setOpen]=useState(false);return <><Button variant="outline" size="sm" onClick={()=>setOpen(true)}>{label??`See All ${count} Reviews`} <ChevronRight/></Button><Dialog open={open} onOpenChange={setOpen}><DialogContent className="max-h-[85vh] overflow-auto sm:max-w-xl"><DialogHeader><DialogTitle>Owner reviews</DialogTitle><DialogDescription>Showing {reviews.length} sample reviews from this local preview.</DialogDescription></DialogHeader><div className="divide-y">{reviews.map(r=><article className="py-4" key={r.name}><p className="mb-2 text-sm font-semibold">{r.name}</p><p className="text-sm leading-6 text-muted-foreground">{r.text}</p></article>)}</div><ReviewForm/></DialogContent></Dialog></>}
+export function AllReviewsButton({
+  count,
+  reviews = audioReviews,
+  label,
+}: {
+  count: string;
+  reviews?: Review[];
+  label?: string;
+}) {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <Button variant="outline" size="sm" onClick={() => setOpen(true)}>
+        {label ?? `See All ${count} Reviews`} <ChevronRight />
+      </Button>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="max-h-[85vh] overflow-auto sm:max-w-xl">
+          <DialogHeader>
+            <DialogTitle>Owner reviews</DialogTitle>
+            <DialogDescription>
+              Showing {reviews.length} sample reviews from this local preview.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="divide-y">
+            {reviews.map((r) => (
+              <article className="py-4" key={r.name}>
+                <p className="mb-2 text-sm font-semibold">{r.name}</p>
+                <p className="text-sm leading-6 text-muted-foreground">
+                  {r.text}
+                </p>
+              </article>
+            ))}
+          </div>
+          <ReviewForm />
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+}

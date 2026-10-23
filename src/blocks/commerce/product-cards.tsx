@@ -1,157 +1,1519 @@
-import { useEffect, useId, useRef, useState } from 'react'
-import type { CSSProperties, ReactNode } from 'react'
-import { ArrowRight, Check, ChevronLeft, ChevronRight, Heart, SlidersHorizontal, ShoppingBag, Tag, Truck } from 'lucide-react'
-import type { BlockProps } from '@/data/types'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/reui/badge'
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
-import { Switch } from '@/components/ui/switch'
-import { Separator } from '@/components/ui/separator'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-import { Empty, EmptyHeader, EmptyTitle, EmptyDescription } from '@/components/ui/empty'
-import { Field, FieldGroup, FieldLabel } from '@/components/ui/field'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import { cn } from '@/lib/utils'
-import { Rating as ReuiRating } from '@/components/reui/rating'
-import { Frame as ReuiFrame, FramePanel } from '@/components/reui/frame'
-import { photos, Money } from './shared'
-import { apparel, arrivals, devices, accessories, lookbook } from './product-data'
-import type { ShowcaseProduct } from './product-data'
+import { FreeCardImageCarousel, FreeProductRail } from "./product-carousels";
+import { useId, useState } from "react";
+import type { CSSProperties, ReactNode } from "react";
+import {
+  ArrowRight,
+  Check,
+  ChevronRight,
+  Heart,
+  SlidersHorizontal,
+  ShoppingBag,
+  Tag,
+  Truck,
+} from "lucide-react";
+import type { BlockProps } from "@/data/types";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/reui/badge";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
+import { Switch } from "@/components/ui/switch";
+import { Separator } from "@/components/ui/separator";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Empty,
+  EmptyHeader,
+  EmptyTitle,
+  EmptyDescription,
+} from "@/components/ui/empty";
+import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
+import { Rating as ReuiRating } from "@/components/reui/rating";
+import { Frame as ReuiFrame, FramePanel } from "@/components/reui/frame";
+import { photos, Money } from "./shared";
+import {
+  apparel,
+  arrivals,
+  devices,
+  accessories,
+  lookbook,
+} from "./product-data";
+import type { ShowcaseProduct } from "./product-data";
 
 // Each exported catalog entry has its own composition. These helpers only share
 // controls and typography; they do not choose a layout by changing a heading.
-function Crumbs({items,center=false}:{items:string[];center?:boolean}) {
- return <nav aria-label="Breadcrumb" className={cn('flex flex-wrap items-center gap-2 text-sm text-muted-foreground',center&&'justify-center')}>{items.map((item,i)=><span className="flex items-center gap-2" key={item}>{i>0&&<ChevronRight className="size-3.5"/>}<span className={cn(i===items.length-1&&'text-foreground')}>{item}</span></span>)}</nav>
+function Crumbs({
+  items,
+  center = false,
+}: {
+  items: string[];
+  center?: boolean;
+}) {
+  return (
+    <nav
+      aria-label="Breadcrumb"
+      className={cn(
+        "flex flex-wrap items-center gap-2 text-sm text-muted-foreground",
+        center && "justify-center",
+      )}
+    >
+      {items.map((item, i) => (
+        <span className="flex items-center gap-2" key={item}>
+          {i > 0 && <ChevronRight className="size-3.5" />}
+          <span className={cn(i === items.length - 1 && "text-foreground")}>
+            {item}
+          </span>
+        </span>
+      ))}
+    </nav>
+  );
 }
-function Wish({product,initial=false}:{product:ShowcaseProduct;initial?:boolean}) {
- const [liked,setLiked]=useState(initial)
- return <Button variant="secondary" size="icon-sm" className="size-7 rounded-md" aria-label={`${liked?'Remove':'Add'} ${product.name} ${liked?'from':'to'} wishlist`} aria-pressed={liked} onClick={()=>setLiked(!liked)}><Heart className={cn(liked&&'fill-destructive text-destructive')}/></Button>
+function Wish({
+  product,
+  initial = false,
+}: {
+  product: ShowcaseProduct;
+  initial?: boolean;
+}) {
+  const [liked, setLiked] = useState(initial);
+  return (
+    <Button
+      variant="secondary"
+      size="icon-sm"
+      className="size-7 rounded-md"
+      aria-label={`${liked ? "Remove" : "Add"} ${product.name} ${liked ? "from" : "to"} wishlist`}
+      aria-pressed={liked}
+      onClick={() => setLiked(!liked)}
+    >
+      <Heart className={cn(liked && "fill-destructive text-destructive")} />
+    </Button>
+  );
 }
-function Price({product,large=false,reverse=false}:{product:ShowcaseProduct;large?:boolean;reverse?:boolean}) {
- const old=product.compareAt&&<del className="font-normal text-muted-foreground"><Money value={product.compareAt}/></del>
- const current=<span className="font-semibold"><Money value={product.price}/></span>
- return <div className={cn('flex flex-wrap items-baseline gap-2 text-sm',large&&'text-xl')}>{reverse?<>{current}{old}</>:<>{old}{current}</>}</div>
+function Price({
+  product,
+  large = false,
+  reverse = false,
+}: {
+  product: ShowcaseProduct;
+  large?: boolean;
+  reverse?: boolean;
+}) {
+  const old = product.compareAt && (
+    <del className="font-normal text-muted-foreground">
+      <Money value={product.compareAt} />
+    </del>
+  );
+  const current = (
+    <span className="font-semibold">
+      <Money value={product.price} />
+    </span>
+  );
+  return (
+    <div
+      className={cn(
+        "flex flex-wrap items-baseline gap-2 text-sm",
+        large && "text-xl",
+      )}
+    >
+      {reverse ? (
+        <>
+          {current}
+          {old}
+        </>
+      ) : (
+        <>
+          {old}
+          {current}
+        </>
+      )}
+    </div>
+  );
 }
-function Rating({product,showValue=true}:{product:ShowcaseProduct;showValue?:boolean}) {
- return <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground"><ReuiRating rating={product.rating??4.7} size="sm" showValue={showValue} aria-label={`${product.rating??4.7} out of 5 stars`}/><span>{product.reviews??128} reviews</span></div>
+function Rating({
+  product,
+  showValue = true,
+}: {
+  product: ShowcaseProduct;
+  showValue?: boolean;
+}) {
+  return (
+    <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+      <ReuiRating
+        rating={product.rating ?? 4.7}
+        size="sm"
+        showValue={showValue}
+        aria-label={`${product.rating ?? 4.7} out of 5 stars`}
+      />
+      <span>{product.reviews ?? 128} reviews</span>
+    </div>
+  );
 }
-function Sale({product,words=false,percentage:customPercentage}:{product:ShowcaseProduct;words?:boolean;percentage?:number}) {
- if(!product.compareAt)return null
- const percentage=customPercentage??Math.round((1-product.price/product.compareAt)*100)
- return <Badge variant="destructive" radius="full">{words?`${percentage}% OFF`:`-${percentage}%`}</Badge>
+function Sale({
+  product,
+  words = false,
+  percentage: customPercentage,
+}: {
+  product: ShowcaseProduct;
+  words?: boolean;
+  percentage?: number;
+}) {
+  if (!product.compareAt) return null;
+  const percentage =
+    customPercentage ??
+    Math.round((1 - product.price / product.compareAt) * 100);
+  return (
+    <Badge variant="destructive" radius="full">
+      {words ? `${percentage}% OFF` : `-${percentage}%`}
+    </Badge>
+  );
 }
-function AddButton({product,cart=false,className,iconOnly=false}:{product:ShowcaseProduct;cart?:boolean;className?:string;iconOnly?:boolean}) {
- const [added,setAdded]=useState(false)
- return <Button className={className} aria-label={product.soldOut?`${product.name} is sold out`:`${added?'Added':'Add'} ${product.name} to ${cart?'cart':'bag'}`} disabled={product.soldOut} onClick={()=>setAdded(!added)}>{added?<Check data-icon="inline-start"/>:<ShoppingBag data-icon="inline-start"/>}{!iconOnly&&(product.soldOut?'Sold Out':added?'Added':cart?'Add to Cart':'Add to Bag')}</Button>
+function AddButton({
+  product,
+  cart = false,
+  className,
+  iconOnly = false,
+}: {
+  product: ShowcaseProduct;
+  cart?: boolean;
+  className?: string;
+  iconOnly?: boolean;
+}) {
+  const [added, setAdded] = useState(false);
+  return (
+    <Button
+      className={className}
+      aria-label={
+        product.soldOut
+          ? `${product.name} is sold out`
+          : `${added ? "Added" : "Add"} ${product.name} to ${cart ? "cart" : "bag"}`
+      }
+      disabled={product.soldOut}
+      onClick={() => setAdded(!added)}
+    >
+      {added ? (
+        <Check data-icon="inline-start" />
+      ) : (
+        <ShoppingBag data-icon="inline-start" />
+      )}
+      {!iconOnly &&
+        (product.soldOut
+          ? "Sold Out"
+          : added
+            ? "Added"
+            : cart
+              ? "Add to Cart"
+              : "Add to Bag")}
+    </Button>
+  );
 }
-function Image({product,className,style}:{product:ShowcaseProduct;className?:string;style?:CSSProperties}) {
- return <img src={product.image} alt={product.name} loading="lazy" className={cn('size-full object-cover transition-transform duration-500 motion-reduce:transition-none',className)} style={style}/>
+function Image({
+  product,
+  className,
+  style,
+}: {
+  product: ShowcaseProduct;
+  className?: string;
+  style?: CSSProperties;
+}) {
+  return (
+    <img
+      src={product.image}
+      alt={product.name}
+      loading="lazy"
+      className={cn(
+        "size-full object-cover transition-transform duration-500 motion-reduce:transition-none",
+        className,
+      )}
+      style={style}
+    />
+  );
 }
-function Caption({product,stock=false,tag=false,emphasis=false}:{product:ShowcaseProduct;stock?:boolean;tag?:boolean;emphasis?:boolean}) {
- return <div className="flex min-h-5 w-full flex-wrap items-center gap-2 text-xs text-muted-foreground">{tag&&<Tag className="size-3.5"/>}<span>{product.category}{product.secondary&&<> · {product.secondary}</>}</span>{stock&&product.stock!==undefined&&product.stock<6?<Badge variant="outline" className="ml-auto">{product.stock} left</Badge>:product.badge&&<Badge variant={product.badge==='Trending'?'destructive':product.badge==='New'&&(!tag||emphasis)?'default':'secondary'} className={cn(tag&&'ml-auto')} style={!tag&&product.badge==='Trending'?{backgroundColor:"var(--destructive)",color:"#fff"}:undefined}>{product.badge}</Badge>}</div>
+function Caption({
+  product,
+  stock = false,
+  tag = false,
+  emphasis = false,
+}: {
+  product: ShowcaseProduct;
+  stock?: boolean;
+  tag?: boolean;
+  emphasis?: boolean;
+}) {
+  return (
+    <div className="flex min-h-5 w-full flex-wrap items-center gap-2 text-xs text-muted-foreground">
+      {tag && <Tag className="size-3.5" />}
+      <span>
+        {product.category}
+        {product.secondary && <> · {product.secondary}</>}
+      </span>
+      {stock && product.stock !== undefined && product.stock < 6 ? (
+        <Badge variant="outline" className="ml-auto">
+          {product.stock} left
+        </Badge>
+      ) : (
+        product.badge && (
+          <Badge
+            variant={
+              product.badge === "Trending"
+                ? "destructive"
+                : product.badge === "New" && (!tag || emphasis)
+                  ? "default"
+                  : "secondary"
+            }
+            className={cn(tag && "ml-auto")}
+            style={
+              !tag && product.badge === "Trending"
+                ? { backgroundColor: "var(--destructive)", color: "#fff" }
+                : undefined
+            }
+          >
+            {product.badge}
+          </Badge>
+        )
+      )}
+    </div>
+  );
 }
-function EmptyProducts(){return <Empty className="col-span-full py-16"><EmptyHeader><EmptyTitle>No pieces found</EmptyTitle><EmptyDescription>Try a different filter to see a little more of the collection.</EmptyDescription></EmptyHeader></Empty>}
+function EmptyProducts() {
+  return (
+    <Empty className="col-span-full py-16">
+      <EmptyHeader>
+        <EmptyTitle>No pieces found</EmptyTitle>
+        <EmptyDescription>
+          Try a different filter to see a little more of the collection.
+        </EmptyDescription>
+      </EmptyHeader>
+    </Empty>
+  );
+}
 
-interface FilterState {category:string;availability:string;signal:string;price:string;sale:boolean;colors:string[]}
-const initialFilters:FilterState={category:'all',availability:'all',signal:'all',price:'all',sale:false,colors:[]}
-function OptionSelect({label,value,onChange,options}:{label:string;value:string;onChange:(value:string)=>void;options:{value:string;label:string}[]}) {
- const id=useId()
- return <Field orientation="horizontal"><FieldLabel htmlFor={id} className="min-w-20 flex-1">{label}</FieldLabel><Select value={value} onValueChange={onChange}><SelectTrigger id={id} className="w-36"><SelectValue/></SelectTrigger><SelectContent><SelectGroup>{options.map(o=><SelectItem value={o.value} key={o.value}>{o.label}</SelectItem>)}</SelectGroup></SelectContent></Select></Field>
+interface FilterState {
+  category: string;
+  availability: string;
+  signal: string;
+  price: string;
+  sale: boolean;
+  colors: string[];
 }
-function ListingFilters({mode,products,filters,onChange}:{mode:'color'|'masonry'|'device';products:ShowcaseProduct[];filters:FilterState;onChange:(filters:FilterState)=>void}) {
- const set=(key:keyof FilterState,value:string|boolean|string[])=>onChange({...filters,[key]:value})
- const count=(filters.category!=='all'?1:0)+(filters.availability!=='all'?1:0)+(filters.signal!=='all'?1:0)+(filters.price!=='all'?1:0)+(filters.sale?1:0)+filters.colors.length
- return <Popover><PopoverTrigger asChild><Button variant="outline" size="sm"><SlidersHorizontal data-icon="inline-start"/>{mode==='device'?'Filter':'Show Filters'}{count>0&&<Badge variant="secondary">{count}</Badge>}</Button></PopoverTrigger><PopoverContent align="end" className="w-72 p-4"><div className="mb-1 flex items-center justify-between"><h3 className="text-xs font-medium text-muted-foreground">Filters</h3>{count>0&&<Button variant="ghost" size="sm" onClick={()=>onChange({...initialFilters})}>Reset</Button>}</div><FieldGroup className="gap-3"><OptionSelect label="Category" value={filters.category} onChange={v=>set('category',v)} options={[{value:'all',label:mode==='device'?'All Categories':'All categories'},...Array.from(new Set(products.map(p=>p.category))).map(c=>({value:c,label:c}))]}/>{mode==='color'?<OptionSelect label="Availability" value={filters.availability} onChange={v=>set('availability',v)} options={[{value:'all',label:'All availability'},{value:'in',label:'In stock'},{value:'low',label:'Low stock'}]}/>:<OptionSelect label={mode==='device'?'Status':'Signal'} value={filters.signal} onChange={v=>set('signal',v)} options={[{value:'all',label:mode==='device'?'All Statuses':'All signals'},...['New','Trending','Low Stock'].map(s=>({value:s,label:s}))]}/>} {mode==='masonry'&&<OptionSelect label="Price" value={filters.price} onChange={v=>set('price',v)} options={[{value:'all',label:'All prices'},{value:'under100',label:'Under $100'},{value:'100to200',label:'$100–$200'},{value:'over200',label:'$200 and up'}]}/>}<Field orientation="horizontal"><FieldLabel className="flex-1" htmlFor={`sale-only-${mode}`}>Sale only</FieldLabel><Switch id={`sale-only-${mode}`} checked={filters.sale} onCheckedChange={v=>set('sale',v)}/></Field>{mode==='color'&&<Field className="border-t pt-4"><FieldLabel className="text-xs text-muted-foreground">Color family</FieldLabel><ToggleGroup type="multiple" variant="outline" value={filters.colors} onValueChange={v=>set('colors',v)} className="flex-wrap justify-start">{['Black','Neutral','Blue','Green','Red'].map(color=><ToggleGroupItem size="sm" value={color} key={color} className="h-6 gap-1 rounded-full px-2 text-[10px]"><span className="size-1.5 rounded-full" style={{backgroundColor:({Black:"#333333",Neutral:"#d6d3d1",Blue:"#3b82f6",Green:"#22a166",Red:"#ef3340"} as Record<string,string>)[color]}}/>{color}</ToggleGroupItem>)}</ToggleGroup></Field>}</FieldGroup></PopoverContent></Popover>
+const initialFilters: FilterState = {
+  category: "all",
+  availability: "all",
+  signal: "all",
+  price: "all",
+  sale: false,
+  colors: [],
+};
+function OptionSelect({
+  label,
+  value,
+  onChange,
+  options,
+}: {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  options: { value: string; label: string }[];
+}) {
+  const id = useId();
+  return (
+    <Field orientation="horizontal">
+      <FieldLabel htmlFor={id} className="min-w-20 flex-1">
+        {label}
+      </FieldLabel>
+      <Select value={value} onValueChange={onChange}>
+        <SelectTrigger id={id} className="w-36">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            {options.map((o) => (
+              <SelectItem value={o.value} key={o.value}>
+                {o.label}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+    </Field>
+  );
 }
-function sortAndFilter(data:ShowcaseProduct[],filters:FilterState,sort:string) {
- return data.filter(p=>(filters.category==='all'||p.category===filters.category)&&(!filters.sale||Boolean(p.compareAt))&&(filters.availability!=='low'||(p.stock??10)<6)&&(filters.availability!=='in'||!p.soldOut)&&(filters.signal==='all'||p.badge===filters.signal)&&(filters.price==='all'||filters.price==='under100'&&p.price<100||filters.price==='100to200'&&p.price>=100&&p.price<=200||filters.price==='over200'&&p.price>200)&&(!filters.colors.length||p.colors?.some(c=>filters.colors.includes(c.family)))).sort((a,b)=>sort==='low'?a.price-b.price:sort==='high'?b.price-a.price:sort==='rated'?(b.rating??0)-(a.rating??0):0)
+function ListingFilters({
+  mode,
+  products,
+  filters,
+  onChange,
+}: {
+  mode: "color" | "masonry" | "device";
+  products: ShowcaseProduct[];
+  filters: FilterState;
+  onChange: (filters: FilterState) => void;
+}) {
+  const set = (key: keyof FilterState, value: string | boolean | string[]) =>
+    onChange({ ...filters, [key]: value });
+  const count =
+    (filters.category !== "all" ? 1 : 0) +
+    (filters.availability !== "all" ? 1 : 0) +
+    (filters.signal !== "all" ? 1 : 0) +
+    (filters.price !== "all" ? 1 : 0) +
+    (filters.sale ? 1 : 0) +
+    filters.colors.length;
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button variant="outline" size="sm">
+          <SlidersHorizontal data-icon="inline-start" />
+          {mode === "device" ? "Filter" : "Show Filters"}
+          {count > 0 && <Badge variant="secondary">{count}</Badge>}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent align="end" className="w-72 p-4">
+        <div className="mb-1 flex items-center justify-between">
+          <h3 className="text-xs font-medium text-muted-foreground">Filters</h3>
+          {count > 0 && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => onChange({ ...initialFilters })}
+            >
+              Reset
+            </Button>
+          )}
+        </div>
+        <FieldGroup className="gap-3">
+          <OptionSelect
+            label="Category"
+            value={filters.category}
+            onChange={(v) => set("category", v)}
+            options={[
+              {
+                value: "all",
+                label: mode === "device" ? "All Categories" : "All categories",
+              },
+              ...Array.from(new Set(products.map((p) => p.category))).map(
+                (c) => ({ value: c, label: c }),
+              ),
+            ]}
+          />
+          {mode === "color" ? (
+            <OptionSelect
+              label="Availability"
+              value={filters.availability}
+              onChange={(v) => set("availability", v)}
+              options={[
+                { value: "all", label: "All availability" },
+                { value: "in", label: "In stock" },
+                { value: "low", label: "Low stock" },
+              ]}
+            />
+          ) : (
+            <OptionSelect
+              label={mode === "device" ? "Status" : "Signal"}
+              value={filters.signal}
+              onChange={(v) => set("signal", v)}
+              options={[
+                {
+                  value: "all",
+                  label: mode === "device" ? "All Statuses" : "All signals",
+                },
+                ...["New", "Trending", "Low Stock"].map((s) => ({
+                  value: s,
+                  label: s,
+                })),
+              ]}
+            />
+          )}{" "}
+          {mode === "masonry" && (
+            <OptionSelect
+              label="Price"
+              value={filters.price}
+              onChange={(v) => set("price", v)}
+              options={[
+                { value: "all", label: "All prices" },
+                { value: "under100", label: "Under $100" },
+                { value: "100to200", label: "$100–$200" },
+                { value: "over200", label: "$200 and up" },
+              ]}
+            />
+          )}
+          <Field orientation="horizontal">
+            <FieldLabel className="flex-1" htmlFor={`sale-only-${mode}`}>
+              Sale only
+            </FieldLabel>
+            <Switch
+              id={`sale-only-${mode}`}
+              checked={filters.sale}
+              onCheckedChange={(v) => set("sale", v)}
+            />
+          </Field>
+          {mode === "color" && (
+            <Field className="border-t pt-4">
+              <FieldLabel className="text-xs text-muted-foreground">
+                Color family
+              </FieldLabel>
+              <ToggleGroup
+                type="multiple"
+                variant="outline"
+                value={filters.colors}
+                onValueChange={(v) => set("colors", v)}
+                className="flex-wrap justify-start"
+              >
+                {["Black", "Neutral", "Blue", "Green", "Red"].map((color) => (
+                  <ToggleGroupItem
+                    size="sm"
+                    value={color}
+                    key={color}
+                    className="h-6 gap-1 rounded-full px-2 text-[10px]"
+                  >
+                    <span
+                      className="size-1.5 rounded-full"
+                      style={{
+                        backgroundColor: (
+                          {
+                            Black: "#333333",
+                            Neutral: "#d6d3d1",
+                            Blue: "#3b82f6",
+                            Green: "#22a166",
+                            Red: "#ef3340",
+                          } as Record<string, string>
+                        )[color],
+                      }}
+                    />
+                    {color}
+                  </ToggleGroupItem>
+                ))}
+              </ToggleGroup>
+            </Field>
+          )}
+        </FieldGroup>
+      </PopoverContent>
+    </Popover>
+  );
 }
-function Sort({value,onChange,devices=false}:{value:string;onChange:(value:string)=>void;devices?:boolean}) {
- return <Select value={value} onValueChange={onChange}><SelectTrigger aria-label="Sort products" size="sm" className="w-[175px] gap-2"><span className="text-muted-foreground">Sort by:</span><SelectValue/></SelectTrigger><SelectContent><SelectGroup><SelectItem value="newest">{devices?'Featured':'Newest'}</SelectItem><SelectItem value="low">Price: Low to High</SelectItem><SelectItem value="high">Price: High to Low</SelectItem>{devices&&<SelectItem value="rated">Highest Rated</SelectItem>}</SelectGroup></SelectContent></Select>
+function sortAndFilter(
+  data: ShowcaseProduct[],
+  filters: FilterState,
+  sort: string,
+) {
+  return data
+    .filter(
+      (p) =>
+        (filters.category === "all" || p.category === filters.category) &&
+        (!filters.sale || Boolean(p.compareAt)) &&
+        (filters.availability !== "low" || (p.stock ?? 10) < 6) &&
+        (filters.availability !== "in" || !p.soldOut) &&
+        (filters.signal === "all" || p.badge === filters.signal) &&
+        (filters.price === "all" ||
+          (filters.price === "under100" && p.price < 100) ||
+          (filters.price === "100to200" && p.price >= 100 && p.price <= 200) ||
+          (filters.price === "over200" && p.price > 200)) &&
+        (!filters.colors.length ||
+          p.colors?.some((c) => filters.colors.includes(c.family))),
+    )
+    .sort((a, b) =>
+      sort === "low"
+        ? a.price - b.price
+        : sort === "high"
+          ? b.price - a.price
+          : sort === "rated"
+            ? (b.rating ?? 0) - (a.rating ?? 0)
+            : 0,
+    );
 }
-function Header({title,breadcrumb,description,children,count,center=false}:{title:string;breadcrumb:string[];description?:string;children?:ReactNode;count?:string;center?:boolean}) {
- return <header className={cn('mb-8',center&&'mb-12 text-center')}><Crumbs items={breadcrumb} center={center}/><div className={cn('mt-5 flex flex-wrap items-end justify-between gap-5',center&&'justify-center')}><div><div className={cn('flex flex-wrap items-center gap-3',center&&'justify-center')}><h2 className={cn("text-[30px] font-semibold leading-tight tracking-tight sm:text-[32px]",center&&"text-[36px] sm:text-[36px]")}>{title}</h2>{count&&<Badge variant="secondary">{count}</Badge>}</div>{description&&<p className="mt-2 text-sm leading-6 text-muted-foreground sm:text-base">{description}</p>}</div>{children&&<div className="flex flex-wrap items-center gap-2">{children}</div>}</div></header>
+function Sort({
+  value,
+  onChange,
+  devices = false,
+}: {
+  value: string;
+  onChange: (value: string) => void;
+  devices?: boolean;
+}) {
+  return (
+    <Select value={value} onValueChange={onChange}>
+      <SelectTrigger
+        aria-label="Sort products"
+        size="sm"
+        className="w-[175px] gap-2"
+      >
+        <span className="text-muted-foreground">Sort by:</span>
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+          <SelectItem value="newest">
+            {devices ? "Featured" : "Newest"}
+          </SelectItem>
+          <SelectItem value="low">Price: Low to High</SelectItem>
+          <SelectItem value="high">Price: High to Low</SelectItem>
+          {devices && <SelectItem value="rated">Highest Rated</SelectItem>}
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+  );
 }
-function Frame({children,center=false,narrow=false}:{children:ReactNode;center?:boolean;narrow?:boolean}) {
- return <div className={cn('mx-auto flex min-h-svh w-full max-w-[1280px] flex-col px-5 py-10 sm:px-10',center&&'justify-center',narrow&&'max-w-6xl')}>{children}</div>
+function Header({
+  title,
+  breadcrumb,
+  description,
+  children,
+  count,
+  center = false,
+}: {
+  title: string;
+  breadcrumb: string[];
+  description?: string;
+  children?: ReactNode;
+  count?: string;
+  center?: boolean;
+}) {
+  return (
+    <header className={cn("mb-8", center && "mb-12 text-center")}>
+      <Crumbs items={breadcrumb} center={center} />
+      <div
+        className={cn(
+          "mt-5 flex flex-wrap items-end justify-between gap-5",
+          center && "justify-center",
+        )}
+      >
+        <div>
+          <div
+            className={cn(
+              "flex flex-wrap items-center gap-3",
+              center && "justify-center",
+            )}
+          >
+            <h2
+              className={cn(
+                "text-[30px] font-semibold leading-tight tracking-tight sm:text-[32px]",
+                center && "text-[36px] sm:text-[36px]",
+              )}
+            >
+              {title}
+            </h2>
+            {count && <Badge variant="secondary">{count}</Badge>}
+          </div>
+          {description && (
+            <p className="mt-2 text-sm leading-6 text-muted-foreground sm:text-base">
+              {description}
+            </p>
+          )}
+        </div>
+        {children && (
+          <div className="flex flex-wrap items-center gap-2">{children}</div>
+        )}
+      </div>
+    </header>
+  );
 }
-function ApparelTile({product,index,bordered=false,colorways=false}:{product:ShowcaseProduct;index:number;bordered?:boolean;colorways?:boolean}) {
- const [color,setColor]=useState('0')
- const selected=product.colors?.[Number(color)]
- const media=<div className={cn('group relative aspect-[4/5] overflow-hidden bg-muted',!bordered&&'rounded-md')}><Image product={product} className="group-hover:scale-105" style={colorways?{filter:Number(color)===0?'none':`sepia(${Number(color)*.18}) saturate(${1+Number(color)*.18}) brightness(${1+Number(color)*.05})`}:undefined}/>{product.compareAt&&<div className="absolute left-2 top-3"><Sale product={product}/></div>}<div className="absolute right-2 top-2"><Wish product={product} initial={index===1}/></div></div>
- const content=<><Caption product={bordered||colorways?{...product,badge:undefined}:product} stock={bordered&&!colorways}/>{colorways&&product.colors&&<div className="flex w-full flex-wrap items-center justify-between gap-2"><ToggleGroup type="single" value={color} onValueChange={v=>v&&setColor(v)} className="justify-start gap-1.5">{product.colors.map((c,j)=><ToggleGroupItem key={c.name} size="sm" value={String(j)} aria-label={`Show ${product.name} in ${c.name}`} className="size-5 min-w-0 shrink-0 rounded-full p-0 ring-offset-2 data-[state=on]:ring-1 data-[state=on]:ring-foreground" style={{backgroundColor:c.value}}><span className="sr-only">{c.name}</span></ToggleGroupItem>)}</ToggleGroup><span className="text-xs text-muted-foreground" aria-live="polite">{selected?.name}</span></div>}<h3 className="text-base font-medium leading-6">{product.name}</h3><p className="text-sm leading-5 text-muted-foreground">{product.description}</p><div className="pt-1"><Price product={product}/></div></>
- return bordered?<Card className="gap-0 rounded-2xl p-0">{media}<CardHeader className="flex flex-col items-stretch gap-3 p-4">{content}</CardHeader></Card>:<article className="min-w-0">{media}<div className="flex flex-col gap-2 pt-3">{content}</div></article>
+function Frame({
+  children,
+  center = false,
+  narrow = false,
+}: {
+  children: ReactNode;
+  center?: boolean;
+  narrow?: boolean;
+}) {
+  return (
+    <div
+      className={cn(
+        "mx-auto flex min-h-svh w-full max-w-[1280px] flex-col px-5 py-10 sm:px-10",
+        center && "justify-center",
+        narrow && "max-w-6xl",
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+function ApparelTile({
+  product,
+  index,
+  bordered = false,
+  colorways = false,
+}: {
+  product: ShowcaseProduct;
+  index: number;
+  bordered?: boolean;
+  colorways?: boolean;
+}) {
+  const [color, setColor] = useState("0");
+  const selected = product.colors?.[Number(color)];
+  const media = (
+    <div
+      className={cn(
+        "group relative aspect-[4/5] overflow-hidden bg-muted",
+        !bordered && "rounded-md",
+      )}
+    >
+      <Image
+        product={product}
+        className="group-hover:scale-105"
+        style={
+          colorways
+            ? {
+                filter:
+                  Number(color) === 0
+                    ? "none"
+                    : `sepia(${Number(color) * 0.18}) saturate(${1 + Number(color) * 0.18}) brightness(${1 + Number(color) * 0.05})`,
+              }
+            : undefined
+        }
+      />
+      {product.compareAt && (
+        <div className="absolute left-2 top-3">
+          <Sale product={product} />
+        </div>
+      )}
+      <div className="absolute right-2 top-2">
+        <Wish product={product} initial={index === 1} />
+      </div>
+    </div>
+  );
+  const content = (
+    <>
+      <Caption
+        product={
+          bordered || colorways ? { ...product, badge: undefined } : product
+        }
+        stock={bordered && !colorways}
+      />
+      {colorways && product.colors && (
+        <div className="flex w-full flex-wrap items-center justify-between gap-2">
+          <ToggleGroup
+            type="single"
+            value={color}
+            onValueChange={(v) => v && setColor(v)}
+            className="justify-start gap-1.5"
+          >
+            {product.colors.map((c, j) => (
+              <ToggleGroupItem
+                key={c.name}
+                size="sm"
+                value={String(j)}
+                aria-label={`Show ${product.name} in ${c.name}`}
+                className="size-5 min-w-0 shrink-0 rounded-full p-0 ring-offset-2 data-[state=on]:ring-1 data-[state=on]:ring-foreground"
+                style={{ backgroundColor: c.value }}
+              >
+                <span className="sr-only">{c.name}</span>
+              </ToggleGroupItem>
+            ))}
+          </ToggleGroup>
+          <span className="text-xs text-muted-foreground" aria-live="polite">
+            {selected?.name}
+          </span>
+        </div>
+      )}
+      <h3 className="text-base font-medium leading-6">{product.name}</h3>
+      <p className="text-sm leading-5 text-muted-foreground">
+        {product.description}
+      </p>
+      <div className="pt-1">
+        <Price product={product} />
+      </div>
+    </>
+  );
+  return bordered ? (
+    <Card className="gap-0 rounded-2xl p-0">
+      {media}
+      <CardHeader className="flex flex-col items-stretch gap-3 p-4">
+        {content}
+      </CardHeader>
+    </Card>
+  ) : (
+    <article className="min-w-0">
+      {media}
+      <div className="flex flex-col gap-2 pt-3">{content}</div>
+    </article>
+  );
 }
 
 function ApparelWishlistGrid() {
- return <Frame center><Header title="New Season Apparel" breadcrumb={['Shop','Apparel','Studio Capsule']} center/><div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">{apparel.slice(0,4).map((p,i)=><ApparelTile product={p} index={i} key={p.id}/>)}</div></Frame>
+  return (
+    <Frame center>
+      <Header
+        title="New Season Apparel"
+        breadcrumb={["Shop", "Apparel", "Studio Capsule"]}
+        center
+      />
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {apparel.slice(0, 4).map((p, i) => (
+          <ApparelTile product={p} index={i} key={p.id} />
+        ))}
+      </div>
+    </Frame>
+  );
 }
 function ColorwayCatalog() {
- const [filters,setFilters]=useState<FilterState>({...initialFilters}),[sort,setSort]=useState('newest'),items=sortAndFilter(apparel.slice(0,4),filters,sort)
- return <Frame center><Header title="New Season Colorways" breadcrumb={['Shop','Apparel','Colorways']} description="Polished outerwear, easy layers, and soft denim."><ListingFilters mode="color" products={apparel.slice(0,4)} filters={filters} onChange={setFilters}/><Sort value={sort} onChange={setSort}/></Header><div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">{items.map(p=><ApparelTile product={p} index={apparel.indexOf(p)} colorways bordered key={p.id}/>)}{!items.length&&<EmptyProducts/>}</div></Frame>
+  const [filters, setFilters] = useState<FilterState>({ ...initialFilters }),
+    [sort, setSort] = useState("newest"),
+    items = sortAndFilter(apparel.slice(0, 4), filters, sort);
+  return (
+    <Frame center>
+      <Header
+        title="New Season Colorways"
+        breadcrumb={["Shop", "Apparel", "Colorways"]}
+        description="Polished outerwear, easy layers, and soft denim."
+      >
+        <ListingFilters
+          mode="color"
+          products={apparel.slice(0, 4)}
+          filters={filters}
+          onChange={setFilters}
+        />
+        <Sort value={sort} onChange={setSort} />
+      </Header>
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {items.map((p) => (
+          <ApparelTile
+            product={p}
+            index={apparel.indexOf(p)}
+            colorways
+            bordered
+            key={p.id}
+          />
+        ))}
+        {!items.length && <EmptyProducts />}
+      </div>
+    </Frame>
+  );
 }
-function SizeGuide({open,onOpenChange}:{open:boolean;onOpenChange:(open:boolean)=>void}) {
- return <Dialog open={open} onOpenChange={onOpenChange}><DialogContent><DialogHeader><DialogTitle>Find your fit</DialogTitle></DialogHeader><p className="text-sm text-muted-foreground">Measurements in centimeters. Choose the size closest to your body measurements.</p><table className="w-full text-left text-sm"><thead><tr className="border-b"><th className="py-3">Size</th><th>Chest</th><th>Waist</th><th>Hip</th></tr></thead><tbody>{['XS','S','M','L','XL'].map((size,i)=><tr key={size} className="border-b last:border-0"><td className="py-3 font-medium">{size}</td><td>{80+i*5}</td><td>{62+i*5}</td><td>{86+i*5}</td></tr>)}</tbody></table></DialogContent></Dialog>
+function SizeGuide({
+  open,
+  onOpenChange,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) {
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Find your fit</DialogTitle>
+        </DialogHeader>
+        <p className="text-sm text-muted-foreground">
+          Measurements in centimeters. Choose the size closest to your body
+          measurements.
+        </p>
+        <table className="w-full text-left text-sm">
+          <thead>
+            <tr className="border-b">
+              <th className="py-3">Size</th>
+              <th>Chest</th>
+              <th>Waist</th>
+              <th>Hip</th>
+            </tr>
+          </thead>
+          <tbody>
+            {["XS", "S", "M", "L", "XL"].map((size, i) => (
+              <tr key={size} className="border-b last:border-0">
+                <td className="py-3 font-medium">{size}</td>
+                <td>{80 + i * 5}</td>
+                <td>{62 + i * 5}</td>
+                <td>{86 + i * 5}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </DialogContent>
+    </Dialog>
+  );
 }
 function QuickBuyCard() {
- const [slide,setSlide]=useState(0),[size,setSize]=useState('M'),[liked,setLiked]=useState(false),[added,setAdded]=useState(false),[guide,setGuide]=useState(false)
- const product={...apparel[2],price:80,compareAt:159}
- return <Frame center><ReuiFrame dense spacing="lg" className="mx-auto w-full max-w-[770px]"><FramePanel className="grid gap-5 p-5 md:grid-cols-[.92fr_1fr]"><div className="relative h-[360px] overflow-hidden rounded-lg bg-muted md:h-[440px]"><img src={slide===0?photos.shirt:photos.jacket} alt={slide===0?'Ribbed tank set front view':'Ribbed tank set alternative view'} className="size-full object-cover"/><Button variant="secondary" size="icon-sm" className="absolute left-2 top-1/2 rounded-full" aria-label="Previous slide" onClick={()=>setSlide((slide+1)%2)}><ChevronLeft/></Button><Button variant="secondary" size="icon-sm" className="absolute right-2 top-1/2 rounded-full" aria-label="Next slide" onClick={()=>setSlide((slide+1)%2)}><ChevronRight/></Button><div className="absolute bottom-3 left-0 flex w-full justify-center gap-1.5">{[0,1].map(n=><span className={cn('size-1.5 rounded-full',slide===n?'bg-foreground':'bg-background/80')} key={n}/>)}</div></div><div className="flex flex-col gap-4"><CardHeader className="gap-3 p-0"><div className="flex items-center gap-2 text-sm text-muted-foreground">Most Popular<TooltipProvider><Tooltip><TooltipTrigger asChild><Button variant="outline" size="sm" className="h-5 px-2 text-[10px]">5 left</Button></TooltipTrigger><TooltipContent>Only 5 left in the selected size.</TooltipContent></Tooltip></TooltipProvider></div><CardTitle><h3 className="text-2xl leading-tight">Ribbed Tank Set</h3></CardTitle><CardDescription>Soft ribbed layers for everyday movement, long travel days, and easy weekend styling.</CardDescription></CardHeader><div className="flex flex-wrap items-center gap-2 pt-1"><Sale product={product} words/><Price product={product} large reverse/></div><CardContent className="mt-auto flex flex-col gap-5 p-0 pt-8"><div><div className="mb-3 flex items-center justify-between"><span className="text-sm font-medium">Select Size</span><Button variant="link" size="sm" onClick={()=>setGuide(true)}>Size guide</Button></div><ToggleGroup type="single" variant="outline" value={size} onValueChange={v=>v&&setSize(v)} className="grid w-full grid-cols-5 gap-2">{['XS','S','M','L','XL'].map(s=><ToggleGroupItem className="relative h-10 rounded-lg" value={s} key={s}>{s}{size===s&&<span className="absolute -right-1 -top-1 flex size-4 items-center justify-center rounded-full bg-foreground text-background"><Check className="size-2.5"/></span>}</ToggleGroupItem>)}</ToggleGroup></div><div className="flex flex-col gap-2"><Button onClick={()=>setAdded(!added)}>{added?<Check data-icon="inline-start"/>:<ShoppingBag data-icon="inline-start"/>}{added?`Added · Size ${size}`:'Add to Bag'}</Button><Button variant="outline" aria-pressed={liked} aria-label={`${liked?'Remove':'Add'} Ribbed Tank Set ${liked?'from':'to'} wishlist`} onClick={()=>setLiked(!liked)}><Heart className={cn(liked&&'fill-current')}/>{liked?'Saved to Wishlist':'Wishlist'}</Button></div></CardContent></div></FramePanel></ReuiFrame><SizeGuide open={guide} onOpenChange={setGuide}/></Frame>
+  const [size, setSize] = useState("M"),
+    [liked, setLiked] = useState(false),
+    [added, setAdded] = useState(false),
+    [guide, setGuide] = useState(false);
+  const product = { ...apparel[2], price: 80, compareAt: 159 };
+  return (
+    <Frame center>
+      <ReuiFrame dense spacing="lg" className="mx-auto w-full max-w-[770px]">
+        <FramePanel className="grid gap-5 p-5 md:grid-cols-[.92fr_1fr]">
+          <FreeCardImageCarousel
+            images={[
+              { src: photos.shirt, alt: "Ribbed tank set front view" },
+              { src: photos.jacket, alt: "Ribbed tank set alternative view" },
+            ]}
+          />
+          <div className="flex flex-col gap-4">
+            <CardHeader className="gap-3 p-0">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                Most Popular
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-5 px-2 text-[10px]"
+                      >
+                        5 left
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      Only 5 left in the selected size.
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </div>
+              <CardTitle>
+                <h3 className="text-2xl leading-tight">Ribbed Tank Set</h3>
+              </CardTitle>
+              <CardDescription>
+                Soft ribbed layers for everyday movement, long travel days, and
+                easy weekend styling.
+              </CardDescription>
+            </CardHeader>
+            <div className="flex flex-wrap items-center gap-2 pt-1">
+              <Sale product={product} words />
+              <Price product={product} large reverse />
+            </div>
+            <CardContent className="mt-auto flex flex-col gap-5 p-0 pt-8">
+              <div>
+                <div className="mb-3 flex items-center justify-between">
+                  <span className="text-sm font-medium">Select Size</span>
+                  <Button
+                    variant="link"
+                    size="sm"
+                    onClick={() => setGuide(true)}
+                  >
+                    Size guide
+                  </Button>
+                </div>
+                <ToggleGroup
+                  type="single"
+                  variant="outline"
+                  value={size}
+                  onValueChange={(v) => v && setSize(v)}
+                  className="grid w-full grid-cols-5 gap-2"
+                >
+                  {["XS", "S", "M", "L", "XL"].map((s) => (
+                    <ToggleGroupItem
+                      className="relative h-10 rounded-lg"
+                      value={s}
+                      key={s}
+                    >
+                      {s}
+                      {size === s && (
+                        <span className="absolute -right-1 -top-1 flex size-4 items-center justify-center rounded-full bg-foreground text-background">
+                          <Check className="size-2.5" />
+                        </span>
+                      )}
+                    </ToggleGroupItem>
+                  ))}
+                </ToggleGroup>
+              </div>
+              <div className="flex flex-col gap-2">
+                <Button onClick={() => setAdded(!added)}>
+                  {added ? (
+                    <Check data-icon="inline-start" />
+                  ) : (
+                    <ShoppingBag data-icon="inline-start" />
+                  )}
+                  {added ? `Added · Size ${size}` : "Add to Bag"}
+                </Button>
+                <Button
+                  variant="outline"
+                  aria-pressed={liked}
+                  aria-label={`${liked ? "Remove" : "Add"} Ribbed Tank Set ${liked ? "from" : "to"} wishlist`}
+                  onClick={() => setLiked(!liked)}
+                >
+                  <Heart className={cn(liked && "fill-current")} />
+                  {liked ? "Saved to Wishlist" : "Wishlist"}
+                </Button>
+              </div>
+            </CardContent>
+          </div>
+        </FramePanel>
+      </ReuiFrame>
+      <SizeGuide open={guide} onOpenChange={setGuide} />
+    </Frame>
+  );
 }
 
-function ProductsCarousel({latest=false}:{latest?:boolean}) {
- const rail=useRef<HTMLDivElement>(null),[page,setPage]=useState(0),[columns,setColumns]=useState(4)
- useEffect(()=>{const update=()=>setColumns(window.innerWidth>=1024?4:window.innerWidth>=640?2:1);update();window.addEventListener('resize',update);return()=>window.removeEventListener('resize',update)},[])
- const data=latest?arrivals:apparel,total=Math.ceil(data.length/columns)
- const move=(next:number)=>{const target=Math.max(0,Math.min(total-1,next));setPage(target);rail.current?.scrollTo({left:target*(rail.current.clientWidth+16),behavior:'smooth'})}
- return <Frame center><div className="mb-8 flex items-center justify-between gap-4"><div className="flex items-center gap-3"><h2 className="text-xl font-semibold tracking-tight">{latest?'Latest Products':'Similar Products'}</h2>{!latest&&<Badge variant="secondary" aria-live="polite">{page+1} / {total}</Badge>}</div><div className="flex gap-2"><Button variant="outline" size="icon-sm" className="rounded-full" aria-label={latest?'Previous latest products':'Previous similar products'} disabled={page===0} onClick={()=>move(page-1)}><ChevronLeft/></Button><Button variant="outline" size="icon-sm" className="rounded-full" aria-label={latest?'Next latest products':'Next similar products'} disabled={page===total-1} onClick={()=>move(page+1)}><ChevronRight/></Button></div></div><div ref={rail} onScroll={e=>setPage(Math.round(e.currentTarget.scrollLeft/(e.currentTarget.clientWidth+16)))} className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">{data.map((p,i)=><div key={p.id} className="min-w-0 shrink-0 basis-full snap-start sm:basis-[calc((100%_-_1rem)/2)] lg:basis-[calc((100%_-_3rem)/4)]">{latest?<ArrivalTile product={p} index={i}/>:<ApparelTile product={p} index={i} bordered/>}</div>)}</div></Frame>
+function ProductsCarousel({ latest = false }: { latest?: boolean }) {
+  const data = latest ? arrivals : apparel;
+  return (
+    <Frame center>
+      <FreeProductRail
+        title={latest ? "Latest Products" : "Similar Products"}
+        previousLabel={
+          latest ? "Previous latest products" : "Previous similar products"
+        }
+        nextLabel={latest ? "Next latest products" : "Next similar products"}
+        showCount={!latest}
+      >
+        {data.map((p, i) =>
+          latest ? (
+            <ArrivalTile product={p} index={i} key={p.id} />
+          ) : (
+            <ApparelTile product={p} index={i} bordered key={p.id} />
+          ),
+        )}
+      </FreeProductRail>
+    </Frame>
+  );
 }
-function ArrivalTile({product,index}:{product:ShowcaseProduct;index:number}) {
- return <Card className="gap-0 p-0"><div className="group relative aspect-[4/5] overflow-hidden bg-muted"><Image product={product} className="group-hover:scale-105"/><div className="absolute left-2 top-3"><Sale product={product}/></div><div className={cn("absolute right-2 top-2 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100",index===1&&"opacity-100")}><Wish product={product} initial={index===1}/></div><div className={cn('absolute inset-0 flex items-center justify-center bg-background/5 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100',product.soldOut&&'opacity-100')}><AddButton product={product} cart/></div></div><CardHeader className="gap-3 p-4"><Caption product={product} tag/><CardTitle><h3>{product.name}</h3></CardTitle><CardDescription className="truncate">{product.description}</CardDescription><div className="mt-1 flex flex-wrap items-center justify-between gap-2"><Price product={product}/><span className="text-xs text-muted-foreground">{product.arrival}</span></div></CardHeader></Card>
+function ArrivalTile({
+  product,
+  index,
+}: {
+  product: ShowcaseProduct;
+  index: number;
+}) {
+  return (
+    <Card className="gap-0 p-0">
+      <div className="group relative aspect-[4/5] overflow-hidden bg-muted">
+        <Image product={product} className="group-hover:scale-105" />
+        <div className="absolute left-2 top-3">
+          <Sale product={product} />
+        </div>
+        <div
+          className={cn(
+            "absolute right-2 top-2 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100",
+            index === 1 && "opacity-100",
+          )}
+        >
+          <Wish product={product} initial={index === 1} />
+        </div>
+        <div
+          className={cn(
+            "absolute inset-0 flex items-center justify-center bg-background/5 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100",
+            product.soldOut && "opacity-100",
+          )}
+        >
+          <AddButton product={product} cart />
+        </div>
+      </div>
+      <CardHeader className="gap-3 p-4">
+        <Caption product={product} tag />
+        <CardTitle>
+          <h3>{product.name}</h3>
+        </CardTitle>
+        <CardDescription className="truncate">
+          {product.description}
+        </CardDescription>
+        <div className="mt-1 flex flex-wrap items-center justify-between gap-2">
+          <Price product={product} />
+          <span className="text-xs text-muted-foreground">
+            {product.arrival}
+          </span>
+        </div>
+      </CardHeader>
+    </Card>
+  );
 }
 
 function FeaturedProduct() {
- const [finish,setFinish]=useState('Pearl'),[liked,setLiked]=useState(false),[added,setAdded]=useState(false),[specs,setSpecs]=useState(false)
- const product={...devices[0],name:'AirBuds White',price:119,compareAt:149,rating:4.7,reviews:362}
- return <Frame center><ReuiFrame dense spacing="lg" className="mx-auto w-full max-w-5xl"><FramePanel className="grid gap-7 p-6 md:grid-cols-[.82fr_1fr]"><div className="flex flex-col gap-5 py-4"><CardHeader className="gap-3 p-0"><div className="flex items-center gap-2 text-xs text-muted-foreground"><Tag className="size-3.5"/>Audio<Badge variant="outline">Popular 6 left</Badge></div><CardTitle><h3 className="text-2xl leading-tight">AirBuds White</h3></CardTitle><CardDescription className="leading-6">Comfortable wireless sound, fast pairing, and a considered design that goes wherever you do.</CardDescription><Rating product={product}/></CardHeader><div className="flex flex-wrap items-center gap-2"><Sale product={product} words percentage={18}/><Price product={product} large reverse/></div><ul className="mt-3 flex flex-col gap-3 text-sm text-muted-foreground">{['Open-Fit Comfort','Low-Latency Pairing','Slim Charging Case'].map(t=><li key={t} className="flex items-center gap-2"><Check className="size-4 text-foreground"/>{t}</li>)}</ul><CardContent className="mt-auto flex flex-col gap-5 p-0 pt-12"><div><div className="mb-3 flex items-center justify-between"><span className="text-sm font-medium">Finish</span><Button size="sm" variant="link" onClick={()=>setSpecs(true)}>Tech Specs</Button></div><ToggleGroup type="single" variant="outline" value={finish} onValueChange={v=>v&&setFinish(v)} className="grid w-full grid-cols-5 gap-2">{['Pearl','Frost','Cloud','Sand','Mist'].map(f=><ToggleGroupItem className="relative h-10 rounded-lg px-1" value={f} key={f}>{f}{finish===f&&<span className="absolute -right-1 -top-1 flex size-4 items-center justify-center rounded-full bg-foreground text-background"><Check className="size-2.5"/></span>}</ToggleGroupItem>)}</ToggleGroup></div><div className="flex gap-2"><Button className="flex-1" onClick={()=>setAdded(!added)}>{added?<Check data-icon="inline-start"/>:<ShoppingBag data-icon="inline-start"/>}{added?`${finish} added`:'Add to Bag'}</Button><Button variant="outline" aria-pressed={liked} onClick={()=>setLiked(!liked)}><Heart className={cn(liked&&'fill-current')}/>{liked?'Saved':'Wishlist'}</Button></div></CardContent></div><div className="min-h-80 overflow-hidden bg-muted md:min-h-[600px]" style={{clipPath:'polygon(0 0,80% 0,100% 20%,100% 100%,20% 100%,0 80%)',borderRadius:22}}><Image product={product} style={{filter:finish==='Pearl'?'none':`sepia(${['Pearl','Frost','Cloud','Sand','Mist'].indexOf(finish)*.1})`}}/></div></FramePanel></ReuiFrame><Dialog open={specs} onOpenChange={setSpecs}><DialogContent><DialogHeader><DialogTitle>AirBuds White · Technical specifications</DialogTitle></DialogHeader><div className="divide-y text-sm">{[['Wireless connection','Bluetooth 5.3'],['Listening time','Up to 6 hours'],['With charging case','Up to 30 hours'],['Charging','USB-C'],['Selected finish',finish]].map(([a,b])=><div className="flex justify-between gap-4 py-3" key={a}><span className="text-muted-foreground">{a}</span><span>{b}</span></div>)}</div></DialogContent></Dialog></Frame>
+  const [finish, setFinish] = useState("Pearl"),
+    [liked, setLiked] = useState(false),
+    [added, setAdded] = useState(false),
+    [specs, setSpecs] = useState(false);
+  const product = {
+    ...devices[0],
+    name: "AirBuds White",
+    price: 119,
+    compareAt: 149,
+    rating: 4.7,
+    reviews: 362,
+  };
+  return (
+    <Frame center>
+      <ReuiFrame dense spacing="lg" className="mx-auto w-full max-w-5xl">
+        <FramePanel className="grid gap-7 p-6 md:grid-cols-[.82fr_1fr]">
+          <div className="flex flex-col gap-5 py-4">
+            <CardHeader className="gap-3 p-0">
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <Tag className="size-3.5" />
+                Audio<Badge variant="outline">Popular 6 left</Badge>
+              </div>
+              <CardTitle>
+                <h3 className="text-2xl leading-tight">AirBuds White</h3>
+              </CardTitle>
+              <CardDescription className="leading-6">
+                Comfortable wireless sound, fast pairing, and a considered
+                design that goes wherever you do.
+              </CardDescription>
+              <Rating product={product} />
+            </CardHeader>
+            <div className="flex flex-wrap items-center gap-2">
+              <Sale product={product} words percentage={18} />
+              <Price product={product} large reverse />
+            </div>
+            <ul className="mt-3 flex flex-col gap-3 text-sm text-muted-foreground">
+              {[
+                "Open-Fit Comfort",
+                "Low-Latency Pairing",
+                "Slim Charging Case",
+              ].map((t) => (
+                <li key={t} className="flex items-center gap-2">
+                  <Check className="size-4 text-foreground" />
+                  {t}
+                </li>
+              ))}
+            </ul>
+            <CardContent className="mt-auto flex flex-col gap-5 p-0 pt-12">
+              <div>
+                <div className="mb-3 flex items-center justify-between">
+                  <span className="text-sm font-medium">Finish</span>
+                  <Button
+                    size="sm"
+                    variant="link"
+                    onClick={() => setSpecs(true)}
+                  >
+                    Tech Specs
+                  </Button>
+                </div>
+                <ToggleGroup
+                  type="single"
+                  variant="outline"
+                  value={finish}
+                  onValueChange={(v) => v && setFinish(v)}
+                  className="grid w-full grid-cols-5 gap-2"
+                >
+                  {["Pearl", "Frost", "Cloud", "Sand", "Mist"].map((f) => (
+                    <ToggleGroupItem
+                      className="relative h-10 rounded-lg px-1"
+                      value={f}
+                      key={f}
+                    >
+                      {f}
+                      {finish === f && (
+                        <span className="absolute -right-1 -top-1 flex size-4 items-center justify-center rounded-full bg-foreground text-background">
+                          <Check className="size-2.5" />
+                        </span>
+                      )}
+                    </ToggleGroupItem>
+                  ))}
+                </ToggleGroup>
+              </div>
+              <div className="flex gap-2">
+                <Button className="flex-1" onClick={() => setAdded(!added)}>
+                  {added ? (
+                    <Check data-icon="inline-start" />
+                  ) : (
+                    <ShoppingBag data-icon="inline-start" />
+                  )}
+                  {added ? `${finish} added` : "Add to Bag"}
+                </Button>
+                <Button
+                  variant="outline"
+                  aria-pressed={liked}
+                  onClick={() => setLiked(!liked)}
+                >
+                  <Heart className={cn(liked && "fill-current")} />
+                  {liked ? "Saved" : "Wishlist"}
+                </Button>
+              </div>
+            </CardContent>
+          </div>
+          <div
+            className="min-h-80 overflow-hidden bg-muted md:min-h-[600px]"
+            style={{
+              clipPath: "polygon(0 0,80% 0,100% 20%,100% 100%,20% 100%,0 80%)",
+              borderRadius: 22,
+            }}
+          >
+            <Image
+              product={product}
+              style={{
+                filter:
+                  finish === "Pearl"
+                    ? "none"
+                    : `sepia(${["Pearl", "Frost", "Cloud", "Sand", "Mist"].indexOf(finish) * 0.1})`,
+              }}
+            />
+          </div>
+        </FramePanel>
+      </ReuiFrame>
+      <Dialog open={specs} onOpenChange={setSpecs}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>AirBuds White · Technical specifications</DialogTitle>
+          </DialogHeader>
+          <div className="divide-y text-sm">
+            {[
+              ["Wireless connection", "Bluetooth 5.3"],
+              ["Listening time", "Up to 6 hours"],
+              ["With charging case", "Up to 30 hours"],
+              ["Charging", "USB-C"],
+              ["Selected finish", finish],
+            ].map(([a, b]) => (
+              <div className="flex justify-between gap-4 py-3" key={a}>
+                <span className="text-muted-foreground">{a}</span>
+                <span>{b}</span>
+              </div>
+            ))}
+          </div>
+        </DialogContent>
+      </Dialog>
+    </Frame>
+  );
 }
 
 function MasonryGallery() {
- const [filters,setFilters]=useState<FilterState>({...initialFilters}),[sort,setSort]=useState('newest'),items=sortAndFilter(apparel,filters,sort)
- const sizes=['aspect-[3/4]','aspect-[4/5]','aspect-[5/6]','aspect-[3/4]','aspect-[4/5]','aspect-[5/7]','aspect-[3/4]','aspect-[4/5]']
- return <Frame><Header title="Studio Mosaic" breadcrumb={['Shop','Apparel','Studio Mosaic']} count={`${items.length} ${items.length===1?'piece':'pieces'}`} ><ListingFilters mode="masonry" products={apparel} filters={filters} onChange={setFilters}/><Sort value={sort} onChange={setSort}/></Header><div className="grid grid-cols-2 gap-4 lg:grid-cols-4">{Array.from({length:4},(_,col)=><div key={col} className="flex flex-col gap-4">{items.slice(col*Math.ceil(items.length/4),(col+1)*Math.ceil(items.length/4)).map(product=><article key={product.id} tabIndex={0} className={cn('group relative overflow-hidden rounded-md bg-muted outline-none focus-visible:ring-2 focus-visible:ring-ring',sizes[apparel.indexOf(product)])}><Image product={product} className="group-hover:scale-105"/><div className={cn("absolute right-3 top-3 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100",apparel.indexOf(product)===1&&"opacity-100")}><Wish product={product} initial={apparel.indexOf(product)===1}/></div><div className="absolute inset-x-3 bottom-3 translate-y-[calc(100%+1rem)] rounded-lg bg-background/95 p-4 opacity-0 shadow-sm backdrop-blur-md transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100"><Caption product={product} stock tag emphasis/><h3 className="mt-3 text-sm font-semibold">{product.name}</h3><p className="mt-2 line-clamp-2 text-xs leading-5 text-muted-foreground">{product.description} A considered piece for a life in motion.</p><div className="mt-3"><Price product={product}/></div></div></article>)}</div>)}{!items.length&&<EmptyProducts/>}</div></Frame>
+  const [filters, setFilters] = useState<FilterState>({ ...initialFilters }),
+    [sort, setSort] = useState("newest"),
+    items = sortAndFilter(apparel, filters, sort);
+  const sizes = [
+    "aspect-[3/4]",
+    "aspect-[4/5]",
+    "aspect-[5/6]",
+    "aspect-[3/4]",
+    "aspect-[4/5]",
+    "aspect-[5/7]",
+    "aspect-[3/4]",
+    "aspect-[4/5]",
+  ];
+  return (
+    <Frame>
+      <Header
+        title="Studio Mosaic"
+        breadcrumb={["Shop", "Apparel", "Studio Mosaic"]}
+        count={`${items.length} ${items.length === 1 ? "piece" : "pieces"}`}
+      >
+        <ListingFilters
+          mode="masonry"
+          products={apparel}
+          filters={filters}
+          onChange={setFilters}
+        />
+        <Sort value={sort} onChange={setSort} />
+      </Header>
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        {Array.from({ length: 4 }, (_, col) => (
+          <div key={col} className="flex flex-col gap-4">
+            {items
+              .slice(
+                col * Math.ceil(items.length / 4),
+                (col + 1) * Math.ceil(items.length / 4),
+              )
+              .map((product) => (
+                <article
+                  key={product.id}
+                  tabIndex={0}
+                  className={cn(
+                    "group relative overflow-hidden rounded-md bg-muted outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                    sizes[apparel.indexOf(product)],
+                  )}
+                >
+                  <Image product={product} className="group-hover:scale-105" />
+                  <div
+                    className={cn(
+                      "absolute right-3 top-3 opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100",
+                      apparel.indexOf(product) === 1 && "opacity-100",
+                    )}
+                  >
+                    <Wish
+                      product={product}
+                      initial={apparel.indexOf(product) === 1}
+                    />
+                  </div>
+                  <div className="absolute inset-x-3 bottom-3 translate-y-[calc(100%+1rem)] rounded-lg bg-background/95 p-4 opacity-0 shadow-sm backdrop-blur-md transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100">
+                    <Caption product={product} stock tag emphasis />
+                    <h3 className="mt-3 text-sm font-semibold">
+                      {product.name}
+                    </h3>
+                    <p className="mt-2 line-clamp-2 text-xs leading-5 text-muted-foreground">
+                      {product.description} A considered piece for a life in
+                      motion.
+                    </p>
+                    <div className="mt-3">
+                      <Price product={product} />
+                    </div>
+                  </div>
+                </article>
+              ))}
+          </div>
+        ))}
+        {!items.length && <EmptyProducts />}
+      </div>
+    </Frame>
+  );
 }
 function RatedProductGrid() {
- const [filters,setFilters]=useState<FilterState>({...initialFilters}),[sort,setSort]=useState('newest'),items=sortAndFilter(devices,filters,sort)
- return <Frame><Header title="Device Drops" breadcrumb={['Shop','Tech Accessories','Device Drops']} count={`${items.length} ${items.length===1?'device':'devices'}`} ><ListingFilters mode="device" products={devices} filters={filters} onChange={setFilters}/><Sort value={sort} onChange={setSort} devices/></Header><div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">{items.map((p,i)=><Card className="gap-4 p-4" key={p.id}><div className="relative aspect-[6/7] overflow-hidden rounded-md bg-muted"><Image product={p}/><div className={cn("absolute right-2 top-2 opacity-0 transition-opacity group-hover/card:opacity-100 group-focus-within/card:opacity-100",i===0&&"opacity-100")}><Wish product={p} initial={i===0}/></div></div><CardHeader className="gap-3 p-0"><Caption product={p} tag/><CardTitle><h3>{p.name}</h3></CardTitle><CardDescription className="line-clamp-2 leading-5">{p.description}</CardDescription></CardHeader><CardContent className="mt-auto flex flex-col gap-3 p-0"><Rating product={p}/><Price product={p} reverse/><AddButton product={p} cart className="w-full"/></CardContent></Card>)}{!items.length&&<EmptyProducts/>}</div></Frame>
+  const [filters, setFilters] = useState<FilterState>({ ...initialFilters }),
+    [sort, setSort] = useState("newest"),
+    items = sortAndFilter(devices, filters, sort);
+  return (
+    <Frame>
+      <Header
+        title="Device Drops"
+        breadcrumb={["Shop", "Tech Accessories", "Device Drops"]}
+        count={`${items.length} ${items.length === 1 ? "device" : "devices"}`}
+      >
+        <ListingFilters
+          mode="device"
+          products={devices}
+          filters={filters}
+          onChange={setFilters}
+        />
+        <Sort value={sort} onChange={setSort} devices />
+      </Header>
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {items.map((p, i) => (
+          <Card className="gap-4 p-4" key={p.id}>
+            <div className="relative aspect-[6/7] overflow-hidden rounded-md bg-muted">
+              <Image product={p} />
+              <div
+                className={cn(
+                  "absolute right-2 top-2 opacity-0 transition-opacity group-hover/card:opacity-100 group-focus-within/card:opacity-100",
+                  i === 0 && "opacity-100",
+                )}
+              >
+                <Wish product={p} initial={i === 0} />
+              </div>
+            </div>
+            <CardHeader className="gap-3 p-0">
+              <Caption product={p} tag />
+              <CardTitle>
+                <h3>{p.name}</h3>
+              </CardTitle>
+              <CardDescription className="line-clamp-2 leading-5">
+                {p.description}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="mt-auto flex flex-col gap-3 p-0">
+              <Rating product={p} />
+              <Price product={p} reverse />
+              <AddButton product={p} cart className="w-full" />
+            </CardContent>
+          </Card>
+        ))}
+        {!items.length && <EmptyProducts />}
+      </div>
+    </Frame>
+  );
 }
-function BrowseDialog({open,onOpenChange,products,title}:{open:boolean;onOpenChange:(open:boolean)=>void;products:ShowcaseProduct[];title:string}) {
- return <Dialog open={open} onOpenChange={onOpenChange}><DialogContent className="max-h-[85vh] overflow-auto sm:max-w-xl"><DialogHeader><DialogTitle>{title}</DialogTitle></DialogHeader><div className="grid grid-cols-2 gap-4">{products.map(p=><div key={p.id} className="flex flex-col gap-3"><div className="aspect-square overflow-hidden rounded-lg bg-muted"><Image product={p}/></div><h3 className="text-sm font-medium">{p.name}</h3><Price product={p}/></div>)}</div></DialogContent></Dialog>
+function BrowseDialog({
+  open,
+  onOpenChange,
+  products,
+  title,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  products: ShowcaseProduct[];
+  title: string;
+}) {
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-h-[85vh] overflow-auto sm:max-w-xl">
+        <DialogHeader>
+          <DialogTitle>{title}</DialogTitle>
+        </DialogHeader>
+        <div className="grid grid-cols-2 gap-4">
+          {products.map((p) => (
+            <div key={p.id} className="flex flex-col gap-3">
+              <div className="aspect-square overflow-hidden rounded-lg bg-muted">
+                <Image product={p} />
+              </div>
+              <h3 className="text-sm font-medium">{p.name}</h3>
+              <Price product={p} />
+            </div>
+          ))}
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
 }
 function FourColumnCatalog() {
- const [browse,setBrowse]=useState(false)
- return <Frame><Header title="Everyday Audio Accessories" breadcrumb={['Shop','Audio','Accessories']} description="Cases, cables, and thoughtful everyday essentials for wherever the day takes you."><Button variant="outline" onClick={()=>setBrowse(true)}>Browse All<ArrowRight data-icon="inline-end"/></Button></Header><div className="grid grid-cols-1 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">{accessories.map((p,i)=><article key={p.id} className={cn('flex min-w-0 flex-col gap-6 px-6',i>0&&'lg:border-l',i%2===1&&'sm:border-l')}><div className="aspect-square overflow-hidden rounded-br-[2.5rem] rounded-tl-sm bg-muted"><Image product={p}/></div><div className="flex flex-1 flex-col gap-4"><Caption product={p} tag/><h3 className="text-xl font-semibold leading-6 tracking-tight">{p.name}</h3><Rating product={p} showValue={false}/><div className="flex flex-wrap items-center justify-between gap-2"><Price product={p} reverse/><span className="flex items-center gap-1.5 text-xs text-muted-foreground"><Truck className="size-3.5"/>{p.arrival}</span></div><AddButton product={p} cart className="mt-3 w-full"/></div></article>)}</div><BrowseDialog open={browse} onOpenChange={setBrowse} products={accessories} title="Everyday Audio Accessories"/></Frame>
+  const [browse, setBrowse] = useState(false);
+  return (
+    <Frame>
+      <Header
+        title="Everyday Audio Accessories"
+        breadcrumb={["Shop", "Audio", "Accessories"]}
+        description="Cases, cables, and thoughtful everyday essentials for wherever the day takes you."
+      >
+        <Button variant="outline" onClick={() => setBrowse(true)}>
+          Browse All
+          <ArrowRight data-icon="inline-end" />
+        </Button>
+      </Header>
+      <div className="grid grid-cols-1 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
+        {accessories.map((p, i) => (
+          <article
+            key={p.id}
+            className={cn(
+              "flex min-w-0 flex-col gap-6 px-6",
+              i > 0 && "lg:border-l",
+              i % 2 === 1 && "sm:border-l",
+            )}
+          >
+            <div className="aspect-square overflow-hidden rounded-br-[2.5rem] rounded-tl-sm bg-muted">
+              <Image product={p} />
+            </div>
+            <div className="flex flex-1 flex-col gap-4">
+              <Caption product={p} tag />
+              <h3 className="text-xl font-semibold leading-6 tracking-tight">
+                {p.name}
+              </h3>
+              <Rating product={p} showValue={false} />
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <Price product={p} reverse />
+                <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <Truck className="size-3.5" />
+                  {p.arrival}
+                </span>
+              </div>
+              <AddButton product={p} cart className="mt-3 w-full" />
+            </div>
+          </article>
+        ))}
+      </div>
+      <BrowseDialog
+        open={browse}
+        onOpenChange={setBrowse}
+        products={accessories}
+        title="Everyday Audio Accessories"
+      />
+    </Frame>
+  );
 }
 function FashionLookbookGrid() {
- const [browse,setBrowse]=useState(false)
- return <Frame><Header title="Fashion Studio" breadcrumb={['Shop','Studio','Fashion Drop']} description="Studio layers and off-duty essentials, selected for the way you move."><Button variant="outline" onClick={()=>setBrowse(true)}>Browse All<ArrowRight data-icon="inline-end"/></Button></Header><div className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">{lookbook.map((p,i)=><article key={p.id} tabIndex={0} className="group relative aspect-[4/5] overflow-hidden rounded-2xl border bg-muted outline-none focus-visible:ring-2 focus-visible:ring-ring"><Image product={p} className="group-hover:scale-105" style={{objectPosition:i%2===0?'center top':'60% center'}}/><div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/5 to-transparent"/>{p.badge&&<Badge variant={p.badge==='Trending'?'destructive':'secondary'} className="absolute right-4 top-4" style={{backgroundColor:p.badge==='Trending'?"var(--destructive)":"#e9a700",color:"#fff"}}>{p.badge}</Badge>}<h3 className="absolute bottom-5 left-4 max-w-32 text-lg font-semibold leading-6 tracking-tight transition-opacity group-hover:opacity-0 group-focus-within:opacity-0">{p.name}</h3><div className="absolute inset-x-4 bottom-0 translate-y-full rounded-t-2xl bg-background/85 p-4 opacity-0 shadow-sm backdrop-blur-xl transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100"><div className="flex items-center gap-1.5 text-xs text-muted-foreground"><Tag className="size-3.5"/>{p.category} · {p.secondary}</div><p className="mt-3 text-sm font-medium leading-5">{p.description}</p><div className="mt-4 flex items-center justify-between gap-3"><span className="text-xs text-muted-foreground">Sizes</span><div className="flex gap-1.5">{(i%3===0?['S','M','L']:i%3===1?['M','L']:['XS','S','M']).map(s=><Badge variant="outline" className="flex size-7 items-center justify-center rounded-full p-0 text-[10px] font-normal text-muted-foreground" key={s}>{s.toLowerCase()}</Badge>)}</div></div><Separator className="my-3"/><div className="flex items-center justify-between gap-3"><span className="text-xs text-muted-foreground">Price</span><Price product={p} reverse/></div></div></article>)}</div><BrowseDialog open={browse} onOpenChange={setBrowse} products={lookbook} title="Fashion Studio collection"/></Frame>
+  const [browse, setBrowse] = useState(false);
+  return (
+    <Frame>
+      <Header
+        title="Fashion Studio"
+        breadcrumb={["Shop", "Studio", "Fashion Drop"]}
+        description="Studio layers and off-duty essentials, selected for the way you move."
+      >
+        <Button variant="outline" onClick={() => setBrowse(true)}>
+          Browse All
+          <ArrowRight data-icon="inline-end" />
+        </Button>
+      </Header>
+      <div className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">
+        {lookbook.map((p, i) => (
+          <article
+            key={p.id}
+            tabIndex={0}
+            className="group relative aspect-[4/5] overflow-hidden rounded-2xl border bg-muted outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            <Image
+              product={p}
+              className="group-hover:scale-105"
+              style={{
+                objectPosition: i % 2 === 0 ? "center top" : "60% center",
+              }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/5 to-transparent" />
+            {p.badge && (
+              <Badge
+                variant={p.badge === "Trending" ? "destructive" : "secondary"}
+                className="absolute right-4 top-4"
+                style={{
+                  backgroundColor:
+                    p.badge === "Trending" ? "var(--destructive)" : "#e9a700",
+                  color: "#fff",
+                }}
+              >
+                {p.badge}
+              </Badge>
+            )}
+            <h3 className="absolute bottom-5 left-4 max-w-32 text-lg font-semibold leading-6 tracking-tight transition-opacity group-hover:opacity-0 group-focus-within:opacity-0">
+              {p.name}
+            </h3>
+            <div className="absolute inset-x-4 bottom-0 translate-y-full rounded-t-2xl bg-background/85 p-4 opacity-0 shadow-sm backdrop-blur-xl transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100">
+              <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                <Tag className="size-3.5" />
+                {p.category} · {p.secondary}
+              </div>
+              <p className="mt-3 text-sm font-medium leading-5">
+                {p.description}
+              </p>
+              <div className="mt-4 flex items-center justify-between gap-3">
+                <span className="text-xs text-muted-foreground">Sizes</span>
+                <div className="flex gap-1.5">
+                  {(i % 3 === 0
+                    ? ["S", "M", "L"]
+                    : i % 3 === 1
+                      ? ["M", "L"]
+                      : ["XS", "S", "M"]
+                  ).map((s) => (
+                    <Badge
+                      variant="outline"
+                      className="flex size-7 items-center justify-center rounded-full p-0 text-[10px] font-normal text-muted-foreground"
+                      key={s}
+                    >
+                      {s.toLowerCase()}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+              <Separator className="my-3" />
+              <div className="flex items-center justify-between gap-3">
+                <span className="text-xs text-muted-foreground">Price</span>
+                <Price product={p} reverse />
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+      <BrowseDialog
+        open={browse}
+        onOpenChange={setBrowse}
+        products={lookbook}
+        title="Fashion Studio collection"
+      />
+    </Frame>
+  );
 }
 
-export function ProductCards({block}:BlockProps) {
- switch(block.id) {
-  case 'product-card-1':return <ApparelWishlistGrid/>
-  case 'product-card-2':return <ColorwayCatalog/>
-  case 'product-card-3':return <QuickBuyCard/>
-  case 'product-card-4':return <ProductsCarousel/>
-  case 'product-card-5':return <FeaturedProduct/>
-  case 'product-card-6':return <MasonryGallery/>
-  case 'product-card-7':return <ProductsCarousel latest/>
-  case 'product-card-8':return <RatedProductGrid/>
-  case 'product-card-9':return <FourColumnCatalog/>
-  case 'product-card-10':return <FashionLookbookGrid/>
-  default:throw new Error(`Unknown product card: ${block.id}`)
- }
+export function ProductCards({ block }: BlockProps) {
+  switch (block.id) {
+    case "product-card-1":
+      return <ApparelWishlistGrid />;
+    case "product-card-2":
+      return <ColorwayCatalog />;
+    case "product-card-3":
+      return <QuickBuyCard />;
+    case "product-card-4":
+      return <ProductsCarousel />;
+    case "product-card-5":
+      return <FeaturedProduct />;
+    case "product-card-6":
+      return <MasonryGallery />;
+    case "product-card-7":
+      return <ProductsCarousel latest />;
+    case "product-card-8":
+      return <RatedProductGrid />;
+    case "product-card-9":
+      return <FourColumnCatalog />;
+    case "product-card-10":
+      return <FashionLookbookGrid />;
+    default:
+      throw new Error(`Unknown product card: ${block.id}`);
+  }
 }
