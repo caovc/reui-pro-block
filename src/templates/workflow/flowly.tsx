@@ -1,20 +1,19 @@
 import { useState } from "react";
+import FlowCanvas from "@/blocks/application/flow-gantt-flow";
+import { FlowlyAgents } from "./flowly-agents";
 import {
   ArrowRight,
   Bot,
   Brain,
-  ChevronRight,
   Filter,
   MoreHorizontal,
   Star,
   GitBranch,
   LayoutDashboard,
   Pencil,
-  Play,
   Plus,
   Settings,
   Workflow,
-  Zap,
 } from "lucide-react";
 import {
   Shell,
@@ -99,15 +98,8 @@ export default function Flowly() {
   const [create, setCreate] = useState(false);
   const [selected, setSelected] = useState("");
   const [chart, setChart] = useState("Runs");
-  const [running, setRunning] = useState(false);
   const [invite, setInvite] = useState(false);
   const [stars, setStars] = useState<string[]>([]);
-  const [steps, setSteps] = useState([
-    "Webhook received",
-    "Validate payload",
-    "AI classification",
-    "Route to destination",
-  ]);
   const list = rows.filter(
     (r) => r.name.toLowerCase().includes(query.toLowerCase()) && (!filter || r.status === "Active"),
   );
@@ -276,6 +268,8 @@ export default function Flowly() {
       setView={setView}
       nav={[
         { label: "Dashboard", icon: LayoutDashboard },
+        { label: "Workflow", icon: Workflow },
+        { label: "Agent Builder", icon: Bot },
         { label: "Workflows", icon: GitBranch },
         { label: "Agents", icon: Bot },
         { label: "Runs", icon: Workflow },
@@ -474,52 +468,32 @@ export default function Flowly() {
             setView("Workflow");
           }}
         />
-      ) : view === "Workflow" ? (
-        <>
-          <div className="wf-page-heading">
-            <div>
-              <h1>{selected || "New workflow"}</h1>
-              <p>Production / Workflow editor</p>
-            </div>
-            <Button
-              onClick={() => {
-                setRunning(true);
-                toast.success("Workflow completed successfully");
-              }}
-            >
-              <Play />
-              {running ? "Run succeeded" : "Run workflow"}
-            </Button>
+      ) : view === "Workflow" || view === "Agent Builder" ? (
+        <div className="wf-integrated-editor">
+          <div className="wf-editor-title">
+            <h1 style={{ fontSize: 14, margin: 0 }}>
+              {selected || (view === "Agent Builder" ? "Collections Agent" : "Lead Routing")}
+            </h1>
+            <span>Production</span>
           </div>
-          <div className="wf-flow-canvas">
-            {steps.map((step, i) => (
-              <div className="wf-flow-step" key={step}>
-                <div className="wf-node">
-                  <span className="wf-inline">
-                    <Zap className="size-4" />
-                    <strong>{step}</strong>
-                  </span>
-                  <p>
-                    {i === 0
-                      ? "Trigger · Receive an HTTP request"
-                      : i === 2
-                        ? "Claude Sonnet · Classify intent"
-                        : "Action · Process workflow data"}
-                  </p>
-                  <Status>{running ? "Succeeded" : "Ready"}</Status>
-                </div>
-                {i < steps.length - 1 && <ChevronRight />}
-              </div>
-            ))}
-            <Button
-              variant="outline"
-              onClick={() => setSteps([...steps, `Action ${steps.length}`])}
-            >
-              <Plus />
-              Add step
-            </Button>
-          </div>
-        </>
+          <FlowCanvas
+            block={{
+              id: "flowly-editor",
+              name: selected || "Lead Routing",
+              category: "flow",
+              group: "application",
+              reference: "https://flowly-app.reui.io/workflow-editor",
+              index: view === "Agent Builder" ? 1 : 0,
+            }}
+          />
+        </div>
+      ) : view === "Agents" ? (
+        <FlowlyAgents
+          onOpen={(name) => {
+            setSelected(name);
+            setView("Agent Builder");
+          }}
+        />
       ) : view === "Settings" ? (
         <WorkspaceSettings />
       ) : (

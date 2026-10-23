@@ -1,3 +1,4 @@
+import { PulseDirectory } from "./pulse-directory";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
@@ -39,21 +40,7 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { toast } from "sonner";
-import {
-  Shell,
-  Button,
-  Input,
-  Avatar,
-  Modal,
-  ReferenceSheet,
-  Empty,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "./shared";
+import { Shell, Button, Input, Avatar, Modal, ReferenceSheet, Empty } from "./shared";
 type TicketRecord = {
   id: string;
   customer: string;
@@ -747,59 +734,7 @@ export default function Pulse() {
           />
         </>
       ) : view === "Contacts" || view === "Team" ? (
-        <>
-          <div className="ct-heading">
-            <div>
-              <h1>{view}</h1>
-              <p>
-                {view === "Team"
-                  ? "Your support team and their current workload."
-                  : "Customers and the conversations you have with them."}
-              </p>
-            </div>
-          </div>
-          <Frame>
-            <FramePanel>
-              <div className="ct-table-scroll">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Name</TableHead>
-                      <TableHead>Email</TableHead>
-                      <TableHead>{view === "Team" ? "Role" : "Queue"}</TableHead>
-                      <TableHead>Open tickets</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {initial
-                      .filter((t) =>
-                        Object.values(t).join(" ").toLowerCase().includes(query.toLowerCase()),
-                      )
-                      .map((t, i) => (
-                        <TableRow key={t.id}>
-                          <TableCell>
-                            <span className="ct-person">
-                              <Avatar name={view === "Team" ? t.agent : t.customer} />
-                              {view === "Team" ? t.agent : t.customer}
-                            </span>
-                          </TableCell>
-                          <TableCell>
-                            {view === "Team"
-                              ? t.agent.toLowerCase().replace(" ", ".") + "@pulse.example"
-                              : t.email}
-                          </TableCell>
-                          <TableCell>
-                            {view === "Team" ? (i === 0 ? "Admin" : "Agent") : t.queue}
-                          </TableCell>
-                          <TableCell>{6 - i}</TableCell>
-                        </TableRow>
-                      ))}
-                  </TableBody>
-                </Table>
-              </div>
-            </FramePanel>
-          </Frame>
-        </>
+        <PulseDirectory key={view} team={view === "Team"} query={query} setQuery={setQuery} />
       ) : view === "Knowledge Base" ? (
         <>
           <div className="ct-heading">

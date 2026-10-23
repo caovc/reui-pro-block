@@ -1,3 +1,4 @@
+import { ReuiStripePattern } from "@/blocks/data/reui-free-chart-primitives";
 import { BrandGlyph } from "@/components/brand-mark";
 import { useState, useId, type ReactNode, type ComponentType } from "react";
 import {
@@ -118,7 +119,7 @@ export function Shell({
     <>
       <div className="wf-brand">
         <Logo />
-        {!compact && <strong>{brand}</strong>}
+        {!compact && <strong>{brand === "ReUI" ? "Bricklane" : brand}</strong>}
       </div>
       {!compact && brand !== "DevOps" && (
         <Button variant="outline" className="wf-search" onClick={() => setSearchOpen(true)}>
@@ -184,7 +185,12 @@ export function Shell({
     >
       <aside className="wf-sidebar">{sidebar}</aside>
       <Sheet open={open} onOpenChange={setOpen}>
-        <SheetContent side="left">
+        <SheetContent
+          side="left"
+          onClick={(event) => {
+            if ((event.target as HTMLElement).closest("button")) setOpen(false);
+          }}
+        >
           <SheetTitle>{brand}</SheetTitle>
           <SheetDescription>Workspace navigation</SheetDescription>
           {sidebar}
@@ -470,14 +476,7 @@ export function Chart({
       <ResponsiveContainer>
         <AreaChart data={data} margin={{ top: 20, right: 24, left: 24, bottom: 0 }}>
           <defs>
-            <pattern id={uid + "hatch"} patternUnits="userSpaceOnUse" width="6" height="6">
-              <path
-                d="M-1,1 l2,-2 M0,6 l6,-6 M5,7 l2,-2"
-                stroke={color}
-                strokeWidth=".5"
-                opacity=".4"
-              />
-            </pattern>
+            <ReuiStripePattern id={uid + "hatch"} color={color} opacity={0.65} />
           </defs>
           <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="3 4" />
           <YAxis hide domain={[0, kind === "flux" ? 140 : 120]} />

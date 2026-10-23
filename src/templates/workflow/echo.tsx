@@ -34,6 +34,7 @@ import {
 import { Sheet, SheetContent, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { toast } from "sonner";
 import { EchoProjects } from "./echo-projects";
+import { EchoScheduled } from "./echo-scheduled";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 const recent = [
   "Stripe webhook 500s on charge.refunded",
@@ -102,7 +103,7 @@ export default function Echo() {
     <>
       <div className="wf-brand">
         <Logo />
-        <strong>ReUI Chat</strong>
+        <strong>Bricklane Chat</strong>
         <Button
           size="icon-sm"
           variant="ghost"
@@ -231,11 +232,13 @@ export default function Echo() {
               "Compare database indexing strategies",
             ];
   return (
-    <div className="wf-root echo-root">
+    <div
+      className={`wf-root echo-root ${["Projects", "Scheduled", "Artifacts"].includes(view) ? "echo-secondary" : ""}`}
+    >
       <aside className={`echo-sidebar ${collapsed ? "echo-collapsed" : ""}`}>{sidebar}</aside>
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetContent side="left">
-          <SheetTitle>ReUI Chat</SheetTitle>
+          <SheetTitle>Bricklane Chat</SheetTitle>
           <SheetDescription>Conversations and projects</SheetDescription>
           {sidebar}
         </SheetContent>
@@ -304,28 +307,7 @@ export default function Echo() {
             onDelete={(name) => setProjects(projects.filter((p) => p !== name))}
           />
         ) : view === "Scheduled" ? (
-          <div className="wf-content">
-            <div className="wf-page-heading">
-              <div>
-                <h1>{view}</h1>
-                <p>{"Recurring tasks in your workspace."}</p>
-              </div>
-              <Button onClick={() => setCreate(true)}>
-                <Plus />
-                New {"task"}
-              </Button>
-            </div>
-            <div className="wf-grid wf-three">
-              {scheduled.map((x) => (
-                <Panel key={x} title={x} description={"Weekly · Next run Monday"}>
-                  <Button variant="outline" onClick={() => selectChat(x)}>
-                    Open
-                    <MessageSquare />
-                  </Button>
-                </Panel>
-              ))}
-            </div>
-          </div>
+          <EchoScheduled onOpen={selectChat} />
         ) : view === "Artifacts" ? (
           <div className="wf-content">
             <h1>Artifacts</h1>
@@ -442,7 +424,7 @@ export default function Echo() {
                 }}
               >
                 <Textarea
-                  aria-label="Message ReUI Chat"
+                  aria-label="Message Bricklane Chat"
                   placeholder="Ask anything, or describe what you want changed…"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
@@ -498,7 +480,9 @@ export default function Echo() {
                   </Button>
                 </div>
               </form>
-              <p className="echo-disclaimer">ReUI Chat can make mistakes. Check important info.</p>
+              <p className="echo-disclaimer">
+                Bricklane Chat can make mistakes. Check important info.
+              </p>
             </div>
           </>
         )}

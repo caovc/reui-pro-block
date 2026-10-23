@@ -1,10 +1,10 @@
+import { LucentSecurity, LucentIntegrations } from "./lucent-settings";
 import { useState } from "react";
 import {
   Activity,
   ClipboardCheck,
   ChartPie,
   Radio,
-  Box,
   ChevronRight,
   Home,
   Layers,
@@ -421,20 +421,12 @@ export default function Lucent() {
         </>
       ) : view === "Delivery" ? (
         <Deployments />
-      ) : view === "Settings" || view === "Security" ? (
+      ) : view === "Security" ? (
+        <LucentSecurity />
+      ) : view === "Settings" ? (
         <WorkspaceSettings />
       ) : view === "Integrations" ? (
-        <Panel title="Integrations" description="Connect your delivery stack">
-          {["GitHub", "Slack", "Datadog", "PagerDuty"].map((x) => (
-            <div className="wf-list-row" key={x}>
-              <Box />
-              <strong>{x}</strong>
-              <Button variant="outline" onClick={() => setSelected(`${x} integration`)}>
-                Configure
-              </Button>
-            </div>
-          ))}
-        </Panel>
+        <LucentIntegrations />
       ) : (
         <>
           {deploymentList}

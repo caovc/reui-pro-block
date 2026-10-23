@@ -1,0 +1,36 @@
+{
+  "scope": "Template secondary pages: Flowly agents, Echo schedules, Lucent settings and Pulse directory",
+  "base": "13ddf7998201db35817b8c64b2f1ff41e7aa67e8",
+  "frozenFiles": {
+    "src/templates/workflow/flowly.tsx": "6f13b6e4564ebb110bd10890fad5593e64064a9bdaefa4e48a02454b8f267329",
+    "src/templates/workflow/flowly-agents.tsx": "4336f603ef4580c2cb047b86039dec60bb889309dff69c560ca277832bfefc8f",
+    "src/templates/workflow/echo.tsx": "a9dfa25dfae3b8f0dfcaec8bcfe6e18026c6fe4c2cdb3d2de98eb1722889d7ce",
+    "src/templates/workflow/echo-scheduled.tsx": "d89750dacf0e15315ffa484c1651743cf440194d87608cd590bde723dff72735",
+    "src/templates/workflow/shared.tsx": "40bdc2359c8e4b267d42c03ab5447c31bfc670516379c03a8556ecec608c8635",
+    "src/templates/workflow/lucent.tsx": "d6508528ff50d1069f57f20b9727bb9f3588c94ae00019715af165316c8fad95",
+    "src/templates/workflow/lucent-settings.tsx": "7f8e8058f790d5356e2b759fda2a4c793a676375f57a0fcd3a3a1eeecb389cde",
+    "src/templates/workflow/workflow.css": "bee0f4607e7d9b624df9b638a159b4770febbb19092fcdd50a3244bfca84885b",
+    "tests/templates-workflow-refinement.spec.ts": "b82c8481913715466429dce99e5456068c2d7bb4f62b9d2d349fbbe7e990cf61",
+    "src/templates/collaboration/pulse-directory.tsx": "871dd79ba980660b037fe6617bad5b99cbd5cbfa2d3baac717f3e545922cd364",
+    "src/templates/collaboration/pulse.tsx": "885a4f5006126a033ecf30da7e53a9f2f55f1e64f9d9ce63505a7b19948773fd",
+    "src/templates/collaboration/styles.css": "a0b3b77e44421b7c8ae8d0baf7295866dbe344deffde74bbd70f1ff7405b55b2",
+    "tests/templates-collaboration-refinement.spec.ts": "6e962bcba65a62b873dbf09e3affc1a68fabefac378c4b82a41f95efdc922080",
+    "tests/templates-source-reuse.spec.ts": "6b9f1c4f5bfc583b9655dfe70c7909a219982800fd7074b126809c4a74934ba9",
+    "docs/templates-fidelity-review.md": "3b5a9fda9bdd0bcafe9e79a77429430c79d375368f174de5112ed2e63d66cd8e"
+  },
+  "actualReuse": [
+    "ReUI Frame, Badge and IconTile",
+    "Existing WorkflowGrid / DomainRecordGrid backed by free ReUI DataGrid",
+    "Existing FlowCanvas Pro Block composed from free workflow components"
+  ],
+  "customGaps": [
+    "Local agent, task, security, webhook and directory state/forms; no live services",
+    "Reference-specific page layout and original fixture/artwork integration"
+  ],
+  "verification": {
+    "root": "Clean committed base plus exact frozen15. Strict production build, full format, tooling3/3 and oxlint pass.53/53 production tests passed1.1m: new secondary workflows, real ZIP dependency closure, all18 template renders, established interactions and global appearance.",
+    "owner": "Actual UI-downloaded Flowly113-file and Pulse87-file projects independently built. Initial48/49 run found a semantic heading regression, corrected and4 related cases passed; Root full fresh candidate independently passed.",
+    "limits": "Source closure confirms reused implementations and their local dependencies ship with MIT attribution; it does not establish universal visual parity. Secondary destination and local-state fidelity gaps remain tracked for later batches.",
+    "deployment": "Not established by local verification; CI and Pages require separate confirmation."
+  }
+}

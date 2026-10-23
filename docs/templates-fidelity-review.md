@@ -89,3 +89,13 @@ The fixed business foundation candidate passed its production build and 41 exist
 - Roster: Hiring repeated people in four columns; the reference has five candidate stages. The organization tree also needs independent node expansion.
 
 These findings are not marked resolved until their corresponding page and interaction milestone is verified.
+
+### Workflow and helpdesk milestone
+
+- Flowly's Workflow and Agent Builder now directly reuse the existing `FlowCanvas` Pro Block instead of the static horizontal step mockup. Agents has its own twelve-record grid, state tabs and creation sheet.
+- Echo Scheduled has five distinct tasks, enable/disable controls, filters, edit/delete actions, four task suggestions and a complete scheduling sheet.
+- Lucent Security and Integrations have separate policy controls, a nine-card integration grid and a webhook form. Connection and policy changes remain independent.
+- Pulse Contacts and Team directly reuse the existing `DomainRecordGrid` Pro Block and actual free DataGrid sorting, selection and pagination. Contacts has eleven records and its account/owner/lifecycle schema; Team has fifteen members and its role/status schema. Creation, editing and member activation update the selected record.
+- Actual downloaded Flowly and Pulse starter ZIPs contain 113 and 87 files respectively and each passes an independent TypeScript/Vite build. The dependency-closure browser tests use the real downloaded ZIPs and TypeScript's parser to check local imports.
+
+The fixed combined candidate passes its production build. Of 49 browser cases, the first run passed 48 and identified a missing accessible heading after Flowly creation. The title was corrected without changing its appearance; the failed case and three related workflow cases then passed. The existing flow assertion was retained.
