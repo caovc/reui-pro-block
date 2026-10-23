@@ -1,4 +1,5 @@
 import RefinedDialogBlock from "./dialog-variants/first-run";
+import WorkspaceDialogBlock from "./dialog-variants/workspace";
 import RefinedEmptyBlock from "./empty-variants";
 import WorkspaceSetupEmptyBlock from "./empty-variants/workspace-setup";
 import TeamSetupEmptyBlock from "./empty-variants/team-setup";
@@ -36,7 +37,13 @@ export default function ApplicationBlock({ block }: BlockProps) {
     case "onboarding":
       return <WizardBlock block={block} />;
     case "dialog":
-      return block.index < 5 ? <RefinedDialogBlock block={block} /> : <DialogBlock block={block} />;
+      return block.index < 5 ? (
+        <RefinedDialogBlock block={block} />
+      ) : block.index < 10 ? (
+        <WorkspaceDialogBlock block={block} />
+      ) : (
+        <DialogBlock block={block} />
+      );
     case "sheet":
       return <DialogBlock block={block} />;
     case "event-calendar":

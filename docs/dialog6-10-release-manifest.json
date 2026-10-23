@@ -1,0 +1,103 @@
+{
+  "batch": "Dialog6–10",
+  "state": "ready for Root integration; no agent Git writes",
+  "integrationBase": "d01e5f2 / archived HEAD at candidate creation",
+  "candidate": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/reui-dialog6-10-production-wfsbo049",
+  "tests": {
+    "passed": 15,
+    "workers": 1,
+    "timeoutMs": 30000,
+    "elapsed": "21.8s",
+    "log": "/tmp/reui-dialog6-10-release-final-tests.log",
+    "output": "/tmp/reui-dialog6-10-release-final-results"
+  },
+  "zip": {
+    "extract": "/tmp/reui-dialog9-realzip-VlHuOp",
+    "files": 285,
+    "bytes": 3505558,
+    "build": "PASS",
+    "renderWidths": [1440, 390],
+    "pageErrors": 0,
+    "overflow": false,
+    "oldScheduleJpegs": 0
+  },
+  "integrationHunks": {
+    "indexImport": "import WorkspaceDialogBlock from \"./dialog-variants/workspace\";",
+    "indexRoute": "case dialog: index <5 => existing first-run; 5<=index<10 => WorkspaceDialogBlock; >=10 existing generic",
+    "sourceTargets": "category dialog, 6<=variant<=10 => paths(\"application\", `dialog-variants/workspace/${[\"apps\",\"support-hub\",\"invites\",\"project\",\"settings\"][variant-6]}`, \"forms\")"
+  },
+  "files": [
+    {
+      "path": "src/blocks/application/dialog-variants/workspace/apps.tsx",
+      "sha256": "5e0d2df8f227f17ddb308804a51a3639e8acc768a380479851f7d88dc44c0f60"
+    },
+    {
+      "path": "src/blocks/application/dialog-variants/workspace/free/avatar-upload.tsx",
+      "sha256": "9f439e88646888524d02cb05c0369a06605c102aaa3155ee497bd8c649e68648"
+    },
+    {
+      "path": "src/blocks/application/dialog-variants/workspace/free/cover-upload.tsx",
+      "sha256": "7bfe6040550f05d321b24c34d2840a33d4e92157b334d16a2b8b44ccd4259a11"
+    },
+    {
+      "path": "src/blocks/application/dialog-variants/workspace/free/labels-picker.tsx",
+      "sha256": "6b3f62881310416ab7954eff902f63e16a2ad07c483249fff7df2f2f211d4572"
+    },
+    {
+      "path": "src/blocks/application/dialog-variants/workspace/free/members-picker.tsx",
+      "sha256": "56b8d96c20a981084f0ff7207cdbbe37888170f363e61a1c4a7dfedbb547569b"
+    },
+    {
+      "path": "src/blocks/application/dialog-variants/workspace/free/priority-picker.tsx",
+      "sha256": "2f035edbe9d34cf90d4224783b9bb1a4a111ccbffc5dd4315de480f0a2353517"
+    },
+    {
+      "path": "src/blocks/application/dialog-variants/workspace/free/status-picker.tsx",
+      "sha256": "fef24a92bccbc14defa882e1ff1b1c99dd6e413bfdd10426b4d9267910517036"
+    },
+    {
+      "path": "src/blocks/application/dialog-variants/workspace/index.tsx",
+      "sha256": "c696cb612d2b3bf31e7279f90574b07d8e25afbdfba64185de37eabccec88308"
+    },
+    {
+      "path": "src/blocks/application/dialog-variants/workspace/invites.tsx",
+      "sha256": "2434cba53b1fdc1dac30494d62de8935b5f5a3d057831d407959156952aafad2"
+    },
+    {
+      "path": "src/blocks/application/dialog-variants/workspace/project.tsx",
+      "sha256": "30b8414e4952abf4259f020c947ddfb213d85df8819325cad898c16ce92d3063"
+    },
+    {
+      "path": "src/blocks/application/dialog-variants/workspace/settings-data.ts",
+      "sha256": "f26f951b86427953cb187a6f12fae628428d49ea00a819604527ed17e3e4e0cd"
+    },
+    {
+      "path": "src/blocks/application/dialog-variants/workspace/settings.tsx",
+      "sha256": "2bc8202b43c20c3b4a37e1e4ead2d0fda0a077747b3b4e1b6afda6085aca8ac2"
+    },
+    {
+      "path": "src/blocks/application/dialog-variants/workspace/support-hub.tsx",
+      "sha256": "a4bd5ec6d07dd629becfb0c6311e106ad733e6e008ead62413b81eca09e6f27c"
+    },
+    {
+      "path": "src/blocks/application/dialog-variants/workspace/workspace.css",
+      "sha256": "4aa9c8c457e0c429371166a7a39310008a22bb158040ee31ba2f6538aca04b71"
+    },
+    {
+      "path": "src/components/ui/combobox.tsx",
+      "sha256": "b3914f44a2ff60be222c6e6ef5e7762ac232824a8a3f11a890dd6532e5d564c2"
+    },
+    {
+      "path": "src/components/ui/kbd.tsx",
+      "sha256": "9936b0ab0f071bbd9c60f35bda49b7e291f9efaff13d55f7030f36be7f55b746"
+    },
+    {
+      "path": "tests/dialog-workspace.spec.ts",
+      "sha256": "fc7d0a417c5030fd1403447c2837fad668a5069c56c52efd0bd1f0b39a9103f4"
+    },
+    {
+      "path": "docs/dialog6-10-implementation.md",
+      "sha256": "7e1b7a2f0413ae024140b063ce1539d0c690c9701e20e8dd8cfbfbb8ad0dcab3"
+    }
+  ]
+}

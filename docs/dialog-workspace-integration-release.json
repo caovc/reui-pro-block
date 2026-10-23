@@ -1,0 +1,39 @@
+{
+  "base": "77d7f420cabef3bb434e32e085bd63326bfe8fa4",
+  "scope": "Dialog6\u201310 actual free ReUI composition and real source-navigation CI evidence",
+  "files": {
+    "src/blocks/application/dialog-variants/workspace/apps.tsx": "5e0d2df8f227f17ddb308804a51a3639e8acc768a380479851f7d88dc44c0f60",
+    "src/blocks/application/dialog-variants/workspace/free/avatar-upload.tsx": "9f439e88646888524d02cb05c0369a06605c102aaa3155ee497bd8c649e68648",
+    "src/blocks/application/dialog-variants/workspace/free/cover-upload.tsx": "7bfe6040550f05d321b24c34d2840a33d4e92157b334d16a2b8b44ccd4259a11",
+    "src/blocks/application/dialog-variants/workspace/free/labels-picker.tsx": "6b3f62881310416ab7954eff902f63e16a2ad07c483249fff7df2f2f211d4572",
+    "src/blocks/application/dialog-variants/workspace/free/members-picker.tsx": "56b8d96c20a981084f0ff7207cdbbe37888170f363e61a1c4a7dfedbb547569b",
+    "src/blocks/application/dialog-variants/workspace/free/priority-picker.tsx": "2f035edbe9d34cf90d4224783b9bb1a4a111ccbffc5dd4315de480f0a2353517",
+    "src/blocks/application/dialog-variants/workspace/free/status-picker.tsx": "fef24a92bccbc14defa882e1ff1b1c99dd6e413bfdd10426b4d9267910517036",
+    "src/blocks/application/dialog-variants/workspace/index.tsx": "c696cb612d2b3bf31e7279f90574b07d8e25afbdfba64185de37eabccec88308",
+    "src/blocks/application/dialog-variants/workspace/invites.tsx": "2434cba53b1fdc1dac30494d62de8935b5f5a3d057831d407959156952aafad2",
+    "src/blocks/application/dialog-variants/workspace/project.tsx": "30b8414e4952abf4259f020c947ddfb213d85df8819325cad898c16ce92d3063",
+    "src/blocks/application/dialog-variants/workspace/settings-data.ts": "f26f951b86427953cb187a6f12fae628428d49ea00a819604527ed17e3e4e0cd",
+    "src/blocks/application/dialog-variants/workspace/settings.tsx": "2bc8202b43c20c3b4a37e1e4ead2d0fda0a077747b3b4e1b6afda6085aca8ac2",
+    "src/blocks/application/dialog-variants/workspace/support-hub.tsx": "a4bd5ec6d07dd629becfb0c6311e106ad733e6e008ead62413b81eca09e6f27c",
+    "src/blocks/application/dialog-variants/workspace/workspace.css": "4aa9c8c457e0c429371166a7a39310008a22bb158040ee31ba2f6538aca04b71",
+    "src/components/ui/combobox.tsx": "b3914f44a2ff60be222c6e6ef5e7762ac232824a8a3f11a890dd6532e5d564c2",
+    "src/components/ui/kbd.tsx": "9936b0ab0f071bbd9c60f35bda49b7e291f9efaff13d55f7030f36be7f55b746",
+    "tests/dialog-workspace.spec.ts": "fc7d0a417c5030fd1403447c2837fad668a5069c56c52efd0bd1f0b39a9103f4",
+    "docs/dialog6-10-implementation.md": "7e1b7a2f0413ae024140b063ce1539d0c690c9701e20e8dd8cfbfbb8ad0dcab3",
+    "docs/dialog6-10-release-manifest.json": "9b25c828844c660c5dccbaa0c760bfa6b24add645c22a191df05f48bda6e6741",
+    "src/blocks/application/index.tsx": "3bea6fe1c963aeb5b0dd772b7e15fcb80e02cae6586a2d976633eddfc4e6a6c5",
+    "src/lib/source-targets.ts": "0356231c321631467c6696c368f6794854af325afe5719dfcfc20c7b5d233974",
+    "docs/FIDELITY.md": "4d2899582b6c5b94a48fbcbfbf6a228d0af07c2d58dbd77804884e955519b879",
+    "docs/source-navigation-ci-trace.md": "1ef4cd3391affe9d4d39b3b7dc7301caf563fb55637c61a7b7a8446db42a1299",
+    "docs/primary-progress.md": "c77760b2b3016a01ab4eb8d5db0171defc659407a4a811790adff26b28839b84"
+  },
+  "verification": {
+    "build": "strict TypeScript+Vite passed",
+    "format": "full clean release candidate722files passed",
+    "lint": "oxlint passed with existing repository warnings",
+    "tooling": "3/3 passed",
+    "production": "32/32 passed,44.1s,1worker,standard30s case timeout",
+    "starter": "Actual Dialog9 UI download285files independently built/rendered1440/390, completed animations before screenshots; computed Dialog content/header padding,borders,radius,display,font/background matched; no errors,overflow or broken images"
+  },
+  "limitations": "Original artwork; local drafts/selection/settings only; Dialog9 uses official free non-modal composition to accommodate BaseUI portals, with documented focus/background difference. Remaining Dialogs and shared Sidebar WIP excluded."
+}
