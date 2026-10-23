@@ -1,0 +1,35 @@
+{
+  "base": "78f4d9e80b08e70943c74734ff1b6bd97c23ef39",
+  "scope": "Immediate route scroll reset; preserve global smooth scrolling and all original source tests",
+  "freeze": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-route-scroll-freeze-87n61p14",
+  "files": [
+    {
+      "path": "src/App.tsx",
+      "sha256": "fd9bfb5cb76247a3e98010d454a4e303fb5b2678bc964d58c9284292a5bbaf94"
+    },
+    {
+      "path": "tests/source-navigation.spec.ts",
+      "sha256": "1835afb1d8d95f8d3154fef8e0fdac8a40e499401e2a618e87b0772b0efee46c"
+    },
+    {
+      "path": "docs/source-navigation-scroll-fix.md",
+      "sha256": "0323c7cd804d6dfaed3a962af5c5c7958d2fe5583fbef295cb24b756c38e298e"
+    }
+  ],
+  "verification": {
+    "red": "77d7f42 production; first route frame y636 vs expected0; 2.0s",
+    "green": "Same production snapshot, only instant scroll reset; 1/1 2.0s",
+    "pressure": "7/7 on77 with3workers; original Dialog source test only CPU4;17.0s",
+    "latest": "78f4d9e clean candidate strict TypeScript/Vite,format724,tooling3,oxlint,7browser3workers16.6s"
+  },
+  "evidence": {
+    "run": 39911450874,
+    "artifact": 12483835950,
+    "timeline": "/tmp/bricklane-77-trace-timeline.json",
+    "snapshot": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-route-final-19xf3xig"
+  },
+  "limitations": [
+    "Local regression proves animated route landing, not deterministic reproduction of the original CI click target.",
+    "No full CI success or deployment claimed before the new run."
+  ]
+}
