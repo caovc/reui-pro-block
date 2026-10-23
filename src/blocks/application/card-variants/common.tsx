@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { demoAvatar } from "@/lib/demo-artwork";
 import type { CSSProperties, ReactNode } from "react";
 import { Check, Copy, Ellipsis } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -18,9 +19,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toast } from "sonner";
-import sarah from "@/blocks/application/assets/schedule-sarah-chen.jpg";
-import james from "@/blocks/application/assets/schedule-james-park.jpg";
-import emma from "@/blocks/application/assets/schedule-emma-wilson.jpg";
 import "./cards.css";
 import { Frame } from "@/components/reui/frame";
 import resendMark from "@/blocks/application/assets/card-brands/resend.svg";
@@ -102,9 +100,9 @@ export function Avatars({ extra = 3 }: { extra?: number }) {
       aria-label={`Sarah Chen, James Park, Emma Wilson and ${extra} others`}
     >
       {[
-        [sarah, "Sarah Chen"],
-        [james, "James Park"],
-        [emma, "Emma Wilson"],
+        [demoAvatar("Sarah Chen"), "Sarah Chen"],
+        [demoAvatar("James Park"), "James Park"],
+        [demoAvatar("Emma Wilson"), "Emma Wilson"],
       ].map(([src, name]) => (
         <Avatar className="-ml-1 size-6 border-2 border-background first:ml-0" key={name}>
           <AvatarImage src={src} alt={name} />

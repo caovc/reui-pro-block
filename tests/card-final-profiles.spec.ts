@@ -121,7 +121,7 @@ test("read-only metric variants retain company, strip and fitness fixtures", asy
   await expect(page.getByText("Calories Burned", { exact: true })).toBeVisible();
 });
 
-test("portfolio source ZIP contains real shared primitives, chart and replacement portraits", async ({
+test("portfolio source ZIP contains real shared primitives, chart and original avatar artwork", async ({
   page,
 }) => {
   await page.goto("./#/block/application/card/card-43");
@@ -140,10 +140,15 @@ test("portfolio source ZIP contains real shared primitives, chart and replacemen
     "src/components/ui/aspect-ratio.tsx",
     "src/components/reui/REUI-LICENSE.txt",
     "src/blocks/application/assets/README.md",
+    "src/lib/demo-artwork.ts",
   ])
     expect(files[path], path).toBeDefined();
-  for (const person of ["emma-wilson", "james-park", "sarah-chen", "sofia-reyes", "liam-torres"])
-    expect(files[`src/blocks/application/assets/schedule-${person}.jpg`]?.length).toBeGreaterThan(
-      2000,
-    );
+  for (const filename of [
+    "src/lib/demo-artwork.ts",
+    "src/blocks/application/card-variants/final-profiles/profiles.tsx",
+  ])
+    expect(new TextDecoder().decode(files[filename])).toBe(await readFile(filename, "utf8"));
+  expect(
+    Object.keys(files).filter((filename) => /assets\/schedule-.*\.jpg$/.test(filename)),
+  ).toEqual([]);
 });

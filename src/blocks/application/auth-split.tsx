@@ -8,12 +8,7 @@ import {
 } from "@/components/ui/carousel";
 import { Rating } from "@/components/reui/rating";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import sarah from "./assets/schedule-sarah-chen.jpg";
-import james from "./assets/schedule-james-park.jpg";
-import emma from "./assets/schedule-emma-wilson.jpg";
-import alex from "./assets/schedule-alex-johnson.jpg";
-import marcus from "./assets/schedule-marcus-webb.jpg";
-import sofia from "./assets/schedule-sofia-reyes.jpg";
+import { demoAvatar } from "@/lib/demo-artwork";
 import { Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -162,7 +157,7 @@ function ReviewCarousel() {
       stopOnFocusIn: true,
     }),
   );
-  const photos = [sarah, james, emma, alex, marcus, sofia];
+  const photos = reviews.map((review) => demoAvatar(review.name));
   useEffect(() => {
     if (!api) return;
     const plugin = autoplay;

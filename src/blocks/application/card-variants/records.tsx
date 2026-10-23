@@ -41,7 +41,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
-import portrait from "@/blocks/application/assets/schedule-priya-singh.jpg";
+import { demoAvatar } from "@/lib/demo-artwork";
 import { CardStage, FramedGrid, LocalLink, Avatars, CopyValue, Actions } from "./common";
 
 export function InvestorProfile() {
@@ -54,7 +54,7 @@ export function InvestorProfile() {
         <FramePanel className="refined-investor flex flex-col gap-5 p-5">
           <div className="flex flex-row items-center gap-5">
             <Avatar className="size-20 rounded-md border-4 border-background shadow-sm">
-              <AvatarImage src={portrait} alt="Mara Alves" className="rounded-sm" />
+              <AvatarImage src={demoAvatar("Mara Alves")} alt="Mara Alves" className="rounded-sm" />
               <AvatarFallback className="rounded-sm">MA</AvatarFallback>
             </Avatar>
             <div className="flex min-w-0 flex-col gap-2">

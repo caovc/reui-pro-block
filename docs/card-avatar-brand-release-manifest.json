@@ -1,0 +1,44 @@
+{
+  "scope": "Card original-avatar source migration, separate from Empty work",
+  "baseCommit": "f3f28e5fef0a403888d87dde460eb36e915e95be",
+  "snapshot": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/reui-card-avatar-freeze-xwu4o5j9",
+  "verification": {
+    "format": "scoped npm run format + format:check passed",
+    "lint": "scoped Oxlint passed",
+    "originalImageRuntime": "9 distinct person seeds produce valid original SVG data URIs",
+    "structure": "AvatarImage JSX counts preserved in all4files; no schedule JPEG import remains in this scope",
+    "production": "deferred to Root coordinated window; no concurrent browser/build started"
+  },
+  "dependency": {
+    "path": "src/lib/demo-artwork.ts",
+    "sha256": "dd1ff55cd26fcc74604d7c94b0e7cb4f4b9df03e7d292f95502072d48d92b313",
+    "owner": "shared brand owner; consumed without editing"
+  },
+  "files": [
+    {
+      "path": "src/blocks/application/card-variants/common.tsx",
+      "sha256": "396e03c4f5160a5413997e2034aa3fd55a3a319bda954e0bfc391756ebe1c82a",
+      "bytes": 6281
+    },
+    {
+      "path": "src/blocks/application/card-variants/extended/common.tsx",
+      "sha256": "56eadbe6b7f093bb75cdec59e86bfce8a0597d20b47e125599c2e1661be78f7e",
+      "bytes": 4364
+    },
+    {
+      "path": "src/blocks/application/card-variants/records.tsx",
+      "sha256": "ff8bf964a0c3b59c25148ad19ee0c563389f5f9a9650f4ad85a0ce7a9fef7a56",
+      "bytes": 19596
+    },
+    {
+      "path": "src/blocks/application/card-variants/final-profiles/profiles.tsx",
+      "sha256": "1bbb232116aabbe804edfe2db46922ef90dbcff13a0138db5314cd436618dc4c",
+      "bytes": 15656
+    },
+    {
+      "path": "docs/card-avatar-brand-migration.md",
+      "sha256": "34b9f6a1385d91a8f6f772f1f3bc31ddabcaf0ed4123ed2906afec0db911d516",
+      "bytes": 4136
+    }
+  ]
+}

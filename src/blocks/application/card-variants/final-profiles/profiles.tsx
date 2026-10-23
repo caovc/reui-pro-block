@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { demoAvatar } from "@/lib/demo-artwork";
 import { Bar, BarChart } from "recharts";
 import { ChartContainer } from "@/components/ui/chart";
 import {
@@ -34,11 +35,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Item, ItemContent, ItemTitle, ItemDescription, ItemActions } from "@/components/ui/item";
-import jenny from "@/blocks/application/assets/schedule-emma-wilson.jpg";
-import ralph from "@/blocks/application/assets/schedule-james-park.jpg";
-import ari from "@/blocks/application/assets/schedule-sarah-chen.jpg";
-import mila from "@/blocks/application/assets/schedule-sofia-reyes.jpg";
-import theo from "@/blocks/application/assets/schedule-liam-torres.jpg";
 import { Stage } from "../extended/common";
 import "./final-profiles.css";
 export function CustomerProfile() {
@@ -49,7 +45,7 @@ export function CustomerProfile() {
       <Frame variant="ghost" dense>
         <FramePanel className="profile-card-mesh flex flex-col items-center gap-5 p-5">
           <Avatar className="size-20 data-[size=lg]:size-20" size="lg">
-            <AvatarImage src={jenny} alt="Jenny Klabber" />
+            <AvatarImage src={demoAvatar("Jenny Klabber")} alt="Jenny Klabber" />
             <AvatarFallback>JK</AvatarFallback>
             <AvatarBadge
               className="bottom-auto top-1 bg-green-500"
@@ -81,10 +77,10 @@ export function CustomerProfile() {
             <p className="text-xs text-muted-foreground/60">TEAM</p>
             <AvatarGroup aria-label="Ari Lane, Mila Stone, K, Theo Vale">
               {[
-                [ari, "Ari Lane", "AL"],
-                [mila, "Mila Stone", "MS"],
+                [demoAvatar("Ari Lane"), "Ari Lane", "AL"],
+                [demoAvatar("Mila Stone"), "Mila Stone", "MS"],
                 ["", "K", "K"],
-                [theo, "Theo Vale", "TV"],
+                [demoAvatar("Theo Vale"), "Theo Vale", "TV"],
               ].map(([src, name, initials]) => (
                 <Avatar key={name} size="sm">
                   {src ? <AvatarImage src={src} alt={name} /> : null}
@@ -243,7 +239,7 @@ export function ContributorPortfolio() {
           <div className="profile-card-cover" aria-label="Abstract muted cover banner" role="img" />
           <Item className="profile-portfolio-info relative -mt-11 items-end gap-3 p-0">
             <Avatar className="size-20 data-[size=lg]:size-20 ring-4 ring-background" size="lg">
-              <AvatarImage src={ralph} alt="Ralph Edwards" />
+              <AvatarImage src={demoAvatar("Ralph Edwards")} alt="Ralph Edwards" />
               <AvatarFallback>RE</AvatarFallback>
               <AvatarBadge
                 className="right-1 bottom-1 bg-green-500"

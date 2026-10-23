@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { demoAvatar } from "@/lib/demo-artwork";
 import type { CSSProperties, ReactNode } from "react";
 import { Ellipsis, FileText } from "lucide-react";
 import { Frame } from "@/components/reui/frame";
@@ -25,9 +26,6 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
-import sarah from "@/blocks/application/assets/schedule-sarah-chen.jpg";
-import james from "@/blocks/application/assets/schedule-james-park.jpg";
-import emma from "@/blocks/application/assets/schedule-emma-wilson.jpg";
 import "./extended.css";
 export function Stage({
   id,
@@ -68,9 +66,9 @@ export function People({ extra = 3 }: { extra?: number }) {
   return (
     <AvatarGroup aria-label={`Sarah Chen, James Park, Emma Wilson and ${extra} others`}>
       {[
-        [sarah, "Sarah Chen"],
-        [james, "James Park"],
-        [emma, "Emma Wilson"],
+        [demoAvatar("Sarah Chen"), "Sarah Chen"],
+        [demoAvatar("James Park"), "James Park"],
+        [demoAvatar("Emma Wilson"), "Emma Wilson"],
       ].map(([src, name]) => (
         <Avatar key={name} size="sm">
           <AvatarImage src={src} alt={name} />
