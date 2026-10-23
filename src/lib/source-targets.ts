@@ -162,6 +162,8 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
       );
     }
     if (block.category === "auth") {
+      if ([9, 12].includes(variant)) return paths("application", "auth-methods", "auth");
+      if ([13, 14].includes(variant)) return paths("application", "auth-access", "auth");
       if ([10, 11, 18].includes(variant)) return paths("application", "auth-review-panels", "auth");
       if ([6, 8].includes(variant)) return paths("application", "auth-editorial", "auth");
       const module = [5, 7].includes(variant)

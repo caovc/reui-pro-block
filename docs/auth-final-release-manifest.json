@@ -1,0 +1,33 @@
+{
+  "base": "cada0d891425ced0c2615dac2c2de4160c5c6288",
+  "scope": "Complete20 explicit auth compositions; correct public mobile layouts and reuse actual free Rating,IconTile,Frame,Carousel patterns",
+  "files": {
+    "src/blocks/application/auth.tsx": "5d470ba2f4db52b6849b206180ab6ac7defdc4b380c237aa7b91b5003d45ca21",
+    "src/blocks/application/auth-form.tsx": "4b4a49ebeee4a5457ad81fb1dde7636db631f16cbff8444a409870f079647b16",
+    "src/blocks/application/auth-split.tsx": "e887a4100c45640eac04d6a8f893f7e6650bcab7614e1fd7683cf80ccf13d882",
+    "src/blocks/application/auth-split.css": "f588708436a4e0d06b16db68ff8b3f16e9dce68f4475277b4bac617805cff56b",
+    "src/blocks/application/auth-grid-review.tsx": "f6790788f0b74857c8a4426277b1a82679b6543fec38e9240c2bf0661fe83d50",
+    "src/blocks/application/auth-grid-review.css": "8c7deaa25687342ea97c023fe84a0d59bf1c1b3c325ed12faf2341f9bee7b6b6",
+    "src/blocks/application/auth-methods.tsx": "06105d9966f309443a8f60a63b210962f91c0fc80d79966a51164fed29f9acc0",
+    "src/blocks/application/auth-methods.css": "a7be43b603741bd4b5786ef5cec74d0475f0c9aac96588421b06739181619202",
+    "src/blocks/application/auth-access.tsx": "6be346e8f84f9179b3e238ef66a50322b45f15d8212e6aa2b5c644dec7aa9d62",
+    "src/blocks/application/auth-access.css": "c1b5c502a889fdbde20e2a66962e4aea2e8f1172d6ba269ddbd0cc551f98b6b6",
+    "src/blocks/application/auth-sculpture.tsx": "56d882833b6033e8c3ed4effdd7b04727832b6fa0b5b616ae2d231d6632ade14",
+    "tests/auth-final-layouts.spec.ts": "ddbdf5b644437f7dd72beb5eb7a246d9b72a0894770feabf340c0747a480f2dc",
+    "src/lib/source-targets.ts": "f2b33977f00064fb84ed0d38d6613e8b149473376a3b2abe24b13e405a1a58c0",
+    "docs/FIDELITY.md": "e4506a4906d81394e3e8c4440269b6a7aa99da9a50e3b23dbe9ffcd6dc597e0e",
+    "docs/audits/auth-final-layouts.md": "138a81e948aeb6be3ce78a31078d9cf53dfd6994430351ca8e1ab3c2ac08a700",
+    "docs/audits/auth-growth-notes.md": "27be983bf7890033b5394564b995498e44163ed0c1ad44aa751443fc4b82a835",
+    "docs/audits/auth-split.md": "0b1b9180a71be8eb8cc6f5cf8dd87dc04cff8370c5ddce43dbb4abdfc9d28283",
+    "docs/auth-carousel-reuse.md": "5ea1d2962d95476ba3894cb167b5803831b3d1a4701fa53baddfa30f0bea19bc",
+    "src/blocks/application/assets/card-extended/ATTRIBUTION.md": "d931dbd3386e9eae75ff401f1f4c26381f9163b76f84e452f488e7d3dab8b515"
+  },
+  "verification": {
+    "browser": "33/33 production,38.0s,1worker",
+    "build": "strict TypeScript/Vite passed",
+    "tooling": "3/3",
+    "realStarter": "Auth12/Auth14 actual UI download257files each; independent build and computed CSS parity1440/390",
+    "publicMobile": "Auth9/12 reviews below form; Auth13 artwork before form; Auth14 hides artwork"
+  },
+  "differences": "Original Bricklane artwork, avatars and independently written testimonials; local-only auth states; consumer layout and tile choreography documented in audit."
+}

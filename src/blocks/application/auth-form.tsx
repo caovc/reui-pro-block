@@ -1,5 +1,5 @@
 import { useId, useState } from "react";
-import { ArrowLeft, Check, Eye, EyeOff, Mail } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Eye, EyeOff, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Field, FieldLabel } from "@/components/ui/field";
@@ -18,6 +18,8 @@ export function PasswordAuthForm({
   initialMode = "login",
   outlinedLogo = false,
   wordmark = false,
+  emailOnly = false,
+  magicArrow = false,
 }: {
   title?: string;
   description?: string;
@@ -29,6 +31,8 @@ export function PasswordAuthForm({
   initialMode?: "login" | "signup";
   outlinedLogo?: boolean;
   wordmark?: boolean;
+  emailOnly?: boolean;
+  magicArrow?: boolean;
 }) {
   const id = useId();
   const [mode, setMode] = useState<"login" | "reset" | "signup" | "sent" | "signed">(initialMode);
@@ -107,15 +111,17 @@ export function PasswordAuthForm({
             )}
             <Field className="gap-2">
               <FieldLabel htmlFor={`${id}-email`}>
-                {magic || mode === "reset" || mode === "signup"
+                {magic || emailOnly || mode === "reset" || mode === "signup"
                   ? "Work email"
                   : "Email or username"}
               </FieldLabel>
               <Input
                 id={`${id}-email`}
-                type={magic || mode !== "login" ? "email" : "text"}
+                type={magic || emailOnly || mode !== "login" ? "email" : "text"}
                 placeholder={
-                  magic || mode !== "login" ? "you@company.com" : "Enter email or username"
+                  magic || emailOnly || mode !== "login"
+                    ? "you@company.com"
+                    : "Enter email or username"
                 }
                 autoComplete="username"
                 required
@@ -172,11 +178,12 @@ export function PasswordAuthForm({
                   : magic
                     ? "Send magic link"
                     : "Sign in"}
+              {magic && magicArrow && mode === "login" && <ArrowRight data-icon="inline-end" />}
             </Button>
           </form>
           {mode === "login" ? (
             <>
-              <FormDivider>{magic ? "or" : "Or continue with"}</FormDivider>
+              <FormDivider>{magic && !magicArrow ? "or" : "Or continue with"}</FormDivider>
               <div
                 className={
                   providerRow ? "auth-detail-providers-row" : "auth-detail-providers-stack"

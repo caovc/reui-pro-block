@@ -9,7 +9,6 @@ import {
 import { Rating } from "@/components/reui/rating";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { demoAvatar } from "@/lib/demo-artwork";
-import { Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Frame, FramePanel } from "@/components/reui/frame";
@@ -346,12 +345,8 @@ export default function SplitAuth({ block }: BlockProps) {
           </header>
           <ReviewCarousel />
           <div className="auth-trustpilot">
-            <div aria-label="5 out of 5 stars">
-              {[0, 1, 2, 3, 4].map((n) => (
-                <span key={n}>
-                  <Star fill="white" />
-                </span>
-              ))}
+            <div>
+              <Rating rating={5} role="img" aria-label="5 out of 5 stars" />
               <strong>Trustpilot</strong>
             </div>
             <p>Trusted by 14,800+ founders and teams worldwide</p>

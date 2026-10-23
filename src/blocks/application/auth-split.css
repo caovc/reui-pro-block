@@ -255,9 +255,19 @@
   justify-content: center;
   gap: 3px;
 }
-.auth-trustpilot > div > span {
+.auth-trustpilot [data-slot="rating"] > div {
+  gap: 3px;
+}
+.auth-trustpilot [data-slot="rating"] > div > div {
   background: #00b67a;
   padding: 3px;
+}
+.auth-trustpilot [data-slot="rating"] > div > div > div {
+  padding: 3px;
+}
+.auth-trustpilot [data-slot="rating-star-filled"] {
+  color: white;
+  fill: white;
 }
 .auth-trustpilot svg {
   width: 15px;

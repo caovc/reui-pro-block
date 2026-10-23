@@ -1,0 +1,126 @@
+.auth-grid-review {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  min-width: 0;
+  border-left: 1px solid var(--border);
+}
+.auth-grid-review::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 56px 56px;
+  opacity: 0.5;
+  mask-image: radial-gradient(ellipse at center, transparent 20%, #000 95%);
+}
+.auth-grid-tiles {
+  position: absolute;
+  inset: 0;
+  opacity: 0.25;
+  pointer-events: none;
+}
+/* Consumer choreography around the actual free IconTile; no custom carousel timer. */
+.auth-grid-tiles > * {
+  position: absolute;
+  left: var(--tile-left);
+  top: var(--tile-top);
+  transform: rotate(var(--tile-rotation));
+  opacity: 0;
+  animation: auth-tile-fade 20s var(--tile-delay) infinite;
+}
+@keyframes auth-tile-fade {
+  0%,
+  20%,
+  100% {
+    opacity: 0;
+  }
+  5%,
+  15% {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .auth-grid-tiles > * {
+    animation: none;
+  }
+  .auth-grid-tiles > :nth-child(-n + 4) {
+    opacity: 1;
+  }
+}
+.auth-grid-story {
+  width: 100%;
+  max-width: 460px;
+  padding: 48px 24px;
+  text-align: center;
+}
+.auth-grid-story [data-slot="rating"] {
+  justify-content: center;
+  color: var(--primary);
+  margin-bottom: 28px;
+}
+.auth-grid-story [data-slot="rating-star-filled"] {
+  color: inherit;
+  fill: currentColor;
+}
+.auth-grid-story figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  margin: 0;
+}
+.auth-grid-story blockquote {
+  margin: 0;
+  min-height: 112px;
+  font-size: 22px;
+  line-height: 1.55;
+  font-weight: 500;
+  letter-spacing: -0.035em;
+}
+.auth-grid-story figcaption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+}
+.auth-grid-story figcaption [data-slot="avatar"] {
+  margin-bottom: 6px;
+}
+.auth-grid-story figcaption strong {
+  font-weight: 500;
+}
+.auth-grid-story figcaption > span:last-child {
+  color: var(--muted-foreground);
+}
+.auth-grid-story-controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 18px;
+}
+.auth-grid-story-controls button {
+  opacity: 0.4;
+}
+.auth-grid-story-controls button[aria-pressed="true"] {
+  opacity: 1;
+}
+.auth-grid-story-controls button span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+@media (max-width: 700px) {
+  .auth-grid-review {
+    min-height: 520px;
+    border-left: 0;
+    border-top: 1px solid var(--border);
+  }
+}
