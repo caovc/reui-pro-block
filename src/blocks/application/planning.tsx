@@ -1,3 +1,5 @@
+import GanttTimeline from "./flow-gantt-timeline";
+import FlowCanvas from "./flow-gantt-flow";
 import { useState } from "react";
 import {
   ArrowRight,
@@ -7,19 +9,16 @@ import {
   ChevronRight,
   Clock,
   FileText,
-  GitBranch,
   GripVertical,
   MessageSquare,
   Minus,
   MousePointer2,
   Plus,
-  Send,
   Square,
   StickyNote,
   Type,
   Upload,
   Workflow,
-  Zap,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -27,7 +26,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import {
   Dialog,
@@ -575,194 +573,10 @@ export function BoardBlock({ block }: BlockProps) {
   );
 }
 export function GanttBlock({ block }: BlockProps) {
-  const [scale, setScale] = useState("Weeks");
-  const [tasks, setTasks] = useState([
-    "Discovery & research",
-    "Define requirements",
-    "Design exploration",
-    "UI design",
-    "Development",
-    "Testing & QA",
-    "Launch",
-  ]);
-  return (
-    <div className="flex min-h-[520px] flex-col gap-6 p-6">
-      <div className="flex flex-wrap justify-between gap-4">
-        <Head
-          title={block.name}
-          description="Plan milestones and keep your team in sync."
-          action=""
-        />
-        <NewItem label="Add task" onCreate={(n) => setTasks([...tasks, n])} />
-      </div>
-      <div className="flex items-center justify-between">
-        <Team />
-        <SmallTabs items={["Days", "Weeks", "Months"]} value={scale} onChange={setScale} />
-      </div>
-      <div className="overflow-x-auto rounded-lg border">
-        <div className="min-w-[760px]">
-          <div className="grid grid-cols-[230px_1fr] border-b bg-muted/40">
-            <span className="p-4 text-xs font-medium">Task name</span>
-            <div className="grid grid-cols-8">
-              {Array.from({ length: 8 }, (_, i) => (
-                <span
-                  key={i}
-                  className="border-l p-4 text-center text-[10px] text-muted-foreground"
-                >
-                  {scale === "Days"
-                    ? `Oct ${19 + i}`
-                    : scale === "Months"
-                      ? ["Sep", "Oct", "Nov", "Dec", "Jan", "Feb", "Mar", "Apr"][i]
-                      : `Week ${i + 1}`}
-                </span>
-              ))}
-            </div>
-          </div>
-          {tasks.map((t, i) => (
-            <div className="grid grid-cols-[230px_1fr] border-b last:border-b-0" key={t}>
-              <div className="flex items-center gap-3 p-4 text-xs">
-                <Checkbox aria-label={`Complete ${t}`} />
-                <span className="flex-1">{t}</span>
-                <Avatar className="size-5">
-                  <AvatarFallback className="text-[8px]">
-                    {people[i % 6]
-                      .split(" ")
-                      .map((n) => n[0])
-                      .join("")}
-                  </AvatarFallback>
-                </Avatar>
-              </div>
-              <div className="relative flex items-center bg-[repeating-linear-gradient(to_right,transparent_0,transparent_calc(12.5%-1px),var(--border)_calc(12.5%-1px),var(--border)_12.5%)]">
-                <button
-                  onClick={() =>
-                    toast(t, {
-                      description: `Assigned to ${people[i % 6]} · ${(i % 3) + 2} ${scale.toLowerCase()}`,
-                    })
-                  }
-                  style={{
-                    marginLeft: `${(i * 11) % 65}%`,
-                    width: `${20 + (i % 3) * 8}%`,
-                  }}
-                  className="truncate rounded-md border bg-muted px-3 py-2 text-left text-[10px] font-medium"
-                >
-                  {t}
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-      <p className="text-xs text-muted-foreground">{tasks.length} tasks · Updated just now</p>
-    </div>
-  );
+  return <GanttTimeline key={block.id} block={block} />;
 }
 export function FlowBlock({ block }: BlockProps) {
-  const [running, setRunning] = useState(false);
-  const [nodes, setNodes] = useState([
-    "Trigger",
-    "Process data",
-    "AI analysis",
-    "Send notification",
-  ]);
-  const [selected, setSelected] = useState(0);
-  return (
-    <div className="flex min-h-[580px] flex-col">
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b p-5">
-        <div className="flex items-center gap-3">
-          <Workflow className="size-5" />
-          <div>
-            <h2 className="text-sm font-semibold">{block.name}</h2>
-            <p className="mt-1 text-xs text-muted-foreground">Draft · Last edited just now</p>
-          </div>
-        </div>
-        <div className="flex gap-2">
-          <Button size="sm" variant="outline" onClick={() => setNodes([...nodes, "New step"])}>
-            <Plus />
-            Add step
-          </Button>
-          <Button
-            size="sm"
-            disabled={running}
-            onClick={() => {
-              setRunning(true);
-              toast.success("Workflow started");
-              setTimeout(() => {
-                setRunning(false);
-                toast.success("Workflow completed successfully");
-              }, 1500);
-            }}
-          >
-            <Zap />
-            {running ? "Running…" : "Run workflow"}
-          </Button>
-        </div>
-      </div>
-      <div className="grid flex-1 lg:grid-cols-[1fr_250px]">
-        <div className="flex min-h-[440px] items-center overflow-auto bg-[radial-gradient(var(--border)_1px,transparent_1px)] bg-[size:18px_18px] p-8">
-          <div className="mx-auto flex flex-wrap items-center gap-0">
-            {nodes.map((n, i) => (
-              <div className="flex items-center" key={i}>
-                {i > 0 && <div className="h-px w-8 bg-border" />}
-                <button
-                  onClick={() => setSelected(i)}
-                  className={`w-44 rounded-xl border bg-background p-4 text-left shadow-sm ${selected === i ? "ring-2 ring-ring" : ""}`}
-                >
-                  <div className="mb-3 flex items-center justify-between">
-                    <span className="flex size-8 items-center justify-center rounded-lg border bg-muted">
-                      {i === 0 ? (
-                        <Zap className="size-4" />
-                      ) : i === nodes.length - 1 ? (
-                        <Send className="size-4" />
-                      ) : (
-                        <GitBranch className="size-4" />
-                      )}
-                    </span>
-                    {running ? (
-                      <Badge variant="secondary">Running</Badge>
-                    ) : (
-                      <Check className="size-3 text-muted-foreground" />
-                    )}
-                  </div>
-                  <h3 className="text-xs font-semibold">{n}</h3>
-                  <p className="mt-1 text-[10px] text-muted-foreground">
-                    {i === 0 ? "When an event occurs" : "Configure this step"}
-                  </p>
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-        <aside className="border-l bg-background p-5">
-          <h3 className="text-sm font-semibold">Step settings</h3>
-          <p className="mt-1 text-xs text-muted-foreground">
-            Configure {nodes[selected]?.toLowerCase()}
-          </p>
-          <div className="mt-6 flex flex-col gap-5">
-            <Field>
-              <FieldLabel>Step name</FieldLabel>
-              <Input
-                value={nodes[selected] ?? ""}
-                onChange={(e) =>
-                  setNodes(nodes.map((n, i) => (i === selected ? e.target.value : n)))
-                }
-              />
-            </Field>
-            <Field>
-              <FieldLabel>Description</FieldLabel>
-              <Textarea placeholder="What does this step do?" rows={4} />
-            </Field>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => toast.success("Step configuration saved")}
-            >
-              Save step
-            </Button>
-          </div>
-        </aside>
-      </div>
-    </div>
-  );
+  return <FlowCanvas key={block.id} block={block} />;
 }
 export function TimelineBlock({ block }: BlockProps) {
   const [filter, setFilter] = useState("All activity");
