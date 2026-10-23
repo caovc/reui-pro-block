@@ -270,9 +270,11 @@ export function OperationsShell({
         {(treeOnly || variant === 33) && <Rail active={active} onChange={setActive} />}
         {variant !== 30 && variant !== 26 && !treeOnly && (
           <Sidebar
-            width={scopes ? 224 : 256}
+            width={
+              variant === 33 ? 288 : scopes ? 224 : variant === 24 || variant === 28 ? 208 : 256
+            }
             collapsed={collapsed}
-            className={`${variant === 33 ? "shell-dark m-2 !w-[288px] rounded-lg !p-0" : scopes ? "!w-[224px]" : variant === 29 ? "!w-64" : "!w-64"} ${variant === 27 ? "!bg-background" : ""}`}
+            className={`${variant === 33 ? "shell-dark m-2 rounded-lg !p-0" : ""} ${variant === 27 ? "!bg-background" : ""}`}
             label="Fleet navigation"
           >
             {(!top || variant === 29) && (

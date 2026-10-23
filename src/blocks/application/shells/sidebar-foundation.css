@@ -82,3 +82,98 @@
 .glass-reference .glass-reference-columns {
   background: transparent;
 }
+
+/* AppShell 1 follows the free Sidebar Header/Content/Footer composition. */
+.shell-reference[data-shell-variant="1"] .shell-sidebar {
+  padding: 0;
+}
+.shell-reference[data-shell-variant="1"] [data-slot="sidebar-header"] {
+  height: 52px;
+}
+.shell-reference[data-shell-variant="1"] .shell-scroll {
+  padding: 8px 8px 0;
+}
+.shell-reference[data-shell-variant="1"] [data-slot="sidebar-group-label"] {
+  height: 32px;
+  min-height: 32px;
+  padding: 0 8px;
+  font-size: 12px;
+}
+.shell-reference[data-shell-variant="1"] .shell-nav-button {
+  height: 32px;
+  font-size: 14px;
+}
+.shell-reference[data-shell-variant="1"] [data-slot="sidebar-menu-sub"] {
+  margin-inline: 24px;
+  padding: 2px 0;
+  border: 0;
+}
+.shell-reference[data-shell-variant="1"] [data-slot="sidebar-menu-sub-button"] {
+  height: 28px;
+  font-size: 14px;
+}
+.shell-reference[data-shell-variant="1"] .shell-icon-dashboard-footer {
+  padding: 8px 8px 12px;
+}
+.shell-reference[data-shell-variant="1"] .shell-icon-dashboard-footer .shell-nav-button {
+  height: 28px;
+  font-size: 12px;
+}
+.shell-reference[data-shell-variant="1"] [data-slot="sidebar-footer"] {
+  padding-bottom: 12px;
+}
+.shell-reference[data-shell-variant="1"] .shell-account-card [data-slot="avatar"] {
+  border-radius: 6px;
+}
+.shell-reference[data-shell-variant="1"] .shell-header {
+  min-height: 48px;
+}
+.shell-reference[data-shell-variant="1"] .shell-placeholder-canvas {
+  padding-top: 0;
+}
+
+.shell-reference[data-shell-variant="1"] [data-state="collapsed"] [data-slot="sidebar-header"] {
+  height: 48px;
+}
+
+.shell-reference[data-shell-variant="1"] [data-slot="sidebar-menu"] {
+  gap: 4px;
+}
+.shell-reference[data-shell-variant="1"] .shell-icon-dashboard-footer > div {
+  padding-block: 0;
+}
+.shell-reference[data-shell-variant="1"] .shell-icon-dashboard-footer [data-slot="sidebar-menu"] {
+  gap: 0;
+}
+.shell-reference[data-shell-variant="1"] [data-slot="sidebar-menu-badge"] {
+  height: 18px;
+  color: #006045;
+  background: #00bc7d1a;
+  border-color: #00bc7d33;
+  font-size: 11px;
+}
+
+.shell-reference [data-collapsible="icon"] .reui-sidebar-content {
+  overflow: hidden;
+}
+
+.shell-reference.shell-drawer .shell-collapse-handle {
+  display: none;
+}
+
+.shell-reference[data-shell-variant="1"]
+  .shell-scroll
+  > .sidebar-expanded
+  > [data-slot="collapsible"] {
+  margin-top: 16px;
+}
+.shell-reference[data-shell-variant="1"]
+  .shell-scroll
+  > .sidebar-expanded
+  [data-slot="sidebar-menu"] {
+  gap: 1px;
+}
+/* Leave a separate hit target for the Sheet's close control on phones. */
+.shell-drawer[data-mobile="true"] [data-slot="sidebar-header"] {
+  padding-inline-end: 40px;
+}

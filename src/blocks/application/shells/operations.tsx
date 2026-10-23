@@ -246,7 +246,12 @@ export default function OperationsShell() {
   return (
     <div className="shell-reference" data-shell-variant="11">
       {regions.includes("workspace") && (
-        <Sidebar collapsed={collapsed} className="border-r" label="Operations navigation">
+        <Sidebar
+          collapsed={collapsed}
+          className="border-r"
+          label="Operations navigation"
+          rail={<CollapseHandle collapsed={collapsed} onToggle={() => setCollapsed(!collapsed)} />}
+        >
           <div className="flex h-9 items-center gap-2 px-2">
             <ReuiMark />
             {!collapsed && <span className="sidebar-expanded text-xs font-medium">Bricklane</span>}
@@ -284,7 +289,6 @@ export default function OperationsShell() {
             />
           </div>
           <WorkspaceMenu collapsed={collapsed} initial="Codex" />
-          <CollapseHandle collapsed={collapsed} onToggle={() => setCollapsed(!collapsed)} />
         </Sidebar>
       )}
       <AppShellInset className="shell-content-frame">

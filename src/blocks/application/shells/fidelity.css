@@ -191,7 +191,7 @@
   height: 15px;
 }
 .shell-reference.fleet-center .fleet-center-sidebar {
-  width: 288px !important;
+  width: var(--sidebar-width);
   padding: 0;
   margin: 0 12px 0 0;
   border-radius: 12px;
@@ -1281,7 +1281,6 @@
   padding-bottom: 9px;
 }
 .todo-shell .shell-sidebar {
-  width: 236px !important;
   border-radius: 12px;
   padding: 8px;
   background: var(--background);
@@ -2340,4 +2339,8 @@
 }
 .glass-reference-assistant[data-slot="frame"] {
   background: color-mix(in srgb, var(--glass-sheet) 97%, transparent);
+}
+
+.shell-reference.fleet-center .fleet-center-sidebar.collapsed {
+  width: var(--sidebar-width-icon);
 }

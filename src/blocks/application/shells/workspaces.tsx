@@ -116,7 +116,7 @@ export function CommunityShell() {
         <Sidebar
           width={240}
           collapsed={collapsed}
-          className="!w-60 border-r !bg-background"
+          className="border-r !bg-background"
           label="Community navigation"
         >
           <GroupedNav groups={communityGroups} active={active} onSelect={setActive} query={query} />
@@ -190,7 +190,11 @@ export function DualWorkspace({ variant }: { variant: 14 | 16 }) {
         }}
       />
       {!hidden && (
-        <Sidebar width={264} className="!w-[264px] border-r" label="Workspace navigation">
+        <Sidebar
+          width={variant === 16 ? 232 : 264}
+          className="border-r"
+          label="Workspace navigation"
+        >
           <div className="flex h-12 items-center justify-between">
             <Choices
               label="Workspaces"
@@ -321,7 +325,7 @@ export function FavoritesShell() {
         </div>
       </header>
       <div className="flex min-h-0 flex-1">
-        <Sidebar width={248} collapsed={collapsed} className="!w-[248px] border-r !bg-background">
+        <Sidebar width={248} collapsed={collapsed} className="border-r !bg-background">
           <div className="flex h-12 items-center justify-between">
             <Choices
               label="Workspaces"

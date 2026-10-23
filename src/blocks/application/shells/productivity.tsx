@@ -70,7 +70,7 @@ export function ModelChat() {
   const [thread, setThread] = useState("");
   return (
     <div className="shell-reference bg-muted/40 p-2 gap-2" data-shell-variant="17">
-      <Sidebar width={240} collapsed={collapsed} className="rounded-xl border !bg-background !w-60">
+      <Sidebar width={240} collapsed={collapsed} className="rounded-xl border !bg-background ">
         <div className="flex h-10 items-center gap-2 px-1">
           <ReuiMark small />
           {!collapsed && <strong className="flex-1 text-sm">ReUI AI</strong>}
@@ -489,7 +489,7 @@ export function PlannerShell() {
     date?.toLocaleDateString("en-US", { month: "long", year: "numeric" }) ?? "October 2026";
   return (
     <div className="shell-reference bg-muted/30" data-shell-variant="19">
-      <Sidebar width={272} collapsed={collapsed} className="!w-[272px]">
+      <Sidebar width={272} collapsed={collapsed}>
         <div className="flex h-12 items-center gap-2 px-2">
           <ReuiMark small />
           <strong className="flex-1">Bricklane</strong>
@@ -581,7 +581,7 @@ export function WebmailShell() {
   const [labels, setLabels] = useState(["Archive", "Snoozed", "Spam", "Trash"]);
   return (
     <div className="shell-reference bg-muted/25" data-shell-variant="20">
-      <Sidebar width={240} className="!w-60 !bg-transparent">
+      <Sidebar width={240} className="!bg-transparent">
         <WorkspaceMenu user initial="Nick Bold" subtitle="nick@reui.io" />
         <Button className="my-3 h-8" onClick={() => setCompose(true)}>
           <Mail />

@@ -31,6 +31,7 @@ import {
 import { IconTile } from "@/components/reui/icon-tile";
 import {
   Button,
+  CollapseHandle,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
@@ -203,6 +204,7 @@ export default function FleetCenter() {
         className="fleet-center-sidebar shell-dark"
         drawerClassName="fleet-center shell-dark"
         label="Fleet navigation"
+        rail={<CollapseHandle collapsed={collapsed} onToggle={() => setCollapsed(!collapsed)} />}
       >
         <header className="fleet-center-title">
           {searching ? (
@@ -313,14 +315,6 @@ export default function FleetCenter() {
             ]}
           />
         </footer>
-        <Button
-          className="shell-collapse-handle"
-          variant="ghost"
-          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-          onClick={() => setCollapsed(!collapsed)}
-        >
-          <span />
-        </Button>
       </Sidebar>
       <AppShellInset className="fleet-center-main">
         <FleetPlaceholders />

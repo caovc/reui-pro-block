@@ -40,15 +40,15 @@
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  width: 248px;
+  width: var(--sidebar-width);
   padding: 8px;
   background: color-mix(in oklab, var(--muted) 25%, var(--background));
   transition: width 180ms ease;
 }
 .shell-reference .shell-sidebar.collapsed {
-  width: 48px !important;
-  padding-left: 5px;
-  padding-right: 5px;
+  width: var(--sidebar-width-icon);
+  padding-left: 8px;
+  padding-right: 8px;
 }
 .shell-reference .shell-header {
   display: flex;
@@ -93,26 +93,79 @@
 }
 .shell-reference .shell-collapse-handle {
   position: absolute;
+  inset-block: auto;
   top: 50%;
-  right: -14px;
-  z-index: 5;
+  left: 100%;
+  right: auto;
+  z-index: 30;
   display: flex;
-  width: 14px;
+  align-items: center;
+  width: 28px;
   height: 48px;
-  padding: 0;
+  padding: 0 0 0 8px;
+  border: 0;
+  border-radius: 0;
   background: transparent;
+  cursor: pointer;
   transform: translateY(-50%);
 }
-.shell-reference .shell-collapse-handle span {
-  width: 1px;
-  height: 16px;
-  background: var(--muted-foreground);
-  opacity: 0.65;
+.shell-reference .shell-collapse-handle::after {
+  display: none;
 }
-.shell-reference .shell-collapse-handle:hover span {
-  width: 3px;
-  height: 30px;
-  border-radius: 3px;
+.shell-reference .shell-collapse-handle:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: -2px;
+}
+.shell-reference .shell-rail-glyph {
+  display: flex;
+  flex-direction: column;
+}
+.shell-reference .shell-rail-glyph > span {
+  width: 2px;
+  height: 8px;
+  background: color-mix(in oklab, var(--foreground) 40%, transparent);
+  transition: transform 100ms linear;
+}
+.shell-reference .shell-rail-glyph > span:first-child {
+  border-radius: 2px 2px 0 0;
+  transform-origin: bottom;
+}
+.shell-reference .shell-rail-glyph > span:last-child {
+  border-radius: 0 0 2px 2px;
+  transform-origin: top;
+}
+.shell-reference
+  .shell-collapse-handle:is(:hover, :focus-visible)
+  .shell-rail-glyph
+  > span:first-child {
+  transform: rotate(40deg);
+}
+.shell-reference
+  .shell-collapse-handle:is(:hover, :focus-visible)
+  .shell-rail-glyph
+  > span:last-child {
+  transform: rotate(-40deg);
+}
+.shell-reference .shell-collapse-handle[aria-expanded="false"] .shell-rail-glyph {
+  rotate: 180deg;
+}
+.shell-reference .shell-rail-label {
+  position: absolute;
+  left: calc(100% - 8px);
+  padding: 2px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--foreground);
+  color: var(--background);
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+.shell-reference .shell-collapse-handle:is(:hover, :focus-visible) .shell-rail-label {
+  opacity: 1;
 }
 .shell-reference .shell-usage-card {
   margin: 12px 8px 5px;
@@ -590,7 +643,6 @@
 .shell-reference[data-shell-variant="3"] .shell-sidebar,
 .shell-reference[data-shell-variant="9"] .shell-sidebar,
 .shell-reference[data-shell-variant="10"] .shell-sidebar {
-  width: 256px;
   padding-top: 16px;
 }
 .shell-reference [data-slot="button"][aria-expanded="true"]:not([aria-haspopup]) {
@@ -709,10 +761,6 @@
   color: var(--foreground);
   font-weight: 500;
 }
-.shell-reference[data-shell-variant="24"] .shell-sidebar,
-.shell-reference[data-shell-variant="28"] .shell-sidebar {
-  width: 208px !important;
-}
 .shell-reference[data-shell-variant="26"] .shell-scope-panel {
   width: 304px;
 }
@@ -724,9 +772,6 @@
   border: 1px solid var(--border);
   border-radius: 14px;
   margin: 8px 8px 8px 0;
-}
-.shell-reference[data-shell-variant="33"] .shell-desktop-sidebar {
-  width: 288px !important;
 }
 @media (max-width: 767px) {
   .shell-reference .shell-console-canvas {
@@ -759,9 +804,6 @@
     width: 192px;
   }
 }
-.shell-reference .shell-sidebar.collapsed {
-  overflow: hidden;
-}
 .shell-reference .shell-sidebar.collapsed .shell-section-label {
   display: none;
 }
@@ -785,9 +827,6 @@
 }
 .shell-reference .shell-glass-lower > .shell-skeleton-card {
   flex: 1;
-}
-.shell-reference[data-shell-variant="16"] .shell-sidebar {
-  width: 232px !important;
 }
 .shell-reference[data-shell-variant="16"] .shell-header {
   min-height: 72px;

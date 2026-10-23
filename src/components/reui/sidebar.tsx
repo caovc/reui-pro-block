@@ -9,7 +9,8 @@
  */
 import { useEffect, useState } from "react";
 import type { ComponentProps, ReactNode } from "react";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { Check, ChevronDown, ChevronRight, Ellipsis, Plus } from "lucide-react";
+import { BrandMark } from "@/components/brand-mark";
 import {
   Sidebar,
   SidebarContent,
@@ -34,6 +35,7 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
@@ -44,6 +46,7 @@ export function ReuiSidebar({
   role = "complementary",
   header,
   footer,
+  rail,
   children,
   className,
   ...props
@@ -52,6 +55,7 @@ export function ReuiSidebar({
   gapWidth?: number;
   header?: ReactNode;
   footer?: ReactNode;
+  rail?: ReactNode;
 }) {
   return (
     <Sidebar
@@ -63,6 +67,7 @@ export function ReuiSidebar({
         {
           "--sidebar-width": `${width}px`,
           "--sidebar-gap": `${gapWidth ?? width}px`,
+          "--sidebar-gap-icon": `calc(var(--sidebar-width-icon) + ${Math.max(0, (gapWidth ?? width) - width)}px)`,
           ...props.style,
         } as React.CSSProperties
       }
@@ -70,6 +75,7 @@ export function ReuiSidebar({
       {header && <SidebarHeader>{header}</SidebarHeader>}
       <SidebarContent className="reui-sidebar-content">{children}</SidebarContent>
       {footer && <SidebarFooter>{footer}</SidebarFooter>}
+      {rail}
     </Sidebar>
   );
 }
@@ -101,6 +107,78 @@ export function SidebarRailButton({
   );
 }
 
+/** Free c-sidebar-1 WorkspaceSwitcher with local, original workspace marks. */
+export function SidebarWorkspaceSwitcher({
+  value,
+  workspaces,
+  onSelect,
+  onCreate,
+}: {
+  value: string;
+  workspaces: string[];
+  onSelect: (name: string) => void;
+  onCreate: () => void;
+}) {
+  const { isMobile, state } = useSidebar();
+  const collapsed = !isMobile && state === "collapsed";
+  return (
+    <SidebarMenu>
+      <SidebarMenuItem>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <SidebarMenuButton
+              size="lg"
+              className="h-9 font-semibold data-[state=open]:bg-sidebar-accent group-data-[collapsible=icon]:justify-center"
+              aria-label="Switch workspace"
+              tooltip={value}
+            >
+              <BrandMark className="size-6! shrink-0" />
+              {!collapsed && (
+                <>
+                  <span className="min-w-0 flex-1 truncate">{value}</span>
+                  <Ellipsis className="size-3.5 text-muted-foreground" />
+                </>
+              )}
+            </SidebarMenuButton>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            side={collapsed ? "right" : "bottom"}
+            align="start"
+            className="min-w-60"
+          >
+            <DropdownMenuGroup>
+              <DropdownMenuLabel>Workspaces</DropdownMenuLabel>
+              {workspaces.map((name, index) => (
+                <DropdownMenuItem key={name} onSelect={() => onSelect(name)}>
+                  <span
+                    className={cn(
+                      "flex size-6 shrink-0 items-center justify-center rounded-md text-sm text-white",
+                      index === 0 ? "bg-neutral-900" : index === 1 ? "bg-blue-500" : "bg-rose-500",
+                    )}
+                    aria-hidden="true"
+                  >
+                    {name.slice(0, 1)}
+                  </span>
+                  <span className="min-w-0 flex-1 truncate">{name}</span>
+                  {name === value && <Check className="ml-auto size-3.5" />}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onSelect={onCreate}>
+              <Plus />
+              <span className="flex flex-col">
+                <span>New Workspace</span>
+                <span className="text-xs text-muted-foreground">Collaborate with others.</span>
+              </span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </SidebarMenuItem>
+    </SidebarMenu>
+  );
+}
+
 // Project/member sections retain c-sidebar-1's row/action separation and
 // c-sidebar-3's accessible Collapsible label/content composition.
 export function SidebarCollection({
@@ -109,7 +187,7 @@ export function SidebarCollection({
   onSelect,
 }: {
   label: string;
-  rows: { label: string; icon: ReactNode; actions?: ReactNode }[];
+  rows: { label: string; icon: ReactNode; badge?: ReactNode; actions?: ReactNode }[];
   onSelect: (value: string) => void;
 }) {
   const { isMobile, setOpenMobile } = useSidebar();
@@ -138,7 +216,8 @@ export function SidebarCollection({
                     }}
                   >
                     {row.icon}
-                    <span>{row.label}</span>
+                    <span className="truncate">{row.label}</span>
+                    {row.badge}
                   </SidebarMenuButton>
                   {row.actions}
                 </SidebarMenuItem>

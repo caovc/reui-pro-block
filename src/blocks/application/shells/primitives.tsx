@@ -1,6 +1,6 @@
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ReuiSidebar, SidebarNavigation } from "@/components/reui/sidebar";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import { Frame, FrameFooter } from "@/components/reui/frame";
 import { useEffect, useRef } from "react";
 import type { ReactNode } from "react";
@@ -124,12 +124,15 @@ export function Segments({
 }
 export function Sidebar({
   children,
-  collapsed = false,
+  collapsed,
   width = 248,
   gapWidth,
   className,
   label = "Navigation",
   drawerClassName,
+  header,
+  footer,
+  rail,
 }: {
   children: ReactNode;
   collapsed?: boolean;
@@ -138,14 +141,22 @@ export function Sidebar({
   className?: string;
   label?: string;
   drawerClassName?: string;
+  header?: ReactNode;
+  footer?: ReactNode;
+  rail?: ReactNode;
 }) {
+  const { state, isMobile } = useSidebar();
+  const compact = !isMobile && (collapsed ?? state === "collapsed");
   return (
     <>
       <ReuiSidebar
         width={width}
         gapWidth={gapWidth}
+        header={header}
+        footer={footer}
+        rail={rail}
         aria-label={label}
-        className={cn("shell-sidebar shell-desktop-sidebar", collapsed && "collapsed", className)}
+        className={cn("shell-sidebar shell-desktop-sidebar", compact && "collapsed", className)}
         mobileTitle={label}
         mobileClassName={cn(
           "shell-reference shell-drawer reui-reference !min-h-0 flex-col gap-0 p-2",

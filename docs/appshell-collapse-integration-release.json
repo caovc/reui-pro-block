@@ -1,0 +1,32 @@
+{
+  "base": "d72516b274193ca3abc8761a201de4bd9632837c",
+  "scope": "AppShell painted collapse geometry and AppShell 1 detail corrections",
+  "files": {
+    "src/components/reui/sidebar.tsx": "b4fc4581334bc60be25c9dd991a09a960375966905343b744ae3e566652c84da",
+    "src/components/ui/sidebar.tsx": "80518f4bd4aca229e83105596c7c770d388d3ed69da2d66c6b1bb1c8b098e6e4",
+    "docs/appshell-sidebar-migration.md": "c6b2953603985be914610b5096c577a06952850d20aa40282794806770547b2e",
+    "tests/appshell-collapse-geometry.spec.ts": "d090a5c37b5521bc4f8d2b9a37543060158f0a78acc5b3736970513ccc6dbf7a",
+    "src/blocks/application/shells/primitives.tsx": "ecae6fe1c5b7c052f49517d8388e3d79881fa30d05c311b24b9fde7268ebea9e",
+    "src/blocks/application/shells/chrome.tsx": "773db69fe6e66bf1579e1b8c97cf53a69a2f5ce81975c52a1543c8db340a2cd5",
+    "src/blocks/application/shells/standard.tsx": "ba1eb8665ca840860282d2f611ebb8b7a1bdf7c4d376d7dd565aff2db5b7bcad",
+    "src/blocks/application/shells/workspaces.tsx": "e6c8e1e02999cf0b84fc60e8fe25102618a0fd6b5a5bbf7ee752cf82fe025a3b",
+    "src/blocks/application/shells/productivity.tsx": "679d650106b2c4519bff0aebc744b0e22b7b53653592263225568f0dcd89208f",
+    "src/blocks/application/shells/fleet-consoles.tsx": "818b77ad4e3d385e4cafeb8defacf4bb76db681774234950959d57d3ed206e85",
+    "src/blocks/application/shells/operations.tsx": "96b7c9dfd08cbaf757ce75a5688c32ac48d7cb68d0ea110690215f287d1acc0a",
+    "src/blocks/application/shells/environment.tsx": "d227e2f71fc0abdff02b7a10f505af555c6a66a7a05212ea7cd3484b089e5c67",
+    "src/blocks/application/shells/fleet-center.tsx": "c8c0a4e5e4158d702bdf40c671ca2d070391514d9618771b714f9073772792cb",
+    "src/blocks/application/shells/shells.css": "7a25b8a9599cc5d274e356c772f28b225c6819a30c9ef31765df8eeceeee4742",
+    "src/blocks/application/shells/sidebar-foundation.css": "d359ff647c190f1116a378aad1b4b346a9af1e87446585796b8eba63ac934840",
+    "src/blocks/application/shells/fidelity.css": "46009f9294b4c70c6d8ce2da0e9028f509c923a733c950f25b021f653d1b7c2d"
+  },
+  "verification": {
+    "build": "strict TypeScript + Vite passed",
+    "format": "full clean candidate726 files passed before integration notes",
+    "lint": "oxlint passed with existing repository warnings",
+    "tooling": "3/3 passed",
+    "production": "Root12/12 passed37.3s; owner49/49 passed47.8s",
+    "starter": "Actual UI app-shell-1.zip,269files, independent TypeScript/Vite build plus 1280/390 render/collapse/account/header hit-area checks",
+    "source": "Actual Code tab/default standard.tsx, clipboard and single-file download match frozen implementation;14 runtime/CSS ZIP sources match SHA256"
+  },
+  "limitations": "Local fixture account/workspace actions; independent Bricklane identity and licensed substitute portraits. Per-entry visual fidelity elsewhere remains in progress."
+}

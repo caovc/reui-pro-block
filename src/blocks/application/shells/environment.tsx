@@ -234,7 +234,7 @@ export default function EnvironmentShell() {
         <Sidebar
           width={260}
           collapsed={collapsed}
-          className={` !w-[260px] border-r ${collapsed ? "collapsed" : ""}`}
+          className={` border-r ${collapsed ? "collapsed" : ""}`}
         >
           <div className="mb-3 p-2">
             <SearchPalette collapsed={collapsed} onSelect={setActive} />

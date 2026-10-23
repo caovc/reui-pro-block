@@ -1,11 +1,14 @@
-import { ReuiSidebar } from "@/components/reui/sidebar";
+import {
+  ReuiSidebar,
+  SidebarCollection,
+  SidebarWorkspaceSwitcher,
+} from "@/components/reui/sidebar";
 import { AppShellInset, useShellSidebarState } from "@/components/reui/layout";
 import { useState } from "react";
 import {
   Activity,
   BarChart3,
   Bot,
-  ChevronDown,
   CircleHelp,
   Code2,
   CreditCard,
@@ -130,7 +133,6 @@ const appsNavigation: NavNode[] = [
   },
 ];
 function ResourceLinks({ onSelect }: { onSelect: (s: string) => void }) {
-  const [open, setOpen] = useState(true);
   const [items, setItems] = useState([
     "API Gateway",
     "ML Pipeline",
@@ -138,46 +140,39 @@ function ResourceLinks({ onSelect }: { onSelect: (s: string) => void }) {
     "CDN",
     "Authentication",
   ]);
+  const colors = ["#00bc7d", "#8e51ff", "#2b7fff", "#fe9a00", "#ff2056"];
   return (
-    <div className="mt-5 flex flex-col gap-1">
-      <Button
-        variant="ghost"
-        size="sm"
-        className="h-7 justify-between px-2 text-[11px] font-normal text-muted-foreground"
-        aria-expanded={open}
-        onClick={() => setOpen(!open)}
-      >
-        Resources
-        <ChevronDown />
-      </Button>
-      {open &&
-        items.map((name, i) => (
-          <div className="group flex items-center" key={name}>
-            <Button
-              variant="ghost"
-              className="shell-nav-button min-w-0 flex-1 justify-start"
-              onClick={() => onSelect(name)}
-            >
-              <span
-                className="mx-1 size-1.5 shrink-0 rounded-full"
-                style={{ background: `var(--chart-${i + 1})` }}
-              />
-              <span className="truncate">{name}</span>
-              {i === 0 && (
-                <Badge variant="outline" className="h-4 px-1 text-[9px]">
-                  Prod
-                </Badge>
-              )}
-              {i === 2 && (
-                <Badge variant="outline" className="h-4 px-1 text-[9px]">
-                  US-East
-                </Badge>
-              )}
-            </Button>
-            <RowActions name={name} onRemove={() => setItems(items.filter((v) => v !== name))} />
-          </div>
-        ))}
-    </div>
+    <SidebarCollection
+      label="Resources"
+      onSelect={onSelect}
+      rows={items.map((name) => ({
+        label: name,
+        icon: (
+          <span
+            className="mx-1 size-1.5 shrink-0 rounded-full"
+            style={{
+              background:
+                colors[
+                  ["API Gateway", "ML Pipeline", "Database", "CDN", "Authentication"].indexOf(name)
+                ],
+            }}
+          />
+        ),
+        badge:
+          name === "API Gateway" || name === "Database" ? (
+            <Badge variant="outline" className="h-4 px-1 text-[9px]">
+              {name === "API Gateway" ? "Prod" : "US-East"}
+            </Badge>
+          ) : undefined,
+        actions: (
+          <RowActions
+            name={name}
+            sidebar
+            onRemove={() => setItems((current) => current.filter((value) => value !== name))}
+          />
+        ),
+      }))}
+    />
   );
 }
 function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
@@ -188,7 +183,9 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
   const [context, setContext] = useState(true);
   const [auto, setAuto] = useState(true);
   const [newItem, setNewItem] = useState(false);
-  const [workspace, setWorkspace] = useState("Atlas");
+  const [workspace, setWorkspace] = useState(variant === 1 ? "Bricklane" : "Atlas");
+  const [workspaces, setWorkspaces] = useState(["Bricklane", "Acme Inc", "Atlas"]);
+  const [createWorkspace, setCreateWorkspace] = useState(false);
   const dark = variant === 6 || variant === 9;
   const floating = variant === 2;
   const apps = variant === 12;
@@ -224,54 +221,48 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
         width={[1, 3, 9, 10].includes(variant) ? 256 : floating || apps ? 240 : 248}
         gapWidth={floating ? 256 : undefined}
         collapsed={collapsed}
-        className={` ${collapsed ? "collapsed" : ""} ${dark ? "shell-dark" : ""} ${floating ? "m-2 rounded-xl border !w-60 shadow-sm" : ""} ${apps ? "!w-60 border-r" : ""} ${variant === 1 ? "!w-64 border-r" : ""}`}
+        header={
+          variant === 1 ? (
+            <SidebarWorkspaceSwitcher
+              value={workspace}
+              workspaces={workspaces}
+              onSelect={setWorkspace}
+              onCreate={() => setCreateWorkspace(true)}
+            />
+          ) : undefined
+        }
+        footer={variant === 1 ? <WorkspaceMenu collapsed={collapsed} user card /> : undefined}
+        rail={<CollapseHandle collapsed={collapsed} onToggle={() => setCollapsed(!collapsed)} />}
+        className={` ${collapsed ? "collapsed" : ""} ${dark ? "shell-dark" : ""} ${floating ? "m-2 rounded-xl border shadow-sm" : ""} ${apps ? "border-r" : ""} ${variant === 1 ? "border-r" : ""}`}
       >
-        <div className={`mb-3 flex h-10 shrink-0 items-center gap-2 px-2 ${apps ? "h-12" : ""}`}>
-          <ReuiMark />
-          {!collapsed && (
-            <>
-              <div className="sidebar-expanded min-w-0 flex-1">
-                <p className="text-[13px] font-medium">Bricklane</p>
-                {apps && <p className="mt-0.5 text-[10px] text-muted-foreground">Pro plan</p>}
-              </div>
-              {[3, 6, 9, 10].includes(variant) && (
-                <div className="sidebar-expanded">
-                  <Notifications />
+        {variant !== 1 && (
+          <div className={`mb-3 flex h-10 shrink-0 items-center gap-2 px-2 ${apps ? "h-12" : ""}`}>
+            <ReuiMark />
+            {!collapsed && (
+              <>
+                <div className="sidebar-expanded min-w-0 flex-1">
+                  <p className="text-[13px] font-medium">Bricklane</p>
+                  {apps && <p className="mt-0.5 text-[10px] text-muted-foreground">Pro plan</p>}
                 </div>
-              )}
-              {variant === 1 && (
-                <div className="sidebar-expanded">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon-sm" aria-label="Switch workspace">
-                        <Ellipsis />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                      <DropdownMenuGroup>
-                        {["Bricklane", "Acme Inc", "Atlas"].map((n) => (
-                          <DropdownMenuItem key={n} onSelect={() => setWorkspace(n)}>
-                            {n}
-                          </DropdownMenuItem>
-                        ))}
-                      </DropdownMenuGroup>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </div>
-              )}
-              {[2, 3].includes(variant) && (
-                <Button
-                  size="icon-sm"
-                  variant="ghost"
-                  aria-label="Toggle Sidebar"
-                  onClick={() => setCollapsed(!collapsed)}
-                >
-                  <PanelLeft />
-                </Button>
-              )}
-            </>
-          )}
-        </div>
+                {[3, 6, 9, 10].includes(variant) && (
+                  <div className="sidebar-expanded">
+                    <Notifications />
+                  </div>
+                )}
+                {[2, 3].includes(variant) && (
+                  <Button
+                    size="icon-sm"
+                    variant="ghost"
+                    aria-label="Toggle Sidebar"
+                    onClick={() => setCollapsed(!collapsed)}
+                  >
+                    <PanelLeft />
+                  </Button>
+                )}
+              </>
+            )}
+          </div>
+        )}
         {hasSearch && (
           <div className="mb-3 px-2">
             <SearchPalette
@@ -351,7 +342,11 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
           )}
         </div>
         {(variant === 1 || variant === 2 || apps) && (
-          <div className={collapsed ? "" : "sidebar-expanded"}>
+          <div
+            className={
+              variant === 1 ? "shell-icon-dashboard-footer" : collapsed ? "" : "sidebar-expanded"
+            }
+          >
             <FooterLinks collapsed={collapsed} onSelect={setActive} />
           </div>
         )}
@@ -367,30 +362,39 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
             />
           </div>
         )}
-        {!apps && (
+        {!apps && variant !== 1 && (
           <div className="mt-auto pt-1">
             <WorkspaceMenu
               collapsed={collapsed}
-              user={[1, 9, 10].includes(variant)}
+              user={[9, 10].includes(variant)}
               initial={
-                variant === 1
-                  ? "Bricklane"
-                  : variant === 2
-                    ? "Vercel"
-                    : variant === 9
-                      ? "Acme Corp"
-                      : variant === 10
-                        ? "Atlas"
-                        : "Claude"
+                variant === 2
+                  ? "Vercel"
+                  : variant === 9
+                    ? "Acme Corp"
+                    : variant === 10
+                      ? "Atlas"
+                      : "Claude"
               }
               subtitle={variant === 9 ? "Acme Corp" : variant === 10 ? "Atlas" : undefined}
-              top={variant === 1}
               onName={setWorkspace}
             />
           </div>
         )}
-        <CollapseHandle collapsed={collapsed} onToggle={() => setCollapsed(!collapsed)} />
       </Sidebar>
+      {variant === 1 && (
+        <CreateItemDialog
+          open={createWorkspace}
+          onOpenChange={setCreateWorkspace}
+          title="New workspace"
+          onCreate={(name) => {
+            const value = name.trim();
+            if (!value) return;
+            setWorkspaces((current) => (current.includes(value) ? current : [...current, value]));
+            setWorkspace(value);
+          }}
+        />
+      )}
       <AppShellInset className={`shell-content-frame ${inset ? "inset" : ""}`}>
         <header
           className={`shell-header ${apps || variant === 10 || variant === 9 ? "border-b" : ""}`}
