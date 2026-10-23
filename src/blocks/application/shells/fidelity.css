@@ -2344,3 +2344,403 @@
 .shell-reference.fleet-center .fleet-center-sidebar.collapsed {
   width: var(--sidebar-width-icon);
 }
+
+/* Workspace families: distinct primary rails and secondary navigation. */
+.shell-reference .shell-workspace-rail {
+  padding: 0;
+  background: var(--background);
+}
+.shell-workspace-rail [data-slot="sidebar-header"] {
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid var(--border);
+}
+.shell-workspace-rail .reui-sidebar-content {
+  align-items: center;
+  padding: 8px;
+  gap: 2px;
+}
+.shell-workspace-rail .reui-sidebar-content > button {
+  width: 40px;
+  height: 32px;
+  padding: 8px;
+}
+.shell-workspace-rail [data-slot="sidebar-footer"] {
+  align-items: center;
+  gap: 8px;
+}
+.shell-reference .shell-workspace-dark-rail > [data-slot="sidebar-inner"] {
+  margin: 12px;
+  width: calc(100% - 24px);
+  height: calc(100% - 24px);
+  border-radius: 18px;
+  background: #171717;
+  color: #a1a1aa;
+  --sidebar-accent: #303033;
+  --sidebar-accent-foreground: #fff;
+}
+.shell-workspace-dark-rail [data-slot="sidebar-header"] {
+  border: 0;
+}
+.shell-workspace-dark-rail .reui-sidebar-content {
+  padding-inline: 8px;
+  gap: 6px;
+}
+.shell-workspace-dark-rail .reui-sidebar-content > button {
+  width: 32px;
+}
+.shell-reference[data-shell-variant="16"] .shell-header {
+  min-height: 88px;
+}
+.shell-reference[data-shell-variant="13"] > .shell-header {
+  min-height: 54px;
+}
+.shell-reference[data-shell-variant="17"] .model-chat-pinned [data-slot="sidebar-menu-button"] {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr);
+  height: 60px;
+  gap: 2px 8px;
+  border: 1px dashed var(--border);
+  align-content: center;
+}
+.model-chat-pinned small {
+  grid-column: 2;
+  font-size: 11px;
+  color: var(--muted-foreground);
+}
+.shell-reference[data-shell-variant="17"] .model-chat-pinned + div,
+.shell-reference[data-shell-variant="17"] .model-chat-pinned + div + div {
+  margin-top: 16px;
+}
+.shell-reference[data-shell-variant="17"] .shell-chat-welcome > div {
+  max-width: 640px;
+  gap: 8px;
+}
+.shell-reference[data-shell-variant="17"] .shell-chat-welcome > div > button {
+  height: 42px;
+}
+.shell-reference[data-shell-variant="19"] .shell-placeholder-canvas {
+  flex: none;
+  padding: 0 16px;
+}
+.shell-reference[data-shell-variant="19"] .shell-placeholder-canvas .grid {
+  gap: 14px;
+}
+.shell-reference[data-shell-variant="19"] .shell-placeholder {
+  border-radius: 16px;
+  background: color-mix(in oklab, var(--muted) 12%, var(--background));
+}
+.shell-reference[data-shell-variant="19"] .shell-planner-track {
+  margin: 14px 16px 0;
+  height: 34px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+.shell-reference[data-shell-variant="19"] .shell-content-frame > .shell-header {
+  min-height: 64px;
+  border: 0;
+}
+.shell-reference[data-shell-variant="19"] .shell-content-frame > .shell-header h1 {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* The operational examples have different summary compositions and card grids. */
+.shell-reference:is(
+    [data-shell-variant="23"],
+    [data-shell-variant="24"],
+    [data-shell-variant="26"],
+    [data-shell-variant="28"]
+  )
+  > .shell-header {
+  min-height: 52px;
+  border: 0;
+}
+.shell-console-surface {
+  overflow: hidden;
+}
+.shell-reference[data-shell-variant="27"] .shell-console-surface,
+.shell-reference[data-shell-variant="26"] .shell-console-regions {
+  margin: 8px 8px 8px 0;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+.shell-reference[data-shell-variant="26"] .shell-console-regions {
+  margin: 0 16px 16px;
+}
+.shell-reference[data-shell-variant="28"] .shell-console-regions {
+  margin: 0 16px 16px;
+}
+.shell-reference[data-shell-variant="27"] .shell-content-frame {
+  border: 0;
+  border-radius: 0;
+  margin: 0;
+}
+.shell-reference[data-shell-variant="26"] .shell-scope-panel {
+  width: 288px;
+}
+.shell-reference:is([data-shell-variant="27"], [data-shell-variant="32"]) .shell-scope-panel {
+  width: 256px;
+}
+.shell-console-content {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+}
+.console-summary-grid,
+.console-body-grid {
+  display: grid;
+  gap: 16px;
+}
+.shell-reference .console-summary,
+.shell-reference .console-body-card {
+  background: var(--background);
+  border-radius: 16px;
+  --frame-panel-bg: var(--background);
+  --frame-panel-border-color: var(--border);
+  --frame-border-color: var(--border);
+}
+.console-summary {
+  height: 148px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.console-summary-panel[data-slot="frame-panel"] {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border: 0;
+  box-shadow: none;
+  border-radius: 16px 16px 0 0;
+}
+.console-summary-footer[data-slot="frame-panel-footer"] {
+  flex-direction: row;
+  align-items: center;
+  min-height: 42px;
+  padding: 8px 16px;
+  background: color-mix(in oklab, var(--muted) 40%, var(--background));
+  border-top: 1px solid var(--border);
+}
+.console-line {
+  display: block;
+  height: 16px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background: color-mix(in oklab, var(--muted) 70%, var(--background));
+}
+.console-body-card {
+  height: 292px;
+}
+.console-body-panel[data-slot="frame-panel"] {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  border: 0;
+  border-radius: 16px;
+  box-shadow: none;
+}
+.console-body-block {
+  display: block;
+  flex: 1;
+  min-height: 0;
+  margin-top: 16px;
+  border-radius: 8px;
+  background: color-mix(in oklab, var(--muted) 70%, var(--background));
+}
+.console-content-23,
+.console-content-28 {
+  padding: 24px;
+  gap: 24px;
+}
+.console-content-23 .console-body-grid,
+.console-content-23 .console-summary-grid,
+.console-content-28 .console-body-grid,
+.console-content-28 .console-summary-grid {
+  gap: 24px;
+}
+.console-content-28 .console-summary {
+  height: 160px;
+}
+.console-content-24 .console-body-card {
+  height: 300px;
+}
+.console-content-26,
+.console-content-32 {
+  padding: 12px;
+  gap: 12px;
+}
+.console-content-26 .console-summary-grid,
+.console-content-26 .console-body-grid,
+.console-content-32 .console-summary-grid,
+.console-content-32 .console-body-grid {
+  gap: 12px;
+}
+.console-content-29 .console-body-card {
+  height: 292px;
+}
+@media (max-width: 767px) {
+  .shell-reference:is([data-shell-variant="26"], [data-shell-variant="28"]) .shell-console-regions {
+    margin: 0 8px 8px;
+  }
+  .shell-reference:is(
+      [data-shell-variant="26"],
+      [data-shell-variant="27"],
+      [data-shell-variant="32"]
+    )
+    .shell-scope-panel {
+    width: 192px;
+  }
+  .shell-console-content {
+    padding: 12px;
+    gap: 12px;
+  }
+  .console-summary-grid,
+  .console-body-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px;
+  }
+  .console-body-card {
+    height: 240px;
+  }
+}
+.console-body-panel[data-slot="frame-panel"] {
+  border: 1px solid var(--border);
+}
+.shell-reference:is(
+    [data-shell-variant="23"],
+    [data-shell-variant="24"],
+    [data-shell-variant="27"],
+    [data-shell-variant="28"]
+  )
+  [data-slot="sidebar-group-label"] {
+  height: 28px;
+  min-height: 28px;
+  padding: 0 8px;
+  font-size: 12px;
+}
+.shell-reference:is([data-shell-variant="24"], [data-shell-variant="28"]) .shell-nav-button {
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.shell-reference:is([data-shell-variant="24"], [data-shell-variant="28"])
+  [data-slot="sidebar-menu-button"][data-active="true"] {
+  color: var(--foreground);
+}
+.console-content-23 .console-summary {
+  height: 160px;
+}
+.console-content-24 {
+  padding: 24px;
+  gap: 24px;
+}
+.console-content-24 .console-summary-grid,
+.console-content-24 .console-body-grid {
+  gap: 24px;
+}
+.console-content-24 .console-summary {
+  height: 130px;
+}
+.console-summary.basic .console-summary-panel {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  gap: 8px;
+}
+.console-summary.basic .console-body-block {
+  margin-top: 16px;
+}
+.shell-calendar-context .rdp-nav {
+  left: auto;
+  right: 0;
+  width: 64px;
+}
+.shell-calendar-context .rdp-month_caption {
+  justify-content: flex-start;
+  padding-left: 0;
+  padding-right: 64px;
+}
+.shell-calendar-event:after {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: calc(50% - 2px);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--muted-foreground);
+  z-index: 11;
+  pointer-events: none;
+}
+.shell-calendar-context .shell-scroll > div > p {
+  font-size: 12px;
+}
+.shell-calendar-context [data-slot="button"] {
+  font-size: 12px;
+}
+@media (max-width: 767px) {
+  .shell-reference:is([data-shell-variant="14"], [data-shell-variant="16"])
+    > .shell-mobile-trigger[aria-label="Open applications"] {
+    left: 56px;
+  }
+}
+.shell-reference:is([data-shell-variant="25"], [data-shell-variant="32"])
+  .shell-icon-rail
+  > [data-slot="sidebar-inner"]
+  > [data-slot="sidebar-content"]
+  > svg:first-child {
+  display: none;
+}
+.shell-reference:is([data-shell-variant="25"], [data-shell-variant="32"])
+  .shell-icon-rail
+  .reui-sidebar-content
+  > div:first-of-type {
+  margin-top: 0;
+}
+.shell-reference[data-shell-variant="25"] .shell-mission-panel .shell-segments {
+  width: 100%;
+  height: 28px;
+  padding: 0;
+}
+.shell-reference[data-shell-variant="25"] .shell-mission-panel [role="tab"] {
+  height: 28px;
+  flex: none;
+}
+.shell-reference[data-shell-variant="32"] > .shell-header {
+  min-height: 48px;
+  padding-left: 60px;
+}
+.shell-reference[data-shell-variant="32"] > .shell-header > div:first-child > svg:first-child {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+}
+.shell-reference[data-shell-variant="25"] .shell-icon-rail {
+  width: 52px;
+}
+.shell-reference .shell-promo {
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 12px 12px;
+  background-color: var(--background);
+  background-blend-mode: soft-light;
+  border-radius: 16px;
+}
+.shell-reference .shell-workspace-dark-rail > [data-slot="sidebar-inner"] {
+  width: 52px;
+}
+/* Embedded offcanvas panels must not paint over an adjacent application rail. */
+.shell-reference [data-collapsible="offcanvas"] > [data-slot="sidebar-container"] {
+  visibility: hidden;
+  pointer-events: none;
+}
+.shell-reference[data-shell-variant="28"] .console-content-28 {
+  padding-top: 23px;
+}

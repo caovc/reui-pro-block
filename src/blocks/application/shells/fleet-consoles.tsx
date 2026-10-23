@@ -10,10 +10,13 @@ import {
   SlidersHorizontal,
   Sparkles,
 } from "lucide-react";
+import ConsoleCanvas from "./console-canvas";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import {
   Button,
   Badge,
+  AppsMenu,
   CreateItemDialog,
   DropdownMenu,
   DropdownMenuContent,
@@ -55,29 +58,23 @@ function SectionNav({
   const names = security ? ["Security", "Incidents", "Threats", "Assets", "Reports"] : sections;
   return (
     <>
-      <div
-        className="hidden min-w-0 items-center gap-1 lg:flex"
-        role="tablist"
-        aria-label="Sections"
-      >
-        {names.map((name, i) => {
-          const Icon = railItems[i].icon;
-          return (
-            <Button
-              role="tab"
-              aria-selected={value === name}
-              variant={value === name ? "secondary" : "ghost"}
-              size="sm"
-              className="h-8 px-2 font-normal text-muted-foreground aria-selected:text-foreground"
-              key={name}
-              onClick={() => onChange(name)}
-            >
-              <Icon />
-              {name}
-            </Button>
-          );
-        })}
-      </div>
+      <Tabs value={value} onValueChange={onChange} className="hidden min-w-0 lg:block">
+        <TabsList className="h-8 gap-1 bg-transparent p-0" aria-label="Sections">
+          {names.map((name, i) => {
+            const Icon = railItems[i].icon;
+            return (
+              <TabsTrigger
+                value={name}
+                key={name}
+                className="h-7 gap-2 rounded-md px-2 text-xs font-normal text-muted-foreground data-[state=active]:bg-muted data-[state=active]:text-foreground"
+              >
+                <Icon className="size-4" />
+                {name}
+              </TabsTrigger>
+            );
+          })}
+        </TabsList>
+      </Tabs>
       <div className="lg:hidden">
         <Choices label="Sections" items={names} value={value} onChange={onChange} />
       </div>
@@ -216,7 +213,8 @@ export function OperationsShell({
           </div>
           {variant === 26 && <SectionNav security value={section} onChange={setSection} />}
           <div className="flex shrink-0 items-center gap-1">
-            <div className="hidden md:block">
+            {variant === 23 && <AppsMenu onSelect={setActive} />}
+            <div className={variant === 23 || variant === 32 ? "hidden" : "hidden md:block"}>
               <SearchPalette
                 iconOnly
                 routes={[
@@ -265,7 +263,7 @@ export function OperationsShell({
         </header>
       )}
       <div
-        className={`flex min-h-0 flex-1 ${inset ? "m-2 rounded-2xl border bg-background overflow-hidden" : ""}`}
+        className={`shell-console-regions flex min-h-0 flex-1 ${inset ? "rounded-2xl border bg-background overflow-hidden" : ""}`}
       >
         {(treeOnly || variant === 33) && <Rail active={active} onChange={setActive} />}
         {variant !== 30 && variant !== 26 && !treeOnly && (
@@ -274,16 +272,19 @@ export function OperationsShell({
               variant === 33 ? 288 : scopes ? 224 : variant === 24 || variant === 28 ? 208 : 256
             }
             collapsed={collapsed}
+            collapsible={[23, 24].includes(variant) ? "offcanvas" : "icon"}
             className={`${variant === 33 ? "shell-dark m-2 rounded-lg !p-0" : ""} ${variant === 27 ? "!bg-background" : ""}`}
             label="Fleet navigation"
           >
             {(!top || variant === 29) && (
-              <div className="flex h-12 items-center justify-between px-2">
+              <div
+                className={`flex h-12 items-center ${collapsed ? "justify-center" : "justify-between px-2"}`}
+              >
                 {variant === 33 ? (
                   <strong className="text-xs">Fleet Center</strong>
-                ) : (
+                ) : !collapsed ? (
                   <ReuiMark small />
-                )}
+                ) : null}
                 <Button
                   variant="ghost"
                   size="icon-sm"
@@ -351,13 +352,17 @@ export function OperationsShell({
               </>
             ) : variant === 29 ? (
               <>
-                <Segments
-                  label="Workspaces"
-                  items={["Fleet", "Team", "Events"]}
-                  value={workspace}
-                  onChange={setWorkspace}
-                />
-                <div className="my-4 grid grid-cols-3 gap-2">
+                <div className="sidebar-expanded">
+                  <Segments
+                    label="Workspaces"
+                    items={["Fleet", "Team", "Events"]}
+                    value={workspace}
+                    onChange={setWorkspace}
+                  />
+                </div>
+                <div
+                  className={`my-4 grid ${collapsed ? "grid-cols-1 gap-1" : "grid-cols-3 gap-2"}`}
+                >
                   {(workspace === "Fleet"
                     ? [
                         "Overview",
@@ -397,25 +402,34 @@ export function OperationsShell({
                     <Button
                       key={name}
                       variant={active === name ? "outline" : "secondary"}
-                      className="h-16 flex-col gap-1 text-[10px] font-normal"
+                      className={
+                        collapsed ? "size-8 p-0" : "h-16 flex-col gap-1 text-[10px] font-normal"
+                      }
+                      aria-label={name}
+                      title={name}
                       onClick={() => (name === "Add" ? setCreate("Add section") : setActive(name))}
                     >
                       <Grid2X2 />
-                      {name}
+                      {!collapsed && name}
                     </Button>
                   ))}
                 </div>
-                <ScopeTree
-                  key={workspace}
-                  networkTree={workspace === "Fleet"}
-                  scope={workspace === "Team" ? "Assets" : "Events"}
-                  query={query}
-                  onSelect={setActive}
-                />
+                <div className="sidebar-expanded">
+                  <ScopeTree
+                    key={workspace}
+                    networkTree={workspace === "Fleet"}
+                    scope={workspace === "Team" ? "Assets" : "Events"}
+                    query={query}
+                    onSelect={setActive}
+                  />
+                </div>
+                <AccountCard />
               </>
             ) : (
               <>
-                {variant === 27 && <NavSearch value={query} onChange={setQuery} />}
+                {variant === 27 && (
+                  <NavSearch value={query} onChange={setQuery} onSelect={setActive} />
+                )}
                 <GroupedNav
                   indented={variant === 23}
                   query={query}
@@ -448,103 +462,114 @@ export function OperationsShell({
                             ],
                           },
                         ]
-                      : undefined
+                      : variant === 27
+                        ? [
+                            {
+                              label: "Fleet Overview",
+                              items: [
+                                "Overview",
+                                "Security Center",
+                                "Live Map",
+                                "All Robots",
+                                "Zones",
+                              ],
+                            },
+                            {
+                              label: "Fleet Activity",
+                              items: ["Live Status", "Access Requests", "Event Feed"],
+                            },
+                          ]
+                        : undefined
                   }
                   active={active}
                   onSelect={setActive}
                 />
-                {[23, 27].includes(variant) && <Promo />}
-                <AccountCard />
+                {[23, 27].includes(variant) && (
+                  <div className="mt-auto">
+                    <Promo />
+                  </div>
+                )}
+                {variant !== 23 && <AccountCard />}
               </>
             )}
           </Sidebar>
         )}
-        {scopes && (
-          <ScopePanel
-            dynamic={variant === 26}
-            query=""
-            onCountChange={(name, count) => {
-              if (name === "Devices") setEndpoints(count);
-              if (name === "Threats") setThreats(count);
-            }}
-            onSelect={setActive}
-            showCounts={counts}
-            showStatus={status}
-          />
-        )}
-        <AppShellInset className="shell-content-frame">
-          {variant === 30 ? (
-            <>
-              <div className="flex flex-wrap items-center justify-between gap-3 px-6 pb-4 pt-6">
-                <div>
-                  <div className="flex flex-wrap items-center gap-2">
-                    <h1 className="text-xl font-medium">{title}</h1>
-                    <div className="flex gap-1">
-                      {["342 Robots", "58 Missions", "12 Stations"].map((name) => (
-                        <Badge variant="outline" className="text-[10px]" key={name}>
-                          {name}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                  <p className="mt-2 text-xs text-muted-foreground">
-                    Track robot status, capacity, assignments, health, and activity across your
-                    entire operating fleet.
-                  </p>
-                </div>
-                <div className="flex gap-2">
-                  <Button size="sm" onClick={() => setCreate("New mission")}>
-                    New Mission
-                  </Button>
-                  <Button size="sm" variant="outline" onClick={() => setAssistant((v) => !v)}>
-                    <Sparkles />
-                    Open Chat
-                  </Button>
-                </div>
-              </div>
-              <div className="px-6">
-                <Segments
-                  label="Workspace views"
-                  items={[
-                    "Summary",
-                    "Delivery Center",
-                    "Performance",
-                    "Coverage",
-                    "Issues",
-                    "Capacity",
-                    "Trends",
-                    "Access",
-                  ]}
-                  value={tab}
-                  onChange={setTab}
-                />
-              </div>
-              <ContentCards layout="console" />
-            </>
-          ) : variant === 29 ? (
-            <>
-              <div className="mx-4 mt-4">
-                <NavSearch value={query} onChange={setQuery} />
-              </div>
-              <ContentCards layout="three" />
-            </>
-          ) : (
-            <ContentCards
-              layout={
-                variant === 23
-                  ? "three"
-                  : variant === 33
-                    ? "fleet"
-                    : variant === 26 || variant === 27 || variant === 32
-                      ? "security"
-                      : variant === 28
-                        ? "four"
-                        : "dashboard"
-              }
+        <div className="shell-console-surface flex min-h-0 min-w-0 flex-1">
+          {scopes && (
+            <ScopePanel
+              dynamic={variant === 26}
+              query=""
+              onCountChange={(name, count) => {
+                if (name === "Devices") setEndpoints(count);
+                if (name === "Threats") setThreats(count);
+              }}
+              onSelect={setActive}
+              showCounts={counts}
+              showStatus={status}
             />
           )}
-        </AppShellInset>
-        {assistant && <Assistant onClose={() => setAssistant(false)} />}
+          <AppShellInset className="shell-content-frame">
+            {variant === 30 ? (
+              <>
+                <div className="flex flex-wrap items-center justify-between gap-3 px-6 pb-4 pt-6">
+                  <div>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <h1 className="text-xl font-medium">{title}</h1>
+                      <div className="flex gap-1">
+                        {["342 Robots", "58 Missions", "12 Stations"].map((name) => (
+                          <Badge variant="outline" className="text-[10px]" key={name}>
+                            {name}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                    <p className="mt-2 text-xs text-muted-foreground">
+                      Track robot status, capacity, assignments, health, and activity across your
+                      entire operating fleet.
+                    </p>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button size="sm" onClick={() => setCreate("New mission")}>
+                      New Mission
+                    </Button>
+                    <Button size="sm" variant="outline" onClick={() => setAssistant((v) => !v)}>
+                      <Sparkles />
+                      Open Chat
+                    </Button>
+                  </div>
+                </div>
+                <div className="px-6">
+                  <Segments
+                    label="Workspace views"
+                    items={[
+                      "Summary",
+                      "Delivery Center",
+                      "Performance",
+                      "Coverage",
+                      "Issues",
+                      "Capacity",
+                      "Trends",
+                      "Access",
+                    ]}
+                    value={tab}
+                    onChange={setTab}
+                  />
+                </div>
+                <ContentCards layout="console" />
+              </>
+            ) : variant === 29 ? (
+              <>
+                <div className="mx-4 mt-4">
+                  <NavSearch value={query} onChange={setQuery} />
+                </div>
+                <ConsoleCanvas variant={variant} />
+              </>
+            ) : (
+              <ConsoleCanvas variant={variant} />
+            )}
+          </AppShellInset>
+          {assistant && <Assistant onClose={() => setAssistant(false)} />}
+        </div>
       </div>
       <CreateItemDialog
         open={Boolean(create)}
@@ -621,10 +646,11 @@ export function MissionShell() {
         </div>
       </header>
       <div className="flex min-h-0 flex-1">
-        <Rail active={active} onChange={setActive} />
+        <Rail active={active} onChange={setActive} width={52} />
         <ReuiSidebar
           collapsible="none"
-          className="shell-mission-panel flex min-h-0 w-[436px] shrink-0 flex-col border-r p-2"
+          width={384}
+          className="shell-mission-panel flex min-h-0 shrink-0 flex-col border-r p-2"
         >
           <Segments
             label="Mission panels"

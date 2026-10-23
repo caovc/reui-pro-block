@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-const route = (n: number) => `/#/preview/application/app-shell/app-shell-${n}`;
+const route = (n: number) => `./#/preview/application/app-shell/app-shell-${n}`;
 for (const width of [1280, 390])
   test(`all 36 AppShell routes render at ${width}px`, async ({ page }) => {
     test.setTimeout(180000);
@@ -93,7 +93,7 @@ test("model grid and header selection synchronize; task assistant closes and reo
     "true",
   );
   await page.getByRole("button", { name: "Draft an email", exact: true }).click();
-  await expect(page.getByRole("textbox", { name: "Message ReUI AI" })).toHaveValue(
+  await expect(page.getByRole("textbox", { name: "Message Bricklane AI" })).toHaveValue(
     "Draft an email",
   );
   await page.goto(route(18));

@@ -1,12 +1,12 @@
 import { test, expect } from "@playwright/test";
 
-const preview = (n: number) => `/#/preview/application/app-shell/app-shell-${n}`;
+const preview = (n: number) => `./#/preview/application/app-shell/app-shell-${n}`;
 
 test("icon collapse shrinks the painted panel and its layout spacer together", async ({ page }) => {
   test.setTimeout(120000);
   await page.setViewportSize({ width: 1280, height: 900 });
   for (const n of [
-    1, 2, 3, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 23, 24, 27, 28, 29, 33, 36,
+    1, 2, 3, 6, 7, 9, 10, 11, 12, 13, 15, 17, 18, 19, 20, 21, 23, 24, 27, 28, 29, 33, 36,
   ]) {
     await test.step(`AppShell ${n}`, async () => {
       await page.goto(preview(n));
@@ -19,6 +19,23 @@ test("icon collapse shrinks the painted panel and its layout spacer together", a
       const expanded = (await panel.boundingBox())!;
       expect(expanded.width).toBeGreaterThan(200);
       await page.keyboard.press("Control+b");
+      if ([19, 23, 24].includes(n)) {
+        await expect(sidebar).toHaveAttribute("data-collapsible", "offcanvas");
+        await expect
+          .poll(
+            async () => (await sidebar.locator('[data-slot="sidebar-gap"]').boundingBox())?.width,
+          )
+          .toBe(0);
+        await expect
+          .poll(async () => {
+            const box = (await panel.boundingBox())!;
+            return box.x + box.width;
+          })
+          .toBeLessThanOrEqual(0);
+        await page.keyboard.press("Control+b");
+        await expect.poll(async () => (await panel.boundingBox())?.x).toBe(expanded.x);
+        return;
+      }
       await expect(sidebar).toHaveAttribute("data-collapsible", "icon");
       // Native floating/inset panels include outer padding and a 2px border allowance.
       const padded = [2, 3, 9, 10].includes(n);

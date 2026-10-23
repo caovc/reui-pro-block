@@ -152,7 +152,12 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
       return paths("application", `navbar-variants/first-run/${module}`, "workspace");
     }
     if (block.category === "app-shell") {
-      return paths("application", `shells/${shellModules[variant - 1]}`, "shells/audited");
+      return paths(
+        "application",
+        `shells/${shellModules[variant - 1]}`,
+        ...([23, 24, 26, 27, 28, 29, 32].includes(variant) ? ["shells/console-canvas"] : []),
+        "shells/audited",
+      );
     }
     if (block.category === "card") {
       return paths("application", `card-variants/${cardModules[variant - 1]}`, "cards");

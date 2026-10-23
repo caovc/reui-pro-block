@@ -1,10 +1,24 @@
-import { ReuiSidebar } from "@/components/reui/sidebar";
+import { ReuiSidebar, SidebarRailButton } from "@/components/reui/sidebar";
 import { AppShellInset, useShellSidebarState } from "@/components/reui/layout";
 import { useState } from "react";
+import type { ReactNode } from "react";
 import {
   ChevronRight,
+  Activity,
+  CircleHelp,
+  FileText,
+  Inbox,
+  Network,
+  Settings,
+  Shield,
+  UserRound,
   Ellipsis,
   Filter,
+  Home,
+  SquareCheck,
+  Building2,
+  BriefcaseBusiness,
+  Users,
   List,
   PanelLeft,
   Pin,
@@ -17,14 +31,12 @@ import {
   Button,
   Badge,
   Breadcrumbs,
-  CollapseHandle,
   CreateItemDialog,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  FooterLinks,
   Input,
   Navigation,
   Notifications,
@@ -40,10 +52,10 @@ import {
   Face,
   GroupedNav,
   PageTitle,
-  Rail,
   Segments,
   Sidebar,
 } from "./primitives";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { CalendarContext } from "./calendar-panel";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable";
 const communityGroups = [
@@ -97,7 +109,7 @@ export function CommunityShell() {
           </Button>
         </div>
         <Input
-          placeholder="Search ReUI"
+          placeholder="Search Bricklane"
           aria-label="Search community"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
@@ -119,8 +131,22 @@ export function CommunityShell() {
           className="border-r !bg-background"
           label="Community navigation"
         >
-          <GroupedNav groups={communityGroups} active={active} onSelect={setActive} query={query} />
-          <FooterLinks collapsed={collapsed} onSelect={setActive} />
+          <GroupedNav
+            groups={communityGroups}
+            active={active}
+            onSelect={setActive}
+            query={query}
+            badges={{ Network: "Beta", Advertise: "Pro" }}
+          />
+          <Button
+            className="mt-auto justify-start gap-2"
+            variant="ghost"
+            aria-label="Community pulse"
+            onClick={() => toast("Community pulse: all systems operational")}
+          >
+            <Activity />
+            {!collapsed && "Community pulse"}
+          </Button>
         </Sidebar>
         <AppShellInset className="shell-content-frame">
           <div className="flex items-center justify-between gap-3 p-3">
@@ -171,8 +197,29 @@ export function CommunityShell() {
     </div>
   );
 }
+function WorkspaceSidebar({ variant, children }: { variant: 14 | 16; children: ReactNode }) {
+  const sidebar = (
+    <Sidebar
+      width={240}
+      collapsible={variant === 14 ? "offcanvas" : "icon"}
+      className="border-r"
+      label="Workspace navigation"
+    >
+      {children}
+    </Sidebar>
+  );
+  return variant === 16 ? (
+    <SidebarProvider keyboardShortcut={false} className="contents">
+      {sidebar}
+    </SidebarProvider>
+  ) : (
+    sidebar
+  );
+}
+
 export function DualWorkspace({ variant }: { variant: 14 | 16 }) {
-  const [section, setSection] = useState("Missions");
+  const [collapsed, setCollapsed] = useShellSidebarState();
+  const [section, setSection] = useState("Updates");
   const [active, setActive] = useState("Updates");
   const [hidden, setHidden] = useState(false);
   const [view, setView] = useState("List");
@@ -181,20 +228,68 @@ export function DualWorkspace({ variant }: { variant: 14 | 16 }) {
   const [create, setCreate] = useState(false);
   return (
     <div className="shell-reference" data-shell-variant={variant}>
-      <Rail
-        dark={variant === 16}
-        active={section}
-        onChange={(value) => {
-          setSection(value);
-          setHidden(false);
-        }}
-      />
-      {!hidden && (
-        <Sidebar
-          width={variant === 16 ? 232 : 264}
-          className="border-r"
-          label="Workspace navigation"
+      <SidebarProvider keyboardShortcut={false} className="contents">
+        <ReuiSidebar
+          width={variant === 16 ? (collapsed ? 64 : 76) : collapsed ? 48 : 60}
+          collapsible="offcanvas"
+          aria-label="Workspace applications"
+          className={`shell-workspace-rail ${variant === 16 ? "shell-workspace-dark-rail" : ""}`}
+          mobileTitle="Workspace applications"
+          header={<ReuiMark small />}
+          footer={
+            <>
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                aria-label="Workspace help"
+                onClick={() => toast("Workspace help selected")}
+              >
+                <CircleHelp />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                aria-label="Workspace settings"
+                onClick={() => toast("Workspace settings selected")}
+              >
+                <Settings />
+              </Button>
+              <WorkspaceMenu collapsed user />
+            </>
+          }
         >
+          {[
+            ["Profile", UserRound],
+            ["Updates", Inbox],
+            ["Account", FileText],
+            ["Network", Network],
+            ["Access", Shield],
+          ].map(([name, Icon]) => {
+            const label = String(name);
+            const ItemIcon = Icon as typeof Inbox;
+            return (
+              <SidebarRailButton key={label} label={label} active={section === label}>
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  aria-label={`${label} application`}
+                  onClick={() => {
+                    setSection(label);
+                    setActive(label === "Profile" ? "Home" : label);
+                    setHidden(false);
+                    if (variant === 14) setCollapsed(false);
+                  }}
+                >
+                  <ItemIcon />
+                </Button>
+              </SidebarRailButton>
+            );
+          })}
+        </ReuiSidebar>
+        <SidebarTrigger className="shell-mobile-trigger" aria-label="Open applications" />
+      </SidebarProvider>
+      {!hidden && (
+        <WorkspaceSidebar variant={variant}>
           <div className="flex h-12 items-center justify-between">
             <Choices
               label="Workspaces"
@@ -206,32 +301,60 @@ export function DualWorkspace({ variant }: { variant: 14 | 16 }) {
               variant="ghost"
               size="icon-sm"
               aria-label="Collapse secondary navigation"
+              className="hidden md:inline-flex"
               onClick={() => setHidden(true)}
             >
               <PanelLeft />
             </Button>
           </div>
-          <GroupedNav groups={sourceGroups} active={active} onSelect={setActive} />
-          <CollapseHandle
-            collapsed={false}
-            label="secondary navigation"
-            onToggle={() => setHidden(true)}
+          <GroupedNav
+            groups={
+              variant === 16
+                ? [
+                    ...sourceGroups.map((group) =>
+                      group.label === "Workspaces"
+                        ? {
+                            ...group,
+                            items: ["Business Concepts", "KeenThemes Studio", "Teams", "Reports"],
+                          }
+                        : group,
+                    ),
+                    {
+                      label: "Resources",
+                      items: ["About Bricklane", "Advertise", "Help", "Blog", "Careers", "Press"],
+                    },
+                  ]
+                : sourceGroups
+            }
+            active={active}
+            onSelect={setActive}
+            badges={{ Clients: "Beta", Teams: "Pro", Advertise: "Pro" }}
           />
-        </Sidebar>
+        </WorkspaceSidebar>
       )}
       <AppShellInset className="shell-content-frame">
         <header className="shell-header border-b">
-          {hidden ? (
+          {hidden || (variant === 14 && collapsed) ? (
             <Button
               variant="ghost"
               size="icon-sm"
               aria-label="Expand secondary navigation"
-              onClick={() => setHidden(false)}
+              onClick={() => {
+                setHidden(false);
+                setCollapsed(false);
+              }}
             >
               <PanelLeft />
             </Button>
           ) : null}
-          <Breadcrumbs items={variant === 14 ? ["Home", active] : [active]} />
+          {variant === 16 ? (
+            <div className="flex min-w-0 flex-col gap-1">
+              <h1>{active}</h1>
+              <Breadcrumbs items={["Home", "Account", active]} />
+            </div>
+          ) : (
+            <Breadcrumbs items={["Home", active]} />
+          )}
           <div className="flex items-center gap-1">
             <div className="hidden sm:block">
               <SearchPalette onSelect={setActive} />
@@ -346,7 +469,19 @@ export function FavoritesShell() {
             label=""
             items={["Dashboard", ...pinned].map((label) => ({
               label,
-              icon: List,
+              icon:
+                label === "Dashboard"
+                  ? Home
+                  : label === "Tasks"
+                    ? SquareCheck
+                    : label === "Companies"
+                      ? Building2
+                      : label === "Company"
+                        ? BriefcaseBusiness
+                        : label === "Contacts"
+                          ? Users
+                          : FileText,
+              badge: label === "Tasks" ? "3" : undefined,
             }))}
             collapsed={collapsed}
             active={active}

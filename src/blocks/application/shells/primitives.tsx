@@ -1,12 +1,30 @@
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ReuiSidebar, SidebarNavigation } from "@/components/reui/sidebar";
 import { SidebarProvider, SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
-import { Frame, FrameFooter } from "@/components/reui/frame";
-import { useEffect, useRef } from "react";
+import { Frame, FrameFooter, FramePanel } from "@/components/reui/frame";
+import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import {
   Activity,
-  Bell,
+  BookOpen,
+  Building2,
+  ChartNoAxesColumn,
+  CircleAlert,
+  ClipboardList,
+  ContactRound,
+  History,
+  Inbox,
+  KeyRound,
+  Mail,
+  Map,
+  MapPin,
+  Megaphone,
+  MessageCircle,
+  Network,
+  ScanLine,
+  SlidersHorizontal,
+  SquareCheck,
+  Tags,
   Bot,
   Box,
   ChevronDown,
@@ -25,6 +43,13 @@ import {
   X,
 } from "lucide-react";
 
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import {
   Button,
@@ -37,6 +62,7 @@ import {
   Face,
   Input,
   ReuiMark,
+  SearchPalette,
   WorkspaceMenu,
 } from "./chrome";
 import type { ShellIcon } from "./chrome";
@@ -134,6 +160,7 @@ export function Sidebar({
   footer,
   rail,
   variant = "sidebar",
+  collapsible = "icon",
 }: {
   children: ReactNode;
   collapsed?: boolean;
@@ -146,13 +173,15 @@ export function Sidebar({
   footer?: ReactNode;
   rail?: ReactNode;
   variant?: "sidebar" | "floating" | "inset";
+  collapsible?: "icon" | "offcanvas";
 }) {
   const { state, isMobile, triggerRef } = useSidebar();
-  const compact = !isMobile && (collapsed ?? state === "collapsed");
+  const compact = collapsible === "icon" && !isMobile && (collapsed ?? state === "collapsed");
   return (
     <>
       <ReuiSidebar
         width={width}
+        collapsible={collapsible}
         variant={variant}
         gapWidth={gapWidth}
         header={header}
@@ -201,12 +230,14 @@ export function Rail({
   onChange,
   dark = false,
   glass = false,
+  width = 48,
   children,
 }: {
   active: string;
   onChange: (s: string) => void;
   dark?: boolean;
   glass?: boolean;
+  width?: number;
   children?: ReactNode;
 }) {
   const contents = (
@@ -238,7 +269,7 @@ export function Rail({
   return (
     <SidebarProvider keyboardShortcut={false} className="contents">
       <ReuiSidebar
-        width={48}
+        width={width}
         collapsible="offcanvas"
         aria-label="Applications"
         className={cn(
@@ -509,23 +540,47 @@ export function NavSearch({
   value,
   onChange,
   label = "Search navigation",
+  onSelect,
 }: {
   value: string;
   onChange: (s: string) => void;
   label?: string;
   drawerClassName?: string;
+  onSelect?: (value: string) => void;
 }) {
+  const { state, isMobile, setOpen } = useSidebar();
+  const compact = !isMobile && state === "collapsed";
+  const search = useRef<HTMLDivElement>(null);
   const input = useRef<HTMLInputElement>(null);
   useEffect(() => {
     const key = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "f") {
         e.preventDefault();
-        input.current?.focus();
+        if (compact) search.current?.querySelector("button")?.click();
+        else input.current?.focus();
       }
     };
     window.addEventListener("keydown", key);
     return () => window.removeEventListener("keydown", key);
-  }, []);
+  }, [compact]);
+  if (compact)
+    return (
+      <div ref={search} className="my-3 flex justify-center">
+        <SearchPalette
+          label={label}
+          iconOnly
+          collapsed
+          onSelect={(value) => {
+            onSelect?.(value);
+            if (!onSelect) {
+              setOpen(true);
+              onChange(value);
+            }
+          }}
+          routes={fleetGroups.flatMap((group) => group.items).concat("Security Center")}
+        />
+      </div>
+    );
   return (
     <div className="relative my-3">
       <Search className="absolute left-2 top-2 size-3.5 text-muted-foreground" />
@@ -555,37 +610,76 @@ export const fleetGroups = [
     items: ["Robot Profiles", "Tags & Labels", "Access Rules", "Data Sync", "Fleet Preferences"],
   },
 ];
-const navIcons = [
-  Grid2X2,
-  Activity,
-  Bot,
-  Layers,
-  Truck,
-  Workflow,
-  Activity,
-  Users,
-  Bell,
-  Activity,
-  Bot,
-  FileText,
-  Shield,
-  Workflow,
-  Settings,
-];
+const navIcons: Record<string, typeof Home> = {
+  Home,
+  Dashboard: Home,
+  Dashboards: Grid2X2,
+  Overview: Grid2X2,
+  "Live Map": Map,
+  "All Robots": Bot,
+  "Robot Groups": Box,
+  Zones: MapPin,
+  Assignments: ClipboardList,
+  "Live Status": Activity,
+  "Access Requests": KeyRound,
+  Alerts: CircleAlert,
+  "Event Feed": History,
+  "Robot Profiles": Users,
+  "Tags & Labels": Tags,
+  "Access Rules": Shield,
+  "Data Sync": ScanLine,
+  "Fleet Preferences": SlidersHorizontal,
+  "Security Center": Shield,
+  Updates: Inbox,
+  Inbox: Mail,
+  Clients: Users,
+  "My Tasks": SquareCheck,
+  "Business Concepts": Building2,
+  "Northstar Studio": Building2,
+  "KeenThemes Studio": Building2,
+  Teams: Users,
+  Reports: ChartNoAxesColumn,
+  "Public Profiles": ContactRound,
+  "Account Settings": Settings,
+  Network,
+  Authentication: Shield,
+  "Create a custom feed": Plus,
+  "Create a community": Plus,
+  "Create A Community": Plus,
+  "New order received": Activity,
+  "New customer registered": Users,
+  "Designers Hub": MessageCircle,
+  "React Guild": MessageCircle,
+  "Node Runtime": MessageCircle,
+  "React Js": MessageCircle,
+  "Node Js": MessageCircle,
+  "About ReUI": CircleHelp,
+  "About Bricklane": CircleHelp,
+  Advertise: Megaphone,
+  Help: CircleHelp,
+  Blog: BookOpen,
+  Careers: Building2,
+  Press: FileText,
+  "New task": FileText,
+  "New deal": FileText,
+  "Recent note": FileText,
+  "Lead added": FileText,
+};
 export function GroupedNav({
   groups = fleetGroups,
   active,
   onSelect,
   query = "",
   indented = false,
+  badges = {},
 }: {
   groups?: { label: string; items: string[] }[];
   active: string;
   onSelect: (s: string) => void;
   query?: string;
   indented?: boolean;
+  badges?: Record<string, string>;
 }) {
-  let index = 0;
   const matches = groups
     .flatMap((g) => g.items)
     .filter((v) => v.toLowerCase().includes(query.toLowerCase()));
@@ -604,8 +698,8 @@ export function GroupedNav({
             active={active}
             onSelect={onSelect}
             items={items.map((label) => {
-              const Icon = navIcons[index++ % navIcons.length];
-              return { label, icon: <Icon /> };
+              const Icon = navIcons[label] ?? FileText;
+              return { label, icon: <Icon />, badge: badges[label] };
             })}
           />
         );
@@ -618,9 +712,12 @@ export function GroupedNav({
 }
 
 export function AccountCard() {
+  const { state, isMobile } = useSidebar();
+  const collapsed = !isMobile && state === "collapsed";
   return (
-    <div className="mt-auto rounded-lg border bg-background">
+    <div className={cn("mt-auto rounded-lg bg-background", !collapsed && "border")}>
       <WorkspaceMenu
+        collapsed={collapsed}
         user
         displayName="Shadcn"
         initial="Nimbus Core"
@@ -630,27 +727,67 @@ export function AccountCard() {
   );
 }
 export function Promo() {
+  const { state, isMobile } = useSidebar();
+  const [open, setOpen] = useState(false);
+  const [plan, setPlan] = useState("");
+  if (!isMobile && state === "collapsed") return null;
   return (
-    <div className="m-2 rounded-xl border bg-background p-4 text-center">
-      <Bot className="mx-auto mb-2 size-6" />
-      <p className="text-xs font-medium">Integrations</p>
-      <p className="mb-3 mt-1 text-[11px] text-muted-foreground">
-        Connect fleet tools, data and workflows here
-      </p>
-      <Choices
-        label="Upgrade workspace"
-        value="Upgrade"
-        items={["Pro plan", "Enterprise plan"]}
-        onChange={() => {}}
-        compact
-      />
-    </div>
+    <>
+      <Frame className="shell-promo m-2 mt-auto p-0">
+        <FramePanel className="flex flex-col items-center border-0 bg-transparent p-4 text-center shadow-none">
+          <Bot className="mb-3 size-8 rounded-lg border bg-background p-1.5" />
+          <p className="text-sm font-medium">Integrations</p>
+          <p className="mb-3 mt-1 text-xs text-muted-foreground">
+            {plan
+              ? `${plan} enabled in this demo.`
+              : "Connect fleet tools, data and workflows here"}
+          </p>
+          <Button size="sm" className="h-7 px-3 text-xs" onClick={() => setOpen(true)}>
+            {plan ? "Manage plan" : "Upgrade"}
+          </Button>
+        </FramePanel>
+      </Frame>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Upgrade workspace</DialogTitle>
+            <DialogDescription>
+              Preview a plan locally. No subscription or payment is created.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid grid-cols-2 gap-3">
+            {["Pro workspace", "Enterprise workspace"].map((name) => (
+              <Button
+                key={name}
+                variant="outline"
+                className="h-20 whitespace-normal"
+                onClick={() => {
+                  setPlan(name);
+                  setOpen(false);
+                }}
+              >
+                {name}
+              </Button>
+            ))}
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
-export function PageTitle({ title, children }: { title: string; children?: ReactNode }) {
+export function PageTitle({
+  title,
+  children,
+  leading,
+}: {
+  title: string;
+  children?: ReactNode;
+  leading?: ReactNode;
+}) {
   return (
     <header className="shell-header border-b">
       <div className="flex min-w-0 items-center gap-3">
+        {leading}
         <h1 className="truncate text-sm font-medium">{title}</h1>
       </div>
       <div className="flex shrink-0 items-center gap-1">{children}</div>

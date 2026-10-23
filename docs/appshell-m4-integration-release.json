@@ -1,0 +1,89 @@
+{
+  "scope": "AppShell secondary rails, route search, Frame composition and semantic navigation",
+  "base": "671e3967513921f3496d28984114e3dcef01f28e",
+  "candidateBase": "46dbee4",
+  "candidate": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/reui-sidebar-ps6k7m1_",
+  "frozen": "/tmp/appshell-m4-frozen",
+  "files": [
+    {
+      "path": "src/blocks/application/shells/calendar-panel.tsx",
+      "sha256": "01cd0cd664b6659c97b46fe20e338395c5b0c742722fd9ef1f7c7876a83e4a49"
+    },
+    {
+      "path": "src/blocks/application/shells/chrome.tsx",
+      "sha256": "8b01d439ea032fb0b9e1a8a76ef6125a53462b92f248d239f4bf73da23945202"
+    },
+    {
+      "path": "src/blocks/application/shells/fidelity.css",
+      "sha256": "59938707db68f4c76ccc7171d937a99760acccb57ed95de5af60b75756cbdc35"
+    },
+    {
+      "path": "src/blocks/application/shells/fleet-consoles.tsx",
+      "sha256": "5a642ca3858de5eeaadb1a6b92e5fad752e381e831a041112f38d96d85e44699"
+    },
+    {
+      "path": "src/blocks/application/shells/primitives.tsx",
+      "sha256": "c80539b835a013433477f12b2039c731a8cdaa298530862f3cea5f88dc9a7778"
+    },
+    {
+      "path": "src/blocks/application/shells/productivity.tsx",
+      "sha256": "90c09f546921c4f595c1801aa354eb73688b4c2081988785694ab5cb9b9ea387"
+    },
+    {
+      "path": "src/blocks/application/shells/workspaces.tsx",
+      "sha256": "6bf2b0f5d7dd729529bdf443ad8531e5eaaccf0f453cd2889b358646837570b7"
+    },
+    {
+      "path": "src/blocks/application/shells/console-canvas.tsx",
+      "sha256": "6af1954226f5a6b5e44e18ba1d3168801b00d2e9babc0f46b9621c564c2c5b34"
+    },
+    {
+      "path": "src/lib/source-targets.ts",
+      "sha256": "1f054e5e888ffeaed543336cffb33220b1a0c230cce9912d01b374ba53b1a220"
+    },
+    {
+      "path": "tests/appshell-variant-fidelity.spec.ts",
+      "sha256": "350b63ee7abb0fd9300522c24659df2b71e01cefa402cb3388c4375810a14ae8"
+    },
+    {
+      "path": "tests/appshell-collapse-geometry.spec.ts",
+      "sha256": "54403866f37456e5dee5e6bfd993d14bea9f6d06da8c5fb16241cd0e3365c19d"
+    },
+    {
+      "path": "tests/appshell-refinement.spec.ts",
+      "sha256": "caafa520ff140425d2cee5712326f7f1d191e2724af9e70887c4cd016bee2ed2"
+    },
+    {
+      "path": "docs/appshell-sidebar-migration.md",
+      "sha256": "4845e3fc84cb36b71fb39566fe771935d5ba7a8802e56d7c56d77725521d09b9"
+    }
+  ],
+  "validation": {
+    "build": "/tmp/appshell-m4-build.log",
+    "tests": "/tmp/appshell-m4-final-tests.log",
+    "result": "75/75 PASS, 1 worker",
+    "exportBuild": "/tmp/appshell-m4-export-build.log",
+    "exportRender": "/tmp/appshell-m4-export-proof.log",
+    "evidence": "/Users/caov/.codex/visualizations/2026/10/22/01a162bd-7057-7ad2-bc44-77cefb07d2ca/appshell-variants/evidence.json"
+  },
+  "remaining": [
+    "17/18/20 native floating compact geometry and header expansion",
+    "28 static navigation collapse policy",
+    "original branding/artwork and local-only backend demo actions"
+  ],
+  "rootIntegration": {
+    "base": "5454238802bb9d0679fc549ebb295a08e9c288dc",
+    "strictBuild": "PASS clean671 +Chat89 +Navbar545 cumulative candidates",
+    "production": "79/79 baseline2.1m,33/33 afterChat36.1s,34/34 afterNavbar34.4s; all one worker",
+    "logs": [
+      "/tmp/bricklane-shell-m4-root-production.log",
+      "/tmp/bricklane-shell-m4-latest-root-production.log",
+      "/tmp/bricklane-shell-m4-navbar-root-production.log"
+    ],
+    "format": "Full formatting PASS before root docs",
+    "tooling": "3/3 PASS",
+    "lint": "0 errors; existing vendor warnings",
+    "sourceTargets": "Only seven console variants gain actual console-canvas fallback; Chat/Navbar mappings retained",
+    "deployment": "Own milestone pending CI/Pages; f95cd62 latest verified live887CI+17Navbar+14Shop live PASS"
+  }
+}

@@ -1,3 +1,4 @@
+import { SidebarCollection } from "@/components/reui/sidebar";
 import { AppShellInset, useShellSidebarState } from "@/components/reui/layout";
 import { useState } from "react";
 import { Message, MessageAvatar, MessageContent } from "@/components/ui/message";
@@ -6,6 +7,14 @@ import { Badge as ReuiBadge } from "@/components/reui/badge";
 import { ResponsiveAssistantPanel } from "./responsive-assistant";
 import {
   CalendarDays,
+  Check,
+  ChevronDown,
+  Code2,
+  FileText,
+  History,
+  MapPin,
+  Search,
+  SlidersHorizontal,
   CircleCheck,
   Flag,
   ListChecks,
@@ -45,13 +54,19 @@ import {
   CreateItemDialog,
   Face,
   Input,
+  Navigation,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
   PlaceholderCanvas,
   ReuiMark,
   SearchPalette,
   WorkspaceMenu,
   toast,
 } from "./chrome";
-import { AccountCard, Choices, GroupedNav, PageTitle, Sidebar } from "./primitives";
+import { Choices, GroupedNav, PageTitle, Sidebar } from "./primitives";
 import { EventCreator } from "./calendar-panel";
 const models = ["GPT-4", "Claude", "Gemini"];
 const recent = [
@@ -67,13 +82,14 @@ export function ModelChat() {
   const [model, setModel] = useState("GPT-4");
   const [draft, setDraft] = useState("");
   const [web, setWeb] = useState(false);
-  const [thread, setThread] = useState("");
+  const [thread, setThread] = useState(recent[0]);
+  const [history, setHistory] = useState(recent);
   return (
     <div className="shell-reference bg-muted/40 p-2 gap-2" data-shell-variant="17">
       <Sidebar width={240} collapsed={collapsed} className="rounded-xl border !bg-background ">
         <div className="flex h-10 items-center gap-2 px-1">
           <ReuiMark small />
-          {!collapsed && <strong className="flex-1 text-sm">ReUI AI</strong>}
+          {!collapsed && <strong className="flex-1 text-sm">Bricklane AI</strong>}
           <Button
             variant="ghost"
             size="icon-sm"
@@ -114,28 +130,102 @@ export function ModelChat() {
                 </Button>
               ))}
             </div>
-            <GroupedNav
-              groups={[
-                { label: "Pinned", items: ["Onboarding email draft"] },
-                { label: "Recent", items: recent },
-                {
-                  label: "Quick Actions",
-                  items: ["Favorites", "Clear History", "Chat History", "Templates", "AI Settings"],
-                },
+            <div className="model-chat-pinned">
+              <SidebarCollection
+                label="Pinned"
+                onSelect={setThread}
+                rows={[
+                  {
+                    label: "Onboarding email draft",
+                    icon: <Mail />,
+                    badge: <small>Claude · 7 msgs</small>,
+                  },
+                ]}
+              />
+            </div>
+            <Navigation
+              label="Recent"
+              items={history.map((label, i) => ({
+                label,
+                icon: [FileText, Code2, MapPin, ListChecks, Search, Inbox][i % 6],
+              }))}
+              active={thread}
+              onSelect={setThread}
+            />
+            <Navigation
+              label="Quick Actions"
+              items={[
+                { label: "Favorites", icon: Star, badge: "2" },
+                { label: "Clear History", icon: Trash2 },
+                { label: "Chat History", icon: History },
+                { label: "Templates", icon: FileText, badge: "5" },
+                { label: "AI Settings", icon: SlidersHorizontal },
               ]}
               active={thread}
               onSelect={(value) => {
                 setThread(value);
-                if (value === "Clear History") setThread("");
+                if (value === "Clear History") {
+                  setHistory([]);
+                  setThread("");
+                  toast.success("Chat history cleared");
+                }
               }}
             />
           </>
         )}
-        <WorkspaceMenu user displayName="AI Assistant" initial="AI Assistant" />
+        <div className="mt-auto">
+          <WorkspaceMenu
+            user
+            displayName="AI Assistant"
+            initial="AI Assistant"
+            subtitle="Always here to help"
+          />
+        </div>
       </Sidebar>
       <AppShellInset className="shell-content-frame rounded-xl border">
         <header className="shell-header">
-          <Choices label="Choose model" items={models} value={model} onChange={setModel} />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm" aria-label="Choose model">
+                {model}
+                <ChevronDown />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-72">
+              <DropdownMenuGroup>
+                {models.map((name, i) => (
+                  <DropdownMenuItem
+                    key={name}
+                    aria-label={name}
+                    className="items-start p-3"
+                    onSelect={() => setModel(name)}
+                  >
+                    <span className="mt-0.5">{["✺", "✳", "✦"][i]}</span>
+                    <div className="flex-1">
+                      <p className="flex items-center gap-2 font-medium">
+                        {name}
+                        {i < 2 && (
+                          <Badge variant="secondary" className="text-[10px]">
+                            {i === 0 ? "Default" : "Fast"}
+                          </Badge>
+                        )}
+                      </p>
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        {
+                          [
+                            "Most capable for complex reasoning.",
+                            "Thoughtful, great for long writing.",
+                            "Fast multimodal answers and search.",
+                          ][i]
+                        }
+                      </p>
+                    </div>
+                    {model === name && <Check className="size-4" />}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <Button
             variant="outline"
             size="sm"
@@ -165,7 +255,6 @@ export function ModelChat() {
               </Button>
             ))}
           </div>
-          {thread && <p className="mt-6 text-sm text-muted-foreground">{thread}</p>}
         </div>
         <form
           className="mx-auto mb-2 w-[calc(100%-2rem)] max-w-2xl rounded-xl border p-3"
@@ -175,10 +264,10 @@ export function ModelChat() {
           }}
         >
           <Textarea
-            aria-label="Message ReUI AI"
+            aria-label="Message Bricklane AI"
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
-            placeholder="Message ReUI AI…"
+            placeholder="Message Bricklane AI…"
             className="min-h-12 resize-none border-0 p-0 shadow-none focus-visible:ring-0"
           />
           <div className="mt-2 flex items-center gap-1">
@@ -223,7 +312,7 @@ export function ModelChat() {
           </div>
         </form>
         <p className="mb-3 text-center text-[11px] text-muted-foreground">
-          ReUI AI can make mistakes. Check important info.
+          Bricklane AI can make mistakes. Check important info.
         </p>
       </AppShellInset>
     </div>
@@ -489,7 +578,7 @@ export function PlannerShell() {
     date?.toLocaleDateString("en-US", { month: "long", year: "numeric" }) ?? "October 2026";
   return (
     <div className="shell-reference bg-muted/30" data-shell-variant="19">
-      <Sidebar width={272} collapsed={collapsed}>
+      <Sidebar width={280} collapsed={collapsed} collapsible="offcanvas">
         <div className="flex h-12 items-center gap-2 px-2">
           <ReuiMark small />
           <strong className="flex-1">Bricklane</strong>
@@ -507,7 +596,19 @@ export function PlannerShell() {
             selected={date}
             onSelect={setDate}
             mode="single"
-            defaultMonth={date}
+            month={date}
+            onMonthChange={(month) =>
+              setDate(
+                new Date(
+                  month.getFullYear(),
+                  month.getMonth(),
+                  Math.min(
+                    date?.getDate() ?? 14,
+                    new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate(),
+                  ),
+                ),
+              )
+            }
             className="w-full p-2"
           />
           <p className="shell-section-label">Up Next</p>
@@ -525,26 +626,45 @@ export function PlannerShell() {
               </div>
             </div>
           ))}
-          <GroupedNav
-            groups={[
-              {
-                label: "Calendars",
-                items: ["Events", "Meetings", "Tasks", "Reminders"],
-              },
+          <Navigation
+            label="Calendars"
+            items={[
+              { label: "Events", icon: CalendarDays, badge: "12" },
+              { label: "Meetings", icon: Users, badge: "5" },
+              { label: "Tasks", icon: ListChecks, badge: "23" },
+              { label: "Reminders", icon: Clock, badge: "8" },
             ]}
             active={active}
             onSelect={setActive}
           />
         </div>
-        <AccountCard />
+        <div className="mt-auto rounded-lg border bg-background">
+          <WorkspaceMenu user displayName="Sana Qureshi" initial="Sana Qureshi" />
+        </div>
       </Sidebar>
       <AppShellInset className="shell-content-frame inset">
-        <PageTitle title={title}>
+        <PageTitle
+          title={title}
+          leading={
+            collapsed ? (
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                aria-label="Expand sidebar"
+                onClick={() => setCollapsed(false)}
+              >
+                <PanelLeft />
+              </Button>
+            ) : undefined
+          }
+        >
           <Button
             size="icon-sm"
             variant="ghost"
             aria-label="Previous month"
-            onClick={() => setDate((d) => new Date(2026, (d?.getMonth() ?? 9) - 1, 14))}
+            onClick={() =>
+              setDate((d) => new Date(d?.getFullYear() ?? 2026, (d?.getMonth() ?? 9) - 1, 14))
+            }
           >
             <ChevronLeft />
           </Button>
@@ -552,7 +672,9 @@ export function PlannerShell() {
             size="icon-sm"
             variant="ghost"
             aria-label="Next month"
-            onClick={() => setDate((d) => new Date(2026, (d?.getMonth() ?? 9) + 1, 14))}
+            onClick={() =>
+              setDate((d) => new Date(d?.getFullYear() ?? 2026, (d?.getMonth() ?? 9) + 1, 14))
+            }
           >
             <ChevronRight />
           </Button>
@@ -567,7 +689,8 @@ export function PlannerShell() {
           />
           <EventCreator onCreate={(e) => setEvents((v) => [...v, e.name])} />
         </PageTitle>
-        <PlaceholderCanvas solid rows={2} />
+        <PlaceholderCanvas solid rows={2} fill={false} />
+        <div className="shell-planner-track" aria-label="Calendar timeline placeholder" />
       </AppShellInset>
     </div>
   );

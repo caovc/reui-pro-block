@@ -708,12 +708,14 @@ export function WorkspaceMenu({
   );
 }
 export function SearchPalette({
+  label = "Search workspace",
   collapsed = false,
   shortcut = "⌘K",
   iconOnly = false,
   onSelect,
   routes: customRoutes,
 }: {
+  label?: string;
   collapsed?: boolean;
   shortcut?: string;
   iconOnly?: boolean;
@@ -756,7 +758,7 @@ export function SearchPalette({
               ? "size-8 shrink-0 justify-center px-0"
               : "h-8 w-full justify-start gap-2 px-2 font-normal",
         )}
-        aria-label="Search workspace"
+        aria-label={label}
         onClick={() => setOpen(true)}
       >
         <Search />

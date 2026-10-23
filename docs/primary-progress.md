@@ -32,20 +32,20 @@ Preview: https://caovc.github.io/reui-pro-block/
 
 ## Current ownership
 
-| Owner                     | Scope                                                                                      |
-| ------------------------- | ------------------------------------------------------------------------------------------ |
-| Primary                   | Release integration, real starter verification, CI/Pages; Sidebar and AI Usage integration |
-| Application agent         | Navbar10–13;7–9 integrated,6 free ButtonGroup follow-up frozen                             |
-| Data agent                | AI Chat1–3 integrated; next4–6 in independent modules                                      |
-| Commerce agent            | All8 Shop Hero functional leaves; next Category Card1–3 in independent modules             |
-| Source/export coordinator | Diagnose source/ZIP/site CI failures within original source scope                          |
-| Grid coordinator          | Diagnose two Grid CI failures; preserve previous filter-focus correction                   |
+| Owner                     | Scope                                                                                          |
+| ------------------------- | ---------------------------------------------------------------------------------------------- |
+| Primary                   | Release integration, real starter verification, CI/Pages; AppShell M4 and Category integration |
+| Application agent         | Navbar10–13;7–9 integrated,6 free ButtonGroup follow-up frozen                                 |
+| Data agent                | AI Chat1–3 integrated; next4–6 in independent modules                                          |
+| Commerce agent            | All8 Shop Hero functional leaves; next Category Card1–3 in independent modules                 |
+| Source/export coordinator | Diagnose source/ZIP/site CI failures within original source scope                              |
+| Grid coordinator          | Diagnose two Grid CI failures; preserve previous filter-focus correction                       |
 
 ## Release and validation rules
 
 Each milestone is built from latest committed HEAD plus its exact frozen payload. Source defaults must point to the actual rendered leaf. Playwright uses production previews, one worker and unique output directories. Actual UI-downloaded ZIPs are independently built and rendered; representative computed padding/borders are compared with the full preview.
 
-A commit or successful push does not establish deployment. Latest verified successful Pages build/deploy is46dbee4 (run39929966778):856/856 browser tests passed, build and deploy succeeded. This includes Templates foundation/secondary/domain, global appearance, Dialog9, Activity1–5, Navbar1–3 and AppShell native inset. Real live Surge/Roster/Echo flows passed3/3 with no page errors; Activity/Navbar/global passed22 checks. The first4 AppShell live cases hit host-root404 because their leading /#/ discarded the Pages directory; after a deployment-relative test-only correction, the same4 cases passed online. Original failed traces remain retained. Shop4/5 and Navbar4–6 are pushed, pending cumulative CI/Pages; newer milestones must be verified separately.
+A commit or successful push does not establish deployment. Latest verified successful Pages build/deploy isf95cd62 (run39931031669):887/887 browser tests passed, build and deploy succeeded. Root real Pages checks passed17/17 Navbar4–6 and14/14 Shop4–5, including source/copy/download comparisons against the immutable matching archive. Previous46dbee4 passed856/856, plus Surge/Roster/Echo live3/3 and Activity/Navbar/global22 checks. Its first4 AppShell live cases hit host-root404 because leading /#/ discarded the Pages directory; after the deployment-relative test-only correction, those4 passed online. Original failed traces remain retained. Shop6–8, Chat1–3, Navbar7–9 and subsequent milestones remain pending their own cumulative CI/Pages.
 
 Commit2a2b5ff tests actual production assets and retains failure diagnostics. Its run39909617625 passed673/674; Coupon run39911450874 passed705/706. Their real traces show source clicks while route scrolling continued; the new first-frame regression establishes and fixes that scrolling defect without claiming to identify every historical click recipient. See [trace findings](source-navigation-ci-trace.md) and [route regression](source-navigation-scroll-fix.md). The Grid investigation separates reproduced loading-pressure symptoms from the unproven historical cause. Global Theme's original candidate has documented first-run browser/source and starter-build failures; the integrated clean candidate independently passed58 targeted production checks, including those source cases and both starters. The historical cause is still unresolved, and full integrated CI remains required. No blind retries or timeout inflation replace evidence-based fixes.
 
@@ -82,3 +82,9 @@ AI Chat1–3 now have independent copilot, document-docked and welcome compositi
 Navbar7–9 add whole actual free ButtonGroup53 publication controls with native modal Calendar/TimePicker, native ToggleGroup5 agent choice and ButtonGroup7 repository branches. Their local publication/history, market filters/deployment and branch/target state stay connected to the displayed values. Root passed59 production regressions across all previous Navbars/global/site/source, then rebuilt on latest Chat1–3; latest cumulative35/35 production checks passed. Actual350-file Navbar7 starter independently built and rendered at1440/390 with working date/time scheduling; leaf source/copy/file/ZIP bytes agree. Public visual matching remains pending; fixture wording and local backend substitutes remain explicit.
 
 Run39931031669 onf95cd62 completed build and Pages deploy successfully, including Shop4/5 and Navbar4–6. Live verification of their own production interactions is in progress; newer Shop6–8/Chat1–3 remain pending their cumulative run.
+
+## AppShell secondary rails and console compositions
+
+M4 integrates native secondary rails, compact route search, semantic navigation icons and actual free Frame summaries/body grids. Shared primitives retain native Sidebar/Sheet behavior; calendar/model state and keyboard section tabs now operate locally. Root passed79/79 production regressions, then33/33 after Chat1–3 integration, with strict build/full formatting/tooling/lint. The actual319-file AppShell28 starter independently built/rendered and exercised section tabs plus390px Sheet/Escape focus. Source/copy/file/ZIP modules match. Floating geometry/header expansion for17/18/20 and static navigation policy28 remain explicit M5 work; original imagery and service handlers remain independent fixtures/local demonstrations.
+
+Latest verified Pages release isf95cd62, run39931031669:887/887 browser cases, build and deployment succeeded. Root real Pages checks passed17/17 Navbar4–6 and14/14 Shop4–5 including original source/copy/download comparisons from the immutable matching archive. Newer commits retain their own CI/Pages pending status.

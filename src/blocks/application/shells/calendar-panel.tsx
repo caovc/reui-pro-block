@@ -111,7 +111,7 @@ export function CalendarContext({
     { name: "Coffee with Alex", time: "2:00 PM to 2:30 PM" },
   ]);
   return (
-    <div className="flex min-h-0 flex-1 flex-col">
+    <div className="shell-calendar-context flex min-h-0 flex-1 flex-col">
       {showTitle && (
         <div className="flex h-[49px] shrink-0 items-center justify-between border-b px-3">
           <h3 className="text-[13px] font-semibold">Calendars</h3>
@@ -135,6 +135,15 @@ export function CalendarContext({
           selected={date}
           onSelect={setDate}
           defaultMonth={new Date(2026, month, 1)}
+          modifiers={{
+            event: [
+              new Date(2026, month, day - 2),
+              new Date(2026, month, day),
+              new Date(2026, month, day + 1),
+              new Date(2026, month, day + 2),
+            ],
+          }}
+          modifiersClassNames={{ event: "shell-calendar-event" }}
           className="w-full rounded-none p-3 [--cell-size:--spacing(8.5)]"
         />
         <Separator />
