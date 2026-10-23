@@ -35,9 +35,11 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { faqContent } from "./marketing-faq-content";
-import contactAbstract from "./assets/contact-abstract.jpg";
+import { demoPanel } from "@/lib/demo-artwork";
 import "../reference.css";
 import "./marketing-contact-faq.css";
+
+const contactArtwork = demoPanel(2);
 
 // The public demo links target #. Keep those interactions in the preview rather
 // than turning a placeholder into an external message or a new product flow.
@@ -150,7 +152,7 @@ export function FAQ({ block }: BlockProps) {
               <h2>Answers Before You Ship</h2>
               <p>
                 Everything teams check when
-                <br className="rm-desktop-break" /> moving ReUI blocks to production.
+                <br className="rm-desktop-break" /> moving Bricklane blocks to production.
               </p>
             </div>
             <div className="rm-intro-support">
@@ -190,7 +192,7 @@ export function FAQ({ block }: BlockProps) {
               <h2>Questions Teams Ask</h2>
               <p>
                 Straight answers about adapting, owning,
-                <br className="rm-desktop-break" /> and shipping ReUI blocks to production.
+                <br className="rm-desktop-break" /> and shipping Bricklane blocks to production.
               </p>
             </div>
           </div>
@@ -270,8 +272,8 @@ export function FAQ({ block }: BlockProps) {
             </span>
             <h2>Questions, Answered</h2>
             <p>
-              The practical details teams check before building production screens with ReUI blocks,
-              from customizing primitives to ongoing updates.
+              The practical details teams check before building production screens with Bricklane
+              blocks, from customizing primitives to ongoing updates.
             </p>
           </div>
           <AnswerList items={all} />
@@ -292,7 +294,7 @@ export function FAQ({ block }: BlockProps) {
           <div className="rm-intro">
             <SmallBadge icon>FAQ</SmallBadge>
             <h2>Everything Before Launch</h2>
-            <p>What teams ask when adopting ReUI blocks in production.</p>
+            <p>What teams ask when adopting Bricklane blocks in production.</p>
           </div>
           <div className="rm-side-support-layout">
             <div className="rm-question-panel">
@@ -315,7 +317,7 @@ export function FAQ({ block }: BlockProps) {
               <div className="rm-email-fallback">
                 <Mail />
                 <span>
-                  Prefer email? <DemoLink>support@reui.dev</DemoLink>
+                  Prefer email? <DemoLink>hello@bricklane.example</DemoLink>
                 </span>
               </div>
             </aside>
@@ -395,10 +397,11 @@ function ContactPanel({ topic = false }: { topic?: boolean }) {
     <div className={`rm-contact-art ${topic ? "rm-contact-photo" : "rm-contact-scope"}`}>
       {topic ? (
         <>
-          <img src={contactAbstract} alt="Studio workspace" />
+          <img src={contactArtwork} alt="" />
           <div className="rm-photo-shade" />
         </>
       ) : (
+        // Locally authored abstract geometry; no upstream SVG or brand artwork.
         <svg
           className="rm-scope-art"
           viewBox="0 0 720 720"
@@ -470,9 +473,9 @@ function ContactPanel({ topic = false }: { topic?: boolean }) {
               : "Plan adoption, registry setup, and launch polish before work drifts."}
           </p>
           <div className="rm-art-links">
-            <a href={`mailto:${topic ? "hello" : "studio"}@reui.example`}>
+            <a href="mailto:hello@bricklane.example">
               <Mail />
-              {topic ? "hello" : "studio"}@reui.example
+              hello@bricklane.example
             </a>
             <a href="tel:+14155550184">
               <Headphones />
@@ -677,8 +680,8 @@ export function Contact({ block }: BlockProps) {
             <span className="rm-eyebrow">Help &amp; Contact</span>
             <h1>We're here to help</h1>
             <p>
-              Need assistance with your ReUI kit, have questions about licensing, or want to upgrade
-              your plan? We'll guide you through the process.
+              Need assistance with your Bricklane kit, have questions about licensing, or want to
+              upgrade your plan? We'll guide you through the process.
             </p>
           </div>
           <Frame className="rm-frame rm-mail-frame">
@@ -694,9 +697,9 @@ export function Contact({ block }: BlockProps) {
                 type="button"
                 variant="outline"
                 className="rm-button"
-                aria-label="Contact support at hello@reui.io"
+                aria-label="Contact support at hello@bricklane.example"
               >
-                hello@reui.io
+                hello@bricklane.example
               </Button>
             </footer>
           </Frame>
@@ -744,9 +747,9 @@ export function Contact({ block }: BlockProps) {
               </p>
             </div>
             <div className="rm-office-actions">
-              <DemoLink label="Email the ReUI team at hello@reui.io">
+              <DemoLink label="Email the Bricklane team at hello@bricklane.example">
                 <Mail />
-                hello@reui.io
+                hello@bricklane.example
               </DemoLink>
               <PreviewButton primary>
                 Talk to us
@@ -795,13 +798,13 @@ export function Contact({ block }: BlockProps) {
                 Next Interface
               </h2>
               <p>
-                Tell us what you are building and the team behind ReUI will point you in the right
-                direction.
+                Tell us what you are building and the team behind Bricklane will point you in the
+                right direction.
               </p>
             </div>
             <div className="rm-contact-methods">
               {[
-                { icon: Mail, label: "Email", text: "hello@reui.io" },
+                { icon: Mail, label: "Email", text: "hello@bricklane.example" },
                 {
                   icon: Clock3,
                   label: "Response time",
@@ -847,21 +850,21 @@ export function Contact({ block }: BlockProps) {
                 icon: MessageSquare,
                 text: "Chat with the team in real time, Monday to Friday.",
                 action: "Start a chat",
-                label: "Start a live chat with the ReUI team",
+                label: "Start a live chat with the Bricklane team",
               },
               {
                 title: "Email Us",
                 icon: Mail,
                 text: "Send a note and a real person replies within a business day.",
-                action: "hello@reui.io",
-                label: "Email the ReUI team at hello@reui.io",
+                action: "hello@bricklane.example",
+                label: "Email the Bricklane team at hello@bricklane.example",
               },
               {
                 title: "Community",
                 icon: Github,
                 text: "Ask questions and share what you build with other developers.",
                 action: "Join the discussion",
-                label: "Join the ReUI community on GitHub",
+                label: "Join the Bricklane community on GitHub",
               },
             ].map((channel) => (
               <FramePanel fit className="rm-frame-panel rm-channel" key={channel.title}>
