@@ -1,3 +1,4 @@
+import { AppShellInset, useShellSidebarState } from "@/components/reui/layout";
 import { Sidebar } from "./primitives";
 import { useEffect, useState } from "react";
 import {
@@ -218,7 +219,7 @@ export function NewsCard() {
   );
 }
 export default function EnvironmentShell() {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useShellSidebarState();
   const [active, setActive] = useState("Overview");
   return (
     <div className="shell-reference flex-col" data-shell-variant="7">
@@ -231,6 +232,7 @@ export default function EnvironmentShell() {
       </header>
       <div className="flex min-h-0 flex-1">
         <Sidebar
+          width={260}
           collapsed={collapsed}
           className={` !w-[260px] border-r ${collapsed ? "collapsed" : ""}`}
         >
@@ -252,9 +254,9 @@ export default function EnvironmentShell() {
           <WorkspaceMenu collapsed={collapsed} user initial="Acme Inc" subtitle="nick@reui.io" />
           <CollapseHandle collapsed={collapsed} onToggle={() => setCollapsed(!collapsed)} />
         </Sidebar>
-        <main className="shell-content-frame">
+        <AppShellInset className="shell-content-frame">
           <PlaceholderCanvas />
-        </main>
+        </AppShellInset>
       </div>
     </div>
   );

@@ -1,3 +1,5 @@
+import { ReuiSidebar } from "@/components/reui/sidebar";
+import { AppShellInset, useShellSidebarState } from "@/components/reui/layout";
 import { useState } from "react";
 import {
   Activity,
@@ -179,7 +181,7 @@ function ResourceLinks({ onSelect }: { onSelect: (s: string) => void }) {
   );
 }
 function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useShellSidebarState();
   const [active, setActive] = useState(
     variant === 1 || variant === 2 || variant === 12 ? "Overview" : "Dashboard",
   );
@@ -219,6 +221,8 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
       data-shell-variant={variant}
     >
       <Sidebar
+        width={[1, 3, 9, 10].includes(variant) ? 256 : floating || apps ? 240 : 248}
+        gapWidth={floating ? 256 : undefined}
         collapsed={collapsed}
         className={` ${collapsed ? "collapsed" : ""} ${dark ? "shell-dark" : ""} ${floating ? "m-2 rounded-xl border !w-60 shadow-sm" : ""} ${apps ? "!w-60 border-r" : ""} ${variant === 1 ? "!w-64 border-r" : ""}`}
       >
@@ -227,7 +231,7 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
           {!collapsed && (
             <>
               <div className="sidebar-expanded min-w-0 flex-1">
-                <p className="text-[13px] font-medium">ReUI</p>
+                <p className="text-[13px] font-medium">Bricklane</p>
                 {apps && <p className="mt-0.5 text-[10px] text-muted-foreground">Pro plan</p>}
               </div>
               {[3, 6, 9, 10].includes(variant) && (
@@ -245,7 +249,7 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                       <DropdownMenuGroup>
-                        {["ReUI", "Acme Inc", "Atlas"].map((n) => (
+                        {["Bricklane", "Acme Inc", "Atlas"].map((n) => (
                           <DropdownMenuItem key={n} onSelect={() => setWorkspace(n)}>
                             {n}
                           </DropdownMenuItem>
@@ -370,7 +374,7 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
               user={[1, 9, 10].includes(variant)}
               initial={
                 variant === 1
-                  ? "ReUI"
+                  ? "Bricklane"
                   : variant === 2
                     ? "Vercel"
                     : variant === 9
@@ -387,7 +391,7 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
         )}
         <CollapseHandle collapsed={collapsed} onToggle={() => setCollapsed(!collapsed)} />
       </Sidebar>
-      <div className={`shell-content-frame ${inset ? "inset" : ""}`}>
+      <AppShellInset className={`shell-content-frame ${inset ? "inset" : ""}`}>
         <header
           className={`shell-header ${apps || variant === 10 || variant === 9 ? "border-b" : ""}`}
         >
@@ -500,7 +504,7 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
         {apps && (
           <footer className="flex flex-wrap items-center justify-between gap-2 border-t px-6 py-3 text-[10px] text-muted-foreground">
             <span>
-              2026 © <span className="text-foreground">ReUI</span>
+              2026 © <span className="text-foreground">Bricklane</span>
             </span>
             <div className="flex gap-3">
               {["Docs", "Changelog", "Support", "Privacy", "Status"].map((n) => (
@@ -516,11 +520,11 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
             </div>
           </footer>
         )}
-      </div>
+      </AppShellInset>
       {variant === 6 && context && (
-        <aside className="shell-context">
+        <ReuiSidebar collapsible="none" className="shell-context">
           <CalendarContext />
-        </aside>
+        </ReuiSidebar>
       )}
       <CreateItemDialog
         open={newItem}

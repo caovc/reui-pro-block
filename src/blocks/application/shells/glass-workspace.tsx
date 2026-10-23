@@ -1,3 +1,6 @@
+import { AppShellInset } from "@/components/reui/layout";
+import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
+import { ReuiSidebar } from "@/components/reui/sidebar";
 import { useEffect, useState } from "react";
 import {
   Bot,
@@ -5,7 +8,6 @@ import {
   LogOut,
   Map,
   MapPinned,
-  Menu,
   Moon,
   Monitor,
   RadioTower,
@@ -22,14 +24,7 @@ import { Frame, FramePanel } from "@/components/reui/frame";
 import { IconTile } from "@/components/reui/icon-tile";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+
 import {
   Button,
   DropdownMenu,
@@ -66,6 +61,7 @@ function GlassCard({ small = false }: { small?: boolean }) {
   );
 }
 export default function GlassWorkspace() {
+  const { isMobile, setOpenMobile } = useSidebar();
   const [active, setActive] = useState("Overview");
   const [tab, setTab] = useState("Operations");
   const [theme, setTheme] = useState(() =>
@@ -92,7 +88,10 @@ export default function GlassWorkspace() {
         aria-label={name}
         title={name}
         aria-pressed={active === name}
-        onClick={() => setActive(name)}
+        onClick={() => {
+          setActive(name);
+          if (isMobile) setOpenMobile(false);
+        }}
       >
         <Icon />
       </button>
@@ -100,7 +99,14 @@ export default function GlassWorkspace() {
   ));
   return (
     <div className="shell-reference reui-reference glass-reference" data-shell-variant="31">
-      <nav className="glass-reference-rail" aria-label="Workspace sections">
+      <ReuiSidebar
+        width={44}
+        collapsible="offcanvas"
+        className="glass-reference-rail"
+        aria-label="Workspace sections"
+        mobileTitle="Sections"
+        mobileClassName="reui-reference glass-mobile-sidebar"
+      >
         <div className="glass-rail-pill glass-rail-brand">
           <ReuiMark small />
           <Button variant="ghost" size="icon-sm" aria-label="Search">
@@ -168,24 +174,11 @@ export default function GlassWorkspace() {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-      </nav>
+      </ReuiSidebar>
       <div className="glass-mobile-toolbar">
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button variant="outline" size="icon-sm" aria-label="Open sections">
-              <Menu />
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left" className="reui-reference">
-            <SheetHeader>
-              <SheetTitle>Sections</SheetTitle>
-              <SheetDescription>Workspace navigation</SheetDescription>
-            </SheetHeader>
-            <div className="glass-mobile-sections">{sectionButtons}</div>
-          </SheetContent>
-        </Sheet>
+        <SidebarTrigger aria-label="Open sections" />
       </div>
-      <div className="glass-reference-columns">
+      <AppShellInset className="glass-reference-columns">
         <Tabs value={tab} onValueChange={setTab} className="glass-reference-workspace">
           <TabsList className="glass-reference-tabs">
             {["Operations", "Structure", "Insights"].map((name) => (
@@ -221,7 +214,7 @@ export default function GlassWorkspace() {
             <div />
           </div>
         </Frame>
-      </div>
+      </AppShellInset>
     </div>
   );
 }

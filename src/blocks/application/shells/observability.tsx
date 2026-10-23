@@ -1,3 +1,6 @@
+import { ReuiSidebar } from "@/components/reui/sidebar";
+import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
+import { AppShellInset, useShellSidebarState } from "@/components/reui/layout";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Activity,
@@ -45,14 +48,7 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
 } from "@/components/ui/dropdown-menu";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+
 import {
   Button,
   DropdownMenu,
@@ -489,7 +485,7 @@ function NavigationContent({
   );
 }
 export default function ObservabilityShell() {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useShellSidebarState();
   const [copied, setCopied] = useState(false);
   useEffect(() => {
     if (!copied) return;
@@ -549,11 +545,15 @@ export default function ObservabilityShell() {
       },
     });
   }
+  const { isMobile, setOpenMobile } = useSidebar();
   const navProps = {
     workspace,
     setWorkspace,
     active,
-    navigate: setActive,
+    navigate: (id: string) => {
+      setActive(id);
+      if (isMobile) setOpenMobile(false);
+    },
     pins,
     unpin,
     query,
@@ -566,13 +566,17 @@ export default function ObservabilityShell() {
   const page = pages[active];
   return (
     <div className="shell-reference reui-reference observe-shell" data-shell-variant="36">
-      <aside
+      <ReuiSidebar
+        width={240}
         className={`observe-sidebar ${collapsed ? "collapsed" : ""}`}
         aria-label="Observability navigation"
+        mobileTitle="Navigation"
+        mobileDescription="Observability pages and workspaces"
+        mobileClassName="observe-mobile-sidebar reui-reference"
       >
         <NavigationContent {...navProps} collapsed={collapsed} />
-      </aside>
-      <main className="shell-content-frame">
+      </ReuiSidebar>
+      <AppShellInset className="shell-content-frame">
         <header className="observe-header">
           <div>
             <Button
@@ -584,25 +588,7 @@ export default function ObservabilityShell() {
             >
               <PanelLeft />
             </Button>
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button
-                  className="observe-mobile-toggle"
-                  variant="ghost"
-                  size="icon-sm"
-                  aria-label="Open navigation"
-                >
-                  <PanelLeft />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="left" className="observe-mobile-sidebar reui-reference">
-                <SheetHeader className="sr-only">
-                  <SheetTitle>Navigation</SheetTitle>
-                  <SheetDescription>Observability pages and workspaces</SheetDescription>
-                </SheetHeader>
-                <NavigationContent {...navProps} />
-              </SheetContent>
-            </Sheet>
+            <SidebarTrigger className="observe-mobile-toggle" aria-label="Open navigation" />
             <span className="observe-header-divider" />
             <WorkspaceBreadcrumb
               items={[page.section, ...(page.parent ? [page.parent] : []), page.name]}
@@ -641,7 +627,7 @@ export default function ObservabilityShell() {
           </div>
         </header>
         <WorkspaceSkeleton />
-      </main>
+      </AppShellInset>
     </div>
   );
 }

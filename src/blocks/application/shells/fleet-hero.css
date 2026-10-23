@@ -1,0 +1,670 @@
+.shell-reference.fleet-photo-shell {
+  position: relative;
+  display: grid;
+  grid-template-columns: 60px minmax(0, 1fr);
+  overflow-y: auto;
+  overflow-x: clip;
+  overflow-anchor: none;
+  background: var(--muted);
+  isolation: isolate;
+}
+.fleet-hero-scenes {
+  position: absolute;
+  pointer-events: none;
+  top: -68px;
+  left: 0;
+  right: 0;
+  height: 444px;
+  overflow: hidden;
+  z-index: -1;
+}
+.fleet-hero-images {
+  position: absolute;
+  inset: 0;
+}
+.fleet-hero-images img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+}
+.fleet-hero-slide {
+  opacity: 0;
+  animation: fleet-hero-fade 30s ease-in-out var(--fleet-slide-delay) infinite;
+}
+.fleet-hero-slide[data-last] {
+  animation-name: fleet-hero-fade-last;
+}
+@keyframes fleet-hero-fade {
+  0%,
+  11.667% {
+    opacity: 0;
+  }
+  16.667%,
+  33.333% {
+    opacity: 1;
+  }
+  33.367%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes fleet-hero-fade-last {
+  0%,
+  11.667% {
+    opacity: 0;
+  }
+  16.667%,
+  28.333% {
+    opacity: 1;
+  }
+  33.333%,
+  100% {
+    opacity: 0;
+  }
+}
+.fleet-hero-grid {
+  position: absolute;
+  inset: 0 0 96px;
+  background-image:
+    linear-gradient(#ffffff05 1px, transparent 1px),
+    linear-gradient(90deg, #ffffff05 1px, transparent 1px);
+  background-size: 12px 12px;
+}
+.fleet-hero-spark {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: var(--muted);
+  opacity: 0;
+  animation: fleet-hero-spark var(--fleet-spark-duration) ease-in-out var(--fleet-spark-delay)
+    infinite;
+}
+@keyframes fleet-hero-spark {
+  0%,
+  62% {
+    opacity: 0;
+  }
+  72%,
+  88% {
+    opacity: 1;
+  }
+  98%,
+  100% {
+    opacity: 0;
+  }
+}
+.fleet-photo-rail,
+.fleet-photo-drawer {
+  position: sticky;
+  top: 12px;
+  grid-column: 1;
+  grid-row: 1;
+  align-self: start;
+  margin: 12px 0 12px 12px;
+  height: calc(100dvh - 24px);
+  width: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  border: 0;
+  border-radius: 24px;
+  background: #0006;
+  backdrop-filter: blur(24px);
+  box-shadow:
+    0 24px 64px #0000000a,
+    inset 0 2px 2px #ffffff1a;
+  color: #ffffffe6;
+  z-index: 10;
+  gap: 0;
+  padding: 0;
+}
+.fleet-hero-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  margin: 12px 0;
+  color: white;
+}
+.fleet-hero-brand svg {
+  width: 24px;
+  height: 24px;
+}
+.fleet-hero-brand {
+  border: 1px solid #ffffff4d;
+  border-radius: 50%;
+  background: #ffffff14;
+}
+.fleet-rail-primary,
+.fleet-rail-secondary,
+.fleet-rail-utility,
+.fleet-rail-account {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 0;
+}
+.fleet-rail-primary,
+.fleet-rail-utility {
+  border: 1px solid #ffffff26;
+  border-radius: 20px;
+}
+.fleet-rail-secondary {
+  padding: 10px 0;
+}
+.fleet-rail-utility {
+  margin-top: auto;
+}
+.fleet-rail-account {
+  padding: 10px 0;
+  gap: 0;
+}
+.fleet-photo-shell .fleet-photo-rail button,
+.fleet-photo-drawer button:not([data-slot="sheet-close"]) {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 50%;
+  color: #ffffffe6;
+  background: transparent;
+}
+.fleet-photo-rail button svg,
+.fleet-photo-drawer button svg {
+  width: 16px;
+  height: 16px;
+}
+.fleet-photo-rail button:hover,
+.fleet-photo-drawer button:hover,
+.fleet-photo-rail button[aria-current="true"],
+.fleet-photo-drawer button[aria-current="true"] {
+  background: #ffffff1a;
+  box-shadow:
+    inset 1px 1px #ffffff73,
+    inset -1px -1px #ffffff4d;
+}
+.fleet-photo-shell .fleet-rail-account button,
+.fleet-photo-drawer .fleet-rail-account button {
+  width: 28px;
+  height: 28px;
+}
+.fleet-rail-account [data-slot="avatar"] {
+  width: 28px;
+  height: 28px;
+}
+.fleet-rail-account [data-slot="avatar-fallback"] {
+  font-size: 12px;
+  color: #737373;
+  background: #f5f5f5;
+}
+.fleet-photo-content {
+  display: block;
+  overflow: visible;
+  background: transparent;
+  position: relative;
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+  min-height: 100%;
+  z-index: 1;
+}
+.fleet-photo-desktop-nav {
+  position: sticky;
+  top: 12px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  width: 466px;
+  height: 40px;
+  margin: 12px auto 0;
+  transform: translateX(-6px);
+  padding: 4px 10px 4px 4px;
+  border-radius: 999px;
+  background: #0006;
+  backdrop-filter: blur(24px);
+  box-shadow:
+    0 24px 64px #0000000a,
+    inset 0 2px 2px #ffffff1a;
+}
+.fleet-photo-desktop-nav [data-slot="toggle-group"] {
+  display: flex;
+  flex: 1;
+  gap: 2px;
+  background: transparent;
+  box-shadow: none;
+  border: 0;
+}
+.fleet-photo-desktop-nav [data-slot="toggle-group-item"] {
+  height: 32px;
+  min-width: 0;
+  flex: 1;
+  border-radius: 999px;
+  padding: 0 10px;
+  white-space: nowrap;
+  color: #ffffffbf;
+  font-size: 12px;
+  font-weight: 400;
+  border: 1px solid transparent;
+  box-shadow: none;
+  background: transparent;
+}
+.fleet-photo-desktop-nav [data-slot="toggle-group-item"][data-state="on"] {
+  color: white;
+  background: #ffffff1a;
+  border-color: #ffffff4d;
+  box-shadow: inset 0 1px #ffffff1a;
+}
+.fleet-photo-shell .fleet-photo-desktop-nav > button,
+.fleet-photo-mobile-header > button {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border-radius: 50%;
+  color: white;
+  background: transparent;
+  flex-shrink: 0;
+}
+.fleet-photo-desktop-nav > button svg,
+.fleet-photo-mobile-header > button svg {
+  width: 16px;
+  height: 16px;
+}
+.fleet-photo-mobile-header {
+  display: none;
+}
+.fleet-hero-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 260px 24px 24px;
+  min-width: 0;
+}
+.fleet-hero-summary-grid,
+.fleet-hero-body-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+}
+.fleet-hero-summary-grid [data-slot="frame"],
+.fleet-hero-body-grid [data-slot="frame"] {
+  padding: 0;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--background);
+  box-shadow: 0 1px 2px #0000000a;
+  min-width: 0;
+  --frame-panel-radius: 14px;
+  --frame-panel-border-color: var(--border);
+}
+.fleet-hero-summary[data-slot="frame"] {
+  height: 154px;
+}
+.fleet-hero-summary > [data-slot="frame-panel"] {
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  padding: 16px;
+  min-height: 0;
+  background: var(--background);
+  box-shadow: none;
+}
+.fleet-hero-summary [data-slot="frame-panel"] > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.fleet-hero-cards [data-slot="skeleton"] {
+  background: color-mix(in srgb, var(--input) 50%, var(--background));
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+.fleet-summary-icon {
+  width: 28px;
+  height: 28px;
+}
+.fleet-summary-title {
+  width: 96px;
+  height: 20px;
+}
+.fleet-summary-action {
+  width: 4px;
+  height: 16px;
+  margin-left: auto;
+  border-radius: 4px;
+}
+.fleet-hero-summary > [data-slot="frame-panel-footer"] {
+  height: 44px;
+  flex-shrink: 0;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.fleet-hero-summary [data-slot="frame-panel-footer"] > div {
+  display: flex;
+}
+.fleet-hero-summary [data-slot="frame-panel-footer"] > div > [data-slot="skeleton"] {
+  height: 20px;
+  width: 20px;
+  border: 1px solid var(--background);
+  border-radius: 50%;
+  margin-right: -8px;
+}
+.fleet-hero-summary [data-slot="frame-panel-footer"] > [data-slot="skeleton"] {
+  height: 16px;
+  width: 112px;
+}
+.fleet-hero-body-grid > [data-slot="frame"] {
+  height: 336px;
+}
+.fleet-hero-body-grid > [data-slot="frame"]:last-child {
+  grid-column: span 3;
+}
+.fleet-hero-body-grid [data-slot="frame-panel"] {
+  border: 0;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+  background: var(--background);
+}
+.fleet-hero-body-grid [data-slot="skeleton"] {
+  height: 16px;
+  min-height: 16px;
+}
+.fleet-hero-body-grid .fleet-hero-body-placeholder {
+  flex: 1;
+  min-height: 0;
+  margin-top: 16px;
+}
+.fleet-glass-menu {
+  background: #272725db !important;
+  border-color: #ffffff26 !important;
+  backdrop-filter: blur(24px);
+  color: #ffffffbf !important;
+  border-radius: 12px;
+  font-family: Inter, Arial, sans-serif;
+}
+.fleet-glass-menu [data-slot="dropdown-menu-item"] {
+  font-size: 12px;
+  min-height: 28px;
+  color: inherit;
+  gap: 8px;
+}
+.fleet-glass-menu [data-slot="dropdown-menu-item"]:focus,
+.fleet-glass-menu [data-slot="dropdown-menu-item"][data-highlighted] {
+  background: #ffffff14;
+  color: white;
+}
+.fleet-glass-menu [data-slot="dropdown-menu-item"] > svg {
+  color: #ffffffb3;
+  width: 16px;
+  height: 16px;
+}
+.fleet-glass-menu [data-slot="dropdown-menu-separator"] {
+  background: #ffffff26;
+}
+.fleet-account-popup {
+  width: 224px;
+}
+.fleet-account-popup [data-slot="dropdown-menu-label"] {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  font-size: 14px;
+  font-weight: 400;
+  color: white;
+}
+.fleet-account-popup [data-slot="dropdown-menu-label"] > span:last-child {
+  display: flex;
+  flex-direction: column;
+}
+.fleet-account-popup [data-slot="dropdown-menu-label"] small {
+  font-size: 12px;
+  line-height: 16px;
+  color: #ffffffb3;
+}
+.fleet-account-popup [data-slot="avatar"] {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+.fleet-account-popup [data-slot="avatar-fallback"] {
+  font-size: 12px;
+  background: #f5f5f5;
+  color: #737373;
+}
+.fleet-account-theme {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 8px;
+  font-size: 12px;
+}
+.fleet-account-theme > span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.fleet-account-theme > span svg {
+  width: 16px;
+  height: 16px;
+}
+.fleet-account-theme [data-slot="toggle-group"] {
+  border: 1px solid #ffffff4d;
+  border-radius: 999px;
+  padding: 2px;
+  background: transparent;
+  gap: 0;
+  box-shadow: none;
+}
+.fleet-account-theme [data-slot="toggle-group-item"] {
+  width: 28px;
+  height: 28px;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #ffffffb3;
+}
+.fleet-account-theme [data-slot="toggle-group-item"][data-state="on"] {
+  border: 1px solid #ffffff4d;
+  background: #ffffff1a;
+  color: white;
+}
+.fleet-account-theme [data-slot="toggle-group-item"] svg {
+  width: 16px;
+  height: 16px;
+}
+.fleet-access-toast {
+  margin-top: -12px !important;
+  margin-right: -12px !important;
+  width: 352px !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  border: 0 !important;
+}
+.fleet-access-notice {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  background: #0006;
+  backdrop-filter: blur(24px);
+  border: 1px solid #ffffff26;
+  border-radius: 14px;
+  color: #ffffffd9;
+  padding: 10px 12px;
+  min-height: 114px;
+  font-size: 12px;
+  width: 100%;
+  box-shadow: 0 24px 64px #0000000a;
+}
+.fleet-access-icon {
+  display: flex;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ffffff26;
+  border-radius: 10px;
+  background: #ffffff1a;
+}
+.fleet-access-icon svg {
+  height: 16px;
+  width: 16px;
+}
+.fleet-access-notice > div {
+  flex: 1;
+  min-width: 0;
+}
+.fleet-access-notice > div > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.fleet-access-notice strong {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+.fleet-access-notice small {
+  margin-left: auto;
+  font-size: 10px;
+  color: #ffffff99;
+}
+.fleet-access-notice p {
+  line-height: 18px;
+  margin-top: 2px;
+}
+.fleet-access-notice > div > div:last-child {
+  margin-top: 8px;
+}
+.fleet-access-notice button[data-slot="button"] {
+  height: 24px;
+  font-size: 12px;
+  font-weight: 400;
+  padding: 0 8px;
+  border-radius: 6px;
+  background: #ffffff0d;
+  color: #ffffffd9;
+  border-color: #ffffff26;
+}
+.fleet-access-notice button[data-slot="button"]:last-child {
+  background: #00a982;
+  border-color: transparent;
+  color: white;
+}
+@media (max-width: 1220px) {
+  .fleet-access-toast {
+    margin-top: 40px !important;
+  }
+}
+@media (max-width: 1023px) {
+  .shell-reference.fleet-photo-shell {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .fleet-photo-rail {
+    display: none;
+  }
+  .fleet-photo-content {
+    grid-column: 1;
+  }
+  .fleet-hero-scenes {
+    height: 420px;
+  }
+  .fleet-photo-desktop-nav {
+    display: none;
+  }
+  .fleet-photo-mobile-header {
+    position: sticky;
+    top: 12px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin: 12px 12px 0;
+    height: 44px;
+    padding: 6px;
+    border-radius: 999px;
+    background: #0006;
+    backdrop-filter: blur(24px);
+    box-shadow:
+      0 24px 64px #0000000a,
+      inset 0 2px 2px #ffffff1a;
+    color: white;
+  }
+  .fleet-photo-mobile-header .fleet-hero-brand {
+    margin: 0;
+    width: 32px;
+    height: 32px;
+  }
+  .fleet-photo-mobile-header > span {
+    flex: 1;
+  }
+  .fleet-hero-cards {
+    padding: 196px 12px 12px;
+    gap: 12px;
+  }
+  .fleet-hero-summary-grid,
+  .fleet-hero-body-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .fleet-hero-body-grid > [data-slot="frame"]:last-child {
+    grid-column: span 1;
+  }
+  .fleet-photo-drawer {
+    position: fixed;
+    inset: 12px auto 12px 12px;
+    top: 12px;
+    margin: 0;
+    height: calc(100dvh - 24px);
+    width: 48px !important;
+    max-width: 48px !important;
+    z-index: 51;
+    gap: 0;
+    padding: 0;
+  }
+  .fleet-photo-drawer > [data-slot="sheet-close"] {
+    display: none;
+  }
+}
+@media (max-width: 639px) {
+  .fleet-hero-scenes {
+    height: 380px;
+  }
+  .fleet-hero-summary-grid,
+  .fleet-hero-body-grid {
+    grid-template-columns: 1fr;
+  }
+  .fleet-access-toast {
+    width: calc(100vw - 24px) !important;
+    margin-right: -12px !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fleet-hero-slide,
+  .fleet-hero-spark {
+    animation: none;
+  }
+}
+
+.fleet-hero-images img:only-child {
+  opacity: 1;
+  animation: none;
+}

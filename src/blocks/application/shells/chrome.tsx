@@ -1,3 +1,5 @@
+import { SidebarCollection, SidebarNavigation } from "@/components/reui/sidebar";
+import { SidebarRail, SidebarMenuAction } from "@/components/ui/sidebar";
 import { BrandMark } from "@/components/brand-mark";
 import portrait0 from "./assets/portrait-0.jpg";
 import portrait1 from "./assets/portrait-1.jpg";
@@ -13,7 +15,6 @@ import {
   Bell,
   BookOpen,
   Check,
-  ChevronDown,
   ChevronRight,
   ChevronsUpDown,
   CircleHelp,
@@ -227,98 +228,18 @@ export function Navigation({
   label?: string;
   initialExpanded?: string[];
 }) {
-  const [expanded, setExpanded] = useState(initialExpanded);
   return (
-    <div className="flex flex-col gap-0">
-      {!collapsed && label && <p className="shell-section-label">{label}</p>}
-      {items.map((item) => {
-        const Icon = item.icon;
-        const open = expanded.includes(item.label);
-        return (
-          <div key={item.label}>
-            {item.children && collapsed ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    className="shell-nav-button justify-center px-0"
-                    aria-label={item.label}
-                  >
-                    <Icon />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent side="right" align="start">
-                  <DropdownMenuLabel>{item.label}</DropdownMenuLabel>
-                  <DropdownMenuGroup>
-                    {item.children.map((child) => (
-                      <DropdownMenuItem key={child} onSelect={() => onSelect(child)}>
-                        {child}
-                      </DropdownMenuItem>
-                    ))}
-                  </DropdownMenuGroup>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <Button
-                variant={active === item.label ? "secondary" : "ghost"}
-                className={cn(
-                  "shell-nav-button",
-                  collapsed ? "justify-center px-0" : "justify-start",
-                  item.accent && "text-primary",
-                )}
-                title={item.label}
-                aria-label={item.label}
-                aria-expanded={item.children ? open : undefined}
-                disabled={item.disabled}
-                onClick={() => {
-                  if (item.children) {
-                    setExpanded(
-                      open ? expanded.filter((v) => v !== item.label) : [...expanded, item.label],
-                    );
-                  } else onSelect(item.label);
-                }}
-              >
-                <Icon />
-                {!collapsed && (
-                  <>
-                    <span className="min-w-0 flex-1 truncate text-left">{item.label}</span>
-                    {item.badge && (
-                      <Badge
-                        variant={item.disabled ? "default" : "outline"}
-                        className="px-1.5 text-[9px]"
-                      >
-                        {item.badge}
-                      </Badge>
-                    )}
-                    {item.dot && (
-                      <span className="size-1.5 animate-pulse rounded-full bg-[var(--chart-2)]" />
-                    )}
-                    {item.children && (open ? <ChevronDown /> : <ChevronRight />)}
-                  </>
-                )}
-              </Button>
-            )}
-            {item.children && open && !collapsed && (
-              <div className="ml-7 flex flex-col gap-1 py-1">
-                {item.children.map((child) => (
-                  <Button
-                    variant={active === child ? "secondary" : "ghost"}
-                    size="sm"
-                    className="h-7 justify-start px-2 text-[13px] font-normal"
-                    key={child}
-                    onClick={() => onSelect(child)}
-                  >
-                    {child}
-                  </Button>
-                ))}
-              </div>
-            )}
-          </div>
-        );
-      })}
-    </div>
+    <SidebarNavigation
+      items={items.map(({ icon: Icon, ...item }) => ({ ...item, icon: <Icon /> }))}
+      collapsed={collapsed}
+      active={active}
+      onSelect={onSelect}
+      label={label}
+      initialExpanded={initialExpanded}
+    />
   );
 }
+
 export function PinnedProjects({
   collapsed = false,
   names = projectNames,
@@ -328,61 +249,42 @@ export function PinnedProjects({
   names?: string[];
   onSelect: (s: string) => void;
 }) {
-  const [open, setOpen] = useState(true);
   const [projects, setProjects] = useState(names);
   if (collapsed) return null;
   return (
-    <div className="mt-6 flex flex-col gap-1">
-      <Button
-        variant="ghost"
-        size="sm"
-        className="h-6 justify-between px-2 text-xs font-normal text-muted-foreground"
-        onClick={() => setOpen(!open)}
-        aria-expanded={open}
-      >
-        Active Projects
-        <ChevronDown />
-      </Button>
-      {open &&
-        projects.map((name, i) => (
-          <div className="group flex items-center gap-1" key={name}>
-            <Button
-              variant="ghost"
-              className="shell-nav-button min-w-0 flex-1 justify-start"
-              onClick={() => onSelect(name)}
-            >
-              <svg viewBox="0 0 20 20" className="size-4 shrink-0" aria-hidden="true">
-                <circle
-                  cx="10"
-                  cy="10"
-                  r="7.5"
-                  fill="none"
-                  stroke="var(--border)"
-                  strokeWidth="2.7"
-                />
-                <circle
-                  cx="10"
-                  cy="10"
-                  r="7.5"
-                  fill="none"
-                  stroke={`var(--chart-${(i % 5) + 1})`}
-                  strokeWidth="2.7"
-                  strokeDasharray={`${[35, 29, 39, 19, 27][i % 5]} 48`}
-                  transform="rotate(-90 10 10)"
-                  strokeLinecap="round"
-                />
-              </svg>
-              <span className="truncate font-normal">{name}</span>
-            </Button>
-            <RowActions
-              name={name}
-              onRemove={() => setProjects(projects.filter((p) => p !== name))}
+    <SidebarCollection
+      label="Active Projects"
+      onSelect={onSelect}
+      rows={projects.map((name, i) => ({
+        label: name,
+        icon: (
+          <svg viewBox="0 0 20 20" className="size-4 shrink-0" aria-hidden="true">
+            <circle cx="10" cy="10" r="7.5" fill="none" stroke="var(--border)" strokeWidth="2.7" />
+            <circle
+              cx="10"
+              cy="10"
+              r="7.5"
+              fill="none"
+              stroke={`var(--chart-${(i % 5) + 1})`}
+              strokeWidth="2.7"
+              strokeDasharray={`${[35, 29, 39, 19, 27][i % 5]} 48`}
+              transform="rotate(-90 10 10)"
+              strokeLinecap="round"
             />
-          </div>
-        ))}
-    </div>
+          </svg>
+        ),
+        actions: (
+          <RowActions
+            sidebar
+            name={name}
+            onRemove={() => setProjects((v) => v.filter((p) => p !== name))}
+          />
+        ),
+      }))}
+    />
   );
 }
+
 export function Members({
   collapsed = false,
   names = teamNames,
@@ -394,58 +296,60 @@ export function Members({
   label?: string;
   onSelect: (s: string) => void;
 }) {
-  const [open, setOpen] = useState(true);
   const [members, setMembers] = useState(names);
   if (collapsed) return null;
   return (
-    <div className="mt-6 flex flex-col gap-1">
-      <Button
-        variant="ghost"
-        size="sm"
-        className="h-6 justify-between px-2 text-xs font-normal text-muted-foreground"
-        onClick={() => setOpen(!open)}
-        aria-expanded={open}
-      >
-        {label}
-        <ChevronDown />
-      </Button>
-      {open &&
-        members.map((name, i) => (
-          <div className="group flex items-center gap-1" key={name}>
-            <Button
-              variant="ghost"
-              className="shell-nav-button min-w-0 flex-1 justify-start"
-              onClick={() => onSelect(name)}
-            >
-              <Face
-                name={name}
-                index={i}
-                small
-                presence={i === 2 ? "away" : i === 5 ? "offline" : "online"}
-              />
-              <span className="truncate font-normal">{name}</span>
-            </Button>
-            <RowActions
-              name={name}
-              onRemove={() => setMembers(members.filter((m) => m !== name))}
-            />
-          </div>
-        ))}
-    </div>
+    <SidebarCollection
+      label={label}
+      onSelect={onSelect}
+      rows={members.map((name, i) => ({
+        label: name,
+        icon: (
+          <Face
+            name={name}
+            index={i}
+            small
+            presence={i === 2 ? "away" : i === 5 ? "offline" : "online"}
+          />
+        ),
+        actions: (
+          <RowActions
+            sidebar
+            name={name}
+            onRemove={() => setMembers((v) => v.filter((m) => m !== name))}
+          />
+        ),
+      }))}
+    />
   );
 }
-export function RowActions({ name, onRemove }: { name: string; onRemove?: () => void }) {
+
+export function RowActions({
+  name,
+  onRemove,
+  sidebar = false,
+}: {
+  name: string;
+  onRemove?: () => void;
+  sidebar?: boolean;
+}) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          className="size-6 shrink-0 opacity-0 focus:opacity-100 group-hover:opacity-100"
-          aria-label={`Actions for ${name}`}
-        >
-          <Ellipsis />
-        </Button>
+        {sidebar ? (
+          <SidebarMenuAction showOnHover aria-label={`Actions for ${name}`}>
+            <Ellipsis />
+          </SidebarMenuAction>
+        ) : (
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            className="size-6 shrink-0 opacity-0 focus:opacity-100 group-hover:opacity-100"
+            aria-label={`Actions for ${name}`}
+          >
+            <Ellipsis />
+          </Button>
+        )}
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuGroup>
@@ -756,14 +660,14 @@ export function CollapseHandle({
   label?: string;
 }) {
   return (
-    <Button
+    <SidebarRail
       className="shell-collapse-handle"
-      variant="ghost"
+      tabIndex={0}
       aria-label={`${collapsed ? "Expand" : "Collapse"} ${label}`}
       onClick={onToggle}
     >
       <span />
-    </Button>
+    </SidebarRail>
   );
 }
 export function Breadcrumbs({ items }: { items: string[] }) {
@@ -796,32 +700,21 @@ export function FooterLinks({
   onSelect: (s: string) => void;
 }) {
   return (
-    <div className="mt-auto flex flex-col gap-1 py-2">
-      {[
-        ["Settings", Settings],
-        ["Invite Team", Users],
-        ["Documentation", BookOpen],
-      ].map(([name, I]) => {
-        const Icon = I as ShellIcon;
-        return (
-          <Button
-            key={String(name)}
-            variant="ghost"
-            className={cn(
-              "shell-nav-button",
-              collapsed ? "justify-center px-0" : "justify-start text-xs",
-            )}
-            aria-label={String(name)}
-            onClick={() => onSelect(String(name))}
-          >
-            <Icon />
-            {!collapsed && String(name)}
-          </Button>
-        );
-      })}
+    <div className="mt-auto py-2">
+      <SidebarNavigation
+        collapsed={collapsed}
+        active=""
+        onSelect={onSelect}
+        items={[
+          { label: "Settings", icon: <Settings /> },
+          { label: "Invite Team", icon: <Users /> },
+          { label: "Documentation", icon: <BookOpen /> },
+        ]}
+      />
     </div>
   );
 }
+
 const notifications = [
   {
     name: "@sarah_smith mentioned you in #PR-1024",
@@ -848,7 +741,7 @@ const notifications = [
   },
   {
     name: "4 people joined your workspace",
-    text: "Sarah, Mike, Emma and James just joined ReUI Pro.",
+    text: "Sarah, Mike, Emma and James just joined Bricklane.",
     time: "45m ago",
   },
   {
@@ -869,7 +762,7 @@ const notifications = [
   },
   {
     name: "Team Invitation",
-    text: "Alex invited you to join ReUI Pro.",
+    text: "Alex invited you to join Bricklane.",
     time: "1h ago",
     buttons: ["Accept", "Decline"],
   },

@@ -1,0 +1,84 @@
+/* ReUI's free SidebarProvider/SidebarInset layout, sized inside the live preview. */
+.reui-shell-layout > .shell-reference {
+  position: relative;
+  width: 100%;
+  min-height: 0;
+  height: 100%;
+}
+.reui-shell-layout [data-slot="sidebar-gap"] {
+  height: 100%;
+}
+.reui-shell-layout [data-slot="sidebar-container"] {
+  position: absolute;
+  inset-block: 0;
+  height: 100%;
+}
+.reui-shell-layout [data-slot="sidebar-inner"] {
+  min-height: 0;
+}
+.reui-sidebar-panel > [data-slot="sidebar-inner"] {
+  background: transparent;
+  color: inherit;
+  align-items: inherit;
+  gap: inherit;
+}
+.reui-sidebar-content {
+  width: 100%;
+  align-items: inherit;
+  gap: inherit;
+}
+.shell-reference .reui-sidebar-content {
+  overflow: visible;
+}
+.shell-reference .reui-sidebar-panel .reui-sidebar-content {
+  display: flex;
+  flex-direction: column;
+}
+.shell-reference .shell-dark {
+  --sidebar: #171717;
+  --sidebar-foreground: #f5f5f5;
+  --sidebar-accent: #28282b;
+  --sidebar-accent-foreground: #f5f5f5;
+  --sidebar-border: #3f3f46;
+  --sidebar-ring: #737373;
+}
+.shell-reference [data-slot="sidebar-group-label"].shell-section-label {
+  height: auto;
+  min-height: 24px;
+  font-weight: 400;
+}
+.shell-reference [data-slot="sidebar-menu-button"][data-active="true"] {
+  background: var(--sidebar-accent);
+  color: var(--sidebar-accent-foreground);
+}
+.shell-reference [data-slot="sidebar-menu-sub-button"] {
+  font-size: 13px;
+  font-weight: 400;
+}
+.shell-reference .shell-sidebar .shell-collapse-handle {
+  display: flex;
+  inset-block: auto;
+  top: 50%;
+}
+@media (max-width: 767px) {
+  .shell-reference.shell-drawer > div:last-of-type {
+    min-height: 0;
+  }
+  .shell-reference.shell-drawer .sidebar-expanded {
+    display: block !important;
+  }
+}
+
+/* Preserve floating shell geometry around the provider's desktop spacer. */
+.reui-shell-layout [data-shell-variant="2"] [data-slot="sidebar-container"] {
+  height: calc(100% - 16px);
+}
+.reui-shell-layout .fleet-photo-rail[data-slot="sidebar-container"] {
+  height: calc(100dvh - 24px);
+}
+.glass-reference [data-slot="sidebar-container"] .reui-sidebar-content {
+  justify-content: space-between;
+}
+.glass-reference .glass-reference-columns {
+  background: transparent;
+}

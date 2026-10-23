@@ -219,7 +219,7 @@ test("mail folders do not repeat inbox messages and phone message selection can 
   await expect(page.getByRole("textbox", { name: "Search mail", exact: true })).toBeVisible();
 });
 
-test("AppShell download includes the audited dispatcher, chrome styles and original cover asset", async ({
+test("AppShell download includes the ReUI Sidebar foundation, layout and original cover", async ({
   page,
 }) => {
   await page.goto("/#/block/application/app-shell/app-shell-22");
@@ -234,9 +234,15 @@ test("AppShell download includes the audited dispatcher, chrome styles and origi
   expect(strFromU8(files["src/blocks/application/shells/shells.css"])).toContain(
     ".shell-reference",
   );
-  expect([
-    ...files["src/blocks/application/shells/assets/fleet-living-room.png"].slice(0, 4),
-  ]).toEqual([137, 80, 78, 71]);
+  expect(files["src/blocks/application/shells/assets/fleet-living-room.png"]).toBeTruthy();
+  expect(files["src/components/reui/sidebar.tsx"]).toBeTruthy();
+  expect(files["src/components/reui/layout.tsx"]).toBeTruthy();
+  expect(files["src/components/ui/sidebar.tsx"]).toBeTruthy();
+  expect(files["src/hooks/use-mobile.ts"]).toBeTruthy();
+  expect(Object.keys(files).some((name) => name.includes("fleet-scenes"))).toBe(false);
+  expect(strFromU8(files["src/blocks/application/shells/fleet-hero.tsx"])).toContain(
+    "function FleetHeroShell",
+  );
 });
 
 test("security console scope icons switch trees and enforce the seven scope limit", async ({

@@ -46,7 +46,7 @@ const shellModules = [
   "productivity",
   "productivity",
   "chat-workspace",
-  "specialized",
+  "fleet-hero",
   "fleet-consoles",
   "fleet-consoles",
   "fleet-consoles",
@@ -140,7 +140,7 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
   const variant = Number(block.id.split("-").at(-1));
   if (block.group === "application") {
     if (block.category === "app-shell") {
-      return paths("application", `shells/${shellModules[variant - 1]}`, "shells/specialized");
+      return paths("application", `shells/${shellModules[variant - 1]}`, "shells/audited");
     }
     if (block.category === "card") {
       return paths("application", `card-variants/${cardModules[variant - 1]}`, "cards");

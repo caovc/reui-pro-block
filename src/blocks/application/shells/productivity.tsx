@@ -1,3 +1,4 @@
+import { AppShellInset, useShellSidebarState } from "@/components/reui/layout";
 import { useState } from "react";
 import { Message, MessageAvatar, MessageContent } from "@/components/ui/message";
 import { Bubble, BubbleContent } from "@/components/ui/bubble";
@@ -62,14 +63,14 @@ const recent = [
   "Optimize SQL query",
 ];
 export function ModelChat() {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useShellSidebarState();
   const [model, setModel] = useState("GPT-4");
   const [draft, setDraft] = useState("");
   const [web, setWeb] = useState(false);
   const [thread, setThread] = useState("");
   return (
     <div className="shell-reference bg-muted/40 p-2 gap-2" data-shell-variant="17">
-      <Sidebar collapsed={collapsed} className="rounded-xl border !bg-background !w-60">
+      <Sidebar width={240} collapsed={collapsed} className="rounded-xl border !bg-background !w-60">
         <div className="flex h-10 items-center gap-2 px-1">
           <ReuiMark small />
           {!collapsed && <strong className="flex-1 text-sm">ReUI AI</strong>}
@@ -132,7 +133,7 @@ export function ModelChat() {
         )}
         <WorkspaceMenu user displayName="AI Assistant" initial="AI Assistant" />
       </Sidebar>
-      <main className="shell-content-frame rounded-xl border">
+      <AppShellInset className="shell-content-frame rounded-xl border">
         <header className="shell-header">
           <Choices label="Choose model" items={models} value={model} onChange={setModel} />
           <Button
@@ -224,7 +225,7 @@ export function ModelChat() {
         <p className="mb-3 text-center text-[11px] text-muted-foreground">
           ReUI AI can make mistakes. Check important info.
         </p>
-      </main>
+      </AppShellInset>
     </div>
   );
 }
@@ -334,7 +335,7 @@ export function Assistant({
   );
 }
 export function TodoShell() {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useShellSidebarState();
   const [active, setActive] = useState("All Tasks");
   const [assistant, setAssistant] = useState(true);
   const [create, setCreate] = useState(false);
@@ -344,10 +345,10 @@ export function TodoShell() {
       className="shell-reference reui-reference todo-shell gap-2 bg-muted/30 p-2"
       data-shell-variant="18"
     >
-      <Sidebar collapsed={collapsed} className="rounded-xl border !bg-background">
+      <Sidebar width={236} collapsed={collapsed} className="rounded-xl border !bg-background">
         <div className="flex h-10 items-center gap-2">
           <ReuiMark small />
-          {!collapsed && <strong className="flex-1">ReUI</strong>}
+          {!collapsed && <strong className="flex-1">Bricklane</strong>}
           <Button
             variant="ghost"
             size="icon-sm"
@@ -428,7 +429,7 @@ export function TodoShell() {
         </div>
         <WorkspaceMenu user displayName="Mira Stone" initial="Mira Stone" subtitle="mira@reui.io" />
       </Sidebar>
-      <main className="shell-content-frame rounded-xl border">
+      <AppShellInset className="shell-content-frame rounded-xl border">
         <header className="shell-header border-b">
           <div className="flex min-w-0 items-center gap-3">
             <Button
@@ -467,7 +468,7 @@ export function TodoShell() {
             ))}
           </div>
         )}
-      </main>
+      </AppShellInset>
       {assistant && <Assistant onClose={() => setAssistant(false)} />}
       <CreateItemDialog
         open={create}
@@ -479,7 +480,7 @@ export function TodoShell() {
   );
 }
 export function PlannerShell() {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useShellSidebarState();
   const [date, setDate] = useState<Date | undefined>(new Date(2026, 9, 14));
   const [view, setView] = useState("Week");
   const [active, setActive] = useState("Events");
@@ -488,10 +489,10 @@ export function PlannerShell() {
     date?.toLocaleDateString("en-US", { month: "long", year: "numeric" }) ?? "October 2026";
   return (
     <div className="shell-reference bg-muted/30" data-shell-variant="19">
-      <Sidebar collapsed={collapsed} className="!w-[272px]">
+      <Sidebar width={272} collapsed={collapsed} className="!w-[272px]">
         <div className="flex h-12 items-center gap-2 px-2">
           <ReuiMark small />
-          <strong className="flex-1">ReUI</strong>
+          <strong className="flex-1">Bricklane</strong>
           <Button
             variant="ghost"
             size="icon-sm"
@@ -537,7 +538,7 @@ export function PlannerShell() {
         </div>
         <AccountCard />
       </Sidebar>
-      <main className="shell-content-frame inset">
+      <AppShellInset className="shell-content-frame inset">
         <PageTitle title={title}>
           <Button
             size="icon-sm"
@@ -567,7 +568,7 @@ export function PlannerShell() {
           <EventCreator onCreate={(e) => setEvents((v) => [...v, e.name])} />
         </PageTitle>
         <PlaceholderCanvas solid rows={2} />
-      </main>
+      </AppShellInset>
     </div>
   );
 }
@@ -580,7 +581,7 @@ export function WebmailShell() {
   const [labels, setLabels] = useState(["Archive", "Snoozed", "Spam", "Trash"]);
   return (
     <div className="shell-reference bg-muted/25" data-shell-variant="20">
-      <Sidebar className="!w-60 !bg-transparent">
+      <Sidebar width={240} className="!w-60 !bg-transparent">
         <WorkspaceMenu user initial="Nick Bold" subtitle="nick@reui.io" />
         <Button className="my-3 h-8" onClick={() => setCompose(true)}>
           <Mail />
@@ -610,7 +611,7 @@ export function WebmailShell() {
           />
         </div>
       </Sidebar>
-      <main className="shell-mail-panes">
+      <AppShellInset className="shell-mail-panes">
         <section className="flex min-w-0 flex-col rounded-xl border bg-background">
           <header className="flex h-12 items-center gap-2 px-3">
             <Input
@@ -674,7 +675,7 @@ export function WebmailShell() {
             </div>
           </div>
         </section>
-      </main>
+      </AppShellInset>
       <nav className="hidden w-10 flex-col items-center gap-3 p-2 lg:flex">
         {[Clock, List, Settings, Users, Plus].map((Icon, i) => (
           <Button

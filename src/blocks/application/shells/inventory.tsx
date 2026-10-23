@@ -1,3 +1,5 @@
+import { ReuiSidebar } from "@/components/reui/sidebar";
+import { AppShellInset } from "@/components/reui/layout";
 import { useState } from "react";
 import {
   BarChart3,
@@ -125,7 +127,7 @@ export default function InventoryShell() {
   const current = sections[section];
   return (
     <div className="shell-reference bg-muted/20" data-shell-variant="8" data-inner-hidden={hidden}>
-      <nav className="shell-icon-rail wide">
+      <ReuiSidebar width={64} collapsible="none" className="shell-icon-rail wide">
         <ReuiMark />
         <div className="mt-5 flex flex-col gap-1.5">
           {sections.map((s, i) => (
@@ -147,8 +149,8 @@ export default function InventoryShell() {
         <div className="mt-auto">
           <WorkspaceMenu collapsed user />
         </div>
-      </nav>
-      <main className="shell-content-frame inset">
+      </ReuiSidebar>
+      <AppShellInset className="shell-content-frame inset">
         <header className="shell-header border-b">
           <HeaderSwitchers initialApp="Inventory" />
           <div className="hidden w-80 lg:block">
@@ -177,7 +179,8 @@ export default function InventoryShell() {
         </header>
         <div className="flex min-h-0 flex-1">
           {!hidden && (
-            <aside
+            <ReuiSidebar
+              collapsible="none"
               className="shell-secondary !w-[200px] max-md:hidden"
               aria-label={`${current.name} navigation`}
             >
@@ -269,7 +272,7 @@ export default function InventoryShell() {
                 collapsed={hidden}
                 onToggle={() => setHidden(true)}
               />
-            </aside>
+            </ReuiSidebar>
           )}
           {hidden && (
             <Button
@@ -284,7 +287,7 @@ export default function InventoryShell() {
           )}
           <PlaceholderCanvas rows={2} solid className="inventory-canvas" />
         </div>
-      </main>
+      </AppShellInset>
       <CreateItemDialog
         title={`Create ${current.name.toLowerCase()} item`}
         open={create}

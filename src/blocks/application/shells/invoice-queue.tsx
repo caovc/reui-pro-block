@@ -1,3 +1,6 @@
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import { ReuiSidebar } from "@/components/reui/sidebar";
+import { AppShellInset } from "@/components/reui/layout";
 import { useEffect, useState } from "react";
 import { hotkeysCoreFeature, syncDataLoaderFeature } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
@@ -10,7 +13,6 @@ import {
   FilePlus2,
   FileText,
   MoreVertical,
-  PanelLeft,
   Scale,
   Search,
   Settings,
@@ -43,14 +45,7 @@ import {
 } from "./chrome";
 import { ResponsiveAssistantPanel } from "./responsive-assistant";
 import { InvoicePlaceholders } from "./detail-placeholders";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+
 const orders = [
   "10021",
   "10001",
@@ -126,10 +121,21 @@ function CheckActions({ name }: { name: string }) {
     </DropdownMenu>
   );
 }
-function OrderQueue() {
-  const [query, setQuery] = useState("");
-  const [filter, setFilter] = useState("All Orders");
-  const [selected, setSelected] = useState("10021-document");
+function OrderQueue({
+  query,
+  setQuery,
+  filter,
+  setFilter,
+  selected,
+  setSelected,
+}: {
+  query: string;
+  setQuery: (value: string) => void;
+  filter: string;
+  setFilter: (value: string) => void;
+  selected: string;
+  setSelected: (value: string) => void;
+}) {
   const visibleOrders = orders.filter(
     (id) =>
       nodes[id].name.toLowerCase().includes(query.toLowerCase()) &&
@@ -382,12 +388,20 @@ function Advisor({ onClose }: { onClose: () => void }) {
   );
 }
 export default function InvoiceQueue() {
+  const [query, setQuery] = useState("");
+  const [filter, setFilter] = useState("All Orders");
+  const [selected, setSelected] = useState("10021-document");
   const [tab, setTab] = useState("Matching Queue");
   const [ai, setAi] = useState(false);
   const [app, setApp] = useState("3WIM");
   return (
     <div className="shell-reference reui-reference invoice-shell" data-shell-variant="34">
-      <nav className="invoice-app-rail" aria-label="Applications">
+      <ReuiSidebar
+        width={36}
+        collapsible="none"
+        className="invoice-app-rail"
+        aria-label="Applications"
+      >
         <ReuiMark small />
         <div>
           {(
@@ -425,28 +439,10 @@ export default function InvoiceQueue() {
           </Button>
           <Face small />
         </footer>
-      </nav>
-      <main className="invoice-shell-main">
+      </ReuiSidebar>
+      <AppShellInset className="invoice-shell-main">
         <header className="invoice-shell-header">
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button
-                className="invoice-mobile-nav"
-                variant="ghost"
-                size="icon-sm"
-                aria-label="Open order queue"
-              >
-                <PanelLeft />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left" className="invoice-mobile-queue reui-reference">
-              <SheetHeader className="sr-only">
-                <SheetTitle>Order queue</SheetTitle>
-                <SheetDescription>Search purchase orders and matching checks.</SheetDescription>
-              </SheetHeader>
-              <OrderQueue />
-            </SheetContent>
-          </Sheet>
+          <SidebarTrigger className="invoice-mobile-nav" aria-label="Open order queue" />
           <h1>3WIM Queue</h1>
           <div className="invoice-queue-tabs" role="tablist" aria-label="Invoice queues">
             {["Matching Queue", "Completed Matches"].map((name) => (
@@ -479,12 +475,26 @@ export default function InvoiceQueue() {
           </div>
         </header>
         <div className="invoice-shell-body">
-          <aside className="invoice-desktop-queue">
-            <OrderQueue />
-          </aside>
+          <ReuiSidebar
+            width={254}
+            collapsible="offcanvas"
+            className="invoice-desktop-queue"
+            mobileTitle="Order queue"
+            mobileDescription="Search purchase orders and matching checks."
+            mobileClassName="invoice-mobile-queue reui-reference"
+          >
+            <OrderQueue
+              query={query}
+              setQuery={setQuery}
+              filter={filter}
+              setFilter={setFilter}
+              selected={selected}
+              setSelected={setSelected}
+            />
+          </ReuiSidebar>
           <InvoicePlaceholders />
         </div>
-      </main>
+      </AppShellInset>
       {ai && <Advisor onClose={() => setAi(false)} />}
     </div>
   );

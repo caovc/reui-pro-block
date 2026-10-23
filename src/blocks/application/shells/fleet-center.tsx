@@ -1,3 +1,5 @@
+import { ReuiSidebar } from "@/components/reui/sidebar";
+import { AppShellInset, useShellSidebarState } from "@/components/reui/layout";
 import swaggerMark from "./assets/swagger.svg";
 import redditMark from "./assets/reddit.svg";
 import strapiMark from "./assets/strapi.svg";
@@ -95,7 +97,12 @@ export function FleetRail() {
     ["Security", ShieldCheck],
   ];
   return (
-    <nav className="fleet-center-rail" aria-label="Applications">
+    <ReuiSidebar
+      width={52}
+      collapsible="none"
+      className="fleet-center-rail"
+      aria-label="Applications"
+    >
       <ReuiMark small />
       <div className="fleet-rail-links">
         {icons.map(([name, Icon]) => (
@@ -163,11 +170,11 @@ export function FleetRail() {
           <Face small />
         </button>
       </div>
-    </nav>
+    </ReuiSidebar>
   );
 }
 export default function FleetCenter() {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useShellSidebarState();
   const [searching, setSearching] = useState(false);
   const [query, setQuery] = useState("");
   const [active, setActive] = useState("Overview");
@@ -190,6 +197,8 @@ export default function FleetCenter() {
     <div className="shell-reference reui-reference fleet-center" data-shell-variant="33">
       <FleetRail />
       <Sidebar
+        width={288}
+        gapWidth={300}
         collapsed={collapsed}
         className="fleet-center-sidebar shell-dark"
         drawerClassName="fleet-center shell-dark"
@@ -313,9 +322,9 @@ export default function FleetCenter() {
           <span />
         </Button>
       </Sidebar>
-      <main className="fleet-center-main">
+      <AppShellInset className="fleet-center-main">
         <FleetPlaceholders />
-      </main>
+      </AppShellInset>
     </div>
   );
 }

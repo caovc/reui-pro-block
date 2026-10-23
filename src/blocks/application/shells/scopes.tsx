@@ -1,3 +1,5 @@
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ReuiSidebar } from "@/components/reui/sidebar";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Copy,
@@ -482,34 +484,36 @@ export function ScopePanel({
   );
   const [scope, setScope] = useState(dynamic ? "Endpoints" : "Security");
   return (
-    <div className="shell-scope-panel flex min-h-0 flex-col border-r">
+    <ReuiSidebar
+      collapsible="none"
+      width={224}
+      aria-label="Operational scopes"
+      className="shell-scope-panel flex min-h-0 flex-col border-r"
+    >
       <div className="flex items-center gap-1 p-2">
         <div className="min-w-0 flex-1">
           {dynamic ? (
-            <div
-              className="flex gap-0.5 rounded-lg border bg-muted/50 p-0.5"
-              role="tablist"
-              aria-label="Scope tabs"
-            >
-              {scopes.map((name, i) => {
-                const Icon = [Shield, Code2, Network, Globe, Layers, FileCheck][i % 6];
-                return (
-                  <Button
-                    key={name}
-                    role="tab"
-                    aria-label={name}
-                    title={name}
-                    aria-selected={scope === name}
-                    variant={scope === name ? "outline" : "ghost"}
-                    size="icon-sm"
-                    className="size-6 min-w-0 flex-1"
-                    onClick={() => setScope(name)}
-                  >
-                    <Icon className="size-3.5" />
-                  </Button>
-                );
-              })}
-            </div>
+            <Tabs value={scope} onValueChange={setScope}>
+              <TabsList
+                className="flex gap-0.5 rounded-lg border bg-muted/50 p-0.5"
+                aria-label="Scope tabs"
+              >
+                {scopes.map((name, i) => {
+                  const Icon = [Shield, Code2, Network, Globe, Layers, FileCheck][i % 6];
+                  return (
+                    <TabsTrigger
+                      key={name}
+                      value={name}
+                      aria-label={name}
+                      title={name}
+                      className="size-6 min-w-0 flex-1 p-0 data-[state=active]:border data-[state=active]:bg-background"
+                    >
+                      <Icon className="size-3.5" />
+                    </TabsTrigger>
+                  );
+                })}
+              </TabsList>
+            </Tabs>
           ) : (
             <Segments label="Scope tabs" items={scopes} value={scope} onChange={setScope} />
           )}
@@ -576,6 +580,6 @@ export function ScopePanel({
         ))}
       </div>
       {dynamic && <AccountCard />}
-    </div>
+    </ReuiSidebar>
   );
 }

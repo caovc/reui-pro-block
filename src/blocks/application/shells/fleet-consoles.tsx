@@ -1,3 +1,5 @@
+import { ReuiSidebar } from "@/components/reui/sidebar";
+import { AppShellInset, useShellSidebarState } from "@/components/reui/layout";
 import { useState } from "react";
 import {
   Activity,
@@ -133,7 +135,7 @@ export function OperationsShell({
   const [active, setActive] = useState(
     variant === 23 ? "Stations" : variant === 27 ? "Security Center" : "Overview",
   );
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useShellSidebarState();
   const [query, setQuery] = useState("");
   const [tab, setTab] = useState("Delivery Center");
   const [create, setCreate] = useState("");
@@ -268,6 +270,7 @@ export function OperationsShell({
         {(treeOnly || variant === 33) && <Rail active={active} onChange={setActive} />}
         {variant !== 30 && variant !== 26 && !treeOnly && (
           <Sidebar
+            width={scopes ? 224 : 256}
             collapsed={collapsed}
             className={`${variant === 33 ? "shell-dark m-2 !w-[288px] rounded-lg !p-0" : scopes ? "!w-[224px]" : variant === 29 ? "!w-64" : "!w-64"} ${variant === 27 ? "!bg-background" : ""}`}
             label="Fleet navigation"
@@ -467,7 +470,7 @@ export function OperationsShell({
             showStatus={status}
           />
         )}
-        <main className="shell-content-frame">
+        <AppShellInset className="shell-content-frame">
           {variant === 30 ? (
             <>
               <div className="flex flex-wrap items-center justify-between gap-3 px-6 pb-4 pt-6">
@@ -538,7 +541,7 @@ export function OperationsShell({
               }
             />
           )}
-        </main>
+        </AppShellInset>
         {assistant && <Assistant onClose={() => setAssistant(false)} />}
       </div>
       <CreateItemDialog
@@ -617,7 +620,10 @@ export function MissionShell() {
       </header>
       <div className="flex min-h-0 flex-1">
         <Rail active={active} onChange={setActive} />
-        <aside className="shell-mission-panel flex min-h-0 w-[436px] shrink-0 flex-col border-r p-2">
+        <ReuiSidebar
+          collapsible="none"
+          className="shell-mission-panel flex min-h-0 w-[436px] shrink-0 flex-col border-r p-2"
+        >
           <Segments
             label="Mission panels"
             items={["Missions", "Robots", "Stations", "Alerts"]}
@@ -763,10 +769,10 @@ export function MissionShell() {
               No {tab.toLowerCase()} to display
             </div>
           )}
-        </aside>
-        <main className="shell-content-frame">
+        </ReuiSidebar>
+        <AppShellInset className="shell-content-frame">
           <ContentCards layout="mission" />
-        </main>
+        </AppShellInset>
       </div>
       <CreateItemDialog
         open={create}

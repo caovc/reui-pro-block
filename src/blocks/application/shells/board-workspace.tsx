@@ -1,3 +1,6 @@
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import { ReuiSidebar, SidebarRailButton } from "@/components/reui/sidebar";
+import { AppShellInset } from "@/components/reui/layout";
 import { useEffect, useState } from "react";
 import {
   Archive,
@@ -15,7 +18,6 @@ import {
   Activity,
   List,
   LogOut,
-  PanelLeft,
   Settings,
   Share2,
   ShieldCheck,
@@ -38,14 +40,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+
 import {
   Drawer,
   DrawerContent,
@@ -54,7 +49,6 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
@@ -163,26 +157,28 @@ function BoardRail({
 }) {
   function link(name: string, Icon: ShellIcon) {
     return (
-      <Tooltip key={name}>
-        <TooltipTrigger asChild>
-          <Button
-            asChild
-            variant={name === "Boards" ? "default" : "ghost"}
-            size="icon-sm"
-            aria-label={name}
-          >
-            <a href="#" onClick={(e) => e.preventDefault()}>
-              <Icon />
-            </a>
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent side="right">{name}</TooltipContent>
-      </Tooltip>
+      <SidebarRailButton key={name} label={name} active={name === "Boards"}>
+        <Button
+          asChild
+          variant={name === "Boards" ? "default" : "ghost"}
+          size="icon-sm"
+          aria-label={name}
+        >
+          <a href="#" onClick={(e) => e.preventDefault()}>
+            <Icon />
+          </a>
+        </Button>
+      </SidebarRailButton>
     );
   }
   return (
     <>
-      <a href="#" className="board-brand" aria-label="ReUI" onClick={(e) => e.preventDefault()}>
+      <a
+        href="#"
+        className="board-brand"
+        aria-label="Bricklane"
+        onClick={(e) => e.preventDefault()}
+      >
         <ReuiMark />
       </a>
       <div className="board-rail-groups">
@@ -225,39 +221,29 @@ export default function BoardWorkspace() {
     });
   return (
     <div className="shell-reference reui-reference board-shell" data-shell-variant="35">
-      <aside className="board-icon-rail" aria-label="Board navigation">
+      <ReuiSidebar
+        width={49}
+        collapsible="offcanvas"
+        className="board-icon-rail"
+        aria-label="Board navigation"
+        mobileTitle="Navigation"
+        mobileDescription="Sections, help and your account."
+        mobileClassName="reui-reference board-mobile-rail"
+      >
         <BoardRail {...profile} />
-      </aside>
-      <main className="shell-content-frame">
+      </ReuiSidebar>
+      <AppShellInset className="shell-content-frame">
         <header className="board-header">
           <div className="board-header-start">
             <a
               className="board-mobile-brand"
               href="#"
-              aria-label="ReUI"
+              aria-label="Bricklane"
               onClick={(e) => e.preventDefault()}
             >
               <ReuiMark />
             </a>
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon-sm"
-                  aria-label="Open navigation"
-                  className="board-mobile-navigation"
-                >
-                  <PanelLeft />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="left" className="reui-reference board-mobile-rail">
-                <SheetHeader className="sr-only">
-                  <SheetTitle>Navigation</SheetTitle>
-                  <SheetDescription>Sections, help and your account.</SheetDescription>
-                </SheetHeader>
-                <BoardRail {...profile} />
-              </SheetContent>
-            </Sheet>
+            <SidebarTrigger className="board-mobile-navigation" aria-label="Open navigation" />
             <Drawer>
               <DrawerTrigger asChild>
                 <Button
@@ -367,7 +353,7 @@ export default function BoardWorkspace() {
           </div>
         </header>
         <WorkspaceSkeleton spacing={24} />
-      </main>
+      </AppShellInset>
       <AlertDialog open={confirm} onOpenChange={setConfirm}>
         <AlertDialogContent className="reui-reference">
           <AlertDialogHeader>

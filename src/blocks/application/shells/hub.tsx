@@ -1,3 +1,5 @@
+import { ReuiSidebar } from "@/components/reui/sidebar";
+import { AppShellInset } from "@/components/reui/layout";
 import { useState } from "react";
 import {
   Bell,
@@ -299,7 +301,7 @@ export default function CalendarHub() {
   ] as const;
   return (
     <div className="shell-reference" data-shell-variant="5" data-panel-hidden={hidden}>
-      <nav className="shell-icon-rail">
+      <ReuiSidebar width={48} collapsible="none" className="shell-icon-rail">
         <ReuiMark />
         <div className="mt-5 flex flex-col gap-1.5">
           {sections.map(([name, Icon]) => (
@@ -321,9 +323,9 @@ export default function CalendarHub() {
         <div className="mt-auto">
           <WorkspaceMenu collapsed user />
         </div>
-      </nav>
+      </ReuiSidebar>
       {!hidden && (
-        <aside className="shell-secondary">
+        <ReuiSidebar collapsible="none" className="shell-secondary">
           {panel === "Calendars" ? (
             <CalendarContext
               key={period}
@@ -340,9 +342,9 @@ export default function CalendarHub() {
             <Notifications feed />
           )}
           <CollapseHandle collapsed={hidden} onToggle={() => setHidden(!hidden)} />
-        </aside>
+        </ReuiSidebar>
       )}
-      <main className={`shell-content-frame ${!hidden ? "max-md:hidden" : ""}`}>
+      <AppShellInset className={`shell-content-frame ${!hidden ? "max-md:hidden" : ""}`}>
         <header className="shell-header border-b">
           <div className="flex items-center gap-3">
             {hidden && (
@@ -417,7 +419,7 @@ export default function CalendarHub() {
           </div>
         </header>
         <PlaceholderCanvas solid />
-      </main>
+      </AppShellInset>
     </div>
   );
 }

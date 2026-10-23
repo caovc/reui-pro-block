@@ -1,3 +1,6 @@
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ReuiSidebar, SidebarNavigation } from "@/components/reui/sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Frame, FrameFooter } from "@/components/reui/frame";
 import { useEffect, useRef } from "react";
 import type { ReactNode } from "react";
@@ -12,8 +15,6 @@ import {
   Grid2X2,
   Home,
   Layers,
-  Menu,
-  PanelLeft,
   Plus,
   Search,
   Settings,
@@ -23,14 +24,7 @@ import {
   Workflow,
   X,
 } from "lucide-react";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+
 import { cn } from "@/lib/utils";
 import {
   Button,
@@ -105,29 +99,23 @@ export function Segments({
 }) {
   return (
     <>
-      <div
-        role="tablist"
-        aria-label={label}
-        className={cn(
-          "shell-segments hidden min-w-0 items-center gap-1 rounded-lg bg-muted/65 p-1 md:flex",
-          className,
-        )}
-      >
-        {items.map((item) => (
-          <button
-            role="tab"
-            aria-selected={item === value}
-            key={item}
-            onClick={() => onChange(item)}
-            className={cn(
-              "min-w-0 rounded-md px-2 py-1 text-xs text-muted-foreground",
-              value === item && "bg-background text-foreground shadow-xs",
-            )}
-          >
-            {item}
-          </button>
-        ))}
-      </div>
+      {/* ReUI free c-tabs-1 composition: roving focus and arrow/Home/End selection. */}
+      <Tabs value={value} onValueChange={onChange} className="hidden min-w-0 md:block">
+        <TabsList
+          aria-label={label}
+          className={cn("shell-segments min-w-0 gap-1 rounded-lg bg-muted/65 p-1", className)}
+        >
+          {items.map((item) => (
+            <TabsTrigger
+              value={item}
+              key={item}
+              className="min-w-0 rounded-md px-2 py-1 text-xs font-normal text-muted-foreground data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-xs"
+            >
+              {item}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+      </Tabs>
       <div className="md:hidden">
         <Choices label={label} items={items} value={value} onChange={onChange} compact />
       </div>
@@ -137,49 +125,36 @@ export function Segments({
 export function Sidebar({
   children,
   collapsed = false,
+  width = 248,
+  gapWidth,
   className,
   label = "Navigation",
   drawerClassName,
 }: {
   children: ReactNode;
   collapsed?: boolean;
+  width?: number;
+  gapWidth?: number;
   className?: string;
   label?: string;
   drawerClassName?: string;
 }) {
   return (
     <>
-      <aside
-        className={cn("shell-sidebar shell-desktop-sidebar", collapsed && "collapsed", className)}
+      <ReuiSidebar
+        width={width}
+        gapWidth={gapWidth}
         aria-label={label}
+        className={cn("shell-sidebar shell-desktop-sidebar", collapsed && "collapsed", className)}
+        mobileTitle={label}
+        mobileClassName={cn(
+          "shell-reference shell-drawer reui-reference !min-h-0 flex-col gap-0 p-2",
+          drawerClassName,
+        )}
       >
         {children}
-      </aside>
-      <Sheet>
-        <SheetTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            className="shell-mobile-trigger"
-            aria-label={`Open ${label.toLowerCase()}`}
-          >
-            <PanelLeft />
-          </Button>
-        </SheetTrigger>
-        <SheetContent
-          side="left"
-          className={cn(
-            "shell-reference shell-drawer !w-72 !min-h-0 flex-col gap-0 p-2",
-            drawerClassName,
-          )}
-        >
-          <SheetHeader className="sr-only">
-            <SheetTitle>{label}</SheetTitle>
-            <SheetDescription>Workspace navigation</SheetDescription>
-          </SheetHeader>
-          {children}
-        </SheetContent>
-      </Sheet>
+      </ReuiSidebar>
+      <SidebarTrigger className="shell-mobile-trigger" aria-label={`Open ${label.toLowerCase()}`} />
     </>
   );
 }
@@ -232,51 +207,26 @@ export function Rail({
     </>
   );
   return (
-    <>
-      <nav
+    <SidebarProvider keyboardShortcut={false} className="contents">
+      <ReuiSidebar
+        width={48}
+        collapsible="offcanvas"
+        aria-label="Applications"
         className={cn(
           "shell-icon-rail shell-desktop-rail",
           dark && "shell-dark m-2 rounded-2xl !border-0",
           glass && "shell-glass-rail",
         )}
-        aria-label="Applications"
+        mobileTitle="Applications"
+        mobileClassName="shell-reference reui-reference shell-drawer !min-h-0 flex-col gap-3 p-4"
       >
         {contents}
-      </nav>
-      <Sheet>
-        <SheetTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            className="shell-mobile-trigger"
-            aria-label="Open applications"
-          >
-            <Menu />
-          </Button>
-        </SheetTrigger>
-        <SheetContent
-          side="left"
-          className="shell-reference shell-drawer !w-64 !min-h-0 flex-col gap-3 p-4"
-        >
-          <SheetHeader>
-            <SheetTitle>Applications</SheetTitle>
-            <SheetDescription>Switch your workspace section.</SheetDescription>
-          </SheetHeader>
-          {railItems.map(({ label, icon: Icon }) => (
-            <Button
-              variant={active === label ? "secondary" : "ghost"}
-              key={label}
-              onClick={() => onChange(label)}
-            >
-              <Icon />
-              {label}
-            </Button>
-          ))}
-        </SheetContent>
-      </Sheet>
-    </>
+      </ReuiSidebar>
+      <SidebarTrigger className="shell-mobile-trigger" aria-label="Open applications" />
+    </SidebarProvider>
   );
 }
+
 function SkeletonSummary({ stats = false }: { stats?: boolean }) {
   return (
     <Frame className="shell-skeleton-card summary">
@@ -613,27 +563,22 @@ export function GroupedNav({
   return (
     <div className="min-h-0 overflow-y-auto">
       {groups.map((group) => {
-        const items = group.items.filter((v) => v.toLowerCase().includes(query.toLowerCase()));
+        const items = group.items.filter((value) =>
+          value.toLowerCase().includes(query.toLowerCase()),
+        );
         if (!items.length) return null;
         return (
-          <section className="mb-4" key={group.label}>
-            <p className="shell-section-label">{group.label}</p>
-            {items.map((item) => {
+          <SidebarNavigation
+            key={group.label}
+            className={cn("mb-4", indented && "pl-4")}
+            label={group.label}
+            active={active}
+            onSelect={onSelect}
+            items={items.map((label) => {
               const Icon = navIcons[index++ % navIcons.length];
-              return (
-                <Button
-                  variant={active === item ? "secondary" : "ghost"}
-                  className={cn("shell-nav-button justify-start", indented && "pl-6")}
-                  key={item}
-                  aria-label={item}
-                  onClick={() => onSelect(item)}
-                >
-                  <Icon />
-                  <span className="truncate">{item}</span>
-                </Button>
-              );
+              return { label, icon: <Icon /> };
             })}
-          </section>
+          />
         );
       })}
       {!matches.length && (
@@ -642,6 +587,7 @@ export function GroupedNav({
     </div>
   );
 }
+
 export function AccountCard() {
   return (
     <div className="mt-auto rounded-lg border bg-background">

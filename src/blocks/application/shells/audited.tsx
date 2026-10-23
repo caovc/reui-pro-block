@@ -1,3 +1,4 @@
+import { AppShellLayout } from "@/components/reui/layout";
 import type { BlockProps } from "@/data/types";
 import {
   AiAgentsConsole,
@@ -16,7 +17,7 @@ import OperationsWorkbench from "./operations";
 import { CommunityShell, DualWorkspace, FavoritesShell } from "./workspaces";
 import { ModelChat, TodoShell, PlannerShell, WebmailShell } from "./productivity";
 import { MissionShell, OperationsShell } from "./fleet-consoles";
-import { FleetHeroShell } from "./specialized";
+import FleetHeroShell from "./fleet-hero";
 import BoardWorkspace from "./board-workspace";
 import ObservabilityShell from "./observability";
 import GlassWorkspace from "./glass-workspace";
@@ -26,7 +27,15 @@ import FleetCenter from "./fleet-center";
 import "../../reference.css";
 import "./shells.css";
 import "./fidelity.css";
-export default function AppShell({ block }: BlockProps) {
+import "./sidebar-foundation.css";
+export default function AppShell(props: BlockProps) {
+  return (
+    <AppShellLayout mobileBreakpoint={props.block.id === "app-shell-22" ? 1024 : 768}>
+      <ShellVariant {...props} />
+    </AppShellLayout>
+  );
+}
+function ShellVariant({ block }: BlockProps) {
   const variant = Number(block.id.split("-").pop());
   switch (variant) {
     case 1:

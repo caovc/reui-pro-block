@@ -1,3 +1,5 @@
+import { ReuiSidebar } from "@/components/reui/sidebar";
+import { AppShellInset } from "@/components/reui/layout";
 import { useState } from "react";
 import {
   Archive,
@@ -185,7 +187,7 @@ export default function MailInbox() {
   }
   return (
     <div className="shell-reference" data-shell-variant="4" data-panel-hidden={listHidden}>
-      <nav className="shell-icon-rail">
+      <ReuiSidebar width={48} collapsible="none" className="shell-icon-rail">
         <ReuiMark />
         <div className="mt-5 flex flex-col gap-1.5">
           {folders.map(([name, Icon]) => (
@@ -207,9 +209,12 @@ export default function MailInbox() {
         <div className="mt-auto">
           <WorkspaceMenu collapsed user />
         </div>
-      </nav>
+      </ReuiSidebar>
       {!listHidden && (
-        <aside className="shell-secondary !w-[392px] max-md:!w-[calc(100vw-48px)]">
+        <ReuiSidebar
+          collapsible="none"
+          className="shell-secondary !w-[392px] max-md:!w-[calc(100vw-48px)]"
+        >
           <div className="flex h-[49px] shrink-0 items-center gap-2 border-b px-3">
             <span className="flex-1 text-xs font-semibold">
               {folder}{" "}
@@ -356,9 +361,9 @@ export default function MailInbox() {
               </p>
             )}
           </div>
-        </aside>
+        </ReuiSidebar>
       )}
-      <main className={`shell-content-frame ${!listHidden ? "max-md:hidden" : ""}`}>
+      <AppShellInset className={`shell-content-frame ${!listHidden ? "max-md:hidden" : ""}`}>
         <header className="shell-header border-b">
           <div className="flex min-w-0 items-center gap-1">
             <Button
@@ -440,7 +445,7 @@ export default function MailInbox() {
           </div>
         </header>
         <PlaceholderCanvas />
-      </main>
+      </AppShellInset>
       <Dialog open={compose} onOpenChange={setCompose}>
         <DialogContent>
           <DialogHeader>

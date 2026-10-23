@@ -21,3 +21,7 @@ Official free registry implementations are vendored under `src/components/reui`,
 Radix UI (MIT), Tailwind CSS (MIT), React (MIT), Lucide (ISC), Recharts (MIT), Sonner (MIT), Geist and Kalam fonts (SIL Open Font License), Prism React Renderer (MIT), and their dependencies retain their respective licenses in node_modules / upstream packages. Demo photos use remote Unsplash image URLs and remain subject to the Unsplash license; no REUI premium imagery is downloaded or bundled.
 
 The official shadcn CSS utilities are vendored in src/styles/shadcn.css to avoid a runtime dependency on the CLI toolchain.
+
+## ReUI free Sidebar compositions
+
+AppShell navigation and layout adapt the public MIT-licensed `c-sidebar-1`, `c-sidebar-2` and `c-sidebar-3` examples from the ReUI free registry. Their `sidebar` dependency is vendored at `src/components/ui/sidebar.tsx`, with the shadcn MIT terms above. Adaptations and consumers are recorded in [the AppShell migration audit](docs/appshell-sidebar-migration.md). The shared Tabs composition also follows the free `c-tabs-1` example. No paid AppShell source is included.

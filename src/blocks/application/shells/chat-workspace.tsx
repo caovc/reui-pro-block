@@ -1,3 +1,4 @@
+import { AppShellInset, useShellSidebarState } from "@/components/reui/layout";
 import { useState } from "react";
 import {
   Archive,
@@ -157,7 +158,7 @@ function ThreadRow({
   );
 }
 export default function ChatWorkspace() {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useShellSidebarState();
   const [active, setActive] = useState(threads[0]);
   const [pinned, setPinned] = useState(threads.slice(0, 2));
   const [tab, setTab] = useState("Chats");
@@ -175,13 +176,14 @@ export default function ChatWorkspace() {
           maxSize={collapsed ? "48px" : "40%"}
         >
           <Sidebar
+            width={248}
             collapsed={collapsed}
             className="chat-workspace-sidebar !w-full !h-full"
             drawerClassName="chat-workspace"
           >
             <header className="chat-workspace-brand">
               <ReuiMark small />
-              {!collapsed && <strong>ReUI Chat</strong>}
+              {!collapsed && <strong>Bricklane Chat</strong>}
               <SearchPalette iconOnly collapsed={collapsed} routes={threads} onSelect={setActive} />
               <Button
                 variant="ghost"
@@ -337,7 +339,7 @@ export default function ChatWorkspace() {
         </ResizablePanel>
         <ResizableHandle />
         <ResizablePanel minSize="50%">
-          <main className="shell-content-frame h-full">
+          <AppShellInset className="shell-content-frame h-full">
             <header className="chat-workspace-header">
               <h1>{active}</h1>
               <div>
@@ -405,7 +407,7 @@ export default function ChatWorkspace() {
               </div>
             </header>
             <ChatPlaceholders />
-          </main>
+          </AppShellInset>
         </ResizablePanel>
       </ResizablePanelGroup>
     </div>

@@ -1,3 +1,5 @@
+import { ReuiSidebar } from "@/components/reui/sidebar";
+import { AppShellInset, useShellSidebarState } from "@/components/reui/layout";
 import { useState } from "react";
 import {
   ChevronRight,
@@ -74,7 +76,7 @@ const sourceGroups = [
   },
 ];
 export function CommunityShell() {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useShellSidebarState();
   const [active, setActive] = useState("Public Profiles");
   const [query, setQuery] = useState("");
   const [create, setCreate] = useState(false);
@@ -84,7 +86,7 @@ export function CommunityShell() {
       <header className="shell-header border-b">
         <div className="flex items-center gap-4">
           <ReuiMark small />
-          <strong className="text-sm">ReUI</strong>
+          <strong className="text-sm">Bricklane</strong>
           <Button
             variant="ghost"
             size="icon-sm"
@@ -112,6 +114,7 @@ export function CommunityShell() {
       </header>
       <div className="flex min-h-0 flex-1">
         <Sidebar
+          width={240}
           collapsed={collapsed}
           className="!w-60 border-r !bg-background"
           label="Community navigation"
@@ -119,7 +122,7 @@ export function CommunityShell() {
           <GroupedNav groups={communityGroups} active={active} onSelect={setActive} query={query} />
           <FooterLinks collapsed={collapsed} onSelect={setActive} />
         </Sidebar>
-        <main className="shell-content-frame">
+        <AppShellInset className="shell-content-frame">
           <div className="flex items-center justify-between gap-3 p-3">
             <div>
               <h1 className="text-base font-medium">Community Feeds</h1>
@@ -154,7 +157,7 @@ export function CommunityShell() {
             </DropdownMenu>
           </div>
           <PlaceholderCanvas rows={2} solid />
-        </main>
+        </AppShellInset>
       </div>
       <CreateItemDialog
         open={create}
@@ -187,7 +190,7 @@ export function DualWorkspace({ variant }: { variant: 14 | 16 }) {
         }}
       />
       {!hidden && (
-        <Sidebar className="!w-[264px] border-r" label="Workspace navigation">
+        <Sidebar width={264} className="!w-[264px] border-r" label="Workspace navigation">
           <div className="flex h-12 items-center justify-between">
             <Choices
               label="Workspaces"
@@ -212,7 +215,7 @@ export function DualWorkspace({ variant }: { variant: 14 | 16 }) {
           />
         </Sidebar>
       )}
-      <main className="shell-content-frame">
+      <AppShellInset className="shell-content-frame">
         <header className="shell-header border-b">
           {hidden ? (
             <Button
@@ -273,7 +276,7 @@ export function DualWorkspace({ variant }: { variant: 14 | 16 }) {
           </div>
         )}
         <PlaceholderCanvas rows={2} solid />
-      </main>
+      </AppShellInset>
       <CreateItemDialog
         open={create}
         onOpenChange={setCreate}
@@ -284,7 +287,7 @@ export function DualWorkspace({ variant }: { variant: 14 | 16 }) {
   );
 }
 export function FavoritesShell() {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useShellSidebarState();
   const [active, setActive] = useState("Dashboard");
   const [workspace, setWorkspace] = useState("Mint");
   const [pinned, setPinned] = useState(["Tasks", "Notes", "Contacts", "Companies", "Company"]);
@@ -293,7 +296,7 @@ export function FavoritesShell() {
       <header className="shell-header shell-dark !min-h-10">
         <div className="flex items-center gap-3">
           <ReuiMark small />
-          <span>ReUI</span>
+          <span>Bricklane</span>
         </div>
         <div className="flex items-center gap-2">
           <Choices
@@ -318,7 +321,7 @@ export function FavoritesShell() {
         </div>
       </header>
       <div className="flex min-h-0 flex-1">
-        <Sidebar collapsed={collapsed} className="!w-[248px] border-r !bg-background">
+        <Sidebar width={248} collapsed={collapsed} className="!w-[248px] border-r !bg-background">
           <div className="flex h-12 items-center justify-between">
             <Choices
               label="Workspaces"
@@ -395,20 +398,20 @@ export function FavoritesShell() {
             </Button>
           </div>
         </Sidebar>
-        <main className="shell-content-frame">
+        <AppShellInset className="shell-content-frame">
           <PageTitle title={active}>
             <Button variant="outline" size="sm" onClick={() => setActive("Reports")}>
               Reports
             </Button>
           </PageTitle>
           <PlaceholderCanvas rows={2} solid />
-        </main>
+        </AppShellInset>
       </div>
     </div>
   );
 }
 export function WorkbenchShell() {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useShellSidebarState();
   const [active, setActive] = useState("Today");
   const [regions, setRegions] = useState(["Navigation", "Details", "Workbench", "Calendar"]);
   const [tab, setTab] = useState("Settings");
@@ -508,7 +511,10 @@ export function WorkbenchShell() {
                 <ContentCards layout="workbench" />
               </div>
               {regions.includes("Details") && (
-                <aside className="hidden w-[280px] flex-col border-l lg:flex">
+                <ReuiSidebar
+                  collapsible="none"
+                  className="hidden w-[280px] flex-col border-l lg:flex"
+                >
                   <div className="flex items-center justify-between border-b p-2">
                     Details
                     <Button
@@ -521,7 +527,7 @@ export function WorkbenchShell() {
                     </Button>
                   </div>
                   <ContentCards layout="details" />
-                </aside>
+                </ReuiSidebar>
               )}
             </div>
           </ResizablePanel>
@@ -566,9 +572,9 @@ export function WorkbenchShell() {
         </ResizablePanelGroup>
       </div>
       {regions.includes("Calendar") && (
-        <aside className="shell-context max-lg:!hidden">
+        <ReuiSidebar collapsible="none" className="shell-context max-lg:!hidden">
           <CalendarContext />
-        </aside>
+        </ReuiSidebar>
       )}
     </div>
   );

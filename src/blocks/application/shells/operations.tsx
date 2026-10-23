@@ -1,3 +1,5 @@
+import { ReuiSidebar } from "@/components/reui/sidebar";
+import { AppShellInset, useShellSidebarState } from "@/components/reui/layout";
 import { useEffect, useState } from "react";
 import {
   Activity,
@@ -234,7 +236,7 @@ export default function OperationsShell() {
     media.addEventListener("change", update);
     return () => media.removeEventListener("change", update);
   }, []);
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useShellSidebarState();
   const [active, setActive] = useState("Today");
   const [note, setNote] = useState(false);
   const [expanded, setExpanded] = useState(false);
@@ -247,7 +249,7 @@ export default function OperationsShell() {
         <Sidebar collapsed={collapsed} className="border-r" label="Operations navigation">
           <div className="flex h-9 items-center gap-2 px-2">
             <ReuiMark />
-            {!collapsed && <span className="sidebar-expanded text-xs font-medium">ReUI</span>}
+            {!collapsed && <span className="sidebar-expanded text-xs font-medium">Bricklane</span>}
           </div>
           <div className="mt-3 px-0">
             <SearchPalette collapsed={collapsed} onSelect={setActive} />
@@ -285,7 +287,7 @@ export default function OperationsShell() {
           <CollapseHandle collapsed={collapsed} onToggle={() => setCollapsed(!collapsed)} />
         </Sidebar>
       )}
-      <main className="shell-content-frame">
+      <AppShellInset className="shell-content-frame">
         <header className="shell-header border-b">
           <HeaderSwitchers initialOrg="Atlas Desk" initialApp="" />
           <div className="flex items-center gap-1">
@@ -420,11 +422,11 @@ export default function OperationsShell() {
             )}
           </ResizablePanelGroup>
         </div>
-      </main>
+      </AppShellInset>
       {regions.includes("context") && !compact && (
-        <aside className="shell-context">
+        <ReuiSidebar collapsible="none" className="shell-context">
           <CalendarContext />
-        </aside>
+        </ReuiSidebar>
       )}
       <Sheet
         open={compact && regions.includes("details")}
