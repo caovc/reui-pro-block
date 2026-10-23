@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useState } from "react";
 import { ArrowLeft, Code2, ExternalLink, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { GlobalCustomizeButton } from "@/components/site/global-theme-root";
 import { templates } from "./catalog";
 import { TemplateRenderer } from "./renderer";
 import "./templates.css";
@@ -31,6 +32,7 @@ export default function TemplateWorkspace({
         <span className="font-medium">{template?.name ?? "Unknown template"}</span>
         <span className="template-demo-label">Local demo</span>
         <div className="ml-auto flex items-center gap-2">
+          <GlobalCustomizeButton compact />
           <Button
             variant="ghost"
             size="icon-xs"

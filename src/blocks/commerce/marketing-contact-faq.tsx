@@ -1,3 +1,4 @@
+import { GitHubMark as Github } from "@/components/icons/github-mark";
 import { useId, useState, type MouseEvent, type ReactNode } from "react";
 import {
   ArrowRight,
@@ -10,7 +11,6 @@ import {
   MessageSquare,
   MessageSquareText,
   LifeBuoy,
-  GitFork as Github,
 } from "lucide-react";
 import type { BlockProps } from "@/data/types";
 import { Badge } from "@/components/reui/badge";

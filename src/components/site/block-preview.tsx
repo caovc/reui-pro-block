@@ -5,7 +5,6 @@ import {
   ExternalLink,
   Monitor,
   RotateCcw,
-  SlidersHorizontal,
   Smartphone,
   Tablet,
   Code2,
@@ -28,19 +27,7 @@ import {
   SheetTitle,
   SheetDescription,
 } from "@/components/ui/sheet";
-const PreviewCustomizer = lazy(() =>
-  import("./preview-customizer").then((m) => ({
-    default: m.PreviewCustomizer,
-  })),
-);
-import {
-  applyTheme,
-  isThemeDark,
-  loadTheme,
-  previewThemeStorageKey,
-  normalizeTheme,
-  readTheme,
-} from "./preview-theme";
+import { useGlobalTheme } from "./global-theme-store";
 import "./block-preview.css";
 const SourcePanel = lazy(() => import("./source-panel").then((m) => ({ default: m.SourcePanel })));
 function IconTip({ label, children }: { label: string; children: React.ReactNode }) {
@@ -51,42 +38,15 @@ function IconTip({ label, children }: { label: string; children: React.ReactNode
     </Tooltip>
   );
 }
-function useSystemDark() {
-  const [dark, setDark] = useState(() => matchMedia("(prefers-color-scheme: dark)").matches);
-  useEffect(() => {
-    const media = matchMedia("(prefers-color-scheme: dark)");
-    const update = () => setDark(media.matches);
-    media.addEventListener("change", update);
-    return () => media.removeEventListener("change", update);
-  }, []);
-  return dark;
-}
-export function PreviewPanel({ block, dark }: { block: BlockMeta; dark: boolean }) {
+export function PreviewPanel({ block }: { block: BlockMeta; dark: boolean }) {
+  const { theme, dark } = useGlobalTheme();
+  const previewDark = dark;
   const [tab, setTab] = useState("preview");
   const [device, setDevice] = useState("desktop");
   const [revision, setRevision] = useState(0);
   const [copied, setCopied] = useState(false);
-  const [theme, setTheme] = useState(loadTheme);
-  const systemDark = useSystemDark();
-  const previewDark = isThemeDark(theme, dark, systemDark);
   const [sourceOpen, setSourceOpen] = useState(false);
   const sourceTrigger = useRef<HTMLButtonElement>(null);
-  useEffect(() => {
-    const update = () => {
-      const params = new URLSearchParams(location.hash.split("?")[1]);
-      if (params.has("preset")) setTheme(readTheme(params));
-    };
-    window.addEventListener("hashchange", update);
-    return () => window.removeEventListener("hashchange", update);
-  }, []);
-  useEffect(() => {
-    try {
-      localStorage.setItem(previewThemeStorageKey, JSON.stringify(theme));
-    } catch {
-      /* A preview still works when storage is disabled. */
-    }
-  }, [theme]);
-  const [customize, setCustomize] = useState(false);
   const iframe = useRef<HTMLIFrameElement>(null);
   const [frameReady, setFrameReady] = useState(false);
   const query = new URLSearchParams({
@@ -198,31 +158,9 @@ export function PreviewPanel({ block, dark }: { block: BlockMeta; dark: boolean 
                 </a>
               </Button>
             </IconTip>
-            <Button
-              variant="outline"
-              size="sm"
-              className="ml-1"
-              aria-label="Customize"
-              aria-controls="preview-customizer"
-              onClick={() => setCustomize((v) => !v)}
-              aria-expanded={customize}
-            >
-              <SlidersHorizontal data-icon="inline-start" />
-              <span className="hidden md:inline">Customize</span>
-            </Button>
           </div>
         </div>
-        <div className="preview-workspace" data-customize={customize}>
-          {customize && (
-            <Suspense fallback={<Skeleton className="h-96 w-60 shrink-0" />}>
-              <PreviewCustomizer
-                theme={theme}
-                onChange={setTheme}
-                onClose={() => setCustomize(false)}
-                presetLink={presetLink}
-              />
-            </Suspense>
-          )}
+        <div className="preview-workspace">
           <div className="preview-workspace-main">
             <TabsContent value="preview" className="preview-content">
               <div ref={canvas} className="preview-canvas" data-device={device}>
@@ -307,39 +245,9 @@ export function PreviewPanel({ block, dark }: { block: BlockMeta; dark: boolean 
   );
 }
 export function IsolatedPreview({ block }: { block: BlockMeta }) {
-  const params = new URLSearchParams(location.hash.split("?")[1]);
-  const [theme, setTheme] = useState(() => readTheme(params));
-  const [inherited, setInherited] = useState(params.get("theme") === "dark");
-  const systemDark = useSystemDark();
-  const dark = isThemeDark(theme, inherited, systemDark);
   useEffect(() => {
-    applyTheme(theme, dark);
     document.title = `${block.name} — Preview`;
-  }, [theme, dark, block.name]);
-  useEffect(
-    () => () => {
-      document.getElementById("preview-preset")?.remove();
-      document.documentElement.style.removeProperty("--radius");
-      document.documentElement.style.removeProperty("color-scheme");
-      delete document.documentElement.dataset.accent;
-    },
-    [],
-  );
-  useEffect(() => {
-    const receive = (event: MessageEvent) => {
-      if (
-        event.origin !== location.origin ||
-        event.source !== window.parent ||
-        window.parent === window ||
-        event.data?.type !== "reui-preview-theme"
-      )
-        return;
-      setTheme(normalizeTheme(event.data.theme));
-      setInherited(event.data.dark === true);
-    };
-    window.addEventListener("message", receive);
-    return () => window.removeEventListener("message", receive);
-  }, []);
+  }, [block.name]);
   return (
     <div className="isolated-preview" data-block-id={block.id}>
       <BlockRenderer block={block} />

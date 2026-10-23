@@ -1,3 +1,4 @@
+import { GitHubMark as Github } from "@/components/icons/github-mark";
 import { LimelightTestimonials } from "./limelight-testimonials";
 import { portraitAssets } from "./photo-assets";
 import { useState, useRef } from "react";
@@ -16,7 +17,6 @@ import {
   Shield,
   Calendar,
   BarChart3,
-  GitFork as Github,
   X,
   Search,
   Play,

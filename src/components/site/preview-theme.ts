@@ -5,21 +5,30 @@ export const accents = {
   violet: "#7c3aed",
   orange: "#c2410c",
   rose: "#be123c",
+  red: "#dc2626",
+  amber: "#b45309",
+  teal: "#0f766e",
+  cyan: "#0e7490",
+  indigo: "#4f46e5",
+  pink: "#be185d",
 } as const;
 export const fonts = {
+  inter: '"Inter", Arial, sans-serif',
   geist: '"Geist Variable", sans-serif',
   system: "system-ui, sans-serif",
   serif: "Georgia, serif",
   mono: "ui-monospace, monospace",
 } as const;
 export const themeOptions = {
-  base: ["default", "neutral", "zinc", "stone"],
+  base: ["default", "neutral", "zinc", "stone", "gray", "slate"],
   accent: ["default", ...Object.keys(accents)],
-  chart: ["default", "neutral", "theme"],
+  chart: ["default", "neutral", "theme", "colorful"],
   font: ["default", ...Object.keys(fonts)],
   heading: ["default", ...Object.keys(fonts)],
   radius: ["default", "0", "0.375", "0.625", "1"],
   mode: ["inherit", "light", "dark", "system"],
+  menu: ["default", "solid", "outline"],
+  menuAccent: ["default", "subtle", "bold"],
 } as const;
 export type PreviewTheme = {
   base: string;
@@ -30,6 +39,8 @@ export type PreviewTheme = {
   radius: string;
   mode: string;
   custom: string;
+  menu: string;
+  menuAccent: string;
 };
 export const defaultTheme: PreviewTheme = {
   base: "default",
@@ -40,6 +51,8 @@ export const defaultTheme: PreviewTheme = {
   radius: "default",
   mode: "inherit",
   custom: "",
+  menu: "default",
+  menuAccent: "default",
 };
 export function normalizeTheme(value: unknown): PreviewTheme {
   const result = { ...defaultTheme };
@@ -93,7 +106,14 @@ export function isThemeDark(theme: PreviewTheme, inherited: boolean, system: boo
 export function themeCSS(theme: PreviewTheme) {
   const accent = theme.custom || accents[theme.accent as keyof typeof accents];
   const color = accent || "var(--primary)";
-  const hue = theme.base === "stone" ? "55" : "286";
+  const hue =
+    theme.base === "stone"
+      ? "55"
+      : theme.base === "slate"
+        ? "258"
+        : theme.base === "gray"
+          ? "264"
+          : "286";
   const chroma = theme.base === "neutral" ? "0" : "0.008";
   const palette = (dark: boolean) => `
   --background: oklch(${dark ? ".145" : "1"} ${chroma} ${hue});
@@ -119,11 +139,22 @@ export function themeCSS(theme: PreviewTheme) {
       : Array.from(
           { length: 5 },
           (_, i) =>
-            `\n  --chart-${i + 1}: ${theme.chart === "neutral" ? `oklch(${0.75 - i * 0.11} 0 0)` : `color-mix(in oklch, ${color} ${100 - i * 16}%, var(--background))`};`,
+            `\n  --chart-${i + 1}: ${theme.chart === "neutral" ? `oklch(${0.75 - i * 0.11} 0 0)` : theme.chart === "colorful" ? ["#2563eb", "#7c3aed", "#047857", "#c2410c", "#be123c"][i] : `color-mix(in oklch, ${color} ${100 - i * 16}%, var(--background))`};`,
         ).join("");
   const bodyFont = fonts[theme.font as keyof typeof fonts];
   const headingFont = fonts[theme.heading as keyof typeof fonts];
-  return `/* Preview preset — append after your existing theme CSS. */
+  const surfaces =
+    ":root:root :is(.reui-reference, .template-surface, .template-surface > :first-child)";
+  const menuTargets =
+    ":root:root :is(.sidebar-link.active, .sidebar-block-link.active, [data-sidebar=menu-button][data-active=true])";
+  const accentTokens = accent
+    ? `--primary: ${accent}; --primary-foreground: #ffffff; --ring: ${accent}; --sidebar-primary: ${accent}; --sidebar-primary-foreground: #ffffff;`
+    : "";
+  const menuTokens =
+    theme.menuAccent === "default"
+      ? ""
+      : `--sidebar-accent: ${theme.menuAccent === "bold" ? "var(--primary)" : "color-mix(in oklch, var(--primary) 10%, var(--background))"}; --sidebar-accent-foreground: ${theme.menuAccent === "bold" ? "var(--primary-foreground)" : "var(--foreground)"};`;
+  return `/* Bricklane global theme — append after your existing theme CSS. */
 :root:root {${theme.base === "default" ? "" : palette(false)}
   ${theme.radius === "default" ? "" : `--radius: ${theme.radius}rem;`}
   ${bodyFont ? `--font-sans: ${bodyFont};` : ""}
@@ -132,25 +163,28 @@ export function themeCSS(theme: PreviewTheme) {
 :root:root.dark {${theme.base === "default" ? "" : palette(true)}
 }
 :root:root, :root:root.dark {
-  ${
-    accent
-      ? `--primary: ${accent};
-  --primary-foreground: #ffffff;
-  --ring: ${accent};
-  --sidebar-primary: ${accent};
-  --sidebar-primary-foreground: #ffffff;`
-      : ""
-  }${chart}
+  ${accentTokens}${chart}${menuTokens}
 }
+${accent || chart || menuTokens ? `${surfaces} { ${accentTokens}${chart}${menuTokens} }` : ""}
+${
+  accent
+    ? `:root:root .template-surface .ct-limelight { --lime: ${accent}; }
+:root:root .template-surface .ct-lime-cta { --primary-foreground: #ffffff; color: var(--primary-foreground); }`
+    : ""
+}
+${theme.base !== "default" ? `:root:root .template-surface .ct-limelight { --lime-bg: var(--background); --lime-panel: var(--card); --lime-text: var(--foreground); --lime-border: var(--border); --lime-muted: var(--muted-foreground); }` : ""}
+${theme.menuAccent !== "default" ? `${menuTargets} { background: var(--sidebar-accent); color: var(--sidebar-accent-foreground); }` : ""}
+${theme.menu === "solid" ? `${menuTargets} { background: var(--primary); color: var(--primary-foreground); }` : theme.menu === "outline" ? `${menuTargets} { background: transparent; color: var(--foreground); box-shadow: inset 0 0 0 1px var(--border); }` : ""}
 ${
   bodyFont
     ? `:root:root body { font-family: var(--font-sans); }
-:root:root .reui-reference { --font-sans: ${bodyFont}; font-family: var(--font-sans); }`
+${surfaces} { --font-sans: ${bodyFont}; font-family: var(--font-sans); }
+:root:root :is([data-slot=popover-content], [data-slot=select-content], [data-slot=dialog-content], [data-slot=sheet-content]) { --font-sans: ${bodyFont}; font-family: var(--font-sans); }`
     : ""
 }
 ${
   headingFont
-    ? `:root:root .reui-reference { --font-heading: ${headingFont}; }
+    ? `${surfaces} { --font-heading: ${headingFont}; }
 :root:root :is(h1, h2, h3, h4, h5, h6) { font-family: var(--font-heading); }`
     : ""
 }

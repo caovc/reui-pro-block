@@ -5,6 +5,7 @@ const raw = import.meta.glob(
     "/src/blocks/**/*.{ts,tsx,css}",
     "/src/components/ui/*.{ts,tsx}",
     "/src/components/brand-mark.tsx",
+    "/src/components/icons/*.{ts,tsx}",
     "/src/components/reui/**/*.{ts,tsx,css}",
     "/src/hooks/*.{ts,tsx}",
     "/src/lib/{utils,download,demo-artwork}.ts",

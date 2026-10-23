@@ -1,0 +1,39 @@
+{
+  "scope": "Global appearance customizer and GitHub mark integration",
+  "base": "32a95febaaa0af5a394b1a9a013c22afeb733681",
+  "frozenFiles": {
+    "src/components/site/global-theme-store.ts": "d12c5630d7a10c2e4d68869576ec0cb88d248793742b1066f510fb3f7ffc7404",
+    "src/components/site/global-theme-root.tsx": "dfbd6043653291f9229de15d7a4b240970efb96d334790c3f9843b7a6a93000c",
+    "src/components/site/global-theme.css": "741326bc4fd7f015d09af7487f12de82f2c8a1194fcd60cb111edc35285e70a6",
+    "src/components/site/block-preview.tsx": "0f191e96f89c517ca2ea9585ae3b936b673b556b9bc97740bdf616526dd0071b",
+    "src/components/site/block-preview.css": "b55e827c0cd4504b8d1c786211c28d7b6a317ce6a5b3e01b606ffd55b7cde8aa",
+    "src/components/site/preview-theme.ts": "c4611be0a41a0ba98169c20b3fe0d13d20af3c29ad5b2edbdb0a59c1a06dceb2",
+    "src/components/site/preview-customizer.tsx": "752c8a4e8ae35f7ce401108ed0214d63a3eb17b674a4473f1fc2d9bfe2020ddc",
+    "src/main.tsx": "43810cfba9c1c17a765b693fb1f07bdbbc003b81c9ea958a5057a863270704d1",
+    "src/App.tsx": "ad774e53c343be3e930bcffcd0aa559e630ec4bae08eee4bfad5c064f935d012",
+    "src/templates/workspace.tsx": "fefcf191ba69174f7d2c830e35d15350e3719b9a5b579e157f0b92a0e51d2889",
+    "tests/global-theme.spec.ts": "b0fa1ce330e301ec24e0f8a78bbc3b152aa9130317d276091739d904a0ed2df4",
+    "docs/global-theme-customizer.md": "eb87d0825c03abba14476b47518596701c563c863259f81782fe9c8be8947206",
+    "src/components/icons/github-mark.tsx": "630316309dd7c91ff0d61763c4423e3308803b79036fa4238cc2b80097bacef9",
+    "src/templates/collaboration/marketing.tsx": "35850f37e87228b396b03fb85091d8726a7d9d14e51cf34853605583f4f776ee",
+    "src/blocks/commerce/marketing-contact-faq.tsx": "85891b1c6c071bc5fc02bc8bce853f7b2241e65c52370fe851807a8e6c37735c",
+    "src/lib/source.ts": "ee1284cb65f4d0091b5edb9b1baf12504923fbc428f8f3f87699ef0ca93851f8"
+  },
+  "actualReuse": [
+    "Official free ReUI Frame/FrameHeader/FramePanel",
+    "Official free ReUI ColorPicker",
+    "Existing Select/Sheet keyboard and focus compositions"
+  ],
+  "customGaps": "Global store, storage synchronization, token application and preset validation are site-specific glue; official free components supply controls.",
+  "verification": {
+    "root": "Clean committed base plus exact frozen16 files; strict production build, full format780files, tooling3/3 and oxlint pass.43/43 production scope+starter tests passed1.2m, then15/15 unchanged workspace regression cases passed17.8s, including the original Dialog6/7 source cases.",
+    "productionLogs": [
+      "/tmp/bricklane-global-theme-root-production.log",
+      "/tmp/bricklane-global-theme-root-dialog-regression.log"
+    ],
+    "actualDownloads": "Root unchanged starter-build tests downloaded, independently built and rendered Data sparkline and Application auth ZIPs, comparing1440/390 computed spacing/Frame borders. Owner separately downloaded auth20 285files, theme CSS and Contact6/Overture ZIPs containing the MIT GitHub mark.",
+    "historicalFailures": "Owner first direct run40/41; full758 run754passed/3failed/1notrun. Original traces and contexts preserved at /tmp/reui-global-theme-diagnostics/index.html. Root independent58pass does not replace or establish the cause of those first-run failures. No timeout/retry/assertion changes.",
+    "fullSuite": "Pending CI on the integrated commit.",
+    "deployment": "Pending separate CI and Pages success."
+  }
+}

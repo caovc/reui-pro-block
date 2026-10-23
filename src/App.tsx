@@ -1,4 +1,5 @@
 import { BrandMark } from "@/components/brand-mark";
+import { GitHubMark } from "@/components/icons/github-mark";
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import {
   ArrowDownToLine,
@@ -10,7 +11,6 @@ import {
   ChevronRight,
   Code2,
   ExternalLink,
-  GitFork as Github,
   Heart,
   LayoutGrid,
   Monitor,
@@ -52,6 +52,8 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { templates, templateCategories } from "@/templates/catalog";
+import { GlobalCustomizeButton } from "@/components/site/global-theme-root";
+import { useGlobalTheme, toggleGlobalTheme } from "@/components/site/global-theme-store";
 import { PreviewPanel, IsolatedPreview } from "@/components/site/block-preview";
 const TemplateGallery = lazy(() => import("@/templates/gallery"));
 const TemplateWorkspace = lazy(() => import("@/templates/workspace"));
@@ -208,7 +210,7 @@ function NoResults({ clear, favorites = false }: { clear: () => void; favorites?
 
 export default function App() {
   const hash = useHash();
-  const [dark, setDark] = useStored("blocks-dark", false);
+  const { dark } = useGlobalTheme();
   const [favorites, setFavorites] = useStored<string[]>("blocks-favorites", []);
   const [group, setGroup] = useState("all");
   const [query, setQuery] = useState("");
@@ -226,9 +228,6 @@ export default function App() {
   const isolated = segments[0] === "preview" && block;
   const isTemplates = segments[0] === "templates";
   const isTemplateWorkspace = isTemplates && Boolean(segments[1]);
-  useEffect(() => {
-    if (!isolated) document.documentElement.classList.toggle("dark", dark);
-  }, [dark, isolated]);
   useEffect(() => {
     const resetFilters = () => {
       setPage(1);
@@ -319,7 +318,7 @@ export default function App() {
           key={segments[1]}
           id={segments[1]}
           dark={dark}
-          onThemeChange={() => setDark(!dark)}
+          onThemeChange={toggleGlobalTheme}
         />
       </Suspense>
     );
@@ -502,12 +501,13 @@ export default function App() {
             <span>{isTemplates ? "Search templates..." : "Search blocks..."}</span>
             <kbd>⌘ K</kbd>
           </Button>
+          <GlobalCustomizeButton />
           <IconTip label={dark ? "Light theme" : "Dark theme"}>
             <Button
               variant="ghost"
               size="icon"
               aria-label="Toggle theme"
-              onClick={() => setDark(!dark)}
+              onClick={toggleGlobalTheme}
             >
               {dark ? <Sun /> : <Moon />}
             </Button>
@@ -519,7 +519,7 @@ export default function App() {
               rel="noreferrer"
               aria-label="GitHub repository"
             >
-              <Github />
+              <GitHubMark />
             </a>
           </Button>
           <Button variant="outline" className="hidden sm:flex" asChild>
@@ -923,7 +923,7 @@ export default function App() {
             <div className="flex gap-2">
               <Button asChild>
                 <a href="https://github.com/caovc/reui-pro-block" target="_blank" rel="noreferrer">
-                  <Github data-icon="inline-start" />
+                  <GitHubMark data-icon="inline-start" />
                   Repository
                 </a>
               </Button>
