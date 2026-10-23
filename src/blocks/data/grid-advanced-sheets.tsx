@@ -46,6 +46,7 @@ import {
   TableOptions,
 } from "./grid-advanced-shared";
 import { cellClass, cn, money } from "./grid-advanced-utils";
+import { productArtwork } from "./grid-advanced-brand-assets";
 const categories = ["Drinks", "Dairy", "Bakery", "Produce", "Frozen", "Snacks", "Home", "Care"];
 const initialMix = {
   target: [14, 12, 6, 10, 10, 16, 18, 14],
@@ -1507,18 +1508,6 @@ function WholesaleModelGrid({
     />
   );
 }
-const productPhotos = [
-  "1550998358-08b4f83dc345",
-  "1744814917810-269fbf29ca00",
-  "1725829966109-89dff97ad2c5",
-  "1547586877-0351a7143cbe",
-  "1698732662028-2443c4acd739",
-  "1596523027665-9da35ced2388",
-  "1624548140129-74786c5f1279",
-  "1624548140150-108c3287f551",
-  "1608236159447-2d27116777f3",
-  "1789110520148-bb52ba37759b",
-];
 export function ProductKpis() {
   const [rows, setRows] = useState(productKpiRows);
   const [query, setQuery] = useState("");
@@ -1647,7 +1636,7 @@ export function ProductKpis() {
                   <div className="flex items-center gap-2">
                     <img
                       alt=""
-                      src={`https://images.unsplash.com/photo-${productPhotos[(r.id - 1) % 10]}?w=96&h=96&fit=crop&q=80`}
+                      src={productArtwork(r.id, r.name)}
                       className="size-7 rounded-md object-cover"
                     />
                     <div>

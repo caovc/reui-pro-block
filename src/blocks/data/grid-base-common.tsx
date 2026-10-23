@@ -35,7 +35,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-import { gridAvatarAssets, gridBrandAssets } from "./grid-base-assets";
+import { demoAvatar } from "@/lib/demo-artwork";
+import { gridBrandAssets } from "./grid-base-assets";
 export function Frame({
   title,
   description,
@@ -127,49 +128,11 @@ export function SearchBox({
     </div>
   );
 }
-const avatarPhotos: Record<string, string> = {
-  "Avery Quinn": "1504593811423-6dd665756598",
-  "Dev Rana": "1504257432389-52343af06ae3",
-  "Imani Brooks": "1488426862026-3ee34a7d66df",
-  "Lena Torres": "1494790108377-be9c29b29330",
-  "Marcus Hale": "1500648767791-00dcc994a43e",
-  "Amara Ortiz": "1494790108377-be9c29b29330",
-  "Theo Mercer": "1500648767791-00dcc994a43e",
-  "Lena Hoffman": "1517841905240-472988babdf9",
-  "Iris Calder": "1488426862026-3ee34a7d66df",
-  "Samir Vale": "1506794778202-cad84cf45f1d",
-  "Leila Cole": "1494790108377-be9c29b29330",
-  "Aiden Brooks": "1500648767791-00dcc994a43e",
-  "Jonah Voss": "1560250097-0b93528c311a",
-  "Kira Santos": "1517841905240-472988babdf9",
-  "Kris Owens": "1546961329-78bef0414d7c",
-  "Adam West": "1472099645785-5658abf4ff4e",
-  "Amara Cole": "1554151228-14d9def656e4",
-  "Avery Stone (You)": "1527980965255-d3b416303d12",
-  "Ben Walker": "1560250097-0b93528c311a",
-  "Clara Meyer": "1489424731084-a5d8b219a5bb",
-  "Dante Ruiz": "1519345182560-3f2917c472ef",
-  "Elena Park": "1524504388940-b1c1722653e1",
-  "Eli Morris": "1511485977113-f34c92461ad9",
-  "Mira Stone": "1494790108377-be9c29b29330",
-  "Nora Vale": "1438761681033-6461ffad8d80",
-  "Alex Johnson": "1535713875002-d1d0cf377fde",
-  "Theo Park": "1472099645785-5658abf4ff4e",
-};
 export function BrandMark({ name }: { name: string }) {
   const slug = name.toLowerCase().replaceAll(" ", "");
   const src = gridBrandAssets[slug];
   return src ? (
-    <img
-      alt=""
-      src={src}
-      className={cn(
-        "size-4 shrink-0 object-contain",
-        !["stripe", "supabase", "mintlify", "neon", "figma", "paypal", "zoom", "n8n"].includes(
-          slug,
-        ) && "dark:invert",
-      )}
-    />
+    <img alt="" src={src} className="size-4 shrink-0 object-contain" />
   ) : (
     <span className="flex size-4 shrink-0 items-center justify-center text-xs font-semibold">
       {name[0]}
@@ -202,9 +165,9 @@ export function Identity({
           .map((w) => w[0])
           .slice(0, 2)
           .join("")}
-        {photo && avatarPhotos[name] && gridAvatarAssets[avatarPhotos[name]] && (
+        {photo && (
           <img
-            src={gridAvatarAssets[avatarPhotos[name]]}
+            src={demoAvatar(name)}
             alt=""
             className="absolute inset-0 size-full rounded-full object-cover"
             onError={(e) => {

@@ -1,7 +1,6 @@
 import { useEffect, useState, type ReactNode } from "react";
 import {
   BellRing,
-  Building2,
   Check,
   Ellipsis,
   GitBranch,
@@ -82,8 +81,8 @@ import {
 import { IconTile } from "@/components/reui/icon-tile";
 import { Rating } from "@/components/reui/rating";
 import "./grid-filtering.css";
-import { gridAvatarAssets, gridBrandAssets } from "./grid-base-assets";
-import { noraPortrait } from "./grid-filtering-portraits";
+import { gridBrandAssets } from "./grid-base-assets";
+import { demoAvatar, integrationArtwork, svgImage } from "@/lib/demo-artwork";
 
 const usd = (n: number) =>
   n.toLocaleString("en-US", {
@@ -91,35 +90,10 @@ const usd = (n: number) =>
     currency: "USD",
     maximumFractionDigits: 0,
   });
-const avatars: Record<string, string> = {
-  "Emil Novak": "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=96&h=96&dpr=2&q=80",
-  "Priya Nair": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=96&h=96&dpr=2&q=80",
-  "Maya Patel": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=96&h=96&dpr=2&q=80",
-  "Nora Ibrahim": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=96&h=96&dpr=2&q=80",
-  "Sarah Chen": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=96&h=96&dpr=2&q=80",
-  "Michael Rodriguez":
-    "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=96&h=96&dpr=2&q=80",
-  "Emma Wilson":
-    "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=96&h=96&dpr=2&q=80",
-  "Daniel Kim": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=96&h=96&dpr=2&q=80",
-  "Priya Patel":
-    "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=96&h=96&dpr=2&q=80",
-  "Alex Johnson":
-    "https://images.unsplash.com/photo-1504593811423-6dd665756598?w=96&h=96&dpr=2&q=80",
-};
 function Portrait({ name, small = false }: { name: string; small?: boolean }) {
   return (
     <Avatar className={small ? "size-4" : "size-7"}>
-      <AvatarImage
-        src={
-          small
-            ? undefined
-            : name === "Nora Ibrahim"
-              ? noraPortrait
-              : gridAvatarAssets[avatars[name]?.split("photo-")[1]?.split("?")[0]]
-        }
-        alt={name}
-      />
+      <AvatarImage src={small ? undefined : demoAvatar(name)} alt={name} />
       <AvatarFallback className={small ? "text-[8px]" : "text-[10px]"}>
         {name
           .split(" ")
@@ -131,19 +105,10 @@ function Portrait({ name, small = false }: { name: string; small?: boolean }) {
   );
 }
 function Brand({ name, tile = false }: { name: string; tile?: boolean }) {
-  const colors: Record<string, string> = {
-    Stripe: "#635bff",
-    Supabase: "#31c88a",
-    OpenAI: "#161616",
-    Anthropic: "#161616",
-    N8n: "#ff4f81",
-    Mintlify: "#10c994",
-    Convex: "#c80061",
-    Prisma: "#161616",
-    Paper: "#80aaff",
-    Neon: "#10c9a1",
-    Slack: "#611f69",
-  };
+  const slug = name.toLowerCase().replaceAll(" ", "");
+  const src =
+    gridBrandAssets[slug] ??
+    svgImage(integrationArtwork(name.slice(0, 1).toUpperCase() || "?", "#71808f"));
   return (
     <IconTile
       aria-hidden="true"
@@ -151,67 +116,8 @@ function Brand({ name, tile = false }: { name: string; tile?: boolean }) {
         "size-5 rounded-none border-0 bg-transparent font-semibold",
         tile && "size-9 rounded-xl border bg-background shadow-xs",
       )}
-      style={{ color: colors[name] ?? "#666" }}
     >
-      {gridBrandAssets[name.toLowerCase().replaceAll(" ", "")] &&
-      !["Stripe", "Supabase"].includes(name) ? (
-        <img
-          src={gridBrandAssets[name.toLowerCase().replaceAll(" ", "")]}
-          alt=""
-          className={cn(
-            "size-5 object-contain",
-            ["OpenAI", "Anthropic", "Prisma", "Convex"].includes(name) && "dark:invert",
-          )}
-        />
-      ) : name === "Stripe" ? (
-        <svg viewBox="0 0 24 24" className="size-5">
-          <path d="M2 6 22 2v15L2 21Z" fill="currentColor" />
-        </svg>
-      ) : name === "Supabase" ? (
-        <svg viewBox="0 0 24 24" className="size-5">
-          <path d="M13 1 1 15h10v8l12-14H13Z" fill="currentColor" />
-        </svg>
-      ) : name === "OpenAI" ? (
-        <svg
-          className="size-5"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.15"
-        >
-          {[0, 60, 120].map((a) => (
-            <rect
-              key={a}
-              x="5"
-              y="3"
-              width="14"
-              height="18"
-              rx="6"
-              transform={`rotate(${a} 12 12)`}
-            />
-          ))}
-        </svg>
-      ) : name === "Anthropic" ? (
-        <span className="text-base tracking-tighter">AI</span>
-      ) : name === "Prisma" ? (
-        <svg
-          viewBox="0 0 24 24"
-          className="size-5"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-        >
-          <path d="m12 2 10 18-17 3-3-7Z M12 2l-7 21" />
-        </svg>
-      ) : name === "Paper" ? (
-        <svg viewBox="0 0 24 24" className="size-5" fill="currentColor">
-          <path d="M2 6h4v12h12v4H2Z M6 2h16v16h-4V6H6Z" />
-        </svg>
-      ) : name === "Mintlify" ? (
-        <span className="rounded-full bg-emerald-400 px-1 text-white">◒</span>
-      ) : (
-        <Building2 className="size-4" />
-      )}
+      <img src={src} alt="" className="size-5 object-contain" />
     </IconTile>
   );
 }

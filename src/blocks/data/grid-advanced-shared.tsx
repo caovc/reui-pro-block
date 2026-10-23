@@ -49,7 +49,7 @@ import {
   type ReactNode,
 } from "react";
 import { downloadCsv } from "./data-utils";
-import { gridAvatarAssets } from "./grid-base-assets";
+import { demoAvatar } from "@/lib/demo-artwork";
 export {
   ArrowUpDown,
   Badge,
@@ -481,16 +481,7 @@ export function TinyAvatar({
       )}
     >
       {photo ? (
-        <img
-          alt=""
-          className="size-full rounded-full object-cover"
-          src={
-            Object.values(gridAvatarAssets)[
-              Array.from(name).reduce((sum, char) => sum + char.charCodeAt(0), 0) %
-                Object.values(gridAvatarAssets).length
-            ]
-          }
-        />
+        <img alt="" className="size-full rounded-full object-cover" src={demoAvatar(name)} />
       ) : (
         name
           .split(" ")

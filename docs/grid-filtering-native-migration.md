@@ -7,7 +7,7 @@
 - `Filters` and its official Cascader, condition picker, typed value editors, multiselect, chip action menus and focus handling replace the hand-built filter builder. The adapter maps domain fields and the basic flat AND query to the records' predicate. The library supplies the filter interface; evaluating a block's domain records remains a block responsibility.
 - `DataGridColumnHeader` supplies actual sorting, clearing, moving and pinning menus. `DataGridColumnVisibility` reads/writes the same table's visibility state; native resize handles update TanStack sizing.
 - `DataGridTableRowSelectAll` and row selection APIs drive selection and local batch edits. Table row pinning drives the Risk queue.
-- Free `Frame`, `Badge`, `Rating` and `IconTile` replace duplicated wrappers and rating-star rendering. Portraits and company logos remain embedded reference assets.
+- Free `Frame`, `Badge`, `Rating` and `IconTile` replace duplicated wrappers and rating-star rendering. Portraits and integration badges now use the locally authored `demoAvatar` and `integrationArtwork` helpers; no upstream preview media is included.
 - The previous unused `LayoutHead` resize/drag implementation and custom pagination implementation are no longer used.
 
 ## Interaction corrections found during independent review

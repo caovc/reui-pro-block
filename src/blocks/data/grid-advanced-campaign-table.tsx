@@ -102,23 +102,7 @@ export default function PerformanceCampaignTable({
             <span className="flex size-7 shrink-0 items-center justify-center rounded-md border text-sm font-semibold">
               <img
                 alt=""
-                className={cn(
-                  "size-5 object-contain",
-                  ["apple", "x"].includes(
-                    [
-                      "apple",
-                      "apple",
-                      "google",
-                      "spotify",
-                      "youtube",
-                      "spotify",
-                      "x",
-                      "apple",
-                      "apple",
-                      "google",
-                    ][(row.id - 1) % 10],
-                  ) && "dark:invert",
-                )}
+                className="size-5 object-contain"
                 src={
                   advancedBrandAssets[
                     [
