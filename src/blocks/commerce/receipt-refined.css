@@ -1,0 +1,17 @@
+@media print {
+  .receipt-actions {
+    display: none !important;
+  }
+
+  .receipt-container {
+    max-width: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .receipt-container [data-slot="frame"],
+  .receipt-container [data-slot="frame-panel"] {
+    break-inside: avoid;
+    box-shadow: none;
+  }
+}

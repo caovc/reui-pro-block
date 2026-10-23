@@ -27,7 +27,7 @@ import anthropic from "./assets/card-brands/anthropic.svg";
 import resend from "./assets/card-brands/resend.svg";
 import "./auth-growth.css";
 
-function CustomerMarks({ extended = false }: { extended?: boolean }) {
+export function CustomerMarks({ extended = false }: { extended?: boolean }) {
   return (
     <ul className="growth-customer-marks" aria-label="Customer brands">
       {[
@@ -72,7 +72,7 @@ function CustomerMarks({ extended = false }: { extended?: boolean }) {
   );
 }
 
-function LegalLinks({ trial = false }: { trial?: boolean }) {
+export function LegalLinks({ trial = false }: { trial?: boolean }) {
   const [document, setDocument] = useState("");
   return (
     <>

@@ -173,6 +173,12 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
     return paths("application", application[block.category]);
   }
   if (block.group === "ecommerce" || block.group === "marketing") {
+    if (block.category === "receipt")
+      return paths(
+        "commerce",
+        block.index < 3 ? "receipt-documents" : "receipt-post-purchase",
+        "transactions",
+      );
     if (block.category === "checkout") {
       return paths(
         "commerce",

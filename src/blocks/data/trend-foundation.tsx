@@ -73,7 +73,10 @@ export function ReuiTrend({
   data,
   series,
   format = (v: number) => v.toLocaleString(),
+  valueFormat,
   rightFormat,
+  axisSide = "left",
+  hideXAxis = false,
   domain = ["auto", "auto"],
   rightDomain = ["auto", "auto"],
   grid = true,
@@ -88,6 +91,9 @@ export function ReuiTrend({
   data: TrendRow[];
   series: TrendSeries[];
   format?: (v: number) => string;
+  valueFormat?: (v: number) => string;
+  axisSide?: "left" | "right";
+  hideXAxis?: boolean;
   rightFormat?: (v: number) => string;
   domain?: [number | "auto" | "dataMin" | "dataMax", number | "auto" | "dataMin" | "dataMax"];
   rightDomain?: [number | "auto" | "dataMin" | "dataMax", number | "auto" | "dataMin" | "dataMax"];
@@ -177,9 +183,17 @@ export function ReuiTrend({
               strokeOpacity={0.6}
             />
           )}
-          <XAxis dataKey="name" tickLine={false} axisLine={false} tickMargin={10} minTickGap={28} />
+          <XAxis
+            hide={hideXAxis}
+            dataKey="name"
+            tickLine={false}
+            axisLine={false}
+            tickMargin={10}
+            minTickGap={28}
+          />
           <YAxis
             yAxisId="left"
+            orientation={axisSide}
             domain={domain}
             tickLine={false}
             axisLine={false}
@@ -224,11 +238,15 @@ export function ReuiTrend({
                           {Array.isArray(value)
                             ? value
                                 .map(Number)
-                                .map(s?.axis === "right" && rightFormat ? rightFormat : format)
+                                .map(
+                                  s?.axis === "right" && rightFormat
+                                    ? rightFormat
+                                    : (valueFormat ?? format),
+                                )
                                 .join(" – ")
-                            : (s?.axis === "right" && rightFormat ? rightFormat : format)(
-                                Number(value),
-                              )}
+                            : (s?.axis === "right" && rightFormat
+                                ? rightFormat
+                                : (valueFormat ?? format))(Number(value))}
                         </span>
                       </div>
                     );
@@ -319,7 +337,7 @@ export function ReuiTrend({
               <span key={s.key} className="text-muted-foreground">
                 {s.label}{" "}
                 <span className="text-foreground">
-                  {(s.axis === "right" && rightFormat ? rightFormat : format)(
+                  {(s.axis === "right" && rightFormat ? rightFormat : (valueFormat ?? format))(
                     Number(active[s.key]),
                   )}
                 </span>

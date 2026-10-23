@@ -1,0 +1,95 @@
+{
+  "scope": "Application Empty State1\u20135 actual free REUI milestone",
+  "baseCommit": "b791b60795034b0982fb4028f11e5058d2e16382",
+  "candidate": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/reui-empty1-5-final-l807ckfz",
+  "sharedIntegration": "application/index.tsx only RefinedEmptyBlock import + block.index<5 conditional; source-targets mapping already maintained by shared owner in baseline. No shared source or dependency edits.",
+  "verification": {
+    "productionBuild": "passed TypeScript+Vite",
+    "behaviorSuite": "10 passed29.3s,1worker,10renders1440/390; final-v3",
+    "realSourceZIP": "/tmp/reui-empty1-5-audit/empty-state-1.zip",
+    "zipBytes": 2740759,
+    "zipFiles": 196,
+    "zipBuild": "passed /var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/reui-empty1-realzip-xf1ccp",
+    "format": "npm run format/format:check scoped with actual oxfmt; passed15files",
+    "lint": "scoped oxlint passed"
+  },
+  "files": [
+    {
+      "path": "docs/empty-state-reference-audit.md",
+      "sha256": "6388d6dd96b490d6ae6aec867ff0a9d009bfa427a827e55d8dba990267f2ae95",
+      "bytes": 12989
+    },
+    {
+      "path": "docs/empty-state1-5-implementation.md",
+      "sha256": "ee91109b26f93f2d5ee2a3da2d0cd5f8617c6e22167fe6e039f3b21600ebff99",
+      "bytes": 8361
+    },
+    {
+      "path": "src/blocks/application/empty-variants/brief.tsx",
+      "sha256": "98aab8b513bc35ebb02307895a20def4785a1df943d60bbb233529103541c20f",
+      "bytes": 6251
+    },
+    {
+      "path": "src/blocks/application/empty-variants/data-import.tsx",
+      "sha256": "025c1c7a553b0527450dc46e33b391747629ae17e10b26ba3bf41cdb8b3dd8c0",
+      "bytes": 7349
+    },
+    {
+      "path": "src/blocks/application/empty-variants/first-run/csv.ts",
+      "sha256": "0472d1a78e68d1d15b3fb6feaad2db35af70186349e548ad11e6669ab456d741",
+      "bytes": 1559
+    },
+    {
+      "path": "src/blocks/application/empty-variants/first-run/first-run.css",
+      "sha256": "9eb1b392b0c08bd084887b427ba80879481357f93f4394c0869bbe3f5d75aa8b",
+      "bytes": 4787
+    },
+    {
+      "path": "src/blocks/application/empty-variants/first-run/shared.tsx",
+      "sha256": "2e39b0cd7ed3593c7b5fe23ede0670a743f8cc1e86c90c4f53d52424f9f333f1",
+      "bytes": 2854
+    },
+    {
+      "path": "src/blocks/application/empty-variants/free/search-cards.tsx",
+      "sha256": "cebed3c11b474561a8708584ca171b8f54de5616853c3797aee5e96e43f9253b",
+      "bytes": 1866
+    },
+    {
+      "path": "src/blocks/application/empty-variants/free/stacked-cards.tsx",
+      "sha256": "332d9137fbbb17d46f1f6a2fe7c5484c74d7e66841f5ccab433c111af4447f83",
+      "bytes": 1214
+    },
+    {
+      "path": "src/blocks/application/empty-variants/index.tsx",
+      "sha256": "0d1079cd08d0fec9dba589be2b83c70f2039ae07a641c90350d9c9eb8022dcc2",
+      "bytes": 740
+    },
+    {
+      "path": "src/blocks/application/empty-variants/project.tsx",
+      "sha256": "3dda1ec4d24b70f7c2c15b3f7509b10a9f8a0d918c772ad026198bdb667ec690",
+      "bytes": 6238
+    },
+    {
+      "path": "src/blocks/application/empty-variants/reports.tsx",
+      "sha256": "ebdb1a37d48159a9c5f0dd4ac5726b7a8066eb2580fa60ea7be41000e2a44aa7",
+      "bytes": 5054
+    },
+    {
+      "path": "src/blocks/application/empty-variants/search.tsx",
+      "sha256": "9ae188c42848a7aaaba6c1a565bd486ac16023e954e24c34eeab09bf5a4f68ca",
+      "bytes": 6668
+    },
+    {
+      "path": "src/blocks/application/index.tsx",
+      "sha256": "082156fdf405fa735335afb8ce3ff2a64599cdd70231987bac095f73d5832f47",
+      "bytes": 2139
+    },
+    {
+      "path": "tests/empty-first-run.spec.ts",
+      "sha256": "dc3c85ab652675eea27b1030ef895138b532e3de415f428f7aa0c02acc2f3467",
+      "bytes": 9845
+    }
+  ],
+  "integrationBase": "00c2853",
+  "integrationNote": "Module hashes describe this published milestone after oxfmt; shared router merged from latest baseline. Agent audit snapshot and verification are recorded above."
+}
