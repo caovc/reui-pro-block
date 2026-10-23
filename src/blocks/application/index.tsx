@@ -1,3 +1,4 @@
+import RefinedNavbarBlock from "./navbar-variants/first-run";
 import RefinedDialogBlock from "./dialog-variants/first-run";
 import WorkspaceDialogBlock from "./dialog-variants/workspace";
 import FinalWorkspaceDialogBlock from "./dialog-variants/workspace-final";
@@ -27,7 +28,7 @@ export default function ApplicationBlock({ block }: BlockProps) {
     case "stats":
       return <StatsBlock block={block} />;
     case "navbar":
-      return <NavBlock block={block} />;
+      return block.index < 3 ? <RefinedNavbarBlock block={block} /> : <NavBlock block={block} />;
     case "list":
       return <ListBlock block={block} />;
     case "form":

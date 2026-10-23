@@ -139,6 +139,10 @@ function paths(family: string, ...modules: string[]) {
 export function blockImplementationCandidates(block: BlockMeta): string[] {
   const variant = Number(block.id.split("-").at(-1));
   if (block.group === "application") {
+    if (block.category === "navbar" && variant <= 3) {
+      const module = ["project", "presence", "platform"][variant - 1];
+      return paths("application", `navbar-variants/first-run/${module}`, "workspace");
+    }
     if (block.category === "app-shell") {
       return paths("application", `shells/${shellModules[variant - 1]}`, "shells/audited");
     }

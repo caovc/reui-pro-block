@@ -1,0 +1,159 @@
+{
+  "scope": "Navbar1–3 actual official free-source composition; original rendered visual audit pending",
+  "base": "bca41daa7357bda7d8d6bc4a815a64b7e7956a20",
+  "frozenFiles": {
+    "src/blocks/application/navbar-variants/first-run/data.ts": "7fd3db12b21e89b2c6bf2816368d3fcfaf86680fdac863fc4271699048cc3023",
+    "src/blocks/application/navbar-variants/first-run/free/account-menu.tsx": "c45f5887a39b4e86dc4b50af1286b766dc2abab32d3397d61cdb5ea182a928e6",
+    "src/blocks/application/navbar-variants/first-run/free/actions-menu.tsx": "013798c4026c16c4e67ff554c8c82ddd59cc07a3c4cf04c984ff4041d60defe7",
+    "src/blocks/application/navbar-variants/first-run/free/choice-menu.tsx": "4e805028474d8357303ab379c1b0d002a90b2a5c6583e43ae592c0fc30280c6a",
+    "src/blocks/application/navbar-variants/first-run/free/context-switcher.tsx": "9dd572fba9326241c933734c523c05b92f4d89c6cb489bd1c181f25c57bc5b18",
+    "src/blocks/application/navbar-variants/first-run/free/inline-invite.tsx": "66cb8ec6ef9fab939efce37eda5fa7a81391521b65c9ef21c707689f7cda043a",
+    "src/blocks/application/navbar-variants/first-run/free/presence.tsx": "4a10ffd3d94f3e635313855418bde3680ef084a9cc61235d4835154a4d67e519",
+    "src/blocks/application/navbar-variants/first-run/free/project-tabs.tsx": "b5493c68b3d68a3ea541d39d75579d0bbc458875c34530244d10b193eefcf7fc",
+    "src/blocks/application/navbar-variants/first-run/free/trail.tsx": "2981954d512ec257642b62930fdd3c32789e513fbba532509ee377216e243d24",
+    "src/blocks/application/navbar-variants/first-run/index.tsx": "ae692973159f45bb7aaef767293ffa34f2a65fb2357c9132c245ba09e73bc605",
+    "src/blocks/application/navbar-variants/first-run/navbar.css": "151e52f174b614603261d209a2a4fefcb08a9947ba810363af9f45e703ba3307",
+    "src/blocks/application/navbar-variants/first-run/platform-data.tsx": "d9a9501e8f306ab178346479ae2e3762024214eec60fe3b7e5cc43dc8fe37c93",
+    "src/blocks/application/navbar-variants/first-run/platform.tsx": "e784c1822539fdc5b584b1d0e73fb5459de5cbba98521d54ee6f197308e6d37b",
+    "src/blocks/application/navbar-variants/first-run/presence.tsx": "223ec9007be5b63c1c92136c9743be895d9a12cfc50fefbd6b38363dec064152",
+    "src/blocks/application/navbar-variants/first-run/project.tsx": "f0e4c24aac7fff8f1f733ca24b7f125617401bfd1b73a4c2f07db885e6ae6bf2",
+    "src/blocks/application/navbar-variants/first-run/support.tsx": "1964e7ca0544327f8a489812214f77df594ea9a194ca75919fb864a2934db0e4",
+    "tests/navbar-first-run.spec.ts": "b769035f70cbcce08a1379eba4145090e1e4e0d526c6c2b00fb2848062de5ba6",
+    "docs/navbar1-3-implementation.md": "32b765fc05723fb81e13ebfd91f2a89317221d62f3118d3c09ce472f7c631ce0"
+  },
+  "frozenManifestSha256": "a64aeab52dfeb69acb5b2e6bc6c6316f2af559bb2f62d76f2504cd34113e91d0",
+  "integration": "Only indices0–2 route to first-run independent Navbar modules; code defaults match project/presence/platform leaves. Remaining10 Navbar routes retain current implementation.",
+  "actualFreeSources": [
+    {
+      "name": "c-breadcrumb-4",
+      "url": "https://reui.io/r/radix-nova/c-breadcrumb-4.json",
+      "upstreamSourceSha256": "dbb33674346510f95a143b8e57bfd94da6c40d8134d98b792330a2b780136c05",
+      "license": "MIT (c) Keenthemes"
+    },
+    {
+      "name": "c-tabs-7",
+      "url": "https://reui.io/r/radix-nova/c-tabs-7.json",
+      "upstreamSourceSha256": "0f79aa8c13378c53c19b58047f33e9988361236fb35d91109750f3385669660f",
+      "license": "MIT (c) Keenthemes"
+    },
+    {
+      "name": "c-avatar-11",
+      "url": "https://reui.io/r/radix-nova/c-avatar-11.json",
+      "upstreamSourceSha256": "18cab53b4bcfe995e2d0bbadf41b328df28c8802c4ccbf4d8f57554c713cf4c3",
+      "license": "MIT (c) Keenthemes"
+    },
+    {
+      "name": "c-avatar-18",
+      "url": "https://reui.io/r/radix-nova/c-avatar-18.json",
+      "upstreamSourceSha256": "2ef2c190609a6f4680bcb15568c40b7ea48ff977922befc0f5e7b5dc2e034199",
+      "license": "MIT (c) Keenthemes"
+    },
+    {
+      "name": "c-dropdown-menu-7",
+      "url": "https://reui.io/r/radix-nova/c-dropdown-menu-7.json",
+      "upstreamSourceSha256": "3b01e43ffa25ca9fea8da20c7e7936e28a855da6d5d8f3aada6f193c53255ec7",
+      "license": "MIT (c) Keenthemes"
+    },
+    {
+      "name": "c-dropdown-menu-10",
+      "url": "https://reui.io/r/radix-nova/c-dropdown-menu-10.json",
+      "upstreamSourceSha256": "2a3ee70435fe8c41f9b7cb2c67c81300e2541284342a1cf8c9354285013125f3",
+      "license": "MIT (c) Keenthemes"
+    },
+    {
+      "name": "c-dropdown-menu-14",
+      "url": "https://reui.io/r/radix-nova/c-dropdown-menu-14.json",
+      "upstreamSourceSha256": "8b6f7b239fbb780abf94ebde68851cf708d9e45f9aff07f99bcbbb157b22a9f2",
+      "license": "MIT (c) Keenthemes"
+    },
+    {
+      "name": "c-dropdown-menu-16",
+      "url": "https://reui.io/r/radix-nova/c-dropdown-menu-16.json",
+      "upstreamSourceSha256": "efe8d1a3c33efa35b519f802c8f0e3117fd3cfa89d9d549fe29ed060a52cbbbf",
+      "license": "MIT (c) Keenthemes"
+    },
+    {
+      "name": "c-popover-3",
+      "url": "https://reui.io/r/radix-nova/c-popover-3.json",
+      "upstreamSourceSha256": "54719e9c6dc9e585a5aeb3474ac675c3579dca5f1773b9e00df1a1b138347dd0",
+      "license": "MIT (c) Keenthemes"
+    }
+  ],
+  "verification": {
+    "root": "Cleanbca41da plus exact frozen19 and2 narrow router/source hooks. Strict build, full format851, tooling3/3, oxlint0errors passed.31/31 production cases54.7s passed: all15 Navbar cases, global4/site4/source-navigation2 and Dialog9 modal6.",
+    "owner": {
+      "candidate": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/reui-navbar-first-production-jg3u1tk7",
+      "productionBuild": {
+        "result": "PASS strict TypeScript + Vite",
+        "log": "/tmp/reui-navbar-first-build.log"
+      },
+      "productionTests": {
+        "result": "15/15 PASS16.7s",
+        "file": "tests/navbar-first-run.spec.ts",
+        "workers": 1,
+        "timeoutMs": 30000,
+        "retryChange": false,
+        "log": "/tmp/reui-navbar-first-final-tests.log",
+        "output": "/tmp/reui-navbar-first-final-results"
+      },
+      "initialFailures": "Three selectors ambiguous, not business failures: textbox vs trigger and output status vs Alert. Corrected selectors; added390platform interaction/bounds; final15allPASS.",
+      "coverage": [
+        "6 desktop/390 initial renders, loaded original portraits, no pageerrors/overflow",
+        "line tabs ArrowRight selection",
+        "phone sections change actual panel",
+        "star state",
+        "12 collaborators",
+        "search no-results and local selection",
+        "local Create validation/focus return",
+        "filter/sort radio values",
+        "invalid/valid invite and focus return",
+        "three independent context picks and menu bounds at1440/390",
+        "actual free theme tab and popup scoped dark class",
+        "account status submenu retained across close",
+        "local upgrade preserves contexts",
+        "actual source leaf defaults all3",
+        "actual ZIP free source/media/provenance"
+      ],
+      "screenshots": [
+        "/tmp/reui-navbar-first-audit/navbar-1-1440.png",
+        "/tmp/reui-navbar-first-audit/navbar-2-1440.png",
+        "/tmp/reui-navbar-first-audit/navbar-3-1440.png",
+        "/tmp/reui-navbar-first-audit/navbar-1-390.png",
+        "/tmp/reui-navbar-first-audit/navbar-2-390.png",
+        "/tmp/reui-navbar-first-audit/navbar-3-390.png"
+      ],
+      "inspectedLocalScreenshots": ["navbar1 and2 at390", "navbar3 at1440"],
+      "actualDownloadedZip": {
+        "path": "/tmp/reui-navbar-first-audit/navbar-3-source.zip",
+        "sha256": "2240c6d2a9151657c19d1841d1a9eb93fdccfed2ce8f5d17dcb457bd64a8d79d",
+        "files": 318,
+        "bytes": 3556137,
+        "extracted": "/tmp/reui-navbar-first-realzip-2rQSfk",
+        "build": "PASS",
+        "buildLog": "/tmp/reui-navbar-first-zip-build.log",
+        "render": "1440 and390 real environment Development selection PASS, zero page errors/overflow",
+        "renderLog": "/tmp/reui-navbar-first-zip-render.log"
+      },
+      "scopedOxfmtOxlint": "PASS; no whole-repo formatting or shared changes"
+    },
+    "rootReview": "Read actual free adapters and original avatar/brand usage; visually inspected390px platform navbar. Actual318-file Navbar3 starter independently built/rendered at1440/390 by owner.",
+    "limitations": [
+      "IDs4–13 unchanged and pending refinement",
+      "Original rendered audit all3 pending",
+      "Demo labels/options/account free preset counters differ or unverified",
+      "Local form/invite/plan actions send no network request",
+      "Filter/sort apply fixture state/output and preserve placeholder content",
+      "Original demoAvatar and Bricklane mark intentionally replace upstream brand/media"
+    ],
+    "publicAudit": {
+      "readPublicMetadata": [
+        "https://reui.io/blocks/application/navbar/navbar-1.md",
+        "https://reui.io/blocks/application/navbar/navbar-2.md",
+        "https://reui.io/blocks/application/navbar/navbar-3.md"
+      ],
+      "publicRenderedDesktopMobileStates": "PENDING: human actively using Edge; hidden CUA IAB unavailable. No native user-tab interaction.",
+      "noClaim": "Passing local tests/screenshots does not establish visual parity; exact typography/geometry/labels/mobile wrapping/menu/hover needs later native reference comparison."
+    },
+    "deployment": "Pending separate CI/Pages confirmation."
+  }
+}
