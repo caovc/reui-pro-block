@@ -214,6 +214,14 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
       const module = ["live-cart", "bento", "countdown"][block.index];
       return paths("commerce", `shop-hero-variants/${module}`, "shop-hero-variants/index");
     }
+    if (block.category === "shop-hero" && [3, 4].includes(block.index)) {
+      const module = block.index === 3 ? "category-shop" : "dual-collections";
+      return paths(
+        "commerce",
+        `shop-hero-variants/${module}`,
+        "shop-hero-variants/collection-pages",
+      );
+    }
     if (block.category === "coupon") {
       const module = block.index === 1 ? "grid" : [4, 5].includes(block.index) ? "bars" : "heroes";
       return paths("commerce", `coupon-variants/${module}`, "coupon-variants/index");

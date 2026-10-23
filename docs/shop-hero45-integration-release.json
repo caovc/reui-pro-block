@@ -1,0 +1,78 @@
+{
+  "baseHead": "45b9afbf44d4c918a0e9869baea049a3eca8611d",
+  "integrationPatchPreparedAgainst": "eac6a1a5df91de1902294f232c88d3027e3ed464",
+  "snapshot": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/reui-shop-hero45-9ve71yrr",
+  "production": "http://127.0.0.1:5410",
+  "integrationPatch": "/tmp/reui-shop-hero45-integration.patch",
+  "leafMapping": {
+    "shop-hero-4": "shop-hero-variants/category-shop",
+    "shop-hero-5": "shop-hero-variants/dual-collections"
+  },
+  "routeFallback": "shop-hero-variants/collection-pages; only indices3/4. Preserve frozen1\u20133 and legacy6\u20138.",
+  "verification": [
+    "candidate strictTypeScript+Vite passed",
+    "14/14 focused production tests15.8s, one worker",
+    "2/2 source graph tests passed",
+    "final contrast-only Badge correction: strict build +3/3 targeted desktop/mobile/source tests3.9s passed",
+    "default source/copy/single-file download/ZIP leaf bytes actually consistent for both entries",
+    "both actual downloaded ZIPs166entries independently strictTypeScript+Vite built",
+    "fresh standalone390px runtime checks passed:60\u219215\u21923 material search; shared saved state across independent navigation entries; original media decoded; zero page errors",
+    "computed heading4=36px/38.16px; heading5=36px/37.44px; both page widths390",
+    "scoped oxfmt check and oxlint passed",
+    "local standalone desktop/mobile/detail screenshots inspected"
+  ],
+  "limitations": [
+    "Public rendered desktop/mobile remains pending for4/5; only official public Markdown brief read. User actively using Edge, hidden IAB unavailable and backgroundEdge exposed no controllable/user tabs, no foreground competition.",
+    "Original independently drawn product still lifes replace source photos; exact source wording, spacing and responsive breakpoints remain provisional.",
+    "Local catalogs, real search/filter/detail/save are extensions over source hash navigation; ratings/review counts are fictional story metadata.",
+    "Source6/7/8 brief/free capability audit recorded only; no claim these entries have been refined."
+  ],
+  "priorShopHeroFrozen11Unchanged": true,
+  "standalones": [
+    {
+      "n": 4,
+      "folder": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-shop-hero4-export-74VhSj",
+      "entries": 166,
+      "preview": "http://127.0.0.1:5411"
+    },
+    {
+      "n": 5,
+      "folder": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-shop-hero5-export-VswJM5",
+      "entries": 166,
+      "preview": "http://127.0.0.1:5412"
+    }
+  ],
+  "files": {
+    "src/blocks/commerce/shop-hero-variants/category-shop.tsx": "26836e6f08414ae9ec206ef4e3f6bcd44c96e4d6ce1f8f27c2d1b61f4fe6a842",
+    "src/blocks/commerce/shop-hero-variants/collection-data.ts": "9d261a797c183eea791fea07ff2c30285530402b3e00fe23c4da0b24d64e96d1",
+    "src/blocks/commerce/shop-hero-variants/collection-dialog.tsx": "6c0f5f55c98ef994a12410710d1eb3d7a74baf7a087a3d9b521a46a1948b3282",
+    "src/blocks/commerce/shop-hero-variants/collection-pages.tsx": "68bb6129f96b7547ce6907bb0f234bb0940c71a327938b19ed09ff7b37bbf389",
+    "src/blocks/commerce/shop-hero-variants/collection-saved.ts": "c91e5eb66246357fa77120264bc5e6fd38a0a606640b2e98ce5f79bb737a2553",
+    "src/blocks/commerce/shop-hero-variants/dual-collections.tsx": "2cca5651f0ce6569872a78d7ace294b0bfdf01d712595f984523a759343db89f",
+    "tests/shop-hero-collections.spec.ts": "4ecaf6c3a7a5b799fb23b645516b2d8ee1f30af8dcda142fcb7631a7c91048de",
+    "docs/shop-hero-collections-refinement.md": "a773bea0db0e9819107ba6e4acaaf0382f989cff2808698e3bcc91b91309f8a5"
+  },
+  "readOnlyDependencies": {
+    "src/blocks/commerce/shop-hero-variants/image-card.tsx": "faeb23fea88479454a0ae1310f9ee321b06960b2286d965334e51b85f9ce6b18",
+    "src/blocks/commerce/wishlist-artwork.ts": "7b8bb57f425418cee9392010dc57708cacb1a26452210ce3aa5605736c2639b6",
+    "src/lib/demo-artwork.ts": "dd1ff55cd26fcc74604d7c94b0e7cb4f4b9df03e7d292f95502072d48d92b313",
+    "src/components/reui/rating.tsx": "40e9bd7d4fc75bedc79396e70fb232f4e929777387a545916148a7b6a0585a35",
+    "src/components/reui/badge.tsx": "aa775fdd1638b34a843f5ece24236705d152cc36ea5edce62a62fe5601dde664",
+    "src/components/reui/alert.tsx": "bcf730d92ee23d445d069d193a6dfc52229c4e4d7085d3e476e0e7b5789f3629",
+    "src/components/ui/item.tsx": "586a27a26a55fe9bce3d097e56608145437f2735abbd5e036a8cca611583322c",
+    "src/components/ui/tabs.tsx": "d0eeb969dbba6f79b755a7adf024358471d24fcc8a25bbe10970818c04b237be",
+    "src/components/ui/toggle.tsx": "1a8d4cf9148def3779a42da052721b8a441834bfe6dbf4e529c3bffa9f0d27e2",
+    "src/components/ui/scroll-area.tsx": "47d13094994d22cb6db30c71320a06ea9946cda4308e5505eaf0e1f31826f739"
+  },
+  "integrationBase": "46dbee4fc4e28ca19ecff7e8a8fa5e0e60ae810d",
+  "rootValidation": {
+    "build": "PASS",
+    "production": "42/42 PASS, one worker,1.0m",
+    "log": "/tmp/bricklane-shop45-root-production.log",
+    "format": "PASS full snapshot",
+    "tooling": "3/3 PASS",
+    "lint": "0 errors",
+    "visual": "Local actual starter390px screenshots inspected; public render pending"
+  },
+  "deployment": "Pending cumulative CI/Pages"
+}

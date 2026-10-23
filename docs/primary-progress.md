@@ -58,3 +58,9 @@ Run39925841223 on460f042 passed786 browser cases and failed5 before application 
 ## AppShell native inset milestone
 
 AppShell3/9/10 now use actual free Sidebar's inset variant and native header/content/footer slots. Collapsed geometry follows the official gap/container sizing rather than an extra hand-built rail; mobile uses the existing free Sheet. Root passed strict production build,79/79 production regressions and full formatting/tooling checks on1d8435b plus the exact seven frozen files. The later template address correction changes test URLs/documentation only. The owner independently built/rendered the actual302-file AppShell3 starter and checked source/copy/single-file bytes. This milestone retains documented visual/interaction gaps across the remaining AppShell entries. CI/Pages must still verify the cumulative release.
+
+## Shop Hero category/collection milestone
+
+Shop Hero4/5 now use actual free c-card9/c-item4/c-card8, Rating/Badge, tabs9/toggle10/scroll-area1 compositions with original Bricklane goods artwork. Category and collection browsing uses60 original catalog colorways with working query/filter/detail/save state. Root passed strict production build,42/42 production cases including prior1–3, global/site/source-navigation regressions, full formatting and tooling3/3; lint has0 errors with existing vendor warnings. Both actual166-file starters independently built and rendered at390px, with source/copy/single-file/ZIP bytes aligned. Original rendered desktop/mobile comparison for4/5 remains pending; local fixtures, wording and breakpoints are provisional.
+
+Superseded run39927970095 onbca41da passed824 and failed13, all the same localhost5212 test URL defect already fixed in76d5504. Original log is retained; the current cumulative CI/Pages result remains pending.
