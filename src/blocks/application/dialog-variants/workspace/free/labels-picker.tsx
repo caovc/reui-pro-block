@@ -3,6 +3,7 @@
 // Adapters: controlled form value/id, Lucide icon adapter; original picker/glyph behavior retained.
 // Function-child list follows free Combobox guidance for actual typed filtering.
 "use client";
+import type { ComponentProps } from "react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -159,10 +160,12 @@ function isLabelSelectionItemEqual(item: LabelSelectionItem, value: LabelSelecti
 
 export function ProjectLabelsPicker({
   id,
+  portalContainer,
   value,
   onChange,
 }: {
   id: string;
+  portalContainer?: ComponentProps<typeof ComboboxContent>["portalContainer"];
   value: string[];
   onChange: (value: string[]) => void;
 }) {
@@ -205,7 +208,10 @@ export function ProjectLabelsPicker({
           </ComboboxValue>
         </ComboboxTrigger>
 
-        <ComboboxContent className="max-w-(--anchor-width) min-w-(--anchor-width)">
+        <ComboboxContent
+          portalContainer={portalContainer}
+          className="max-w-(--anchor-width) min-w-(--anchor-width)"
+        >
           <ComboboxInput showTrigger={false} placeholder="Select labels" className="mb-1" />
           <ComboboxEmpty>No labels found.</ComboboxEmpty>
           <ComboboxList>

@@ -1,0 +1,111 @@
+{
+  "milestone": "Dialog9 real modal with official free REUI Combobox Portal containment",
+  "integrationBase": "095e5128b53d064222c6b5ca37bb2d90075c74f6",
+  "scope": "Five existing source leaves plus independent test, ledger and this manifest; no router, source-targets, shared UI, final frozen source or package changes.",
+  "files": [
+    {
+      "path": "src/blocks/application/dialog-variants/workspace/project.tsx",
+      "sha256": "8a8c911d48b81bd9b181c2b2fc76e6031d4a3f7dcfb026a9d6e5493aca01f971"
+    },
+    {
+      "path": "src/blocks/application/dialog-variants/workspace/free/status-picker.tsx",
+      "sha256": "6bae8e6c9dee884958365aebcdf8f300eb63f2571adcac11424578692f30523d"
+    },
+    {
+      "path": "src/blocks/application/dialog-variants/workspace/free/priority-picker.tsx",
+      "sha256": "abcce71bb8fcaf26389278f1cc507cd576ff4c4607aac854334ad034ecd3e29c"
+    },
+    {
+      "path": "src/blocks/application/dialog-variants/workspace/free/members-picker.tsx",
+      "sha256": "cc46ffbdaae34f1a0603355c09aab65594e29954362fe5bdde73a592fc81ae1d"
+    },
+    {
+      "path": "src/blocks/application/dialog-variants/workspace/free/labels-picker.tsx",
+      "sha256": "522821cd43270d9338a0453139e8ad0e0838f84ba87ca6cee3d81f8b2e20cc3f"
+    },
+    {
+      "path": "tests/dialog-project-modal.spec.ts",
+      "sha256": "21f1bc6344fc70db8360001d4cb732a82b64e490369b2e06f088f8262b326501"
+    },
+    {
+      "path": "docs/dialog9-modal-implementation.md",
+      "sha256": "7c56965a7b172d5adc600416757a77b85022ab5c956d6c132841a401ea24bd64"
+    }
+  ],
+  "requiredExistingDependency": {
+    "path": "src/components/ui/combobox.tsx",
+    "sha256": "008fb7933ee436e111ac6902c6a12bfd8c8da393960186da44d59dd48c6b3ff0",
+    "api": "Existing optional ComboboxContent.portalContainer forwarded to official BaseUI Portal.container; no modification in this batch.",
+    "officialDocumentation": "https://base-ui.com/react/components/combobox#portal"
+  },
+  "actualReuse": [
+    "REUI c-combobox21 status",
+    "REUI c-combobox22 priority",
+    "REUI c-combobox24 members",
+    "REUI c-combobox26 labels",
+    "Unchanged REUI c-file-upload10 with official useFileUpload",
+    "Unchanged official upstream Radix Dialog through free c-dialog3/c-dialog6 composition"
+  ],
+  "correction": "Remove modal=false; portal actual official pickers into real DialogContent. Native Radix controls overlay, pointer protection, focus loop and restoration; existing picker behaviors remain official.",
+  "verification": {
+    "productionCandidate": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/reui-dialog9-modal-production-mdupzwca",
+    "productionBuild": {
+      "result": "PASS",
+      "log": "/tmp/reui-dialog9-modal-build.log"
+    },
+    "combinedRegression": {
+      "result": "21/21 PASS in 26.0s",
+      "tests": ["tests/dialog-project-modal.spec.ts", "tests/dialog-workspace.spec.ts"],
+      "workers": 1,
+      "timeoutMs": 30000,
+      "retryChange": false,
+      "log": "/tmp/reui-dialog9-modal-tests.log"
+    },
+    "finalEnhancedFocused": {
+      "result": "6/6 PASS in 11.7s",
+      "test": "tests/dialog-project-modal.spec.ts",
+      "workers": 1,
+      "timeoutMs": 30000,
+      "log": "/tmp/reui-dialog9-modal-final-tests.log",
+      "addedCoverage": "All four popups entirely within clipped DialogContent bounds at 1440 and 390"
+    },
+    "behaviors": [
+      "modal overlay/body pointer protection",
+      "all four official popup portal descendants",
+      "mouse open/close all pickers",
+      "keyboard filter and Enter status/priority selection",
+      "nested Escape dismisses popup first then outer dialog",
+      "20 Tab steps remain in modal",
+      "close restores launcher focus",
+      "member clear gates Create",
+      "member search and selection",
+      "label clear",
+      "key normalization and saved draft",
+      "real File cover upload",
+      "source ZIP includes actual Portal source"
+    ],
+    "screenshots": [
+      "/tmp/reui-dialog9-modal-audit/dialog-9-1440.png",
+      "/tmp/reui-dialog9-modal-audit/dialog-9-390.png"
+    ],
+    "realDownloadedZip": {
+      "path": "/tmp/reui-dialog9-modal-audit/dialog-9-source.zip",
+      "sha256": "24351cd299394517ff54a845e3c8d1065d80dc4218b50d9f58bd3b774b2be45c",
+      "files": 285,
+      "bytes": 3508629,
+      "extractedProject": "/tmp/reui-dialog9-modal-realzip-7nnthc",
+      "build": "PASS",
+      "buildLog": "/tmp/reui-dialog9-modal-zip-build.log",
+      "render": "1440 and 390 actual Completed option selection PASS; no page errors or horizontal overflow",
+      "retiredScheduleJpegReferences": 0
+    },
+    "scopedFormattingAndLint": "PASS; rechecked on exact frozen source/test/ledger; manifest formatted separately"
+  },
+  "remainingDifferences": [
+    "No new original public-browser visual audit: human Edge actively in use. Existing audited layout unchanged.",
+    "Saved drafts remain local demonstrations; no network API.",
+    "Known cover-preview reset on reopening unchanged.",
+    "Dialog9 has no date field; frozen final12 date source untouched."
+  ],
+  "publication": "READY payload only; Root owns coordinated staging, commit, push, and deployment verification. No child Git writes."
+}

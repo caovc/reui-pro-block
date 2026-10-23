@@ -1,0 +1,60 @@
+{
+  "scope": "Dialog9 native modal and official picker Portal containment",
+  "base": "e140d0241b0790926ccb472004e879c40238a3a2",
+  "frozenFiles": [
+    {
+      "path": "src/blocks/application/dialog-variants/workspace/project.tsx",
+      "sha256": "8a8c911d48b81bd9b181c2b2fc76e6031d4a3f7dcfb026a9d6e5493aca01f971"
+    },
+    {
+      "path": "src/blocks/application/dialog-variants/workspace/free/status-picker.tsx",
+      "sha256": "6bae8e6c9dee884958365aebcdf8f300eb63f2571adcac11424578692f30523d"
+    },
+    {
+      "path": "src/blocks/application/dialog-variants/workspace/free/priority-picker.tsx",
+      "sha256": "abcce71bb8fcaf26389278f1cc507cd576ff4c4607aac854334ad034ecd3e29c"
+    },
+    {
+      "path": "src/blocks/application/dialog-variants/workspace/free/members-picker.tsx",
+      "sha256": "cc46ffbdaae34f1a0603355c09aab65594e29954362fe5bdde73a592fc81ae1d"
+    },
+    {
+      "path": "src/blocks/application/dialog-variants/workspace/free/labels-picker.tsx",
+      "sha256": "522821cd43270d9338a0453139e8ad0e0838f84ba87ca6cee3d81f8b2e20cc3f"
+    },
+    {
+      "path": "tests/dialog-project-modal.spec.ts",
+      "sha256": "21f1bc6344fc70db8360001d4cb732a82b64e490369b2e06f088f8262b326501"
+    },
+    {
+      "path": "docs/dialog9-modal-implementation.md",
+      "sha256": "7c56965a7b172d5adc600416757a77b85022ab5c956d6c132841a401ea24bd64"
+    }
+  ],
+  "requiredExistingDependency": {
+    "path": "src/components/ui/combobox.tsx",
+    "sha256": "008fb7933ee436e111ac6902c6a12bfd8c8da393960186da44d59dd48c6b3ff0",
+    "api": "Existing optional ComboboxContent.portalContainer forwarded to official BaseUI Portal.container; no modification in this batch.",
+    "officialDocumentation": "https://base-ui.com/react/components/combobox#portal"
+  },
+  "actualReuse": [
+    "REUI c-combobox21 status",
+    "REUI c-combobox22 priority",
+    "REUI c-combobox24 members",
+    "REUI c-combobox26 labels",
+    "Unchanged REUI c-file-upload10 with official useFileUpload",
+    "Unchanged official upstream Radix Dialog through free c-dialog3/c-dialog6 composition"
+  ],
+  "verification": {
+    "root": "Clean committed base plus exact eight frozen files; strict production build, full format784files, tooling3/3 and oxlint pass.27/27 production cases passed1.4m: new modal6, unchanged workspace15, site4 and route/source2.",
+    "rootProductionLog": "/tmp/bricklane-dialog9-modal-root-production.log",
+    "owner": "Production21/21, final enhanced modal6/6 pass. Actual UI285-file ZIP independently built and rendered1440/390 with Completed selection, zero errors/overflow.",
+    "limits": [
+      "No new original public-browser visual audit: human Edge actively in use. Existing audited layout unchanged.",
+      "Saved drafts remain local demonstrations; no network API.",
+      "Known cover-preview reset on reopening unchanged.",
+      "Dialog9 has no date field; frozen final12 date source untouched."
+    ],
+    "deployment": "Pending CI and Pages confirmation."
+  }
+}

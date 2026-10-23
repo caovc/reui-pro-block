@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Info, LayoutTemplate, Plus } from "lucide-react";
 import { Badge } from "@/components/reui/badge";
 import { Button } from "@/components/ui/button";
@@ -43,6 +43,7 @@ function ProjectHelp({ label, children }: { label: string; children: string }) {
 
 export default function ProjectCoverDialog() {
   const [open, setOpen] = useState(false);
+  const surface = useRef<HTMLDivElement | null>(null);
   const [name, setName] = useState("Atlas Launch System");
   const [key, setKey] = useState("ALS");
   const [summary, setSummary] = useState(
@@ -57,8 +58,7 @@ export default function ProjectCoverDialog() {
   const [saved, setSaved] = useState<ProjectDraft | null>(null);
 
   return (
-    // The official free c-combobox-17 Dialog example uses modal={false} so BaseUI portals remain interactive.
-    <Dialog modal={false} open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogLauncher
         id={9}
         title="Project workspace"
@@ -90,6 +90,10 @@ export default function ProjectCoverDialog() {
       </DialogLauncher>
       <DialogSurface
         id={9}
+        onEscapeKeyDown={(event) => {
+          if (surface.current?.querySelector('[data-slot="combobox-content"]'))
+            event.preventDefault();
+        }}
         title="Create Project"
         description="Add a focused project space with a cover, brief, priority, labels, and owners."
         footer={
@@ -120,7 +124,13 @@ export default function ProjectCoverDialog() {
           </>
         }
       >
-        <FieldGroup>
+        <FieldGroup
+          ref={(node) => {
+            // The free shared DialogSurface stays unchanged. Its content node is the
+            // official Portal destination, outside the body's scrolling viewport.
+            surface.current = node?.closest<HTMLDivElement>('[data-dialog-entry="9"]') ?? null;
+          }}
+        >
           <CoverUpload
             onImageChange={(file) => {
               setCover(file);
@@ -172,6 +182,7 @@ export default function ProjectCoverDialog() {
                 id="workspace-project-status"
                 value={status}
                 onChange={setStatus}
+                portalContainer={surface}
               />
             </Field>
             <Field>
@@ -180,6 +191,7 @@ export default function ProjectCoverDialog() {
                 id="workspace-project-priority"
                 value={priority}
                 onChange={setPriority}
+                portalContainer={surface}
               />
             </Field>
             <Field>
@@ -193,6 +205,7 @@ export default function ProjectCoverDialog() {
                 id="workspace-project-members"
                 value={members}
                 onChange={setMembers}
+                portalContainer={surface}
               />
             </Field>
             <Field>
@@ -206,6 +219,7 @@ export default function ProjectCoverDialog() {
                 id="workspace-project-labels"
                 value={labels}
                 onChange={setLabels}
+                portalContainer={surface}
               />
             </Field>
           </div>

@@ -3,6 +3,7 @@
 // Adapters: controlled form value/id, Lucide icon adapter; original picker/glyph behavior retained.
 // Demo avatars replace upstream photos; function-child list keeps real search filtering.
 "use client";
+import type { ComponentProps } from "react";
 
 import { cn } from "@/lib/utils";
 import { demoAvatar } from "@/lib/demo-artwork";
@@ -205,10 +206,12 @@ function MemberSelectionRow({ option }: { option: MemberSelectionItem }) {
 
 export function ProjectMembersPicker({
   id,
+  portalContainer,
   value,
   onChange,
 }: {
   id: string;
+  portalContainer?: ComponentProps<typeof ComboboxContent>["portalContainer"];
   value: string[];
   onChange: (value: string[]) => void;
 }) {
@@ -253,7 +256,10 @@ export function ProjectMembersPicker({
           </ComboboxValue>
         </ComboboxTrigger>
 
-        <ComboboxContent className="max-w-(--anchor-width) min-w-(--anchor-width)">
+        <ComboboxContent
+          portalContainer={portalContainer}
+          className="max-w-(--anchor-width) min-w-(--anchor-width)"
+        >
           <ComboboxInput showTrigger={false} placeholder="Select members" className="mb-1" />
           <ComboboxEmpty>No members found.</ComboboxEmpty>
           <ComboboxList>

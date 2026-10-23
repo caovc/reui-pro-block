@@ -2,6 +2,7 @@
 // https://reui.io/r/radix-nova/c-combobox-22.json
 // Adapters: controlled form value/id, Lucide icon adapter; original picker/glyph behavior retained.
 "use client";
+import type { ComponentProps } from "react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -124,10 +125,12 @@ function PriorityLabel({ priority, className }: { priority: PriorityOption; clas
 
 export function ProjectPriorityPicker({
   id,
+  portalContainer,
   value,
   onChange,
 }: {
   id: string;
+  portalContainer?: ComponentProps<typeof ComboboxContent>["portalContainer"];
   value: string;
   onChange: (value: string) => void;
 }) {
@@ -163,7 +166,10 @@ export function ProjectPriorityPicker({
           </ComboboxValue>
         </ComboboxTrigger>
 
-        <ComboboxContent className="max-w-(--anchor-width) min-w-(--anchor-width)">
+        <ComboboxContent
+          portalContainer={portalContainer}
+          className="max-w-(--anchor-width) min-w-(--anchor-width)"
+        >
           <ComboboxInput showTrigger={false} placeholder="Change priority" className="mb-1" />
           <ComboboxEmpty>No priorities found.</ComboboxEmpty>
           <ComboboxList>

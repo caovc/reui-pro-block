@@ -2,6 +2,7 @@
 // https://reui.io/r/radix-nova/c-combobox-21.json
 // Adapters: controlled form value/id, Lucide icon adapter; original picker/glyph behavior retained.
 "use client";
+import type { ComponentProps } from "react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -93,10 +94,12 @@ function StatusLabel({ status, className }: { status: StatusOption; className?: 
 
 export function ProjectStatusPicker({
   id,
+  portalContainer,
   value,
   onChange,
 }: {
   id: string;
+  portalContainer?: ComponentProps<typeof ComboboxContent>["portalContainer"];
   value: string;
   onChange: (value: string) => void;
 }) {
@@ -132,7 +135,10 @@ export function ProjectStatusPicker({
           </ComboboxValue>
         </ComboboxTrigger>
 
-        <ComboboxContent className="max-w-(--anchor-width) min-w-(--anchor-width)">
+        <ComboboxContent
+          portalContainer={portalContainer}
+          className="max-w-(--anchor-width) min-w-(--anchor-width)"
+        >
           <ComboboxInput showTrigger={false} placeholder="Change status" className="mb-1" />
           <ComboboxEmpty>No statuses found.</ComboboxEmpty>
           <ComboboxList>
