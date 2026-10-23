@@ -45,51 +45,6 @@ import {
   Sidebar,
 } from "./primitives";
 import { downloadFile } from "@/lib/download";
-export function GlassWorkspace() {
-  const [active, setActive] = useState("Fleet");
-  const [tab, setTab] = useState("Operations");
-  return (
-    <div
-      className="shell-reference shell-color-wash p-3 gap-4"
-      data-shell-variant="31"
-    >
-      <Rail glass active={active} onChange={setActive} />
-      <main className="shell-content-frame !overflow-visible rounded-3xl !bg-transparent pt-3">
-        <div
-          className="shell-folder-tabs flex"
-          role="tablist"
-          aria-label="Workspace tabs"
-        >
-          {["Operations", "Structure", "Insights"].map((name) => (
-            <button
-              role="tab"
-              aria-selected={tab === name}
-              key={name}
-              onClick={() => setTab(name)}
-              className={`shell-folder-tab ${tab === name ? "active" : ""}`}
-            >
-              {name}
-            </button>
-          ))}
-        </div>
-        <div className="flex min-h-0 flex-1 gap-6">
-          <section className="flex min-w-0 flex-1 rounded-3xl bg-background/90 p-2">
-            <ContentCards layout="glass" />
-          </section>
-          <aside className="shell-glass-assistant hidden w-[32%] flex-col rounded-3xl border border-background/70 bg-background/70 p-2 lg:flex">
-            <div className="h-6 rounded-xl bg-muted/60" />
-            <div className="mt-auto space-y-3">
-              <div className="h-20 rounded-xl bg-muted/70" />
-              <div className="h-3 w-2/5 rounded bg-muted/70" />
-              <div className="h-40 rounded-xl bg-muted/70" />
-              <div className="h-10 rounded-xl bg-muted/70" />
-            </div>
-          </aside>
-        </div>
-      </main>
-    </div>
-  );
-}
 export function BoardWorkspace() {
   const [active, setActive] = useState("Overview");
   const [view, setView] = useState("Board");

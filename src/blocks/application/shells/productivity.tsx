@@ -8,7 +8,6 @@ import { Bubble, BubbleContent } from "@/components/ui/bubble";
 import { Badge as ReuiBadge } from "@/components/reui/badge";
 import { ResponsiveAssistantPanel } from "./responsive-assistant";
 import {
-  Archive,
   CalendarDays,
   CircleCheck,
   Flag,
@@ -22,9 +21,7 @@ import {
   List,
   Mail,
   Mic,
-  MoreHorizontal,
   PanelLeft,
-  Pin,
   Plus,
   Send,
   Settings,
@@ -35,7 +32,6 @@ import {
   Users,
   X,
 } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import {
   Dialog,
@@ -44,21 +40,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/ui/resizable";
+
 import { Calendar } from "@/components/ui/calendar";
 import {
   Button,
   Badge,
   CreateItemDialog,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
   Face,
   Input,
   PlaceholderCanvas,
@@ -70,10 +57,8 @@ import {
 import {
   AccountCard,
   Choices,
-  ContentCards,
   GroupedNav,
   PageTitle,
-  Segments,
   Sidebar,
 } from "./primitives";
 import { EventCreator } from "./calendar-panel";
@@ -838,202 +823,6 @@ export function WebmailShell() {
         title="Create label"
         onCreate={(name) => setLabels((v) => [...v, name])}
       />
-    </div>
-  );
-}
-const initialThreads = [
-  "Stripe webhook 500s on charge.refunded",
-  "Q3 release notes draft",
-  "Stream chat responses",
-  "Churn by plan tier",
-  "Mobile onboarding revamp scope",
-  "Why is p95 latency up on eu-west",
-  "Rewrite the trial expiry email",
-  "Postgres index for events table",
-];
-export function ResizableChat() {
-  const [collapsed, setCollapsed] = useState(false);
-  const [threads, setThreads] = useState(initialThreads);
-  const [active, setActive] = useState(initialThreads[0]);
-  const [pinned, setPinned] = useState(initialThreads.slice(0, 2));
-  const [tab, setTab] = useState("Chats");
-  const [model, setModel] = useState("Claude Sonnet 5");
-  const [memory, setMemory] = useState(true);
-  return (
-    <div className="shell-reference" data-shell-variant="21">
-      <ResizablePanelGroup orientation="horizontal" key={String(collapsed)}>
-        <ResizablePanel
-          defaultSize={collapsed ? "5%" : "20%"}
-          minSize={collapsed ? "48px" : "210px"}
-          maxSize={collapsed ? "48px" : "40%"}
-        >
-          <Sidebar collapsed={collapsed} className="!h-full !w-full border-r">
-            <div className="flex h-12 items-center justify-between px-1">
-              <ReuiMark small />
-              {!collapsed && <strong className="text-xs">ReUI Chat</strong>}
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                aria-label="Toggle Sidebar"
-                onClick={() => setCollapsed((v) => !v)}
-              >
-                <PanelLeft />
-              </Button>
-            </div>
-            <SearchPalette
-              iconOnly={collapsed}
-              collapsed={collapsed}
-              onSelect={setActive}
-            />
-            {!collapsed && (
-              <>
-                <div className="my-3">
-                  <Segments
-                    label="Thread content"
-                    items={["Chats", "Artifacts"]}
-                    value={tab}
-                    onChange={setTab}
-                  />
-                </div>
-                <Button
-                  variant="ghost"
-                  className="justify-start"
-                  onClick={() => setActive("New Chat")}
-                >
-                  <Plus />
-                  New Chat
-                </Button>
-                <GroupedNav
-                  groups={[
-                    {
-                      label: "",
-                      items: ["Projects", "Scheduled", "Customize"],
-                    },
-                  ]}
-                  active={active}
-                  onSelect={setActive}
-                />
-                <div className="shell-scroll">
-                  {tab === "Artifacts" ? (
-                    <GroupedNav
-                      groups={[
-                        {
-                          label: "Artifacts",
-                          items: [
-                            "Release summary",
-                            "Revenue dashboard",
-                            "API documentation",
-                          ],
-                        },
-                      ]}
-                      active={active}
-                      onSelect={setActive}
-                    />
-                  ) : (
-                    ["Pinned", "Recent"].map((group) => (
-                      <section className="mb-4" key={group}>
-                        <p className="shell-section-label">{group}</p>
-                        {threads
-                          .filter((t) =>
-                            group === "Pinned"
-                              ? pinned.includes(t)
-                              : !pinned.includes(t),
-                          )
-                          .map((name) => (
-                            <div className="group flex items-center" key={name}>
-                              <Button
-                                variant={
-                                  active === name ? "secondary" : "ghost"
-                                }
-                                className="shell-nav-button min-w-0 flex-1 justify-start"
-                                onClick={() => setActive(name)}
-                              >
-                                <span className="truncate">{name}</span>
-                              </Button>
-                              <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
-                                  <Button
-                                    variant="ghost"
-                                    size="icon-sm"
-                                    className="size-6 opacity-0 group-hover:opacity-100 focus:opacity-100"
-                                    aria-label={`Thread actions for ${name}`}
-                                  >
-                                    <MoreHorizontal />
-                                  </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent>
-                                  <DropdownMenuGroup>
-                                    <DropdownMenuItem
-                                      onSelect={() =>
-                                        setPinned((v) =>
-                                          v.includes(name)
-                                            ? v.filter((t) => t !== name)
-                                            : [...v, name],
-                                        )
-                                      }
-                                    >
-                                      <Pin />
-                                      {pinned.includes(name)
-                                        ? "Unpin"
-                                        : "Pin to top"}
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem
-                                      onSelect={() =>
-                                        setThreads((v) =>
-                                          v.filter((t) => t !== name),
-                                        )
-                                      }
-                                    >
-                                      <Archive />
-                                      Archive
-                                    </DropdownMenuItem>
-                                  </DropdownMenuGroup>
-                                </DropdownMenuContent>
-                              </DropdownMenu>
-                            </div>
-                          ))}
-                      </section>
-                    ))
-                  )}
-                </div>
-              </>
-            )}
-            <WorkspaceMenu user displayName="Shadcn" initial="Shadcn" />
-          </Sidebar>
-        </ResizablePanel>
-        <ResizableHandle withHandle />
-        <ResizablePanel minSize="50%">
-          <main className="shell-content-frame h-full">
-            <PageTitle title={active}>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" aria-label="Chat model">
-                    {model}
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuGroup>
-                    {["Claude Sonnet 5", "GPT-4", "Gemini"].map((m) => (
-                      <DropdownMenuItem key={m} onSelect={() => setModel(m)}>
-                        {m}
-                      </DropdownMenuItem>
-                    ))}
-                  </DropdownMenuGroup>
-                  <div className="flex items-center justify-between gap-3 border-t p-2 text-xs">
-                    <span>Memory</span>
-                    <Switch
-                      checked={memory}
-                      onCheckedChange={setMemory}
-                      aria-label="Memory"
-                    />
-                  </div>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </PageTitle>
-            <ContentCards layout="chat" />
-          </main>
-        </ResizablePanel>
-      </ResizablePanelGroup>
     </div>
   );
 }

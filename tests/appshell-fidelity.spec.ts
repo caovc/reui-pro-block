@@ -143,3 +143,95 @@ test("mobile order queue is a dismissible dialog and retains its search", async 
   await page.keyboard.press("Escape");
   await expect(dialog).toHaveCount(0);
 });
+
+test("chat sidebar groups, search and memory preserve the reference interaction model", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto(route(21));
+  const pinnedGroup = page.getByRole("button", { name: /^Pinned/ });
+  await pinnedGroup.click();
+  await expect(
+    page.getByRole("button", { name: "Q3 release notes draft", exact: true }),
+  ).toHaveCount(0);
+  await pinnedGroup.click();
+  await expect(
+    page.getByRole("button", { name: "Q3 release notes draft", exact: true }),
+  ).toBeVisible();
+  await page
+    .getByRole("button", { name: "Pin Stream chat responses", exact: true })
+    .focus();
+  await page
+    .getByRole("button", { name: "Pin Stream chat responses", exact: true })
+    .click();
+  await expect(
+    page.getByRole("button", {
+      name: "Unpin Stream chat responses",
+      exact: true,
+    }),
+  ).toBeVisible();
+  await page
+    .getByRole("button", {
+      name: "Thread actions for Stream chat responses",
+      exact: true,
+    })
+    .click();
+  await page.getByRole("menuitem", { name: "Archive", exact: true }).click();
+  await expect(
+    page.getByRole("button", { name: "Stream chat responses", exact: true }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Chat memory", exact: true }).click();
+  await page.getByRole("button", { name: "Chat model", exact: true }).click();
+  await expect(
+    page.getByRole("switch", { name: "Memory", exact: true }),
+  ).not.toBeChecked();
+  await page.keyboard.press("Escape");
+  await page.keyboard.press("Control+k");
+  await page
+    .getByRole("combobox", { name: "Search workspace routes", exact: true })
+    .fill("Q3 release");
+  await page.keyboard.press("Enter");
+  await expect(
+    page.getByRole("heading", { name: "Q3 release notes draft", exact: true }),
+  ).toBeVisible();
+});
+test("glass workspace uses keyboard tabs and keeps its account menu open when choosing a theme", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 900 });
+  await page.goto(route(31));
+  const operations = page.getByRole("tab", { name: "Operations", exact: true });
+  await operations.focus();
+  await operations.press("ArrowRight");
+  await expect(
+    page.getByRole("tab", { name: "Structure", exact: true }),
+  ).toHaveAttribute("data-state", "active");
+  await page.getByRole("button", { name: "Routes", exact: true }).click();
+  await expect(
+    page.getByRole("button", { name: "Routes", exact: true }),
+  ).toHaveAttribute("aria-pressed", "true");
+  await page
+    .getByRole("button", { name: "Operator menu", exact: true })
+    .click();
+  await page.getByRole("radio", { name: "Dark", exact: true }).click();
+  await expect(page.locator("html")).toHaveClass(/dark/);
+  await expect(page.getByRole("menu")).toBeVisible();
+  await page.getByRole("radio", { name: "Light", exact: true }).click();
+  await expect(page.locator("html")).not.toHaveClass(/dark/);
+  await expect(page.getByRole("menu")).toBeVisible();
+  await page.keyboard.press("Escape");
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page
+    .getByRole("button", { name: "Open sections", exact: true })
+    .click();
+  const dialog = page.getByRole("dialog");
+  await expect(
+    dialog.getByRole("button", { name: "Robots", exact: true }),
+  ).toBeVisible();
+  await dialog.getByRole("button", { name: "Robots", exact: true }).click();
+  await expect(
+    dialog.getByRole("button", { name: "Robots", exact: true }),
+  ).toHaveAttribute("aria-pressed", "true");
+  await page.keyboard.press("Escape");
+  await expect(dialog).toHaveCount(0);
+});

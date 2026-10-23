@@ -19,15 +19,15 @@ import {
   TodoShell,
   PlannerShell,
   WebmailShell,
-  ResizableChat,
 } from "./productivity";
 import { MissionShell, OperationsShell } from "./fleet-consoles";
 import {
   BoardWorkspace,
   FleetHeroShell,
-  GlassWorkspace,
   ObservabilityShell,
 } from "./specialized";
+import GlassWorkspace from "./glass-workspace";
+import ChatWorkspace from "./chat-workspace";
 import InvoiceQueue from "./invoice-queue";
 import FleetCenter from "./fleet-center";
 import "../../reference.css";
@@ -76,7 +76,7 @@ export default function AppShell({ block }: BlockProps) {
     case 20:
       return <WebmailShell />;
     case 21:
-      return <ResizableChat />;
+      return <ChatWorkspace />;
     case 22:
       return <FleetHeroShell />;
     case 25:
