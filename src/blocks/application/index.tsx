@@ -1,4 +1,5 @@
 import RefinedEmptyBlock from "./empty-variants";
+import WorkspaceSetupEmptyBlock from "./empty-variants/workspace-setup";
 import TeamSetupEmptyBlock from "./empty-variants/team-setup";
 import type { BlockProps } from "@/data/types";
 import AuthBlock from "./auth";
@@ -9,14 +10,7 @@ import CardsBlock from "./cards";
 import { SettingsBlock, WizardBlock, DialogBlock } from "./forms";
 import { DashboardBlock, StatsBlock, NavBlock, ListBlock } from "./workspace";
 import AppShell from "./shells/audited";
-import {
-  CalendarBlock,
-  BoardBlock,
-  GanttBlock,
-  FlowBlock,
-  TimelineBlock,
-  EmptyBlock,
-} from "./planning";
+import { CalendarBlock, BoardBlock, GanttBlock, FlowBlock, TimelineBlock } from "./planning";
 export default function ApplicationBlock({ block }: BlockProps) {
   switch (block.category) {
     case "auth":
@@ -65,7 +59,7 @@ export default function ApplicationBlock({ block }: BlockProps) {
       ) : block.index < 10 ? (
         <TeamSetupEmptyBlock block={block} />
       ) : (
-        <EmptyBlock block={block} />
+        <WorkspaceSetupEmptyBlock block={block} />
       );
     default:
       throw new Error(`Unknown application category: ${block.category}`);

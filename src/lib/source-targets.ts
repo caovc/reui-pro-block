@@ -153,6 +153,14 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
       const modules = ["launch", "invite", "settings", "invite", "blueprints"];
       return paths("application", `empty-variants/team-setup/${modules[variant - 6]}`, "planning");
     }
+    if (block.category === "empty-state" && variant >= 11 && variant <= 14) {
+      const modules = ["signals", "exports", "storage", "organizations"];
+      return paths(
+        "application",
+        `empty-variants/workspace-setup/${modules[variant - 11]}`,
+        "planning",
+      );
+    }
     if (block.category === "auth") {
       if ([10, 11, 18].includes(variant)) return paths("application", "auth-review-panels", "auth");
       if ([6, 8].includes(variant)) return paths("application", "auth-editorial", "auth");
@@ -240,6 +248,16 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
         : variant === 23
           ? "social-lines"
           : "commerce-lines";
+      return paths("data", module, "charts");
+    }
+    if (block.category === "sparkline") {
+      const module = [1, 2, 15, 25].includes(variant)
+        ? "sparkline-business"
+        : [3, 5, 11].includes(variant)
+          ? "sparkline-finance"
+          : [31, 41, 46].includes(variant)
+            ? "sparkline-operations"
+            : "sparkline-budgets";
       return paths("data", module, "charts");
     }
     const modules: Record<string, string> = {

@@ -1,0 +1,158 @@
+{
+  "scope": "Application Empty State11–14: actual official free-source workspace setup composition",
+  "baseCommit": "48495a3df9e62c21269db91605c1777241f0ce93",
+  "candidate": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/reui-empty11-14-candidate-iyia8set",
+  "frozenPayload": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/reui-empty11-14-freeze-pbpwaqqv",
+  "ownedFileCountIncludingManifest": 12,
+  "sharedIntegration": {
+    "workingFilesEdited": false,
+    "dispatcher": "application/index.tsx: add WorkspaceSetupEmptyBlock import, remove unused planning EmptyBlock import, replace only final Empty fallback after index<10 with WorkspaceSetupEmptyBlock. Preserve earlier branches.",
+    "sourceDefaults": {
+      "empty-state-11": "empty-variants/workspace-setup/signals",
+      "empty-state-12": "empty-variants/workspace-setup/exports",
+      "empty-state-13": "empty-variants/workspace-setup/storage",
+      "empty-state-14": "empty-variants/workspace-setup/organizations"
+    },
+    "instructions": "Exact narrow source-targets hunk is recorded in the implementation ledger. Both private integration hunks were production-tested in the isolated candidate. Root merges against latest shared files."
+  },
+  "actualFreeReuse": [
+    "Installed official IconStack in all4 entries; actual geometry retained.",
+    "Installed official Frame/FramePanel/FrameFooter in storage/organizations, checked against c-frame-1.",
+    "Existing upstream shadcn Empty slots as actually consumed by audited official c-empty examples1/4/8; all20 free examples inspected.",
+    "Actual official c-calendar-29 source retained in free/range-picker with documented integration/viewport adapters; no custom calendar or preset replacement.",
+    "Installed actual REUI Badge/Alert for local feedback; existing downloadFile and original demo-artwork helper."
+  ],
+  "officialCalendar": {
+    "registry": "https://reui.io/r/radix-nova/c-calendar-29.json",
+    "rawSourceSHA256": "e75c721013557ee6daa0ed8d05ca5673c4975c699533fb429c0ceb68e7551f51",
+    "adaptations": "Named component props/callback; Lucide icon adapter; stable mount date; Radix asChild; available-height/collision scrolling. Full provenance+MIT header preserved."
+  },
+  "verification": {
+    "productionBuild": "passed complete TypeScript+Vite; /tmp/reui-empty11-14-production-build.log",
+    "tests": "12 passed16.4s;1worker;standard30s timeout;8initialrenders1440/390;actual downloads/source defaults/ZIP;mobile Popover bounds regression",
+    "testLog": "/tmp/reui-empty11-14-tests-final-v2.log",
+    "screenshots": "/tmp/reui-empty11-14-audit:8initialscreenshots+1settledmobilecalendar, all reviewed",
+    "actualZIP": "/tmp/reui-empty11-14-audit/empty-state-14.zip",
+    "zipBytes": 3514782,
+    "zipFiles": 255,
+    "zipBuild": "passed full TypeScript+Vite: /var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/reui-empty14-realzip-9__e3eu5",
+    "format": "scoped oxfmt format/check passed",
+    "lint": "scoped Oxlint passed",
+    "priorFrozenSources": "11 Empty1–5 +10 Empty6–10 +4 Card avatar source hashes unchanged"
+  },
+  "limits": [
+    "Signal rules, delivery drafts, folders and organization permissions are explicit local state; no real backend/email/OAuth/authorization.",
+    "PDF brief intentionally downloads printable .html for browser Print/Save as PDF; no false PDF bytes or remote generator.",
+    "Provider marks are original typographic demo artwork, deliberately replacing original-site SVG media.",
+    "Committed48495a3 whole-Application ZIP still includes13 legacy Schedule/range JPEGs outside this scope. Integrate coordinated migrations/deletion and recheck archive media before claiming policy clearance. This payload adds no binary media."
+  ],
+  "dependencies": [
+    {
+      "path": "src/components/reui/icon-stack.tsx",
+      "sha256": "5549a831c03513b92189d7d88f53db1abeb626249adfb9da0a71fa452d9cc32b",
+      "owner": "existing shared source; consumed without edits"
+    },
+    {
+      "path": "src/components/reui/frame.tsx",
+      "sha256": "a80a37a89e4c47eb2ff226557b2f53e528681d09a4a0321d8aebf826b4c3ecd6",
+      "owner": "existing shared source; consumed without edits"
+    },
+    {
+      "path": "src/components/reui/badge.tsx",
+      "sha256": "aa775fdd1638b34a843f5ece24236705d152cc36ea5edce62a62fe5601dde664",
+      "owner": "existing shared source; consumed without edits"
+    },
+    {
+      "path": "src/components/reui/alert.tsx",
+      "sha256": "bcf730d92ee23d445d069d193a6dfc52229c4e4d7085d3e476e0e7b5789f3629",
+      "owner": "existing shared source; consumed without edits"
+    },
+    {
+      "path": "src/components/ui/empty.tsx",
+      "sha256": "497f9c1685ce4095db1e644525d3b1fda5d2f6724dd6278db01a07d2d5414fd0",
+      "owner": "existing shared source; consumed without edits"
+    },
+    {
+      "path": "src/components/ui/calendar.tsx",
+      "sha256": "e6595c8a2c9e3abb525b0188c930bdc10901ebd882aefa8e6f7465732d1b58bd",
+      "owner": "existing shared source; consumed without edits"
+    },
+    {
+      "path": "src/components/ui/popover.tsx",
+      "sha256": "141c0769f2f65f7dccb592edb4e4819610ee7d85d39ca189ccc39bb01071db5b",
+      "owner": "existing shared source; consumed without edits"
+    },
+    {
+      "path": "src/components/ui/dialog.tsx",
+      "sha256": "e7b23b215a5ccc94d827419106f0815fafda401f8cdbb43256a6746adab6ee17",
+      "owner": "existing shared source; consumed without edits"
+    },
+    {
+      "path": "src/lib/demo-artwork.ts",
+      "sha256": "dd1ff55cd26fcc74604d7c94b0e7cb4f4b9df03e7d292f95502072d48d92b313",
+      "owner": "existing shared source; consumed without edits"
+    },
+    {
+      "path": "src/lib/download.ts",
+      "sha256": "f177debd6c2919449006612cd08728b13ee0e8372677452a752e9aaa31d55a9e",
+      "owner": "existing shared source; consumed without edits"
+    }
+  ],
+  "files": [
+    {
+      "path": "docs/empty-state11-14-implementation.md",
+      "sha256": "ba7950ca785bd17458b36905c64290d1f7d1fce5afcd69ea3c7d8f59dbb21add",
+      "bytes": 13496
+    },
+    {
+      "path": "src/blocks/application/empty-variants/workspace-setup/export-data.ts",
+      "sha256": "d678aee2861ef1c8f463d28496e6fa12b20afcc833c38c92557b33bf4913d567",
+      "bytes": 4463
+    },
+    {
+      "path": "src/blocks/application/empty-variants/workspace-setup/exports.tsx",
+      "sha256": "4422de7642a5e10c7567a04626125e06671411bfe0c38f42486b1fb67c8c3b30",
+      "bytes": 12441
+    },
+    {
+      "path": "src/blocks/application/empty-variants/workspace-setup/free/range-picker.tsx",
+      "sha256": "f8d52c3102419ca8487f04faf10ed2d95f77a7366629410ceeb2d2b7d4e8392b",
+      "bytes": 6911
+    },
+    {
+      "path": "src/blocks/application/empty-variants/workspace-setup/index.tsx",
+      "sha256": "5c69af1f6899b2b6102197e491f58cbd7df4960b3389c3642d706f7e5e266a16",
+      "bytes": 677
+    },
+    {
+      "path": "src/blocks/application/empty-variants/workspace-setup/organizations.tsx",
+      "sha256": "a6776234ed03b3083911cff83db16fb21c7040199065d34f8e29d19f4a954ff0",
+      "bytes": 9146
+    },
+    {
+      "path": "src/blocks/application/empty-variants/workspace-setup/signals.tsx",
+      "sha256": "08fe6a50521c9a4e45af669e4547446d9cb2676b0da61b2f6c147744c9885af3",
+      "bytes": 6285
+    },
+    {
+      "path": "src/blocks/application/empty-variants/workspace-setup/storage.tsx",
+      "sha256": "34efd1462c26931da03017478ba54451c18ef43322c85c933b20ca6fcc6b68d3",
+      "bytes": 7343
+    },
+    {
+      "path": "src/blocks/application/empty-variants/workspace-setup/support.tsx",
+      "sha256": "1b46ceb7fa07a2682f45eeb58322f95fa070d577bfb3bbbf44390af423ba929c",
+      "bytes": 982
+    },
+    {
+      "path": "src/blocks/application/empty-variants/workspace-setup/workspace-setup.css",
+      "sha256": "27d20fbd75ba1eb7be6bcc2d53b35d74b37cfbab29f526c9ebf9bcd7ea6282fe",
+      "bytes": 5334
+    },
+    {
+      "path": "tests/empty-workspace-setup.spec.ts",
+      "sha256": "97b5f62c4c74e012bb49f679ec977ea36b553e9d873e7aa8a6f743a091386932",
+      "bytes": 13551
+    }
+  ]
+}
