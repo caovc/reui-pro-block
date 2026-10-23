@@ -1,0 +1,280 @@
+{
+  "milestone": "Navbar4\u20136 actual free-source toolbar composition; visual audit pending",
+  "testedArchiveBase": "bca41daa7357bda7d8d6bc4a815a64b7e7956a20",
+  "scope": "18 new source files under independent toolbars directory plus test/ledger/manifest. No frozen first-run/Dialog/shared/router/source-targets/package/Git changes.",
+  "files": [
+    {
+      "path": "src/blocks/application/navbar-variants/toolbars/admin.tsx",
+      "sha256": "e1f8fe266f4ba2b9754ed4c60e087b42344d9141e785690cb8486714087548cd"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/toolbars/analytics.tsx",
+      "sha256": "8dd4b38c2d98444e20821deda0627f1d38eb3a0343af370fa42947f191fd790e"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/toolbars/data.ts",
+      "sha256": "4ff422095350d5ae9dc1060c5778c582c45786f3a5ab571958108dc886a28ac2"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/toolbars/download.ts",
+      "sha256": "49cbcc5ce09c4706028244eae96243edd6b390e7da25ea73171436c613bc8cb8"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/toolbars/free/active-switch.tsx",
+      "sha256": "63e9761b427a83ec4db6c288cf9164ccca2b59f32c4536fbda96eb55fbf1029a"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/toolbars/free/analytics-menu.tsx",
+      "sha256": "7aa4de7050a4d48812efa32fa36d3b227d6575a809fc3dba8ddc4a37a5dc3dfb"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/toolbars/free/compare-toggle.tsx",
+      "sha256": "e33c37f30ad257a4f913d646d9dfaae06f56fe6b7794f546977ae8b58eee3461"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/toolbars/free/notification-progress.tsx",
+      "sha256": "0c2a0bf63df99acc60c71ffebcfbde6a7a60c2b1e116313c29386f493b4cc766"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/toolbars/free/refresh-select.tsx",
+      "sha256": "a2342114b5e215ba464daed772441177ac6ed0d8ca9959746cb34e41845dcc18"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/toolbars/free/search.tsx",
+      "sha256": "6989ca97ffb651a30e6e69c96eb10327d10bd97930359a910f7184f454838388"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/toolbars/free/single-date.tsx",
+      "sha256": "53887a6815be4d757e922addd4d097526113b08a1a61a4011f7673367e25e490"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/toolbars/free/workflow-menu.tsx",
+      "sha256": "8378de311db92dde8eb374e7b3859814fa37d89c29ed277a9d762f04f8123c65"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/toolbars/index.tsx",
+      "sha256": "11b237f24dfd4ffe4788adf5d6de81f7f6c8fde3b8447ece0532afe98939516f"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/toolbars/notifications.tsx",
+      "sha256": "9ecc577fb1fab83879c9b35dae6c383a91bc43eefb4e7192258dcdfa2829bc31"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/toolbars/support.tsx",
+      "sha256": "ae08ce59909b6be81dc20d4b193ff6ac4e09632840b7ede8a548fcc90653527a"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/toolbars/toolbar.css",
+      "sha256": "7ba60abb1942defcc6c358ad27897275d10d190451781a73faa93e2ba61d4a41"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/toolbars/use-theme.ts",
+      "sha256": "9e80a751e82f25e98fa4bfe7316427cc99085aaa4aa5ba7f3a8822cd7d81a4b9"
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/toolbars/workflow.tsx",
+      "sha256": "8dc96947c212af49e139bb8ef695f15c225559b38f460941c9540131b43fc1fc"
+    },
+    {
+      "path": "tests/navbar-toolbars.spec.ts",
+      "sha256": "d7046649a5239a06eb9c78b212f9476bbd7722e90695b3d56589b904494cfa61"
+    },
+    {
+      "path": "docs/navbar4-6-implementation.md",
+      "sha256": "5e8aa29ef76fb308cf11f12137a4031183c06112df094e1b4d2eb839f1316909"
+    }
+  ],
+  "unchangedRequiredDependencies": [
+    {
+      "path": "src/blocks/application/navbar-variants/first-run/free/account-menu.tsx",
+      "sha256": "c45f5887a39b4e86dc4b50af1286b766dc2abab32d3397d61cdb5ea182a928e6",
+      "note": "Read-only existing/frozen consumer; not part of this payload."
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/first-run/free/trail.tsx",
+      "sha256": "2981954d512ec257642b62930fdd3c32789e513fbba532509ee377216e243d24",
+      "note": "Read-only existing/frozen consumer; not part of this payload."
+    },
+    {
+      "path": "src/blocks/application/navbar-variants/first-run/free/presence.tsx",
+      "sha256": "4a10ffd3d94f3e635313855418bde3680ef084a9cc61235d4835154a4d67e519",
+      "note": "Read-only existing/frozen consumer; not part of this payload."
+    },
+    {
+      "path": "src/blocks/application/dialog-variants/first-run/free/dialog-surface.tsx",
+      "sha256": "fff63897eb044d56702cba1803c9a5ba045be62324cbf337e9fd8519299a5344",
+      "note": "Read-only existing/frozen consumer; not part of this payload."
+    },
+    {
+      "path": "src/blocks/application/dialog-variants/first-run/first-run.css",
+      "sha256": "6d33a1532f2510ea3b18ad48e7ad17178a0981ce00aa922128875b69e3e16aa8",
+      "note": "Read-only existing/frozen consumer; not part of this payload."
+    }
+  ],
+  "officialFreeSources": [
+    {
+      "name": "c-command-5",
+      "url": "https://reui.io/r/radix-nova/c-command-5.json",
+      "upstreamSourceSha256": "a6fbf8279a0d9de2fe0aa576eb00a637dd288e4029f64c93ba5ab03b18d60e43",
+      "license": "MIT (c) Keenthemes"
+    },
+    {
+      "name": "c-dropdown-menu-11",
+      "url": "https://reui.io/r/radix-nova/c-dropdown-menu-11.json",
+      "upstreamSourceSha256": "11b72f166234d36b89c2d502a18c2998029fb33a19ece02ee6157470343e0367",
+      "license": "MIT (c) Keenthemes"
+    },
+    {
+      "name": "c-dropdown-menu-12",
+      "url": "https://reui.io/r/radix-nova/c-dropdown-menu-12.json",
+      "upstreamSourceSha256": "d27d51532640ee2360089b277a139ccc19f0ebe140ce6625962d355f7167290b",
+      "license": "MIT (c) Keenthemes"
+    },
+    {
+      "name": "c-dropdown-menu-13",
+      "url": "https://reui.io/r/radix-nova/c-dropdown-menu-13.json",
+      "upstreamSourceSha256": "62f962f9e1b2d1cec5b6e35982d551723745ddbaeae41de4a26ed6392304b487",
+      "license": "MIT (c) Keenthemes"
+    },
+    {
+      "name": "c-calendar-24",
+      "url": "https://reui.io/r/radix-nova/c-calendar-24.json",
+      "upstreamSourceSha256": "34ccf9f2c438cb03d2e62965dc8923094ffa6abbf239e7b80b6e6b5217e9d742",
+      "license": "MIT (c) Keenthemes"
+    },
+    {
+      "name": "c-switch-1",
+      "url": "https://reui.io/r/radix-nova/c-switch-1.json",
+      "upstreamSourceSha256": "87b075da613bdcac3670ca236ff2210fdc6de7392a011bc4a98a2ce1c6aafc40",
+      "license": "MIT (c) Keenthemes"
+    },
+    {
+      "name": "c-select-5",
+      "url": "https://reui.io/r/radix-nova/c-select-5.json",
+      "upstreamSourceSha256": "59ce33e5b54f51d36fed42660adfb6c4bb2a69d73df6221820931f935e1bddc8",
+      "license": "MIT (c) Keenthemes"
+    },
+    {
+      "name": "c-progress-2",
+      "url": "https://reui.io/r/radix-nova/c-progress-2.json",
+      "upstreamSourceSha256": "539c007c6890633220abf46b9ab250c9cb1f183fe367c99aba4f9d532bbf4eca",
+      "license": "MIT (c) Keenthemes"
+    },
+    {
+      "name": "c-rating-1",
+      "url": "https://reui.io/r/radix-nova/c-rating-1.json",
+      "upstreamSourceSha256": "b6ce855d9cede7df4f5feed555633deabaa8656cc559950a54d1711166fa6fc0",
+      "license": "MIT (c) Keenthemes"
+    },
+    {
+      "name": "c-toggle-1",
+      "url": "https://reui.io/r/radix-nova/c-toggle-1.json",
+      "upstreamSourceSha256": "570bee8300d975d5852c7b8ff0bbc719d379a4955dd440e34f2b765381713c92",
+      "license": "MIT (c) Keenthemes"
+    }
+  ],
+  "rootIntegration": {
+    "routerImport": "import ToolbarNavbarBlock from \"./navbar-variants/toolbars\";",
+    "navbarGuard": "block.index >= 3 && block.index < 6",
+    "component": "<ToolbarNavbarBlock block={block} />",
+    "preserve": "Earlier index<3 first-run branch and later NavBlock fallback; do not replace latest entire router.",
+    "sourceTargets": {
+      "guard": "group application; category navbar; 1-based variants4 through6",
+      "variant4": "navbar-variants/toolbars/admin",
+      "variant5": "navbar-variants/toolbars/workflow",
+      "variant6": "navbar-variants/toolbars/analytics",
+      "fallback": "workspace"
+    },
+    "appliedOnlyInCandidate": true
+  },
+  "verification": {
+    "candidate": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/reui-navbar-toolbars-production-0dsl4zy_",
+    "strictBuild": {
+      "result": "PASS strict TypeScript + production Vite",
+      "log": "/tmp/reui-navbar-toolbars-build.log"
+    },
+    "targetedProduction": {
+      "result": "17/17 PASS16.4s",
+      "test": "tests/navbar-toolbars.spec.ts",
+      "workers": 1,
+      "timeoutMs": 30000,
+      "retryChange": false,
+      "log": "/tmp/reui-navbar-toolbars-tests.log",
+      "output": "/tmp/reui-navbar-toolbars-results"
+    },
+    "enhancedFinalSource": {
+      "result": "4/4 PASS5.4s",
+      "log": "/tmp/reui-navbar-toolbars-source-tests.log",
+      "note": "Existing3source cases now prove exact clipboard/single-file bytes; actualZIP checks exact all3leaf bytes. Business source unchanged."
+    },
+    "coverage": [
+      "6 desktop/390 no-error/no-overflow/image-loaded renders",
+      "Cmd/CtrlK/MetaK actual Command search filtering/Enter/Escape/focus restoration",
+      "19 rich notifications, local Accept and read0,65% progress,4star actualRating",
+      "New field validation and actual account theme",
+      "workflow Active/Inactive/run simulation/history/export JSON state/duplicate/local delete cancel+confirm+restore",
+      "single-date Calendar22/Compare/manual refresh1.2s/real10s interval Off via virtual clock",
+      "actual CSV/PNG downloads and signatures",
+      "currentURL share/embed",
+      "sourceviewer defaults3actual leaves/exact clipboard/singlefile/ZIP bytes"
+    ],
+    "screenshots": [
+      "/tmp/reui-navbar-toolbars-audit/navbar-4-1440.png",
+      "/tmp/reui-navbar-toolbars-audit/navbar-5-1440.png",
+      "/tmp/reui-navbar-toolbars-audit/navbar-6-1440.png",
+      "/tmp/reui-navbar-toolbars-audit/navbar-4-390.png",
+      "/tmp/reui-navbar-toolbars-audit/navbar-5-390.png",
+      "/tmp/reui-navbar-toolbars-audit/navbar-6-390.png",
+      "/tmp/reui-navbar-toolbars-audit/navbar-4-notifications-390.png",
+      "/tmp/reui-navbar-toolbars-audit/navbar-6-calendar-390.png"
+    ],
+    "inspectedLocalScreenshots": ["4phone richfeed", "5phone header", "6phone calendar"],
+    "actualDownloadedZip": {
+      "path": "/tmp/reui-navbar-toolbars-audit/navbar-6-source.zip",
+      "sha256": "cbfb209b678cae4e136f5cbd4485a4c39b9965cc8064600a8e78d764ddd3f4f0",
+      "files": 323,
+      "bytes": 3561455,
+      "extracted": "/tmp/reui-navbar-toolbars-realzip-Fxett5",
+      "independentBuild": "PASS",
+      "buildLog": "/tmp/reui-navbar-toolbars-zip-build.log",
+      "standaloneRender": "1440 and390 Calendar22 +Compare enabled +actual CSV reflecting both PASS; zero script errors/horizontal overflow",
+      "renderLog": "/tmp/reui-navbar-toolbars-zip-render.log"
+    },
+    "scopedOxfmtOxlint": "PASS on exact source/test/ledger; manifest separately formatted"
+  },
+  "referenceAudit": {
+    "publicMetadataRead": [
+      "https://reui.io/blocks/application/navbar/navbar-4.md",
+      "https://reui.io/blocks/application/navbar/navbar-5.md",
+      "https://reui.io/blocks/application/navbar/navbar-6.md"
+    ],
+    "renderedDesktopMobileStates": "PENDING. Human Edge active; IAB/extension unavailable or timing out. No native foreground/tab action.",
+    "explicitLimit": "Local test/screenshot success does not prove original visual parity. Keep fidelity visually pending."
+  },
+  "deliberateDifferences": [
+    "Original fictional19notification fixtures and original demoAvatar/Bricklane mark replace source media",
+    "Original search4 only Input; reused free Command5 adds actual results",
+    "Original no-op controls now have explicit local handlers/simulation",
+    "Analytics original single-date behavior preserved despite range wording",
+    "Auto refresh actual local interval; no network query",
+    "PNG is original generated sample chart, not actual dashboard screenshot",
+    "Free12 shortcut hints visual only",
+    "Exact original labels/geometry/menu arrangement/mobile behavior unverified;7\u201313 out of scope"
+  ],
+  "publication": "Functional/free-reuse READY with visual audit pending. Root serially stages/commits/pushes/checks CI+Pages. No child Git writes.",
+  "integrationBase": "60bbcb7ac42f8808824e00023a07e3541990a0b5",
+  "frozenManifestSha256": "fedb63f2e923a8792bc47bb29cee037c9c129b8bbf8ca4af8e8ae50c2dece242",
+  "rootValidation": {
+    "build": "PASS strict production on60bbcb7",
+    "production": "42/42 PASS original;33/33 PASS after cumulative Shop4/5 rebase",
+    "logs": [
+      "/tmp/bricklane-navbar46-root-production.log",
+      "/tmp/bricklane-navbar46-latest-root-production.log"
+    ],
+    "format": "PASS full snapshot",
+    "tooling": "3/3 PASS original; rerun after docs",
+    "lint": "0 errors original; rerun after docs",
+    "visual": "Root inspected actual390 calendar/notification screenshots; public render pending"
+  },
+  "deployment": "Pending cumulative CI/Pages"
+}
