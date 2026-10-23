@@ -1,0 +1,75 @@
+{
+  "scope": "Agent Activity five independent functional entries; Activity 2 default native desktop/mobile correction",
+  "base": "eac6a1a5df91de1902294f232c88d3027e3ed464",
+  "frozenFiles": {
+    "docs/agent-activity-refinement.md": "a96ee9a04506bd8fa4c882af0bfdc082e8bae3ae75b36ad5ccb48f57aba5cd91",
+    "src/blocks/data/agent-activity-approval.tsx": "18b8af047aeccda0b3f6ebf0d5f04661711874d114fbbd2f1e313d1ff1e519e0",
+    "src/blocks/data/agent-activity-audit.tsx": "d691b656f1dab7456c64a5130287ec9ab82ed21465048223122617ec436d0404",
+    "src/blocks/data/agent-activity-feed.tsx": "2fed3c33fce000a0b7d2acff1d73ce4a955651e99c3c62450a5c8be3ebd5cd17",
+    "src/blocks/data/agent-activity-model.ts": "003dfddcbda0faccce1322d7398a95db583047bd422a489974fff58b7a7eda5a",
+    "src/blocks/data/agent-activity-outcome.tsx": "5c02c2e3ed49464eb8be1dc7d7491dc76dbd30617454e4941bd8c9c9dbe9a5d0",
+    "src/blocks/data/agent-activity-research.tsx": "1509b15c32e6d7aaf4f9d577d43a56f207a2b0f08a4cf9357dd1bd010e33c42a",
+    "src/blocks/data/agent-activity-variants.tsx": "adae098b958deb232105fc74ecde0e12201c2915125ac750131bf97f5d206056",
+    "src/components/ui/trace.tsx": "c908ec9fb5e79cd304ae4f626250b49ae724866b58a705738fb1f09b138b70e1",
+    "tests/agent-activity-approval.spec.ts": "847865b7a217987c1351daadd162a2d5b167c2fe74f2e02026d62637947c8ef4",
+    "tests/agent-activity-evidence.spec.ts": "f72df063d59eea6a66cabd69bc6bd98ec03b41cfed8ce1441d84c9c59ce8cc91",
+    "tests/agent-activity-feed.spec.ts": "8211331fd9f7920fe30f45bdcd38cd237e3dcb6a549d16259cc85e599919f47d",
+    "tests/agent-activity-model.spec.ts": "a7dfc5a97b5e9469f357e170b21d68cfdc7e9064869de657643a3cfd46be21ef",
+    "tests/agent-activity-source.spec.ts": "05e844f2d3b961eb8186d7a3b6cc4257f9d558cd1fe9ed2c0f349f22faff1d18"
+  },
+  "integration": "Replace only ai-agents agent-activity route with independent variants; retain Chat and Usage. Default sources map to actual five rendered leaves. New Trace only, no existing UI/package overwrite.",
+  "actualFreeReuse": [
+    "official REUI Frame/Badge/Timeline/CodeBlock implementations",
+    "REUI free c-marker-2/3/4/5 compositions with upstream Marker",
+    "REUI free c-trace-2 timed/streamed run and controlled collapse",
+    "REUI free c-trace-5 approval phase/timer/focus handoff",
+    "REUI free c-trace-13 Table-in-Card and explicit failure/skipped semantics",
+    "upstream Trace via explicit official REUI delegation, isolated CLI install; source SHA cb56c628760299e3ca2fbfaf8487b11bc011ebd2167be9affe798837899ab9f3"
+  ],
+  "customGaps": [
+    "complete per-step gatedBy approval workflow and validated questions/revisions",
+    "local MCP scope/requeue and pending server audit state",
+    "dependency-aware scoped result retry, keep/undo and discard/restore",
+    "independent task/source/file/data fixtures and original initials avatar"
+  ],
+  "verification": {
+    "root": "Clean460 plus frozen14 and2 narrow hooks: strict build, full format807, tooling3/3, oxlint0errors;26/26 new/global/site production cases and9/9 existing Usage/source-navigation cases passed. Then rebased exact disjoint58 template changes onto eac6a1a, rebuilt and independently passed all26 new/global/site cases1.0m. No timeout or retry changes.",
+    "owner": {
+      "production": "18/18, one worker, /tmp/reui-agent-activity-production-native-final",
+      "strengthenedFeedCopy": "3/3, one worker, /tmp/reui-agent-activity-production-copy-final",
+      "formatAndLint": "all14 format:check and scoped oxlint clean",
+      "candidate": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/reui-activity-functional-qa-6v9xt0ur",
+      "url": "http://127.0.0.1:4276/",
+      "actualOutcomeZip": {
+        "entries": 216,
+        "directory": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/reui-activity-actual-final-rhnv0ru5",
+        "strictBuild": true,
+        "viewportWidths": [1440, 390],
+        "css": "Frame border1px/padding3px; Panel border1px/padding16px",
+        "interactions": "Grant plus dependent scoped retries passed",
+        "evidence": "/tmp/reui-agent-activity-actual-final-smoke.json"
+      },
+      "actualFeedZip": {
+        "entries": 216,
+        "zip": "/tmp/reui-agent-activity-2-actual-final.zip",
+        "directory": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/reui-activity-feed-actual-final-4bir72fl",
+        "strictBuild": true,
+        "viewportWidths": [1440, 393],
+        "geometry": "card576/345px, top64, height454, eight20px rows",
+        "interactions": "real step clipboard bytes, local open, Rerun/Stop passed",
+        "evidence": "/tmp/reui-agent-activity-feed-actual-final-smoke.json"
+      }
+    },
+    "rootReview": "Viewed the393px corrected Activity2 feed against actual official desktop/mobile screenshot evidence; eight rows, top64/card576 or345,height454. Read source-free provenance and controlled dependency model.",
+    "publicEvidence": {
+      "agent-activity-2": "Actual coordinator native desktop and393×852 completed-state screenshots viewed by child; independent 390 functional and393 layout tests. Audit images stay outside repo/freeze/download.",
+      "pending": [
+        "Activity1/3/4/5 public desktop and mobile",
+        "Activity2 reference ellipsis menu and live/pause/stop/replay/keyboard lifecycle",
+        "direct automated pixel parity; original fixture, avatar and durations intentionally differ"
+      ]
+    },
+    "limits": "Only Activity2 default desktop/mobile observed; other4 and reference menu/lifecycle remain pending. Original initials/fixtures/durations differ. Local actions do not change server scope or external repositories.",
+    "deployment": "Pending separate CI/Pages confirmation."
+  }
+}

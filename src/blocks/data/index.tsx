@@ -26,7 +26,8 @@ import PieChartBlock from "./pie-charts";
 import RadialChartBlock from "./radial-charts";
 import SlopeChartBlock from "./slope-charts";
 import SankeyChartBlock from "./sankey-charts";
-import { ActivityBlock, ChatBlock } from "./ai";
+import { ChatBlock } from "./ai";
+import AgentActivityVariants from "./agent-activity-variants";
 import AiUsageVariants from "./ai-usage-variants";
 import {
   BoardBlock,
@@ -89,7 +90,7 @@ export default function DataBlock({ block }: BlockProps) {
     return block.category === "ai-chat" ? (
       <ChatBlock block={block} />
     ) : block.category === "agent-activity" ? (
-      <ActivityBlock block={block} />
+      <AgentActivityVariants block={block} />
     ) : (
       <AiUsageVariants block={block} />
     );

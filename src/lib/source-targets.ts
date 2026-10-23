@@ -318,6 +318,16 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
     return paths("data", modules[block.category] ?? "charts");
   }
   if (block.group === "ai-agents") {
+    if (block.category === "agent-activity") {
+      const modules = [
+        "agent-activity-approval",
+        "agent-activity-feed",
+        "agent-activity-research",
+        "agent-activity-audit",
+        "agent-activity-outcome",
+      ];
+      return paths("data", modules[variant - 1], "agent-activity-variants");
+    }
     if (block.category === "ai-usage") {
       const modules = [
         "ai-usage-planner",
