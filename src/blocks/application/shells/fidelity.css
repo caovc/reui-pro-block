@@ -2338,22 +2338,6 @@
   width: 100%;
   text-align: left;
 }
-.chat-workspace-brand > svg rect,
-.glass-rail-brand > svg rect {
-  fill: transparent;
-}
-.chat-workspace-brand > svg path {
-  stroke: var(--foreground);
-}
-.chat-workspace-brand > svg circle {
-  fill: var(--foreground);
-}
-.glass-rail-brand > svg path {
-  stroke: var(--glass-ink);
-}
-.glass-rail-brand > svg circle {
-  fill: var(--glass-ink);
-}
 .glass-reference-assistant[data-slot="frame"] {
   background: color-mix(in srgb, var(--glass-sheet) 97%, transparent);
 }

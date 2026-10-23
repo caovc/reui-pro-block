@@ -1,3 +1,4 @@
+import { BrandMark } from "@/components/brand-mark";
 import { Separator } from "@/components/ui/separator";
 
 export type Provider = "Google" | "Apple" | "GitHub";
@@ -47,26 +48,8 @@ export function AuthMark({
 }) {
   return (
     <div className="inline-flex items-center gap-2 text-sm font-medium">
-      <svg aria-hidden="true" viewBox="0 0 32 32" className={large ? "size-10" : "size-8"}>
-        <rect
-          x={outlined ? 0.5 : 0}
-          y={outlined ? 0.5 : 0}
-          width={outlined ? 31 : 32}
-          height={outlined ? 31 : 32}
-          rx="10"
-          fill={outlined ? "var(--background)" : "currentColor"}
-          stroke={outlined ? "var(--border)" : "none"}
-        />
-        <path
-          d="M9 9v8c0 5 3 7 7 7s7-2 7-7v-3"
-          fill="none"
-          stroke={outlined ? "currentColor" : "var(--background)"}
-          strokeWidth="2.7"
-          strokeLinecap="round"
-        />
-        <circle cx="23" cy="9" r="1.7" fill={outlined ? "currentColor" : "var(--background)"} />
-      </svg>
-      {wordmark && "ReUI"}
+      <BrandMark className={large ? "size-10" : "size-8"} outlined={outlined} />
+      {wordmark && "Bricklane"}
     </div>
   );
 }

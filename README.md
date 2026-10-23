@@ -1,6 +1,6 @@
-# REUI Blocks
+# Bricklane
 
-An independent, interactive block collection built with React, TypeScript, Tailwind CSS and shadcn/ui. The public REUI catalog snapshot is used as the development checklist: **662 entries, 78 categories, 7 groups**.
+Independent recreations of **ReUI Pro Blocks and Templates**, built with React, TypeScript, Tailwind CSS and official open-source ReUI components. Bricklane uses an original logo, name, and locally authored demo illustrations. The public REUI catalog snapshot is used as the development checklist: **662 entries, 78 categories, 7 groups**.
 
 > This is an independent recreation using shared layout families. Catalog coverage is not a claim of 662 pixel-identical copies. No REUI Pro source or premium assets are distributed. See [provenance](THIRD_PARTY_NOTICES.md) and the implementation notes in `docs/`.
 

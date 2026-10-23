@@ -1,3 +1,4 @@
+import { demoAvatar } from "@/lib/demo-artwork";
 import { useState } from "react";
 import {
   ArrowUp,
@@ -195,7 +196,7 @@ export default function Echo() {
         </Button>
         <Button variant="outline" onClick={() => setView("Settings")}>
           <Avatar>
-            <AvatarImage src="https://echo-chat.reui.io/avatars/shadcn.jpg" />
+            <AvatarImage src={demoAvatar("Echo account")} />
             <AvatarFallback>sh</AvatarFallback>
           </Avatar>
           <span className="echo-user-name">

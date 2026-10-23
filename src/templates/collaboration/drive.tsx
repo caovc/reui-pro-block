@@ -90,7 +90,7 @@ const seeds: FileRecord[] = [
   ["Overview Screen.webp", "Theo Park", "WebP", "61.4 KB", "Today"],
   ["Overview — Dark.webp", "Kenji Tan", "WebP", "57.6 KB", "Today"],
   ["Q3 Studio Plan.pdf", "Alex Rivera", "PDF", "88.5 KB", "Today"],
-  ["ReUI Master Logo.svg", "Theo Park", "SVG", "833 B", "4 days ago"],
+  ["Bricklane symbol.svg", "Theo Park", "SVG", "833 B", "4 days ago"],
   ["Spring Campaign", "Leo Grant", "Folder", "387.1 KB", "Today"],
 ].map((r, i) => ({
   id: "file-" + i,

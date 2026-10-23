@@ -8,8 +8,11 @@ test("official CodeBlock supports file selection, wrap, copy and file download",
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
   await page.goto("./#/block/application/auth/auth-4");
   await page.getByRole("tab", { name: "Code", exact: true }).click();
+  const selector = page.getByRole("combobox", { name: "Source file" });
+  await selector.waitFor({ state: "visible" });
+  await expect(selector).toHaveText("src/blocks/application/auth-split.tsx");
   const code = page.locator('.reui-source-viewer[data-slot="code-block"]');
-  await expect(code).toContainText("export default function Example");
+  await expect(code).toContainText("export default function SplitAuth");
   await expect(code.locator("pre")).toHaveAttribute("data-code-line-numbers", "true");
   await page.getByRole("combobox", { name: "Source file" }).click();
   await page
@@ -58,8 +61,9 @@ test("official framed auth and source viewer fit a phone viewport", async ({ pag
   await expect(page.getByLabel("Email or username", { exact: true })).toBeVisible();
   await page.goto("./#/block/application/auth/auth-4");
   await page.getByRole("tab", { name: "Code", exact: true }).click();
+  await page.getByRole("combobox", { name: "Source file" }).waitFor({ state: "visible" });
   await expect(page.locator('.reui-source-viewer[data-slot="code-block"]')).toContainText(
-    "export default function Example",
+    "export default function SplitAuth",
   );
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(391);
   expect(errors).toEqual([]);

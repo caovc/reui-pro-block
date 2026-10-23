@@ -23,20 +23,6 @@
   width: 28px;
   height: 28px;
 }
-.board-brand svg rect,
-.board-mobile-brand svg rect {
-  fill: transparent;
-  stroke: var(--foreground);
-  stroke-opacity: 0.2;
-}
-.board-brand svg path,
-.board-mobile-brand svg path {
-  stroke: var(--foreground);
-}
-.board-brand svg circle,
-.board-mobile-brand svg circle {
-  fill: var(--foreground);
-}
 .board-rail-groups {
   display: flex;
   flex-direction: column;

@@ -1,3 +1,4 @@
+import { BrandGlyph } from "@/components/brand-mark";
 import userAvatar from "./assets/commerce-3.jpg";
 /* Shared template primitives and small data helpers intentionally share one module. */
 /* eslint-disable react/only-export-components */
@@ -128,10 +129,11 @@ export const icons = {
 export function Mark() {
   return (
     <span className="bt-mark" aria-hidden="true">
-      ∪<i />
+      <BrandGlyph />
     </span>
   );
 }
+
 export function NavItems({
   items,
   active,

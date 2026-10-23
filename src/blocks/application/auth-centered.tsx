@@ -541,7 +541,7 @@ export default function CenteredAuth({ block }: BlockProps) {
             , including our sign-in and account access policies.
           </p>
           <div className="mt-5 flex flex-wrap justify-center gap-4">
-            <span>© 2026 ReUI</span>
+            <span>Bricklane · Independent demo</span>
             {(["Privacy Policy", "Docs", "Support"] as const).map((label) => (
               <Button
                 variant="link"

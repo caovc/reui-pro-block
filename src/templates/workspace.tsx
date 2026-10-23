@@ -18,7 +18,7 @@ export default function TemplateWorkspace({
   const template = templates.find((t) => t.id === id);
   const [sourceOpen, setSourceOpen] = useState(false);
   useEffect(() => {
-    document.title = `${template?.name ?? "Template"} — REUI Templates`;
+    document.title = `${template?.name ?? "Template"} — Bricklane Templates`;
   }, [template]);
   return (
     <div className="template-workspace">

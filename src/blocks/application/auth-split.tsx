@@ -281,7 +281,7 @@ function LegalFooter({ copyright = false }: { copyright?: boolean }) {
   return (
     <>
       <footer className="auth-split-legal">
-        {copyright && <span>© 2026 ReUI. All rights reserved.</span>}
+        {copyright && <span>Bricklane · Independent demo</span>}
         <nav aria-label="Legal and support">
           {(copyright ? ["Terms", "Privacy", "Help"] : ["Privacy", "Terms", "Status"]).map(
             (label) => (

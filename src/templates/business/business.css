@@ -1664,7 +1664,7 @@
   }
   .bt-surge .bt-topbar::before,
   .bt-manifest .bt-topbar::before {
-    content: "∪";
+    content: "B";
     width: 28px;
     height: 28px;
     background: var(--foreground);
@@ -3013,4 +3013,14 @@
 .bt-surge .bt-stat-title,
 .bt-manifest .bt-stat-title {
   font-weight: 600;
+}
+
+/* Original geometric demo mark; no borrowed wordmark glyph. */
+.bt-mark {
+  padding: 4px;
+  letter-spacing: normal;
+}
+.bt-mark svg {
+  width: 100%;
+  height: 100%;
 }

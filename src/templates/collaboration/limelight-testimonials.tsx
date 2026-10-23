@@ -1,4 +1,4 @@
-import { referencePhotos } from "./photo-assets";
+import { portraitAssets } from "./photo-assets";
 const reviews = [
   [
     "40%",
@@ -59,7 +59,7 @@ const reviews = [
   ],
 ];
 export function LimelightTestimonials() {
-  const photos = Object.keys(referencePhotos).filter((s) => s.includes("w=96"));
+  const photos = portraitAssets;
   return (
     <section className="ct-lime-section ct-lime-quotes">
       <div className="ct-lime-quote-head">

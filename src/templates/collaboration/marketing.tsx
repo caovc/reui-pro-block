@@ -1,5 +1,5 @@
 import { LimelightTestimonials } from "./limelight-testimonials";
-import { referencePhotos } from "./photo-assets";
+import { portraitAssets } from "./photo-assets";
 import { useState, useRef } from "react";
 import { Scrollspy } from "@/components/reui/scrollspy";
 import {
@@ -32,7 +32,7 @@ import {
 } from "@/components/ui/accordion";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { Button, Input, Modal, Sparkline } from "./shared";
+import { Button, Input, Modal, Sparkline, Mark } from "./shared";
 import "./marketing.css";
 import { wallpaperAssets } from "./wallpaper-assets";
 const cues = [
@@ -275,17 +275,21 @@ function Overture() {
       <Wallpaper />
       <div className="ct-overture-shade" />
       <header>
-        <a href="#/templates" aria-label="REUI Templates">
-          <span className="ct-overture-mark">ü</span>
-          <b>REUI</b>
+        <a href="#/templates" aria-label="Bricklane Templates">
+          <Mark />
+          <b>Bricklane</b>
         </a>
         <div>
           <a href="https://x.com" target="_blank" rel="noopener noreferrer" aria-label="X">
             <X size={17} />
           </a>
-          <a href="https://github.com/keenthemes/reui" target="_blank" rel="noopener noreferrer">
+          <a
+            href="https://github.com/caovc/reui-pro-block"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <Github size={14} />
-            3.2K
+            Source
           </a>
         </div>
       </header>
@@ -460,13 +464,7 @@ function Limelight() {
               <small>
                 <span className="ct-lime-people">
                   {[1, 2, 3, 4, 5].map((n) => (
-                    <img
-                      key={n}
-                      src={
-                        referencePhotos[`https://limelight-landing.reui.io/avatars/300-${n}.png`]
-                      }
-                      alt=""
-                    />
+                    <img key={n} src={portraitAssets[n - 1]} alt="" />
                   ))}
                 </span>
                 <b>2,400+ teams</b> run production on Limelight

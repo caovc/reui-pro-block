@@ -1,3 +1,4 @@
+import { demoAvatar } from "@/lib/demo-artwork";
 import type { ReactNode } from "react";
 import { Sheet, SheetContent, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import {
@@ -126,7 +127,7 @@ export function Person({ name, index = 0 }: { name: string; index?: number }) {
               "Mei Watanabe",
               "Adam Reyes",
             ].includes(name)
-              ? `https://lucent-devops.reui.io/avatars/${name.toLowerCase().replaceAll(" ", "-")}.jpg`
+              ? demoAvatar(name)
               : `https://images.unsplash.com/${photos[name] || ["photo-1500648767791-00dcc994a43e", "photo-1494790108377-be9c29b29330", "photo-1534528741775-53994a69daeb", "photo-1543299750-19d1d6297053", "photo-1507591064344-4c6ce005b128"][index % 5]}?w=96&h=96&dpr=2&q=80`
           }
           alt=""

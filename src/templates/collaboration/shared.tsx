@@ -1,4 +1,5 @@
-import { referencePhotos } from "./photo-assets";
+import { BrandGlyph } from "@/components/brand-mark";
+import { demoAvatar, demoPanel } from "@/lib/demo-artwork";
 import { useState, type ReactNode } from "react";
 import {
   Bell,
@@ -50,55 +51,15 @@ export {
 export function Mark() {
   return (
     <span className="ct-mark" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none">
-        <path
-          d="M5.5 6v7.5a6.5 6.5 0 0 0 13 0V10"
-          stroke="currentColor"
-          strokeWidth="2.7"
-          strokeLinecap="round"
-        />
-        <circle cx="18.5" cy="5.5" r="1.5" fill="currentColor" />
-      </svg>
+      <BrandGlyph />
     </span>
   );
 }
-const avatarSources: Record<string, string> = {
-  "Bruno Duarte": "https://roster-hr.reui.io/avatars/15.jpg",
-  "Aisha Rahman": "https://roster-hr.reui.io/avatars/12.jpg",
-  "Ingrid Larsen": "https://roster-hr.reui.io/avatars/17.jpg",
-  "Priya Patel":
-    "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=96&h=96&dpr=2&q=80",
-  "Leo Grant": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=96&h=96&dpr=2&q=80",
-  "Sana Qureshi":
-    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=96&h=96&dpr=2&q=80",
-  "Kenji Tan": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=96&h=96&dpr=2&q=80",
-  "Theo Park": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=96&h=96&dpr=2&q=80",
-  "Alex Rivera": "https://images.unsplash.com/photo-1543299750-19d1d6297053?w=96&h=96&dpr=2&q=80",
-  "Quanta Devices": "https://pulse-helpdesk.reui.io/avatars/carla-ferreira.jpg",
-  "Apex Manufacturing": "https://pulse-helpdesk.reui.io/avatars/marcus-hale.jpg",
-  "Brightwave Media": "https://pulse-helpdesk.reui.io/avatars/priya-raman.jpg",
-  "Atlas Freight": "https://pulse-helpdesk.reui.io/avatars/aisha-bello.jpg",
-};
+
 export function Avatar({ name }: { name: string }) {
-  const src =
-    avatarSources[name] ||
-    "https://pulse-helpdesk.reui.io/avatars/" + name.toLowerCase().replace(" ", "-") + ".jpg";
   return (
     <span className="ct-avatar">
-      {name
-        .split(" ")
-        .map((n) => n[0])
-        .slice(0, 2)
-        .join("")}
-      {(referencePhotos[src] || avatarSources[name]) && (
-        <img
-          src={referencePhotos[src] || avatarSources[name]}
-          alt=""
-          onError={(e) => {
-            e.currentTarget.style.display = "none";
-          }}
-        />
-      )}
+      <img src={demoAvatar(name)} alt="" />
     </span>
   );
 }
@@ -300,14 +261,7 @@ export function Shell({
                 onClick={() => setView("Knowledge Base")}
                 aria-label="Read about SLA clock pauses"
               >
-                <img
-                  className="ct-pulse-promo"
-                  src={
-                    referencePhotos["https://pulse-helpdesk.reui.io/news/sla-clock-pause.jpg"] ||
-                    "https://pulse-helpdesk.reui.io/news/sla-clock-pause.jpg"
-                  }
-                  alt=""
-                />
+                <img className="ct-pulse-promo" src={demoPanel(17)} alt="" />
               </button>
             </CardContent>
           </Card>

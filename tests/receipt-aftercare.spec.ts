@@ -93,7 +93,7 @@ test("statement receipt tracks shipping and saves a support file", async ({ page
   await page.getByRole("button", { name: "Track your shipment", exact: true }).click();
   await expect(page.getByRole("dialog").locator('[data-slot="timeline-item"]')).toHaveCount(5);
   await page.keyboard.press("Escape");
-  await page.getByRole("button", { name: "Contact ReUI support", exact: true }).click();
+  await page.getByRole("button", { name: "Contact demo support", exact: true }).click();
   await page.getByLabel("How can we help?").fill("Please help update my delivery preferences.");
   const pending = page.waitForEvent("download");
   await page.getByRole("button", { name: "Save support request", exact: true }).click();

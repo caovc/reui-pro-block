@@ -9,9 +9,10 @@ const sources = import.meta.glob(
     "/src/templates/{surface.tsx,reference.css}",
     "/src/blocks/**/*.{ts,tsx,css}",
     "/src/components/ui/*.{ts,tsx}",
+    "/src/components/brand-mark.tsx",
     "/src/components/reui/**/*.{ts,tsx,css}",
     "/src/hooks/**/*.{ts,tsx}",
-    "/src/lib/{utils,download}.ts",
+    "/src/lib/{utils,download,demo-artwork}.ts",
     "/src/data/*.{ts,json}",
     "/src/index.css",
     "/src/styles/shadcn.css",
@@ -144,7 +145,7 @@ export async function downloadTemplate(template: TemplateMeta) {
     2,
   );
   files["README.md"] =
-    `# ${template.name}\n\nIndependent React recreation of the publicly visible ${template.name} preview.\nReference: ${template.reference}\n\nRun npm install, then npm run dev (Node.js 24+). Entry: src/Example.tsx.\n\nInteractions use local demo data. No production backend, authentication, AI provider, email delivery, or original premium source is included. Shared family modules are included as transitive dependencies. Public preview photos and wallpaper screenshots remain external URL references and require an internet connection. Bundled fonts and licensed images retain their license notices; no premium source or premium media binaries are bundled.\n`;
+    `# ${template.name}\n\nIndependent React recreation of the publicly visible ${template.name} preview.\nReference: ${template.reference}\n\nRun npm install, then npm run dev (Node.js 24+). Entry: src/Example.tsx.\n\nInteractions use local demo data. No production backend, authentication, AI provider, email delivery, or original premium source is included. Shared family modules are included as transitive dependencies. Demo portraits, integration badges, and wallpaper illustrations are original local SVG artwork. No original ReUI preview media is loaded. Licensed stock photos may still require an internet connection. Bundled fonts and licensed images retain their license notices; no premium source or premium media binaries are bundled.\n`;
   files["LICENSE"] = meta["/LICENSE"];
   files["THIRD_PARTY_NOTICES.md"] = meta["/THIRD_PARTY_NOTICES.md"];
   const payload = Object.fromEntries(

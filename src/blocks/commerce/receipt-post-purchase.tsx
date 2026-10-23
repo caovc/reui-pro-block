@@ -296,7 +296,7 @@ export function StatementReceipt() {
               className="h-auto p-0 text-xs"
               onClick={() => open({ kind: "support" })}
             >
-              Contact ReUI support
+              Contact demo support
             </Button>
             .
           </p>

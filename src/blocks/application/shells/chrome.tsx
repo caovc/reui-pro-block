@@ -1,3 +1,4 @@
+import { BrandMark } from "@/components/brand-mark";
 import portrait0 from "./assets/portrait-0.jpg";
 import portrait1 from "./assets/portrait-1.jpg";
 import portrait2 from "./assets/portrait-2.jpg";
@@ -111,25 +112,11 @@ export const teamNames = [
   "Sophie Bennett",
   "Liam Carter",
 ];
+/** Compatibility name retained for existing shells; artwork is the original Bricklane mark. */
 export function ReuiMark({ small = false }: { small?: boolean }) {
-  return (
-    <svg
-      viewBox="0 0 28 28"
-      className={small ? "size-6 shrink-0" : "size-7 shrink-0"}
-      aria-hidden="true"
-    >
-      <rect width="28" height="28" rx="8" fill="currentColor" />
-      <path
-        d="M8.5 10.5v4.2c0 6.3 11 6.3 11 0v-4.2"
-        stroke="var(--background)"
-        strokeWidth="2.6"
-        fill="none"
-        strokeLinecap="round"
-      />
-      <circle cx="19.5" cy="7" r="1.45" fill="var(--background)" />
-    </svg>
-  );
+  return <BrandMark className={small ? "size-6 shrink-0" : "size-7 shrink-0"} />;
 }
+
 const portraits = [portrait0, portrait1, portrait2, portrait3, portrait4, portrait5];
 export function Face({
   name = "Nick Bold",

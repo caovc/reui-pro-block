@@ -73,7 +73,7 @@ export const receiptMoney = (value: number) =>
 export function receiptText() {
   const order = receiptOrder;
   return [
-    "ORDER RECEIPT · REUI INDEPENDENT DEMO",
+    "ORDER RECEIPT · BRICKLANE DEMO",
     `Receipt: ${order.receipt}`,
     `Order: ${order.id}`,
     `Date: ${order.date}`,

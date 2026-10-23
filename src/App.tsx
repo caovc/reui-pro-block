@@ -1,3 +1,4 @@
+import { BrandMark } from "@/components/brand-mark";
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import {
   ArrowDownToLine,
@@ -92,11 +93,7 @@ function IconTip({ label, children }: { label: string; children: React.ReactNode
   );
 }
 function Mark({ small = false }: { small?: boolean }) {
-  return (
-    <span className={cn("brand-mark", small && "brand-mark-small")}>
-      <span />
-    </span>
-  );
+  return <BrandMark className={cn("brand-mark", small && "brand-mark-small")} />;
 }
 function Miniature({ block }: { block: BlockMeta }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -244,12 +241,12 @@ export default function App() {
     if (isolated) return;
     if (isTemplateWorkspace) return;
     document.title = isTemplates
-      ? "Templates — REUI"
+      ? "Templates — Bricklane"
       : isBlock
-        ? `${block.name} — REUI Blocks`
+        ? `${block.name} — Bricklane`
         : isCategory
-          ? `${category.name} — REUI Blocks`
-          : "REUI Blocks — Open component collection";
+          ? `${category.name} — Bricklane`
+          : "Bricklane — Blocks & Templates";
   }, [isolated, isBlock, isCategory, block, category, isTemplates, isTemplateWorkspace]);
   useEffect(() => {
     const listener = (e: KeyboardEvent) => {
@@ -464,9 +461,9 @@ export default function App() {
   return (
     <div className="site-shell">
       <header className="site-header">
-        <a className="brand" href="#/" aria-label="REUI Blocks home">
+        <a className="brand" href="#/" aria-label="Bricklane home">
           <Mark />
-          <span>REUI</span>
+          <span>Bricklane</span>
           <span className="brand-suffix">{isTemplates ? "TEMPLATES" : "BLOCKS"}</span>
         </a>
         <nav className="header-nav" aria-label="Main navigation">
@@ -673,7 +670,7 @@ export default function App() {
                       ? "Your favorite blocks"
                       : isCategory
                         ? `${category.name} blocks`
-                        : "Beautiful blocks. Ready to build."}
+                        : "Build it, brick by brick."}
                   </h1>
                   <Badge variant="outline">
                     {isFavoritePage
@@ -688,11 +685,8 @@ export default function App() {
                     ? "A little inspiration, saved for your next project."
                     : isCategory
                       ? `Explore ${category.count} ${category.name.toLowerCase()} layouts. Preview, interact, and view the implementation.`
-                      : "A carefully crafted collection of application, commerce, and marketing layouts."}
-                  <span className="hidden xl:inline">
-                    {" "}
-                    Built with ReUI and shadcn/ui. Yours to customize.
-                  </span>
+                      : "Independent recreations of ReUI Pro blocks and templates, ready to explore and adapt."}
+                  <span className="hidden xl:inline"> Built with open-source ReUI components.</span>
                 </p>
               </div>
               <div className="catalog-controls">
@@ -789,9 +783,9 @@ export default function App() {
           <footer className="site-footer">
             <div>
               <Mark small />
-              <span>REUI Blocks</span>
+              <span>Bricklane</span>
               <span className="footer-note">
-                Independent collection · Free components, thoughtful compositions.
+                An independent recreation of ReUI Pro Blocks & Templates.
               </span>
             </div>
             <Button variant="ghost" size="sm" onClick={() => setAbout(true)}>
@@ -879,9 +873,9 @@ export default function App() {
       </Dialog>
       <Dialog open={about} onOpenChange={setAbout}>
         <DialogContent>
-          <DialogTitle>Made to be explored. Built to be yours.</DialogTitle>
+          <DialogTitle>About Bricklane</DialogTitle>
           <DialogDescription>
-            An independent component collection inspired by REUI’s public block catalog.
+            Bricklane is an independent recreation of ReUI Pro Blocks and Templates.
           </DialogDescription>
           <div className="about-content">
             <p>
@@ -901,6 +895,11 @@ export default function App() {
             <p>
               Forms, payments, authentication, and AI responses run as local demos. Connect your own
               services for production.
+            </p>
+            <p>
+              Bricklane uses original branding and demo artwork. It is not affiliated with or
+              endorsed by ReUI or KeenThemes. Open-source component license notices are included
+              with source downloads.
             </p>
             <div className="flex gap-2">
               <Button asChild>

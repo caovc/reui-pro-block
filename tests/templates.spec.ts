@@ -14,7 +14,7 @@ test("template catalog filters, searches, and opens a full workspace", async ({ 
   await expect(page.locator(".template-list-row")).toHaveCount(1);
   await page.getByRole("link", { name: "Open template", exact: true }).click();
   await expect(page).toHaveURL(/#\/templates\/echo$/);
-  await expect(page).toHaveTitle("Echo — REUI Templates");
+  await expect(page).toHaveTitle("Echo — Bricklane Templates");
   await page.getByRole("link", { name: "Templates", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Full-page Templates" })).toBeVisible();
   await page.getByRole("textbox", { name: "Search templates" }).fill("unfindable-template");
@@ -28,10 +28,18 @@ for (const template of templates) {
     page,
   }) => {
     const errors: string[] = [];
+    const referenceMedia: string[] = [];
     page.on("pageerror", (error) => errors.push(error.message));
+    page.on("request", (request) => {
+      if (!["image", "media", "font"].includes(request.resourceType())) return;
+      const host = new URL(request.url()).hostname;
+      if (host === "reui.io" || host.endsWith(".reui.io") || host.endsWith(".keenthemes.com")) {
+        referenceMedia.push(request.url());
+      }
+    });
     await page.setViewportSize({ width: 1440, height: 1000 });
     await page.goto(`/#/templates/${template.id}`);
-    await expect(page).toHaveTitle(`${template.name} — REUI Templates`);
+    await expect(page).toHaveTitle(`${template.name} — Bricklane Templates`);
     const content = page.locator(".template-workspace-content");
     await expect.poll(async () => (await content.innerText()).length).toBeGreaterThan(200);
     await expect(page.locator("vite-error-overlay")).toHaveCount(0);
@@ -51,6 +59,7 @@ for (const template of templates) {
       .toBeLessThanOrEqual(391);
     await expect(page.getByRole("link", { name: "Templates", exact: true })).toBeVisible();
     expect(errors).toEqual([]);
+    expect(referenceMedia).toEqual([]);
   });
 }
 
@@ -69,6 +78,8 @@ test("source dialog exports a runnable project with transitive template modules"
   const files = unzipSync(new Uint8Array(await readFile(path!)));
   expect(files["src/templates/workflow/index.tsx"]).toBeTruthy();
   expect(files["src/templates/workflow/echo.tsx"]).toBeTruthy();
+  expect(files["src/components/brand-mark.tsx"]).toBeTruthy();
+  expect(files["src/lib/demo-artwork.ts"]).toBeTruthy();
   expect(files["src/main.tsx"]).toBeTruthy();
   expect(files["src/theme.css"]).toBeTruthy();
   expect(files["src/templates/surface.tsx"]).toBeTruthy();

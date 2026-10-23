@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test("catalog search, deep link, code viewer and favorites", async ({ page }) => {
   await page.goto("./");
-  await expect(page.getByRole("heading", { level: 1 })).toContainText("Beautiful blocks");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Build it, brick by brick.");
   await page.getByLabel("Search blocks", { exact: true }).fill("Centered Password Login");
   await expect(page.locator(".block-tile")).toHaveCount(1);
   await page.getByRole("link").filter({ hasText: "Centered Password Login" }).click();

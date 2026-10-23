@@ -74,8 +74,8 @@ export default function TemplateGallery({ dark }: { dark: boolean }) {
         <span className="text-xs font-medium tracking-widest text-muted-foreground">TEMPLATES</span>
         <h1>Full-page Templates</h1>
         <p>
-          Complete workspaces for your next product. Explore 18 independent, interactive recreations
-          built with React and shadcn/ui.
+          Explore 18 independent recreations of ReUI Pro templates, with interactive React demos and
+          complete source to make your own.
         </p>
         <div className="template-gallery-controls">
           <Tabs value={category} onValueChange={setCategory}>

@@ -143,7 +143,9 @@ export function TillSlipReceipt() {
           <header className="flex flex-col items-center gap-3">
             <ReceiptBrand compact />
             <h1 className="text-sm font-bold tracking-[.24em]">ORDER RECEIPT</h1>
-            <p className="text-[10px] tracking-[.18em] text-muted-foreground">REUI · REUI.IO</p>
+            <p className="text-[10px] tracking-[.18em] text-muted-foreground">
+              BRICKLANE · DEMO STORE
+            </p>
           </header>
           <dl className="space-y-2 border-y border-dashed py-4 text-[11px]">
             {[
@@ -201,7 +203,7 @@ export function TillSlipReceipt() {
             </div>
           </section>
           <footer className="pt-3 text-center">
-            <p className="text-xs">Thank you for shopping with ReUI.</p>
+            <p className="text-xs">Thank you for shopping with Bricklane.</p>
             <div className="receipt-actions mt-3">
               <ReceiptSupport />
             </div>

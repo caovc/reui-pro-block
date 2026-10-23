@@ -1,3 +1,4 @@
+import { BrandMark } from "@/components/brand-mark";
 import { useState } from "react";
 import type { ReactNode } from "react";
 import {
@@ -57,16 +58,11 @@ import {
 export function ReceiptBrand({ compact = false }: { compact?: boolean }) {
   return (
     <div className="flex items-center gap-2.5">
-      <span
-        className="flex size-9 items-center justify-center rounded-xl bg-foreground text-lg font-bold text-background"
-        aria-hidden="true"
-      >
-        ü
-      </span>
+      <BrandMark className="size-9 shrink-0" />
       {!compact && (
         <div>
-          <p className="text-sm font-semibold">ReUI</p>
-          <p className="text-xs text-muted-foreground">reui.io</p>
+          <p className="text-sm font-semibold">Bricklane</p>
+          <p className="text-xs text-muted-foreground">Independent demo</p>
         </div>
       )}
     </div>

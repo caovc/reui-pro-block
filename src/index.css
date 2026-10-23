@@ -214,50 +214,20 @@ a {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 17px;
-  font-weight: 700;
-  letter-spacing: 0.13em;
+  font-size: 19px;
+  font-weight: 650;
+  letter-spacing: -0.045em;
   white-space: nowrap;
 }
 .brand-mark {
-  display: inline-flex;
-  width: 29px;
-  height: 30px;
-  border: 1.5px solid var(--foreground);
-  border-radius: 9px;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  box-shadow: 0 2px 3px #00000009;
-}
-.brand-mark > span {
-  height: 13px;
-  width: 12px;
-  border: 2.5px solid var(--foreground);
-  border-top: 0;
-  border-radius: 0 0 6px 6px;
-  position: relative;
-}
-.brand-mark > span:before {
-  content: "";
-  position: absolute;
-  width: 3px;
-  height: 3px;
-  background: var(--foreground);
-  border-radius: 50%;
-  top: -5px;
-  right: -2px;
+  display: block;
+  width: 31px;
+  height: 31px;
+  flex-shrink: 0;
 }
 .brand-mark-small {
-  width: 22px;
+  width: 23px;
   height: 23px;
-  border-radius: 7px;
-  transform: scale(0.9);
-}
-.brand-mark-small > span {
-  width: 9px;
-  height: 10px;
-  border-width: 2px;
 }
 .brand-suffix {
   border-left: 1px solid var(--border);
