@@ -48,6 +48,7 @@ import {
   applyTheme,
   isThemeDark,
   loadTheme,
+  previewThemeStorageKey,
   normalizeTheme,
   readTheme,
 } from "./preview-theme";
@@ -107,7 +108,7 @@ export function PreviewPanel({
   }, []);
   useEffect(() => {
     try {
-      localStorage.setItem("blocks-preview-theme-v1", JSON.stringify(theme));
+      localStorage.setItem(previewThemeStorageKey, JSON.stringify(theme));
     } catch {
       /* A preview still works when storage is disabled. */
     }

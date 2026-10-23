@@ -13,12 +13,12 @@ export const fonts = {
   mono: "ui-monospace, monospace",
 } as const;
 export const themeOptions = {
-  base: ["neutral", "zinc", "stone"],
-  accent: Object.keys(accents),
+  base: ["default", "neutral", "zinc", "stone"],
+  accent: ["default", ...Object.keys(accents)],
   chart: ["default", "neutral", "theme"],
   font: ["default", ...Object.keys(fonts)],
   heading: ["default", ...Object.keys(fonts)],
-  radius: ["0", "0.375", "0.625", "1"],
+  radius: ["default", "0", "0.375", "0.625", "1"],
   mode: ["inherit", "light", "dark", "system"],
 } as const;
 export type PreviewTheme = {
@@ -32,12 +32,12 @@ export type PreviewTheme = {
   custom: string;
 };
 export const defaultTheme: PreviewTheme = {
-  base: "neutral",
-  accent: "blue",
+  base: "default",
+  accent: "default",
   chart: "default",
   font: "default",
   heading: "default",
-  radius: "0.625",
+  radius: "default",
   mode: "inherit",
   custom: "",
 };
@@ -70,13 +70,22 @@ export function readTheme(params: URLSearchParams): PreviewTheme {
     return { ...defaultTheme };
   }
 }
+export const previewThemeStorageKey = "blocks-preview-theme-v2";
 export function loadTheme(): PreviewTheme {
   const params = new URLSearchParams(location.hash.split("?")[1]);
   if (params.has("preset")) return readTheme(params);
   try {
-    return normalizeTheme(
+    const saved = localStorage.getItem(previewThemeStorageKey);
+    if (saved !== null) return normalizeTheme(JSON.parse(saved));
+    const legacy = normalizeTheme(
       JSON.parse(localStorage.getItem("blocks-preview-theme-v1") || "null"),
     );
+    // v1 persisted blue even when the visitor never opened Customize. Preserve
+    // other colors and custom HEX, while removing that implicit blue override.
+    if (legacy.accent === "blue" && !legacy.custom) legacy.accent = "default";
+    if (legacy.base === "neutral") legacy.base = "default";
+    if (legacy.radius === "0.625") legacy.radius = "default";
+    return legacy;
   } catch {
     return { ...defaultTheme };
   }
@@ -93,7 +102,8 @@ export function isThemeDark(
   );
 }
 export function themeCSS(theme: PreviewTheme) {
-  const color = theme.custom || accents[theme.accent as keyof typeof accents];
+  const accent = theme.custom || accents[theme.accent as keyof typeof accents];
+  const color = accent || "var(--primary)";
   const hue = theme.base === "stone" ? "55" : "286";
   const chroma = theme.base === "neutral" ? "0" : "0.008";
   const palette = (dark: boolean) => `
@@ -125,19 +135,23 @@ export function themeCSS(theme: PreviewTheme) {
   const bodyFont = fonts[theme.font as keyof typeof fonts];
   const headingFont = fonts[theme.heading as keyof typeof fonts];
   return `/* Preview preset — append after your existing theme CSS. */
-:root:root {${palette(false)}
-  --radius: ${theme.radius}rem;
+:root:root {${theme.base === "default" ? "" : palette(false)}
+  ${theme.radius === "default" ? "" : `--radius: ${theme.radius}rem;`}
   ${bodyFont ? `--font-sans: ${bodyFont};` : ""}
   ${headingFont ? `--font-heading: ${headingFont};` : ""}
 }
-:root:root.dark {${palette(true)}
+:root:root.dark {${theme.base === "default" ? "" : palette(true)}
 }
 :root:root, :root:root.dark {
-  --primary: ${color};
+  ${
+    accent
+      ? `--primary: ${accent};
   --primary-foreground: #ffffff;
-  --ring: ${color};
-  --sidebar-primary: ${color};
-  --sidebar-primary-foreground: #ffffff;${chart}
+  --ring: ${accent};
+  --sidebar-primary: ${accent};
+  --sidebar-primary-foreground: #ffffff;`
+      : ""
+  }${chart}
 }
 ${
   bodyFont
@@ -156,7 +170,13 @@ ${
 export function applyTheme(theme: PreviewTheme, dark: boolean) {
   document.documentElement.classList.toggle("dark", dark);
   document.documentElement.style.colorScheme = dark ? "dark" : "light";
-  document.documentElement.style.setProperty("--radius", `${theme.radius}rem`);
+  if (theme.radius === "default")
+    document.documentElement.style.removeProperty("--radius");
+  else
+    document.documentElement.style.setProperty(
+      "--radius",
+      `${theme.radius}rem`,
+    );
   document.documentElement.dataset.accent = theme.accent;
   let style = document.getElementById("preview-preset");
   if (!style) {

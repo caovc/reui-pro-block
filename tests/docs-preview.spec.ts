@@ -33,7 +33,7 @@ test("customizer updates the live frame without losing input and persists settin
   ).toContainText("Emerald");
   await expect(frame.locator("html")).toHaveCSS("--primary", "#047857");
   await page.getByRole("button", { name: "Reset", exact: true }).click();
-  await expect(frame.locator("html")).toHaveCSS("--radius", "0.625rem");
+  await expect(frame.locator("html")).toHaveCSS("--radius", /^0?\.625rem$/);
   expect(errors).toEqual([]);
 });
 
@@ -61,7 +61,7 @@ test("preset link is portable and malformed values cannot inject CSS", async ({
   await page.goto(
     `./#/preview/application/auth/auth-20?preset=${encodeURIComponent(JSON.stringify({ radius: "0; background:red", custom: "red; } body { display:none }" }))}`,
   );
-  await expect(page.locator("html")).toHaveCSS("--radius", "0.625rem");
+  await expect(page.locator("html")).toHaveCSS("--radius", /^0?\.625rem$/);
   await expect(page.locator(".isolated-preview")).toBeVisible();
 });
 
@@ -173,4 +173,56 @@ test("default keeps component fonts and explicit choices override a local font s
   );
   await page.getByRole("button", { name: "Reset", exact: true }).click();
   await expect(surface).toHaveCSS("font-family", "Inter, Arial, sans-serif");
+});
+
+test("default preserves the original neutral primary while Blue and Reset remain functional", async ({
+  page,
+}) => {
+  await page.goto("./#/block/application/schedule/schedule-3");
+  const root = page.frameLocator("iframe").locator("html");
+  await expect(root).toHaveCSS("--primary", /^oklch\((0\.205|20\.5%) 0 0\)$/);
+  await expect(root).toHaveCSS(
+    "--muted-foreground",
+    /^oklch\((0\.556|55\.6%) 0 0\)$/,
+  );
+  await page.getByRole("button", { name: "Customize", exact: true }).click();
+  await expect(
+    page.getByRole("combobox", { name: "Accent color", exact: true }),
+  ).toContainText("Default");
+  await page
+    .getByRole("combobox", { name: "Accent color", exact: true })
+    .click();
+  await page.getByRole("option", { name: "Blue", exact: true }).click();
+  await expect(root).toHaveCSS("--primary", "#2563eb");
+  await page.reload();
+  await expect(root).toHaveCSS("--primary", "#2563eb");
+  await page.getByRole("button", { name: "Customize", exact: true }).click();
+  await page.getByRole("button", { name: "Reset", exact: true }).click();
+  await expect(root).toHaveCSS("--primary", /^oklch\((0\.205|20\.5%) 0 0\)$/);
+  await expect(root).toHaveCSS(
+    "--muted-foreground",
+    /^oklch\((0\.556|55\.6%) 0 0\)$/,
+  );
+  await page.getByRole("button", { name: "Toggle theme" }).click();
+  await expect(root).toHaveClass("dark");
+  await expect(root).toHaveCSS("--primary", /^oklch\((0\.922|92\.2%) 0 0\)$/);
+});
+
+test("legacy implicit blue migrates to Default while explicit URL presets stay blue", async ({
+  page,
+}) => {
+  await page.addInitScript(() =>
+    localStorage.setItem(
+      "blocks-preview-theme-v1",
+      JSON.stringify({ accent: "blue", radius: "1" }),
+    ),
+  );
+  await page.goto(route);
+  const root = page.frameLocator("iframe").locator("html");
+  await expect(root).toHaveCSS("--primary", /^oklch\((0\.205|20\.5%) 0 0\)$/);
+  await expect(root).toHaveCSS("--radius", "1rem");
+  await page.goto(
+    `${route}?preset=${encodeURIComponent(JSON.stringify({ accent: "blue" }))}`,
+  );
+  await expect(root).toHaveCSS("--primary", "#2563eb");
 });

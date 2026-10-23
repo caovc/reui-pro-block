@@ -149,7 +149,9 @@ export function PreviewCustomizer({
             <ColorPicker
               aria-label="Custom accent"
               value={
-                theme.custom || accents[theme.accent as keyof typeof accents]
+                theme.custom ||
+                accents[theme.accent as keyof typeof accents] ||
+                null
               }
               format="hex"
               onValueChange={(v) => v && update("custom", v)}
