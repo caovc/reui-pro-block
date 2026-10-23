@@ -1,6 +1,7 @@
 import type { BlockProps } from "@/data/types";
 import { CategoryBrowser, FilterSidebar } from "./catalog";
-import { Wishlist } from "./transactions";
+import { WishlistShopping } from "./wishlist-shopping";
+import { WishlistCollections } from "./wishlist-collection-pages";
 import { ReceiptDocuments } from "./receipt-refined";
 import { ReceiptPostPurchase } from "./receipt-post-purchase";
 import Checkout from "./checkout-refined";
@@ -33,7 +34,11 @@ export default function CommerceBlock({ block }: BlockProps) {
     case "shopping-cart":
       return <ShoppingCart key={block.id} block={block} />;
     case "wishlist":
-      return <Wishlist key={block.id} block={block} />;
+      return block.index < 3 ? (
+        <WishlistShopping key={block.id} block={block} />
+      ) : (
+        <WishlistCollections key={block.id} block={block} />
+      );
     case "receipt":
       return block.index < 3 ? (
         <ReceiptDocuments block={block} />

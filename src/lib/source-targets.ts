@@ -115,7 +115,7 @@ const commerce: Record<string, string> = {
   "product-card": "product-cards",
   "product-detail": "product-details",
   "product-grid": "product-grids",
-  wishlist: "transactions",
+  wishlist: "wishlist-shopping",
   receipt: "transactions",
   coupon: "promotions",
   comparison: "promotions",
@@ -186,6 +186,21 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
     return paths("application", application[block.category]);
   }
   if (block.group === "ecommerce" || block.group === "marketing") {
+    if (block.category === "wishlist") {
+      const modules = [
+        "wishlist-bulk",
+        "wishlist-grid",
+        "wishlist-grid",
+        "wishlist-boards",
+        "wishlist-priority",
+        "wishlist-rail",
+      ];
+      return paths(
+        "commerce",
+        modules[block.index],
+        block.index < 3 ? "wishlist-shopping" : "wishlist-collection-pages",
+      );
+    }
     if (block.category === "review" && [1, 2, 3].includes(block.index)) {
       const modules = ["review-topic-filter", "review-summary", "review-highlights"];
       return paths("commerce", modules[block.index - 1], "review-list-pages");
