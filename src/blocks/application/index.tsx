@@ -1,5 +1,6 @@
 import RefinedDialogBlock from "./dialog-variants/first-run";
 import WorkspaceDialogBlock from "./dialog-variants/workspace";
+import FinalWorkspaceDialogBlock from "./dialog-variants/workspace-final";
 import RefinedEmptyBlock from "./empty-variants";
 import WorkspaceSetupEmptyBlock from "./empty-variants/workspace-setup";
 import TeamSetupEmptyBlock from "./empty-variants/team-setup";
@@ -42,7 +43,7 @@ export default function ApplicationBlock({ block }: BlockProps) {
       ) : block.index < 10 ? (
         <WorkspaceDialogBlock block={block} />
       ) : (
-        <DialogBlock block={block} />
+        <FinalWorkspaceDialogBlock block={block} />
       );
     case "sheet":
       return <DialogBlock block={block} />;

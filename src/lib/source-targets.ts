@@ -169,6 +169,16 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
       const modules = ["apps", "support-hub", "invites", "project", "settings"];
       return paths("application", `dialog-variants/workspace/${modules[variant - 6]}`, "forms");
     }
+    if (block.category === "dialog" && [11, 12, 13, 14, 16].includes(variant)) {
+      const modules: Record<number, string> = {
+        11: "finance",
+        12: "entry",
+        13: "templates",
+        14: "consent",
+        16: "duplicates",
+      };
+      return paths("application", `dialog-variants/workspace-final/${modules[variant]}`, "forms");
+    }
     if (block.category === "auth") {
       if ([9, 12].includes(variant)) return paths("application", "auth-methods", "auth");
       if ([13, 14].includes(variant)) return paths("application", "auth-access", "auth");

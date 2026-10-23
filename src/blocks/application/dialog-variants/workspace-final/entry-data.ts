@@ -1,0 +1,48 @@
+export const entryTypes = [
+  {
+    id: "action",
+    label: "Action",
+    title: "Close billing-event gaps before partner beta",
+    notes:
+      "Confirm upgrade, downgrade, and trial-extension events are mapped before the beta opens.",
+    titleHint: "Name the next action...",
+    notesHint: "Add context, acceptance notes, or blockers...",
+    action: "Create Action",
+  },
+  {
+    id: "brief",
+    label: "Brief",
+    title: "Partner beta readiness decision",
+    notes: "Summarize launch criteria, support coverage, and rollout risks for reviewer sign-off.",
+    titleHint: "Title the decision brief...",
+    notesHint: "Capture the decision, evidence, and open questions...",
+    action: "Create Brief",
+  },
+  {
+    id: "nudge",
+    label: "Nudge",
+    title: "Remind support leads about beta cohort",
+    notes: "Send a short note before launch review so channel coverage is confirmed.",
+    titleHint: "What should the team remember?",
+    notesHint: "Add the short prompt that should be sent later...",
+    action: "Schedule Nudge",
+  },
+  {
+    id: "canvas",
+    label: "Canvas",
+    title: "Map activation handoff",
+    notes: "Sketch the owner handoff from signup to first successful invitation.",
+    titleHint: "Name the shared canvas...",
+    notesHint: "Describe what the canvas should organize...",
+    action: "Start Canvas",
+  },
+  {
+    id: "pulse",
+    label: "Pulse",
+    title: "Launch room health snapshot",
+    notes: "Share current readiness, open risks, and the next milestone in one update.",
+    titleHint: "Name the status pulse...",
+    notesHint: "Summarize signal, risk, movement, and next readout...",
+    action: "Publish Pulse",
+  },
+] as const;

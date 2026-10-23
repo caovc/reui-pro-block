@@ -1,0 +1,14 @@
+{
+  "change": "Official BaseUI Portal optional container passthrough",
+  "authorization": "Root explicit optional-only shared API grant; existing defaults remain undefined",
+  "baseCommit": "78f4d9e80b08e70943c74734ff1b6bd97c23ef39",
+  "file": "src/components/ui/combobox.tsx",
+  "baseSha256": "b3914f44a2ff60be222c6e6ef5e7762ac232824a8a3f11a890dd6532e5d564c2",
+  "sha256": "008fb7933ee436e111ac6902c6a12bfd8c8da393960186da44d59dd48c6b3ff0",
+  "api": "portalContainer?: React.ComponentProps<typeof ComboboxPrimitive.Portal>[\"container\"]",
+  "upstream": "@base-ui/react/combobox/portal/ComboboxPortal.d.ts; https://base-ui.com/react/components/combobox#portal",
+  "consumer": "src/blocks/application/dialog-variants/workspace-final/entry.tsx passes actual DialogContent ref; free21/22/23/25/26 adapters forward it",
+  "unchangedDefaultConsumer": "Dialog9 unchanged modal=false; full15-test Dialog6–10 regression passed",
+  "verification": "31/31 production tests PASS42.7s; tests/dialog-workspace-final.spec.ts modal containment, focus, Tab, pointer protection, selected menus and restoration; actual302file ZIP build +1440/390 interactive render pass",
+  "behaviorChange": "Only explicit destinations change placement. No hand-built focus trap, overlay or menus."
+}

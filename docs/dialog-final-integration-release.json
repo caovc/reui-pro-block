@@ -1,0 +1,49 @@
+{
+  "base": "45b9afbf44d4c918a0e9869baea049a3eca8611d",
+  "scope": "Final five catalog Dialogs11/12/13/14/16; all15 catalog entries now have explicit workflows",
+  "files": {
+    "src/blocks/application/dialog-variants/workspace-final/consent.tsx": "dd33801598893d570c35c9dd203edcd96fabfadcac6fef0df6416b545dd1e6da",
+    "src/blocks/application/dialog-variants/workspace-final/duplicates.tsx": "bed9e003c589167c0d779363af117acfbb75b92baba14597e5c681513e9cc174",
+    "src/blocks/application/dialog-variants/workspace-final/entry-data.ts": "318d791ec485b3d1428ebfce50d925f4b51266f0086aacf52430ead8b4796d3b",
+    "src/blocks/application/dialog-variants/workspace-final/entry.tsx": "5df384ebd5fe5fa10f2a026346f4b25d442ad66cf89e29f1c9ec8f3befe1bf71",
+    "src/blocks/application/dialog-variants/workspace-final/final.css": "93bd320145c335e06464cb1cbce76d5fbb5e8641b93c33af9bf9c5db3adebdc6",
+    "src/blocks/application/dialog-variants/workspace-final/finance.tsx": "e03135edd3c40376bc9e9d42478b391aa88032a45032ec8553281c99cd9c589c",
+    "src/blocks/application/dialog-variants/workspace-final/free/assignee-picker.tsx": "1984db93a0e37d4f1db48d26b8ec2d777e39346b47a13d9a6fc6613b45b3d7a8",
+    "src/blocks/application/dialog-variants/workspace-final/free/candidate-item.tsx": "96c3cacb45485e5137a148c7a50de2b5dbac5e597cfcca10bf9a0fbcfb24e555",
+    "src/blocks/application/dialog-variants/workspace-final/free/date-picker.tsx": "876a6842de41a3bd65cd38acadeb5dd82b11ee24fbc050272992bb5b798319cb",
+    "src/blocks/application/dialog-variants/workspace-final/free/label-cards.tsx": "30fc05b4e72dd45038324031f9c78088e8a142e31bfe9c5230bbca7f911ed92e",
+    "src/blocks/application/dialog-variants/workspace-final/free/labels-picker.tsx": "31570af42919ff299395aa93a12dfc8f3ff43eb1b321a6b99db8ba63c554a919",
+    "src/blocks/application/dialog-variants/workspace-final/free/priority-picker.tsx": "2c24349b7c4ecc84135b01e1d5a5e8e06a3a1a34046bf56f35203881414b8a71",
+    "src/blocks/application/dialog-variants/workspace-final/free/scope-options.tsx": "bbb1779b2fe59d8ecbd9571fab7694ae68a55729a6162c013c4479b7b3eb4d77",
+    "src/blocks/application/dialog-variants/workspace-final/free/status-picker.tsx": "ccf757d66ae802f7e2ae4e211122589c9cc0ac3b897dff748434cbdcc12d35c1",
+    "src/blocks/application/dialog-variants/workspace-final/index.tsx": "dca1d6644afc064e5606eac232494ac78aa45e92592baadbd44222669fd00324",
+    "src/blocks/application/dialog-variants/workspace-final/template-data.ts": "3b7e7b3425c2d680b36db4b7e59443d366883c5a765bf80a0387181e07346870",
+    "src/blocks/application/dialog-variants/workspace-final/templates.tsx": "1f23f29ac9731f1e1e5f6f0fd936c4e5359bba353270e90e14dfe4503d633131",
+    "src/components/ui/combobox.tsx": "008fb7933ee436e111ac6902c6a12bfd8c8da393960186da44d59dd48c6b3ff0",
+    "tests/dialog-workspace-final.spec.ts": "d73a2f89fe56080a66aec9471f54ddf715e97b21006f1466f4669ea80eb4b96d",
+    "docs/dialog11-16-implementation.md": "dc8ffbf08a011aaaae07fbe95563b01422a098915f715beaad0432cb431f6596",
+    "docs/dialog-modal-portal-release-manifest.json": "51970cb648aee23b8d6426bde8c6867b642382ea8dc668a11a784998daa40bfd",
+    "docs/dialog11-16-release-manifest.json": "dd5453a2580989f87a2b7a452976230c7ed1c859599824c83d7b56c61ac4c2dc",
+    "src/blocks/application/index.tsx": "28a3b7c9171139e36b010f70e2bd264bcb4bc83f4325dcdd10563552a039cf58",
+    "src/lib/source-targets.ts": "da7aa466c64c33e1d0a0d7ed74690be72802048a0a30aad446528ade201b4189",
+    "docs/FIDELITY.md": "152ba52400c5989e110006ab62119401cb82f9e025f5f81dcb0b71cb343a7084",
+    "docs/primary-progress.md": "5963d60fa52a3a0f01fa2b733ef23040c0200d28ffbe798c6408158e53a5adb0"
+  },
+  "verification": {
+    "build": "strict TypeScript + Vite passed",
+    "format": "full clean candidate771 files passed before integration notes",
+    "lint": "oxlint passed with existing repository warnings",
+    "tooling": "3/3 passed",
+    "production": "Root50/50 passed2.0m; owner31/31 passed42.7s,1worker,standard30s case timeout",
+    "starter": "Actual Dialog12 UI download302files independently strict-built/rendered1440/390; Dialog content/header padding,border,radius,display,font,background match site; actual Completed and In Progress modal picker selections; no page errors,overflow or broken images"
+  },
+  "freeReuse": "Actual free21/22/23/25/26 pickers, Checkbox9 cards, Radio3 scopes, Item3 candidates and installed Frame/Badge/Alert/IconTile; upstream Dialog/Field/InputGroup/Select where prescribed by ReUI free examples.",
+  "sharedChange": "Only optional typed Combobox Portal.container passthrough; default undefined stays compatible. Dialog12 uses actual DialogContent ref and modal=true. Published Dialog9 unchanged in this milestone.",
+  "publicEvidence": {
+    "desktop": "all5 observed natively through own Edge tab",
+    "mobile": "11 observed;12/13/14/16pending due user browser activity; hiddenIAB unavailable",
+    "localRenderWidths": [1440, 390],
+    "localUndo": "real Undo and delayed commit tested; public appearance pending after user-changed"
+  },
+  "limitations": "Local form/consent/invite/duplicate fixtures; original service marks/avatars/gradient; public mobile12/13/14/16 and public Undo appearance still pending. This is a functional milestone, not complete per-width visual fidelity."
+}
