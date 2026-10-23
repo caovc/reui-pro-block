@@ -434,38 +434,53 @@ function ContactPanel({ topic = false }: { topic?: boolean }) {
       ) : (
         <svg
           className="rm-scope-art"
-          viewBox="0 0 576 723"
+          viewBox="0 0 720 720"
           preserveAspectRatio="none"
           aria-hidden="true"
         >
           <defs>
             <linearGradient id={`${id}-g`} x1="0" y1="0" x2="1" y2="1">
-              <stop stopColor="#030712" />
-              <stop offset=".22" stopColor="#110631" />
-              <stop offset=".55" stopColor="#4b1df4" />
-              <stop offset="1" stopColor="#302da6" />
+              <stop stopColor="oklch(14% 0.04 268)" />
+              <stop offset=".42" stopColor="oklch(47% 0.29 279)" />
+              <stop offset="1" stopColor="oklch(61% 0.23 250)" />
             </linearGradient>
             <pattern
               id={`${id}-dots`}
-              width="12"
-              height="12"
+              width="18"
+              height="18"
               patternUnits="userSpaceOnUse"
             >
-              <circle cx="2" cy="2" r=".7" fill="white" fillOpacity=".33" />
+              <circle cx="1.5" cy="1.5" r="1.4" fill="currentColor" />
+              <circle cx="12" cy="8" r=".9" fill="currentColor" />
             </pattern>
+            <radialGradient id={`${id}-shade`} cx="12%" cy="34%" r="64%">
+              <stop stopColor="oklch(8% 0.02 268)" />
+              <stop offset=".5" stopColor="oklch(8% 0.02 268 / 72%)" />
+              <stop offset="1" stopColor="oklch(8% 0.02 268 / 0%)" />
+            </radialGradient>
+            <mask id={`${id}-spray`}>
+              <rect width="720" height="720" fill="white" />
+              <circle cx="545" cy="182" r="210" fill="black" opacity=".24" />
+              <circle cx="112" cy="620" r="190" fill="black" opacity=".3" />
+            </mask>
           </defs>
-          <path d="M0 0H576V723H0Z" fill={`url(#${id}-g)`} />
-          <path
-            d="M0 245Q140 95 270 205T576 170V723H0Z"
-            fill="#000018"
-            opacity=".12"
+          <rect width="720" height="720" fill={`url(#${id}-g)`} />
+          <rect
+            width="720"
+            height="720"
+            fill={`url(#${id}-dots)`}
+            color="oklch(8% 0.02 268 / 42%)"
+            mask={`url(#${id}-spray)`}
           />
           <path
-            d="M0 435Q130 380 250 465T576 450V723H0Z"
-            fill="#190c6c"
-            opacity=".55"
+            d="M0 86C116 44 198 64 288 140C410 244 520 248 720 168V720H0Z"
+            fill="oklch(41% 0.24 282 / 52%)"
           />
-          <path d="M0 0H576V723H0Z" fill={`url(#${id}-dots)`} />
+          <path
+            d="M-40 500C98 412 228 400 352 464C474 526 562 532 760 432V760H-40Z"
+            fill="oklch(20% 0.12 262 / 45%)"
+          />
+          <rect width="720" height="720" fill={`url(#${id}-shade)`} />
         </svg>
       )}
       <div className="rm-art-inner">
