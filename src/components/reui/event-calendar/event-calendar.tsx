@@ -482,7 +482,13 @@ function createEventCalendarStore<TData>(
   };
 
   type ControlledKey =
-    "view" | "date" | "dayCount" | "events" | "selection" | "interactions" | "viewSettings";
+    | "view"
+    | "date"
+    | "dayCount"
+    | "events"
+    | "selection"
+    | "interactions"
+    | "viewSettings";
 
   const setField = <K extends ControlledKey>(
     key: K,

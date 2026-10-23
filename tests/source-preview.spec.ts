@@ -22,7 +22,10 @@ for (const [route, filename, component] of cases) {
     await page.getByRole("button", { name: "View code", exact: true }).click();
     const dialog = page.getByRole("dialog");
     const source = dialog.locator(".source-code");
-    await expect(dialog.getByRole("combobox", { name: "Source file" })).toHaveText(filename);
+    const selector = dialog.getByRole("combobox", { name: "Source file" });
+    // Wait for the lazily loaded source panel before asserting its selected implementation.
+    await selector.waitFor({ state: "visible" });
+    await expect(selector).toHaveText(filename);
     await expect(source).toContainText(`function ${component}`);
     const expected = await readFile(filename, "utf8");
     await source.getByRole("button", { name: "Copy", exact: true }).click();

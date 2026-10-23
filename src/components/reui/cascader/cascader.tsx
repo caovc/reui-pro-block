@@ -649,7 +649,8 @@ interface CascaderLatest<T> {
   selectedValues: string[];
   deepResults: CascaderNode<T>[] | null;
   onValueChange:
-    ((value: string | string[], details: CascaderChangeDetails<T>) => void) | undefined;
+    | ((value: string | string[], details: CascaderChangeDetails<T>) => void)
+    | undefined;
   resolveNode: (value: string) => CascaderNode<T>;
   isSelectable: (node: CascaderNode<T>) => boolean;
   needsChildren: (node: CascaderNode<T>) => boolean;
@@ -765,7 +766,8 @@ function Cascader<T>({
 
   // Public props are discriminated, internals are not: one assertion.
   const onValueChange = onValueChangeProp as
-    ((value: string | string[], details: CascaderChangeDetails<T>) => void) | undefined;
+    | ((value: string | string[], details: CascaderChangeDetails<T>) => void)
+    | undefined;
 
   // No `onChange`: `onValueChange` takes a second argument, so `emitSelection`
   // invokes it rather than the state hook, which only knows the value.

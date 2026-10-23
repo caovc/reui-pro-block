@@ -22,7 +22,7 @@
 ## 可读源码与提交格式化
 
 - 所有源码应以可读的多行形式编写，禁止为节省 token 将组件、数据或函数压成超长单行。优先实际复用 ReUI 免费组件的要求保持不变。
-- 使用仓库 Prettier 配置；运行 `npm run format` 统一格式化，提交前通过 `npm run format:check`。CI 会拒绝不符合格式的代码。
+- 统一使用 oxfmt 格式化、oxlint 检查，遵循仓库 `.oxfmtrc.json` 配置；运行 `npm run format` 统一格式化（共享工作区只格式化自己负责的文件：`npm run format -- <paths>`），提交前通过 `npm run format:check`。CI 会拒绝不符合格式的代码。
 - `npm install` / `npm ci` 通过 Husky 安装提交钩子，pre-commit 使用 `git-format-staged` 格式化暂存区，保护尚未暂存的在制修改。不要绕过钩子。
 - 多会话仍需串行协调 Git 写操作；批量格式化后重新读取文件再编辑，不要用旧快照覆盖其他变更。
 - 修改组件路由或新增分拆文件时，同步维护 `src/lib/source-targets.ts`，确保代码预览默认展示实际实现，且查看、复制、单文件下载与完整项目下载内容一致。

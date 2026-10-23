@@ -908,7 +908,8 @@ export interface KanbanOverlayProps extends Omit<
   "children"
 > {
   children?:
-    ReactNode | ((params: { value: UniqueIdentifier; variant: "column" | "item" }) => ReactNode);
+    | ReactNode
+    | ((params: { value: UniqueIdentifier; variant: "column" | "item" }) => ReactNode);
 }
 
 function KanbanOverlay({ children, className, ...props }: KanbanOverlayProps) {

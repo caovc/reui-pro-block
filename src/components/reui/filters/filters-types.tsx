@@ -40,7 +40,14 @@ export type FilterNode<V = unknown> = FilterRule<V> | FilterGroupNode<V>;
 export type FilterQuery<V = unknown> = FilterGroupNode<V>;
 
 export type FilterChangeReason =
-  "add" | "update" | "remove" | "duplicate" | "negate" | "reorder" | "combinator" | "clear";
+  | "add"
+  | "update"
+  | "remove"
+  | "duplicate"
+  | "negate"
+  | "reorder"
+  | "combinator"
+  | "clear";
 
 /** Second argument to `onQueryChange`, so nobody has to diff two trees. */
 export interface FilterChangeDetails<V = unknown, O = unknown> {

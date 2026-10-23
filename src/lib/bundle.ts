@@ -68,9 +68,9 @@ export async function downloadBundle(block: BlockMeta) {
     JSON.stringify(
       {
         compilerOptions: {
-          target: "ES2022",
+          target: "ES2023",
           types: ["vite/client", "node"],
-          lib: ["ES2022", "DOM", "DOM.Iterable"],
+          lib: ["ES2023", "DOM", "DOM.Iterable"],
           module: "ESNext",
           moduleResolution: "bundler",
           jsx: "react-jsx",

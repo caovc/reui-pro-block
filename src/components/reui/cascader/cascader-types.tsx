@@ -110,7 +110,8 @@ export interface CascaderFlatNode<T = unknown> {
 
 /** One segment of a rendered path, after collapsing. */
 export type CascaderPathSegment<T = unknown> =
-  { type: "node"; node: CascaderNode<T> } | { type: "ellipsis"; hidden: CascaderNode<T>[] };
+  | { type: "node"; node: CascaderNode<T> }
+  | { type: "ellipsis"; hidden: CascaderNode<T>[] };
 
 /**
  * Async load state for one node's children. Deliberately WITHOUT a `status`

@@ -536,7 +536,8 @@ export interface CascaderValueProps extends Omit<React.ComponentProps<"span">, "
    * and path; with `asChild`, the element the display renders into instead.
    */
   children?:
-    ((selected: CascaderNode[], path: CascaderNode[]) => React.ReactNode) | React.ReactElement;
+    | ((selected: CascaderNode[], path: CascaderNode[]) => React.ReactNode)
+    | React.ReactElement;
 }
 
 /**

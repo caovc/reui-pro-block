@@ -23,7 +23,7 @@ The editor uses the browser’s native contenteditable/selection model with shad
 
 ## Validation
 
-Application files are formatted with Prettier. TypeScript `tsc -b` has no errors under `src/blocks/application` at handoff. Root handles exhaustive catalog rendering, browser QA and site release validation.
+Application files are formatted with oxfmt. TypeScript `tsc -b` has no errors under `src/blocks/application` at handoff. Root handles exhaustive catalog rendering, browser QA and site release validation.
 
 ## Follow-up validation
 

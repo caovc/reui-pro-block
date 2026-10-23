@@ -52,7 +52,15 @@ export type ColorPickerFormat = "hex" | "rgb" | "hsl" | "hsb" | "oklch";
 export type ColorPickerColorSpace = "rgb" | "hsl" | "hsv" | "oklch";
 
 export type ColorPickerChannel =
-  "hue" | "saturation" | "brightness" | "lightness" | "chroma" | "red" | "green" | "blue" | "alpha";
+  | "hue"
+  | "saturation"
+  | "brightness"
+  | "lightness"
+  | "chroma"
+  | "red"
+  | "green"
+  | "blue"
+  | "alpha";
 
 /**
  * A parsed color. Channels stay in the space they were given or edited in,

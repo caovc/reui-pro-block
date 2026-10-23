@@ -31,7 +31,8 @@ test("staged formatting preserves unfinished changes without adding them to the 
       "-m",
       "Fixture baseline",
     );
-    copyFileSync(".prettierrc.json", join(directory, ".prettierrc.json"));
+    copyFileSync(".oxfmtrc.json", join(directory, ".oxfmtrc.json"));
+    copyFileSync("package.json", join(directory, "package.json"));
     writeFileSync(
       join(directory, "example.tsx"),
       "export function Example(){return <div>Ready</div>}\n",
@@ -41,11 +42,7 @@ test("staged formatting preserves unfinished changes without adding them to the 
       join(directory, "example.tsx"),
       "export function Example(){return <div>Ready</div>}\n// Unfinished work must remain unstaged\n",
     );
-    execFileSync(
-      join(bin, "git-format-staged"),
-      ["-f", 'prettier --ignore-unknown --stdin-filepath "{}"', "*.tsx"],
-      options,
-    );
+    execFileSync("sh", [resolve(".husky/pre-commit")], options);
     const staged = git("show", ":example.tsx");
     assert.equal(staged, "export function Example() {\n  return <div>Ready</div>;\n}\n");
     assert.match(

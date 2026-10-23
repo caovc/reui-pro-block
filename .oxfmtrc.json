@@ -1,0 +1,23 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "printWidth": 100,
+  "tabWidth": 2,
+  "semi": true,
+  "singleQuote": false,
+  "trailingComma": "all",
+  "endOfLine": "lf",
+  "sortImports": false,
+  "sortPackageJson": false,
+  "ignorePatterns": [
+    "node_modules/**",
+    "dist/**",
+    "dist-ssr/**",
+    "package-lock.json",
+    "playwright-report/**",
+    "test-results/**",
+    ".qa/**",
+    ".playwright-cli/**",
+    ".codegraph/**",
+    "src/data/catalog.json"
+  ]
+}
