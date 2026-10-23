@@ -32,20 +32,20 @@ Preview: https://caovc.github.io/reui-pro-block/
 
 ## Current ownership
 
-| Owner                     | Scope                                                                                             |
-| ------------------------- | ------------------------------------------------------------------------------------------------- |
-| Primary                   | Release integration, real starter verification, CI/Pages; Sidebar and AI Usage integration        |
-| Application agent         | Final five Dialogs integrated; next Dialog9 modal Portal correction in independent batch          |
-| Data agent                | AI Usage4 integrated; next Agent Activity5 with actual free Trace/Timeline in independent modules |
-| Commerce agent            | All6 Coupons published; next8 Shop Heroes in independent modules                                  |
-| Source/export coordinator | Diagnose source/ZIP/site CI failures within original source scope                                 |
-| Grid coordinator          | Diagnose two Grid CI failures; preserve previous filter-focus correction                          |
+| Owner                     | Scope                                                                                      |
+| ------------------------- | ------------------------------------------------------------------------------------------ |
+| Primary                   | Release integration, real starter verification, CI/Pages; Sidebar and AI Usage integration |
+| Application agent         | Navbar7–9 and free ButtonGroup follow-up, independently frozen for integration             |
+| Data agent                | AI Chat1–3 ready; next4–6 in independent modules                                           |
+| Commerce agent            | All8 Shop Hero functional leaves; next Category Card1–3 in independent modules             |
+| Source/export coordinator | Diagnose source/ZIP/site CI failures within original source scope                          |
+| Grid coordinator          | Diagnose two Grid CI failures; preserve previous filter-focus correction                   |
 
 ## Release and validation rules
 
 Each milestone is built from latest committed HEAD plus its exact frozen payload. Source defaults must point to the actual rendered leaf. Playwright uses production previews, one worker and unique output directories. Actual UI-downloaded ZIPs are independently built and rendered; representative computed padding/borders are compared with the full preview.
 
-A commit or successful push does not establish deployment. Last verified successful Pages build/deploy is e140d02 (run39924009192), including the Templates foundation32a95fe and global appearance. Templates foundation was separately checked live at1440/390 with an Editor/Pending invitation and no page errors; global-theme live4/4 interactions and1440/390 mark/menu screenshots passed without page or console errors. Dialog9 correction13ddf79 is pushed; its pending run39925502936 was superseded by the cumulative Template secondary commit460f042 run39925841223, now in progress. Template domain/state refinement eac6a1a passed85 local production checks and is pushed, pending CI/Pages. Agent Activity functional baseline bca41da is pushed and pending cumulative CI/Pages. Navbar1–3 functional/free-source integration passed31 local production checks and is being released separately. Each new build and deploy must succeed before claiming an updated public preview.
+A commit or successful push does not establish deployment. Latest verified successful Pages build/deploy is46dbee4 (run39929966778):856/856 browser tests passed, build and deploy succeeded. This includes Templates foundation/secondary/domain, global appearance, Dialog9, Activity1–5, Navbar1–3 and AppShell native inset. Real live Surge/Roster/Echo flows passed3/3 with no page errors; Activity/Navbar/global passed22 checks. The first4 AppShell live cases hit host-root404 because their leading /#/ discarded the Pages directory; after a deployment-relative test-only correction, the same4 cases passed online. Original failed traces remain retained. Shop4/5 and Navbar4–6 are pushed, pending cumulative CI/Pages; newer milestones must be verified separately.
 
 Commit2a2b5ff tests actual production assets and retains failure diagnostics. Its run39909617625 passed673/674; Coupon run39911450874 passed705/706. Their real traces show source clicks while route scrolling continued; the new first-frame regression establishes and fixes that scrolling defect without claiming to identify every historical click recipient. See [trace findings](source-navigation-ci-trace.md) and [route regression](source-navigation-scroll-fix.md). The Grid investigation separates reproduced loading-pressure symptoms from the unproven historical cause. Global Theme's original candidate has documented first-run browser/source and starter-build failures; the integrated clean candidate independently passed58 targeted production checks, including those source cases and both starters. The historical cause is still unresolved, and full integrated CI remains required. No blind retries or timeout inflation replace evidence-based fixes.
 
@@ -68,3 +68,7 @@ Superseded run39927970095 onbca41da passed824 and failed13, all the same localho
 ## Navbar toolbar milestone
 
 Navbar4–6 now have independent admin, workflow and analytics leaves composed from10 actual free Command/Dropdown/Calendar/Switch/Select/Progress/Rating/Toggle examples, retaining published free account/trail/presence dependencies. Admin search and19 notifications, workflow state/history/JSON and analytics date/compare/refresh/CSV/PNG/share use explicit local handlers. Root passed strict production build and42/42 cases on46dbee4, then rebased the disjoint Shop4/5 release and passed33/33 cumulative toolbar/shop/source checks. Actual323-file Navbar6 ZIP independently built/rendered at1440/390; source, clipboard, single-file and ZIP leaf bytes agree. Public rendered comparison remains pending for all6 refined Navbars; local fixtures/PNG sample chart and handler differences are recorded.
+
+## Shop Hero release/switcher/quilt milestone
+
+Shop Hero6–8 complete the eight independent functional entries with actual free c-card8/c-tabs9/c-badge22/c-dialog1 and the published catalog helpers. Native tab geometry and image-corner regressions exposed real mobile defects, now fixed locally without force clicks or timeout/retry changes. Root passed strict build,58/58 cumulative production checks and full formatting/tooling/lint. Three actual175-file starters independently built and rendered at1440/390 with exact discount arithmetic, native reminder state, zero image corners and no errors/overflow. Public visual comparison for2–8 remains pending, with original artwork and local metadata/delivery differences explicit. Root also passed17/17 default-CI URL checks after preserving the deployment subdirectory in three test suites.

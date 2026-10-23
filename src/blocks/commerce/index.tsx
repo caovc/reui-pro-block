@@ -10,6 +10,7 @@ import { Comparison, ShopHero } from "./promotions";
 import { CouponVariants } from "./coupon-variants";
 import { ShopHeroVariants } from "./shop-hero-variants";
 import { CollectionShopHeroes } from "./shop-hero-variants/collection-pages";
+import { ReleaseShopHeroes } from "./shop-hero-variants/release-pages";
 import { Blog, FAQ, Contact, MarketingCompare } from "./marketing";
 import { Hero, CTA, HowItWorks } from "./heroes";
 import { Pricing } from "./pricing";
@@ -59,6 +60,9 @@ export default function CommerceBlock({ block }: BlockProps) {
         <ReviewLists block={block} />
       );
     case "shop-hero":
+      if ([5, 6, 7].includes(block.index)) {
+        return <ReleaseShopHeroes key={block.id} block={block} />;
+      }
       if ([3, 4].includes(block.index)) {
         return <CollectionShopHeroes key={block.id} block={block} />;
       }

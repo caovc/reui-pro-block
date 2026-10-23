@@ -1,0 +1,112 @@
+{
+  "status": "READY / frozen; no Git writes by child",
+  "frozenAt": "2026-10-23T09:27:43.291369+00:00",
+  "baseHead": "76d550419e0084524fd3a3298b6d8dee0739c60a",
+  "integrationPatchPreparedAgainst": "f95cd62053138774f3f6404cc16c63378061bfbf",
+  "snapshot": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/reui-shop-hero678-9n4jwu6o",
+  "production": "http://127.0.0.1:5415",
+  "integrationPatch": "/tmp/reui-shop-hero678-integration.patch",
+  "leafMapping": {
+    "shop-hero-6": "shop-hero-variants/lookbook",
+    "shop-hero-7": "shop-hero-variants/collection-switcher",
+    "shop-hero-8": "shop-hero-variants/collection-quilt"
+  },
+  "router": "ReleaseShopHeroes from shop-hero-variants/release-pages, only indices5/6/7; preserve existing1\u20135 and other commerce routes.",
+  "verification": [
+    "Final strict TypeScript + Vite build PASS",
+    "Final 16/16 focused production tests PASS,19.4s,1worker; no timeout/retry/force changes",
+    "2/2 source graph tests PASS",
+    "Scoped oxfmt check and oxlint PASS",
+    "All3 actual default source/copy/single-file/ZIP leaf bytes identical",
+    "Actual downloaded ZIPs175files each:3 independent strict builds PASS",
+    "Final standalone6 checks at1440/390 PASS; heading line heights, no overflow/errors, original image decode;12 correct40% price cuts; native Tabs pointer and reminder persistence; true edge-to-edge quilt bounds and zero image radius",
+    "Final desktop/mobile/overlay screenshots inspected"
+  ],
+  "officialFreeReuse": [
+    "actual c-card-8 via existing ShopImageCard",
+    "actual controlled c-tabs-9",
+    "actual c-badge-22 source composition",
+    "actual controlled c-dialog-1 form composition",
+    "existing CollectionBrowser/SaveProvider with c-item-2, c-tabs-9, c-scroll-area-1,c-toggle-10",
+    "official Frame,Item,ScrollArea,Badge,Alert sources"
+  ],
+  "limitations": [
+    "Public rendered desktop/mobile/state visual comparison remains pending for6\u20138; metadata/free-source functional refinement only. No foreground competition with user Edge; background IAB unavailable.",
+    "Original independently drawn still lifes replace source photography; exact public wording/metrics/responsive behavior provisional.",
+    "Entry6 actual dataset is30 instead of source typed32; all UI counts correctly derive30.",
+    "Local reminder sends no email and resets reload; archive is read-only demo prices, not a purchase backend."
+  ],
+  "priorFrozenManifests": {
+    "/tmp/reui-shop-hero3-ready-manifest.json": {
+      "unchanged": true,
+      "files": 11
+    },
+    "/tmp/reui-shop-hero45-ready-manifest.json": {
+      "unchanged": true,
+      "files": 8
+    }
+  },
+  "standalones": [
+    {
+      "n": 6,
+      "folder": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-shop-hero6-export-6w09D8",
+      "entries": 175,
+      "preview": "http://127.0.0.1:5416"
+    },
+    {
+      "n": 7,
+      "folder": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-shop-hero7-export-EcAou0",
+      "entries": 175,
+      "preview": "http://127.0.0.1:5417"
+    },
+    {
+      "n": 8,
+      "folder": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-shop-hero8-export-TaSxwU",
+      "entries": 175,
+      "preview": "http://127.0.0.1:5418"
+    }
+  ],
+  "evidence": {
+    "finalTests": "/tmp/reui-shop-hero678-final-corners-tests.log",
+    "initialTabsFailure": "/tmp/reui-shop-hero678-initial-tests.log",
+    "initialTrace": "/tmp/reui-shop-hero678-initial-results/shop-hero-releases-Shop-He-25d5e--media-and-working-overlays/trace.zip",
+    "build": "/tmp/reui-shop-hero678-final-build.log",
+    "sourceTests": "/tmp/reui-shop-hero678-source-final-tests.log",
+    "standaloneRuntime": "/tmp/reui-shop-hero678-export-runtime.json",
+    "screenshots": "/tmp/reui-shop-hero{6,7,8}-export-{desktop,mobile}.png + export-state-{desktop,mobile}.png"
+  },
+  "readOnlyDependencies": {
+    "src/blocks/commerce/shop-hero-variants/image-card.tsx": "faeb23fea88479454a0ae1310f9ee321b06960b2286d965334e51b85f9ce6b18",
+    "src/blocks/commerce/shop-hero-variants/collection-data.ts": "9d261a797c183eea791fea07ff2c30285530402b3e00fe23c4da0b24d64e96d1",
+    "src/blocks/commerce/shop-hero-variants/collection-dialog.tsx": "6c0f5f55c98ef994a12410710d1eb3d7a74baf7a087a3d9b521a46a1948b3282",
+    "src/blocks/commerce/shop-hero-variants/collection-saved.ts": "c91e5eb66246357fa77120264bc5e6fd38a0a606640b2e98ce5f79bb737a2553",
+    "src/blocks/commerce/wishlist-artwork.ts": "7b8bb57f425418cee9392010dc57708cacb1a26452210ce3aa5605736c2639b6",
+    "src/components/brand-mark.tsx": "11620d3f7a3a4b26a130fba67a529743dcfa57f60ef607d599c94491660667d7",
+    "src/components/reui/badge.tsx": "aa775fdd1638b34a843f5ece24236705d152cc36ea5edce62a62fe5601dde664",
+    "src/components/reui/alert.tsx": "bcf730d92ee23d445d069d193a6dfc52229c4e4d7085d3e476e0e7b5789f3629",
+    "src/components/reui/frame.tsx": "a80a37a89e4c47eb2ff226557b2f53e528681d09a4a0321d8aebf826b4c3ecd6"
+  },
+  "files": {
+    "src/blocks/commerce/shop-hero-variants/release-data.ts": "3c471f4343e56c47f144c34c20a5fe2b57b6b755e15d156e43d1b7346ed0733d",
+    "src/blocks/commerce/shop-hero-variants/release-status.tsx": "c809971f3a917a44ae818779302bee2206a83ff59d9795a2ce545e18a83709ed",
+    "src/blocks/commerce/shop-hero-variants/archive-offers.tsx": "da2466dc901ba114e0761c85b2d68bb4c165366b82deabe99ddcbb31056113cf",
+    "src/blocks/commerce/shop-hero-variants/drop-reminder.tsx": "10ce1f13919d9e9e071e23b4514913177e932584ec687df677c4bf4fe23ba4e3",
+    "src/blocks/commerce/shop-hero-variants/lookbook.tsx": "2be6b1124e98885154232ddf18513f3df7f1b14fce5487bcb78792c8ab958629",
+    "src/blocks/commerce/shop-hero-variants/collection-switcher.tsx": "033e2bc8c1952b89da383132c91056cadc1076afc77898754785c5bb3b660faa",
+    "src/blocks/commerce/shop-hero-variants/collection-quilt.tsx": "86eb8fc4a9805cd016b15faf4e8a6747220439e2608e900f399f58122bca7266",
+    "src/blocks/commerce/shop-hero-variants/release-pages.tsx": "dcab6ffde796c6592d4b7161319460bbbd168407bc39433bcc0f10fe31bddd0f",
+    "tests/shop-hero-releases.spec.ts": "838bda54f330e7398cfb0119b6284c188c17ee9b21e5ba9a391db8f9eb887003",
+    "docs/shop-hero-releases-refinement.md": "99b6b67ae88002df9bc93fe8630ea17d57db7e69dcbe9ffb5953dc2a19555616"
+  },
+  "integrationBase": "e214f11044ae426392d9f0968527f1259e100fba",
+  "rootValidation": {
+    "build": "PASS",
+    "production": "58/58 PASS1.2m, one worker",
+    "log": "/tmp/bricklane-shop678-root-production.log",
+    "format": "PASS all896 files before Root docs; final check required",
+    "tooling": "3/3 PASS",
+    "lint": "0 errors",
+    "visual": "Root inspected final actualShop7 mobile; all public6\u20138 pending"
+  },
+  "deployment": "Pending cumulative CI/Pages; live verified46dbee4"
+}

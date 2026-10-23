@@ -226,6 +226,10 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
         "shop-hero-variants/collection-pages",
       );
     }
+    if (block.category === "shop-hero" && [5, 6, 7].includes(block.index)) {
+      const module = ["lookbook", "collection-switcher", "collection-quilt"][block.index - 5];
+      return paths("commerce", `shop-hero-variants/${module}`, "shop-hero-variants/release-pages");
+    }
     if (block.category === "coupon") {
       const module = block.index === 1 ? "grid" : [4, 5].includes(block.index) ? "bars" : "heroes";
       return paths("commerce", `coupon-variants/${module}`, "coupon-variants/index");
