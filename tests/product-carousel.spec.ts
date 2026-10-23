@@ -23,6 +23,17 @@ test("c-carousel9 main swipe/keyboard and thumbnail click synchronize the actual
   await expect(
     page.getByRole("button", { name: "Show image 4 of 5", exact: true }),
   ).toHaveAttribute("aria-pressed", "true");
+  // Embla emits select when the target changes, before its animated slide reaches the viewport.
+  // Start this gesture from the physically aligned fourth slide, not only its selected metadata.
+  await expect
+    .poll(async () => {
+      const [slide, viewport] = await Promise.all([
+        main.locator('[data-slot="carousel-item"][aria-hidden="false"]').boundingBox(),
+        main.locator('[data-slot="carousel-content"]').boundingBox(),
+      ]);
+      return slide && viewport ? Math.abs(slide.x - viewport.x) : Infinity;
+    })
+    .toBeLessThanOrEqual(1);
   const box = await main.boundingBox();
   if (!box) throw new Error("Gallery missing");
   await page.mouse.move(box.x + box.width * 0.8, box.y + box.height * 0.5);
@@ -32,6 +43,9 @@ test("c-carousel9 main swipe/keyboard and thumbnail click synchronize the actual
   });
   await page.mouse.up();
   await expect(page.locator("[data-gallery-image]")).toHaveAttribute("alt", /view 5/);
+  await expect(
+    page.getByRole("button", { name: "Show image 5 of 5", exact: true }),
+  ).toHaveAttribute("aria-pressed", "true");
 });
 test("vertical and book thumbnails retain selected style and counters after c-carousel9 navigation", async ({
   page,
