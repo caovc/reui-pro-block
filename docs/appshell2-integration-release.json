@@ -1,0 +1,29 @@
+{
+  "scope": "AppShell2 native floating sidebar integration",
+  "base": "a6cf9ff2cb189b276fa5afe0aa98f2fdcf246bd2",
+  "frozenFiles": {
+    "src/blocks/application/shells/primitives.tsx": "eb028d1eb19c7a4be9e924cf86ca58232d6910b643e146425d51f6558ad02acd",
+    "src/blocks/application/shells/standard.tsx": "3d16b768638cf8b1d36603d46075dcc672ac132591aaf0dcf778e20fa3df1f92",
+    "src/blocks/application/shells/chrome.tsx": "393dae029dc0117aa0b8168dd6f9bd43ece3934e2dee5129e7de6d2cfd820a6c",
+    "src/blocks/application/shells/sidebar-foundation.css": "6e02ec175e9e4b3e0c3486adfd1b74563f0d9ab701849d6e53d11bcb69a80c07",
+    "src/components/ui/command.tsx": "695548acf2945ab309265334c4f77acff9effd1c87df19b211a665947cb9f294",
+    "tests/appshell-collapse-geometry.spec.ts": "ed22d1cc1fd2bf3ef3d5ac70a1e6708cb1dee51f7279c4270c1f78032038f993",
+    "docs/appshell-sidebar-migration.md": "000f2c62309e1123271223d67f844f3a862b8adf8eba8fc232a9d681786a78da"
+  },
+  "nativeGeometry": {
+    "gap": 64,
+    "container": 66,
+    "inner": 50,
+    "innerContent": 48,
+    "logo": [19, 23, 28, 28],
+    "toggle": [17, 65, 28, 28],
+    "search": [17, 109, 32, 32]
+  },
+  "verification": {
+    "root": "Clean committed base plus frozen seven files; strict build, full format, tooling and oxlint passed. Production15/15 passed47.6s.",
+    "rootProductionLog": "/tmp/bricklane-shell2-root-production.log",
+    "owner": "Production58/58 passed53.9s. Actual UI app-shell-2.zip285files independently built and rendered1280/390, source/copy/download bytes checked.",
+    "publicReference": "Official AppShell2 screenshots and native geometry observed by sidebar coordinator; original Bricklane logo retained.",
+    "deployment": "Pending separate CI and Pages confirmation."
+  }
+}

@@ -449,6 +449,7 @@ export function WorkspaceMenu({
   top = false,
   onName,
   card = false,
+  compact = false,
 }: {
   collapsed?: boolean;
   user?: boolean;
@@ -458,6 +459,7 @@ export function WorkspaceMenu({
   top?: boolean;
   onName?: (s: string) => void;
   card?: boolean;
+  compact?: boolean;
 }) {
   const [workspace, setWorkspace] = useState(initial);
   const [accountTheme, setAccountTheme] = useState("system");
@@ -479,12 +481,19 @@ export function WorkspaceMenu({
             "w-full px-2",
             card && "shell-account-card border bg-background shadow-xs",
             collapsed ? "justify-center" : "justify-start",
-            card ? "h-auto p-1.5" : user ? "h-12" : "h-10",
+            card ? "h-auto p-1.5" : compact ? "h-8" : user ? "h-12" : "h-10",
           )}
           aria-label={user ? "Open user menu" : top ? "Switch workspace" : "Open workspace menu"}
         >
           {user ? (
             <Face name={displayName} />
+          ) : compact ? (
+            <span
+              className="flex size-4 shrink-0 items-center justify-center text-base"
+              aria-hidden="true"
+            >
+              {workspace === "Vercel" ? "▲" : workspace.slice(0, 1)}
+            </span>
           ) : (
             <span className="flex size-6 shrink-0 items-center justify-center rounded-full border text-[10px] font-medium">
               {workspace === "Claude" ? "C" : workspace === "Vercel" ? "▲" : workspace.slice(0, 1)}
@@ -724,12 +733,12 @@ export function SearchPalette({
       <Button
         ref={trigger}
         variant={iconOnly ? "ghost" : "outline"}
-        size={iconOnly ? "icon-sm" : "sm"}
+        size={iconOnly || collapsed ? "icon-sm" : "sm"}
         className={cn(
           iconOnly
             ? ""
             : collapsed
-              ? "w-full justify-center px-0"
+              ? "size-8 shrink-0 justify-center px-0"
               : "h-8 w-full justify-start gap-2 px-2 font-normal",
         )}
         aria-label="Search workspace"
@@ -750,6 +759,10 @@ export function SearchPalette({
         onOpenChange={setOpen}
         title="Search"
         description="Search your workspace content."
+        onCloseAutoFocus={(event) => {
+          event.preventDefault();
+          trigger.current?.focus({ preventScroll: true });
+        }}
       >
         <Command>
           <CommandInput

@@ -20,9 +20,13 @@ test("icon collapse shrinks the painted panel and its layout spacer together", a
       expect(expanded.width).toBeGreaterThan(200);
       await page.keyboard.press("Control+b");
       await expect(sidebar).toHaveAttribute("data-collapsible", "icon");
-      await expect.poll(async () => (await panel.boundingBox())?.width).toBe(48);
+      // The free floating variant includes 16px outer padding and a 2px border allowance.
+      await expect.poll(async () => (await panel.boundingBox())?.width).toBe(n === 2 ? 66 : 48);
       const gap = (await sidebar.locator('[data-slot="sidebar-gap"]').boundingBox())!;
-      const collapsed = (await panel.boundingBox())!;
+      const collapsed = (await (
+        n === 2 ? panel.locator('[data-slot="sidebar-inner"]') : panel
+      ).boundingBox())!;
+      if (n === 2) expect(collapsed.width).toBe(50);
       // Floating examples retain their explicit outer gutter, never a full blank column.
       expect(gap.width).toBeGreaterThanOrEqual(48);
       expect(gap.width).toBeLessThanOrEqual(64);
@@ -165,4 +169,88 @@ test("account card uses account actions and a keyboard-operated Theme submenu", 
   await expect(menu).toHaveAttribute("data-side", "right");
   await menu.getByRole("menuitem", { name: /^Profile/ }).click();
   await expect(page.getByText("Profile selected", { exact: true })).toBeVisible();
+});
+
+for (const width of [1280, 1718]) {
+  test(`floating shell preserves its logo and header toggle after collapse at ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto(preview(2));
+    const sidebar = page.locator('[data-slot="sidebar"][data-state]');
+    await expect(sidebar).toHaveAttribute("data-variant", "floating");
+    const toggle = page.getByRole("button", { name: "Toggle Sidebar", exact: true });
+    await expect(toggle).toHaveAttribute("data-slot", "sidebar-trigger");
+    await expect(toggle).toHaveAttribute("aria-expanded", "true");
+    await toggle.click();
+    await expect(toggle).toBeFocused();
+    await expect(toggle).toHaveAttribute("aria-expanded", "false");
+    const frame = sidebar.locator('[data-slot="sidebar-inner"]');
+    await expect.poll(async () => (await frame.boundingBox())?.width).toBe(50);
+    const logo = (await sidebar.locator(".shell-floating-brand > svg").boundingBox())!;
+    const search = page.getByRole("button", { name: "Search workspace", exact: true });
+    const searchBox = (await search.boundingBox())!;
+    const control = (await toggle.boundingBox())!;
+    expect(logo.width).toBe(28);
+    expect(logo.height).toBe(28);
+    expect(logo.x).toBe(19);
+    expect(logo.y).toBe(23);
+    expect(control.y).toBe(65);
+    expect(control.width).toBe(28);
+    expect(searchBox.width).toBe(32);
+    expect(searchBox.height).toBe(32);
+    expect(searchBox.x).toBe(17);
+    expect(searchBox.y).toBe(109);
+    await expect(toggle.locator("svg")).toHaveCSS("transform", "matrix(-1, 0, 0, -1, 0, 0)");
+    const visibleFrame = (await frame.boundingBox())!;
+    for (const box of [logo, control, searchBox]) {
+      expect(box.x).toBeGreaterThan(visibleFrame.x);
+      expect(box.x + box.width).toBeLessThan(visibleFrame.x + visibleFrame.width);
+    }
+    await expect(page.getByRole("button", { name: "Expand sidebar", exact: true })).toHaveCount(0);
+    await search.click();
+    const palette = page.getByRole("dialog", { name: "Search", exact: true });
+    await expect(palette).toBeVisible();
+    await palette.getByRole("combobox").fill("Projects");
+    await page.keyboard.press("Enter");
+    await expect(palette).toHaveCount(0);
+    await expect(search).toBeFocused();
+    await expect(page.getByRole("navigation", { name: "Breadcrumb" })).toContainText("Projects");
+    await toggle.focus();
+    await toggle.press("Enter");
+    await expect(toggle).toHaveAttribute("aria-expanded", "true");
+    await expect(toggle).toBeFocused();
+    await expect.poll(async () => (await frame.boundingBox())?.width).toBe(240);
+    await toggle.press("Space");
+    await expect(toggle).toHaveAttribute("aria-expanded", "false");
+    await page.keyboard.press("Control+b");
+    await expect(toggle).toHaveAttribute("aria-expanded", "true");
+  });
+}
+
+test("floating Sidebar returns focus to the phone opener after a desktop collapse", async ({
+  page,
+}) => {
+  await page.goto(preview(2));
+  await page.getByRole("button", { name: "Toggle Sidebar", exact: true }).click();
+  await page.setViewportSize({ width: 390, height: 844 });
+  const opener = page.getByRole("button", { name: "Open navigation", exact: true });
+  await opener.click();
+  const sheet = page.getByRole("dialog", { name: "Navigation", exact: true });
+  await expect(sheet.getByText("Bricklane", { exact: true })).toBeVisible();
+  await expect(sheet.getByRole("button", { name: "Toggle Sidebar", exact: true })).toHaveCount(0);
+  await sheet.getByRole("button", { name: "Close", exact: true }).click();
+  await expect(sheet).toHaveCount(0);
+  await expect(opener).toBeFocused();
+  await opener.click();
+  const search = sheet.getByRole("button", { name: "Search workspace", exact: true });
+  await search.click();
+  const palette = page.getByRole("dialog", { name: "Search", exact: true });
+  await palette.getByRole("combobox").fill("Projects");
+  await page.keyboard.press("Enter");
+  await expect(palette).toHaveCount(0);
+  await expect(search).toBeFocused();
+  await page.keyboard.press("Escape");
+  await expect(sheet).toHaveCount(0);
+  await expect(opener).toBeFocused();
 });

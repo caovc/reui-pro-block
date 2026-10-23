@@ -133,6 +133,7 @@ export function Sidebar({
   header,
   footer,
   rail,
+  variant = "sidebar",
 }: {
   children: ReactNode;
   collapsed?: boolean;
@@ -144,19 +145,26 @@ export function Sidebar({
   header?: ReactNode;
   footer?: ReactNode;
   rail?: ReactNode;
+  variant?: "sidebar" | "floating" | "inset";
 }) {
-  const { state, isMobile } = useSidebar();
+  const { state, isMobile, triggerRef } = useSidebar();
   const compact = !isMobile && (collapsed ?? state === "collapsed");
   return (
     <>
       <ReuiSidebar
         width={width}
+        variant={variant}
         gapWidth={gapWidth}
         header={header}
         footer={footer}
         rail={rail}
         aria-label={label}
-        className={cn("shell-sidebar shell-desktop-sidebar", compact && "collapsed", className)}
+        className={cn(
+          variant === "floating" ? "shell-floating-sidebar" : "shell-sidebar",
+          "shell-desktop-sidebar",
+          compact && "collapsed",
+          className,
+        )}
         mobileTitle={label}
         mobileClassName={cn(
           "shell-reference shell-drawer reui-reference !min-h-0 flex-col gap-0 p-2",
@@ -165,7 +173,13 @@ export function Sidebar({
       >
         {children}
       </ReuiSidebar>
-      <SidebarTrigger className="shell-mobile-trigger" aria-label={`Open ${label.toLowerCase()}`} />
+      <SidebarTrigger
+        className="shell-mobile-trigger"
+        aria-label={`Open ${label.toLowerCase()}`}
+        onClick={(event) => {
+          triggerRef.current = event.currentTarget;
+        }}
+      />
     </>
   );
 }

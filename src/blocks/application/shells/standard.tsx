@@ -27,6 +27,7 @@ import {
   Workflow,
   Zap,
 } from "lucide-react";
+import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import { Switch } from "@/components/ui/switch";
 import {
   AppsMenu,
@@ -177,6 +178,7 @@ function ResourceLinks({ onSelect }: { onSelect: (s: string) => void }) {
 }
 function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
   const [collapsed, setCollapsed] = useShellSidebarState();
+  const { isMobile } = useSidebar();
   const [active, setActive] = useState(
     variant === 1 || variant === 2 || variant === 12 ? "Overview" : "Dashboard",
   );
@@ -218,8 +220,8 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
       data-shell-variant={variant}
     >
       <Sidebar
-        width={[1, 3, 9, 10].includes(variant) ? 256 : floating || apps ? 240 : 248}
-        gapWidth={floating ? 256 : undefined}
+        width={floating || [1, 3, 9, 10].includes(variant) ? 256 : apps ? 240 : 248}
+        variant={floating ? "floating" : "sidebar"}
         collapsed={collapsed}
         header={
           variant === 1 ? (
@@ -229,14 +231,39 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
               onSelect={setWorkspace}
               onCreate={() => setCreateWorkspace(true)}
             />
+          ) : floating ? (
+            <div className="shell-floating-header">
+              <div className="shell-floating-brand">
+                <ReuiMark />
+                {!collapsed && <span className="text-sm font-medium">Bricklane</span>}
+              </div>
+              {!isMobile && (
+                <SidebarTrigger
+                  className="shell-floating-toggle opacity-60 hover:opacity-100"
+                  aria-label="Toggle Sidebar"
+                />
+              )}
+            </div>
           ) : undefined
         }
-        footer={variant === 1 ? <WorkspaceMenu collapsed={collapsed} user card /> : undefined}
-        rail={<CollapseHandle collapsed={collapsed} onToggle={() => setCollapsed(!collapsed)} />}
-        className={` ${collapsed ? "collapsed" : ""} ${dark ? "shell-dark" : ""} ${floating ? "m-2 rounded-xl border shadow-sm" : ""} ${apps ? "border-r" : ""} ${variant === 1 ? "border-r" : ""}`}
+        footer={
+          variant === 1 ? (
+            <WorkspaceMenu collapsed={collapsed} user card />
+          ) : floating ? (
+            <WorkspaceMenu collapsed={collapsed} compact initial="Vercel" onName={setWorkspace} />
+          ) : undefined
+        }
+        rail={
+          floating ? undefined : (
+            <CollapseHandle collapsed={collapsed} onToggle={() => setCollapsed(!collapsed)} />
+          )
+        }
+        className={` ${collapsed ? "collapsed" : ""} ${dark ? "shell-dark" : ""} ${apps ? "border-r" : ""} ${variant === 1 ? "border-r" : ""}`}
       >
-        {variant !== 1 && (
-          <div className={`mb-3 flex h-10 shrink-0 items-center gap-2 px-2 ${apps ? "h-12" : ""}`}>
+        {variant !== 1 && !floating && (
+          <div
+            className={`mb-3 flex h-10 shrink-0 items-center gap-2 ${collapsed ? "justify-center px-0" : "px-2"} ${apps ? "h-12" : ""}`}
+          >
             <ReuiMark />
             {!collapsed && (
               <>
@@ -249,7 +276,7 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
                     <Notifications />
                   </div>
                 )}
-                {[2, 3].includes(variant) && (
+                {variant === 3 && (
                   <Button
                     size="icon-sm"
                     variant="ghost"
@@ -264,7 +291,13 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
           </div>
         )}
         {hasSearch && (
-          <div className="mb-3 px-2">
+          <div
+            className={
+              floating
+                ? "shell-floating-search px-2 pt-2 mb-4"
+                : `mb-3 ${collapsed ? "px-0" : "px-2"}`
+            }
+          >
             <SearchPalette
               collapsed={collapsed}
               shortcut={variant === 10 ? "/" : "⌘K"}
@@ -362,20 +395,12 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
             />
           </div>
         )}
-        {!apps && variant !== 1 && (
+        {!apps && variant !== 1 && !floating && (
           <div className="mt-auto pt-1">
             <WorkspaceMenu
               collapsed={collapsed}
               user={[9, 10].includes(variant)}
-              initial={
-                variant === 2
-                  ? "Vercel"
-                  : variant === 9
-                    ? "Acme Corp"
-                    : variant === 10
-                      ? "Atlas"
-                      : "Claude"
-              }
+              initial={variant === 9 ? "Acme Corp" : variant === 10 ? "Atlas" : "Claude"}
               subtitle={variant === 9 ? "Acme Corp" : variant === 10 ? "Atlas" : undefined}
               onName={setWorkspace}
             />

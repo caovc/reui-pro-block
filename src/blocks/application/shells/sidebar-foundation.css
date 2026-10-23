@@ -70,9 +70,6 @@
 }
 
 /* Preserve floating shell geometry around the provider's desktop spacer. */
-.reui-shell-layout [data-shell-variant="2"] [data-slot="sidebar-container"] {
-  height: calc(100% - 16px);
-}
 .reui-shell-layout .fleet-photo-rail[data-slot="sidebar-container"] {
   height: calc(100dvh - 24px);
 }
@@ -176,4 +173,82 @@
 /* Leave a separate hit target for the Sheet's close control on phones. */
 .shell-drawer[data-mobile="true"] [data-slot="sidebar-header"] {
   padding-inline-end: 40px;
+}
+
+/* AppShell 2 uses Sidebar's native floating variant, including its 64px compact gap. */
+.shell-floating-sidebar > [data-slot="sidebar-inner"] {
+  border: 1px solid color-mix(in oklab, var(--border) 80%, transparent);
+  border-radius: 12px;
+  background: color-mix(in oklab, var(--muted) 25%, var(--background));
+  box-shadow: 0 1px 2px color-mix(in oklab, var(--foreground) 5%, transparent);
+}
+.shell-floating-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.shell-floating-brand {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  gap: 8px;
+  padding-inline: 2px;
+}
+[data-collapsible="icon"] .shell-floating-header {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+.shell-floating-toggle svg {
+  transition: transform 200ms ease;
+}
+[data-collapsible="icon"] .shell-floating-toggle svg {
+  transform: rotate(180deg);
+}
+.shell-floating-sidebar .shell-scroll {
+  padding-inline: 8px;
+}
+.shell-floating-sidebar [data-slot="sidebar-group-label"] {
+  height: 32px;
+  min-height: 32px;
+  padding: 0 8px;
+  font-size: 12px;
+}
+.shell-floating-sidebar .shell-nav-button {
+  height: 32px;
+  font-size: 14px;
+}
+.shell-floating-sidebar .shell-nav-button:not([data-active="true"]) {
+  color: var(--muted-foreground);
+}
+.shell-floating-sidebar [data-slot="sidebar-menu-sub"] {
+  margin-inline: 24px;
+  padding: 0;
+  border: 0;
+}
+.shell-floating-sidebar [data-slot="sidebar-menu-sub-button"] {
+  height: 28px;
+  font-size: 14px;
+}
+.shell-floating-sidebar .shell-scroll + div {
+  padding-inline: 8px;
+}
+.shell-floating-sidebar .shell-scroll + div .shell-nav-button {
+  font-size: 12px;
+}
+.shell-floating-sidebar [data-slot="sidebar-footer"] {
+  margin-top: 8px;
+}
+.shell-floating-sidebar [data-slot="sidebar-footer"]::before {
+  content: "";
+  margin-inline: 4px;
+  border-top: 1px solid var(--border);
+}
+.shell-reference[data-shell-variant="2"] .shell-header {
+  min-height: 56px;
+  padding-inline: 8px;
+}
+.shell-reference[data-shell-variant="2"] .shell-placeholder-canvas {
+  padding: 0 8px 8px;
 }
