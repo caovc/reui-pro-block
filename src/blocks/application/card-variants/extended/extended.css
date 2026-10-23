@@ -1,0 +1,272 @@
+.extended-card-stage {
+  min-height: 100svh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+  container-type: inline-size;
+}
+.extended-card-content {
+  width: 100%;
+  min-width: 0;
+}
+.extended-frame-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--extended-columns, 3), minmax(0, 1fr));
+}
+.extended-independent-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+.extended-independent-grid > * {
+  min-width: 0;
+}
+.extended-content-link {
+  min-width: 0;
+  height: auto;
+  padding: 0;
+  justify-content: flex-start;
+  white-space: normal;
+  text-align: left;
+  text-decoration: none;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  color: inherit;
+}
+.extended-content-link:hover {
+  text-decoration: underline;
+}
+.extended-dots {
+  isolation: isolate;
+  position: relative;
+}
+.extended-dots > * {
+  position: relative;
+  z-index: 1;
+}
+.extended-dots:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(var(--border) 0.7px, transparent 0.7px);
+  background-size: 4px 4px;
+  mask-image: radial-gradient(ellipse at top right, #000, transparent 80%);
+  opacity: 0.65;
+}
+.extended-mesh {
+  background-image:
+    linear-gradient(
+      color-mix(in oklab, var(--border) 35%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      color-mix(in oklab, var(--border) 35%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 14px 14px;
+}
+.extended-integration-band {
+  height: 138px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  color: white;
+  position: relative;
+  isolation: isolate;
+  background: #09090b;
+}
+.extended-integration-band:after {
+  background-image: radial-gradient(#ffffff33 0.7px, transparent 0.7px);
+}
+.extended-integration-band img {
+  width: 30px;
+  height: 30px;
+}
+.extended-quote-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.extended-summary {
+  display: grid;
+  grid-template-columns: 1.7fr 0.8fr 1.3fr 1fr 1.25fr 2.9fr;
+  padding: 0;
+}
+.extended-summary > div {
+  min-width: 0;
+  padding: 17px 16px;
+  border-right: 1px solid var(--border);
+}
+.extended-summary > div:last-child {
+  border-right: 0;
+}
+.extended-summary h3 {
+  font-size: 12px;
+  color: var(--muted-foreground);
+  font-weight: 400;
+  margin-bottom: 18px;
+}
+.extended-summary p {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+.extended-promo-art {
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+}
+.extended-promo-art > div {
+  width: 80px;
+}
+.extended-promo-art > div:first-child {
+  transform: rotate(-7deg);
+  z-index: 1;
+}
+.extended-promo-art > div:last-child {
+  transform: rotate(6deg);
+  margin-left: -12px;
+}
+.extended-promo-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}
+.extended-monitor-top {
+  height: 228px;
+  overflow: hidden;
+  position: relative;
+}
+.extended-monitor-logo {
+  position: absolute;
+}
+.extended-monitor-logo img {
+  width: 27px;
+  height: 27px;
+}
+.extended-asset-logo {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+.extended-shared-value {
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+.extended-kpi-fraction {
+  color: var(--muted-foreground);
+  opacity: 0.45;
+}
+.extended-area-grid {
+  gap: 0 !important;
+  padding: 3px !important;
+  overflow: hidden;
+}
+.extended-area-cell {
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 340px;
+}
+.extended-area-cell:not(:last-child) {
+  border-right: 1px solid var(--border) !important;
+}
+.extended-area-cell:first-child {
+  border-top-left-radius: var(--frame-panel-radius) !important;
+  border-bottom-left-radius: var(--frame-panel-radius) !important;
+}
+.extended-area-cell:last-child {
+  border-top-right-radius: var(--frame-panel-radius) !important;
+  border-bottom-right-radius: var(--frame-panel-radius) !important;
+}
+.extended-area-art {
+  height: 145px;
+  margin-top: auto;
+  display: block;
+  width: 100%;
+  flex-shrink: 0;
+}
+.extended-area-art polygon {
+  vector-effect: non-scaling-stroke;
+}
+@container (max-width:760px) {
+  .extended-frame-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .extended-independent-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .extended-summary {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .extended-summary > div {
+    border-bottom: 1px solid var(--border);
+  }
+  .extended-summary > div:nth-child(3n) {
+    border-right: 0;
+  }
+  .extended-summary > div:nth-last-child(-n + 3) {
+    border-bottom: 0;
+  }
+  .extended-area-cell:nth-child(2) {
+    border-right: 0 !important;
+  }
+}
+@container (max-width:460px) {
+  .extended-frame-grid,
+  .extended-independent-grid {
+    grid-template-columns: 1fr;
+  }
+  .extended-quote-panel {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .extended-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .extended-summary > div {
+    border-right: 1px solid var(--border) !important;
+    border-bottom: 1px solid var(--border) !important;
+  }
+  .extended-summary > div:nth-child(2n) {
+    border-right: 0 !important;
+  }
+  .extended-summary > div:nth-last-child(-n + 2) {
+    border-bottom: 0 !important;
+  }
+  .extended-area-cell {
+    border-right: 0 !important;
+    border-bottom: 1px solid var(--border) !important;
+    border-radius: var(--frame-panel-radius) !important;
+  }
+  .extended-area-cell:last-child {
+    border-bottom: 0 !important;
+  }
+}
+
+@container (max-width:460px) {
+  .extended-summary p {
+    flex-wrap: wrap;
+    white-space: normal;
+  }
+  .extended-integration-band {
+    padding: 18px;
+  }
+}

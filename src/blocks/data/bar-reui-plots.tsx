@@ -4,7 +4,7 @@
  * rounded bars and ChartTooltipContent. Historical overlay and plan tapes are extensions.
  */
 import { useId } from 'react'
-import { Bar, BarChart, CartesianGrid, Cell, ReferenceDot, Rectangle, XAxis, YAxis, type BarShapeProps } from 'recharts'
+import { Bar, BarChart, CartesianGrid, Cell, ReferenceArea, ReferenceDot, ReferenceLine, Rectangle, XAxis, YAxis, type BarShapeProps } from 'recharts'
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
 import { ReuiStripePattern } from './reui-free-chart-primitives'
 import { barColors, useBarNarrow } from './bar-chart-utils'
@@ -43,6 +43,35 @@ export function InventoryBars({rows,onFocus}:{rows:{name:string;index:number;val
           const row=rows[props.index]
           return <Rectangle x={props.x} y={props.y} width={props.width} height={props.height} fill={row.color} radius={narrow?4:15} role="button" tabIndex={0} aria-label={`${row.name}: ${row.value} units per day, ${row.days} days of supply`} onMouseEnter={()=>onFocus(row.index)} onMouseLeave={()=>onFocus(null)} onClick={()=>onFocus(row.index)} onFocus={()=>onFocus(row.index)} onKeyDown={event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();onFocus(row.index)}}}/>
         }}/>
+      </BarChart>
+    </ChartContainer>
+  </div>
+}
+
+// c-chart-12's actual dual horizontal Bar composition. Signed domains and a
+// target line extend it into diverging transit lanes; labels and row focus are local.
+export function TransitBars({rows,metric,grid,labels,focus,onFocus}:{rows:{name:string;short:string;index:number;road:number;rail:number}[];metric:string;grid:boolean;labels:boolean;focus:number|null;onFocus:(i:number|null)=>void}) {
+  const narrow=useBarNarrow(),gap=(v:number)=>`${v<0?'−':'+'}${Math.abs(v).toFixed(1)} d`
+  const lane=(props:BarShapeProps,color:string,key:'road'|'rail')=>{
+    const row=rows[props.index];if(!row)return <g/>
+    const value=row[key],end=props.width<0?props.x+props.width:value>=0?props.x+props.width:props.x
+    return <g><Rectangle x={props.x} y={props.y} width={props.width} height={props.height} radius={6} fill={color} opacity={.85}/>{labels&&<text x={end+(value>=0?5:-5)} y={props.y+props.height/2+3.5} fill="var(--muted-foreground)" textAnchor={value>=0?'start':'end'} fontSize={11}>{gap(value)}</text>}</g>
+  }
+  return <div className="h-[355px] w-full" role="img" aria-label={`${metric} road and rail gaps against target`} data-reui-chart="c-chart-12">
+    <ChartContainer config={{road:{label:'Road freight',color:barColors.blue},rail:{label:'Rail freight',color:'#efb125'}}} className="size-full aspect-auto">
+      <BarChart accessibilityLayer data={rows} layout="vertical" barGap={4} margin={{left:0,right:35,top:35,bottom:8}}>
+        {grid&&<CartesianGrid horizontal={false} stroke="var(--border)"/>}
+        <YAxis type="category" dataKey="name" tickLine={false} tickMargin={10} axisLine={false} width={narrow?58:136} tickFormatter={name=>narrow?rows.find(row=>row.name===name)?.short??name:name} tick={{fontSize:12}}/>
+        <XAxis type="number" domain={[-4.8,5.1]} ticks={narrow?[-4,0,4]:[-4,-2,0,2,4]} tickLine={false} axisLine={false} tickMargin={10} tickFormatter={value=>value?`${value>0?'+':''}${value} d`:'0'}/>
+        <ReferenceArea x1={0} x2={5.1} fill="var(--destructive)" fillOpacity={.025} stroke="none"/>
+        <ReferenceLine x={0} stroke="var(--muted-foreground)" strokeOpacity={.45} label={{value:'Target',position:'top',fill:'var(--muted-foreground)',fontSize:12}}/>
+        <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dot" className="min-w-40 gap-2.5" formatter={(value,name)=><div className="flex w-full items-center justify-between gap-2"><span className="text-muted-foreground">{name==='road'?'Road freight':'Rail freight'}</span><span className="font-semibold">{gap(Number(value))}</span></div>}/>}/>
+        <Bar dataKey="road" fill={barColors.blue} radius={6} barSize={12} isAnimationActive={false} shape={(props:BarShapeProps)=>{
+          const row=rows[props.index];if(!row)return <g/>
+          const background=props.background
+          return <g role="button" tabIndex={0} aria-label={`${row.name}: road ${gap(row.road)}, rail ${gap(row.rail)}`} onPointerEnter={()=>onFocus(row.index)} onPointerLeave={()=>onFocus(null)} onClick={()=>onFocus(row.index)} onFocus={()=>onFocus(row.index)} onKeyDown={event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();onFocus(row.index)}}}><Rectangle x={background?.x??0} y={props.y-3} width={background?.width??0} height={34} fill={focus===row.index?'var(--muted)':'transparent'}/>{lane(props,barColors.blue,'road')}</g>
+        }}/>
+        <Bar dataKey="rail" fill="#efb125" radius={6} barSize={12} isAnimationActive={false} onMouseEnter={(_,i)=>onFocus(rows[i].index)} onMouseLeave={()=>onFocus(null)} onClick={(_,i)=>onFocus(rows[i].index)} shape={(props:BarShapeProps)=>lane(props,'#efb125','rail')}/>
       </BarChart>
     </ChartContainer>
   </div>

@@ -146,3 +146,35 @@ The two remaining standard-primitive follow-ups recorded above are now migrated:
 Desktop and 390px renders were inspected for both entries. The official `c-chart-22` example was filtered/opened in the public gallery, and its active Starter sector plus `5,400` tooltip were observed before comparing our adapted pie behavior. Independent data, rose gradient orientation, exact row spacing, and the comparison values remain fidelity differences; this is a source reuse migration, not a claim of identical Pro code.
 
 `tests/chart-free-reuse.spec.ts` adds five meaningful adapter checks: clicking the actual Safari pie sector opens versions and back works; clicking the actual AI/ML rose wedge opens GPU services; hovering a real Training column changes week/readout; Inventory horizontal bars support named keyboard selection; both extreme rose utilization labels fit inside the narrow chart. **5/5 pass in 3.6s**, with page errors captured. The five focused existing Inventory/Cloud/CSV/mobile cases also pass (7.4s), and scoped TypeScript/oxlint are clean. The parent owns the combined production run and queued publication.
+
+### Third migration milestone: hourly stacked outcomes
+
+The shared `HourColumns` renderer used by Runner Load, Cron Run Durations, Audit Volume, Sync Activity and Sync Run History now composes the actual free REUI `c-chart-1/2/3/4` chart implementation: `ChartContainer`, accessible `BarChart`, `CartesianGrid`, numeric/category axes, stacked `Bar`, rounded `Rectangle`, official stripe/dot cells and `ChartTooltipContent`. The previous manual stack coordinates and SVG bar rectangles have been removed. Stacking, full-bucket hit targets, colored caps, semantic series labels, range selection and domain annotations extend the free examples; free examples do not provide those combined workflows.
+
+Resize measurements align the application overlays to the responsive plot. Pointer capture preserves Audit drag ranges; Arrow/Enter/Shift+Enter/Escape and per-bucket log actions work on the same underlying data. Cron percentile bands and timeout/deploy labels use chart coordinates so text remains readable on narrow screens. Runner grid controls now directly toggle the actual grid. Filtering from 20 runs to one timeout exposed stale shape indices during Recharts' intermediate update; shape callbacks now guard removed rows, and a persistent filter→log→restore case covers that failure.
+
+All five hourly layouts were rendered and inspected at desktop and 390px. Their existing differences remain as recorded above: independent telemetry, condensed actor review display, simplified teardown texture and non-live connector data. No backend or paid implementation is represented.
+
+Verification: scoped TypeScript and oxlint pass. All three persistent chart suites passed **33/33 in 23.9s** after the underlying chart migration. After refining mobile annotations, all eight affected Runner/Cron/Audit/Sync/mobile cases passed again (**14.6s**). The bar suite now contains 16 tests including status filtering, with the existing Runner case also verifying the visible grid toggle. Parent integration owns production validation and prompt milestone publication.
+
+### Transit completion and 23-entry source reuse matrix
+
+Transit now extends the actual free `c-chart-12` two-series horizontal `BarChart/Bar` implementation. Recharts computes positive/negative lane extents, grouping, numeric ticks and category ordering; the former handwritten divergence coordinates and rectangles are removed. The target line, tinted behind-target region, endpoint labels and combined row focus extend this source. Both desktop and 390px were compared; Median/P90, ordering, layer controls and CSV remain independent local data operations. Negative endpoint placement handles signed Recharts rectangles and narrow region abbreviations retain their full labels.
+
+| Entries | Reused official source beyond the shared Frame/Badge | Remaining custom capability and reason |
+| --- | --- | --- |
+| Fund Inflows 9 | `c-chart-8` four-face isometric geometry; `c-chart-3` estimate texture | Multi-fund stacks, selected-year state and run-rate forecast are not free example features. |
+| Training 10 | `c-chart-2/3` multi-series bars, pattern, axes and tooltip | Plan finish tapes and keyboard week readout are domain extensions. |
+| Inventory 29 | `c-chart-1/12` column/horizontal bars, axes, tooltip; `c-chart-3` tracks | Stock-health semantics, warehouse filtering and orientation switching extend the examples. |
+| Transit 30 | `c-chart-12` dual horizontal bars and tooltip | Diverging target domain, annotations and live lane simulation extend the free source. |
+| Runner 32, Cron Durations 33, Audit 35, Sync Activity 45, Sync History 47 | `c-chart-1/2/3/4` accessible chart scales, stack rectangles, axes, grid, patterns and tooltip | Bucket brush, caps, markers, execution logs and domain filters are not present in the free gallery. |
+| Firewall 40 | Actual REUI Frame/Badge | Free gallery has no quantized request-pill heatmap; discrete pill allocation and incident pinning remain custom. |
+| Budget Burn 42, SLO Burn 43 | Actual REUI Frame/Badge | Free gallery has no signed budget/logarithmic lollipop plot, forecast range brush or alert rule logic. |
+| Capital 13, Browser 27 | `c-chart-20/21/22` Pie/Cell/Sector/Label, corner/padding and tooltip; `c-chart-3` adapted slice textures | Linked rows, Browser versions and prior/support overlays extend the free source. |
+| Cloud Spend 54 | `c-chart-19/21/22` gradient Pie/Cell/Sector/Label and tooltip | Radius encodes spending/budget while angle encodes budget; risk arcs are an additional rose capability. |
+| Error Budgets 7 | `c-chart-25` radial bars, domain axis, tracks, gradients and tooltip | Partial dial sweep and objective table interaction extend the free example. |
+| API Health 8, Cash Inflows 12 | Actual REUI Frame/Badge | Free radial score bars do not implement tick gauges or the 31-day stacked liquidity clock; those exact domain shapes remain custom. |
+| Runway 50, Retention 51 | Actual REUI Frame/Badge | No slope/rank/crossover example exists in the 25 free charts; rank geometry, intersections and playback remain custom. |
+| Revenue 48, Trial 49, Pipeline 53 | Actual REUI Frame/Badge | No free Sankey example exists; financial/journey/pipeline topology, lineage and pulse/drop annotations remain custom. |
+
+The complete next batch (HourColumns plus Transit) was production-built in an isolated chart-only harness, including the current official shared components and theme. **All 33 persistent chart tests pass against production on port 4198 (19.7s)**: 16 Bar, 12 prior refinement and 5 free-source adapter checks. The earlier whole-site snapshot build revealed an unrelated missing collaboration wallpaper import in that old snapshot; the dedicated harness removes unrelated application/template imports and verifies the actual chart bundle. Parent integration independently owns combined-site production checks, commit/push and deployment status. Source reuse never implies identical Pro data or a pixel match.

@@ -22,6 +22,7 @@ import "./auth.css";
 import { OAuthIcon, type Provider } from "./auth-shared";
 import CenteredAuth from "./auth-centered";
 import SplitAuth from "./auth-split";
+import { BlueprintMagicLink, FreeTrialSignup } from "./auth-growth";
 type AuthConfig = {
   providers: Provider[];
   magic?: boolean;
@@ -141,6 +142,8 @@ function TrustLogos() {
   );
 }
 export default function AuthBlock({ block }: BlockProps) {
+  if (block.id === "auth-5") return <FreeTrialSignup />;
+  if (block.id === "auth-7") return <BlueprintMagicLink />;
   if (["auth-1", "auth-2", "auth-3", "auth-4"].includes(block.id))
     return <SplitAuth block={block} />;
   if (

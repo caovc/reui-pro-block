@@ -1,0 +1,148 @@
+{
+  "milestone": "Card16–29 official-free-first dedicated variants",
+  "frozenAt": "2026-10-23 Asia/Shanghai",
+  "gitWrites": "none; root coordinates isolated staging, commit, push and deployment",
+  "scope": [
+    "card-16",
+    "card-17",
+    "card-18",
+    "card-19",
+    "card-20",
+    "card-21",
+    "card-22",
+    "card-23",
+    "card-24",
+    "card-25",
+    "card-26",
+    "card-27",
+    "card-28",
+    "card-29"
+  ],
+  "preserved": [
+    "Card1–15 modules/helpers/CSS",
+    "Card30–43 generic behavior",
+    "EmptyBlock",
+    "all Shell modules",
+    "shared REUI sources"
+  ],
+  "modifiedDispatcherHunk": "Import ./card-variants/extended; route /^card-(1[6-9]|2[0-9])$/ after first15 dispatch and before generic fallback.",
+  "validation": {
+    "scopedTypeScript": "passed",
+    "oxlint": "passed",
+    "playwright": "10 passed, final rerun 11.1s",
+    "renderMatrix": "14 IDs x 1440/390 = 28; no page errors, overlays or document overflow",
+    "screenshots": "/tmp/reui-card-extended-audit/card-N-{1440,390}.png"
+  },
+  "sharedDependencies": [
+    "src/components/reui/frame.tsx",
+    "src/components/reui/icon-tile.tsx",
+    "src/components/reui/badge.tsx",
+    "src/components/reui/number-field.tsx",
+    "src/components/reui/alert.tsx",
+    "src/components/ui/item.tsx (external Schedule/Pricing coordinator supplied; do not overwrite)",
+    "existing official shadcn Button/Dialog/DropdownMenu/AvatarGroup/Field/Input/Textarea/Checkbox/Switch/Separator/ToggleGroup",
+    "existing assets/card-brands/openai.svg and assets/schedule-{sarah-chen,james-park,emma-wilson}.jpg"
+  ],
+  "files": [
+    {
+      "path": "docs/card16-29-implementation.md",
+      "sha256": "78f26827a130ef635222e6c510483e715efc0794e53d5aa4ba14ee629442c1aa",
+      "bytes": 14515
+    },
+    {
+      "path": "src/blocks/application/assets/card-extended/ATTRIBUTION.md",
+      "sha256": "3259583a064a152a6ad4a51f597f645bb36a86069df32a722aa76543cd5de652",
+      "bytes": 1787
+    },
+    {
+      "path": "src/blocks/application/assets/card-extended/binance.svg",
+      "sha256": "dae44f5a86018c7175018d026094c0789bffaa423ea9de5560d70038cd286434",
+      "bytes": 505
+    },
+    {
+      "path": "src/blocks/application/assets/card-extended/coinbase.svg",
+      "sha256": "035f2b88c32c720f5af47d1f0d9bd05cc4653643440b4d8e46aadaf0d466292b",
+      "bytes": 262
+    },
+    {
+      "path": "src/blocks/application/assets/card-extended/cursor.svg",
+      "sha256": "c97df28d60475fdf77ec8389e92522d10de01dba6e47a72546871bb0cde5afb7",
+      "bytes": 469
+    },
+    {
+      "path": "src/blocks/application/assets/card-extended/googlegemini.svg",
+      "sha256": "b6ce68b9deb68f84984aaa8b91b60b422622fffa9627ea9d77607def4a45c9d7",
+      "bytes": 673
+    },
+    {
+      "path": "src/blocks/application/assets/card-extended/gradient-aurora.svg",
+      "sha256": "60bb84109a52122099a6d0f7b68c239faa98c9c1b34ea54e9bdca8fecd65bdfd",
+      "bytes": 500
+    },
+    {
+      "path": "src/blocks/application/assets/card-extended/gradient-prism.svg",
+      "sha256": "3912fbbf70e6bf5735c4a95962b5d909d272701817fbb5b962f772ab8563767a",
+      "bytes": 476
+    },
+    {
+      "path": "src/blocks/application/assets/card-extended/n8n.svg",
+      "sha256": "5d6979b173d558b35024e61a4304d393ef5fb44ac33a989e37e5434241e9875a",
+      "bytes": 1588
+    },
+    {
+      "path": "src/blocks/application/card-variants/extended/common.tsx",
+      "sha256": "2ec4f64682531ede6c01bc03fff21fb993805e239fe33d2dc12090079bcd43b2",
+      "bytes": 4542
+    },
+    {
+      "path": "src/blocks/application/card-variants/extended/extended.css",
+      "sha256": "14ee074c69f1ef1e9d37acb66e250c5dc54dfc2de47529a17b73c08fde2bcf63",
+      "bytes": 5976
+    },
+    {
+      "path": "src/blocks/application/card-variants/extended/index.tsx",
+      "sha256": "2c197352f33896deba74519d5fa502fd2d7a86aeaee74e2a6448c10ddf3e2943",
+      "bytes": 1264
+    },
+    {
+      "path": "src/blocks/application/card-variants/extended/metrics.tsx",
+      "sha256": "0b88828d397f9715f4cfaa331ad5f67cf6ab210ea29b95a542220f242e7947bb",
+      "bytes": 8020
+    },
+    {
+      "path": "src/blocks/application/card-variants/extended/promos.tsx",
+      "sha256": "6269a104eac9e01cd87dd517b28c4400aa75b4e8c09da7b63f23e99e6955f317",
+      "bytes": 8658
+    },
+    {
+      "path": "src/blocks/application/card-variants/extended/records.tsx",
+      "sha256": "ff0dee76c2d73445bc63d0f4e83237edcb5b58dcbfe97bf63523c8872c0780ff",
+      "bytes": 13813
+    },
+    {
+      "path": "src/blocks/application/card-variants/extended/tiles.tsx",
+      "sha256": "e3ac707929f54e65d57f1878a1e4d08c883bc89a959b9e8135de9def5c5a8a87",
+      "bytes": 13752
+    },
+    {
+      "path": "src/blocks/application/card-variants/extended/trade-dialog.tsx",
+      "sha256": "b7a558a831669f2b31ff4f36b764678f001eada5f3703bb4f1a15932ad3556db",
+      "bytes": 3522
+    },
+    {
+      "path": "src/blocks/application/cards.tsx",
+      "sha256": "2ca7e7f8c20a31d0b9693fa0bcaba834bba0d31b830467452371a9b1cc6b5977",
+      "bytes": 22641
+    },
+    {
+      "path": "src/components/ui/aspect-ratio.tsx",
+      "sha256": "3ce0684d13f8572abbd3c46fc0beb613ad2d0821ab978480f8576c9a394f03d5",
+      "bytes": 260
+    },
+    {
+      "path": "tests/card-extended.spec.ts",
+      "sha256": "afb0e8fe8bae031aa653528250942ba9e58dcabe3e96ad393fa9800031519c32",
+      "bytes": 7871
+    }
+  ]
+}

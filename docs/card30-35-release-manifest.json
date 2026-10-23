@@ -1,0 +1,69 @@
+{
+  "milestone": "Card30–35 actual-free-first dedicated KPI variants",
+  "frozenAt": "2026-10-23 Asia/Shanghai",
+  "gitWrites": "none; root coordinates staging/commit/push/deploy",
+  "scope": [
+    "card-30",
+    "card-31",
+    "card-32",
+    "card-33",
+    "card-34",
+    "card-35"
+  ],
+  "dispatcher": "Adds ./card-variants/final-kpis import and exact /^card-3[0-5]$/ branch after existing first29 dispatch; remaining behavior preserved.",
+  "validation": {
+    "scopedTypeScript": "passed",
+    "oxlint": "passed",
+    "playwright": "6 passed (22.9s), separate localhost5199",
+    "renderMatrix": "6 variants x 1440/390 =12, no page errors/overlays/document overflow",
+    "screenshots": "/tmp/reui-card-final-kpis-audit/card-N-{1440,390}.png"
+  },
+  "dependencies": [
+    "frozen card-variants/extended/common.tsx and extended.css",
+    "existing actual REUI Frame/IconTile/Badge/Alert",
+    "official shadcn Item/Button/Dialog/DropdownMenu/Field/Input/AvatarGroup",
+    "existing attributed schedule portraits via extended People helper"
+  ],
+  "files": [
+    {
+      "path": "docs/card30-35-implementation.md",
+      "sha256": "7586c3fc3aff014fa4ed7f59b8b9ab7c978927ddf3a9574f58f318c4d95c0bb0",
+      "bytes": 4765
+    },
+    {
+      "path": "docs/card30-43-reference-audit.md",
+      "sha256": "d7d9aa1ccdbbe53f5c0ea3a981a96c16af92a60c146f6da07f5f967782083a53",
+      "bytes": 6385
+    },
+    {
+      "path": "src/blocks/application/card-variants/final-kpis/final-kpis.css",
+      "sha256": "87ed0a2f39e07bb32dc48e456fbae732f057d2ae81e91c96b90c69e8d5756b09",
+      "bytes": 2780
+    },
+    {
+      "path": "src/blocks/application/card-variants/final-kpis/index.tsx",
+      "sha256": "575b32ed4185b2a599f63b9979c4fd25e200a1bbbb5829416fdf8c625e74c96b",
+      "bytes": 638
+    },
+    {
+      "path": "src/blocks/application/card-variants/final-kpis/static.tsx",
+      "sha256": "ce0fe81666bb1ba1bfc22b450d1e5a00d93d074f6b3cf30340b412ee6aa1ca44",
+      "bytes": 4456
+    },
+    {
+      "path": "src/blocks/application/card-variants/final-kpis/tiles.tsx",
+      "sha256": "26a36e2e8133612657149cd5e9d4e50e3f392a7cf00e89a47161a664dedcc615",
+      "bytes": 13278
+    },
+    {
+      "path": "src/blocks/application/cards.tsx",
+      "sha256": "53b3f8c27e89c3c8ecb980226b896ce0d5a901106497f131e0b5f2971c7e963c",
+      "bytes": 22766
+    },
+    {
+      "path": "tests/card-final-kpis.spec.ts",
+      "sha256": "4bff24e7cfb41abc6cc5411d5ae05ad23e8c71998649e8afeb2cf527b5a4b2b8",
+      "bytes": 4877
+    }
+  ]
+}
