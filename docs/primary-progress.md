@@ -35,7 +35,7 @@ Preview: https://caovc.github.io/reui-pro-block/
 | Owner                     | Scope                                                                                          |
 | ------------------------- | ---------------------------------------------------------------------------------------------- |
 | Primary                   | Release integration, real starter verification, CI/Pages; AppShell M5 and Category integration |
-| Application agent         | Navbar12–13;1–11 integrated with whole free examples                                           |
+| Application agent         | All13 Navbars integrated; Dashboard1–3 audit started                                           |
 | Data agent                | AI Chat1–6 integrated; Activity1 compact layout follow-up in progress                          |
 | Commerce agent            | All8 Shop Heroes and Category1–3 functional; Category4–6 in independent modules                |
 | Source/export coordinator | Diagnose source/ZIP/site CI failures within original source scope                              |
@@ -126,3 +126,9 @@ Chat4–6 now have independent quote sidebar, connected-app and agentic task lea
 ## Template workflow health and secondary-content milestone
 
 Flowly now has12 health records, native fixed DataGrid columns,32px header and retained third-page edits. Flux Evals has10 cases with actual free expansion, independent editing and the existing ReuiTrend; Memory has18 entries,4scopes and retained pin/trust state. Pulse Knowledge Base has6 categories/18 original runbooks with outline/hash links/text/CSV; Reports has3 MiniTrend KPIs and10 agent records with native grid filtering/expansion/pagination and exports. Actual free DataGrid and previously implemented blocks supply their existing capabilities. Template source targets keep each main entry first and actual secondary implementations next; view/copy/ZIP bytes remain equal. Root strict builds plus76/76 baseline,81/81 M5 and33/33 Category production checks passed; latest Chat-base results are in the release manifest. Pulse142/Flux136 actual starters independently strict-built/rendered at1440/390. Remaining recorded pages and visual/detail differences continue in later batches; this milestone does not establish complete template fidelity.
+
+## Navbar marketing and editor milestone
+
+Navbar12–13 complete13 independent functional entries. Actual whole free NavigationMenu4/slide-arrowButton53 supply product/company panels and CTA; Button24/Toggle1/AsyncButton44/Card1 supply preview/review/editor actions. The missing upstream NavigationMenu primitive is installed as one official MIT source with mechanical cn alias substitution; existing UI/dependencies are unchanged. Root passed87/87 wholeNavbar/global/site/source regressions,34/34 Category cumulative and28/28 Chat cumulative checks with strict builds. Both actual362-file starters independently strict-built/rendered1440/390, including native menu keyboard,16px glyph bounds andlocal editor pending/close/reopen/copy. Public visual matching remains pending for all13. The invoice preview is an explicit original functional extension beyond the public13 brief; no remote publication is implied.
+
+GitHub run40255980466 onAppShellM5 56229f5 passed996/996 browser cases and both build/Pages deployment. Newer Category/Chat/Templates remain pending their own cumulative release. Root’s first80-case realPages probe was stopped after retained proxy/dynamic-module loading failures (5passed,6failed,1interrupted,68notrun); it is not a live pass. A separate fresh-browser diagnostic rendered Chat1 after10.1s with77 completed requests and no request failures. This narrows the loading evidence but does not erase the original failures.

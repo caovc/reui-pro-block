@@ -1,3 +1,4 @@
+import FinalNavbarBlock from "./navbar-variants/final-bars";
 import DeveloperNavbarBlock from "./navbar-variants/developer";
 import PublishingNavbarBlock from "./navbar-variants/publishing";
 import ToolbarNavbarBlock from "./navbar-variants/toolbars";
@@ -31,6 +32,9 @@ export default function ApplicationBlock({ block }: BlockProps) {
     case "stats":
       return <StatsBlock block={block} />;
     case "navbar":
+      if (block.index >= 11 && block.index < 13) {
+        return <FinalNavbarBlock block={block} />;
+      }
       if (block.index >= 9 && block.index < 11) {
         return <DeveloperNavbarBlock block={block} />;
       }

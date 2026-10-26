@@ -1,0 +1,102 @@
+.final-marketing-header {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 24px;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--background);
+}
+.final-marketing-brand {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+  font-weight: 600;
+}
+.final-marketing-action {
+  justify-self: end;
+}
+.final-mega-panel {
+  width: min(500px, calc(100vw - 64px));
+}
+.final-editor-card {
+  gap: 0;
+  padding-block: 0;
+}
+.final-editor-heading {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 16px;
+}
+.final-editor-title {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 12px;
+}
+.final-editor-title h1 {
+  font-size: 14px;
+  font-weight: 500;
+}
+.final-editor-actions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 8px;
+}
+.final-invoice-preview {
+  margin-top: 24px;
+}
+.final-invoice-fields {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+.final-invoice-fields dt {
+  margin-bottom: 4px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.final-invoice-fields dd {
+  font-size: 14px;
+}
+@media (max-width: 767px) {
+  .final-marketing-header {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 16px 12px;
+    padding: 12px;
+  }
+  .final-marketing-menu {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    width: 100%;
+    max-width: none;
+    justify-content: flex-start;
+  }
+  .final-marketing-action {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .final-marketing-brand {
+    font-size: 16px;
+  }
+  .final-editor-heading {
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 12px;
+  }
+  .final-editor-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+  .final-invoice-fields {
+    grid-template-columns: 1fr;
+  }
+}

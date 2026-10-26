@@ -1,0 +1,134 @@
+{
+  "ownerManifest": {
+    "milestone": "Navbar 12\u201313 actual-free marketing mega menu and editor action bar",
+    "status": "READY for root integration; original rendered visual audit PENDING",
+    "integrationBase": "868696ec1fd2f7109edb560c46f47f6d947aee39",
+    "ownedFiles": [
+      {
+        "path": "src/blocks/application/navbar-variants/final-bars/data.ts",
+        "sha256": "82c96cb787b2b303a9dfb86aa1723aa1a1f14f27d6a91fb3e03face0b309b873"
+      },
+      {
+        "path": "src/blocks/application/navbar-variants/final-bars/editor.tsx",
+        "sha256": "34cd2896e450e2744b268cd55414a66b077a08ba2ac1e8a421aa65746c3fe000"
+      },
+      {
+        "path": "src/blocks/application/navbar-variants/final-bars/final-bars.css",
+        "sha256": "a8ddd49266de8474146d442e761169c10a3da03a2bf6fb0253f96fd284c61fc2"
+      },
+      {
+        "path": "src/blocks/application/navbar-variants/final-bars/free/content-card.tsx",
+        "sha256": "4df7615fc1584cd41f7eabddbcd3f341bf4b9bf43af4ba43a05e9c99349de579"
+      },
+      {
+        "path": "src/blocks/application/navbar-variants/final-bars/free/editor-actions.tsx",
+        "sha256": "e8b61c6cbb442cef9ab25a5ca01e85827a24d73f2d8fdf9b10be7c7c1fa9e626"
+      },
+      {
+        "path": "src/blocks/application/navbar-variants/final-bars/free/mega-menu.tsx",
+        "sha256": "ec91870fd4e252b7c2a1b5209a2197a8af4d3408139769dfee2b1ec491636932"
+      },
+      {
+        "path": "src/blocks/application/navbar-variants/final-bars/free/sliding-cta.tsx",
+        "sha256": "761b345f64da6df168632201e4f64c7cbbb1b393dea3bd802ae69eebbc3a04fe"
+      },
+      {
+        "path": "src/blocks/application/navbar-variants/final-bars/index.tsx",
+        "sha256": "6f508673f35134cf09da51c65ec32d20c5bd1bd470a89cc9efd92e27bd6c9426"
+      },
+      {
+        "path": "src/blocks/application/navbar-variants/final-bars/marketing.tsx",
+        "sha256": "b96834eec2532454454ab2920f96a58f7b86d9da4910dc548d15e6f6eb16474d"
+      },
+      {
+        "path": "src/components/ui/navigation-menu.tsx",
+        "sha256": "93bc5abaf670c9e8b45c7b18283c9108b197f4fda989fa2d4a8ae582ce4066aa"
+      },
+      {
+        "path": "tests/navbar-final-bars.spec.ts",
+        "sha256": "fc70b72493d328d54e9215ddb5078f7fb5c55af466c6465a4d4803fd6e34755b"
+      },
+      {
+        "path": "docs/navbar12-13-implementation.md",
+        "sha256": "d8a3b35fb5865832de62e1e292e0863863fb900095f47403d80ab9c41a92c109"
+      }
+    ],
+    "manifestPath": "docs/navbar12-13-release-manifest.json",
+    "counts": {
+      "newScopedSources": 9,
+      "authorizedNewSharedUI": 1,
+      "test": 1,
+      "ledger": 1,
+      "manifest": 1,
+      "total": 13
+    },
+    "integration": {
+      "dispatcherImport": "FinalNavbarBlock from ./navbar-variants/final-bars",
+      "zeroBasedGuard": "11 <= block.index && block.index < 13",
+      "sourceTargets": {
+        "12": "navbar-variants/final-bars/marketing",
+        "13": "navbar-variants/final-bars/editor"
+      },
+      "sharedDispatcherSourcePackageLockModified": false
+    },
+    "verification": {
+      "strictProductionBuild": "PASS /tmp/reui-navbar-final-bars-build.log",
+      "tests": "12/12 PASS 17.6s; 1 worker; standard 30s; /tmp/reui-navbar-final-bars-final-tests.log",
+      "sourceParity": "12/13 exact leaf defaults/clipboard/single-file; actual ZIP adapters/upstream UI byte equality",
+      "actualZIPs": [
+        {
+          "id": 12,
+          "path": "/tmp/reui-navbar-final-bars-audit/navbar-12-source.zip",
+          "files": 362,
+          "bytes": 3612187,
+          "sha256": "166ea9c4598742877a170ecee2b124e355cb9d26fb719833cbab52ec28d10053",
+          "strictBuildLog": "/tmp/reui-navbar12-final-zip-build.log"
+        },
+        {
+          "id": 13,
+          "path": "/tmp/reui-navbar-final-bars-audit/navbar-13-source.zip",
+          "files": 362,
+          "bytes": 3612183,
+          "sha256": "e020f6174e5ee611fbf129001c5d8511227d01ffdbf81d380707a331fc962e9a",
+          "strictBuildLog": "/tmp/reui-navbar13-final-zip-build.log"
+        }
+      ],
+      "standaloneRendering": "Both actual starters at 1440/390; native menu keyboard and bounded 16px icons/local routes; editor preview/review/copy/close-reopen; zero page errors/broken images/overflow; computed header geometry/styles/font equal to production preview; /tmp/reui-navbar-final-bars-zip-render.log",
+      "scopedFormat": "PASS 12 non-manifest owned files; manifest formatted separately",
+      "scopedOxlint": "0 errors; 1 unchanged upstream Fast Refresh style-export warning",
+      "originalVisual": "PENDING; no foreground user browser interference, only public metadata and free actual source audited"
+    },
+    "actualFreeSources": [
+      "c-navigation-menu-4",
+      "c-button-53",
+      "c-button-24",
+      "c-toggle-1",
+      "c-button-44",
+      "c-card-1",
+      "existing ReUI Badge/Alert"
+    ],
+    "newUpstreamUI": {
+      "path": "src/components/ui/navigation-menu.tsx",
+      "officialCLI": "npx shadcn@latest add navigation-menu --dry-run and --view",
+      "rawSourceSHA256": "8fd557c15579a89ebe72bd8fbf71741c86aa5071b78b685d157f9e69b828ef24",
+      "adaptation": "Only cn import mapped to existing project utility plus provenance/oxfmt; no package/dependency write"
+    },
+    "provenanceAndRemainingGaps": "docs/navbar12-13-implementation.md",
+    "gitWrites": "none; root coordinates commit/push/CI/Pages"
+  },
+  "root": {
+    "base": "bd94ff540740ab7335b528eca39aa0dede7280ef",
+    "strictBuild": "PASS allrebases, isolated candidate TypeScript cache",
+    "production": "87/87 wholeNavbar/global/site/source2.5m;Category34/34 54.8s;Chat28/28 44.5s;latestTemplate-source19/19 30.3s;all1worker",
+    "logs": [
+      "/tmp/bricklane-navbar1213-m5-root-production.log",
+      "/tmp/bricklane-navbar1213-category-root-production.log",
+      "/tmp/bricklane-navbar1213-chat-root-production.log",
+      "/tmp/bricklane-navbar1213-template-root-production.log"
+    ],
+    "source": "FinalNavbarBlock default import zero-based11/12; exact12marketing/13editor leaf",
+    "limits": "All13 public rendered comparison pending; originallocalinvoice preview extension, provider marks/fixtures/pendingstate andphone panel geometry unverified",
+    "deployment": "Own CI/Pages pending; latest successfuldeployment56229f5 run40255980466,996browser PASS",
+    "visual": "Root inspected actual Navbar12 phone ZIP menu capture; public originals remain unverified"
+  }
+}

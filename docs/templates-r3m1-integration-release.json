@@ -46,13 +46,14 @@
       "/tmp/bricklane-templates-r3m1-category-root-production.log",
       "/tmp/bricklane-templates-r3m1-chat-root-production.log",
       "/tmp/bricklane-templates-r3m1-chat-root-build.log",
-      "/tmp/bricklane-pulse-sheet-stability.log"
+      "/tmp/bricklane-pulse-sheet-stability.log",
+      "/tmp/bricklane-pulse-open-stability.log"
     ],
     "source": "Only templateImplementationTargets function expands secondary targets; implementationFirst and block maps preserved",
     "retainedIntegrationFailure": "First Root snippet replacement removed adjacent implementationFirst; strict TS caught it before publication. Original /tmp/bricklane-templates-r3m1-root-build.log retained; restored unchanged function and corrected strict build passed.",
     "actualStarters": "Pulse142 and Flux136 actualUI ZIPs independent strictbuild +1440/390 target interactions PASS; owner evidence reviewed",
     "limitations": "Remaining infrastructure/providers/costs/Roster/Cohort/editor details not included; fixtures/originalmedia/localservices; no complete pixel parity",
     "deployment": "Own CI/Pages pending; latest successfuldeploymentc28b627987browser PASS; Root live recheck retained network/dynamic-import failures and is not counted as passed",
-    "visual": "Root observed ghosted article text in earlier phone capture; fresh390 Escape followed by real Sheet content/overlay unmount assertions passed, and settled fullpage capture inspected. No app/source change needed."
+    "visual": "Root observed faint article content in earlier fullpage entering-animation screenshot. Fresh390 open waits for nativeSheet opacity1 and terminal animations, then viewport capture inspected; fresh Escape waits for actual Sheet content/overlay unmount, then fullpage capture inspected. Both stable states are correct; no application/source change."
   }
 }
