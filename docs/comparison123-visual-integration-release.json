@@ -1,0 +1,40 @@
+{
+  "scope": "Comparison1\u20133 public layout correction and separate4\u20136 public audit",
+  "base": "9debafec4ebd014f01a7ae81c00277762459f619",
+  "frozenFiles": {
+    "src/blocks/commerce/comparison-variants/shared.tsx": "99b5acb473d2696637dc7466e8b3a3cff23822a7d91d8c56fe726cf966e9efb7",
+    "src/blocks/commerce/comparison-variants/spec-table.tsx": "8913d3448cc26018b0de694822eacdbb3fd94de90039eac81416546c788aa632",
+    "src/blocks/commerce/comparison-variants/two-product.tsx": "00b28187d5e6c37f3934af22aa95af7d320bff2df1217e6a6bd67336820c6872",
+    "src/blocks/commerce/comparison-variants/buying-guide.tsx": "eb80d47a327f7b0d1c22e932d12cfda60e03ec4c6e1b6a4f4d172f2dbaf989aa",
+    "tests/comparison-decisions.spec.ts": "96a0a0d1e659b3fd10e8a5351be310bac1bc2217382b3e4b02971bb1903d93ec",
+    "docs/comparison123-visual-followup-2026-10-26.md": "0c86b30dfc41851d7f2337e4b534a969137631a213bdc5925381419c9da85208",
+    "docs/comparison123-visual-followup-release-manifest.json": "874f0395131f6177a943c8cb602030c2648e6b56ab0b2ed923ece0ed7261eeb3",
+    "docs/audits/comparison4-6-native-2026-10-26.md": "7c9d49214a3df06e20c0d4ce31c84435fa0c961158c67fc9378e05ae5cd2971f"
+  },
+  "actualFreeReuse": [
+    "DataGrid16/20 native pinning and visibility",
+    "Frame3 and Item2 actual layouts",
+    "Select1/Table16/Rating2/Tooltip1 plus existing NumberField/DialogSurface"
+  ],
+  "sharedAPI": "Optional headerActions and eyebrow; current defaults retained. Pair Swap now actual page-header content.",
+  "independentAcceptance": {
+    "production": "49/49 standard one-worker cases, all Comparison1\u20136",
+    "actualZIP": "Three205-file UI downloads independently strict-built;6 desktop/phone flows and exact computed site/ZIP parity",
+    "evidence": "/tmp/bricklane-comparison123-swap-audit",
+    "rootScreenshot": "Root inspected final actual Comparison2 phone: normal natural header, Swap above paired cards"
+  },
+  "rootVerification": {
+    "build": "/tmp/bricklane-comparison123-visual-root-build.log",
+    "production": "/tmp/bricklane-comparison123-visual-root-tests.log",
+    "formatToolingLint": "/tmp/bricklane-comparison123-visual-root-static.log"
+  },
+  "public4to6": "Audit records actual carousel pages, stable switch order, four-slot empty state and real static phone grid. Audit-only document does not itself change4\u20136 runtime.",
+  "remaining": [
+    "Independent original brand/data/media retained",
+    "Comparison3 Browse header action remains missing",
+    "Six guide features versus original five add height",
+    "Cart/Reset local functional extensions",
+    "No all-browser/full-pixel parity claim"
+  ],
+  "publication": "Root serial commit/push; own CI and Pages deployment pending"
+}

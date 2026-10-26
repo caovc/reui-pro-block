@@ -1,0 +1,102 @@
+{
+  "milestone": "Comparison 1\u20133 rendered layout correction with observed header Swap",
+  "status": "READY; root serial commit/push/CI/Pages pending",
+  "integrationBase": "368dd9f6c1189e1a8eadfbfc4bfd8f390eebc573",
+  "ownedFiles": [
+    {
+      "path": "src/blocks/commerce/comparison-variants/shared.tsx",
+      "sha256": "99b5acb473d2696637dc7466e8b3a3cff23822a7d91d8c56fe726cf966e9efb7"
+    },
+    {
+      "path": "src/blocks/commerce/comparison-variants/spec-table.tsx",
+      "sha256": "8913d3448cc26018b0de694822eacdbb3fd94de90039eac81416546c788aa632"
+    },
+    {
+      "path": "src/blocks/commerce/comparison-variants/two-product.tsx",
+      "sha256": "00b28187d5e6c37f3934af22aa95af7d320bff2df1217e6a6bd67336820c6872"
+    },
+    {
+      "path": "src/blocks/commerce/comparison-variants/buying-guide.tsx",
+      "sha256": "eb80d47a327f7b0d1c22e932d12cfda60e03ec4c6e1b6a4f4d172f2dbaf989aa"
+    },
+    {
+      "path": "tests/comparison-decisions.spec.ts",
+      "sha256": "96a0a0d1e659b3fd10e8a5351be310bac1bc2217382b3e4b02971bb1903d93ec"
+    },
+    {
+      "path": "docs/comparison123-visual-followup-2026-10-26.md",
+      "sha256": "0c86b30dfc41851d7f2337e4b534a969137631a213bdc5925381419c9da85208"
+    }
+  ],
+  "manifestPath": "docs/comparison123-visual-followup-release-manifest.json",
+  "totalGitPayloadFiles": 7,
+  "candidate": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-comparison123-swap-production-t7vz3392",
+  "sourceRouting": "Existing exact leaf targets remain unchanged; no dispatcher/source-target changes",
+  "actualFreeReuse": [
+    "DataGrid16 native pinning",
+    "DataGrid20 controlled visibility",
+    "Frame3 dense fit panels",
+    "Item2 horizontal media/content and feature items",
+    "Select1 native model selectors",
+    "Table16 vertical specs",
+    "Rating2 decimal partial fill",
+    "Tooltip1 native hints",
+    "existing NumberField1 and DialogSurface cart unchanged"
+  ],
+  "sharedAPI": "Optional headerActions?: ReactNode and eyebrow?: string; defaults unchanged, empty eyebrow hides. Variant2 Swap uses actual header content, no minimum text height. Existing title/description/actions remain compatible.",
+  "verification": {
+    "strictBuild": "PASS /tmp/bricklane-comparison123-swap-build.log",
+    "production": "49/49 PASS 52.3s, 1 worker, standard unchanged30s; /tmp/bricklane-comparison123-swap-final-tests.log",
+    "suiteCounts": {
+      "comparison1to3": 27,
+      "comparison4to6": 22
+    },
+    "newGeometryCases": 6,
+    "zipFilesEach": 205,
+    "actualZIPBuilds": [
+      {
+        "n": 1,
+        "path": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-comparison1-swap-final-export-45dpe_f7",
+        "exitCode": 0,
+        "buildLog": "/tmp/bricklane-comparison123-swap-audit/export-1-build.log",
+        "seconds": 11.05
+      },
+      {
+        "n": 2,
+        "path": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-comparison2-swap-final-export-886vqfj9",
+        "exitCode": 0,
+        "buildLog": "/tmp/bricklane-comparison123-swap-audit/export-2-build.log",
+        "seconds": 16.41
+      },
+      {
+        "n": 3,
+        "path": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-comparison3-swap-final-export-k0wpj1g9",
+        "exitCode": 0,
+        "buildLog": "/tmp/bricklane-comparison123-swap-audit/export-3-build.log",
+        "seconds": 11.46
+      }
+    ],
+    "standaloneFlows": "6/6 PASS1440x1000 and390x844, headerSwap plus original interactions; zero errors/broken media/document overflow",
+    "siteStarterComputedParity": "6/6 exact geometry/font/line/padding including description/headerSwap; site-export-parity.json",
+    "formatAndLint": "Scoped oxfmt/oxlint PASS; full hook/format gate Root-owned",
+    "timeoutRetryForceChanged": false,
+    "readOnlyDataCartContextIndex": "Byte identical to368dd9f",
+    "headerGeometry": "phone text96/desc40/Swap y140h28/card y192; desktop text80/desc20/Swap y92h28/card y144; min-height auto"
+  },
+  "remainingDifferences": [
+    "Original fictional headphones/data retained; no original media copied",
+    "Six editor features versus original five; card heights763.875/770.797 versus original~753/760",
+    "Comparison3 original Browse header action not reproduced; minheaderheight remains, full header pixel matching not claimed",
+    "Cart is a real local functional extension reachable in footer; variant2 Reset also footer",
+    "Root audited public originals with CUA; Root must accept final screenshot and serially publish"
+  ],
+  "evidenceDirectory": "/tmp/bricklane-comparison123-swap-audit",
+  "preservedInitialRun": {
+    "beforeSwap": "46 PASS /3 FAIL original border selector/boolean overflow corrected; old freeze untouched",
+    "headerSwap": "47 PASS /2 FAIL solely expected min-height0px versus natural flexitemauto, corrected with additional96/80 height checks; /tmp/bricklane-comparison123-swap-tests.log + /tmp/bricklane-comparison123-swap-playwright"
+  },
+  "baseline": "Six older screenshots preserved under evidence baseline/; old0b candidate retained",
+  "publication": "No child Git writes; Root integrates exact frozen payload and checks CI/Pages separately",
+  "previousFreezeReadOnly": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-comparison123-visual-freeze-w3ula1o8",
+  "previousManifestSHA256": "5fe543b9d7b15eeb757af5cf8d3354a54d4c22f5ffafb231158b74a45ffd996f"
+}

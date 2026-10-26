@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { X } from "lucide-react";
 import { useTable, type ColumnDef, type ColumnVisibilityState } from "@tanstack/react-table";
 import {
@@ -9,7 +9,6 @@ import {
 } from "@/components/reui/data-grid/data-grid";
 import { DataGridScrollArea } from "@/components/reui/data-grid/data-grid-scroll-area";
 import { DataGridTable } from "@/components/reui/data-grid/data-grid-table";
-import { Badge } from "@/components/reui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Empty,
@@ -25,41 +24,38 @@ import { ComparisonLayout, ComparisonRating, ComparisonValue, SpecLabel } from "
 /** Actual official c-data-grid-16 pinning and c-data-grid-20 visibility APIs; no manual sticky table. */
 export function SpecComparisonTable() {
   const [visibility, setVisibility] = useState<ColumnVisibilityState>({});
+  const [narrow, setNarrow] = useState(() => window.matchMedia("(max-width: 639px)").matches);
+  useEffect(() => {
+    const query = window.matchMedia("(max-width: 639px)");
+    const update = () => setNarrow(query.matches);
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
   const count = comparisonProducts.filter((product) => visibility[product.id] !== false).length;
   const columns = useMemo<ColumnDef<DataGridFeatures, ComparisonRow>[]>(
     () => [
       {
         id: "spec",
         accessorKey: "id",
-        size: 156,
-        minSize: 156,
+        size: narrow ? 192 : 224,
+        minSize: narrow ? 192 : 224,
         enableHiding: false,
         enableResizing: false,
-        header: () => (
-          <div className="space-y-3 py-2">
-            <p className="font-medium">The details</p>
-            <p className="text-xs font-normal leading-5 text-muted-foreground">
-              Line up the essentials. Scroll to see every model.
-            </p>
-          </div>
-        ),
+        header: () => <span className="sr-only">Product</span>,
         cell: ({ row }) =>
           row.original.spec ? (
             <div data-spec-label={row.original.spec.id}>
               <SpecLabel spec={row.original.spec} />
             </div>
           ) : (
-            <p
-              className="py-1 text-[10px] font-semibold uppercase tracking-widest"
-              data-spec-group={row.original.group}
-            >
+            <p className="text-xs font-medium leading-4" data-spec-group={row.original.group}>
               {row.original.group}
             </p>
           ),
         meta: {
           headerClassName:
-            "h-auto! align-top! whitespace-normal! p-4! bg-background! [&>div]:w-full",
-          cellClassName: "whitespace-normal! p-4! bg-background!",
+            "h-[390.5px]! align-top! whitespace-normal! p-4! bg-background! [&>div]:w-full",
+          cellClassName: "whitespace-normal! px-4! py-2! bg-background! text-sm! leading-5!",
         },
       },
       ...comparisonProducts.map(
@@ -67,33 +63,32 @@ export function SpecComparisonTable() {
           ({
             id: product.id,
             accessorFn: () => product.id,
-            size: 208,
-            minSize: 208,
+            size: 256,
+            minSize: 256,
             enableHiding: true,
             enableResizing: false,
             header: ({ column }) => (
-              <div className="flex w-full flex-col gap-3" data-compared-product={product.id}>
-                <div className="flex items-center justify-between gap-2">
-                  <Badge variant="outline" size="sm">
-                    Bricklane Audio
-                  </Badge>
-                  <Button
-                    variant="ghost"
-                    size="icon-xs"
-                    aria-label={`Remove ${product.name} from comparison`}
-                    onClick={() => column.toggleVisibility(false)}
-                  >
-                    <X className="size-3.5" />
-                  </Button>
-                </div>
+              <div
+                className="relative flex h-[357.5px] w-full flex-col justify-between gap-3"
+                data-compared-product={product.id}
+              >
+                <Button
+                  variant="ghost"
+                  size="icon-xs"
+                  className="absolute right-0 top-0"
+                  aria-label={`Remove ${product.name} from comparison`}
+                  onClick={() => column.toggleVisibility(false)}
+                >
+                  <X className="size-3.5" />
+                </Button>
                 <img
                   src={product.image}
                   alt={`${product.name} original headphone illustration`}
-                  className="aspect-square w-full rounded-lg object-cover"
+                  className="size-40 shrink-0 self-center object-contain"
                 />
                 <div>
                   <h3 className="text-sm font-semibold">{product.name}</h3>
-                  <p className="mt-1 text-[10px] font-normal leading-4 text-muted-foreground">
+                  <p className="mt-1 text-xs font-normal leading-4 text-muted-foreground">
                     {product.tagline}
                   </p>
                 </div>
@@ -109,13 +104,13 @@ export function SpecComparisonTable() {
                 <span aria-hidden="true">&nbsp;</span>
               ),
             meta: {
-              headerClassName: "h-auto! align-top! whitespace-normal! p-4! [&>div]:w-full",
-              cellClassName: "whitespace-normal! p-4!",
+              headerClassName: "h-[390.5px]! align-top! whitespace-normal! p-4! [&>div]:w-full",
+              cellClassName: "whitespace-normal! px-4! py-2!",
             },
           }) satisfies ColumnDef<DataGridFeatures, ComparisonRow>,
       ),
     ],
-    [],
+    [narrow],
   );
   const table = useTable({
     features: dataGridFeatures,
@@ -133,20 +128,28 @@ export function SpecComparisonTable() {
     <ComparisonLayout
       variant={1}
       title="Compare the details"
-      description="Six sample models, side by side. Keep the ones that interest you and look a little closer."
+      description="Find your next pair, side by side."
       actions={
-        <Button variant="outline" onClick={() => setVisibility({})}>
-          Reset comparison
-        </Button>
+        <>
+          <p
+            className={
+              count === comparisonProducts.length
+                ? "text-xs leading-4 text-muted-foreground"
+                : "sr-only"
+            }
+            aria-live="polite"
+            data-comparison-active-count
+          >
+            {count} of {comparisonProducts.length} models in this comparison
+          </p>
+          {count < comparisonProducts.length && (
+            <Button variant="outline" onClick={() => setVisibility({})}>
+              Reset comparison
+            </Button>
+          )}
+        </>
       }
     >
-      <p
-        className="mb-3 text-xs text-muted-foreground"
-        aria-live="polite"
-        data-comparison-active-count
-      >
-        {count} of {comparisonProducts.length} models in this comparison
-      </p>
       {count ? (
         <DataGrid
           table={table}
@@ -159,7 +162,10 @@ export function SpecComparisonTable() {
             width: "fixed",
             headerBackground: false,
           }}
-          tableClassNames={{ bodyRow: "has-[[data-spec-group]]:bg-muted/50" }}
+          tableClassNames={{
+            bodyRow:
+              "has-[[data-spec-group]]:bg-muted/50 [&:has([data-spec-group])>td]:bg-muted/50! [&:has([data-spec-group])>td]:text-xs! [&:has([data-spec-group])>td]:leading-4!",
+          }}
         >
           <DataGridContainer className="rounded-xl border">
             <DataGridScrollArea orientation="horizontal">

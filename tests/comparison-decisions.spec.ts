@@ -30,6 +30,135 @@ async function expectKeySpecsContained(page: Page) {
   ).toBe(true);
 }
 
+for (const width of [1440, 390]) {
+  test(`spec comparison follows the observed title/table and native column dimensions at ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: width === 390 ? 844 : 1000 });
+    await open(page, 1);
+    const content = (await page.locator("[data-comparison-content]").boundingBox())!;
+    expect(content.x).toBeCloseTo(width === 390 ? 16 : 176, 0);
+    expect(content.width).toBeCloseTo(width === 390 ? 358 : 1088, 0);
+    await expect(page.locator("[data-comparison-eyebrow]")).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Reset comparison", exact: true })).toHaveCount(
+      0,
+    );
+    const table = page.locator('[data-slot="data-grid-table"]');
+    const tableBox = (await table.boundingBox())!;
+    const containerBox = (await page.locator('[data-slot="data-grid"]').boundingBox())!;
+    expect(containerBox.y).toBeCloseTo(width === 390 ? 152 : 132, 0);
+    expect(tableBox.y - containerBox.y).toBe(1);
+    expect(tableBox.width).toBeCloseTo(width === 390 ? 1728 : 1760, 0);
+    const headers = table.locator("thead th");
+    expect((await headers.first().boundingBox())!.width).toBeCloseTo(width === 390 ? 192 : 224, 0);
+    expect((await headers.nth(1).boundingBox())!.width).toBeCloseTo(256, 0);
+    expect((await headers.nth(1).boundingBox())!.height).toBeCloseTo(390.5, 0);
+    const image = table.locator('[data-compared-product="sora"] img');
+    const imageBox = (await image.boundingBox())!;
+    expect(imageBox.width).toBe(160);
+    expect(imageBox.height).toBe(160);
+    await expect(image).toHaveCSS("object-fit", "contain");
+    const normalRow = page.locator('[data-spec-label="battery"]').locator("../..");
+    const groupRow = page.locator("[data-spec-group]").first().locator("../..");
+    expect((await normalRow.boundingBox())!.height).toBeCloseTo(37, 0);
+    expect((await groupRow.boundingBox())!.height).toBeCloseTo(33, 0);
+  });
+
+  test(`two-model cards use observed horizontal media, phone stacking and a fluid table at ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: width === 390 ? 844 : 1000 });
+    await open(page, 2);
+    const a = (await page.locator('[data-comparison-selector="A"]').boundingBox())!;
+    const b = (await page.locator('[data-comparison-selector="B"]').boundingBox())!;
+    expect(a.width).toBeCloseTo(width === 390 ? 358 : 534, 0);
+    expect(a.height).toBeCloseTo(width === 390 ? 242 : 266, 0);
+    expect(a.y).toBeCloseTo(width === 390 ? 192 : 144, 0);
+    const header = page.locator("[data-comparison-content] > header");
+    const swap = page.getByRole("button", { name: "Swap models", exact: true });
+    await expect(header.getByRole("button", { name: "Swap models", exact: true })).toHaveText(
+      "Swap",
+    );
+    const swapBox = (await swap.boundingBox())!;
+    const description = (await page.locator("[data-comparison-description]").boundingBox())!;
+    expect(description.height).toBe(width === 390 ? 40 : 20);
+    expect(swapBox.height).toBe(28);
+    expect(swapBox.y).toBe(width === 390 ? 140 : 92);
+    expect(swapBox.x).toBeCloseTo(width === 390 ? 16 : 1264 - swapBox.width, 0);
+    expect(a.y - (swapBox.y + swapBox.height)).toBe(24);
+    expect(
+      await header
+        .locator(":scope > div")
+        .first()
+        .evaluate((element) => getComputedStyle(element).minHeight),
+    ).toBe("auto");
+    expect((await header.locator(":scope > div").first().boundingBox())!.height).toBe(
+      width === 390 ? 96 : 80,
+    );
+    await expect(
+      page
+        .locator('footer[aria-label="Comparison demo actions"]')
+        .getByRole("button", { name: "Swap models", exact: true }),
+    ).toHaveCount(0);
+
+    expect(b.x).toBeCloseTo(width === 390 ? a.x : a.x + a.width + 20, 0);
+    expect(b.y).toBeCloseTo(width === 390 ? a.y + a.height + 16 : a.y, 0);
+    for (const media of await page.locator("[data-comparison-model-media]").all()) {
+      const box = (await media.boundingBox())!;
+      expect(box.width).toBe(width === 390 ? 80 : 96);
+      expect(box.height).toBe(width === 390 ? 80 : 96);
+      await expect(media.locator("img")).toHaveCSS("object-fit", "contain");
+    }
+    const table = page.locator("[data-comparison-pair-table]");
+    expect((await table.boundingBox())!.width).toBeCloseTo(width === 390 ? 356 : 1086, 0);
+    expect(
+      await table.locator("..").evaluate((element) => element.scrollWidth <= element.clientWidth),
+    ).toBe(true);
+    expect((await table.locator("th").first().boundingBox())!.width).toBeCloseTo(
+      width === 390 ? 192 : 224,
+      0,
+    );
+    await expect(page.getByText("Better numeric value", { exact: true }).first()).toHaveClass(
+      "sr-only",
+    );
+  });
+
+  test(`editor picks place a badge over contained 5:4 media and keep four horizontal chips intact at ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: width === 390 ? 844 : 1000 });
+    await open(page, 3);
+    const cards = page.locator("[data-editor-pick]");
+    const first = (await cards.first().boundingBox())!;
+    const second = (await cards.nth(1).boundingBox())!;
+    expect(first.width).toBeCloseTo(width === 390 ? 358 : (1088 - 40) / 3, 0);
+    expect(first.y).toBeCloseTo(width === 390 ? 192 : 152, 0);
+    expect(second.x).toBeCloseTo(width === 390 ? first.x : first.x + first.width + 20, 0);
+    expect(second.y).toBeCloseTo(width === 390 ? first.y + first.height + 16 : first.y, 0);
+    for (const card of await cards.all()) {
+      const media = (await card.locator("[data-pick-media]").boundingBox())!;
+      const badge = (await card.locator("[data-pick-badge]").boundingBox())!;
+      expect(media.width / media.height).toBeCloseTo(1.25, 2);
+      expect(badge.x - media.x).toBeCloseTo(width === 390 ? 12 : 16, 0);
+      expect(badge.y - media.y).toBeCloseTo(width === 390 ? 12 : 16, 0);
+      await expect(card.locator("[data-pick-media] img")).toHaveCSS("object-fit", "contain");
+      await expect(card.locator("[data-pick-media] img")).toHaveCSS("transform", "none");
+      for (const chip of await card.locator("[data-key-spec]").all()) {
+        await expect(chip).toHaveCSS("border-top-style", "dashed");
+        const labels = await chip.locator("span").evaluateAll((elements) =>
+          elements.map((element) => {
+            const box = element.getBoundingClientRect();
+            return { x: box.x, centerY: box.y + box.height / 2 };
+          }),
+        );
+        expect(labels[1].x).toBeGreaterThan(labels[0].x);
+        expect(labels[1].centerY).toBeCloseTo(labels[0].centerY, 0);
+      }
+    }
+    await expectKeySpecsContained(page);
+  });
+}
+
 test("spec table renders six real product columns and every grouped feature in the official DataGrid", async ({
   page,
 }) => {
@@ -251,16 +380,15 @@ for (const n of [1, 2, 3])
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
         width,
       );
-      expect(
-        await page
-          .locator(".isolated-preview h2")
-          .first()
-          .evaluate(
-            (el) =>
-              parseFloat(getComputedStyle(el).lineHeight) /
-              parseFloat(getComputedStyle(el).fontSize),
-          ),
-      ).toBeLessThan(1.15);
+      const headingStyle = await page.locator("[data-comparison-heading]").evaluate((element) => ({
+        fontSize: getComputedStyle(element).fontSize,
+        lineHeight: getComputedStyle(element).lineHeight,
+      }));
+      expect(headingStyle).toEqual(
+        width === 390
+          ? { fontSize: "24px", lineHeight: "32px" }
+          : { fontSize: "30px", lineHeight: "36px" },
+      );
       expect(
         await page.locator(".isolated-preview img").evaluateAll(async (images) => {
           await Promise.all(images.map((image) => (image as HTMLImageElement).decode()));
