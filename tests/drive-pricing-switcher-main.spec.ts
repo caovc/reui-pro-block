@@ -2,9 +2,7 @@
 // No tests in this file were executed for the static milestone.
 import { expect, test, type Locator, type Page } from "@playwright/test";
 
-const previewUrl = process.env.PREVIEW_URL;
-if (!previewUrl) throw new Error("Supply Root's approved warm main PREVIEW_URL.");
-const entry = `${previewUrl}/#/template-preview/filespace`;
+const entry = "/#/template-preview/filespace";
 const faults = new WeakMap<Page, string[]>();
 const writes = new WeakMap<Page, string[]>();
 const features = [

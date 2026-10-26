@@ -3,7 +3,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import { readFile } from "node:fs/promises";
 
-const base = process.env.PREVIEW_URL ?? "http://127.0.0.1:6350";
 const prefix = "/#/template-preview/filespace/settings";
 const routes = [
   ["Profile", "", "Profile Details"],
@@ -24,7 +23,7 @@ const nav = (page: Page, title: string) =>
     .getByRole("navigation", { name: "Account settings sections" })
     .getByRole("link", { name: title, exact: true });
 async function ready(page: Page, suffix = "") {
-  await page.goto(`${base}${prefix}${suffix}`);
+  await page.goto(`${prefix}${suffix}`);
   await expect(page.locator(".ds-root")).toBeVisible();
   await page.evaluate(() => document.fonts.ready);
 }

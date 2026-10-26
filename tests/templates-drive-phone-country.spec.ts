@@ -2,8 +2,6 @@
 // and approves an integrated warm slot. This is not browser pass evidence.
 import { expect, test } from "@playwright/test";
 
-const base = process.env.PREVIEW_URL ?? "http://127.0.0.1:6350";
-
 for (const width of [1440, 390]) {
   test(`Drive PhoneInput country registry, controlled number and native focus at ${width}`, async ({
     page,
@@ -14,7 +12,7 @@ for (const width of [1440, 390]) {
     page.on("console", (message) => {
       if (["warning", "error"].includes(message.type())) faults.push(message.text());
     });
-    await page.goto(`${base}/#/template-preview/filespace/settings`);
+    await page.goto("/#/template-preview/filespace/settings");
     await expect(page.getByText("Profile Details", { exact: true })).toBeVisible();
     const row = page
       .locator(".workspace-settings-row")
