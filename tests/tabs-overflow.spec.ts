@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
-import { readFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { dirname } from "node:path";
 import { unzipSync, strFromU8 } from "fflate";
 
 for (const width of [1440, 390]) {
@@ -135,15 +136,41 @@ for (const width of [1440, 390]) {
           }
         });
         const session = await context.newCDPSession(page);
+        const commands: Array<Record<string, unknown>> = [];
+        let version: unknown;
         try {
-          await session.send("Input.synthesizeScrollGesture", {
-            x: input.x,
-            y: input.y,
-            xDistance: -200,
-            yDistance: 0,
-            speed: 500,
-            gestureSourceType: "touch",
-          });
+          version = await session.send("Browser.getVersion");
+          const start = {
+            type: "touchStart",
+            touchPoints: [{ x: input.x, y: input.y, id: 1 }],
+          };
+          commands.push({ method: "Input.dispatchTouchEvent", params: start });
+          await session.send("Input.dispatchTouchEvent", start);
+          await expect
+            .poll(() =>
+              page.evaluate(() =>
+                Reflect.get(window, "galleryTouchAudit").some(
+                  (event: Record<string, unknown>) =>
+                    event.type === "touchstart" && event.trusted && event.insideViewport,
+                ),
+              ),
+            )
+            .toBe(true);
+          for (let step = 1; step <= 12; step++) {
+            const move = {
+              type: "touchMove",
+              touchPoints: [{ x: input.x - (200 * step) / 12, y: input.y, id: 1 }],
+            };
+            commands.push({ method: "Input.dispatchTouchEvent", params: move });
+            await session.send("Input.dispatchTouchEvent", move);
+            // Sample the next position after a renderer frame acknowledgment.
+            await page.evaluate(
+              () => new Promise<void>((resolve) => requestAnimationFrame(() => resolve())),
+            );
+          }
+          const end = { type: "touchEnd", touchPoints: [] };
+          commands.push({ method: "Input.dispatchTouchEvent", params: end });
+          await session.send("Input.dispatchTouchEvent", end);
           await expect
             .poll(() =>
               page.evaluate(() =>
@@ -167,15 +194,30 @@ for (const width of [1440, 390]) {
           await expect.poll(() => viewport.evaluate((node) => node.scrollLeft)).toBeGreaterThan(0);
           expect(await page.evaluate(() => scrollY)).toBe(pageY);
         } finally {
-          await testInfo.attach("native-touch-input", {
-            body: JSON.stringify(
+          const auditPath = testInfo.outputPath("native-touch-input.json");
+          await mkdir(dirname(auditPath), { recursive: true });
+          await writeFile(
+            auditPath,
+            JSON.stringify(
               {
+                producer: "dispatchTouchEvent",
                 input,
+                commands,
+                version,
                 events: await page.evaluate(() => Reflect.get(window, "galleryTouchAudit")),
+                final: await viewport.evaluate((node) => ({
+                  scrollLeft: node.scrollLeft,
+                  clientWidth: node.clientWidth,
+                  scrollWidth: node.scrollWidth,
+                  pageY: scrollY,
+                })),
               },
               null,
               2,
             ),
+          );
+          await testInfo.attach("native-touch-input", {
+            path: auditPath,
             contentType: "application/json",
           });
           await session.detach();
