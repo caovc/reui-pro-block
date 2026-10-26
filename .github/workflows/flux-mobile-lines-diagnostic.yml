@@ -1,0 +1,41 @@
+name: Diagnose Flux mobile native lines
+on:
+  push:
+    branches: [codex/flux-mobile-lines-diagnostic]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Use Ubuntu HTTPS package mirrors
+        run: |
+          if [ -f /etc/apt/apt-mirrors.txt ]; then
+            printf '%s\tpriority:%s\n' \
+              'https://archive.ubuntu.com/ubuntu/' 1 \
+              'https://security.ubuntu.com/ubuntu/' 2 | \
+              sudo tee /etc/apt/apt-mirrors.txt
+          fi
+      - run: npx playwright install --with-deps chromium
+      - name: Collect native layout once for local and public Workspace
+        run: node scripts/diagnose-flux-mobile-lines.mjs
+        env:
+          START_PREVIEW: "1"
+          PREVIEW_URL: http://127.0.0.1:4173
+          DIAGNOSTIC_DIR: /tmp/bricklane-flux-mobile-lines
+      - name: Upload read-only diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: flux-mobile-lines-${{ github.run_id }}
+          path: /tmp/bricklane-flux-mobile-lines/
+          if-no-files-found: warn
+          retention-days: 7
