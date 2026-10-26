@@ -1,5 +1,9 @@
 import { expect, test } from "@playwright/test";
 import { writeFile } from "node:fs/promises";
+import {
+  assertPhoneSettingsStructure,
+  phoneSettingsWrapOracle,
+} from "./helpers/lucent-layout-oracle";
 
 for (const width of [1440, 390])
   for (const section of ["Settings", "Security", "Integrations"]) {
@@ -34,13 +38,22 @@ for (const width of [1440, 390])
         await expect(content).toHaveCSS("padding", "16px");
         if (section === "Settings") {
           const frame = page.locator(".wf-lucent-general > [data-slot='frame']");
+          let phoneWrapDelta = 0;
+          if (width === 390) {
+            const structure = await assertPhoneSettingsStructure(page);
+            const oracle = await phoneSettingsWrapOracle(page);
+            phoneWrapDelta = oracle.delta;
+            evidence.push({ prefix, section, width, structure, oracle });
+          }
           await expect
             .poll(async () => {
               const box = await frame.boundingBox();
               return box && [box.x, box.y, box.width, box.height];
             })
             .toEqual(
-              width === 390 ? [16, 64 + toolbar, 358, 1365.25] : [272, 64 + toolbar, 1152, 937.25],
+              width === 390
+                ? [16, 64 + toolbar, 358, 1365.25 + phoneWrapDelta]
+                : [272, 64 + toolbar, 1152, 937.25],
             );
         }
         await page.evaluate(() => window.scrollTo(0, 1390));

@@ -36,7 +36,7 @@ jobs:
           BRICKLANE_FONT_HINTING: ${{ inputs.font_hinting }}
         run: >-
           npx playwright test
-          tests/diagnostics/lucent-platform-font.diagnostic.ts
+          tests/templates-lucent-header-layout.spec.ts
           --config=playwright.diagnostics.config.ts
           --workers=1 --retries=0
           --output=/tmp/bricklane-linux-browser-diagnostics
