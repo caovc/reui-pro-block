@@ -1,0 +1,124 @@
+{
+  "base": "3f7d0246c3d7bea010b6b0994db7565f5b763ec0",
+  "frozenFiles": {
+    "src/blocks/data/agent-activity-approval.tsx": "98c06d073c9d6b018d3e7836ac0dceb4839ed1e1ed7b4efcc627fb55885287fa",
+    "tests/agent-activity-approval-layout.spec.ts": "78c2558ee2101866e4d95d5c5e4e8cd8b2f387c8f07271ad3b3bef3d3dd38897",
+    "docs/agent-activity-approval-refinement.md": "1238956b8595e1314f4e8bd42afd6f2dd63c36c73c562ad77404bd6a2167fb6f",
+    "docs/parallel-dispatch-2026-10-26.md": "ce69ab4393e50d7093107849b69edeac75219d3efee0401457bb287a2393af8c"
+  },
+  "rootValidation": {
+    "strictBuild": "PASS /tmp/bricklane-activity1-root-build.log",
+    "production": "28/28, one worker, 1.5 minutes; original Activity model/feed/evidence/approval/source plus new layout/menu/flow/ZIP and refined source defaults",
+    "productionLog": "/tmp/bricklane-activity1-root-production.log",
+    "actualStarter": "Owner actual 245-file UI download independently strict-built and rendered at 1440/390; exact runtime and actual free dependencies checked by persistent source/ZIP tests",
+    "actualStarterEvidence": {
+      "results": [
+        {
+          "width": 1440,
+          "captures": [
+            {
+              "name": "production",
+              "metrics": {
+                "width": 576,
+                "border": "1px",
+                "radius": "14px",
+                "font": "\"Geist Variable\", sans-serif",
+                "headerPadding": "10px 16px",
+                "gap": "14px"
+              },
+              "inputCss": {
+                "opacity": "1",
+                "border": "1px",
+                "radius": "10px",
+                "height": 32
+              }
+            },
+            {
+              "name": "actual-starter",
+              "metrics": {
+                "width": 576,
+                "border": "1px",
+                "radius": "14px",
+                "font": "\"Geist Variable\", sans-serif",
+                "headerPadding": "10px 16px",
+                "gap": "14px"
+              },
+              "inputCss": {
+                "opacity": "1",
+                "border": "1px",
+                "radius": "10px",
+                "height": 32
+              }
+            }
+          ]
+        },
+        {
+          "width": 390,
+          "captures": [
+            {
+              "name": "production",
+              "metrics": {
+                "width": 342,
+                "border": "1px",
+                "radius": "14px",
+                "font": "\"Geist Variable\", sans-serif",
+                "headerPadding": "10px 16px",
+                "gap": "14px"
+              },
+              "inputCss": {
+                "opacity": "1",
+                "border": "1px",
+                "radius": "10px",
+                "height": 32
+              }
+            },
+            {
+              "name": "actual-starter",
+              "metrics": {
+                "width": 342,
+                "border": "1px",
+                "radius": "14px",
+                "font": "\"Geist Variable\", sans-serif",
+                "headerPadding": "10px 16px",
+                "gap": "14px"
+              },
+              "inputCss": {
+                "opacity": "1",
+                "border": "1px",
+                "radius": "10px",
+                "height": 32
+              }
+            }
+          ]
+        }
+      ],
+      "errors": []
+    },
+    "rootVisual": "Root inspected actual phone question-gate screenshot; compact header, continuous rows, inline Send and footer contained and legible",
+    "formatToolingLint": "Final full format check/tooling3/scopedlint recorded in /tmp/bricklane-activity1-root-static.log"
+  },
+  "actualFreeReuse": [
+    "c-trace-5 native progression/focus primitives",
+    "c-marker-3 completion state anatomy",
+    "c-input-group-10 inline native field/action",
+    "Existing real ReUI Frame/Badge and delegated Collapsible/DropdownMenu"
+  ],
+  "corrections": [
+    "Remove duplicate tall run metadata and visible full-width progress",
+    "Default continuous finished rows and inline question/revision form",
+    "Actual checked menu state controls paths/notes/folding/density",
+    "Queued completion row no longer announces Run complete before completion"
+  ],
+  "customGaps": [
+    "Independent eight-step model plus completion and default third approval preserved",
+    "Original working phase can compress future rows; independent model keeps them visible",
+    "Original retry/recovery/summary fixtures and remaining public branch results require separate audit"
+  ],
+  "ganttIntegration": {
+    "commit": "3f7d0246c3d7bea010b6b0994db7565f5b763ec0",
+    "rootStrictBuild": "PASS /tmp/bricklane-gantt-ci-root-build.log",
+    "rootProduction": "19/19, one worker, /tmp/bricklane-gantt-ci-root-production.log",
+    "changes": "Only native modal unmount synchronization and stronger test assertions; zero runtime change"
+  },
+  "deployment": "Own CI/Pages pending. Earlier cumulative cbd5c2e CI passed 1080 and failed one Navbar12 Insights navigation case; original log/artifact retained and trace diagnosis in progress. Latest successfully deployed milestone remains 56229f5."
+}

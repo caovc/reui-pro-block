@@ -32,14 +32,14 @@ Preview: https://caovc.github.io/reui-pro-block/
 
 ## Current ownership
 
-| Owner                     | Scope                                                                                          |
-| ------------------------- | ---------------------------------------------------------------------------------------------- |
-| Primary                   | Release integration, real starter verification, CI/Pages; AppShell M5 and Category integration |
-| Application agent         | All13 Navbars integrated; Gantt CI trace fix in progress; Dashboard audit paused               |
-| Data agent                | AI Chat1–6 integrated; Activity1 compact layout follow-up in progress                          |
-| Commerce agent            | All8 Shop Heroes/6 Category functional; Comparison1–3 integrated and4–6 in independent modules |
-| Source/export coordinator | Diagnose source/ZIP/site CI failures within original source scope                              |
-| Grid coordinator          | Diagnose two Grid CI failures; preserve previous filter-focus correction                       |
+| Owner                     | Scope                                                                                                 |
+| ------------------------- | ----------------------------------------------------------------------------------------------------- |
+| Primary                   | Release integration, real starter verification, CI/Pages; AppShell M5 and Category integration        |
+| Application agent         | All13 Navbars integrated; Gantt test-only fix published; Comparison 1–3 visual refinement in progress |
+| Data agent                | AI Chat1–6 integrated; Activity1 compact layout integrated; public branch audit in progress           |
+| Commerce agent            | All8 Shop Heroes/6 Category functional; Comparison1–3 integrated and4–6 in independent modules        |
+| Source/export coordinator | Diagnose source/ZIP/site CI failures within original source scope                                     |
+| Grid coordinator          | Diagnose two Grid CI failures; preserve previous filter-focus correction                              |
 
 ## Release and validation rules
 
@@ -144,3 +144,11 @@ Root real Pages checks against deployedM5 passed desktop17/18/20 native expanded
 Comparison1–3 now have independent six-column specs, two-model selector/winner and three editor-pick leaves. Actual free DataGrid16/20 owns sticky labels/column visibility, Table16 the vertical spec anatomy, Rating2 decimal stars, Tooltip1 keyboard hints, and Frame3/Item/NumberField1 the cards and cart. Root replaced the duplicate cart modal anatomy with existing actual free DialogSurface3/6 and its real CSS. Fictional original Bricklane Audio products/artwork, typed winner rules and real local quantity/subtotal state fill domain gaps; the original public cart handlers are console-only. Conflicting Frame heights that clipped four spec chips are corrected with real geometry assertions, and root width follows the documented max-w-6xl. Root63/38/23 production rounds and strict builds passed. Three actual200-file starters independently strict-built/rendered1440/390 in6 scenarios with exact runtime/helper/license bytes; settled modal/site style parity is recorded separately. Public 1–3 visual matching remains pending; 4–6 are in development.
 
 Superseded templateM1 run40257256416 passed1040/1041 browser cases and failed one existing nativeGantt drag regression at flow-gantt-refinement.spec.ts:224 (bar date label unchanged). Original full log/trace are retained; The actual trace shows the closing edit overlay still receiving pointer events, so the drag never started. A test-only fix will wait for native unmount, explicitly assert drag activation, and retain both date-change and assignee assertions without increasing timeouts or retries. Newer cumulative CI remains required.
+
+## Activity 1 compact sequence and Gantt synchronization milestone
+
+Activity 1 now uses a compact title/status/menu, continuous completed rows, and inline question and revision fields. The actual free Trace, Marker, Frame, Badge and InputGroup implementations remain in use; existing native menu and Collapsible controls apply real paths, notes, folding and density preferences. The queued completion row no longer claims the run has finished. Root strict build and 28/28 production checks passed on the cumulative candidate. The actual 245-file starter independently strict-built and rendered at 1440/390, with matching card/input CSS and no errors or overflow; Root inspected its phone question state. The independent eight-step model plus completion and default third approval remain intentional differences. Further original branches are under separate audit. See [integration evidence](activity1-compact-integration-release.json).
+
+Gantt synchronization is committed and pushed as 3f7d024. Root independently passed strict build and all 19 related production cases on the latest Comparison base. The test waits for the actual closing modal/overlay to leave, asserts native drag activation and preserves both date-change and assignee checks. No runtime engine or consumer changed. The later cbd5c2e cumulative CI passed 1080 browser cases and failed one Navbar 12 Insights navigation case; its original log and artifact are retained and being diagnosed. CI for subsequent commits remains pending or running, so these local results do not claim Pages deployment.
+
+The [October 26 dispatch](parallel-dispatch-2026-10-26.md) assigns separate Flow, Grouping, Pricing and source-export batches while retaining the Root, AppShell and Templates boundaries. Each coordinator supplies a frozen small batch for serialized Git publication.
