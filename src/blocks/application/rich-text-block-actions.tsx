@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useEditorState } from "@tiptap/react";
 import { DragHandle } from "@tiptap/extension-drag-handle-react";
 import { BubbleMenu } from "@tiptap/react/menus";
 import type { Editor } from "@tiptap/core";
@@ -37,6 +38,10 @@ export function RichTextBlockActions({
   onLink: () => void;
 }) {
   const [position, setPosition] = useState(-1);
+  const tableActive = useEditorState({
+    editor,
+    selector: ({ editor: instance }) => instance.isActive("table"),
+  });
   function changeBlock(
     action: "duplicate" | "delete" | "up" | "down" | "paragraph" | "h1" | "h2" | "quote",
   ) {
@@ -175,7 +180,7 @@ export function RichTextBlockActions({
               <Icon />
             </Button>
           ))}
-          {fluid && editor.isActive("table") && (
+          {fluid && tableActive && (
             <Popover>
               <PopoverTrigger asChild>
                 <Button size="sm" variant="ghost" onMouseDown={(event) => event.preventDefault()}>

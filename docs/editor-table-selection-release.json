@@ -1,0 +1,23 @@
+{
+  "milestone": "Reactive table actions for collapsed editor selections",
+  "sourceBase": "7ecb56d0338bd4c5421a9f0a017df80b1bb78648",
+  "integrationBase": "bd73ca131e9889ebdb8c41965f72002408aa250b",
+  "problem": "A real collapsed caret move from a paragraph to a table could open the native formatting bubble while its React table action remained stale.",
+  "evidenceLimits": "The failed Linux trace records the cell target, pointer coordinates, focused document and visible formatting bubble, but does not record numeric ProseMirror selection state.",
+  "fix": "Subscribe to table activity with the installed public useEditorState selector. Use that boolean for the existing conditional; all existing marks, callbacks, menu options and engine initialization are preserved.",
+  "domainGap": "Free ReUI supplies the controls; rich document selection and editing are provided by the Tiptap engine.",
+  "validation": {
+    "normalPostinstallExitCode": 0,
+    "strictMainBuildExitCode": 0,
+    "originalSdkCasesPassed": 25,
+    "newRealPointerRegressionPassed": 1,
+    "workers": 1,
+    "retries": 0,
+    "timeoutMs": 30000,
+    "originalTableTestUnchanged": true,
+    "regression": "Ready document -> collapsed paragraph caret -> settled native block hover -> collapsed table caret -> paragraph. Document, stored marks and Undo/Redo state remain unchanged.",
+    "sourceRoutingUnchanged": true
+  },
+  "scope": "One component and one regression test; no new dependencies or global transaction rerender flag.",
+  "publication": "Full Linux CI and Pages deployment remain separate release checks."
+}
