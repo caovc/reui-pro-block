@@ -29,7 +29,7 @@ jobs:
         run: |
           mkdir -p /tmp/bricklane-flux-fixed-reference
           npx playwright test tests/templates-flux-settings.spec.ts \
-            --grep '^Flux Workspace reference defaults' \
+            --grep 'Flux Workspace reference defaults' \
             --workers=1 --retries=0 --reporter=list,json
         env:
           PLAYWRIGHT_JSON_OUTPUT_NAME: /tmp/bricklane-flux-fixed-reference/report.json
