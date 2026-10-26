@@ -103,16 +103,21 @@ test("all fourteen mega-menu anchors select local content without breaking the p
     ["Company", ["About us", "Careers", "Customer stories", "Journal", "Changelog", "Contact"]],
   ] as const) {
     for (const name of names) {
-      await page.getByRole("button", { name: menu, exact: true }).click();
-      await page
-        .getByLabel(`${menu} pages`, { exact: true })
-        .getByRole("link", { name: new RegExp(`^${name}`) })
-        .click();
+      const trigger = page.getByRole("button", { name: menu, exact: true });
+      const panel = page.getByLabel(`${menu} pages`, { exact: true });
+      // Native hover can open before click, making an unconditional click close it.
+      // Open through the actual hover path and synchronize with the menu's state.
+      await trigger.hover();
+      await expect(trigger).toHaveAttribute("aria-expanded", "true");
+      await expect(panel).toBeVisible();
+      await panel.getByRole("link", { name: new RegExp(`^${name}`) }).click();
       await expect(
         page
           .getByLabel("Selected marketing page", { exact: true })
           .getByText(name, { exact: true }),
       ).toBeVisible();
+      await expect(trigger).toHaveAttribute("aria-expanded", "false");
+      await expect(panel).toBeHidden();
       expect(page.url()).toBe(original);
     }
   }
@@ -125,6 +130,10 @@ test("free native NavigationMenu opens on hover and retains keyboard/Escape beha
   const product = page.getByRole("button", { name: "Product", exact: true });
   await product.hover();
   await expect(page.getByLabel("Product pages", { exact: true })).toBeVisible();
+  // Clicking an already hover-open native trigger intentionally toggles it closed.
+  await product.click();
+  await expect(product).toHaveAttribute("aria-expanded", "false");
+  await expect(page.getByLabel("Product pages", { exact: true })).toBeHidden();
   await page.getByRole("button", { name: "Company", exact: true }).hover();
   await expect(page.getByLabel("Company pages", { exact: true })).toBeVisible();
   await page.getByRole("heading", { name: "Navbar", exact: true }).hover();
