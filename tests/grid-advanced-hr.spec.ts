@@ -115,8 +115,16 @@ test("native collapse preserves summary and column visibility preserves footer a
   await page.getByRole("button", { name: "View", exact: true }).click();
   await page.getByRole("menuitemcheckbox", { name: "Owner", exact: true }).click();
   await page.keyboard.press("Escape");
+  // The modal menu keeps the grid aria-hidden until its exit animation unmounts.
+  await expect(
+    page.locator('[data-slot="dropdown-menu-content"]').filter({ hasText: "Columns" }),
+  ).toHaveCount(0);
+  await expect(grid).toBeVisible();
+  await expect(grid.locator('tbody tr[data-row-id="group-Hiring"]')).toHaveCount(1);
   await expect(grid.locator('tbody td[data-col-id="owner"]')).toHaveCount(0);
-  await expect(grid.locator("tfoot td")).toHaveCount(await grid.locator("colgroup col").count());
+  const columnCount = await grid.locator("colgroup col").count();
+  expect(columnCount).toBeGreaterThan(0);
+  await expect(grid.locator("tfoot td")).toHaveCount(columnCount);
 });
 
 test("owner reassignment writes the raw KPI and Undo restores its previous owner", async ({

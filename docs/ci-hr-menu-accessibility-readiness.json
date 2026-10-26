@@ -1,0 +1,35 @@
+{
+  "parent": "79125a5909ad599ab52d35a9603ce5e0c120c313",
+  "failedRun": 40308778043,
+  "failedRunSummary": {
+    "passed": 1513,
+    "failed": 2
+  },
+  "artifact": {
+    "bytes": 30072196,
+    "sha256": "747b2de9dff6d62c4c6fd5cb23fed5fbd1f4f0d9ae66c78cdbfd4ae19870f6df"
+  },
+  "finding": "The native modal View menu retains aria-hidden on the background during its exit animation. The role-based grid locator temporarily matched no element and froze expected columnCount=0, although original Linux DOM snapshots show the same table with14 columns and14 footer cells.",
+  "change": "Wait for the actual View menu to unmount and for the grid and its retained Hiring group to become accessible. Keep the original Owner-column absence and exact footer-to-column equality, and require a positive column count.",
+  "unchanged": [
+    "product code",
+    "native modal semantics",
+    "animations",
+    "timeouts",
+    "tolerances",
+    "retries"
+  ],
+  "verification": {
+    "originalAffectedCase": 1,
+    "passed": 1,
+    "workers": 1,
+    "retries": 0,
+    "timeoutMs": 30000,
+    "artifact": "unchanged final669 immutable62121",
+    "notYetLinuxCIVerification": true
+  },
+  "evidenceSHA256": {
+    "linux-trace-decoded-evidence.json": "c53750db337a97a92f95f000b42a710b3122379f691e513416379f00eaf74a73",
+    "onecase-result.json": "bc675041f95539cb258e31843e7192b4a5d32e19674d9f6bb8fcfa75b1eefa84"
+  }
+}
