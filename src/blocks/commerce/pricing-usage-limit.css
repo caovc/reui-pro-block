@@ -1,0 +1,458 @@
+.pu8-entry {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100svh;
+  width: 100%;
+  padding: 24px;
+}
+
+.pu8-empty [data-slot="empty-title"] {
+  font-family: inherit;
+}
+
+.pu8-dialog {
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 32px);
+  max-width: 960px;
+  height: fit-content;
+  max-height: min(86svh, 704px);
+  gap: 0;
+  overflow: hidden;
+  padding: 0;
+  line-height: 20px;
+  outline: none;
+}
+
+.pu8-dialog-header {
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--border);
+  padding: 16px 20px;
+}
+
+.pu8-dialog-header [data-slot="dialog-title"] {
+  font-family: inherit;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 18px;
+}
+
+.pu8-dialog-header [data-slot="dialog-description"] {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.pu8-scroll-slot {
+  display: grid;
+  min-height: 0;
+  flex: 1 1 auto;
+}
+
+.pu8-scroll-area {
+  min-height: 0;
+}
+
+.pu8-scroll-area [data-slot="scroll-area-viewport"]:focus-visible {
+  box-shadow: inset 0 0 0 3px color-mix(in oklab, var(--ring) 50%, transparent);
+}
+
+/* The free ScrollArea still owns scrolling and its scrollbar. These overlays
+   add only the public preview's visual fade at the two scroll boundaries. */
+.pu8-scroll-area::before,
+.pu8-scroll-area::after {
+  position: absolute;
+  z-index: 2;
+  inset-inline: 0;
+  height: 24px;
+  pointer-events: none;
+  content: "";
+  opacity: 0;
+}
+
+.pu8-scroll-area::before {
+  top: 0;
+  background: linear-gradient(var(--background), transparent);
+}
+
+.pu8-scroll-area::after {
+  bottom: 0;
+  background: linear-gradient(transparent, var(--background));
+}
+
+.pu8-scroll-area[data-fade-top="true"]::before,
+.pu8-scroll-area[data-fade-bottom="true"]::after {
+  opacity: 1;
+}
+
+.pu8-scroll-area [data-slot="scroll-area-scrollbar"] {
+  z-index: 3;
+  width: 8px;
+}
+
+.pu8-scroll-area [data-slot="scroll-area-thumb"] {
+  background: color-mix(in oklab, var(--muted-foreground) 18%, transparent);
+}
+
+.pu8-plan-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-bottom: 1px solid var(--border);
+  padding: 16px 12px 16px 8px;
+}
+
+.pu8-rail-title {
+  padding-inline: 12px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+}
+
+.pu8-radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pu8-rail-item {
+  position: relative;
+  flex-wrap: nowrap;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.pu8-rail-item[data-selected="true"] {
+  background: var(--muted);
+}
+
+.pu8-rail-item:hover:not([data-selected="true"]) {
+  background: color-mix(in oklab, var(--muted) 60%, transparent);
+}
+
+.pu8-rail-item:has(:focus-visible) {
+  border-color: var(--ring);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 50%, transparent);
+}
+
+.pu8-rail-radio {
+  position: absolute;
+  scroll-margin-block: 36px;
+}
+
+.pu8-rail-media {
+  align-self: center !important;
+  transform: none !important;
+}
+
+.pu8-rail-copy {
+  min-width: 0;
+  gap: 2px;
+}
+
+.pu8-rail-copy [data-slot="item-description"] {
+  overflow: hidden;
+  font-size: 12px;
+  line-height: 16px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pu8-rail-price {
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.pu8-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px 20px;
+}
+
+.pu8-billing {
+  display: flex;
+  justify-content: center;
+  padding-block: 8px;
+}
+
+.pu8-billing [data-slot="tabs-trigger"] {
+  gap: 6px;
+  scroll-margin-block: 48px;
+}
+
+/* Default pill tabs do not use the line variant's below-button underline.
+   Removing only that inert pseudo-element prevents a 1px phantom overflow. */
+.pu8-billing [data-slot="tabs-list"][data-variant="default"] [data-slot="tabs-trigger"]::after {
+  content: none;
+}
+
+.pu8-billing [data-slot="badge"] {
+  margin-right: -4px;
+}
+
+.pu8-plan-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.pu8-plan-card {
+  height: 100%;
+}
+
+.pu8-plan-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pu8-card-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pu8-card-heading h3 {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 28px;
+}
+
+.pu8-card-price {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pu8-card-price > p:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 8px;
+}
+
+.pu8-price {
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 40px;
+  letter-spacing: -0.025em;
+  font-variant-numeric: tabular-nums;
+}
+
+.pu8-muted,
+.pu8-highlight {
+  color: var(--muted-foreground);
+}
+
+.pu8-plan-action {
+  width: 100%;
+}
+
+.pu8-inclusions,
+.pu8-inclusions ul {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pu8-inclusions > p {
+  font-weight: 500;
+}
+
+.pu8-inclusions li {
+  display: flex;
+  align-items: start;
+  gap: 8px;
+}
+
+.pu8-feature-mark {
+  display: flex;
+  height: 20px;
+  flex-shrink: 0;
+  align-items: center;
+  color: var(--muted-foreground);
+}
+
+.pu8-feature-mark svg,
+.pu8-value-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.pu8-highlight {
+  min-width: 0;
+  text-wrap: pretty;
+}
+
+.pu8-quantity {
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.pu8-popular {
+  position: absolute;
+  top: -11px;
+  right: 20px;
+  z-index: 1;
+  border-color: transparent;
+  border-radius: 6px;
+  background: linear-gradient(100deg, #00c950, #007a55);
+  box-shadow: 0 2px 3px rgb(0 0 0 / 0.16);
+}
+
+.pu8-feature-panel {
+  padding: 0;
+}
+
+.pu8-feature-panel [data-slot="table-container"] {
+  overflow-x: clip;
+}
+
+.pu8-feature-table {
+  table-layout: fixed;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.pu8-feature-table th,
+.pu8-feature-table td {
+  white-space: normal;
+  font-weight: 400;
+  vertical-align: middle;
+}
+
+.pu8-feature-table [data-plan] {
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.pu8-feature-table .pu8-feature-label {
+  padding: 10px 12px 10px 16px;
+  text-align: left;
+}
+
+.pu8-feature-table thead th,
+.pu8-feature-table .pu8-feature-band th {
+  height: 40px;
+  padding-block: 0;
+  font-weight: 500;
+}
+
+.pu8-feature-table .pu8-feature-band,
+.pu8-feature-table .pu8-feature-band:hover {
+  border-block: 1px solid var(--border);
+  background: color-mix(in oklab, var(--muted) 50%, transparent);
+}
+
+.pu8-feature-table tbody tr:last-child {
+  border-bottom: 1px solid var(--border);
+}
+
+.pu8-feature-table tbody:last-child tr:last-child {
+  border-bottom: 0;
+}
+
+.pu8-included {
+  color: var(--success);
+}
+
+.pu8-value-icon {
+  display: block;
+  margin-inline: auto;
+}
+
+.pu8-mobile-footer {
+  display: block;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.pu8-footer-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 20px;
+}
+
+.pu8-summary {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted-foreground);
+}
+
+.pu8-summary-name {
+  flex-shrink: 0;
+  color: var(--foreground);
+  font-weight: 500;
+}
+
+.pu8-summary-dot {
+  width: 4px;
+  height: 4px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: color-mix(in oklab, var(--muted-foreground) 40%, transparent);
+}
+
+.pu8-summary-invoice {
+  min-width: 0;
+  overflow: hidden;
+  font-variant-numeric: tabular-nums;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (width < 768px) {
+  .pu8-plan-audience,
+  .pu8-card-action,
+  .pu8-card-invoice,
+  .pu8-plan-card,
+  .pu8-feature-table [data-plan] {
+    display: none;
+  }
+
+  .pu8-dialog[data-selected-plan="basic"] [data-plan="basic"],
+  .pu8-dialog[data-selected-plan="team"] [data-plan="team"],
+  .pu8-dialog[data-selected-plan="enterprise"] [data-plan="enterprise"] {
+    display: table-cell;
+  }
+
+  .pu8-dialog[data-selected-plan="basic"] .pu8-plan-card[data-plan="basic"],
+  .pu8-dialog[data-selected-plan="team"] .pu8-plan-card[data-plan="team"],
+  .pu8-dialog[data-selected-plan="enterprise"] .pu8-plan-card[data-plan="enterprise"] {
+    display: flex;
+  }
+
+  .pu8-feature-table thead .pu8-feature-label {
+    width: 66.666667%;
+  }
+}
+
+@media (min-width: 640px) {
+  .pu8-entry {
+    padding: 48px;
+  }
+}
+
+@media (min-width: 768px) {
+  .pu8-dialog {
+    max-height: min(92svh, 864px);
+  }
+
+  .pu8-plan-rail,
+  .pu8-mobile-footer {
+    display: none;
+  }
+
+  .pu8-plan-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .pu8-feature-table thead .pu8-feature-label {
+    width: 33.333333%;
+  }
+}

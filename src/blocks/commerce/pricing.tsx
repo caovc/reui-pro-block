@@ -20,6 +20,9 @@ import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { AnalyticsPricing, AgencyPricing } from "./pricing-refined";
+import { CustomerLogoPricing } from "./pricing-customer-logos";
+import { UpgradePlanPricing } from "./pricing-upgrade-dialog";
+import { UsageLimitPricing } from "./pricing-usage-limit";
 import { SeatStepperPricing } from "./pricing-seat-stepper";
 import { PlanComparisonPricing } from "./pricing-plan-comparison";
 import { PerSeatPricing } from "./pricing-per-seat";
@@ -484,6 +487,9 @@ function GeneralPricing({ block }: BlockProps) {
 }
 
 export function Pricing(props: BlockProps) {
+  if (props.block.index === 3) return <CustomerLogoPricing />;
+  if (props.block.index === 6) return <UpgradePlanPricing />;
+  if (props.block.index === 7) return <UsageLimitPricing />;
   if (props.block.index === 0) return <SeatStepperPricing />;
   if (props.block.index === 1) return <PlanComparisonPricing />;
   if (props.block.index === 2) return <PerSeatPricing />;

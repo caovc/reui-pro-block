@@ -1,0 +1,328 @@
+.pud-entry {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100svh;
+  padding: 48px;
+  color: var(--foreground);
+  background: var(--background);
+}
+.pud-entry [data-slot="empty-title"] {
+  letter-spacing: normal;
+}
+.pud-dialog {
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 32px);
+  max-width: 512px;
+  max-height: min(86svh, 44rem);
+  padding: 0;
+  gap: 0;
+  border-radius: 14px;
+  overflow: hidden;
+  font-size: 14px;
+  line-height: 20px;
+}
+.pud-dialog:focus-visible {
+  outline: none;
+}
+.pud-dialog > [data-slot="dialog-header"] {
+  flex-shrink: 0;
+  padding: 16px 20px;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.pud-dialog [data-slot="dialog-title"] {
+  font-size: 18px;
+  line-height: 18px;
+  font-weight: 600;
+}
+.pud-dialog > [data-slot="dialog-footer"] {
+  flex-shrink: 0;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 16px 20px;
+  border-radius: 0 0 14px 14px;
+}
+.pud-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  color: var(--muted-foreground);
+  font-variant-numeric: tabular-nums;
+}
+.pud-summary > :first-child {
+  color: var(--foreground);
+  font-weight: 500;
+}
+.pud-summary-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--border);
+}
+.pud-outer-scroll {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.pud-outer-scroll > [data-slot="scroll-area-viewport"] {
+  flex: 1;
+  min-height: 0;
+}
+.pud-outer-scroll > [data-slot="scroll-area-scrollbar"][data-orientation="vertical"] {
+  width: 10px;
+  height: 100%;
+  border-left: 1px solid transparent;
+}
+.pud-body-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+}
+.pud-plans-label {
+  padding: 16px 20px 0;
+  font-weight: 500;
+}
+.pud-rail-scroll {
+  border-bottom: 1px solid var(--border);
+}
+.pud-plan-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 20px 16px;
+}
+.pud-plan-item {
+  position: relative;
+  flex-wrap: nowrap;
+  gap: 8px;
+  cursor: pointer;
+  border-radius: 10px;
+}
+.pud-plan-item:hover {
+  background: color-mix(in oklab, var(--muted) 60%, transparent);
+}
+.pud-plan-item[data-selected="true"] {
+  background: var(--muted);
+}
+.pud-plan-item:has(:focus-visible) {
+  border-color: var(--ring);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 50%, transparent);
+}
+.pud-plan-item [data-slot="item-media"] {
+  align-self: center;
+  transform: none;
+}
+.pud-plan-item [data-slot="item-content"] {
+  min-width: 0;
+  gap: 2px;
+}
+.pud-plan-item [data-slot="item-description"] {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  line-height: 18px;
+}
+.pud-plan-radio {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+  scroll-margin-block: 36px;
+}
+.pud-rail-price {
+  flex-shrink: 0;
+  margin-inline-start: auto;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.pud-billing {
+  padding: 16px 20px 0;
+}
+.pud-dialog [data-slot="tabs-list"] {
+  border-radius: 10px;
+}
+.pud-dialog [data-slot="tabs-trigger"] {
+  border-radius: 8px;
+  scroll-margin-block: 36px;
+}
+.pud-dialog [data-slot="tabs-trigger"][data-state="active"] {
+  background: var(--background);
+  color: var(--foreground);
+  box-shadow:
+    0 1px 3px #0000001a,
+    0 1px 2px #0000001a;
+}
+.pud-dialog [data-slot="tabs-trigger"] [data-slot="badge"] {
+  margin-inline-end: -4px;
+}
+/* This is a filled tab list. The stock line-variant pseudo element would
+   extend 1px beyond this list despite being transparent. */
+.pud-dialog [data-slot="tabs-list"][data-variant="default"] [data-slot="tabs-trigger"]::after {
+  display: none;
+}
+.pud-details-cell {
+  min-width: 0;
+  margin: 0;
+}
+.pud-detail-stack {
+  display: grid;
+}
+/* All panels contribute their natural size. Inactive panels cannot receive focus
+   or enter the accessibility tree; no fixed-height replica of a plan is needed. */
+.pud-plan-panel {
+  grid-area: 1 / 1;
+  padding: 20px;
+  min-width: 0;
+  container: upgrade-plan / inline-size;
+}
+.pud-plan-panel[data-active="false"] {
+  visibility: hidden;
+  pointer-events: none;
+}
+.pud-plan-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.pud-plan-heading h3 {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 28px;
+}
+.pud-price-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 12px;
+}
+.pud-main-price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 8px;
+  font-variant-numeric: tabular-nums;
+}
+.pud-main-price > :first-child {
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 40px;
+  letter-spacing: -0.9px;
+}
+.pud-main-price > :last-child,
+.pud-savings {
+  color: var(--muted-foreground);
+}
+.pud-plan-panel [data-slot="separator"] {
+  margin-block: 20px;
+}
+.pud-includes {
+  font-weight: 500;
+}
+.pud-feature-list {
+  margin-top: 12px;
+  column-gap: 24px;
+}
+.pud-feature-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  break-inside: avoid;
+  color: var(--muted-foreground);
+}
+.pud-feature-list li + li {
+  margin-top: 12px;
+}
+.pud-feature-list li > svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+@container upgrade-plan (min-width: 480px) {
+  .pud-feature-list {
+    columns: 2;
+  }
+}
+@media (max-width: 767px) {
+  .pud-entry {
+    padding: 24px;
+  }
+  .pud-outer-scroll {
+    overflow: hidden;
+  }
+  .pud-outer-scroll > [data-slot="scroll-area-viewport"] {
+    mask-image: linear-gradient(
+      transparent 0px,
+      #000 var(--pud-fade-start, 0px),
+      #000 calc(100% - var(--pud-fade-end, min(12%, 40px))),
+      transparent 100%
+    );
+  }
+  .pud-outer-scroll[data-scroll-start="true"] {
+    --pud-fade-start: min(12%, 40px);
+  }
+  .pud-outer-scroll[data-scroll-end="true"] {
+    --pud-fade-end: 0px;
+  }
+}
+@media (min-width: 640px) {
+  .pud-dialog > [data-slot="dialog-footer"] {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+@media (min-width: 768px) {
+  .pud-dialog {
+    max-width: min(960px, calc(100% - 32px));
+    max-height: min(86svh, 55rem);
+  }
+  .pud-body-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    grid-template-rows: auto minmax(0, 1fr);
+  }
+  .pud-plans-label {
+    grid-column: 1;
+    grid-row: 1;
+    padding: 22px 20px 6px;
+    border-right: 1px solid var(--border);
+  }
+  .pud-rail-scroll {
+    grid-column: 1;
+    grid-row: 2;
+    min-height: 0;
+    border-right: 1px solid var(--border);
+    border-bottom: 0;
+  }
+  .pud-plan-rail {
+    padding-top: 20px;
+  }
+  .pud-billing {
+    grid-column: 2;
+    grid-row: 1;
+  }
+  .pud-details-cell {
+    grid-column: 2;
+    grid-row: 2;
+    min-height: 0;
+  }
+  .pud-details-scroll {
+    height: 100%;
+    min-width: 0;
+  }
+}
+@media (min-width: 1024px) {
+  .pud-dialog {
+    max-height: min(86svh, 41rem);
+  }
+}

@@ -231,6 +231,17 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
     return paths("application", application[block.category]);
   }
   if (block.group === "ecommerce" || block.group === "marketing") {
+    if (block.category === "pricing" && [3, 6, 7].includes(block.index)) {
+      const modules: Record<number, string> = {
+        3: "pricing-customer-logos",
+        6: "pricing-upgrade-dialog",
+        7: "pricing-usage-limit",
+      };
+      return paths("commerce", modules[block.index], "pricing");
+    }
+    if (block.category === "pricing" && [4, 5].includes(block.index)) {
+      return paths("commerce", "pricing-refined", "pricing");
+    }
     if (block.category === "pricing" && block.index <= 2) {
       const modules = ["pricing-seat-stepper", "pricing-plan-comparison", "pricing-per-seat"];
       return paths("commerce", modules[block.index], "pricing");

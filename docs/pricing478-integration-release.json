@@ -1,0 +1,39 @@
+{
+  "scope": "Independent Pricing4 customer logos,7 upgrade dialog and8 usage limit",
+  "base": "71de48e8d2e5fd5d103ce5aa0a9dc167808ce567",
+  "files": {
+    "src/blocks/commerce/pricing-customer-logos.tsx": "a1835e484a362761afc25fc461e0a7b8f58437dba7cb2cc6745600aed4b68c6e",
+    "src/blocks/commerce/pricing-customer-logos.css": "dabe91aa1f32e4133f3b764d84cf2c2c377e31cd29f661d26be3835f0ba98409",
+    "tests/pricing-customer-logos.spec.ts": "b2103b923cff2f518ad362212d65505a62e3a785016c0f76205ed8ea67142fe0",
+    "docs/pricing-customer-logos-refinement.md": "507cc24e75f01c89ca1638a61bfd57a47fd886815d01dc04c178777ca602cccf",
+    "src/blocks/commerce/pricing-upgrade-dialog.tsx": "0a5fbc5b3448973dd617b803c0118521700ed7807424d1490f97322f0657758e",
+    "src/blocks/commerce/pricing-upgrade-dialog.css": "7b640808aae3d98a0625ce219610c7a38b2d2677da1fd5eac09e53a1cf8d4356",
+    "tests/pricing-upgrade-dialog.spec.ts": "3e37861f3d92f5556f6e15f13356493bf27d7f0b7e28c691c8dd5d26ad4ba53f",
+    "docs/pricing-upgrade-dialog-refinement.md": "1297aa4686a9fb783c7d93841d1d35096e289d84d852caf66697c2aa6a7afabd",
+    "src/blocks/commerce/pricing-usage-limit.tsx": "a1aba40e70384bccbcc540d76301666eb7e28e4c998e09e115a1b204e1383d9f",
+    "src/blocks/commerce/pricing-usage-limit.css": "2d7b21132ac0171ca2d53852918ea6f5408aec1bcad7e5743b02bf4dcbfc98dc",
+    "tests/pricing-usage-limit.spec.ts": "98ed4378d002ba91a40ce2bc4632f5b0dc386726a3acaedb9acd08986f85fdda",
+    "docs/pricing-usage-limit-refinement.md": "3f57292c127be4cd0562d2e4d20fd1ac73f31c38c6caa49ce96775b3dbbc85d4",
+    "src/blocks/commerce/pricing-usage-limit-data.ts": "8e4f4660efd876161b5ca9c53e4fdcb6c7e05dbced8a6bb4d3afd86f41f3036a",
+    "tests/pricing-secondary-source.spec.ts": "42fe34a788928a5972870014c675603fb6607af5e9e52e2940e075b5947da36f",
+    "src/blocks/commerce/pricing.tsx": "d2d167081b11a748eca4b8b779a1e03ad2691761106b44794b69cd5daaabc49c",
+    "src/lib/source-targets.ts": "daaac9dbae24ac7d08db9b2b40697fed32d354b026a5f4a7189de6a145ee981e",
+    "docs/FIDELITY.md": "58183d226f0bf1dc606f318ebdf373b4eaf4021ecfa5727e8ec51d7abf653386"
+  },
+  "reuse": "Actual official free ReUI Frame/Item/Dialog/RadioGroup/Tabs/Progress/controls and original local pricing models; no vendor workaround for test input timing",
+  "testCorrection": "Keep original raw outside click and all interaction effects; wait actual opening animations/hit-test and native destination focus. Two original failures at175 outside and186 ArrowUp remain separately preserved; controlled listener mechanism is not retroactive proof of original cause",
+  "verification": {
+    "latestRoot": "21/21 once42.3s,1worker30s,0retry; unique Vite-only2.04s; fullformat/scopedlint/tooling and scope proof",
+    "tabsCompatibility": "1440/390 loaded32px list/25px trigger; genuine Space/Arrow selected/focus and no extra overflow",
+    "source": "Fresh220 Usage project7 key bytes exact includes new Tabs634, actual Usage source/data/CSS and licenses;5/6 defaults pricing-refined retained",
+    "ownerStrict": "Site strict + oneactual Pricing4 ZIP strict; other2same217sourcebytes of220 differ only Example data/pkgname/README,2Vite bundles+6actualflows; not3ZIP strict",
+    "originalFailures": "Both old20/21 failures retained; initial readiness-v2 fixed suite21/21 prior-base, latest changedTabs gate21/21 independent",
+    "receipt": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-pricing478-latest71-fzx8csl8/receipt.json"
+  },
+  "remaining": [
+    "Third visual5 CSS/test refinement is separate and excluded",
+    "Original artwork, spacing and theme differences retain3variant ledgers",
+    "No backend billing/purchases; local demo outcomes only"
+  ],
+  "publication": "Own cumulativeCI/Pages separately pending; latest confirmed live f1780d3 run40271415001 passed1224/1224 and deployment05:14:00UTC"
+}
