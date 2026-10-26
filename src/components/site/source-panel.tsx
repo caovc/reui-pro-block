@@ -26,6 +26,7 @@ export function SourcePanel({
   const [manager, setManager] = useState<string>("pnpm");
   const [downloading, setDownloading] = useState(false);
   const command = `${manager} install\n${manager === "yarn" ? "yarn dev" : `${manager} run dev`}`;
+  const themeCode = themeCSS(theme);
   async function download() {
     setDownloading(true);
     try {
@@ -93,12 +94,15 @@ export function SourcePanel({
           Append this CSS after the starter’s existing theme. Apply the <code>dark</code> class to
           the root element for dark mode.
         </p>
-        <CodeBlock code={themeCSS(theme)} language="css" showLineNumbers label="Theme CSS">
+        <CodeBlock code={themeCode} language="css" showLineNumbers label="Theme CSS">
           <CodeBlockHeader>
             <span>preview-theme.css</span>
             <div className="flex">
               <CodeBlockDownloadButton filename="preview-theme.css" label="Download theme CSS" />
-              <CodeBlockCopyButton onCopyError={() => toast.error("Could not copy theme CSS")} />
+              <CodeBlockCopyButton
+                key={themeCode}
+                onCopyError={() => toast.error("Could not copy theme CSS")}
+              />
             </div>
           </CodeBlockHeader>
         </CodeBlock>

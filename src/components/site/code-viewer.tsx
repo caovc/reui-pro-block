@@ -65,6 +65,7 @@ export function CodeViewer({ block, dark }: { block: BlockMeta; dark: boolean })
             label="Download source file"
           />
           <CodeBlockCopyButton
+            key={filename}
             labels={{ copy: "Copy", copied: "Copied" }}
             onCopyError={() => toast.error("Clipboard unavailable. Use Download source file.")}
           />
