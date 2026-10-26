@@ -73,6 +73,10 @@ test("Cohort notes and external employee identity stay with the person across ed
     .click();
   await action(page, "Amara Okafor", "Edit person");
   const editor = page.getByRole("dialog", { name: "Edit Amara Okafor", exact: true });
+  await expect(editor).toBeVisible();
+  await editor.evaluate(async (element) => {
+    await Promise.all(element.getAnimations().map((animation) => animation.finished));
+  });
   expect((await editor.boundingBox())?.width).toBe(512);
   await expect(editor.getByRole("textbox", { name: /note/i })).toHaveCount(0);
   await editor.getByRole("textbox", { name: "Full name", exact: true }).fill("Reset me");

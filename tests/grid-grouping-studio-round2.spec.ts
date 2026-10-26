@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { demoAvatar } from "../src/lib/demo-artwork";
 
 const route = (entry: number) => `/#/preview/data-grid/grouping/data-grid-grouping-${entry}`;
 
@@ -136,7 +137,17 @@ test("delivery stage selection preserves checked rows in other stages and hidden
 test("delivery shared sorting retains each engagement's crew", async ({ page }) => {
   await page.goto(route(7));
   const gemini = page.locator("tbody tr").filter({ hasText: "Gemini" });
-  const crew = await gemini.getByLabel("Crew on the Gemini engagement").innerHTML();
+  const crewGroup = gemini.getByLabel("Crew on the Gemini engagement");
+  const portraits = crewGroup.locator('[data-slot="avatar-image"]');
+  await expect(portraits).toHaveCount(3);
+  for (const [index, name] of ["Sora Min", "Rina Holt", "Evren Blake"].entries()) {
+    await expect(portraits.nth(index)).toHaveAttribute("src", demoAvatar(name));
+  }
+  await portraits.evaluateAll(async (images) => {
+    await Promise.all(images.map((image) => (image as HTMLImageElement).decode()));
+  });
+  await expect(crewGroup.locator('[data-slot="avatar-group-count"]')).toHaveText("+1");
+  const crew = await crewGroup.innerHTML();
   await page.getByRole("button", { name: "Client", exact: true }).first().click();
   await expect(page.locator('th[data-col-id="client"][aria-sort="ascending"]')).toHaveCount(4);
   await expect(
