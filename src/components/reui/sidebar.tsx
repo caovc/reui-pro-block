@@ -113,14 +113,16 @@ export function SidebarWorkspaceSwitcher({
   workspaces,
   onSelect,
   onCreate,
+  collapsed: collapsedOverride,
 }: {
   value: string;
   workspaces: string[];
   onSelect: (name: string) => void;
   onCreate: () => void;
+  collapsed?: boolean;
 }) {
   const { isMobile, state } = useSidebar();
-  const collapsed = !isMobile && state === "collapsed";
+  const collapsed = !isMobile && (collapsedOverride ?? state === "collapsed");
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -130,7 +132,7 @@ export function SidebarWorkspaceSwitcher({
               size="lg"
               className="h-9 font-semibold data-[state=open]:bg-sidebar-accent group-data-[collapsible=icon]:justify-center"
               aria-label="Switch workspace"
-              tooltip={value}
+              tooltip={collapsed ? { children: value, hidden: false } : undefined}
             >
               <BrandMark className="size-6! shrink-0" />
               {!collapsed && (
@@ -144,7 +146,7 @@ export function SidebarWorkspaceSwitcher({
           <DropdownMenuContent
             side={collapsed ? "right" : "bottom"}
             align="start"
-            className="min-w-60"
+            className="reui-reference min-w-60"
           >
             <DropdownMenuGroup>
               <DropdownMenuLabel>Workspaces</DropdownMenuLabel>
@@ -238,6 +240,7 @@ export function SidebarNavigation({
   initialExpanded = [],
   collapsed: collapsedProp,
   className,
+  menuClassName,
 }: {
   items: SidebarNavigationItem[];
   active: string;
@@ -246,6 +249,7 @@ export function SidebarNavigation({
   initialExpanded?: string[];
   collapsed?: boolean;
   className?: string;
+  menuClassName?: string;
 }) {
   const { state, isMobile, setOpenMobile } = useSidebar();
   const collapsed = !isMobile && (collapsedProp ?? state === "collapsed");
@@ -302,7 +306,11 @@ export function SidebarNavigation({
                 <SidebarMenuItem key={item.label}>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>{button}</DropdownMenuTrigger>
-                    <DropdownMenuContent side="right" align="start">
+                    <DropdownMenuContent
+                      side="right"
+                      align="start"
+                      className={cn("reui-reference min-w-32", menuClassName)}
+                    >
                       <DropdownMenuLabel>{item.label}</DropdownMenuLabel>
                       <DropdownMenuGroup>
                         {item.children.map((child) => (

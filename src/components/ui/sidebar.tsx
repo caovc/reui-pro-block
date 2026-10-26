@@ -166,6 +166,7 @@ function Sidebar({
   mobileTitle = "Navigation",
   mobileDescription = "Workspace navigation",
   mobileWidth,
+  mobileShowCloseButton = true,
   ...props
 }: React.ComponentProps<"div"> & {
   side?: "left" | "right";
@@ -175,6 +176,7 @@ function Sidebar({
   mobileTitle?: string;
   mobileDescription?: string;
   mobileWidth?: string;
+  mobileShowCloseButton?: boolean;
 }) {
   const { isMobile, state, openMobile, setOpenMobile, triggerRef } = useSidebar();
 
@@ -202,6 +204,7 @@ function Sidebar({
           data-sidebar="sidebar"
           data-slot="sidebar"
           data-mobile="true"
+          showCloseButton={mobileShowCloseButton}
           className={cn(
             "w-(--sidebar-width) bg-sidebar p-0 text-sidebar-foreground",
             mobileClassName,

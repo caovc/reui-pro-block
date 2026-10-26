@@ -561,7 +561,7 @@ export function WorkspaceMenu({
       <DropdownMenuContent
         side={card || collapsed ? "right" : top ? "bottom" : "top"}
         align="end"
-        className="w-56"
+        className="reui-reference w-56"
       >
         {card ? (
           <>
@@ -794,6 +794,7 @@ export function SearchPalette({
         )}
       </Button>
       <CommandDialog
+        className="reui-reference"
         open={open}
         onOpenChange={setOpen}
         title="Search"

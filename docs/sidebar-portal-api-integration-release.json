@@ -1,0 +1,28 @@
+{
+  "scope": "Actual free Sidebar portal typography and optional native presentation API",
+  "base": "ee84b30fd35a68fd20596a08f1e7b08c00f1ca77",
+  "files": {
+    "src/blocks/application/shells/chrome.tsx": "258780ac2504495213dbcff4004763fa413911e96532683ed8cf5ab56258a15f",
+    "src/components/reui/sidebar.tsx": "cd917ef641c5e8c3f69e0baf70078bc6894942ea383b796923822dd6539a061e",
+    "src/components/ui/sidebar.tsx": "d37b265da290de3e93c0cddeb31acc297886c6dc246b7d8c3052e8d09b151c67",
+    "tests/appshell-portal-font.spec.ts": "3d49d30de6febc600a28b36febca84b5a583bb97a58a0fe27cbf9d12cb0f73b7",
+    "docs/appshell-portal-font-review.md": "16395fd88e6a3e211575e1806dd4a7485e0437904f726eaf787d939c4a946eea",
+    "docs/appshell-portal-production-verification.md": "0fd7640ce53f4e683743248dd25c7f1a5b906fb47fac14c2db182351ef8790ca"
+  },
+  "reuse": "Actual ReUI Sidebar/WorkspaceSwitcher/Navigation and native Sheet; optional collapsed/menuClassName/mobileShowCloseButton forward existing behavior, no fake provider or duplicate Sheet state",
+  "changes": "Consumer portal reui-reference font scope respects explicit customization; optional expanded switcher,192px group menu and mobile native close visibility support upcoming template composition",
+  "verification": {
+    "production": "14/14 AppShell checks on original cumulative production and included in latest71+Tabs independent116/116",
+    "mainStrict": "Template20 cumulative main strict0; no second unchanged runtime cold build",
+    "actualProjects": "3fresh374files,371common;1normalinstall+tsc/Vite strict0,2Vite-only0;all3\u00d71440/390 true standalone native menu/search/Sheet/collapse/focus flowsPASS;3runtime/copy/single exactbytes",
+    "geometry": "Canvas/portal bounds preserved; default portal Geist\u2192Inter14/20; explicitSerif/Mono/Reset native customization retained",
+    "receipt": "/tmp/appshell-portal-v2-ready-receipt.json"
+  },
+  "boundaries": "Only6owner files plus Root2; broader Template19consumer layout is separate and currently held for Mesh phone header regression; no source-target/routing changes needed",
+  "remaining": [
+    "Shell18 account menu semantics and Search2 public layout still retain separate gaps",
+    "No global body or primitive font override",
+    "No claim of pixel-complete category or new cumulative deployment"
+  ],
+  "publication": "Root serial commit/push; own fullCI and Pages pending"
+}
