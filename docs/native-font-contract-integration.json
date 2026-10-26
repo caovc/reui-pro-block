@@ -1,0 +1,26 @@
+{
+  "milestone": "Cross-platform native font geometry contract",
+  "base": "6aaaeba8ff719864f1aa8df2d68d20c625359aec",
+  "productChanges": false,
+  "oracleChange": "Single-platform Mac intrinsic width constants are replaced by fixed, independent official text/style fixtures rendered on the same platform. Comparison precision2 is retained.",
+  "independence": [
+    "Reference uses fixed Success and Upgrade Your Plan literals, Inter weight500 at official12/16 or14/20 and fixed tracking; it does not copy target styles or import a product component",
+    "Target and fixture must both use actual custom Inter glyphs and the expected served c940 WOFF2 bytes; fallback cannot pass merely because both render the same substitute",
+    "All other Flow and Pricing behavior/geometry checks remain; additional explicit CSS token and font guards were added"
+  ],
+  "controlledEvidence": [
+    "Wrong Flow weight400 or gap8 fails at both widths while reference remains unchanged",
+    "Missing Inter font makes actual-font guards fail even if target/reference widths match",
+    "Old normal title tracking fails both tracking and width comparisons at both widths"
+  ],
+  "preservedLinuxEvidence": {
+    "nativeRun": 40286825531,
+    "result": "31 passed / 2 failed; Flow24 and original Tabs6 pass, Pricing retains1/64px platform residual and manual synthetic gesture fails",
+    "hintingNoneRun": 40288750249
+  },
+  "limits": [
+    "Font hinting normalization was only a manual diagnostic experiment; normal product and test configuration remains native",
+    "This is a corrected measurement oracle, not a product CSS fix and not a claim that all old expected values are unchanged",
+    "Linux native reference validation, full CI and Pages deployment remain pending"
+  ]
+}

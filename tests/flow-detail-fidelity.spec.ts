@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import { attachFontRenderDiagnostics } from "./font-render-diagnostics";
+import { attachFontRenderDiagnostics, measureReferenceText } from "./font-render-diagnostics";
 
 async function open(page: Page, id: string, width: number) {
   await page.setViewportSize({ width, height: 900 });
@@ -199,15 +199,54 @@ for (const width of [1440, 390]) {
   }, testInfo) => {
     await open(page, "flow-1", width);
     const badge = page.locator('[data-flow-node="form"] [data-slot="badge"]');
-    await attachFontRenderDiagnostics(
+    const actualFontEvidence = await attachFontRenderDiagnostics(
       page,
       testInfo,
       `flow-badge-font-${width}`,
       '[data-flow-node="form"] [data-slot="badge"]',
     );
+    const reference = await measureReferenceText(
+      page,
+      testInfo,
+      `flow-success-reference-${width}`,
+      "flow-success",
+    );
+    expect(reference.computed).toEqual({
+      fontFamily: "Inter, Arial, sans-serif",
+      fontWeight: "500",
+      fontSize: "12px",
+      lineHeight: "16px",
+      letterSpacing: "normal",
+      padding: "0px",
+      borderWidth: "0px",
+    });
+    const expectedInterEvidence = {
+      platformFonts: {
+        fonts: [{ familyName: "Inter", isCustomFont: true, glyphCount: 7 }],
+      },
+      buildFontFiles: [
+        {
+          bytes: 48432,
+          sha256: "c940764593d0fe5d596be327ca7558855e018039fb78509aa21921fd3644c3e4",
+        },
+      ],
+    };
+    expect(actualFontEvidence).toMatchObject(expectedInterEvidence);
+    expect(reference.diagnostics).toMatchObject(expectedInterEvidence);
+    await expect(badge).toHaveText("Success");
+    await expect(badge).toHaveCSS("font-family", "Inter, Arial, sans-serif");
+    await expect(badge).toHaveCSS("font-weight", "500");
+    await expect(badge).toHaveCSS("font-size", "12px");
+    await expect(badge).toHaveCSS("line-height", "16px");
+    await expect(badge).toHaveCSS("letter-spacing", "normal");
+    await expect(badge).toHaveCSS("padding", "2px 5px");
+    await expect(badge).toHaveCSS("border-width", "1px");
+    await expect(badge).toHaveCSS("gap", "4px");
+    await expect(badge).toHaveCSS("height", "20px");
+    // 10px padding + 2px border + 4px gap + 12px native icon.
     expect(
       await badge.evaluate((element) => parseFloat(getComputedStyle(element).width)),
-    ).toBeCloseTo(76.796875, 2);
+    ).toBeCloseTo(reference.width + 28, 2);
     await expect(badge.locator("svg")).toHaveCSS("width", "12px");
     await page.getByRole("button", { name: "Workflow actions", exact: true }).click();
     const menu = page.getByRole("menu");

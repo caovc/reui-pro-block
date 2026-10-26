@@ -186,4 +186,100 @@ export async function attachFontRenderDiagnostics(
   await mkdir(dirname(outputPath), { recursive: true });
   await writeFile(outputPath, JSON.stringify(evidence, null, 2));
   await testInfo.attach(name, { path: outputPath, contentType: "application/json" });
+  return evidence;
+}
+
+const referenceTextContracts = {
+  "flow-success": {
+    text: "Success",
+    fontSize: "12px",
+    lineHeight: "16px",
+    letterSpacing: "normal",
+  },
+  "pricing-upgrade-title": {
+    text: "Upgrade Your Plan",
+    fontSize: "14px",
+    lineHeight: "20px",
+    letterSpacing: "-0.35px",
+  },
+} as const;
+
+/**
+ * Measure official text constants using this platform's actual font metrics.
+ * This fixture never reads the target's CSS or imports a product component.
+ */
+export async function measureReferenceText(
+  page: Page,
+  testInfo: TestInfo,
+  name: string,
+  contract: keyof typeof referenceTextContracts,
+) {
+  const fixture = await page.evaluate((reference) => {
+    const element = document.createElement("span");
+    element.id = `bricklane-reference-text-${crypto.randomUUID()}`;
+    element.setAttribute("aria-hidden", "true");
+    element.inert = true;
+    element.textContent = reference.text;
+    const properties = {
+      all: "initial",
+      display: "inline-block",
+      position: "fixed",
+      left: "-10000px",
+      top: "0px",
+      opacity: "0",
+      "pointer-events": "none",
+      "box-sizing": "content-box",
+      width: "max-content",
+      "min-width": "0px",
+      "max-width": "none",
+      height: "auto",
+      margin: "0px",
+      padding: "0px",
+      border: "0px",
+      font: `normal 500 ${reference.fontSize}/${reference.lineHeight} Inter, Arial, sans-serif`,
+      "font-stretch": "100%",
+      "font-kerning": "auto",
+      "font-optical-sizing": "auto",
+      "font-feature-settings": "normal",
+      "font-variation-settings": "normal",
+      "font-size-adjust": "none",
+      "font-synthesis": "weight style small-caps",
+      "letter-spacing": reference.letterSpacing,
+      "word-spacing": "0px",
+      "text-rendering": "auto",
+      "text-transform": "none",
+      "white-space": "nowrap",
+      direction: "ltr",
+      "writing-mode": "horizontal-tb",
+      transform: "none",
+      zoom: "1",
+    };
+    for (const [property, value] of Object.entries(properties)) {
+      element.style.setProperty(property, value, "important");
+    }
+    document.body.append(element);
+    const style = getComputedStyle(element);
+    const bounds = element.getBoundingClientRect();
+    return {
+      id: element.id,
+      text: element.textContent,
+      width: bounds.width,
+      height: bounds.height,
+      computed: {
+        fontFamily: style.fontFamily,
+        fontWeight: style.fontWeight,
+        fontSize: style.fontSize,
+        lineHeight: style.lineHeight,
+        letterSpacing: style.letterSpacing,
+        padding: style.padding,
+        borderWidth: style.borderWidth,
+      },
+    };
+  }, referenceTextContracts[contract]);
+  try {
+    const diagnostics = await attachFontRenderDiagnostics(page, testInfo, name, `#${fixture.id}`);
+    return { ...fixture, diagnostics };
+  } finally {
+    await page.evaluate((id) => document.getElementById(id)?.remove(), fixture.id);
+  }
 }
