@@ -1,0 +1,27 @@
+{
+  "milestone": "Default whiteboard header preserves native scene exports",
+  "sourceBase": "6e06f311bb990513ddc82595b951b88b0e75c14d",
+  "integrationBase": "1824e2fa239ada79b13a69b7e5be7d56496c897f",
+  "change": "The Save board file header action now uses the existing native engine serialization handler, matching Board > Save board.",
+  "gap": "The free ReUI library supplies the surrounding controls; the native drawing document engine and its serialization are domain capabilities supplied by Excalidraw.",
+  "removedImplementation": "JSON serialization of the simplified bridge scene discarded native drawing fields and files.",
+  "validation": {
+    "strictMainBuildExitCode": 0,
+    "productionSdkAndHeaderCasesPassed": 26,
+    "workers": 1,
+    "retries": 0,
+    "timeoutMs": 30000,
+    "sourceViewerCopySingleFileAndActualZip": "Exact implementation bytes verified.",
+    "actualZip": {
+      "members": 404,
+      "supportingSourceLicenseScriptBytesExact": 375,
+      "portableViteAndDependenciesExact": true,
+      "svgAssets": "21 assets follow the separately verified Vite quote/trim mapping."
+    },
+    "actualDownloadedProjectStrictBuildExitCode": 0,
+    "actualDownloadedProjectHeaderRuntimePassed": 1,
+    "dependencySetup": "Matching physical dependencies from the normally installed actual Flow project; normal postinstall and separate private caches."
+  },
+  "scope": "One existing header handler and one regression test; no Mesh APIs or shared dependencies changed.",
+  "publication": "Commit, push, CI and Pages tracked separately."
+}

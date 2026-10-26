@@ -451,11 +451,7 @@ export default function Whiteboard({
                     <DropdownMenuGroup>
                       <DropdownMenuItem onSelect={downloadSvg}>Export SVG</DropdownMenuItem>
                       <DropdownMenuItem onSelect={exportPng}>Export PNG</DropdownMenuItem>
-                      <DropdownMenuItem
-                        onSelect={() =>
-                          download(JSON.stringify(scene, null, 2), `${scene.name}.json`)
-                        }
-                      >
+                      <DropdownMenuItem onSelect={downloadBoard}>
                         <FileJson />
                         Save board file
                       </DropdownMenuItem>
