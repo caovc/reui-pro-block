@@ -1,0 +1,54 @@
+{
+  "commit": "e25a1907dc068e645f0c71ed36910dcf81a8c70c",
+  "run": "https://github.com/caovc/reui-pro-block/actions/runs/40291532075",
+  "environment": "Linux Chromium, native font hinting; default production Playwright configuration unchanged",
+  "result": {
+    "productCases": {
+      "passed": 31,
+      "failed": 0,
+      "flow": 24,
+      "tabs": 6,
+      "pricing": 1
+    },
+    "manualNativeDispatchProbe": "passed",
+    "retainedSyntheticGestureDiagnostic": "failed: real horizontal scroll remains zero",
+    "wholeManualSuite": {
+      "passed": 32,
+      "failed": 1
+    }
+  },
+  "artifact": {
+    "id": 12637340650,
+    "bytes": 3058475,
+    "sha256": "cf4e14ffadfe758bd2537babe8257003842f31ee230398b05d56e5db017dd32b"
+  },
+  "independentTextReference": {
+    "contract": "Fixed literal and official font CSS, independent of product target styles; precision 2 retained; actual custom font, glyph count and served file hash guarded",
+    "flow": {
+      "targetWidth": 79,
+      "referenceTextWidth": 51,
+      "fixedBoxOverhead": 28,
+      "residual": 0,
+      "customInterGlyphs": 7
+    },
+    "pricing": {
+      "targetWidth": 125.0625,
+      "referenceWidth": 125.0625,
+      "height": 20,
+      "residual": 0,
+      "customInterGlyphs": 17
+    },
+    "viewports": [1440, 390],
+    "fontBytes": 48432,
+    "fontSha256": "c940764593d0fe5d596be327ca7558855e018039fb78509aa21921fd3644c3e4"
+  },
+  "nativePhoneInput": {
+    "commands": 14,
+    "trustedTouchMoves": 12,
+    "trustedScrollEvents": 10,
+    "scrollLeftBefore": 0,
+    "scrollLeftAfter": 142,
+    "pageY": 0
+  },
+  "limitations": "This corrects the cross-platform test oracle and input producer. It is not a product font CSS change, a claim that the manual suite is fully green, or confirmation of full CI/Pages success."
+}

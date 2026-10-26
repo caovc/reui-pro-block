@@ -1,9 +1,36 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
 import catalog from "../src/data/catalog.json" with { type: "json" };
 const items = catalog.flatMap((c) => c.blocks);
 function route(category: string, name?: RegExp) {
   const block = items.find((b) => b.category === category && (!name || name.test(b.name)))!;
   return `./#/preview/${block.group}/${block.category}/${block.id}`;
+}
+async function nativeBoard(page: Page, kind: number) {
+  const read = () =>
+    page.evaluate(
+      (id) => JSON.parse(localStorage.getItem(`bricklane:whiteboard:whiteboard-${id}`) || "null"),
+      kind,
+    );
+  await expect.poll(async () => Boolean((await read())?.elements.length)).toBe(true);
+  return read();
+}
+async function nativeObject(page: Page, kind: number, id: string) {
+  const scene = await nativeBoard(page, kind);
+  const element = scene.elements.find((item: { id: string }) => item.id === id);
+  const canvas = (await page
+    .locator(".bricklane-whiteboard-engine canvas.interactive")
+    .boundingBox())!;
+  return {
+    x: canvas.x + (element.x + scene.appState.scrollX) * scene.appState.zoom.value,
+    y: canvas.y + (element.y + scene.appState.scrollY) * scene.appState.zoom.value,
+    width: element.width * scene.appState.zoom.value,
+    height: element.height * scene.appState.zoom.value,
+    scale: scene.appState.zoom.value,
+  };
+}
+async function selectNativeObject(page: Page, kind: number, id: string) {
+  const bounds = await nativeObject(page, kind, id);
+  await page.mouse.click(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
 }
 test("magic link form validates and changes to sent state", async ({ page }) => {
   await page.goto(route("auth", /Centered Magic Link/));
@@ -102,7 +129,10 @@ test("whiteboard draws shapes with undo, redo and SVG export", async ({ page }) 
     name: "Checkout Review drawing canvas",
   });
   await expect(canvas).toBeVisible();
-  const before = await canvas.locator("[data-shape]").count();
+  const count = async () =>
+    (await nativeBoard(page, 1)).elements.filter((item: { isDeleted: boolean }) => !item.isDeleted)
+      .length;
+  const before = await count();
   await page.getByRole("radio", { name: "Rectangle", exact: true }).click();
   const box = (await canvas.boundingBox())!;
   await page.mouse.move(box.x + box.width * 0.4, box.y + box.height * 0.5);
@@ -111,11 +141,11 @@ test("whiteboard draws shapes with undo, redo and SVG export", async ({ page }) 
     steps: 5,
   });
   await page.mouse.up();
-  await expect(canvas.locator("[data-shape]")).toHaveCount(before + 1);
+  await expect.poll(count).toBe(before + 1);
   await page.getByRole("button", { name: "Undo", exact: true }).click();
-  await expect(canvas.locator("[data-shape]")).toHaveCount(before);
+  await expect.poll(count).toBe(before);
   await page.getByRole("button", { name: "Redo", exact: true }).click();
-  await expect(canvas.locator("[data-shape]")).toHaveCount(before + 1);
+  await expect.poll(count).toBe(before + 1);
   await page.getByRole("button", { name: "Export", exact: true }).click();
   const download = page.waitForEvent("download");
   await page.getByRole("menuitem", { name: "Export SVG", exact: true }).click();
@@ -125,23 +155,43 @@ test("whiteboard draws shapes with undo, redo and SVG export", async ({ page }) 
 test("sprint planning updates capacity, linked decisions and presentation", async ({ page }) => {
   await page.goto(route("whiteboard", /Sprint Planning/));
   await expect(page.getByText("26 of 31 pts", { exact: true })).toBeVisible();
-  const card = page.locator('[data-shape="story-0-0"]');
-  await card.click();
+  const nativeCanvas = page.locator(".bricklane-whiteboard-engine canvas.interactive");
+  const area = (await nativeCanvas.boundingBox())!;
+  await page.getByRole("radio", { name: "Hand", exact: true }).click();
+  await page.mouse.move(area.x + area.width / 2, area.y + area.height * 0.8);
+  await page.mouse.down();
+  await page.mouse.move(area.x + area.width / 2 + 240, area.y + area.height * 0.8, { steps: 8 });
+  await page.mouse.up();
+  await expect.poll(async () => (await nativeBoard(page, 2)).appState.scrollX).not.toBe(0);
+  await page.getByRole("radio", { name: "Selection", exact: true }).click();
+  const card = "story-0-0";
+  await selectNativeObject(page, 2, card);
   await page.getByRole("button", { name: "Estimate", exact: true }).click();
   await page.getByRole("radio", { name: "8", exact: true }).click();
   await page.getByRole("button", { name: "Reveal votes", exact: true }).click();
   await page.getByRole("button", { name: "Use 8 points", exact: true }).click();
   await expect(page.getByText("29 of 31 pts", { exact: true })).toBeVisible();
-  await expect(card).toContainText("8 pts");
-  await expect(page.getByRole("dialog")).toBeHidden();
-  await card.click();
-  const bounds = (await card.boundingBox())!;
-  const scale = await page
-    .locator(".wb-canvas")
-    .evaluate((element) => (element as SVGSVGElement).getScreenCTM()!.a);
+  await expect
+    .poll(
+      async () =>
+        (await nativeBoard(page, 2)).elements.find(
+          (item: { type: string; containerId?: string }) =>
+            item.type === "text" && item.containerId === card,
+        )?.text,
+    )
+    .toContain("8 pts");
+  await expect(page.getByRole("dialog", { name: "Planning poker", exact: true })).toBeHidden();
+  const zoomField = page.getByLabel("Zoom percentage", { exact: true });
+  await zoomField.fill("40%");
+  await zoomField.press("Tab");
+  await expect.poll(async () => (await nativeObject(page, 2, card)).scale).toBe(0.4);
+  await selectNativeObject(page, 2, card);
+  const bounds = await nativeObject(page, 2, card);
+  const parked = await nativeObject(page, 2, "lane3");
+  const targetX = parked.x + parked.width / 2;
   await page.mouse.move(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2);
   await page.mouse.down();
-  await page.mouse.move(bounds.x + bounds.width / 2 + 1050 * scale, bounds.y + bounds.height / 2, {
+  await page.mouse.move(targetX, bounds.y + bounds.height / 2, {
     steps: 12,
   });
   await page.mouse.up();
@@ -179,15 +229,58 @@ for (const [id, name, panelLabel, cardId] of [
     const canvas = page.getByRole("application", {
       name: `${name} drawing canvas`,
     });
-    const card = page.locator(`[data-shape="${cardId}"]`);
-    await expect.poll(async () => (await card.boundingBox())?.width || 0).toBeGreaterThan(130);
-    const before = (await card.boundingBox())!;
+    const kind = Number(id.slice(-1));
+    // The reference's native 240-unit notes and 20px text stay at 60% on phones.
+    await expect.poll(async () => (await nativeObject(page, kind, cardId)).scale).toBe(0.6);
+    await expect
+      .poll(async () => (await nativeObject(page, kind, cardId)).width)
+      .toBeCloseTo(144, 1);
+    expect((await nativeObject(page, kind, cardId)).width).toBeGreaterThan(130);
+    await page.getByRole("radio", { name: "Hand", exact: true }).click();
+    for (let attempt = 0; attempt < 4; attempt++) {
+      const bounds = await nativeObject(page, kind, cardId);
+      const delta = Math.max(-300, Math.min(300, 40 - bounds.x));
+      if (Math.abs(delta) < 2) break;
+      const previousX = bounds.x;
+      const startX = delta > 0 ? 45 : 345;
+      await page.mouse.move(startX, 590);
+      await page.mouse.down();
+      await page.mouse.move(startX + delta, 590, { steps: 6 });
+      await page.mouse.up();
+      await expect.poll(async () => (await nativeObject(page, kind, cardId)).x).not.toBe(previousX);
+    }
+    await page.getByRole("radio", { name: "Selection", exact: true }).click();
+    const scene = await nativeBoard(page, kind);
+    const note = scene.elements.find((item: { id: string }) => item.id === cardId);
+    const label = scene.elements.find(
+      (item: { type: string; containerId: string }) =>
+        item.type === "text" && item.containerId === note.id,
+    );
+    expect(label.text.length).toBeGreaterThan(0);
+    expect(label.fontSize * scene.appState.zoom.value).toBeGreaterThanOrEqual(12);
+    await selectNativeObject(page, kind, cardId);
+    await page.keyboard.press("Enter");
+    const textEditor = page.locator(".excalidraw-wysiwyg");
+    await expect(textEditor).toHaveValue(label.text);
+    await textEditor.fill(`${label.text} · edited`);
+    await page.keyboard.press("Escape");
+    await expect
+      .poll(
+        async () =>
+          (await nativeBoard(page, kind)).elements.find(
+            (item: { id: string }) => item.id === label.id,
+          ).originalText,
+      )
+      .toBe(`${label.text} · edited`);
+    const before = await nativeObject(page, kind, cardId);
     await page.getByRole("radio", { name: "Hand", exact: true }).click();
     await page.mouse.move(230, 590);
     await page.mouse.down();
     await page.mouse.move(280, 620, { steps: 6 });
     await page.mouse.up();
-    await expect.poll(async () => (await card.boundingBox())!.x - before.x).toBeGreaterThan(45);
+    await expect
+      .poll(async () => (await nativeObject(page, Number(id.slice(-1)), cardId)).x - before.x)
+      .toBeGreaterThan(45);
     await expect(canvas).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(390);
   });

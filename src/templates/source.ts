@@ -1,3 +1,4 @@
+import { excalidrawExportFiles } from "@/lib/excalidraw-export";
 import { zipSync, strToU8 } from "fflate";
 import type { TemplateMeta } from "./catalog";
 import { implementationFirst, templateImplementationTargets } from "@/lib/source-targets";
@@ -121,6 +122,8 @@ export function templateFiles(template: TemplateMeta) {
 
 export async function downloadTemplate(template: TemplateMeta) {
   const { files, requiredAssets } = collect(template);
+  const engineSetup = excalidrawExportFiles(files);
+  Object.assign(files, engineSetup);
   const manifest = JSON.parse(meta["/package.json"]);
   files["package.json"] = JSON.stringify(
     {
@@ -128,8 +131,16 @@ export async function downloadTemplate(template: TemplateMeta) {
       version: "1.0.0",
       private: true,
       type: "module",
-      scripts: { dev: "vite", build: "tsc --noEmit && vite build", preview: "vite preview" },
+      scripts: {
+        dev: "vite",
+        build: "tsc --noEmit && vite build",
+        preview: "vite preview",
+        ...(engineSetup["scripts/copy-excalidraw-assets.mjs"]
+          ? { postinstall: "node scripts/copy-excalidraw-assets.mjs" }
+          : {}),
+      },
       dependencies: manifest.dependencies,
+      ...(manifest.overrides ? { overrides: manifest.overrides } : {}),
       devDependencies: manifest.devDependencies,
     },
     null,

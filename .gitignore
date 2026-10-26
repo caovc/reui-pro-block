@@ -27,3 +27,6 @@ dist-ssr
 playwright-report/
 test-results/
 .qa/
+
+# Generated from the installed Excalidraw package by postinstall.
+public/excalidraw/

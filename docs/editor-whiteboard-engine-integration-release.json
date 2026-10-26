@@ -1,0 +1,108 @@
+{
+  "baseline": "e25a1907dc068e645f0c71ed36910dcf81a8c70c",
+  "scope": "Five rich text blocks and two whiteboards use native Tiptap/Excalidraw engines while retaining official free ReUI controls. Mesh page integration remains separate.",
+  "actualFreeReuse": ["ColorPicker", "NumberField", "Scrollspy", "existing shared ReUI controls"],
+  "replaced": [
+    "contentEditable/execCommand and handwritten HTML history",
+    "handwritten SVG drawing, selection and history"
+  ],
+  "sdkGap": "Official free ReUI does not include complete rich text or whiteboard engines; MIT Tiptap and Excalidraw supply these capabilities.",
+  "frozenSource": {
+    ".gitignore": "aa082b53110809fd5fe1f73a98d4137bf52d1780bebcdf8770ca0ff7d602fce5",
+    "package.json": "17d6be3e632e47ed8ba102f5e29777fd5b1b887e0966fafa1ff471e2a78232e4",
+    "package-lock.json": "7002e2783fadd1d7fd69b7b9c77f814dbb61c5de3ed4b96418467c619bf097f8",
+    "scripts/copy-excalidraw-assets.mjs": "8533a257f6b2477589abf225552d97650171506b8cd5da770e34fbd583bf5955",
+    "src/blocks/application/editor.tsx": "95faa01a3ad7bd8a3f940f8af45aa65061e61cf637f85e709ab551ce5e09235a",
+    "src/blocks/application/editor.css": "7d397115558da3c3430c6da6568898dc42ab2f18c20aed18b2820494e69c2635",
+    "src/blocks/application/rich-text-engine.ts": "53aabe286e0ad2ad4a90d688a5ae86f01cfa39e39e7e26d3623d19478df593af",
+    "src/blocks/application/rich-text-contents.tsx": "1955f0e94dc0993c7e9d57afcdd49eb9fb631dc599787190676ef69b232612cb",
+    "src/blocks/application/rich-text-block-actions.tsx": "b41185a85ab1951093db3e5aa59ae0637f336aa99a7332522cc296447337cc12",
+    "src/blocks/application/rich-text-suggestion.ts": "5a02859845b9eeb2757f1669d64c3c4dfb1f1c84e2edc0a75faa97ed2206b160",
+    "src/blocks/application/whiteboard.tsx": "feba297d6cfb7df08c685bd98f34880772de456a53e0ce1b3450fa203f316397",
+    "src/blocks/application/whiteboard-data.ts": "bbf12551592a5e3059821fc33a2a2c1401f331d17bcd595a8194ae445ad85420",
+    "src/blocks/application/whiteboard-elements.ts": "9edf6ec631585f5d93d873d35a10997969942fef5fd95e6d4f413b4d24901c98",
+    "src/blocks/application/whiteboard-engine.tsx": "ff1630c43c81ac423aed1f13cb564f1c6cdf048126bf6faf5031db0a628ca415",
+    "src/blocks/application/whiteboard-engine.css": "b499be630700fbb940b126cfdae70d557ca121307f883c93411cb5732e01fb44",
+    "src/lib/excalidraw-export.ts": "b6eb58e0db6903459a18f984e24a06976a3deda6dce5cb83ba36f32bb7ad5fca",
+    "src/lib/bundle.ts": "a95555818625c697105ab3a0fa44a6af40a5cf6486d580ac9d268c512fc628c3",
+    "src/lib/starter-files.ts": "645d313ee6222ea16aa3346ba6cafa2be307d986b1a8ec9f6599eb97b7927708",
+    "src/templates/source.ts": "008f152cf7fe124b4dcc267b304408f2701e6b1df31fa25faad051ffac873fa4",
+    "tests/editor-engine.spec.ts": "ebeb335e304d8b1089026db471e5f674a1cb1ad48af1c2da97a74dae2edf3a9b",
+    "tests/whiteboard-engine.spec.ts": "d2a75558a86f7bbca996a88684c5d70847162c636c65d4716ad476a640cfe455",
+    "tests/demos.spec.ts": "e3ea373f3753dcfcf911ed4b4b18d49ce7fd57c741af8a0299bef490acae953a",
+    "src/blocks/application/assets/excalidraw/Cascadia-OFL.txt": "51882cd3cdba4e16f220f44ddb08a635c38c44ea6e0975db2574f4be6f958238",
+    "src/blocks/application/assets/excalidraw/Virgil-OFL.txt": "a3ac9cdc65ef304ffb095d8cc877ee93bf1bffa88269693cd42ddf001650ffd0",
+    "src/blocks/application/assets/excalidraw/Nunito-OFL.txt": "580df76c95a1ec5ab878ceb25bb3d85c6a076804e9c970c8c6972aea775fdf65",
+    "src/blocks/application/assets/excalidraw/Tiptap-MIT.txt": "c96e5ecb55ac593157ad1d21d1f44a611187f494a0f04c235a1ae692c88d6ba9",
+    "src/blocks/application/assets/excalidraw/ComicShanns-MIT.txt": "6a8855512749568a12153c13b328bb1b8d1eefb89e7b997777667c988db11055",
+    "src/blocks/application/assets/excalidraw/SOURCES.md": "8b4e15610709232db33ad1625bf537628a2892e22e6d67065cb9a1767fbc26bc",
+    "src/blocks/application/assets/excalidraw/Assistant-OFL.txt": "7eaf6282cfab122b99ffd62a122fc27b6c3c8f2c65b56ff9b3a25badbc64887d",
+    "src/blocks/application/assets/excalidraw/Liberation-OFL.txt": "93fed46019c38bbe566b479d22148e2e8a1e85ada614accb0211c37b2c61c19b",
+    "src/blocks/application/assets/excalidraw/Lilita-OFL.txt": "255d5debbb80eb2ea762644311f266a279e8778f00156655a516e2b7781a63e1",
+    "src/blocks/application/assets/excalidraw/Xiaolai-OFL.txt": "0df7e09be4c2c850a48bd8beb9cd64b343aad49cd5d3f6cfb2ad2e3d28a56ca4",
+    "src/blocks/application/assets/excalidraw/Excalidraw-MIT.txt": "1352d204fdb90d5e482c13139d848bc2c9300a9a7de358a0a558a23e72d0d8be",
+    "src/blocks/application/assets/excalidraw/Excalifont-OFL.txt": "a8cbce2c463d606aff58468402dd4296981e6d5974ae7b2629debe3d58c4e2e9",
+    "src/blocks/application/whiteboard-fonts.ts": "c8f052deed7524ed8efa2eb0f3e07d293d439f6f86b1471c97894598710fa150",
+    "docs/audits/editor-whiteboard-engine-2026-10-26.md": "035ceda3979af3eaadd85e0e55234b85ca516e2d77b21d14b857ee8cf9d1b140",
+    "tests/whiteboard-initialization.spec.ts": "eb00acb37cb099bfa9c90e3dfb3e689dbb77ed610333b6d5fd2796e82b308888",
+    "src/blocks/application/rich-text-selection.ts": "d5655dc1738462f8a04dddb440af6af0974a5babac2ee501c04cbedfb67fe482"
+  },
+  "checks": {
+    "strictMain": "c0903d4 + 38 files: original npm run build exit 0; e25 intervening changes have no overlap with the 341 application source members",
+    "production": "25/25 on immutable original main build; subsequent CSS-only library correction passed actual-output interaction checks at 1440,1024,390",
+    "source": "Two production UI downloads: default display, clipboard, single-file download, archive source bytes agree",
+    "rootIntegration": "Clean e25 + 38: full format check and source/staged-format tooling 3/3 pass",
+    "starterInstall": "First actual 404-file ZIP normal npm install and original strict npm run build exit 0",
+    "secondStarter": "401 shared files, package except name, payload field types and build configs identical; physical dependency reuse, postinstall and independent Vite exit 0",
+    "starterRuntime": [
+      {
+        "id": "rich-text-editor-2",
+        "width": 1440,
+        "errors": [],
+        "externalFonts": [],
+        "checkedFontMetrics": 0
+      },
+      {
+        "id": "whiteboard-1",
+        "width": 1440,
+        "errors": [],
+        "externalFonts": [],
+        "checkedFontMetrics": 25
+      },
+      {
+        "id": "rich-text-editor-2",
+        "width": 390,
+        "errors": [],
+        "externalFonts": [],
+        "checkedFontMetrics": 0
+      },
+      {
+        "id": "whiteboard-1",
+        "width": 390,
+        "errors": [],
+        "externalFonts": [],
+        "checkedFontMetrics": 25
+      }
+    ],
+    "nativeResize": "Unchanged native drawing/select/resize/undo/redo/reload case against independent starter: 1/1 pass",
+    "remoteDeployment": "Pending new commit CI and Pages; local validation is not deployment confirmation"
+  },
+  "archives": [
+    {
+      "id": "rich-text-editor-2",
+      "sha256": "4a63a2743c8121fe73488da24a93cfdae27c21896fb65aacd0a6210e57fb4e4e",
+      "members": 404
+    },
+    {
+      "id": "whiteboard-1",
+      "sha256": "48f3e008203de4148fcdfdd0009dcfa5a94e88d6cb279ebfde776c45fa4800c3",
+      "members": 404
+    }
+  ],
+  "assets": "Original demo scenes and phone drawing. SDK fonts copied from installed package; MIT/OFL notices retained. Relative Vite base supports subdirectory hosting.",
+  "remaining": [
+    "Mesh document picker/CRUD and full canvas chrome",
+    "Local demo sharing/presence/comments have no server or multiplayer service",
+    "Imported fonts beyond initial fixture families remain SDK managed; failed preload uses best-effort fallback"
+  ]
+}

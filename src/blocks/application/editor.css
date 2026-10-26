@@ -135,3 +135,312 @@
     font-size: 17px;
   }
 }
+
+.reui-rich-document ul[data-type="taskList"] {
+  list-style: none;
+  padding-left: 0;
+}
+.reui-rich-document li[data-type="taskItem"] {
+  display: flex;
+  gap: 9px;
+  align-items: baseline;
+}
+.reui-rich-document li[data-type="taskItem"] > label {
+  flex-shrink: 0;
+  user-select: none;
+}
+.reui-rich-document li[data-type="taskItem"] > div {
+  flex: 1;
+  min-width: 0;
+}
+.reui-rich-document li[data-type="taskItem"] > div > p {
+  margin: 0;
+}
+.reui-rich-document li[data-checked="true"] > div {
+  color: var(--muted-foreground);
+  text-decoration: line-through;
+}
+.reui-rich-document .tableWrapper {
+  overflow-x: auto;
+}
+.reui-rich-document table {
+  table-layout: fixed;
+}
+.reui-rich-document td,
+.reui-rich-document th {
+  position: relative;
+  min-width: 60px;
+}
+.reui-rich-document .selectedCell:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: color-mix(in oklab, var(--primary) 10%, transparent);
+}
+.reui-rich-document .column-resize-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: -2px;
+  width: 4px;
+  pointer-events: none;
+  background: var(--primary);
+}
+.reui-rich-document.resize-cursor {
+  cursor: col-resize;
+}
+.rich-text-gutter,
+.rich-text-bubble {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  color: var(--muted-foreground);
+}
+.rich-text-bubble {
+  padding: 4px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--background);
+  box-shadow: 0 4px 16px #00000014;
+}
+.rich-text-contents {
+  margin: 20px 0;
+  border-left: 2px solid var(--border);
+  padding: 8px 16px;
+  font-size: 12px;
+}
+.rich-text-contents nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 10px;
+}
+.rich-text-contents button {
+  width: fit-content;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  text-align: left;
+}
+.rich-text-contents button:hover {
+  color: var(--foreground);
+}
+.reui-editor [data-slot="scrollspy"] [data-active="true"] {
+  color: var(--primary);
+  background: var(--muted);
+}
+
+.reui-editor[data-full-width="true"] main > div {
+  max-width: none;
+}
+.reui-editor[data-small-text="true"] .reui-rich-document {
+  font-size: 12px;
+}
+.reui-editor[data-readonly="true"] .editor-format-toolbar {
+  display: none;
+}
+.rich-text-insert-menu {
+  position: fixed;
+  width: 280px;
+  max-width: calc(100vw - 16px);
+  max-height: 320px;
+  overflow: hidden;
+  z-index: 80;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--popover);
+  box-shadow: 0 8px 24px #00000016;
+}
+.rich-text-insert-menu [cmdk-list] {
+  max-height: 270px;
+}
+/* Wiki pages use the fluid reference layout; the document/contract variants retain their own chrome. */
+.reui-editor[data-kind="2"] {
+  height: calc(100dvh - var(--template-toolbar-height, 0px));
+  min-height: 0;
+}
+.reui-editor[data-kind="2"] > header {
+  height: 56px;
+  flex-shrink: 0;
+  padding: 8px 24px;
+}
+.reui-editor[data-kind="2"] > header h2 {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+}
+.reui-editor[data-kind="2"] .editor-export,
+.reui-editor[data-kind="2"] .editor-save,
+.reui-editor[data-kind="2"] .editor-format-toolbar {
+  display: none;
+}
+.reui-editor[data-kind="2"] > .grid {
+  display: block;
+  position: relative;
+  overflow: auto;
+}
+.reui-editor[data-kind="2"] > .grid > main {
+  padding: 48px 24px 80px;
+  min-height: 100%;
+}
+.reui-editor[data-kind="2"] main > div:first-child:not(:has(.reui-rich-document)) {
+  display: none;
+}
+.reui-editor[data-kind="2"] main > div:has(.reui-rich-document) {
+  max-width: 640px;
+  padding: 0;
+  margin-inline: auto;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.reui-editor[data-kind="2"] .reui-rich-document {
+  padding: 0;
+  font-size: 16px;
+  line-height: 28px;
+}
+.reui-editor[data-kind="2"] .reui-rich-document h1 {
+  font-size: 24px;
+  line-height: 36px;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: -0.025em;
+}
+.reui-editor[data-kind="2"] .reui-rich-document h2 {
+  font-size: 20px;
+  line-height: 32px;
+  font-weight: 600;
+  margin: 32px 0 0;
+}
+.reui-editor[data-kind="2"] .reui-rich-document h3 {
+  font-size: 18px;
+  line-height: 28px;
+  font-weight: 600;
+  margin: 24px 0 0;
+}
+.reui-editor[data-kind="2"] .reui-rich-document p {
+  margin: 12px 0 0;
+}
+.reui-editor[data-kind="2"] .reui-rich-document table {
+  font-size: 14px;
+  line-height: 20px;
+}
+.reui-editor[data-kind="2"] .reui-rich-document td,
+.reui-editor[data-kind="2"] .reui-rich-document th {
+  padding: 8px 12px;
+}
+.reui-editor[data-kind="2"] .reui-rich-document blockquote {
+  margin: 12px 0 0;
+  padding-left: 16px;
+  font-style: normal;
+}
+.reui-editor[data-kind="2"] > .grid > aside {
+  position: absolute;
+  z-index: 5;
+  right: 12px;
+  top: 82px;
+  width: 32px;
+  padding: 0;
+  border: 0;
+  gap: 0;
+}
+.reui-editor[data-kind="2"] > .grid > aside > :not(nav) {
+  display: none;
+}
+.reui-editor[data-kind="2"] > .grid > aside nav button {
+  position: relative;
+  height: 12px;
+  padding: 0;
+  min-height: 0;
+  font-size: 0;
+  background: none;
+}
+.reui-editor[data-kind="2"] > .grid > aside nav button:after {
+  content: "";
+  display: block;
+  height: 1px;
+  width: 18px;
+  background: var(--border);
+}
+.reui-editor[data-kind="2"] > .grid > aside nav button[data-active="true"]:after {
+  background: var(--foreground);
+  width: 24px;
+}
+.reui-editor[data-kind="2"] > .grid > aside:is(:hover, :focus-within) {
+  width: 228px;
+  padding: 12px;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  box-shadow: 0 4px 18px #0000000c;
+}
+.reui-editor[data-kind="2"] > .grid > aside:is(:hover, :focus-within) nav button {
+  height: auto;
+  padding-block: 7px;
+  font-size: 12px;
+}
+.reui-editor[data-kind="2"] > .grid > aside:is(:hover, :focus-within) nav button:after {
+  display: none;
+}
+.reui-editor[data-kind="2"] > footer {
+  display: none;
+}
+@media (max-width: 640px) {
+  .reui-editor[data-kind="2"] > header {
+    padding-inline: 16px;
+    gap: 6px;
+  }
+  .reui-editor[data-kind="2"] > header > div:first-child > svg {
+    display: none;
+  }
+  .reui-editor[data-kind="2"] > .grid > main {
+    padding: 32px 24px 60px;
+  }
+  .reui-editor[data-kind="2"] > .grid > aside {
+    right: 4px;
+    width: 20px;
+  }
+}
+.reui-editor[data-kind="2"] > .grid {
+  scrollbar-width: none;
+}
+.reui-editor[data-kind="2"] > .grid::-webkit-scrollbar {
+  width: 0;
+}
+.reui-editor[data-kind="2"] > header > div:first-child > svg {
+  display: none;
+}
+.reui-editor[data-kind="2"] > header p {
+  font-size: 12px;
+  line-height: 16px;
+}
+.reui-editor[data-kind="2"] .reui-rich-document :is(td, th) > p {
+  margin: 0;
+}
+.reui-editor[data-kind="2"] .rich-text-contents {
+  border: 0;
+  padding: 0;
+  margin: 12px 0 0;
+  color: var(--muted-foreground);
+}
+.reui-editor[data-kind="2"] .rich-text-contents > strong {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 20px;
+}
+.reui-editor[data-kind="2"] .rich-text-contents nav {
+  gap: 4px;
+  margin-top: 8px;
+  line-height: 20px;
+}
+.reui-editor[data-kind="2"] > .grid > aside {
+  top: 100px;
+}
+
+.reui-editor[data-kind="2"][data-full-width="true"] main > div:has(.reui-rich-document) {
+  max-width: none;
+}
+.reui-editor[data-kind="2"][data-small-text="true"] .reui-rich-document {
+  font-size: 14px;
+  line-height: 24px;
+}

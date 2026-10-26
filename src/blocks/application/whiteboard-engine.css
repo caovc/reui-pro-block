@@ -1,0 +1,114 @@
+.bricklane-whiteboard-engine {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+}
+.bricklane-whiteboard-engine .excalidraw {
+  --ui-font: Inter, Arial, sans-serif;
+  --color-primary: #6c5ce7;
+  --color-primary-darker: #5747c6;
+  --color-primary-light: #e8e4ff;
+}
+.bricklane-whiteboard-engine .App-toolbar,
+.bricklane-whiteboard-engine .main-menu-trigger,
+.bricklane-whiteboard-engine .library-button,
+.bricklane-whiteboard-engine .help-icon,
+.bricklane-whiteboard-engine .zoom-actions {
+  display: none;
+}
+.bricklane-whiteboard-engine .App-menu_top {
+  top: 68px;
+  left: 16px;
+}
+.bricklane-whiteboard-engine .excalidraw .Island {
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 8px #0000000a;
+}
+.bricklane-whiteboard-engine .excalidraw .App-menu__left {
+  width: 200px;
+}
+.bricklane-whiteboard-engine {
+  z-index: 0;
+}
+
+.wb-root:has(.bricklane-whiteboard-engine) .wb-bottom {
+  pointer-events: none;
+}
+.wb-root:has(.bricklane-whiteboard-engine) .wb-bottom > * {
+  pointer-events: auto;
+}
+.bricklane-whiteboard-engine .undo-redo-buttons {
+  position: absolute;
+  bottom: 0;
+  left: 300px;
+  pointer-events: auto;
+}
+@media (max-width: 640px) {
+  .bricklane-whiteboard-engine .undo-redo-buttons {
+    left: 10px;
+    bottom: 48px;
+  }
+}
+.wb-root:has(.bricklane-whiteboard-engine) .wb-selection {
+  left: 232px;
+}
+@media (max-width: 640px) {
+  .wb-root:has(.bricklane-whiteboard-engine) .wb-selection {
+    left: 10px;
+    top: auto;
+    bottom: 100px;
+  }
+}
+.wb-tools-cluster {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding-right: 3px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--background);
+}
+.wb-tools-cluster .wb-tools {
+  border: 0;
+}
+@media (max-width: 700px) {
+  .wb-tools-cluster {
+    min-width: 0;
+    max-width: calc(100% - 80px);
+  }
+  .wb-tools-cluster .wb-tools {
+    max-width: 100%;
+  }
+}
+
+.wb-canvas-wrap:has(.bricklane-whiteboard-engine) {
+  background-color: var(--background);
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--border) 24%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--border) 24%, transparent) 1px, transparent 1px);
+  background-size: 12px 12px;
+}
+
+.wb-engine-loading {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  background: var(--background);
+  color: var(--muted-foreground);
+  font:
+    14px Inter,
+    Arial,
+    sans-serif;
+}
+
+.bricklane-whiteboard-engine:has(.default-sidebar) {
+  z-index: auto;
+}
+@media (min-width: 641px) {
+  .bricklane-whiteboard-engine .sidebar-trigger__label-element:has(> .default-sidebar-trigger) {
+    transform: translateX(-44px);
+  }
+}

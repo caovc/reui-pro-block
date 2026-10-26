@@ -1,5 +1,6 @@
 import { zipSync, strToU8 } from "fflate";
 import type { BlockMeta } from "@/data/types";
+import { excalidrawExportFiles } from "./excalidraw-export";
 import { blockFiles } from "./source";
 import { starterMain, starterViteConfig, starterHTML } from "./starter-files";
 const assets = import.meta.glob("/src/blocks/**/assets/**/*.{jpg,jpeg,png,webp,svg,woff,woff2}", {
@@ -14,6 +15,7 @@ const packageManifest = import.meta.glob("/package.json", {
 }) as Record<string, string>;
 export async function downloadBundle(block: BlockMeta) {
   const files = blockFiles(block);
+  const engineSetup = excalidrawExportFiles(files);
   const payload: Record<string, Uint8Array> = {};
   for (const [path, content] of Object.entries(files))
     payload[path === `${block.id}.tsx` ? "src/Example.tsx" : path] = strToU8(content);
@@ -34,6 +36,7 @@ export async function downloadBundle(block: BlockMeta) {
         payload[path.slice(1)] = new Uint8Array(await response.arrayBuffer());
       }),
   );
+  for (const [path, content] of Object.entries(engineSetup)) payload[path] = strToU8(content);
   const original = JSON.parse(packageManifest["/package.json"]);
   payload["package.json"] = strToU8(
     JSON.stringify(
@@ -46,8 +49,12 @@ export async function downloadBundle(block: BlockMeta) {
           dev: "vite",
           build: "tsc --noEmit && vite build",
           preview: "vite preview",
+          ...(engineSetup["scripts/copy-excalidraw-assets.mjs"]
+            ? { postinstall: "node scripts/copy-excalidraw-assets.mjs" }
+            : {}),
         },
         dependencies: original.dependencies,
+        ...(original.overrides ? { overrides: original.overrides } : {}),
         devDependencies: {
           vite: original.devDependencies.vite,
           "@vitejs/plugin-react": original.devDependencies["@vitejs/plugin-react"],
