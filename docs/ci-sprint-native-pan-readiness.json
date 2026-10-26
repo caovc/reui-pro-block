@@ -1,0 +1,24 @@
+{
+  "failedRun": 40318993259,
+  "diagnosis": "old initial fit viewport satisfies notZero before debounce stores pan; pointer click is full 240px behind actual card",
+  "originalMouseUp": 572085.498,
+  "staleReads": [572141.372, 572180.851, 572313.318, 572375.68],
+  "staleViewport": {
+    "scrollX": 49.33333333333337,
+    "scrollY": 206,
+    "zoom": 0.6
+  },
+  "runtime": {
+    "status": "PASS",
+    "cases": 1,
+    "seconds": 3.7,
+    "server": "http://127.0.0.1:51830/",
+    "processReceipt": "/tmp/bricklane-engines/sprint-ci-5fcd-diagnosis/ui1-process.json",
+    "workers": 1,
+    "retries": 0,
+    "timeout": 30000
+  },
+  "preservedAssertions": "Original capacity, estimates, drag, decision log and presentation assertions remain unchanged.",
+  "productChanges": false,
+  "deployment": "Focused regression passed; full main CI and Pages still pending."
+}

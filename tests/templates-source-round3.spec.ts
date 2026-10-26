@@ -22,7 +22,7 @@ for (const example of [
     family: "collaboration",
     modules: ["roster", "roster-approvals", "roster-import"],
   },
-  { id: "echo", family: "workflow", modules: ["echo", "echo-composer", "echo-projects"] },
+  { id: "echo", family: "workflow", modules: ["echo", "echo-sidebar", "echo-settings"] },
 ]) {
   test(`${example.id} promotes its actual secondary implementations and copies the exact ZIP source`, async ({
     page,

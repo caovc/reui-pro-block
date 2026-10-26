@@ -170,7 +170,7 @@ test("Roster uses the official calendar to switch date views and open events", a
 
 test("Echo creates and renames a project in the Projects workspace", async ({ page }) => {
   await open(page, "echo");
-  await page.getByRole("button", { name: /^Projects \d+$/ }).click();
+  await page.getByRole("button", { name: "Projects", exact: true }).click();
   await page.getByRole("button", { name: "New Project", exact: true }).click();
   await page.getByPlaceholder("e.g. Billing reliability").fill("Fidelity review");
   await page.getByRole("button", { name: "Create project", exact: true }).click();

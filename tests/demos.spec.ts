@@ -155,6 +155,7 @@ test("whiteboard draws shapes with undo, redo and SVG export", async ({ page }) 
 test("sprint planning updates capacity, linked decisions and presentation", async ({ page }) => {
   await page.goto(route("whiteboard", /Sprint Planning/));
   await expect(page.getByText("26 of 31 pts", { exact: true })).toBeVisible();
+  const beforePan = (await nativeBoard(page, 2)).appState;
   const nativeCanvas = page.locator(".bricklane-whiteboard-engine canvas.interactive");
   const area = (await nativeCanvas.boundingBox())!;
   await page.getByRole("radio", { name: "Hand", exact: true }).click();
@@ -162,7 +163,9 @@ test("sprint planning updates capacity, linked decisions and presentation", asyn
   await page.mouse.down();
   await page.mouse.move(area.x + area.width / 2 + 240, area.y + area.height * 0.8, { steps: 8 });
   await page.mouse.up();
-  await expect.poll(async () => (await nativeBoard(page, 2)).appState.scrollX).not.toBe(0);
+  await expect
+    .poll(async () => (await nativeBoard(page, 2)).appState.scrollX)
+    .toBeCloseTo(beforePan.scrollX + 240 / beforePan.zoom.value, 1);
   await page.getByRole("radio", { name: "Selection", exact: true }).click();
   const card = "story-0-0";
   await selectNativeObject(page, 2, card);

@@ -1,0 +1,45 @@
+{
+  "milestone": "Echo native Sidebar CI fixture corrections",
+  "base": "7fc739cbd837e2a10625ec04cbeea022aa1cab06",
+  "originalFullCI": {
+    "commit": "5fcd6ac117aa3dd45bc5412f8882239e8dd3ef2d",
+    "passed": 1612,
+    "failed": 4,
+    "originalArtifactSha256": "ac834fbef5c5dc87377399ccc344765ec4ebb1db6f9cdc7d3ede6a955a9b2b5e",
+    "preservedAt": "/tmp/bricklane-ci-5fcd-original"
+  },
+  "causes": [
+    {
+      "test": "Echo creates and renames a project in the Projects workspace",
+      "cause": "Actual ReuiSidebar navigation keeps Projects as a button with the count in a sibling badge. The old locator incorrectly required Projects plus the count inside its accessible name.",
+      "fix": "Use exact button name Projects; existing project creation, rename and old-name removal assertions are unchanged."
+    },
+    {
+      "test": "echo promotes its actual secondary implementations and copies the exact ZIP source",
+      "cause": "The published Echo source priority now promotes the native Sidebar and Settings modules after the template leaf, while the old fixture still expected Composer and Projects first.",
+      "fix": "Synchronize only the Echo module fixture with the published priority; existing source text, native clipboard and ZIP byte equality assertions are unchanged."
+    }
+  ],
+  "productChanges": false,
+  "configurationChanges": false,
+  "validation": {
+    "format": "oxfmt --check two files exit 0",
+    "lint": "oxlint two files exit 0",
+    "originalAffectedTests": {
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0,
+      "workers": 1,
+      "retries": 0,
+      "timeoutMs": 30000,
+      "productionURL": "http://127.0.0.1:51830",
+      "wallSeconds": 4.730205059051514,
+      "note": "One original affected two-test run against Root-authorized immutable 7fc-equivalent production, without rebuild or dependency install."
+    }
+  },
+  "limits": [
+    "Lucent mobile Settings height failure is investigated separately.",
+    "No successful full CI or new Pages deployment is claimed."
+  ]
+}
