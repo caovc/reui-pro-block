@@ -28,6 +28,7 @@ import {
 import {
   Frame,
   FrameDescription,
+  FrameFooter,
   FrameHeader,
   FramePanel,
   FrameTitle,
@@ -962,16 +963,18 @@ export default function TechnicianCapacity({ loadCapacity }: TechnicianCapacityP
                 </>
               )}
             </div>
-            <DataGridContainer className="min-w-0 rounded-none border-0">
+            <DataGridContainer className="min-w-0 rounded-none border-0 border-b">
               <DataGridScrollArea orientation="horizontal">
                 <DataGridTable />
               </DataGridScrollArea>
             </DataGridContainer>
-            <DataGridPagination
-              sizes={[10, 25, 50]}
-              info="{from} - {to} of {count} technicians"
-              className="capacity-pagination border-t px-4"
-            />
+            <FrameFooter>
+              <DataGridPagination
+                sizes={[10, 25, 50]}
+                info="{from} - {to} of {count} technicians"
+                className="capacity-pagination"
+              />
+            </FrameFooter>
           </DataGrid>
         )}
       </FramePanel>

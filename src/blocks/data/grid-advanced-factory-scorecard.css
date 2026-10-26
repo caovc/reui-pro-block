@@ -2,10 +2,6 @@
   min-height: 48px;
 }
 
-.factory-scorecard-pager {
-  min-height: 46px;
-}
-
 .factory-scorecard [data-slot="data-grid-table"] {
   min-width: 1041px;
 }
@@ -147,23 +143,5 @@
   .factory-scorecard-heading > div:last-child {
     width: 100%;
     justify-content: flex-start;
-  }
-
-  .factory-scorecard-pager {
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    padding-block: 12px;
-  }
-
-  .factory-scorecard-pager > div {
-    flex-wrap: wrap;
-    justify-content: center;
-    padding-block: 0;
-  }
-
-  .factory-scorecard-pager > div:last-child {
-    flex-direction: column;
-    gap: 12px;
   }
 }

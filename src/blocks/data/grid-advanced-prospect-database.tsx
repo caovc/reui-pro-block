@@ -66,6 +66,7 @@ import type { FilterField, FilterQuery } from "@/components/reui/filters/filters
 import {
   Frame,
   FrameDescription,
+  FrameFooter,
   FrameHeader,
   FramePanel,
   FrameTitle,
@@ -429,7 +430,7 @@ export default function ProspectDatabase({ loadCompanies }: Props = {}) {
       },
       {
         ...header("industry", "Industry", (record) => record.industry, 124),
-        cell: ({ row }) => <span className="text-muted-foreground">{row.original.industry}</span>,
+        cell: ({ row }) => <span className="text-foreground">{row.original.industry}</span>,
       },
       {
         ...header("growth", "Growth", prospectGrowth, 120),
@@ -438,12 +439,7 @@ export default function ProspectDatabase({ loadCompanies }: Props = {}) {
           return (
             <div className="flex items-center gap-2">
               <ProspectHeadcount record={row.original} />
-              <span
-                className={cn(
-                  "tabular-nums",
-                  growth !== null && growth < 0 ? "text-destructive" : "text-muted-foreground",
-                )}
-              >
+              <span className="tabular-nums text-muted-foreground">
                 {growth === null ? "—" : `${growth > 0 ? "+" : ""}${growth}%`}
               </span>
             </div>
@@ -453,7 +449,7 @@ export default function ProspectDatabase({ loadCompanies }: Props = {}) {
       {
         ...header("employees", "Size", (record) => record.employees, 80),
         cell: ({ row }) => (
-          <span className="tabular-nums text-muted-foreground">
+          <span className="tabular-nums text-foreground">
             {row.original.employees.toLocaleString()}
           </span>
         ),
@@ -466,7 +462,7 @@ export default function ProspectDatabase({ loadCompanies }: Props = {}) {
       {
         ...header("contacts", "Contacts", (record) => record.contacts, 108),
         cell: ({ row }) => (
-          <span className="tabular-nums text-muted-foreground">{row.original.contacts}</span>
+          <span className="tabular-nums text-foreground">{row.original.contacts}</span>
         ),
       },
       {
@@ -677,7 +673,7 @@ export default function ProspectDatabase({ loadCompanies }: Props = {}) {
     <section className="prospect-database" aria-label="Prospect database" onKeyDown={handleUndoKey}>
       <Frame dense className="prospect-database-frame">
         <FrameHeader className="prospect-database-header">
-          <div className="min-w-0">
+          <div className="flex min-w-0 flex-col gap-px">
             <FrameTitle>Prospects</FrameTitle>
             <FrameDescription className="truncate">
               Companies that fit your customer profile
@@ -735,8 +731,8 @@ export default function ProspectDatabase({ loadCompanies }: Props = {}) {
                     {summary.unassigned ? `${summary.unassigned} unassigned` : "All assigned"}
                   </span>
                 </div>
-                <div className="mt-1.5 flex items-center gap-2">
-                  <strong className="text-xl leading-6 font-semibold tabular-nums">
+                <div className="prospect-summary-metrics">
+                  <strong className="prospect-summary-count text-xl font-semibold tracking-tight tabular-nums">
                     {summary.count}
                   </strong>
                   <span className="prospect-summary-dots" aria-hidden="true">
@@ -744,7 +740,7 @@ export default function ProspectDatabase({ loadCompanies }: Props = {}) {
                       <span key={record.id} data-filled={index < summary.count} />
                     ))}
                   </span>
-                  <span className="text-xs tabular-nums text-muted-foreground">
+                  <span className="prospect-summary-share text-xs tabular-nums text-muted-foreground">
                     {summary.share}%
                   </span>
                 </div>
@@ -1025,11 +1021,13 @@ export default function ProspectDatabase({ loadCompanies }: Props = {}) {
                 <DataGridTable />
               </DataGridScrollArea>
             </DataGridContainer>
-            <DataGridPagination
-              sizes={[10, 25, 50]}
-              info="{from} - {to} of {count} companies"
-              className="prospect-database-pagination px-4 py-3"
-            />
+            <FrameFooter>
+              <DataGridPagination
+                sizes={[10, 25, 50]}
+                info="{from} - {to} of {count} companies"
+                className="prospect-database-pagination"
+              />
+            </FrameFooter>
           </DataGrid>
         </FramePanel>
       </Frame>

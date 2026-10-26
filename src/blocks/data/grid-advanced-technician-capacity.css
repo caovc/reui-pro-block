@@ -125,9 +125,6 @@
 .technician-capacity.capacity-comfortable {
   --capacity-row-height: 49px;
 }
-.technician-capacity .capacity-pagination {
-  min-height: 44px;
-}
 .capacity-sheet,
 .capacity-day-popover {
   font-size: 14px;
@@ -177,10 +174,5 @@
   .technician-capacity .capacity-toolbar [aria-label="Service"],
   .technician-capacity .capacity-toolbar [aria-label="Days"] {
     width: 144px;
-  }
-  .technician-capacity .capacity-pagination {
-    padding-top: 16px;
-    padding-bottom: 16px;
-    gap: 16px;
   }
 }

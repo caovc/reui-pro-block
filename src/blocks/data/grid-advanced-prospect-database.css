@@ -13,11 +13,11 @@
 
 .prospect-database-header {
   display: flex;
-  min-height: 54px;
+  min-height: 0;
   flex-direction: row;
   align-items: center;
   gap: 12px;
-  padding: 7px 16px;
+  padding: 8px 16px;
 }
 
 .prospect-database-header [data-slot="frame-panel-title"] {
@@ -62,12 +62,16 @@
 
 .prospect-intent-card[data-slot="toggle-group-item"] {
   position: relative;
-  display: block;
+  display: flex;
   width: 288px;
-  height: 74px;
+  height: auto;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 8px;
   flex: 0 0 288px;
   overflow: hidden;
-  padding: 10px 12px;
+  padding: 10px;
   border: 1px solid var(--color-border);
   border-radius: 10px;
   background: var(--color-background);
@@ -101,6 +105,28 @@
   color: var(--color-foreground);
 }
 
+.prospect-summary-metrics {
+  display: flex;
+  min-height: 24px;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.prospect-summary-count {
+  line-height: 28px;
+  text-box: trim-both cap alphabetic;
+}
+
+.prospect-summary-share {
+  width: 32px;
+  flex-shrink: 0;
+  margin-left: auto;
+  text-align: end;
+  text-box: trim-both cap alphabetic;
+}
+
 .prospect-summary-dots {
   display: flex;
   min-width: 0;
@@ -110,9 +136,10 @@
 }
 
 .prospect-summary-dots > span {
-  width: 8px;
-  height: 8px;
-  flex: 1 1 8px;
+  min-width: 0;
+  max-width: 8px;
+  aspect-ratio: 1;
+  flex: 1;
   border-radius: 999px;
   background: color-mix(in oklch, var(--prospect-intent-color) 22%, transparent);
 }
@@ -230,7 +257,6 @@
 }
 
 .prospect-database-pagination {
-  min-height: 44px;
   font-size: 13px;
 }
 
@@ -276,22 +302,12 @@
 }
 
 @media (max-width: 639px) {
-  .prospect-database-header {
-    min-height: 58px;
-    gap: 8px;
+  .prospect-summary-share {
+    order: 2;
   }
 
-  .prospect-database-pagination {
-    flex-direction: column;
-    justify-content: center;
-    gap: 10px;
-  }
-
-  .prospect-database-pagination > :first-child {
+  .prospect-summary-dots {
+    flex-basis: 100%;
     order: 3;
-  }
-
-  .prospect-database-pagination > :last-child {
-    order: -1;
   }
 }

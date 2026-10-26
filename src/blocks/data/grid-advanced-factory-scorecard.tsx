@@ -25,6 +25,7 @@ import {
 import { toast } from "sonner";
 import {
   Frame,
+  FrameFooter,
   FrameHeader,
   FramePanel,
   FrameTitle,
@@ -992,11 +993,13 @@ export default function FactoryScorecard({ loadFactories }: FactoryScorecardProp
               <DataGridTable />
             </DataGridScrollArea>
           </DataGridContainer>
-          <DataGridPagination
-            sizes={[10, 25, 50]}
-            info="{from} - {to} of {count} factories"
-            className="factory-scorecard-pager border-t px-4 py-2"
-          />
+          <FrameFooter className="factory-scorecard-footer">
+            <DataGridPagination
+              sizes={[10, 25, 50]}
+              info="{from} - {to} of {count} factories"
+              className="factory-scorecard-pager"
+            />
+          </FrameFooter>
         </DataGrid>
       </FramePanel>
       {store.undo.length > 0 && (

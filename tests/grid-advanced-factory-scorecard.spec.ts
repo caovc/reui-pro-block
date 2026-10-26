@@ -11,10 +11,10 @@ test("native rows page and sort by numeric quarterly spend", async ({ page }) =>
   await expect
     .poll(() =>
       page
-        .locator(".factory-scorecard-pager")
+        .locator(".factory-scorecard-footer")
         .evaluate((element) => element.getBoundingClientRect().height),
     )
-    .toBe(46);
+    .toBe(44);
   const rows = page.getByRole("table").first().locator("tbody tr");
   await expect(rows).toHaveCount(10);
   await expect(rows.first()).toContainText("Cedar Loom Works");
@@ -203,6 +203,14 @@ test("mobile uses a lens dropdown, genuine horizontal scrolling and no pinned fa
         .evaluate((element) => element.getBoundingClientRect().height),
     )
     .toBe(80);
+  // The public 152px measurement applies only to the default 26-record, three-page state.
+  await expect
+    .poll(() =>
+      page
+        .locator(".factory-scorecard-footer")
+        .evaluate((element) => element.getBoundingClientRect().height),
+    )
+    .toBe(152);
   const pager = page.locator(".factory-scorecard-pager");
   const pageButton = await pager.locator('button[aria-current="page"]').boundingBox();
   const results = await pager.getByText("1 - 10 of 26 factories", { exact: true }).boundingBox();

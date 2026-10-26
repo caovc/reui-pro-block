@@ -3,18 +3,24 @@
 }
 
 .hr-scorecard-actions,
-.hr-scorecard-tools,
 .hr-scorecard-period-actions {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
+.hr-scorecard-tools {
+  max-width: 100%;
+  gap: 0;
+}
+
 .hr-scorecard-search {
-  display: flex;
+  width: 176px;
+  flex: 0 1 176px;
+}
+
+.hr-scorecard-search input {
   min-width: 0;
-  align-items: center;
-  gap: 4px;
 }
 
 .hr-scorecard-summary {
@@ -158,19 +164,6 @@
     width: 100%;
     align-items: flex-start;
     flex-direction: column;
-  }
-
-  .hr-scorecard-tools {
-    width: 100%;
-  }
-
-  .hr-scorecard-search {
-    flex: 1;
-  }
-
-  .hr-scorecard-search input {
-    width: 100%;
-    min-width: 0;
   }
 
   .hr-scorecard-period-actions > button {

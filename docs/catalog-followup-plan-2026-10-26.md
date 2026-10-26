@@ -31,7 +31,7 @@ Deploy Board uses the published free-component implementation from commit `6aaae
 
 ## Scope and coordination
 
-The five Advanced implementations and two Solutions implementations were developed in parallel using separate leaves. Shared DataGrid adapters, Tabs, Sidebar, global CSS and export collectors retain assigned writers. Root integrated the catalog and source hooks narrowly, installed MapLibre normally against the current dependency baseline and coordinated all Git writes. Subsequent visual refinements keep their own evidence and frozen deltas.
+The five Advanced implementations and two Solutions implementations were developed in parallel using separate leaves. Shared DataGrid adapters, Tabs, Sidebar, global CSS and export collectors retain assigned writers. Root integrated the catalog and source hooks narrowly, installed MapLibre normally against the current dependency baseline and coordinated all Git writes. Subsequent visual refinements keep their own evidence and frozen deltas. The next native-layout milestone for Advanced 10, 11, 13 and 22 replaces consumer approximations with free FrameFooter, InputGroup and ButtonGroup compositions; [its release record](grid-native-layout-refinement-release.json) preserves the 45 production checks, five actual export builds, ten exported-runtime checks and remaining same-state visual differences.
 
 Catalog coverage is 669 blocks in 79 categories, alongside the 18 audited template IDs. Existing blocks retain their unresolved fidelity ledgers; matching counts does not certify every visual state. Remaining differences in the new grid leaves, including phone summary dots, pagination spacing and some chart/text colors, continue as separate refinements.
 

@@ -1,0 +1,49 @@
+{
+  "milestone": "Native free ReUI grid footers and HR input composition",
+  "base": "5fcd6ac117aa3dd45bc5412f8882239e8dd3ef2d",
+  "scope": [
+    "data-grid-advanced-10",
+    "data-grid-advanced-11",
+    "data-grid-advanced-13",
+    "data-grid-advanced-22"
+  ],
+  "unchangedControl": "data-grid-advanced-12",
+  "actualFreeReuse": {
+    "pagination": "Existing DataGrid context > actual FrameFooter > native DataGridPagination in 10, 11 and 22.",
+    "hrSearch": "Actual InputGroup/InputGroupInput/InputGroupAddon/InputGroupButton, Kbd and ButtonGroup; official examples c-input-group-4/10/12/13 and c-button-group-1.",
+    "charts": "Existing free ChartContainer and semantic native bar-cell patterns."
+  },
+  "removedApproximations": [
+    "Hand-built HR search/input tools and group seams.",
+    "Consumer footer padding/height/order overrides replaced with native footer composition.",
+    "Fixed phone summary-dot dimensions replaced with natural wrapping and aspect ratio."
+  ],
+  "customScope": "Independent domain records, existing state callbacks and prospect growth classification. The cutoff at 20 is an independent heuristic; public observations do not establish an exact original rule.",
+  "validation": {
+    "mainBuildExitCode": 0,
+    "nativeProductionPassed": 45,
+    "actualSourceDownloadsPassed": 5,
+    "actualZipMembersEach": 304,
+    "rawExactCandidateSourceMembersEach": 294,
+    "svgMembersEach": 0,
+    "crossZipDifferencesOnly": ["README.md", "package.json:name", "src/Example.tsx"],
+    "actualProjectNormalInstallsPassed": 5,
+    "actualProjectStrictBuildsPassed": 5,
+    "actualProjectRuntimePassed": 10,
+    "workers": 1,
+    "retries": 0,
+    "timeoutMs": 30000,
+    "desktopPhoneVisualsReviewed": 10,
+    "frozenMainAndActualAssetsUnchanged": true
+  },
+  "protected": "No free vendor, global CSS, source targets, catalog, HR readiness test, dependencies, fixtures or unrelated template edits.",
+  "remainingDifferences": [
+    "10 desktop Frame +2.266 / phone -7.734; table-footer gap1 vs public12; public track computed missing",
+    "11 table +1px, frame and pagination geometries match",
+    "12 unchanged: desktop footer46 vs44 / phone table550 vs560; same-element footer tr26 vs27desktop/37phone; legend styling and horizontal track residual; no invented interaction",
+    "13 thead upper group30 vs28; lower leaf32matches; FrameHeader48/120 matches; desktop tools right25.5625; phone tools exact; ALL KPIS visible after actual scrollIntoView phone pageScrollY188",
+    "22 no panel inset shifts frame children1px; mobile summary card79.484 dots6.9375 match; original buttons wider;6point native chart remains flatter vspublic7 HTMLbars; cutoff20 originalinference, public-5 ambiguous, not asserted official"
+  ],
+  "next": "The separate HR grouped-header proposal will correct the consumer group-row minimum while preserving the native 32px leaf row; it is outside this frozen milestone.",
+  "publication": "Commit, push, full CI and Pages deployment are separate outcomes."
+}

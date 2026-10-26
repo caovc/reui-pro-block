@@ -291,9 +291,20 @@ export function ProspectHeadcount({
     ...record.headcount.filter((value): value is number => value !== null),
   );
   const points = record.headcount.map((count, month) => ({ month, count }));
+  const growth = prospectGrowth(record);
+  const growthColor =
+    growth === null
+      ? "var(--color-muted-foreground)"
+      : growth >= 20
+        ? "var(--color-success)"
+        : growth >= 5
+          ? "var(--color-blue-500)"
+          : growth > -5
+            ? "var(--color-warning)"
+            : "var(--color-destructive)";
   return (
     <ChartContainer
-      config={{ count: { label: "People", color: "var(--color-muted-foreground)" } }}
+      config={{ count: { label: "People", color: growthColor } }}
       className={cn("prospect-headcount", large && "prospect-headcount-large")}
       initialDimension={{ width: large ? 480 : 32, height: large ? 64 : 16 }}
       role="img"
@@ -342,8 +353,8 @@ export function ProspectHeadcount({
             {points.map((point) => (
               <Cell
                 key={point.month}
-                fill={point.month === 5 ? "var(--color-foreground)" : "var(--color-count)"}
-                fillOpacity={point.month === 5 ? 0.75 : 0.45}
+                fill="var(--color-count)"
+                fillOpacity={point.month >= points.length - 2 ? 1 : 0.25}
               />
             ))}
           </Bar>

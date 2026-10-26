@@ -64,7 +64,14 @@ import { Filters } from "@/components/reui/filters/filters";
 import { createFilterQuery } from "@/components/reui/filters/filters-query";
 import type { FilterField, FilterQuery } from "@/components/reui/filters/filters-types";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { ButtonGroup } from "@/components/ui/button-group";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "@/components/ui/input-group";
+import { Kbd } from "@/components/ui/kbd";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   Select,
@@ -840,9 +847,9 @@ export default function HRScorecard({ loadKpis }: HRScorecardProps = {}) {
   const viewMenu = (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button size="icon-sm" variant="ghost" aria-label="View">
+        <InputGroupButton size="icon-sm" variant="outline" aria-label="View">
           <Columns3 />
-        </Button>
+        </InputGroupButton>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-52">
         <DropdownMenuLabel>Columns</DropdownMenuLabel>
@@ -881,9 +888,9 @@ export default function HRScorecard({ loadKpis }: HRScorecardProps = {}) {
   const thresholdMenu = (
     <Popover>
       <PopoverTrigger asChild>
-        <Button size="icon-sm" variant="ghost" aria-label="Thresholds">
+        <InputGroupButton size="icon-sm" variant="outline" aria-label="Thresholds">
           <SlidersHorizontal />
-        </Button>
+        </InputGroupButton>
       </PopoverTrigger>
       <PopoverContent align="end" className="w-80 space-y-4 p-4 text-sm">
         <h3 className="font-semibold">Score thresholds</h3>
@@ -960,13 +967,15 @@ export default function HRScorecard({ loadKpis }: HRScorecardProps = {}) {
           </FrameDescription>
         </div>
         <div className="hr-scorecard-actions">
-          <div className="hr-scorecard-tools">
-            <div className="hr-scorecard-search">
-              <Search className="size-4 text-muted-foreground" />
-              <Input
+          <ButtonGroup className="hr-scorecard-tools" aria-label="Search and scorecard tools">
+            <InputGroup className="hr-scorecard-search">
+              <InputGroupAddon>
+                <Search />
+              </InputGroupAddon>
+              <InputGroupInput
                 ref={searchRef}
-                className="h-8 w-40"
                 aria-label="Search KPIs"
+                aria-keyshortcuts="/"
                 value={search}
                 onChange={(event) => {
                   setSearch(event.target.value);
@@ -974,7 +983,10 @@ export default function HRScorecard({ loadKpis }: HRScorecardProps = {}) {
                 }}
                 placeholder="Search KPIs"
               />
-            </div>
+              <InputGroupAddon align="inline-end">
+                <Kbd aria-hidden="true">/</Kbd>
+              </InputGroupAddon>
+            </InputGroup>
             <Filters
               fields={schema}
               query={query}
@@ -987,17 +999,22 @@ export default function HRScorecard({ loadKpis }: HRScorecardProps = {}) {
               advancedAlign="end"
               showClear
               trigger={
-                <Button size="icon-sm" variant="ghost" aria-label="Filter">
+                <InputGroupButton size="icon-sm" variant="outline" aria-label="Filter">
                   <ListFilter />
-                </Button>
+                </InputGroupButton>
               }
             />
             {thresholdMenu}
             {viewMenu}
-            <Button size="icon-sm" variant="ghost" aria-label="Export CSV" onClick={exportCsv}>
+            <InputGroupButton
+              size="icon-sm"
+              variant="outline"
+              aria-label="Export CSV"
+              onClick={exportCsv}
+            >
               <Download />
-            </Button>
-          </div>
+            </InputGroupButton>
+          </ButtonGroup>
           <div className="hr-scorecard-period-actions">
             <ToggleGroup
               spacing={0}
