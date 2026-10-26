@@ -199,3 +199,55 @@ test("mobile scroll keeps native expand/KPI columns fixed without document overf
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   expect(failures).toEqual([]);
 });
+
+test("period Select uses pointer and keyboard month changes with real YTD totals and editing guards", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  const period = page.getByRole("combobox", { name: "Scorecard month", exact: true });
+  const hiring = page.locator(firstKpi);
+  const filled = page.locator('tr[data-row-id="HR-105"]');
+  const filledTarget = filled.locator('td[data-col-id="target"]');
+  const filledActual = filled.locator('td[data-col-id="actual"]');
+
+  await expect(period).toHaveText("Sep 2026");
+  await expect(hiring.locator('td[data-col-id="actual"]')).toHaveText("37.6");
+  await period.click();
+  await page.getByRole("option", { name: "Aug 2026", exact: true }).click();
+  await expect(period).toHaveText("Aug 2026");
+  await expect(page.locator(".hr-scorecard-heading")).toContainText("Aug 2026, vs Aug 2025");
+  await expect(hiring.locator('td[data-col-id="actual"]')).toHaveText("38.6");
+  await expect(filledTarget).toHaveText("35");
+  await expect(filledActual).toHaveText("39");
+
+  await page.locator('[data-slot="toggle-group-item"]').filter({ hasText: /^YTD$/ }).click();
+  await expect(period).toHaveText("Jan → Aug 2026");
+  // Eight fixed monthly observations are 35, 36, 37, 38, 36, 37, 38 and 39.
+  await expect(filledTarget).toHaveText("280");
+  await expect(filledActual).toHaveText("296");
+  await filledTarget.dblclick();
+  await expect(page.getByRole("textbox", { name: "Target", exact: true })).toHaveCount(0);
+  await expect(page.getByText("Month only editing.", { exact: false })).toBeVisible();
+
+  await period.focus();
+  await period.press("ArrowDown");
+  await expect(page.getByRole("listbox")).toBeVisible();
+  await page.keyboard.press("End");
+  await page.keyboard.press("Enter");
+  await expect(period).toHaveText("Jan → Sep 2026");
+  await expect(filledTarget).toHaveText("315");
+  await expect(filledActual).toHaveText("334");
+
+  await page
+    .locator('[data-slot="toggle-group-item"]')
+    .filter({ hasText: /^Month$/ })
+    .click();
+  await expect(period).toHaveText("Sep 2026");
+  await expect(hiring.locator('td[data-col-id="actual"]')).toHaveText("37.6");
+  await expect(filledTarget).toHaveText("35");
+  await expect(filledActual).toHaveText("38");
+  await filledTarget.dblclick();
+  await expect(page.getByRole("textbox", { name: "Target", exact: true })).toHaveValue("35");
+  await page.getByRole("textbox", { name: "Target", exact: true }).press("Escape");
+  await expect(filledTarget).toHaveText("35");
+});

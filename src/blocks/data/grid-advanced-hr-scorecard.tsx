@@ -20,7 +20,6 @@ import {
 import {
   ArrowDown,
   ArrowUp,
-  ChevronDown,
   Columns3,
   Copy,
   Download,
@@ -76,6 +75,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -87,8 +87,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -393,28 +391,24 @@ export default function HRScorecard({ loadKpis }: HRScorecardProps = {}) {
 
   const periodMenu = useMemo(
     () => (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            size="sm"
-            variant="ghost"
-            aria-label="Scorecard month"
-            className="h-7 gap-1 px-1 text-xs font-medium"
-          >
-            {ytd ? `Jan → ${monthLabel(month)}` : monthLabel(month)}
-            <ChevronDown className="size-3" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-36">
-          <DropdownMenuRadioGroup value={month} onValueChange={setMonth}>
+      <Select value={month} onValueChange={setMonth}>
+        <SelectTrigger
+          size="sm"
+          aria-label="Scorecard month"
+          className="mx-auto w-auto gap-1 border-0 bg-transparent p-0 text-xs font-semibold shadow-none data-[size=sm]:h-6 [&>svg]:opacity-40 hover:[&>svg]:opacity-100"
+        >
+          <SelectValue>{ytd ? `Jan → ${monthLabel(month)}` : monthLabel(month)}</SelectValue>
+        </SelectTrigger>
+        <SelectContent className="w-36">
+          <SelectGroup>
             {hrMonths.map((value) => (
-              <DropdownMenuRadioItem key={value} value={value}>
+              <SelectItem key={value} value={value}>
                 {monthLabel(value)}
-              </DropdownMenuRadioItem>
+              </SelectItem>
             ))}
-          </DropdownMenuRadioGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
+          </SelectGroup>
+        </SelectContent>
+      </Select>
     ),
     [month, ytd],
   );
@@ -423,6 +417,10 @@ export default function HRScorecard({ loadKpis }: HRScorecardProps = {}) {
     const meta = {
       headerClassName: "h-[30px] px-2 py-0 text-xs font-medium",
       cellClassName: "h-7 px-2 py-0 text-xs",
+    };
+    const groupMeta = {
+      ...meta,
+      headerClassName: "h-7 px-2 py-0 text-xs font-medium",
     };
     const aggregate = (row: NativeHrRow, field: "vsPY" | "vsTarget") => {
       const summary = hrSummary(nativeLeaves(row.subRows));
@@ -576,7 +574,10 @@ export default function HRScorecard({ loadKpis }: HRScorecardProps = {}) {
       {
         id: "period",
         header: () => periodMenu,
-        meta,
+        meta: {
+          ...groupMeta,
+          headerClassName: "h-7 px-0 py-0 text-xs font-medium",
+        },
         columns: [
           numeric("priorYear", "Prior Year", 76),
           numeric("priorMonth", "Prior Month", 88),
@@ -588,8 +589,8 @@ export default function HRScorecard({ loadKpis }: HRScorecardProps = {}) {
       },
       {
         id: "score",
-        header: "Score",
-        meta,
+        header: () => <span className="block truncate text-center font-semibold">Score</span>,
+        meta: groupMeta,
         columns: (["vsPY", "vsTarget"] as const).map((id) => ({
           id,
           accessorKey: id,
@@ -1134,7 +1135,6 @@ export default function HRScorecard({ loadKpis }: HRScorecardProps = {}) {
           }}
           tableClassNames={{
             base: "text-xs",
-            headerRow: "h-[30px]",
             bodyRow: "h-7",
             footer: "hr-scorecard-footer",
           }}

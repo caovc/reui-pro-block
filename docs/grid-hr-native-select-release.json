@@ -1,0 +1,127 @@
+{
+  "baseCommit": "7fc739cbd837e2a10625ec04cbeea022aa1cab06",
+  "freeComponentsReused": [
+    "existing official-free Select",
+    "SelectTrigger",
+    "SelectValue",
+    "SelectContent",
+    "SelectGroup",
+    "SelectItem",
+    "existing ReUI DataGrid/TanStack native grouped headers and leaf band"
+  ],
+  "duplicateApproximationCorrected": "period DropdownMenu+28px Button replaced by actual24px Select, controlled month/setMonth/YTD values preserved",
+  "consumerChanges": "groupMeta28, periodTHpx0 and centered600 period control, Score THpx8 and centered600 span; obsolete globalrow30 removed; no totalthead60 constraint and no shared free component changes",
+  "mainGates": [
+    {
+      "stage": "postinstall",
+      "exitCode": 0,
+      "seconds": 0.278,
+      "log": "/private/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-hr-select-v2-bbojswe4/postinstall.log"
+    },
+    {
+      "stage": "format-check",
+      "exitCode": 0,
+      "seconds": 0.735,
+      "log": "/private/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-hr-select-v2-bbojswe4/format-check.log"
+    },
+    {
+      "stage": "lint",
+      "exitCode": 0,
+      "seconds": 0.624,
+      "log": "/private/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-hr-select-v2-bbojswe4/lint.log"
+    },
+    {
+      "stage": "native-list",
+      "exitCode": 0,
+      "seconds": 0.564,
+      "log": "/private/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-hr-select-v2-bbojswe4/native-list.log"
+    },
+    {
+      "stage": "build",
+      "exitCode": 0,
+      "seconds": 25.484,
+      "log": "/private/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-hr-select-v2-bbojswe4/build.log"
+    }
+  ],
+  "native10": {
+    "startTime": "2026-10-26T12:46:46.635Z",
+    "duration": 13098.208,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "geometry": {
+    "widths": [1440, 390],
+    "rowsEach": [28, 32],
+    "rowspanEach": 60,
+    "firstBodyY": [223, 474],
+    "FrameHeaderEach": [48, 120],
+    "periodTriggerSizeEach": {
+      "height": 24,
+      "width": 75.96875
+    },
+    "phoneDocumentWidth": 390,
+    "phoneHorizontalScroll": 789,
+    "phoneFixedXs": [17, 45],
+    "newPNGsActuallyViewed": true,
+    "files": [
+      {
+        "path": "/private/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-hr-select-v2-bbojswe4/geometry/hr-1440.png",
+        "sha256": "cedb31542aa26a6be8be527704e55935d23960a119b7db9ae340703961506d33"
+      },
+      {
+        "path": "/private/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-hr-select-v2-bbojswe4/geometry/hr-390.png",
+        "sha256": "fea759390701b8540a6a031421cbf26ec029b684f74eb8a2ad3d17c8c4d8d91c"
+      }
+    ]
+  },
+  "source1": {
+    "actualZIPCount": 304,
+    "supportingRawExactCount": 294,
+    "supportingExtensions": {
+      ".tsx": 234,
+      ".ts": 43,
+      ".css": 13,
+      ".woff2": 1,
+      ".txt": 2,
+      ".md": 1
+    },
+    "rawExactLicenses": ["LICENSE", "THIRD_PARTY_NOTICES.md"],
+    "SVGCount": 0,
+    "viewerCopySingleZIPExact": true,
+    "actualZIPArchiveSHA256": "a711c139e35579aa88f154f3907fb3f36694bed270bee79af2b3691f3abc7eda",
+    "originalZIPChangedMembers": [],
+    "generatedFilesSeparated": ["src/Example.tsx", "src/main.tsx", "src/theme.css"],
+    "generatedThemeExact": true
+  },
+  "actualStrict": {
+    "pid": 5869,
+    "cmd": ["npm", "run", "build"],
+    "cwd": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-hr-select-v2-bbojswe4/source1/export-original-13",
+    "originalScript": "tsc --noEmit && vite build",
+    "exitCode": 0,
+    "seconds": 10.968
+  },
+  "actualNative2": {
+    "startTime": "2026-10-26T12:50:24.165Z",
+    "duration": 1692.8029999999999,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "residuals": [
+    "period trigger width/height matches public but x is1px left:749.53125 vs750.53125 desktop;584.53125 vs585.53125 phone; native group TH divider orientation unchanged",
+    "existing desktop toolbar25.5625px position and unrelated older Grid residuals remain; not pixel-perfect claim"
+  ],
+  "priorFailure": {
+    "directory": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-hr-group28-gkyaf3a_",
+    "receiptSHA256": "574171deba7707b46ba00587dd767927cf706d22a200cfae3208af057b6e609f",
+    "geometry": [29, 32],
+    "readonlyFrozenURL": "http://127.0.0.1:49409",
+    "SourceOrActualBuildNotRun": true
+  },
+  "evidenceReceiptSHA256": "bc0f6c5a0894b9b2b133963f9ea8568350f935cc85ed7b0d13a627c8dbac573f",
+  "deployment": "Not deployed at commit; Root checks main CI and Pages after push."
+}
