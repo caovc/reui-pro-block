@@ -1,0 +1,41 @@
+name: Diagnose browser rendering on Linux
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: browser-diagnostics-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  focused-browser-checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run format:check
+      - run: npm run test:tooling
+      - run: npm run lint
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - name: Run original focused browser checks
+        run: >-
+          npx playwright test
+          tests/flow-detail-fidelity.spec.ts
+          tests/pricing-upgrade-dialog-visual.spec.ts
+          tests/tabs-overflow.spec.ts
+          tests/tabs-native-input-diagnostic.spec.ts
+          --workers=1 --retries=0
+          --output=/tmp/bricklane-linux-browser-diagnostics
+      - name: Upload browser evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-browser-evidence-${{ github.run_id }}
+          path: /tmp/bricklane-linux-browser-diagnostics/
+          if-no-files-found: ignore
+          retention-days: 7

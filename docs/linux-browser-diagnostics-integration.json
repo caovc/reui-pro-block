@@ -1,0 +1,27 @@
+{
+  "milestone": "Manual Linux browser diagnostics; observation only, no product fix or Pages deployment claimed",
+  "base": "d8c63058993e7891b7bf2d3ae42e8387e234b232",
+  "ci": {
+    "run": 40283302611,
+    "passed": 1377,
+    "failed": 6,
+    "artifact": 12632774578,
+    "artifactSHA256": "61084f868da7bd02dd7196cab41c27baba391f6fbb4f7fa9184b4ac7caead254"
+  },
+  "scope": [
+    "Flow and Pricing actual platform fonts, synchronous layout, glyph ranges, canvas metrics and served-font hashes",
+    "Separate original synthetic gesture versus dispatchTouchEvent probe; each must really scroll",
+    "Manual workflow executes original three regression specs and separate native input probe, one worker and zero retries",
+    "Original push deployment workflow and original dimensions, precision, timeouts, Tabs49 assertions unchanged"
+  ],
+  "localEvidence": {
+    "flowHelperSanity": "1 PASS; native Inter Medium and 76.796875; not Linux acceptance",
+    "pricingOriginalAndDiagnostic": "2 PASS on exact d8 immutable5488; width119.078125; not Linux acceptance",
+    "touchV1": "2 PASS once; V2 only persists same JSON to artifact files, no repeated UI run"
+  },
+  "limitations": [
+    "Diagnostics can advance time; synchronous first and after-CDP snapshots expose this. A diagnostic pass alone is not a product fix.",
+    "Linux actual run and new Pages deployment remain pending.",
+    "Grouping avatar loading and Cohort native animation failures have separate trace-backed readiness fixes in progress."
+  ]
+}

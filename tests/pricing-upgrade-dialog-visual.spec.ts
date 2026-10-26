@@ -1,4 +1,5 @@
 import { expect, test, type Locator } from "@playwright/test";
+import { attachFontRenderDiagnostics } from "./font-render-diagnostics";
 
 async function finishEntryAnimation(dialog: Locator) {
   await dialog.evaluate(async (element) => {
@@ -86,6 +87,12 @@ test("pricing 7 preserves reference title tracking, centered media and native se
       .soft(typography.font, `${prefix} title uses the loaded reference font`)
       .toContain("Inter");
     expect.soft(typography.tracking, `${prefix} official EmptyTitle tracking`).toBe("-0.35px");
+    await attachFontRenderDiagnostics(
+      page,
+      testInfo,
+      `${prefix}-pricing7-empty-title`,
+      '.pud-entry [data-slot="empty-title"]',
+    );
     expect.soft(typography.width, `${prefix} reference title width`).toBeCloseTo(119.078125, 2);
     await page.screenshot({
       path: testInfo.outputPath(`${viewport.width}-closed.png`),

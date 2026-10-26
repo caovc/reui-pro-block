@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
+import { attachFontRenderDiagnostics } from "./font-render-diagnostics";
 
 async function open(page: Page, id: string, width: number) {
   await page.setViewportSize({ width, height: 900 });
@@ -195,9 +196,15 @@ for (const width of [1440, 390]) {
   });
   test(`workflow menus and native badge match measured reference geometry at ${width}`, async ({
     page,
-  }) => {
+  }, testInfo) => {
     await open(page, "flow-1", width);
     const badge = page.locator('[data-flow-node="form"] [data-slot="badge"]');
+    await attachFontRenderDiagnostics(
+      page,
+      testInfo,
+      `flow-badge-font-${width}`,
+      '[data-flow-node="form"] [data-slot="badge"]',
+    );
     expect(
       await badge.evaluate((element) => parseFloat(getComputedStyle(element).width)),
     ).toBeCloseTo(76.796875, 2);
