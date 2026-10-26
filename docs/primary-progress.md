@@ -36,7 +36,7 @@ Preview: https://caovc.github.io/reui-pro-block/
 | ------------------------- | ---------------------------------------------------------------------------------------------- |
 | Primary                   | Release integration, real starter verification, CI/Pages; AppShell M5 and Category integration |
 | Application agent         | Navbar12–13;1–11 integrated with whole free examples                                           |
-| Data agent                | AI Chat1–3 integrated; next4–6 in independent modules                                          |
+| Data agent                | AI Chat1–6 integrated; Activity1 compact layout follow-up in progress                          |
 | Commerce agent            | All8 Shop Heroes and Category1–3 functional; Category4–6 in independent modules                |
 | Source/export coordinator | Diagnose source/ZIP/site CI failures within original source scope                              |
 | Grid coordinator          | Diagnose two Grid CI failures; preserve previous filter-focus correction                       |
@@ -118,3 +118,7 @@ M5 cumulative Root validation on latestNavbar10–11 passed99/99 production case
 Category Card4–6 complete six independent functional leaves. The actual free Card8/ScrollArea1/Item4/Item2/Breadcrumb1 and published CollectionBrowser/SaveProvider supply media, native scroll, records, navigation and shared save state. Domain taxonomy/budget calculations and the full-surface seasonal hover/focus reveal are custom gaps absent from the checked free examples. Root passed98/98 production regressions then33/33 cumulative Navbar10–11/source cases; final M5-base build and focused checks are recorded in the integration release. Three actual182-file starters independently strict-built/rendered at1440/390. Source/copy/file/ZIP leaves agree. The directory correctly counts60 unique pieces across overlapping paths; public4–6 visual matching and exact typography/geometry remain pending.
 
 On2026-10-26, GitHub confirmed c28b627 run39939335751 succeeded with987/987 browser cases plus build and Pages deployment. AppShellM5 56229f5 has now been pushed; its own cumulative CI/deploy remains pending. Push success is not deployment success.
+
+## AI Chat quote, connected-app and task workspace milestone
+
+Chat4–6 now have independent quote sidebar, connected-app and agentic task leaves using actual free Sidebar4/Command7/Combobox26/Item11/Radio16/Trace2&4/Questionnaire1/Message/Scroller/Frame/CodeBlock. This replaces their generic chat surface. Original quote/thread state, immutable source permissions/read receipts, editable task plans, failure/retry/branch omission and local Markdown/ticket handoff fill specific domain gaps. The installed Combobox filtered render API supplies actual native search/keyboard selection; consumer-only phone Sheet classes remove width/duplicate-close defects. Root strict build and63/63 baseline plus32/32 cumulative M5 production cases passed; latest Category integration result is recorded separately. Two actual245-file5/6 starters independently strict-built/rendered at1440/390 with byte-identical leaves. Public4–6 visual/menu/lifecycle matching remains pending; AI, app connections and tickets are local demos.

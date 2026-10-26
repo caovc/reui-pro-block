@@ -1,0 +1,135 @@
+{
+  "checkedOn": "2026-10-23",
+  "onlyFreeSource": true,
+  "existingFirstBatchSourceRecord": "docs/ai-chat-free-sources.json",
+  "sources": [
+    {
+      "name": "c-sidebar-4",
+      "url": "https://reui.io/r/radix-nova/c-sidebar-4.json",
+      "jsonSha256": "1f9e4dc257ac6fe1a1698cb1aeb521b3587c3e478922d7bc8bf792c8316188c8",
+      "registryDependencies": ["avatar", "@reui/badge", "button", "dropdown-menu", "sidebar"],
+      "files": [
+        {
+          "path": "c-sidebar-4.tsx",
+          "sha256": "a469cde6c2be846eff2ebabc3afb9cda67c00abb2764aae700238969f3e442f3",
+          "lines": 458
+        }
+      ],
+      "scope": "adapted-in-chat-4-6"
+    },
+    {
+      "name": "c-combobox-24",
+      "url": "https://reui.io/r/radix-nova/c-combobox-24.json",
+      "jsonSha256": "550be8d6a3457d825a957be713ff9f5a7fe58587f266ebb8ae7de72519055720",
+      "registryDependencies": ["avatar", "button", "combobox", "field", "item"],
+      "files": [
+        {
+          "path": "c-combobox-24.tsx",
+          "sha256": "8cb334aeb2512485f38127dc964de22317d801aee8f6184941f4029e343738cf",
+          "lines": 349
+        }
+      ],
+      "scope": "audited-only"
+    },
+    {
+      "name": "c-combobox-26",
+      "url": "https://reui.io/r/radix-nova/c-combobox-26.json",
+      "jsonSha256": "7c488d116b1e50d4b8526f1e61bd9cd44866f27b062e40672af5a7d5a49c7537",
+      "registryDependencies": ["button", "combobox", "field"],
+      "files": [
+        {
+          "path": "c-combobox-26.tsx",
+          "sha256": "db465921caa80abd2b21c5fb59d5ce2e3876a6d7180cb5da7d69d93e1287fd3d",
+          "lines": 243
+        }
+      ],
+      "scope": "adapted-in-chat-4-6"
+    },
+    {
+      "name": "c-item-11",
+      "url": "https://reui.io/r/radix-nova/c-item-11.json",
+      "jsonSha256": "3f305e036470eb493d3fe223289d2fcfbf810f3199fea4824e6e017448a57d73",
+      "registryDependencies": ["@reui/badge", "button", "item"],
+      "files": [
+        {
+          "path": "c-item-11.tsx",
+          "sha256": "4be1997087941964bb31c3e359bb1b5f71790468189be9c2e2118e3c7bcb0bed",
+          "lines": 88
+        }
+      ],
+      "scope": "adapted-in-chat-4-6"
+    },
+    {
+      "name": "c-trace-2",
+      "url": "https://reui.io/r/radix-nova/c-trace-2.json",
+      "jsonSha256": "8729bafbc9c37a96515bba7fba48fc45487ce89418c7ef37b155fd7dbb85214a",
+      "registryDependencies": ["button", "@reui/code-block", "trace"],
+      "files": [
+        {
+          "path": "c-trace-2.tsx",
+          "sha256": "4bd3dec994e8c9b946582d70cc87d95a5b39360839cdcaed490fee65a1e2569d",
+          "lines": 289
+        }
+      ],
+      "scope": "adapted-in-chat-4-6"
+    },
+    {
+      "name": "c-trace-4",
+      "url": "https://reui.io/r/radix-nova/c-trace-4.json",
+      "jsonSha256": "ed8f0b1d36d142c707b901f59b4c25b3e3d22b4fd900014b5f896894b955fdca",
+      "registryDependencies": ["button", "@reui/code-block", "trace"],
+      "files": [
+        {
+          "path": "c-trace-4.tsx",
+          "sha256": "66e06ed3ac737a817d8e660f0a5ffb03a2028ee894144335b35f37705f07e534",
+          "lines": 277
+        }
+      ],
+      "scope": "adapted-in-chat-4-6"
+    },
+    {
+      "name": "c-radio-group-5",
+      "url": "https://reui.io/r/radix-nova/c-radio-group-5.json",
+      "jsonSha256": "8d855bc41de2c811d5e0cf09720b24f07982436c317469e874d7089c84ee5db9",
+      "registryDependencies": ["field", "radio-group"],
+      "files": [
+        {
+          "path": "c-radio-group-5.tsx",
+          "sha256": "337a490433f5da7565d78d7407a257ce233d6e154eac6fa919730096a8cd0f17",
+          "lines": 36
+        }
+      ],
+      "scope": "audited-only"
+    },
+    {
+      "name": "c-radio-group-16",
+      "url": "https://reui.io/r/radix-nova/c-radio-group-16.json",
+      "retrieval": "official npx shadcn@latest view @reui/c-radio-group-16",
+      "cliPayloadSha256": "a0585a0eeb5fdc17480aeccb200165c38be08c642fb370b9054df0be423443b6",
+      "registryDependencies": ["field", "radio-group"],
+      "files": [
+        {
+          "path": "c-radio-group-16.tsx",
+          "sha256": "1e85123dfee07827ec589ecc1bc763e7bafa86febdf2df3520ebe1705bdfb473",
+          "lines": 33
+        }
+      ],
+      "scope": "adapted-in-chat-4-6"
+    },
+    {
+      "name": "c-command-7",
+      "url": "https://reui.io/r/radix-nova/c-command-7.json",
+      "retrieval": "official npx shadcn@latest view @reui/c-command-7",
+      "cliPayloadSha256": "40fee4ba6802b927bbacaf6081c9cb8f52fce8f7cb13983d1ca44ba7df7c77c0",
+      "registryDependencies": ["button", "command"],
+      "files": [
+        {
+          "path": "c-command-7.tsx",
+          "sha256": "da6cbcd2354ff52eef9fcf13ac0099bf32e58e4fc74ee6d163485e77a54c71e8",
+          "lines": 122
+        }
+      ],
+      "scope": "adapted-in-chat-4-6"
+    }
+  ]
+}

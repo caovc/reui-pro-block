@@ -369,6 +369,12 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
       const module = ["ai-chat-copilot", "ai-chat-docked", "ai-chat-welcome"][variant - 1];
       return paths("data", module, "ai-chat-initial-variants");
     }
+    if (block.category === "ai-chat" && variant >= 4 && variant <= 6) {
+      const module = ["ai-chat-quote-sidebar", "ai-chat-connected-apps", "ai-chat-task-panel"][
+        variant - 4
+      ];
+      return paths("data", module, "ai-chat-workspace-variants");
+    }
     if (block.category === "agent-activity") {
       const modules = [
         "agent-activity-approval",

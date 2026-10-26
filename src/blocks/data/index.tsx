@@ -1,3 +1,4 @@
+import WorkspaceChatVariants from "./ai-chat-workspace-variants";
 import InitialChatVariants from "./ai-chat-initial-variants";
 import StatusTrackerBlock from "./status-tracker";
 import FilteringGrid from "./grid-filtering";
@@ -93,6 +94,13 @@ export default function DataBlock({ block }: BlockProps) {
     ["ai-chat-1", "ai-chat-2", "ai-chat-3"].includes(block.id)
   ) {
     return <InitialChatVariants block={block} />;
+  }
+  if (
+    block.group === "ai-agents" &&
+    block.category === "ai-chat" &&
+    ["ai-chat-4", "ai-chat-5", "ai-chat-6"].includes(block.id)
+  ) {
+    return <WorkspaceChatVariants block={block} />;
   }
   if (block.group === "ai-agents")
     return block.category === "ai-chat" ? (

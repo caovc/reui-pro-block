@@ -1,0 +1,72 @@
+{
+  "frozenFiles": {
+    "docs/ai-chat-workspace-free-sources.json": "776e15edc0fb8c15622ea0e5f848ae8b58325e65283d0c7243e6e4dc98e3089c",
+    "docs/ai-chat-workspace-refinement.md": "f4d6408017cfd6d72e50ea46798a3ae9a029ac72bff1a5a79c900dfa14b39d5c",
+    "src/blocks/data/ai-chat-connected-apps.tsx": "49bf31e31476269328694901bca6daff0c47976b5db1f0dcb6cc8b45874cc644",
+    "src/blocks/data/ai-chat-connected-model.ts": "1dab9d94306042371d3585f0c9e85ef179b5bc574f9c3d24169130af81449cc1",
+    "src/blocks/data/ai-chat-quote-model.ts": "3d13bddace4c4e933d76799c1949e33f045ea1f2feac91f3a78d543e6c3ca048",
+    "src/blocks/data/ai-chat-quote-sidebar.tsx": "2f4c96a52f58da98bb988abed58ee10d1e002f4b19db96269509f8af24db180d",
+    "src/blocks/data/ai-chat-task-brief.tsx": "a4695fd63e29453493126f66ee841ee835a209227e4d94f2a163eacffd6b34eb",
+    "src/blocks/data/ai-chat-task-model.ts": "5c5c459a2567de65dd66c603d36918dbed781aa25a363985c672ee03ca1329ab",
+    "src/blocks/data/ai-chat-task-panel.tsx": "8fc8959544590438592264a6ff4ed58d5169758d77793d2186a3dec5016bf081",
+    "src/blocks/data/ai-chat-workspace-composer.tsx": "c334ac8ec92fa623e3cb12b2d80472694b4161a2051c0b95fff71e58dba6c3dc",
+    "src/blocks/data/ai-chat-workspace-transcript.tsx": "b776f43f68c00083c4b1cee9baa925a6bbf4e5312052b216a3801faa903f73ad",
+    "src/blocks/data/ai-chat-workspace-variants.tsx": "05a873dde683b0afb02ac6f917c6ad349a239286a6735cca376691b6819439b2",
+    "tests/ai-chat-workspace-model.spec.ts": "ac27d05be3ef6db3d71c673a8a42683d1597e6ea595f8dcbf0cc57e3808f9f3c",
+    "tests/ai-chat-workspace-source.spec.ts": "226c5d3742158c1778f59d0b70590eeb22226ac821e1eb7b90af894ecf26b6f3",
+    "tests/ai-chat-workspace.spec.ts": "58fa132fb8803e6f060e3fb253f3da9a4db60fd36a3df3e527a0b9d695aec45f"
+  },
+  "ownerIntegration": {
+    "scope": "Only exact AI Chat IDs 4,5,6; preserve all other entries, published Chat1\u20133 and independent Branching9.",
+    "candidateBase": "671e3967513921f3496d28984114e3dcef01f28e",
+    "dataIndex": {
+      "import": "import WorkspaceChatVariants from \"./ai-chat-workspace-variants\";",
+      "dispatch": "if (block.group === \"ai-agents\" && block.category === \"ai-chat\" && [\"ai-chat-4\", \"ai-chat-5\", \"ai-chat-6\"].includes(block.id)) return <WorkspaceChatVariants block={block} />;"
+    },
+    "sourceTargets": {
+      "condition": "ai-agents / ai-chat / variant >=4 && variant <=6",
+      "leaves": ["ai-chat-quote-sidebar", "ai-chat-connected-apps", "ai-chat-task-panel"],
+      "fallback": "ai-chat-workspace-variants"
+    },
+    "protectedFirst16Exact": true,
+    "publicVisual": "All three public desktop/mobile pixels, original menus and lifecycle pending; functional milestone only.",
+    "verification": {
+      "production": "14/14 passed, one worker,17.4s",
+      "output": "/tmp/reui-ai-chat-workspace-release-final",
+      "candidate": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/reui-ai-chat-workspace-qa-jjz5h5xb",
+      "productionUrl": "http://127.0.0.1:4334",
+      "actualZipBuilds": [
+        {
+          "id": 5,
+          "path": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/reui-ai-chat-5-release-starter-bcz5085t",
+          "zip": "/tmp/reui-ai-chat-workspace-release-final/ai-chat-workspace-source-a-59d40-and-message-implementations/ai-chat-workspace-5-starter.zip",
+          "files": 245,
+          "strict": true
+        },
+        {
+          "id": 6,
+          "path": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/reui-ai-chat-6-release-starter-np4keiw1",
+          "zip": "/tmp/reui-ai-chat-workspace-release-final/ai-chat-workspace-source-a-6c6e5-and-message-implementations/ai-chat-workspace-6-starter.zip",
+          "files": 245,
+          "strict": true
+        }
+      ],
+      "zipViewports": ["1440x950", "390x950"],
+      "zipResults": "All four functional cases passed with CSS borders/radii/opacity; no errors, broken images or horizontal overflow."
+    }
+  },
+  "root": {
+    "base": "dabc8164d81fc08835136950d4a95c6c4cd9c325",
+    "strictBuild": "PASS latest Category rebase dabc816; candidate-only isolated TypeScript cache",
+    "production": "63/63 baseline2.0m +32/32 M5 cumulative1.2m PASS,oneworker; latest Category36/36 PASS1worker",
+    "logs": [
+      "/tmp/bricklane-chat456-root-production.log",
+      "/tmp/bricklane-chat456-m5-root-production.log",
+      "/tmp/bricklane-chat456-category-root-production.log",
+      "/tmp/bricklane-chat456-category-root-build.log"
+    ],
+    "starter": "Two actual245-file5/6 ZIPs independently strictbuilt/rendered1440/390, Root inspected actual5phone screenshot",
+    "limits": "Allpublic4\u20136 visual/menu/lifecycle matching pending; originalfixtures, ninthNotion app, in-memoryAI/tickets",
+    "deployment": "Own CI/Pages pending; latest verified successfuldeployment c28b627987browser PASS"
+  }
+}
