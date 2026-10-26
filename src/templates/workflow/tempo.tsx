@@ -1,3 +1,5 @@
+import { AiOperations } from "./ai-operations";
+import { useAiOperationsModel } from "./ai-operations-model";
 import { useTempoReportsModel } from "./workflow-models";
 import { useState } from "react";
 import {
@@ -97,6 +99,7 @@ const seed = [
   },
 ];
 export default function Tempo() {
+  const operationsModel = useAiOperationsModel();
   const segmentRecords = useTempoReportsModel();
   const [view, setView] = useState("Home");
   const [reportView, setReportView] = useState("Analytics");
@@ -265,7 +268,7 @@ export default function Tempo() {
         <>
           {view === "Reports" && (
             <div className="wf-task-subnav">
-              {["Activity", "Analytics"].map((label) => (
+              {["Activity", "Analytics", "AI Ops"].map((label) => (
                 <Button
                   key={label}
                   variant={reportView === label ? "secondary" : "ghost"}
@@ -324,6 +327,8 @@ export default function Tempo() {
       {view === "Reports" ? (
         reportView === "Activity" ? (
           <TempoCalendar />
+        ) : reportView === "AI Ops" ? (
+          <AiOperations model={operationsModel} variant="tempo" />
         ) : (
           <TempoReports records={segmentRecords} />
         )

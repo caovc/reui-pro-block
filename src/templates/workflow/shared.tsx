@@ -1,3 +1,5 @@
+import { SidebarNavigation } from "@/components/reui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { ReuiStripePattern } from "@/blocks/data/reui-free-chart-primitives";
 import { BrandGlyph } from "@/components/brand-mark";
 import { useState, useId, type ReactNode, type ComponentType } from "react";
@@ -80,6 +82,7 @@ export type NavItem = {
   label: string;
   icon?: ComponentType<{ className?: string }>;
   count?: string;
+  children?: string[];
 };
 export function Logo() {
   return (
@@ -115,6 +118,7 @@ export function Shell({
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [searchOpen, setSearchOpen] = useState(false);
+  const hasNestedNavigation = nav.some((item) => item.children?.length);
   const sidebar = (
     <>
       <div className="wf-brand">
@@ -127,34 +131,52 @@ export function Shell({
           Search…<kbd>/</kbd>
         </Button>
       )}
-      <div className="wf-nav-group">
-        {!compact && <p>{brand === "ReUI" ? "Platform" : "Workspace"}</p>}
-        {nav.map(({ label, icon: Icon = LayoutDashboard, count }) => (
-          <div key={label}>
-            <Button
-              title={label}
-              aria-label={label}
-              aria-current={view === label ? "page" : undefined}
-              variant={view === label ? "secondary" : "ghost"}
-              size={compact ? "icon" : "default"}
-              className="wf-nav-button"
-              onClick={() => {
-                setView(label);
-                setOpen(false);
-              }}
-            >
-              <Icon />
-              {!compact && (
-                <>
-                  <span>{label}</span>
-                  {count ? <small>{count}</small> : null}
-                </>
-              )}
-            </Button>
-            {label === "Tasks" && taskNavigation}
-          </div>
-        ))}
-      </div>
+      {hasNestedNavigation ? (
+        <SidebarNavigation
+          className="wf-free-nav"
+          label="Workspace"
+          items={nav.map(({ label, icon: Icon = LayoutDashboard, count, children }) => ({
+            label,
+            icon: <Icon />,
+            badge: count,
+            children,
+          }))}
+          active={view}
+          onSelect={(value) => {
+            setView(value);
+            setOpen(false);
+          }}
+        />
+      ) : (
+        <div className="wf-nav-group">
+          {!compact && <p>{brand === "ReUI" ? "Platform" : "Workspace"}</p>}
+          {nav.map(({ label, icon: Icon = LayoutDashboard, count }) => (
+            <div key={label}>
+              <Button
+                title={label}
+                aria-label={label}
+                aria-current={view === label ? "page" : undefined}
+                variant={view === label ? "secondary" : "ghost"}
+                size={compact ? "icon" : "default"}
+                className="wf-nav-button"
+                onClick={() => {
+                  setView(label);
+                  setOpen(false);
+                }}
+              >
+                <Icon />
+                {!compact && (
+                  <>
+                    <span>{label}</span>
+                    {count ? <small>{count}</small> : null}
+                  </>
+                )}
+              </Button>
+              {label === "Tasks" && taskNavigation}
+            </div>
+          ))}
+        </div>
+      )}
       {!compact && extra}
       <div className="wf-sidebar-bottom">
         <Button
@@ -179,7 +201,7 @@ export function Shell({
       </div>
     </>
   );
-  return (
+  const content = (
     <div
       className={`wf-root wf-${brand.toLowerCase()} ${compact ? "wf-compact" : ""} ${dark ? "wf-dark-sidebar" : ""}`}
     >
@@ -188,7 +210,8 @@ export function Shell({
         <SheetContent
           side="left"
           onClick={(event) => {
-            if ((event.target as HTMLElement).closest("button")) setOpen(false);
+            const button = (event.target as HTMLElement).closest("button");
+            if (button && !button.hasAttribute("aria-expanded")) setOpen(false);
           }}
         >
           <SheetTitle>{brand}</SheetTitle>
@@ -296,6 +319,13 @@ export function Shell({
         </DialogContent>
       </Dialog>
     </div>
+  );
+  return hasNestedNavigation ? (
+    <SidebarProvider className="contents" style={{ minHeight: "auto" }}>
+      {content}
+    </SidebarProvider>
+  ) : (
+    content
   );
 }
 export function Panel({

@@ -1,6 +1,8 @@
-import { CohortHiring, useCohortHiringState } from "./cohort-hiring";
+import { CohortSettings, useCohortSettingsState, cohortSettingsPages } from "./cohort-settings";
+import { CohortPeople, useCohortPeopleState } from "./cohort-people";
+import { CohortHiring, useCohortHiringState, resetCohortHiring } from "./cohort-hiring";
 import CohortCalendar from "./cohort-calendar";
-import CohortApprovals from "./cohort-approvals";
+import CohortApprovals, { useCohortApprovalsState, resetCohortApprovals } from "./cohort-approvals";
 import {
   Sheet,
   SheetContent,
@@ -18,7 +20,6 @@ import {
   Panel,
   Button,
   Badge,
-  Input,
   Period,
   Spark,
   Area,
@@ -29,7 +30,6 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
-  SettingsPage,
   toast,
 } from "./shared";
 import { Auth } from "./auth";
@@ -77,22 +77,15 @@ const originalRequests: Request[] = [
     status: "Pending",
   },
 ];
-const initialPeople = [
-  ["Aisha Rahman", "Engineering", "Senior Engineer", "London", "Active"],
-  ["Ingrid Larsen", "Design", "Product Designer", "Copenhagen", "On leave"],
-  ["Bruno Duarte", "People", "People Partner", "London", "Active"],
-  ["Grace Adeyemi", "Customer Success", "Support Lead", "London", "Active"],
-  ["Amara Okafor", "Engineering", "Engineering Manager", "London", "Active"],
-  ["Priya Nair", "Sales", "Account Executive", "Singapore", "On leave"],
-];
 export default function Cohort() {
   const hiringState = useCohortHiringState();
+  const approvalsState = useCohortApprovalsState();
   const [logged, setLogged] = useState(false);
   const [active, setActive] = useState("Dashboard");
   const [period, setPeriod] = useState("Year");
-  const [people, setPeople] = useState(initialPeople);
+  const peopleState = useCohortPeopleState();
   const [requests, setRequests] = useState(originalRequests);
-  const [query, setQuery] = useState("");
+  const settingsState = useCohortSettingsState();
   const [create, setCreate] = useState(false);
   const [event, setEvent] = useState("");
   const [selected, setSelected] = useState<Request | null>(null);
@@ -103,13 +96,27 @@ export default function Cohort() {
     <Shell
       id="cohort"
       brand="Cohort"
+      account={{
+        name: settingsState.saved.profile.fields.name,
+        organisation: settingsState.saved.company.fields.name,
+        photo: settingsState.saved.profile.fields.photo,
+      }}
       active={active}
       setActive={(x) => {
-        setActive(x);
-        setQuery("");
+        setActive(x === "Settings" ? "Organisation" : x === "Directory" ? "People" : x);
       }}
       items={["Dashboard", "Approvals", "People", "Hiring", "Time", "Settings"]}
-      top={<span>⌂ People – {active}</span>}
+      navGroups={{ Settings: cohortSettingsPages, People: ["Directory"] }}
+      top={
+        <span>
+          ⌂ People –{" "}
+          {cohortSettingsPages.includes(active)
+            ? `Settings – ${active}`
+            : active === "People"
+              ? "Directory"
+              : active}
+        </span>
+      }
       footer={
         <div className="bt-info">
           <strong>Headcount plan</strong>Approved headcount for FY26. Resets when the plan is
@@ -121,18 +128,39 @@ export default function Cohort() {
         </div>
       }
     >
-      {active === "Settings" ? (
-        <SettingsPage brand="Cohort UK" />
+      {cohortSettingsPages.includes(active) ? (
+        <CohortSettings
+          page={active}
+          onPage={setActive}
+          model={settingsState}
+          onClearPeople={peopleState.reset}
+          onClearHiring={() => resetCohortHiring(hiringState)}
+          onClearApprovals={() => resetCohortApprovals(approvalsState)}
+          onClearNotes={() =>
+            peopleState.setPeople((rows) => rows.map((p) => ({ ...p, notes: "" })))
+          }
+          onClearLeave={() => setExtraEvents([])}
+        />
       ) : (
         <>
-          <Heading
-            title={active === "Dashboard" ? "" : active}
-            date="Jul 1, 2026 - Jul 30, 2026"
-            action={
-              active === "People" ? "Add person" : active === "Time" ? "Add event" : undefined
-            }
-            onAction={() => setCreate(true)}
-          />
+          {active === "People" ? (
+            <div className="bt-cohort-people-heading">
+              <h1>People</h1>
+              <Button size="sm" onClick={() => setCreate(true)}>
+                <UserRoundPlus size={14} />
+                Add person
+              </Button>
+            </div>
+          ) : (
+            <Heading
+              title={active === "Dashboard" ? "" : active}
+              date="Jul 1, 2026 - Jul 30, 2026"
+              action={
+                active === "People" ? "Add person" : active === "Time" ? "Add event" : undefined
+              }
+              onAction={() => setCreate(true)}
+            />
+          )}
           {active === "Dashboard" ? (
             <>
               <Panel
@@ -142,7 +170,7 @@ export default function Cohort() {
               >
                 <div className="bt-cohort-summary">
                   {[
-                    ["Headcount", String(198 + people.length - 6), "+3", Users],
+                    ["Headcount", String(198 + peopleState.people.length - 21), "+3", Users],
                     ["Open roles", "5", "+2", UserRoundPlus],
                     ["Voluntary attrition", "12.8%", "+0.9", UserRoundMinus],
                     ["Absence rate", "1%", "-0.6", CalendarDays],
@@ -240,31 +268,17 @@ export default function Cohort() {
               </Panel>
             </>
           ) : active === "People" ? (
-            <Panel
-              title="People directory"
-              description={`${people.length} people in this demo workspace`}
-            >
-              <div className="bt-toolbar">
-                <Input
-                  aria-label="Search people"
-                  placeholder="Search people..."
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                />
-                <Badge variant="outline">All departments</Badge>
-              </div>
-              <DataTable
-                onReset={() => setQuery("")}
-                query={query}
-                columns={["Name", "Department", "Role", "Location", "Status"]}
-                rows={people}
-                onRow={(i) =>
-                  setEvent(`${people[i][0]} · ${people[i][2]} · ${people[i][1]} · ${people[i][3]}`)
-                }
-              />
-            </Panel>
+            <CohortPeople
+              model={peopleState}
+              organisation={settingsState.saved.company.fields.name}
+              create={create}
+              onCreateChange={setCreate}
+              departmentOptions={settingsState.saved.departments.rows?.map((r) => r.name)}
+              locationOptions={settingsState.saved.locations.rows?.map((r) => r.name)}
+              employmentOptions={settingsState.saved.employment.rows?.map((r) => r.name)}
+            />
           ) : active === "Approvals" ? (
-            <CohortApprovals />
+            <CohortApprovals model={approvalsState} />
           ) : active === "Time" ? (
             calendar
           ) : (
@@ -274,7 +288,7 @@ export default function Cohort() {
       )}
       <RecordDialog
         title={active === "People" ? "Add person" : "Add event"}
-        open={create}
+        open={create && active !== "People"}
         onOpenChange={setCreate}
         fields={
           active === "People"
@@ -290,9 +304,7 @@ export default function Cohort() {
               ]
         }
         onSave={(v) => {
-          if (active === "People")
-            setPeople((x) => [...x, [v.name, v.department, v.role, v.location, "Active"]]);
-          else setExtraEvents((x) => [...x, v.name]);
+          setExtraEvents((x) => [...x, v.name]);
           toast.success("Record added");
         }}
       />

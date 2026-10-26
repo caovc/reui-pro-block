@@ -144,11 +144,13 @@ export function NavItems({
   active,
   onSelect,
   atlas = false,
+  groups,
 }: {
   items: string[];
   active: string;
   onSelect: (value: string) => void;
   atlas?: boolean;
+  groups?: Record<string, string[]>;
 }) {
   const closeNavigation = useContext(NavigationCloseContext);
   return (
@@ -166,9 +168,10 @@ export function NavItems({
             label,
             icon: <Icon />,
             children:
-              atlas && label === "Users"
+              groups?.[label] ??
+              (atlas && label === "Users"
                 ? ["All Users", "Roles & Permissions", "Access Control", "Audit Log"]
-                : undefined,
+                : undefined),
           };
         })}
       />
@@ -194,6 +197,8 @@ function ShellContent({
   rail = false,
   top,
   footer,
+  navGroups,
+  account,
 }: {
   id: string;
   brand: string;
@@ -205,6 +210,8 @@ function ShellContent({
   rail?: boolean;
   top?: ReactNode;
   footer?: ReactNode;
+  navGroups?: Record<string, string[]>;
+  account?: { name: string; organisation: string; photo?: string };
 }) {
   const [mobile, setMobile] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
@@ -243,6 +250,7 @@ function ShellContent({
           </p>
           <NavItems
             atlas={id === "atlas"}
+            groups={navGroups}
             items={items.filter((x) => x.toLowerCase().includes(search.toLowerCase()))}
             active={active}
             onSelect={(x) => {
@@ -299,15 +307,31 @@ function ShellContent({
         <Button
           type="button"
           variant="ghost"
-          onClick={() => setActive("Settings")}
+          onClick={() => setActive(account ? "Profile" : "Settings")}
           className="w-full justify-start"
         >
           <span className="bt-avatar">
-            {id === "cohort" ? "BD" : <img src={userAvatar} alt="Nick Bold" />}
+            {account ? (
+              account.photo ? (
+                <img src={account.photo} alt="" />
+              ) : (
+                account.name
+                  .split(" ")
+                  .map((word) => word[0])
+                  .slice(0, 2)
+                  .join("")
+              )
+            ) : id === "cohort" ? (
+              "BD"
+            ) : (
+              <img src={userAvatar} alt="Nick Bold" />
+            )}
           </span>
           <span>
-            {id === "cohort" ? "Bruno Duarte" : "Nick Bold"}
-            <small>{id === "cohort" ? "Cohort UK" : "nick@bricklane.demo"}</small>
+            {account?.name || (id === "cohort" ? "Bruno Duarte" : "Nick Bold")}
+            <small>
+              {account?.organisation || (id === "cohort" ? "Cohort UK" : "nick@bricklane.demo")}
+            </small>
           </span>
         </Button>
       </div>
@@ -412,6 +436,7 @@ function ShellContent({
             ) : (
               <NavItems
                 atlas={id === "atlas"}
+                groups={navGroups}
                 items={items}
                 active={active}
                 onSelect={(x) => {

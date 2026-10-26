@@ -19,14 +19,16 @@ export function Choice({
   onChange,
   items,
   placeholder,
+  showLabel = false,
 }: {
   label: string;
   value: string;
   onChange: (value: string) => void;
   items: string[];
   placeholder?: string;
+  showLabel?: boolean;
 }) {
-  return (
+  const control = (
     <Select value={value} onValueChange={onChange}>
       <SelectTrigger aria-label={label}>
         <SelectValue placeholder={placeholder} />
@@ -39,6 +41,14 @@ export function Choice({
         ))}
       </SelectContent>
     </Select>
+  );
+  return showLabel ? (
+    <label className="wf-choice-label">
+      <span>{label}</span>
+      {control}
+    </label>
+  ) : (
+    control
   );
 }
 export function SideForm({

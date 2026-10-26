@@ -271,24 +271,28 @@ export function FluxMemory({ model }: { model: ReturnType<typeof useFluxEvidence
               />
             </label>
             <Choice
+              showLabel
               label="Kind"
               value={draft.kind}
               items={["Preference", "Policy", "Procedure", "Constraint"]}
               onChange={(kind) => setDraft({ ...draft, kind })}
             />
             <Choice
+              showLabel
               label="Scope"
               value={draft.scope}
               items={scopes}
               onChange={(scope) => setDraft({ ...draft, scope })}
             />
             <Choice
+              showLabel
               label="State"
               value={draft.state}
               items={["Needs review", "Trusted", "Stale"]}
               onChange={(state) => setDraft({ ...draft, state })}
             />
             <Choice
+              showLabel
               label="Agent"
               value={draft.agent}
               items={[
@@ -302,6 +306,7 @@ export function FluxMemory({ model }: { model: ReturnType<typeof useFluxEvidence
               onChange={(agent) => setDraft({ ...draft, agent })}
             />
             <Choice
+              showLabel
               label="Owner"
               value={draft.owner}
               items={["Maya Perez", "Noa Kim", "Emil Novak", "Jonas Reed"]}

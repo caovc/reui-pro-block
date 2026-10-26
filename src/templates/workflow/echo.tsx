@@ -3,17 +3,14 @@ import { echoArtifacts } from "./echo-artifact-data";
 import { demoAvatar } from "@/lib/demo-artwork";
 import { useState } from "react";
 import {
-  ArrowUp,
   Bookmark,
   PanelLeft,
   CircleHelp,
   BookOpen,
-  Brain,
   ChevronDown,
   Clock,
   Code,
   Folder,
-  Globe,
   Menu,
   MessageSquare,
   Paperclip,
@@ -25,7 +22,6 @@ import {
   Star,
 } from "lucide-react";
 import { Button, Input, Panel, Logo, Segments, CreateDialog, WorkspaceSettings } from "./shared";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
@@ -34,8 +30,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Sheet, SheetContent, SheetTitle, SheetDescription } from "@/components/ui/sheet";
-import { toast } from "sonner";
-import { EchoProjects } from "./echo-projects";
+import { EchoProjects, type EchoProject } from "./echo-projects";
+import { EchoComposer } from "./echo-composer";
 import { EchoScheduled } from "./echo-scheduled";
 import { EchoArtifactList, EchoArtifactPanel } from "./echo-artifacts";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -68,12 +64,12 @@ export default function Echo() {
   const [model, setModel] = useState("Claude Sonnet 5");
   const [open, setOpen] = useState(false);
   const [create, setCreate] = useState(false);
-  const [projects, setProjects] = useState([
-    "Admin 3.4",
-    "Billing reliability",
-    "Growth analytics",
-    "Platform performance",
-    "Search relevance",
+  const [projects, setProjects] = useState<EchoProject[]>([
+    { id: "admin", name: "Admin 3.4", chats: 4, changed: "1h", icon: 0 },
+    { id: "billing", name: "Billing reliability", chats: 2, changed: "2m", icon: 1 },
+    { id: "growth", name: "Growth analytics", chats: 1, changed: "3h", icon: 2 },
+    { id: "platform", name: "Platform performance", chats: 3, changed: "12m", icon: 3 },
+    { id: "search", name: "Search relevance", chats: 2, changed: "34m", icon: 4 },
   ]);
   const [scheduled, setScheduled] = useState([
     "Weekly release summary",
@@ -91,14 +87,14 @@ export default function Echo() {
     ]);
     setOpen(false);
   }
-  function send(text = input) {
+  function send(text = input, context: string[] = []) {
     if (!text.trim()) return;
     setMessages((prev) => [
       ...prev,
-      { role: "user", text },
+      { role: "user", text: context.length ? `${text}\n\nContext: ${context.join(", ")}` : text },
       {
         role: "assistant",
-        text: `Local preview response\n\nFor “${text}”, start by defining the outcome, gather the relevant workspace context, and draft a concise implementation plan.\n\n• Scope the change and its owner\n• Validate the behavior with a focused check\n• Record follow-ups and acceptance criteria\n\nConnect your model provider to generate real responses.`,
+        text: `Local preview response\n\nFor “${text}”, start by defining the outcome, gather the relevant workspace context, and draft a concise implementation plan.\n\n• Scope the change and its owner\n• Validate the behavior with a focused check\n• Record follow-ups and acceptance criteria\n\nConnect your model provider to generate real responses.${context.length ? `\n\nContext staged: ${context.join(", ")}.` : ""}\n\n${model} · ${[think && "Think", search && "Search"].filter(Boolean).join(" + ") || "No tools"}`,
       },
     ]);
     setView(text.slice(0, 48));
@@ -314,14 +310,31 @@ export default function Echo() {
           <EchoProjects
             projects={projects}
             open={create}
-            onCreate={(name) => setProjects([...projects, name])}
+            onCreate={(name) =>
+              setProjects((current) => [
+                ...current,
+                {
+                  id: crypto.randomUUID(),
+                  name,
+                  chats: 0,
+                  changed: "just now",
+                  icon: current.length % 5,
+                },
+              ])
+            }
             onClose={() => setCreate(false)}
             onOpen={selectChat}
             onNew={() => setCreate(true)}
-            onRename={(oldName, name) =>
-              setProjects(projects.map((p) => (p === oldName ? name : p)))
+            onRename={(id, name) =>
+              setProjects((current) =>
+                current.map((project) =>
+                  project.id === id ? { ...project, name, changed: "just now" } : project,
+                ),
+              )
             }
-            onDelete={(name) => setProjects(projects.filter((p) => p !== name))}
+            onDelete={(id) =>
+              setProjects((current) => current.filter((project) => project.id !== id))
+            }
           />
         ) : view === "Scheduled" ? (
           <EchoScheduled records={scheduledRecords} onOpen={selectChat} />
@@ -434,69 +447,15 @@ export default function Echo() {
                 Context 64 percent full · Plan limit resets Friday 12:00 PM{" "}
                 <ChevronDown className="size-3" />
               </div>
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  send();
-                }}
-              >
-                <Textarea
-                  aria-label="Message Bricklane Chat"
-                  placeholder="Ask anything, or describe what you want changed…"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" && !e.shiftKey) {
-                      e.preventDefault();
-                      send();
-                    }
-                  }}
-                />
-                <div className="echo-compose-tools">
-                  <label className="echo-attach">
-                    <input
-                      type="file"
-                      onChange={(e) => {
-                        if (e.target.files?.[0]) {
-                          setInput(input + ` [Attached: ${e.target.files[0].name}]`);
-                          toast.success("File attached to local message");
-                        }
-                      }}
-                    />
-                    <Paperclip className="size-4" />
-                    <span className="sr-only">Attach file</span>
-                  </label>
-                  <Button
-                    type="button"
-                    variant={think ? "secondary" : "ghost"}
-                    size="sm"
-                    onClick={() => setThink(!think)}
-                    aria-pressed={think}
-                  >
-                    <Brain />
-                    Think
-                  </Button>
-                  <Button
-                    type="button"
-                    variant={search ? "secondary" : "ghost"}
-                    size="sm"
-                    onClick={() => setSearch(!search)}
-                    aria-pressed={search}
-                  >
-                    <Globe />
-                    Search
-                  </Button>
-                  <Button
-                    type="submit"
-                    size="icon"
-                    aria-label="Send message"
-                    className="ml-auto"
-                    disabled={!input.trim()}
-                  >
-                    <ArrowUp />
-                  </Button>
-                </div>
-              </form>
+              <EchoComposer
+                value={input}
+                onChange={setInput}
+                think={think}
+                onThink={setThink}
+                search={search}
+                onSearch={setSearch}
+                onSend={(context) => send(input, context)}
+              />
               <p className="echo-disclaimer">
                 Bricklane Chat can make mistakes. Check important info.
               </p>

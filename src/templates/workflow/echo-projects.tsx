@@ -4,11 +4,28 @@ import { Button, Input } from "./shared";
 import { SideForm } from "./controls";
 import { IconTile } from "@/components/reui/icon-tile";
 import {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemGroup,
+  ItemMedia,
+  ItemTitle,
+} from "@/components/ui/item";
+import "./echo-refinement.css";
+import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
+export type EchoProject = {
+  id: string;
+  name: string;
+  chats: number;
+  changed: string;
+  icon: number;
+};
 export function EchoProjects({
   projects,
   open,
@@ -19,14 +36,14 @@ export function EchoProjects({
   onRename,
   onDelete,
 }: {
-  projects: string[];
+  projects: EchoProject[];
   open: boolean;
   onCreate: (name: string) => void;
   onClose: () => void;
   onOpen: (name: string) => void;
   onNew: () => void;
-  onRename: (oldName: string, name: string) => void;
-  onDelete: (name: string) => void;
+  onRename: (id: string, name: string) => void;
+  onDelete: (id: string) => void;
 }) {
   const [query, setQuery] = useState("");
   const [name, setName] = useState("");
@@ -60,51 +77,57 @@ export function EchoProjects({
           New Project
         </Button>
       </div>
-      <div className="echo-project-list">
+      <ItemGroup className="echo-project-list gap-0">
         {projects
-          .filter((p) => p.toLowerCase().includes(query.toLowerCase()))
-          .map((p, i) => {
-            const Icon = [Shield, Banknote, TrendingUp, Gauge, Search][i % 5];
+          .filter((project) => project.name.toLowerCase().includes(query.toLowerCase()))
+          .map((project) => {
+            const { id, name: projectName, chats, changed, icon } = project;
+            const Icon = [Shield, Banknote, TrendingUp, Gauge, Search][icon % 5];
             return (
-              <div className="echo-project-row" key={p}>
-                <button onClick={() => onOpen(p)}>
-                  <IconTile variant="frame">
-                    <Icon />
-                  </IconTile>
-                  <span>
-                    <strong>{p}</strong>
-                    <small>
-                      {[4, 2, 1, 3, 2][i % 5]} chats, last changed{" "}
-                      {["1h", "2m", "3h", "12m", "34m"][i % 5]}
-                    </small>
-                  </span>
+              <Item variant="outline" className="echo-project-row" key={id}>
+                <button onClick={() => onOpen(projectName)}>
+                  <ItemMedia>
+                    <IconTile variant="frame">
+                      <Icon />
+                    </IconTile>
+                  </ItemMedia>
+                  <ItemContent>
+                    <ItemTitle>{projectName}</ItemTitle>
+                    <ItemDescription>
+                      {chats} {chats === 1 ? "chat" : "chats"}, last changed {changed}
+                    </ItemDescription>
+                  </ItemContent>
                 </button>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon-sm" aria-label={`Actions ${p}`}>
-                      <MoreVertical />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem onSelect={() => onOpen(p)}>Open project</DropdownMenuItem>
-                    <DropdownMenuItem
-                      onSelect={() => {
-                        setEditing(p);
-                        setName(p);
-                        onNew();
-                      }}
-                    >
-                      Rename project
-                    </DropdownMenuItem>
-                    <DropdownMenuItem variant="destructive" onSelect={() => onDelete(p)}>
-                      Delete project
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
+                <ItemActions>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="icon-sm" aria-label={`Actions ${projectName}`}>
+                        <MoreVertical />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuItem onSelect={() => onOpen(projectName)}>
+                        Open project
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onSelect={() => {
+                          setEditing(id);
+                          setName(projectName);
+                          onNew();
+                        }}
+                      >
+                        Rename project
+                      </DropdownMenuItem>
+                      <DropdownMenuItem variant="destructive" onSelect={() => onDelete(id)}>
+                        Delete project
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </ItemActions>
+              </Item>
             );
           })}
-      </div>
+      </ItemGroup>
       <SideForm
         wide
         title={editing ? "Rename project" : "New project"}

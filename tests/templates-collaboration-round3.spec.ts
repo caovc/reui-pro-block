@@ -86,3 +86,123 @@ test("Pulse secondary pages fit a mobile viewport and keep the article controls 
   await expect(page.locator(".ct-kb-category")).toHaveCount(6);
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
 });
+
+test("Roster approvals retain twenty requests and distinguish repeated offer titles", async ({
+  page,
+}) => {
+  await page.goto("/#/template-preview/roster");
+  await page.getByRole("button", { name: "Approvals", exact: true }).click();
+  const approvals = page.locator(".ct-approvals");
+  await expect(approvals).toContainText("1 - 10 of 20");
+  const first = approvals.getByRole("row").filter({ hasText: "Campaign shoot: £4,200" });
+  await first.getByRole("button", { name: "Approve: Campaign shoot: £4,200", exact: true }).click();
+  await expect(first.getByText("Approved", { exact: true })).toBeVisible();
+  await expect(approvals).toContainText("1 - 10 of 20");
+  await page.getByRole("button", { name: "Go to next page", exact: true }).click();
+  const secondOffer = approvals
+    .getByRole("row")
+    .filter({ hasText: "Second offer on this opening" });
+  const relocatingOffer = approvals
+    .getByRole("row")
+    .filter({ hasText: "relocating from Rotterdam" });
+  await secondOffer
+    .getByRole("button", { name: "Reject: Offer sign-off: Senior Engineer", exact: true })
+    .click();
+  await expect(secondOffer.getByText("Rejected", { exact: true })).toBeVisible();
+  await expect(relocatingOffer.getByText("Pending", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Dashboard", exact: true }).click();
+  await expect(page.getByText("18 waiting, oldest 13d", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Approvals", exact: true }).click();
+  await expect(secondOffer.getByText("Rejected", { exact: true })).toBeVisible();
+  await secondOffer.getByRole("button", { name: /Change decision/ }).click();
+  await page.getByRole("menuitem", { name: "Pending", exact: true }).click();
+  await expect(secondOffer.getByText("Pending", { exact: true })).toBeVisible();
+  await page.getByRole("combobox", { name: "Filter request status", exact: true }).click();
+  await page.getByRole("option", { name: "Approved", exact: true }).click();
+  await expect(approvals.getByRole("row").filter({ hasText: "Campaign shoot" })).toHaveCount(1);
+  await expect(approvals).toContainText("1 - 1 of 1");
+});
+
+async function openRosterImport(page: import("@playwright/test").Page) {
+  await page.goto("/#/template-preview/roster");
+  await page.getByRole("button", { name: "People", exact: true }).first().click();
+  await page.getByRole("button", { name: "Import", exact: true }).click();
+}
+
+async function nextImport(page: import("@playwright/test").Page, count: number) {
+  for (let index = 0; index < count; index++) {
+    await page.getByRole("button", { name: "Next Step", exact: true }).click();
+  }
+}
+
+test("Roster CSV import validates the five steps and saves new people across navigation", async ({
+  page,
+}) => {
+  await openRosterImport(page);
+  await page.getByRole("button", { name: /roster-people-sample.csv/ }).click();
+  await nextImport(page, 1);
+  await expect(
+    page.getByRole("combobox", { name: "Map Date of birth", exact: true }),
+  ).toBeVisible();
+  await nextImport(page, 1);
+  await expect(page.getByText("3 valid", { exact: true })).toBeVisible();
+  await nextImport(page, 1);
+  await expect(
+    page.getByText("1 row matches someone already on the roster by full name.", { exact: true }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "Dashboard", exact: true }).click();
+  await page.getByRole("button", { name: "Import", exact: true }).click();
+  await expect(page.getByText("Duplicate handling", { exact: true })).toBeVisible();
+  await nextImport(page, 1);
+  await page
+    .locator(".ct-import-footer")
+    .getByRole("button", { name: "Import", exact: true })
+    .click();
+  await expect(
+    page.getByText("2 people added, 0 updated, 1 skipped.", { exact: true }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "View people", exact: true }).click();
+  await page.getByPlaceholder("Search people…", { exact: true }).fill("Noor Haddad");
+  await expect(page.locator(".ct-reporting-lines")).toContainText("VP Engineering");
+  await page.getByRole("button", { name: "Dashboard", exact: true }).click();
+  await page.getByRole("button", { name: "Directory", exact: true }).click();
+  await page.getByPlaceholder("Search people…", { exact: true }).fill("Tomas Beaulieu");
+  await expect(page.locator(".ct-reporting-lines")).toContainText("Tomas Beaulieu");
+});
+
+test("Roster CSV import parses quoted fields and updates only the matched person", async ({
+  page,
+}) => {
+  await openRosterImport(page);
+  const csv = [
+    "Employee ID,Full name,Job title,Department,Location,Employment type,Start date,Manager,Date of birth",
+    'p-003,Amara Okafor,"Chief, Platform",Engineering,Berlin,Full-time,2026-10-01,Isabel Ferreira,1990-06-12',
+    "p-999,Invalid Date,Engineer,Engineering,London,Full-time,not-a-date,,",
+  ].join("\r\n");
+  await page.getByLabel("Upload people CSV", { exact: true }).setInputFiles({
+    name: "team-update.csv",
+    mimeType: "text/csv",
+    buffer: Buffer.from(csv),
+  });
+  await expect(
+    page.getByText("team-update.csv is ready. 2 rows detected.", { exact: true }),
+  ).toBeVisible();
+  await nextImport(page, 2);
+  await expect(page.getByText("1 valid", { exact: true })).toBeVisible();
+  await expect(page.getByText("1 errors", { exact: true })).toBeVisible();
+  await nextImport(page, 1);
+  await page.getByRole("radio").nth(1).check();
+  await nextImport(page, 1);
+  await page
+    .locator(".ct-import-footer")
+    .getByRole("button", { name: "Import", exact: true })
+    .click();
+  await expect(
+    page.getByText("0 people added, 1 updated, 0 skipped.", { exact: true }),
+  ).toBeVisible();
+  await page.getByRole("button", { name: "View people", exact: true }).click();
+  await page.getByPlaceholder("Search people…", { exact: true }).fill("Amara Okafor");
+  await expect(page.locator(".ct-reporting-lines")).toContainText("Chief, Platform");
+  await expect(page.locator(".ct-reporting-lines")).toContainText("Berlin");
+  await expect(page.locator(".ct-reporting-lines")).not.toContainText("Invalid Date");
+});

@@ -319,6 +319,7 @@ export function FluxEvaluations({ model }: { model: ReturnType<typeof useFluxEvi
               />
             </label>
             <Choice
+              showLabel
               label="Suite"
               value={draft.suite}
               items={[
@@ -331,18 +332,21 @@ export function FluxEvaluations({ model }: { model: ReturnType<typeof useFluxEvi
               onChange={(suite) => setDraft({ ...draft, suite })}
             />
             <Choice
+              showLabel
               label="Status"
               value={draft.status}
               items={["Passing", "Regressed", "Improved", "Flaky"]}
               onChange={(status) => setDraft({ ...draft, status })}
             />
             <Choice
+              showLabel
               label="Impact"
               value={draft.impact}
               items={["None", "Medium", "High", "Critical"]}
               onChange={(impact) => setDraft({ ...draft, impact })}
             />
             <Choice
+              showLabel
               label="Reviewer"
               value={draft.reviewer}
               items={[

@@ -6,6 +6,13 @@ import { unzipSync, strFromU8 } from "fflate";
 for (const example of [
   { id: "flux", family: "workflow", modules: ["flux", "flux-evaluations", "flux-memory"] },
   { id: "pulse", family: "collaboration", modules: ["pulse", "pulse-knowledge", "pulse-reports"] },
+  { id: "cohort", family: "business", modules: ["cohort", "cohort-people", "cohort-settings"] },
+  {
+    id: "roster",
+    family: "collaboration",
+    modules: ["roster", "roster-approvals", "roster-import"],
+  },
+  { id: "echo", family: "workflow", modules: ["echo", "echo-composer", "echo-projects"] },
 ]) {
   test(`${example.id} promotes its actual secondary implementations and copies the exact ZIP source`, async ({
     page,
@@ -28,6 +35,6 @@ for (const example of [
     const zip = unzipSync(new Uint8Array(await readFile((await download.path())!)));
     expect(strFromU8(zip[files[1]])).toBe(source);
     for (const path of files) expect(zip[path]).toBeTruthy();
-    await download.saveAs(`/tmp/bricklane-templates-round3/export-${example.id}-m1.zip`);
+    await download.saveAs(`/tmp/bricklane-templates-round3/export-${example.id}-m2.zip`);
   });
 }

@@ -1,3 +1,11 @@
+import {
+  organization,
+  departments,
+  person,
+  rosterPersonNames,
+  type Person,
+} from "./roster-directory-data";
+import type { ImportedPerson } from "./roster-import-model";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useState } from "react";
 import { ChevronDown, ChevronRight, Filter, Settings2 } from "lucide-react";
@@ -25,278 +33,6 @@ import {
 import { Avatar, Button, Input, Export } from "./shared";
 import "./roster-directory.css";
 
-type Person = { id: string; values: string[]; children?: Person[] };
-const person = (
-  name: string,
-  role: string,
-  department: string,
-  location: string,
-  reports: string,
-  roles: string,
-  tenure: string,
-  started: string,
-  status = "Active",
-  children?: Person[],
-): Person => ({
-  id: name,
-  values: [name, role, department, location, reports, roles, tenure, started, status],
-  children,
-});
-const organization = person(
-  "Isabel Ferreira",
-  "Founder & CEO",
-  "People",
-  "London",
-  "7 of 20",
-  "5",
-  "7 years",
-  "15 Jan 2019",
-  "Active",
-  [
-    person(
-      "Amara Okafor",
-      "VP Engineering",
-      "Engineering",
-      "London",
-      "2 of 4",
-      "1",
-      "5 years",
-      "15 Mar 2021",
-      "Active",
-      [
-        person(
-          "Daniel Reyes",
-          "Staff Engineer",
-          "Engineering",
-          "Lisbon",
-          "2 of 2",
-          "—",
-          "4 years",
-          "10 Jan 2022",
-          "Active",
-          [
-            person(
-              "Tomás Silva",
-              "Engineer",
-              "Engineering",
-              "Lisbon",
-              "—",
-              "—",
-              "Under a year",
-              "15 Jun 2026",
-              "Probation",
-            ),
-            person(
-              "Mei Chen",
-              "Engineer",
-              "Engineering",
-              "Singapore",
-              "—",
-              "—",
-              "Under a year",
-              "13 Jul 2026",
-              "Probation",
-            ),
-          ],
-        ),
-        person(
-          "Priya Nair",
-          "Senior Engineer",
-          "Engineering",
-          "Bengaluru",
-          "—",
-          "—",
-          "3 years",
-          "5 Sept 2022",
-          "On leave",
-        ),
-      ],
-    ),
-    person(
-      "Hannah Weber",
-      "Head of Product",
-      "Product",
-      "Berlin",
-      "2 of 3",
-      "1",
-      "4 years",
-      "2 Aug 2021",
-      "Active",
-      [
-        person(
-          "Marco Bianchi",
-          "Product Manager",
-          "Product",
-          "Milan",
-          "—",
-          "—",
-          "3 years",
-          "17 Apr 2023",
-        ),
-        person(
-          "Sofia Lindqvist",
-          "Design Lead",
-          "Design",
-          "Stockholm",
-          "1 of 1",
-          "—",
-          "4 years",
-          "28 Feb 2022",
-          "Active",
-          [
-            person(
-              "Abena Mensah",
-              "Product Designer",
-              "Design",
-              "Accra",
-              "—",
-              "—",
-              "2 years",
-              "8 Jan 2024",
-              "On leave",
-            ),
-          ],
-        ),
-      ],
-    ),
-    person(
-      "Elena Petrova",
-      "Sales Director",
-      "Sales",
-      "Amsterdam",
-      "2 of 2",
-      "1",
-      "5 years",
-      "16 Nov 2020",
-      "Active",
-      [
-        person(
-          "James Whitfield",
-          "Account Executive",
-          "Sales",
-          "London",
-          "—",
-          "—",
-          "3 years",
-          "24 Jul 2023",
-          "Notice",
-        ),
-        person(
-          "Yuki Tanaka",
-          "Account Executive",
-          "Sales",
-          "Singapore",
-          "—",
-          "—",
-          "2 years",
-          "13 May 2024",
-        ),
-      ],
-    ),
-    person(
-      "Aisha Rahman",
-      "Marketing Manager",
-      "Marketing",
-      "Dubai",
-      "1 of 1",
-      "—",
-      "3 years",
-      "6 Feb 2023",
-      "Active",
-      [
-        person(
-          "Lucas Moreau",
-          "Content Lead",
-          "Marketing",
-          "Paris",
-          "—",
-          "—",
-          "1 year",
-          "3 Mar 2025",
-        ),
-      ],
-    ),
-    person(
-      "Grace Adeyemi",
-      "CS Lead",
-      "Customer Success",
-      "Lagos",
-      "1 of 1",
-      "1",
-      "4 years",
-      "20 Jun 2022",
-      "Active",
-      [
-        person(
-          "Nils Andersen",
-          "Support Engineer",
-          "Customer Success",
-          "Copenhagen",
-          "—",
-          "—",
-          "Under a year",
-          "6 Jul 2026",
-        ),
-      ],
-    ),
-    person(
-      "Bruno Duarte",
-      "People Partner",
-      "People",
-      "Lisbon",
-      "1 of 1",
-      "—",
-      "4 years",
-      "27 Sept 2021",
-      "Active",
-      [
-        person(
-          "Omar Haddad",
-          "Talent Partner",
-          "People",
-          "Cairo",
-          "—",
-          "—",
-          "1 year",
-          "21 Oct 2024",
-        ),
-      ],
-    ),
-    person(
-      "Ingrid Larsen",
-      "Finance Manager",
-      "Finance",
-      "Oslo",
-      "1 of 1",
-      "1",
-      "3 years",
-      "14 Nov 2022",
-      "Active",
-      [
-        person(
-          "Rafael Costa",
-          "Financial Analyst",
-          "Finance",
-          "São Paulo",
-          "—",
-          "—",
-          "Under a year",
-          "11 Aug 2025",
-        ),
-      ],
-    ),
-  ],
-);
-const departments = [
-  "Engineering",
-  "Product",
-  "Design",
-  "Sales",
-  "Marketing",
-  "Customer Success",
-  "People",
-  "Finance",
-];
 function flatten(rows: Person[]): Person[] {
   return rows.flatMap((row) => [row, ...flatten(row.children || [])]);
 }
@@ -305,11 +41,13 @@ export function RosterDirectory({
   setQuery,
   onOpen,
   extras = [],
+  imports = [],
 }: {
   query: string;
   setQuery: (value: string) => void;
   onOpen: (value: string[]) => void;
   extras?: string[][];
+  imports?: ImportedPerson[];
 }) {
   const [expanded, setExpanded] = useState<ExpandedState>({ [organization.id]: true });
   const [depth, setDepth] = useState("1");
@@ -317,8 +55,48 @@ export function RosterDirectory({
   const [statuses, setStatuses] = useState<string[]>([]);
   const [selection, setSelection] = useState<string[]>([]);
   const [hidden, setHidden] = useState<string[]>([]);
+  const applyUpdates = (row: Person): Person => {
+    const update = imports
+      .slice()
+      .reverse()
+      .find((item) => item.update && item.values[1].toLowerCase() === row.values[0].toLowerCase());
+    return {
+      ...row,
+      values: update
+        ? [
+            update.values[1],
+            update.values[2],
+            update.values[3],
+            update.values[4],
+            ...row.values.slice(4, 7),
+            update.values[6],
+            row.values[8],
+          ]
+        : row.values,
+      children: row.children?.map(applyUpdates),
+    };
+  };
   const data = [
-    organization,
+    applyUpdates(organization),
+    ...imports
+      .filter(
+        (item) =>
+          !item.update ||
+          !rosterPersonNames.some((name) => name.toLowerCase() === item.values[1].toLowerCase()),
+      )
+      .map((item) => ({
+        ...person(
+          item.values[1],
+          item.values[2],
+          item.values[3],
+          item.values[4],
+          "—",
+          "—",
+          "New",
+          item.values[6],
+        ),
+        id: item.id,
+      })),
     ...extras
       .filter((row) => ["New team member", "Candidate"].includes(row[2]))
       .map((row) => person(row[0], row[2], row[1], row[3], "—", "—", "New", "Today")),
@@ -389,7 +167,7 @@ export function RosterDirectory({
           <Avatar name={person.values[0]} />
           <span>
             <b>{person.values[0]}</b>
-            {row.depth < 2 && (
+            {row.depth < 2 && !person.id.startsWith("import-") && (
               <Badge variant="secondary" className="ct-org-level">
                 {row.depth ? "Vice President" : "Executive"}
               </Badge>

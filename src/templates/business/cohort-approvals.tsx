@@ -1,3 +1,4 @@
+/* eslint-disable react/only-export-components */
 import { useState } from "react";
 import { Check, X } from "lucide-react";
 import {
@@ -125,8 +126,18 @@ const seed = [
     "Pending",
   ],
 ];
-export default function CohortApprovals() {
-  const [rows, setRows] = useState(seed);
+export function useCohortApprovalsState() {
+  return useState(seed);
+}
+export function resetCohortApprovals(model: ReturnType<typeof useCohortApprovalsState>) {
+  model[1](seed);
+}
+export default function CohortApprovals({
+  model,
+}: {
+  model: ReturnType<typeof useCohortApprovalsState>;
+}) {
+  const [rows, setRows] = model;
   const [decision, setDecision] = useState<{ row: string[]; action: string } | null>(null);
   const [q, setQ] = useState("");
   const [status, setStatus] = useState("Status");

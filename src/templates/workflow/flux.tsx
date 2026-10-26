@@ -1,3 +1,10 @@
+import { FluxSpend, FluxTokenAudit } from "./flux-costs";
+import { useFluxCostModel } from "./flux-cost-models";
+import { AiOperations } from "./ai-operations";
+import { useAiOperationsModel } from "./ai-operations-model";
+import { FluxConnections } from "./flux-providers";
+import { FluxRouting } from "./flux-routing";
+import { useFluxProviderModel } from "./flux-provider-models";
 import { FluxEvaluations } from "./flux-evaluations";
 import { FluxMemory } from "./flux-memory";
 import { useFluxEvidenceModel } from "./flux-evidence-models";
@@ -66,6 +73,9 @@ const incidents = [
   },
 ];
 export default function Flux() {
+  const costModel = useFluxCostModel();
+  const operationsModel = useAiOperationsModel();
+  const providerModel = useFluxProviderModel();
   const evidenceModel = useFluxEvidenceModel();
   const flagRecords = useFluxFlagsModel();
   const [view, setView] = useState("Overview");
@@ -88,8 +98,12 @@ export default function Flux() {
         { label: "Flags", icon: Flag },
         { label: "Memory", icon: Brain },
         { label: "Tools", icon: Wrench },
-        { label: "Providers", icon: Server },
-        { label: "Costs", icon: CircleDollarSign },
+        {
+          label: "Providers",
+          icon: Server,
+          children: ["Connections", "Routing rules", "Failover"],
+        },
+        { label: "Costs", icon: CircleDollarSign, children: ["Spend overview", "Token audit"] },
         { label: "Settings", icon: Settings },
       ]}
       extra={
@@ -103,15 +117,7 @@ export default function Flux() {
                   variant="ghost"
                   className="wf-nav-button"
                   onClick={() => {
-                    setView(
-                      x.includes("Spend") || x.includes("Token")
-                        ? "Costs"
-                        : x === "Failures"
-                          ? "Runs"
-                          : x === "Connections"
-                            ? "Providers"
-                            : "Tools",
-                    );
+                    setView(x === "Failures" ? "Runs" : x);
                     setRiskOnly(x === "Failures");
                   }}
                 >
@@ -250,7 +256,13 @@ export default function Flux() {
         <FluxFlags records={flagRecords} />
       ) : view === "Approvals" ? (
         <ApprovalInbox />
-      ) : view === "Tools" || view === "Providers" ? (
+      ) : view === "Connections" || view === "Providers" ? (
+        <FluxConnections model={providerModel} />
+      ) : view === "Failover" ? (
+        <AiOperations model={operationsModel} />
+      ) : view === "Routing rules" ? (
+        <FluxRouting model={providerModel} />
+      ) : view === "Tools" ? (
         <Panel
           title={view === "Tools" ? "Tool matrix" : "Provider routing"}
           description="Manage capabilities available to your agents."
@@ -284,24 +296,10 @@ export default function Flux() {
             </div>
           ))}
         </Panel>
-      ) : view === "Costs" ? (
-        <>
-          <div className="wf-grid wf-three">
-            <Panel title="Workspace spend">
-              <strong className="wf-stat-value">$95.10</strong>
-            </Panel>
-            <Panel title="Tokens consumed">
-              <strong className="wf-stat-value">1.84M</strong>
-            </Panel>
-            <Panel title="Budget remaining">
-              <strong className="wf-stat-value">$48.99</strong>
-            </Panel>
-          </div>
-          <Panel title="Daily spend" description="Across all model providers">
-            <Chart mode="layers" />
-          </Panel>
-          {tree}
-        </>
+      ) : view === "Costs" || view === "Spend overview" ? (
+        <FluxSpend model={costModel} />
+      ) : view === "Token audit" ? (
+        <FluxTokenAudit model={costModel} />
       ) : (
         <Panel
           title={view}

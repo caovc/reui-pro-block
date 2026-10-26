@@ -237,3 +237,21 @@
 .ct-report-filters > div {
   padding: 0;
 }
+
+.ct-pulse .ct-kb-category,
+.ct-pulse .ct-report-kpi,
+.ct-pulse .ct-report-scorecard {
+  background: var(--background);
+}
+@media (max-width: 700px) {
+  .ct-pulse .ct-report-heading {
+    height: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .ct-report-export {
+    position: static;
+  }
+}

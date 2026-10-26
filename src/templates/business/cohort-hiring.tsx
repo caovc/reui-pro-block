@@ -76,6 +76,9 @@ const initial = Object.fromEntries(
       })),
   ]),
 ) as Record<string, Candidate[]>;
+export function resetCohortHiring(model: ReturnType<typeof useCohortHiringState>) {
+  model[1](initial);
+}
 export function useCohortHiringState() {
   return useState(initial);
 }

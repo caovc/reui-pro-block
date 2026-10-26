@@ -1,3 +1,7 @@
+import { RosterImport } from "./roster-import";
+import { useRosterImportState } from "./roster-import-model";
+import { RosterApprovals } from "./roster-approvals";
+import { useRosterApprovalsState } from "./roster-approvals-model";
 import { MiniTrend } from "@/blocks/data/sparkline-primitives";
 import { RosterHiring, useRosterHiringState } from "./roster-hiring";
 import {
@@ -8,6 +12,7 @@ import {
   FramePanel,
 } from "@/components/reui/frame";
 import { RosterDirectory } from "./roster-directory";
+import { rosterPersonNames } from "./roster-directory-data";
 import { RosterCalendar } from "./roster-calendar";
 import { useState } from "react";
 import { Plus, CalendarDays, Users, UserPlus, UserMinus, ArrowRight, Check } from "lucide-react";
@@ -28,7 +33,6 @@ import {
   Avatar,
   Modal,
   ReferenceSheet,
-  Empty,
   Export,
   Table,
   TableBody,
@@ -49,43 +53,6 @@ const initialPeople = [
   ["Priya Nair", "Customer Success", "Customer Success Lead", "London", "Full-time"],
   ["Abena Mensah", "People", "People Operations", "Accra", "Full-time"],
 ];
-const requests = [
-  [
-    "Campaign shoot: £4,200",
-    "Over the £1,000 threshold, agency invoice",
-    "Expense",
-    "Aisha Rahman",
-    "14d",
-  ],
-  [
-    "Right to work renewal",
-    "Visa expires 30 Sep, blocks payroll if it lapses",
-    "Profile change",
-    "Hannah Weber",
-    "13d",
-  ],
-  [
-    "Promotion to Staff Engineer",
-    "Level change, effective 1 Sep",
-    "Compensation",
-    "Amara Okafor",
-    "13d",
-  ],
-  [
-    "Offer sign-off: Account Executive",
-    "Candidate holds a competing offer",
-    "Offer",
-    "Bruno Duarte",
-    "12d",
-  ],
-  [
-    "Developer tooling renewal: £3,600",
-    "Annual licence, over the £1,000 threshold",
-    "Expense",
-    "Daniel Reyes",
-    "11d",
-  ],
-];
 const baseEvents: Record<number, string> = {
   11: "Aisha Rahman: annual leave",
   14: "Ingrid Larsen: annual leave",
@@ -103,10 +70,12 @@ const baseEvents: Record<number, string> = {
 export default function Roster() {
   const [view, setView] = useState("Dashboard");
   const hiringState = useRosterHiringState();
+  const importState = useRosterImportState(rosterPersonNames);
   const [query, setQuery] = useState("");
   const [period, setPeriod] = useState("Year");
   const [people, setPeople] = useState(initialPeople);
-  const [pending, setPending] = useState(requests);
+  const approvalState = useRosterApprovalsState();
+  const pending = approvalState.requests.filter((r) => r.decision === "Pending");
   const [modal, setModal] = useState("");
   const [detail, setDetail] = useState<string[] | null>(null);
   const [events, setEvents] = useState(baseEvents);
@@ -129,7 +98,9 @@ export default function Roster() {
         <div className="ct-between">
           <div>
             <FrameTitle>Awaiting your action</FrameTitle>
-            <FrameDescription>{pending.length} waiting, oldest 14d</FrameDescription>
+            <FrameDescription>
+              {pending.length} waiting, oldest {pending[0]?.waiting || 0}d
+            </FrameDescription>
           </div>
           <Button variant="outline" onClick={() => setView("Approvals")}>
             All requests
@@ -148,29 +119,32 @@ export default function Roster() {
             </TableHeader>
             <TableBody>
               {pending
-                .filter((r) => r.join(" ").toLowerCase().includes(query.toLowerCase()))
+                .filter((r) =>
+                  Object.values(r).join(" ").toLowerCase().includes(query.toLowerCase()),
+                )
+                .slice(0, 5)
                 .map((r) => (
-                  <TableRow key={r[0]}>
+                  <TableRow key={r.id}>
                     <TableCell>
-                      <b>{r[0]}</b>
-                      <small className="block ct-muted mt-1">{r[1]}</small>
+                      <b>{r.title}</b>
+                      <small className="block ct-muted mt-1">{r.description}</small>
                     </TableCell>
                     <TableCell>
-                      <Badge variant="outline">{r[2]}</Badge>
+                      <Badge variant="outline">{r.type}</Badge>
                     </TableCell>
                     <TableCell>
                       <span className="ct-person">
-                        <Avatar name={r[3]} />
-                        {r[3]}
+                        <Avatar name={r.requester} />
+                        {r.requester}
                       </span>
                     </TableCell>
-                    <TableCell>{r[4]}</TableCell>
+                    <TableCell>{r.waiting}d</TableCell>
                     <TableCell>
                       <Button
                         size="sm"
                         variant="outline"
                         onClick={() => {
-                          setPending((p) => p.filter((x) => x[0] !== r[0]));
+                          approvalState.decide(r.id, "Approved");
                           toast.success("Request approved");
                         }}
                       >
@@ -183,7 +157,7 @@ export default function Roster() {
             </TableBody>
           </Table>
         </div>
-        {pending.length === 0 && <Empty reset={() => setPending(requests)} />}
+        {pending.length === 0 && <p className="ct-muted py-4">All requests have a decision.</p>}
       </FramePanel>
     </Frame>
   );
@@ -403,18 +377,18 @@ export default function Roster() {
               Add person
             </Button>
           </div>
-          <RosterDirectory extras={people} query={query} setQuery={setQuery} onOpen={setDetail} />
+          <RosterDirectory
+            imports={importState.applied}
+            extras={people}
+            query={query}
+            setQuery={setQuery}
+            onOpen={setDetail}
+          />
         </>
+      ) : view === "Import" ? (
+        <RosterImport model={importState} onPeople={() => setView("People")} />
       ) : view === "Approvals" ? (
-        <>
-          <div className="ct-heading">
-            <div>
-              <h1>Approvals</h1>
-              <p>Review requests that need your decision.</p>
-            </div>
-          </div>
-          {approvals}
-        </>
+        <RosterApprovals model={approvalState} />
       ) : view === "Time" ? (
         <>
           <div className="ct-heading">

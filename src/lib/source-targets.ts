@@ -452,8 +452,19 @@ export function templateImplementationTargets(template: {
     filebox: "drive",
   };
   const secondaryModules: Record<string, string[]> = {
-    flux: ["flux-evaluations", "flux-memory"],
+    flux: [
+      "flux-evaluations",
+      "flux-memory",
+      "flux-providers",
+      "flux-routing",
+      "flux-costs",
+      "ai-operations",
+    ],
+    tempo: ["ai-operations"],
     pulse: ["pulse-knowledge", "pulse-reports"],
+    cohort: ["cohort-people", "cohort-settings"],
+    roster: ["roster-approvals", "roster-import", "roster-directory"],
+    echo: ["echo-composer", "echo-projects"],
   };
   const modules = [
     sharedModules[template.id] ?? template.id,

@@ -4196,3 +4196,455 @@
   left: 74px;
   top: 0;
 }
+
+/* Cohort reporting lines: existing Pro Block model grid, official ReUI table behavior. */
+.bt-cohort .bt-reporting-lines {
+  max-width: none;
+  margin-top: 0;
+  border-radius: 14px;
+}
+.bt-cohort .bt-reporting-lines > div > header {
+  height: auto;
+  min-height: 49px;
+  padding: 7px 12px;
+}
+.bt-reporting-summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.bt-reporting-summary > span {
+  white-space: nowrap;
+  border-right: 1px solid var(--border);
+  padding-right: 12px;
+}
+.bt-reporting-summary b {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1px 5px;
+  margin-left: 5px;
+  color: var(--foreground);
+  font-weight: 500;
+}
+.bt-reporting-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.bt-reporting-controls {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-left: auto;
+}
+.bt-depth-controls {
+  display: flex;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  overflow: hidden;
+}
+.bt-depth-controls button {
+  height: 30px;
+  border-radius: 0;
+  padding: 0 10px;
+  border-right: 1px solid var(--border);
+}
+.bt-depth-controls button:last-child {
+  border-right: 0;
+}
+.bt-depth-controls button[aria-pressed="true"] {
+  background: var(--muted);
+}
+.bt-reporting-grid tbody tr {
+  height: 56px;
+}
+.bt-reporting-grid thead th {
+  border-right: 1px solid var(--border);
+  background: var(--background);
+}
+.bt-tree-person {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+.bt-tree-person > button {
+  flex: 0 0 14px;
+}
+.bt-tree-person > button:disabled {
+  visibility: hidden;
+}
+.bt-tree-person > div {
+  min-width: 0;
+}
+.bt-person-name {
+  font-weight: 600;
+  max-width: 115px;
+  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+}
+.bt-tree-person [data-slot="badge"] {
+  margin-left: 6px;
+  font-size: 10px;
+  vertical-align: middle;
+}
+.bt-tree-person small {
+  display: block;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 18px;
+}
+.bt-reporting-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 16px 9px 48px;
+  background: var(--muted);
+  font-size: 13px;
+}
+.bt-reporting-footer > span {
+  display: flex;
+  gap: 90px;
+  align-items: center;
+}
+.bt-reporting-footer small {
+  color: var(--muted-foreground);
+}
+.bt-tree-filter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 12px;
+  border-bottom: 1px solid var(--border);
+}
+.bt-person-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-top: 10px;
+}
+.bt-person-form label {
+  display: grid;
+  gap: 8px;
+  font-size: 13px;
+}
+.bt-person-notes {
+  grid-column: 1 / -1;
+}
+.bt-person-notes textarea {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px;
+  min-height: 90px;
+}
+.bt-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 24px;
+}
+@media (max-width: 767px) {
+  .bt-reporting-summary {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .bt-reporting-toolbar {
+    flex-wrap: wrap;
+  }
+  .bt-reporting-toolbar > div:first-child {
+    flex-basis: 100%;
+  }
+  .bt-reporting-controls {
+    margin-left: 0;
+    flex-wrap: wrap;
+  }
+  .bt-reporting-footer {
+    padding-left: 12px;
+    gap: 8px;
+  }
+  .bt-reporting-footer > span {
+    gap: 16px;
+  }
+  .bt-person-form {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Cohort's six settings pages use independently saved ReUI Frame sections. */
+.bt-cohort-settings {
+  max-width: 864px;
+  margin: 0 auto;
+  padding-bottom: 20px;
+}
+.bt-cohort-settings > h1 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 12px;
+  letter-spacing: -0.4px;
+}
+.bt-settings-tabs {
+  display: flex;
+  gap: 3px;
+  overflow-x: auto;
+  margin-bottom: 15px;
+  white-space: nowrap;
+}
+.bt-settings-tabs button {
+  flex: 0 0 auto;
+  border-radius: 0;
+  color: var(--muted-foreground);
+  height: 37px;
+  padding: 0 9px;
+}
+.bt-settings-tabs button[aria-current="page"] {
+  color: var(--foreground);
+  border-bottom: 2px solid var(--foreground);
+}
+.bt-cohort-setting-section {
+  margin-bottom: 16px;
+  max-width: none;
+  border-radius: 14px;
+}
+.bt-cohort .bt-cohort-setting-section > div > header {
+  min-height: 56px;
+  height: auto;
+  padding: 10px 16px;
+}
+.bt-cohort-setting-section tbody tr {
+  height: 49px;
+}
+.bt-cohort-setting-section [data-slot="number-field-group"] {
+  border-color: transparent;
+  box-shadow: none;
+}
+.bt-cohort-setting-section [data-slot="number-field-input"] {
+  color: var(--muted-foreground);
+}
+.bt-cohort-setting-section [data-slot="number-field-group"]:focus-within {
+  border-color: var(--border);
+}
+.bt-setting-row {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 25px;
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+}
+.bt-setting-row:last-child {
+  border-bottom: 0;
+}
+.bt-setting-row strong {
+  font-size: 13px;
+  font-weight: 500;
+}
+.bt-setting-row p {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  margin-top: 2px;
+}
+.bt-setting-save {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 16px;
+  background: color-mix(in srgb, var(--muted) 50%, transparent);
+}
+.bt-setting-save > span {
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.bt-setting-save > div {
+  display: flex;
+  gap: 12px;
+}
+.bt-setting-cell {
+  font-weight: 500;
+  width: 100%;
+  text-align: left;
+}
+.bt-setting-count {
+  border-radius: 5px;
+  background: var(--muted);
+  padding: 1px 6px;
+  font-size: 12px;
+}
+.bt-fiscal-fields {
+  display: flex;
+  gap: 12px;
+}
+.bt-fiscal-fields > * {
+  flex: 1;
+}
+.bt-working-days {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.bt-working-days button {
+  padding: 0 8px;
+}
+.bt-profile-heading {
+  padding: 12px 16px 0;
+  font-weight: 500;
+}
+.bt-profile-photo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.bt-profile-photo > img,
+.bt-profile-photo > span {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.bt-security-form {
+  display: grid;
+  gap: 16px;
+  padding: 20px;
+  max-width: 500px;
+}
+.bt-security-form label {
+  display: grid;
+  gap: 7px;
+  font-size: 13px;
+}
+.bt-security-form > button {
+  justify-self: start;
+}
+@media (max-width: 767px) {
+  .bt-setting-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .bt-setting-save {
+    padding: 9px 12px;
+    gap: 6px;
+  }
+  .bt-setting-save > div {
+    gap: 6px;
+  }
+  .bt-setting-save button {
+    padding: 0 8px;
+  }
+  .bt-settings-tabs {
+    max-width: calc(100vw - 58px);
+  }
+}
+.bt-person-editor {
+  display: flex;
+  flex-direction: column;
+  width: min(512px, calc(100vw - 32px));
+}
+.bt-person-editor > form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+.bt-person-editor .bt-person-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px 16px;
+  margin: 0;
+  overflow-y: auto;
+}
+.bt-person-editor .bt-person-form > label {
+  display: grid;
+  grid-template-columns: 0.7fr 1fr;
+  gap: 12px;
+  align-items: center;
+}
+.bt-person-editor .bt-dialog-actions {
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+.bt-person-editor [data-slot="sheet-description"] {
+  font-size: 12px;
+}
+.bt-cohort-people-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 54px;
+  margin: -2px 0 8px;
+}
+.bt-cohort-people-heading h1 {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.4px;
+}
+.bt-cohort-setting-section [data-slot="number-field-input"] {
+  text-align: left;
+  padding-left: 0;
+}
+.bt-cohort-setting-section .bt-setting-row [data-slot="number-field-group"] {
+  border-color: var(--border);
+  padding-left: 10px;
+}
+.bt-tree-person [data-slot="badge"][data-variant="focus-light"] {
+  color: #5226b8;
+  background: #faf8ff;
+}
+.bt-cohort-settings {
+  width: 100%;
+  min-width: 0;
+}
+@media (max-width: 767px) {
+  .bt-cohort .bt-topbar {
+    height: 48px;
+  }
+  .bt-cohort-people-heading {
+    height: 24px;
+    margin: 0;
+  }
+  .bt-reporting-summary {
+    display: contents;
+  }
+  .bt-reporting-summary > span {
+    border-right: 0;
+    padding-right: 0;
+  }
+  .bt-cohort-setting-section > div > header > div:last-child {
+    width: 100%;
+  }
+}
+.bt-tree-person [data-person-level="Vice President"] [data-slot="badge"] {
+  color: #5226b8;
+  background: #faf8ff;
+  border-color: var(--border);
+}
+.bt-tree-person [data-slot="badge"] {
+  font-size: 11px;
+}
+.bt-tree-person [data-person-level="Vice President"] .bt-person-name {
+  max-width: 84px;
+}
+.bt-reporting-grid [aria-label^="Change status"] [data-slot="badge"] {
+  color: var(--foreground);
+  border-color: var(--border);
+  background: var(--background);
+  gap: 4px;
+}
+.bt-person-status-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #e4a32c;
+}
+.bt-person-status-dot.active {
+  background: #0eb887;
+}

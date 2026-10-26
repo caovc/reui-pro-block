@@ -74,9 +74,17 @@ function collect(template: TemplateMeta) {
   visit("/src/templates/surface.tsx");
   visit("/src/components/ui/tooltip.tsx");
   visit("/src/components/ui/sonner.tsx");
-  files["src/Example.tsx"] =
-    `import Template from '@/templates/${template.family}'\nimport { TemplateSurface } from '@/templates/surface'\n
+  visit("/src/components/site/global-theme-store.ts");
+  visit("/src/components/site/preview-theme.ts");
+  files["src/Example.tsx"] = `import { useLayoutEffect } from 'react';
+import Template from '@/templates/${template.family}';
+import { TemplateSurface } from '@/templates/surface';
+import { useGlobalTheme } from '@/components/site/global-theme-store';
+import { applyTheme } from '@/components/site/preview-theme';
+
 export default function Example() {
+  const { theme, dark } = useGlobalTheme();
+  useLayoutEffect(() => applyTheme(theme, dark), [theme, dark]);
   return (
     <TemplateSurface id="${template.id}">
       <Template id="${template.id}" />

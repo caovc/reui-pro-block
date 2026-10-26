@@ -1,5 +1,8 @@
 /** CSV records are domain content; file selection/validation uses the actual free REUI hook. */
-export function parseRecordsCSV(text: string): string[][] {
+export function parseRecordsCSV(
+  text: string,
+  { maxColumns = 8, maxRecords = 200 }: { maxColumns?: number; maxRecords?: number } = {},
+): string[][] {
   const rows: string[][] = [];
   let cells: string[] = [];
   let value = "";
@@ -33,10 +36,11 @@ export function parseRecordsCSV(text: string): string[][] {
   if (cells.some(Boolean)) rows.push(cells);
   if (rows.length < 2) throw new Error("Include a header row and at least one record.");
   const columns = rows[0].length;
-  if (columns > 8) throw new Error("This demo supports up to 8 columns.");
+  if (columns > maxColumns) throw new Error(`This demo supports up to ${maxColumns} columns.`);
   if (rows.some((row) => row.length !== columns)) {
     throw new Error("Every record must have the same number of fields as the header.");
   }
-  if (rows.length > 201) throw new Error("This demo supports up to 200 records.");
+  if (rows.length > maxRecords + 1)
+    throw new Error(`This demo supports up to ${maxRecords} records.`);
   return rows;
 }
