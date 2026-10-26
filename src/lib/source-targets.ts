@@ -231,6 +231,10 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
     return paths("application", application[block.category]);
   }
   if (block.group === "ecommerce" || block.group === "marketing") {
+    if (block.category === "comparison" && block.index < 3) {
+      const module = ["spec-table", "two-product", "buying-guide"][block.index];
+      return paths("commerce", `comparison-variants/${module}`, "comparison-variants/index");
+    }
     if (block.category === "category-card" && [3, 4, 5].includes(block.index)) {
       const module = ["featured-department", "collection-guides", "seasonal-categories"][
         block.index - 3

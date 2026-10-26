@@ -1,0 +1,208 @@
+{
+  "base": "cbd5c2e0192d7fb747fb5d6817b7c8d23a4866b9",
+  "frozenFiles": {
+    "src/blocks/commerce/comparison-variants/cart-context.ts": "08e12442a2ac4faad708088c62b4ffa09af98cab6b71d677bca108f643d2be0f",
+    "src/blocks/commerce/comparison-variants/buying-guide.tsx": "e77aba63448d76b243354b01eadbeb2806c313a1505a0db8e3649c422e899634",
+    "src/blocks/commerce/comparison-variants/spec-table.tsx": "2aaa0964db44164e141f31d1fed5072a3dd1926f8b088f02d5231656739e5b4d",
+    "src/blocks/commerce/comparison-variants/two-product.tsx": "9979433a3d1cc783d9186e545f1fdd3f8813ffb5d342300fee2c11a03e0328b5",
+    "src/blocks/commerce/comparison-variants/shared.tsx": "5cf8018ce04079016e0cb985c13b365c8c28973140fbd0b0440d8da7bd8cfc59",
+    "src/blocks/commerce/comparison-variants/data.ts": "a13fcf6f27d71ea8dce63faca874a30978e1ef89ec8c597cdcd418ce545e7691",
+    "src/blocks/commerce/comparison-variants/cart.tsx": "d0ce52b93eaae62d1f64c85b9c9a3cd8b2f757a1299f71b18afbf1fecc63e3dd",
+    "src/blocks/commerce/comparison-variants/index.tsx": "b7ec8461978187e497e3f0d9b4559580a307f9c2112d604ad2997b50437fe012",
+    "tests/comparison-decisions.spec.ts": "069454c5862ae616c0f536b942f15c93269bfc991c7cce969908fe1e6f129779"
+  },
+  "sourceLeaves": {
+    "1": "comparison-variants/spec-table",
+    "2": "comparison-variants/two-product",
+    "3": "comparison-variants/buying-guide"
+  },
+  "rootValidation": {
+    "strictBuild": "PASS before/after actualfreeDialog and documentedwidth correction",
+    "production": "63/63 initial Comparison/allCategory/source1.0m;38/38 latestM2/freeDialog/Nav/CSV/source37.2s;23/23 finalComparison/source21.7s;all1worker",
+    "logs": [
+      "/tmp/bricklane-comparison123-root-production.log",
+      "/tmp/bricklane-comparison123-free-dialog-root-production.log",
+      "/tmp/bricklane-comparison123-final-root-production.log"
+    ],
+    "actualUIStarters": [
+      {
+        "n": 1,
+        "folder": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-comparison1-final-export-23RXe3",
+        "entries": 200
+      },
+      {
+        "n": 2,
+        "folder": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-comparison2-final-export-zjZC2p",
+        "entries": 200
+      },
+      {
+        "n": 3,
+        "folder": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-comparison3-final-export-YuK7pz",
+        "entries": 200
+      }
+    ],
+    "starterBuilds": "All3 actual200-file starters strict:true independent tsc/VitePASS; workspace dependencies reused, no fresh install claimed",
+    "runtime": "6/6 actual1440/390 stickywheel/swap/4chips/nativeNumberField/subtotal/freeDialogEscape+focusPASS; noerrors/images/overflow; first measured dialog widths captured entering animation and are not settled geometry",
+    "settledRuntime": [
+      {
+        "n": 1,
+        "width": 1440,
+        "styles": {
+          "width": 576,
+          "headerPadding": "20px",
+          "footerPadding": "16px",
+          "border": "0px"
+        },
+        "errors": [],
+        "status": "PASS"
+      },
+      {
+        "n": 1,
+        "width": 390,
+        "styles": {
+          "width": 358,
+          "headerPadding": "20px",
+          "footerPadding": "16px",
+          "border": "0px"
+        },
+        "errors": [],
+        "status": "PASS"
+      },
+      {
+        "n": 2,
+        "width": 1440,
+        "styles": {
+          "width": 576,
+          "headerPadding": "20px",
+          "footerPadding": "16px",
+          "border": "0px"
+        },
+        "errors": [],
+        "status": "PASS"
+      },
+      {
+        "n": 2,
+        "width": 390,
+        "styles": {
+          "width": 358,
+          "headerPadding": "20px",
+          "footerPadding": "16px",
+          "border": "0px"
+        },
+        "errors": [],
+        "status": "PASS"
+      },
+      {
+        "n": 3,
+        "width": 1440,
+        "styles": {
+          "width": 576,
+          "headerPadding": "20px",
+          "footerPadding": "16px",
+          "border": "0px"
+        },
+        "errors": [],
+        "status": "PASS"
+      },
+      {
+        "n": 3,
+        "width": 390,
+        "styles": {
+          "width": 358,
+          "headerPadding": "20px",
+          "footerPadding": "16px",
+          "border": "0px"
+        },
+        "errors": [],
+        "status": "PASS"
+      }
+    ],
+    "styleParity": {
+      "result": "PASS: all 6 settled site/starter dialog widths, header/footer padding and border match",
+      "log": "/tmp/bricklane-comparison123-style-parity.log",
+      "measurements": [
+        {
+          "n": 1,
+          "width": 1440,
+          "styles": {
+            "width": 576,
+            "headerPadding": "20px",
+            "footerPadding": "16px",
+            "border": "0px"
+          },
+          "status": "PASS"
+        },
+        {
+          "n": 1,
+          "width": 390,
+          "styles": {
+            "width": 358,
+            "headerPadding": "20px",
+            "footerPadding": "16px",
+            "border": "0px"
+          },
+          "status": "PASS"
+        },
+        {
+          "n": 2,
+          "width": 1440,
+          "styles": {
+            "width": 576,
+            "headerPadding": "20px",
+            "footerPadding": "16px",
+            "border": "0px"
+          },
+          "status": "PASS"
+        },
+        {
+          "n": 2,
+          "width": 390,
+          "styles": {
+            "width": 358,
+            "headerPadding": "20px",
+            "footerPadding": "16px",
+            "border": "0px"
+          },
+          "status": "PASS"
+        },
+        {
+          "n": 3,
+          "width": 1440,
+          "styles": {
+            "width": 576,
+            "headerPadding": "20px",
+            "footerPadding": "16px",
+            "border": "0px"
+          },
+          "status": "PASS"
+        },
+        {
+          "n": 3,
+          "width": 390,
+          "styles": {
+            "width": 358,
+            "headerPadding": "20px",
+            "footerPadding": "16px",
+            "border": "0px"
+          },
+          "status": "PASS"
+        }
+      ]
+    },
+    "visual": "Root inspected actual phone buying guide: all four chips and complete original headphones visible; settled phone cart legible and contained. Original public visuals pending.",
+    "formatToolingLint": "Final full format check, tooling and scoped lint recorded in /tmp/bricklane-comparison123-final-release-static.log"
+  },
+  "freeReuseCorrections": [
+    "NativeDataGrid pinning/visibility replaces generic mixed products/table",
+    "ActualdecimalRating/Tooltip/Frame/Table/Item/NumberField implementations",
+    "RootreusesexistingactualfreeDialogSurface3/6 with its realCSS ratherthan duplicate modalheader/body/footer",
+    "ConflictingFrame consumerheight removed; chipsinsideactualpaintedpanels asserted",
+    "Documented max-w-6xl root width retained"
+  ],
+  "customGaps": [
+    "Fictional originalproducts/specs/typednumericwinner state",
+    "Selection/cart quantity/subtotal and localhandler state; publicreferencecartconsole-only",
+    "Independentresponsivecomposition pending renderedreferenceaudit"
+  ],
+  "deployment": "Own CI/Pages pending; latest successfulM5 56229f5996browserPASS+Root4liveflows; oldM1bd94 CI1040PASS/1GanttFAIL currentlydiagnosed"
+}

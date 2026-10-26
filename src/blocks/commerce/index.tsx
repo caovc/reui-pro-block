@@ -1,3 +1,4 @@
+import { ComparisonVariants } from "./comparison-variants";
 import type { BlockProps } from "@/data/types";
 import { CategoryBrowser, FilterSidebar } from "./catalog";
 import { CategoryCardVariants } from "./category-card-variants";
@@ -57,6 +58,7 @@ export default function CommerceBlock({ block }: BlockProps) {
     case "coupon":
       return <CouponVariants key={block.id} block={block} />;
     case "comparison":
+      if (block.index < 3) return <ComparisonVariants key={block.id} block={block} />;
       return <Comparison key={block.id} block={block} />;
     case "review":
       return [0, 4, 5].includes(block.index) ? (
