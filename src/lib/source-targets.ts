@@ -496,6 +496,9 @@ export function templateImplementationTargets(template: {
     filebox: "drive",
   };
   const secondaryModules: Record<string, string[]> = {
+    filespace: ["drive-layout"],
+    filebox: ["drive-layout"],
+    mesh: ["workflow-account-settings", "workflow-account-menu"],
     flux: [
       "flux-evaluations",
       "flux-memory",
@@ -504,7 +507,7 @@ export function templateImplementationTargets(template: {
       "flux-costs",
       "ai-operations",
     ],
-    tempo: ["ai-operations"],
+    tempo: ["ai-operations", "workflow-account-settings", "workflow-account-menu"],
     lucent: ["lucent-clusters", "lucent-hosts", "lucent-registry"],
     pulse: ["pulse-knowledge", "pulse-reports", "pulse-settings"],
     cohort: [

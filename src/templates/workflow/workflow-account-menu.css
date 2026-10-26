@@ -1,0 +1,83 @@
+.wf-account-menu-tempo {
+  width: 240px;
+}
+.wf-account-menu-mesh {
+  width: 224px;
+}
+.wf-account-menu [data-slot="dropdown-menu-item"] {
+  min-height: 28px;
+  gap: 6px;
+}
+.wf-account-menu [data-slot="dropdown-menu-label"] {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+}
+.wf-account-menu .wf-account-menu-identity {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 6px;
+  font-size: 14px;
+}
+.wf-account-menu-identity strong {
+  line-height: 20px;
+}
+.wf-account-menu-identity small {
+  line-height: 16px;
+}
+.wf-account-menu-account-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.wf-account-organization-mark {
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 10px;
+}
+.wf-account-menu-theme-row {
+  display: flex;
+  height: 36px;
+  align-items: center;
+  gap: 6px;
+  padding: 0 6px;
+  font-size: 14px;
+  line-height: 20px;
+}
+.wf-account-menu-theme-choices {
+  display: flex;
+  flex: none;
+  margin-left: auto;
+  gap: 2px;
+  border: 0;
+  border-radius: 8px;
+  padding: 2px;
+  background: var(--muted);
+}
+.wf-account-menu .wf-account-menu-theme-choice {
+  display: flex;
+  width: 24px;
+  height: 24px;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: 6px;
+}
+.wf-account-menu-theme-choice > span {
+  display: none;
+}
+.wf-account-menu-theme-choice[data-state="checked"] {
+  background: var(--background);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.08);
+}
+
+.wf-account-menu-trigger[data-account-kind="tempo"][data-account-collapsed="false"] {
+  margin-left: -4px;
+}

@@ -22,10 +22,6 @@ import {
   Video,
   ChevronRight,
   ChevronDown,
-  HardDrive,
-  Building2,
-  CreditCard,
-  Settings,
   Bell,
   CircleHelp,
   Menu,
@@ -36,6 +32,8 @@ import {
   SlidersHorizontal,
 } from "lucide-react";
 import { Badge } from "@/components/reui/badge";
+import { Item, ItemMedia, ItemContent, ItemTitle, ItemDescription } from "@/components/ui/item";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
@@ -44,7 +42,14 @@ import {
   DropdownMenuTrigger,
   DropdownMenuCheckboxItem,
 } from "@/components/ui/dropdown-menu";
-import { Sheet, SheetContent, SheetTitle, SheetDescription } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+} from "@/components/ui/sheet";
 import {
   Select,
   SelectTrigger,
@@ -68,6 +73,7 @@ import {
   Empty,
 } from "./shared";
 import "./drive.css";
+import { DriveLayout, DriveApplicationTrigger } from "./drive-layout";
 export type FileRecord = {
   id: string;
   name: string;
@@ -367,7 +373,7 @@ export default function Drive({ id }: { id: string }) {
       <DriveFolderTree
         folders={files.filter((file) => file.type === "Folder" && !file.deleted)}
         view={view}
-        onNavigate={(name) => (name === "My Drive" ? setView(name) : openFolder(name))}
+        onNavigate={openFolder}
       />
       <div className="ct-drive-side-bottom">
         {[
@@ -407,38 +413,10 @@ export default function Drive({ id }: { id: string }) {
     </>
   );
   return (
-    <div className="ct-app ct-drive">
-      <aside className="ct-drive-rail">
-        <Mark />
-        {[HardDrive, Building2, CreditCard, Settings].map((Icon, i) => (
-          <Button
-            key={i}
-            size="icon"
-            variant={i === 0 ? "secondary" : "ghost"}
-            aria-label={["My drive", "Workspace", "Billing", "Settings"][i]}
-            onClick={() =>
-              i === 0
-                ? setView("My Drive")
-                : setModal(["", "Workspace settings", "Get More Storage", "Account settings"][i])
-            }
-          >
-            <Icon />
-          </Button>
-        ))}
-        <div className="ct-grow" />
-        <Avatar name="Alex Rivera" />
-      </aside>
-      <div className="ct-drive-window">
+    <Sheet open={mobile} onOpenChange={setMobile}>
+      <DriveLayout onNavigate={() => openFolder("My Drive")} onAction={setModal}>
         <header className="ct-drive-header">
-          <Button
-            className="ct-mobile-menu"
-            size="icon-sm"
-            variant="ghost"
-            aria-label="Open folders"
-            onClick={() => setMobile(true)}
-          >
-            <Menu />
-          </Button>
+          <DriveApplicationTrigger />
           <span className="ct-drive-dot" />
           <b>Bricklane</b>
           <ChevronDown size={12} />
@@ -473,11 +451,25 @@ export default function Drive({ id }: { id: string }) {
           >
             <div className="ct-drive-toolbar">
               <div className="ct-toolbar">
+                <SheetTrigger asChild>
+                  <Button
+                    className="ct-drive-folders-trigger"
+                    size="icon"
+                    variant="outline"
+                    aria-label="Open folders"
+                  >
+                    <Menu />
+                  </Button>
+                </SheetTrigger>
                 <button type="button" className="ct-muted" onClick={() => setView("My Drive")}>
                   My Drive
                 </button>
-                <ChevronRight size={14} />
-                <span>{view}</span>
+                {view !== "My Drive" && (
+                  <>
+                    <ChevronRight size={14} />
+                    <span>{view}</span>
+                  </>
+                )}
               </div>
               <div className="ct-grow" />
               <div className="ct-toolbar">
@@ -502,22 +494,25 @@ export default function Drive({ id }: { id: string }) {
                     ))}
                   </SelectContent>
                 </Select>
-                <Button
-                  variant={layout === "list" ? "secondary" : "outline"}
-                  size="icon"
-                  aria-label="List view"
-                  onClick={() => setLayout("list")}
+                <ToggleGroup
+                  type="single"
+                  variant="outline"
+                  size="sm"
+                  spacing={0}
+                  value={layout}
+                  onValueChange={(value) => {
+                    if (value) setLayout(value);
+                  }}
+                  className="ct-drive-layout-toggle"
+                  aria-label="File view"
                 >
-                  <List />
-                </Button>
-                <Button
-                  variant={layout === "grid" ? "secondary" : "outline"}
-                  size="icon"
-                  aria-label="Grid view"
-                  onClick={() => setLayout("grid")}
-                >
-                  <LayoutGrid />
-                </Button>
+                  <ToggleGroupItem value="list" aria-label="List view">
+                    <List />
+                  </ToggleGroupItem>
+                  <ToggleGroupItem value="grid" aria-label="Grid view">
+                    <LayoutGrid />
+                  </ToggleGroupItem>
+                </ToggleGroup>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline" size="icon" aria-label="Display columns">
@@ -579,18 +574,25 @@ export default function Drive({ id }: { id: string }) {
                 <h2>Suggested Folders</h2>
                 <div>
                   {[
+                    ["Brand Library", "384.0 KB", "8 items"],
                     ["Samples", "241.3 KB", "6 items"],
                     ["Product Design", "1.51 MB", "36 items"],
                     ["Spring Campaign", "387.1 KB", "10 items"],
-                    ["Client Deliverables", "501.7 KB", "13 items"],
                   ].map(([name, size, count]) => (
-                    <button type="button" onClick={() => openFolder(name)} key={name}>
-                      <Folder size={28} />
-                      <b>{name}</b>
-                      <small>
-                        {size} · {count}
-                      </small>
-                    </button>
+                    <Item asChild variant="outline" className="ct-drive-suggested-item" key={name}>
+                      <button type="button" onClick={() => openFolder(name)}>
+                        <ItemMedia variant="icon" className="ct-drive-suggested-icon">
+                          <Folder />
+                        </ItemMedia>
+                        <ItemContent>
+                          <ItemTitle>{name}</ItemTitle>
+                          <ItemDescription>
+                            <span>{size}</span>
+                            <span>{count}</span>
+                          </ItemDescription>
+                        </ItemContent>
+                      </button>
+                    </Item>
                   ))}
                 </div>
                 <h2>Suggested Files</h2>
@@ -804,379 +806,380 @@ export default function Drive({ id }: { id: string }) {
             )}
           </main>
         </div>
-      </div>
-      <input {...uploadActions.getInputProps()} hidden />
-      <Sheet open={mobile} onOpenChange={setMobile}>
-        <SheetContent side="left">
-          <SheetTitle>My Drive</SheetTitle>
-          <SheetDescription>Folders and shared files</SheetDescription>
-          {side}
-        </SheetContent>
-      </Sheet>
-      <ReferenceSheet
-        title="Share with people and teams"
-        description={target?.name}
-        width={416}
-        open={modal === "Share file"}
-        onClose={() => {
-          setModal("");
-          setInvite(false);
-        }}
-        footer={
-          <>
-            <Select
-              value={shared.restriction}
-              disabled={inherited}
-              onValueChange={(restriction) => changeShare({ restriction })}
-            >
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Restricted">Restricted</SelectItem>
-                <SelectItem value="Anyone with the link">Anyone with the link</SelectItem>
-              </SelectContent>
-            </Select>
-            <Button
-              variant="outline"
-              onClick={() => {
-                navigator.clipboard.writeText(location.href + "?file=" + target?.id);
-                toast.success("Link copied");
-              }}
-            >
-              Copy Link
-            </Button>
-            {inherited && (
-              <small className="ct-inherited-footer">Managed in {target?.parent}</small>
-            )}
-          </>
-        }
-      >
-        {inherited && (
-          <Alert className="ct-inherited-alert">
-            <Folder />
-            <AlertTitle>Inherits access from {target?.parent}</AlertTitle>
-            <AlertAction>
+        <input {...uploadActions.getInputProps()} hidden />
+        <ReferenceSheet
+          title="Share with people and teams"
+          description={target?.name}
+          width={416}
+          open={modal === "Share file"}
+          onClose={() => {
+            setModal("");
+            setInvite(false);
+          }}
+          footer={
+            <>
+              <Select
+                value={shared.restriction}
+                disabled={inherited}
+                onValueChange={(restriction) => changeShare({ restriction })}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Restricted">Restricted</SelectItem>
+                  <SelectItem value="Anyone with the link">Anyone with the link</SelectItem>
+                </SelectContent>
+              </Select>
               <Button
                 variant="outline"
+                onClick={() => {
+                  navigator.clipboard.writeText(location.href + "?file=" + target?.id);
+                  toast.success("Link copied");
+                }}
+              >
+                Copy Link
+              </Button>
+              {inherited && (
+                <small className="ct-inherited-footer">Managed in {target?.parent}</small>
+              )}
+            </>
+          }
+        >
+          {inherited && (
+            <Alert className="ct-inherited-alert">
+              <Folder />
+              <AlertTitle>Inherits access from {target?.parent}</AlertTitle>
+              <AlertAction>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    if (parentFolder) setTarget(parentFolder);
+                    setInvite(false);
+                  }}
+                >
+                  Manage
+                </Button>
+              </AlertAction>
+            </Alert>
+          )}
+          <section className="ct-detail-section">
+            <div className="ct-between">
+              <h4>
+                PEOPLE WITH ACCESS <span>{shared.people.length} people</span>
+              </h4>
+              <Button
                 size="sm"
+                variant="outline"
                 onClick={() => {
                   if (parentFolder) setTarget(parentFolder);
+                  setInvite(!invite);
+                }}
+              >
+                Invite
+              </Button>
+            </div>
+            {invite && (
+              <form
+                className="ct-form ct-share-invite"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  const email = String(new FormData(e.currentTarget).get("email"));
+                  if (!shared.people.some((p) => p[1] === email))
+                    changeShare({
+                      people: [...shared.people, [email.split("@")[0], email, "Can view"]],
+                    });
                   setInvite(false);
                 }}
               >
-                Manage
-              </Button>
-            </AlertAction>
-          </Alert>
-        )}
-        <section className="ct-detail-section">
-          <div className="ct-between">
+                <Input type="email" name="email" required placeholder="Email address" />
+                <Button type="submit">Invite</Button>
+              </form>
+            )}
+            {shared.people.map(([name, email, access]) => (
+              <div className="ct-share-member" key={email}>
+                <Avatar name={name} />
+                <span>
+                  <b>{name}</b>
+                  <small>{email}</small>
+                  {inherited && access !== "Owner" && (
+                    <small className="ct-inherited-label">
+                      {name === "Theo Park" ? "Pending · " : ""}Inherited
+                    </small>
+                  )}
+                </span>
+                {access === "Owner" ? (
+                  <span className="ct-subtle">Owner</span>
+                ) : (
+                  <Select
+                    value={access}
+                    disabled={inherited}
+                    onValueChange={(value) =>
+                      changeShare({
+                        people:
+                          value === "Remove access"
+                            ? shared.people.filter((p) => p[1] !== email)
+                            : shared.people.map((p) => (p[1] === email ? [p[0], p[1], value] : p)),
+                      })
+                    }
+                  >
+                    <SelectTrigger aria-label={"Access for " + name}>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {["Can view", "Can edit", "Remove access"].map((v) => (
+                        <SelectItem value={v} key={v}>
+                          {v}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              </div>
+            ))}
+          </section>
+          <section className="ct-detail-section">
             <h4>
-              PEOPLE WITH ACCESS <span>{shared.people.length} people</span>
+              TEAMS WITH ACCESS <span>1 team</span>
             </h4>
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => {
-                if (parentFolder) setTarget(parentFolder);
-                setInvite(!invite);
+            <div className="ct-share-member">
+              <Users size={24} />
+              <span>
+                <b>{teamName}</b>
+                <small>
+                  {productionTeam ? "8 members" : "6 members"}
+                  {inherited ? " · Inherited" : ""}
+                </small>
+              </span>
+              <Select
+                value={shared.team}
+                disabled={inherited}
+                onValueChange={(team) => changeShare({ team })}
+              >
+                <SelectTrigger aria-label={teamName + " access"}>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Can view">Can view</SelectItem>
+                  <SelectItem value="Can comment">Can comment</SelectItem>
+                  <SelectItem value="Can edit">Can edit</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </section>
+        </ReferenceSheet>
+        <DriveFilePanels
+          mode={modal}
+          file={target ? files.find((f) => f.id === target.id) || target : null}
+          files={files}
+          onMode={setModal}
+          onUpdate={(updated) => {
+            setFiles((all) => all.map((f) => (f.id === updated.id ? updated : f)));
+            setTarget(updated);
+          }}
+        />
+        <Modal
+          description={modal === "New Folder" ? "Creates a folder inside My Drive." : undefined}
+          title={modal === "Preview" ? target?.name || "File preview" : modal}
+          open={
+            !!modal &&
+            !["Share file", "Details", "Move", "Version History", "Download"].includes(modal)
+          }
+          onClose={() => setModal("")}
+        >
+          {modal === "New Folder" || modal === "Rename file" ? (
+            <form
+              className="ct-form"
+              onSubmit={(e) => {
+                e.preventDefault();
+                const name = String(new FormData(e.currentTarget).get("name"));
+                if (modal === "Rename file" && target)
+                  setFiles((f) => f.map((x) => (x.id === target.id ? { ...x, name } : x)));
+                else {
+                  setFiles((f) => [
+                    ...f,
+                    {
+                      id: crypto.randomUUID(),
+                      name,
+                      owner: "Alex Rivera",
+                      type: "Folder",
+                      size: "0 B",
+                      modified: "Today",
+                      star: false,
+                      parent: view === "Favourites" ? "My Drive" : view,
+                    },
+                  ]);
+                  setView(view === "Favourites" ? "My Drive" : view);
+                }
+                setModal("");
+                toast.success("Saved");
               }}
             >
-              Invite
-            </Button>
-          </div>
-          {invite && (
+              <label>
+                Name
+                <Input
+                  name="name"
+                  placeholder="Untitled folder"
+                  required
+                  autoFocus
+                  defaultValue={modal === "Rename file" ? target?.name : ""}
+                />
+              </label>
+              <div className="ct-folder-footer">
+                <Button type="button" variant="outline" onClick={() => setModal("")}>
+                  Cancel
+                </Button>
+                <Button type="submit">{modal === "New Folder" ? "Create" : "Save name"}</Button>
+              </div>
+            </form>
+          ) : modal === "Preview" && target ? (
+            <div className="ct-form">
+              {target.url && ["PNG", "JPG", "JPEG", "WEBP", "GIF"].includes(target.type) ? (
+                <img src={target.url} alt={target.name} className="ct-upload-preview" />
+              ) : (
+                <div className="ct-file-preview">
+                  <FileIcon type={target.type} />
+                  <h3>{target.name}</h3>
+                  <p>
+                    {target.type} · {target.size}
+                  </p>
+                  <p className="ct-subtle">
+                    {target.url
+                      ? "Uploaded file is ready to download."
+                      : "This seeded demo record has metadata only. Upload a file to preview its contents."}
+                  </p>
+                </div>
+              )}
+              <p>
+                Owner: {target.owner} · Modified {target.modified}
+              </p>
+              {target.sharedWith && <p>Shared with: {target.sharedWith}</p>}
+              {target.url && (
+                <Button asChild>
+                  <a href={target.url} download={target.name}>
+                    <Download />
+                    Download file
+                  </a>
+                </Button>
+              )}
+            </div>
+          ) : modal === "Share file" ? (
             <form
-              className="ct-form ct-share-invite"
+              className="ct-form"
               onSubmit={(e) => {
                 e.preventDefault();
                 const email = String(new FormData(e.currentTarget).get("email"));
-                if (!shared.people.some((p) => p[1] === email))
-                  changeShare({
-                    people: [...shared.people, [email.split("@")[0], email, "Can view"]],
-                  });
-                setInvite(false);
+                setFiles((f) =>
+                  f.map((x) => (x.id === target?.id ? { ...x, sharedWith: email } : x)),
+                );
+                toast.success("Local sharing access updated");
+                setModal("");
               }}
             >
-              <Input type="email" name="email" required placeholder="Email address" />
-              <Button type="submit">Invite</Button>
+              <p>{target?.name}</p>
+              <label>
+                Add people
+                <Input name="email" type="email" required placeholder="Email address" />
+              </label>
+              <Select defaultValue="view">
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="view">Can view</SelectItem>
+                  <SelectItem value="edit">Can edit</SelectItem>
+                </SelectContent>
+              </Select>
+              <Button type="submit">Share file</Button>
             </form>
-          )}
-          {shared.people.map(([name, email, access]) => (
-            <div className="ct-share-member" key={email}>
-              <Avatar name={name} />
-              <span>
-                <b>{name}</b>
-                <small>{email}</small>
-                {inherited && access !== "Owner" && (
-                  <small className="ct-inherited-label">
-                    {name === "Theo Park" ? "Pending · " : ""}Inherited
-                  </small>
-                )}
-              </span>
-              {access === "Owner" ? (
-                <span className="ct-subtle">Owner</span>
-              ) : (
-                <Select
-                  value={access}
-                  disabled={inherited}
-                  onValueChange={(value) =>
-                    changeShare({
-                      people:
-                        value === "Remove access"
-                          ? shared.people.filter((p) => p[1] !== email)
-                          : shared.people.map((p) => (p[1] === email ? [p[0], p[1], value] : p)),
-                    })
-                  }
-                >
-                  <SelectTrigger aria-label={"Access for " + name}>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {["Can view", "Can edit", "Remove access"].map((v) => (
-                      <SelectItem value={v} key={v}>
-                        {v}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              )}
-            </div>
-          ))}
-        </section>
-        <section className="ct-detail-section">
-          <h4>
-            TEAMS WITH ACCESS <span>1 team</span>
-          </h4>
-          <div className="ct-share-member">
-            <Users size={24} />
-            <span>
-              <b>{teamName}</b>
-              <small>
-                {productionTeam ? "8 members" : "6 members"}
-                {inherited ? " · Inherited" : ""}
-              </small>
-            </span>
-            <Select
-              value={shared.team}
-              disabled={inherited}
-              onValueChange={(team) => changeShare({ team })}
-            >
-              <SelectTrigger aria-label={teamName + " access"}>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Can view">Can view</SelectItem>
-                <SelectItem value="Can comment">Can comment</SelectItem>
-                <SelectItem value="Can edit">Can edit</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </section>
-      </ReferenceSheet>
-      <DriveFilePanels
-        mode={modal}
-        file={target ? files.find((f) => f.id === target.id) || target : null}
-        files={files}
-        onMode={setModal}
-        onUpdate={(updated) => {
-          setFiles((all) => all.map((f) => (f.id === updated.id ? updated : f)));
-          setTarget(updated);
-        }}
-      />
-      <Modal
-        description={modal === "New Folder" ? "Creates a folder inside My Drive." : undefined}
-        title={modal === "Preview" ? target?.name || "File preview" : modal}
-        open={
-          !!modal &&
-          !["Share file", "Details", "Move", "Version History", "Download"].includes(modal)
-        }
-        onClose={() => setModal("")}
-      >
-        {modal === "New Folder" || modal === "Rename file" ? (
-          <form
-            className="ct-form"
-            onSubmit={(e) => {
-              e.preventDefault();
-              const name = String(new FormData(e.currentTarget).get("name"));
-              if (modal === "Rename file" && target)
-                setFiles((f) => f.map((x) => (x.id === target.id ? { ...x, name } : x)));
-              else {
-                setFiles((f) => [
-                  ...f,
-                  {
-                    id: crypto.randomUUID(),
-                    name,
-                    owner: "Alex Rivera",
-                    type: "Folder",
-                    size: "0 B",
-                    modified: "Today",
-                    star: false,
-                    parent: view === "Favourites" ? "My Drive" : view,
-                  },
-                ]);
-                setView(view === "Favourites" ? "My Drive" : view);
-              }
-              setModal("");
-              toast.success("Saved");
-            }}
-          >
-            <label>
-              Name
-              <Input
-                name="name"
-                placeholder="Untitled folder"
-                required
-                autoFocus
-                defaultValue={modal === "Rename file" ? target?.name : ""}
-              />
-            </label>
-            <div className="ct-folder-footer">
-              <Button type="button" variant="outline" onClick={() => setModal("")}>
-                Cancel
-              </Button>
-              <Button type="submit">{modal === "New Folder" ? "Create" : "Save name"}</Button>
-            </div>
-          </form>
-        ) : modal === "Preview" && target ? (
-          <div className="ct-form">
-            {target.url && ["PNG", "JPG", "JPEG", "WEBP", "GIF"].includes(target.type) ? (
-              <img src={target.url} alt={target.name} className="ct-upload-preview" />
-            ) : (
-              <div className="ct-file-preview">
-                <FileIcon type={target.type} />
-                <h3>{target.name}</h3>
-                <p>
-                  {target.type} · {target.size}
-                </p>
-                <p className="ct-subtle">
-                  {target.url
-                    ? "Uploaded file is ready to download."
-                    : "This seeded demo record has metadata only. Upload a file to preview its contents."}
-                </p>
-              </div>
-            )}
-            <p>
-              Owner: {target.owner} · Modified {target.modified}
-            </p>
-            {target.sharedWith && <p>Shared with: {target.sharedWith}</p>}
-            {target.url && (
-              <Button asChild>
-                <a href={target.url} download={target.name}>
-                  <Download />
-                  Download file
-                </a>
-              </Button>
-            )}
-          </div>
-        ) : modal === "Share file" ? (
-          <form
-            className="ct-form"
-            onSubmit={(e) => {
-              e.preventDefault();
-              const email = String(new FormData(e.currentTarget).get("email"));
-              setFiles((f) =>
-                f.map((x) => (x.id === target?.id ? { ...x, sharedWith: email } : x)),
-              );
-              toast.success("Local sharing access updated");
-              setModal("");
-            }}
-          >
-            <p>{target?.name}</p>
-            <label>
-              Add people
-              <Input name="email" type="email" required placeholder="Email address" />
-            </label>
-            <Select defaultValue="view">
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="view">Can view</SelectItem>
-                <SelectItem value="edit">Can edit</SelectItem>
-              </SelectContent>
-            </Select>
-            <Button type="submit">Share file</Button>
-          </form>
-        ) : modal === "Move to bin" ? (
-          <>
-            <p>{selected.length} files will be moved to the bin. You can restore them later.</p>
-            <Button
-              onClick={() => {
-                trash(selected);
-                setModal("");
-              }}
-            >
-              Move to bin
-            </Button>
-          </>
-        ) : modal === "Get More Storage" ? (
-          <>
-            <p>Choose the space your team needs.</p>
-            <div className="ct-two">
-              {["100 GB · $9 / month", "1 TB · $29 / month"].map((p) => (
-                <Button
-                  variant="outline"
-                  key={p}
-                  onClick={() => {
-                    toast.success("Demo plan selected: " + p);
-                    setModal("");
-                  }}
-                >
-                  {p}
-                </Button>
-              ))}
-            </div>
-          </>
-        ) : modal === "Help center" ? (
-          <>
-            <p>
-              Create folders, upload files, switch between list and grid, and share with teammates.
-            </p>
-            <Button
-              variant="outline"
-              onClick={() => {
-                setModal("");
-                uploadActions.openFileDialog();
-              }}
-            >
-              Upload your first file
-            </Button>
-          </>
-        ) : (
-          <form
-            className="ct-form"
-            onSubmit={(e) => {
-              e.preventDefault();
-              toast.success("Settings saved");
-              setModal("");
-            }}
-          >
-            <label>
-              Display name
-              <Input defaultValue="Alex Rivera" required />
-            </label>
-            <label>
-              Workspace
-              <Input defaultValue="Bricklane" required />
-            </label>
-            <Button type="submit">Save changes</Button>
-            {id === "filebox" && (
+          ) : modal === "Move to bin" ? (
+            <>
+              <p>{selected.length} files will be moved to the bin. You can restore them later.</p>
               <Button
-                variant="outline"
                 onClick={() => {
-                  setSigned(false);
+                  trash(selected);
                   setModal("");
                 }}
               >
-                <ArrowLeft />
-                Sign out
+                Move to bin
               </Button>
-            )}
-          </form>
-        )}
-      </Modal>
-    </div>
+            </>
+          ) : modal === "Get More Storage" ? (
+            <>
+              <p>Choose the space your team needs.</p>
+              <div className="ct-two">
+                {["100 GB · $9 / month", "1 TB · $29 / month"].map((p) => (
+                  <Button
+                    variant="outline"
+                    key={p}
+                    onClick={() => {
+                      toast.success("Demo plan selected: " + p);
+                      setModal("");
+                    }}
+                  >
+                    {p}
+                  </Button>
+                ))}
+              </div>
+            </>
+          ) : modal === "Help center" ? (
+            <>
+              <p>
+                Create folders, upload files, switch between list and grid, and share with
+                teammates.
+              </p>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setModal("");
+                  uploadActions.openFileDialog();
+                }}
+              >
+                Upload your first file
+              </Button>
+            </>
+          ) : (
+            <form
+              className="ct-form"
+              onSubmit={(e) => {
+                e.preventDefault();
+                toast.success("Settings saved");
+                setModal("");
+              }}
+            >
+              <label>
+                Display name
+                <Input defaultValue="Alex Rivera" required />
+              </label>
+              <label>
+                Workspace
+                <Input defaultValue="Bricklane" required />
+              </label>
+              <Button type="submit">Save changes</Button>
+              {id === "filebox" && (
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setSigned(false);
+                    setModal("");
+                  }}
+                >
+                  <ArrowLeft />
+                  Sign out
+                </Button>
+              )}
+            </form>
+          )}
+        </Modal>
+      </DriveLayout>
+      <SheetContent side="left" className="reui-reference ct-drive-folder-sheet">
+        <SheetHeader>
+          <SheetTitle>Bricklane Drive</SheetTitle>
+          <SheetDescription>Pick a folder or a saved view</SheetDescription>
+        </SheetHeader>
+        <div className="ct-drive-folder-content">{side}</div>
+      </SheetContent>
+    </Sheet>
   );
 }

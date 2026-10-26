@@ -1,4 +1,11 @@
-import { type ComponentType, type CSSProperties, type MouseEvent, type ReactNode } from "react";
+import {
+  useRef,
+  useState,
+  type ComponentType,
+  type CSSProperties,
+  type MouseEvent,
+  type ReactNode,
+} from "react";
 import { Bell, CircleHelp, LayoutDashboard, MoreHorizontal } from "lucide-react";
 import { BrandGlyph } from "@/components/brand-mark";
 import { ReuiSidebar, SidebarNavigation, SidebarRailButton } from "@/components/reui/sidebar";
@@ -26,6 +33,10 @@ import { Person } from "./controls";
 import "@/blocks/reference.css";
 import "@/blocks/application/shells/shells.css";
 import "./workflow-layout.css";
+import { WorkflowAccountMenu } from "./workflow-account-menu";
+import { WorkflowAccountSettings, type WorkflowAccountIdentity } from "./workflow-account-settings";
+import type { WorkflowAccountSection } from "./workflow-account-settings-data";
+import { demoAvatar } from "@/lib/demo-artwork";
 
 export type NavItem = {
   label: string;
@@ -90,12 +101,44 @@ function ShellContent({
   extra,
   taskNavigation,
 }: ShellProps) {
-  const { isMobile, state, setOpenMobile, toggleSidebar } = useSidebar();
+  const { isMobile, state, setOpenMobile, toggleSidebar, triggerRef: mobileTrigger } = useSidebar();
   const collapsed = !isMobile && state === "collapsed";
   const iconRail = compact || collapsed;
   const inset = brand === "AgentOps";
   const width = brand === "ReUI" ? 250 : brand === "Flowly" ? 63 : brand === "Mesh" ? 48 : 256;
+  const accountKind = brand === "ReUI" ? "tempo" : brand === "Mesh" ? "mesh" : undefined;
+  const accountTrigger = useRef<HTMLButtonElement>(null);
+  const returnFocus = useRef<HTMLElement | null>(null);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [settingsSection, setSettingsSection] = useState<WorkflowAccountSection>("profile");
+  const [identity, setIdentity] = useState<WorkflowAccountIdentity>(() => ({
+    name: brand === "Mesh" ? "Sienna Wells" : "Nick Bold",
+    avatar: demoAvatar(brand === "Mesh" ? "Sienna Wells" : "Nick Bold"),
+  }));
+  const openSettings = (section: WorkflowAccountSection, trigger?: HTMLElement | null) => {
+    returnFocus.current =
+      isMobile && accountKind === "mesh"
+        ? mobileTrigger.current
+        : (trigger ?? (document.activeElement as HTMLElement));
+    setSettingsSection(section);
+    if (isMobile && accountKind === "mesh") setOpenMobile(false);
+    setSettingsOpen(true);
+  };
+  const changeSettingsOpen = (open: boolean) => {
+    setSettingsOpen(open);
+    if (!open)
+      requestAnimationFrame(() => {
+        const target = returnFocus.current;
+        if (target?.isConnected && target.getClientRects().length)
+          target.focus({ preventScroll: true });
+        else accountTrigger.current?.focus({ preventScroll: true });
+      });
+  };
   const select = (value: string) => {
+    if (accountKind && value === "Settings") {
+      openSettings("profile");
+      return;
+    }
     setView(value);
     if (isMobile) setOpenMobile(false);
   };
@@ -115,6 +158,7 @@ function ShellContent({
       }))}
       active={view}
       onSelect={select}
+      closeOnSelect={accountKind === "tempo" ? (value) => value !== "Settings" : undefined}
       menuClassName={brand === "AgentOps" || brand === "DevOps" ? "min-w-48" : undefined}
     />
   );
@@ -182,18 +226,28 @@ function ShellContent({
               </SidebarMenuItem>
             )}
             <SidebarMenuItem>
-              <SidebarMenuButton
-                tooltip="Account settings"
-                aria-label="Account settings"
-                onClick={() => select("Settings")}
-              >
-                <span className="wf-avatar">{dark ? "C" : brand === "DevOps" ? "TO" : "NB"}</span>
-                {!iconRail && (
-                  <span>
-                    {dark ? "Claude" : brand === "DevOps" ? "Tomas Okonkwo" : "Nick Bold"}
-                  </span>
-                )}
-              </SidebarMenuButton>
+              {accountKind ? (
+                <WorkflowAccountMenu
+                  kind={accountKind}
+                  identity={identity}
+                  collapsed={iconRail}
+                  triggerRef={accountTrigger}
+                  onSectionSelect={openSettings}
+                />
+              ) : (
+                <SidebarMenuButton
+                  tooltip="Account settings"
+                  aria-label="Account settings"
+                  onClick={() => select("Settings")}
+                >
+                  <span className="wf-avatar">{dark ? "C" : brand === "DevOps" ? "TO" : "NB"}</span>
+                  {!iconRail && (
+                    <span>
+                      {dark ? "Claude" : brand === "DevOps" ? "Tomas Okonkwo" : "Nick Bold"}
+                    </span>
+                  )}
+                </SidebarMenuButton>
+              )}
             </SidebarMenuItem>
           </SidebarMenu>
         }
@@ -330,6 +384,15 @@ function ShellContent({
         </header>
         <div className="wf-content">{children}</div>
       </AppShellInset>
+      {accountKind && (
+        <WorkflowAccountSettings
+          kind={accountKind}
+          open={settingsOpen}
+          onOpenChange={changeSettingsOpen}
+          initialSection={settingsSection}
+          onIdentityChange={setIdentity}
+        />
+      )}
     </>
   );
 }

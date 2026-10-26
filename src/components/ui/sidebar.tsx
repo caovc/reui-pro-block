@@ -278,7 +278,12 @@ function Sidebar({
   );
 }
 
-function SidebarTrigger({ className, onClick, ...props }: React.ComponentProps<typeof Button>) {
+function SidebarTrigger({
+  className,
+  onClick,
+  children,
+  ...props
+}: React.ComponentProps<typeof Button>) {
   const { toggleSidebar, triggerRef, open, openMobile, isMobile } = useSidebar();
 
   return (
@@ -296,7 +301,7 @@ function SidebarTrigger({ className, onClick, ...props }: React.ComponentProps<t
       }}
       {...props}
     >
-      <PanelLeftIcon className="cn-rtl-flip" />
+      {children ?? <PanelLeftIcon className="cn-rtl-flip" />}
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   );

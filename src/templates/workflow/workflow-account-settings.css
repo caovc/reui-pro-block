@@ -1,0 +1,146 @@
+/* Host geometry measured against Tempo and Mesh; the shared Pro panel stays unchanged. */
+.wf-account-shell.workspace-settings-shell {
+  width: calc(100vw - 24px);
+  max-width: 960px;
+  height: min(88svh, 768px);
+  max-height: calc(100svh - 24px);
+}
+.wf-account-shell .workspace-settings-rail {
+  padding-right: 20px;
+  padding-left: 20px;
+}
+.wf-account-shell .workspace-settings-rail [data-slot="tabs-trigger"] {
+  gap: 12px;
+  padding: 6px 12px;
+}
+.wf-account-shell .workspace-settings-header {
+  gap: 6px;
+  padding: 16px 48px 16px 0;
+}
+.wf-account-shell [data-slot="dialog-title"] {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 24px;
+}
+.wf-account-shell [data-slot="dialog-description"],
+.wf-account-shell [data-slot="field-description"] {
+  font-size: 14px;
+  line-height: 20px;
+}
+.wf-account-shell .workspace-settings-tab {
+  padding: 20px 0;
+}
+.wf-account-shell [data-slot="field-group"] {
+  gap: 16px;
+}
+.wf-account-shell .workspace-settings-row {
+  grid-template-columns: minmax(0, 0.37fr) minmax(0, 0.63fr);
+  align-items: center;
+  gap: 16px;
+}
+.wf-account-shell .workspace-settings-row > [data-slot="field-content"] {
+  gap: 2px;
+}
+.wf-account-shell [data-slot="field-label"],
+.wf-account-shell [data-slot="field-title"] {
+  line-height: 19.25px;
+}
+.wf-account-shell[data-workflow-account="mesh"] [data-slot="field-label"],
+.wf-account-shell[data-workflow-account="mesh"] [data-slot="field-title"] {
+  line-height: 14px;
+}
+.wf-account-shell .wf-account-public-row > [data-slot="field-content"] > [data-slot="field-title"] {
+  line-height: 20px;
+}
+.wf-account-shell[data-workflow-account="mesh"]
+  .wf-account-public-row
+  > [data-slot="field-content"]
+  > [data-slot="field-title"] {
+  line-height: 19.25px;
+}
+.wf-account-shell .wf-account-public-row,
+.wf-account-shell .workspace-settings-row:has(> .workspace-settings-control > textarea) {
+  align-items: start;
+}
+.wf-account-public-details {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 16px;
+}
+.wf-account-shell .wf-account-public-details .workspace-settings-row {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+}
+.wf-account-public-details .workspace-settings-control {
+  width: 100%;
+}
+.wf-account-shell textarea {
+  field-sizing: fixed;
+  height: calc(4lh + 18px);
+  min-height: 0;
+  margin-top: 8px;
+}
+.wf-account-shell > [data-slot="dialog-close"] {
+  top: 16px;
+  right: 16px;
+  width: 28px;
+  height: 28px;
+}
+.wf-account-pending,
+.wf-account-media-error {
+  margin-right: auto;
+  font-size: 12px;
+}
+.wf-account-media-error {
+  color: var(--destructive);
+}
+/* The frozen panel's string-only choice cannot express the two-line reference options. */
+.wf-account-options {
+  font-size: 16px;
+  line-height: 24px;
+}
+.wf-account-options [data-slot="select-item"] {
+  gap: 6px;
+  padding: 6px 32px 6px 10px;
+}
+.wf-account-option {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  font-size: 14px;
+  line-height: 20px;
+}
+.wf-account-option small {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 16px;
+}
+@media (max-width: 767px) {
+  .wf-account-shell > [data-slot="dialog-close"] {
+    top: 18px;
+    right: 12px;
+  }
+  .wf-account-shell .workspace-settings-tabs {
+    grid-template-rows: 67px minmax(0, 1fr);
+  }
+  .wf-account-shell[data-workflow-account="tempo"] .workspace-settings-tabs {
+    grid-template-rows: 65px minmax(0, 1fr);
+  }
+  .wf-account-shell[data-workflow-account="tempo"]
+    .workspace-settings-rail
+    [data-slot="tabs-trigger"] {
+    height: 31px;
+  }
+  .wf-account-shell .workspace-settings-rail {
+    padding-right: 36px;
+  }
+  .wf-account-shell .workspace-settings-main {
+    padding: 0 24px;
+  }
+  .wf-account-shell .workspace-settings-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

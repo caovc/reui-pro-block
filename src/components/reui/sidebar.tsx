@@ -187,8 +187,10 @@ export function SidebarCollection({
   label,
   rows,
   onSelect,
+  headerTrailing,
 }: {
   label: string;
+  headerTrailing?: ReactNode;
   rows: { label: string; icon: ReactNode; badge?: ReactNode; actions?: ReactNode }[];
   onSelect: (value: string) => void;
 }) {
@@ -200,9 +202,9 @@ export function SidebarCollection({
           asChild
           className="w-full px-2 text-xs font-normal hover:bg-sidebar-accent"
         >
-          <CollapsibleTrigger>
+          <CollapsibleTrigger aria-label={label} className="group/sidebar-collection-trigger">
             <span className="min-w-0 flex-1 truncate text-start">{label}</span>
-            <ChevronDown />
+            {headerTrailing ?? <ChevronDown />}
           </CollapsibleTrigger>
         </SidebarGroupLabel>
         <CollapsibleContent>
@@ -241,6 +243,7 @@ export function SidebarNavigation({
   collapsed: collapsedProp,
   className,
   menuClassName,
+  closeOnSelect = true,
 }: {
   items: SidebarNavigationItem[];
   active: string;
@@ -250,6 +253,7 @@ export function SidebarNavigation({
   collapsed?: boolean;
   className?: string;
   menuClassName?: string;
+  closeOnSelect?: boolean | ((value: string) => boolean);
 }) {
   const { state, isMobile, setOpenMobile } = useSidebar();
   const collapsed = !isMobile && (collapsedProp ?? state === "collapsed");
@@ -265,7 +269,9 @@ export function SidebarNavigation({
   }, [activeParent]);
   function select(value: string) {
     onSelect(value);
-    if (isMobile) setOpenMobile(false);
+    if (isMobile && (typeof closeOnSelect === "function" ? closeOnSelect(value) : closeOnSelect)) {
+      setOpenMobile(false);
+    }
   }
   return (
     <SidebarGroup className={cn("p-0", className)}>

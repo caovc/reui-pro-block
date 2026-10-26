@@ -13,6 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/reui/badge";
 import { IconTile } from "@/components/reui/icon-tile";
+import { ChartContainer, type ChartConfig } from "@/components/ui/chart";
 import {
   Table,
   TableBody,
@@ -30,15 +31,7 @@ import {
   EmptyDescription,
   EmptyContent,
 } from "@/components/ui/empty";
-import {
-  Area,
-  AreaChart,
-  CartesianGrid,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
+import { Area, AreaChart, CartesianGrid, Tooltip, XAxis, YAxis } from "recharts";
 import { toast } from "sonner";
 export {
   Button,
@@ -232,68 +225,84 @@ export function Chart({
           : Math.round(value * 0.26),
     third: kind === "tempo" ? [79, 82, 79, 74, 70, 73][i] : Math.round(value * 0.06),
   }));
+  const chartConfig = {
+    value: {
+      label: kind === "tempo" || kind === "flux" ? "Completed" : "Deploys",
+      color,
+    },
+    second: {
+      label: kind === "tempo" ? "In Progress" : kind === "flux" ? "Running" : "Second series",
+      color: kind === "tempo" ? "var(--chart-1)" : color,
+    },
+    third: {
+      label: kind === "tempo" ? "Target" : kind === "flux" ? "Waiting" : "Third series",
+      color: kind === "tempo" ? "var(--muted-foreground)" : color,
+    },
+  } satisfies ChartConfig;
   return (
-    <div style={{ height, width: "100%" }}>
-      <ResponsiveContainer>
-        <AreaChart data={data} margin={{ top: 20, right: 24, left: 24, bottom: 0 }}>
-          <defs>
-            <ReuiStripePattern id={uid + "hatch"} color={color} opacity={0.65} />
-          </defs>
-          <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="3 4" />
-          <YAxis hide domain={[0, kind === "flux" ? 140 : 120]} />
-          <XAxis
-            dataKey="name"
-            axisLine={false}
-            tickLine={false}
-            tick={{ fontSize: 12, fill: "var(--muted-foreground)" }}
-            interval={kind === "flux" ? 1 : 0}
-          />
-          <Tooltip
-            contentStyle={{
-              background: "var(--popover)",
-              borderColor: "var(--border)",
-              borderRadius: 8,
-              fontSize: 12,
-            }}
-          />
-          <Area
-            type={kind === "deploy" ? "linear" : "monotone"}
-            dataKey="value"
-            stroke={color}
-            fill={kind === "tempo" ? `url(#${uid}hatch)` : color}
-            fillOpacity={kind === "tempo" ? 1 : mode === "layers" ? 0.24 : 0.06}
-            strokeWidth={mode === "line" ? 2 : 1}
-            dot={
-              kind === "deploy" && mode === "line"
-                ? { r: 3, fill: "var(--background)", strokeWidth: 2 }
-                : false
-            }
-            isAnimationActive={false}
-          />
-          {mode === "layers" && (
-            <>
-              <Area
-                type="monotone"
-                dataKey="second"
-                stroke={kind === "tempo" ? "var(--chart-1)" : color}
-                fill={kind === "tempo" ? "var(--chart-1)" : color}
-                fillOpacity={0.08}
-                isAnimationActive={false}
-              />
-              <Area
-                type="monotone"
-                dataKey="third"
-                stroke={kind === "tempo" ? "var(--muted-foreground)" : color}
-                strokeDasharray={kind === "tempo" ? "4 4" : undefined}
-                fill={color}
-                fillOpacity={kind === "tempo" ? 0 : 0.18}
-                isAnimationActive={false}
-              />
-            </>
-          )}
-        </AreaChart>
-      </ResponsiveContainer>
-    </div>
+    <ChartContainer
+      config={chartConfig}
+      className="aspect-auto w-full"
+      style={{ height, minWidth: 0 }}
+    >
+      <AreaChart data={data} margin={{ top: 20, right: 24, left: 24, bottom: 0 }}>
+        <defs>
+          <ReuiStripePattern id={uid + "hatch"} color="var(--color-value)" opacity={0.65} />
+        </defs>
+        <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="3 4" />
+        <YAxis hide domain={[0, kind === "flux" ? 140 : 120]} />
+        <XAxis
+          dataKey="name"
+          axisLine={false}
+          tickLine={false}
+          tick={{ fontSize: 12, fill: "var(--muted-foreground)" }}
+          interval={kind === "flux" ? 1 : 0}
+        />
+        <Tooltip
+          contentStyle={{
+            background: "var(--popover)",
+            borderColor: "var(--border)",
+            borderRadius: 8,
+            fontSize: 12,
+          }}
+        />
+        <Area
+          type={kind === "deploy" ? "linear" : "monotone"}
+          dataKey="value"
+          stroke="var(--color-value)"
+          fill={kind === "tempo" ? `url(#${uid}hatch)` : "var(--color-value)"}
+          fillOpacity={kind === "tempo" ? 1 : mode === "layers" ? 0.24 : 0.06}
+          strokeWidth={mode === "line" ? 2 : 1}
+          dot={
+            kind === "deploy" && mode === "line"
+              ? { r: 3, fill: "var(--background)", strokeWidth: 2 }
+              : false
+          }
+          isAnimationActive={false}
+        />
+        {mode === "layers" && (
+          <>
+            <Area
+              type="monotone"
+              dataKey="second"
+              stroke="var(--color-second)"
+              fill="var(--color-second)"
+              fillOpacity={0.08}
+              isAnimationActive={false}
+            />
+            <Area
+              type="monotone"
+              dataKey="third"
+              stroke="var(--color-third)"
+              strokeDasharray={kind === "tempo" ? "4 4" : undefined}
+              fill="var(--color-value)"
+              fillOpacity={kind === "tempo" ? 0 : 0.18}
+              isAnimationActive={false}
+            />
+          </>
+        )}
+      </AreaChart>
+    </ChartContainer>
   );
 }
 export function Segments({

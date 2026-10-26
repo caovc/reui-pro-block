@@ -106,42 +106,11 @@ export function SideForm({
     </Sheet>
   );
 }
-const photos: Record<string, string> = {
-  "Tomas Lindqvist": "photo-1500648767791-00dcc994a43e",
-  "Ines Marchetti": "photo-1494790108377-be9c29b29330",
-  "Hanna Berg": "photo-1534528741775-53994a69daeb",
-  "Nick Bold": "photo-1543299750-19d1d6297053",
-  "Omar Haddad": "photo-1507591064344-4c6ce005b128",
-  "Leo Grant": "photo-1500648767791-00dcc994a43e",
-  "Nora Vale": "photo-1438761681033-6461ffad8d80",
-  "Ada Brooks": "photo-1488426862026-3ee34a7d66df",
-  "Mira Stone": "photo-1494790108377-be9c29b29330",
-  "Ravi Shah": "photo-1535713875002-d1d0cf377fde",
-  "Iris Fox": "photo-1534528741775-53994a69daeb",
-};
-export function Person({ name, index = 0 }: { name: string; index?: number }) {
+export function Person({ name }: { name: string; index?: number }) {
   return (
     <span className="wf-person">
       <Avatar>
-        <AvatarImage
-          src={
-            [
-              "Tomas Okonkwo",
-              "Amelia Hart",
-              "Marcus Webb",
-              "Nia Achebe",
-              "Klara Nowak",
-              "Rafael Duarte",
-              "Leila Haddad",
-              "Theo Morales",
-              "Mei Watanabe",
-              "Adam Reyes",
-            ].includes(name)
-              ? demoAvatar(name)
-              : `https://images.unsplash.com/${photos[name] || ["photo-1500648767791-00dcc994a43e", "photo-1494790108377-be9c29b29330", "photo-1534528741775-53994a69daeb", "photo-1543299750-19d1d6297053", "photo-1507591064344-4c6ce005b128"][index % 5]}?w=96&h=96&dpr=2&q=80`
-          }
-          alt=""
-        />
+        <AvatarImage src={demoAvatar(name)} alt="" />
         <AvatarFallback>
           {name
             .split(" ")

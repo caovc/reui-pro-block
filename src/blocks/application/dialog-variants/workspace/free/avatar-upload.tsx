@@ -4,6 +4,7 @@
 // Actual official useFileUpload selection, drag/drop, type/size checks and local Blob preview retained.
 "use client";
 
+import { useEffect, useRef } from "react";
 import { useFileUpload, type FileWithPreview } from "@/hooks/use-file-upload";
 import { Alert, AlertDescription, AlertTitle } from "@/components/reui/alert";
 
@@ -44,10 +45,18 @@ export function LocalAvatarUpload({
     maxSize,
     accept: "image/*",
     multiple: false,
-    onFilesChange: (files) => {
-      onFileChange?.(files[0] || null);
-    },
   });
+
+  const changeCallback = useRef(onFileChange);
+  const notifiedFiles = useRef(files);
+  useEffect(() => {
+    changeCallback.current = onFileChange;
+  }, [onFileChange]);
+  useEffect(() => {
+    if (notifiedFiles.current === files) return;
+    notifiedFiles.current = files;
+    changeCallback.current?.(files[0] ?? null);
+  }, [files]);
 
   const currentFile = files[0];
   const previewUrl = currentFile?.preview || defaultAvatar;
