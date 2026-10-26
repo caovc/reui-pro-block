@@ -4,7 +4,7 @@
 // Actual official useFileUpload selection, drag/drop, type/size checks and local Blob preview retained.
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { useFileUpload, type FileWithPreview } from "@/hooks/use-file-upload";
 import { Alert, AlertDescription, AlertTitle } from "@/components/reui/alert";
 
@@ -14,6 +14,8 @@ import { CircleAlertIcon, UserIcon } from "lucide-react";
 
 interface AvatarUploadProps {
   label?: string;
+  changeLabel?: ReactNode;
+  removeLabel?: ReactNode;
   onDefaultRemove?: () => void;
   maxSize?: number;
   className?: string;
@@ -23,6 +25,8 @@ interface AvatarUploadProps {
 
 export function LocalAvatarUpload({
   label = "Upload profile avatar",
+  changeLabel = "Change",
+  removeLabel = "Remove",
   onDefaultRemove,
   maxSize = 2 * 1024 * 1024, // 2MB
   className,
@@ -100,7 +104,7 @@ export function LocalAvatarUpload({
 
       <div className="flex gap-2">
         <Button variant="outline" size="sm" type="button" onClick={openFileDialog}>
-          Change
+          {changeLabel}
         </Button>
         <Button
           variant="outline"
@@ -109,7 +113,7 @@ export function LocalAvatarUpload({
           onClick={handleRemove}
           disabled={!previewUrl}
         >
-          Remove
+          {removeLabel}
         </Button>
       </div>
       {/* Error Messages */}

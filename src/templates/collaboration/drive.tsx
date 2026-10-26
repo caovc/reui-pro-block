@@ -21,7 +21,6 @@ import {
   FileText,
   Video,
   ChevronRight,
-  ChevronDown,
   Bell,
   CircleHelp,
   Menu,
@@ -74,6 +73,19 @@ import {
 } from "./shared";
 import "./drive.css";
 import { DriveLayout, DriveApplicationTrigger } from "./drive-layout";
+
+import { DriveSettings } from "./drive-settings";
+import { DriveProfileMenu } from "./drive-settings-profile-menu";
+import { useDriveSettingsModel } from "./drive-settings-model";
+import { driveSettingsTitles } from "./drive-settings-data";
+import type { DriveSettingsNavigation } from "./drive-settings-types";
+import { useDriveRoute } from "./drive-route";
+import type { DriveRoute } from "./drive-route-model";
+import { DrivePricing } from "./drive-pricing";
+import { DriveWorkspaceMenu } from "./drive-workspace-menu";
+import { useDriveWorkspaceModel } from "./drive-workspace-model";
+import { setGlobalTheme, useGlobalTheme } from "@/components/site/global-theme-store";
+
 export type FileRecord = {
   id: string;
   name: string;
@@ -262,6 +274,13 @@ function Login({ onLogin }: { onLogin: () => void }) {
   );
 }
 export default function Drive({ id }: { id: string }) {
+  const routing = useDriveRoute(id === "filebox" ? "filebox" : "filespace");
+  const { route } = routing;
+  const workspaceModel = useDriveWorkspaceModel();
+  const settingsModel = useDriveSettingsModel({
+    onWorkspaceNameChange: workspaceModel.renameCurrentWorkspace,
+  });
+  const { theme } = useGlobalTheme();
   const [signed, setSigned] = useState(id !== "filebox");
   const [view, setView] = useState("Favourites");
   const [files, setFiles] = useState<FileRecord[]>(() => [
@@ -324,12 +343,24 @@ export default function Drive({ id }: { id: string }) {
   function changeShare(change: Partial<typeof shared>) {
     if (target) setShares((s) => ({ ...s, [permissionKey]: { ...shared, ...change } }));
   }
-  if (!signed)
+  function navigateDrive(destination: DriveRoute) {
+    setModal("");
+    setMobile(false);
+    routing.navigate(destination);
+  }
+
+  const settingsNavigation: DriveSettingsNavigation = {
+    href: (section, memberSlug) => routing.href({ kind: "settings", section, memberSlug }),
+    onNavigate: (section, memberSlug) => navigateDrive({ kind: "settings", section, memberSlug }),
+  };
+
+  if (!signed || route.kind === "login")
     return (
       <Login
         onLogin={() => {
           setSigned(true);
           setView("My Drive");
+          navigateDrive({ kind: "files" });
         }}
       />
     );
@@ -351,6 +382,7 @@ export default function Drive({ id }: { id: string }) {
     )
     .sort((a, b) => a.name.localeCompare(b.name));
   function openFolder(name: string) {
+    if (route.kind !== "files") navigateDrive({ kind: "files" });
     setView(name);
     setQuery("");
     setSelected([]);
@@ -405,7 +437,7 @@ export default function Drive({ id }: { id: string }) {
             <span style={{ width: "63%", background: "var(--foreground)" }} />
           </div>
           <p>643.6 MB of 1.00 GB used</p>
-          <Button variant="outline" onClick={() => setModal("Get More Storage")}>
+          <Button variant="outline" onClick={() => navigateDrive({ kind: "pricing" })}>
             Get More Storage
           </Button>
         </div>
@@ -413,15 +445,55 @@ export default function Drive({ id }: { id: string }) {
     </>
   );
   return (
-    <Sheet open={mobile} onOpenChange={setMobile}>
-      <DriveLayout onNavigate={() => openFolder("My Drive")} onAction={setModal}>
+    <Sheet open={mobile && route.kind === "files"} onOpenChange={setMobile}>
+      <DriveLayout
+        onNavigate={() => openFolder("My Drive")}
+        activeApplication={
+          route.kind === "pricing"
+            ? "Pricing"
+            : route.kind === "settings"
+              ? route.section === "workspace"
+                ? "Workspace"
+                : "Settings"
+              : "Drive"
+        }
+        profileName={settingsModel.profile.fullName}
+        profileMenu={
+          <DriveProfileMenu
+            name={settingsModel.profile.fullName}
+            email={settingsModel.profile.email}
+            theme={theme.mode === "light" || theme.mode === "dark" ? theme.mode : "system"}
+            onThemeChange={(mode) => setGlobalTheme({ ...theme, mode })}
+            navigation={settingsNavigation}
+            loginHref={routing.href({ kind: "login" })}
+            onSignOut={() => navigateDrive({ kind: "login" })}
+          />
+        }
+        onAction={(action) => {
+          if (action === "Get More Storage") navigateDrive({ kind: "pricing" });
+          else if (action === "Workspace settings")
+            navigateDrive({ kind: "settings", section: "workspace" });
+          else if (action === "Account settings")
+            navigateDrive({ kind: "settings", section: "profile" });
+          else setModal(action);
+        }}
+      >
         <header className="ct-drive-header">
           <DriveApplicationTrigger />
-          <span className="ct-drive-dot" />
-          <b>Bricklane</b>
-          <ChevronDown size={12} />
+          <DriveWorkspaceMenu
+            workspaces={workspaceModel.workspaces}
+            value={workspaceModel.selectedId}
+            onSelect={workspaceModel.selectWorkspace}
+            onCreate={workspaceModel.createWorkspace}
+          />
           <span className="ct-muted">/</span>
-          <span>{view}</span>
+          <span>
+            {route.kind === "settings"
+              ? driveSettingsTitles[route.section]
+              : route.kind === "pricing"
+                ? "Pricing"
+                : view}
+          </span>
           <div className="ct-grow" />
           <Button
             variant="ghost"
@@ -440,378 +512,418 @@ export default function Drive({ id }: { id: string }) {
             <Bell />
           </Button>
         </header>
-        <div className="ct-drive-body">
-          <aside className="ct-drive-sidebar">{side}</aside>
-          <main
-            className={"ct-drive-content " + (uploadState.isDragging ? "ct-drive-dragging" : "")}
-            onDragEnter={uploadActions.handleDragEnter}
-            onDragLeave={uploadActions.handleDragLeave}
-            onDragOver={uploadActions.handleDragOver}
-            onDrop={uploadActions.handleDrop}
-          >
-            <div className="ct-drive-toolbar">
-              <div className="ct-toolbar">
-                <SheetTrigger asChild>
-                  <Button
-                    className="ct-drive-folders-trigger"
-                    size="icon"
-                    variant="outline"
-                    aria-label="Open folders"
-                  >
-                    <Menu />
-                  </Button>
-                </SheetTrigger>
-                <button type="button" className="ct-muted" onClick={() => setView("My Drive")}>
-                  My Drive
-                </button>
-                {view !== "My Drive" && (
-                  <>
-                    <ChevronRight size={14} />
-                    <span>{view}</span>
-                  </>
-                )}
-              </div>
-              <div className="ct-grow" />
-              <div className="ct-toolbar">
-                <div className="ct-drive-search">
-                  <Search size={15} />
-                  <Input
-                    aria-label="Search files"
-                    placeholder={"Search " + view}
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                  />
-                </div>
-                <Select value={type} onValueChange={setType}>
-                  <SelectTrigger aria-label="File type">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {["All types", "Folder", "PDF", "WebP", "MP4", "SVG"].map((t) => (
-                      <SelectItem value={t} key={t}>
-                        {t}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                <ToggleGroup
-                  type="single"
-                  variant="outline"
-                  size="sm"
-                  spacing={0}
-                  value={layout}
-                  onValueChange={(value) => {
-                    if (value) setLayout(value);
-                  }}
-                  className="ct-drive-layout-toggle"
-                  aria-label="File view"
-                >
-                  <ToggleGroupItem value="list" aria-label="List view">
-                    <List />
-                  </ToggleGroupItem>
-                  <ToggleGroupItem value="grid" aria-label="Grid view">
-                    <LayoutGrid />
-                  </ToggleGroupItem>
-                </ToggleGroup>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="icon" aria-label="Display columns">
-                      <SlidersHorizontal />
+        {route.kind === "settings" ? (
+          <DriveSettings
+            section={route.section}
+            memberSlug={route.memberSlug}
+            model={settingsModel}
+            navigation={settingsNavigation}
+            files={files}
+            currentPlan={workspaceModel.currentPlan}
+            onOpenFile={(fileId) => {
+              const file = files.find((entry) => entry.id === fileId && !entry.deleted);
+              if (file) {
+                navigateDrive({ kind: "files" });
+                openFile(file);
+              }
+            }}
+            pricingHref={routing.href({ kind: "pricing" })}
+            onPricing={() => navigateDrive({ kind: "pricing" })}
+          />
+        ) : route.kind === "pricing" ? (
+          <div className="ds-root reui-reference">
+            <DrivePricing
+              currentPlan={workspaceModel.currentPlan.id}
+              onPlanChange={(plan) => {
+                if (plan === workspaceModel.currentPlan.id) return;
+                workspaceModel.changeCurrentPlan(plan);
+                settingsModel.resetBillingCapacity();
+              }}
+            />
+          </div>
+        ) : (
+          <div className="ct-drive-body">
+            <aside className="ct-drive-sidebar">{side}</aside>
+            <main
+              className={"ct-drive-content " + (uploadState.isDragging ? "ct-drive-dragging" : "")}
+              onDragEnter={uploadActions.handleDragEnter}
+              onDragLeave={uploadActions.handleDragLeave}
+              onDragOver={uploadActions.handleDragOver}
+              onDrop={uploadActions.handleDrop}
+            >
+              <div className="ct-drive-toolbar">
+                <div className="ct-toolbar">
+                  <SheetTrigger asChild>
+                    <Button
+                      className="ct-drive-folders-trigger"
+                      size="icon"
+                      variant="outline"
+                      aria-label="Open folders"
+                    >
+                      <Menu />
                     </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    {["owner", "type", "size", "modified"].map((key) => (
-                      <DropdownMenuCheckboxItem
-                        key={key}
-                        checked={columnVisibility[key] !== false}
-                        onCheckedChange={(value) =>
-                          setColumnVisibility((v) => ({ ...v, [key]: value }))
-                        }
-                      >
-                        {key[0].toUpperCase() + key.slice(1)}
-                      </DropdownMenuCheckboxItem>
-                    ))}
-                  </DropdownMenuContent>
-                </DropdownMenu>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  aria-label="New Folder"
-                  onClick={() => setModal("New Folder")}
-                >
-                  <FolderPlus />
-                </Button>
-                <Button
-                  size="icon"
-                  aria-label="Upload"
-                  onClick={() => uploadActions.openFileDialog()}
-                >
-                  <Upload />
-                </Button>
-              </div>
-            </div>
-            {selected.length > 0 && (
-              <div className="ct-drive-selection">
-                <span>{selected.length} selected</span>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => {
-                    setTarget(null);
-                    setModal("Move to bin");
-                  }}
-                >
-                  <Trash2 />
-                  Move to bin
-                </Button>
-                <Button size="sm" variant="ghost" onClick={() => setSelected([])}>
-                  Cancel
-                </Button>
-              </div>
-            )}
-            {id === "filebox" && view === "My Drive" && !query && (
-              <section className="ct-suggested-folders">
-                <h2>Suggested Folders</h2>
-                <div>
-                  {[
-                    ["Brand Library", "384.0 KB", "8 items"],
-                    ["Samples", "241.3 KB", "6 items"],
-                    ["Product Design", "1.51 MB", "36 items"],
-                    ["Spring Campaign", "387.1 KB", "10 items"],
-                  ].map(([name, size, count]) => (
-                    <Item asChild variant="outline" className="ct-drive-suggested-item" key={name}>
-                      <button type="button" onClick={() => openFolder(name)}>
-                        <ItemMedia variant="icon" className="ct-drive-suggested-icon">
-                          <Folder />
-                        </ItemMedia>
-                        <ItemContent>
-                          <ItemTitle>{name}</ItemTitle>
-                          <ItemDescription>
-                            <span>{size}</span>
-                            <span>{count}</span>
-                          </ItemDescription>
-                        </ItemContent>
-                      </button>
-                    </Item>
-                  ))}
+                  </SheetTrigger>
+                  <button type="button" className="ct-muted" onClick={() => setView("My Drive")}>
+                    My Drive
+                  </button>
+                  {view !== "My Drive" && (
+                    <>
+                      <ChevronRight size={14} />
+                      <span>{view}</span>
+                    </>
+                  )}
                 </div>
-                <h2>Suggested Files</h2>
-              </section>
-            )}
-            {layout === "list" ? (
-              <div className="ct-drive-table">
-                <ReferenceGrid
-                  rows={visible}
-                  columnVisibility={columnVisibility}
-                  columns={[
-                    {
-                      id: "selection",
-                      title: "",
-                      header: (
-                        <Checkbox
-                          aria-label="Select all files"
-                          checked={visible.length > 0 && selected.length === visible.length}
-                          onCheckedChange={(v) => setSelected(v ? visible.map((f) => f.id) : [])}
-                        />
-                      ),
-                      render: (f) => (
-                        <Checkbox
-                          aria-label={"Select " + f.name}
-                          checked={selected.includes(f.id)}
-                          onCheckedChange={(v) =>
-                            setSelected((s) => (v ? [...s, f.id] : s.filter((x) => x !== f.id)))
+                <div className="ct-grow" />
+                <div className="ct-toolbar">
+                  <div className="ct-drive-search">
+                    <Search size={15} />
+                    <Input
+                      aria-label="Search files"
+                      placeholder={"Search " + view}
+                      value={query}
+                      onChange={(e) => setQuery(e.target.value)}
+                    />
+                  </div>
+                  <Select value={type} onValueChange={setType}>
+                    <SelectTrigger aria-label="File type">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {["All types", "Folder", "PDF", "WebP", "MP4", "SVG"].map((t) => (
+                        <SelectItem value={t} key={t}>
+                          {t}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <ToggleGroup
+                    type="single"
+                    variant="outline"
+                    size="sm"
+                    spacing={0}
+                    value={layout}
+                    onValueChange={(value) => {
+                      if (value) setLayout(value);
+                    }}
+                    className="ct-drive-layout-toggle"
+                    aria-label="File view"
+                  >
+                    <ToggleGroupItem value="list" aria-label="List view">
+                      <List />
+                    </ToggleGroupItem>
+                    <ToggleGroupItem value="grid" aria-label="Grid view">
+                      <LayoutGrid />
+                    </ToggleGroupItem>
+                  </ToggleGroup>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline" size="icon" aria-label="Display columns">
+                        <SlidersHorizontal />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      {["owner", "type", "size", "modified"].map((key) => (
+                        <DropdownMenuCheckboxItem
+                          key={key}
+                          checked={columnVisibility[key] !== false}
+                          onCheckedChange={(value) =>
+                            setColumnVisibility((v) => ({ ...v, [key]: value }))
                           }
-                        />
-                      ),
-                    },
-                    {
-                      id: "name",
-                      title: "Name",
-                      value: (f) => f.name,
-                      render: (f) => (
-                        <div className="ct-drive-filename">
-                          <button type="button" onClick={() => openFile(f)}>
-                            <FileIcon type={f.type} />
-                            <span className="ct-drive-filetext">
-                              <span className="ct-drive-title">{f.name}</span>
-                              <small className="ct-drive-mobile-meta">
-                                {f.type} ·{" "}
-                                {f.type === "Folder"
-                                  ? {
-                                      "Client Deliverables": "13 items",
-                                      "Northwind Rebrand": "6 items",
-                                      "Brand Library": "8 items",
-                                      "Spring Campaign": "10 items",
-                                      "Studio Operations": "6 items",
-                                      "Product Design": "36 items",
-                                      Samples: "6 items",
-                                      "Harbor Coffee": "4 items",
-                                    }[f.name] || "0 items"
-                                  : f.size}{" "}
-                                · {f.modified}
-                              </small>
-                            </span>
-                          </button>
-                          <button
-                            type="button"
-                            aria-label={(f.star ? "Unstar " : "Star ") + f.name}
-                            onClick={() =>
-                              setFiles((a) =>
-                                a.map((x) => (x.id === f.id ? { ...x, star: !x.star } : x)),
-                              )
+                        >
+                          {key[0].toUpperCase() + key.slice(1)}
+                        </DropdownMenuCheckboxItem>
+                      ))}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    aria-label="New Folder"
+                    onClick={() => setModal("New Folder")}
+                  >
+                    <FolderPlus />
+                  </Button>
+                  <Button
+                    size="icon"
+                    aria-label="Upload"
+                    onClick={() => uploadActions.openFileDialog()}
+                  >
+                    <Upload />
+                  </Button>
+                </div>
+              </div>
+              {selected.length > 0 && (
+                <div className="ct-drive-selection">
+                  <span>{selected.length} selected</span>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => {
+                      setTarget(null);
+                      setModal("Move to bin");
+                    }}
+                  >
+                    <Trash2 />
+                    Move to bin
+                  </Button>
+                  <Button size="sm" variant="ghost" onClick={() => setSelected([])}>
+                    Cancel
+                  </Button>
+                </div>
+              )}
+              {id === "filebox" && view === "My Drive" && !query && (
+                <section className="ct-suggested-folders">
+                  <h2>Suggested Folders</h2>
+                  <div>
+                    {[
+                      ["Brand Library", "384.0 KB", "8 items"],
+                      ["Samples", "241.3 KB", "6 items"],
+                      ["Product Design", "1.51 MB", "36 items"],
+                      ["Spring Campaign", "387.1 KB", "10 items"],
+                    ].map(([name, size, count]) => (
+                      <Item
+                        asChild
+                        variant="outline"
+                        className="ct-drive-suggested-item"
+                        key={name}
+                      >
+                        <button type="button" onClick={() => openFolder(name)}>
+                          <ItemMedia variant="icon" className="ct-drive-suggested-icon">
+                            <Folder />
+                          </ItemMedia>
+                          <ItemContent>
+                            <ItemTitle>{name}</ItemTitle>
+                            <ItemDescription>
+                              <span>{size}</span>
+                              <span>{count}</span>
+                            </ItemDescription>
+                          </ItemContent>
+                        </button>
+                      </Item>
+                    ))}
+                  </div>
+                  <h2>Suggested Files</h2>
+                </section>
+              )}
+              {layout === "list" ? (
+                <div className="ct-drive-table">
+                  <ReferenceGrid
+                    rows={visible}
+                    columnVisibility={columnVisibility}
+                    columns={[
+                      {
+                        id: "selection",
+                        title: "",
+                        header: (
+                          <Checkbox
+                            aria-label="Select all files"
+                            checked={visible.length > 0 && selected.length === visible.length}
+                            onCheckedChange={(v) => setSelected(v ? visible.map((f) => f.id) : [])}
+                          />
+                        ),
+                        render: (f) => (
+                          <Checkbox
+                            aria-label={"Select " + f.name}
+                            checked={selected.includes(f.id)}
+                            onCheckedChange={(v) =>
+                              setSelected((s) => (v ? [...s, f.id] : s.filter((x) => x !== f.id)))
                             }
-                          >
-                            <Star size={14} className={f.star ? "ct-star" : ""} />
-                          </button>
-                        </div>
-                      ),
-                    },
-                    {
-                      id: "owner",
-                      title: "Owner",
-                      value: (f) => f.owner,
-                      render: (f) => (
-                        <span className="ct-person">
-                          <Avatar name={f.owner} />
-                          {f.owner}
-                        </span>
-                      ),
-                    },
-                    {
-                      id: "type",
-                      title: "Type",
-                      value: (f) => f.type,
-                      render: (f) => <Badge variant="outline">{f.type}</Badge>,
-                    },
-                    {
-                      id: "size",
-                      title: "Size",
-                      value: (f) => parseFloat(f.size),
-                      render: (f) => (
-                        <>
-                          {f.size}
-                          {f.type === "Folder" && (
-                            <small className="block ct-muted">
-                              {f.id === "file-0" ? "13" : "6"} items
-                            </small>
-                          )}
-                        </>
-                      ),
-                    },
-                    {
-                      id: "modified",
-                      title: "Modified",
-                      value: (f) => f.modified,
-                      render: (f) => (
-                        <>
-                          {f.modified}
-                          <span className="ct-person ct-subtle">
+                          />
+                        ),
+                      },
+                      {
+                        id: "name",
+                        title: "Name",
+                        value: (f) => f.name,
+                        render: (f) => (
+                          <div className="ct-drive-filename">
+                            <button type="button" onClick={() => openFile(f)}>
+                              <FileIcon type={f.type} />
+                              <span className="ct-drive-filetext">
+                                <span className="ct-drive-title">{f.name}</span>
+                                <small className="ct-drive-mobile-meta">
+                                  {f.type} ·{" "}
+                                  {f.type === "Folder"
+                                    ? {
+                                        "Client Deliverables": "13 items",
+                                        "Northwind Rebrand": "6 items",
+                                        "Brand Library": "8 items",
+                                        "Spring Campaign": "10 items",
+                                        "Studio Operations": "6 items",
+                                        "Product Design": "36 items",
+                                        Samples: "6 items",
+                                        "Harbor Coffee": "4 items",
+                                      }[f.name] || "0 items"
+                                    : f.size}{" "}
+                                  · {f.modified}
+                                </small>
+                              </span>
+                            </button>
+                            <button
+                              type="button"
+                              aria-label={(f.star ? "Unstar " : "Star ") + f.name}
+                              onClick={() =>
+                                setFiles((a) =>
+                                  a.map((x) => (x.id === f.id ? { ...x, star: !x.star } : x)),
+                                )
+                              }
+                            >
+                              <Star size={14} className={f.star ? "ct-star" : ""} />
+                            </button>
+                          </div>
+                        ),
+                      },
+                      {
+                        id: "owner",
+                        title: "Owner",
+                        value: (f) => f.owner,
+                        render: (f) => (
+                          <span className="ct-person">
                             <Avatar name={f.owner} />
                             {f.owner}
                           </span>
-                        </>
-                      ),
-                    },
-                    {
-                      id: "actions",
-                      title: "",
-                      render: (f) => (
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button
-                              size="icon-sm"
-                              variant="ghost"
-                              aria-label={"Actions for " + f.name}
-                            >
-                              <MoreVertical />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent className="w-52">
-                            {[
-                              "Details",
-                              "Share",
-                              "Copy Link",
-                              "Rename",
-                              f.star ? "Remove from Favourites" : "Add to Favourites",
-                              "Move",
-                              "Version History",
-                              "Download",
-                              f.deleted ? "Restore" : "Move to Trash",
-                            ].map((action) => (
-                              <DropdownMenuItem
-                                key={action}
-                                onClick={() => {
-                                  setTarget(f);
-                                  if (action === "Share") setModal("Share file");
-                                  else if (action === "Rename") setModal("Rename file");
-                                  else if (action.includes("Favourites"))
-                                    setFiles((a) =>
-                                      a.map((x) => (x.id === f.id ? { ...x, star: !x.star } : x)),
-                                    );
-                                  else if (action === "Move to Trash") trash([f.id]);
-                                  else if (action === "Restore")
-                                    setFiles((a) =>
-                                      a.map((x) => (x.id === f.id ? { ...x, deleted: false } : x)),
-                                    );
-                                  else if (action === "Copy Link") {
-                                    navigator.clipboard.writeText(location.href + "?file=" + f.id);
-                                    toast.success("Link copied");
-                                  } else if (action === "Download" && f.url) {
-                                    const a = document.createElement("a");
-                                    a.href = f.url;
-                                    a.download = f.name;
-                                    a.click();
-                                  } else setModal(action);
-                                }}
+                        ),
+                      },
+                      {
+                        id: "type",
+                        title: "Type",
+                        value: (f) => f.type,
+                        render: (f) => <Badge variant="outline">{f.type}</Badge>,
+                      },
+                      {
+                        id: "size",
+                        title: "Size",
+                        value: (f) => parseFloat(f.size),
+                        render: (f) => (
+                          <>
+                            {f.size}
+                            {f.type === "Folder" && (
+                              <small className="block ct-muted">
+                                {f.id === "file-0" ? "13" : "6"} items
+                              </small>
+                            )}
+                          </>
+                        ),
+                      },
+                      {
+                        id: "modified",
+                        title: "Modified",
+                        value: (f) => f.modified,
+                        render: (f) => (
+                          <>
+                            {f.modified}
+                            <span className="ct-person ct-subtle">
+                              <Avatar name={f.owner} />
+                              {f.owner}
+                            </span>
+                          </>
+                        ),
+                      },
+                      {
+                        id: "actions",
+                        title: "",
+                        render: (f) => (
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button
+                                size="icon-sm"
+                                variant="ghost"
+                                aria-label={"Actions for " + f.name}
                               >
-                                {action}
-                              </DropdownMenuItem>
-                            ))}
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      ),
-                    },
-                  ]}
+                                <MoreVertical />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="w-52">
+                              {[
+                                "Details",
+                                "Share",
+                                "Copy Link",
+                                "Rename",
+                                f.star ? "Remove from Favourites" : "Add to Favourites",
+                                "Move",
+                                "Version History",
+                                "Download",
+                                f.deleted ? "Restore" : "Move to Trash",
+                              ].map((action) => (
+                                <DropdownMenuItem
+                                  key={action}
+                                  onClick={() => {
+                                    setTarget(f);
+                                    if (action === "Share") setModal("Share file");
+                                    else if (action === "Rename") setModal("Rename file");
+                                    else if (action.includes("Favourites"))
+                                      setFiles((a) =>
+                                        a.map((x) => (x.id === f.id ? { ...x, star: !x.star } : x)),
+                                      );
+                                    else if (action === "Move to Trash") trash([f.id]);
+                                    else if (action === "Restore")
+                                      setFiles((a) =>
+                                        a.map((x) =>
+                                          x.id === f.id ? { ...x, deleted: false } : x,
+                                        ),
+                                      );
+                                    else if (action === "Copy Link") {
+                                      navigator.clipboard.writeText(
+                                        location.href + "?file=" + f.id,
+                                      );
+                                      toast.success("Link copied");
+                                    } else if (action === "Download" && f.url) {
+                                      const a = document.createElement("a");
+                                      a.href = f.url;
+                                      a.download = f.name;
+                                      a.click();
+                                    } else setModal(action);
+                                  }}
+                                >
+                                  {action}
+                                </DropdownMenuItem>
+                              ))}
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        ),
+                      },
+                    ]}
+                  />
+                </div>
+              ) : (
+                <div className="ct-drive-grid">
+                  {visible.map((f) => (
+                    <Card key={f.id}>
+                      <CardContent>
+                        <button
+                          type="button"
+                          className="ct-drive-grid-file"
+                          onClick={() => openFile(f)}
+                        >
+                          <FileIcon type={f.type} />
+                          <b>{f.name}</b>
+                          <small>
+                            {f.size} · {f.modified}
+                          </small>
+                        </button>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              )}
+              {!visible.length && (
+                <Empty
+                  reset={() => {
+                    setQuery("");
+                    setType("All types");
+                    setView("My Drive");
+                  }}
                 />
-              </div>
-            ) : (
-              <div className="ct-drive-grid">
-                {visible.map((f) => (
-                  <Card key={f.id}>
-                    <CardContent>
-                      <button
-                        type="button"
-                        className="ct-drive-grid-file"
-                        onClick={() => openFile(f)}
-                      >
-                        <FileIcon type={f.type} />
-                        <b>{f.name}</b>
-                        <small>
-                          {f.size} · {f.modified}
-                        </small>
-                      </button>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            )}
-            {!visible.length && (
-              <Empty
-                reset={() => {
-                  setQuery("");
-                  setType("All types");
-                  setView("My Drive");
-                }}
-              />
-            )}
-          </main>
-        </div>
+              )}
+            </main>
+          </div>
+        )}
         <input {...uploadActions.getInputProps()} hidden />
         <ReferenceSheet
           title="Share with people and teams"
           description={target?.name}
           width={416}
-          open={modal === "Share file"}
+          open={route.kind === "files" && modal === "Share file"}
           onClose={() => {
             setModal("");
             setInvite(false);
@@ -970,7 +1082,7 @@ export default function Drive({ id }: { id: string }) {
           </section>
         </ReferenceSheet>
         <DriveFilePanels
-          mode={modal}
+          mode={route.kind === "files" ? modal : ""}
           file={target ? files.find((f) => f.id === target.id) || target : null}
           files={files}
           onMode={setModal}
@@ -984,6 +1096,7 @@ export default function Drive({ id }: { id: string }) {
           title={modal === "Preview" ? target?.name || "File preview" : modal}
           open={
             !!modal &&
+            (route.kind === "files" || modal === "Help center") &&
             !["Share file", "Details", "Move", "Version History", "Download"].includes(modal)
           }
           onClose={() => setModal("")}
@@ -1105,24 +1218,6 @@ export default function Drive({ id }: { id: string }) {
                 Move to bin
               </Button>
             </>
-          ) : modal === "Get More Storage" ? (
-            <>
-              <p>Choose the space your team needs.</p>
-              <div className="ct-two">
-                {["100 GB · $9 / month", "1 TB · $29 / month"].map((p) => (
-                  <Button
-                    variant="outline"
-                    key={p}
-                    onClick={() => {
-                      toast.success("Demo plan selected: " + p);
-                      setModal("");
-                    }}
-                  >
-                    {p}
-                  </Button>
-                ))}
-              </div>
-            </>
           ) : modal === "Help center" ? (
             <>
               <p>
@@ -1139,38 +1234,7 @@ export default function Drive({ id }: { id: string }) {
                 Upload your first file
               </Button>
             </>
-          ) : (
-            <form
-              className="ct-form"
-              onSubmit={(e) => {
-                e.preventDefault();
-                toast.success("Settings saved");
-                setModal("");
-              }}
-            >
-              <label>
-                Display name
-                <Input defaultValue="Alex Rivera" required />
-              </label>
-              <label>
-                Workspace
-                <Input defaultValue="Bricklane" required />
-              </label>
-              <Button type="submit">Save changes</Button>
-              {id === "filebox" && (
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    setSigned(false);
-                    setModal("");
-                  }}
-                >
-                  <ArrowLeft />
-                  Sign out
-                </Button>
-              )}
-            </form>
-          )}
+          ) : null}
         </Modal>
       </DriveLayout>
       <SheetContent side="left" className="reui-reference ct-drive-folder-sheet">

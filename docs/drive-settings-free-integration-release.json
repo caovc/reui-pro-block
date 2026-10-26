@@ -1,0 +1,185 @@
+{
+  "status": "LOCAL_GATES_AND_INDEPENDENT_LINUX_PRICING_VERIFIED_READY_FOR_MAIN_RELEASE",
+  "base": "05e0f56a23ebc657dbceec6373b6561cabd79d55",
+  "ownerFrozenManifestSHA256": "dd1c8ef99981d9d000bf348f384fb0dc3ee8850cba9dc92cc697ec5f6b94b8b3",
+  "scope": {
+    "templates": ["filespace", "filebox"],
+    "features": [
+      "Profile/Workspace/Team/Member/Billing settings",
+      "native workspace/profile navigation",
+      "local saved drafts, plan/seat changes and pricing",
+      "actual free phone country registry and focus",
+      "real local download serializers"
+    ],
+    "newCatalogIDs": 0,
+    "sharedAvatarChange": "Only optional ReactNode changeLabel/removeLabel; defaults and all upload callbacks unchanged",
+    "excluded": "Header Help/Notifications and future Flux Profile slots are separate follow-ups"
+  },
+  "actualFreeReuse": [
+    "ReUI Frame/FramePanel/FrameFooter",
+    "ReUI DataGrid and native Pagination",
+    "ReUI Alert/AlertAction",
+    "official c-select-27",
+    "official c-combobox-6 and c-combobox-19 with native Avatar/Item/Chip",
+    "official c-checkbox-9 Field/Checkbox cards",
+    "official free PhoneInput composition",
+    "existing free LocalAvatarUpload/use-file-upload",
+    "existing native Sidebar/Sheet/Dropdown/Select/Field/InputGroup/Badge/IconTile"
+  ],
+  "correctedDuplicatePresentations": [
+    "Manual Alert wrapper replaced by actual direct native slots",
+    "Bare Label seat approximation replaced by official Field card composition",
+    "Text-only approximated Approver chips restored to actual free composition",
+    "Native chip input and Chevron no longer damaged by broad consumer CSS"
+  ],
+  "necessaryCustomCapabilities": "Existing domain model, local draft/save/nullable/exclusive seat rules, URL routing and independent PDF/CSV download serializers are application behavior not supplied by generic free UI primitives. No replacement popup/focus/selection engine.",
+  "brandAndLicenses": {
+    "identity": "Original Bricklane mark and local original avatars",
+    "referenceMediaDistributed": false,
+    "phoneDependencyNewPackages": 9,
+    "changedExistingDependencyVersions": 0,
+    "nineFullPhoneMITNotices": "src/templates/collaboration/assets/drive-phone-LICENSES.txt",
+    "MITAndFontOFLRetained": true,
+    "fontAndAssetAttribution": "Two actual exports each12 font/license/asset metadata entries raw-exact"
+  },
+  "gates": {
+    "strictMain": {
+      "exit": 0,
+      "seconds": 21.822766065597534,
+      "owned37AndProtected1518Exact": true
+    },
+    "originalNative47": {
+      "passed": 47,
+      "seconds": 68.276326,
+      "workers": 1,
+      "retries": 0,
+      "timeoutMs": 30000,
+      "skipped": 0,
+      "flaky": 0
+    },
+    "visual": "Five pages1440/390 all Frame rectangles exact; natural700 Team no lost/duplicate roles or overflow; actual PNG review and deeper Billing row/Alert/Chips/card comparison completed",
+    "newNativePaths": "Labelclick/Space/nullable/exclusive/save, Approvers filter/select/remove/Backspace/Escape/focus/anchor, Alert Review/Escape/Dismiss, native Select Chevron and popup descriptions checked",
+    "originalSource2": "2PASS once6.654s; those original tests explicitly select only DriveLayout",
+    "sourceSupplement": "Default Drive.tsx and13 supporting UIchoices per template:28 view/actualCopy/single-file/ZIP comparisons",
+    "actualExports": {
+      "status": "SOURCE2_AND_ACTUAL2_ZIP_STRICT_RUNTIME_PASS_WITH_EXPLICIT_MINOR_VISUAL_GAPS",
+      "owned37Exact": true,
+      "protected1518Exact": true,
+      "manifestSHA256": "dd1c8ef99981d9d000bf348f384fb0dc3ee8850cba9dc92cc697ec5f6b94b8b3",
+      "actualOriginal220PerProjectExact": true,
+      "actualImmutable34PerProjectExact": true,
+      "source2": "Original2PASS once natural0/6.654s original30s1worker0retry",
+      "source28": "DefaultDrive+13supporting UI choices\u00d72,View/Copy/single/actualZIPraw bytes exact",
+      "clipboard": "Released to Root after all actualCopy tasks",
+      "ZIPRawException": "Only exact named original BricklaneSVG Vite inline dataURL formatting, fullXMLnamespace/tag/allattrschildren treeexact; preserved actualbytes, not rawexact claim",
+      "ZIPClosure": "Each220members,1101importtargets0missing/0undeclared, originalgeneratedtheme/starter/strict/dependencySlices exact, ninefullPhoneMIT+ReUIMIT/OFL preserved",
+      "dependencyMode": "Normal842 physicalclone with identical dependency/devoverride slices and lock versions, privateemptycaches. Not freshinstall. Actualexport has no postinstall as intended; scripts not suppressed.",
+      "strictBuilds": {
+        "filespace": {
+          "id": "filespace",
+          "pid": 40928,
+          "args": ["npm", "run", "build"],
+          "exitCode": 0,
+          "elapsedSeconds": 6.398015975952148,
+          "originalActualZIPScript": "tsc --noEmit && vite build",
+          "original220ExactBeforeAfter": true,
+          "actualExampleExact": true,
+          "normalPhysicalDependenciesNotFreshInstall": true,
+          "retries": 0,
+          "strictChanged": false,
+          "sourceArchiveUnmodified": true
+        },
+        "filebox": {
+          "id": "filebox",
+          "pid": 41003,
+          "args": ["npm", "run", "build"],
+          "exitCode": 0,
+          "elapsedSeconds": 6.27508807182312,
+          "originalActualZIPScript": "tsc --noEmit && vite build",
+          "original220ExactBeforeAfter": true,
+          "actualExampleExact": true,
+          "normalPhysicalDependenciesNotFreshInstall": true,
+          "retries": 0,
+          "strictChanged": false,
+          "sourceArchiveUnmodified": true
+        }
+      },
+      "runtime4Contexts": {
+        "allPassed": true,
+        "widths": [1440, 390],
+        "templates": ["filespace", "filebox"],
+        "faults": 0,
+        "writes": 0,
+        "screenshots": 14,
+        "personallyViewedRepresentative": [
+          "filespace-native-billing-saved-390.png",
+          "filespace-settings-profile-1440.png",
+          "filebox-original-login-390.png",
+          "filebox-default-files-1440.png"
+        ],
+        "proof": "/tmp/bricklane-templates-layout/drive-05-repair-preparation-v5/actual-downloads-v1/runtime-actual-once-v1/proof.json"
+      },
+      "protectedFailures": "Original Source observer static MIT-count assertion9vsactual10 preserved separately; original2 and product builds0 remain distinct. Old v2TS/v4TS/original36of45 identities preserved.",
+      "publication": "No sharedrepo/Gitwrites by Templates; Root sole releasewriter. Root Linux fixture-only3test update pending and LinuxPricing2 separate scope."
+    },
+    "LinuxPricing2": {
+      "run": 40380933471,
+      "commit": "80a04836bfe916947752158cff6d42a3c4c1f549",
+      "artifact": 12679510109,
+      "artifactSHA256": "35b0cda9aec89dd48b6dfffc3d33cac5539d710b7dc17419b8d81acbae8c96b6",
+      "stats": {
+        "startTime": "2026-10-26T18:49:40.395Z",
+        "duration": 4751.319,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "workers": 1,
+      "retries": 0,
+      "timeoutMs": 30000,
+      "originalReport": "/tmp/bricklane-drive-linux-pricing-final-original/bricklane-drive-linux-pricing/report.json",
+      "allCaseTitles": [
+        "1440 main Pricing matches the complete static matrix and all row densities",
+        "390 main Pricing renders every 341 by 576 Frame with all eight features"
+      ]
+    }
+  },
+  "rootZIPProof": {
+    "path": "/tmp/bricklane-templates-layout/drive-05-repair-preparation-v5/root-independent-actual-zip-byte-proof.json",
+    "SHA256": "67d281309bf317258c544c254442a9b48bf7177fe596b3e8b9f8cfb6f7dced06",
+    "eachZIP": "220members:211 raw sources exact,8 separately validated generated scaffolds,1 named original BricklaneSVG with complete XML tree equivalence",
+    "SVGException": "Only Vite inline dataURI quote/line-format normalization; actual ZIP bytes preserved, no broad source normalization"
+  },
+  "testHarnessCorrection": {
+    "scope": "Only three preview entry URL fixtures changed to relative URLs resolved by the existing Playwright baseURL; business assertions/geometry/waits/timeouts unchanged",
+    "firstLinuxAttempt": 40380098103,
+    "firstOutcome": "Import-time explicit PREVIEW_URL guard failed before browser/test discovery; not a product-case failure",
+    "firstLog": "/tmp/bricklane-drive-linux-pricing-original-failure.log",
+    "LinuxPricingSuccessor": 40380933471,
+    "successorStatus": "SUCCESS original2/4.751s/1worker/0retry/original30s",
+    "ownerIndependentReview": "Original v5 beforeSHA and changed three fixture afterSHA independently reviewed; business/geometry/waits/assertions byte-identical."
+  },
+  "preservedFailures": [
+    "First original45 gate36PASS9FAIL with original traces; fixture and actual structure causes separated",
+    "V2 main2/18.90485s flatMap inference; type-only ReactNode generic erased identically",
+    "V4 main2/18.843352s popup member contextual any; one DriveSettingsMember annotation erased identically",
+    "Source observer counted9 instead of10 totalMIT markers; observer corrected without modifying packages",
+    "Root initial ZIP checker compared6 generated scaffolds against repo shell; observer fixed, archives unchanged"
+  ],
+  "remainingGaps": [
+    "Field description2px internal spacing",
+    "Native checkbox idle1px position",
+    "Native phone pagination group5px offset",
+    "Native glyph/online-presence differences; presence not inferred from membership",
+    "Some unobserved public changed-state flows remain explicitly local demo behavior",
+    "Header Help/Notifications follow-up not integrated"
+  ],
+  "publication": {
+    "committed": false,
+    "pushed": false,
+    "fullCI": "PENDING_NEW_MAIN_COMMIT",
+    "Pages": "PENDING_NEW_MAIN_COMMIT",
+    "RootSoleNormalHookWriter": true
+  }
+}

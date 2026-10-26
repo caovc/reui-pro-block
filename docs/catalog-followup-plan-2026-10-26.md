@@ -148,3 +148,34 @@ and the original30s timeout (run40374879935). The earlier anchored CLI selector 
 that discovery failure is preserved separately and is not a browser-test result.
 Root alone coordinates the normal-hook scoped commit and push; the new complete three-worker
 CI and Pages must succeed before the Mesh, Flux and Prospect follow-ups are described as live.
+
+## Drive native settings and pricing — 2026-10-27
+
+The [Drive integration receipt](drive-settings-free-integration-release.json) records the
+Filespace/Filebox settings, member, Billing and Pricing milestone. Existing actual free ReUI
+Frame, DataGrid, PhoneInput, AlertAction, Combobox19 Avatar/Chip and Checkbox9 Field-card
+compositions now replace the corresponding consumer approximations. The only shared avatar
+adapter extension supplies optional label contents while retaining default behavior. Nine
+phone-support packages have complete MIT notices; no existing locked dependency changes.
+
+The exact v5 strict build,47 original interaction cases, natural five-page1440/390 comparison,
+700px Team boundary and additional native label/keyboard/Chip/focus checks passed. Visual
+acceptance retains explicit2px description,1px checkbox and5px native pagination differences.
+It is not a pixel-perfect claim. The original Source2 only covered a selected layout file;
+actual defaultDrive.tsx plus13 supporting choices per template receive separate28-module
+view/Copy/single-file/real-ZIP byte checks.
+
+Each downloaded project has220 members,1101 checked local-import targets, complete licensing
+and original generated theme/scaffolds. Root independently verifies211 raw sources, eight
+explicit generated scaffolds and one original BricklaneSVG's complete XML tree; only that
+named inline-SVG formatting difference is accepted. Both unmodified actual strict builds and
+four desktop/phone exported-runtime contexts pass. Dependency trees are matched physical
+copies of normally installed842 packages, not claimed as fresh installs. Actual exports have
+no conditional Excalidraw postinstall and no script is suppressed.
+
+Three test URL fixtures now use the existing Playwright baseURL rather than private6350 or
+mandatory PREVIEW_URL; business/geometry/waits/timeout assertions remain. The independent
+Linux Pricing desktop/phone gate passed once in4.751s with1worker/0retries and original30s
+timeout (run40380933471). Root coordinates the scoped normal-hook release. Full main CI and
+Pages remain separate publication gates. Header Help/Notifications and future Flux Profile
+slots are independent planned follow-ups; current frozen source/download evidence is preserved.

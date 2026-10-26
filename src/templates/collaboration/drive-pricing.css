@@ -1,0 +1,453 @@
+.drive-pricing {
+  width: 100%;
+  max-width: 896px;
+  margin-inline: auto;
+  color: var(--foreground);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.drive-pricing-heading {
+  margin-bottom: 32px;
+}
+
+.drive-pricing-heading h1 {
+  margin: 0;
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+.drive-pricing-heading p {
+  max-width: 672px;
+  margin: 0;
+  color: var(--muted-foreground);
+  line-height: 1.625;
+}
+
+.drive-pricing .drive-pricing-matrix-panel {
+  padding: 0;
+  /* Nested plan FrameHeaders must not prevent this dense outer panel from sitting flush. */
+  margin-top: -1px;
+}
+
+.drive-pricing-matrix-scroll {
+  overflow-x: auto;
+}
+
+.drive-pricing-matrix {
+  min-width: 736px;
+}
+
+.drive-pricing-grid {
+  display: grid;
+  grid-template-columns: minmax(8rem, 1.2fr) repeat(3, minmax(0, 1fr));
+}
+
+.drive-pricing-grid > :not(:last-child) {
+  border-inline-end: 1px solid var(--border);
+}
+
+.drive-pricing-grid > [data-plan="team"] {
+  background: color-mix(in oklch, var(--primary) 2%, transparent);
+}
+
+.drive-pricing-matrix-header,
+.drive-pricing-feature:not(:last-child) {
+  border-bottom: 1px solid var(--border);
+}
+
+.drive-pricing-intro {
+  padding: 16px;
+  background: color-mix(in oklch, var(--muted) 20%, transparent);
+}
+
+.drive-pricing-intro h2 {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.drive-pricing-intro p {
+  margin: 8px 0 0;
+  max-width: 208px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 19.5px;
+}
+
+.drive-pricing .drive-pricing-plan-header {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  padding: 32px 20px;
+  text-align: center;
+}
+
+.drive-pricing-plan-name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+}
+
+.drive-pricing-plan-description {
+  width: 100%;
+  min-height: 39px;
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 19.5px;
+}
+
+.drive-pricing-price {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 6px;
+  margin: 20px 0 0;
+}
+
+.drive-pricing-price strong {
+  font-size: 30px;
+  line-height: 36px;
+  letter-spacing: -0.04em;
+  font-weight: 700;
+}
+
+.drive-pricing-price span,
+.drive-pricing-note {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.drive-pricing-note {
+  margin: 8px 0 0;
+  line-height: 16px;
+}
+
+.drive-pricing .drive-pricing-action {
+  width: 100%;
+  height: 36px;
+  margin-top: 20px;
+  border-radius: var(--radius-lg);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.drive-pricing .drive-pricing-popular {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  height: 19px;
+  padding: 0 5px;
+  transform: translateX(-50%);
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.drive-pricing-feature > [role="cell"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 16px;
+}
+
+.drive-pricing-feature-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 12px 16px;
+  font-weight: 500;
+}
+
+.drive-pricing-feature-label > svg,
+.drive-pricing-mobile-feature dt > svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+}
+
+.drive-pricing-feature-label > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.drive-pricing .drive-pricing-value {
+  height: 24px;
+  padding: 2px 8px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.drive-pricing-included,
+.drive-pricing-excluded {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+}
+
+.drive-pricing-included > svg,
+.drive-pricing-excluded > svg {
+  width: 16px;
+  height: 16px;
+}
+
+.drive-pricing-included {
+  color: var(--color-emerald-800);
+}
+
+.drive-pricing-excluded {
+  color: color-mix(in oklch, var(--muted-foreground) 70%, transparent);
+}
+
+.drive-pricing-mobile {
+  display: none;
+}
+
+.drive-workspace-trigger {
+  height: 28px;
+  width: auto;
+  gap: 4px;
+  padding: 0 10px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.drive-workspace-trigger > svg {
+  width: 12px;
+  height: 12px;
+}
+
+.drive-workspace-mark {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #b65e42;
+  color: #fff;
+}
+
+.drive-workspace-mark[data-mark="teal"] {
+  background: #267f83;
+}
+
+.drive-workspace-mark[data-mark="amber"] {
+  background: #a56c17;
+}
+
+.drive-workspace-mark > svg {
+  width: 14px;
+  height: 14px;
+}
+
+.drive-workspace-trigger .drive-workspace-mark {
+  width: 12px;
+  height: 12px;
+}
+
+.drive-workspace-trigger .drive-workspace-mark > svg {
+  width: 10px;
+  height: 10px;
+}
+
+.drive-workspace-menu {
+  width: 224px;
+  padding: 4px;
+  border-radius: var(--radius-lg);
+}
+
+.drive-workspace-menu [data-slot="dropdown-menu-label"] {
+  padding: 4px 6px;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+}
+
+.drive-workspace-menu .drive-workspace-item {
+  min-height: 36px;
+  gap: 6px;
+  padding: 4px 6px;
+}
+
+.drive-workspace-item-text {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.drive-workspace-item-text > span:first-child {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.drive-workspace-menu .drive-workspace-plan {
+  display: block;
+  height: 12px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 12px;
+  font-weight: 400;
+}
+
+.drive-workspace-check {
+  margin-inline-start: auto;
+}
+
+.drive-workspace-create {
+  max-width: min(384px, calc(100% - 32px));
+}
+
+.drive-workspace-create-form {
+  display: contents;
+}
+
+.drive-workspace-name-field {
+  gap: 8px;
+}
+
+.drive-workspace-name-field [data-slot="field-label"] {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.drive-workspace-name-field input {
+  height: 32px;
+}
+
+@media (max-width: 1023px) {
+  .drive-pricing-desktop {
+    display: none;
+  }
+
+  .drive-pricing-mobile {
+    display: grid;
+    gap: 16px;
+  }
+
+  .drive-pricing .drive-pricing-card {
+    overflow: hidden;
+  }
+
+  .drive-pricing-card .drive-pricing-plan-header {
+    align-items: stretch;
+    padding: 24px 20px;
+    text-align: left;
+  }
+
+  .drive-pricing-mobile-title-row {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .drive-pricing-mobile-badges {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .drive-pricing-card .drive-pricing-plan-name {
+    justify-content: flex-start;
+    font-size: 18px;
+    line-height: 28px;
+  }
+
+  .drive-pricing-card .drive-pricing-plan-description {
+    min-height: 0;
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .drive-pricing-card .drive-pricing-price {
+    justify-content: flex-start;
+    margin-top: 16px;
+  }
+
+  .drive-pricing-card .drive-pricing-price strong {
+    font-size: 30px;
+    line-height: 36px;
+    letter-spacing: -0.025em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .drive-pricing-card .drive-pricing-price span {
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .drive-pricing-card .drive-pricing-note {
+    margin-top: 12px;
+    text-align: center;
+  }
+
+  .drive-pricing .drive-pricing-card-features {
+    padding: 0;
+  }
+
+  .drive-pricing-card-features dl {
+    margin: 0;
+  }
+
+  .drive-pricing-mobile-feature {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 20px;
+  }
+
+  .drive-pricing-mobile-feature:not(:last-child) {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .drive-pricing-mobile-feature .drive-pricing-value {
+    height: 25px;
+  }
+
+  .drive-pricing-mobile-feature dt {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 400;
+  }
+
+  .drive-pricing-mobile-feature dd {
+    display: flex;
+    align-items: center;
+    margin: 0;
+  }
+}
