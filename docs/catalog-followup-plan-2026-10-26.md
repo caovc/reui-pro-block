@@ -125,3 +125,26 @@ and the actual source default leaf. Those are distinct 9c evidence. At this prec
 f755's format/tooling/lint/build were green but its browser installation and complete CI/Pages
 were pending. Root coordinates normal-hook commit/push for this narrow four-path release and
 checks that resulting commit's Linux CI and Pages separately; push alone is not deployment.
+
+## Flux Workspace Linux reference correction — 2026-10-27
+
+The original `1e578ed` full CI completed 1650 passing checks and one failed phone Workspace
+Frame assertion; Pages was skipped. The independent Linux diagnostic run40373334023 then
+opened the actual public Workspace URL and the local build with identical 390×844 viewports.
+Both initial and naturally settled samples have the same four Frame rectangles and title line
+counts. Actual CDP glyph fonts are custom Inter-Regular, and the public/local Inter WOFF2
+bytes share the same SHA256. This rules out a late-font change in those observations. The
+original Mac reference has different natural wrapping on this platform.
+
+The [reference correction receipt](flux-workspace-linux-reference-release.json) preserves the
+original failure, both diagnostic attempts and their raw artifact hashes. The test adds explicit
+Linux phone constants transcribed from the independently measured public page; the existing
+Mac values, desktop and other-view references, business assertions, waits and precision remain.
+Product source, free ReUI component implementations, source targets, exports and media are
+unchanged. A known 4px action-control width difference remains documented separately.
+
+The original Workspace desktop/phone cases passed once on Linux in7.127s, with1worker,0retries
+and the original30s timeout (run40374879935). The earlier anchored CLI selector found0tests;
+that discovery failure is preserved separately and is not a browser-test result.
+Root alone coordinates the normal-hook scoped commit and push; the new complete three-worker
+CI and Pages must succeed before the Mesh, Flux and Prospect follow-ups are described as live.

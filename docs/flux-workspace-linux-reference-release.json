@@ -1,0 +1,153 @@
+{
+  "status": "TARGETED_LINUX_VERIFIED_READY_FOR_MAIN_FULL_CI",
+  "scope": {
+    "baseCommit": "1e578edd95e89a490a30c22381b722e228a9fefb",
+    "files": [
+      "tests/templates-flux-settings.spec.ts",
+      "docs/flux-workspace-linux-reference-release.json"
+    ],
+    "productSourceChanges": false,
+    "newAssetsOrScreenshotsDistributed": false,
+    "sourceTargetsOrExportsChanged": false
+  },
+  "originalFailure": {
+    "run": 40364109290,
+    "commit": "1e578edd95e89a490a30c22381b722e228a9fefb",
+    "passed": 1650,
+    "failed": 1,
+    "duration": "25.5m",
+    "deploy": "skipped",
+    "test": "Flux Workspace reference defaults, information actions and route reset 390",
+    "assertion": "evidence Frame0 dimension3",
+    "expectedMacHeight": 242.5,
+    "receivedLinuxHeight": 261,
+    "artifactId": 12671327307,
+    "artifactBytes": 39952722,
+    "artifactSHA256": "99398bc364a54ead7f308a68480c960b6ce2e9094a05e82370b74adbb4230db6",
+    "originalLog": "/tmp/bricklane-main-1e578ed-failed-job.log",
+    "preserved": true
+  },
+  "independentPublicReference": {
+    "url": "https://flux-agentops.reui.io/settings/workspace",
+    "run": 40373334023,
+    "diagnosticCommit": "28e13b1e6d51153c662cb54fe5e52101877b6436",
+    "diagnosticZIP_SHA256": "de433e16c0281e3fc2cedf5fb5370a79a87aef3b92a22c9ad13dad7e5ab1614f",
+    "publicOriginalPoint": {
+      "path": "/tmp/bricklane-flux-diag2-original/public-original-point.json",
+      "sha256": "af2b6d97393b5a3f7db26b159185a1f7077b09a190a20313b1a0f72bc025f329"
+    },
+    "publicSettledPoint": {
+      "path": "/tmp/bricklane-flux-diag2-original/public-settled-point.json",
+      "sha256": "f73045eef8a9e137143aee99d254eab40d905b947c17cf2f53b079fbfbe5280b"
+    },
+    "framesOriginalAndSettled": [
+      [17, 65, 356, 261],
+      [17, 346, 356, 374.5],
+      [17, 740.5, 356, 135.5],
+      [17, 896, 356, 242.5]
+    ],
+    "titleLineCountsBoth": [2, 2, 2, 2, 2, 2, 1, 2],
+    "environment": {
+      "platform": "linux",
+      "release": "6.17.0-1022-azure",
+      "arch": "x64",
+      "node": "v24.21.0",
+      "playwright": "1.64.1",
+      "imageOS": "ubuntu24",
+      "imageVersion": "20261023.334.3",
+      "githubRun": "40373334023",
+      "githubSHA": "28e13b1e6d51153c662cb54fe5e52101877b6436",
+      "osRelease": "PRETTY_NAME=\"Ubuntu 24.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.5 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
+      "chromium": "156.0.8078.4"
+    },
+    "viewport": [390, 844],
+    "actualCDPFonts": "All eight public and local title nodes use custom Inter-Regular.",
+    "interWOFF2SHA256": "c940764593d0fe5d596be327ca7558855e018039fb78509aa21921fd3644c3e4",
+    "fontBytesPublicAndLocalExact": true,
+    "consoleErrors": [],
+    "blockedMutations": [],
+    "firstAndSettledMatch": true,
+    "RootPersonallyViewedPublicAndLocalScreenshots": true,
+    "noFontsOverrideStyleInjectionOrFixedHeightPolling": true
+  },
+  "cause": "The PUBLIC page itself naturally wraps the same three titles onto one more native line on Linux. Both local and public original-point and fonts-ready settled-point match all four Frames exactly. This is a platform-specific fixed reference mismatch, not a late-font race or measured consumer Frame regression.",
+  "correction": {
+    "newFixedKey": "workspace-390-linux",
+    "selection": "Only key workspace-390 on Node process.platform === linux; the browser runs locally on this host.",
+    "expectedValuesSource": "Explicit constants transcribed from independently measured PUBLIC JSON, not from product rectangles, line counts, runtime measurements, a dynamic oracle, or platform-height tolerances.",
+    "preserved": [
+      "Original workspace-390 Mac fixed constants",
+      "All desktop fixed references and all other view references",
+      "Original toBeCloseTo precision0",
+      "Original networkidle and document.fonts.ready waits",
+      "Original Settings navigation/Sheet Escape/focus return",
+      "Every business, source, console, overflow, screenshot and route-reset assertion",
+      "Original timeout/retry/workers configuration"
+    ],
+    "newWaits": false,
+    "newProductionAssertionsWeakened": false
+  },
+  "remainingVisualDifference": "Native action controls are locally 4px narrower than the current public reference. This existing control-width difference is disclosed, not fixed by the test-only change; all four row-group Frames still match. No complete visual-fidelity claim.",
+  "diagnosticHistory": {
+    "firstRun": 40372567347,
+    "firstRunStatus": "Failed before browser: preview had started but its ANSI-formatted Local label did not match readiness parser.",
+    "firstZIP_SHA256": "afe7a326627324b9bfbd613f4721066afaa18c07460e023cd87212e9cab0e1b1",
+    "firstEvidence": "/tmp/bricklane-flux-diag1-original",
+    "firstTargets": [],
+    "firstBrowserLaunched": false,
+    "RootCorrection": "Only stripVTControlCharacters for preview listening output; no timeout, font, original test or product change.",
+    "secondRun": 40373334023,
+    "secondRunStatus": "Successful diagnostic evidence collection; not an original business-case pass.",
+    "firstTargetedSelection": {
+      "run": 40374381972,
+      "status": "No tests found before browser test execution",
+      "reason": "Root incorrectly anchored grep to title start; Playwright full title includes filename",
+      "artifact": 12674776238,
+      "artifactSHA256": "2b220bc8b02f994bb50b9bfc5a80cdb1a63f57e7320c5bd37e82963df205cab4",
+      "actualTests": 0,
+      "correction": "Removed grep start anchor; list-only discovery confirmed exactly1440+390 before necessary targeted execution",
+      "testOrProductChangesForCorrection": false
+    }
+  },
+  "validationBoundary": {
+    "static": "Scoped oxfmt/oxlint only in clean private candidate.",
+    "originalTests": "Original Workspace1440+390 both PASS once on Linux;1worker/0retry/original30s; no business assertions or waits modified.",
+    "independentNegativeChecksProposed": [
+      "Using Linux public reference, old Mac first Frame height242.5 must fail the unchanged precision0 comparator against261.",
+      "Moving the second expected Frame y346 to347 or adding1px group spacing must fail unchanged precision0; no tolerance widening."
+    ],
+    "negativeChecksExecuted": false,
+    "RootOnlyNormalHookCommitPushAndFullCI": true,
+    "newMainCIAndPages": "PENDING_FUTURE_RELEASE"
+  },
+  "actualFreeReuseAndBrand": "This is test-only. Existing actual free ReUI Frame/Item/Badge/IconTile and native controls remain unchanged. Bricklane original identity and required licensing remain; no reference screenshots, fonts, extracted SVG or other media are copied into the repository or downloads.",
+  "preValidationBoundary": {
+    "static": "Scoped oxfmt/oxlint only in clean private candidate.",
+    "originalTests": "NOT_RUN; Root review required. Root plans original Workspace1440+390 Linux once with workers1/retries0 and unchanged original timeout/config.",
+    "independentNegativeChecksProposed": [
+      "Using Linux public reference, old Mac first Frame height242.5 must fail the unchanged precision0 comparator against261.",
+      "Moving the second expected Frame y346 to347 or adding1px group spacing must fail unchanged precision0; no tolerance widening."
+    ],
+    "negativeChecksExecuted": false,
+    "RootOnlyNormalHookCommitPushAndFullCI": true,
+    "newMainCIAndPages": "PENDING_FUTURE_RELEASE"
+  },
+  "targetedLinuxGate": {
+    "run": 40374879935,
+    "commit": "91bed5c46f3eab40c986ef494fa3b86d06a3eda5",
+    "status": "success",
+    "testsPassed": 2,
+    "skipped": 0,
+    "flaky": 0,
+    "unexpected": 0,
+    "durationMs": 7127.384,
+    "workers": 1,
+    "retries": 0,
+    "timeoutMs": 30000,
+    "artifact": 12674622122,
+    "artifactBytes": 167390,
+    "artifactSHA256": "3958511e2a4dfd459937962f2ec5bca45cc529095ceceea9d85311ba1cc9f53b",
+    "originalReport": "/tmp/bricklane-flux-fixed-reference-linux2-original/bricklane-flux-fixed-reference/report.json",
+    "productUnchanged": true
+  }
+}
