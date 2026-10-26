@@ -3,104 +3,194 @@ import { readFile } from "node:fs/promises";
 import { unzipSync, strFromU8 } from "fflate";
 
 for (const width of [1440, 390]) {
-  test(`template category tabs avoid vertical overflow and retain keyboard access at ${width}px`, async ({
-    page,
-    context,
-  }, testInfo) => {
-    await page.setViewportSize({ width, height: width === 390 ? 844 : 1000 });
-    const errors: string[] = [];
-    page.on("pageerror", (error) => errors.push(error.message));
-    await page.goto("./#/templates");
-    const viewport = page.locator('.template-gallery-controls > [data-slot="tabs"]');
-    const tabs = viewport.getByRole("tab");
-    await expect(tabs).toHaveCount(5);
-    const size = await viewport.evaluate((node) => ({
-      height: node.clientHeight,
-      contentHeight: node.scrollHeight,
-      width: node.clientWidth,
-      contentWidth: node.scrollWidth,
-    }));
-    expect(size.contentHeight).toBeLessThanOrEqual(size.height);
-    if (width === 1440) expect(size.contentWidth).toBeLessThanOrEqual(size.width);
-    else expect(size.contentWidth).toBeGreaterThan(size.width);
+  const run = width === 390 ? test.extend({ hasTouch: true, isMobile: true }) : test;
+  run(
+    `template category tabs avoid vertical overflow and retain keyboard access at ${width}px`,
+    async ({ page, context }, testInfo) => {
+      await page.setViewportSize({ width, height: width === 390 ? 844 : 1000 });
+      const errors: string[] = [];
+      page.on("pageerror", (error) => errors.push(error.message));
+      await page.goto("./#/templates");
+      const viewport = page.locator('.template-gallery-controls > [data-slot="tabs"]');
+      const tabs = viewport.getByRole("tab");
+      await expect(tabs).toHaveCount(5);
+      const size = await viewport.evaluate((node) => ({
+        height: node.clientHeight,
+        contentHeight: node.scrollHeight,
+        width: node.clientWidth,
+        contentWidth: node.scrollWidth,
+      }));
+      expect(size.contentHeight).toBeLessThanOrEqual(size.height);
+      if (width === 1440) expect(size.contentWidth).toBeLessThanOrEqual(size.width);
+      else expect(size.contentWidth).toBeGreaterThan(size.width);
 
-    await tabs.first().focus();
-    const pageY = await page.evaluate(() => scrollY);
-    await tabs.first().press("End");
-    await expect(tabs.last()).toBeFocused();
-    await expect(tabs.last()).toHaveAttribute("data-state", "active");
-    await expect(page.getByText("2 templates", { exact: true })).toBeVisible();
-    await expect
-      .poll(() =>
-        tabs.last().evaluate((node) => {
-          const port = node.closest('[data-slot="tabs"]')!;
-          const bounds = port.getBoundingClientRect();
-          const item = node.getBoundingClientRect();
-          return item.left >= bounds.left && item.right <= bounds.left + port.clientWidth;
-        }),
-      )
-      .toBe(true);
-    expect(await page.evaluate(() => scrollY)).toBe(pageY);
-    expect(await tabs.last().evaluate((node) => node.matches(":focus-visible"))).toBe(true);
-    await expect
-      .poll(() =>
-        tabs.last().evaluate((node) => ({
-          width: getComputedStyle(node).outlineWidth,
-          offset: getComputedStyle(node).outlineOffset,
-        })),
-      )
-      .toEqual({ width: "1px", offset: "0px" });
-    await expect
-      .poll(() => tabs.last().evaluate((node) => getComputedStyle(node).boxShadow))
-      .toContain(" 3px");
+      await tabs.first().focus();
+      const pageY = await page.evaluate(() => scrollY);
+      await tabs.first().press("End");
+      await expect(tabs.last()).toBeFocused();
+      await expect(tabs.last()).toHaveAttribute("data-state", "active");
+      await expect(page.getByText("2 templates", { exact: true })).toBeVisible();
+      await expect
+        .poll(() =>
+          tabs.last().evaluate((node) => {
+            const port = node.closest('[data-slot="tabs"]')!;
+            const bounds = port.getBoundingClientRect();
+            const item = node.getBoundingClientRect();
+            return item.left >= bounds.left && item.right <= bounds.left + port.clientWidth;
+          }),
+        )
+        .toBe(true);
+      expect(await page.evaluate(() => scrollY)).toBe(pageY);
+      expect(await tabs.last().evaluate((node) => node.matches(":focus-visible"))).toBe(true);
+      await expect
+        .poll(() =>
+          tabs.last().evaluate((node) => ({
+            width: getComputedStyle(node).outlineWidth,
+            offset: getComputedStyle(node).outlineOffset,
+          })),
+        )
+        .toEqual({ width: "1px", offset: "0px" });
+      await expect
+        .poll(() => tabs.last().evaluate((node) => getComputedStyle(node).boxShadow))
+        .toContain(" 3px");
 
-    await tabs.last().press("Home");
-    await expect(tabs.first()).toBeFocused();
-    if (width === 1440) {
-      expect(await viewport.evaluate((node) => node.scrollLeft)).toBe(0);
-      await page.evaluate(() => {
-        const button = document.createElement("button");
-        button.id = "native-focus-audit";
-        button.textContent = "Native focus audit";
-        Object.assign(button.style, { position: "fixed", left: "16px", bottom: "16px" });
-        document.body.append(button);
+      await tabs.last().press("Home");
+      await expect(tabs.first()).toBeFocused();
+      if (width === 1440) {
+        expect(await viewport.evaluate((node) => node.scrollLeft)).toBe(0);
+        await page.evaluate(() => {
+          const button = document.createElement("button");
+          button.id = "native-focus-audit";
+          button.textContent = "Native focus audit";
+          Object.assign(button.style, { position: "fixed", left: "16px", bottom: "16px" });
+          document.body.append(button);
+        });
+        const native = page.locator("#native-focus-audit");
+        await native.focus();
+        expect(await native.evaluate((node) => node.matches(":focus-visible"))).toBe(true);
+        expect(
+          await native.evaluate((node) => ({
+            width: getComputedStyle(node).outlineWidth,
+            offset: getComputedStyle(node).outlineOffset,
+          })),
+        ).toEqual({ width: "2px", offset: "3px" });
+        await native.evaluate((node) => node.remove());
+      }
+      if (width === 390) {
+        await expect.poll(() => viewport.evaluate((node) => node.scrollLeft)).toBe(0);
+        await page.evaluate(() => document.fonts.ready);
+        expect(await page.evaluate(() => navigator.maxTouchPoints)).toBeGreaterThan(0);
+        const bounds = (await viewport.boundingBox())!;
+        const position = { x: bounds.width - 15, y: bounds.height / 2 };
+        await viewport.click({ trial: true, position });
+        const input = await viewport.evaluate((node, position) => {
+          const bounds = node.getBoundingClientRect();
+          const point = { x: bounds.x + position.x, y: bounds.y + position.y };
+          const hit = document.elementFromPoint(point.x, point.y);
+          return {
+            ...point,
+            hitsViewport: hit !== null && node.contains(hit),
+            insideViewport:
+              point.x > bounds.left &&
+              point.x < bounds.right &&
+              point.y > bounds.top &&
+              point.y < bounds.bottom,
+            scrollLeft: node.scrollLeft,
+            clientWidth: node.clientWidth,
+            scrollWidth: node.scrollWidth,
+            overflowX: getComputedStyle(node).overflowX,
+          };
+        }, position);
+        expect(input.hitsViewport).toBe(true);
+        expect(input.insideViewport).toBe(true);
+        expect(input.scrollLeft).toBe(0);
+        expect(input.scrollWidth).toBeGreaterThan(input.clientWidth);
+        expect(input.overflowX).toBe("auto");
+        await page.evaluate(() => {
+          const events: Array<Record<string, unknown>> = [];
+          Reflect.set(window, "galleryTouchAudit", events);
+          for (const type of ["touchstart", "touchmove", "touchend", "touchcancel", "scroll"]) {
+            document.addEventListener(
+              type,
+              (event) => {
+                const viewport = document.querySelector<HTMLElement>(
+                  '.template-gallery-controls > [data-slot="tabs"]',
+                )!;
+                const touch =
+                  event instanceof TouchEvent
+                    ? event.touches[0] || event.changedTouches[0]
+                    : undefined;
+                events.push({
+                  type,
+                  trusted: event.isTrusted,
+                  insideViewport: viewport.contains(event.target as Node),
+                  x: touch?.clientX,
+                  y: touch?.clientY,
+                  scrollLeft: viewport.scrollLeft,
+                  time: performance.now(),
+                });
+              },
+              { capture: true, passive: true },
+            );
+          }
+        });
+        const session = await context.newCDPSession(page);
+        try {
+          await session.send("Input.synthesizeScrollGesture", {
+            x: input.x,
+            y: input.y,
+            xDistance: -200,
+            yDistance: 0,
+            speed: 500,
+            gestureSourceType: "touch",
+          });
+          await expect
+            .poll(() =>
+              page.evaluate(() =>
+                Reflect.get(window, "galleryTouchAudit").some(
+                  (event: Record<string, unknown>) =>
+                    event.type === "touchstart" && event.trusted && event.insideViewport,
+                ),
+              ),
+            )
+            .toBe(true);
+          await expect
+            .poll(() =>
+              page.evaluate(() =>
+                Reflect.get(window, "galleryTouchAudit").some(
+                  (event: Record<string, unknown>) =>
+                    event.type === "touchmove" && event.trusted && event.insideViewport,
+                ),
+              ),
+            )
+            .toBe(true);
+          await expect.poll(() => viewport.evaluate((node) => node.scrollLeft)).toBeGreaterThan(0);
+          expect(await page.evaluate(() => scrollY)).toBe(pageY);
+        } finally {
+          await testInfo.attach("native-touch-input", {
+            body: JSON.stringify(
+              {
+                input,
+                events: await page.evaluate(() => Reflect.get(window, "galleryTouchAudit")),
+              },
+              null,
+              2,
+            ),
+            contentType: "application/json",
+          });
+          await session.detach();
+        }
+      }
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+        true,
+      );
+      expect(errors).toEqual([]);
+      await page.screenshot({
+        path: testInfo.outputPath(`gallery-${width}.png`),
+        animations: "disabled",
       });
-      const native = page.locator("#native-focus-audit");
-      await native.focus();
-      expect(await native.evaluate((node) => node.matches(":focus-visible"))).toBe(true);
-      expect(
-        await native.evaluate((node) => ({
-          width: getComputedStyle(node).outlineWidth,
-          offset: getComputedStyle(node).outlineOffset,
-        })),
-      ).toEqual({ width: "2px", offset: "3px" });
-      await native.evaluate((node) => node.remove());
-    }
-    if (width === 390) {
-      await expect.poll(() => viewport.evaluate((node) => node.scrollLeft)).toBe(0);
-      const bounds = (await viewport.boundingBox())!;
-      const session = await context.newCDPSession(page);
-      await session.send("Emulation.setTouchEmulationEnabled", { enabled: true });
-      await session.send("Input.synthesizeScrollGesture", {
-        x: bounds.x + bounds.width - 15,
-        y: bounds.y + bounds.height / 2,
-        xDistance: -200,
-        yDistance: 0,
-        speed: 500,
-        gestureSourceType: "touch",
-      });
-      await expect.poll(() => viewport.evaluate((node) => node.scrollLeft)).toBeGreaterThan(0);
-      await session.detach();
-    }
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
-      true,
-    );
-    expect(errors).toEqual([]);
-    await page.screenshot({
-      path: testInfo.outputPath(`gallery-${width}.png`),
-      animations: "disabled",
-    });
-  });
+    },
+  );
 }
 
 for (const width of [1280, 390]) {

@@ -108,19 +108,33 @@ test("actual free project pickers change status, filter members and clear labels
   await page.locator("#workspace-project-status").click();
   await page.getByRole("option", { name: "Completed", exact: true }).click();
   await page.locator("#workspace-project-members").click();
-  await page.getByPlaceholder("Select members").fill("no assigned users");
+  const memberSearch = page.getByPlaceholder("Select members");
+  await expect(memberSearch).toHaveAttribute("aria-expanded", "true");
+  await expect(memberSearch).toBeFocused();
+  await memberSearch.fill("no assigned users");
   await page.getByRole("option", { name: "No assigned users", exact: true }).click();
   await page.locator("#workspace-project-members").click();
+  // The native popup retains its closing input until its exit animation ends.
+  // Wait for that input to unmount before opening the next search instance.
+  await expect(memberSearch).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Create project", exact: true })).toBeDisabled();
   await page.locator("#workspace-project-members").click();
-  await page.getByPlaceholder("Select members").fill("Maya");
+  await expect(memberSearch).toHaveAttribute("aria-expanded", "true");
+  await expect(memberSearch).toBeFocused();
+  await memberSearch.fill("Maya");
+  await expect(memberSearch).toHaveValue("Maya");
   await expect(page.getByRole("option")).toHaveCount(1);
   await page.getByRole("option", { name: /Maya Stone/ }).click();
   await page.locator("#workspace-project-members").click();
+  await expect(memberSearch).toHaveCount(0);
   await page.locator("#workspace-project-labels").click();
-  await page.getByPlaceholder("Select labels").fill("No label");
+  const labelSearch = page.getByPlaceholder("Select labels");
+  await expect(labelSearch).toHaveAttribute("aria-expanded", "true");
+  await expect(labelSearch).toBeFocused();
+  await labelSearch.fill("No label");
   await page.getByRole("option", { name: "No label", exact: true }).click();
   await page.locator("#workspace-project-labels").click();
+  await expect(labelSearch).toHaveCount(0);
   await page.getByRole("button", { name: "Create project", exact: true }).click();
   await expect(page.getByRole("alert")).toContainText("No labels");
   await expect(page.getByRole("alert")).toContainText("QA release");

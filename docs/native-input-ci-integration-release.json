@@ -1,0 +1,20 @@
+{
+  "scope": "Native input readiness and diagnostic records for two fullCI failures",
+  "base": "571b4c2e5b354a4dfc60688041c7fe6ad2a09093",
+  "runtimeChanges": false,
+  "tests": {
+    "tests/tabs-overflow.spec.ts": "144741193764d82f9394067afdbc02cbeea4394df027d18ed762486c005301b4",
+    "tests/dialog-workspace.spec.ts": "20ac5b7e62b66724a33b11aa29ccc3c163e3c6e38c044abd25610c53ab81fef9"
+  },
+  "tabs": {
+    "original": "b1311290PASS/1FAIL and e51340PASS/2FAIL; touch returns successfully withscroll0; original trusted-event evidence absent, cause unconfirmed",
+    "candidate": "Phone context hasTouch/isMobile at creation; actual fonts/nativehit ready; originalCDPgesture and49assertions retained,9 added; trusted touchstart/moves andreal scroll>0 recorded",
+    "verification": "6/6 once8.7s and controlledfont477→494 boundary; no primitive or productchange",
+    "receipt": "/tmp/bricklane-tabs-touch-ci-audit/receipt.json"
+  },
+  "picker": {
+    "verification": "15/15 once17.6s; controlled600ms nativeexit1/1 once4.9s; originalcontrolledinstantstateprobe failure retained",
+    "review": "/tmp/bricklane-tabs-touch-ci-audit/project-picker-static-review.json"
+  },
+  "publication": "Commit/push do not imply new CI or Pages success; latest confirmed deployed remainsf178 at preparation"
+}
