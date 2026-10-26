@@ -227,6 +227,16 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
     return paths("application", application[block.category]);
   }
   if (block.group === "ecommerce" || block.group === "marketing") {
+    if (block.category === "category-card" && [3, 4, 5].includes(block.index)) {
+      const module = ["featured-department", "collection-guides", "seasonal-categories"][
+        block.index - 3
+      ];
+      return paths(
+        "commerce",
+        `category-card-variants/${module}`,
+        "category-card-variants/directory-pages",
+      );
+    }
     if (block.category === "category-card" && block.index < 3) {
       const module = ["browse-grid", "filterable-collections", "category-carousel"][block.index];
       return paths("commerce", `category-card-variants/${module}`, "category-card-variants/index");

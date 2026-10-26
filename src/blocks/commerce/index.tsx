@@ -1,6 +1,7 @@
 import type { BlockProps } from "@/data/types";
 import { CategoryBrowser, FilterSidebar } from "./catalog";
 import { CategoryCardVariants } from "./category-card-variants";
+import { CategoryDirectoryVariants } from "./category-card-variants/directory-pages";
 import { WishlistShopping } from "./wishlist-shopping";
 import { WishlistCollections } from "./wishlist-collection-pages";
 import { ReceiptDocuments } from "./receipt-refined";
@@ -25,6 +26,8 @@ import { ProductGrids } from "./product-grids";
 export default function CommerceBlock({ block }: BlockProps) {
   switch (block.category) {
     case "category-card":
+      if ([3, 4, 5].includes(block.index))
+        return <CategoryDirectoryVariants key={block.id} block={block} />;
       if (block.index < 3) return <CategoryCardVariants key={block.id} block={block} />;
       return <CategoryBrowser key={block.id} block={block} />;
     case "product-card":

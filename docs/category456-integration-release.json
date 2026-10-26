@@ -1,0 +1,132 @@
+{
+  "status": "READY / frozen; no child Git writes",
+  "frozenAt": "2026-10-23T10:11:31.061348+00:00",
+  "baseHead": "5454238802bb9d0679fc549ebb295a08e9c288dc",
+  "integrationPatchPreparedAgainst": "16a69bf680dc659cf4116d7a64cedc6727966993",
+  "integrationOriginalFilesSha256": {
+    "src/blocks/commerce/index.tsx": "d53ee250479f56dfae5b768e11cbdc297cb6015be74c85817bfa0b9b29f69e3b",
+    "src/lib/source-targets.ts": "6fc1ee9054b2565cd18e1b00cc5270740b5889926cafcf240b6fa7ecb232d7cf"
+  },
+  "snapshot": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/reui-category456-m9apuwye",
+  "production": "http://127.0.0.1:5425",
+  "integrationPatch": "/tmp/reui-category456-integration.patch",
+  "leafMapping": {
+    "category-card-4": "category-card-variants/featured-department",
+    "category-card-5": "category-card-variants/collection-guides",
+    "category-card-6": "category-card-variants/seasonal-categories"
+  },
+  "router": "CategoryDirectoryVariants only indices3/4/5; preserve published1\u20133 and all Shop1\u20138. Source fallback category-card-variants/directory-pages.",
+  "verification": [
+    "Strict TypeScript+Vite production build PASS",
+    "20/20 new production tests22.6s PASS,1worker, no timeout/retry/forced actions",
+    "After consumer-only top Badge contrast correction: strict build +6/6 targeted desktop/mobile/source tests6.7s PASS",
+    "2/2 source graph checks PASS",
+    "Actual default/copy/single-file/ZIP leaf bytes identical for all3",
+    "Final actual UI-downloaded ZIPs182files each,3 independent strict builds PASS",
+    "Final6 standalone1440/390 runtime checks PASS: originalSVGdecode, noerrors/overflow; nativewheel actualdirectoryscroll and last60-piece route; sharedsaved guide/subcategory; desktophover/mobilepersistentreveal working",
+    "Headings36/38.88 desktop and30/32.4 mobile; directory620px desktop/512mobile",
+    "Scoped oxfmt and oxlint PASS, no warnings/errors",
+    "Final standalone desktop/mobile/state/reveal screenshots directly inspected"
+  ],
+  "officialFreeReuse": [
+    "existing actual c-card-8 ShopImageCard in all3 leaves",
+    "actual c-scroll-area-1 paddedheader/divided list/viewport/scrollbar structure",
+    "actual c-item-4 asChild clickablemedia/content/actions/separators directory rows",
+    "actual c-item-2 Item content/actions anatomy with actualc-card8 media for guides",
+    "frozen c-breadcrumb-1 CategoryBreadcrumb localnavigation",
+    "official REUI Badge",
+    "existing CollectionBrowser/SaveProvider:c-item2,c-tabs9,c-scroll-area1,c-toggle10,REUIAlert/Badge"
+  ],
+  "customGaps": [
+    "Bricklane directory/guide taxonomy, actuallowestprice and uniqueinventory computation absent fromfree registry",
+    "c-card8 persistentcaption extendedwithspecificfullsurface seasonalrest/reveal +mobilealwaysopen state; inspected c-hover-card1 floatingtriggerpanel is differentcapability"
+  ],
+  "limitations": [
+    "Public rendered desktop/mobile/hover/focus comparison remains pending; officialpublicbrief/free-source +localfunctional evidence only; no competingforegroundEdge actions",
+    "Originaldrawing/copy/status replaceupstreamphoto/branding; exactpublictypography/spacing/countofguides/mobilestyleprovisional",
+    "Directory shows60unique pieces/8overlappingcollectionpaths ratherthan misleading210summeditemcounts; explicitUIexplanation",
+    "Fourindependentguides show30/15/15/45pieces withactualminbudgets38/35/42/35, not claimed exactreferencecopy/count",
+    "All routes localdemo catalogs; no backend/purchase"
+  ],
+  "priorFrozenManifests": {
+    "/tmp/reui-category123-ready-manifest.json": {
+      "unchanged": true,
+      "files": 11
+    },
+    "/tmp/reui-shop-hero3-ready-manifest.json": {
+      "unchanged": true,
+      "files": 11
+    },
+    "/tmp/reui-shop-hero45-ready-manifest.json": {
+      "unchanged": true,
+      "files": 8
+    },
+    "/tmp/reui-shop-hero678-ready-manifest.json": {
+      "unchanged": true,
+      "files": 10
+    }
+  },
+  "candidatePrerequisites": "Candidatebase545423 predated Category1\u20133publication; exactfrozenreadonlydata.ts/breadcrumb.tsx werecopiedin. Theyare nowpublished byRoot16a69bf andhash unchanged.",
+  "standalones": [
+    {
+      "n": 4,
+      "folder": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-category-card4-export-C2Ikgf",
+      "entries": 182,
+      "preview": "http://127.0.0.1:5426"
+    },
+    {
+      "n": 5,
+      "folder": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-category-card5-export-Pf9yT9",
+      "entries": 182,
+      "preview": "http://127.0.0.1:5427"
+    },
+    {
+      "n": 6,
+      "folder": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-category-card6-export-DiRvN4",
+      "entries": 182,
+      "preview": "http://127.0.0.1:5428"
+    }
+  ],
+  "evidence": {
+    "initial20Tests": "/tmp/reui-category456-initial-tests.log",
+    "finalContrastTests": "/tmp/reui-category456-final-contrast-tests.log",
+    "build": "/tmp/reui-category456-final-build.log",
+    "sourceTests": "/tmp/reui-category456-source-tests.log",
+    "standaloneRuntime": "/tmp/reui-category456-export-runtime.json",
+    "screenshots": "/tmp/reui-category-card{4,5,6}-export-{desktop,mobile-viewport}.png +export-state-mobile.png, category-card6-export-reveal-desktop.png"
+  },
+  "readOnlyDependencies": {
+    "src/blocks/commerce/category-card-variants/data.ts": "e4ffc9ce319c20446b7c22ae812e9e7045097f7f363cdd5a330d89fbbfb5517b",
+    "src/blocks/commerce/category-card-variants/breadcrumb.tsx": "9a506b09ad6f07dc8b1ac6cf4725e4eca7a8ccd024c006b129baa3e6cc6923d4",
+    "src/blocks/commerce/shop-hero-variants/image-card.tsx": "faeb23fea88479454a0ae1310f9ee321b06960b2286d965334e51b85f9ce6b18",
+    "src/blocks/commerce/shop-hero-variants/collection-data.ts": "9d261a797c183eea791fea07ff2c30285530402b3e00fe23c4da0b24d64e96d1",
+    "src/blocks/commerce/shop-hero-variants/collection-dialog.tsx": "6c0f5f55c98ef994a12410710d1eb3d7a74baf7a087a3d9b521a46a1948b3282",
+    "src/blocks/commerce/shop-hero-variants/collection-saved.ts": "c91e5eb66246357fa77120264bc5e6fd38a0a606640b2e98ce5f79bb737a2553",
+    "src/blocks/commerce/wishlist-artwork.ts": "7b8bb57f425418cee9392010dc57708cacb1a26452210ce3aa5605736c2639b6",
+    "src/components/reui/badge.tsx": "aa775fdd1638b34a843f5ece24236705d152cc36ea5edce62a62fe5601dde664",
+    "src/components/ui/scroll-area.tsx": "47d13094994d22cb6db30c71320a06ea9946cda4308e5505eaf0e1f31826f739",
+    "src/components/ui/item.tsx": "586a27a26a55fe9bce3d097e56608145437f2735abbd5e036a8cca611583322c"
+  },
+  "files": {
+    "src/blocks/commerce/category-card-variants/discovery-data.ts": "957e87091d2505b3d2eed5c5b37ea9023c925643e724d674f66652a4a551987a",
+    "src/blocks/commerce/category-card-variants/featured-department.tsx": "fa829c95fbcdef9d0250de97897e221578de6d151ae50abe223316f456db6ecc",
+    "src/blocks/commerce/category-card-variants/collection-guides.tsx": "cda22199d0a1c69dc8f235f2f61bc79d081f8179708b4082ffb156ebfc3e5b8b",
+    "src/blocks/commerce/category-card-variants/seasonal-categories.tsx": "2135a5b6912f1ca3821bd34de02763ba97a841e0c455e7e2c7b16e436cef59fd",
+    "src/blocks/commerce/category-card-variants/directory-pages.tsx": "1bc5903c44f91bf090a2e25971e85b73d97d534b76a5e4acaaea638a57a4373d",
+    "tests/category-card-directory.spec.ts": "d96e309aa776cd6d09de46d0ca856c8a27dd34bc8b362927eefc488e192e3e17",
+    "docs/category-card-directory-refinement.md": "59a95a75592da87cc25593bf195f0c65930a406c665b2a227fcf58e929b23220"
+  },
+  "rootIntegration": {
+    "base": "56229f543afa793107c012118f432b29058a6767",
+    "build": "Strict production PASS, candidate-only isolated .tmp cache; committed configs unchanged",
+    "production": "98/98 baseline2.1m +33/33 cumulativeNavbar10\u201311/source41.9s,1worker; latestM5 cumulative31/31 PASS1.2m",
+    "logs": [
+      "/tmp/bricklane-category456-root-production.log",
+      "/tmp/bricklane-category456-latest-root-production.log",
+      "/tmp/bricklane-category456-m5-root-production.log",
+      "/tmp/bricklane-category456-m5-root-build.log"
+    ],
+    "visual": "Root inspected actual seasonal hover screenshot; public4\u20136 comparison pending",
+    "deployment": "Own CI/Pages pending; latest verified successful deploymentc28b627 run39939335751,987browser PASS"
+  }
+}
