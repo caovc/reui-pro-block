@@ -62,14 +62,34 @@ for (const width of [1440, 390]) {
     await popup.getByRole("option", { name: "Slack", exact: true }).click();
     await expect(popup).toHaveCount(0);
     await expect(app).toContainText("Slack");
+    const notice = page.locator("[data-sonner-toast]").filter({ hasText: "Step updated" });
     await page.getByRole("button", { name: "Save step", exact: true }).click();
     await expect(app).toHaveCount(0);
+
+    // Undo is a short-lived native action. Use it before testing a separate reopen.
+    if (width === 390) {
+      await page.getByRole("button", { name: "Close", exact: true }).click();
+      await expect(page.getByRole("dialog")).toHaveCount(0);
+    }
+    await notice.getByRole("button", { name: "Undo", exact: true }).click();
+    await node.dblclick();
+    await expect(app).toContainText("Neon");
+    await expect(title).toHaveValue("Neon");
+
+    // A second real save independently verifies persistence after reopening.
+    await app.click();
+    await expect(popup).toBeVisible();
+    await popup.getByRole("option", { name: "Slack", exact: true }).click();
+    await expect(popup).toHaveCount(0);
+    await expect(app).toContainText("Slack");
+    await page.getByRole("button", { name: "Save step", exact: true }).click();
+    await expect(app).toHaveCount(0);
+    // Hovering a bottom-right toast pauses its native lifetime and blocks this footer.
+    await page.mouse.move(0, 0);
+    await expect(notice).toHaveCount(0);
     await page.getByRole("button", { name: "Edit step", exact: true }).click();
     await expect(app).toContainText("Slack");
     await expect(title).toHaveValue("Neon");
-
-    // Close the reopened editor before Undo so the next open reads restored graph data.
-    // On phone, the native modal must close before an outside toast action is reachable.
     await page
       .getByRole("button", {
         name: width === 390 ? "Close" : "Close step details",
@@ -80,13 +100,5 @@ for (const width of [1440, 390]) {
     if (width === 390) {
       await expect(page.getByRole("dialog")).toHaveCount(0);
     }
-    await page
-      .locator("[data-sonner-toast]")
-      .filter({ hasText: "Step updated" })
-      .getByRole("button", { name: "Undo", exact: true })
-      .click();
-    await node.dblclick();
-    await expect(app).toContainText("Neon");
-    await expect(title).toHaveValue("Neon");
   });
 }

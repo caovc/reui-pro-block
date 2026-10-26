@@ -1,0 +1,383 @@
+{
+  "baseCommit": "0912fc453f609350f6f43bebab8a7307ac52c5fb",
+  "scope": "Two native test fixtures only; no product source, toast duration, position, fonts, dependencies, export or original configuration changes.",
+  "originalCI": {
+    "run": 40331179251,
+    "passed": 1617,
+    "failed": 2,
+    "artifact": {
+      "path": "/tmp/bricklane-flow2-main-55fc-original.zip",
+      "bytes": 40776297,
+      "sha256": "e9eb703983c25c4342c6ac9018a0e9321e7521972d6ff3196eed889245673d0c"
+    }
+  },
+  "rootCause": "Both tests click Edit step underneath the real bottom-right Step updated toast. In App it eventually clicks after native toast expiry, then asks for that already-expired Undo. In workflow the pointer hovers the toast, expanding it and pausing its native remaining lifetime, so the click remains blocked. This is a fixture ordering/pointer orchestration defect; no evidence of failed save, broken Select, or broken Undo callback.",
+  "appRawEvents": {
+    "clickEvents": [
+      {
+        "start": 739290.434,
+        "end": 739481.297,
+        "params": {
+          "selector": "internal:role=button[name=\"Save step\"s]",
+          "strict": true
+        }
+      },
+      {
+        "start": 739550.634,
+        "end": 743837.534,
+        "params": {
+          "selector": "internal:role=button[name=\"Edit step\"s]",
+          "strict": true
+        }
+      },
+      {
+        "start": 743881.13,
+        "end": 743958.967,
+        "params": {
+          "selector": "internal:role=button[name=\"Close step details\"s]",
+          "strict": true
+        }
+      },
+      {
+        "start": 743979.688,
+        "end": null,
+        "params": {
+          "selector": "[data-sonner-toast] >> internal:has-text=\"Step updated\"i >> internal:role=button[name=\"Undo\"s]",
+          "strict": true
+        }
+      }
+    ],
+    "firstVisibleToastSnapshot": 739498.356,
+    "firstRecordedAbsentSnapshotAfter1s": 743761.634,
+    "firstExpandedSnapshot": null,
+    "lastSnapshotTime": 743981.749,
+    "editClickInterceptions": [
+      {
+        "time": 739666.554,
+        "message": "  <div class=\"\" data-title=\"\">Step updated</div> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 739705.713,
+        "message": "  <div class=\"\" data-title=\"\">Step updated</div> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 739777.341,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"false\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 739916.481,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"false\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 740057.892,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"false\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 740587.86,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"false\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 741112.07,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"false\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 741628.513,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"false\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 742153.889,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"false\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 742687.955,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"false\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 743219.729,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"false\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      }
+    ]
+  },
+  "workflowRawEvents": {
+    "clickEvents": [
+      {
+        "start": 835399.983,
+        "end": 835575.769,
+        "params": {
+          "selector": "internal:role=button[name=\"Save step\"s]",
+          "strict": true
+        }
+      },
+      {
+        "start": 835597.897,
+        "end": null,
+        "params": {
+          "selector": "internal:role=button[name=\"Edit step\"s]",
+          "strict": true
+        }
+      }
+    ],
+    "firstVisibleToastSnapshot": 835581.003,
+    "firstRecordedAbsentSnapshotAfter1s": null,
+    "firstExpandedSnapshot": 835781.353,
+    "lastSnapshotTime": 860476.14,
+    "editClickInterceptions": [
+      {
+        "time": 835704.693,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"false\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 835783.369,
+        "message": "  <div class=\"\" data-title=\"\">Step updated</div> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 835836.251,
+        "message": "  <div class=\"\" data-title=\"\">Step updated</div> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 835988.981,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 836130.863,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 836670.161,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 837194.298,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 837729.386,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 838259.337,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 838771.569,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 839293.2,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 839813.897,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 840337.626,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 840857.761,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 841373.308,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 841888.071,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 842409.771,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 842922.915,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 843467.718,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 843994.662,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 844505.687,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 845028.528,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 845581.552,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 846107.85,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 846633.747,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 847157.07,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 847678.327,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 848247.899,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 848796.427,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 849332.927,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 849880.895,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 850411.726,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 850941.651,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 851474.695,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 851992.366,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 852504.418,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 853027.626,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 853573.535,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 854091.704,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 854632.413,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 855155.056,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 855677.828,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 856218.393,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 856744.669,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 857260.004,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 857801.034,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 858337.046,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 858857.984,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 859402.521,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 859933.016,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      },
+      {
+        "time": 860478.569,
+        "message": "  <li tabindex=\"0\" data-index=\"0\" class=\"cn-toast\" data-front=\"true\" data-styled=\"true\" data-mounted=\"true\" data-swiped=\"false\" data-visible=\"true\" data-type=\"success\" data-sonner-toast=\"\" data-promise=\"false\" data-removed=\"false\" data-swiping=\"false\" data-expanded=\"true\" data-swipe-out=\"false\" data-rich-colors=\"true\" data-x-position=\"right\" data-dismissible=\"true\" data-y-position=\"bottom\">…</li> from <section tabindex=\"-1\" aria-live=\"polite\" aria-atomic=\"false\" aria-relevant=\"additions text\" aria-label=\"Notifications alt+T\" data-react-aria-top-layer=\"true\">…</section> subtree intercepts pointer events"
+      }
+    ]
+  },
+  "correction": [
+    "Use the native limited-lifetime Undo immediately after the first real save; verify original Neon is restored.",
+    "Make a second real Slack save to independently verify persistence after reopening.",
+    "Move the actual pointer away from the toast and wait for its natural removal before clicking the underlying Edit step in both affected fixtures."
+  ],
+  "preserved": "All label, typeahead, Escape, draft cancellation, save, original-title restoration, reopened Slack persistence and Close assertions; no force click, timer mutation, manual toast dismissal, sleep, skip or retries.",
+  "macAffected4": {
+    "result": "4 PASS once",
+    "seconds": 28.4,
+    "workers": 1,
+    "retries": 0,
+    "testTimeoutMs": 30000,
+    "existingImmutableFlowRuntime": "41 source/style files plus package/lock/config byte exact; reused validated immutable production with657 dist assets unchanged",
+    "notLinuxProof": true
+  },
+  "linuxAffected4": {
+    "run": 40348723866,
+    "diagnosticCommit": "31dc5ffe844cba1af456efe39a2f526c0b5117be",
+    "result": "success",
+    "stats": {
+      "startTime": "2026-10-26T15:24:25.337Z",
+      "duration": 19126.308,
+      "expected": 4,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "workers": 3,
+    "retries": 0,
+    "testTimeoutMs": 30000,
+    "originalConfigurationSHA256": "f56581a130d434003f4996eea4135014397bce7fe68bc1c9729d2fc94c317b7f",
+    "nativeFonts": true,
+    "artifactId": 12663360657,
+    "artifactBytes": 2251,
+    "artifactSHA256": "7cbbd426514031ec41aacf04c1abd02b4cc0aa32b59bc3aa41f910e26252f86a",
+    "errors": []
+  },
+  "changedFiles": [
+    {
+      "path": "tests/flow-agent-native-select.spec.ts",
+      "source": "/tmp/flow2-ci55fc-testfix-delivery-v1/frozen/tests/flow-agent-native-select.spec.ts",
+      "beforeSha256": "fbb6c42b838a50b8bb7e2f4f33fa62bba1db0202507b5828dbd590a3e2c24533",
+      "sha256": "d0bcfeabab0637717b962414ce3557c112c40a0bc6fa3ddcf5798d85441cf457"
+    },
+    {
+      "path": "tests/flow-inspector-fields.spec.ts",
+      "source": "/tmp/flow2-ci55fc-testfix-delivery-v1/frozen/tests/flow-inspector-fields.spec.ts",
+      "beforeSha256": "ff3897c7eb459c0054bfc0ccaa18cb31532a73d3eea58d8cf21fcabf9e5cc49b",
+      "sha256": "bd0207aa505106c2a67ff9cfdbac078b3e23404bf9673a037d98516ee20ded5c"
+    }
+  ],
+  "publication": "The independent Linux diagnostic passed. Main full CI and Pages deployment remain separate subsequent gates; diagnostic YAML is excluded from this release."
+}

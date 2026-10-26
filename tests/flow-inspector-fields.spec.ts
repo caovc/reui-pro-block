@@ -285,6 +285,11 @@ for (const width of [1440, 390]) {
     await page.getByRole("option", { name: "Hanna Berg", exact: true }).click();
     await page.getByRole("button", { name: "Save step", exact: true }).click();
     await expect(page.getByRole("textbox", { name: "Title", exact: true })).toHaveCount(0);
+    // Let the native toast finish without hovering it over the footer's Edit step.
+    await page.mouse.move(0, 0);
+    await expect(
+      page.locator("[data-sonner-toast]").filter({ hasText: "Step updated" }),
+    ).toHaveCount(0);
     await page.getByRole("button", { name: "Edit step", exact: true }).click();
     await expect(category).toContainText("Email");
     await expect(owner).toContainText("Hanna Berg");
