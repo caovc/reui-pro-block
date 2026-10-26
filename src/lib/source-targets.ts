@@ -476,9 +476,9 @@ export function templateImplementationTargets(template: {
       "ai-operations",
     ],
     tempo: ["ai-operations"],
-    pulse: ["pulse-knowledge", "pulse-reports"],
+    pulse: ["pulse-knowledge", "pulse-reports", "pulse-settings"],
     cohort: ["cohort-people", "cohort-settings", "cohort-time-off", "cohort-timesheets"],
-    roster: ["roster-approvals", "roster-import", "roster-directory"],
+    roster: ["roster-approvals", "roster-import", "roster-directory", "roster-settings"],
     echo: ["echo-composer", "echo-projects"],
   };
   const modules = [

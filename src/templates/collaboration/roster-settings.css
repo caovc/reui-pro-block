@@ -1,0 +1,318 @@
+.ct-roster .ct-main:has(.ct-roster-settings) {
+  padding: 16px;
+  margin-left: 0;
+}
+.ct-roster .ct-main:has(.ct-roster-settings) > .ct-pagebar,
+.ct-roster-settings {
+  width: 100%;
+  max-width: 864px;
+  margin-inline: auto;
+}
+.ct-roster-settings .ct-heading {
+  margin-bottom: 8px;
+}
+.ct-roster-settings .ct-heading h1 {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 28px;
+}
+.ct-roster-settings > [data-slot="tabs"] {
+  margin-bottom: 16px;
+}
+.ct-roster-settings [data-slot="tabs-list"] {
+  border: 0;
+  padding: 0 4px;
+  gap: 12px;
+}
+.ct-roster-settings [data-slot="tabs-trigger"] {
+  font-size: 14px;
+  font-weight: 500;
+  height: 40px;
+}
+.ct-roster-settings-panels {
+  display: grid;
+  gap: 16px;
+}
+.ct-settings-fiscal {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 112px;
+  gap: 12px;
+}
+.ct-settings-fiscal > [data-slot="select-trigger"] {
+  width: 100%;
+}
+.ct-settings-list {
+  max-height: 334px;
+  overflow: auto;
+}
+.ct-settings-list td {
+  height: 49px;
+  font-size: 14px;
+}
+.ct-settings-cell {
+  cursor: pointer;
+  text-align: left;
+  min-height: 32px;
+  width: 100%;
+}
+.ct-settings-list [data-slot="number-field"] {
+  max-width: 180px;
+}
+.ct-settings-profile-photo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.ct-settings-profile-photo > img,
+.ct-settings-profile-photo > .ct-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.ct-settings-empty {
+  display: block;
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--muted-foreground);
+}
+@media (max-width: 760px) {
+  .ct-roster-settings > [data-slot="tabs"] {
+    overflow-x: auto;
+  }
+  .ct-roster-settings [data-slot="tabs-list"] {
+    width: max-content;
+  }
+  .ct-roster-settings [data-slot="tabs-trigger"] {
+    font-size: 12px;
+  }
+  .ct-settings-list table {
+    min-width: 520px;
+  }
+  .ct-settings-profile-photo {
+    flex-wrap: wrap;
+  }
+}
+
+.ct-roster-settings .ct-setting-row {
+  align-items: center;
+}
+.ct-roster-settings .ct-settings-list th {
+  height: 40px;
+  padding-inline: 16px;
+  font-weight: 400;
+}
+.ct-roster-settings .ct-settings-list td {
+  padding-inline: 16px;
+}
+.ct-roster-settings .ct-settings-list td:first-child {
+  font-weight: 500;
+}
+.ct-roster-settings .ct-settings-list [data-slot="badge"] {
+  min-height: 20px;
+  padding-inline: 6px;
+  border-radius: 6px;
+  font-size: 12px;
+}
+.ct-roster-settings .ct-settings-list td:last-child {
+  text-align: right;
+}
+.ct-roster-settings .ct-settings-list [data-slot="data-grid-container"] {
+  border: 0;
+}
+.ct-roster-settings .ct-settings-cell {
+  margin-inline: -6px;
+  padding-inline: 6px;
+  width: calc(100% + 12px);
+  border-radius: 4px;
+  transition: background-color 100ms;
+}
+.ct-roster-settings .ct-settings-cell:hover {
+  background: var(--muted);
+}
+.ct-roster-settings-profile .ct-roster-settings-panels {
+  max-width: 672px;
+}
+.ct-roster-settings-profile .ct-setting-row {
+  grid-template-columns: 254px minmax(0, 1fr);
+  border: 0;
+  padding-block: 10px;
+}
+.ct-roster-settings-profile .ct-setting-row:first-child {
+  padding-top: 16px;
+}
+.ct-roster-settings-profile .ct-setting-row:nth-last-child(2) {
+  padding-bottom: 16px;
+}
+.ct-roster-settings-profile .ct-settings-profile-photo > .ct-avatar,
+.ct-roster-settings-profile .ct-settings-profile-photo > img {
+  width: 40px;
+  height: 40px;
+}
+.ct-roster-settings-profile .ct-settings-profile-photo {
+  gap: 8px;
+}
+.ct-roster-settings-profile .ct-setting-footer {
+  border-top: 1px solid var(--border);
+  border-radius: 0;
+}
+.ct-roster-settings-profile .ct-profile-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ct-roster-settings-profile .ct-profile-title svg {
+  width: 12px;
+  height: 12px;
+  color: var(--muted-foreground);
+}
+@media (max-width: 760px) {
+  .ct-roster-settings-profile .ct-setting-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+  .ct-roster-settings .ct-settings-fiscal {
+    grid-template-columns: minmax(0, 1fr) 112px;
+  }
+}
+.ct-roster-settings-preferences .ct-roster-settings-panels {
+  max-width: 672px;
+}
+.ct-preferences-list {
+  gap: 0;
+}
+.ct-preference-item {
+  min-height: 71px;
+  padding: 14px;
+  gap: 16px;
+  border: 0;
+  border-top: 1px solid var(--border);
+  border-radius: 0;
+  flex-wrap: nowrap;
+}
+.ct-preference-item [data-slot="item-content"] {
+  min-width: 0;
+  gap: 2px;
+}
+.ct-preference-item [data-slot="item-media"] {
+  align-self: center;
+  transform: none;
+}
+.ct-preference-item [data-slot="item-description"] {
+  overflow: visible;
+  display: block;
+}
+.ct-preference-item [data-slot="icon-tile"] svg {
+  width: 16px;
+  height: 16px;
+}
+
+.ct-roster .ct-main:has(.ct-roster-settings) > .ct-pagebar {
+  min-height: 24px;
+}
+.ct-roster-settings > [data-slot="tabs"] {
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+.ct-roster-settings [data-slot="tabs-trigger"] {
+  height: 32px;
+}
+.ct-roster-settings .ct-settings-list {
+  max-height: 334px;
+}
+.ct-roster-settings .ct-settings-list td {
+  text-align: left;
+  height: 49px;
+}
+.ct-roster-settings .ct-settings-list td:last-child {
+  text-align: right;
+}
+.ct-roster-settings .ct-settings-section > [data-slot="frame-header"] {
+  padding: 10px 16px;
+}
+.ct-roster-settings .ct-settings-section [data-slot="frame-description"] {
+  margin-top: 2px;
+  font-size: 12px;
+}
+.ct-roster-settings .ct-setting-footer {
+  padding: 9px 16px;
+  min-height: 49px;
+}
+.ct-roster-settings .ct-setting-footer button {
+  height: 32px;
+  font-size: 14px;
+}
+.ct-roster-settings-profile .ct-settings-profile-photo button {
+  height: 28px;
+  padding-inline: 8px;
+  font-size: 12px;
+}
+.ct-roster-settings-profile .ct-settings-profile-photo button:last-of-type {
+  border: 1px solid var(--border);
+}
+.ct-roster-settings > [data-slot="tabs"] {
+  margin-top: 16px;
+}
+.ct-roster-settings [data-slot="tabs-trigger"]::after {
+  bottom: 0;
+}
+.ct-roster-settings [data-slot="tabs-trigger"][data-state="active"]::after {
+  opacity: 1;
+}
+.ct-roster-settings .ct-settings-section [data-slot="frame-panel-title"] {
+  line-height: 17px;
+}
+.ct-roster-settings .ct-settings-section [data-slot="frame-panel-description"] {
+  line-height: 15px;
+  margin-top: 0;
+}
+.ct-roster-settings .ct-setting-label h3 {
+  line-height: 20px;
+}
+.ct-roster .ct-roster-settings .ct-settings-section,
+.ct-roster-settings .ct-setting-footer {
+  background: color-mix(in srgb, var(--muted) 50%, var(--background));
+}
+.ct-roster-settings .ct-settings-list th,
+.ct-roster-settings .ct-settings-list td {
+  padding-inline: 12px;
+}
+.ct-roster-settings .ct-settings-list th:first-child,
+.ct-roster-settings .ct-settings-list td:first-child {
+  padding-left: 16px;
+}
+.ct-roster-settings .ct-settings-list-counts td:nth-last-child(2) {
+  text-align: right;
+  padding-right: 16px;
+}
+.ct-roster-settings .ct-settings-list-counts th:nth-last-child(2) {
+  padding-right: 16px;
+}
+.ct-roster-settings .ct-settings-list td:last-child {
+  padding-right: 16px;
+}
+.ct-roster:has(.ct-roster-settings) .ct-free-navigation [data-slot="sidebar-menu-sub-button"] {
+  width: 100%;
+}
+.ct-roster-settings .ct-heading h1 {
+  font-weight: 500;
+  letter-spacing: -0.5px;
+}
+.ct-roster-settings [data-slot="tabs-list"] {
+  height: 32px;
+  gap: 4px;
+  padding-inline: 3px;
+}
+.ct-roster-settings [data-slot="tabs-trigger"] {
+  height: 25px;
+  padding: 2px 6px;
+  font-size: 14px;
+}
+.ct-roster-settings [data-slot="tabs-trigger"]::after {
+  left: 1px;
+  right: 1px;
+  bottom: -4px;
+}
+.ct-roster-settings-profile .ct-setting-row:first-child {
+  align-items: start;
+}

@@ -1,3 +1,5 @@
+import { RosterSettings } from "./roster-settings";
+import { rosterSettingsTabs, useRosterSettingsState } from "./roster-settings-model";
 import { RosterImport } from "./roster-import";
 import { useRosterImportState } from "./roster-import-model";
 import { RosterApprovals } from "./roster-approvals";
@@ -69,7 +71,9 @@ const baseEvents: Record<number, string> = {
 };
 export default function Roster() {
   const [view, setView] = useState("Dashboard");
+  const settingsState = useRosterSettingsState();
   const hiringState = useRosterHiringState();
+  const [initialHiring] = useState(() => structuredClone(hiringState.columns));
   const importState = useRosterImportState(rosterPersonNames);
   const [query, setQuery] = useState("");
   const [period, setPeriod] = useState("Year");
@@ -80,7 +84,42 @@ export default function Roster() {
   const [detail, setDetail] = useState<string[] | null>(null);
   const [events, setEvents] = useState(baseEvents);
   const [eventDay, setEventDay] = useState(0);
-  const [saved, setSaved] = useState(false);
+  function changeView(next: string) {
+    if (rosterSettingsTabs.includes(next)) settingsState.setTab(next);
+    setView(next);
+  }
+  function saveApprovalFlows(flows: Record<string, string>) {
+    approvalState.setRequests((requests) =>
+      requests.map((request) => ({
+        ...request,
+        approver: flows[request.type] || request.approver,
+      })),
+    );
+  }
+  const canClear = {
+    people: people.length !== initialPeople.length || importState.applied.length > 0,
+    approvals: approvalState.requests.some((request) => request.decision !== "Pending"),
+    hiring:
+      JSON.stringify(hiringState.columns) !== JSON.stringify(initialHiring) ||
+      hiringState.scheduled.length > 0,
+    notes: false,
+    leave: false,
+    timesheets: false,
+  };
+  function clearChanges(key: string) {
+    if (key === "people") {
+      setPeople(initialPeople);
+      importState.setApplied([]);
+      importState.setResult(null);
+    } else if (key === "approvals") {
+      approvalState.setRequests((requests) =>
+        requests.map((request) => ({ ...request, decision: "Pending" })),
+      );
+    } else if (key === "hiring") {
+      hiringState.setColumns(structuredClone(initialHiring));
+      hiringState.setScheduled([]);
+    }
+  }
   const monthName = "Jul 1, 2026 - Jul 30, 2026";
   const calendar = (
     <RosterCalendar
@@ -165,9 +204,10 @@ export default function Roster() {
     <Shell
       kind="roster"
       view={view}
-      setView={setView}
+      setView={changeView}
       query={query}
       setQuery={setQuery}
+      rosterIdentity={{ ...settingsState.profile.saved, company: settingsState.company.saved.name }}
       extra={
         view === "Dashboard" ? (
           <>
@@ -402,52 +442,13 @@ export default function Roster() {
       ) : view === "Hiring" ? (
         <RosterHiring query={query} state={hiringState} />
       ) : (
-        <div className="ct-settings">
-          <div className="ct-heading">
-            <div>
-              <h1>Workspace settings</h1>
-              <p>Manage your organisation and working preferences.</p>
-            </div>
-          </div>
-          <Frame>
-            <FrameHeader>
-              <FrameTitle>Organisation</FrameTitle>
-              <FrameDescription>These details appear throughout your workspace.</FrameDescription>
-            </FrameHeader>
-            <FramePanel>
-              <form
-                className="ct-form"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  setSaved(true);
-                  toast.success("Workspace settings saved");
-                }}
-              >
-                <label>
-                  Organisation name
-                  <Input defaultValue="Roster UK" required />
-                </label>
-                <label>
-                  Contact email
-                  <Input type="email" defaultValue="people@roster.example" required />
-                </label>
-                <label>
-                  Working week
-                  <Select defaultValue="mon">
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="mon">Monday – Friday</SelectItem>
-                      <SelectItem value="sun">Sunday – Thursday</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </label>
-                <Button type="submit">{saved ? "Saved" : "Save changes"}</Button>
-              </form>
-            </FramePanel>
-          </Frame>
-        </div>
+        <RosterSettings
+          model={settingsState}
+          onTabChange={changeView}
+          onFlowsSave={saveApprovalFlows}
+          onClear={clearChanges}
+          canClear={canClear}
+        />
       )}
       <ReferenceSheet
         title={modal}

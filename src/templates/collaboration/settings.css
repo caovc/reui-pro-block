@@ -1,0 +1,183 @@
+.ct-pulse .ct-settings-section,
+.ct-roster .ct-settings-section {
+  padding: 0;
+  gap: 0;
+  background: var(--muted);
+  overflow: hidden;
+}
+.ct-settings-section > [data-slot="frame-panel-header"] {
+  padding: 10px 16px;
+}
+.ct-settings-section [data-slot="frame-panel-description"] {
+  font-size: 12px;
+  margin-top: 2px;
+}
+.ct-pulse .ct-settings-section > .ct-settings-section-content,
+.ct-roster .ct-settings-section > .ct-settings-section-content {
+  padding: 0;
+  border: 0;
+  margin: 0;
+  border-radius: 12px;
+  background: var(--background);
+}
+.ct-setting-row {
+  display: grid;
+  grid-template-columns: minmax(230px, 384px) minmax(0, 1fr);
+  gap: 16px;
+  padding: 16px;
+  border-top: 1px solid var(--border);
+  align-items: start;
+}
+.ct-setting-label h3 {
+  font-size: 14px;
+  font-weight: 500;
+}
+.ct-setting-label p {
+  font-size: 12px;
+  color: var(--muted-foreground);
+  line-height: 17px;
+  margin-top: 2px;
+}
+.ct-setting-control {
+  min-width: 0;
+}
+.ct-setting-control > input,
+.ct-setting-control > [data-slot="select-trigger"] {
+  width: 100%;
+}
+.ct-setting-footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 9px 16px;
+  background: var(--muted);
+}
+.ct-setting-footer > span {
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.ct-settings-url {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  height: 32px;
+  padding-left: 10px;
+}
+.ct-settings-url > span {
+  color: var(--muted-foreground);
+  font-size: 14px;
+}
+.ct-settings-url input {
+  border: 0;
+  padding-left: 4px;
+  box-shadow: none;
+}
+.ct-settings-domains {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.ct-settings-domains [data-slot="badge"] {
+  gap: 8px;
+}
+.ct-settings-domains button {
+  cursor: pointer;
+}
+.ct-settings-region {
+  display: grid;
+  gap: 12px;
+  font-size: 14px;
+}
+.ct-settings-region label {
+  display: grid;
+  gap: 6px;
+}
+.ct-settings-region [data-slot="select-trigger"] {
+  width: 100%;
+}
+.ct-settings-switches {
+  display: grid;
+  gap: 12px;
+}
+.ct-settings-switches label {
+  display: flex;
+  gap: 12px;
+  font-size: 14px;
+  align-items: flex-start;
+  cursor: pointer;
+}
+.ct-settings-switches small {
+  display: block;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  margin-top: 2px;
+}
+.ct-settings-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+}
+.ct-settings-actions > span {
+  flex: 1;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.ct-setting-control [data-slot="color-picker-swatches"] {
+  --color-picker-swatch-size: 28px;
+  display: flex;
+  gap: 12px;
+}
+.ct-setting-control > .bg-muted\/60 {
+  display: inline-flex;
+  flex-wrap: wrap;
+  background: transparent;
+  padding: 0;
+}
+.ct-setting-control .ct-workdays {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+@media (max-width: 760px) {
+  .ct-setting-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+  .ct-settings-domains {
+    justify-content: flex-start;
+  }
+  .ct-settings-actions {
+    flex-wrap: wrap;
+  }
+  .ct-settings-actions > span {
+    flex-basis: 100%;
+  }
+  .ct-setting-footer {
+    flex-wrap: wrap;
+  }
+}
+
+.ct-setting-control [data-slot="color-picker-swatches"] {
+  justify-content: flex-start;
+  width: max-content;
+  max-width: 100%;
+  flex-wrap: wrap;
+}
+.ct-settings-date > div {
+  width: fit-content;
+  max-width: 100%;
+  flex-wrap: wrap;
+  background: transparent;
+  gap: 8px;
+  padding: 0;
+}
+.ct-settings-date button {
+  border: 1px solid var(--border);
+}
+.ct-settings-date button[data-variant="outline"] {
+  background: var(--muted);
+}

@@ -1,3 +1,5 @@
+import { PulseSettings } from "./pulse-settings";
+import { useSettingsDraft, initialPulseSettings } from "./settings-model";
 import "./pulse-secondary.css";
 import { PulseKnowledgeBase } from "./pulse-knowledge";
 import { PulseReports } from "./pulse-reports";
@@ -41,7 +43,6 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { toast } from "sonner";
 import { Shell, Button, Input, Avatar, ReferenceSheet, Empty } from "./shared";
 type TicketRecord = {
   id: string;
@@ -232,6 +233,7 @@ export default function Pulse() {
     new URLSearchParams(location.hash.split("?")[1] || "").get("article") || "";
   const [view, setView] = useState(initialArticle ? "Knowledge Base" : "Dashboard");
   const reportModel = usePulseReportState();
+  const settingsModel = useSettingsDraft(initialPulseSettings);
   const [contactRecords, setContactRecords] = useState(() => initialDirectoryRecords(false));
   const [memberRecords, setMemberRecords] = useState(() => initialDirectoryRecords(true));
   const [query, setQuery] = useState("");
@@ -765,53 +767,7 @@ export default function Pulse() {
       ) : view === "Reports" ? (
         <PulseReports model={reportModel} />
       ) : (
-        <div className="ct-settings">
-          <div className="ct-heading">
-            <div>
-              <h1>Settings</h1>
-              <p>Your help desk, your way.</p>
-            </div>
-          </div>
-          <Frame>
-            <FrameHeader>
-              <FrameTitle>Workspace profile</FrameTitle>
-            </FrameHeader>
-            <FramePanel>
-              <form
-                className="ct-form"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  toast.success("Help desk settings saved");
-                }}
-              >
-                <label>
-                  Workspace name
-                  <Input defaultValue="Help Desk" required />
-                </label>
-                <label>
-                  Support email
-                  <Input type="email" defaultValue="support@pulse.example" required />
-                </label>
-                <label>
-                  First response target
-                  <Select defaultValue="4">
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {["1", "4", "8", "24"].map((n) => (
-                        <SelectItem key={n} value={n}>
-                          {n} hours
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </label>
-                <Button type="submit">Save changes</Button>
-              </form>
-            </FramePanel>
-          </Frame>
-        </div>
+        <PulseSettings model={settingsModel} />
       )}
       <ReferenceSheet
         title={editing ? "Edit escalation" : view === "Dashboard" ? "New escalation" : "New ticket"}

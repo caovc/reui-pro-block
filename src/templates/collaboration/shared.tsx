@@ -1,3 +1,4 @@
+import { rosterSettingsTabs } from "./roster-settings-model";
 import { SidebarNavigation } from "@/components/reui/sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import "./navigation.css";
@@ -20,6 +21,7 @@ import {
   BookOpen,
   BarChart3,
   Menu,
+  UserRound,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -135,6 +137,7 @@ export function Shell({
   extra,
   query,
   setQuery,
+  rosterIdentity,
 }: {
   kind: "roster" | "pulse";
   view: string;
@@ -143,6 +146,7 @@ export function Shell({
   extra?: ReactNode;
   query: string;
   setQuery: (v: string) => void;
+  rosterIdentity?: { name: string; company: string; photo: boolean; image: string };
 }) {
   const [mobile, setMobile] = useState(false);
   const [invite, setInvite] = useState(false);
@@ -173,7 +177,12 @@ export function Shell({
             label: name,
             icon: <Icon />,
             badge: name === "Tickets" ? "24" : undefined,
-            children: kind === "roster" && name === "People" ? ["Directory", "Import"] : undefined,
+            children:
+              kind === "roster" && name === "People"
+                ? ["Directory", "Import"]
+                : kind === "roster" && name === "Settings"
+                  ? rosterSettingsTabs
+                  : undefined,
           };
         })}
         onSelect={(name) => {
@@ -248,10 +257,22 @@ export function Shell({
           </Card>
         )}
         <div className="ct-profile">
-          <Avatar name={kind === "roster" ? "Bruno Duarte" : "Nick Bold"} />
+          {kind === "roster" && rosterIdentity ? (
+            <span className="ct-avatar">
+              {rosterIdentity.photo ? (
+                <img src={rosterIdentity.image || demoAvatar(rosterIdentity.name)} alt="" />
+              ) : (
+                <UserRound size={18} aria-label="No profile photo" />
+              )}
+            </span>
+          ) : (
+            <Avatar name={kind === "roster" ? "Bruno Duarte" : "Nick Bold"} />
+          )}
           <span>
-            <b>{kind === "roster" ? "Bruno Duarte" : "Nick Bold"}</b>
-            <small>{kind === "roster" ? "Roster UK" : "nick.bold@pulse.io"}</small>
+            <b>{kind === "roster" ? rosterIdentity?.name || "Bruno Duarte" : "Nick Bold"}</b>
+            <small>
+              {kind === "roster" ? rosterIdentity?.company || "Roster UK" : "nick.bold@pulse.io"}
+            </small>
           </span>
           <ChevronDown size={14} />
         </div>
@@ -315,6 +336,12 @@ export function Shell({
               {(kind === "roster" || view !== "Dashboard") && (
                 <>
                   <span className="ct-muted">{kind === "roster" ? "–" : "/"}</span>
+                  {kind === "roster" && rosterSettingsTabs.includes(view) && (
+                    <>
+                      <span>Settings</span>
+                      <span className="ct-muted">–</span>
+                    </>
+                  )}
                   <b>{view === "People" ? "Directory" : view}</b>
                 </>
               )}

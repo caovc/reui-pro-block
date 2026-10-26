@@ -192,3 +192,9 @@ Specification rows now use compact actual native DataGrid pinning/visibility, pa
 The [separate4–6 public audit](audits/comparison4-6-native-2026-10-26.md) records actual page controls, fixed alternative ordering, selection/clear/empty and phone stacked-table behavior. It explicitly leaves unverified touch/hash/cart internals open and is not a runtime-fidelity claim. Comparison3's missing Browse action, six-versus-five features and independent original artwork remain documented differences.
 
 Root separately rendered the real Pages AppShell17 at1440 and390 after the368dd9f deployment, with no pageerrors. Theme9debafe is submitted to its own CI; previous complete1130-case deployment success does not certify it.
+
+## Pulse and Roster saved-settings milestone
+
+Pulse now has independent domain import/validation, branding and regional/preferences state. Roster has organisation, policies, approval-flow, profile and preferences settings with separate saved/draft values. Resets restore saved values; the documented policy/profile effects reach the real existing request/directory/sidebar records. Actual free controlled inputs, native tables/tabs, upload and color implementations supply their checked behavior; original domain validation and local state fill the remaining gaps.
+
+Independent combined acceptance passed53/53 regressions,2/2 fresh source checks and4/4 actual exported desktop/phone flows. Both174-file UI projects strict-built with all12 changed runtime/style bytes and real free dependencies/licenses intact. Root's latest cumulative checks and exact16-file payload are in the [release evidence](templates-settings-integration-release.json). Source targets include actual Settings leaves and recursive supporting modules. Shared template Sidebar/layout fidelity remains assigned to a separate controlled migration; local preview state is not backend persistence or full visual certification.

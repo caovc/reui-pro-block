@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 async function openPulse(page: import("@playwright/test").Page, view: string) {
   await page.goto("/#/template-preview/pulse");
-  await page.getByRole("button", { name: view, exact: true }).click();
+  await page.getByRole("button", { name: view, exact: true }).first().click();
 }
 
 test("Pulse knowledge base has six categories and eighteen independent runbooks", async ({
@@ -205,4 +205,107 @@ test("Roster CSV import parses quoted fields and updates only the matched person
   await expect(page.locator(".ct-reporting-lines")).toContainText("Chief, Platform");
   await expect(page.locator(".ct-reporting-lines")).toContainText("Berlin");
   await expect(page.locator(".ct-reporting-lines")).not.toContainText("Invalid Date");
+});
+
+test("Pulse settings save domains, color and preferences and reset to the saved values", async ({
+  page,
+}) => {
+  await openPulse(page, "Settings");
+  await page
+    .getByRole("textbox", { name: "Help desk name", exact: true })
+    .fill("Bricklane Support Desk");
+  await page.getByRole("button", { name: "Add domain", exact: true }).click();
+  const dialog = page.getByRole("dialog");
+  await dialog.getByRole("textbox", { name: "Domain", exact: true }).fill("support.example.com");
+  await dialog.getByRole("button", { name: "Add domain", exact: true }).click();
+  await expect(
+    page.getByRole("button", { name: "Remove support.example.com", exact: true }),
+  ).toBeVisible();
+  await page.getByRole("option", { name: "Violet", exact: true }).click();
+  await page.getByRole("button", { name: "YYYY/MM/DD", exact: true }).click();
+  await expect(page.getByText("Unsaved changes", { exact: true })).toBeVisible();
+  await page.getByRole("switch", { name: "Compact ticket list.", exact: true }).check();
+  await page.getByRole("button", { name: "Save changes", exact: true }).click();
+  await expect(page.getByText("All changes saved", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Dashboard", exact: true }).click();
+  await page.getByRole("button", { name: "Settings", exact: true }).first().click();
+  await expect(page.getByRole("textbox", { name: "Help desk name", exact: true })).toHaveValue(
+    "Bricklane Support Desk",
+  );
+  await expect(page.getByRole("option", { name: "Violet", exact: true })).toHaveAttribute(
+    "aria-selected",
+    "true",
+  );
+  await expect(
+    page.getByRole("switch", { name: "Compact ticket list.", exact: true }),
+  ).toBeChecked();
+  await page.getByRole("textbox", { name: "Help desk name", exact: true }).fill("Unsaved desk");
+  await page.getByRole("button", { name: "Remove support.example.com", exact: true }).click();
+  await page.getByRole("button", { name: "Reset", exact: true }).click();
+  await expect(page.getByRole("textbox", { name: "Help desk name", exact: true })).toHaveValue(
+    "Bricklane Support Desk",
+  );
+  await expect(
+    page.getByRole("button", { name: "Remove support.example.com", exact: true }),
+  ).toBeVisible();
+});
+
+test("Pulse settings reject invalid domains and import a unique domain list", async ({ page }) => {
+  await openPulse(page, "Settings");
+  await page.getByRole("button", { name: "Add domain", exact: true }).click();
+  const dialog = page.getByRole("dialog");
+  await dialog
+    .getByRole("textbox", { name: "Domain", exact: true })
+    .fill("https://invalid.example");
+  await dialog.getByRole("button", { name: "Add domain", exact: true }).click();
+  await expect(dialog.getByText(/Enter valid domains/)).toBeVisible();
+  await dialog.getByRole("textbox", { name: "Domain", exact: true }).fill("Support.Example.com");
+  await dialog.getByRole("button", { name: "Add domain", exact: true }).click();
+  await page.getByLabel("Import allowed domains", { exact: true }).setInputFiles({
+    name: "allowed-domains.csv",
+    mimeType: "text/csv",
+    buffer: Buffer.from("support.example.com\npartners.example.com;PARTNERS.EXAMPLE.COM"),
+  });
+  await expect(
+    page.getByRole("button", { name: "Remove partners.example.com", exact: true }),
+  ).toHaveCount(1);
+  await expect(
+    page.getByRole("button", { name: "Remove support.example.com", exact: true }),
+  ).toHaveCount(1);
+  await page.getByRole("button", { name: "Save changes", exact: true }).click();
+  await page.getByLabel("Import allowed domains", { exact: true }).setInputFiles({
+    name: "invalid-domains.txt",
+    mimeType: "text/plain",
+    buffer: Buffer.from("valid.example.com\nnot a domain"),
+  });
+  await expect(page.getByText(/Enter valid domains/)).toBeVisible();
+  await expect(
+    page.getByRole("button", { name: "Remove valid.example.com", exact: true }),
+  ).toHaveCount(0);
+  await page.getByRole("button", { name: "Reset", exact: true }).click();
+  await expect(page.getByText("All changes saved", { exact: true })).toBeVisible();
+});
+
+test("Pulse settings keep mobile domain and regional controls usable", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/#/template-preview/pulse");
+  await page.getByRole("button", { name: "Open navigation", exact: true }).click();
+  await page.getByRole("button", { name: "Settings", exact: true }).first().click();
+  await page.getByRole("combobox", { name: "Region", exact: true }).click();
+  await page.getByRole("option", { name: "European Union", exact: true }).click();
+  await page.getByRole("button", { name: "Add domain", exact: true }).click();
+  const dialog = page.getByRole("dialog");
+  await dialog.getByRole("textbox", { name: "Domain", exact: true }).fill("mobile.example.com");
+  await dialog.getByRole("button", { name: "Add domain", exact: true }).click();
+  await page.getByRole("button", { name: "Save changes", exact: true }).click();
+  await expect(page.getByRole("combobox", { name: "Region", exact: true })).toContainText(
+    "European Union",
+  );
+  await expect(
+    page.getByRole("button", { name: "Remove mobile.example.com", exact: true }),
+  ).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+  await expect(
+    page.locator(".ct-settings-section").getByRole("button", { name: "Save changes", exact: true }),
+  ).toBeVisible();
 });

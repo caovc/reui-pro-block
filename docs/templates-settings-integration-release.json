@@ -1,0 +1,51 @@
+{
+  "scope": "Pulse and Roster independent settings with native shared state",
+  "testedAncestor": "368dd9f6c1189e1a8eadfbfc4bfd8f390eebc573",
+  "frozenFiles": {
+    "src/templates/collaboration/pulse.tsx": "2dbaf134dd87dfcb087fdf891180e11039c2342aec68ee4a2f5a18c3c3b1d64e",
+    "src/templates/collaboration/pulse-settings.tsx": "a07043ff32ad9ac92ca9a61907685fc2c94496b31e67592b26f7eaca583d3059",
+    "src/templates/collaboration/settings-model.ts": "9746ab7c6af737bfdc0891261c602a3c55994bb0ad6b48263a954b3484ab1855",
+    "src/templates/collaboration/settings-shared.tsx": "92222b76bfdce51b13a39c2bebce13bf203ac8c7dd0e056b4b3c79cf174de6ae",
+    "src/templates/collaboration/settings.css": "5f51272a4752486d8043d0124e533d4a1b9466ab8119ff60b8adf42d2961ea3e",
+    "tests/templates-collaboration-round3.spec.ts": "ee995b5b01d38cb20001ede6d450e8de6169efdbd15249c837f3fe3b30b5b581",
+    "src/templates/collaboration/pulse-settings.css": "9f4f22ece510331205c21f27e3db4c4f33ae507cbd37c9018c786dcb1ed6f049",
+    "docs/templates-pulse-settings-review.md": "8361368a8bb60d2b8ebe7e0fe50d956f3a7c255630536be6cabc093f4fbf1ac3",
+    "src/templates/collaboration/roster.tsx": "edb6f16a414079440425102717db9a2e687cdb14032b6082208cdf98d39e264d",
+    "src/templates/collaboration/shared.tsx": "f09f806d75089d6a1cfc84fd67907e41e2b3a4840bb81a95daae0a99479d1704",
+    "src/templates/collaboration/roster-settings.tsx": "de3240933afacc989956c6839114a796bdb701bfa98d6d64c6359062b89abf9c",
+    "src/templates/collaboration/roster-settings-list.tsx": "ada3fa668d8c923a84caff04d20f5998292b466c766cb48a290cd7d90159acd2",
+    "src/templates/collaboration/roster-settings-model.ts": "7edf968f93a0eb24f4dce4a4b10cccd639d276de09f53465db5db6e750604635",
+    "src/templates/collaboration/roster-settings.css": "41d27a80389be7fc115989a480a889f0de6ec95f824f6c213f09500ea47ea838",
+    "tests/templates-roster-settings-round3.spec.ts": "d0dd918daa0217c5e066f0a03954ac0e1014108d84f970c054b0dc9259204076",
+    "docs/templates-roster-settings-round3.md": "8a1574dd9b6512d048d95c6e2278350b9652bdba0e2b4da0a2bff5805cf8009c"
+  },
+  "independentAcceptance": {
+    "receipt": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-pulse-roster-integration-ready-7h5yr1dq/receipt.json",
+    "receiptSHA256": "a740ba23840eab5b68c475782f6d57208ee1aa05e0240e074eb50e80ad6668d0",
+    "production": "53/53 all collaboration/template/source plus2/2 fresh source/copy/download",
+    "actualZIP": "Two174-file actual UI projects strict-built;12runtime/style bytes exact;4/4 desktop/light and phone/dark save/reset/theme/identity flows",
+    "sourceClosure": "137files,442localimports,0missing;7actual free dependencies and MIT/OFL exact",
+    "tabs": "8readonly samples;no falseYrange;phoneRoster95px realX retained"
+  },
+  "rootVerification": {
+    "build": "/tmp/bricklane-pulse-roster-root-build.log",
+    "production": "/tmp/bricklane-pulse-roster-root-tests.log",
+    "formatToolingLint": "/tmp/bricklane-pulse-roster-root-static.log"
+  },
+  "sourceHooks": [
+    "Pulse actual pulse-settings",
+    "Roster actual roster-settings; subordinate list/model/CSS imports recursively included"
+  ],
+  "reuse": [
+    "Actual free DataGrid, native controlled form/combobox/switch/number/upload and existing shared compositions",
+    "Native Tabs maintained; no hand-built parallel behavior"
+  ],
+  "domainGap": "Independent settings records, validation, saved/draft resets, CSV domain import, profile upload and request policy effects are original domain state absent from primitive examples.",
+  "remaining": [
+    "Public template shell/sidebar layout still differs; separate actual-free Sidebar migration is assigned",
+    "Some font/spacing/portal details await same-state public visual audit",
+    "Default project preset workflow remains documented separate CSS",
+    "No real backend/account service implied"
+  ],
+  "publication": "Root sole serial Git; own CI and Pages separate pending"
+}

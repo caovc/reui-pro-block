@@ -1,0 +1,33 @@
+.ct-pulse-settings .ct-settings-section > [data-slot="frame-panel-header"] {
+  padding-block: 8px;
+}
+
+.ct-pulse-settings .ct-settings-actions {
+  margin-top: 0;
+  padding: 8px 16px;
+}
+
+.ct-settings-icon-select {
+  position: relative;
+}
+
+.ct-settings-icon-select > svg {
+  position: absolute;
+  left: 10px;
+  top: 8px;
+  pointer-events: none;
+}
+
+.ct-settings-icon-select > [data-slot="select-trigger"] {
+  padding-left: 32px;
+}
+
+.ct-pulse-settings .ct-settings-date button {
+  height: 32px;
+  font-size: 14px;
+}
+
+.ct-pulse-settings [data-slot="color-picker-swatch-item"][aria-selected="true"] {
+  outline: 2px solid var(--muted-foreground);
+  outline-offset: 2px;
+}
