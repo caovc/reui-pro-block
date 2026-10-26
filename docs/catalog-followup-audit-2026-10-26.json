@@ -1,0 +1,99 @@
+{
+  "date": "2026-10-26",
+  "localCatalog": {
+    "blocks": 662,
+    "categories": 78,
+    "templates": 18
+  },
+  "publicCatalog": {
+    "blocks": 669,
+    "categories": 79,
+    "templates": 18
+  },
+  "groupCounts": {
+    "application": {
+      "local": 305,
+      "public": 305
+    },
+    "data-grid": {
+      "local": 48,
+      "public": 53
+    },
+    "chart": {
+      "local": 52,
+      "public": 52
+    },
+    "ai-agents": {
+      "local": 22,
+      "public": 22
+    },
+    "solutions": {
+      "local": 81,
+      "public": 83
+    },
+    "ecommerce": {
+      "local": 87,
+      "public": 87
+    },
+    "marketing": {
+      "local": 67,
+      "public": 67
+    }
+  },
+  "added": [
+    {
+      "id": "data-grid-advanced-10",
+      "name": "Technician Capacity",
+      "group": "data-grid",
+      "category": "advanced",
+      "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-10"
+    },
+    {
+      "id": "data-grid-advanced-11",
+      "name": "Factory Scorecard",
+      "group": "data-grid",
+      "category": "advanced",
+      "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-11"
+    },
+    {
+      "id": "data-grid-advanced-12",
+      "name": "Freight & Cargo Services",
+      "group": "data-grid",
+      "category": "advanced",
+      "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-12"
+    },
+    {
+      "id": "data-grid-advanced-13",
+      "name": "HR Scorecard",
+      "group": "data-grid",
+      "category": "advanced",
+      "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-13"
+    },
+    {
+      "id": "data-grid-advanced-22",
+      "name": "Prospect Database",
+      "group": "data-grid",
+      "category": "advanced",
+      "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-22"
+    },
+    {
+      "id": "solution-dev-ops-7",
+      "name": "Deploy Board",
+      "group": "solutions",
+      "category": "dev-ops",
+      "reference": "https://reui.io/blocks/solutions/dev-ops/solution-dev-ops-7"
+    },
+    {
+      "id": "solution-map-1",
+      "name": "Dispatch Map",
+      "group": "solutions",
+      "category": "map",
+      "reference": "https://reui.io/blocks/solutions/map/solution-map-1"
+    }
+  ],
+  "removed": [],
+  "moved": [],
+  "verification": "79public category pages+7detail canonical/HTTP200; separate18template IDs+22category/detail pages canonical/HTTP200; existing662 IDs retained",
+  "status": "Read-only difference; seven implementations planned, catalog/routes unchanged",
+  "source": "Official public category/detail metadata; rawHTML/referencepaidmedia not distributed"
+}
