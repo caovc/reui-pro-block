@@ -28,13 +28,13 @@ test("ranked cards sort by independent overall scores and count actual dimension
   await expect(first.locator('[data-score-dimension][data-best="true"]')).toHaveCount(1);
   await expect(
     first.locator('[data-score-dimension="sound"] [role="progressbar"]'),
-  ).toHaveAttribute("aria-valuenow", "98");
+  ).toHaveAttribute("aria-valuenow", "9.8");
   await expect(page.locator('[data-scorecard="studio"] [data-dimension-wins]')).toHaveText("1 win");
   await expect(page.locator('[data-scorecard="field"] [data-dimension-wins]')).toHaveText("0 wins");
-  await expect(page.getByRole("progressbar")).toHaveCount(15);
+  await expect(page.getByRole("progressbar")).toHaveCount(18);
 });
 
-test("official Carousel arrows, dots and keyboard page three rankings with hidden-page controls inert", async ({
+test("official Carousel arrows and keyboard page three rankings with hidden-page controls inert", async ({
   page,
 }) => {
   await open(page, 4);
@@ -50,7 +50,7 @@ test("official Carousel arrows, dots and keyboard page three rankings with hidde
   ).toHaveCount(0);
   await expect(page.locator('[data-scorecard="arc"] [data-dimension-wins]')).toHaveText("2 wins");
   await expect(page.locator('[data-score-page="0"]').locator("..")).toHaveJSProperty("inert", true);
-  await page.getByRole("button", { name: "Go to rankings page 1", exact: true }).click();
+  await page.getByRole("button", { name: "Previous slide", exact: true }).click();
   await expect(page.locator("[data-ranked-page]")).toHaveText("Ranks 1–3 of 6");
   await page.getByRole("region", { name: "Ranked headphone scorecards" }).focus();
   await page.keyboard.press("ArrowRight");
@@ -72,7 +72,12 @@ test("official Carousel pointer drag changes ranking page without a custom scrol
     .toBeGreaterThan(0);
   await page.mouse.move(box.x + box.width * 0.8, box.y + box.height / 2);
   await page.mouse.down();
-  await page.mouse.move(box.x - box.width, box.y + box.height / 2, { steps: 18 });
+  const viewportWidth = (await viewport.boundingBox())!.width;
+  await page.mouse.move(
+    Math.max(24, box.x + box.width * 0.8 - viewportWidth * 0.65),
+    box.y + box.height / 2,
+    { steps: 18 },
+  );
   await page.mouse.up();
   await expect(page.locator("[data-ranked-page]")).toHaveText("Ranks 4–6 of 6");
 });
@@ -109,12 +114,10 @@ test("alternatives start with one focal model, three rivals and signed real pric
   await open(page, 5);
   await expect(page.locator("[data-focused-model]")).toHaveAttribute("data-focused-model", "field");
   await expect(page.locator("[data-alternative]")).toHaveCount(3);
-  await expect(page.locator('[data-alternative="sora"] [data-price-delta]')).toHaveText("$70 less");
-  await expect(page.locator('[data-alternative="studio"] [data-price-delta]')).toHaveText(
-    "$150 more",
-  );
-  await expect(page.locator('[data-alternative="arc"] [data-price-delta]')).toHaveText("$50 more");
-  await expect(page.locator("[data-focused-model] [data-alternative-feature]")).toHaveCount(6);
+  await expect(page.locator('[data-alternative="sora"] [data-price-delta]')).toHaveText("−$70");
+  await expect(page.locator('[data-alternative="studio"] [data-price-delta]')).toHaveText("+$150");
+  await expect(page.locator('[data-alternative="arc"] [data-price-delta]')).toHaveText("+$50");
+  await expect(page.locator("[data-focused-model] [data-alternative-feature]")).toHaveCount(4);
 });
 
 test("Switch moves the actual rival into focus and recomputes the remaining three cards", async ({
@@ -128,9 +131,7 @@ test("Switch moves the actual rival into focus and recomputes the remaining thre
   );
   await expect(page.locator("[data-focused-price]")).toHaveText("$349");
   await expect(page.locator('[data-alternative="studio"]')).toHaveCount(0);
-  await expect(page.locator('[data-alternative="field"] [data-price-delta]')).toHaveText(
-    "$150 less",
-  );
+  await expect(page.locator('[data-alternative="field"] [data-price-delta]')).toHaveText("−$150");
   await expect(
     page.locator('[data-focused-model] [data-alternative-feature="foldable"]'),
   ).toHaveAttribute("data-included", "false");
@@ -138,9 +139,7 @@ test("Switch moves the actual rival into focus and recomputes the remaining thre
   await expect(
     page.locator('[data-focused-model] [data-alternative-feature="hires"]'),
   ).toHaveAttribute("data-included", "false");
-  await expect(page.locator('[data-alternative="studio"] [data-price-delta]')).toHaveText(
-    "$220 more",
-  );
+  await expect(page.locator('[data-alternative="studio"] [data-price-delta]')).toHaveText("+$220");
   await page.getByRole("button", { name: "Reset focus", exact: true }).click();
   await expect(page.locator("[data-focused-model]")).toHaveAttribute("data-focused-model", "field");
 });
@@ -209,7 +208,7 @@ test("Clear all empties live slots; one selected model has no false winners; tie
   await expect(page.locator("[data-builder-count]")).toHaveText("0 / 4 selected");
   await expect(page.getByRole("heading", { name: "A fresh shortlist", exact: true })).toBeVisible();
   await expect(page.locator("[data-builder-empty-slot]")).toHaveCount(4);
-  await expect(page.getByRole("button", { name: "Clear all", exact: true })).toBeDisabled();
+  await expect(page.getByRole("button", { name: "Clear all", exact: true })).toHaveCount(0);
   await select(page, "Sora One");
   await expect(page.locator("[data-winner]")).toHaveCount(0);
   await select(page, "Studio Max");
@@ -231,10 +230,10 @@ test("builder clearing the comparison preserves actual cart records", async ({ p
   await expect(page.locator("[data-comparison-cart-total]")).toHaveText("$199");
 });
 
-test("builder native DataGrid pins labels during actual mobile horizontal wheel scrolling", async ({
+test("builder native DataGrid pins labels during actual tablet horizontal wheel scrolling", async ({
   page,
 }) => {
-  await page.setViewportSize({ width: 390, height: 900 });
+  await page.setViewportSize({ width: 900, height: 900 });
   await open(page, 6);
   const viewport = page.locator('[data-builder-panel] [data-slot="scroll-area-viewport"]');
   const label = page.locator('[data-builder-spec-label="battery"]').locator("..");
@@ -259,6 +258,81 @@ for (const n of [4, 5, 6])
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
         width,
       );
+      if (n === 4) {
+        const cards = await page
+          .locator('[data-score-page="0"] [data-scorecard]')
+          .evaluateAll((elements) =>
+            elements.map((el) => {
+              const r = el.getBoundingClientRect();
+              return { x: r.x, y: r.y, width: r.width, height: r.height };
+            }),
+          );
+        for (const card of cards) expect(card.height).toBeCloseTo(421, 0);
+        expect(cards[0].x).toBeCloseTo(width === 390 ? 20 : 180, 0);
+        expect(cards[0].y).toBeCloseTo(width === 390 ? 188 : 136, 0);
+        expect(cards[0].width).toBeCloseTo(width === 390 ? 350 : 346.664, 0);
+        if (width === 390)
+          for (let index = 1; index < cards.length; index++)
+            expect(cards[index].y - cards[index - 1].y).toBeCloseTo(437, 0);
+        else expect(cards[1].y).toBeCloseTo(cards[0].y, 0);
+        for (const image of await page.locator('[data-score-page="0"] img').all()) {
+          const r = (await image.boundingBox())!;
+          expect(r.width).toBeCloseTo(80, 0);
+          expect(r.height).toBeCloseTo(80, 0);
+        }
+        await expect(page.getByRole("button", { name: /Go to rankings page/ })).toHaveCount(0);
+        expect(
+          await page.locator("[data-top-pick]").evaluate((el) => getComputedStyle(el).transform),
+        ).not.toBe("none");
+        expect(
+          await page.locator("[data-top-pick]").evaluate((el) => {
+            const range = document.createRange();
+            range.selectNodeContents(el);
+            const text = range.getBoundingClientRect(),
+              panel = el.parentElement!.getBoundingClientRect();
+            return (
+              text.top >= panel.top &&
+              text.bottom <= panel.bottom &&
+              text.left >= panel.left &&
+              text.right <= panel.right
+            );
+          }),
+        ).toBe(true);
+      }
+      if (n === 5) {
+        const hero = (await page.locator("[data-focused-model]").boundingBox())!;
+        expect(hero.width).toBeCloseTo(width === 390 ? 358 : 657.227, 0);
+        expect(hero.y).toBeCloseTo(width === 390 ? 168 : 160, 0);
+        expect(hero.height).toBeCloseTo(width === 390 ? 677.797 : 909.93, 0);
+        const image = (await page.locator("[data-focused-image]").boundingBox())!;
+        expect(image.width / image.height).toBeCloseTo(1.25, 2);
+        for (const rival of await page.locator("[data-alternative]").all()) {
+          const r = (await rival.boundingBox())!;
+          expect(r.height).toBeCloseTo(306, 0);
+          expect(r.width).toBeCloseTo(width === 390 ? 358 : 410.773, 0);
+          await expect(rival.locator("[data-alternative-feature]")).toHaveCount(4);
+        }
+      }
+      if (n === 6) {
+        const cards = await page.locator("[data-builder-catalog]").evaluateAll((elements) =>
+          elements.map((el) => {
+            const r = el.getBoundingClientRect();
+            return { x: r.x, y: r.y, width: r.width, height: r.height };
+          }),
+        );
+        for (const card of cards) {
+          expect(card.width).toBeCloseTo(width === 390 ? 358 : 352, 0);
+          expect(card.height).toBeCloseTo(width === 390 ? 490 : 484, 0);
+        }
+        expect(cards[0].y).toBeCloseTo(width === 390 ? 184 : 132, 0);
+        if (width === 390)
+          for (let index = 1; index < cards.length; index++)
+            expect(cards[index].y - cards[index - 1].y).toBeCloseTo(502, 0);
+        else {
+          expect(cards[2].y).toBeCloseTo(cards[0].y, 0);
+          expect(cards[3].y - cards[0].y).toBeCloseTo(500, 0);
+        }
+      }
       expect(
         await page.locator(".isolated-preview img").evaluateAll(async (images) => {
           await Promise.all(images.map((image) => (image as HTMLImageElement).decode()));
@@ -270,13 +344,15 @@ for (const n of [4, 5, 6])
         }),
       ).toBe(true);
       expect(
-        await page.locator('[data-slot="frame-panel"] > *').evaluateAll((elements) =>
-          elements.every((el) => {
-            const rect = el.getBoundingClientRect(),
-              panel = el.parentElement!.getBoundingClientRect();
-            return rect.top >= panel.top && rect.bottom <= panel.bottom + 1;
-          }),
-        ),
+        await page
+          .locator('[data-slot="frame-panel"] > *:not([data-top-pick])')
+          .evaluateAll((elements) =>
+            elements.every((el) => {
+              const rect = el.getBoundingClientRect(),
+                panel = el.parentElement!.getBoundingClientRect();
+              return rect.top >= panel.top && rect.bottom <= panel.bottom + 1;
+            }),
+          ),
       ).toBe(true);
       expect(errors).toEqual([]);
     });
@@ -317,6 +393,7 @@ for (const [n, module, component] of [
       "src/components/reui/rating.tsx",
       "src/components/reui/frame.tsx",
       "src/components/reui/REUI-LICENSE.txt",
+      "src/blocks/commerce/comparison-variants/followups/visual-followups.css",
     ]) {
       expect(entries[path]).toBeDefined();
       expect(new TextDecoder().decode(entries[path])).toBe(await readFile(path, "utf8"));
@@ -331,3 +408,96 @@ for (const [n, module, component] of [
     }
   });
 }
+
+test("390px reflows the same native DataGrid nodes into four static slots and thirteen vertically stacked specs", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 900 });
+  await open(page, 6);
+  const viewport = page.locator('[data-builder-panel] [data-slot="scroll-area-viewport"]');
+  expect(
+    await viewport.evaluate((el) => ({
+      width: el.clientWidth,
+      scroll: el.scrollWidth,
+      left: el.scrollLeft,
+    })),
+  ).toEqual({ width: 356, scroll: 356, left: 0 });
+  const header = page.locator("[data-builder-panel] thead tr");
+  const slots = header.locator("[data-builder-slot], [data-builder-empty-slot]");
+  await expect(slots).toHaveCount(4);
+  const boxes = await slots.evaluateAll((elements) =>
+    elements.map((el) => {
+      const r = el.getBoundingClientRect();
+      return { x: r.x, y: r.y, width: r.width, height: r.height };
+    }),
+  );
+  for (const box of boxes) {
+    expect(box.width).toBeCloseTo(324, 0);
+    expect(box.height).toBeCloseTo(194, 0);
+  }
+  for (let index = 1; index < boxes.length; index++) {
+    expect(boxes[index].x).toBeCloseTo(boxes[0].x, 0);
+    expect(boxes[index].y).toBeGreaterThanOrEqual(
+      boxes[index - 1].y + boxes[index - 1].height + 11,
+    );
+  }
+  for (const label of await page.locator("[data-builder-spec-label]").all()) {
+    const cell = label.locator("..");
+    expect(await cell.evaluate((el) => getComputedStyle(el).position)).toBe("static");
+    const cells = await cell
+      .locator("..")
+      .locator('td:not([data-slot="data-grid-table-fill-body-cell"])')
+      .evaluateAll((elements) =>
+        elements.map((el) => {
+          const r = el.getBoundingClientRect();
+          return { x: r.x, y: r.y, width: r.width, height: r.height };
+        }),
+      );
+    expect(cells).toHaveLength(5);
+    for (let index = 1; index < cells.length; index++) {
+      expect(cells[index].x).toBeCloseTo(cells[0].x, 0);
+      expect(cells[index].y).toBeGreaterThanOrEqual(cells[index - 1].y + cells[index - 1].height);
+    }
+  }
+  await page.getByRole("button", { name: "About Battery life", exact: true }).focus();
+  await expect(page.getByRole("tooltip")).toContainText("Longer battery life");
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("tooltip")).toHaveCount(0);
+  await page.getByRole("button", { name: "Remove Field Pro from comparison", exact: true }).click();
+  await expect(page.locator("[data-builder-slot]")).toHaveCount(1);
+  await expect(page.locator("[data-winner]")).toHaveCount(0);
+  await page.getByRole("button", { name: "Clear all", exact: true }).click();
+  await expect(page.locator("[data-builder-empty-slot]")).toHaveCount(4);
+  await expect(page.locator("[data-builder-spec-label]")).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "A fresh shortlist", exact: true })).toBeVisible();
+  await select(page, "Sora One");
+  await select(page, "Arc Travel");
+  await expect(page.locator("[data-builder-spec-label]")).toHaveCount(13);
+  await expect(page.locator('[data-spec="battery"][data-winner="arc"]')).toHaveCount(1);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(390);
+});
+
+test("alternative reordering follows the fixed candidate list and Details opens actual local free DialogSurface", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 900 });
+  await open(page, 5);
+  await page.getByRole("button", { name: "Switch focus to Studio Max", exact: true }).click();
+  await page.getByRole("button", { name: "Switch focus to Arc Travel", exact: true }).click();
+  expect(
+    await page
+      .locator("[data-alternative]")
+      .evaluateAll((elements) => elements.map((el) => el.getAttribute("data-alternative"))),
+  ).toEqual(["field", "sora", "studio"]);
+  const trigger = page.getByRole("button", { name: "View Field Pro sample details", exact: true });
+  await trigger.click();
+  await expect(page.getByRole("dialog")).toContainText("Independent local specifications");
+  await expect(page.getByRole("dialog").locator("[data-spec]")).toHaveCount(13);
+  await expect(
+    page.getByRole("button", { name: "Back to alternatives", exact: true }),
+  ).toBeFocused();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(390);
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+  await expect(trigger).toBeFocused();
+});

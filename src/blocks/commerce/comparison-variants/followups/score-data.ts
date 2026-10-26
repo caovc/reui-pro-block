@@ -2,10 +2,10 @@ import { productById, type ComparisonProductId } from "../data";
 
 /** Fictional editorial scores, deliberately independent from the overall ranking. */
 export const scoreDimensions = [
-  { id: "sound", label: "Sound quality" },
-  { id: "noise", label: "Noise cancellation" },
-  { id: "comfort", label: "Comfort" },
+  { id: "sound", label: "Sound" },
   { id: "battery", label: "Battery" },
+  { id: "noise", label: "Noise cancel" },
+  { id: "comfort", label: "Comfort" },
   { id: "value", label: "Value" },
 ] as const;
 export type ScoreDimension = (typeof scoreDimensions)[number]["id"];

@@ -1,0 +1,202 @@
+/* Consumer presentation for actual free Frame, Progress, Item and DataGrid.
+   No shared primitive, selection, scrolling or pinning engine is replaced. */
+[data-comparison-variant="4"] [data-comparison-content] > header {
+  min-height: 120px;
+  align-items: flex-start;
+}
+[data-comparison-variant="5"] [data-comparison-content] > header {
+  margin-bottom: 40px;
+}
+.comparison-ranked-controls {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 24px);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.comparison-ranked-card {
+  height: 421px;
+  background: var(--background);
+}
+.comparison-ranked-card-body {
+  display: flex;
+  flex-direction: column;
+}
+.comparison-dimension-row {
+  display: grid;
+  grid-template-columns: 100px minmax(0, 1fr) 48px;
+  align-items: center;
+  height: 16px;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--muted-foreground);
+}
+.comparison-dimension-row[data-best="true"] {
+  color: var(--foreground);
+}
+/* No free Ribbon component/example was found in the reviewed official catalog.
+   The actual free Badge supplies the label; this diagonal placement is custom. */
+.comparison-top-pick {
+  position: absolute;
+  top: 15px;
+  right: -34px;
+  width: 124px;
+  height: 18px;
+  transform: rotate(45deg);
+  border-radius: 0;
+  color: var(--color-yellow-950, #422006);
+  font-size: 10px;
+  line-height: 18px;
+}
+.comparison-focus-meta {
+  display: flex;
+  min-height: 179.5px;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: 16px;
+}
+.comparison-alternative-features {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 5px;
+}
+.comparison-rival {
+  display: grid;
+  height: 306px;
+  grid-template-columns: 96px minmax(0, 1fr);
+  grid-template-rows: 96px minmax(0, 1fr) 28px;
+  column-gap: 12px;
+  row-gap: 12px;
+  padding: 20px;
+}
+.comparison-builder-catalog-card {
+  height: 490px;
+}
+.comparison-builder-catalog-panel {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+}
+.comparison-builder-catalog-panel > img {
+  aspect-ratio: 1;
+  width: 100%;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+.comparison-builder-slot {
+  display: flex;
+  height: 194px;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 12px;
+}
+.comparison-builder-slot > img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}
+@media (min-width: 640px) {
+  [data-comparison-variant="4"] [data-comparison-content] > header {
+    min-height: 0;
+  }
+  .comparison-builder-catalog-card {
+    height: 484px;
+  }
+}
+@media (min-width: 1024px) {
+  .comparison-focus-meta {
+    min-height: 171.5px;
+  }
+}
+@media (max-width: 639px) {
+  .comparison-focus-body {
+    padding-bottom: 19px;
+  }
+  /* Keep the real DataGrid DOM and data model. Only its presentation changes.
+     The upstream API has no stacked-row mode; desktop pinning remains native. */
+  [data-comparison-variant="6"] [data-builder-panel],
+  [data-comparison-variant="6"] [data-slot="scroll-area-viewport"],
+  [data-comparison-variant="6"] [data-slot="scroll-area-content"],
+  [data-comparison-variant="6"] [data-slot="data-grid-table-viewport"],
+  [data-comparison-variant="6"] [data-slot="data-grid-table"] {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100%;
+  }
+  [data-comparison-variant="6"] [data-slot="scroll-area-viewport"] {
+    overflow-x: hidden !important;
+  }
+  [data-comparison-variant="6"] [data-slot="data-grid-table"],
+  [data-comparison-variant="6"] thead,
+  [data-comparison-variant="6"] tbody {
+    display: block;
+  }
+  [data-comparison-variant="6"] colgroup,
+  [data-comparison-variant="6"] [data-slot="data-grid-table-fill-head-cell"],
+  [data-comparison-variant="6"] [data-slot="data-grid-table-fill-body-cell"],
+  [data-comparison-variant="6"] [data-slot="data-grid-table-fill-col"],
+  [data-comparison-variant="6"] [data-slot="data-grid-scrollbar"] {
+    display: none;
+  }
+  [data-comparison-variant="6"] thead tr {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    padding: 16px;
+  }
+  [data-comparison-variant="6"] thead th {
+    display: block;
+    width: 100% !important;
+    height: auto !important;
+    padding: 0 !important;
+    border: 0;
+    position: static !important;
+    inset-inline-start: auto !important;
+    transform: none !important;
+    contain: none !important;
+    overflow: visible;
+  }
+  [data-comparison-variant="6"] thead th:first-child {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  [data-comparison-variant="6"] tbody {
+    padding: 0 16px 16px;
+  }
+  [data-comparison-variant="6"] tbody tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    border-bottom: 1px solid var(--border);
+    padding-block: 8px;
+  }
+  [data-comparison-variant="6"] tbody td {
+    display: block;
+    width: 100% !important;
+    padding: 8px 0 !important;
+    border: 0;
+    position: static !important;
+    inset-inline-start: auto !important;
+    inset-inline-end: auto !important;
+    transform: none !important;
+    contain: none !important;
+    white-space: normal;
+    overflow: visible;
+  }
+  [data-comparison-variant="6"] tbody tr:has([data-builder-spec-group]) > td:not(:first-child) {
+    display: none;
+  }
+  [data-comparison-variant="6"] [data-slot="data-grid-table-empty"] {
+    position: static;
+    width: 100% !important;
+  }
+}

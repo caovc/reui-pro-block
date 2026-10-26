@@ -26,6 +26,7 @@ import {
   type ComparisonSpec,
 } from "../data";
 import { ComparisonLayout, ComparisonRating, ComparisonValue, SpecLabel } from "../shared";
+import "./visual-followups.css";
 
 const maxCompared = 4;
 function isWinner(spec: ComparisonSpec, product: ComparisonProduct, selected: ComparisonProduct[]) {
@@ -54,8 +55,8 @@ function BuilderSpecPanel({
       {
         id: "spec",
         accessorKey: "id",
-        size: 160,
-        minSize: 160,
+        size: 176,
+        minSize: 176,
         enableResizing: false,
         header: () => (
           <div className="flex flex-col gap-2 py-2">
@@ -89,12 +90,12 @@ function BuilderSpecPanel({
         return {
           id: `slot-${index}`,
           accessorFn: () => product?.id || "empty",
-          size: 188,
-          minSize: 188,
+          size: 201.5,
+          minSize: 201.5,
           enableResizing: false,
           header: () =>
             product ? (
-              <div className="flex w-full flex-col gap-3" data-builder-slot={product.id}>
+              <div className="comparison-builder-slot" data-builder-slot={product.id}>
                 <div className="flex items-center justify-between gap-1">
                   <Badge variant="outline" size="sm">
                     Slot {index + 1}
@@ -111,14 +112,14 @@ function BuilderSpecPanel({
                 <img
                   src={product.image}
                   alt={`${product.name} original headphone illustration`}
-                  className="h-28 w-full rounded-lg object-contain"
+                  className="rounded-lg"
                 />
                 <h3 className="text-sm font-semibold">{product.name}</h3>
                 <ComparisonCartAction id={product.id} compact />
               </div>
             ) : (
               <div
-                className="flex min-h-52 w-full flex-col items-center justify-center gap-3 rounded-lg border border-dashed p-3 text-center"
+                className="flex h-[194px] w-full flex-col items-center justify-center gap-3 rounded-lg border border-dashed p-3 text-center"
                 data-builder-empty-slot={index}
               >
                 <Plus className="size-5 text-muted-foreground" />
@@ -130,7 +131,9 @@ function BuilderSpecPanel({
               </div>
             ),
           cell: ({ row }) =>
-            row.original.spec && product ? (
+            !row.original.spec ? (
+              <span aria-hidden="true" />
+            ) : product ? (
               <ComparisonValue
                 product={product}
                 spec={row.original.spec}
@@ -140,7 +143,7 @@ function BuilderSpecPanel({
               <span aria-hidden="true">—</span>
             ),
           meta: {
-            headerClassName: "h-auto! p-3! align-top! whitespace-normal! [&>div]:w-full",
+            headerClassName: "h-auto! p-0! align-top! whitespace-normal! [&>div]:w-full",
             cellClassName: "p-4! whitespace-normal!",
           },
         } satisfies ColumnDef<DataGridFeatures, ComparisonRow>;
@@ -150,7 +153,7 @@ function BuilderSpecPanel({
   const table = useTable({
     features: dataGridFeatures,
     columns,
-    data: comparisonRows,
+    data: ids.length ? comparisonRows : [],
     getRowId: (row) => row.id,
     initialState: {
       columnPinning: { start: ["spec"], end: [] },
@@ -159,8 +162,20 @@ function BuilderSpecPanel({
   });
   return (
     <DataGrid
+      emptyMessage={
+        <Empty>
+          <EmptyHeader>
+            <EmptyTitle role="heading" aria-level={3}>
+              A fresh shortlist
+            </EmptyTitle>
+            <EmptyDescription>
+              Select Compare on any model. All four slots are ready.
+            </EmptyDescription>
+          </EmptyHeader>
+        </Empty>
+      }
       table={table}
-      recordCount={comparisonRows.length}
+      recordCount={ids.length ? comparisonRows.length : 0}
       tableLayout={{
         columnsPinnable: true,
         columnsResizable: true,
@@ -171,7 +186,7 @@ function BuilderSpecPanel({
       }}
       tableClassNames={{ bodyRow: "has-[[data-builder-spec-group]]:bg-muted/50" }}
     >
-      <DataGridContainer className="rounded-xl border">
+      <DataGridContainer className="max-w-[984px] rounded-xl border">
         <DataGridScrollArea orientation="horizontal" data-builder-panel>
           <DataGridTable />
         </DataGridScrollArea>
@@ -187,85 +202,98 @@ export function CompareBuilder() {
   return (
     <ComparisonLayout
       variant={6}
-      title="Build your own comparison."
+      eyebrow=""
+      title="Build your comparison"
       description="Pick up to four models, then put every detail side by side. Your shortlist, your call."
-      actions={
-        <Button variant="outline" disabled={!ids.length} onClick={() => setIds([])}>
-          Clear all
-        </Button>
+      headerActions={
+        <>
+          <Badge variant={ids.length === maxCompared ? "default" : "secondary"} data-builder-count>
+            {ids.length} / 4 selected
+          </Badge>
+          {ids.length > 0 && (
+            <Button variant="outline" size="sm" onClick={() => setIds([])}>
+              Clear all
+            </Button>
+          )}
+        </>
       }
     >
-      <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-        <h3 className="text-sm font-semibold">The six-model collection</h3>
-        <Badge variant={ids.length === maxCompared ? "default" : "secondary"} data-builder-count>
-          {ids.length} / 4 selected
-        </Badge>
+      <div>
+        <h3 className="sr-only">The six-model collection</h3>
+        <div className="mb-5 grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
+          {comparisonProducts.map((product) => {
+            const pressed = ids.includes(product.id);
+            return (
+              <Frame
+                key={product.id}
+                dense
+                spacing="sm"
+                className="comparison-builder-catalog-card"
+                data-builder-catalog={product.id}
+              >
+                <FramePanel className="comparison-builder-catalog-panel">
+                  <img
+                    src={product.image}
+                    alt={`${product.name} original headphone illustration`}
+                    className="rounded-lg"
+                  />
+                  <div className="mt-3 flex items-center justify-between gap-2">
+                    <h4 className="text-base font-semibold leading-6">{product.name}</h4>
+                    {pressed && (
+                      <Badge variant="secondary" size="sm">
+                        Added
+                      </Badge>
+                    )}
+                  </div>
+                  <p className="mt-1 text-xs leading-4 text-muted-foreground">
+                    Over-ear headphones
+                  </p>
+                  <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
+                    <strong className="text-lg font-semibold leading-7">
+                      {compareMoney(product.price)}
+                    </strong>
+                    <ComparisonRating product={product} />
+                  </div>
+                  {/* Actual free c-toggle-10 controlled state, icon and label swap. */}
+                  <Toggle
+                    variant="outline"
+                    className="mt-auto w-full"
+                    aria-label={`Compare ${product.name}`}
+                    pressed={pressed}
+                    disabled={!pressed && ids.length === maxCompared}
+                    onPressedChange={(next) =>
+                      next
+                        ? setIds((current) =>
+                            current.length < maxCompared && !current.includes(product.id)
+                              ? [...current, product.id]
+                              : current,
+                          )
+                        : remove(product.id)
+                    }
+                  >
+                    {pressed ? <Check /> : <Plus />}
+                    {pressed ? "Added" : "Compare"}
+                  </Toggle>
+                </FramePanel>
+              </Frame>
+            );
+          })}
+        </div>
+        <p className="mb-4 text-xs text-muted-foreground" aria-live="polite">
+          {ids.length === maxCompared
+            ? "All four slots are filled. Remove a model to compare another."
+            : ids.length
+              ? `${maxCompared - ids.length} open slots. Numeric leaders are highlighted when two or more models are selected.`
+              : "Your comparison is empty. Choose a model above to get started."}
+        </p>
+        <BuilderSpecPanel ids={ids} remove={remove} />
+        <p className="mt-3 text-[11px] text-muted-foreground">
+          <span className="hidden sm:inline">Scroll the spec panel sideways when needed. </span>
+          Lower price, weight and charging time lead; higher battery life and rating lead. Text and
+          feature availability are not ranked. These thirteen fictional specifications extend the
+          original eight-field preview.
+        </p>
       </div>
-      <div className="mb-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {comparisonProducts.map((product) => {
-          const pressed = ids.includes(product.id);
-          return (
-            <Frame key={product.id} spacing="sm" data-builder-catalog={product.id}>
-              <FramePanel fit>
-                <img
-                  src={product.image}
-                  alt={`${product.name} original headphone illustration`}
-                  className="mb-3 h-32 w-full rounded-lg object-contain"
-                />
-                <div className="mb-2 flex items-center justify-between gap-2">
-                  <h4 className="text-sm font-semibold">{product.name}</h4>
-                  <strong className="text-sm">{compareMoney(product.price)}</strong>
-                </div>
-                <ComparisonRating product={product} />
-                {/* Actual free c-toggle-10 controlled state, icon and label swap. */}
-                <Toggle
-                  variant="outline"
-                  className="mt-3 w-full"
-                  aria-label={`Compare ${product.name}`}
-                  pressed={pressed}
-                  disabled={!pressed && ids.length === maxCompared}
-                  onPressedChange={(next) =>
-                    next
-                      ? setIds((current) =>
-                          current.length < maxCompared && !current.includes(product.id)
-                            ? [...current, product.id]
-                            : current,
-                        )
-                      : remove(product.id)
-                  }
-                >
-                  {pressed ? <Check /> : <Plus />}
-                  {pressed ? "Comparing" : "Compare"}
-                </Toggle>
-              </FramePanel>
-            </Frame>
-          );
-        })}
-      </div>
-      <p className="mb-4 text-xs text-muted-foreground" aria-live="polite">
-        {ids.length === maxCompared
-          ? "All four slots are filled. Remove a model to compare another."
-          : ids.length
-            ? `${maxCompared - ids.length} open slots. Numeric leaders are highlighted when two or more models are selected.`
-            : "Your comparison is empty. Choose a model above to get started."}
-      </p>
-      {!ids.length && (
-        <Empty className="mb-4 border bg-muted/40">
-          <EmptyHeader>
-            <EmptyTitle role="heading" aria-level={3}>
-              A fresh shortlist
-            </EmptyTitle>
-            <EmptyDescription>
-              Select Compare on any model. All four slots are ready.
-            </EmptyDescription>
-          </EmptyHeader>
-        </Empty>
-      )}
-      <BuilderSpecPanel ids={ids} remove={remove} />
-      <p className="mt-3 text-[11px] text-muted-foreground">
-        Swipe or scroll the spec panel sideways. Lower price, weight and charging time lead; higher
-        battery life and rating lead. Text and feature availability are not ranked.
-      </p>
     </ComparisonLayout>
   );
 }

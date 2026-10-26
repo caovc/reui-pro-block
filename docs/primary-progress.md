@@ -219,4 +219,8 @@ Lucent now has independent Clusters, Hosts and Registry pages with actual native
 
 Flow1–2 now use the actual free Frame/Panel/IconTile/Badge anatomy with the observed failed test fixture and real model undo/reset. Trigger deletion is guarded; other removals use the actual confirmation action. Independent37/37 old/new/source checks passed and actual374-file download bytes were verified. The only old-test change synchronizes the observed Flow2 result; all Gantt, Timeline and modal/drag assertions stay unchanged. Tabs and newly measured menu/font details are separate follow-ups. See [integration evidence](flow12-integration-release.json).
 
+## Comparison4–6 public layout correction
+
+Comparison4 now matches the observed421px ranked cards with80px thumbnails and native carousel pages;5 uses the measured hero/rival split and stable rival order;6 has484/490px catalog cards and the observed phone vertical specification presentation using one actual DataGrid. A real Details initial-focus defect was fixed with the existing dialog API. Independent24/24 production checks, three actual206-file project strict builds and six desktop/phone exported interactions passed. Original artwork, richer13-field specs and incomplete dark/hover/touch coverage remain documented differences. See [integration evidence](comparison456-visual-integration-release.json).
+
 Run40266050417 on5c6df66 later passed1165 and failed one old Checklist connect/manage case; Pages was skipped. Original trace/artifact12627475041 is retained. Root is diagnosing native Accordion animation/input readiness; unrelated local milestone passes do not erase that failure. Latest verified deployed version remains303cc13.

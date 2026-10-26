@@ -1,0 +1,27 @@
+{
+  "scope": "Comparison4\u20136 public layout correction",
+  "combinedBase": "5c6df66d78f54bff481816f578b856bcb3b243ac",
+  "frozenFiles": {
+    "src/blocks/commerce/comparison-variants/followups/ranked-scorecards.tsx": "cb56c3277aef28d83fc963d81cbb455d96f8f2965a9228f4a3087f63a50fce92",
+    "src/blocks/commerce/comparison-variants/followups/alternatives-switcher.tsx": "d851ec5fc88774c5312e5a9090ac638127c4a94184fa99747a8e5ea24bcdaac8",
+    "src/blocks/commerce/comparison-variants/followups/compare-builder.tsx": "4b1bc1d59e0a4cc9ea7d8decf257101508f4a87f7dc382aec32490bb4c03c832",
+    "src/blocks/commerce/comparison-variants/followups/visual-followups.css": "6beb47b2833a17cf5b86dfc576efc66f3bc1afc69b06fd22113974ce1999f210",
+    "tests/comparison-followups.spec.ts": "3da6b9c17fdf2401cd38a99ba31046c57275acaa6091c4082875d2ee3ad6bff8",
+    "docs/comparison456-visual-followup-2026-10-26.md": "7f8187a98eb96b3b7088f01ced6410f7929df5571bfa26527d28dac269fecc1f",
+    "src/blocks/commerce/comparison-variants/followups/score-data.ts": "ab67ff2e82c21f6c7772a75fda7bdd6b1a91858ce1faf64f9873453d00c943e6"
+  },
+  "independentAcceptance": "Independent24/24 production passed;3actual206-file ZIPs strict-built;6desktop/phone interactions and6site/ZIP settled-dialog style comparisons passed.",
+  "actualFreeReuseAndCustomGap": "Actual free Carousel/Progress/Rating/Badge/Frame/DataGrid remain native. One actual DataGrid adapts to the observed phone stack;900px keeps native pinning and scrolling.",
+  "remainingLimits": "Original art/data retained;13specifications versus reference8 and local functional cart/details/scoring extensions documented. DPR/fontfamily/dark/hover/touch evidence is not exhaustive.",
+  "finalCumulativeAcceptance": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-cumulative-release-qa-yj7ljamp/manifest.json",
+  "finalCumulativeContract": "One clean5c archive plus explicitly frozen pending Pricing/Grouping/Lucent/Flow/Comparison payloads. Shared source hooks applied in recorded order. Strict build and56 new/source cases recorded in final combined receipt, no repeated unchanged ZIP builds.",
+  "publication": "Root serial per-milestone commit/push; own full CI and Pages separately checked.",
+  "knownCI": {
+    "run": 40266050417,
+    "result": "1165passed/1oldChecklisttestfailure;Pages skipped",
+    "artifact": 12627475041,
+    "log": "/tmp/bricklane-settings-ci-failure.log",
+    "diagnosis": "Root retained trace and localoriginalcasePASS; nativeAccordion content was still animating/clipped at pointerclick. Investigation/fix pending; not erased by unrelated milestone tests.",
+    "latestVerifiedPages": "303cc13 1136/1136"
+  }
+}
