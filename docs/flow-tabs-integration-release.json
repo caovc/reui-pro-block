@@ -1,0 +1,25 @@
+{
+  "base": "ebd53dd109630be43d6e9af7f5ddd5b1c4b51b89",
+  "cumulativeProduction": "88/88, seven suites,1worker,30s,retries0, immutable production5462",
+  "cumulativeFormat": "1156 files PASS before Root documents; tooling3/3; scopedlint0errors, existing fast-refresh warning",
+  "build": "One Vite-only integration; prior typed gates retained, no new cold TypeScript or standalone strict claim",
+  "sourceAudit": "/tmp/bricklane-tabs-flow5462-source-audit/receipt.json",
+  "sourceBytes": "Fresh native source view/clipboard/single-file/projectZIP exact; Flow4 376files and Grouping3 248files with actual new Tabs/Cohorts/FlowInspector/CSS bytes",
+  "publication": "Own cumulative CI and Pages pending;67577 remains latest confirmed live at preparation",
+  "scope": "Flow inspector Tabs and period buttons use actual free composition",
+  "files": {
+    "src/blocks/application/flow-gantt-flow.tsx": "13395791ef8b9b058e53ffc85e1ff1e75b3cd265d88209e21dd41c4a953f5d15",
+    "tests/flow-gantt-refinement.spec.ts": "eab6c2adce6d7eb82531688a863c09215d8ef57fbe161da8bd062c49ac56e559",
+    "src/blocks/application/flow-inspector-tabs.tsx": "8d972ff2ac7a00ea5b06d185477f7365695d265b761b600c04f6abc69bf06fdd",
+    "src/blocks/application/flow-inspector-tabs.css": "2e4864fd1d30490fc0400ee8abb72e3d21867800234c8ae3a16c5ff14b67de94",
+    "tests/flow-tabs-overflow.spec.ts": "af5cf45f51bbe30afbe156ff713d568735f64a4d6a4e708b55c40eddd9b76aa6",
+    "docs/flow-tabs-refinement.md": "8efd6b586dedcea5afc34617c9442689ab808b30165a10b1414f623ee5ad58a9"
+  },
+  "reuse": "Actual free Tabs/List/Trigger/Content and ButtonGroup/Button replace hand-built inspector tabs and period controls; native keyboard/focus and existing controlled draft state retained",
+  "priorStrict": "Owner main strict and actual standalone project strict; final six source bytes identical to that validation",
+  "remaining": [
+    "Two short inspector tabs; generic long-list scroll is shared Tabs scope",
+    "Flow1\u20132 detailed toolbar/menu/fonts are separate nine-file preflight, not included",
+    "No claim of complete public pixel parity"
+  ]
+}

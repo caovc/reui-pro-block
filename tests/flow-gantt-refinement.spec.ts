@@ -71,10 +71,10 @@ test("growth map changes the period, relinks a metric and saves its value", asyn
   await open(page, "flow-4");
   await page.getByRole("button", { name: "6 weeks", exact: true }).click();
   await expect(page.getByText("22,408", { exact: true })).toBeVisible();
-  await page.getByRole("button", { name: "Links", exact: true }).click();
+  await page.getByRole("tab", { name: "Links", exact: true }).click();
   await choose(page, "Relink incoming checkout-north", "rate");
   await expect(page.getByText("Not measured", { exact: true })).toBeVisible();
-  await page.getByRole("button", { name: "Settings", exact: true }).click();
+  await page.getByRole("tab", { name: "Settings", exact: true }).click();
   await page.getByLabel("Past 6 weeks value", { exact: true }).fill("24000");
   await page.getByRole("button", { name: "Save metric", exact: true }).click();
   await expect(page.getByText("24,000", { exact: true })).toBeVisible();

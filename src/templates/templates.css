@@ -29,7 +29,10 @@
 .template-gallery-controls > [data-slot="tabs"] {
   min-width: 0;
   max-width: 100%;
+  padding-block: 4px;
+  margin-block: -4px;
   overflow-x: auto;
+  overflow-y: hidden;
 }
 .template-search {
   display: flex;

@@ -1,0 +1,33 @@
+{
+  "base": "ebd53dd109630be43d6e9af7f5ddd5b1c4b51b89",
+  "cumulativeProduction": "88/88, seven suites,1worker,30s,retries0, immutable production5462",
+  "cumulativeFormat": "1156 files PASS before Root documents; tooling3/3; scopedlint0errors, existing fast-refresh warning",
+  "build": "One Vite-only integration; prior typed gates retained, no new cold TypeScript or standalone strict claim",
+  "sourceAudit": "/tmp/bricklane-tabs-flow5462-source-audit/receipt.json",
+  "sourceBytes": "Fresh native source view/clipboard/single-file/projectZIP exact; Flow4 376files and Grouping3 248files with actual new Tabs/Cohorts/FlowInspector/CSS bytes",
+  "publication": "Own cumulative CI and Pages pending;67577 remains latest confirmed live at preparation",
+  "scope": "Shared free ReUI Tabs and consumer scroll/focus repair",
+  "files": {
+    "src/components/ui/tabs.tsx": "de4025878bc9bbcef22e93e77b0cba0277c64f0c593a407180597d1dbaa8c63a",
+    "src/templates/templates.css": "188215847db66ec7b58c22afa2118d955ccdcae66ab0b13d3ba13402c2dcaeec",
+    "src/index.css": "fae6618e80c6a247665026eb60aaf4423973bfd5c75c21b5f954cd4bda1168db",
+    "src/blocks/application/shells/operations.tsx": "b9592fa1ffdd13adcd71fdcd6418a94d9b1d21b0f9c548083660c69b801f44d3",
+    "src/blocks/data/grid-grouping-cohorts.tsx": "504f09a3cffbe446508a201d90bb1c3a39f86341fd3d595212372c3f5934f82e",
+    "tests/tabs-overflow.spec.ts": "38286b069b555fe1e4de471a94b8c2c4b5cbc14e1e3a470421c49233e487bf6e",
+    "docs/tabs-overflow-refinement-2026-10-26.md": "5e517bb9de27c38fa9ebb4c1d7739287532d6de1f04f471d05612074d13c84ea"
+  },
+  "reuse": "Installed actual free ReUI Tabs, native Radix selection and roving focus; nearest real X-scroll ancestor only; caller onFocus preserved, preventDefault respected",
+  "changes": [
+    "Consumer height overrides actual list height; filled tabs have no hidden underline overflow",
+    "Original general focus fallback moved to base layer so actual component focus styles apply",
+    "Gallery keeps baseline textY and real horizontal scroll with Y focus space",
+    "Workbench uses native computed trigger height and line underline position",
+    "Fixed40px Cohorts consumer uses3px inset ring and inward1px outline with original height/textY/underline retained"
+  ],
+  "evidence": "Owner strict prior-source PASS; finalclass-onlyVite39/39; Root cumulative88/88 and visually inspected actual390px inset focus screenshot",
+  "remaining": [
+    "Vertical Tabs variants not newly certified",
+    "Public glyph/fonts and unrelated portal widths retain separate ledgers",
+    "No global overflow hiding or original public brand/media copied"
+  ]
+}

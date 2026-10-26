@@ -184,7 +184,11 @@ function Workbench({
           className="h-11 w-full shrink-0 justify-start overflow-x-auto border-t px-4"
         >
           {names.map((name, i) => (
-            <TabsTrigger value={name} key={name} className="h-10 shrink-0 px-2 text-[11px]">
+            <TabsTrigger
+              value={name}
+              key={name}
+              className="shrink-0 px-2 text-[11px] group-data-horizontal/tabs:after:bottom-0"
+            >
               {name}
               {i > 1 && i < 5 && (
                 <Badge variant="outline" className="h-4 px-1 text-[9px]">

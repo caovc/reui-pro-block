@@ -411,7 +411,7 @@ export default function Cohorts() {
               <TabsTrigger
                 key={name}
                 value={name}
-                className="h-10! rounded-none px-0 text-sm after:bottom-0!"
+                className="h-10! rounded-none px-0 text-sm after:bottom-0! focus-visible:-outline-offset-1 focus-visible:ring-inset"
               >
                 {name}
               </TabsTrigger>

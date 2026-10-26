@@ -17,6 +17,7 @@ import {
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { FlowFidelityNode } from "./flow-fidelity-node";
+import { FlowInspectorTabs, FlowPeriodControl } from "./flow-inspector-tabs";
 import { Badge } from "@/components/reui/badge";
 import { Frame, FramePanel } from "@/components/reui/frame";
 import { IconTile } from "@/components/reui/icon-tile";
@@ -1493,16 +1494,7 @@ function FlowEditor({ block }: BlockProps) {
                     : "Ines Marchetti"}
           </span>
         </div>
-        {variant === 3 && (
-          <div className="fg-period-tabs">
-            {["7 days", "6 weeks", "12 months"].map((p, i) => (
-              <button key={p} aria-pressed={period === i} onClick={() => setPeriod(i)}>
-                <span className="fg-period-full">{p}</span>
-                <span className="fg-period-short">{["7d", "6w", "12m"][i]}</span>
-              </button>
-            ))}
-          </div>
-        )}
+        {variant === 3 && <FlowPeriodControl value={period} onValueChange={setPeriod} />}
         {variant === 2 && (
           <div className="fg-status-counts">
             {(["Failed", "Waiting", "Queued", "Succeeded"] as RunState[]).map((s) => (
@@ -2070,501 +2062,501 @@ function FlowEditor({ block }: BlockProps) {
               <X />
             </IconButton>
           </div>
-          {variant >= 2 && (
-            <div className="fg-tabs">
-              {["Settings", variant === 3 ? "Links" : "Wiring"].map((t) => (
-                <button
-                  key={t}
-                  aria-selected={tab === t}
-                  onClick={() => {
-                    setTab(t);
-                    if (!draft) setDraft({ ...current });
-                  }}
-                >
-                  {t}
-                </button>
-              ))}
-            </div>
-          )}
-          <div className="fg-inspector-body">
-            {variant >= 2 && tab !== "Settings" ? (
-              <>
-                {(["incoming", "outgoing"] as const).map((direction) => (
-                  <div className="fg-links-section" key={direction}>
-                    <p className="fg-detail-title">
-                      {variant === 3
-                        ? direction === "incoming"
-                          ? "DRIVEN BY"
-                          : "MOVES"
-                        : direction === "incoming"
-                          ? "INPUTS"
-                          : "OUTPUTS"}
-                    </p>
-                    {graph.edges
-                      .filter((e) =>
-                        direction === "incoming"
-                          ? e.target === current.id
-                          : e.source === current.id,
-                      )
-                      .map((edge) => (
-                        <div className="fg-link-row" key={edge.id}>
-                          <span
-                            className={`fg-link-correlation ${edge.correlation?.startsWith("-") ? "fg-failed" : "fg-success"}`}
-                          >
-                            {edge.correlation ??
-                              (variant === 3 ? "Not measured" : (edge.label ?? "Dependency"))}
-                          </span>
-                          <FGSelect
-                            aria-label={`Relink ${direction} ${edge.id}`}
-                            value={direction === "incoming" ? edge.source : edge.target}
-                            onChange={(e) => {
-                              const target = e.target.value;
-                              if (target === current.id) return;
-                              change({
-                                ...graph,
-                                edges: graph.edges.map((v) =>
-                                  v.id === edge.id
-                                    ? {
-                                        ...v,
-                                        [direction === "incoming" ? "source" : "target"]: target,
-                                        correlation: undefined,
-                                      }
-                                    : v,
-                                ),
-                              });
-                            }}
-                          >
-                            {graph.nodes
-                              .filter((n) => n.id !== current.id && !n.kind)
-                              .map((n) => (
-                                <option key={n.id} value={n.id}>
-                                  {n.title}
-                                </option>
-                              ))}
-                          </FGSelect>
-                        </div>
-                      ))}
-                  </div>
-                ))}
-              </>
-            ) : editing || variant >= 2 ? (
-              <>
-                {!draft ? null : (
-                  <>
-                    <label htmlFor="fg-step-title">
-                      <span className="fg-field-label">
-                        Title{variant < 2 && <FieldHelp label="Title" />}
-                      </span>
-                      <input
-                        id="fg-step-title"
-                        aria-label="Title"
-                        value={draft.title}
-                        onChange={(e) => setDraft({ ...draft, title: e.target.value })}
-                      />
-                    </label>
-                    {variant < 2 && (
-                      <label htmlFor="fg-step-detail">
+          <FlowInspectorTabs
+            enabled={variant >= 2}
+            value={tab}
+            secondaryLabel={variant === 3 ? "Links" : "Wiring"}
+            onValueChange={(value) => {
+              setTab(value);
+              if (!draft) setDraft({ ...current });
+            }}
+          >
+            <div className="fg-inspector-body">
+              {variant >= 2 && tab !== "Settings" ? (
+                <>
+                  {(["incoming", "outgoing"] as const).map((direction) => (
+                    <div className="fg-links-section" key={direction}>
+                      <p className="fg-detail-title">
+                        {variant === 3
+                          ? direction === "incoming"
+                            ? "DRIVEN BY"
+                            : "MOVES"
+                          : direction === "incoming"
+                            ? "INPUTS"
+                            : "OUTPUTS"}
+                      </p>
+                      {graph.edges
+                        .filter((e) =>
+                          direction === "incoming"
+                            ? e.target === current.id
+                            : e.source === current.id,
+                        )
+                        .map((edge) => (
+                          <div className="fg-link-row" key={edge.id}>
+                            <span
+                              className={`fg-link-correlation ${edge.correlation?.startsWith("-") ? "fg-failed" : "fg-success"}`}
+                            >
+                              {edge.correlation ??
+                                (variant === 3 ? "Not measured" : (edge.label ?? "Dependency"))}
+                            </span>
+                            <FGSelect
+                              aria-label={`Relink ${direction} ${edge.id}`}
+                              value={direction === "incoming" ? edge.source : edge.target}
+                              onChange={(e) => {
+                                const target = e.target.value;
+                                if (target === current.id) return;
+                                change({
+                                  ...graph,
+                                  edges: graph.edges.map((v) =>
+                                    v.id === edge.id
+                                      ? {
+                                          ...v,
+                                          [direction === "incoming" ? "source" : "target"]: target,
+                                          correlation: undefined,
+                                        }
+                                      : v,
+                                  ),
+                                });
+                              }}
+                            >
+                              {graph.nodes
+                                .filter((n) => n.id !== current.id && !n.kind)
+                                .map((n) => (
+                                  <option key={n.id} value={n.id}>
+                                    {n.title}
+                                  </option>
+                                ))}
+                            </FGSelect>
+                          </div>
+                        ))}
+                    </div>
+                  ))}
+                </>
+              ) : editing || variant >= 2 ? (
+                <>
+                  {!draft ? null : (
+                    <>
+                      <label htmlFor="fg-step-title">
                         <span className="fg-field-label">
-                          Detail
-                          <FieldHelp label="Detail" />
+                          Title{variant < 2 && <FieldHelp label="Title" />}
                         </span>
                         <input
-                          aria-label="Detail"
-                          id="fg-step-detail"
-                          value={draft.detail}
-                          onChange={(e) => setDraft({ ...draft, detail: e.target.value })}
+                          id="fg-step-title"
+                          aria-label="Title"
+                          value={draft.title}
+                          onChange={(e) => setDraft({ ...draft, title: e.target.value })}
                         />
                       </label>
-                    )}
-                    {variant === 0 && (
-                      <label>
-                        <span className="fg-field-label">
-                          Category
-                          <FieldHelp label="Category" />
-                        </span>
-                        <FGSelect
-                          aria-label="Category"
-                          value={draft.category ?? "Action"}
-                          onChange={(e) => setDraft({ ...draft, category: e.target.value })}
-                        >
-                          {["Webhook", "Condition", "Data", "Email", "Delay", "Action"].map((c) => (
-                            <option key={c}>{c}</option>
-                          ))}
-                        </FGSelect>
-                      </label>
-                    )}
-                    {variant === 1 && (
-                      <label>
-                        <span className="fg-field-label">
-                          App
-                          <FieldHelp label="App" />
-                        </span>
-                        <FGSelect
-                          aria-label="App"
-                          value={draft.app ?? "Custom Code"}
-                          onChange={(e) => setDraft({ ...draft, app: e.target.value })}
-                        >
-                          {[
-                            "Stripe",
-                            "Neon",
-                            "Claude",
-                            "ClickUp",
-                            "Resend",
-                            "Slack",
-                            "Custom Code",
-                          ].map((c) => (
-                            <option key={c}>{c}</option>
-                          ))}
-                        </FGSelect>
-                      </label>
-                    )}
-                    {variant === 1 &&
-                      graph.edges.some((edge) => edge.target === current.id && edge.label) && (
-                        <label htmlFor="fg-step-path">
+                      {variant < 2 && (
+                        <label htmlFor="fg-step-detail">
                           <span className="fg-field-label">
-                            Path
-                            <FieldHelp label="Path" />
+                            Detail
+                            <FieldHelp label="Detail" />
                           </span>
                           <input
-                            id="fg-step-path"
-                            aria-label="Path"
-                            value={
-                              draft.branch ??
-                              graph.edges.find((edge) => edge.target === current.id)?.label ??
-                              ""
-                            }
-                            onChange={(event) => setDraft({ ...draft, branch: event.target.value })}
+                            aria-label="Detail"
+                            id="fg-step-detail"
+                            value={draft.detail}
+                            onChange={(e) => setDraft({ ...draft, detail: e.target.value })}
                           />
                         </label>
                       )}
-                    {variant === 0 && (
-                      <label>
-                        <span className="fg-field-label">
-                          Owner
-                          <FieldHelp label="Owner" />
-                        </span>
-                        <FGSelect
-                          aria-label="Owner"
-                          value={draft.owner}
-                          onChange={(e) => setDraft({ ...draft, owner: e.target.value })}
-                        >
-                          {owners.map((o) => (
-                            <option key={o}>{o}</option>
-                          ))}
-                        </FGSelect>
-                      </label>
-                    )}
-                    {variant === 2 && (
-                      <>
+                      {variant === 0 && (
                         <label>
-                          Service
+                          <span className="fg-field-label">
+                            Category
+                            <FieldHelp label="Category" />
+                          </span>
                           <FGSelect
-                            value={draft.app ?? "Google Cloud"}
+                            aria-label="Category"
+                            value={draft.category ?? "Action"}
+                            onChange={(e) => setDraft({ ...draft, category: e.target.value })}
+                          >
+                            {["Webhook", "Condition", "Data", "Email", "Delay", "Action"].map(
+                              (c) => (
+                                <option key={c}>{c}</option>
+                              ),
+                            )}
+                          </FGSelect>
+                        </label>
+                      )}
+                      {variant === 1 && (
+                        <label>
+                          <span className="fg-field-label">
+                            App
+                            <FieldHelp label="App" />
+                          </span>
+                          <FGSelect
+                            aria-label="App"
+                            value={draft.app ?? "Custom Code"}
                             onChange={(e) => setDraft({ ...draft, app: e.target.value })}
                           >
                             {[
                               "Stripe",
-                              "PayPal",
-                              "Redis",
-                              "Ledger",
-                              "Google Cloud",
+                              "Neon",
+                              "Claude",
+                              "ClickUp",
+                              "Resend",
                               "Slack",
-                              "Action",
+                              "Custom Code",
                             ].map((c) => (
                               <option key={c}>{c}</option>
                             ))}
                           </FGSelect>
                         </label>
-                        {Object.entries(draft.params ?? current.params ?? {}).map(
-                          ([key, value]) => (
-                            <label
-                              key={key}
-                              className={
-                                value === "true" || value === "false" ? "fg-toggle-line" : undefined
+                      )}
+                      {variant === 1 &&
+                        graph.edges.some((edge) => edge.target === current.id && edge.label) && (
+                          <label htmlFor="fg-step-path">
+                            <span className="fg-field-label">
+                              Path
+                              <FieldHelp label="Path" />
+                            </span>
+                            <input
+                              id="fg-step-path"
+                              aria-label="Path"
+                              value={
+                                draft.branch ??
+                                graph.edges.find((edge) => edge.target === current.id)?.label ??
+                                ""
                               }
+                              onChange={(event) =>
+                                setDraft({ ...draft, branch: event.target.value })
+                              }
+                            />
+                          </label>
+                        )}
+                      {variant === 0 && (
+                        <label>
+                          <span className="fg-field-label">
+                            Owner
+                            <FieldHelp label="Owner" />
+                          </span>
+                          <FGSelect
+                            aria-label="Owner"
+                            value={draft.owner}
+                            onChange={(e) => setDraft({ ...draft, owner: e.target.value })}
+                          >
+                            {owners.map((o) => (
+                              <option key={o}>{o}</option>
+                            ))}
+                          </FGSelect>
+                        </label>
+                      )}
+                      {variant === 2 && (
+                        <>
+                          <label>
+                            Service
+                            <FGSelect
+                              value={draft.app ?? "Google Cloud"}
+                              onChange={(e) => setDraft({ ...draft, app: e.target.value })}
                             >
-                              {key}
-                              {value === "true" || value === "false" ? (
-                                <Switch
-                                  aria-label={key}
-                                  checked={value === "true"}
-                                  onCheckedChange={(checked) =>
-                                    setDraft({
-                                      ...draft,
-                                      params: {
-                                        ...draft.params,
-                                        [key]: String(checked),
-                                      },
-                                    })
-                                  }
-                                />
-                              ) : (
+                              {[
+                                "Stripe",
+                                "PayPal",
+                                "Redis",
+                                "Ledger",
+                                "Google Cloud",
+                                "Slack",
+                                "Action",
+                              ].map((c) => (
+                                <option key={c}>{c}</option>
+                              ))}
+                            </FGSelect>
+                          </label>
+                          {Object.entries(draft.params ?? current.params ?? {}).map(
+                            ([key, value]) => (
+                              <label
+                                key={key}
+                                className={
+                                  value === "true" || value === "false"
+                                    ? "fg-toggle-line"
+                                    : undefined
+                                }
+                              >
+                                {key}
+                                {value === "true" || value === "false" ? (
+                                  <Switch
+                                    aria-label={key}
+                                    checked={value === "true"}
+                                    onCheckedChange={(checked) =>
+                                      setDraft({
+                                        ...draft,
+                                        params: {
+                                          ...draft.params,
+                                          [key]: String(checked),
+                                        },
+                                      })
+                                    }
+                                  />
+                                ) : (
+                                  <input
+                                    value={value}
+                                    onChange={(e) =>
+                                      setDraft({
+                                        ...draft,
+                                        params: {
+                                          ...draft.params,
+                                          [key]: e.target.value,
+                                        },
+                                      })
+                                    }
+                                  />
+                                )}
+                              </label>
+                            ),
+                          )}
+                        </>
+                      )}
+                      {variant === 3 && (
+                        <>
+                          <label>
+                            Role
+                            <FGSelect
+                              value={draft.role ?? "Input"}
+                              disabled={draft.role === "North Star"}
+                              onChange={(e) => setDraft({ ...draft, role: e.target.value })}
+                            >
+                              {["Input", "North Star", "KPI", "Initiative"].map((r) => (
+                                <option key={r}>{r}</option>
+                              ))}
+                            </FGSelect>
+                            {draft.role === "North Star" && (
+                              <small>Promote another metric to hand this role on.</small>
+                            )}
+                          </label>
+                          <div className="fg-detail-grid">
+                            <label>
+                              Aggregation
+                              <FGSelect
+                                value={draft.aggregation ?? "Sum"}
+                                onChange={(e) =>
+                                  setDraft({
+                                    ...draft,
+                                    aggregation: e.target.value,
+                                  })
+                                }
+                              >
+                                {["Sum", "Average", "Last value"].map((r) => (
+                                  <option key={r}>{r}</option>
+                                ))}
+                              </FGSelect>
+                            </label>
+                            <label>
+                              Unit
+                              <FGSelect
+                                value={draft.unit ?? "Count"}
+                                onChange={(e) => setDraft({ ...draft, unit: e.target.value })}
+                              >
+                                {["Count", "Percent", "Currency"].map((r) => (
+                                  <option key={r}>{r}</option>
+                                ))}
+                              </FGSelect>
+                            </label>
+                          </div>
+                          <label>
+                            Better when
+                            <FGSelect
+                              value={draft.better ?? "Higher is better"}
+                              onChange={(e) => setDraft({ ...draft, better: e.target.value })}
+                            >
+                              <option>Higher is better</option>
+                              <option>Lower is better</option>
+                            </FGSelect>
+                          </label>
+                          <div className="fg-period-grid">
+                            <span className="fg-caption">PERIOD</span>
+                            <span className="fg-caption">VALUE</span>
+                            <span className="fg-caption">CHANGE %</span>
+                            {["Past 7 days", "Past 6 weeks", "Past 12 months"].map((p, i) => (
+                              <div key={p} style={{ display: "contents" }}>
+                                <label style={{ fontWeight: 500 }}>{p}</label>
                                 <input
-                                  value={value}
+                                  aria-label={`${p} value`}
+                                  type="number"
+                                  value={draft.value?.[i] ?? 0}
                                   onChange={(e) =>
                                     setDraft({
                                       ...draft,
-                                      params: {
-                                        ...draft.params,
-                                        [key]: e.target.value,
-                                      },
+                                      value: (draft.value ?? [0, 0, 0]).map((v, k) =>
+                                        k === i ? Number(e.target.value) : v,
+                                      ),
                                     })
                                   }
                                 />
-                              )}
-                            </label>
-                          ),
-                        )}
-                      </>
-                    )}
-                    {variant === 3 && (
-                      <>
-                        <label>
-                          Role
-                          <FGSelect
-                            value={draft.role ?? "Input"}
-                            disabled={draft.role === "North Star"}
-                            onChange={(e) => setDraft({ ...draft, role: e.target.value })}
-                          >
-                            {["Input", "North Star", "KPI", "Initiative"].map((r) => (
-                              <option key={r}>{r}</option>
+                                <input
+                                  aria-label={`${p} change`}
+                                  type="number"
+                                  step="any"
+                                  value={draft.change?.[i] ?? 0}
+                                  onChange={(e) =>
+                                    setDraft({
+                                      ...draft,
+                                      change: (draft.change ?? [0, 0, 0]).map((v, k) =>
+                                        k === i ? Number(e.target.value) : v,
+                                      ),
+                                    })
+                                  }
+                                />
+                              </div>
                             ))}
-                          </FGSelect>
-                          {draft.role === "North Star" && (
-                            <small>Promote another metric to hand this role on.</small>
-                          )}
-                        </label>
-                        <div className="fg-detail-grid">
+                          </div>
                           <label>
-                            Aggregation
-                            <FGSelect
-                              value={draft.aggregation ?? "Sum"}
+                            Goal
+                            <input
+                              placeholder="Leave empty for no goal"
+                              value={draft.goal ?? ""}
+                              onChange={(e) => setDraft({ ...draft, goal: e.target.value })}
+                            />
+                          </label>
+                          <label>
+                            Goal progress %
+                            <input
+                              disabled
+                              type="number"
+                              min="0"
+                              max="100"
+                              value={draft.progress ?? 0}
                               onChange={(e) =>
                                 setDraft({
                                   ...draft,
-                                  aggregation: e.target.value,
+                                  progress: Number(e.target.value),
                                 })
                               }
-                            >
-                              {["Sum", "Average", "Last value"].map((r) => (
-                                <option key={r}>{r}</option>
-                              ))}
-                            </FGSelect>
+                            />
                           </label>
-                          <label>
-                            Unit
-                            <FGSelect
-                              value={draft.unit ?? "Count"}
-                              onChange={(e) => setDraft({ ...draft, unit: e.target.value })}
-                            >
-                              {["Count", "Percent", "Currency"].map((r) => (
-                                <option key={r}>{r}</option>
-                              ))}
-                            </FGSelect>
-                          </label>
-                        </div>
-                        <label>
-                          Better when
-                          <FGSelect
-                            value={draft.better ?? "Higher is better"}
-                            onChange={(e) => setDraft({ ...draft, better: e.target.value })}
-                          >
-                            <option>Higher is better</option>
-                            <option>Lower is better</option>
-                          </FGSelect>
-                        </label>
-                        <div className="fg-period-grid">
-                          <span className="fg-caption">PERIOD</span>
-                          <span className="fg-caption">VALUE</span>
-                          <span className="fg-caption">CHANGE %</span>
-                          {["Past 7 days", "Past 6 weeks", "Past 12 months"].map((p, i) => (
-                            <div key={p} style={{ display: "contents" }}>
-                              <label style={{ fontWeight: 500 }}>{p}</label>
-                              <input
-                                aria-label={`${p} value`}
-                                type="number"
-                                value={draft.value?.[i] ?? 0}
-                                onChange={(e) =>
-                                  setDraft({
-                                    ...draft,
-                                    value: (draft.value ?? [0, 0, 0]).map((v, k) =>
-                                      k === i ? Number(e.target.value) : v,
-                                    ),
-                                  })
-                                }
-                              />
-                              <input
-                                aria-label={`${p} change`}
-                                type="number"
-                                step="any"
-                                value={draft.change?.[i] ?? 0}
-                                onChange={(e) =>
-                                  setDraft({
-                                    ...draft,
-                                    change: (draft.change ?? [0, 0, 0]).map((v, k) =>
-                                      k === i ? Number(e.target.value) : v,
-                                    ),
-                                  })
-                                }
-                              />
-                            </div>
-                          ))}
-                        </div>
-                        <label>
-                          Goal
-                          <input
-                            placeholder="Leave empty for no goal"
-                            value={draft.goal ?? ""}
-                            onChange={(e) => setDraft({ ...draft, goal: e.target.value })}
-                          />
-                        </label>
-                        <label>
-                          Goal progress %
-                          <input
-                            disabled
-                            type="number"
-                            min="0"
-                            max="100"
-                            value={draft.progress ?? 0}
-                            onChange={(e) =>
-                              setDraft({
-                                ...draft,
-                                progress: Number(e.target.value),
-                              })
-                            }
-                          />
-                        </label>
-                      </>
-                    )}
-                  </>
-                )}
-              </>
-            ) : (
-              <div className="fg-step-readonly">
-                <strong>Step</strong>
-                {[
-                  ["Detail", current.detail],
-                  ...(variant === 1
-                    ? [
-                        ["App", current.app],
-                        [
-                          "Next steps",
-                          String(graph.edges.filter((e) => e.source === current.id).length),
-                        ],
-                        ["Last run", durationFor(current)],
-                      ]
-                    : [
-                        ["Category", current.category],
-                        ["Owner", current.owner],
-                        [
-                          "Incoming",
-                          String(graph.edges.filter((e) => e.target === current.id).length),
-                        ],
-                        [
-                          "Outgoing",
-                          String(graph.edges.filter((e) => e.source === current.id).length),
-                        ],
-                      ]),
-                ].map(([key, value]) => (
-                  <div className="fg-detail-line" key={key}>
-                    <span>{key}</span>
-                    <span>
-                      {key === "Owner" ? (
-                        <>
-                          <MiniAvatar name={String(value)} />
-                          {value}
                         </>
-                      ) : (
-                        value
                       )}
-                    </span>
+                    </>
+                  )}
+                </>
+              ) : (
+                <div className="fg-step-readonly">
+                  <strong>Step</strong>
+                  {[
+                    ["Detail", current.detail],
+                    ...(variant === 1
+                      ? [
+                          ["App", current.app],
+                          [
+                            "Next steps",
+                            String(graph.edges.filter((e) => e.source === current.id).length),
+                          ],
+                          ["Last run", durationFor(current)],
+                        ]
+                      : [
+                          ["Category", current.category],
+                          ["Owner", current.owner],
+                          [
+                            "Incoming",
+                            String(graph.edges.filter((e) => e.target === current.id).length),
+                          ],
+                          [
+                            "Outgoing",
+                            String(graph.edges.filter((e) => e.source === current.id).length),
+                          ],
+                        ]),
+                  ].map(([key, value]) => (
+                    <div className="fg-detail-line" key={key}>
+                      <span>{key}</span>
+                      <span>
+                        {key === "Owner" ? (
+                          <>
+                            <MiniAvatar name={String(value)} />
+                            {value}
+                          </>
+                        ) : (
+                          value
+                        )}
+                      </span>
+                    </div>
+                  ))}
+                  {variant === 0 && <strong className="fg-detail-section">Last run</strong>}
+                  <div className="fg-detail-line">
+                    <span>{variant === 1 ? "Result" : "Status"}</span>
+                    <Badge
+                      variant={
+                        stateFor(current) === "Succeeded"
+                          ? "success-light"
+                          : stateFor(current) === "Failed"
+                            ? "destructive-light"
+                            : "outline"
+                      }
+                    >
+                      <RunIcon state={stateFor(current)} />
+                      {stateFor(current) === "Succeeded"
+                        ? variant === 1
+                          ? "Passed"
+                          : "Success"
+                        : variant === 1 && stateFor(current) === "Idle"
+                          ? "Not run"
+                          : stateFor(current)}
+                    </Badge>
                   </div>
-                ))}
-                {variant === 0 && <strong className="fg-detail-section">Last run</strong>}
-                <div className="fg-detail-line">
-                  <span>{variant === 1 ? "Result" : "Status"}</span>
-                  <Badge
-                    variant={
-                      stateFor(current) === "Succeeded"
-                        ? "success-light"
-                        : stateFor(current) === "Failed"
-                          ? "destructive-light"
-                          : "outline"
-                    }
-                  >
-                    <RunIcon state={stateFor(current)} />
-                    {stateFor(current) === "Succeeded"
-                      ? variant === 1
-                        ? "Passed"
-                        : "Success"
-                      : variant === 1 && stateFor(current) === "Idle"
-                        ? "Not run"
-                        : stateFor(current)}
-                  </Badge>
-                </div>
-                {variant === 0 && (
-                  <>
-                    <div className="fg-detail-line">
-                      <span>Duration</span>
-                      <span>{current.duration}</span>
-                    </div>
-                    <div className="fg-detail-line">
-                      <span>Run</span>
-                      <span>run_3f9a1c</span>
-                    </div>
-                  </>
-                )}
-              </div>
-            )}
-            {variant === 2 &&
-              (stateFor(current) === "Waiting" || stateFor(current) === "Failed") && (
-                <div
-                  className={`fg-detail-box fg-state-note ${statusClass(stateFor(current))}`}
-                  style={{ marginTop: "auto" }}
-                >
-                  {stateFor(current) === "Failed" ? <X /> : <CirclePause />}
-                  <span>
-                    {stateFor(current) === "Failed" ? "Duplicate charge id" : "Awaiting Approval"}
-                  </span>
+                  {variant === 0 && (
+                    <>
+                      <div className="fg-detail-line">
+                        <span>Duration</span>
+                        <span>{current.duration}</span>
+                      </div>
+                      <div className="fg-detail-line">
+                        <span>Run</span>
+                        <span>run_3f9a1c</span>
+                      </div>
+                    </>
+                  )}
                 </div>
               )}
-          </div>
-          <div className="fg-inspector-footer">
-            {editing || variant >= 2 ? (
-              <>
+              {variant === 2 &&
+                (stateFor(current) === "Waiting" || stateFor(current) === "Failed") && (
+                  <div
+                    className={`fg-detail-box fg-state-note ${statusClass(stateFor(current))}`}
+                    style={{ marginTop: "auto" }}
+                  >
+                    {stateFor(current) === "Failed" ? <X /> : <CirclePause />}
+                    <span>
+                      {stateFor(current) === "Failed" ? "Duplicate charge id" : "Awaiting Approval"}
+                    </span>
+                  </div>
+                )}
+            </div>
+            <div className="fg-inspector-footer">
+              {editing || variant >= 2 ? (
+                <>
+                  <Button
+                    className="fg-button"
+                    variant="outline"
+                    onClick={() => {
+                      setDraft({ ...current });
+                      if (variant < 2 || window.innerWidth < 600) setInspected(null);
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    className="fg-button"
+                    onClick={saveNode}
+                    disabled={
+                      variant >= 2 && (!draft || JSON.stringify(draft) === JSON.stringify(current))
+                    }
+                  >
+                    {variant === 3 ? "Save metric" : variant === 2 ? "Save task" : "Save step"}
+                  </Button>
+                </>
+              ) : (
                 <Button
                   className="fg-button"
                   variant="outline"
                   onClick={() => {
                     setDraft({ ...current });
-                    if (variant < 2 || window.innerWidth < 600) setInspected(null);
+                    setEditing(true);
                   }}
                 >
-                  Cancel
+                  Edit step
                 </Button>
-                <Button
-                  className="fg-button"
-                  onClick={saveNode}
-                  disabled={
-                    variant >= 2 && (!draft || JSON.stringify(draft) === JSON.stringify(current))
-                  }
-                >
-                  {variant === 3 ? "Save metric" : variant === 2 ? "Save task" : "Save step"}
-                </Button>
-              </>
-            ) : (
-              <Button
-                className="fg-button"
-                variant="outline"
-                onClick={() => {
-                  setDraft({ ...current });
-                  setEditing(true);
-                }}
-              >
-                Edit step
-              </Button>
-            )}
-          </div>
+              )}
+            </div>
+          </FlowInspectorTabs>
         </FlowInspectorShell>
       )}
       <AlertDialog

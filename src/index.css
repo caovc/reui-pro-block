@@ -171,9 +171,11 @@ button {
 a {
   text-decoration: none;
 }
-:focus-visible {
-  outline: 2px solid var(--ring);
-  outline-offset: 3px;
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+  }
 }
 /* Official ReUI badge semantic tokens (radix-nova registry). */
 @theme inline {
