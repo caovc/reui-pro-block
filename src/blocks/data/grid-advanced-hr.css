@@ -1,0 +1,198 @@
+.hr-scorecard-heading {
+  min-height: 48px;
+}
+
+.hr-scorecard-actions,
+.hr-scorecard-tools,
+.hr-scorecard-period-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hr-scorecard-search {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 4px;
+}
+
+.hr-scorecard-summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1.35fr;
+  border-bottom: 1px solid var(--border);
+}
+
+.hr-scorecard-summary > div {
+  min-height: 64px;
+  padding: 10px 16px;
+  border-right: 1px solid var(--border);
+}
+
+.hr-scorecard-summary > div:last-child {
+  border-right: 0;
+}
+
+.hr-scorecard-summary > div > span {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.hr-scorecard-summary p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 24px;
+}
+
+.hr-scorecard-summary strong {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 24px;
+  font-variant-numeric: tabular-nums;
+}
+
+.hr-scorecard-summary small {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.hr-scorecard-scroll {
+  height: 768px;
+}
+
+.hr-scorecard [data-row-id^="group-"] > td {
+  background: var(--muted);
+  font-weight: 500;
+}
+
+.hr-score-index {
+  display: flex;
+  height: 27px;
+  align-items: center;
+  justify-content: flex-end;
+  margin-inline: -8px;
+  padding-inline: 8px;
+  font-weight: 500;
+}
+
+.hr-score-index[data-status="On Track"] {
+  background: color-mix(in oklch, var(--color-emerald-500) 9%, var(--background));
+  color: var(--color-emerald-700);
+}
+
+.hr-score-index[data-status="Watch"] {
+  background: color-mix(in oklch, var(--color-amber-500) 9%, var(--background));
+  color: var(--color-amber-700);
+}
+
+.hr-score-index[data-status="Off Track"] {
+  background: color-mix(in oklch, var(--destructive) 7%, var(--background));
+  color: var(--destructive);
+}
+
+.hr-trend {
+  width: 48px;
+  height: 18px;
+  margin-inline: auto;
+  aspect-ratio: auto;
+  color: var(--color-emerald-500);
+}
+
+.hr-trend[data-status="Watch"] {
+  color: var(--color-amber-500);
+}
+
+.hr-trend[data-status="Off Track"] {
+  color: var(--destructive);
+}
+
+.hr-trend[data-status="Pending"] {
+  color: var(--muted-foreground);
+}
+
+.hr-scorecard-footer {
+  position: sticky;
+  z-index: 35;
+  bottom: 0;
+  background: var(--muted);
+}
+
+.hr-scorecard-footer td {
+  background: var(--muted);
+}
+
+.hr-footer-expand {
+  position: sticky;
+  z-index: 36;
+  left: 0;
+}
+
+.hr-footer-label {
+  position: sticky;
+  z-index: 36;
+  left: 28px;
+  overflow: visible;
+}
+
+.hr-scorecard-sheet[data-slot="sheet-content"] {
+  inset: 16px 16px 16px auto;
+  width: min(448px, calc(100vw - 32px));
+  max-width: 448px;
+  height: calc(100dvh - 32px);
+  gap: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+}
+
+@media (max-width: 640px) {
+  .hr-scorecard-heading {
+    justify-content: flex-start;
+    padding-block: 8px;
+  }
+
+  .hr-scorecard-actions {
+    width: 100%;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .hr-scorecard-tools {
+    width: 100%;
+  }
+
+  .hr-scorecard-search {
+    flex: 1;
+  }
+
+  .hr-scorecard-search input {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .hr-scorecard-period-actions > button {
+    width: 32px;
+    padding-inline: 0;
+  }
+
+  .hr-scorecard-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .hr-scorecard-summary > div {
+    min-height: 64px;
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hr-scorecard-summary > div:last-child {
+    border-bottom: 0;
+  }
+
+  .hr-scorecard-scroll {
+    height: 512px;
+  }
+}

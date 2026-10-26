@@ -1,0 +1,152 @@
+import { expect, test, type Page } from "@playwright/test";
+import { createFreightBook, freightTerminals } from "../src/blocks/data/grid-advanced-freight-data";
+import { freightFigures } from "../src/blocks/data/grid-advanced-freight-math";
+
+// Integration owner runs these after the explicit advanced-12 route is registered.
+// This file has not been executed by the leaf owner: no browser server is authorized.
+const route = "./#/preview/data-grid/advanced/data-grid-advanced-12";
+const network = (page: Page) =>
+  page.getByRole("region", { name: "Freight & Cargo Services", exact: true });
+const originRow = (page: Page, city: string) =>
+  network(page)
+    .getByRole("row")
+    .filter({
+      has: page.getByRole("checkbox", { name: `Select ${city}`, exact: true }),
+    });
+
+async function actions(page: Page, name: string, item: string) {
+  await page.getByRole("button", { name: `Actions for ${name}`, exact: true }).click();
+  await page.getByRole("menuitem", { name: item, exact: true }).click();
+}
+
+test("Freight filters native lane records, conserves inbound loads and resets an empty result", async ({
+  page,
+}) => {
+  await page.goto(route);
+  await expect(network(page).locator("tbody tr[data-row-id]")).toHaveCount(12);
+  await expect
+    .poll(() =>
+      network(page)
+        .locator("tbody tr[data-row-id]")
+        .evaluateAll((rows) => rows.map((row) => row.getBoundingClientRect().height)),
+    )
+    .toEqual(Array(12).fill(41));
+  const search = page.getByRole("textbox", { name: "Search terminals and shippers", exact: true });
+  await search.fill("Valencia");
+  const matching = createFreightBook().lanes.filter(
+    (lane) => lane.origin === "VLC" || lane.destination === "VLC",
+  );
+  const origins = new Set(matching.map((lane) => lane.origin));
+  await expect(network(page).locator("tbody tr[data-row-id]")).toHaveCount(origins.size);
+  const outColumnIndex = await network(page)
+    .getByRole("columnheader", { name: "Out", exact: true })
+    .evaluate((header) => (header as HTMLTableCellElement).cellIndex);
+  for (const origin of origins) {
+    const terminal = freightTerminals.find((candidate) => candidate.id === origin)!;
+    const loads = matching
+      .filter((lane) => lane.origin === origin)
+      .reduce((sum, lane) => sum + lane.loads, 0);
+    await expect(originRow(page, terminal.city).locator("td").nth(outColumnIndex)).toHaveText(
+      loads.toLocaleString("en-GB"),
+    );
+  }
+  await expect(
+    network(page).locator("tfoot tr").last().locator("td").nth(outColumnIndex),
+  ).toHaveText(matching.reduce((sum, lane) => sum + lane.loads, 0).toLocaleString("en-GB"));
+  await search.fill("does-not-exist-bricklane");
+  await expect(
+    network(page).getByText("No lanes match this search or filter.", { exact: true }),
+  ).toBeVisible();
+  await network(page).getByRole("button", { name: "Clear filters", exact: true }).click();
+  await expect(network(page).locator("tbody tr[data-row-id]")).toHaveCount(12);
+});
+
+test("Freight origin selection remains native, and draft filters leave records visible", async ({
+  page,
+}) => {
+  await page.goto(route);
+  await page.getByRole("button", { name: "Filter", exact: true }).click();
+  await page.getByRole("button", { name: "Add group", exact: true }).click();
+  await page.keyboard.press("Escape");
+  await expect(network(page).locator("tbody tr[data-row-id]")).toHaveCount(12);
+  await page.getByRole("checkbox", { name: "Select Porto", exact: true }).click();
+  await page.getByRole("checkbox", { name: "Select Valencia", exact: true }).click();
+  await expect(network(page).getByRole("status")).toContainText("2 origins selected");
+  await page.getByRole("checkbox", { name: "Select Porto", exact: true }).click();
+  await expect(page.getByRole("checkbox", { name: "Select Valencia", exact: true })).toBeChecked();
+  await expect(network(page).getByRole("status")).toContainText("1 origin selected");
+  await network(page).getByRole("button", { name: "Clear", exact: true }).click();
+  await expect(
+    page.getByRole("checkbox", { name: "Select Valencia", exact: true }),
+  ).not.toBeChecked();
+});
+
+test("Freight repricing writes real history and Undo restores it", async ({ page }) => {
+  await page.goto(route);
+  await actions(page, "Porto", "Reprice Lanes");
+  const sheet = page.getByRole("dialog", { name: "Reprice Lanes", exact: true });
+  const losing = createFreightBook().lanes.filter(
+    (lane) => lane.origin === "OPO" && freightFigures(lane).profitCents < 0,
+  );
+  await expect(
+    sheet.getByText(`${losing.length} lanes of 11 change`, { exact: true }),
+  ).toBeVisible();
+  await sheet.getByLabel("Reason", { exact: true }).fill("Freight browser audit");
+  await sheet.getByRole("button", { name: "Apply Rates", exact: true }).click();
+  await expect(sheet).toBeHidden();
+  await actions(page, "Porto", "Rate History");
+  await expect(
+    page.getByRole("dialog").getByText("Freight browser audit", { exact: true }),
+  ).toHaveCount(losing.length);
+  await page.keyboard.press("Escape");
+  await expect(page.getByRole("button", { name: "Actions for Porto", exact: true })).toBeFocused();
+  await page.getByRole("button", { name: "Undo last change", exact: true }).click();
+  await actions(page, "Porto", "Rate History");
+  await expect(
+    page.getByRole("dialog").getByText("Freight browser audit", { exact: true }),
+  ).toHaveCount(0);
+});
+
+test("Freight closing a directed lane changes totals and Undo reopens it", async ({ page }) => {
+  await page.goto(route);
+  await page.getByRole("button", { name: /^Porto to Valencia,/ }).click();
+  await page.getByRole("dialog").getByRole("button", { name: "Close Lane", exact: true }).click();
+  const confirmation = page.getByRole("alertdialog", {
+    name: "Close Porto to Valencia?",
+    exact: true,
+  });
+  await confirmation.getByRole("button", { name: "Keep Lane", exact: true }).click();
+  await expect(
+    page.getByRole("dialog").getByRole("button", { name: "Edit Lane", exact: true }),
+  ).toBeVisible();
+  await page.getByRole("dialog").getByRole("button", { name: "Close Lane", exact: true }).click();
+  await confirmation.getByRole("button", { name: "Close Lane", exact: true }).click();
+  await expect(
+    network(page)
+      .getByText(/97 lanes/, { exact: false })
+      .first(),
+  ).toBeVisible();
+  await expect(page.getByRole("button", { name: /^Porto to Valencia, no lane/ })).toBeVisible();
+  await page.getByRole("button", { name: "Undo last change", exact: true }).click();
+  await expect(page.getByRole("button", { name: /^Porto to Valencia, (?!no lane)/ })).toBeVisible();
+});
+
+test("Freight phone retains native pinned columns while the matrix scrolls", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto(route);
+  const origin = originRow(page, "Porto").locator('td[data-pinned="start"][data-last-col="start"]');
+  await expect
+    .poll(() => originRow(page, "Porto").evaluate((row) => row.getBoundingClientRect().height))
+    .toBe(41);
+  const before = await origin.boundingBox();
+  const viewport = network(page)
+    .locator('[data-slot="scroll-area-viewport"]')
+    .filter({ has: page.locator("table") })
+    .first();
+  await viewport.hover();
+  await page.mouse.wheel(600, 0);
+  await expect.poll(() => viewport.evaluate((element) => element.scrollLeft)).toBeGreaterThan(0);
+  const after = await origin.boundingBox();
+  expect(after!.x).toBeCloseTo(before!.x, 1);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(390);
+});

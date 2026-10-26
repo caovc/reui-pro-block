@@ -1,0 +1,169 @@
+.factory-scorecard-heading {
+  min-height: 48px;
+}
+
+.factory-scorecard-pager {
+  min-height: 46px;
+}
+
+.factory-scorecard [data-slot="data-grid-table"] {
+  min-width: 1041px;
+}
+
+.factory-otif-lane {
+  display: flex;
+  width: 100%;
+  height: 40px;
+  align-items: center;
+  gap: 16px;
+  border-radius: 3px;
+  text-align: left;
+}
+
+.factory-otif-lane:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 1px;
+}
+
+.factory-otif-track {
+  position: relative;
+  display: block;
+  height: 40px;
+  flex: 1;
+  background: repeating-linear-gradient(to right, var(--border) 0 1px, transparent 1px 25%);
+}
+
+.factory-otif-track::before {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  height: 1px;
+  background: var(--border);
+  content: "";
+}
+
+.factory-otif-peer,
+.factory-otif-change,
+.factory-otif-prior,
+.factory-otif-current,
+.factory-otif-floor,
+.factory-otif-goal {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.factory-otif-peer {
+  height: 6px;
+  border-radius: 4px;
+  background: color-mix(in oklch, var(--foreground) 13%, transparent);
+}
+
+.factory-otif-change {
+  height: 1px;
+  background: color-mix(in oklch, var(--foreground) 40%, transparent);
+}
+
+.factory-otif-prior {
+  width: 7px;
+  height: 7px;
+  border: 1px solid color-mix(in oklch, var(--foreground) 50%, transparent);
+  border-radius: 50%;
+  background: var(--background);
+  transform: translate(-50%, -50%);
+}
+
+.factory-otif-current {
+  width: 12px;
+  height: 12px;
+  border: 1.5px solid var(--background);
+  border-radius: 50%;
+  background: var(--foreground);
+  transform: translate(-50%, -50%);
+}
+
+.factory-otif-current.is-below {
+  background: var(--destructive);
+}
+
+.factory-otif-floor {
+  height: 12px;
+  border-left: 1px dashed color-mix(in oklch, var(--foreground) 45%, transparent);
+}
+
+.factory-otif-goal {
+  height: 40px;
+  border-left: 1px solid color-mix(in oklch, var(--foreground) 18%, transparent);
+}
+
+.factory-otif-axis {
+  position: relative;
+  min-width: 0;
+  height: 20px;
+  flex: 1;
+  margin-right: 2px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.factory-otif-axis > span {
+  position: absolute;
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+
+.factory-comfortable .factory-otif-lane,
+.factory-comfortable .factory-otif-track,
+.factory-comfortable .factory-otif-goal {
+  height: 48px;
+}
+
+.factory-scorecard-sheet[data-slot="sheet-content"] {
+  inset: 16px 16px 16px auto;
+  width: min(576px, calc(100vw - 32px));
+  max-width: 576px;
+  height: calc(100dvh - 32px);
+  gap: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+}
+
+@media (max-width: 640px) {
+  .factory-scorecard-heading {
+    align-items: flex-start;
+    gap: 12px;
+    padding: 8px 16px;
+  }
+
+  .factory-scorecard-heading > div:first-child {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .factory-scorecard-heading > div:last-child {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .factory-scorecard-pager {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding-block: 12px;
+  }
+
+  .factory-scorecard-pager > div {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-block: 0;
+  }
+
+  .factory-scorecard-pager > div:last-child {
+    flex-direction: column;
+    gap: 12px;
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "baseline": "13082becd8cd4b3ea8720e231632d63d09ee050e",
+  "catalog": {
+    "entries": 669,
+    "categories": 79,
+    "groups": 7,
+    "uniqueStableKeys": 669,
+    "countsMatchCategoryLengths": true
+  },
+  "addedIDs": [
+    "data-grid-advanced-10",
+    "data-grid-advanced-11",
+    "data-grid-advanced-12",
+    "data-grid-advanced-13",
+    "data-grid-advanced-22",
+    "solution-map-1"
+  ],
+  "integration": "Five dedicated advanced leaves and the Map category, registered with explicit stable IDs and implementation-first source targets. No IDs14–21 are invented. Existing DataGrid phone gutters change only for these five IDs.",
+  "reuse": {
+    "actualFreeReUI": [
+      "Frame",
+      "DataGrid and its native editing, pagination and column models",
+      "Filters",
+      "Cascader",
+      "Timeline",
+      "NumberField",
+      "Badge",
+      "Slider example",
+      "Alert",
+      "CodeBlock"
+    ],
+    "customGaps": [
+      "MapLibre GL6.16.0 supplies the real geographic engine and worker; the free component library has no fleet-map engine.",
+      "Independent fleet/domain models, eligibility and Undo state, local original vehicle artwork and domain-specific cells compose around free controls."
+    ],
+    "newSDKExact": "maplibre-gl@6.16.0",
+    "normalSDKInstallExitCode": 0,
+    "paidSourceOrMediaIncluded": false,
+    "branding": "Original Bricklane mark and local artwork; external map data carries its native attribution."
+  },
+  "validation": {
+    "mergedOriginalStrictMainBuild": "passed",
+    "toolingAndModelTestsPassed": 91,
+    "fixedCatalogSnapshot": "1 passed; 669 entries /79 categories and all unique keys",
+    "advancedNativeSuite": {
+      "passed": 45,
+      "failed": 0,
+      "source": "Frozen13082+five leaves; final merged leaves remain byte-exact."
+    },
+    "dispatchNativeAndSourceSuite": {
+      "passed": 18,
+      "failed": 0,
+      "source": "Fourth Map production candidate. Prior8/6,15/3 and16/2 reports remain retained."
+    },
+    "finalSourceUI": "Five advanced four-way UI checks and four Map source tests passed on the merged immutable candidate. Each default leaf matches displayed CodeBlock content, actual clipboard, single download and actual ZIP.",
+    "actualZIPs": {
+      "count": 6,
+      "membersEach": 304,
+      "byteIdenticalCommonMembers": 301,
+      "onlyDifferentMembers": ["src/Example.tsx", "package.json", "README.md"],
+      "freshNormalNpmInstalls": 1,
+      "independentPhysicalDependencyClones": 5,
+      "originalStrictBuildsPassed": 6,
+      "archiveContentsEdited": false,
+      "nativeRuntimeCasesPassed": 15,
+      "mapRuntimeBase": "/maps/",
+      "mapCoverage": [
+        "1440 and390 layout/List",
+        "actual SDK worker/GeoJSON/markers/camera",
+        "real style503 Retry",
+        "genuine WebGL failure native List fallback"
+      ]
+    },
+    "visualReview": {
+      "screenshotsActuallyViewed": 10,
+      "widths": [1440, 390],
+      "fonts": "loaded",
+      "pageErrors": 0,
+      "documentOverflow": 0,
+      "sameStateDesktopPixelSamples": 7,
+      "notPixelPerfect": true,
+      "remaining": [
+        {
+          "id": 10,
+          "finding": "Desktop table504.734→506 and header55.734→56. Phone table y220→221; public pagination y696.734/h152 versus local y687/h155, overlay track does not reserve the same lower band. Smaller header-tone/pin-icon differences remain."
+        },
+        {
+          "id": 11,
+          "finding": "Phone Frame726→699, pager152→125 (27px short); order pages→info→size and table y163 align. Exact public JSON desktop pagination height44, local46; earlier46px public description included surrounding boundaries and was imprecise."
+        },
+        {
+          "id": 12,
+          "finding": "Desktop frame700→702 while table550 matches. Phone frame738→728 and table560→550. Reference footer sample is tfoot tr, local is whole tfoot:27→26/37→26 cannot be treated as strict same-element delta."
+        },
+        {
+          "id": 13,
+          "finding": "Reference single bordered InputGroup with embedded icon, slash keycap and contiguous tools differs from separate local search/ghost tools. Combined header60→62. Desktop ALL KPIS label visible; phone table y414 matches, but footer is below viewport and not screenshot-verified."
+        },
+        {
+          "id": 22,
+          "finding": "Phone dots should be a distinct lower line; current inline. Frame reference795.484→781, header y232.484→231. Pagination difference originally described as roughly12px; precise public pagination box was not captured, do not claim exact12px. Body industry/size/contacts muted versus black reference; Growth bars monochrome versus tinted series. Desktop table x112/w1216 versus reference header x113 within frame; additional1px inset remains."
+        }
+      ],
+      "actualRemoteMap": "Root Edge final669 street tiles loaded with native attribution, simulation paused and Zoom changed scale3000ft to2000ft. SDK state tests use an explicit network-independent style and do not claim street-map visual proof."
+    },
+    "formatAndScopedOxlint": "passed"
+  },
+  "focusAndViewportFixes": [
+    "Map detail Tabs use45px including border and native36px list, retaining the original phone horizontal-scroll contract.",
+    "Reassignment clicks the visible native radio label and asserts the same radio checked; route counts9→8→Undo9 remain unchanged.",
+    "Controlled consumers retain native focus scopes and real opener/fallback rules. A two-width probe proved selecting V03 remounts its native DataGrid button; an optional live-origin resolver returns the same visible vehicle entity after Escape. No vendor or document.body reset is used."
+  ],
+  "deployment": "Commit/push, normal Actions completion and successful Pages deployment must be reported separately. This receipt is local verification, not a deployment claim.",
+  "evidenceSHA256": {
+    "bricklane-six-final-669-main-process.json": "68075e416e634c5a27908a903c84db64274f7a2cbc72c0866c6011787688763e",
+    "bricklane-map-canonical-third-production-report.json": "a92d04715baef3e99182ff16cf609c4709d7bc21b085cbb8bab6b686b137fd79",
+    "bricklane-map-canonical-fourth-production-report.json": "307fae4ec94cd8207c66c0c529b8d912b780742ee8facc5ff0013f69b3da2cd5",
+    "final45-acceptance-receipt.json": "b85ed19deec7c15603ee84bc072af5d583fee44fb8963f6d3e35d6fc51ef84a5",
+    "bricklane-six-final-669-tooling.log": "6f6053df371039548157060805dd547e1c0431011e1aef6c4e0e8c407c546747",
+    "bricklane-six-final-669-catalog.log": "dcd577beaaa971a19f11628092d9b438ae27e793a6545e2b883c8bd56023a0bc",
+    "bricklane-six-final-669-map-source-report.json": "0457c478ed402296ffd67dc583e1720876ddd7d2d97fe7d626bcc185f9d9d952",
+    "source-export-results.json": "c33d4f1eb9cc72826af9e0331e4cb43bc26b026f2c91291db25b29625004fe33",
+    "bricklane-six-final-sixzip-equivalence.json": "6c3a9d6ab5c895f96c8564860047314509655317961b5633bf3bafea5312c868",
+    "bricklane-six-final-actual-zip10-install-process.json": "01d1d28a64211bfa9a5b6b4ca9c6dc64f8cd40c96939f0cb2ede0b60a8137af0",
+    "bricklane-six-final-actual-zip10-strict-process.json": "0e70ee9d876b6dc49aa35df0bdc3511bc8eab825ebc14a1e5722057f26229618",
+    "bricklane-six-final-remaining-strict-results.json": "3e6123a36c289b7bd0cd20c2bccf57853c6b664edc5ec615f734ea2420355d55",
+    "bricklane-six-final-export-runtime-results.json": "63e7b575e36b0b47482ce92fcf8a621b966250956c495e2ce3325c3b01e385a4",
+    "final669-visual-review-receipt.json": "fde5dd9a03b4821a14af904fe5108d112d39291974c272f690dc40e173e86461",
+    "bricklane-root-final669-map-visual.png": "ed0b6d7e37434265386973686fb06a86ab147365c67610b3ea8028e8f523c0d7"
+  }
+}

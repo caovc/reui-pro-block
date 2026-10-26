@@ -137,6 +137,7 @@ function paths(family: string, ...modules: string[]) {
 
 /** Candidate implementation files in the same routing order as the previews. */
 export function blockImplementationCandidates(block: BlockMeta): string[] {
+  if (block.id === "solution-map-1") return paths("data", "solution-map-variants/dispatch-map");
   const variant = Number(block.id.split("-").at(-1));
   if (block.id === "solution-dev-ops-7")
     return paths("data", "solution-dev-ops-variants/deploy-board");
@@ -337,6 +338,17 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
     return paths("commerce", commerce[block.category]);
   }
   if (block.group === "data-grid") {
+    if (block.category === "advanced") {
+      const modules: Record<string, string> = {
+        "data-grid-advanced-10": "grid-advanced-technician-capacity",
+        "data-grid-advanced-11": "grid-advanced-factory-scorecard",
+        "data-grid-advanced-12": "grid-advanced-freight",
+        "data-grid-advanced-13": "grid-advanced-hr-scorecard",
+        "data-grid-advanced-22": "grid-advanced-prospect-database",
+      };
+      const module = modules[block.id];
+      if (module) return paths("data", module, "grid-advanced");
+    }
     if (block.category === "grouping" && block.index >= 5 && block.index < 7) {
       const module = ["grid-grouping-editorial", "grid-grouping-delivery"][block.index - 5];
       return paths("data", module, "grid-grouping");

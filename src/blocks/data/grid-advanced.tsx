@@ -3,6 +3,11 @@ import type { BlockProps } from "@/data/types";
 import { Filter, Settings2 } from "lucide-react";
 import { useMemo, useState } from "react";
 import PerformanceCampaignTable from "./grid-advanced-campaign-table";
+import TechnicianCapacity from "./grid-advanced-technician-capacity";
+import FactoryScorecard from "./grid-advanced-factory-scorecard";
+import FreightCargo from "./grid-advanced-freight";
+import HRScorecard from "./grid-advanced-hr-scorecard";
+import ProspectDatabase from "./grid-advanced-prospect-database";
 import { DomainRecordGrid, domainTextMatches } from "./grid-advanced-model-grid";
 import { campaignPerformanceRows, campaignTargetRows, storePnlRows } from "./grid-advanced-seeds";
 import {
@@ -1072,7 +1077,19 @@ export default function AdvancedGrid({ block }: BlockProps) {
       return <ProForma />;
     case "data-grid-advanced-8":
       return <ProductKpis />;
-    default:
+    case "data-grid-advanced-9":
       return <ServiceVisits />;
+    case "data-grid-advanced-10":
+      return <TechnicianCapacity />;
+    case "data-grid-advanced-11":
+      return <FactoryScorecard />;
+    case "data-grid-advanced-12":
+      return <FreightCargo />;
+    case "data-grid-advanced-13":
+      return <HRScorecard />;
+    case "data-grid-advanced-22":
+      return <ProspectDatabase />;
+    default:
+      return null;
   }
 }

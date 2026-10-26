@@ -3143,9 +3143,54 @@
         "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-9",
         "index": 8,
         "description": "Kitchen service visit planner with a three week day matrix and a coverage column"
+      },
+      {
+        "id": "data-grid-advanced-10",
+        "name": "Technician Capacity",
+        "category": "advanced",
+        "group": "data-grid",
+        "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-10",
+        "index": 9,
+        "description": "Daily technician capacity with booking, time-off planning and overtime indicators."
+      },
+      {
+        "id": "data-grid-advanced-11",
+        "name": "Factory Scorecard",
+        "category": "advanced",
+        "group": "data-grid",
+        "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-11",
+        "index": 10,
+        "description": "Factory spend and delivery scorecard with quarterly comparisons, review notes and supplier decisions."
+      },
+      {
+        "id": "data-grid-advanced-12",
+        "name": "Freight & Cargo Services",
+        "category": "advanced",
+        "group": "data-grid",
+        "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-12",
+        "index": 11,
+        "description": "Directed freight lane matrix with margin bands, repricing history and reversible network changes."
+      },
+      {
+        "id": "data-grid-advanced-13",
+        "name": "HR Scorecard",
+        "category": "advanced",
+        "group": "data-grid",
+        "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-13",
+        "index": 12,
+        "description": "Monthly HR performance scorecard with grouped metrics, target editing, prior-year comparison and trends."
+      },
+      {
+        "id": "data-grid-advanced-22",
+        "name": "Prospect Database",
+        "category": "advanced",
+        "group": "data-grid",
+        "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-22",
+        "index": 13,
+        "description": "Prospect account database with structured filters, intent summaries, lists and account handover."
       }
     ],
-    "count": 9
+    "count": 14
   },
   {
     "id": "columns",
@@ -5149,6 +5194,25 @@
       }
     ],
     "count": 2
+  },
+  {
+    "id": "map",
+    "name": "Map",
+    "group": "solutions",
+    "groupLabel": "Solutions",
+    "reference": "https://reui.io/blocks/solutions/map",
+    "blocks": [
+      {
+        "id": "solution-map-1",
+        "name": "Dispatch Map",
+        "category": "map",
+        "group": "solutions",
+        "reference": "https://reui.io/blocks/solutions/map/solution-map-1",
+        "index": 0,
+        "description": "Same-day dispatch on a live street map: a simulated fleet from minivans to box trucks, a framed fleet panel, an iso and side vehicle twin with its cargo..."
+      }
+    ],
+    "count": 1
   },
   {
     "id": "category-card",

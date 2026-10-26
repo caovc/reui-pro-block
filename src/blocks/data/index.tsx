@@ -1,3 +1,4 @@
+import DispatchMap from "./solution-map-variants/dispatch-map";
 import DeployBoard from "./solution-dev-ops-variants/deploy-board";
 import WorkspaceChatVariants from "./ai-chat-workspace-variants";
 import InitialChatVariants from "./ai-chat-initial-variants";
@@ -41,6 +42,7 @@ import {
   WizardBlock,
 } from "./workflows";
 export default function DataBlock({ block }: BlockProps) {
+  if (block.id === "solution-map-1") return <DispatchMap />;
   if (block.id === "solution-dev-ops-7") return <DeployBoard block={block} />;
   if (block.group === "data-grid") {
     const refined = {
@@ -60,9 +62,16 @@ export default function DataBlock({ block }: BlockProps) {
       "data-grid-editing-2",
       "data-grid-expansion-2",
     ].includes(block.id);
+    const wideGutter = [
+      "data-grid-advanced-10",
+      "data-grid-advanced-11",
+      "data-grid-advanced-12",
+      "data-grid-advanced-13",
+      "data-grid-advanced-22",
+    ].includes(block.id);
     return (
       <main
-        className={`data-grid-refinement min-w-0 w-full ${previous ? (block.id === "data-grid-editing-2" ? "px-12 sm:px-6" : "px-8 sm:px-6") : "px-3 py-8 sm:px-6 sm:py-12"}`}
+        className={`data-grid-refinement min-w-0 w-full ${previous ? (block.id === "data-grid-editing-2" ? "px-12 sm:px-6" : "px-8 sm:px-6") : `${wideGutter ? "px-4" : "px-3"} py-8 sm:px-6 sm:py-12`}`}
       >
         {previous ? <GridBlock block={block} /> : <Refined block={block} />}
       </main>

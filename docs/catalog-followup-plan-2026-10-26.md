@@ -1,22 +1,24 @@
 # Official catalog follow-up — 2026-10-26
 
-The current public Blocks catalog has669 stable IDs in79 categories. The implemented local catalog snapshot contains662 IDs in78 categories. Read-only comparison fetched all79 public category pages and verified all seven additional detail pages with matching canonical URLs and HTTP200. No old ID was removed, renamed or moved. This records a current coverage difference; it does not establish when any block was published.
+The implemented catalog now represents all 669 stable IDs in the audited 79 public categories. At the beginning of this audit, the local snapshot contained 662 IDs in 78 categories. Read-only comparison fetched all 79 public category pages and verified the seven additional detail pages with matching canonical URLs and HTTP 200. No old ID was removed, renamed or moved. The audit establishes coverage, rather than publication dates or pixel-identical fidelity.
 
 The separate template audit verified18 local/public template IDs, names, category memberships and live preview URLs, with no additions or removals. Dynamic list ordering is not a new template.
 
-## Implementation queue
+## Implementation record
 
-All seven entries below are pending. Their IDs must remain explicit; `data-grid-advanced-22` must not be renumbered and IDs14–21 must not be invented. Existing releases continue independently.
+All seven entries below have dedicated implementations and actual implementation source defaults. Deploy Board was committed separately; the remaining six share the 669-entry release verification. Their IDs remain explicit: `data-grid-advanced-22` is retained, and IDs 14–21 are not invented. Source/download checks, actual exported-project builds and remaining visual differences are recorded in [the release receipt](catalog-six-blocks-669-release.json). CI and Pages deployment remain separate release gates.
 
-| Stable ID             | Official name/reference                                                                     | Owner and next step                                                                         |
-| --------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| data-grid-advanced-10 | [Technician Capacity](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-10)      | Data Grid owner: free-component and public-state audit, then an independent domain leaf     |
-| data-grid-advanced-11 | [Factory Scorecard](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-11)        | Data Grid owner: free-component and public-state audit, then an independent domain leaf     |
-| data-grid-advanced-12 | [Freight & Cargo Services](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-12) | Data Grid owner: free-component and public-state audit, then an independent domain leaf     |
-| data-grid-advanced-13 | [HR Scorecard](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-13)             | Data Grid owner: free-component and public-state audit, then an independent domain leaf     |
-| data-grid-advanced-22 | [Prospect Database](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-22)        | Data Grid owner: free-component and public-state audit, then an independent domain leaf     |
-| solution-dev-ops-7    | [Deploy Board](https://reui.io/blocks/solutions/dev-ops/solution-dev-ops-7)                 | Solutions follow-up: free-component and public-state audit, then an independent domain leaf |
-| solution-map-1        | [Dispatch Map](https://reui.io/blocks/solutions/map/solution-map-1)                         | Solutions follow-up: free-component and public-state audit, then an independent domain leaf |
+| Stable ID             | Official name/reference                                                                     | Implementation and verification                                                          |
+| --------------------- | ------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| data-grid-advanced-10 | [Technician Capacity](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-10)      | Dedicated free ReUI domain leaf; the five-block native interaction suite passes 45 tests |
+| data-grid-advanced-11 | [Factory Scorecard](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-11)        | Dedicated free ReUI domain leaf; the five-block native interaction suite passes 45 tests |
+| data-grid-advanced-12 | [Freight & Cargo Services](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-12) | Dedicated free ReUI domain leaf; the five-block native interaction suite passes 45 tests |
+| data-grid-advanced-13 | [HR Scorecard](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-13)             | Dedicated free ReUI domain leaf; the five-block native interaction suite passes 45 tests |
+| data-grid-advanced-22 | [Prospect Database](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-22)        | Dedicated free ReUI domain leaf; the five-block native interaction suite passes 45 tests |
+| solution-dev-ops-7    | [Deploy Board](https://reui.io/blocks/solutions/dev-ops/solution-dev-ops-7)                 | Dedicated solution leaf; see the verification record below                               |
+| solution-map-1        | [Dispatch Map](https://reui.io/blocks/solutions/map/solution-map-1)                         | Dedicated solution leaf; see the verification record below                               |
+
+Deploy Board uses the published free-component implementation from commit `6aaaeba`; its 16 production checks passed. Dispatch Map composes actual free ReUI controls around MapLibre GL 6.16.0, with an independently authored fleet model and vehicle artwork. Its 18 production checks passed after fixing native focus restoration and the detail-tab viewport. The merged six-block candidate also passes the original strict main build, 91 tooling/model tests, the fixed 669/79 catalog snapshot, real source UI checks, six actual export builds and 15 original exported-runtime checks.
 
 ## Required sequence
 
@@ -29,8 +31,8 @@ All seven entries below are pending. Their IDs must remain explicit; `data-grid-
 
 ## Scope and coordination
 
-The5Advanced audits and the2Solutions audits may proceed in parallel using separate leaves. Existing shared DataGrid adapters, Tabs, Sidebar, global CSS and export collectors retain their assigned single writers. No new dependency, shared primitive change, catalog mutation or cold build is part of the initial read-only audit.
+The five Advanced implementations and two Solutions implementations were developed in parallel using separate leaves. Shared DataGrid adapters, Tabs, Sidebar, global CSS and export collectors retain assigned writers. Root integrated the catalog and source hooks narrowly, installed MapLibre normally against the current dependency baseline and coordinated all Git writes. Subsequent visual refinements keep their own evidence and frozen deltas.
 
-After this queue is delivered, expected catalog coverage is669 blocks/79 categories and18 templates, subject to another final public-ID comparison. Existing blocks still retain their own unresolved fidelity ledgers; matching counts does not certify every visual state.
+Catalog coverage is 669 blocks in 79 categories, alongside the 18 audited template IDs. Existing blocks retain their unresolved fidelity ledgers; matching counts does not certify every visual state. Remaining differences in the new grid leaves, including phone summary dots, pagination spacing and some chart/text colors, continue as separate refinements.
 
 Evidence snapshots remain outside the repository: the Blocks diff/canonical/fetch receipts and the separate Templates18 canonical receipt. Raw reference HTML, paid screenshots and extracted original artwork are not distributed.
