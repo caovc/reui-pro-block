@@ -1,0 +1,99 @@
+{
+  "scope": "Test-only, independent native typography fixture; product CSS/components and normal CI unchanged.",
+  "failedRun": 40318993259,
+  "diagnosisRun": 40328123082,
+  "diagnosisArtifact": {
+    "sha256": "410500303065da99dcc37efe8b8d7f6557c6832e675d8a1f68e9d521625dbeb9",
+    "bytes": 1201380
+  },
+  "cause": "Actual custom Inter-Regular and324px/12px/16px/400/normal match Mac. First description wraps naturally and adds exactly16px; other seven rows match. No product CSS/font flag change.",
+  "font": {
+    "path": "src/blocks/assets/inter-latin-variable.woff2",
+    "sha256": "c940764593d0fe5d596be327ca7558855e018039fb78509aa21921fd3644c3e4",
+    "fixedSampleWidth": 324,
+    "fixedFont": "400 12px/16px Inter, normal letter spacing",
+    "oracle": "Independent iframe font asset and fixture string; target dimensions/style/text never seed expected delta"
+  },
+  "preservedAssertions": "Original six cases, two routes, exact frame XYWH, sticky header, content padding, scrolling, overflow, console and screenshots retained. Independent oracle never reads target values as expectations. Added fixed width/font/ordered8rows/padding guards.",
+  "mac": {
+    "cases": 6,
+    "seconds": 17.292716,
+    "workers": 1,
+    "retries": 0,
+    "timeoutMs": 30000,
+    "independentSampleHeight": 16,
+    "delta": 0,
+    "receiptSHA256": "07a98e3c0b0fe34c8657988fe3ba98c0f7125d96aaad1a1c80607efb663f20ba"
+  },
+  "linux": {
+    "run": 40329792309,
+    "commit": "c1668b70ca486c34b5712c3a75cbc3977f05b8c6",
+    "cases": 6,
+    "seconds": 20.7,
+    "workers": 1,
+    "retries": 0,
+    "timeoutMs": 30000,
+    "fontHinting": "native",
+    "independentSampleHeight": 32,
+    "delta": 16,
+    "artifact": {
+      "id": 12655036416,
+      "sha256": "c32201990d1a18118b342c4c088521b3579499f07f213f64b2a8e6b263870272",
+      "bytes": 862720
+    }
+  },
+  "negativeControls": {
+    "stats": {
+      "startTime": "2026-10-26T13:23:27.046Z",
+      "duration": 3902.99,
+      "expected": 3,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "log": "/tmp/bricklane-lucent-oracle-17e-2g36j62x/negative-results.log",
+    "runCount": 1,
+    "workers": 1,
+    "retries": 0,
+    "timeoutMs": 30000,
+    "results": [
+      {
+        "kind": "padding",
+        "results": [
+          {
+            "kind": "padding",
+            "detectedBy": "phone Settings row padding"
+          }
+        ],
+        "oracleUnchanged": true
+      },
+      {
+        "kind": "weight",
+        "results": [
+          {
+            "kind": "weight",
+            "detectedBy": "phone Settings description weight"
+          }
+        ],
+        "oracleUnchanged": true
+      },
+      {
+        "kind": "extra-row",
+        "results": [
+          {
+            "kind": "extra-row",
+            "detectedBy": "phone Settings row count"
+          }
+        ],
+        "oracleUnchanged": true
+      }
+    ],
+    "scope": "Private helpers/diagnostic wrapper excluded from production payload"
+  },
+  "productionPayload": {
+    "tests/templates-lucent-header-layout.spec.ts": "0b4c51dd4be058b481d3e0728ed5b6e6823ed69ea7233553430fbeb7f5ad6cd0",
+    "tests/helpers/lucent-layout-oracle.ts": "4df48e95bcb09862c0b45b5600257cc615671bb9af6079c0f8d455608d9b3974"
+  },
+  "deployment": "Targeted native Linux and Mac checks passed. Main full CI and Pages are verified separately after push.",
+  "formatVerification": "Full clean candidate check; unrelated shared in-progress files are excluded from this release."
+}
