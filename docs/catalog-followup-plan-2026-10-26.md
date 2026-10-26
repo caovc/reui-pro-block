@@ -40,3 +40,54 @@ Catalog coverage is 669 blocks in 79 categories, alongside the 18 audited templa
 Evidence snapshots remain outside the repository: the Blocks diff/canonical/fetch receipts and the separate Templates18 canonical receipt. Raw reference HTML, paid screenshots and extracted original artwork are not distributed.
 
 The [669-entry deployment receipt](ci-pages-669-native-controls-release.json) records successful full CI (1617 checks) and Pages deployment for commit `9d3a47c`, followed by live catalog, Map preview, pause control and actual source-default verification. Later milestones require their own CI and Pages result before they are described as live.
+
+## Mesh and Flux native integration — local verification, 2026-10-27
+
+The private release candidate uses the published `9c80801` baseline plus34 frozen implementation,
+regression and audit files. This is a native engine/component migration; it adds no catalog IDs,
+packages or export-engine changes. The [integration receipt](mesh-flux-native-integration-release.json)
+keeps the exact payload proof, actual free-component reuse and remaining gates separate from
+publication. This is the precommit local verification scope; the release commit, full Linux CI and Pages outcome are tracked separately by Root.
+
+Mesh now composes the existing Whiteboard/Excalidraw and RichEditor/Tiptap engines, with actual
+free ReUI NumberField, ColorPicker, Scrollspy, Frame and Sidebar implementations. It removes
+the duplicated SVG gesture/history surface and reuses the real free `c-message-7` assistant
+composition. ResizeObserver supplies the missing domain rule for actual workspace width and
+AI/pane coexistence; native Sheet, selection/history and SDK actions remain authoritative.
+Flux Settings composes the actual SystemMonitor and the complete existing native profile form,
+including the free field, Select, Tabs, file-upload and ReUI Badge/IconTile primitives. Its latest
+consumer-only Field gap and native Select border corrections preserve default callers and
+focus/invalid styling. Original Bricklane artwork and required MIT/OFL/SDK attribution remain.
+
+The final-v2 strict main completed with exit0 in21.87s and654 immutable dist files. The previously
+verified Mesh responsive3 are carried only because all32 unaffected files, including Mesh, are
+byte-identical; their original8.3s pass is not relabelled as a new run. Exact-final Profile2 passed
+once in7.697s with native focus/invalid and four-state settled visual acceptance. The remaining
+Info/Tooltip, upload-icon and native-component differences stay explicit in the receipt.
+
+New same-build Source2 passed naturally. Both actual projects contain305 members:297 source
+files match candidate bytes, and8 generated scaffolds have separate AST/content checks. The
+projects share302 byte-identical members; only Example, package name and README are project
+specific. Root independently checked1126 local-import edges per project with none missing,
+current consumer CSS and licensing closure. The first checker assumed the wrong Example path;
+only that read-only expectation was corrected, and its failure remains recorded.
+
+The unmodified downloaded strict builds passed once:Mesh8.77s andFlux8.55s. Each ran its normal
+postinstall and retained all305 original archive files. Matching dependency trees were physical copies of a
+previously normally installed709-package tree with verified package/lock graphs, not fresh
+installs. Both actual builds have475-file immutable outputs. Representative actual Mesh3 passed
+once in6.1s, retaining all original assertions and adding real phone Rectangle/Undo/Redo history;
+only four entry-navigation literals target the exported homepage. Actual Flux Profile2 passed
+once in7.045s with original form/save/focus/phone-overflow assertions. The original305 archive
+members, original Examples and joint654/Mesh475/Flux475 immutable files remain exact after
+runtime. A postvalidation audit-document update is outside the source/ZIP closure and changes
+no product source. The local scope is ready for Root's serial normal-hook release; the resulting
+commit's complete Linux CI and Pages must still be verified independently.
+
+Preserve the original Mesh React185 defect and its native transaction-loop correction, the
+corrected17e original36/2 gate and two fixture-only follow-ups, the Flux original14/5 gate,
+and the later joint7/1 real mobile native-Undo defect. Earlier affected5/Profile2 interaction
+passes did not certify the subsequently measured visual state. Do not overwrite those failures
+or reuse62650 source packages as if they contain the final CSS. Remaining real structure gaps
+are the upload action-icon slot and Public Details Info/Tooltip slot, including the8.75px phone
+residual. No artificial spacer/control or claim of pixel-perfect reproduction is introduced.

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   ArrowDownToLine,
   ArrowLeft,
@@ -75,11 +75,38 @@ import { WhiteboardEngine } from "./whiteboard-engine";
 import type { WhiteboardEngineHandle } from "./whiteboard-engine";
 import "./whiteboard-engine.css";
 
+export type WhiteboardHeaderControls = {
+  scene: Scene;
+  ready: boolean;
+  saving: boolean;
+  viewOnly: boolean;
+  setViewOnly: (value: boolean) => void;
+  panelOpen: boolean;
+  togglePanel: () => void;
+  exportSvg: () => Promise<void>;
+  exportPng: () => Promise<void>;
+  saveBoard: () => void;
+};
+
+const originalPanel = (content: ReactNode) => content;
+
 export default function Whiteboard({
   block,
   initialScene,
   storageKey,
-}: BlockProps & { initialScene?: Scene; storageKey?: string }) {
+  renderHeader,
+  renderPanel = originalPanel,
+  initialViewOnly = false,
+}: BlockProps & {
+  initialScene?: Scene;
+  storageKey?: string;
+  renderHeader?: (controls: WhiteboardHeaderControls) => ReactNode;
+  renderPanel?: (
+    content: ReactNode,
+    controls: Pick<WhiteboardHeaderControls, "scene" | "panelOpen" | "togglePanel">,
+  ) => ReactNode;
+  initialViewOnly?: boolean;
+}) {
   const sprint = block.id === "whiteboard-2";
   const engine = useRef<WhiteboardEngineHandle>(null);
   const [engineReady, setEngineReady] = useState(false);
@@ -97,7 +124,7 @@ export default function Whiteboard({
   const [zoom, setZoom] = useState(60);
   const [grid, setGrid] = useState(false);
   const [snap, setSnap] = useState(false);
-  const [viewOnly, setViewOnly] = useState(false);
+  const [viewOnly, setViewOnly] = useState(initialViewOnly);
   const [panel, setPanel] = useState(true);
   const [panelTab, setPanelTab] = useState(sprint ? "plan" : "frames");
   const [frame, setFrame] = useState(0);
@@ -315,162 +342,179 @@ export default function Whiteboard({
     { id: "image", label: "Image", icon: ImagePlus },
     { id: "eraser", label: "Eraser", icon: Eraser },
   ];
+  const togglePanel = () => setPanel(!panel);
+  const headerControls: WhiteboardHeaderControls = {
+    scene,
+    ready: engineReady,
+    saving: dirty,
+    viewOnly,
+    setViewOnly,
+    panelOpen: panel,
+    togglePanel,
+    exportSvg: downloadSvg,
+    exportPng,
+    saveBoard: downloadBoard,
+  };
   return (
     <div className="reui-reference wb-root" data-presenting={presenting} aria-busy={!engineReady}>
       <fieldset className="contents" disabled={!engineReady}>
-        <header className="wb-header">
-          <div className="flex min-w-0 items-center gap-3">
-            <h2 className="truncate text-sm font-semibold">{scene.name}</h2>
-            <span className="hidden items-center gap-1 text-[11px] text-muted-foreground sm:flex">
-              <Check className="size-3" />
-              {dirty ? "Saving…" : "Saved"}
-            </span>
-            {sprint && (
-              <span className="hidden text-xs text-muted-foreground md:inline">
-                Sep 28 to Oct 9
+        {renderHeader ? (
+          renderHeader(headerControls)
+        ) : (
+          <header className="wb-header">
+            <div className="flex min-w-0 items-center gap-3">
+              <h2 className="truncate text-sm font-semibold">{scene.name}</h2>
+              <span className="hidden items-center gap-1 text-[11px] text-muted-foreground sm:flex">
+                <Check className="size-3" />
+                {dirty ? "Saving…" : "Saved"}
               </span>
-            )}
-          </div>
-          <div className="flex items-center gap-2">
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="ghost" aria-label="On this board, 3 here, 1 away">
-                  <span className="flex">
-                    {["AM", "PC", "OR"].map((name) => (
-                      <Avatar
-                        className="-ml-2 size-6 border-2 border-background first:ml-0"
-                        key={name}
-                      >
-                        <AvatarFallback className="text-[8px]">{name}</AvatarFallback>
-                      </Avatar>
-                    ))}
-                  </span>
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-64">
-                <h3 className="mb-3 text-sm font-medium">On this board</h3>
-                {[
-                  "Alex Morgan · You",
-                  "Priya Chen · Editing",
-                  "Olivia Rhye · Viewing",
-                  "Noah Williams · Away",
-                ].map((p, i) => (
-                  <div className="flex items-center gap-2 py-2 text-xs" key={p}>
-                    <span
-                      className={cn(
-                        "size-1.5 rounded-full",
-                        i === 3 ? "bg-muted-foreground" : "bg-chart-3",
-                      )}
-                    />
-                    {p}
-                  </div>
-                ))}
-                {sprint && (
-                  <Button
-                    className="mt-3 w-full"
-                    size="sm"
-                    variant={follow ? "secondary" : "outline"}
-                    onClick={() => {
-                      setFollow(!follow);
-                      setPan(follow ? { x: 0, y: 0 } : { x: 350, y: 60 });
-                    }}
-                  >
-                    {follow ? "Stop following Priya" : "Follow Priya’s view"}
+              {sprint && (
+                <span className="hidden text-xs text-muted-foreground md:inline">
+                  Sep 28 to Oct 9
+                </span>
+              )}
+            </div>
+            <div className="flex items-center gap-2">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="ghost" aria-label="On this board, 3 here, 1 away">
+                    <span className="flex">
+                      {["AM", "PC", "OR"].map((name) => (
+                        <Avatar
+                          className="-ml-2 size-6 border-2 border-background first:ml-0"
+                          key={name}
+                        >
+                          <AvatarFallback className="text-[8px]">{name}</AvatarFallback>
+                        </Avatar>
+                      ))}
+                    </span>
                   </Button>
-                )}
-                <p className="mt-3 text-[10px] text-muted-foreground">
-                  Presence is simulated in this local preview.
-                </p>
-              </PopoverContent>
-            </Popover>
-            {sprint ? (
-              <Button
-                variant={presenting ? "secondary" : "outline"}
-                size="sm"
-                aria-pressed={presenting}
-                onClick={togglePresent}
-              >
-                <Square data-icon="inline-start" />
-                Present
-              </Button>
-            ) : (
-              <>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button size="sm">
-                      <Share2 data-icon="inline-start" />
-                      <span className="hidden sm:inline">Share</span>
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent align="end" className="w-72">
-                    <h3 className="mb-3 text-sm font-medium">Share this board</h3>
-                    <div className="mb-3 flex items-center justify-between text-xs">
-                      <span>View only</span>
-                      <Switch
-                        checked={viewOnly}
-                        onCheckedChange={setViewOnly}
-                        aria-label="View only sharing"
+                </PopoverTrigger>
+                <PopoverContent className="w-64">
+                  <h3 className="mb-3 text-sm font-medium">On this board</h3>
+                  {[
+                    "Alex Morgan · You",
+                    "Priya Chen · Editing",
+                    "Olivia Rhye · Viewing",
+                    "Noah Williams · Away",
+                  ].map((p, i) => (
+                    <div className="flex items-center gap-2 py-2 text-xs" key={p}>
+                      <span
+                        className={cn(
+                          "size-1.5 rounded-full",
+                          i === 3 ? "bg-muted-foreground" : "bg-chart-3",
+                        )}
                       />
+                      {p}
                     </div>
+                  ))}
+                  {sprint && (
                     <Button
-                      className="w-full"
-                      variant="outline"
+                      className="mt-3 w-full"
                       size="sm"
-                      onClick={async () => {
-                        try {
-                          await navigator.clipboard.writeText(
-                            `${location.href}${location.hash.includes("?") ? "&" : "?"}access=view`,
-                          );
-                          setShareCopied(true);
-                        } catch {
-                          toast.error("Copy unavailable");
-                        }
+                      variant={follow ? "secondary" : "outline"}
+                      onClick={() => {
+                        setFollow(!follow);
+                        setPan(follow ? { x: 0, y: 0 } : { x: 350, y: 60 });
                       }}
                     >
-                      {shareCopied ? (
-                        <Check data-icon="inline-start" />
-                      ) : (
+                      {follow ? "Stop following Priya" : "Follow Priya’s view"}
+                    </Button>
+                  )}
+                  <p className="mt-3 text-[10px] text-muted-foreground">
+                    Presence is simulated in this local preview.
+                  </p>
+                </PopoverContent>
+              </Popover>
+              {sprint ? (
+                <Button
+                  variant={presenting ? "secondary" : "outline"}
+                  size="sm"
+                  aria-pressed={presenting}
+                  onClick={togglePresent}
+                >
+                  <Square data-icon="inline-start" />
+                  Present
+                </Button>
+              ) : (
+                <>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button size="sm">
                         <Share2 data-icon="inline-start" />
-                      )}
-                      {shareCopied ? "Link copied" : "Copy preview link"}
-                    </Button>
-                    <p className="mt-3 text-[10px] text-muted-foreground">
-                      Local preview link; no permission changes are sent.
-                    </p>
-                  </PopoverContent>
-                </Popover>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button size="sm" variant="outline">
-                      <ArrowDownToLine data-icon="inline-start" />
-                      <span className="hidden sm:inline">Export</span>
-                      <ChevronDown data-icon="inline-end" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuGroup>
-                      <DropdownMenuItem onSelect={downloadSvg}>Export SVG</DropdownMenuItem>
-                      <DropdownMenuItem onSelect={exportPng}>Export PNG</DropdownMenuItem>
-                      <DropdownMenuItem onSelect={downloadBoard}>
-                        <FileJson />
-                        Save board file
-                      </DropdownMenuItem>
-                    </DropdownMenuGroup>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </>
-            )}
-            <Button
-              variant="ghost"
-              size="icon-sm"
-              aria-label={sprint ? "Planning panel" : "Board panel"}
-              aria-pressed={panel}
-              onClick={() => setPanel(!panel)}
-            >
-              <PanelRight />
-            </Button>
-          </div>
-        </header>
+                        <span className="hidden sm:inline">Share</span>
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent align="end" className="w-72">
+                      <h3 className="mb-3 text-sm font-medium">Share this board</h3>
+                      <div className="mb-3 flex items-center justify-between text-xs">
+                        <span>View only</span>
+                        <Switch
+                          checked={viewOnly}
+                          onCheckedChange={setViewOnly}
+                          aria-label="View only sharing"
+                        />
+                      </div>
+                      <Button
+                        className="w-full"
+                        variant="outline"
+                        size="sm"
+                        onClick={async () => {
+                          try {
+                            await navigator.clipboard.writeText(
+                              `${location.href}${location.hash.includes("?") ? "&" : "?"}access=view`,
+                            );
+                            setShareCopied(true);
+                          } catch {
+                            toast.error("Copy unavailable");
+                          }
+                        }}
+                      >
+                        {shareCopied ? (
+                          <Check data-icon="inline-start" />
+                        ) : (
+                          <Share2 data-icon="inline-start" />
+                        )}
+                        {shareCopied ? "Link copied" : "Copy preview link"}
+                      </Button>
+                      <p className="mt-3 text-[10px] text-muted-foreground">
+                        Local preview link; no permission changes are sent.
+                      </p>
+                    </PopoverContent>
+                  </Popover>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button size="sm" variant="outline">
+                        <ArrowDownToLine data-icon="inline-start" />
+                        <span className="hidden sm:inline">Export</span>
+                        <ChevronDown data-icon="inline-end" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuGroup>
+                        <DropdownMenuItem onSelect={downloadSvg}>Export SVG</DropdownMenuItem>
+                        <DropdownMenuItem onSelect={exportPng}>Export PNG</DropdownMenuItem>
+                        <DropdownMenuItem onSelect={downloadBoard}>
+                          <FileJson />
+                          Save board file
+                        </DropdownMenuItem>
+                      </DropdownMenuGroup>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </>
+              )}
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                aria-label={sprint ? "Planning panel" : "Board panel"}
+                aria-pressed={panel}
+                onClick={() => setPanel(!panel)}
+              >
+                <PanelRight />
+              </Button>
+            </div>
+          </header>
+        )}
         <div className="wb-workspace">
           <div className="wb-canvas-wrap" ref={canvasWrap}>
             <div className="wb-topbar">
@@ -809,307 +853,316 @@ export default function Whiteboard({
               </div>
             </div>
           </div>
-          {panel && (
-            <aside className="wb-panel">
-              <Tabs value={panelTab} onValueChange={setPanelTab} className="gap-0">
-                <TabsList className={cn("mx-3 mt-3 flex flex-wrap h-auto", "w-[calc(100%-24px)]")}>
-                  {sprint ? (
-                    <>
-                      <TabsTrigger value="plan" className="flex-1">
-                        Plan
-                      </TabsTrigger>
-                      <TabsTrigger value="decisions" className="flex-1">
-                        Log
-                      </TabsTrigger>
-                    </>
-                  ) : (
-                    <>
-                      <TabsTrigger value="frames">Frames</TabsTrigger>
-                      <TabsTrigger value="library">Library</TabsTrigger>
-                      <TabsTrigger value="history">History</TabsTrigger>
-                    </>
-                  )}
-                </TabsList>
-                <TabsContent value="plan" className="wb-panel-body">
-                  <Input
-                    placeholder="Find a card"
-                    aria-label="Find a card"
-                    value={cardQuery}
-                    onChange={(event) => setCardQuery(event.target.value)}
-                  />
-                  <div className="my-4 px-1">
-                    <div className="flex justify-between text-xs">
-                      <span className="text-muted-foreground">Committed</span>
-                      <strong>{committedPoints} of 31 pts</strong>
-                    </div>
-                    <div
-                      className="my-2 h-1 rounded-full bg-muted"
-                      role="progressbar"
-                      aria-label="Committed points"
-                      aria-valuenow={committedPoints}
-                      aria-valuemax={31}
-                    >
-                      <div
-                        className="h-full rounded-full bg-foreground"
-                        style={{
-                          width: `${Math.min(100, (committedPoints / 31) * 100)}%`,
-                        }}
-                      />
-                    </div>
-                    <p className="text-[10px] text-muted-foreground">{lanePoints[3]} pts parked</p>
-                  </div>
-                  <p className="mb-3 text-xs text-muted-foreground">Lanes</p>
-                  {laneMeta.map((lane, index) => (
-                    <div className="mb-1" key={lane.name}>
-                      <div className="flex items-center gap-2">
-                        <Button
-                          className="min-w-0 flex-1 justify-start h-auto py-2 text-left"
-                          variant="ghost"
-                          onClick={() => selectFrame(index + 2)}
-                        >
-                          <Square className="mr-1 size-4 shrink-0" />
-                          <span className="min-w-0">
-                            <span className="block text-sm font-normal">{lane.name}</span>
-                            <span className="mt-1 block text-[10px] font-normal text-muted-foreground">
-                              {lane.owner
-                                ? `${lane.owner} · ${lanePoints[index]} of ${lane.capacity} pts`
-                                : `${scene.shapes.filter((shape) => shape.lane === index).length} cards · ${lanePoints[index]} pts`}
-                            </span>
-                          </span>
-                        </Button>
-                        <Button
-                          size="icon-xs"
-                          variant="ghost"
-                          aria-label={`Add a card to ${lane.name}`}
-                          disabled={viewOnly}
-                          onClick={() => addLaneCard(index)}
-                        >
-                          <Plus />
-                        </Button>
-                      </div>
-                      {cardQuery &&
-                        scene.shapes
-                          .filter(
-                            (shape) =>
-                              shape.lane === index &&
-                              shape.text?.toLowerCase().includes(cardQuery.toLowerCase()),
-                          )
-                          .map((shape) => (
-                            <Button
-                              key={shape.id}
-                              variant="outline"
-                              size="sm"
-                              className="mb-2 w-full justify-start text-xs"
-                              onClick={() => {
-                                setSelected(shape.id);
-                                selectFrame(index + 2);
-                              }}
-                            >
-                              {shape.text?.split("\n")[0]}
-                            </Button>
-                          ))}
-                    </div>
-                  ))}
-                </TabsContent>
-                <TabsContent value="frames" className="wb-panel-body">
-                  <Input
-                    aria-label="Search board"
-                    placeholder="Search board"
-                    value={boardQuery}
-                    onChange={(event) => setBoardQuery(event.target.value)}
-                    className="mb-3"
-                  />
-                  <Button
-                    variant={wholeBoard ? "secondary" : "ghost"}
-                    className="mb-2 h-auto w-full justify-start py-3"
-                    onClick={() => {
-                      setWholeBoard(true);
-                      setPan({ x: 0, y: 0 });
-                      setZoom(60);
-                    }}
+          {panel &&
+            renderPanel(
+              <aside className="wb-panel">
+                <Tabs value={panelTab} onValueChange={setPanelTab} className="gap-0">
+                  <TabsList
+                    className={cn("mx-3 mt-3 flex flex-wrap h-auto", "w-[calc(100%-24px)]")}
                   >
-                    <Grid2X2 data-icon="inline-start" />
-                    <span className="text-left">
-                      <span className="block text-xs font-medium">Whole Board</span>
-                      <span className="text-[10px] font-normal text-muted-foreground">
-                        {frames.length} frames ·{" "}
-                        {scene.shapes.filter((shape) => shape.kind !== "frame").length} items
-                      </span>
-                    </span>
-                  </Button>
-                  {frames
-                    .filter((shape) => shape.text?.toLowerCase().includes(boardQuery.toLowerCase()))
-                    .map((s) => {
-                      const i = frames.indexOf(s);
-                      return (
-                        <Button
-                          key={s.id}
-                          variant={!wholeBoard && i === frame ? "secondary" : "ghost"}
-                          className="mb-2 h-auto w-full justify-start py-3"
-                          onClick={() => selectFrame(i)}
-                        >
-                          <Square data-icon="inline-start" />
-                          <span className="text-left">
-                            <span className="block text-xs font-medium">{s.text}</span>
-                            <span className="text-[10px] font-normal text-muted-foreground">
-                              {
-                                scene.shapes.filter(
-                                  (shape) =>
-                                    shape.kind !== "frame" &&
-                                    shape.x >= s.x &&
-                                    shape.x < s.x + s.w &&
-                                    shape.y >= s.y &&
-                                    shape.y < s.y + s.h,
-                                ).length
-                              }{" "}
-                              items
+                    {sprint ? (
+                      <>
+                        <TabsTrigger value="plan" className="flex-1">
+                          Plan
+                        </TabsTrigger>
+                        <TabsTrigger value="decisions" className="flex-1">
+                          Log
+                        </TabsTrigger>
+                      </>
+                    ) : (
+                      <>
+                        <TabsTrigger value="frames">Frames</TabsTrigger>
+                        <TabsTrigger value="library">Library</TabsTrigger>
+                        <TabsTrigger value="history">History</TabsTrigger>
+                      </>
+                    )}
+                  </TabsList>
+                  <TabsContent value="plan" className="wb-panel-body">
+                    <Input
+                      placeholder="Find a card"
+                      aria-label="Find a card"
+                      value={cardQuery}
+                      onChange={(event) => setCardQuery(event.target.value)}
+                    />
+                    <div className="my-4 px-1">
+                      <div className="flex justify-between text-xs">
+                        <span className="text-muted-foreground">Committed</span>
+                        <strong>{committedPoints} of 31 pts</strong>
+                      </div>
+                      <div
+                        className="my-2 h-1 rounded-full bg-muted"
+                        role="progressbar"
+                        aria-label="Committed points"
+                        aria-valuenow={committedPoints}
+                        aria-valuemax={31}
+                      >
+                        <div
+                          className="h-full rounded-full bg-foreground"
+                          style={{
+                            width: `${Math.min(100, (committedPoints / 31) * 100)}%`,
+                          }}
+                        />
+                      </div>
+                      <p className="text-[10px] text-muted-foreground">
+                        {lanePoints[3]} pts parked
+                      </p>
+                    </div>
+                    <p className="mb-3 text-xs text-muted-foreground">Lanes</p>
+                    {laneMeta.map((lane, index) => (
+                      <div className="mb-1" key={lane.name}>
+                        <div className="flex items-center gap-2">
+                          <Button
+                            className="min-w-0 flex-1 justify-start h-auto py-2 text-left"
+                            variant="ghost"
+                            onClick={() => selectFrame(index + 2)}
+                          >
+                            <Square className="mr-1 size-4 shrink-0" />
+                            <span className="min-w-0">
+                              <span className="block text-sm font-normal">{lane.name}</span>
+                              <span className="mt-1 block text-[10px] font-normal text-muted-foreground">
+                                {lane.owner
+                                  ? `${lane.owner} · ${lanePoints[index]} of ${lane.capacity} pts`
+                                  : `${scene.shapes.filter((shape) => shape.lane === index).length} cards · ${lanePoints[index]} pts`}
+                              </span>
                             </span>
-                          </span>
-                        </Button>
-                      );
-                    })}
-                  <p className="mt-4 text-xs leading-5 text-muted-foreground">
-                    Choose a frame to navigate. Drag with the hand tool to move around the canvas.
-                  </p>
-                </TabsContent>
-                <TabsContent value="templates" className="wb-panel-body">
-                  {["Design review", "Sprint planning", "Blank canvas"].map((name) => (
+                          </Button>
+                          <Button
+                            size="icon-xs"
+                            variant="ghost"
+                            aria-label={`Add a card to ${lane.name}`}
+                            disabled={viewOnly}
+                            onClick={() => addLaneCard(index)}
+                          >
+                            <Plus />
+                          </Button>
+                        </div>
+                        {cardQuery &&
+                          scene.shapes
+                            .filter(
+                              (shape) =>
+                                shape.lane === index &&
+                                shape.text?.toLowerCase().includes(cardQuery.toLowerCase()),
+                            )
+                            .map((shape) => (
+                              <Button
+                                key={shape.id}
+                                variant="outline"
+                                size="sm"
+                                className="mb-2 w-full justify-start text-xs"
+                                onClick={() => {
+                                  setSelected(shape.id);
+                                  selectFrame(index + 2);
+                                }}
+                              >
+                                {shape.text?.split("\n")[0]}
+                              </Button>
+                            ))}
+                      </div>
+                    ))}
+                  </TabsContent>
+                  <TabsContent value="frames" className="wb-panel-body">
+                    <Input
+                      aria-label="Search board"
+                      placeholder="Search board"
+                      value={boardQuery}
+                      onChange={(event) => setBoardQuery(event.target.value)}
+                      className="mb-3"
+                    />
                     <Button
-                      className="mb-3 w-full justify-start"
-                      key={name}
-                      variant="outline"
-                      onClick={() => template(name)}
+                      variant={wholeBoard ? "secondary" : "ghost"}
+                      className="mb-2 h-auto w-full justify-start py-3"
+                      onClick={() => {
+                        setWholeBoard(true);
+                        setPan({ x: 0, y: 0 });
+                        setZoom(60);
+                      }}
                     >
                       <Grid2X2 data-icon="inline-start" />
-                      {name}
+                      <span className="text-left">
+                        <span className="block text-xs font-medium">Whole Board</span>
+                        <span className="text-[10px] font-normal text-muted-foreground">
+                          {frames.length} frames ·{" "}
+                          {scene.shapes.filter((shape) => shape.kind !== "frame").length} items
+                        </span>
+                      </span>
                     </Button>
-                  ))}
-                </TabsContent>
-                <TabsContent value="history" className="wb-panel-body">
-                  <FieldGroup>
-                    <Field>
-                      <FieldLabel htmlFor="wb-version">Save a version</FieldLabel>
-                      <Input
-                        id="wb-version"
-                        value={versionName}
-                        onChange={(e) => setVersionName(e.target.value)}
-                        placeholder="Before review"
-                      />
-                      <Button size="sm" onClick={saveVersion}>
-                        Save snapshot
-                      </Button>
-                    </Field>
-                  </FieldGroup>
-                  {versions.map((v, i) => (
-                    <div className="mt-4 rounded-lg border p-3" key={i}>
-                      <p className="mb-2 text-xs font-medium">{v.name}</p>
+                    {frames
+                      .filter((shape) =>
+                        shape.text?.toLowerCase().includes(boardQuery.toLowerCase()),
+                      )
+                      .map((s) => {
+                        const i = frames.indexOf(s);
+                        return (
+                          <Button
+                            key={s.id}
+                            variant={!wholeBoard && i === frame ? "secondary" : "ghost"}
+                            className="mb-2 h-auto w-full justify-start py-3"
+                            onClick={() => selectFrame(i)}
+                          >
+                            <Square data-icon="inline-start" />
+                            <span className="text-left">
+                              <span className="block text-xs font-medium">{s.text}</span>
+                              <span className="text-[10px] font-normal text-muted-foreground">
+                                {
+                                  scene.shapes.filter(
+                                    (shape) =>
+                                      shape.kind !== "frame" &&
+                                      shape.x >= s.x &&
+                                      shape.x < s.x + s.w &&
+                                      shape.y >= s.y &&
+                                      shape.y < s.y + s.h,
+                                  ).length
+                                }{" "}
+                                items
+                              </span>
+                            </span>
+                          </Button>
+                        );
+                      })}
+                    <p className="mt-4 text-xs leading-5 text-muted-foreground">
+                      Choose a frame to navigate. Drag with the hand tool to move around the canvas.
+                    </p>
+                  </TabsContent>
+                  <TabsContent value="templates" className="wb-panel-body">
+                    {["Design review", "Sprint planning", "Blank canvas"].map((name) => (
                       <Button
+                        className="mb-3 w-full justify-start"
+                        key={name}
                         variant="outline"
-                        size="xs"
-                        onClick={() => commit(structuredClone(v.scene))}
+                        onClick={() => template(name)}
                       >
-                        Restore version
+                        <Grid2X2 data-icon="inline-start" />
+                        {name}
                       </Button>
-                    </div>
-                  ))}
-                  {!versions.length && (
-                    <p className="mt-6 text-xs text-muted-foreground">No saved versions yet.</p>
-                  )}
-                </TabsContent>
-                <TabsContent value="library" className="wb-panel-body">
-                  <p className="mb-4 text-xs text-muted-foreground">
-                    Reusable shapes for your next idea.
-                  </p>
-                  <Button variant="outline" className="w-full" onClick={addNote}>
-                    <Plus data-icon="inline-start" />
-                    Add sticky note
-                  </Button>
-                  <p className="mt-3 text-xs leading-5 text-muted-foreground">
-                    Select objects and use ⌘D / Ctrl+D or the native context menu to duplicate them.
-                  </p>
-                </TabsContent>
-                <TabsContent value="decisions" className="wb-panel-body">
-                  {decisions.map((entry, index) => (
-                    <div
-                      className="mb-3 rounded-lg border p-3 text-xs"
-                      key={`${index}-${entry.shapeId}`}
-                    >
-                      <div className="mb-2 flex items-center justify-between gap-2">
-                        <button
-                          className="text-[10px] text-muted-foreground hover:text-foreground"
-                          onClick={() => {
-                            const shape = scene.shapes.find((item) => item.id === entry.shapeId);
-                            if (shape) {
-                              setSelected(shape.id);
-                              setPan({ x: shape.x - 150, y: shape.y - 180 });
-                            }
-                          }}
-                        >
-                          ↗ Linked to canvas
-                        </button>
+                    ))}
+                  </TabsContent>
+                  <TabsContent value="history" className="wb-panel-body">
+                    <FieldGroup>
+                      <Field>
+                        <FieldLabel htmlFor="wb-version">Save a version</FieldLabel>
+                        <Input
+                          id="wb-version"
+                          value={versionName}
+                          onChange={(e) => setVersionName(e.target.value)}
+                          placeholder="Before review"
+                        />
+                        <Button size="sm" onClick={saveVersion}>
+                          Save snapshot
+                        </Button>
+                      </Field>
+                    </FieldGroup>
+                    {versions.map((v, i) => (
+                      <div className="mt-4 rounded-lg border p-3" key={i}>
+                        <p className="mb-2 text-xs font-medium">{v.name}</p>
                         <Button
-                          size="icon-xs"
-                          variant="ghost"
-                          aria-label={`Remove decision ${index + 1}`}
-                          onClick={() => setDecisions(decisions.filter((_, i) => i !== index))}
+                          variant="outline"
+                          size="xs"
+                          onClick={() => commit(structuredClone(v.scene))}
                         >
-                          <X />
+                          Restore version
                         </Button>
                       </div>
-                      <p
-                        className={cn(
-                          "leading-5",
-                          entry.done && "line-through text-muted-foreground",
-                        )}
+                    ))}
+                    {!versions.length && (
+                      <p className="mt-6 text-xs text-muted-foreground">No saved versions yet.</p>
+                    )}
+                  </TabsContent>
+                  <TabsContent value="library" className="wb-panel-body">
+                    <p className="mb-4 text-xs text-muted-foreground">
+                      Reusable shapes for your next idea.
+                    </p>
+                    <Button variant="outline" className="w-full" onClick={addNote}>
+                      <Plus data-icon="inline-start" />
+                      Add sticky note
+                    </Button>
+                    <p className="mt-3 text-xs leading-5 text-muted-foreground">
+                      Select objects and use ⌘D / Ctrl+D or the native context menu to duplicate
+                      them.
+                    </p>
+                  </TabsContent>
+                  <TabsContent value="decisions" className="wb-panel-body">
+                    {decisions.map((entry, index) => (
+                      <div
+                        className="mb-3 rounded-lg border p-3 text-xs"
+                        key={`${index}-${entry.shapeId}`}
                       >
-                        {entry.text}
-                      </p>
-                      <Button
-                        className="mt-2"
-                        size="xs"
-                        variant="ghost"
-                        aria-pressed={entry.done}
-                        onClick={() =>
-                          setDecisions(
-                            decisions.map((item, i) =>
-                              i === index ? { ...item, done: !item.done } : item,
-                            ),
-                          )
-                        }
-                      >
-                        <Check data-icon="inline-start" />
-                        {entry.done ? "Done" : "Mark done"}
-                      </Button>
-                    </div>
-                  ))}
-                  <Input
-                    aria-label="New decision"
-                    placeholder="Record a decision…"
-                    value={decision}
-                    onChange={(e) => setDecision(e.target.value)}
-                  />
-                  <Button
-                    className="mt-3 w-full"
-                    size="sm"
-                    disabled={!decision.trim()}
-                    onClick={() => {
-                      setDecisions([
-                        ...decisions,
-                        {
-                          text: decision,
-                          shapeId: selected || "sprint-goal",
-                          done: false,
-                        },
-                      ]);
-                      setDecision("");
-                    }}
-                  >
-                    Add decision
-                  </Button>
-                </TabsContent>
-              </Tabs>
-            </aside>
-          )}
+                        <div className="mb-2 flex items-center justify-between gap-2">
+                          <button
+                            className="text-[10px] text-muted-foreground hover:text-foreground"
+                            onClick={() => {
+                              const shape = scene.shapes.find((item) => item.id === entry.shapeId);
+                              if (shape) {
+                                setSelected(shape.id);
+                                setPan({ x: shape.x - 150, y: shape.y - 180 });
+                              }
+                            }}
+                          >
+                            ↗ Linked to canvas
+                          </button>
+                          <Button
+                            size="icon-xs"
+                            variant="ghost"
+                            aria-label={`Remove decision ${index + 1}`}
+                            onClick={() => setDecisions(decisions.filter((_, i) => i !== index))}
+                          >
+                            <X />
+                          </Button>
+                        </div>
+                        <p
+                          className={cn(
+                            "leading-5",
+                            entry.done && "line-through text-muted-foreground",
+                          )}
+                        >
+                          {entry.text}
+                        </p>
+                        <Button
+                          className="mt-2"
+                          size="xs"
+                          variant="ghost"
+                          aria-pressed={entry.done}
+                          onClick={() =>
+                            setDecisions(
+                              decisions.map((item, i) =>
+                                i === index ? { ...item, done: !item.done } : item,
+                              ),
+                            )
+                          }
+                        >
+                          <Check data-icon="inline-start" />
+                          {entry.done ? "Done" : "Mark done"}
+                        </Button>
+                      </div>
+                    ))}
+                    <Input
+                      aria-label="New decision"
+                      placeholder="Record a decision…"
+                      value={decision}
+                      onChange={(e) => setDecision(e.target.value)}
+                    />
+                    <Button
+                      className="mt-3 w-full"
+                      size="sm"
+                      disabled={!decision.trim()}
+                      onClick={() => {
+                        setDecisions([
+                          ...decisions,
+                          {
+                            text: decision,
+                            shapeId: selected || "sprint-goal",
+                            done: false,
+                          },
+                        ]);
+                        setDecision("");
+                      }}
+                    >
+                      Add decision
+                    </Button>
+                  </TabsContent>
+                </Tabs>
+              </aside>,
+              { scene, panelOpen: panel, togglePanel },
+            )}
         </div>
         <Dialog open={voting} onOpenChange={setVoting}>
           <DialogContent>

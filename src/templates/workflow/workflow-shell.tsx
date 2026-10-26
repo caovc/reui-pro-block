@@ -60,6 +60,8 @@ type ShellProps = {
   mobileSecondaryWidth?: number;
   headerTitle?: ReactNode;
   headerActions?: ReactNode;
+  /** Undefined keeps the default header; null hides it; a node replaces it. */
+  headerContent?: ReactNode;
   closeMobileOnSelect?: (view: string) => boolean;
 };
 
@@ -101,6 +103,7 @@ function ShellContent({
   nav,
   children,
   actions,
+  headerContent,
   compact = false,
   dark = false,
   extra,
@@ -117,6 +120,7 @@ function ShellContent({
   const iconRail = compact || collapsed;
   const inset = brand === "AgentOps";
   const width = brand === "ReUI" ? 250 : brand === "Flowly" ? 63 : brand === "Mesh" ? 48 : 256;
+  const HeaderTitleTag = brand === "AgentOps" && headerTitle !== undefined ? "div" : "span";
   const accountKind = brand === "ReUI" ? "tempo" : brand === "Mesh" ? "mesh" : undefined;
   const accountTrigger = useRef<HTMLButtonElement>(null);
   const returnFocus = useRef<HTMLElement | null>(null);
@@ -322,106 +326,110 @@ function ShellContent({
         )}
       </ReuiSidebar>
       <AppShellInset className="wf-main">
-        <header
-          className={`wf-header ${headerTitle !== undefined || headerActions !== undefined ? "wf-header-override" : ""}`}
-        >
-          {isMobile && brand === "Mesh" && (
-            <Button
-              size="icon"
-              variant="ghost"
-              className="wf-mobile-brand"
-              aria-label="Bricklane home"
-              onClick={() => select("Home")}
-            >
-              <Logo />
-            </Button>
-          )}
-          <SidebarTrigger className="wf-mobile-menu" aria-label="Open navigation" />
-          {isMobile && brand === "Flowly" && (
-            <Button
-              size="icon"
-              variant="ghost"
-              className="wf-mobile-brand"
-              aria-label="Bricklane home"
-              onClick={() => select("Dashboard")}
-            >
-              <Logo />
-            </Button>
-          )}
-          <span>
-            {headerTitle !== undefined ? (
-              headerTitle
-            ) : brand === "AgentOps" ? (
-              <span className="wf-inline wf-muted">
-                <i className="wf-workspace-dot" />
-                Atlas　›　
-                <Person name="Nick Bold" index={3} />
-                　›　<span className="wf-current-crumb">{view}</span>
-              </span>
-            ) : (
-              view
-            )}
-          </span>
-          <div
-            className={`wf-header-actions ${headerActions !== undefined ? "wf-header-actions-override" : ""}`}
+        {headerContent === undefined ? (
+          <header
+            className={`wf-header ${headerTitle !== undefined || headerActions !== undefined ? "wf-header-override" : ""}`}
           >
-            {headerActions !== undefined ? (
-              <div className="wf-header-action-slot">{headerActions}</div>
-            ) : (
-              <>
-                {brand === "DevOps" && (
-                  <div className="wf-header-search">
-                    <SearchPalette
-                      label="Search or jump to…"
-                      iconOnly={isMobile}
-                      routes={[
-                        ...nav.flatMap((item) => [item.label, ...(item.children ?? [])]),
-                        "Integrations",
-                        "Security",
-                        "Settings",
-                      ]}
-                      onSelect={select}
-                    />
-                  </div>
-                )}
-                {(brand === "Flowly" || brand === "DevOps" || brand === "ReUI") && (
-                  <div className="wf-header-avatars">
-                    {["Tomas Lindqvist", "Ines Marchetti", "Hanna Berg"].map((name, i) => (
-                      <Person key={name} name={name} index={i} />
-                    ))}
-                    <small>+{brand === "Flowly" ? "8" : "5"}</small>
-                  </div>
-                )}
-                {actions}
-                {brand === "Flowly" ? (
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button size="icon" variant="ghost" aria-label="Dashboard menu">
-                        <MoreHorizontal />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                      {nav.map((n) => (
-                        <DropdownMenuItem key={n.label} onSelect={() => setView(n.label)}>
-                          {n.label}
-                        </DropdownMenuItem>
-                      ))}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                ) : (
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    aria-label="Notifications"
-                    onClick={() => toast.info("You are up to date. No new notifications.")}
-                  >
-                    <Bell />
-                  </Button>
-                )}
-              </>
+            {isMobile && brand === "Mesh" && (
+              <Button
+                size="icon"
+                variant="ghost"
+                className="wf-mobile-brand"
+                aria-label="Bricklane home"
+                onClick={() => select("Home")}
+              >
+                <Logo />
+              </Button>
             )}
-          </div>
-        </header>
+            <SidebarTrigger className="wf-mobile-menu" aria-label="Open navigation" />
+            {isMobile && brand === "Flowly" && (
+              <Button
+                size="icon"
+                variant="ghost"
+                className="wf-mobile-brand"
+                aria-label="Bricklane home"
+                onClick={() => select("Dashboard")}
+              >
+                <Logo />
+              </Button>
+            )}
+            <HeaderTitleTag>
+              {headerTitle !== undefined ? (
+                headerTitle
+              ) : brand === "AgentOps" ? (
+                <span className="wf-inline wf-muted">
+                  <i className="wf-workspace-dot" />
+                  Atlas　›　
+                  <Person name="Nick Bold" index={3} />
+                  　›　<span className="wf-current-crumb">{view}</span>
+                </span>
+              ) : (
+                view
+              )}
+            </HeaderTitleTag>
+            <div
+              className={`wf-header-actions ${headerActions !== undefined ? "wf-header-actions-override" : ""}`}
+            >
+              {headerActions !== undefined ? (
+                <div className="wf-header-action-slot">{headerActions}</div>
+              ) : (
+                <>
+                  {brand === "DevOps" && (
+                    <div className="wf-header-search">
+                      <SearchPalette
+                        label="Search or jump to…"
+                        iconOnly={isMobile}
+                        routes={[
+                          ...nav.flatMap((item) => [item.label, ...(item.children ?? [])]),
+                          "Integrations",
+                          "Security",
+                          "Settings",
+                        ]}
+                        onSelect={select}
+                      />
+                    </div>
+                  )}
+                  {(brand === "Flowly" || brand === "DevOps" || brand === "ReUI") && (
+                    <div className="wf-header-avatars">
+                      {["Tomas Lindqvist", "Ines Marchetti", "Hanna Berg"].map((name, i) => (
+                        <Person key={name} name={name} index={i} />
+                      ))}
+                      <small>+{brand === "Flowly" ? "8" : "5"}</small>
+                    </div>
+                  )}
+                  {actions}
+                  {brand === "Flowly" ? (
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button size="icon" variant="ghost" aria-label="Dashboard menu">
+                          <MoreHorizontal />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent>
+                        {nav.map((n) => (
+                          <DropdownMenuItem key={n.label} onSelect={() => setView(n.label)}>
+                            {n.label}
+                          </DropdownMenuItem>
+                        ))}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  ) : (
+                    <Button
+                      size="icon"
+                      variant="ghost"
+                      aria-label="Notifications"
+                      onClick={() => toast.info("You are up to date. No new notifications.")}
+                    >
+                      <Bell />
+                    </Button>
+                  )}
+                </>
+              )}
+            </div>
+          </header>
+        ) : (
+          headerContent
+        )}
         <div className="wf-content">{children}</div>
       </AppShellInset>
       {accountKind && (

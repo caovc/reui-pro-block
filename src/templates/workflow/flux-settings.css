@@ -1,0 +1,420 @@
+.flux-settings-page {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.wf-root.wf-agentops.wf-native-layout > .wf-main:has(.flux-settings-page) > .wf-header {
+  height: 48px;
+  padding-inline: 16px;
+}
+
+.wf-root.wf-agentops.wf-native-layout > .wf-main > .wf-content:has(> .flux-settings-page) {
+  padding: 16px;
+}
+
+.flux-settings-status {
+  height: 32px;
+  border-radius: 999px;
+}
+
+.flux-settings-page [data-slot="frame-panel-title"] {
+  line-height: 20px;
+}
+
+.flux-settings-page [data-slot="frame-panel-description"] {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.flux-settings-item {
+  flex-wrap: nowrap;
+  gap: 14px;
+  padding: 14px 12px;
+}
+
+.flux-settings-item > [data-slot="item-content"] {
+  min-width: 0;
+}
+
+.flux-settings-page .flux-settings-item [data-slot="item-description"] {
+  line-height: 20px;
+}
+
+.flux-settings-item > [data-slot="item-actions"] {
+  flex: none;
+}
+
+.flux-settings-fields > .workspace-settings-row {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  border: 1px solid transparent;
+  padding: 14px 12px;
+}
+
+.flux-settings-fields > .workspace-settings-row > [data-slot="field-content"] {
+  gap: 4px;
+}
+
+.flux-settings-fields .workspace-settings-control {
+  justify-self: end;
+}
+
+.flux-settings-fields .workspace-settings-control > [data-slot="select-trigger"] {
+  width: 160px;
+  border-radius: 999px;
+  background: var(--muted);
+}
+
+.flux-settings-fields [data-slot="field-description"] {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.flux-settings-fields div[data-slot="field-label"] {
+  line-height: 1.375;
+}
+
+.flux-settings-page [data-slot="switch"] {
+  width: 28px;
+  height: 16px;
+}
+
+.flux-settings-page [data-slot="switch-thumb"] {
+  width: 14px;
+  height: 14px;
+}
+
+.flux-api-actions {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 12px;
+}
+
+.flux-api-key {
+  display: inline-flex;
+  max-width: 100%;
+  height: 20px;
+  gap: 6px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0 6px;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.flux-api-key > svg {
+  width: 12px;
+  height: 12px;
+  color: var(--muted-foreground);
+}
+
+.flux-api-grid [data-slot="data-grid-container"] {
+  min-width: 0;
+}
+
+.flux-api-grid table {
+  min-width: 980px;
+}
+
+.flux-api-pagination :is(button, [data-slot="select-trigger"]) {
+  height: 32px;
+  border-radius: 999px;
+}
+
+.flux-api-pagination button {
+  min-width: 32px;
+}
+
+.flux-api-pagination .text-sm {
+  line-height: 20px;
+}
+
+.flux-endpoint-item {
+  border: 0;
+}
+
+.flux-endpoint-item [data-slot="item-title"] {
+  min-width: 0;
+}
+
+.flux-endpoint-url {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.flux-endpoint-copy {
+  width: 16px;
+  height: 24px;
+  flex: none;
+  padding: 0;
+}
+
+.flux-endpoint-copy > svg {
+  width: 12px;
+  height: 12px;
+}
+
+.flux-endpoint-health {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  padding: 0;
+}
+
+.flux-endpoint-health > svg {
+  width: 14px;
+  height: 14px;
+}
+
+.flux-endpoint-healthy {
+  color: var(--success);
+}
+
+.flux-endpoint-warning {
+  color: var(--warning);
+}
+
+.flux-endpoint-critical {
+  color: var(--destructive);
+}
+
+@media (max-width: 639px) {
+  .flux-api-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .flux-api-actions > button {
+    width: 40px;
+    padding-inline: 0;
+  }
+
+  .flux-settings-fields .workspace-settings-control > [data-slot="select-trigger"] {
+    width: 130px;
+  }
+}
+.flux-settings-crumb [data-slot="breadcrumb-list"] {
+  flex-wrap: nowrap;
+  gap: 12px;
+}
+
+.flux-settings-crumb [data-slot="breadcrumb-separator"] svg {
+  width: 12px;
+  height: 12px;
+}
+
+.flux-settings-crumb .wf-person [data-slot="avatar"] {
+  width: 20px;
+  height: 20px;
+}
+
+@media (max-width: 767px) {
+  .wf-root.wf-agentops.wf-native-layout > .wf-main:has(.flux-settings-page) {
+    border: 1px solid var(--border);
+  }
+
+  .flux-settings-status {
+    width: 40px;
+    padding-inline: 0;
+  }
+
+  .flux-settings-status > span {
+    display: none;
+  }
+
+  .flux-settings-crumb [data-slot="breadcrumb-list"] {
+    gap: 8px;
+  }
+
+  .flux-settings-crumb .flux-crumb-workspace,
+  .flux-settings-crumb .wf-person > span:last-child {
+    display: none;
+  }
+}
+
+.wf-flux-profile-trigger {
+  height: auto;
+  padding: 0;
+  font-weight: inherit;
+}
+
+@media (max-width: 767px) {
+  .workspace-settings-shell.wf-flux-profile-dialog {
+    width: calc(100% - 24px);
+    max-width: calc(100% - 24px);
+    height: min(768px, 88svh);
+  }
+}
+
+/* Flux uses the existing Pro dialog with its measured, consumer-only theme. */
+.workspace-settings-shell.wf-flux-profile-dialog {
+  gap: 0;
+  border-radius: var(--radius-4xl);
+}
+
+.wf-flux-profile-dialog .workspace-settings-rail {
+  padding: 16px 20px;
+}
+
+.wf-flux-profile-dialog .workspace-settings-rail [data-slot="tabs-trigger"] {
+  gap: 12px;
+  border-radius: var(--radius-2xl);
+  padding: 6px 12px;
+}
+
+.wf-flux-profile-dialog .workspace-settings-header {
+  gap: 8px;
+  padding: 16px 48px 14px 0;
+}
+
+.wf-flux-profile-dialog [data-slot="dialog-title"] {
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.wf-flux-profile-dialog .workspace-settings-tab {
+  padding: 20px 0;
+}
+
+.wf-flux-profile-dialog .workspace-settings-tab > [data-slot="field-group"],
+.wf-flux-profile-dialog .workspace-settings-control > [data-slot="field-group"] {
+  gap: 16px;
+}
+
+.wf-flux-profile-dialog
+  .workspace-settings-control
+  > [data-slot="field-group"]
+  > [data-slot="field"] {
+  gap: 12px;
+}
+
+.wf-flux-profile-dialog .workspace-settings-row {
+  grid-template-columns: minmax(0, 0.37fr) minmax(0, 0.63fr);
+  align-items: center;
+  gap: 16px;
+}
+
+.wf-flux-profile-dialog
+  .workspace-settings-row:has(
+    > .workspace-settings-control > :is([data-slot="field-group"], [data-slot="textarea"])
+  ) {
+  align-items: start;
+}
+
+.wf-flux-profile-dialog .workspace-settings-row > [data-slot="field-content"] {
+  gap: 2px;
+}
+
+.wf-flux-profile-dialog :is([data-slot="field-title"], [data-slot="field-label"]) {
+  line-height: 1.375;
+}
+
+.wf-flux-profile-dialog [data-slot="field-description"] {
+  line-height: 20px;
+}
+
+.workspace-settings-shell.wf-flux-profile-dialog
+  :is([data-slot="input"], [data-slot="select-trigger"], [data-slot="input-group"]) {
+  height: 36px;
+  border-radius: var(--radius-3xl);
+  background: color-mix(in oklab, var(--input) 50%, transparent);
+}
+
+.workspace-settings-shell.wf-flux-profile-dialog [data-slot="input"] {
+  padding: 4px 12px;
+}
+
+.workspace-settings-shell.wf-flux-profile-dialog [data-slot="select-trigger"] {
+  padding: 8px 16px;
+}
+
+.workspace-settings-shell.wf-flux-profile-dialog
+  :is([data-slot="input"], [data-slot="input-group"], [data-slot="textarea"]):not(
+    :focus-visible
+  ):not(:focus-within):not([aria-invalid="true"]):not(:has([aria-invalid="true"])) {
+  border-color: transparent;
+}
+
+.workspace-settings-shell.wf-flux-profile-dialog [data-slot="input-group"] {
+  border-radius: var(--radius-4xl);
+}
+
+.wf-flux-profile-dialog [data-slot="input-group-addon"][data-align="inline-start"] {
+  padding-left: 12px;
+}
+
+.workspace-settings-shell.wf-flux-profile-dialog [data-slot="input-group-control"] {
+  height: 36px;
+  padding-right: 12px;
+}
+
+.workspace-settings-shell.wf-flux-profile-dialog [data-slot="textarea"] {
+  min-height: calc(4lh + 26px);
+  margin-top: 8px;
+  border-radius: var(--radius-2xl);
+  padding: 12px;
+  background: color-mix(in oklab, var(--input) 50%, transparent);
+}
+
+.wf-flux-profile-dialog [data-slot="badge"] {
+  height: 20px;
+  border-radius: var(--radius-4xl);
+}
+
+.wf-flux-profile-dialog .workspace-settings-avatar {
+  gap: 8px;
+}
+
+.workspace-settings-shell.wf-flux-profile-dialog .workspace-settings-avatar [data-slot="button"] {
+  height: 32px;
+  border-radius: var(--radius-4xl);
+  padding-inline: 12px;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.workspace-settings-shell.wf-flux-profile-dialog .workspace-settings-footer [data-slot="button"] {
+  height: 36px;
+  border-radius: var(--radius-4xl);
+  padding-inline: 12px;
+}
+
+.workspace-settings-shell.wf-flux-profile-dialog > [data-slot="dialog-close"] {
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-4xl);
+  background: var(--muted);
+}
+
+.wf-flux-profile-dialog > [data-slot="dialog-close"] > svg {
+  width: 12px;
+  height: 12px;
+}
+
+@media (max-width: 767px) {
+  .wf-flux-profile-dialog .workspace-settings-tabs {
+    grid-template-rows: 67px minmax(0, 1fr);
+  }
+
+  .wf-flux-profile-dialog .workspace-settings-rail {
+    padding: 16px 20px;
+  }
+
+  .wf-flux-profile-dialog .workspace-settings-main {
+    padding-inline: 24px;
+  }
+
+  .wf-flux-profile-dialog .workspace-settings-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

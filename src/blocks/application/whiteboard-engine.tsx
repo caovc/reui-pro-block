@@ -59,6 +59,29 @@ type PreparedScene = {
   zoom: number;
   data: ExcalidrawInitialDataState;
 };
+type PendingSave = {
+  elements: readonly ExcalidrawElement[];
+  state: AppState;
+  files: BinaryFiles;
+  storageKey: string;
+};
+
+function persistSnapshot(snapshot: PendingSave) {
+  try {
+    const saved = JSON.parse(
+      serializeAsJSON(snapshot.elements, snapshot.state, snapshot.files, "local"),
+    );
+    saved.appState = {
+      ...saved.appState,
+      scrollX: snapshot.state.scrollX,
+      scrollY: snapshot.state.scrollY,
+      zoom: snapshot.state.zoom,
+    };
+    localStorage.setItem(snapshot.storageKey, JSON.stringify(saved));
+  } catch {
+    toast.error("Browser storage is full. Export the board to keep your changes.");
+  }
+}
 
 function prepareInitialScene(props: Props, useStoredScene: boolean): PreparedScene {
   let saved: {
@@ -141,6 +164,7 @@ export const WhiteboardEngine = forwardRef<WhiteboardEngineHandle, Props>(
     const lastSignature = useRef("");
     const viewportInitialized = useRef(false);
     const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const pendingSave = useRef<PendingSave | null>(null);
     const [initialData] = useState(() =>
       prepareWhiteboardFonts()
         .catch(() => {
@@ -196,12 +220,21 @@ export const WhiteboardEngine = forwardRef<WhiteboardEngineHandle, Props>(
           captureUpdate: CaptureUpdateAction.NEVER,
         });
     }, [api, props.zoom, props.pan, ready]);
-    useEffect(
-      () => () => {
+    useEffect(() => {
+      const flush = () => {
         if (saveTimer.current) clearTimeout(saveTimer.current);
-      },
-      [],
-    );
+        saveTimer.current = null;
+        const snapshot = pendingSave.current;
+        if (!snapshot) return;
+        persistSnapshot(snapshot);
+        pendingSave.current = null;
+      };
+      window.addEventListener("pagehide", flush);
+      return () => {
+        window.removeEventListener("pagehide", flush);
+        flush();
+      };
+    }, []);
     useImperativeHandle(
       ref,
       () => ({
@@ -303,20 +336,13 @@ export const WhiteboardEngine = forwardRef<WhiteboardEngineHandle, Props>(
         y: -state.scrollY,
         tool: toTool(state.activeTool.type),
       });
+      pendingSave.current = { elements, state, files, storageKey: latest.current.storageKey };
       if (saveTimer.current) clearTimeout(saveTimer.current);
       saveTimer.current = setTimeout(() => {
-        try {
-          const saved = JSON.parse(serializeAsJSON(elements, state, files, "local"));
-          saved.appState = {
-            ...saved.appState,
-            scrollX: state.scrollX,
-            scrollY: state.scrollY,
-            zoom: state.zoom,
-          };
-          localStorage.setItem(latest.current.storageKey, JSON.stringify(saved));
-        } catch {
-          toast.error("Browser storage is full. Export the board to keep your changes.");
-        }
+        const snapshot = pendingSave.current;
+        if (snapshot) persistSnapshot(snapshot);
+        pendingSave.current = null;
+        saveTimer.current = null;
       }, 300);
     }
     return (

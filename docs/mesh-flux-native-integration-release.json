@@ -1,0 +1,554 @@
+{
+  "status": "LOCAL_VERIFIED_READY_FOR_MAIN_CI",
+  "milestone": "Mesh native canvas/documents and Flux native settings header/profile integration",
+  "base": "9c80801fa5f3826ea481c980138244977fc473ce",
+  "preparedAtUTC": "2026-10-26T16:15:49.636443+00:00",
+  "scope": {
+    "runtimePayloadFiles": 34,
+    "catalogChanges": false,
+    "blocks": 669,
+    "categories": 79,
+    "templates": 18,
+    "newDependencyChanges": false,
+    "globalStylesOrExportEngineChanges": false
+  },
+  "payloadProof": {
+    "manifest": "/tmp/bricklane-mesh-flux-9c-profile-v2-static-v0pli8n8/final-manifest-v2.json",
+    "sha256": "6801839bbde4f12d61764ca778a09508230fa3f54bb19dd27d9202f7995ffa59",
+    "preReceiptNonownedFiles": 1487,
+    "preReceiptNonownedExact": true,
+    "sharedMerge": "Only optional headerContent plus AgentOps supplied-title wrapper, and Mesh/Flux implementation-leaf arrays. Both inverse projections return exact9c baseline.",
+    "docsInPayload": [
+      {
+        "path": "docs/audits/mesh-engine-integration-plan.md",
+        "sha256": "1a3f0fceee716cf1d3c22f05c49fa9787bbcc54e2f77d34d8d25254cb55e180a"
+      },
+      {
+        "path": "docs/templates-flux-header-first-run-repair.md",
+        "sha256": "83023cdcb9a8fb4d6c8c2377565c4357eb9c14b896e3a27624bbd4cdfb7efd76"
+      },
+      {
+        "path": "docs/templates-flux-header-native-review.md",
+        "sha256": "349889f02a164767ccd60aa19d6faed7fa2b24c646ab2ef53bb26e64dc97c92e"
+      },
+      {
+        "path": "docs/templates-flux-settings-native-review.md",
+        "sha256": "018d30c4f93bdddbbd311923b2792c73a0a2267d908e4cdf2fae03c68b9c1ee7"
+      },
+      {
+        "path": "docs/templates-flux-profile-consumer-theme.md",
+        "sha256": "941addb7a7fb58ad826cdc31b79c18982f485b5f130ca87e43c3ada0120a9f21"
+      }
+    ],
+    "runtimeManifest": "/tmp/bricklane-mesh-flux-9c-profile-v2-static-v0pli8n8/final-manifest-v2.json",
+    "runtimeManifestSHA256": "6801839bbde4f12d61764ca778a09508230fa3f54bb19dd27d9202f7995ffa59",
+    "finalEngineManifest": "/tmp/bricklane-mesh-flux-9c-profile-v2-static-v0pli8n8/final-delivery/final-validation-manifest.json",
+    "finalEngineManifestSHA256": "d03fbcb8b6f3891f86951c4393d673a62c5ca5b62c3a81a73eb988f9fd8c2677",
+    "releaseFiles34AllExact": true,
+    "unchangedRuntimeSourceFiles": 33,
+    "postRuntimeDocumentationDelta": {
+      "path": "docs/audits/mesh-engine-integration-plan.md",
+      "file": "/tmp/bricklane-mesh-flux-9c-profile-v2-static-v0pli8n8/final-delivery/docs/audits/mesh-engine-integration-plan.md",
+      "beforeSHA256": "d2878c86ddebf5842f2bcdda3fd226da6b51874bad1a76fa3eb7d3d8d16cbb84",
+      "afterSHA256": "1a3f0fceee716cf1d3c22f05c49fa9787bbcc54e2f77d34d8d25254cb55e180a",
+      "formatAndCheck": 0,
+      "outsideActualZIPClosure": true,
+      "noProductChangeOrNewBuildNeeded": true
+    }
+  },
+  "actualFreeReuse": {
+    "meshCanvas": [
+      "Published Whiteboard/WhiteboardEngine with actual free ReUI NumberField and ColorPicker controls; full existing Excalidraw engine stays authoritative."
+    ],
+    "meshDocuments": [
+      "Published RichEditorBlock/Tiptap with actual free ReUI Scrollspy and ColorPicker; actual Frame/FramePanel surface."
+    ],
+    "assistant": [
+      "Content-parametrized adaptation of actual official free c-message-7, including pending/streaming status, reduced-motion behavior and mounted action footer. Existing message/Bubble/Marker/Spinner/MessageScroller are its explicit shadcn dependencies, not relabelled as new ReUI components."
+    ],
+    "navigation": [
+      "Existing actual free ReUI AppShellLayout/AppShellInset/ReuiSidebar/Sidebar navigation and existing native SidebarProvider/SidebarTrigger/mobile Sheet."
+    ],
+    "fluxSettings": [
+      "Actual free ReUI Frame, Item, IconTile, AvatarGroup, Badge and dense DataGrid; existing independent complete AccountSettingsDialog/SettingsPanel uses official Field, Input/InputGroup, Select, Tabs, Switch, Textarea and ScrollArea, plus the official c-file-upload-2 adapter/useFileUpload."
+    ],
+    "fluxHeader": [
+      "Native Popover and actual free IconTile/Button/Breadcrumb/Avatar composition. Settings System Status consumes the real SystemMonitor opt-in instead of a generic run-detail panel; Nick identity is a real trigger opening the full five-tab profile form."
+    ],
+    "references": [
+      "https://reui.io/components/message/c-message-7",
+      "https://reui.io/r/radix-nova/c-message-7.json"
+    ],
+    "provenance": "Existing required ReUI MIT, fonts OFL and third-party notices remain; no premium source was fetched."
+  },
+  "removedApproximations": [
+    "Mesh duplicated SVG gesture/scene/history implementation replaced by the entire existing native Whiteboard Block.",
+    "Mesh document controls and content/history now use the actual public Tiptap Editor instead of an independent placeholder editing/history model.",
+    "Flux Settings generic run-detail substitute and static profile breadcrumb replaced by opt-in existing native monitor and full actual form."
+  ],
+  "customCapabilityGaps": [
+    {
+      "capability": "Full drawing/document engines",
+      "reason": "No matching complete free ReUI drawing/schema/selection/history engine was available; existing Excalidraw and Tiptap integrations supply native transforms/bindings/text/history/selection/serialization."
+    },
+    {
+      "capability": "Mesh container-aware pane arbitration",
+      "reason": "ResizeObserver measures actual workspace inline width, including the width consumed by AI. Existing free responsive helpers do not encode Mesh domain rules:1120px inline-board threshold,288px inline panel,320px native modal panel,desktopAI min(416px,42vw),mobileAI288. It composes native Sheet and existing engine/controller, not a replacement gesture/history engine."
+    },
+    {
+      "capability": "Native SDK compact footer visibility",
+      "reason": "Mesh-only .excalidraw--mobile selectors expose existing SDK undo/redo actions and reserve layout space. SDK mobile depends on engine-container width, including narrowed desktop layouts; standalone Blocks and native desktop SDK branch do not match."
+    },
+    {
+      "capability": "Flux trend domain visualization",
+      "reason": "No independent official free ReUI Sparkline API was found. Root-approved existing MiniTrend uses actual ChartContainer and Recharts Area; the free c-chart-16 provenance is retained. This is not claimed as a new free ReUI Sparkline. Default monitor SVG remains unchanged for compatibility."
+    },
+    {
+      "capability": "Local domain state",
+      "reason": "Document seeds/CRUD, scene context, assistant replies, monitor metrics and profile save snapshot are local demo behavior. No AI/provider/authentication backend, server permissions or real collaboration is implied."
+    }
+  ],
+  "brandAndLicense": {
+    "brand": "Bricklane original brick mark and locally authored demo identities/artwork. No ReUI/KeenThemes logo or extracted reference avatars/paid screenshots/SVG are distributed.",
+    "privateReferenceEvidence": "Reference captures remain private and are not included in site/download payload.",
+    "notices": "Root byte proof confirms current ZIP notice/licensing bytes; normal postinstall independently copies234 runtime font files and12 SDK license files exactly in each actual project. Required ReUI MIT, font OFL and SDK attribution remain. Representative exported runtime remains pending."
+  },
+  "historyRetained": [
+    {
+      "stage": "Initial5fcd Mesh main and original gate",
+      "outcome": "Main exit0; original production gate failed with real Documents React185 maximum-update-depth defect.",
+      "evidence": [
+        "/tmp/bricklane-engines/mesh-5fcd-main-process.json",
+        "/tmp/bricklane-engines/mesh-5fcd-ui38-process.json",
+        "/tmp/bricklane-engines/mesh-prod-diagnosis-before.json",
+        "/tmp/bricklane-engines/mesh-prod-diagnosis-after.json"
+      ],
+      "cause": "Native BubbleMenu updateOptions metadata transaction changed neither document nor canUndo/canRedo; unconditional outer revision recreated shouldShow, producing a render/transaction loop.",
+      "correction": "Subscribe to all native transactions and keep the previous history state object when the two real booleans are unchanged; committed hook Editor instance owns cleanup. Diagnostic assets were causal probes, not formal gates."
+    },
+    {
+      "stage": "Corrected17e original38",
+      "outcome": "36PASS2FAIL retained",
+      "evidence": "/tmp/bricklane-engines/mesh-17e-ui38-process.json",
+      "affectedOutcome": "2PASS once; no product change",
+      "affectedEvidence": "/tmp/bricklane-engines/mesh-17e-fixture-diagnosis/affected2-process.json",
+      "correction": "Test-only native ToggleGroup radio roles and lazy mobile-page readiness; real editing/history/layout/focus assertions retained. Original36/2 not overwritten."
+    },
+    {
+      "stage": "First Flux integrated19",
+      "passed": 14,
+      "failed": 5,
+      "durationMs": 93550.015,
+      "evidence": "/tmp/bricklane-templates-layout/flux-header-release-17e-v1-proof/native-19-report.json",
+      "outcome": "Real Monitor geometry differences plus new Profile/Inventory test accessible-name fixtures. Small consumer repair and narrowly corrected locators; original14/5 retained."
+    },
+    {
+      "stage": "Joint responsive run",
+      "passed": 7,
+      "failed": 1,
+      "evidence": "/tmp/bricklane-root-latest-release-state.json",
+      "sourceKey": "jointCandidate.previousV2",
+      "outcome": "Real phone native Undo control hidden by consumer CSS, not a test tolerance issue. Root-approved Mesh+actual SDKmobile footer rules preserve native actionManager authority."
+    },
+    {
+      "stage": "Prior affected Flux5 and Profile2",
+      "evidence": "/tmp/bricklane-root-latest-release-state.json",
+      "sourceKeys": ["jointCandidate.previousV2", "jointCandidate.profileAffected2"],
+      "scopeClarification": "The five-case affected gate includes Flux Monitor/Profile/default Inventory checks; it is not five distinct Profile cases. Prior old87f352 Profile2 passed once7.356s, but did not validate the currentc1670b8 CSS.",
+      "outcome": "Settled reference comparison subsequently found actual radii, padding, typography, nested Field gap and native Select border differences. Actual opt-in consumer CSS corrected them; passing interactions did not establish visual fidelity. The first bad InputGroup diagnostic locator failure is also retained."
+    },
+    {
+      "stage": "Final ZIP independent read-only helper correction",
+      "outcome": "Initial read-only checker assumed Example.tsx at root; actual archive member is src/Example.tsx. Corrected only expected path, no file/test assertion/source/ZIP changes.",
+      "productFailure": false,
+      "evidence": "/tmp/bricklane-root-final-mesh-flux-zip-byte-proof.json",
+      "evidenceSHA256": "6157411b842d93ca43dec9256b7c391426587aaf0705dfe8178c884d01b4e3fd",
+      "retained": true
+    }
+  ],
+  "currentVerifiedGates": {
+    "strictMain": {
+      "status": "PASS_ROOT_REPORTED",
+      "exitCode": 0,
+      "seconds": 21.87,
+      "immutableURL": "http://127.0.0.1:49659",
+      "actualDistFiles": 654,
+      "sourceProtectedExact": true,
+      "evidence": "/tmp/bricklane-root-latest-release-state.json",
+      "sourceKey": "jointCandidate.main"
+    },
+    "meshResponsive3": {
+      "status": "PASS_CARRIED_EXACT_SCOPE",
+      "result": "PASS once",
+      "seconds": 8.3,
+      "workers": 1,
+      "retries": 0,
+      "timeoutMs": 30000,
+      "branchWidths": {
+        "900_AI": "473 mobile nativefooter visible",
+        "1024_AI": "559 mobile nativefooter visible",
+        "1920_AI": "1167 desktop native branch unchanged"
+      },
+      "phoneUndoRedo": "original true scene count assertions passed",
+      "onPreviousImmutable": "http://127.0.0.1:62650",
+      "carryReason": "Finalv2 differs from that34 payload only in Flux profile CSS and its ledger; other32 files including all Mesh/runtime shared files remain exact. No new Mesh rerun claimed."
+    }
+  },
+  "finalGates": {
+    "profileAffected2": {
+      "status": "PASS_OWNER_VERIFIED",
+      "result": "PASS2/2 once",
+      "seconds": 7.697064161300659,
+      "workers": 1,
+      "retries": 0,
+      "timeoutMs": 30000,
+      "specAndConfigUnchanged": true,
+      "immutableURL": "http://127.0.0.1:49659/",
+      "evidence": "/tmp/bricklane-templates-layout/flux-final-v2-profile-dual-proof.json",
+      "evidenceSHA256": "1f279ea3d96b1890abd2757d84b310e82d77d15924dcbc9e8d309f1f664b0070"
+    },
+    "settledVisualAndNativeFocus": {
+      "status": "ACCEPTED_WITH_EXPLICIT_GAPS",
+      "settledStates": 4,
+      "nativeGeometryFocusStates": 2,
+      "ownerViewedAllFour": true,
+      "errors": [],
+      "sameMeasuredBoxes": [
+        "dialog",
+        "title",
+        "rail/tab",
+        "photo/fullname/email/username",
+        "desktoprole/timezone/website/bio"
+      ],
+      "realComputedRadius": "dialog26,input22,textarea18,close26",
+      "nestedFieldsGap": "12px each of3",
+      "selectBorder": "native border-input oklch0.922 restored; source uses actual freeSelect",
+      "nativeFocusAndInvalid": "All fixed geometry/defaultborder/nestedgap assertions and nativefocus/invalid assertions pass naturally",
+      "noDomOrCssInjection": true,
+      "square": "Static existing token consequence only; no runtimeSquare claim",
+      "phoneResidual": "exact8.75px after PublicDetails from missing actual Info trigger; not hidden",
+      "footerResidual": "visible separator/buttons match measured positions; internal footer container differs",
+      "nativeComponentResidual": "Native icon shapes and Select internal gap6 versus reference8 retained; no pixel-perfect claim",
+      "evidence": "/tmp/bricklane-templates-layout/flux-final-v2-profile-dual-proof.json",
+      "evidenceSHA256": "1f279ea3d96b1890abd2757d84b310e82d77d15924dcbc9e8d309f1f664b0070"
+    },
+    "sourceUI2": {
+      "status": "PASS_NEW_FINAL_V2_SOURCE_UI_AND_ROOT_BYTE_PROOF",
+      "passed": 2,
+      "rootReportedTestSeconds": 5.5,
+      "processWallSeconds": 5.938245,
+      "workers": 1,
+      "retries": 0,
+      "timeoutMs": 30000,
+      "immutableURL": "http://127.0.0.1:49659/",
+      "scope": "Actual Mesh source/copy/single-file/ZIP and Flux original Source strengthened with default rendered leaf and single-file exactness. No old62650 ZIP relabelled.",
+      "process": "/tmp/bricklane-mesh-flux-9c-profile-v2-static-v0pli8n8/source-ui-once-process.json",
+      "processSHA256": "2a79cebce2a92b3410a6eb89dbf760fe6d57634fc22808f4e9dfdf4d4055dfe1",
+      "rawReceipt": "/tmp/bricklane-mesh-flux-9c-profile-v2-static-v0pli8n8/actual-source/raw-receipt.json",
+      "rawReceiptSHA256": "6548481635daadcd45b7354ec5452b11f3d14d3dc10e62ad9835e1003e3df9e0",
+      "rootIndependentByteProof": "/tmp/bricklane-root-final-mesh-flux-zip-byte-proof.json",
+      "rootIndependentByteProofSHA256": "6157411b842d93ca43dec9256b7c391426587aaf0705dfe8178c884d01b4e3fd",
+      "membersEach": 305,
+      "candidateRawByteExactEach": 297,
+      "generatedScaffolds": {
+        "countEach": 8,
+        "validation": "Independent AST/content checks, not raw source equality",
+        "paths": [
+          "README.md",
+          "index.html",
+          "package.json",
+          "src/Example.tsx",
+          "src/main.tsx",
+          "src/theme.css",
+          "tsconfig.json",
+          "vite.config.ts"
+        ]
+      },
+      "commonByteExactBetweenProjects": 302,
+      "expectedDifferences": ["src/Example.tsx", "package.json", "README.md"],
+      "packageScriptsDependenciesOverridesEqual": true,
+      "localImportEdgesEach": 1126,
+      "missingLocalImportEdges": 0
+    },
+    "actualMeshZIP": {
+      "status": "PASS_STRICT_CLOSURE_AND_ACTUAL_RUNTIME",
+      "originalZIP": {
+        "zipSHA256": "9c075c689b7b3c5b969aca841ea74181df6797a988673800a3b4269a3559bc73",
+        "bytes": 1168336,
+        "members": 305,
+        "candidateExact": 297,
+        "requiredConsumerCSSExact": true,
+        "licensingExact": true,
+        "path": "/tmp/bricklane-mesh-flux-9c-profile-v2-static-v0pli8n8/source-ui-results/mesh-engines-Mesh-actual-s-8f1fd-n-the-same-engine-consumers/mesh-engines-project.zip"
+      },
+      "strictBuild": {
+        "status": "PASS_ONCE",
+        "exitCode": 0,
+        "seconds": 8.76673,
+        "command": ["npm", "run", "build"],
+        "originalDownloadedExampleUnchanged": true,
+        "rawFilesBeforeAndAfter": 305,
+        "evidence": "/tmp/bricklane-mesh-flux-9c-profile-v2-static-v0pli8n8/actual-source/mesh-strict-process.json",
+        "evidenceSHA256": "34078679a4612280df012ba355065763c8c718c8f8822842319e064fc67ff824"
+      },
+      "postinstall": {
+        "status": "PASS_NORMAL_SCRIPT",
+        "exitCode": 0,
+        "command": ["npm", "run", "postinstall"],
+        "evidence": "/tmp/bricklane-mesh-flux-9c-profile-v2-static-v0pli8n8/actual-source/mesh-postinstall-process.json",
+        "evidenceSHA256": "683e823c40a110f9f5ec9b32a66220c1891908515cabc1ea51dafbc93d068c02"
+      },
+      "dependencyPreparation": {
+        "method": "Physical APFS clone of normally installed matching tree, not a new fresh install claim",
+        "providerOrigin": "/tmp/bricklane-engines/mesh-17e-actual-install-process.json normal fresh709 natural0",
+        "newFreshInstallClaim": false,
+        "scriptsDependenciesDevDependenciesOverridesExact": true,
+        "lockedGraphExact": true,
+        "lockIdentity": "Original provider lock bytes exact",
+        "providerLockSHA256": "bb0d01eca87c1606bbd4e16d97ea745ddc3c71f18ffe28cd67062a7fef719941",
+        "actualGeneratedLockSHA256": "bb0d01eca87c1606bbd4e16d97ea745ddc3c71f18ffe28cd67062a7fef719941",
+        "privateCachesEmpty": true,
+        "differentNodeModulesInode": true,
+        "evidence": "/tmp/bricklane-mesh-flux-9c-profile-v2-static-v0pli8n8/actual-source/mesh-dependency-proof.json",
+        "evidenceSHA256": "e6e7f6fb5d826800572b131b945be70ee58061f1144cf663abe0c164be33aa0c"
+      },
+      "fontAndLicenseClosure": {
+        "runtimeFontsCopiedExact": 234,
+        "SDKLicenseFilesCopiedExact": 12,
+        "method": "Original normal postinstall output compared byte for byte with installed SDK fonts and bundled license sources",
+        "runtimeAssetRoot": "new URL(\"./excalidraw/\", document.baseURI), public runtime assets separately verified",
+        "requiredConsumerCSSAndLicensingRawExact": true,
+        "evidence": "/tmp/bricklane-mesh-flux-9c-profile-v2-static-v0pli8n8/actual-source/mesh-fonts-licenses.json",
+        "evidenceSHA256": "1c353e7a62778782065c6351e07fd3941787acc50e8302204504901cc50e47f7"
+      },
+      "actualImmutable": {
+        "url": "http://127.0.0.1:51357/",
+        "files": 475,
+        "productionManifest": "/tmp/bricklane-mesh-flux-9c-profile-v2-static-v0pli8n8/actual-source/mesh-production-manifest.json",
+        "productionManifestSHA256": "7e7962275ff525f6c28c87baca078596ce63ae79a41a8a34602e934d34cca8d1"
+      },
+      "representativeRuntime": {
+        "status": "PASS_ONCE",
+        "passed": 3,
+        "rootReportedTestSeconds": 6.1,
+        "processWallSeconds": 6.453057,
+        "workers": 1,
+        "retries": 0,
+        "timeoutMs": 30000,
+        "actualURL": "http://127.0.0.1:51357/",
+        "originalAssertionsRetained": true,
+        "phoneActualRectangleUndoRedo": true,
+        "entryRouteDerivation": [
+          "All4 template-preview navigation literals adapt to actual exported homepage; only selected3 execute",
+          "Original390case adds actualRectangle/nativeUndo/nativeRedo with real storedscene count assertions; all original assertions retained"
+        ],
+        "actualProductAndOriginal305Unchanged": true,
+        "evidence": "/tmp/bricklane-mesh-flux-9c-profile-v2-static-v0pli8n8/actual-source/mesh-runtime3-once-process.json",
+        "evidenceSHA256": "79d52d92a26c5da6d1d680eaf672ff13a268fc6af180c98271cf354ab25ece97",
+        "derivationEvidence": "/tmp/bricklane-mesh-flux-9c-profile-v2-static-v0pli8n8/actual-source/mesh-runtime-derivation.json",
+        "derivationSHA256": "5bd97cb017dad67940862c438a87e2614a50d8fbcf723a1da1115e7f70be4bdd"
+      }
+    },
+    "actualFluxZIP": {
+      "status": "PASS_STRICT_CLOSURE_AND_ACTUAL_RUNTIME",
+      "originalZIP": {
+        "zipSHA256": "acc58746c2d351920cdc83dedd2d8769afa1a3383fbda3c0ce3fe108c8304050",
+        "bytes": 1168337,
+        "members": 305,
+        "candidateExact": 297,
+        "requiredConsumerCSSExact": true,
+        "licensingExact": true,
+        "path": "/tmp/bricklane-mesh-flux-9c-profile-v2-static-v0pli8n8/source-ui-results/templates-source-round3-fi-d86a2-copies-the-exact-ZIP-source/actual-flux-project.zip"
+      },
+      "strictBuild": {
+        "status": "PASS_ONCE",
+        "exitCode": 0,
+        "seconds": 8.554414,
+        "command": ["npm", "run", "build"],
+        "originalDownloadedExampleUnchanged": true,
+        "rawFilesBeforeAndAfter": 305,
+        "evidence": "/tmp/bricklane-mesh-flux-9c-profile-v2-static-v0pli8n8/actual-source/flux-strict-process.json",
+        "evidenceSHA256": "ac08a09c34a7c22664e78f87407eb9f94da5d8417bea8ac29ee2d86f4f80c89b"
+      },
+      "postinstall": {
+        "status": "PASS_NORMAL_SCRIPT",
+        "exitCode": 0,
+        "command": ["npm", "run", "postinstall"],
+        "evidence": "/tmp/bricklane-mesh-flux-9c-profile-v2-static-v0pli8n8/actual-source/flux-postinstall-process.json",
+        "evidenceSHA256": "ff01dcf1e4c33f0dcdeb35b0bca5a35d98c9f8b2207ff88e42f88ab72fa28d78"
+      },
+      "dependencyPreparation": {
+        "method": "Physical APFS clone of normally installed matching tree, not a new fresh install claim",
+        "providerOrigin": "/tmp/bricklane-engines/mesh-17e-actual-install-process.json normal fresh709 natural0",
+        "newFreshInstallClaim": false,
+        "scriptsDependenciesDevDependenciesOverridesExact": true,
+        "lockedGraphExact": true,
+        "lockIdentity": "Generated lock absent from ZIP: only top/root package name changed; full locked graph equals normal provider",
+        "providerLockSHA256": "bb0d01eca87c1606bbd4e16d97ea745ddc3c71f18ffe28cd67062a7fef719941",
+        "actualGeneratedLockSHA256": "1eae4bd2f8e3efdd3468f743fdc0368b5ac956d1f508aca0dcccb1c7d3e92cd4",
+        "privateCachesEmpty": true,
+        "differentNodeModulesInode": true,
+        "evidence": "/tmp/bricklane-mesh-flux-9c-profile-v2-static-v0pli8n8/actual-source/flux-dependency-proof.json",
+        "evidenceSHA256": "7885e740872d4f1c661f4232b56e50721a60b5742638194c7850c2c0bc92ec34"
+      },
+      "fontAndLicenseClosure": {
+        "runtimeFontsCopiedExact": 234,
+        "SDKLicenseFilesCopiedExact": 12,
+        "method": "Original normal postinstall output compared byte for byte with installed SDK fonts and bundled license sources",
+        "runtimeAssetRoot": "new URL(\"./excalidraw/\", document.baseURI), public runtime assets separately verified",
+        "requiredConsumerCSSAndLicensingRawExact": true,
+        "evidence": "/tmp/bricklane-mesh-flux-9c-profile-v2-static-v0pli8n8/actual-source/flux-fonts-licenses.json",
+        "evidenceSHA256": "976ebd519437de298e2ba1f7481253126d3f6cc9ae5a31582998488d139cc0f4"
+      },
+      "actualImmutable": {
+        "url": "http://127.0.0.1:51516/",
+        "files": 475,
+        "productionManifest": "/tmp/bricklane-mesh-flux-9c-profile-v2-static-v0pli8n8/actual-source/flux-production-manifest.json",
+        "productionManifestSHA256": "7d7f49ef92bd9df2d084b816d24d851372fda125ea9e633985e8984a12fd5ff5"
+      },
+      "representativeRuntime": {
+        "status": "PASS_ONCE",
+        "passed": 2,
+        "wallSeconds": 7.04538893699646,
+        "runnerDurationMs": 6820.709,
+        "workers": 1,
+        "retries": 0,
+        "timeoutMs": 30000,
+        "actualURL": "http://127.0.0.1:51516/",
+        "originalExampleSHA256": "79c4189b47aa71e591913b3f2e715ea2eaac0b8c4767a706167429c3c09d6c6f",
+        "finalCSSSHA256": "c1670b8a1e117cf54e1f0fccd226828de27f2af338690aa84306e84a8bc5d186",
+        "original305UnchangedAfterRuntime": true,
+        "onlyEntryRouteChanged": true,
+        "actualBehavior": [
+          "All five native Profile tabs",
+          "FullName/email validation and Save disabled",
+          "Cancel retains draft but does not save header",
+          "Save updates NickBold to NickRivera in actual header and native focus returns to new trigger",
+          "Saved billing/name survive Settingspaths and Overview roundtrip/unmount",
+          "NativeEscape restores actual header trigger focus",
+          "No phone document overflow",
+          "Empty console/pageerror lists in test attachments"
+        ],
+        "evidence": "/tmp/bricklane-templates-layout/flux-actual-final-v2-profile-two-once-v1/postproof.json",
+        "evidenceSHA256": "614284bbd449aecf35c0b4b509f12a32b6f52dc907fef1a5869c2a7fed73f8a2"
+      }
+    },
+    "latestParentClosure": {
+      "status": "PASS_FOR_EXACT_9C_BASE_ONLY",
+      "baselineRootHead": "9c80801fa5f3826ea481c980138244977fc473ce",
+      "candidateComparison": {
+        "candidateBase": "9c80801fa5f3826ea481c980138244977fc473ce",
+        "latestRootHEAD": "9c80801fa5f3826ea481c980138244977fc473ce",
+        "changedPaths": [],
+        "actualMemberIntersection": []
+      },
+      "rootIndependentByteProof": "/tmp/bricklane-root-final-mesh-flux-zip-byte-proof.json",
+      "rootIndependentByteProofSHA256": "6157411b842d93ca43dec9256b7c391426587aaf0705dfe8178c884d01b4e3fd",
+      "scope": "1126 actual local import edges per project, zero missing; required current consumer CSS and notices exact. This is source/import closure evidence, not browser runtime or deployment."
+    },
+    "finalFormattingAndRootHooks": {
+      "status": "LOCAL_CHECKS_COMPLETE_ROOT_NORMAL_HOOKS_NEXT",
+      "localFormat": "Scoped docs/audit write, full format check and scoped code lint checked before this exact36 freeze.",
+      "normalCommitHooks": "Root runs normal hooks during its serial stage/commit/push; this receipt does not bypass or preclaim those hooks."
+    },
+    "fullLinuxCIAndPages": {
+      "status": "NOT_ESTABLISHED_FOR_THE_RELEASE_COMMIT",
+      "reason": "This is the precommit local verification snapshot. Root must separately check the new release commit CI and Pages outcome; earlier milestone CI/Pages are not proof for this commit."
+    }
+  },
+  "knownResiduals": [
+    "The actual avatar upload adapter has no Change/Remove action-icon slot; no fake icon or reserved spacer was added.",
+    "Public Details has no actual Info/Tooltip slot; the missing interaction can leave an8.75px phone stack residual. No fake control or pixel-perfect claim.",
+    "Original demo artwork/identities intentionally differ from reference premium media.",
+    "Square0 is preserved by existing radius tokens; computed Square interaction is not claimed in this draft."
+  ],
+  "publication": {
+    "scope": "Precommit local verification snapshot for exact36 against9c; status is evidence scope, not a live remote-state field.",
+    "nextOwner": "Root serial normal-hook stage/commit/push, then separate full Linux CI and Pages verification.",
+    "releaseCommitAndRemoteOutcome": "Track with the actual subsequent commit/run; not asserted by this local receipt.",
+    "newCommitCIPagesSuccessClaimed": false
+  },
+  "draftEvidenceSnapshot": {
+    "source": "/tmp/bricklane-root-latest-release-state.json",
+    "capturedSHA256": "a859cf6f5060b31460fbd642b76f3c3352e1ce58cf0c41a0ca0e7085e4af95f5",
+    "note": "Snapshot may contain older progress summaries. Only cited fields establish current evidence; pending gates are deliberately not auto-promoted."
+  },
+  "lastDraftUpdateUTC": "2026-10-26T16:24:20.207931+00:00",
+  "updatedEvidence": {
+    "profileDual": {
+      "path": "/tmp/bricklane-templates-layout/flux-final-v2-profile-dual-proof.json",
+      "sha256": "1f279ea3d96b1890abd2757d84b310e82d77d15924dcbc9e8d309f1f664b0070"
+    },
+    "rootZIPBytes": {
+      "path": "/tmp/bricklane-root-final-mesh-flux-zip-byte-proof.json",
+      "sha256": "6157411b842d93ca43dec9256b7c391426587aaf0705dfe8178c884d01b4e3fd"
+    },
+    "notice": "All necessary local functional/visual/source/actual-export gates are complete for the exact source scope. Root normal hooks and subsequent new-commit CI/Pages remain separate publication steps.",
+    "finalEngine": {
+      "path": "/tmp/bricklane-mesh-flux-9c-profile-v2-static-v0pli8n8/final-delivery/final-validation-manifest.json",
+      "sha256": "d03fbcb8b6f3891f86951c4393d673a62c5ca5b62c3a81a73eb988f9fd8c2677"
+    },
+    "actualFluxRuntime": {
+      "path": "/tmp/bricklane-templates-layout/flux-actual-final-v2-profile-two-once-v1/postproof.json",
+      "sha256": "614284bbd449aecf35c0b4b509f12a32b6f52dc907fef1a5869c2a7fed73f8a2"
+    }
+  },
+  "localVerificationSnapshotUTC": "2026-10-26T16:30:52.231135+00:00",
+  "postRuntimeIntegrity": {
+    "evidence": "/tmp/bricklane-mesh-flux-9c-profile-v2-static-v0pli8n8/final-delivery/final-validation-manifest.json",
+    "evidenceSHA256": "d03fbcb8b6f3891f86951c4393d673a62c5ca5b62c3a81a73eb988f9fd8c2677",
+    "runtimeOwned34ExactAfterAllGates": true,
+    "protected1487ExactAfterAllGates": true,
+    "originalActualProjects": {
+      "mesh": {
+        "zipSHA256": "9c075c689b7b3c5b969aca841ea74181df6797a988673800a3b4269a3559bc73",
+        "rawMembersExact": 305,
+        "originalExampleSHA256": "2b2efd5658053b37588b2682c910d8b27d20103b13b661cec92d4730a66d6669",
+        "extractedOriginalUnchanged": true
+      },
+      "flux": {
+        "zipSHA256": "acc58746c2d351920cdc83dedd2d8769afa1a3383fbda3c0ce3fe108c8304050",
+        "rawMembersExact": 305,
+        "originalExampleSHA256": "79c4189b47aa71e591913b3f2e715ea2eaac0b8c4767a706167429c3c09d6c6f",
+        "extractedOriginalUnchanged": true
+      }
+    },
+    "immutableDistributions": {
+      "joint": {
+        "receipt": "/tmp/bricklane-mesh-flux-9c-profile-v2-static-v0pli8n8/engine-production-manifest.json",
+        "receiptSHA256": "f5bd0fb3d998d978c3615f4fe87cdd139b7c4db95ef34d251a17e9baa36324f8",
+        "files": 654,
+        "immutableAllExactAfterRuntime": true,
+        "originalBuildDistExact": true
+      },
+      "mesh": {
+        "receipt": "/tmp/bricklane-mesh-flux-9c-profile-v2-static-v0pli8n8/actual-source/mesh-production-manifest.json",
+        "receiptSHA256": "7e7962275ff525f6c28c87baca078596ce63ae79a41a8a34602e934d34cca8d1",
+        "files": 475,
+        "immutableAllExactAfterRuntime": true,
+        "originalBuildDistExact": true
+      },
+      "flux": {
+        "receipt": "/tmp/bricklane-mesh-flux-9c-profile-v2-static-v0pli8n8/actual-source/flux-production-manifest.json",
+        "receiptSHA256": "7d7f49ef92bd9df2d084b816d24d851372fda125ea9e633985e8984a12fd5ff5",
+        "files": 475,
+        "immutableAllExactAfterRuntime": true,
+        "originalBuildDistExact": true
+      }
+    },
+    "releaseDocOnlyDeltaOutsideSourceZIP": {
+      "path": "docs/audits/mesh-engine-integration-plan.md",
+      "file": "/tmp/bricklane-mesh-flux-9c-profile-v2-static-v0pli8n8/final-delivery/docs/audits/mesh-engine-integration-plan.md",
+      "beforeSHA256": "d2878c86ddebf5842f2bcdda3fd226da6b51874bad1a76fa3eb7d3d8d16cbb84",
+      "afterSHA256": "1a3f0fceee716cf1d3c22f05c49fa9787bbcc54e2f77d34d8d25254cb55e180a",
+      "formatAndCheck": 0,
+      "outsideActualZIPClosure": true,
+      "noProductChangeOrNewBuildNeeded": true
+    },
+    "latestRootParentComparison": {
+      "HEAD": "9c80801fa5f3826ea481c980138244977fc473ce",
+      "changedPaths": [],
+      "actualMemberIntersection": []
+    }
+  }
+}

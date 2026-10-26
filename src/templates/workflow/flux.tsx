@@ -1,3 +1,8 @@
+import { FluxWorkspaceSettings } from "./flux-settings-workspace";
+import { FluxSecuritySettings } from "./flux-settings-security";
+import { FluxApiKeysSettings } from "./flux-settings-api-keys";
+import { FluxWebhookSettings } from "./flux-settings-webhooks";
+import { useFluxSettingsModel, fluxProfileSeed } from "./flux-settings-model";
 import { FluxSpend, FluxTokenAudit } from "./flux-costs";
 import { useFluxCostModel } from "./flux-cost-models";
 import { AiOperations } from "./ai-operations";
@@ -28,20 +33,13 @@ import {
   Wrench,
   Zap,
 } from "lucide-react";
-import {
-  Shell,
-  Panel,
-  Button,
-  Status,
-  Chart,
-  Detail,
-  ExportButton,
-  WorkspaceSettings,
-} from "./shared";
+import { Shell, Panel, Button, Status, Chart, Detail, ExportButton } from "./shared";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 import { IconTile } from "@/components/reui/icon-tile";
 import { Choice } from "./controls";
+import { FluxSettingsBreadcrumb, FluxSettingsMonitor } from "./flux-settings-header";
+import type { SettingsValues } from "@/blocks/application/dialog-variants/workspace/settings-panel";
 import { RunTree } from "./run-tree";
 import { ApprovalInbox } from "./approvals";
 import { FluxFlags } from "./flux-flags";
@@ -72,6 +70,24 @@ const incidents = [
       "Read latency on the embeddings index rose to 1.9s, slowing enrichment lookups before it recovered.",
   },
 ];
+
+const settingsViews = ["Workspace", "Security", "API keys", "Webhooks"] as const;
+type FluxSettingsView = (typeof settingsViews)[number];
+
+function fluxSettingsView(view: string): FluxSettingsView | undefined {
+  if (view === "Settings") return "Workspace";
+  return settingsViews.find((candidate) => candidate === view);
+}
+
+function FluxSettingsRoute({ view }: { view: FluxSettingsView }) {
+  const model = useFluxSettingsModel();
+
+  if (view === "Workspace") return <FluxWorkspaceSettings model={model} />;
+  if (view === "Security") return <FluxSecuritySettings model={model} />;
+  if (view === "API keys") return <FluxApiKeysSettings model={model} />;
+  return <FluxWebhookSettings model={model} />;
+}
+
 export default function Flux() {
   const costModel = useFluxCostModel();
   const operationsModel = useAiOperationsModel();
@@ -79,6 +95,10 @@ export default function Flux() {
   const evidenceModel = useFluxEvidenceModel();
   const flagRecords = useFluxFlagsModel();
   const [view, setView] = useState("Overview");
+  const [profileValues, setProfileValues] = useState<SettingsValues>(() => ({
+    ...fluxProfileSeed,
+  }));
+  const settingsView = fluxSettingsView(view);
   const [agents] = useState(agentSeed);
   const [riskOnly, setRiskOnly] = useState(false);
   const [period, setPeriod] = useState("Last 24 hours");
@@ -90,6 +110,17 @@ export default function Flux() {
       brand="AgentOps"
       view={view}
       setView={setView}
+      headerTitle={
+        settingsView ? (
+          <FluxSettingsBreadcrumb
+            view={settingsView}
+            profileValues={profileValues}
+            onProfileSave={setProfileValues}
+          />
+        ) : undefined
+      }
+      headerActions={settingsView ? <FluxSettingsMonitor /> : undefined}
+      closeMobileOnSelect={(nextView) => fluxSettingsView(nextView) === undefined}
       nav={[
         { label: "Overview", icon: LayoutDashboard },
         { label: "Runs", icon: Play },
@@ -104,7 +135,11 @@ export default function Flux() {
           children: ["Connections", "Routing rules", "Failover"],
         },
         { label: "Costs", icon: CircleDollarSign, children: ["Spend overview", "Token audit"] },
-        { label: "Settings", icon: Settings },
+        {
+          label: "Settings",
+          icon: Settings,
+          children: ["Workspace", "Security", "API keys", "Webhooks"],
+        },
       ]}
       extra={
         <>
@@ -246,8 +281,8 @@ export default function Flux() {
         </>
       ) : view === "Runs" ? (
         tree
-      ) : view === "Settings" ? (
-        <WorkspaceSettings />
+      ) : settingsView ? (
+        <FluxSettingsRoute key={settingsView} view={settingsView} />
       ) : view === "Evals" ? (
         <FluxEvaluations model={evidenceModel} />
       ) : view === "Memory" ? (

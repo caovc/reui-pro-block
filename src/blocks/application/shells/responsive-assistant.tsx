@@ -21,17 +21,22 @@ export function ResponsiveAssistantPanel({
   onClose,
   className,
   children,
+  modal,
+  description = "Conversation and suggested actions.",
 }: {
   title: string;
   onClose: () => void;
   className?: string;
   children: ReactNode;
+  modal?: boolean;
+  description?: string;
 }) {
-  const mobile = useSyncExternalStore(
+  const mediaMobile = useSyncExternalStore(
     subscribe,
     () => window.matchMedia(query).matches,
     () => false,
   );
+  const mobile = modal ?? mediaMobile;
   const returnFocus = useRef(
     typeof document === "undefined" ? null : (document.activeElement as HTMLElement | null),
   );
@@ -53,7 +58,7 @@ export function ResponsiveAssistantPanel({
         >
           <SheetHeader className="sr-only">
             <SheetTitle>{title}</SheetTitle>
-            <SheetDescription>Conversation and suggested actions.</SheetDescription>
+            <SheetDescription>{description}</SheetDescription>
           </SheetHeader>
           {children}
         </SheetContent>

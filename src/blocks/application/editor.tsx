@@ -220,12 +220,14 @@ export default function RichEditorBlock({
   initialHtml,
   documentTitle,
   onHtmlChange,
+  onEditorReady,
   readOnly = false,
   compact = false,
 }: BlockProps & {
   initialHtml?: string;
   documentTitle?: string;
   onHtmlChange?: (html: string) => void;
+  onEditorReady?: (editor: Editor | null) => void;
   readOnly?: boolean;
   compact?: boolean;
 }) {
@@ -248,9 +250,12 @@ export default function RichEditorBlock({
   const [initialContent] = useState(() => normalizeDocument(loadHtml()));
   const [storageError, setStorageError] = useState(false);
   const changeCallback = useRef(onHtmlChange);
+  const readyCallback = useRef(onEditorReady);
+  const latestHtml = useRef("");
   useLayoutEffect(() => {
     changeCallback.current = onHtmlChange;
-  }, [onHtmlChange]);
+    readyCallback.current = onEditorReady;
+  }, [onHtmlChange, onEditorReady]);
   const [textColor, setTextColor] = useState("#262626");
   const [highlightColor, setHighlightColor] = useState("#fef08a");
   useEffect(() => {
@@ -351,11 +356,13 @@ export default function RichEditorBlock({
     editorProps: richTextEditorProps,
     onCreate: ({ editor: instance }) => {
       editor.current = instance.view.dom as HTMLDivElement;
-      setDocumentHtml(instance.getHTML());
+      latestHtml.current = instance.getHTML();
+      setDocumentHtml(latestHtml.current);
       refreshOutline(instance);
     },
     onUpdate: ({ editor: instance }) => {
-      setDocumentHtml(instance.getHTML());
+      latestHtml.current = instance.getHTML();
+      setDocumentHtml(latestHtml.current);
       setIsSaved(false);
       setCanUndo(instance.can().undo());
       setCanRedo(instance.can().redo());
@@ -389,6 +396,30 @@ export default function RichEditorBlock({
     },
   });
   useEffect(() => {
+    if (!engine) return;
+    // Subscribe only to the committed hook instance. Strict Mode may also create
+    // a temporary instance whose deferred create/destroy events still run.
+    let reported = false;
+    const ready = () => {
+      if (reported || engine.isDestroyed) return;
+      reported = true;
+      readyCallback.current?.(engine);
+    };
+    const destroyed = () => {
+      if (!reported) return;
+      reported = false;
+      readyCallback.current?.(null);
+    };
+    engine.on("create", ready);
+    engine.on("destroy", destroyed);
+    if (engine.isInitialized) ready();
+    return () => {
+      engine.off("create", ready);
+      engine.off("destroy", destroyed);
+      destroyed();
+    };
+  }, [engine]);
+  useEffect(() => {
     engine?.setEditable(editable);
   }, [engine, editable]);
   useEffect(
@@ -410,6 +441,22 @@ export default function RichEditorBlock({
     }, 400);
     return () => clearTimeout(timeout);
   }, [documentHtml, storageKey, engine]);
+  useEffect(() => {
+    if (!storageKey) return;
+    const flush = () => {
+      if (!latestHtml.current) return;
+      try {
+        localStorage.setItem(storageKey, latestHtml.current);
+      } catch {
+        // The normal save path reports unavailable storage while the page is visible.
+      }
+    };
+    window.addEventListener("pagehide", flush);
+    return () => {
+      window.removeEventListener("pagehide", flush);
+      flush();
+    };
+  }, [storageKey]);
   function snapshot() {
     if (!engine) return;
     setDocumentHtml(engine.getHTML());

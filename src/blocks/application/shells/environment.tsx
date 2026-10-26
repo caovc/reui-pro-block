@@ -1,10 +1,14 @@
 import { AppShellInset, useShellSidebarState } from "@/components/reui/layout";
 import { Sidebar } from "./primitives";
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState, type CSSProperties, type ReactElement } from "react";
 import {
   Activity,
   ArrowRight,
   ChevronDown,
+  Cpu,
+  MemoryStick,
+  Monitor,
+  Wifi,
   KeyRound,
   Network,
   Shield,
@@ -33,6 +37,9 @@ import {
   WorkspaceMenu,
 } from "./chrome";
 import type { NavNode } from "./chrome";
+import { MiniTrend } from "@/blocks/data/sparkline-primitives";
+import { IconTile } from "@/components/reui/icon-tile";
+import "@/blocks/reference.css";
 const nav: NavNode[] = [
   { label: "Overview", icon: Activity },
   {
@@ -53,7 +60,153 @@ const nav: NavNode[] = [
   { label: "Webhooks", icon: Webhook },
   { label: "API Keys", icon: KeyRound },
 ];
-export function SystemMonitor() {
+export type SystemMonitorProps = {
+  /** A ref-capable button; the real PopoverTrigger supplies its popup/focus behavior. */
+  trigger?: ReactElement;
+  presentation?: "default" | "flux";
+};
+
+const fluxMetrics = [
+  { name: "CPU", base: 56.7, unit: "%", color: "var(--color-blue-500)", icon: Cpu },
+  { name: "GPU", base: 31.1, unit: "%", color: "var(--color-emerald-500)", icon: Monitor },
+  { name: "Memory", base: 11.4, unit: "GB", color: "var(--color-amber-500)", icon: MemoryStick },
+  { name: "Network", base: 26.4, unit: "Mbps", color: "var(--color-violet-500)", icon: Wifi },
+] as const;
+
+const fluxAgentMemory = [
+  { name: "Refund Triage", memory: 194, color: "var(--color-indigo-500)" },
+  { name: "Invoice Reconciler", memory: 285, color: "var(--color-purple-500)" },
+  { name: "Support Router", memory: 485, color: "var(--color-sky-500)" },
+  { name: "Contract Reader", memory: 142, color: "var(--color-teal-500)" },
+  { name: "Churn Watch", memory: 238, color: "var(--color-amber-500)" },
+  {
+    name: "Procurement Intake & Vendor Onboarding Assistant",
+    memory: 108,
+    color: "var(--color-rose-500)",
+  },
+] as const;
+
+function FluxMonitorContent({
+  phase,
+  expanded,
+  onToggle,
+}: {
+  phase: number;
+  expanded: boolean;
+  onToggle: () => void;
+}) {
+  const memoryId = useId();
+  const descriptionId = useId();
+  const [clockStart] = useState(() => ({ timestamp: Date.now(), phase }));
+  return (
+    <>
+      <div className="flex items-center justify-between border-b px-3 py-2.5">
+        <h3 className="text-xs leading-4 font-medium">System Monitor</h3>
+        <time className="text-[11px] leading-[1.428571] text-muted-foreground">
+          {new Date(clockStart.timestamp + (phase - clockStart.phase) * 1000).toLocaleTimeString(
+            "en-US",
+            { hour: "2-digit", minute: "2-digit", second: "2-digit" },
+          )}
+        </time>
+      </div>
+      <div className="grid grid-cols-2" aria-describedby={descriptionId}>
+        {fluxMetrics.map(({ name, base, unit, color, icon: Icon }, index) => {
+          const value = base + Math.sin(phase * 0.5 + index) * Math.min(2, base * 0.08);
+          const values = Array.from(
+            { length: 25 },
+            (_, point) =>
+              19 +
+              Math.sin(point * 1.9 + phase * 0.25 + index) * 7 +
+              Math.sin(point * 0.5 + index) * 4,
+          );
+          return (
+            <div
+              className={`${index % 2 ? "border-l" : ""} ${index > 1 ? "border-t" : ""}`}
+              key={name}
+            >
+              <div className="flex flex-col gap-2 p-3">
+                <div className="flex items-center justify-between gap-1">
+                  <span className="flex min-w-0 items-center gap-1.5 text-[11px] leading-[1.428571] text-muted-foreground">
+                    <IconTile
+                      variant="outline"
+                      className="size-5 border-0 bg-transparent dark:bg-transparent"
+                      style={{ color }}
+                    >
+                      <Icon className="size-3" aria-hidden="true" />
+                    </IconTile>
+                    <span>{name}</span>
+                  </span>
+                  <span className="shrink-0 text-xs font-medium tabular-nums" style={{ color }}>
+                    {Number(value.toFixed(1))}
+                    <span className="ml-0.5 text-[10px] leading-[1.333333] font-normal text-muted-foreground">
+                      {unit}
+                    </span>
+                  </span>
+                </div>
+                <MiniTrend
+                  values={values}
+                  label={`${name} usage trend`}
+                  color={color}
+                  height={36}
+                  area
+                  domain={[0, 46]}
+                />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <div className="border-t">
+        <Button
+          variant="ghost"
+          size="sm"
+          className="h-8 w-full justify-start gap-2 rounded-none border-0 px-3 py-2 text-xs font-normal text-muted-foreground aria-expanded:bg-transparent aria-expanded:text-muted-foreground aria-expanded:hover:bg-muted aria-expanded:hover:text-foreground"
+          aria-expanded={expanded}
+          aria-controls={memoryId}
+          onClick={onToggle}
+        >
+          <ChevronDown
+            className={`size-3 shrink-0 transition-transform ${expanded ? "" : "-rotate-90"}`}
+            aria-hidden="true"
+          />
+          Per-Agent Memory
+        </Button>
+        {expanded && (
+          <div id={memoryId} className="pb-2">
+            {fluxAgentMemory.map(({ name, memory, color }, index) => {
+              const memoryMb = Math.round(memory + Math.sin(phase * 0.4 + index) * 4);
+              return (
+                <div
+                  key={name}
+                  className="flex min-w-0 items-center gap-2 px-3 py-1.5 text-xs leading-4"
+                >
+                  <span className="size-2 shrink-0 rounded-full" style={{ background: color }} />
+                  <span className="min-w-0 flex-1 truncate text-muted-foreground" title={name}>
+                    {name}
+                  </span>
+                  <Progress
+                    value={Math.min(100, (memoryMb / 512) * 100)}
+                    aria-label={`${name} memory`}
+                    className="h-1 w-12 shrink-0 rounded-none [&_[data-slot=progress-indicator]]:bg-[var(--agent-memory-color)]"
+                    style={{ "--agent-memory-color": color } as CSSProperties}
+                  />
+                  <span className="w-10 shrink-0 text-right text-[10px] leading-[1.428571] tabular-nums text-muted-foreground">
+                    {memoryMb}MB
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+      <p id={descriptionId} className="sr-only">
+        Simulated resource metrics for the local preview.
+      </p>
+    </>
+  );
+}
+
+export function SystemMonitor({ trigger, presentation = "default" }: SystemMonitorProps = {}) {
   const [open, setOpen] = useState(false);
   const [phase, setPhase] = useState(0);
   const [expanded, setExpanded] = useState(true);
@@ -68,25 +221,45 @@ export function SystemMonitor() {
     ["Memory", 8.3, "GB"],
     ["Network", 9.4, "Mbps"],
   ] as const;
+  const defaultTrigger = (
+    <Button
+      variant="outline"
+      size="sm"
+      className="h-7 gap-1 px-2 text-[11px]"
+      aria-label="System monitor"
+    >
+      <Activity />
+      System
+      <Badge
+        variant="outline"
+        className="ml-1 h-4 border-0 bg-[color-mix(in_oklab,var(--chart-2)_10%,transparent)] px-1 text-[9px] font-normal text-[var(--chart-2)]"
+      >
+        Normal
+      </Badge>
+    </Button>
+  );
+  if (presentation === "flux") {
+    return (
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>{trigger ?? defaultTrigger}</PopoverTrigger>
+        <PopoverContent
+          align="end"
+          sideOffset={8}
+          aria-label="System Monitor"
+          className="reui-reference w-80 gap-0 overflow-hidden rounded-3xl p-0"
+        >
+          <FluxMonitorContent
+            phase={phase}
+            expanded={expanded}
+            onToggle={() => setExpanded(!expanded)}
+          />
+        </PopoverContent>
+      </Popover>
+    );
+  }
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          className="h-7 gap-1 px-2 text-[11px]"
-          aria-label="System monitor"
-        >
-          <Activity />
-          System
-          <Badge
-            variant="outline"
-            className="ml-1 h-4 border-0 bg-[color-mix(in_oklab,var(--chart-2)_10%,transparent)] px-1 text-[9px] font-normal text-[var(--chart-2)]"
-          >
-            Normal
-          </Badge>
-        </Button>
-      </PopoverTrigger>
+      <PopoverTrigger asChild>{trigger ?? defaultTrigger}</PopoverTrigger>
       <PopoverContent align="end" className="w-80 p-0">
         <div className="flex items-center justify-between border-b px-3 py-2.5">
           <h3 className="text-xs font-medium">System Monitor</h3>

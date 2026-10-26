@@ -56,7 +56,18 @@ const projects = [
   ["GA Launch", "Bug fixes, review, announce", "Iris Fox", 5, 3, "Not started"],
 ] as const;
 export default function Mesh() {
-  const [view, setView] = useState("Home");
+  const [view, updateView] = useState<string>(() => {
+    const params = new URLSearchParams(location.search);
+    return params.has("doc") ? "Documents" : params.get("page") === "canvas" ? "Canvas" : "Home";
+  });
+  function setView(next: string) {
+    const url = new URL(location.href);
+    if (next !== "Documents") url.searchParams.delete("doc");
+    if (next !== "Canvas") url.searchParams.delete("page");
+    if (next !== view) url.searchParams.delete("mode");
+    if (url.href !== location.href) history.replaceState(history.state, "", url);
+    updateView(next);
+  }
   const [selected, setSelected] = useState("");
   const [resolved, setResolved] = useState<string[]>([]);
   const [mode, setMode] = useState("Due date");
@@ -178,6 +189,7 @@ export default function Mesh() {
       compact
       view={view}
       setView={setView}
+      headerContent={view === "Canvas" || view === "Documents" ? null : undefined}
       nav={[
         { label: "Home", icon: Home },
         { label: "Templates", icon: LayoutTemplate },
@@ -236,7 +248,10 @@ export default function Mesh() {
       }
     >
       {view === "Canvas" ? (
-        <MeshCanvas block={blocks.find((b) => b.category === "whiteboard")!} />
+        <MeshCanvas
+          block={blocks.find((b) => b.category === "whiteboard")!}
+          onHome={() => setView("Home")}
+        />
       ) : view === "Home" ? (
         <>
           <div className="wf-grid wf-five">
@@ -356,7 +371,7 @@ export default function Mesh() {
       ) : view === "Projects" ? (
         <ProjectBoard kind="mesh" createOpen={newTask} onCreateClose={() => setNewTask(false)} />
       ) : view === "Documents" ? (
-        <MeshDocuments />
+        <MeshDocuments onHome={() => setView("Home")} />
       ) : view === "Settings" ? (
         <WorkspaceSettings />
       ) : (

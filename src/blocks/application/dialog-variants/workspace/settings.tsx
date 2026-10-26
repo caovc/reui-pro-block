@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, type ReactElement } from "react";
 import { Settings2 } from "lucide-react";
 import { demoAvatar, integrationArtwork, svgImage } from "@/lib/demo-artwork";
+import { cn } from "@/lib/utils";
 import { Badge } from "@/components/reui/badge";
 import {
   Dialog,
@@ -9,17 +10,17 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Textarea } from "@/components/ui/textarea";
 import { DialogLauncher } from "../first-run/support";
-import { SettingsPanel, SettingsRow, SettingsChoice } from "./settings-panel";
+import { SettingsPanel, SettingsRow, SettingsChoice, type SettingsValues } from "./settings-panel";
 import { LocalAvatarUpload } from "./free/avatar-upload";
 import {
   initialSettings,
-  profileInitial,
   settingsFields,
   settingsSections,
   timezones,
@@ -28,10 +29,35 @@ import {
 
 const validEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
-export default function AccountSettingsDialog() {
+export type AccountSettingsDialogProps = {
+  /** A native button, or a component forwarding its ref and trigger props to one. */
+  trigger?: ReactElement;
+  /** Merged with the demo defaults once at mount; subsequent props do not overwrite drafts. */
+  initialValues?: Readonly<SettingsValues>;
+  /** Local saved fields only. Upload previews and files remain owned by this dialog. */
+  onSave?: (values: SettingsValues) => void;
+  /** Local or licensed demo artwork; captured once at mount. */
+  initialAvatar?: string;
+  profileRoleOptions?: readonly string[];
+  contentClassName?: string;
+};
+
+export default function AccountSettingsDialog({
+  trigger,
+  initialValues,
+  onSave,
+  initialAvatar,
+  profileRoleOptions,
+  contentClassName,
+}: AccountSettingsDialogProps = {}) {
   const [open, setOpen] = useState(false);
   const [section, setSection] = useState<SettingsSection>("profile");
-  const [values, setValues] = useState(initialSettings);
+  const [initialSnapshot] = useState<SettingsValues>(() => ({
+    ...initialSettings,
+    ...initialValues,
+  }));
+  const [originalAvatar] = useState(() => initialAvatar ?? demoAvatar("Ava Chen profile"));
+  const [values, setValues] = useState(initialSnapshot);
   const [defaultAvatar, setDefaultAvatar] = useState(true);
   const [defaultLogo, setDefaultLogo] = useState(true);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
@@ -54,9 +80,7 @@ export default function AccountSettingsDialog() {
         <>
           <SettingsRow title="Profile Photo" description="Shown in comments and mentions.">
             <LocalAvatarUpload
-              defaultAvatar={
-                avatarPreview ?? (defaultAvatar ? demoAvatar("Ava Chen profile") : undefined)
-              }
+              defaultAvatar={avatarPreview ?? (defaultAvatar ? originalAvatar : undefined)}
               onDefaultRemove={() => {
                 setDefaultAvatar(false);
                 setAvatarFile(null);
@@ -87,10 +111,10 @@ export default function AccountSettingsDialog() {
             invalid={!validEmail(String(values.email))}
             badge={
               <Badge
-                variant={values.email === profileInitial.email ? "success-light" : "secondary"}
+                variant={values.email === initialSnapshot.email ? "success-light" : "secondary"}
                 size="sm"
               >
-                {values.email === profileInitial.email ? "Verified" : "Unverified draft"}
+                {values.email === initialSnapshot.email ? "Verified" : "Unverified draft"}
               </Badge>
             }
           >
@@ -128,7 +152,9 @@ export default function AccountSettingsDialog() {
                 <SettingsChoice
                   id="workspace-settings-profileRole"
                   value={String(values.role)}
-                  options={["Staff Product Lead", "Product Manager", "Design Lead"]}
+                  options={
+                    profileRoleOptions ?? ["Staff Product Lead", "Product Manager", "Design Lead"]
+                  }
                   onChange={(value) => change("role", value)}
                 />
               </Field>
@@ -206,32 +232,39 @@ export default function AccountSettingsDialog() {
   }));
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogLauncher
-        id={10}
-        title="Account settings"
-        description="Keep your profile and workspace preferences in sync."
-        icon={<Settings2 />}
-        action="Open account settings"
-        result={
-          saved && (
-            <span>
-              {saved.fullName} · {saved.workspaceName} · {saved.defaultRole} · {saved.theme}. Member
-              invites: {saved.memberInvites ? "On" : "Off"}; external sharing:{" "}
-              {saved.externalSharing ? "On" : "Off"}. {savedMedia} Local settings only; no real
-              account, permission, billing or device preference was changed.
-            </span>
-          )
-        }
+      {trigger ? (
+        <DialogTrigger asChild>{trigger}</DialogTrigger>
+      ) : (
+        <DialogLauncher
+          id={10}
+          title="Account settings"
+          description="Keep your profile and workspace preferences in sync."
+          icon={<Settings2 />}
+          action="Open account settings"
+          result={
+            saved && (
+              <span>
+                {saved.fullName} · {saved.workspaceName} · {saved.defaultRole} · {saved.theme}.
+                Member invites: {saved.memberInvites ? "On" : "Off"}; external sharing:{" "}
+                {saved.externalSharing ? "On" : "Off"}. {savedMedia} Local settings only; no real
+                account, permission, billing or device preference was changed.
+              </span>
+            )
+          }
+        >
+          <div className="flex flex-wrap gap-2">
+            {settingsSections.map((entry) => (
+              <Badge variant="outline" key={entry.id}>
+                {entry.title}
+              </Badge>
+            ))}
+          </div>
+        </DialogLauncher>
+      )}
+      <DialogContent
+        className={cn("workspace-settings-shell", contentClassName)}
+        data-workspace-dialog={10}
       >
-        <div className="flex flex-wrap gap-2">
-          {settingsSections.map((entry) => (
-            <Badge variant="outline" key={entry.id}>
-              {entry.title}
-            </Badge>
-          ))}
-        </div>
-      </DialogLauncher>
-      <DialogContent className="workspace-settings-shell" data-workspace-dialog={10}>
         <SettingsPanel
           sections={sections}
           section={section}
@@ -246,6 +279,7 @@ export default function AccountSettingsDialog() {
               `Photo: ${avatarFile?.name ?? (defaultAvatar ? "Original demo avatar" : "None")}; logo: ${logoFile?.name ?? (defaultLogo ? "Original demo mark" : "None")}.`,
             );
             setOpen(false);
+            onSave?.({ ...next });
           }}
           renderHeader={(active) => (
             <DialogHeader className="workspace-settings-header">
