@@ -211,4 +211,8 @@ GitHub run40264448297 on303cc13 passed1136/1136 browser cases, build and Pages d
 
 Grouping1–3 now have distinct roadmap, revenue and cohort models composed on the actual native DataGrid. The shared adapter uses the real empty component and a narrow group-cell callback; application state and summaries remain original domain rules. Independent49/49 production cases and three actual248-file export/source checks passed. Current cumulative checks are recorded separately; further mobile/visual details remain open. See [integration evidence](grouping123-integration-release.json).
 
+## Lucent infrastructure template pages
+
+Lucent now has independent Clusters, Hosts and Registry pages with actual native DataGrid, controlled provision and retention state. Independent16/16 production cases, a195-file actual project strict build and frozen source/license checks passed. Existing reference gaps in shared navigation, filters and unavailable metrics remain explicit; shared shell migration is a separate batch. See [integration evidence](lucent-infrastructure-integration-release.json).
+
 Run40266050417 on5c6df66 later passed1165 and failed one old Checklist connect/manage case; Pages was skipped. Original trace/artifact12627475041 is retained. Root is diagnosing native Accordion animation/input readiness; unrelated local milestone passes do not erase that failure. Latest verified deployed version remains303cc13.

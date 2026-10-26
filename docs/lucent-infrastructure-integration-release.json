@@ -1,0 +1,29 @@
+{
+  "scope": "Lucent infrastructure template pages",
+  "combinedBase": "5c6df66d78f54bff481816f578b856bcb3b243ac",
+  "frozenFiles": {
+    "src/templates/workflow/lucent.tsx": "88c20705acf62ffb9cad3025e6394e23761711c71eead434e6a37cea4ceca415",
+    "src/templates/workflow/lucent-infrastructure-model.ts": "7ff40a14561e786018b5add93e09e0eb0d43e2c3dc6dc7873f5631fcc92ae8aa",
+    "src/templates/workflow/lucent-clusters.tsx": "5253f056e34ef2a8657fa2144ba2ba2a06ac10999170717961fcd76154c9f0e4",
+    "src/templates/workflow/lucent-hosts.tsx": "ced36b8de3babb71f39add898c4087ed830bfb4a3c3c81c3834f500ccc57f11b",
+    "src/templates/workflow/lucent-registry.tsx": "2b26174060a60480e055751b3d13f089d8d3171fb9bd51dff205d6c4682d1e39",
+    "src/templates/workflow/infrastructure.css": "e8cc37fd888bff20c60c8385e5b7015e3f15620d7ad69ee023c85097829d7029",
+    "tests/templates-infrastructure-round3.spec.ts": "d136b39342449c500ac7e6fc3776b1f6e72842a986a27b4eae5e49de488f9391",
+    "docs/templates-lucent-infrastructure-review.md": "f3fa2f49d910e17fd577f1f1ceb2bd887188437a74039d75d2852657c86cbec5",
+    "src/lib/source-targets.ts": "e9ed4704b3fa09d30b7a2463d8ed31a3f46790775f0da112ea27e1c1e3d1b489"
+  },
+  "independentAcceptance": "Independent16/16 production, strict candidate and actual195-file ZIP strict build passed;6 frozen runtime/style files and187 matching entries verified.",
+  "actualFreeReuseAndCustomGap": "Actual free DataGrid and controlled native forms/menus/dialogs supply checked interaction; original cluster/host/registry records and local provision/retention state fill domain gaps.",
+  "remainingLimits": "Shared Workflow Sidebar/breadcrumb, Filters placement and unmodelled host/registry metrics remain documented gaps; no real infrastructure service.",
+  "finalCumulativeAcceptance": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-cumulative-release-qa-yj7ljamp/manifest.json",
+  "finalCumulativeContract": "One clean5c archive plus explicitly frozen pending Pricing/Grouping/Lucent/Flow/Comparison payloads. Shared source hooks applied in recorded order. Strict build and56 new/source cases recorded in final combined receipt, no repeated unchanged ZIP builds.",
+  "publication": "Root serial per-milestone commit/push; own full CI and Pages separately checked.",
+  "knownCI": {
+    "run": 40266050417,
+    "result": "1165passed/1oldChecklisttestfailure;Pages skipped",
+    "artifact": 12627475041,
+    "log": "/tmp/bricklane-settings-ci-failure.log",
+    "diagnosis": "Root retained trace and localoriginalcasePASS; nativeAccordion content was still animating/clipped at pointerclick. Investigation/fix pending; not erased by unrelated milestone tests.",
+    "latestVerifiedPages": "303cc13 1136/1136"
+  }
+}

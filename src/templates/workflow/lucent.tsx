@@ -40,6 +40,10 @@ import { toast } from "sonner";
 import { Deployments } from "./deployments";
 import { Person } from "./controls";
 import { serviceLogos } from "./service-logos";
+import { useLucentInfrastructureModel } from "./lucent-infrastructure-model";
+import { LucentClusters } from "./lucent-clusters";
+import { LucentHosts } from "./lucent-hosts";
+import { LucentRegistry } from "./lucent-registry";
 const services = ["api-gateway", "orders-db", "edge-cache", "recommender"];
 const initialFlags = [
   "Checkout canary routing",
@@ -51,6 +55,7 @@ const initialFlags = [
 export default function Lucent() {
   const securityModel = useLucentSecurityModel();
   const integrationModel = useLucentIntegrationsModel();
+  const infrastructureModel = useLucentInfrastructureModel();
   const [view, setView] = useState("Overview");
   const [period, setPeriod] = useState("30 days");
   const [query, setQuery] = useState("");
@@ -120,7 +125,7 @@ export default function Lucent() {
       nav={[
         { label: "Overview", icon: Home },
         { label: "Delivery", icon: Rocket },
-        { label: "Infrastructure", icon: Layers },
+        { label: "Infrastructure", icon: Layers, children: ["Clusters", "Hosts", "Registry"] },
         { label: "Observability", icon: Activity },
         { label: "Reliability", icon: Shield },
       ]}
@@ -424,6 +429,12 @@ export default function Lucent() {
         </>
       ) : view === "Delivery" ? (
         <Deployments />
+      ) : view === "Clusters" || view === "Infrastructure" ? (
+        <LucentClusters model={infrastructureModel} />
+      ) : view === "Hosts" ? (
+        <LucentHosts model={infrastructureModel} />
+      ) : view === "Registry" ? (
+        <LucentRegistry model={infrastructureModel} />
       ) : view === "Security" ? (
         <LucentSecurity model={securityModel} />
       ) : view === "Settings" ? (
