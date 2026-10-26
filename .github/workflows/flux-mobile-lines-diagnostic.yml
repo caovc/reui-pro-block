@@ -25,17 +25,21 @@ jobs:
               sudo tee /etc/apt/apt-mirrors.txt
           fi
       - run: npx playwright install --with-deps chromium
-      - name: Collect native layout once for local and public Workspace
-        run: node scripts/diagnose-flux-mobile-lines.mjs
+      - name: Validate original Workspace reference cases once
+        run: |
+          mkdir -p /tmp/bricklane-flux-fixed-reference
+          npx playwright test tests/templates-flux-settings.spec.ts \
+            --grep '^Flux Workspace reference defaults' \
+            --workers=1 --retries=0 --reporter=list,json
         env:
-          START_PREVIEW: "1"
-          PREVIEW_URL: http://127.0.0.1:4173
-          DIAGNOSTIC_DIR: /tmp/bricklane-flux-mobile-lines
-      - name: Upload read-only diagnostic evidence
+          PLAYWRIGHT_JSON_OUTPUT_NAME: /tmp/bricklane-flux-fixed-reference/report.json
+      - name: Upload original case results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: flux-mobile-lines-${{ github.run_id }}
-          path: /tmp/bricklane-flux-mobile-lines/
+          name: flux-fixed-reference-${{ github.run_id }}
+          path: |
+            /tmp/bricklane-flux-fixed-reference/
+            /tmp/reui-pro-block-playwright/
           if-no-files-found: warn
           retention-days: 7

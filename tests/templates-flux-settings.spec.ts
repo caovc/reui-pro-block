@@ -33,6 +33,14 @@ const referenceFrames: Record<string, number[][]> = {
     [17, 703.5, 356, 135.5],
     [17, 859, 356, 224],
   ],
+  // Independently measured PUBLIC Linux Chromium reference, not local product geometry.
+  // Provenance and preserved original failure: docs/flux-workspace-linux-reference-release.json.
+  "workspace-390-linux": [
+    [17, 65, 356, 261],
+    [17, 346, 356, 374.5],
+    [17, 740.5, 356, 135.5],
+    [17, 896, 356, 242.5],
+  ],
   "security-1440": [
     [273, 73, 1142, 276.75],
     [273, 369.75, 1142, 276.75],
@@ -117,7 +125,9 @@ async function evidence(page: Page, testInfo: TestInfo, name: string) {
           return [box.x, box.y, box.width, box.height];
         }),
       );
-    const expected = referenceFrames[key];
+    const referenceKey =
+      key === "workspace-390" && process.platform === "linux" ? "workspace-390-linux" : key;
+    const expected = referenceFrames[referenceKey];
     expect(expected, `fixed reference for ${key}`).toBeDefined();
     expect(frames).toHaveLength(expected.length);
     for (let index = 0; index < expected.length; index++)
