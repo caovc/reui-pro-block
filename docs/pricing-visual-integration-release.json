@@ -1,0 +1,45 @@
+{
+  "scope": "Pricing7/8 visual details on actual official free components",
+  "base": "4cc9ecb7eb81975c305b25d9d24679cbf6279fc7",
+  "frozenRuntimeAndTests": {
+    "src/blocks/commerce/pricing-upgrade-dialog.css": "3cc1f7c19a42b0c65eea02f05908cec17207e6cfb57e4a8be412bf00aafcd1b9",
+    "src/blocks/commerce/pricing-usage-limit.css": "169f452ea2f965128b87ddd1e1c3887f2b92e0f580e18daf3a5c11cbc34c0ab7",
+    "tests/pricing-upgrade-dialog-visual.spec.ts": "b03559416d9abfec8782fbe510093100b2621fa2b50b85d4f066ae8957a3ff04",
+    "tests/pricing-usage-limit-visual.spec.ts": "794e4c4ad31a0277932005e51afb1c0ab2f3e61bfc97416e5b3471a58ff2485e"
+  },
+  "ledger": "Initial frozen ledger plus later cumulative integration note; initial pending status retained as history",
+  "reuse": "Retain actual free Item/EmptyTitle/Badge/Tabs/ScrollArea; remove consumer overrides of native tracking, elevation, description density and scrollbar, plus extend semantic Badge palette for observed gradient",
+  "verification": {
+    "baseCSSHashes": "match committed original frozenCSS",
+    "original13Hashes": "match committed Rootbytes; native readinessv2 retained fromHEAD",
+    "scopedFormatLint": "5paths pass; QA-only source test separate",
+    "02cdProduction": "11/11 passed21.3s one worker incl Rootnative readinessv2/full7and8 behavior,2visual,2CSS source roundtrip",
+    "02cdActualStarters": "bothactual220-file ZIPs Vite-only built;2canonical visual tests cover1440/390;4standalone renders matchfullsite geometry andbilling/selection/dialog flows",
+    "latestBaseline": "b13170647a49e82a9d6b7cb7fed3d172b4fb6c47",
+    "latestViteOnly": "passed; no mainTS orZIPstrict repeated",
+    "latestNarrowProduction": "4/4 passed7.1s:2visual regressions +2CSS selected-source/clipboard/file/actualZIP roundtrips",
+    "latestActualZIPs": "both220files each are byte-identical by entry to the independently bundled/rendered02cd actual ZIPs; no redundant rebuild",
+    "ZIPComparisonEvidence": "latest/zip-baseline-differences.json",
+    "rawActualZIPs": ["latest/pricing-7-actual.zip", "latest/pricing-8-actual.zip"],
+    "mainTS": "not run in this CSS/test/doc batch; reuse Rootcommitted TS strict evidence",
+    "noActiveCold": true
+  },
+  "latestBaseQualification": {
+    "7": {
+      "members": 220,
+      "baseChangeIntersection": [],
+      "zipSHA256": "faa3713eb4f5d37b2a35c0206d7fe562e1fcddc072897864d00dcd64c70ae83b"
+    },
+    "8": {
+      "members": 220,
+      "baseChangeIntersection": [],
+      "zipSHA256": "ad483d42c87870d97bca25592a60bf63386d048b20be045db67b05841b0b567d"
+    }
+  },
+  "rootVisualReview": "Inspected production phone390 screenshots for both dialogs: visible rail, selection, focused Tabs and fixed bottom action fit viewport",
+  "remaining": [
+    "Previously recorded pointer focus modality difference unresolved",
+    "Safari/dark/unmeasured widths not certified"
+  ],
+  "publication": "Normal root commit/push; full CI and Pages pending"
+}

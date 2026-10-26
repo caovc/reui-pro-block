@@ -298,3 +298,7 @@ The [integration record](templates-native-layout-integration-release.json) disti
 实际复用免费 ReUI DataGrid、Frame、Badge 及原生菜单，替换 Editorial / Delivery 的重复近似实现，并把代码预览默认定位到实际叶文件。独立生产验证 17/17 通过，两个实际下载项目的实现、复制、单文件与 ZIP 已核对；代表 ZIP 严格构建与另包 Vite、4 个视口结果分别保留。最新模板侧栏 15 文件与两个 251 文件导出闭包无交集，合并保留 WorkflowShell 和既有 Pricing 源路由。原有失败证据及共享字体、菜单细节差异见专项记录。
 
 本批提交、推送与 Pages 成功分开记录；截至本条准备合并时，最新累计 CI 仍在运行，前一轮手机 Tabs 真实触摸滑动失败正在诊断。
+
+### Pricing 7–8 视觉细节（2026-10-26）
+
+保留实际免费 Item、EmptyTitle、Badge、Tabs、ScrollArea，移除重复覆盖的标题字距、选中态阴影、描述行高与滚动条尺寸，补上语义色板渐变。原实现逻辑不变；02cd 上 11 项、b131 上 4 项生产检查分别通过，两个实际 220 文件项目与早期已打包核对的项目逐字节相同。最新模板与 Grouping 合并不在这两个导出闭包内；本批无重复 TypeScript 构建。Root 已人工检查两张 390px 生产截图，指针焦点差异仍单独记录。提交、推送及 Pages 成功继续分开确认。

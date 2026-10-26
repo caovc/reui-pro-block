@@ -87,11 +87,6 @@
 
 .pu8-scroll-area [data-slot="scroll-area-scrollbar"] {
   z-index: 3;
-  width: 8px;
-}
-
-.pu8-scroll-area [data-slot="scroll-area-thumb"] {
-  background: color-mix(in oklab, var(--muted-foreground) 18%, transparent);
 }
 
 .pu8-plan-rail {
@@ -143,7 +138,7 @@
 
 .pu8-rail-media {
   align-self: center !important;
-  transform: none !important;
+  translate: 0 !important;
 }
 
 .pu8-rail-copy {
@@ -154,7 +149,6 @@
 .pu8-rail-copy [data-slot="item-description"] {
   overflow: hidden;
   font-size: 12px;
-  line-height: 16px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -290,6 +284,8 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* Pro presentation extends the actual free success Badge with semantic palette
+   tokens; the Badge implementation still owns its shape, type and states. */
 .pu8-popular {
   position: absolute;
   top: -11px;
@@ -297,8 +293,15 @@
   z-index: 1;
   border-color: transparent;
   border-radius: 6px;
-  background: linear-gradient(100deg, #00c950, #007a55);
-  box-shadow: 0 2px 3px rgb(0 0 0 / 0.16);
+  background-image: linear-gradient(
+    to right in oklch,
+    var(--color-green-500),
+    var(--color-emerald-700)
+  );
+  background-origin: border-box;
+  box-shadow:
+    0 1px 3px 0 color-mix(in oklab, var(--color-emerald-900) 25%, transparent),
+    0 1px 2px -1px color-mix(in oklab, var(--color-emerald-900) 25%, transparent);
 }
 
 .pu8-feature-panel {
