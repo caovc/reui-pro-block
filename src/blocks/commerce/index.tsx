@@ -1,3 +1,4 @@
+import { ComparisonFollowups } from "./comparison-variants/followups";
 import { ComparisonVariants } from "./comparison-variants";
 import type { BlockProps } from "@/data/types";
 import { CategoryBrowser, FilterSidebar } from "./catalog";
@@ -9,7 +10,7 @@ import { ReceiptDocuments } from "./receipt-refined";
 import { ReceiptPostPurchase } from "./receipt-post-purchase";
 import Checkout from "./checkout-refined";
 import ShoppingCart from "./cart-refined";
-import { Comparison, ShopHero } from "./promotions";
+import { ShopHero } from "./promotions";
 import { CouponVariants } from "./coupon-variants";
 import { ShopHeroVariants } from "./shop-hero-variants";
 import { CollectionShopHeroes } from "./shop-hero-variants/collection-pages";
@@ -59,7 +60,7 @@ export default function CommerceBlock({ block }: BlockProps) {
       return <CouponVariants key={block.id} block={block} />;
     case "comparison":
       if (block.index < 3) return <ComparisonVariants key={block.id} block={block} />;
-      return <Comparison key={block.id} block={block} />;
+      return <ComparisonFollowups key={block.id} block={block} />;
     case "review":
       return [0, 4, 5].includes(block.index) ? (
         <ReviewCarousels block={block} />

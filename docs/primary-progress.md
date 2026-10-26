@@ -32,14 +32,14 @@ Preview: https://caovc.github.io/reui-pro-block/
 
 ## Current ownership
 
-| Owner                     | Scope                                                                                                 |
-| ------------------------- | ----------------------------------------------------------------------------------------------------- |
-| Primary                   | Release integration, real starter verification, CI/Pages; AppShell M5 and Category integration        |
-| Application agent         | All13 Navbars integrated; Gantt test-only fix published; Comparison 1–3 visual refinement in progress |
-| Data agent                | AI Chat1–6 integrated; Activity1 compact layout integrated; public branch audit in progress           |
-| Commerce agent            | All8 Shop Heroes/6 Category functional; Comparison1–3 integrated and4–6 in independent modules        |
-| Source/export coordinator | Diagnose source/ZIP/site CI failures within original source scope                                     |
-| Grid coordinator          | Diagnose two Grid CI failures; preserve previous filter-focus correction                              |
+| Owner                     | Scope                                                                                                                        |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| Primary                   | Release integration, real starter verification, CI/Pages; AppShell M5 and Category integration                               |
+| Application agent         | All13 Navbars integrated; Gantt test-only fix published; Comparison 1–3 visual refinement in progress                        |
+| Data agent                | AI Chat1–6 integrated; Activity1 compact layout integrated; public branch audit in progress                                  |
+| Commerce agent            | All8 Shop Heroes/6 Category functional; All six Comparison entries integrated; Navbar12 CI input synchronization in progress |
+| Source/export coordinator | Diagnose source/ZIP/site CI failures within original source scope                                                            |
+| Grid coordinator          | Diagnose two Grid CI failures; preserve previous filter-focus correction                                                     |
 
 ## Release and validation rules
 
@@ -152,3 +152,9 @@ Activity 1 now uses a compact title/status/menu, continuous completed rows, and 
 Gantt synchronization is committed and pushed as 3f7d024. Root independently passed strict build and all 19 related production cases on the latest Comparison base. The test waits for the actual closing modal/overlay to leave, asserts native drag activation and preserves both date-change and assignee checks. No runtime engine or consumer changed. The later cbd5c2e cumulative CI passed 1080 browser cases and failed one Navbar 12 Insights navigation case; its original log and artifact are retained and being diagnosed. CI for subsequent commits remains pending or running, so these local results do not claim Pages deployment.
 
 The [October 26 dispatch](parallel-dispatch-2026-10-26.md) assigns separate Flow, Grouping, Pricing and source-export batches while retaining the Root, AppShell and Templates boundaries. Each coordinator supplies a frozen small batch for serialized Git publication.
+
+## Comparison rankings, alternatives and builder milestone
+
+All six Comparison routes now select independent leaves. Entries 4–6 add real six-model ranking pages, a focus-switching rival list, and four-slot live specification comparison. Actual free Carousel, Progress, Toggle, Frame, Item, Rating and DataGrid implementations own native controls and table behavior; the existing DialogSurface and NumberField cart are reused. Ranking data, price deltas, typed winner rules and selection limits are fictional domain composition. The generic mixed-products fallback is no longer dispatched.
+
+Root strict build and 53/53 cumulative production cases passed, covering all six comparisons plus Activity 1 and source defaults. Three actual 205-file starters independently strict-built, all six desktop/phone runtime scenarios passed, and six settled Dialog style comparisons matched. Default code, clipboard, single-file and complete-project source resolve to each real leaf. Root inspected the phone builder download. Original rendered 4–6 reference comparison remains pending; 1–3 visual correction is separately in progress. See [release evidence](comparison456-integration-release.json).

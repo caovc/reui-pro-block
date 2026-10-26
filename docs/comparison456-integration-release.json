@@ -1,0 +1,100 @@
+{
+  "base": "8362e2c7773c45e6835db44cc802b5a29a5355c4",
+  "ownerBase": "0b297cd037c6ac0c6b900bf0fbae7db9ab41babd",
+  "frozenFiles": {
+    "docs/comparison4-6-refinement.md": "2c4df9fcbca27fe45bd4a697f36632daeaa4ee07aa60f01500950b6b5eed8700",
+    "src/blocks/commerce/comparison-variants/followups/alternatives-switcher.tsx": "5f559e37cc2379d910c2ff385e04323c1b1eb5e5d52adaaea28638f52632dfae",
+    "src/blocks/commerce/comparison-variants/followups/compare-builder.tsx": "316d89aefe5f865a237b1ed4ce24ee708847334d30ec728d37993401d52088eb",
+    "src/blocks/commerce/comparison-variants/followups/index.tsx": "f7879efd19a48b5a3c955ecb36b4c3cac9bfd2cf262ad56a48cd2ea193d4cda6",
+    "src/blocks/commerce/comparison-variants/followups/ranked-scorecards.tsx": "52b077c1a146a694ae317ce5302bc1bcbe7c0b11b1532949cf47227bbf0e90fb",
+    "src/blocks/commerce/comparison-variants/followups/score-data.ts": "1e18fcf558c260691cbb0627cf0332bd01327a0056c03e815a139c8c10f8011c",
+    "tests/comparison-followups.spec.ts": "8ccd75c7afcf8a5e38a6dbdde3dfbeef84197452144f04703103c0fd9fd2b7b2"
+  },
+  "sourceLeaves": {
+    "comparison-4": "src/blocks/commerce/comparison-variants/followups/ranked-scorecards.tsx",
+    "comparison-5": "src/blocks/commerce/comparison-variants/followups/alternatives-switcher.tsx",
+    "comparison-6": "src/blocks/commerce/comparison-variants/followups/compare-builder.tsx"
+  },
+  "sourceDispatcher": "src/blocks/commerce/comparison-variants/followups/index.tsx",
+  "rootValidation": {
+    "strictBuild": "PASS /tmp/bricklane-comparison456-root-build.log",
+    "production": "53/53 in 57.2 seconds, one worker: all six Comparison variants, Activity1 layout/menu/inline/source and refined source defaults",
+    "productionLog": "/tmp/bricklane-comparison456-root-production.log",
+    "starterEvidence": {
+      "strictBuild": "/tmp/bricklane-comparison456-ready-build-final.log",
+      "production": "/tmp/bricklane-comparison456-prod-final.log",
+      "result": "22/22 (21.5s), one worker, no timeout/retry changes",
+      "source": "All three leaf/default/clipboard/file/ZIP byte comparisons pass; all five followup sources also match all extracted actual starters",
+      "exports": [
+        {
+          "n": 4,
+          "folder": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-comparison4-export-4YzyKE",
+          "entries": 205,
+          "strictBuildExit": 0,
+          "buildLog": "/tmp/bricklane-comparison4-export-build.log"
+        },
+        {
+          "n": 5,
+          "folder": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-comparison5-export-ZKnLHY",
+          "entries": 205,
+          "strictBuildExit": 0,
+          "buildLog": "/tmp/bricklane-comparison5-export-build.log"
+        },
+        {
+          "n": 6,
+          "folder": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-comparison6-export-h5RXkb",
+          "entries": 205,
+          "strictBuildExit": 0,
+          "buildLog": "/tmp/bricklane-comparison6-export-build.log"
+        }
+      ],
+      "runtime": "/tmp/bricklane-comparison456-export-runtime.json",
+      "runtimeResult": "6/6 at1440/390",
+      "styleParity": "/tmp/bricklane-comparison456-style-parity.json",
+      "styleParityResult": "6/6 settled native Dialog computed style comparisons"
+    },
+    "rootVisual": "Inspected actual Comparison6 phone starter: original media, live selected count and native Compare toggles contained and legible",
+    "formatToolingLint": "Full format check/tooling3/scopedlint recorded in /tmp/bricklane-comparison456-root-static.log"
+  },
+  "rootLedgerCorrection": "Converted three owner Markdown section labels to actual CommonMark headings; runtime/test frozen bytes unchanged",
+  "freeSources": [
+    {
+      "cache": "/tmp/reui-category-free-c-carousel-1.json",
+      "sha256": "528d1406065428d500c231e8c4138f0b9a502aa5678ffc5d7344aa03f3dc5d16"
+    },
+    {
+      "cache": "/tmp/reui-free-carousel-audit/c-carousel-11-0.tsx",
+      "sha256": "8b6d12d7a6b52257395c0eb0d6658b483a96e09544ebbdd8a3cb77a60b29cbdc"
+    },
+    {
+      "cache": "/tmp/reui-status-free-progress.json",
+      "sha256": "3d4da30c19456ddea789e12f1827df9e04ee5fdc2309ca1949b9d94bc9ecf97f"
+    },
+    {
+      "cache": "/tmp/reui-shop-free-c-toggle-10.json",
+      "sha256": "ef22bb9ead99297e56ae6302bc7825db66b4f0753917d8049f94bd1470e81693"
+    },
+    {
+      "cache": "/tmp/reui-coupon-free-c-item-2.json",
+      "sha256": "5536fa604a0cd43c9bdc4bee1ee2e63877b46af2b5c4e3a974824be3b3423575"
+    },
+    {
+      "cache": "/tmp/reui-comparison-free-c-frame-3.json",
+      "sha256": "3420ef431384d65f8910593b61843a1e02bdcbeddf4ac1074d3fa2c6854f7b4c"
+    },
+    {
+      "cache": "/tmp/reui-comparison-free-c-data-grid-16.json",
+      "sha256": "685b8cd8df6bde5ff53fd236f05421c1873750c36ae79313f751bb6f0df15b90"
+    }
+  ],
+  "actualReuse": [
+    "Native Carousel engine/navigation/dots with inert inactive pages",
+    "Real Progress Indicator slot and typed domain scores",
+    "Actual Toggle controlled state with native disabled/keyboard behavior",
+    "Frame/Item/Rating and parent actual DialogSurface/CSS/NumberField cart",
+    "DataGrid pinning and horizontal scroll for four real slots"
+  ],
+  "customGaps": "Fictional domain score catalog/ranking, focus/price-delta state and four-slot typed winner rules have no complete matching free ReUI implementation. Actual native free controls used for existing capabilities; original local wishlistArtwork replaces prohibited reference media.",
+  "referenceEvidence": "Public briefs read. Original rendered 4\u20136 desktop/mobile states remain pending; original 1\u20133 visual follow-up is in progress separately. Functional coverage is not pixel verification.",
+  "deployment": "Commit/push/own CI pending; latest successful Pages milestone remains 56229f5. Cumulative M2 run40257879025 failed only one Navbar12 anchor test (1080 passed); native hover/click trace diagnosis and test-only synchronization fix are being prepared."
+}
