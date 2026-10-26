@@ -1,0 +1,426 @@
+/* Consumer geometry for the real ReUI c-sidebar-1/2/3 composition.
+   Provider owns desktop/mobile state, Sheet focus and Cmd/Ctrl+B. */
+.wf-root.wf-native-layout {
+  position: relative;
+  align-items: stretch;
+}
+
+.wf-root.wf-native-layout[data-layout="inset"],
+.wf-root.wf-native-layout[data-layout="pane"] {
+  height: calc(100dvh - var(--template-toolbar-height, 0px));
+  min-height: 0;
+  overflow: hidden;
+}
+
+.wf-native-sidebar [data-slot="sidebar-inner"],
+.wf-native-mobile {
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--accent-foreground);
+  --sidebar-foreground: var(--foreground);
+  --sidebar: color-mix(in srgb, var(--background) 98%, var(--foreground));
+  color: var(--sidebar-foreground);
+}
+
+.wf-native-sidebar:not(.wf-native-rail) [data-slot="sidebar-header"],
+.wf-native-mobile [data-slot="sidebar-header"] {
+  padding: 8px;
+  gap: 12px;
+}
+
+.wf-root.wf-native-layout .wf-native-sidebar .wf-brand,
+.wf-native-mobile .wf-brand {
+  height: 36px;
+  min-height: 36px;
+  margin: 0;
+}
+
+.wf-root.wf-native-layout .wf-native-extra,
+.wf-native-mobile .wf-native-extra {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: min-content;
+}
+
+.wf-root.wf-native-layout .wf-native-extra > .wf-nav-group,
+.wf-native-mobile .wf-native-extra > .wf-nav-group {
+  flex: 1;
+}
+
+.wf-root.wf-native-layout .wf-native-extra .wf-nav-spacer,
+.wf-native-mobile .wf-native-extra .wf-nav-spacer {
+  flex: 1;
+  height: auto;
+  min-height: 24px;
+}
+
+.wf-root.wf-native-layout .wf-native-navigation {
+  flex: none;
+}
+
+.wf-native-sidebar .wf-search,
+.wf-native-mobile .wf-search {
+  margin: 0;
+  height: 32px;
+}
+
+.wf-native-search {
+  flex: none;
+}
+
+.wf-native-sidebar .wf-native-search > button {
+  max-width: 100%;
+}
+
+.wf-native-sidebar [data-slot="sidebar-content"],
+.wf-native-mobile [data-slot="sidebar-content"] {
+  padding: 8px;
+  gap: 16px;
+}
+
+.wf-native-sidebar .wf-search,
+.wf-native-mobile .wf-search {
+  flex: none;
+}
+
+.wf-native-sidebar [data-slot="sidebar-footer"],
+.wf-native-mobile [data-slot="sidebar-footer"] {
+  padding: 8px;
+}
+
+.wf-native-navigation [data-slot="sidebar-menu-button"] {
+  height: 32px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  gap: 8px;
+}
+
+.wf-native-account [data-slot="sidebar-menu-button"] {
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 400;
+}
+
+.wf-native-navigation [data-slot="sidebar-menu-button"][data-active="true"] {
+  font-weight: 500;
+}
+
+.wf-agentops .wf-native-navigation [data-slot="sidebar-menu-button"]:not([data-active="true"]) {
+  color: color-mix(in oklab, var(--sidebar-foreground) 80%, transparent);
+}
+
+.wf-reui .wf-native-navigation [data-slot="sidebar-menu-button"]:not([data-active="true"]),
+.wf-mesh .wf-native-navigation [data-slot="sidebar-menu-button"]:not([data-active="true"]) {
+  color: var(--muted-foreground);
+}
+
+.wf-mesh .wf-native-navigation [data-slot="sidebar-menu-button"][data-active="true"] {
+  background: var(--foreground);
+  color: var(--background);
+}
+
+.wf-native-navigation [data-slot="sidebar-menu-button"] > svg,
+.wf-native-account [data-slot="sidebar-menu-button"] > svg {
+  width: 16px;
+  height: 16px;
+}
+
+.wf-native-navigation [data-slot="sidebar-group-label"] {
+  height: 32px;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted-foreground);
+}
+
+.wf-agentops .wf-native-navigation [data-slot="sidebar-menu-button"] {
+  height: 36px;
+  border-radius: 999px;
+  font-size: 14px;
+}
+
+.wf-agentops .wf-native-sidebar [data-slot="sidebar-inner"],
+.wf-native-mobile.wf-agentops {
+  --sidebar: var(--background);
+}
+
+.wf-agentops .wf-native-sidebar [data-slot="sidebar-header"],
+.wf-reui .wf-native-sidebar [data-slot="sidebar-header"] {
+  padding-bottom: 12px;
+}
+
+.wf-agentops .wf-native-sidebar [data-slot="sidebar-content"] {
+  gap: 24px;
+}
+
+.wf-native-sidebar .wf-native-account [data-slot="sidebar-menu-button"] {
+  height: 36px;
+}
+
+.wf-devops .wf-native-account [data-slot="sidebar-menu-button"] {
+  height: 38px;
+}
+
+.wf-devops .wf-native-sidebar [data-slot="sidebar-footer"] {
+  padding-bottom: 12px;
+}
+
+.wf-reui .wf-native-account [data-slot="sidebar-menu-button"] {
+  height: 32px;
+}
+
+.wf-native-sidebar .wf-avatar,
+.wf-native-mobile .wf-avatar {
+  flex: none;
+}
+
+.wf-root.wf-native-layout > .wf-main {
+  min-width: 0;
+  min-height: 0;
+}
+
+.wf-root.wf-native-layout[data-layout="inset"] > .wf-main {
+  margin: 8px 8px 8px 0;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.wf-root.wf-native-layout[data-layout="inset"] > .wf-main > .wf-content {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+.wf-root.wf-native-layout[data-layout="inset"] > .wf-main > .wf-content > * {
+  flex-shrink: 0;
+}
+
+.wf-root.wf-native-layout[data-layout="pane"] > .wf-main {
+  overflow: auto;
+}
+
+.wf-root.wf-native-layout[data-layout="document"] > .wf-main {
+  overflow: visible;
+}
+
+.wf-root.wf-native-layout > .wf-main > .wf-header {
+  flex: none;
+}
+
+.wf-root.wf-native-layout .wf-mobile-menu {
+  display: none;
+}
+
+.wf-native-sidebar.wf-native-rail {
+  padding: 0;
+  border: 0;
+}
+
+.wf-native-rail [data-slot="sidebar-header"],
+.wf-native-rail [data-slot="sidebar-footer"] {
+  padding: 8px;
+}
+
+.wf-native-rail [data-slot="sidebar-content"] {
+  padding: 8px;
+}
+
+.wf-native-rail .wf-brand {
+  justify-content: center;
+  padding: 0;
+}
+
+.wf-root.wf-mesh.wf-native-layout .wf-native-sidebar .wf-brand {
+  height: 32px;
+  min-height: 32px;
+}
+
+.wf-native-mobile.wf-mesh [data-slot="sidebar-header"] {
+  flex: none;
+  height: 48px;
+}
+
+.wf-native-mobile.wf-mesh .wf-brand {
+  height: 32px;
+  min-height: 32px;
+}
+
+.wf-native-rail [data-slot="sidebar-menu"] {
+  align-items: center;
+}
+
+.wf-rail-navigation {
+  gap: 2px;
+}
+
+.wf-rail-navigation [data-slot="sidebar-menu-button"] {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  justify-content: center;
+}
+
+.wf-native-rail .wf-native-account {
+  gap: 8px;
+}
+
+.wf-native-rail .wf-native-account [data-slot="sidebar-menu-button"] {
+  width: 28px !important;
+  height: 28px !important;
+  padding: 0;
+  justify-content: center;
+}
+
+.wf-mesh-rail-groups {
+  display: flex;
+  flex-direction: column;
+}
+
+.wf-mesh-rail-groups > [data-slot="sidebar-separator"] {
+  width: 20px;
+  margin: 8px auto 7px;
+}
+
+.wf-mesh-rail-groups .wf-rail-navigation {
+  gap: 8px;
+}
+
+.wf-mesh-rail-groups [data-slot="sidebar-menu-button"] {
+  width: 28px !important;
+  height: 28px !important;
+}
+
+.wf-mesh .wf-native-rail [data-slot="sidebar-content"],
+.wf-mesh .wf-native-rail [data-slot="sidebar-footer"],
+.wf-native-mobile.wf-mesh [data-slot="sidebar-content"],
+.wf-native-mobile.wf-mesh [data-slot="sidebar-footer"] {
+  padding-block: 10px;
+}
+
+.wf-native-dark,
+.wf-native-dark [data-slot="sidebar-inner"] {
+  --sidebar: #171717;
+  --sidebar-foreground: #fafafa;
+  --sidebar-accent: #303036;
+  --sidebar-accent-foreground: #fafafa;
+  --background: #171717;
+  --foreground: #fafafa;
+  --muted: #252525;
+  --secondary: #27272a;
+  --secondary-foreground: #fafafa;
+  --border: #3f3f46;
+  --muted-foreground: #a1a1aa;
+  background: var(--sidebar);
+  color: var(--sidebar-foreground);
+}
+
+@media (min-width: 768px) {
+  .wf-root.wf-native-layout[data-layout="document"] > [data-slot="sidebar"] {
+    height: auto;
+    align-self: stretch;
+  }
+
+  .wf-root.wf-native-layout[data-layout="document"] [data-slot="sidebar-container"] {
+    position: sticky;
+    top: var(--template-toolbar-height, 0px);
+    height: calc(100dvh - var(--template-toolbar-height, 0px));
+  }
+
+  .wf-root.wf-flowly.wf-native-layout .wf-native-sidebar {
+    padding: 8px;
+  }
+
+  .wf-root.wf-flowly.wf-native-layout .wf-native-sidebar [data-slot="sidebar-header"],
+  .wf-root.wf-flowly.wf-native-layout .wf-native-sidebar [data-slot="sidebar-content"],
+  .wf-root.wf-flowly.wf-native-layout .wf-native-sidebar [data-slot="sidebar-footer"] {
+    padding-inline: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .wf-root.wf-native-layout .wf-mobile-menu {
+    display: inline-flex;
+  }
+
+  .wf-root.wf-native-layout[data-layout="inset"] > .wf-main {
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+  }
+
+  .wf-root.wf-native-layout .wf-header-search {
+    display: flex;
+    width: auto;
+  }
+
+  .wf-root.wf-native-layout .wf-mobile-brand {
+    flex: none;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+  }
+
+  .wf-root.wf-flowly.wf-native-layout .wf-header {
+    height: 51px;
+    gap: 6px;
+    padding-inline: 12px;
+  }
+
+  .wf-root.wf-flowly.wf-native-layout .wf-content {
+    padding: 16px;
+  }
+
+  .wf-root.wf-flowly.wf-native-layout
+    .wf-four
+    [data-slot="card-header"]:has([data-slot="card-action"]) {
+    grid-template-columns: 1fr auto;
+  }
+
+  .wf-root.wf-flowly.wf-native-layout .wf-four [data-slot="card-action"] {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    justify-self: end;
+    width: auto;
+  }
+
+  .wf-root.wf-flowly.wf-native-layout .wf-header-actions > button {
+    width: 36px;
+    min-width: 36px;
+    padding: 0;
+    font-size: 0;
+  }
+
+  .wf-root.wf-flowly.wf-native-layout .wf-header-actions > button:last-child {
+    width: 32px;
+    min-width: 32px;
+  }
+
+  .wf-root.wf-flowly.wf-native-layout .wf-header-avatars {
+    display: flex;
+  }
+
+  .wf-root.wf-mesh.wf-native-layout .wf-header-actions > button {
+    width: 28px;
+    min-width: 28px;
+    gap: 0;
+    padding: 0;
+    font-size: 0;
+  }
+}
+
+/* Use the existing shell block's native CollapseHandle styles inside the
+   Sidebar container. The template owns its viewport, not the block demo. */
+.wf-root.wf-native-layout .wf-native-sidebar.shell-reference {
+  height: calc(100dvh - var(--template-toolbar-height, 0px));
+  min-height: 0;
+  overflow: visible;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.wf-native-mobile.shell-reference {
+  width: var(--sidebar-width);
+  min-height: 0;
+  overflow: visible;
+}

@@ -1,0 +1,37 @@
+{
+  "scope": "Actual native Sidebar layouts in shared Business,Workflow,Collaboration template families",
+  "base": "b13170647a49e82a9d6b7cb7fed3d172b4fb6c47",
+  "files": {
+    "src/templates/business/shared.tsx": "3ae4d68ac788f8cb86f8023c9fb684edb5629277cbca22e26b2c8ed1f5ddef8b",
+    "src/templates/business/business-layout.css": "b73729f61624c998844b65444515b13ee5c6377441952dbb82a2bf0efd11084c",
+    "tests/templates-business-layout.spec.ts": "ea7a566fa0c473c8d3d6cc5e78fe31f5a826e0a8c2ec57003ad3fde7dcf211f9",
+    "docs/templates-business-layout-review.md": "c9e1ad473b813ea8d3f9ddf36dc4fb68723b924238395e91c0efe6500e97a4b4",
+    "src/templates/workflow/shared.tsx": "8d523ac45081ccbb0446598fc4699b28826459b76cc7438d846071c39d564068",
+    "src/templates/workflow/workflow-shell.tsx": "ebb330b9cbfe51219b39775f7b366dbb285fa422659ea9a01d47f8ad714fac7d",
+    "src/templates/workflow/workflow-layout.css": "f5ea316a54cf563083bce7bc4354c0303fe1d5b48868848ca2c9d252cc9b16ad",
+    "src/templates/workflow/flowly.tsx": "04a1af8f338c12801456a13bdca917f5b9e0753ae5de4905ed61ffef7f47043a",
+    "tests/templates-workflow-layout.spec.ts": "3ae612c019050879f467231c537a676f6f53c82be66e2b3214874096c7353658",
+    "docs/templates-workflow-layout-review.md": "e8651d1912004f117b1414acb4ec419890943eed4ba692792c347c5c89476e3b",
+    "src/templates/collaboration/shared.tsx": "38af79358620ac7b157316acfb41e109694577d5fef86eae6d9c8604f6d9e429",
+    "src/templates/collaboration/collaboration-layout.css": "f121340791d3f60aeb8001e9f93a80af73090900262f92f06054b55e159ebed6",
+    "tests/templates-collaboration-layout.spec.ts": "47f7809b74f8193c935fbd18cc11ecc5248af1b4461b9f5480ac4d125226e6ef",
+    "docs/templates-collaboration-sidebar-fidelity.md": "688cd14fe3f38c08c7f184d6cd7e0e8eb16193cdce718cb5880752341dc3fee6",
+    "src/lib/source-targets.ts": "624da400e9daea79b003211de05afa6347281bc99743cab3f809370ebe1ff132"
+  },
+  "reuse": "Actual free ReUI Sidebar slots/provider/inset/trigger/rail/navigation/workspace switcher, native Sheet and existing SearchPalette; consumer domain navigation replaces duplicated hand-built aside/provider/Sheet layouts",
+  "verification": {
+    "typed": "Original cumulative20 main strict0; Theme374 actualstrict0 and Workflow213 actualstrict0; this final difference from typed source is consumerCSS/test/ledger only",
+    "original": "116/116 production on prior consumer20 plus latestTabs compatibility116/116; retain original Mesh395 regression evidence",
+    "fixed": "26/26 production on final15,1worker30s,oneVite-only2.83s; actual390 Projects document395\u2192390,3visible actions28px,Newtask/form/focus and fonts preserved",
+    "actualExport": "FinalFlux215-file actualproject differs from prior215 only workflow-layout.css,214 exactbytes; frozenCSS/Tabs/Theme/MIT/OFL/attribution match",
+    "familyExport": "Business6original-configVite+12views andCollab2original-configVite+4views PASS; originalpackage/deps/devdeps/tsconfig/main/Example identical to priorstrict and newsharedgraph exactcoveredby2representatives. Not8newstrictbuilds",
+    "assetContract": "Business160 code/JPG/font/license files byte-exact;11originalSVG only double\u2192single quote Vite inline normalization,XML canonical+attribute paths equal. Rawbyte failure retained; notwholeassetbyteidentity",
+    "receipt": "/private/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-template-consumer-v2-acceptance-xcnfrw_g/receipt.json"
+  },
+  "remaining": [
+    "Separate Echochild/custom drive shell/detail layouts retain own audits",
+    "Original illustrations/content and smallfont/portal/canvas differences are recorded in3ownerledgers",
+    "Settingscontrolledpanel/adapters and actual richtext/whiteboard engines are separate batches"
+  ],
+  "publication": "Root serial commit/push; own cumulativeCI and Pages separately pending"
+}

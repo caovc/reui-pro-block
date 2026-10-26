@@ -1,6 +1,21 @@
+import { CollapseHandle, SearchPalette } from "@/blocks/application/shells/chrome";
 import { MiniTrend } from "@/blocks/data/sparkline-primitives";
-import { SidebarProvider } from "@/components/ui/sidebar";
-import { SidebarNavigation } from "@/components/reui/sidebar";
+import {
+  SidebarProvider,
+  SidebarInset,
+  SidebarTrigger,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+  useSidebar,
+} from "@/components/ui/sidebar";
+import {
+  ReuiSidebar,
+  SidebarNavigation,
+  SidebarCollection,
+  SidebarRailButton,
+  SidebarWorkspaceSwitcher,
+} from "@/components/reui/sidebar";
 import { BrandGlyph } from "@/components/brand-mark";
 import { demoAvatar } from "@/lib/demo-artwork";
 const userAvatar = demoAvatar("Nick Bold");
@@ -14,7 +29,6 @@ import {
   ChevronLeft,
   ChevronRight,
   X,
-  Menu,
   LayoutDashboard,
   Users,
   Package,
@@ -34,7 +48,6 @@ import {
   Tag,
   Star,
   CreditCard,
-  PanelLeftClose,
   ChevronDown,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -66,7 +79,17 @@ import {
   DialogDescription,
   DialogFooter,
 } from "@/components/ui/dialog";
-import { Sheet, SheetContent, SheetTitle, SheetDescription } from "@/components/ui/sheet";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
+import "@/blocks/reference.css";
+import "@/blocks/application/shells/shells.css";
+import "./business-layout.css";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 export {
@@ -145,18 +168,23 @@ export function NavItems({
   onSelect,
   atlas = false,
   groups,
+  label,
+  menuClassName,
 }: {
   items: string[];
   active: string;
   onSelect: (value: string) => void;
   atlas?: boolean;
   groups?: Record<string, string[]>;
+  label?: string;
+  menuClassName?: string;
 }) {
   const closeNavigation = useContext(NavigationCloseContext);
   return (
     <nav className="bt-nav bt-reui-navigation">
       <SidebarNavigation
-        collapsed={false}
+        label={label}
+        menuClassName={menuClassName}
         active={active}
         onSelect={(value) => {
           onSelect(value);
@@ -179,9 +207,34 @@ export function NavItems({
   );
 }
 
-export function Shell(props: ComponentProps<typeof ShellContent>) {
+function BusinessNotifications() {
   return (
-    <SidebarProvider className="contents" keyboardShortcut={false}>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" size="icon-sm" aria-label="Notifications">
+          <Bell />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="reui-reference" align="end">
+        <DropdownMenuLabel>Notifications</DropdownMenuLabel>
+        <p className="px-2 py-3 text-sm text-muted-foreground">No unread notifications.</p>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+export function Shell(props: ComponentProps<typeof ShellContent>) {
+  const framed = ["cohort", "verve", "miro"].includes(props.id);
+  return (
+    <SidebarProvider
+      className={`bt-app bt-layout bt-${props.id} ${props.rail ? "bt-has-rail" : ""} ${framed ? "bt-framed" : ""}`}
+      style={
+        {
+          "--sidebar-width-icon":
+            props.id === "cohort" ? "66px" : props.id === "atlas" ? "48px" : "62px",
+        } as React.CSSProperties
+      }
+    >
       <ShellContent {...props} />
     </SidebarProvider>
   );
@@ -213,241 +266,333 @@ function ShellContent({
   navGroups?: Record<string, string[]>;
   account?: { name: string; organisation: string; photo?: string };
 }) {
-  const [mobile, setMobile] = useState(false);
-  const [collapsed, setCollapsed] = useState(false);
-  const [search, setSearch] = useState("");
-  const nav = (
+  const { state, isMobile, setOpenMobile, toggleSidebar } = useSidebar();
+  const collapsed = !isMobile && state === "collapsed";
+  const [workspace, setWorkspace] = useState(brand);
+  const [workspaces, setWorkspaces] = useState([brand]);
+  const [createWorkspace, setCreateWorkspace] = useState(false);
+  const commerce = ["surge", "manifest"].includes(id);
+  const crossHeader = commerce || id === "verve";
+  const closeNavigation = () => setOpenMobile(false);
+  function select(value: string) {
+    setActive(value);
+    closeNavigation();
+  }
+  const accountName = account?.name || (id === "cohort" ? "Bruno Duarte" : "Nick Bold");
+  const accountOrganisation =
+    account?.organisation || (id === "cohort" ? "Cohort UK" : "nick@bricklane.demo");
+  const accountControl = (
+    <SidebarMenu>
+      <SidebarMenuItem>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <SidebarMenuButton
+              size="lg"
+              tooltip={accountName}
+              className="bt-account-button"
+              aria-label={`Open account menu for ${accountName}`}
+            >
+              <span className="bt-avatar">
+                {account?.photo ? (
+                  <img src={account.photo} alt="" />
+                ) : account ? (
+                  accountName
+                    .split(" ")
+                    .map((word) => word[0])
+                    .slice(0, 2)
+                    .join("")
+                ) : id === "cohort" ? (
+                  "BD"
+                ) : (
+                  <img src={userAvatar} alt="" />
+                )}
+              </span>
+              {!collapsed && !rail && (
+                <span className="bt-account-copy">
+                  <strong>{accountName}</strong>
+                  <small>{accountOrganisation}</small>
+                </span>
+              )}
+              {!collapsed && !rail && <ChevronDown className="ml-auto size-3.5" />}
+            </SidebarMenuButton>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            className="reui-reference"
+            side={isMobile ? "top" : "right"}
+            align="end"
+          >
+            <DropdownMenuLabel>{accountName}</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            {account && (
+              <DropdownMenuItem onSelect={() => select("Profile")}>Profile</DropdownMenuItem>
+            )}
+            <DropdownMenuItem onSelect={() => select("Settings")}>Settings</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </SidebarMenuItem>
+    </SidebarMenu>
+  );
+  const collapseControl =
+    isMobile || id !== "cohort" ? null : (
+      <SidebarTrigger
+        className="bt-sidebar-toggle"
+        aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+      />
+    );
+  const header = (
     <>
-      <div className="bt-brand">
-        <Mark />
-        <strong>{brand}</strong>
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon-sm"
-          aria-label="Collapse sidebar"
-          onClick={() => setCollapsed(!collapsed)}
-        >
-          <PanelLeftClose />
-        </Button>
-      </div>
-      {!aside && id !== "atlas" && (
-        <label className="bt-search">
-          <Search size={15} />
-          <Input
-            aria-label="Search navigation"
-            placeholder="Search..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <kbd>⌘K</kbd>
-        </label>
+      {(!commerce || isMobile) &&
+        !rail &&
+        (id === "atlas" ? (
+          <div className="bt-sidebar-workspace">
+            <SidebarWorkspaceSwitcher
+              value={workspace}
+              workspaces={workspaces}
+              onSelect={setWorkspace}
+              onCreate={() => setCreateWorkspace(true)}
+            />
+            {collapseControl}
+          </div>
+        ) : (
+          <div className="bt-brand">
+            <Mark />
+            {!collapsed && <strong>{brand}</strong>}
+            {id === "cohort" && !collapsed && !isMobile && <BusinessNotifications />}
+            {collapseControl}
+          </div>
+        ))}
+      {!rail && (!aside || isMobile) && id !== "atlas" && (
+        <SearchPalette
+          label="Search navigation"
+          collapsed={collapsed}
+          routes={[...new Set([...items, ...Object.values(navGroups ?? {}).flat()])]}
+          onSelect={select}
+        />
       )}
+    </>
+  );
+  const navigation = (
+    <>
       {aside ?? (
         <>
-          <p className="bt-nav-label">
-            {id === "atlas" ? "Menu" : id === "cohort" ? "Workspace" : "Store"}
-          </p>
           <NavItems
+            label={id === "atlas" ? "Menu" : id === "cohort" ? "Workspace" : "Store"}
             atlas={id === "atlas"}
+            menuClassName={id === "cohort" ? "min-w-48" : undefined}
             groups={navGroups}
-            items={items.filter((x) => x.toLowerCase().includes(search.toLowerCase()))}
+            items={
+              commerce ? items.filter((item) => !["Analytics", "Settings"].includes(item)) : items
+            }
             active={active}
-            onSelect={(x) => {
-              setActive(x);
-              setMobile(false);
-            }}
+            onSelect={select}
           />
-          {!items.some((x) => x.toLowerCase().includes(search.toLowerCase())) && (
-            <div className="bt-empty">
-              No pages found.
-              <Button variant="outline" onClick={() => setSearch("")}>
-                Clear search
-              </Button>
-            </div>
+          {commerce && (
+            <NavItems
+              label="System"
+              groups={navGroups}
+              items={items.filter((item) => ["Analytics", "Settings"].includes(item))}
+              active={active}
+              onSelect={select}
+            />
           )}
         </>
       )}
-      <>
-        {id === "atlas" && (
-          <div className="bt-nav">
-            <p className="text-xs text-muted-foreground mb-2">Favorites</p>
-            {["Weekly revenue", "Open deals", "New signups", "Low stock"].map((name, i) => (
-              <Button
-                key={name}
-                variant="ghost"
-                className="justify-start"
-                onClick={() => setActive(["Reports", "Deals", "Users", "Products"][i])}
-              >
-                <span className="bt-metric-dot" style={{ background: `var(--bt-series-${i})` }} />
-                {name}
-              </Button>
-            ))}
-          </div>
-        )}
-      </>
-      {id === "cohort" && (
-        <div className="bt-nav bt-departments">
-          <p className="text-xs text-muted-foreground mb-2">Headcount by department</p>
-          {["Engineering", "People", "Sales", "Customer Success", "Design"].map((x, i) => (
-            <Button
-              key={x}
-              variant="ghost"
-              className="justify-start"
-              onClick={() => setActive("People")}
-            >
-              <span className="bt-metric-dot" style={{ background: `var(--bt-series-${i})` }} />
-              {x}
-            </Button>
-          ))}
-        </div>
+      {!collapsed && id === "atlas" && (
+        <SidebarCollection
+          label="Favorites"
+          rows={["Weekly revenue", "Open deals", "New signups", "Low stock"].map(
+            (label, index) => ({
+              label,
+              icon: (
+                <span className="inline-flex size-4 shrink-0 items-center justify-center">
+                  <span
+                    className="bt-metric-dot"
+                    style={{ background: `var(--bt-series-${index})` }}
+                  />
+                </span>
+              ),
+            }),
+          )}
+          onSelect={(name) =>
+            select(
+              ["Reports", "Deals", "Users", "Products"][
+                ["Weekly revenue", "Open deals", "New signups", "Low stock"].indexOf(name)
+              ],
+            )
+          }
+        />
       )}
-      <div className="bt-sidebar-bottom">
-        {footer}
-        <Button
-          type="button"
-          variant="ghost"
-          onClick={() => setActive(account ? "Profile" : "Settings")}
-          className="w-full justify-start"
-        >
-          <span className="bt-avatar">
-            {account ? (
-              account.photo ? (
-                <img src={account.photo} alt="" />
-              ) : (
-                account.name
-                  .split(" ")
-                  .map((word) => word[0])
-                  .slice(0, 2)
-                  .join("")
-              )
-            ) : id === "cohort" ? (
-              "BD"
-            ) : (
-              <img src={userAvatar} alt="Nick Bold" />
-            )}
-          </span>
-          <span>
-            {account?.name || (id === "cohort" ? "Bruno Duarte" : "Nick Bold")}
-            <small>
-              {account?.organisation || (id === "cohort" ? "Cohort UK" : "nick@bricklane.demo")}
-            </small>
-          </span>
-        </Button>
-      </div>
+      {!collapsed && id === "cohort" && (
+        <SidebarCollection
+          label="Headcount by department"
+          rows={["Engineering", "People", "Sales", "Customer Success", "Design"].map(
+            (label, index) => ({
+              label,
+              icon: (
+                <span className="inline-flex size-4 shrink-0 items-center justify-center">
+                  <span
+                    className="bt-metric-dot"
+                    style={{
+                      background: ["#3b82f6", "#a855f7", "#bbf7d0", "#fb923c", "#f9a8d4"][index],
+                    }}
+                  />
+                </span>
+              ),
+            }),
+          )}
+          onSelect={() => select("People")}
+        />
+      )}
     </>
   );
-  return (
-    <NavigationCloseContext.Provider value={() => setMobile(false)}>
-      <div
-        className={`bt-app bt-${id} ${rail ? "bt-has-rail" : ""} ${collapsed ? "bt-collapsed" : ""}`}
-      >
-        {rail && (
-          <div className="bt-icon-rail">
-            <Mark />
-            {items.map((item) => {
-              const Icon = icons[item as keyof typeof icons] ?? FileText;
-              return (
-                <Button
-                  type="button"
-                  key={item}
-                  variant={active === item ? "secondary" : "ghost"}
-                  size="icon"
-                  aria-label={item}
-                  title={item}
-                  onClick={() => setActive(item)}
-                >
-                  <Icon />
-                </Button>
-              );
-            })}
-            <div className="bt-rail-end">
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                aria-label="Notifications"
-                onClick={() => toast("You are all caught up")}
-              >
+  const sidebarFooter = (
+    <>
+      {(!collapsed || id === "atlas") && footer && (
+        <div
+          className="bt-custom-footer"
+          onClick={(event) => {
+            const target =
+              event.target instanceof Element ? event.target.closest("button, a") : null;
+            if (target && !target.hasAttribute("aria-haspopup")) closeNavigation();
+          }}
+        >
+          {footer}
+        </div>
+      )}
+      {!rail && accountControl}
+    </>
+  );
+  const topbar = (
+    <header className="bt-topbar">
+      {isMobile && <SidebarTrigger className="bt-mobile-menu" aria-label="Open menu" />}
+      {collapsed && rail && !isMobile && (
+        <SidebarTrigger className="bt-expand-trigger" aria-label="Expand sidebar" />
+      )}
+      {commerce && <Mark />}
+      <span>{top ?? active}</span>
+      <div className="bt-topbar-right">
+        {commerce ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm" aria-label="Store status">
+                ◉ Store <Badge variant="warning-light">Attention</Badge>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="reui-reference" align="end">
+              <DropdownMenuLabel>Store</DropdownMenuLabel>
+              {["Products", "Inventory", "Orders"].map((page) => (
+                <DropdownMenuItem key={page} onSelect={() => select(page)}>
+                  {page}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon" aria-label="Notifications">
                 <Bell />
               </Button>
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                aria-label="Settings"
-                onClick={() => setActive("Settings")}
-              >
-                <Settings />
-              </Button>
-            </div>
-          </div>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="reui-reference" align="end">
+              <DropdownMenuLabel>Notifications</DropdownMenuLabel>
+              <p className="px-2 py-3 text-sm text-muted-foreground">No unread notifications.</p>
+            </DropdownMenuContent>
+          </DropdownMenu>
         )}
-        <aside className="bt-sidebar">{nav}</aside>
-        <div className="bt-main">
-          <header className="bt-topbar">
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              className="bt-mobile-menu"
-              aria-label="Open menu"
-              onClick={() => setMobile(true)}
-            >
-              <Menu />
-            </Button>
-            {collapsed && (
-              <Button
-                variant="ghost"
-                size="icon"
-                aria-label="Expand sidebar"
-                onClick={() => setCollapsed(false)}
-              >
-                <Menu />
-              </Button>
-            )}
-            <span>{top ?? active}</span>
-            <div className="bt-topbar-right">
-              {["surge", "manifest"].includes(id) ? (
-                <Button variant="outline" size="sm">
-                  ◉ Store <Badge variant="warning-light">Attention</Badge>
-                </Button>
-              ) : (
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  aria-label="Notifications"
-                  onClick={() => toast("No new notifications")}
-                >
-                  <Bell />
-                </Button>
-              )}
-            </div>
-          </header>
-          <div className="bt-content">{children}</div>
-        </div>
-        <Sheet open={mobile} onOpenChange={setMobile}>
-          <SheetContent side="left">
-            <SheetTitle>{brand}</SheetTitle>
-            <SheetDescription>Workspace navigation</SheetDescription>
-            {id === "verve" && aside ? (
-              aside
-            ) : (
-              <NavItems
-                atlas={id === "atlas"}
-                groups={navGroups}
-                items={items}
-                active={active}
-                onSelect={(x) => {
-                  setActive(x);
-                  setMobile(false);
-                }}
-              />
-            )}
-          </SheetContent>
-        </Sheet>
       </div>
+    </header>
+  );
+  const applicationRail = (
+    <ReuiSidebar
+      collapsible="none"
+      width={isMobile || id === "miro" ? 48 : 63}
+      className={`bt-icon-rail bt-layout-rail${isMobile ? " bt-mobile-icon-rail" : ""}`}
+      aria-label={`${brand} applications`}
+      header={<Mark />}
+      footer={
+        <>
+          {id === "miro" && (
+            <>
+              <BusinessNotifications />
+              <SearchPalette label="Search navigation" iconOnly routes={items} onSelect={select} />
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <SidebarRailButton label="Settings" active={active === "Settings"}>
+                    <button type="button" aria-label="Settings" onClick={() => select("Settings")}>
+                      <Settings />
+                    </button>
+                  </SidebarRailButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </>
+          )}
+          {accountControl}
+        </>
+      }
+    >
+      <SidebarMenu>
+        {items
+          .filter((item) => id !== "miro" || item !== "Settings")
+          .map((item) => {
+            const Icon = icons[item as keyof typeof icons] ?? FileText;
+            return (
+              <SidebarMenuItem key={item}>
+                <SidebarRailButton label={item} active={active === item}>
+                  <button type="button" aria-label={item} onClick={() => select(item)}>
+                    <Icon />
+                  </button>
+                </SidebarRailButton>
+              </SidebarMenuItem>
+            );
+          })}
+      </SidebarMenu>
+    </ReuiSidebar>
+  );
+  return (
+    <NavigationCloseContext.Provider value={closeNavigation}>
+      {rail && !isMobile && applicationRail}
+      <div className="bt-workspace" data-sidebar-state={state}>
+        {crossHeader && topbar}
+        <div className="bt-layout-columns">
+          <ReuiSidebar
+            width={id === "miro" ? 302 : id === "verve" ? 200 : commerce ? 260 : 256}
+            collapsible={rail ? "offcanvas" : "icon"}
+            className="bt-sidebar shell-reference"
+            aria-label={`${brand} navigation`}
+            mobileClassName={`reui-reference bt-app bt-sidebar-mobile bt-layout-mobile bt-${id}${rail ? " bt-mobile-with-rail" : ""}`}
+            mobileTitle={brand}
+            mobileShowCloseButton={id !== "miro"}
+            mobileWidth={id === "cohort" ? "min(288px, calc(100vw - 32px))" : "75vw"}
+            header={header}
+            footer={sidebarFooter}
+            rail={
+              id !== "cohort" && !isMobile ? (
+                <CollapseHandle collapsed={collapsed} onToggle={toggleSidebar} />
+              ) : undefined
+            }
+          >
+            {rail && isMobile && applicationRail}
+            {navigation}
+          </ReuiSidebar>
+          <SidebarInset className="bt-main">
+            {!crossHeader && topbar}
+            <div className="bt-content">{children}</div>
+          </SidebarInset>
+        </div>
+      </div>
+      <RecordDialog
+        title="New workspace"
+        open={createWorkspace}
+        onOpenChange={setCreateWorkspace}
+        fields={[{ name: "name", label: "Workspace name" }]}
+        onSave={({ name }) => {
+          const value = name.trim();
+          if (!value) return;
+          setWorkspaces((current) => [...new Set([...current, value])]);
+          setWorkspace(value);
+        }}
+      />
     </NavigationCloseContext.Provider>
   );
 }

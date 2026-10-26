@@ -1,0 +1,489 @@
+/* Layout adapter around the actual MIT ReUI c-sidebar-1/2/3 compositions.
+   Sidebar owns its spacer, slots, compact state and mobile Sheet. */
+.bt-app.bt-layout {
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  padding: 0;
+  min-width: 0;
+  min-height: calc(100dvh - var(--template-toolbar-height, 0px));
+  --bt-layout-height: calc(100dvh - var(--template-toolbar-height, 0px));
+  --bt-sidebar-offset: 0px;
+}
+.bt-layout .bt-workspace {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+.bt-layout .bt-layout-columns {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+.bt-layout .bt-layout-columns > [data-slot="sidebar"] {
+  height: auto;
+  align-self: stretch;
+}
+.bt-layout [data-slot="sidebar-gap"] {
+  height: 0;
+}
+.bt-layout .bt-sidebar[data-slot="sidebar-container"] {
+  position: sticky;
+  inset: auto;
+  top: var(--bt-sidebar-offset);
+  width: var(--sidebar-width);
+  height: calc(var(--bt-layout-height) - var(--bt-sidebar-offset));
+  min-height: 0;
+  font: inherit;
+  padding: 0;
+  overflow: visible;
+  gap: 0;
+  background: transparent;
+  border-right: 1px solid var(--border);
+}
+.bt-layout [data-collapsible="icon"] > .bt-sidebar[data-slot="sidebar-container"] {
+  width: var(--sidebar-width-icon);
+}
+.bt-layout [data-collapsible="offcanvas"] > .bt-sidebar[data-slot="sidebar-container"] {
+  width: 0;
+  border: 0;
+  overflow: hidden;
+  visibility: hidden;
+}
+.bt-layout .bt-sidebar > [data-slot="sidebar-inner"] {
+  min-height: 0;
+  background: color-mix(in oklch, var(--muted) 32%, var(--background));
+}
+.bt-layout .bt-sidebar [data-slot="sidebar-header"] {
+  padding: 16px;
+  gap: 20px;
+}
+.bt-layout .bt-sidebar .reui-sidebar-content {
+  padding: 0 16px 16px;
+  gap: 20px;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+.bt-layout .bt-sidebar [data-slot="sidebar-footer"] {
+  gap: 12px;
+  padding: 12px 16px;
+}
+.bt-layout .bt-sidebar-workspace {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.bt-layout .bt-sidebar-workspace > ul {
+  flex: 1;
+  min-width: 0;
+}
+.bt-layout .bt-account-button {
+  min-height: 40px;
+  height: auto;
+  padding: 4px;
+}
+.bt-account-copy {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+  text-align: left;
+  line-height: 16px;
+}
+.bt-account-copy strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px;
+  font-weight: 500;
+}
+.bt-account-copy small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 11px;
+  color: var(--muted-foreground);
+}
+.bt-layout [data-collapsible="icon"] .bt-sidebar [data-slot="sidebar-header"],
+.bt-layout [data-collapsible="icon"] .bt-sidebar [data-slot="sidebar-footer"] {
+  padding-inline: 8px;
+}
+.bt-layout [data-collapsible="icon"] .bt-sidebar .reui-sidebar-content {
+  padding-inline: 8px;
+  overflow-x: clip;
+}
+.bt-layout [data-collapsible="icon"] .bt-brand {
+  flex-direction: column;
+}
+.bt-layout [data-collapsible="icon"] .bt-brand > button {
+  margin-left: 0;
+}
+.bt-layout .reui-sidebar-content > [data-slot="collapsible"] {
+  margin-top: 0;
+}
+.bt-app.bt-layout .bt-main {
+  display: flex;
+  min-width: 0;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+}
+.bt-layout .bt-topbar {
+  flex-shrink: 0;
+  min-width: 0;
+}
+.bt-layout .bt-topbar::before {
+  content: none;
+}
+.bt-layout .bt-topbar > span {
+  min-width: 0;
+}
+.bt-layout .bt-content {
+  min-width: 0;
+}
+.bt-app.bt-layout.bt-framed {
+  height: var(--bt-layout-height);
+  min-height: 0;
+  overflow: hidden;
+}
+.bt-layout.bt-framed .bt-layout-columns > [data-slot="sidebar"] {
+  height: 100%;
+}
+.bt-layout.bt-framed .bt-sidebar[data-slot="sidebar-container"] {
+  position: relative;
+  top: 0;
+  height: 100%;
+}
+.bt-layout.bt-framed .bt-main {
+  min-height: 0;
+  overflow-y: auto;
+}
+.bt-layout.bt-framed .bt-main > .bt-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--background);
+}
+.bt-layout.bt-cohort .bt-sidebar {
+  border: 0;
+}
+.bt-layout.bt-cohort .bt-main {
+  margin: 8px 8px 8px 0;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+.bt-layout.bt-cohort .bt-content {
+  flex-shrink: 0;
+}
+.bt-layout.bt-verve .bt-workspace {
+  margin: 8px 8px 8px 0;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--background);
+}
+.bt-layout.bt-verve .bt-topbar {
+  min-height: 50px;
+  height: 50px;
+  margin: 0;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  padding: 0 16px;
+}
+.bt-layout.bt-verve .bt-sidebar > [data-slot="sidebar-inner"] {
+  background: var(--background);
+}
+.bt-layout.bt-verve .bt-sidebar [data-slot="sidebar-header"] {
+  display: none;
+}
+.bt-layout.bt-verve .bt-sidebar .reui-sidebar-content {
+  padding: 16px 12px;
+  gap: 18px;
+}
+.bt-layout.bt-verve .bt-content {
+  border: 0;
+  border-radius: 0;
+  flex-shrink: 0;
+}
+.bt-layout.bt-surge,
+.bt-layout.bt-manifest {
+  --bt-sidebar-offset: 51px;
+}
+.bt-layout.bt-surge .bt-topbar,
+.bt-layout.bt-manifest .bt-topbar {
+  height: 51px;
+  min-height: 51px;
+  padding: 8px 18px;
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: var(--background);
+}
+.bt-layout.bt-surge .bt-sidebar > [data-slot="sidebar-inner"],
+.bt-layout.bt-manifest .bt-sidebar > [data-slot="sidebar-inner"] {
+  background: var(--background);
+}
+.bt-layout .bt-layout-rail[data-slot="sidebar"] {
+  position: relative;
+  inset: auto;
+  width: var(--sidebar-width);
+  min-height: 0;
+  height: var(--bt-layout-height);
+  padding: 0;
+  gap: 0;
+  border: 0;
+  background: var(--muted);
+  flex-shrink: 0;
+}
+:is(.bt-layout, .bt-layout-mobile) .bt-layout-rail > [data-slot="sidebar-header"] {
+  align-items: center;
+  padding: 12px 8px;
+}
+:is(.bt-layout, .bt-layout-mobile) .bt-layout-rail .reui-sidebar-content {
+  padding: 8px;
+  align-items: center;
+  min-height: 0;
+  overflow-y: auto;
+}
+:is(.bt-layout, .bt-layout-mobile) .bt-layout-rail [data-slot="sidebar-footer"] {
+  padding: 8px;
+  align-items: center;
+}
+:is(.bt-layout, .bt-layout-mobile) .bt-layout-rail [data-slot="sidebar-menu-button"] {
+  width: 32px;
+  height: 32px;
+  justify-content: center;
+  padding: 0;
+}
+.bt-layout.bt-miro .bt-sidebar > [data-slot="sidebar-inner"] {
+  background: var(--background);
+}
+.bt-layout.bt-miro .bt-sidebar [data-slot="sidebar-header"] {
+  display: none;
+}
+.bt-layout.bt-miro .bt-sidebar .reui-sidebar-content {
+  padding: 0 12px 12px;
+  gap: 16px;
+}
+.bt-layout.bt-miro .bt-sidebar .reui-sidebar-content > .bt-row:first-of-type {
+  min-height: 50px;
+  margin-inline: -12px;
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.bt-layout.bt-miro .bt-sidebar [data-slot="sidebar-footer"] {
+  padding: 8px 12px;
+}
+.bt-layout.bt-miro .bt-topbar-right {
+  display: none;
+}
+.bt-layout.bt-atlas .bt-sidebar > [data-slot="sidebar-inner"] {
+  background: var(--background);
+}
+.bt-layout-mobile.bt-app {
+  display: flex;
+  min-height: 0;
+  height: 100%;
+  padding: 0;
+  gap: 0;
+  background: var(--background);
+  font-size: 14px;
+  line-height: 1.45;
+}
+.bt-layout-mobile [data-slot="sidebar-header"] {
+  padding: 16px 44px 16px 16px;
+  gap: 16px;
+}
+.bt-layout-mobile .reui-sidebar-content {
+  padding: 0 16px 16px;
+  gap: 18px;
+  min-height: 0;
+  overflow-y: auto;
+}
+.bt-layout-mobile [data-slot="sidebar-footer"] {
+  padding: 12px 16px;
+  gap: 12px;
+}
+.bt-layout-mobile .bt-sidebar-toggle {
+  display: none;
+}
+@media (max-width: 767px) {
+  .bt-app.bt-layout {
+    height: auto;
+    min-height: var(--bt-layout-height);
+    overflow: visible;
+  }
+  .bt-layout .bt-layout-rail[data-slot="sidebar"] {
+    display: none;
+  }
+  .bt-layout .bt-main,
+  .bt-layout.bt-cohort .bt-main,
+  .bt-layout.bt-verve .bt-workspace {
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    overflow: visible;
+  }
+  .bt-layout .bt-mobile-menu {
+    display: inline-flex !important;
+  }
+  .bt-layout .bt-topbar {
+    display: flex;
+    min-height: 50px;
+    height: auto;
+    padding: 8px 12px;
+  }
+  .bt-layout .bt-expand-trigger {
+    display: none;
+  }
+  .bt-layout .bt-topbar > .bt-mark {
+    display: none;
+  }
+}
+
+/* Legacy family grid rules must not replace SidebarInset with display:contents. */
+.bt-app.bt-layout .bt-topbar::before {
+  content: none;
+}
+@media (min-width: 768px) {
+  .bt-layout.bt-cohort .bt-content > .bt-heading:has(h1:empty) {
+    display: none;
+  }
+}
+
+.bt-layout .bt-brand > strong {
+  flex: 1;
+}
+.bt-layout .bt-brand > button {
+  margin-left: 0;
+}
+.bt-layout-mobile[data-mobile="true"] {
+  width: var(--sidebar-width);
+  max-width: calc(100vw - 32px);
+}
+
+.bt-layout [data-collapsible="icon"] .bt-custom-footer .bt-nav > button {
+  justify-content: center;
+  padding-inline: 0;
+  gap: 0;
+  font-size: 0;
+}
+
+/* Reference navigation density belongs to the template consumer, not vendor UI. */
+.bt-layout .bt-reui-navigation [data-slot="sidebar-menu-button"],
+.bt-layout-mobile .bt-reui-navigation [data-slot="sidebar-menu-button"] {
+  height: 32px;
+  padding: 6px 8px;
+}
+.bt-layout.bt-verve .bt-reui-navigation [data-slot="sidebar-menu-button"] {
+  height: 26px;
+  padding: 4px 8px;
+  font-size: 13px;
+}
+.bt-layout.bt-cohort .reui-sidebar-content > [data-slot="collapsible"] .bt-metric-dot,
+.bt-layout-mobile.bt-cohort .reui-sidebar-content > [data-slot="collapsible"] .bt-metric-dot {
+  width: 14px;
+  height: 14px;
+  border: 3px solid transparent;
+  background-clip: border-box;
+  box-shadow: inset 0 0 0 4px var(--background);
+}
+
+/* Contextual clinic content now lives in the genuine SidebarContent slot. */
+.bt-layout.bt-miro .bt-sidebar .reui-sidebar-content:has(.bt-patient-nav) > strong:first-of-type {
+  display: flex;
+  align-items: center;
+  min-height: 50px;
+  flex-shrink: 0;
+  margin-inline: -12px;
+  padding-inline: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.bt-layout.bt-miro .bt-sidebar .reui-sidebar-content > [aria-label="Search patient directory"] {
+  flex-shrink: 0;
+}
+
+/* Measured row progression: Cohort 32px, Atlas 36px, Commerce 33px. */
+.bt-layout.bt-cohort .bt-reui-navigation [data-slot="sidebar-menu"] {
+  gap: 0;
+}
+.bt-layout.bt-cohort .bt-sidebar [data-slot="sidebar-header"] {
+  padding-top: 20px;
+}
+.bt-layout.bt-atlas .bt-sidebar [data-slot="sidebar-header"] {
+  padding: 8px;
+}
+.bt-layout.bt-atlas .bt-sidebar .reui-sidebar-content {
+  padding-inline: 8px;
+  padding-top: 8px;
+}
+.bt-layout.bt-atlas .bt-sidebar [data-slot="sidebar-footer"] {
+  padding-inline: 8px;
+}
+.bt-layout.bt-atlas .bt-reui-navigation [data-slot="sidebar-menu"] {
+  gap: 4px;
+}
+.bt-layout.bt-surge .bt-reui-navigation [data-slot="sidebar-menu"],
+.bt-layout.bt-manifest .bt-reui-navigation [data-slot="sidebar-menu"] {
+  gap: 1px;
+}
+
+.bt-layout.bt-cohort .bt-sidebar .reui-sidebar-content {
+  gap: 16px;
+}
+
+/* The reference mobile drawer keeps the application rail beside its contextual pane. */
+.bt-layout-mobile.bt-mobile-with-rail > div > [data-slot="sidebar-header"] {
+  display: none;
+}
+.bt-layout-mobile.bt-mobile-with-rail > div > .reui-sidebar-content {
+  padding: 0 12px 12px 60px;
+}
+.bt-layout-mobile.bt-mobile-with-rail > div > [data-slot="sidebar-footer"] {
+  padding-left: 60px;
+}
+.bt-layout-mobile .bt-mobile-icon-rail[data-slot="sidebar"] {
+  display: flex !important;
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 48px;
+  height: 100%;
+  min-height: 0;
+  padding: 0;
+  gap: 0;
+  background: var(--muted);
+  border-right: 1px solid var(--border);
+}
+.bt-layout-mobile .bt-mobile-icon-rail .bt-account-button {
+  padding: 0;
+}
+.bt-layout-mobile.bt-cohort .bt-reui-navigation [data-slot="sidebar-menu"] {
+  gap: 0;
+}
+.bt-layout-mobile.bt-cohort > div > .reui-sidebar-content {
+  gap: 16px;
+  padding-inline: 8px;
+}
+.bt-layout-mobile.bt-cohort [data-slot="sidebar-header"] {
+  padding-inline: 8px;
+}
+.bt-layout-mobile.bt-atlas > div > [data-slot="sidebar-header"] {
+  padding: 8px 32px 8px 8px;
+}
+.bt-layout-mobile.bt-atlas > div > .reui-sidebar-content {
+  padding: 8px;
+  gap: 16px;
+}
+.bt-layout-mobile.bt-atlas > div > [data-slot="sidebar-footer"] {
+  padding-inline: 8px;
+}
+.bt-layout-mobile.bt-atlas .bt-reui-navigation [data-slot="sidebar-menu"] {
+  gap: 4px;
+}
+.bt-layout-mobile.bt-surge .bt-reui-navigation [data-slot="sidebar-menu"],
+.bt-layout-mobile.bt-manifest .bt-reui-navigation [data-slot="sidebar-menu"] {
+  gap: 1px;
+}

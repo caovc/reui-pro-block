@@ -1,5 +1,5 @@
 import { useFlowlyAgentsModel } from "./workflow-models";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import FlowCanvas from "@/blocks/application/flow-gantt-flow";
 import { FlowlyAgents } from "./flowly-agents";
 import {
@@ -14,6 +14,7 @@ import {
   Pencil,
   Plus,
   Settings,
+  UserRoundPlus,
   Workflow,
 } from "lucide-react";
 import {
@@ -184,6 +185,7 @@ export default function Flowly() {
   const [selected, setSelected] = useState("");
   const [chart, setChart] = useState("Runs");
   const [invite, setInvite] = useState(false);
+  const inviteTrigger = useRef<HTMLButtonElement>(null);
   const [stars, setStars] = useState<string[]>([]);
   const list = rows.filter(
     (r) => r.name.toLowerCase().includes(query.toLowerCase()) && (!filter || r.status === "Active"),
@@ -370,7 +372,8 @@ export default function Flowly() {
       ]}
       actions={
         <>
-          <Button size="sm" variant="outline" onClick={() => setInvite(true)}>
+          <Button ref={inviteTrigger} size="sm" variant="outline" onClick={() => setInvite(true)}>
+            <UserRoundPlus />
             Invite
           </Button>
           <Button
@@ -645,6 +648,7 @@ export default function Flowly() {
         title="Invite teammate"
         label="Email address"
         open={invite}
+        returnFocusRef={inviteTrigger}
         onClose={() => setInvite(false)}
         onCreate={() => toast.success("Demo invitation added")}
       />

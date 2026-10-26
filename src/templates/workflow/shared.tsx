@@ -1,20 +1,6 @@
-import { SidebarNavigation } from "@/components/reui/sidebar";
-import { SidebarProvider } from "@/components/ui/sidebar";
 import { ReuiStripePattern } from "@/blocks/data/reui-free-chart-primitives";
-import { BrandGlyph } from "@/components/brand-mark";
-import { useState, useId, type ReactNode, type ComponentType } from "react";
-import {
-  Activity,
-  ArrowDownToLine,
-  Bell,
-  Check,
-  ChevronRight,
-  CircleHelp,
-  MoreHorizontal,
-  LayoutDashboard,
-  Menu,
-  Search,
-} from "lucide-react";
+import { useState, useId, type ReactNode, type ComponentType, type RefObject } from "react";
+import { Activity, ArrowDownToLine, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -27,13 +13,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/reui/badge";
 import { IconTile } from "@/components/reui/icon-tile";
-import { Person } from "./controls";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
 import {
   Table,
   TableBody,
@@ -78,256 +57,8 @@ export {
   TableHeader,
   TableRow,
 };
-export type NavItem = {
-  label: string;
-  icon?: ComponentType<{ className?: string }>;
-  count?: string;
-  children?: string[];
-};
-export function Logo() {
-  return (
-    <span className="wf-logo" aria-hidden="true">
-      <BrandGlyph />
-    </span>
-  );
-}
+export { Shell, Logo, type NavItem } from "./workflow-shell";
 
-export function Shell({
-  brand,
-  view,
-  setView,
-  nav,
-  children,
-  actions,
-  compact = false,
-  dark = false,
-  extra,
-  taskNavigation,
-}: {
-  brand: string;
-  view: string;
-  setView: (v: string) => void;
-  nav: NavItem[];
-  children: ReactNode;
-  actions?: ReactNode;
-  compact?: boolean;
-  dark?: boolean;
-  extra?: ReactNode;
-  taskNavigation?: ReactNode;
-}) {
-  const [open, setOpen] = useState(false);
-  const [search, setSearch] = useState("");
-  const [searchOpen, setSearchOpen] = useState(false);
-  const hasNestedNavigation = nav.some((item) => item.children?.length);
-  const sidebar = (
-    <>
-      <div className="wf-brand">
-        <Logo />
-        {!compact && <strong>{brand === "ReUI" ? "Bricklane" : brand}</strong>}
-      </div>
-      {!compact && brand !== "DevOps" && (
-        <Button variant="outline" className="wf-search" onClick={() => setSearchOpen(true)}>
-          <Search />
-          Search…<kbd>/</kbd>
-        </Button>
-      )}
-      {hasNestedNavigation ? (
-        <SidebarNavigation
-          className="wf-free-nav"
-          label="Workspace"
-          items={nav.map(({ label, icon: Icon = LayoutDashboard, count, children }) => ({
-            label,
-            icon: <Icon />,
-            badge: count,
-            children,
-          }))}
-          active={view}
-          onSelect={(value) => {
-            setView(value);
-            setOpen(false);
-          }}
-        />
-      ) : (
-        <div className="wf-nav-group">
-          {!compact && <p>{brand === "ReUI" ? "Platform" : "Workspace"}</p>}
-          {nav.map(({ label, icon: Icon = LayoutDashboard, count }) => (
-            <div key={label}>
-              <Button
-                title={label}
-                aria-label={label}
-                aria-current={view === label ? "page" : undefined}
-                variant={view === label ? "secondary" : "ghost"}
-                size={compact ? "icon" : "default"}
-                className="wf-nav-button"
-                onClick={() => {
-                  setView(label);
-                  setOpen(false);
-                }}
-              >
-                <Icon />
-                {!compact && (
-                  <>
-                    <span>{label}</span>
-                    {count ? <small>{count}</small> : null}
-                  </>
-                )}
-              </Button>
-              {label === "Tasks" && taskNavigation}
-            </div>
-          ))}
-        </div>
-      )}
-      {!compact && extra}
-      <div className="wf-sidebar-bottom">
-        <Button
-          aria-label="Help"
-          title="Help"
-          size={compact ? "icon" : "default"}
-          variant="ghost"
-          onClick={() => toast.info("Use the sidebar to explore this interactive local workspace.")}
-        >
-          <CircleHelp />
-          {!compact && "Help & documentation"}
-        </Button>
-        <Button
-          aria-label="Account settings"
-          size={compact ? "icon" : "default"}
-          variant="ghost"
-          onClick={() => setView("Settings")}
-        >
-          <span className="wf-avatar">{dark ? "C" : brand === "DevOps" ? "TO" : "NB"}</span>
-          {!compact && (dark ? "Claude" : brand === "DevOps" ? "Tomas Okonkwo" : "Nick Bold")}
-        </Button>
-      </div>
-    </>
-  );
-  const content = (
-    <div
-      className={`wf-root wf-${brand.toLowerCase()} ${compact ? "wf-compact" : ""} ${dark ? "wf-dark-sidebar" : ""}`}
-    >
-      <aside className="wf-sidebar">{sidebar}</aside>
-      <Sheet open={open} onOpenChange={setOpen}>
-        <SheetContent
-          side="left"
-          onClick={(event) => {
-            const button = (event.target as HTMLElement).closest("button");
-            if (button && !button.hasAttribute("aria-expanded")) setOpen(false);
-          }}
-        >
-          <SheetTitle>{brand}</SheetTitle>
-          <SheetDescription>Workspace navigation</SheetDescription>
-          {sidebar}
-        </SheetContent>
-      </Sheet>
-      <div className="wf-main">
-        <header className="wf-header">
-          <Button
-            className="wf-mobile-menu"
-            size="icon"
-            variant="ghost"
-            aria-label="Open navigation"
-            onClick={() => setOpen(true)}
-          >
-            <Menu />
-          </Button>
-          <span>
-            {brand === "AgentOps" ? (
-              <span className="wf-inline wf-muted">
-                <i className="wf-workspace-dot" />
-                Atlas　›　
-                <Person name="Nick Bold" index={3} />
-                　›　<span className="wf-current-crumb">{view}</span>
-              </span>
-            ) : (
-              view
-            )}
-          </span>
-          <div className="wf-header-actions">
-            {brand === "DevOps" && (
-              <Button
-                variant="outline"
-                className="wf-header-search"
-                onClick={() => setSearchOpen(true)}
-              >
-                <Search />
-                Search or jump to…<kbd>⌘K</kbd>
-              </Button>
-            )}
-            {(brand === "Flowly" || brand === "DevOps" || brand === "ReUI") && (
-              <div className="wf-header-avatars">
-                {["Tomas Lindqvist", "Ines Marchetti", "Hanna Berg"].map((name, i) => (
-                  <Person key={name} name={name} index={i} />
-                ))}
-                <small>+{brand === "Flowly" ? "8" : "5"}</small>
-              </div>
-            )}
-            {actions}
-            {brand === "Flowly" ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button size="icon" variant="ghost" aria-label="Dashboard menu">
-                    <MoreHorizontal />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  {nav.map((n) => (
-                    <DropdownMenuItem key={n.label} onSelect={() => setView(n.label)}>
-                      {n.label}
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <Button
-                size="icon"
-                variant="ghost"
-                aria-label="Notifications"
-                onClick={() => toast.info("You are up to date. No new notifications.")}
-              >
-                <Bell />
-              </Button>
-            )}
-          </div>
-        </header>
-        <main className="wf-content">{children}</main>
-      </div>
-      <Dialog open={searchOpen} onOpenChange={setSearchOpen}>
-        <DialogContent>
-          <DialogTitle>Search your workspace</DialogTitle>
-          <DialogDescription>Jump to a workspace view.</DialogDescription>
-          <Input
-            autoFocus
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search views…"
-          />
-          {nav
-            .filter((n) => n.label.toLowerCase().includes(search.toLowerCase()))
-            .map((n) => (
-              <Button
-                key={n.label}
-                variant="ghost"
-                onClick={() => {
-                  setView(n.label);
-                  setSearchOpen(false);
-                }}
-              >
-                {n.label}
-                <ChevronRight />
-              </Button>
-            ))}
-        </DialogContent>
-      </Dialog>
-    </div>
-  );
-  return hasNestedNavigation ? (
-    <SidebarProvider className="contents" style={{ minHeight: "auto" }}>
-      {content}
-    </SidebarProvider>
-  ) : (
-    content
-  );
-}
 export function Panel({
   title,
   description,
@@ -611,12 +342,14 @@ export function CreateDialog({
   onClose,
   onCreate,
   label = "Name",
+  returnFocusRef,
 }: {
   title: string;
   open: boolean;
   onClose: () => void;
   onCreate: (name: string) => void;
   label?: string;
+  returnFocusRef?: RefObject<HTMLElement | null>;
 }) {
   const [name, setName] = useState("");
   return (
@@ -626,7 +359,13 @@ export function CreateDialog({
         if (!v) onClose();
       }}
     >
-      <DialogContent>
+      <DialogContent
+        onCloseAutoFocus={(event) => {
+          if (!returnFocusRef?.current) return;
+          event.preventDefault();
+          returnFocusRef.current.focus();
+        }}
+      >
         <DialogTitle>{title}</DialogTitle>
         <DialogDescription>Create a record in this local demo workspace.</DialogDescription>
         <form

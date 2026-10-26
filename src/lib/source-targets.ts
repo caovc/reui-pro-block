@@ -517,6 +517,9 @@ export function templateImplementationTargets(template: {
   const modules = [
     sharedModules[template.id] ?? template.id,
     ...(secondaryModules[template.id] ?? []),
+    ...(["flowly", "flux", "lucent", "tempo", "mesh"].includes(template.id)
+      ? ["workflow-shell"]
+      : []),
   ];
   return modules.map((module) => `src/templates/${template.family}/${module}.tsx`);
 }
