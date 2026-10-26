@@ -1,0 +1,17 @@
+{
+  "cause": "Deploy Board added one verified catalog entry; the fixed catalog size and unique-key snapshot constants were not updated in that milestone.",
+  "failedRun": "https://github.com/caovc/reui-pro-block/actions/runs/40291463475",
+  "commit": "e25a1907dc068e645f0c71ed36910dcf81a8c70c",
+  "result": {
+    "passed": 1432,
+    "failed": 1,
+    "failure": "catalog snapshot expected 662 entries; actual 663"
+  },
+  "change": "Update both fixed entry count and unique-key count to 663; category count 78, per-category count checks, and all rendering checks remain unchanged.",
+  "artifact": {
+    "id": 12636913981,
+    "bytes": 22185362,
+    "sha256": "ce5e6876bbdcc7556c948851b286b57a8df40dfcd3892935302002b6b8e11caa"
+  },
+  "scope": "No product source, browser settings, timeouts or tolerances changed. No green full CI or new Pages deployment is claimed."
+}

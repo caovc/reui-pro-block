@@ -3,8 +3,8 @@ import catalog from "../src/data/catalog.json" with { type: "json" };
 const blocks = catalog.flatMap((c) => c.blocks);
 test("catalog snapshot is complete and identifiers are unique", async () => {
   expect(catalog).toHaveLength(78);
-  expect(blocks).toHaveLength(662);
-  expect(new Set(blocks.map((b) => `${b.group}/${b.category}/${b.id}`)).size).toBe(662);
+  expect(blocks).toHaveLength(663);
+  expect(new Set(blocks.map((b) => `${b.group}/${b.category}/${b.id}`)).size).toBe(663);
   expect(catalog.every((c) => c.count === c.blocks.length && c.count > 0)).toBeTruthy();
 });
 for (const category of catalog) {
