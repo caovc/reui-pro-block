@@ -4352,9 +4352,18 @@
         "reference": "https://reui.io/blocks/solutions/dev-ops/solution-dev-ops-6",
         "index": 5,
         "description": "Dev Ops Data Connections Settings with Linked Datasets, Masked Data Preview and Sync Activity"
+      },
+      {
+        "id": "solution-dev-ops-7",
+        "name": "Deploy Board",
+        "group": "solutions",
+        "category": "dev-ops",
+        "reference": "https://reui.io/blocks/solutions/dev-ops/solution-dev-ops-7",
+        "index": 6,
+        "description": "Live deployment wall with production approval windows, native canary traffic control, automatic rollback and merge-linked deployment details."
       }
     ],
-    "count": 6
+    "count": 7
   },
   {
     "id": "ai-ops",

@@ -1,0 +1,59 @@
+{
+  "milestone": "Deploy Board, exact catalog entry solution-dev-ops-7",
+  "base": "3bed3519ee6840279d0c85df7c0b42bcba85edc9",
+  "catalog": {
+    "categories": 78,
+    "declared": 663,
+    "entries": 663,
+    "devOps": 7
+  },
+  "sourceDefault": "src/blocks/data/solution-dev-ops-variants/deploy-board.tsx",
+  "actualFreeComponents": [
+    "Frame, Table, Badge, Timeline, Item, Empty",
+    "Native Slider using the audited controlled free example",
+    "Sheet, Tabs, AlertDialog, Alert/AlertAction and copy hook"
+  ],
+  "domainCustomizations": [
+    "Original deployment fixtures, approval windows, canary simulation, rollback/undo reducer",
+    "Split-flap rendering has no corresponding free ReUI component; uses local CSS and accessible static labels",
+    "Modal Undo uses native Alert/Action because the native modal layer blocks the outside toast action"
+  ],
+  "rootReview": [
+    "Read actual free composition and native Slider/controlled AlertDialog adapters",
+    "CUA saw Cancel return focus to BODY; eight production combinations reproduced this before the owned focus adapter correction",
+    "Verified narrow exact-ID router/source hooks and corrected category count7",
+    "Verified latest SourceTargets retains all four template targets and actual default leaf"
+  ],
+  "validation": {
+    "V1": "Immutable original14 held; original15PASS does not assert Cancel return focus. Earlier main failures and modal Undo failures retained.",
+    "originalCancelMatrix": "8/8 reproduced BODY focus on original5795; individual traces/screenshots retained.",
+    "V2focusedProduction": "10/10 PASS14.9s1worker original30s:8Cancel combinations+confirmedRollbackUndo+source",
+    "V2actual259Strict": {
+      "exitCode": 0,
+      "durationSeconds": 9.711519002914429
+    },
+    "V2actualStandaloneRuntime": "2/2 PASS at1440/390; exact header/Slider focus, traffic unchanged, Sheet open, noerrors/overflow",
+    "latestViteOnly": {
+      "exitCode": 0,
+      "durationSeconds": 5.102838039398193
+    },
+    "latestSource": "1/1 PASS2.3s, actual view/copy/file/UI ZIP",
+    "latest259": "257 unchanged; only2Sidebar bodies match publishedc090+latest3bed; no newimports; no directDeploySidebar calls",
+    "complementaryStrict": "Root explicitly accepts V2 actual259strict0 plus published Template27 typedmain+actualTempo227/Filespace192strict for2sharedSidebar bodies. No thirdZIPstrict/fullmain/15rerun claimed.",
+    "formatAndLint": "scoped oxfmt/oxlintPASS; full frozen14 check recorded separately"
+  },
+  "latestExportTypingLimit": "Latest actual259 package has two newly published Sidebar bodies. Its other257 members match the strict-passed V2 package. Both updated shared bodies have independent strict coverage in the published Template milestone. No third independent latest259 strict build is claimed.",
+  "remaining": {
+    "visual": [
+      "Independent mechanical bench/native horizontal Slider",
+      "Native modal Undo Alert adaptation vs reference toast presentation",
+      "Measured small panel/row and Merges-column distribution differences; full dark/reduced-motion public geometry pending"
+    ],
+    "ciAndDeployment": "Full current CI and Pages deployment pending; push alone does not mean the website is updated."
+  },
+  "preservedEvidence": {
+    "oldOriginalCancelFailures": 8,
+    "originalMilestone15": "Passed before Cancel focus was asserted; not treated as coverage of that missing assertion",
+    "manifestSHA256": "d9e2bffea8eccd1ac7aa6eef942236b1fe5e3241022624dca290eb0e45ffce5b"
+  }
+}

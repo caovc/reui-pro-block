@@ -1,3 +1,4 @@
+import DeployBoard from "./solution-dev-ops-variants/deploy-board";
 import WorkspaceChatVariants from "./ai-chat-workspace-variants";
 import InitialChatVariants from "./ai-chat-initial-variants";
 import StatusTrackerBlock from "./status-tracker";
@@ -40,6 +41,7 @@ import {
   WizardBlock,
 } from "./workflows";
 export default function DataBlock({ block }: BlockProps) {
+  if (block.id === "solution-dev-ops-7") return <DeployBoard block={block} />;
   if (block.group === "data-grid") {
     const refined = {
       base: BaseGrid,

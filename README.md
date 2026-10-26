@@ -1,8 +1,8 @@
 # Bricklane
 
-Independent recreations of **ReUI Pro Blocks and Templates**, built with React, TypeScript, Tailwind CSS and official open-source ReUI components. Bricklane uses an original logo, name, and locally authored demo illustrations. The public REUI catalog snapshot is used as the development checklist: **662 entries, 78 categories, 7 groups**.
+Independent recreations of **ReUI Pro Blocks and Templates**, built with React, TypeScript, Tailwind CSS and official open-source ReUI components. Bricklane uses an original logo, name, and locally authored demo illustrations. The local development checklist currently contains **663 entries, 78 categories, 7 groups**. The latest public catalog audit lists 669 entries across 79 categories; six additions remain in development.
 
-> This is an independent recreation using shared layout families. Catalog coverage is not a claim of 662 pixel-identical copies. No REUI Pro source or premium assets are distributed. See [provenance](THIRD_PARTY_NOTICES.md) and the implementation notes in `docs/`.
+> This is an independent recreation using shared layout families. Catalog coverage is not a claim of 663 pixel-identical copies. No REUI Pro source or premium assets are distributed. See [provenance](THIRD_PARTY_NOTICES.md) and the implementation notes in `docs/`.
 
 ## Explore
 
@@ -37,7 +37,7 @@ npm run test:catalog
 npx playwright test tests/templates.spec.ts tests/template-interactions.spec.ts
 ```
 
-Browser tests require Chromium (`npx playwright install chromium`). `PREVIEW_URL` can target an already running local or deployed server. Catalog smoke tests exercise all 662 individual preview routes; site tests exercise navigation, search, responsive controls, theme persistence, favorites, source view and downloads.
+Browser tests require Chromium (`npx playwright install chromium`). `PREVIEW_URL` can target an already running local or deployed server. Catalog smoke tests exercise all 663 individual preview routes; site tests exercise navigation, search, responsive controls, theme persistence, favorites, source view and downloads.
 
 ## Project layout
 

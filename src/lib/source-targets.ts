@@ -138,6 +138,8 @@ function paths(family: string, ...modules: string[]) {
 /** Candidate implementation files in the same routing order as the previews. */
 export function blockImplementationCandidates(block: BlockMeta): string[] {
   const variant = Number(block.id.split("-").at(-1));
+  if (block.id === "solution-dev-ops-7")
+    return paths("data", "solution-dev-ops-variants/deploy-board");
   if (block.group === "application") {
     if (block.category === "navbar" && variant >= 12 && variant <= 13) {
       const module = ["marketing", "editor"][variant - 12];
