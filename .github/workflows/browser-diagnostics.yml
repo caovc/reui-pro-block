@@ -1,15 +1,6 @@
-name: Diagnose browser rendering on Linux
+name: Diagnose native Flow toast interactions on Linux
 on:
   workflow_dispatch:
-    inputs:
-      font_hinting:
-        description: Font rendering hinting for this diagnostic run
-        type: choice
-        required: true
-        default: native
-        options:
-          - native
-          - none
 permissions:
   contents: read
 concurrency:
@@ -31,23 +22,25 @@ jobs:
       - run: npm run lint
       - run: npm run build
       - run: npx playwright install --with-deps chromium
-      - name: Run original focused browser checks
+      - name: List exactly the four affected native cases
+        run: |
+          mkdir -p /tmp/bricklane-flow-toast-linux
+          npx playwright test tests/flow-agent-native-select.spec.ts tests/flow-inspector-fields.spec.ts --grep 'agent App selection preserves native interaction|workflow select typeahead, Escape, save and draft cancellation' --list > /tmp/bricklane-flow-toast-linux/discovery.log
+      - name: Run the affected cases under the original CI configuration
         env:
-          BRICKLANE_FONT_HINTING: ${{ inputs.font_hinting }}
+          PLAYWRIGHT_JSON_OUTPUT_NAME: /tmp/bricklane-flow-toast-linux/report.json
         run: >-
           npx playwright test
-          tests/flow-detail-fidelity.spec.ts
-          tests/pricing-upgrade-dialog-visual.spec.ts
-          tests/tabs-overflow.spec.ts
-          tests/diagnostics/tabs-native-input.diagnostic.ts
-          --config=playwright.diagnostics.config.ts
-          --workers=1 --retries=0
-          --output=/tmp/bricklane-linux-browser-diagnostics
-      - name: Upload browser evidence
+          tests/flow-agent-native-select.spec.ts
+          tests/flow-inspector-fields.spec.ts
+          --grep 'agent App selection preserves native interaction|workflow select typeahead, Escape, save and draft cancellation'
+          --retries=0 --reporter=list,json
+          --output=/tmp/bricklane-flow-toast-linux/artifacts
+      - name: Upload original native browser evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: linux-browser-evidence-${{ github.run_id }}
-          path: /tmp/bricklane-linux-browser-diagnostics/
+          name: flow-toast-linux-evidence-${{ github.run_id }}
+          path: /tmp/bricklane-flow-toast-linux/
           if-no-files-found: ignore
           retention-days: 7
