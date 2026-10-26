@@ -3,6 +3,7 @@ import { spawn } from "node:child_process";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { createRequire } from "node:module";
 import os from "node:os";
+import { stripVTControlCharacters } from "node:util";
 import path from "node:path";
 import { chromium } from "playwright";
 
@@ -55,7 +56,7 @@ async function startPreview() {
     for (const stream of [previewProcess.stdout, previewProcess.stderr]) {
       stream.on("data", (chunk) => {
         previewLog += chunk.toString();
-        if (/Local:/.test(previewLog)) finish();
+        if (/Local:/.test(stripVTControlCharacters(previewLog))) finish();
       });
     }
   });
