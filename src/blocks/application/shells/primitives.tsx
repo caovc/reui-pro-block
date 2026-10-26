@@ -2,7 +2,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ReuiSidebar, SidebarNavigation } from "@/components/reui/sidebar";
 import { SidebarProvider, SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import { Frame, FrameFooter, FramePanel } from "@/components/reui/frame";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import {
   Activity,
@@ -63,6 +63,8 @@ import {
   Input,
   ReuiMark,
   SearchPalette,
+  ShellVariantContext,
+  shellThemeClasses,
   WorkspaceMenu,
 } from "./chrome";
 import type { ShellIcon } from "./chrome";
@@ -74,6 +76,8 @@ export function Choices({
   onChange,
   icon: Icon,
   compact = false,
+  variant = "ghost",
+  className,
 }: {
   label: string;
   value: string;
@@ -81,14 +85,16 @@ export function Choices({
   onChange: (v: string) => void;
   icon?: ShellIcon;
   compact?: boolean;
+  variant?: "ghost" | "default";
+  className?: string;
 }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          variant="ghost"
+          variant={variant}
           size="sm"
-          className={cn("h-8 min-w-0 gap-1.5 px-2 font-normal", compact && "border")}
+          className={cn("h-8 min-w-0 gap-1.5 px-2 font-normal", compact && "border", className)}
           aria-label={label}
         >
           {Icon && <Icon />}
@@ -177,6 +183,7 @@ export function Sidebar({
 }) {
   const { state, isMobile, triggerRef } = useSidebar();
   const compact = collapsible === "icon" && !isMobile && (collapsed ?? state === "collapsed");
+  const themeClass = shellThemeClasses(useContext(ShellVariantContext));
   return (
     <>
       <ReuiSidebar
@@ -194,6 +201,7 @@ export function Sidebar({
             : variant === "inset"
               ? "shell-inset-sidebar"
               : "shell-sidebar",
+          themeClass,
           "shell-desktop-sidebar",
           compact && "collapsed",
           className,
@@ -201,6 +209,7 @@ export function Sidebar({
         mobileTitle={label}
         mobileClassName={cn(
           "shell-reference shell-drawer reui-reference !min-h-0 flex-col gap-0 p-2",
+          themeClass,
           drawerClassName,
         )}
       >
@@ -240,13 +249,16 @@ export function Rail({
   width?: number;
   children?: ReactNode;
 }) {
+  const variant = useContext(ShellVariantContext);
+  const solidSelection = variant === 25 || variant === 32;
   const contents = (
     <>
       <ReuiMark small />
       <div className="mt-4 flex flex-col gap-2">
         {railItems.map(({ label, icon: Icon }) => (
           <Button
-            variant={active === label ? "secondary" : "ghost"}
+            variant={active === label ? (solidSelection ? "default" : "secondary") : "ghost"}
+            data-active={active === label}
             size="icon-sm"
             key={label}
             title={label}
@@ -274,11 +286,15 @@ export function Rail({
         aria-label="Applications"
         className={cn(
           "shell-icon-rail shell-desktop-rail",
+          shellThemeClasses(variant),
           dark && "shell-dark m-2 rounded-2xl !border-0",
           glass && "shell-glass-rail",
         )}
         mobileTitle="Applications"
-        mobileClassName="shell-reference reui-reference shell-drawer !min-h-0 flex-col gap-3 p-4"
+        mobileClassName={cn(
+          "shell-reference reui-reference shell-drawer !min-h-0 flex-col gap-3 p-4",
+          shellThemeClasses(variant),
+        )}
       >
         {contents}
       </ReuiSidebar>

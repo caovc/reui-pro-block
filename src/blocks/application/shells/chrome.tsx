@@ -7,7 +7,7 @@ import portrait2 from "./assets/portrait-2.jpg";
 import portrait3 from "./assets/portrait-3.jpg";
 import portrait4 from "./assets/portrait-4.jpg";
 import portrait5 from "./assets/portrait-5.jpg";
-import { useEffect, useRef, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import type { ComponentType } from "react";
 import {
   Activity,
@@ -126,8 +126,30 @@ export const teamNames = [
   "Liam Carter",
 ];
 /** Compatibility name retained for existing shells; artwork is the original Bricklane mark. */
+// Variant metadata follows React portals without introducing another sidebar state.
+export const ShellVariantContext = createContext(0);
+const primaryBrandVariants = new Set([
+  1, 2, 3, 4, 5, 7, 8, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 23,
+]);
+const primaryNavigationVariants = new Set([1, 4, 5, 7, 8, 11, 12, 13, 18, 19, 20]);
+export function shellThemeClasses(variant: number) {
+  return cn(
+    `shell-theme-${variant}`,
+    primaryBrandVariants.has(variant) && "shell-theme-brand",
+    primaryNavigationVariants.has(variant) && "shell-theme-navigation",
+  );
+}
 export function ReuiMark({ small = false }: { small?: boolean }) {
-  return <BrandMark className={small ? "size-6 shrink-0" : "size-7 shrink-0"} />;
+  const variant = useContext(ShellVariantContext);
+  return (
+    <BrandMark
+      className={cn(
+        small ? "size-6 shrink-0" : "size-7 shrink-0",
+        primaryBrandVariants.has(variant) &&
+          "text-primary [--background:var(--primary-foreground)]",
+      )}
+    />
+  );
 }
 
 const portraits = [portrait0, portrait1, portrait2, portrait3, portrait4, portrait5];
@@ -1057,7 +1079,7 @@ export function Notifications({
               <p className="mt-2 text-[10px] text-muted-foreground">{n.time}</p>
             </div>
             {!read && i !== 0 && i < 5 && (
-              <span className="absolute right-3 top-4 size-1.5 rounded-full bg-foreground" />
+              <span className="absolute right-3 top-4 size-1.5 rounded-full bg-primary" />
             )}
           </div>
         ))}
@@ -1078,9 +1100,7 @@ export function Notifications({
         <SheetTrigger asChild>
           <Button size="icon-sm" variant="ghost" className="relative" aria-label="Notifications">
             <Bell />
-            {!read && (
-              <span className="absolute right-1 top-1 size-1.5 rounded-full bg-foreground" />
-            )}
+            {!read && <span className="absolute right-1 top-1 size-1.5 rounded-full bg-primary" />}
           </Button>
         </SheetTrigger>
         <SheetContent className="gap-0 px-0 sm:max-w-md">

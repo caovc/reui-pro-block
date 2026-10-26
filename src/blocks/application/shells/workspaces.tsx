@@ -428,6 +428,8 @@ export function FavoritesShell() {
         <div className="flex items-center gap-2">
           <Choices
             label="Upgrade"
+            variant="default"
+            className="h-7 border-0 bg-linear-to-r from-violet-600 to-indigo-600 px-2.5 text-white shadow-sm hover:from-violet-500 hover:to-indigo-500 hover:text-white"
             value="✣ Upgrade"
             items={["Pro workspace", "Enterprise workspace"]}
             onChange={(v) => toast(v)}

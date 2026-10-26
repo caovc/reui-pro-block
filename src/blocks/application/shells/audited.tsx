@@ -1,4 +1,5 @@
 import { AppShellLayout } from "@/components/reui/layout";
+import { ShellVariantContext } from "./chrome";
 import type { BlockProps } from "@/data/types";
 import {
   AiAgentsConsole,
@@ -31,7 +32,9 @@ import "./sidebar-foundation.css";
 export default function AppShell(props: BlockProps) {
   return (
     <AppShellLayout mobileBreakpoint={props.block.id === "app-shell-22" ? 1024 : 768}>
-      <ShellVariant {...props} />
+      <ShellVariantContext.Provider value={Number(props.block.id.split("-").pop())}>
+        <ShellVariant {...props} />
+      </ShellVariantContext.Provider>
     </AppShellLayout>
   );
 }

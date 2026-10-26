@@ -409,3 +409,155 @@
 .shell-reference .shell-dark .shell-usage-card [data-slot="frame-panel-header"] p {
   color: #facc15;
 }
+
+/* Public ReUI shell accent treatment, including navigation rendered in a Sheet.
+   Neutral, fixed-dark and glass families deliberately keep their original tone. */
+.shell-theme-brand [data-slot="sidebar-header"] svg[viewBox="0 0 32 32"] {
+  color: var(--primary);
+  --background: var(--primary-foreground);
+}
+.shell-theme-navigation
+  :is(
+    [data-slot="sidebar-menu-button"],
+    [data-slot="sidebar-menu-sub-button"]
+  )[data-active="true"] {
+  background: color-mix(in oklab, var(--primary) 5%, transparent);
+  color: var(--primary);
+}
+.shell-theme-navigation
+  :is(
+    [data-slot="sidebar-menu-button"],
+    [data-slot="sidebar-menu-sub-button"]
+  )[data-active="true"]:hover {
+  background: color-mix(in oklab, var(--primary) 10%, transparent);
+}
+.shell-theme-18 [data-slot="sidebar-menu-button"][data-active="true"] {
+  background: color-mix(in oklab, var(--primary) 10%, transparent);
+}
+.shell-theme-18 [data-slot="sidebar-menu-button"][data-active="true"]:hover {
+  background: color-mix(in oklab, var(--primary) 15%, transparent);
+}
+.shell-theme-18 [data-active="true"] + [data-slot="sidebar-menu-badge"] {
+  background: color-mix(in oklab, var(--primary) 10%, transparent);
+  color: var(--primary);
+}
+.shell-reference:is([data-shell-variant="4"], [data-shell-variant="5"])
+  .shell-icon-rail
+  [data-active="true"],
+.shell-reference:is([data-shell-variant="4"], [data-shell-variant="5"])
+  .shell-icon-rail
+  [data-variant="secondary"] {
+  background: color-mix(in oklab, var(--primary) 5%, transparent);
+  color: var(--primary);
+}
+.shell-reference .board-rail-groups [data-sidebar="menu-button"][data-active="true"] {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+.shell-reference:is([data-shell-variant="25"], [data-shell-variant="32"])
+  .shell-icon-rail
+  [data-active="false"],
+.shell-reference:is([data-shell-variant="25"], [data-shell-variant="32"])
+  .shell-icon-rail
+  [data-variant="ghost"],
+.shell-reference:is([data-shell-variant="25"], [data-shell-variant="32"]) .shell-nav-button,
+.shell-theme-25.shell-drawer [data-active="false"],
+.shell-theme-32.shell-drawer [data-active="false"] {
+  color: var(--ring);
+}
+.shell-reference .fleet-center-rail .fleet-rail-icon:not([aria-pressed="true"]),
+.shell-reference .fleet-center-rail [data-slot="button"][data-variant="ghost"],
+.shell-reference .invoice-rail-icon,
+.shell-reference[data-shell-variant="36"] [data-slot="sidebar-trigger"],
+.shell-reference .shell-scope-grip,
+.shell-reference .shell-scope-add {
+  color: var(--ring);
+}
+.shell-theme-26 [data-slot="tabs-trigger"]:not([data-state="active"]) {
+  color: var(--ring);
+}
+:is(
+    .shell-theme-25,
+    .shell-theme-26,
+    .shell-theme-27,
+    .shell-theme-29,
+    .shell-theme-30,
+    .shell-theme-32
+  )
+  [data-slot="tabs-trigger"][data-state="active"],
+.shell-reference[data-shell-variant="35"] [data-slot="tabs-trigger"][data-state="active"] {
+  border-color: color-mix(in oklab, var(--ring) 50%, transparent);
+}
+.shell-theme-29 .grid > [data-slot="button"][data-variant="outline"] {
+  border-color: color-mix(in oklab, var(--ring) 30%, transparent);
+}
+
+.shell-reference .inventory-rail-navigation [data-slot="sidebar-menu-button"] {
+  width: 32px;
+  height: 32px;
+  justify-content: center;
+  padding: 0;
+}
+.shell-reference .inventory-rail-navigation [data-slot="sidebar-menu"] {
+  gap: 6px;
+}
+
+.shell-icon-rail:is(.shell-theme-25, .shell-theme-32) [data-active="true"],
+:is(.shell-theme-25, .shell-theme-32).shell-drawer [data-active="true"] {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+/* 15's header is dark, but its brand and Upgrade control use the chosen accent. */
+.shell-reference[data-shell-variant="15"] > .shell-dark {
+  --primary: inherit;
+  --primary-foreground: inherit;
+}
+
+.shell-reference .inventory-section-navigation .shell-nav-button {
+  height: 28px;
+  min-height: 28px;
+  font-size: 11px;
+}
+.shell-reference .inventory-section-navigation [data-slot="sidebar-menu"] {
+  gap: 0;
+}
+.shell-reference .inventory-section-navigation [data-slot="sidebar-menu-badge"] {
+  height: 16px;
+  font-size: 9px;
+}
+
+/* Fixed scope panels compose ReuiSidebar directly, outside the responsive wrapper. */
+.shell-reference[data-shell-variant="26"]
+  .shell-scope-panel
+  [data-slot="tabs-trigger"]:not([data-state="active"]) {
+  color: var(--ring);
+}
+.shell-reference:is(
+    [data-shell-variant="25"],
+    [data-shell-variant="26"],
+    [data-shell-variant="27"],
+    [data-shell-variant="29"],
+    [data-shell-variant="30"],
+    [data-shell-variant="32"]
+  )
+  .shell-scope-panel
+  [data-slot="tabs-trigger"][data-state="active"] {
+  border-color: color-mix(in oklab, var(--ring) 50%, transparent);
+}
+
+.shell-reference[data-shell-variant="12"]
+  [aria-label="Analytics"]
+  + [data-slot="sidebar-menu-badge"] {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border-color: transparent;
+}
+.shell-reference[data-shell-variant="16"]
+  .shell-workspace-dark-rail
+  [data-sidebar="menu-button"][data-active="true"] {
+  background: color-mix(in oklab, var(--primary) 5%, transparent);
+}
+.shell-theme-29 .grid > [data-slot="button"][data-variant="secondary"] > svg {
+  color: var(--ring);
+}

@@ -1,4 +1,4 @@
-import { ReuiSidebar } from "@/components/reui/sidebar";
+import { ReuiSidebar, SidebarNavigation } from "@/components/reui/sidebar";
 import { AppShellInset } from "@/components/reui/layout";
 import { useState } from "react";
 import {
@@ -15,7 +15,6 @@ import {
 import { Progress } from "@/components/ui/progress";
 import {
   Button,
-  Badge,
   CollapseHandle,
   CreateItemDialog,
   HeaderSwitchers,
@@ -130,21 +129,21 @@ export default function InventoryShell() {
       <ReuiSidebar width={64} collapsible="none" className="shell-icon-rail wide">
         <ReuiMark />
         <div className="mt-5 flex flex-col gap-1.5">
-          {sections.map((s, i) => (
-            <Button
-              variant={section === i ? "secondary" : "ghost"}
-              size="icon-sm"
-              aria-label={`${s.name} section`}
-              key={s.name}
-              onClick={() => {
-                setSection(i);
-                setActive(s.groups[0].items[0]);
-                setHidden(false);
-              }}
-            >
-              <s.icon />
-            </Button>
-          ))}
+          <SidebarNavigation
+            collapsed
+            className="shell-theme-navigation inventory-rail-navigation"
+            active={`${current.name} section`}
+            onSelect={(name) => {
+              const index = sections.findIndex((section) => `${section.name} section` === name);
+              setSection(index);
+              setActive(sections[index].groups[0].items[0]);
+              setHidden(false);
+            }}
+            items={sections.map(({ name, icon: Icon }) => ({
+              label: `${name} section`,
+              icon: <Icon />,
+            }))}
+          />
         </div>
         <div className="mt-auto">
           <WorkspaceMenu collapsed user />
@@ -190,30 +189,25 @@ export default function InventoryShell() {
                     <p className="mb-1.5 px-1 text-[9px] uppercase text-muted-foreground">
                       {group.title}
                     </p>
-                    {group.items.map((item) => (
-                      <Button
-                        variant={item === active ? "secondary" : "ghost"}
-                        className="shell-nav-button h-7 !min-h-7 justify-start !text-[11px]"
-                        key={item}
-                        onClick={() => {
-                          setActive(item);
-                          if (window.innerWidth < 768) setHidden(true);
-                        }}
-                      >
-                        <Box className="size-3.5" />
-                        <span className="min-w-0 flex-1 truncate text-left">{item}</span>
-                        {item === "Customer Reviews" && (
-                          <Badge variant="outline" className="h-4 px-1 text-[9px]">
-                            20
-                          </Badge>
-                        )}
-                        {item === "Stock Alerts" && (
-                          <Badge variant="outline" className="h-4 px-1 text-[9px]">
-                            4
-                          </Badge>
-                        )}
-                      </Button>
-                    ))}
+                    <SidebarNavigation
+                      className="inventory-section-navigation"
+                      collapsed={false}
+                      active={active}
+                      onSelect={(item) => {
+                        setActive(item);
+                        if (window.innerWidth < 768) setHidden(true);
+                      }}
+                      items={group.items.map((label) => ({
+                        label,
+                        icon: <Box className="size-3.5" />,
+                        badge:
+                          label === "Customer Reviews"
+                            ? "20"
+                            : label === "Stock Alerts"
+                              ? "4"
+                              : undefined,
+                      }))}
+                    />
                   </section>
                 ))}
               </div>

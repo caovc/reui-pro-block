@@ -388,11 +388,11 @@ export function Assistant({
         ))}
         <p className="pt-2 text-[11px] text-muted-foreground">Suggested</p>
         <div className="flex flex-wrap gap-1">
-          {["Summarize my day", "Plan the week", "Surface blockers"].map((v) => (
+          {["Summarize my day", "Plan the week", "Surface blockers"].map((v, index) => (
             <Button
               variant="outline"
               size="sm"
-              className="h-6 px-2 text-[10px]"
+              className={`h-6 px-2 text-[10px] ${index === 0 ? "border-primary/10 bg-primary/5 text-primary hover:bg-primary/10" : ""}`}
               key={v}
               onClick={() => setDraft(v)}
             >
@@ -469,7 +469,7 @@ export function TodoShell() {
                   Focus Progress<span className="text-foreground">18 / 32</span>
                 </p>
                 <div className="my-3 h-1 rounded bg-muted">
-                  <div className="h-full w-[56%] rounded bg-foreground" />
+                  <div className="h-full w-[56%] rounded bg-primary" />
                 </div>
                 <p className="text-xs font-medium">Launch Campaign</p>
                 <p className="text-[10px] text-muted-foreground">Next milestone in 3 days</p>
@@ -634,7 +634,7 @@ export function PlannerShell() {
             <div className="mb-2 rounded-lg border p-3 text-xs" key={name}>
               <p className="flex justify-between gap-2 font-medium">
                 {name}
-                <Badge variant="outline">Meeting</Badge>
+                <Badge variant="primary-light">Meeting</Badge>
               </p>
               <p className="mt-2 text-muted-foreground">9:00 AM to 9:15 AM</p>
               <p className="mt-2 text-muted-foreground">Zoom · Room A</p>

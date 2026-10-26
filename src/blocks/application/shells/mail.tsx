@@ -263,7 +263,11 @@ export default function MailInbox() {
             <Tabs value={tab} onValueChange={setTab}>
               <TabsList variant="line" className="h-7 w-full justify-start gap-2">
                 {["All", "Unread", "Starred", "Files"].map((t) => (
-                  <TabsTrigger value={t} key={t} className="h-6 rounded-full px-2 text-[10px]">
+                  <TabsTrigger
+                    value={t}
+                    key={t}
+                    className="h-6 rounded-full px-2 text-[10px] data-[state=active]:bg-primary! data-[state=active]:text-primary-foreground! after:hidden"
+                  >
                     {t}
                     {t !== "All" && (
                       <span className="ml-1 text-[9px]">
@@ -291,7 +295,7 @@ export default function MailInbox() {
                   }}
                 >
                   <div className="flex w-2 shrink-0 items-start pt-3">
-                    {m.unread && <span className="size-1.5 rounded-full bg-foreground" />}
+                    {m.unread && <span className="size-1.5 rounded-full bg-primary" />}
                   </div>
                   <Face name={m.sender} index={i} />
                   <div className="min-w-0 flex-1">
@@ -321,7 +325,10 @@ export default function MailInbox() {
                     </div>
                   )}
                   {m.label && (
-                    <Badge variant="outline" className="h-4 rounded px-1 text-[9px] font-normal">
+                    <Badge
+                      variant={m.label === "Design" ? "primary-light" : "outline"}
+                      className="h-4 rounded px-1 text-[9px] font-normal"
+                    >
                       {m.label}
                     </Badge>
                   )}

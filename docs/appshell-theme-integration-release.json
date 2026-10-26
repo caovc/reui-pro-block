@@ -1,0 +1,81 @@
+{
+  "scope": "AppShell actual free navigation and public theme treatments",
+  "base": "303cc13c0a80a73a89327072f1e72a49b4a5cd61",
+  "frozenFiles": [
+    {
+      "path": "src/blocks/application/shells/audited.tsx",
+      "sha256": "6c678abd520bc941490c7515e8d91e29b7ad9e524cecf5f4bcc2b282eda76c1d"
+    },
+    {
+      "path": "src/blocks/application/shells/chrome.tsx",
+      "sha256": "c6062a39f18de04c1f2b7126d387afb2bbc2c0b9b31fd37e95af43641cd18aad"
+    },
+    {
+      "path": "src/blocks/application/shells/primitives.tsx",
+      "sha256": "7d3e1c55cdceb303bfce58dd42d1b36117494577c8c59f7ee6a3953386dfef29"
+    },
+    {
+      "path": "src/blocks/application/shells/sidebar-foundation.css",
+      "sha256": "39979b9df5e1c0789da3d3f328c58e1f96f3b430fafb3074b904f6b39f8fc1dc"
+    },
+    {
+      "path": "src/blocks/application/shells/mail.tsx",
+      "sha256": "fe13eebb12337caa90540c49ea6b2376687c2495a4020aa37169adbb53cd97d7"
+    },
+    {
+      "path": "src/blocks/application/shells/productivity.tsx",
+      "sha256": "400028f8607594fef108835684749dd4f7fdd9575b32cadc8e1f0ee258258251"
+    },
+    {
+      "path": "src/blocks/application/shells/inventory.tsx",
+      "sha256": "3cc51825dea7f2f12414ef1f075a9e7188f8b08b56a2271ad7ff0bc18f63e36b"
+    },
+    {
+      "path": "src/blocks/application/shells/workspaces.tsx",
+      "sha256": "0d7dd319caf15f9dfaa0c152e8ad18f4e8b6d2f69162472e7c4b7a2b810903d5"
+    },
+    {
+      "path": "tests/appshell-theme.spec.ts",
+      "sha256": "133834d888e64d027edc435057abc112c88efd630ffbf96ea5422bbd217c636e"
+    },
+    {
+      "path": "docs/appshell-theme-review.md",
+      "sha256": "b92b9c970cd354ac82979a4dbfcd4bd793bb684ab9f357876ff1e5bd67beff5f"
+    },
+    {
+      "path": "docs/appshell-sidebar-migration.md",
+      "sha256": "191017ad55a076fcf42ba7c94a879b7088297e4b0a565b83398bf18279a7c8d7"
+    }
+  ],
+  "independentAcceptance": {
+    "receipt": "/tmp/bricklane-appshell-theme-integration-receipt.json",
+    "base": "0fc5cb2849012ce9062e98023fc3fb0d0a20004a",
+    "production": "101/101 PASS; native theme/global/site/source",
+    "actualStarter": "371-file UI ZIP, all eight frozen runtime/style bytes and MIT exact; strict build plus desktop/mobile native navigation/focus",
+    "presetContract": "Actual separately downloaded CSS, appended byte-for-byte after starter CSS; dark root applied explicitly; automatic preset in ZIP NOT claimed"
+  },
+  "rootVerification": {
+    "strictBuild": "PASS /tmp/bricklane-appshell-theme-root-build.log",
+    "production": "15/15 final cumulative theme and source feedback cases; /tmp/bricklane-appshell-theme-root-303-tests.log",
+    "formatToolingLint": "/tmp/bricklane-appshell-theme-root-static.log",
+    "visual": "Root inspected real exported dark emerald phone task navigation/count/progress"
+  },
+  "reuse": [
+    "Inventory section navigation now actually uses free SidebarNavigation",
+    "Native Sidebar, Header/Content/Footer, Sheet, layout and controls retained"
+  ],
+  "customGap": "Reference primary/ring treatment is consumer CSS and domain selected-state composition, absent from free example theme presets. Fixed dark/glass and semantic colors retain reference behavior.",
+  "remaining": [
+    "Tabs geometry fix is a separate owned batch",
+    "Default ZIP does not automatically preserve live preset; separately downloaded Theme CSS verified",
+    "All nested workflows and all-browser pixel parity not certified"
+  ],
+  "ci": {
+    "lastVerifiedCommit": "368dd9f",
+    "run": 40262462305,
+    "fullBrowserCases": "1130/1130",
+    "build": "success",
+    "deploy": "success 2026-10-26 03:31:24 UTC",
+    "newMilestone": "Commit/push and its own full CI/Pages are separate pending checks"
+  }
+}
