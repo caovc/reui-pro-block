@@ -206,3 +206,9 @@ Seat stepper, plan comparison and per-seat billing now have distinct actual impl
 Independent acceptance passed20/20 production checks. Three actual212-file projects strict-built, and six desktop/phone flows and geometry comparisons passed. The latest cumulative strict build and20 targeted checks are recorded in the [integration evidence](pricing123-integration-release.json). This certifies the checked states and source contracts, not every visual state or whole-category fidelity. Pricing4/7/8 and newly measured visual details remain separate batches.
 
 GitHub run40264448297 on303cc13 passed1136/1136 browser cases, build and Pages deployment at2026-10-26 03:50:44 UTC. Thus Cohort Time and source-copy feedback have reached Pages. Theme9debafe and Comparison10de2f1 pending runs were superseded by5c6df66; the cumulative5c run is now in progress. Push is not deployment.
+
+## Grouping1–3 native DataGrid models
+
+Grouping1–3 now have distinct roadmap, revenue and cohort models composed on the actual native DataGrid. The shared adapter uses the real empty component and a narrow group-cell callback; application state and summaries remain original domain rules. Independent49/49 production cases and three actual248-file export/source checks passed. Current cumulative checks are recorded separately; further mobile/visual details remain open. See [integration evidence](grouping123-integration-release.json).
+
+Run40266050417 on5c6df66 later passed1165 and failed one old Checklist connect/manage case; Pages was skipped. Original trace/artifact12627475041 is retained. Root is diagnosing native Accordion animation/input readiness; unrelated local milestone passes do not erase that failure. Latest verified deployed version remains303cc13.

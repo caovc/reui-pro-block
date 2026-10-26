@@ -1,0 +1,28 @@
+{
+  "scope": "Grouping1\u20133 native DataGrid models",
+  "combinedBase": "5c6df66d78f54bff481816f578b856bcb3b243ac",
+  "frozenFiles": {
+    "src/blocks/data/grid-advanced-group-model.tsx": "c63b8fd9d6575a5c9e923e9e0397f2f050ea9e23b232d2f87b44eac30de33d22",
+    "src/blocks/data/grid-grouping.tsx": "e083e9d1854eb1b6b714101eccf43014220840e07b6b0577a3e8221df01328a4",
+    "src/blocks/data/grid-grouping-roadmap.tsx": "6131cac646b677b3d6eb8e6ce2ad1e5d13bf4ac19a358dac147e0a1e40eafcef",
+    "src/blocks/data/grid-grouping-revenue.tsx": "97ed2b8d23f3301fe6f4dfb4de77c35414295442347835f616a8514f8b824067",
+    "src/blocks/data/grid-grouping-cohorts.tsx": "d6847494a512548ede7dd1fc4307838f07d221d728cf915726705bc240f9f0da",
+    "tests/grid-grouping-round2.spec.ts": "dd0ae30d6719805435be45c1f02b94904263a1f940aa1ea162385c6a4088de15",
+    "docs/grid-grouping-round2-refinement.md": "032c2a8a44433f722dee9447d5fc8261bb26d40ec1d6c15f0d9893d1e1d931e0",
+    "src/lib/source-targets.ts": "ffc4fe19ae1627d9778c521a3ca54383da7602b77139745aeb33a6abbd881e35"
+  },
+  "independentAcceptance": "Independent49/49 production and3 actual248-file projects with frozen leaf/default/copy/file/ZIP consistency; candidate strict build passed.",
+  "actualFreeReuseAndCustomGap": "Native DataGrid owns grouping, expansion, filtering and empty-row anatomy. A renderGroup callback and actual empty slot replace duplicated rows; typed roadmap/revenue/cohort records and aggregation are original domain gaps.",
+  "remainingLimits": "Grouping4\u20137 unaffected by the shared adapter change in checked tests; mobile keyboard/tab and broad visual details continue in separate batches.",
+  "finalCumulativeAcceptance": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-cumulative-release-qa-yj7ljamp/manifest.json",
+  "finalCumulativeContract": "One clean5c archive plus explicitly frozen pending Pricing/Grouping/Lucent/Flow/Comparison payloads. Shared source hooks applied in recorded order. Strict build and56 new/source cases recorded in final combined receipt, no repeated unchanged ZIP builds.",
+  "publication": "Root serial per-milestone commit/push; own full CI and Pages separately checked.",
+  "knownCI": {
+    "run": 40266050417,
+    "result": "1165passed/1oldChecklisttestfailure;Pages skipped",
+    "artifact": 12627475041,
+    "log": "/tmp/bricklane-settings-ci-failure.log",
+    "diagnosis": "Root retained trace and localoriginalcasePASS; nativeAccordion content was still animating/clipped at pointerclick. Investigation/fix pending; not erased by unrelated milestone tests.",
+    "latestVerifiedPages": "303cc13 1136/1136"
+  }
+}

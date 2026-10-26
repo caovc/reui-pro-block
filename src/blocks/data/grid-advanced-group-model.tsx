@@ -19,6 +19,7 @@ import {
   DataGridTableBodyRow,
   DataGridTableBodyRowCell,
   DataGridTableRenderedRow,
+  DataGridTableEmpty,
   DataGridTableFootRowCell,
   renderDataGridTableHeadCellContent,
 } from "@/components/reui/data-grid/data-grid-table";
@@ -205,10 +206,16 @@ export function DomainGroupedGrid<T extends object>({
                               <ChevronRight
                                 className={cn("size-3", row.getIsExpanded() && "rotate-90")}
                               />
-                              {row.original.group.title}
-                              <span className="text-xs text-muted-foreground">
-                                {row.subRows.length}
-                              </span>
+                              {renderGroup ? (
+                                renderGroup(row.original.group)
+                              ) : (
+                                <>
+                                  {row.original.group.title}
+                                  <span className="text-xs text-muted-foreground">
+                                    {row.subRows.length}
+                                  </span>
+                                </>
+                              )}
                             </button>
                           ) : (
                             groupValue(row.original.group, cell.column.id)
@@ -253,6 +260,7 @@ export function DomainGroupedGrid<T extends object>({
                 </Fragment>
               ),
             )}
+            {!table.getRowModel().rows.length && <DataGridTableEmpty />}
             {footer}
           </DataGridTableBody>
         </DataGridTableBase>
