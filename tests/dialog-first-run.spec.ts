@@ -192,8 +192,26 @@ test("checklist searches apps and changes real local connection/manage states", 
   await page.goto(preview(4));
   await page.getByRole("button", { name: "Open launch checklist", exact: true }).click();
   await page.getByRole("button", { name: "Connected apps", exact: true }).click();
+  const sections = page.locator(".refined-checklist-sections");
+  await expect(page.getByRole("button", { name: "Connected apps", exact: true })).toHaveAttribute(
+    "aria-expanded",
+    "true",
+  );
+  // Native closing/opening panels move the dialog even when a child button
+  // briefly looks stable. Wait for those animations before locating an input.
+  await sections.evaluate(async (element) => {
+    await Promise.all(
+      element
+        .getAnimations({ subtree: true })
+        .map((animation) => animation.finished.catch(() => undefined)),
+    );
+  });
+  await expect(
+    sections.locator('[data-slot="accordion-content"][data-state="closed"]:visible'),
+  ).toHaveCount(0);
   await page.getByRole("textbox", { name: "Search apps", exact: true }).fill("calendar");
   await expect(page.getByRole("button", { name: "Manage Slack", exact: true })).toHaveCount(0);
+  await page.getByRole("button", { name: "Connect Google Calendar", exact: true }).hover();
   await page.getByRole("button", { name: "Connect Google Calendar", exact: true }).click();
   await page.getByRole("button", { name: "Manage Google Calendar", exact: true }).click();
   await expect(page.getByRole("alert")).toContainText("No OAuth permission has been granted");
