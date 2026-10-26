@@ -488,7 +488,14 @@ export function templateImplementationTargets(template: {
     tempo: ["ai-operations"],
     lucent: ["lucent-clusters", "lucent-hosts", "lucent-registry"],
     pulse: ["pulse-knowledge", "pulse-reports", "pulse-settings"],
-    cohort: ["cohort-people", "cohort-settings", "cohort-time-off", "cohort-timesheets"],
+    cohort: [
+      "cohort-people",
+      "cohort-person-detail",
+      "cohort-person-editor-fields",
+      "cohort-settings",
+      "cohort-time-off",
+      "cohort-timesheets",
+    ],
     roster: ["roster-approvals", "roster-import", "roster-directory", "roster-settings"],
     echo: ["echo-composer", "echo-projects"],
   };

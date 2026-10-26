@@ -1,5 +1,8 @@
 /* eslint-disable react/only-export-components */
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { CohortPersonDetail } from "./cohort-person-detail";
+import { PersonFieldLabel, PersonManagerPicker } from "./cohort-person-editor-fields";
+import { cohortProfileData, employeeIdsByInitialName } from "./cohort-person-profile-data";
 import { useFileUpload } from "@/hooks/use-file-upload";
 import {
   Sheet,
@@ -8,7 +11,7 @@ import {
   SheetTitle,
   SheetDescription,
 } from "@/components/ui/sheet";
-import { ChevronRight, Ellipsis, Filter, Plus } from "lucide-react";
+import { ChevronRight, Ellipsis, Filter, Plus, RotateCcw, Save, Upload, X } from "lucide-react";
 import { DomainRecordGrid, type ExpandedState } from "@/blocks/data/grid-advanced-model-grid";
 import {
   ExportRows,
@@ -39,6 +42,7 @@ import {
 
 export type CohortPerson = {
   id: string;
+  externalEmployeeId: string;
   manager: string;
   name: string;
   title: string;
@@ -51,6 +55,7 @@ export type CohortPerson = {
   notes: string;
   employment?: string;
   photo?: string;
+  photoRemoved?: boolean;
   children?: CohortPerson[];
 };
 const person = (
@@ -65,6 +70,7 @@ const person = (
   level?: string,
 ): CohortPerson => ({
   id,
+  externalEmployeeId: employeeIdsByInitialName[name],
   manager,
   name,
   title,
@@ -75,6 +81,7 @@ const person = (
   level,
   status: "Active",
   notes: "",
+  employment: cohortProfileData({ externalEmployeeId: employeeIdsByInitialName[name] }).employment,
 });
 const initialPeople: CohortPerson[] = [
   person(
@@ -225,6 +232,7 @@ function isReport(id: string, ancestor: string, people: CohortPerson[]): boolean
 }
 const blankPerson: CohortPerson = {
   id: "",
+  externalEmployeeId: "",
   manager: "1",
   name: "",
   title: "",
@@ -243,6 +251,7 @@ export function CohortPeople({
   organisation = "Cohort UK",
   locationOptions,
   employmentOptions,
+  onTimesheet,
 }: {
   model: CohortPeopleModel;
   create: boolean;
@@ -251,6 +260,7 @@ export function CohortPeople({
   organisation?: string;
   locationOptions?: string[];
   employmentOptions?: string[];
+  onTimesheet: () => void;
 }) {
   const { people, setPeople } = model;
   const [query, setQuery] = useState("");
@@ -261,15 +271,22 @@ export function CohortPeople({
   const [statusFilter, setStatusFilter] = useState("All statuses");
   const [selection, setSelection] = useState<string[]>([]);
   const [editing, setEditing] = useState<CohortPerson | null>(null);
+  const [viewingId, setViewingId] = useState<string | null>(null);
   const [draft, setDraft] = useState(blankPerson);
   const [remove, setRemove] = useState<CohortPerson | null>(null);
+  const uploadVersion = useRef(0);
+  const editorContent = useRef<HTMLDivElement>(null);
   const [uploadState, upload] = useFileUpload({
     accept: "image/*",
     maxSize: 5 * 1024 * 1024,
     onFilesAdded: ([file]) => {
       if (file?.file instanceof File) {
+        const version = ++uploadVersion.current;
         const reader = new FileReader();
-        reader.onload = () => setDraft((old) => ({ ...old, photo: String(reader.result) }));
+        reader.onload = () => {
+          if (version === uploadVersion.current)
+            setDraft((old) => ({ ...old, photo: String(reader.result), photoRemoved: false }));
+        };
         reader.readAsDataURL(file.file);
       }
     },
@@ -280,14 +297,19 @@ export function CohortPeople({
   const update = (id: string, values: Partial<CohortPerson>) =>
     setPeople((rows) => rows.map((p) => (p.id === id ? { ...p, ...values } : p)));
   function edit(p: CohortPerson) {
+    uploadVersion.current++;
+    upload.clearFiles();
     setDraft({ ...p, children: undefined });
     setEditing(p);
   }
   const close = () => {
+    uploadVersion.current++;
+    upload.clearFiles();
     onCreateChange(false);
     setEditing(null);
     setDraft(blankPerson);
   };
+  const viewing = people.find((person) => person.id === viewingId);
   return (
     <>
       <GridFrame
@@ -485,12 +507,10 @@ export function CohortPeople({
                   {p.photo ? (
                     <img className="size-6 rounded-full object-cover" alt="" src={p.photo} />
                   ) : (
-                    <TinyAvatar name={p.name} />
+                    <TinyAvatar name={p.name} photo={!p.photoRemoved} />
                   )}
                   <div data-person-level={p.level}>
-                    <button className="bt-person-name" onClick={() => edit(p)}>
-                      {p.name}
-                    </button>
+                    <span className="bt-person-name">{p.name}</span>
                     {p.level && (
                       <Tone tone={p.level === "Executive" ? "neutral" : "violet"}>{p.level}</Tone>
                     )}
@@ -594,9 +614,19 @@ export function CohortPeople({
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    <DropdownMenuItem onSelect={() => edit(p)}>View profile</DropdownMenuItem>
+                    <DropdownMenuItem onSelect={() => setViewingId(p.id)}>
+                      View profile
+                    </DropdownMenuItem>
                     <DropdownMenuItem onSelect={() => edit(p)}>Edit person</DropdownMenuItem>
-                    <DropdownMenuItem onSelect={() => edit(p)}>Change manager</DropdownMenuItem>
+                    <DropdownMenuItem
+                      onSelect={() =>
+                        toast.info("Change manager", {
+                          description: `Move ${p.name} and ${people.filter((candidate) => isReport(candidate.id, p.id, people)).length} reports.`,
+                        })
+                      }
+                    >
+                      Change manager
+                    </DropdownMenuItem>
                     <DropdownMenuItem
                       onSelect={() => {
                         update(p.id, { roles: p.roles + 1 });
@@ -625,11 +655,32 @@ export function CohortPeople({
           </span>
         </footer>
       </GridFrame>
+      {viewing && (
+        <CohortPersonDetail
+          key={viewing.id}
+          person={viewing}
+          people={people}
+          onClose={() => setViewingId(null)}
+          onSaveNote={(notes) => update(viewing.id, { notes })}
+          onTimesheet={() => {
+            setViewingId(null);
+            onTimesheet();
+          }}
+        />
+      )}
       <Sheet open={create || !!editing} onOpenChange={(open) => !open && close()}>
-        <SheetContent className="bt-floating-sheet bt-person-editor">
+        <SheetContent
+          ref={editorContent}
+          className="bt-floating-sheet bt-person-editor cohort-person-editor"
+          onEscapeKeyDown={(event) => {
+            // The free manager Combobox owns Escape while its local popup is open.
+            if (editorContent.current?.querySelector('[data-slot="combobox-content"]'))
+              event.preventDefault();
+          }}
+        >
           <SheetHeader>
-            <SheetTitle>{editing ? editing.name : "Add a person"}</SheetTitle>
-            <SheetDescription>
+            <SheetTitle>{editing ? `Edit ${editing.name}` : "Add a person"}</SheetTitle>
+            <SheetDescription className="sr-only">
               {editing
                 ? "Personal details and reporting line."
                 : "Add a person to your organisation."}
@@ -638,7 +689,20 @@ export function CohortPeople({
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              const values = create ? { ...draft, id: `person-${Date.now()}` } : draft;
+              const nextEmployeeNumber =
+                Math.max(
+                  0,
+                  ...people.map(
+                    (person) => Number(person.externalEmployeeId.replace(/^p-/, "")) || 0,
+                  ),
+                ) + 1;
+              const values = create
+                ? {
+                    ...draft,
+                    id: `person-${crypto.randomUUID()}`,
+                    externalEmployeeId: `p-${String(nextEmployeeNumber).padStart(3, "0")}`,
+                  }
+                : draft;
               if (create) setPeople((rows) => [...rows, values]);
               else update(values.id, values);
               close();
@@ -652,14 +716,28 @@ export function CohortPeople({
                   {draft.photo ? (
                     <img src={draft.photo} alt="Person" />
                   ) : (
-                    <TinyAvatar name={draft.name || "New person"} />
+                    <TinyAvatar name={draft.name || "New person"} photo={!draft.photoRemoved} />
                   )}
                   <input
                     className="hidden"
                     {...upload.getInputProps({ "aria-label": "Upload person photo" })}
                   />
                   <Button type="button" variant="outline" size="sm" onClick={upload.openFileDialog}>
-                    Upload
+                    <Upload size={14} />
+                    Change
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      uploadVersion.current++;
+                      upload.clearFiles();
+                      setDraft((old) => ({ ...old, photo: "", photoRemoved: true }));
+                    }}
+                  >
+                    <X size={14} />
+                    Remove
                   </Button>
                 </div>
                 {uploadState.errors.map((error) => (
@@ -673,7 +751,14 @@ export function CohortPeople({
                 ["Job title", "title"],
               ].map(([label, key]) => (
                 <label key={key}>
-                  {label}
+                  <PersonFieldLabel
+                    label={label === "Full name" ? "Full Name" : "Job Title"}
+                    help={
+                      key === "title"
+                        ? "The job title shown in the directory and employee record."
+                        : undefined
+                    }
+                  />
                   <Input
                     required
                     aria-label={label}
@@ -683,7 +768,23 @@ export function CohortPeople({
                 </label>
               ))}
               <label>
-                Department
+                <PersonFieldLabel
+                  label="Manager"
+                  help="The person this employee reports to in the organisation chart."
+                />
+                <PersonManagerPicker
+                  value={draft.manager}
+                  people={people.filter(
+                    (p) => p.id !== draft.id && !isReport(p.id, draft.id, people),
+                  )}
+                  onChange={(manager) => setDraft({ ...draft, manager })}
+                />
+              </label>
+              <label>
+                <PersonFieldLabel
+                  label="Department"
+                  help="The department this person belongs to."
+                />
                 <Choice
                   label="Person department"
                   value={draft.department}
@@ -692,26 +793,7 @@ export function CohortPeople({
                 />
               </label>
               <label>
-                Reports to
-                <Choice
-                  label="Reports to"
-                  value={
-                    people.find((p) => p.id === draft.manager)?.name ||
-                    "Nobody (top of the org chart)"
-                  }
-                  onChange={(name) =>
-                    setDraft({ ...draft, manager: people.find((p) => p.name === name)?.id || "" })
-                  }
-                  options={[
-                    "Nobody (top of the org chart)",
-                    ...people
-                      .filter((p) => p.id !== draft.id && !isReport(p.id, draft.id, people))
-                      .map((p) => p.name),
-                  ]}
-                />
-              </label>
-              <label>
-                Location
+                <PersonFieldLabel label="Location" />
                 <Choice
                   label="Person location"
                   value={draft.location}
@@ -720,7 +802,10 @@ export function CohortPeople({
                 />
               </label>
               <label>
-                Employment Type
+                <PersonFieldLabel
+                  label="Employment Type"
+                  help="The working arrangement for this employee’s contract."
+                />
                 <Choice
                   label="Employment Type"
                   value={draft.employment || "Full-time"}
@@ -729,7 +814,7 @@ export function CohortPeople({
                 />
               </label>
               <label>
-                Start date
+                <PersonFieldLabel label="Start Date" />
                 <Input
                   aria-label="Start date"
                   type="date"
@@ -738,28 +823,22 @@ export function CohortPeople({
                   onChange={(e) => setDraft({ ...draft, start: e.target.value })}
                 />
               </label>
-              <label className="bt-person-notes">
-                Notes
-                <textarea
-                  aria-label="Person notes"
-                  value={draft.notes}
-                  onChange={(e) => setDraft({ ...draft, notes: e.target.value })}
-                />
-              </label>
             </div>
             <div className="bt-dialog-actions">
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => {
+                  uploadVersion.current++;
                   setDraft(editing ? { ...editing, children: undefined } : blankPerson);
                   upload.clearFiles();
                 }}
               >
+                <RotateCcw size={14} />
                 Reset
               </Button>
               <Button type="submit">
-                <Plus size={14} />
+                {create ? <Plus size={14} /> : <Save size={14} />}
                 {create ? "Add person" : "Save changes"}
               </Button>
             </div>

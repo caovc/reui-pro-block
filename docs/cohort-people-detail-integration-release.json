@@ -1,0 +1,33 @@
+{
+  "scope": "Cohort people detail and native manager editor",
+  "base": "aa00ab9dc49c8e8c6f3af1d13b2f21c91c971f23",
+  "frozenFiles": {
+    "src/templates/business/cohort-person-detail.tsx": "f746bff8664b9d7a433f0ccee6fcc7069ada4729160d2cf27b19d0c8d038a7c2",
+    "src/templates/business/cohort-person-detail.css": "92424293aea25c599cd04ab4ff6535f37de2b571f4e22879ffb1dde8b0b0ca18",
+    "src/templates/business/cohort-person-profile-data.ts": "36be7ef4046bd5b763e5b8cd13cca6aa79b297b57106cd7c7e84e2b56011407e",
+    "src/templates/business/cohort-person-editor-fields.tsx": "3db312b2f9fb8528597f5b6857a8833254f74fb795bfec07cc4781830cd3c077",
+    "src/templates/business/cohort-people.tsx": "27d28b7e89da05ee35d6856a9de8f1c197107541630c0e95884962cb1105d01d",
+    "src/templates/business/cohort.tsx": "2d425a0d7407baeec8a3b557f50d252a8c87ea2d80899ddd749246fa33392d9a",
+    "tests/templates-business-round3.spec.ts": "3ef56300535837349a6e17fa308f823a5ec53aa9339a85d17d7736fa11ce36b5",
+    "tests/templates-cohort-people-detail.spec.ts": "b980d857587b585073da921f9b10dfb95f44ee5c19f6383377a5eb32f299f401",
+    "docs/templates-cohort-people-detail-fidelity.md": "98661e2bb1cec88992da44f964fd17430aa5f0b99dd0367b0e39256eb21941ff",
+    "src/lib/source-targets.ts": "413ec6c6b3eff558b654e2a57f236b2bf9a819b77698a8636b65887ec2ba4048"
+  },
+  "reuse": "Actual free Frame/Item/Timeline/Sheet and official c-combobox-23 composition; original HR notes, separate person identities and acyclic manager model",
+  "verification": {
+    "independent": "12/12 production final-v2; original11pass/1readiness failure retained",
+    "source": "6 fresh source/default/selection/clipboard checks; actual detail and editor source targets",
+    "actualProject": "168files;167 owner strict-built common files byte-identical, only original assets README added",
+    "ownerStrict": "Main and actual167project strict plus6exported states PASS",
+    "root": "Latest clean archive+10frozenfiles; format/tooling/scopedlint, no duplicate cold build"
+  },
+  "testCorrection": "Require visible search/listbox before excluded-option and Escape assertions; verify editor remains open and popup closed; all original hierarchy/edit effects retained",
+  "limitations": [
+    "Shared actual free Sidebar/layout migration separate",
+    "Original glyph/2\u20133px/artwork gaps retained in ledger",
+    "Template source viewer single-file download control remains absent",
+    "Local demo state is not backend persistence"
+  ],
+  "receipt": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-cohort-people-a-acceptance-ucd9qb4s/release-receipt.json",
+  "publication": "Root serial commit/push; own cumulativeCI/Pages pending"
+}

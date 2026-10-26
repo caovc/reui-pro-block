@@ -298,6 +298,7 @@ export default function Cohort() {
               departmentOptions={settingsState.saved.departments.rows?.map((r) => r.name)}
               locationOptions={settingsState.saved.locations.rows?.map((r) => r.name)}
               employmentOptions={settingsState.saved.employment.rows?.map((r) => r.name)}
+              onTimesheet={() => setActive("Timesheets")}
             />
           ) : active === "Approvals" ? (
             <CohortApprovals model={approvalsState} />

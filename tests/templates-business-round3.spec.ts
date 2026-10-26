@@ -58,22 +58,28 @@ test("Cohort person creation, manager reassignment and removal retain valid repo
   const sheet = page.getByRole("dialog", { name: "Add a person", exact: true });
   await sheet.getByLabel("Full name", { exact: true }).fill("Marina Cruz");
   await sheet.getByLabel("Job title", { exact: true }).fill("Staff Designer");
-  await sheet.getByRole("combobox", { name: "Reports to", exact: true }).click();
+  await sheet.getByRole("combobox", { name: "Manager", exact: true }).click();
   await page.getByRole("option", { name: "Hannah Weber", exact: true }).click();
-  await sheet
-    .getByRole("textbox", { name: "Person notes", exact: true })
-    .fill("Accessibility programme owner");
   await sheet.getByRole("button", { name: "Add person", exact: true }).click();
   await expect(sheet).toBeHidden();
   await page.getByRole("button", { name: "Dashboard", exact: true }).first().click();
   await directory(page);
   await page.getByRole("button", { name: "Expand Hannah Weber", exact: true }).click();
-  await page.getByRole("button", { name: "Marina Cruz", exact: true }).click();
-  const editor = page.getByRole("dialog", { name: "Marina Cruz", exact: true });
-  await expect(editor.getByLabel("Person notes", { exact: true })).toHaveValue(
-    "Accessibility programme owner",
-  );
-  await editor.getByRole("combobox", { name: "Reports to", exact: true }).click();
+  await page.getByRole("button", { name: "Actions for Marina Cruz", exact: true }).click();
+  await page.getByRole("menuitem", { name: "View profile", exact: true }).click();
+  const profile = page.getByRole("dialog", { name: "Marina Cruz", exact: true });
+  await profile
+    .getByRole("textbox", { name: "Internal note for Marina Cruz", exact: true })
+    .fill("Accessibility programme owner");
+  await profile.getByRole("button", { name: "Save note", exact: true }).click();
+  await profile
+    .locator(".cohort-profile-footer")
+    .getByRole("button", { name: "Close", exact: true })
+    .click();
+  await page.getByRole("button", { name: "Actions for Marina Cruz", exact: true }).click();
+  await page.getByRole("menuitem", { name: "Edit person", exact: true }).click();
+  const editor = page.getByRole("dialog", { name: "Edit Marina Cruz", exact: true });
+  await editor.getByRole("combobox", { name: "Manager", exact: true }).click();
   await page.getByRole("option", { name: "Amara Okafor", exact: true }).click();
   await editor.getByRole("button", { name: "Save changes", exact: true }).click();
   await page.getByRole("button", { name: "Set tree depth All", exact: true }).click();

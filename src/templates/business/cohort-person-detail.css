@@ -1,0 +1,400 @@
+.bt-floating-sheet.cohort-person-detail[data-slot="sheet-content"],
+.bt-floating-sheet.cohort-person-editor[data-slot="sheet-content"] {
+  top: 16px;
+  right: 16px;
+  bottom: 16px;
+  height: calc(100dvh - 32px);
+  max-width: calc(100vw - 32px);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  color: var(--foreground);
+}
+.bt-floating-sheet.cohort-person-detail[data-slot="sheet-content"] {
+  width: 480px;
+  border-left: 1px solid var(--border);
+}
+.bt-floating-sheet.cohort-person-editor[data-slot="sheet-content"] {
+  width: 512px;
+  border-left: 1px solid var(--border);
+}
+.cohort-person-detail[data-slot="sheet-content"] [data-slot="sheet-header"] {
+  padding: 18px 20px 14px;
+  gap: 0;
+  flex-shrink: 0;
+}
+.cohort-profile-id {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  color: var(--muted-foreground);
+  font-family: monospace;
+  font-size: 12px;
+  line-height: 20px;
+}
+.cohort-profile-title-row,
+.cohort-profile-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.cohort-profile-title-row {
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.cohort-profile-title {
+  flex-wrap: wrap;
+  row-gap: 2px;
+  font-size: 14px;
+  color: var(--muted-foreground);
+}
+.cohort-person-detail[data-slot="sheet-content"] [data-slot="sheet-title"] {
+  font-size: 18px;
+  line-height: 28px;
+  color: var(--foreground);
+}
+.cohort-profile-title > span:first-of-type,
+.cohort-profile-location > span,
+.cohort-profile-person-since > span,
+.cohort-profile-contract p > span,
+.cohort-profile-leave-caption > span > span {
+  color: var(--muted-foreground);
+  opacity: 0.5;
+}
+.cohort-person-detail .cohort-profile-location {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 0;
+  font-size: 12px;
+  line-height: 18px;
+}
+.cohort-profile-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.cohort-profile-scroll > .cohort-profile-sections {
+  background: var(--background);
+  border: 0;
+  border-radius: 0;
+}
+.cohort-profile-sections > .cohort-profile-section[data-slot="frame-panel"] {
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  margin: 0;
+  padding: 16px 20px;
+  box-shadow: none;
+  background: var(--background);
+}
+.cohort-profile-section-title {
+  margin: 0 0 12px;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+.cohort-person-detail .cohort-profile-manager,
+.cohort-person-detail .cohort-profile-leave {
+  border: 0;
+  padding: 0;
+  gap: 12px;
+  align-items: flex-start;
+}
+.cohort-profile-manager [data-slot="item-media"] {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.cohort-profile-manager [data-slot="item-media"] > span,
+.cohort-profile-manager [data-slot="item-media"] > img {
+  width: 36px;
+  height: 36px;
+}
+.cohort-person-detail [data-slot="item-content"] {
+  gap: 2px;
+}
+.cohort-person-detail [data-slot="item-title"] {
+  line-height: 20px;
+}
+.cohort-person-detail [data-slot="item-description"] {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  font-size: 12px;
+  line-height: 18px;
+}
+.cohort-person-detail [data-slot="item-actions"] {
+  padding-top: 2px;
+}
+.cohort-profile-contract {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 12px;
+  font-size: 14px;
+  line-height: 20px;
+}
+.cohort-profile-contract strong {
+  font-weight: 500;
+}
+.cohort-profile-contract p {
+  line-height: 18px;
+  display: flex;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.cohort-profile-person-since,
+.cohort-profile-activity-author {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 20px;
+}
+.cohort-profile-person-since {
+  margin-top: 16px;
+}
+.cohort-profile-person-since > span[aria-label],
+.cohort-profile-person-since > img,
+.cohort-profile-activity-author > span[aria-label],
+.cohort-profile-activity-author > img {
+  width: 20px;
+  height: 20px;
+  opacity: 1;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.cohort-profile-person-since strong {
+  font-weight: 500;
+  color: var(--foreground);
+}
+.cohort-profile-leave [data-slot="item-media"] {
+  padding-top: 3px;
+  color: var(--muted-foreground);
+}
+.cohort-profile-leave-meter {
+  margin-top: 18px;
+  height: 4px;
+  background: repeating-linear-gradient(135deg, var(--border) 0 1px, transparent 1px 4px);
+}
+.cohort-profile-leave-meter [data-slot="progress-indicator"] {
+  background: #f6b800;
+}
+.cohort-profile-leave-caption {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--muted-foreground);
+  line-height: 18px;
+  margin-top: 10px;
+}
+.cohort-profile-leave-caption > span:first-child {
+  display: flex;
+  gap: 5px;
+}
+.cohort-profile-details {
+  display: grid;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 20px;
+}
+.cohort-profile-details > div {
+  display: grid;
+  grid-template-columns: 124px minmax(0, 1fr);
+  gap: 12px;
+}
+.cohort-profile-details dt {
+  color: var(--muted-foreground);
+}
+.cohort-profile-details dd {
+  overflow-wrap: anywhere;
+}
+.cohort-profile-code {
+  font-family: monospace;
+  font-size: 12px;
+}
+.cohort-profile-note {
+  width: 100%;
+  padding: 8px 12px;
+  min-height: 80px;
+  font-size: 14px;
+  border-radius: 12px;
+}
+.cohort-profile-note-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.cohort-profile-note-actions button {
+  height: 28px;
+  font-size: 12px;
+}
+.cohort-profile-activity [data-slot="timeline-item"] {
+  margin-left: 32px;
+  padding-bottom: 28px;
+}
+.cohort-profile-activity [data-slot="timeline-item"]:last-child {
+  padding-bottom: 0;
+}
+.cohort-profile-activity [data-slot="timeline-indicator"] {
+  width: 20px;
+  height: 20px;
+  top: 0;
+  border-width: 1px;
+  color: var(--muted-foreground);
+  --icon-tile-size: 20px;
+  --icon-tile-icon-size: 12px;
+}
+.cohort-profile-activity [data-kind="leave"] {
+  color: #e4a600;
+}
+.cohort-profile-activity [data-kind="joined"] {
+  color: #9d62ff;
+}
+.cohort-profile-activity [data-slot="timeline-separator"] {
+  background: var(--border);
+}
+.cohort-profile-activity [data-slot="timeline-content"] {
+  font-size: 14px;
+  line-height: 20px;
+}
+.cohort-profile-activity strong {
+  color: var(--foreground);
+  font-weight: 500;
+}
+.cohort-profile-activity p {
+  margin-top: 3px;
+}
+.cohort-profile-activity-author {
+  margin-top: 8px;
+}
+.cohort-person-detail[data-slot="sheet-content"] .cohort-profile-footer {
+  flex-direction: row;
+  justify-content: flex-end;
+  flex-shrink: 0;
+  padding: 12px 20px;
+  gap: 8px;
+  border-top: 1px solid var(--border);
+  background: var(--background);
+}
+.cohort-profile-footer button {
+  height: 28px;
+  font-size: 12px;
+}
+.cohort-person-editor[data-slot="sheet-content"] [data-slot="sheet-header"] {
+  padding: 13.5px 16px;
+}
+.cohort-person-editor[data-slot="sheet-content"] [data-slot="sheet-title"] {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+.cohort-person-editor[data-slot="sheet-content"] .bt-person-form {
+  flex: 1;
+  gap: 20px;
+  padding: 20px 16px;
+}
+.cohort-person-editor[data-slot="sheet-content"] .bt-person-form > label {
+  grid-template-columns: 194.5px minmax(0, 1fr);
+  gap: 12px;
+  font-size: 14px;
+  font-weight: 500;
+}
+.cohort-person-editor[data-slot="sheet-content"] .bt-profile-photo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.cohort-person-editor .bt-profile-photo > span,
+.cohort-person-editor .bt-profile-photo > img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.cohort-person-editor .bt-profile-photo button {
+  height: 28px;
+  font-size: 12px;
+}
+.cohort-person-editor .bt-profile-photo button > svg {
+  width: 14px;
+  height: 14px;
+}
+.cohort-person-editor[data-slot="sheet-content"] .bt-dialog-actions {
+  padding: 12px 16px;
+  min-height: 56px;
+  flex-shrink: 0;
+}
+.cohort-person-editor[data-slot="sheet-content"] input,
+.cohort-person-editor[data-slot="sheet-content"] [role="combobox"] {
+  height: 32px;
+  font-size: 14px;
+  font-weight: 400;
+}
+@media (max-width: 767px) {
+  .cohort-person-editor[data-slot="sheet-content"] .bt-person-form {
+    gap: 20px;
+  }
+  .cohort-person-editor[data-slot="sheet-content"] .bt-person-form > label {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+  .cohort-profile-details > div {
+    grid-template-columns: 124px minmax(0, 1fr);
+  }
+}
+
+.cohort-person-field-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 19.25px;
+  line-height: 19.25px;
+}
+.cohort-person-field-label button {
+  width: 24px;
+  height: 24px;
+  color: var(--muted-foreground);
+}
+.cohort-person-field-label button svg {
+  width: 12px;
+  height: 12px;
+}
+.cohort-manager-option {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 400;
+}
+.cohort-manager-option > span:last-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cohort-manager-avatar,
+.cohort-manager-avatar > img,
+.cohort-manager-avatar > span {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+}
