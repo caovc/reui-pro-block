@@ -1,0 +1,31 @@
+# Drive inline Settings and routing — private static integration
+
+This assembles the prior immutable M1 Settings, native application layout and profile menu, the parent native hash adapter, the Pricing/workspace switcher static batch, and the two later narrowly reviewed consumer corrections. It has not been installed, typechecked, bundled or requested from any browser. The running 6350 Flux candidate and the independent three-template 669 release candidate are untouched.
+
+## Composition and state
+
+The actual ReUI SidebarProvider/ReuiSidebar/AppShellInset remain the single application foundation. The parent preserves existing mounted files, upload, selection, sharing, search and dialog models. Settings/Pricing replace the content area; FilePanels/Share/Folder Sheets derive visibility from the current route. The prior generic Settings saved form and unrelated two-plan storage modal have been removed. Profile, Workspace, Team/member and Billing are actual inline pages reusing the existing Pro SettingsRow/Fields/Choice and real free Frame, Field, Item, DataGrid and upload components. New Pricing and workspace-menu consumers use real Frame/Panel/Badge and native Dropdown/Dialog/Field; current Pro pricing factories have fixed four-plan or incompatible schemas and the existing workspace switcher lacks the measured header/plan slots, so only the three-plan schema and measured consumer layout are custom. BrandGlyph and the local SVG are original Bricklane artwork.
+
+The hash adapter preserves both preview namespaces, standalone routes, member slugs and exact existing query bytes; actual pure route tests previously passed seven cases. Browser navigation, Back/Forward, native links and the new React hook are still untested. Profile/workspace saved text mount at the parent; page-local uploaded media follows the observed unmount/Cancel lifecycle. Menu theme selection uses the existing global theme store, not a local fake theme. An existing preset-query synchronization edge still needs an actual browser check.
+
+The external Header audit proved Workspace navigation uses settings/workspace and highlights Workspace, while Profile highlights Settings. Sign Out is a demo route to login and native Back returns to Profile without an auth mutation; the parent therefore does not invent a persistent signed-out guard. Initial Filebox still shows its existing login sample until local Sign In.
+
+## Plans, capacity and workspace selection
+
+The original Pricing/workspace static batch is superseded only in its state-precedence proposal. A fresh 13-step public-demo sequence with 81 read requests and zero non-read attempts/errors proved: Save16 changes Free3 to Free16 and 12-of16, including SPA return; SwitchTeam changes capacity to10 and clears the three seat checkboxes; choosing Northwind or Personal afterward leaves Billing on Team10. Workspace selection is not a billing plan switch.
+
+The local model therefore holds a global plan independently of selected workspace; the active workspace's badge changes only when an actual plan change occurs. The Billing consumer uses saved seatSelection when present and otherwise global plan seats. Parent onPlanChange first checks same-plan no-op, then changes plan and calls the model's new silent resetBillingCapacity(), which clears only the saved seat selection and preserves all other saved fields. It does not misuse Save or emit a second save toast. The earlier test draft that automatically changed Pricing to Team after selecting Northwind has been replaced with the observed Billing sequence. Pricing after selecting Personal was not separately reopened in the reference, and intentionally edited other Billing fields across a plan switch were not observed; those remain explicit gaps.
+
+## Actual free PhoneInput correction
+
+The official free PhoneInput code is reused. Static API review found its BaseUI Combobox registry used CountryEntry objects while value and ComboboxItem used country-code strings. The local adaptation projects items to country codes, keeps the existing manual filtering with filter=null, supplies itemToStringLabel and uses null for no selection. This preserves the actual free implementation and MIT notice. Installed helper evidence shows the mismatched registry cannot find US while the projected registry can; it is not browser or typecheck evidence.
+
+The missing direct dependency remains react-phone-number-input@3.4.18. It must be installed normally in a Root-approved window, with the resolved transitive flag license recorded before distribution. The local family assets license note preserves the captured ReUI/phone MIT notices and explicitly marks the pending transitive audit. No vendored official paid image or extracted vendor SVG is included.
+
+## Validation and remaining work
+
+Scoped formatting/lint and syntax/import parsing are static gates only. Draft main cases remain unexecuted:24 Settings,8 Pricing/Switcher and2 Phone. The separate seven pure route tests are prior real evidence and unchanged. The draft Sidebar selectors were corrected to its actual Open application navigation aria-label without reducing cases or assertions. No harness replaces actual main app routes.
+
+Important remaining Header gap: the reference Help and Notifications are floating Sheets,416px desktop/358px phone, with8 guide links and4 unread entries. This static assembly deliberately retains the existing Help modal/Notifications toast and does not claim they match; their frozen external audit and actual component mapping are separate. Guide destinations, notification mutations and downloads were not exercised.
+
+Required before release: the Header Sheet consumer work or an explicitly separate scoped milestone; normal phone install/lock/transitive license; actual-main34 tests plus selected existing Drive defaults/Back/query/focus flows; measured same-state screenshots and real Phone country typeahead/search/controlled number; latest shared baseline strict production; actual Source view/copy/single-file/project ZIP equality and font/MIT/local-SVG closure; exported-app original strict build and real standalone routes. Release Root alone coordinates shared edits, normal-hook commit/push and confirmed preview deployment. No runtime-ready or deployment claim is made here.

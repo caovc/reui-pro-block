@@ -1,0 +1,46 @@
+name: Validate Drive Pricing Linux layout
+on:
+  push:
+    branches: [codex/drive-linux-pricing-validation]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Use Ubuntu HTTPS package mirrors
+        run: |
+          if [ -f /etc/apt/apt-mirrors.txt ]; then
+            printf '%s\tpriority:%s\n' \
+              'https://archive.ubuntu.com/ubuntu/' 1 \
+              'https://security.ubuntu.com/ubuntu/' 2 | \
+              sudo tee /etc/apt/apt-mirrors.txt
+          fi
+      - run: npx playwright install --with-deps chromium
+      - name: Validate original Pricing geometry cases once
+        run: |
+          mkdir -p /tmp/bricklane-drive-linux-pricing
+          npx playwright test tests/drive-pricing-switcher-main.spec.ts \
+            --grep 'main Pricing' --list
+          npx playwright test tests/drive-pricing-switcher-main.spec.ts \
+            --grep 'main Pricing' --workers=1 --retries=0 --reporter=list,json
+        env:
+          PLAYWRIGHT_JSON_OUTPUT_NAME: /tmp/bricklane-drive-linux-pricing/report.json
+      - name: Upload original case results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: drive-linux-pricing-${{ github.run_id }}
+          path: |
+            /tmp/bricklane-drive-linux-pricing/
+            /tmp/reui-pro-block-playwright/
+          if-no-files-found: warn
+          retention-days: 7

@@ -15,10 +15,15 @@ import { Mark, Avatar } from "./shared";
 import "@/blocks/reference.css";
 import "./drive-native-layout.css";
 
+export type DriveApplication = "Drive" | "Workspace" | "Pricing" | "Settings";
+
 type DriveLayoutProps = {
   children: ReactNode;
   onNavigate: () => void;
   onAction: (action: string) => void;
+  activeApplication?: DriveApplication;
+  profileName?: string;
+  profileMenu?: ReactNode;
 };
 
 export function DriveApplicationTrigger() {
@@ -30,7 +35,13 @@ export function DriveApplicationTrigger() {
   );
 }
 
-function DriveRail({ onNavigate, onAction }: Omit<DriveLayoutProps, "children">) {
+function DriveRail({
+  onNavigate,
+  onAction,
+  activeApplication = "Drive",
+  profileName = "Alex Rivera",
+  profileMenu,
+}: Omit<DriveLayoutProps, "children">) {
   const { isMobile, setOpenMobile } = useSidebar();
   const navigate = (action: string) => {
     if (action === "Drive") onNavigate();
@@ -59,29 +70,33 @@ function DriveRail({ onNavigate, onAction }: Omit<DriveLayoutProps, "children">)
       footer={
         <SidebarMenu>
           <SidebarMenuItem className="flex justify-center">
-            <Button
-              size="icon-sm"
-              variant="ghost"
-              className="ct-drive-profile-trigger"
-              aria-label="Open profile for Alex Rivera"
-              onClick={() => navigate("Account settings")}
-            >
-              <Avatar name="Alex Rivera" />
-            </Button>
+            {profileMenu !== undefined ? (
+              profileMenu
+            ) : (
+              <Button
+                size="icon-sm"
+                variant="ghost"
+                className="ct-drive-profile-trigger"
+                aria-label={`Open profile for ${profileName}`}
+                onClick={() => navigate("Account settings")}
+              >
+                <Avatar name="Alex Rivera" />
+              </Button>
+            )}
           </SidebarMenuItem>
         </SidebarMenu>
       }
     >
       <SidebarMenu className="ct-drive-native-applications">
         {[
-          { label: "Drive", icon: HardDrive },
-          { label: "Workspace settings", icon: Building2 },
-          { label: "Get More Storage", icon: CreditCard },
-          { label: "Account settings", icon: Settings },
-        ].map(({ label, icon: Icon }) => (
+          { label: "Drive", action: "Drive", icon: HardDrive },
+          { label: "Workspace", action: "Workspace settings", icon: Building2 },
+          { label: "Pricing", action: "Get More Storage", icon: CreditCard },
+          { label: "Settings", action: "Account settings", icon: Settings },
+        ].map(({ label, action, icon: Icon }) => (
           <SidebarMenuItem key={label}>
-            <SidebarRailButton label={label} active={label === "Drive"}>
-              <button type="button" aria-label={label} onClick={() => navigate(label)}>
+            <SidebarRailButton label={label} active={label === activeApplication}>
+              <button type="button" aria-label={label} onClick={() => navigate(action)}>
                 <Icon />
               </button>
             </SidebarRailButton>
@@ -92,7 +107,14 @@ function DriveRail({ onNavigate, onAction }: Omit<DriveLayoutProps, "children">)
   );
 }
 
-export function DriveLayout({ children, onNavigate, onAction }: DriveLayoutProps) {
+export function DriveLayout({
+  children,
+  onNavigate,
+  onAction,
+  activeApplication = "Drive",
+  profileName = "Alex Rivera",
+  profileMenu,
+}: DriveLayoutProps) {
   return (
     <TooltipProvider>
       <SidebarProvider
@@ -101,7 +123,13 @@ export function DriveLayout({ children, onNavigate, onAction }: DriveLayoutProps
         className="ct-app ct-drive ct-drive-native-root"
         style={{ "--sidebar-width-icon": "63px" } as CSSProperties}
       >
-        <DriveRail onNavigate={onNavigate} onAction={onAction} />
+        <DriveRail
+          onNavigate={onNavigate}
+          onAction={onAction}
+          activeApplication={activeApplication}
+          profileName={profileName}
+          profileMenu={profileMenu}
+        />
         <AppShellInset className="ct-drive-window">{children}</AppShellInset>
       </SidebarProvider>
     </TooltipProvider>
