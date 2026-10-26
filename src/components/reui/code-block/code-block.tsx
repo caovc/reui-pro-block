@@ -435,6 +435,7 @@ function CodeBlockTokens({ tokens }: { tokens: CodeBlockToken[] }) {
 
 type CodeBlockLineRowProps = {
   line: CodeBlockLine;
+  lineEnding?: string;
   selectable: boolean;
   selected: boolean;
   focusMode: boolean;
@@ -458,6 +459,7 @@ type CodeBlockLineRowProps = {
  */
 const CodeBlockLineRow = memo(function CodeBlockLineRow({
   line,
+  lineEnding,
   selectable,
   selected,
   focusMode,
@@ -622,7 +624,7 @@ const CodeBlockLineRow = memo(function CodeBlockLineRow({
             the browser emitting a newline between block-level rows, and a row
             with no text at all contributes neither text nor separator, so a
             blank line silently vanishes from the pasted source. */}
-        {line.tokens.length === 0 ? <br /> : null}
+        {line.tokens.length === 0 && !lineEnding ? <br /> : null}
         <CodeBlockTokens tokens={line.tokens} />
         {folded && hiddenCount > 0 ? (
           /* `select-none` is doing real work: a manual drag-select over a
@@ -657,6 +659,7 @@ const CodeBlockLineRow = memo(function CodeBlockLineRow({
           />
         ) : null}
       </span>
+      {lineEnding}
     </span>
   );
 });
@@ -1147,6 +1150,7 @@ function CodeBlock({
   const hasContent = containsElementType(children, CodeBlockContent);
 
   const surfaceProps: CodeBlockSurfaceProps = {
+    source: deferredSource,
     lines: renderedLines,
     gutterMax: lines[lines.length - 1]?.number ?? startLine,
     foldable,
@@ -1211,7 +1215,17 @@ function CodeBlock({
  * height cap no longer applies). Omitted, the root renders the same surface
  * itself, exactly as before.
  */
-function CodeBlockContent({ className }: { className?: string }) {
+function CodeBlockContent({
+  className,
+  codeClassName,
+  preserveLineBreaks = false,
+}: {
+  className?: string;
+  /** Class for the actual code element, excluding header and action labels. */
+  codeClassName?: string;
+  /** Restore original LF, CRLF and CR text nodes from the block's code prop. */
+  preserveLineBreaks?: boolean;
+}) {
   const surface = useContext(CodeBlockSurfacePropsContext);
   if (!surface) {
     throw new Error("CodeBlockContent must be used within a CodeBlock");
@@ -1233,7 +1247,15 @@ function CodeBlockContent({ className }: { className?: string }) {
     }
   }, [surface.builtInSurfaceRendered]);
 
-  return <CodeBlockSurface {...surface} scroll={false} className={className} />;
+  return (
+    <CodeBlockSurface
+      {...surface}
+      scroll={false}
+      className={className}
+      codeClassName={codeClassName}
+      preserveLineBreaks={preserveLineBreaks}
+    />
+  );
 }
 
 /**
@@ -1256,6 +1278,7 @@ function containsElementType(node: ReactNode, type: unknown): boolean {
 /* -------------------------------------------------------------------------- */
 
 type CodeBlockSurfaceProps = {
+  source: string;
   lines: CodeBlockLine[];
   wrap: boolean;
   startLine: number;
@@ -1283,9 +1306,12 @@ type CodeBlockSurfaceProps = {
   /** false = no scroll container of its own; an ancestor scrolls instead. */
   scroll?: boolean;
   className?: string;
+  codeClassName?: string;
+  preserveLineBreaks?: boolean;
 };
 
 function CodeBlockSurface({
+  source,
   lines,
   wrap,
   startLine,
@@ -1310,7 +1336,15 @@ function CodeBlockSurface({
   completeAnnouncement,
   scroll = true,
   className,
+  codeClassName,
+  preserveLineBreaks = false,
 }: CodeBlockSurfaceProps) {
+  // Local source-viewer adaptation: keep raw line endings inside each row so
+  // textContent is exact without adding inter-row whitespace or blank rows.
+  const lineEndings = useMemo(
+    () => (preserveLineBreaks ? (source.match(/\r\n|\r|\n/g) ?? []) : undefined),
+    [preserveLineBreaks, source],
+  );
   const viewportRef = useRef<HTMLDivElement | null>(null);
   const preRef = useRef<HTMLPreElement | null>(null);
   const [activeLine, setActiveLine] = useState<number | null>(null);
@@ -1589,11 +1623,16 @@ function CodeBlockSurface({
                   number). Windowing here means rendering fewer rows, not
                   containing them. */}
           {/* presentation, so the listbox owns its options directly. */}
-          <code data-slot="code-block-code" role={selectable ? "presentation" : undefined}>
+          <code
+            data-slot="code-block-code"
+            className={codeClassName}
+            role={selectable ? "presentation" : undefined}
+          >
             {lines.map((line) => (
               <CodeBlockLineRow
                 key={line.number}
                 line={line}
+                lineEnding={lineEndings?.[line.number - startLine]}
                 selectable={selectable}
                 selected={selectedSet.has(line.number - startLine + 1)}
                 focusMode={focusMode}

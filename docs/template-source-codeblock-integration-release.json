@@ -1,0 +1,81 @@
+{
+  "scope": "Actual free ReUI CodeBlock template source migration",
+  "base": "afd5a34c79df4672ede18a73f1903d6a5fca3588",
+  "files": {
+    "src/components/reui/code-block/code-block.tsx": "b19955d416f30509f385342b959dc971151dbf96bf5165028606418fc4615fb3",
+    "src/templates/source-dialog.tsx": "f2629601327d25292cd9aebea524912e699aa278292ce9b4119024ef9e99531a",
+    "src/templates/templates.css": "5d6f5f48e4c1d44a655c1183be7ca59d2eb6bfb93caf6220e59344002873c330",
+    "tests/template-source-codeblock.spec.ts": "a9d0036385774418ae4abcb31e2c793bb0e6c3eaad18d68fbf08050bfbb510c5",
+    "docs/template-source-codeblock-migration.md": "21303760d2a12b58376880f3a11909a08e7422952fb5febda06228c1ddecec60"
+  },
+  "reuse": [
+    "CodeBlock",
+    "CodeBlockHeader",
+    "CodeBlockContent",
+    "CodeBlockCopyButton",
+    "CodeBlockDownloadButton",
+    "CodeBlockWrapToggle"
+  ],
+  "change": "Replace handwritten pre/copy with actual free renderer, wrap/copy/UTF8 file actions, native Select current-trigger focus. Default-off source line-ending preservation retains raw LF/CRLF/CR without hidden duplicate markup.",
+  "verification": {
+    "mainAndProduction": {
+      "base": "b13170647a49e82a9d6b7cb7fed3d172b4fb6c47",
+      "exit": 0,
+      "log": "/tmp/bricklane-template-source-codeblock-production-build.log",
+      "privateTSAndViteCache": true
+    },
+    "latestProduction": {
+      "viteOnlyExit": 0,
+      "viteLog": "/tmp/bricklane-template-source-codeblock-afd-vite.log",
+      "production8": "8/8 PASS20.8s",
+      "productionLog": "/tmp/bricklane-template-source-codeblock-afd-production8.log",
+      "ownRuntimeAndTestHashesChanged": false,
+      "source5PrivateFixturesExcluded": true,
+      "newMainTSRuns": 0
+    },
+    "freshByteContracts": "Original17leaves/5actualprojects plus latest12fourway checks afterFlow; Flux/Echo217, Pulse/Roster188, Cohort182. No page errors.",
+    "latestTypeSourceProof": {
+      "receipt": "/tmp/bricklane-template-source-codeblock-afd-bytes/type-source-compatibility.json",
+      "ownCodeBlockStrictSource": "CodeBlock b19955 exact to independently normal-installed Flux215 strict0",
+      "newFlowStrictSource": "6 product hashes exact to independently normal-installed Flow378 strict0",
+      "otherOriginal215FilesExact": 212,
+      "flow375CommonOverlapExact": 92,
+      "publicFlowFunctionSignaturesUnchanged": true,
+      "originalTypeConfigExactToOwn215": true,
+      "effectiveTypeConfigEqualToFlow378": true,
+      "explicitImplicitSyntheticImportDifferenceDocumented": true,
+      "runtimeCommonCompilerDependencyRangesAndSharedResolvedVersionsEqual": true,
+      "fiveExtraTemplateDevToolsExactToOwn215": true,
+      "extraToolDifferenceReceipt": "/tmp/bricklane-template-source-codeblock-afd-bytes/first-type-proof-difference.json",
+      "new217InstallOrStrictRun": false,
+      "noClaimThat215EqualsLatest217": true
+    },
+    "representativeStrict": {
+      "actualZIPFiles": 215,
+      "normalInstall": true,
+      "originalConfiguration": true,
+      "script": "tsc --noEmit && vite build",
+      "exit": 0,
+      "unchangedOriginalSourceFiles": 215,
+      "npmAuditVulnerabilities": 0,
+      "log": "/tmp/bricklane-template-source-codeblock-flux215-strict.log",
+      "receipt": "/tmp/bricklane-template-source-codeblock-e5-bytes/flux215-strict-receipt.json",
+      "allOtherStarterColdRuns": 0
+    },
+    "staticReview": "RootApp actual free composition/lineendings/atomic switching/native focus review; runtime/test4hash unchanged; Root browser review screenshot retained",
+    "protectedPaths": {
+      "src/templates/source.ts": "e9ef9442fa59507988de9cc24b6097fdf5db17d074a97944a1769f856d7f0573",
+      "src/lib/source.ts": "ee1284cb65f4d0091b5edb9b1baf12504923fbc428f8f3f87699ef0ca93851f8",
+      "src/lib/source-targets.ts": "648f7fd0a8218cc55d1fd78e4ff294f27e511c5c69f2c60750616b1d381c74cb",
+      "src/main.tsx": "43810cfba9c1c17a765b693fb1f07bdbbc003b81c9ea958a5057a863270704d1",
+      "package.json": "f9fd28366f59fa5f6bdad8b9e19a5dceb8786460d1618b73f3165f894a6152ae",
+      "tests/templates-source-round3.spec.ts": "ac11be2c4645ade79158876f08d1b063898796ae07f8a0608c46f637e2578036"
+    }
+  },
+  "limits": [
+    "Latest217 projects were not independently cold-compiled again; precise complementary source/dependency/effective-config proof is documented",
+    "Existing notation marker stripping is inherited from free CodeBlock; current exported source contains no affected markers",
+    "Existing11originalCohortSVG quote serialization is XML-equivalent, not raw-byte identity"
+  ],
+  "publication": "Root normal hook/serialcommit/push; full newCI and Pages remain pending. afd run40280247785 just failed; diagnosis kept separate."
+}
