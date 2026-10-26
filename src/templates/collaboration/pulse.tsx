@@ -1,3 +1,7 @@
+import "./pulse-secondary.css";
+import { PulseKnowledgeBase } from "./pulse-knowledge";
+import { PulseReports } from "./pulse-reports";
+import { usePulseReportState } from "./pulse-report-model";
 import { PulseDirectory, initialDirectoryRecords } from "./pulse-directory";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -16,10 +20,9 @@ import {
 } from "@/components/reui/frame";
 import { PulseBoard } from "./pulse-board";
 import { ReferenceGrid } from "./reference-grid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Plus,
-  ArrowUpRight,
   CheckCircle,
   Clock,
   Smile,
@@ -27,7 +30,6 @@ import {
   Filter,
   MoreHorizontal,
   Bell,
-  BookOpen,
   SlidersHorizontal,
 } from "lucide-react";
 import { Badge } from "@/components/reui/badge";
@@ -40,7 +42,7 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { toast } from "sonner";
-import { Shell, Button, Input, Avatar, Modal, ReferenceSheet, Empty } from "./shared";
+import { Shell, Button, Input, Avatar, ReferenceSheet, Empty } from "./shared";
 type TicketRecord = {
   id: string;
   customer: string;
@@ -226,7 +228,10 @@ function ResolutionChart() {
   );
 }
 export default function Pulse() {
-  const [view, setView] = useState("Dashboard");
+  const initialArticle =
+    new URLSearchParams(location.hash.split("?")[1] || "").get("article") || "";
+  const [view, setView] = useState(initialArticle ? "Knowledge Base" : "Dashboard");
+  const reportModel = usePulseReportState();
   const [contactRecords, setContactRecords] = useState(() => initialDirectoryRecords(false));
   const [memberRecords, setMemberRecords] = useState(() => initialDirectoryRecords(true));
   const [query, setQuery] = useState("");
@@ -237,7 +242,18 @@ export default function Pulse() {
   const [create, setCreate] = useState(false);
   const [selected, setSelected] = useState<TicketRecord | null>(null);
   const [editing, setEditing] = useState<TicketRecord | null>(null);
-  const [article, setArticle] = useState("");
+  const [article, setArticle] = useState(initialArticle);
+  useEffect(() => {
+    const openLinkedArticle = () => {
+      const linkedArticle = new URLSearchParams(location.hash.split("?")[1] || "").get("article");
+      if (linkedArticle) {
+        setArticle(linkedArticle);
+        setView("Knowledge Base");
+      }
+    };
+    window.addEventListener("hashchange", openLinkedArticle);
+    return () => window.removeEventListener("hashchange", openLinkedArticle);
+  }, []);
   const [page, setPage] = useState(1);
   const [layout, setLayout] = useState("Board");
   const filtered = tickets.filter(
@@ -745,63 +761,9 @@ export default function Pulse() {
           setRows={view === "Team" ? setMemberRecords : setContactRecords}
         />
       ) : view === "Knowledge Base" ? (
-        <>
-          <div className="ct-heading">
-            <div>
-              <h1>Knowledge Base</h1>
-              <p>Answers, runbooks and guides for your team.</p>
-            </div>
-          </div>
-          <div className="ct-two">
-            {[
-              "Getting started with your workspace",
-              "SLA clock pauses on waits",
-              "Account access and two-factor authentication",
-              "Billing, invoices and refunds",
-              "Escalating a critical incident",
-              "Importing customer contacts",
-            ]
-              .filter((a) => a.toLowerCase().includes(query.toLowerCase()))
-              .map((a) => (
-                <Frame key={a}>
-                  <FrameHeader>
-                    <BookOpen />
-                    <FrameTitle>{a}</FrameTitle>
-                    <FrameDescription>Help your customers find the right answer.</FrameDescription>
-                  </FrameHeader>
-                  <FramePanel>
-                    <Button variant="outline" onClick={() => setArticle(a)}>
-                      Read article
-                      <ArrowUpRight />
-                    </Button>
-                  </FramePanel>
-                </Frame>
-              ))}
-          </div>
-        </>
+        <PulseKnowledgeBase query={query} articleId={article} setArticleId={setArticle} />
       ) : view === "Reports" ? (
-        <>
-          <div className="ct-heading">
-            <div>
-              <h1>Reports</h1>
-              <p>Understand your team's support performance.</p>
-            </div>
-          </div>
-          <Frame>
-            <FrameHeader>
-              <div className="ct-between">
-                <div>
-                  <FrameTitle>First Contact Resolution</FrameTitle>
-                  <FrameDescription>Weekly rate tracked against target</FrameDescription>
-                </div>
-                <span className="ct-chart-legend">First contact resolution</span>
-              </div>
-            </FrameHeader>
-            <FramePanel>
-              <ResolutionChart />
-            </FramePanel>
-          </Frame>
-        </>
+        <PulseReports model={reportModel} />
       ) : (
         <div className="ct-settings">
           <div className="ct-heading">
@@ -1051,25 +1013,6 @@ export default function Pulse() {
           </>
         )}
       </ReferenceSheet>
-      <Modal title={article} open={!!article} onClose={() => setArticle("")}>
-        <p>
-          Use the workspace settings to manage access, response targets and team responsibilities.
-          Assign each request to the right queue before escalating it.
-        </p>
-        <p className="ct-muted">
-          When a ticket is waiting for a customer, the SLA timer pauses. Once the customer replies,
-          it resumes with the remaining time.
-        </p>
-        <Button
-          variant="outline"
-          onClick={() => {
-            toast.success("Thanks for your feedback");
-            setArticle("");
-          }}
-        >
-          This was helpful
-        </Button>
-      </Modal>
     </Shell>
   );
 }

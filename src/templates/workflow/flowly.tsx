@@ -31,6 +31,7 @@ import { toast } from "sonner";
 import { WorkflowGrid, type WorkflowField } from "./grid";
 import { Person } from "./controls";
 import { workflowLogos } from "./workflow-logos";
+import "./flowly-dashboard.css";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -48,6 +49,7 @@ const seed = [
     date: "Oct 05, 07:00",
     schedule: "Mondays at 07:00",
     status: "Active",
+    path: "success/churn-digest",
   },
   {
     name: "Contract Sync",
@@ -58,6 +60,7 @@ const seed = [
     date: "Oct 04, 16:21",
     schedule: "On signed contract",
     status: "Paused",
+    path: "legal/contract-sync",
   },
   {
     name: "Data Warehouse Export",
@@ -68,6 +71,7 @@ const seed = [
     date: "Oct 06, 09:00",
     schedule: "Every hour",
     status: "Active",
+    path: "data/warehouse-export",
   },
   {
     name: "Expense Approvals",
@@ -78,6 +82,7 @@ const seed = [
     date: "Not run yet",
     schedule: "On expense filed",
     status: "Paused",
+    path: "finance/expense-approvals",
   },
   {
     name: "Inventory Restock",
@@ -88,6 +93,84 @@ const seed = [
     date: "Oct 06, 06:00",
     schedule: "Daily at 06:00",
     status: "Active",
+    path: "ops/inventory-restock",
+  },
+  {
+    name: "Invoice Reminders",
+    owner: "Tomas Lindqvist",
+    trigger: "Schedule",
+    rate: 100,
+    runs: "28/28 runs",
+    date: "Oct 06, 08:00",
+    schedule: "Daily at 08:00",
+    status: "Active",
+    path: "billing/invoice-reminders",
+  },
+  {
+    name: "Lead Routing",
+    owner: "Ines Marchetti",
+    trigger: "Webhook",
+    rate: 98,
+    runs: "1,184/1,208 runs",
+    date: "Oct 06, 09:42",
+    schedule: "On new lead",
+    status: "Active",
+    path: "crm/lead-routing",
+  },
+  {
+    name: "Meeting Notes to CRM",
+    owner: "Nick Bold",
+    trigger: "Event",
+    rate: 64,
+    runs: "118/184 runs",
+    date: "Oct 06, 09:10",
+    schedule: "On call ended",
+    status: "Failing",
+    path: "sales/meeting-notes",
+  },
+  {
+    name: "Onboarding Emails",
+    owner: "Hanna Berg",
+    trigger: "Event",
+    rate: 97,
+    runs: "451/465 runs",
+    date: "Oct 06, 09:28",
+    schedule: "On signup",
+    status: "Active",
+    path: "growth/onboarding-emails",
+  },
+  {
+    name: "Order Fulfillment",
+    owner: "Tomas Lindqvist",
+    trigger: "Event",
+    rate: 99,
+    runs: "3,912/3,946 runs",
+    date: "Oct 06, 09:44",
+    schedule: "On paid order",
+    status: "Active",
+    path: "ops/order-fulfillment",
+  },
+  {
+    name: "Social Mentions Alert",
+    owner: "Ines Marchetti",
+    trigger: "Event",
+    rate: 76,
+    runs: "302/397 runs",
+    date: "Oct 06, 09:31",
+    schedule: "On brand mention",
+    status: "Failing",
+    path: "marketing/mentions-alert",
+  },
+  {
+    name: "Support Triage",
+    owner: "Hanna Berg",
+    trigger: "Event",
+    rate: 71,
+    runs: "642/904 runs",
+    date: "Oct 06, 09:37",
+    schedule: "On new ticket",
+    status: "Failing",
+    path: "support/triage",
   },
 ];
 export default function Flowly() {
@@ -109,7 +192,7 @@ export default function Flowly() {
     {
       key: "rate",
       title: "Success",
-      size: 295,
+      size: 210,
       render: (r) => (
         <div className="wf-inline">
           <span
@@ -137,7 +220,7 @@ export default function Flowly() {
     {
       key: "name",
       title: "Workflow",
-      size: 435,
+      size: 300,
       render: (r) => (
         <>
           <button
@@ -150,8 +233,7 @@ export default function Flowly() {
             {r.name}
           </button>
           <small className="wf-sub wf-workflow-meta">
-            {r.trigger} · <Person name={r.owner} index={4} /> ·{" "}
-            <code>{r.name.toLowerCase().replaceAll(" ", "-")}</code>
+            {r.trigger} · <Person name={r.owner} index={4} /> · <code>{r.path}</code>
           </small>
         </>
       ),
@@ -159,7 +241,7 @@ export default function Flowly() {
     {
       key: "date",
       title: "Last run",
-      size: 260,
+      size: 180,
       render: (r) => (
         <>
           {r.date}
@@ -167,11 +249,11 @@ export default function Flowly() {
         </>
       ),
     },
-    { key: "status", title: "Status", size: 180, render: (r) => <Status>{r.status}</Status> },
+    { key: "status", title: "Status", size: 126, render: (r) => <Status>{r.status}</Status> },
     {
       key: "actions",
       title: "Actions",
-      size: 145,
+      size: 104,
       sortable: false,
       render: (r) => (
         <div className="wf-inline">
@@ -259,7 +341,15 @@ export default function Flowly() {
         </div>
       }
     >
-      <WorkflowGrid rows={list.map((r) => ({ ...r, id: r.name }))} fields={fields} pageSize={5} />
+      <WorkflowGrid
+        key={`${query}:${filter}`}
+        rows={list.map((r) => ({ ...r, id: r.name }))}
+        fields={fields}
+        pageSize={5}
+        layout="fixed"
+        dense
+        preservePage
+      />
     </Panel>
   );
   return (

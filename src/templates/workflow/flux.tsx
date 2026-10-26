@@ -1,3 +1,6 @@
+import { FluxEvaluations } from "./flux-evaluations";
+import { FluxMemory } from "./flux-memory";
+import { useFluxEvidenceModel } from "./flux-evidence-models";
 import { useFluxFlagsModel } from "./workflow-models";
 import { useState } from "react";
 import {
@@ -63,6 +66,7 @@ const incidents = [
   },
 ];
 export default function Flux() {
+  const evidenceModel = useFluxEvidenceModel();
   const flagRecords = useFluxFlagsModel();
   const [view, setView] = useState("Overview");
   const [agents] = useState(agentSeed);
@@ -238,6 +242,10 @@ export default function Flux() {
         tree
       ) : view === "Settings" ? (
         <WorkspaceSettings />
+      ) : view === "Evals" ? (
+        <FluxEvaluations model={evidenceModel} />
+      ) : view === "Memory" ? (
+        <FluxMemory model={evidenceModel} />
       ) : view === "Flags" ? (
         <FluxFlags records={flagRecords} />
       ) : view === "Approvals" ? (

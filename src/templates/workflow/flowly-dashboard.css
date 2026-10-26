@@ -1,0 +1,27 @@
+.wf-flowly .wf-health-table .wf-official-grid th {
+  padding-inline: 8px;
+}
+
+.wf-flowly .wf-health-table .wf-official-grid th:first-child {
+  padding-inline-start: 16px;
+}
+
+.wf-flowly .wf-health-table .wf-official-grid th:last-child {
+  padding-inline-end: 16px;
+}
+
+.wf-flowly .wf-health-table .wf-official-grid th button {
+  font-size: 13px;
+}
+
+.wf-flowly .wf-health-table .wf-official-grid td {
+  padding-inline: 8px !important;
+}
+
+.wf-flowly .wf-health-table .wf-official-grid td:first-child {
+  padding-inline-start: 16px !important;
+}
+
+.wf-flowly .wf-health-table .wf-official-grid td:last-child {
+  padding-inline-end: 16px !important;
+}

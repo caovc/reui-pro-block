@@ -447,8 +447,15 @@ export function templateImplementationTargets(template: {
     filespace: "drive",
     filebox: "drive",
   };
-  const module = sharedModules[template.id] ?? template.id;
-  return [`src/templates/${template.family}/${module}.tsx`];
+  const secondaryModules: Record<string, string[]> = {
+    flux: ["flux-evaluations", "flux-memory"],
+    pulse: ["pulse-knowledge", "pulse-reports"],
+  };
+  const modules = [
+    sharedModules[template.id] ?? template.id,
+    ...(secondaryModules[template.id] ?? []),
+  ];
+  return modules.map((module) => `src/templates/${template.family}/${module}.tsx`);
 }
 
 export function implementationFirst(files: Record<string, string>, candidates: string[]) {

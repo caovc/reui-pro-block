@@ -97,7 +97,12 @@ export default function Example() {
   return { files, requiredAssets };
 }
 export function templateFiles(template: TemplateMeta) {
-  return implementationFirst(collect(template).files, templateImplementationTargets(template));
+  const targets = templateImplementationTargets(template);
+  const files = implementationFirst(collect(template).files, targets);
+  const implementations = Object.fromEntries(
+    targets.filter((path) => files[path] !== undefined).map((path) => [path, files[path]]),
+  );
+  return { ...implementations, ...files };
 }
 
 export async function downloadTemplate(template: TemplateMeta) {

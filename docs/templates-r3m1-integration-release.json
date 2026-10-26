@@ -1,0 +1,58 @@
+{
+  "ownerManifest": {
+    "base": "868696ec1fd2f7109edb560c46f47f6d947aee39",
+    "files": {
+      "src/templates/workflow/grid.tsx": "14619e5ac2a2c79382428310ad9b628691916e46345cea2e05e6e9af54c1a8fb",
+      "src/templates/workflow/flowly.tsx": "65391e1b4cef2e8adbc5faf1b4fb15fafe9a621d35296eca6bdc68d038bebc98",
+      "src/templates/workflow/flowly-dashboard.css": "7ae407d8f84045d9c84c72bd725ace7c8a85866b1a309f615d5ca8d71bae2b67",
+      "tests/templates-geometry-round3.spec.ts": "0a66bbb8222ef59e4d0a1da368de09cc2f39d337019983dd37aa51a2c2097d77",
+      "src/templates/workflow/flux.tsx": "157105cb22253a11a5b31dd746889f2d068267735b355f21f762aeffcd24ae78",
+      "src/templates/workflow/flux-evaluations.tsx": "da1cb05796ad86f0ec609924e1cecd3e56ef063ffa028bc22e562b3c335133ef",
+      "src/templates/workflow/flux-memory.tsx": "11382031b2f50f644cfcceecf56fb7ddafdc43ff32c96b2b40c5a8460237a183",
+      "src/templates/workflow/flux-evidence-models.ts": "b745ae92df7ee8570638fbb13e12d4385338e4dfd5618a0f09d8760ff8925e16",
+      "src/templates/workflow/round3.css": "0a3ea5717dc936381f868aa33061cf687f4b75370c0ed31cad23eeec209dddaa",
+      "tests/templates-workflow-round3.spec.ts": "0d6dfb388bc8ceffbc8dee81c9ebbec3fd6da2107e5c30bcfa81cec2ea2013f5",
+      "src/templates/collaboration/pulse.tsx": "b71f5e1fdfefc49d09e4191c2722adb214bb1ba76e673e259e87a260e4206b91",
+      "src/templates/collaboration/pulse-knowledge-data.ts": "90855cc3088e3697ecddd5bd2d243ad7fe87d90bed2d1e8327ab55520ef3fb99",
+      "src/templates/collaboration/pulse-knowledge.tsx": "a0e1de4db26b4d88b6ecd6f71f598e3e78cec21bd50e38f30c7136e27a371262",
+      "src/templates/collaboration/pulse-report-model.ts": "5ce90f4e1ae0503e39e5d5c1cc7b9195c1f8fc524ecf2dad2f0d8573bf88812a",
+      "src/templates/collaboration/pulse-reports.tsx": "3b4e66f739c5c242419d378d3e81f014522c51184c7116d4c21236840c3ae25b",
+      "src/templates/collaboration/pulse-secondary.css": "e518559481fc052e0f20d1a538e2c56830de44e57f45a38821838e3f4934deb9",
+      "tests/templates-collaboration-round3.spec.ts": "bf5fe801fbb43ec57ecaf373c7e912612a277fa8eb6754fde4f6a901994a34e0",
+      "src/templates/source.ts": "eb0abc5aaf9050d18f183b3a41f3f9991f3276a1fb272fdf2f6498f5c5c32fdc",
+      "tests/templates-source-round3.spec.ts": "55b40b9d5b40c47fb509c169ea83238bda715286d322430cd6204acf14a08690",
+      "docs/templates-fidelity-review.md": "5d0a9ba8dc7019a7de703d6b9a5aae67fbc01fe1c59df9a0346a27ae25091acd"
+    },
+    "templateTargetsSnippet": "template-targets.txt",
+    "validation": {
+      "strictBuild": "PASS",
+      "browserCases": 58,
+      "sourceCases": 5,
+      "downloadBuilds": {
+        "pulse": 142,
+        "flux": 136
+      },
+      "scope": "M1 only; later agent snapshots deliberately excluded",
+      "exportRenders": "4/4 PASS: Pulse/Flux at 1440 and390, pageerrors=[], no document overflow"
+    }
+  },
+  "root": {
+    "base": "3db231939ac51178e5f671176906ef6fcc9ab0b4",
+    "strictBuild": "PASS latest Chat3db2319; candidate-only isolated TypeScript caches",
+    "production": "76/76 c28 baseline2.1m;81/81 M5 cumulative2.5m;33/33 Category cumulative51.1s;all1worker; latestChat27/27 PASS42.5s",
+    "logs": [
+      "/tmp/bricklane-templates-r3m1-root-production.log",
+      "/tmp/bricklane-templates-r3m1-m5-root-production.log",
+      "/tmp/bricklane-templates-r3m1-category-root-production.log",
+      "/tmp/bricklane-templates-r3m1-chat-root-production.log",
+      "/tmp/bricklane-templates-r3m1-chat-root-build.log",
+      "/tmp/bricklane-pulse-sheet-stability.log"
+    ],
+    "source": "Only templateImplementationTargets function expands secondary targets; implementationFirst and block maps preserved",
+    "retainedIntegrationFailure": "First Root snippet replacement removed adjacent implementationFirst; strict TS caught it before publication. Original /tmp/bricklane-templates-r3m1-root-build.log retained; restored unchanged function and corrected strict build passed.",
+    "actualStarters": "Pulse142 and Flux136 actualUI ZIPs independent strictbuild +1440/390 target interactions PASS; owner evidence reviewed",
+    "limitations": "Remaining infrastructure/providers/costs/Roster/Cohort/editor details not included; fixtures/originalmedia/localservices; no complete pixel parity",
+    "deployment": "Own CI/Pages pending; latest successfuldeploymentc28b627987browser PASS; Root live recheck retained network/dynamic-import failures and is not counted as passed",
+    "visual": "Root observed ghosted article text in earlier phone capture; fresh390 Escape followed by real Sheet content/overlay unmount assertions passed, and settled fullpage capture inspected. No app/source change needed."
+  }
+}
