@@ -1,0 +1,99 @@
+{
+  "milestone": "Gantt CI modal-exit/native-drag synchronization",
+  "status": "READY test-only; root commit/push/CI pending",
+  "integrationBase": "cbd5c2e0192d7fb747fb5d6817b7c8d23a4866b9",
+  "ownedFiles": [
+    {
+      "path": "tests/flow-gantt-refinement.spec.ts",
+      "sha256": "0b6a6dd96e89db7c1aa43dbdd97f0d7176863aa13b3107bbe7d65ac175e2a683"
+    },
+    {
+      "path": "docs/gantt-modal-drag-ci-2026-10-26.md",
+      "sha256": "cfeed28e5716e3abbcdafe58ea98efbe298eb6b318beddefe9024788a2571029"
+    }
+  ],
+  "manifestPath": "docs/gantt-modal-drag-ci-release-manifest.json",
+  "totalGitPayloadFiles": 3,
+  "changes": "6 insertions/1 deletion in one existing test; actual dialog+overlay dismissal awaited; native drag and in-flight assignee assertions added; original label/final-assignee assertions retained",
+  "runtimeChanges": false,
+  "timeoutRetryForceChanges": false,
+  "originalCI": {
+    "run": 40257256416,
+    "head": "bd94ff540740ab7335b528eca39aa0dede7280ef",
+    "artifactId": 12623318508,
+    "artifactBytes": 13066191,
+    "artifactZIP": "/tmp/bricklane-gantt-ci-diagnostics.zip",
+    "artifactSHA256": "453110df8396d33f1b06e2500e80513032924d7df45fc9da76f88b2f4687ed62",
+    "result": "1040 PASS / 1 FAIL; original failure retained"
+  },
+  "verification": {
+    "strictProductionBuild": "PASS /tmp/bricklane-gantt-ci-build.log",
+    "productionSuite": "19/19 PASS 42.9s; 1 worker; standard 30s; /tmp/bricklane-gantt-ci-tests.log",
+    "candidate": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-gantt-ci-production-i_5_qya5",
+    "confirmedPreviewPort": 55038,
+    "runtimeInvariance": "consumer flow-gantt-timeline.tsx and all nine src/components/reui/gantt/*.tsx are byte-identical to integration base",
+    "scopedFormat": "PASS test+ledger; manifest formatted separately",
+    "scopedOxlint": "PASS test, zero errors/warnings",
+    "newStarterZIP": "not required; no runtime/dependency/source export changes"
+  },
+  "externalEvidenceNotForGit": [
+    {
+      "freezePath": "evidence/original-failed-test-trace.zip",
+      "sourcePath": "/tmp/bricklane-gantt-ci-diagnostics/flow-gantt-refinement-canc-4772f-ignees-during-a-native-drag/trace.zip",
+      "sha256": "b8c37ae71c8e347b532b8459da6ed88e6f28bada76dcfd60fd8fe7964051aad4"
+    },
+    {
+      "freezePath": "evidence/original-failed-run.log",
+      "sourcePath": "/tmp/bricklane-templates-r3m1-ci-failure.log",
+      "sha256": "feae378401831998e7676a375121eda3fe1cd79a89092d8684d7e474326f9ee8"
+    },
+    {
+      "freezePath": "evidence/artifact-metadata.json",
+      "sourcePath": "/tmp/bricklane-gantt-ci-artifacts.json",
+      "sha256": "fa1db7c4227815372f9d688b62a1cee3bf22ecfcb8fb179c23addae40e018a11"
+    },
+    {
+      "freezePath": "evidence/cancel-after-snapshot.json",
+      "sourcePath": "/tmp/bricklane-gantt-ci-audit/cancel-after-snapshot.json",
+      "sha256": "92c5917d19471cd337fd4044c9f60a2b589f04d9aa50b2d5a94306a684ddff09"
+    },
+    {
+      "freezePath": "evidence/ci-action-timeline.json",
+      "sourcePath": "/tmp/bricklane-gantt-ci-audit/ci-action-timeline.json",
+      "sha256": "e3526afb522cfd295b0f28f3d3830ecb13eee4c85d7aa83184424eecc07effce"
+    },
+    {
+      "freezePath": "evidence/ci-mousedown-frame.jpeg",
+      "sourcePath": "/tmp/bricklane-gantt-ci-trace/screencast/page@262dffef3d79c7892bf566c9e8e29c3c-1792980756302.jpeg",
+      "sha256": "97bf5081b4b45413eadc794a004f4da09db4c34af33c551c967b4076a24c5fdd"
+    },
+    {
+      "freezePath": "evidence/official-free-gantt-registry.json",
+      "sourcePath": "/tmp/bricklane-gantt-ci-audit/official-free-gantt.json",
+      "sha256": "d52126e810efcb35730bfaaa5775a7d5b120ad66455661554524806950eda2b8"
+    },
+    {
+      "freezePath": "evidence/production-build.log",
+      "sourcePath": "/tmp/bricklane-gantt-ci-build.log",
+      "sha256": "34fe66c33d733df787c1b3620d0d8d6552c627da199ea7f92754669273b5b11c"
+    },
+    {
+      "freezePath": "evidence/production-tests.log",
+      "sourcePath": "/tmp/bricklane-gantt-ci-tests.log",
+      "sha256": "731483705e2db4b61d8ba3ceb7a08313ee81b507d4f963c4edebe0e98fed92d6"
+    }
+  ],
+  "freeSourceReview": "Official @reui/gantt read via CLI; native beginMove/canDrag/data-dragging checked, no engine changes; provenance in ledger",
+  "scopeExclusions": [
+    "runtime consumer",
+    "shared Gantt engine",
+    "Dialog UI",
+    "source-targets",
+    "router",
+    "package",
+    "lock",
+    "Dashboard",
+    "prior Navbar freezes"
+  ],
+  "gitWrites": "none; Root rebases onto latest 0b297cd and serializes commit/push/CI"
+}
