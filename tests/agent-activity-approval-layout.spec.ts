@@ -9,7 +9,9 @@ async function open(page: Page) {
   await expect(page.locator("[data-approval-card]")).toBeVisible();
 }
 async function menu(page: Page) {
-  await page.getByRole("button", { name: "Approval run actions", exact: true }).click();
+  // View and Density choices now retain the original public menu's open state.
+  if (!(await page.getByRole("menu").isVisible()))
+    await page.getByRole("button", { name: "Approval run actions", exact: true }).click();
 }
 
 for (const width of [1440, 390, 393]) {
@@ -102,6 +104,8 @@ test("Activity1 actual menu defaults and view controls preserve its gate and res
   );
   await menu(page);
   await page.getByRole("menuitemcheckbox", { name: "Fold Finished Steps", exact: true }).click();
+  await expect(page.getByRole("menu")).toBeVisible();
+  await page.keyboard.press("Escape");
   await expect(page.locator('[data-approval-step="read"]')).not.toBeVisible();
   await expect(page.getByRole("button", { name: "Approve", exact: true })).toBeVisible();
   await page.getByRole("button", { name: /2 finished steps/ }).click();

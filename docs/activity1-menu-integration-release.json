@@ -1,0 +1,29 @@
+{
+  "scope": "Activity1 actual free grouped menu and native persistent selection",
+  "base": "67577aec0ffbc3cc374101f25eba5bc351203449",
+  "frozenFiles": {
+    "src/blocks/data/agent-activity-approval.tsx": "51bc11178ee136417b672d9267899b44d4307678bbf5854f4be3577e3725e200",
+    "tests/agent-activity-approval-layout.spec.ts": "c413f75ae197781116735567dc3e155b0b36b14edf4d8cf417d1ab8d68c11110",
+    "tests/agent-activity-approval-menu.spec.ts": "ef7c1867538c7cbaea66dd35ad5f4bbcd077b7d6392ecb41961959b76289b253",
+    "docs/audits/activity1-menu-refinement-2026-10-26.md": "7308bcb0798c79d6422353ab86069237911389b6b95150f586468e43903c4d99"
+  },
+  "reuse": "Whole official free c-dropdown-menu8 grouped composition, existing native CheckboxItem/RadioItem/Label/Separator/destructive Item and original local run model",
+  "behavior": "View and Density choices retain the open native menu; checked states and density update actual console; Copy Summary and Restart Run retain real local effects and focus",
+  "verification": {
+    "production": "32/32 related production plus strengthened8/8 menu cases",
+    "actualZIP": "245files, strict buildPASS,245/245 extracted bytes stable,11runtime/free/license checks",
+    "actualStarter": "1440light/390light/390 explicitdark-class3/3 PASS;224x294 menu,7rows28px,14/20text,16icons",
+    "rootVisual": "Root inspected actual dark-class phone menu with3labels,checkbox/radio states and destructive restart",
+    "receipt": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-activity1-menu-final-ready-xwtbnnap/receipt.json",
+    "formatToolingLint": "/tmp/bricklane-activity-menu-root-static.log"
+  },
+  "remaining": [
+    "Default Geist portal differs from public Inter; separate actual font-scope batch",
+    "Anchor3px difference retained instead of offset masking",
+    "Current extra keyboard outline awaits sharedfocus layer batch",
+    "Block starter is static light/default; dark-class QA is an explicit local harness, not native themeUI/hash support",
+    "Public Approval/Deny model differences remain in separate audit"
+  ],
+  "publication": "Root serial commit/push; own fullCI and Pages separate pending",
+  "rootBaseCommit": "f1780d36bf3b3197b93aefa2e0d7b5b0bd689ebb"
+}

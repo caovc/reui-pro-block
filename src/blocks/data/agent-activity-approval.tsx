@@ -7,7 +7,10 @@
  * Compact persistent sequence follows the actual public desktop/393px notes
  * in docs/audits/activity1-native-reference.md. Fixtures and workflow remain
  * independent. Answer/revision/completion structure was publicly observed;
- * Approve, Deny, pause and alternate view results remain unverified.
+ * Later public menu observations are recorded in the independent menu ledger.
+ * The grouped menu composes actual free c-dropdown-menu-6/7/8 patterns:
+ * https://reui.io/r/radix-nova/c-dropdown-menu-8.json
+ * Local state, checkbox/radio bindings and the approved workflow remain original.
  */
 import { useEffect, useRef, useState } from "react";
 import {
@@ -23,6 +26,7 @@ import {
   Pencil,
   Play,
   RotateCcw,
+  RotateCw,
   ShieldCheck,
   SkipForward,
   Terminal,
@@ -37,6 +41,7 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuRadioGroup,
@@ -188,31 +193,58 @@ export default function ApprovalRunConsole() {
                 <Ellipsis />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-52">
-              <DropdownMenuLabel>Run options</DropdownMenuLabel>
-              <DropdownMenuCheckboxItem checked={showPaths} onCheckedChange={setShowPaths}>
-                File Paths
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem checked={showNotes} onCheckedChange={setShowNotes}>
-                Step Notes
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem checked={foldFinished} onCheckedChange={setFoldFinished}>
-                Fold Finished Steps
-              </DropdownMenuCheckboxItem>
+            {/* Free c-dropdown-menu-8 grouped composition, with the controlled
+                checkbox/radio patterns from c-dropdown-menu-6/7. */}
+            <DropdownMenuContent align="end" className="w-56" data-approval-run-menu>
+              <DropdownMenuGroup>
+                <DropdownMenuLabel>View</DropdownMenuLabel>
+                <DropdownMenuCheckboxItem
+                  checked={showPaths}
+                  onCheckedChange={setShowPaths}
+                  onSelect={(event) => event.preventDefault()}
+                >
+                  File Paths
+                </DropdownMenuCheckboxItem>
+                <DropdownMenuCheckboxItem
+                  checked={showNotes}
+                  onCheckedChange={setShowNotes}
+                  onSelect={(event) => event.preventDefault()}
+                >
+                  Step Notes
+                </DropdownMenuCheckboxItem>
+                <DropdownMenuCheckboxItem
+                  checked={foldFinished}
+                  onCheckedChange={setFoldFinished}
+                  onSelect={(event) => event.preventDefault()}
+                >
+                  Fold Finished Steps
+                </DropdownMenuCheckboxItem>
+              </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuRadioGroup value={density} onValueChange={setDensity}>
-                <DropdownMenuRadioItem value="comfortable">Comfortable</DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="compact">Compact</DropdownMenuRadioItem>
+                <DropdownMenuLabel>Density</DropdownMenuLabel>
+                <DropdownMenuRadioItem
+                  value="comfortable"
+                  onSelect={(event) => event.preventDefault()}
+                >
+                  Comfortable
+                </DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="compact" onSelect={(event) => event.preventDefault()}>
+                  Compact
+                </DropdownMenuRadioItem>
               </DropdownMenuRadioGroup>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={copy}>
-                <Copy />
-                Copy Summary
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={restart}>
-                <RotateCcw />
-                Restart run
-              </DropdownMenuItem>
+              <DropdownMenuGroup>
+                <DropdownMenuLabel>Run</DropdownMenuLabel>
+                <DropdownMenuItem onClick={copy}>
+                  <Copy />
+                  Copy Summary
+                </DropdownMenuItem>
+                <DropdownMenuItem variant="destructive" onClick={restart}>
+                  <RotateCw />
+                  Restart Run
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
         </FrameHeader>
