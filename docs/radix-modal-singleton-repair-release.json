@@ -1,0 +1,84 @@
+{
+  "baseline": "d52606d25bf3f468538c9ff7d236c69427b6b9d6",
+  "problem": "Installing the native editor SDK introduced legacy top-level Radix focus/layer packages alongside newer nested packages. Separate module contexts broke modal dismissal and focus across existing free ReUI consumers.",
+  "change": {
+    "directDependencies": {
+      "@radix-ui/react-focus-scope": "1.3.1",
+      "@radix-ui/react-dismissable-layer": "1.2.1"
+    },
+    "viteAndDownloadedStarterDedupe": [
+      "@radix-ui/react-focus-scope",
+      "@radix-ui/react-dismissable-layer"
+    ],
+    "portableBase": "./",
+    "absoluteAliases": false,
+    "vendorOrComponentPatches": false,
+    "bundledDismissableLayerContextCopies": {
+      "before": 8,
+      "after": 1
+    }
+  },
+  "validation": {
+    "mainInstallAndOriginalStrictBuild": "passed",
+    "previouslyFailingCISelection": {
+      "selected": 49,
+      "initialPassed": 48,
+      "initialFailed": 1,
+      "skipped": 0,
+      "retries": 0,
+      "remainingFailure": "Cohort width measured 480.00006103515625 during native Sheet entrance animation.",
+      "readinessCorrection": "Await native animation.finished before retaining the original exact 480px assertion, matching the existing 512px readiness in this test file.",
+      "onlyAffectedCaseAfterCorrection": {
+        "passed": 1,
+        "failed": 0
+      }
+    },
+    "originalNativeEditorAndWhiteboardSelection": {
+      "passed": 25,
+      "failed": 0,
+      "workers": 1,
+      "retries": 0,
+      "timeoutMs": 30000
+    },
+    "toolingTestsPassed": 13,
+    "scopedOxlint": "passed",
+    "fullCandidateFormatCheck": "passed",
+    "sourceAndActualDownloads": {
+      "block": "app-shell-1",
+      "blockZIPMembers": 404,
+      "template": "mesh",
+      "templateZIPMembers": 233,
+      "defaultLeafDisplayCopySingleAndZIP": "exact",
+      "canonicalDependenciesAndBothDedupeIDs": "passed",
+      "relativeBaseAndPortableAlias": "passed",
+      "MITAndOFL": "present",
+      "commonMembers": 108,
+      "byteIdenticalCommonMembers": 104,
+      "remainingCommonDifferences": [
+        "README.md",
+        "package.json",
+        "src/Example.tsx",
+        "tsconfig.json"
+      ],
+      "supportingSVG": "21 AppShell SVGs retain existing Vite inline serialization: 18 attribute-quote changes and 3 quote changes plus outer-whitespace trim; original archives and first two helper failures retained. No product serialization changed.",
+      "freshNormalInstalls": 2,
+      "originalStrictBuildsPassed": 2
+    }
+  },
+  "reuse": "No free ReUI consumer was replaced. Existing official Sidebar, menus, dialogs, Frame, CodeBlock, NumberField and editor controls keep their actual implementations. Only dependency identity/build configuration changes.",
+  "deployment": "Requires a successful normal GitHub Actions run before reporting updated Pages.",
+  "evidence": {
+    "bricklane-radix-singleton-install-process.json": "b590afb21e11e40bee6430c63e672310874adea8191d2001d7a91925d8e3c2b3",
+    "bricklane-radix-portable-main-build-process.json": "6757b80118f2325cdd1bb52cb79483e5c7e19b4ed64390f38c1e1d782b490979",
+    "bricklane-radix-portable-ci49-report.json": "0c1a01c7b5f97ee9a0fae0c62ebc842a55da23ca9bc358f0d4106a8a0627eac4",
+    "bricklane-radix-cohort-animation-probe.json": "160834c48b680dc7afad7a2a691899ca6d7f68134db6515380885a60797b767c",
+    "bricklane-radix-cohort-readiness-process.json": "f18be6e7c5e50b85d730de2a6099e954e8ade6ab631d29904b23443d31dc9866",
+    "bricklane-root-canonical-sdk25-process.json": "e992e191f5996e3caef20e316aecc628194f8da72fdfc770dc0ea2ba3da67db6",
+    "bricklane-radix-portable-static-checks.json": "2096fcd3d7288ed4d4013122f3214cbd09e80858529d05efa67ef83e5edd6922",
+    "bricklane-radix-actual-appshell-install-process.json": "344eea92e354959aec0df4abfcb96cb1609872b9ddbeb81be6f0e75c208cfbd2",
+    "bricklane-radix-actual-appshell-strict-process.json": "33f982332daf5e5be73fa4e0687f264b8038959ad41e633279688e1b408662c3",
+    "bricklane-radix-actual-mesh-install-process.json": "0a525be7b18621d95cfd3d2f443437dd88165d0b73ce3793f59725e9ca0f5049",
+    "bricklane-radix-actual-mesh-strict-process.json": "9695b3f0a8f7c8e0727290ea2254f64af7a203a8073baca33397e23263f01e3c",
+    "final-source-export-receipt.json": "e1e3905edafca408dedc1857df76e657a66219a2f0162bfb5e3dd909b4721daf"
+  }
+}

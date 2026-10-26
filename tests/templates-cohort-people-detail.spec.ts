@@ -33,6 +33,9 @@ test("Cohort View has individual contract, leave, review and activity rather tha
   await expect(amara).toContainText("Complete: 100%");
   await expect(amara.getByRole("combobox")).toHaveCount(0);
   await expect(amara.getByRole("button", { name: "Save note", exact: true })).toBeDisabled();
+  await amara.evaluate(async (element) => {
+    await Promise.all(element.getAnimations().map((animation) => animation.finished));
+  });
   expect((await amara.boundingBox())?.width).toBe(480);
   await amara.getByText("Joined the company", { exact: true }).scrollIntoViewIfNeeded();
   await expect(amara.getByText("Joined the company", { exact: true })).toBeInViewport();
