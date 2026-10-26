@@ -18,7 +18,8 @@ import {
 } from "./grid-advanced-shared";
 import { cellClass, cn, useGridSorting } from "./grid-advanced-utils";
 import { gridBrandAssets } from "./grid-base-assets";
-import { MaterialsTree, ReportingTree } from "./grid-grouping-trees";
+import MaterialsTree from "./grid-grouping-materials";
+import ReportingTree from "./grid-grouping-reporting";
 import Roadmap from "./grid-grouping-roadmap";
 import Revenue from "./grid-grouping-revenue";
 import Cohorts from "./grid-grouping-cohorts";

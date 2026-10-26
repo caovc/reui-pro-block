@@ -26,6 +26,7 @@ import {
   type DataGridTableInstance,
 } from "@/components/reui/data-grid/data-grid";
 import { DataGridTable } from "@/components/reui/data-grid/data-grid-table";
+import { DataGridScrollArea } from "@/components/reui/data-grid/data-grid-scroll-area";
 import { DataGridColumnHeader } from "@/components/reui/data-grid/data-grid-column-header";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
@@ -292,6 +293,7 @@ export function DomainGridSurface<T extends object>({
   onCellSelectionChange,
   onRowClick,
   paginationControls,
+  scrollArea,
 }: {
   table: DomainTable<T>;
   children?: ReactNode;
@@ -303,6 +305,7 @@ export function DomainGridSurface<T extends object>({
   onCellSelectionChange?: DataGridProps<DataGridFeatures, T>["onCellSelectionChange"];
   onRowClick?: (row: T) => void;
   paginationControls?: boolean | { noun?: string; sizes?: number[]; className?: string };
+  scrollArea?: "horizontal" | "vertical" | "both";
 }) {
   return (
     <DataGrid
@@ -328,7 +331,13 @@ export function DomainGridSurface<T extends object>({
       className={cn("min-w-0 w-full", className)}
     >
       <DataGridContainer className={cn("min-w-0 rounded-none border-0", className)}>
-        {children || <DataGridTable footerContent={footerContent} />}
+        {scrollArea ? (
+          <DataGridScrollArea orientation={scrollArea}>
+            {children || <DataGridTable footerContent={footerContent} />}
+          </DataGridScrollArea>
+        ) : (
+          children || <DataGridTable footerContent={footerContent} />
+        )}
         {layout?.cellSelection && <DataGridCellSelection<T> />}
       </DataGridContainer>
       {paginationControls && (
@@ -416,10 +425,12 @@ export function DomainRecordGrid<T extends object>({
   layout,
   rowFilter,
   paginationControls,
+  scrollArea,
 }: {
   data: T[];
   fields: DomainField<T>[];
   paginationControls?: boolean | { noun?: string; sizes?: number[]; className?: string };
+  scrollArea?: "horizontal" | "vertical" | "both";
   rowFilter?: (record: T) => boolean;
   search?: string;
   filters?: ColumnFiltersState;
@@ -517,6 +528,7 @@ export function DomainRecordGrid<T extends object>({
       className={className}
       layout={layout}
       paginationControls={paginationControls}
+      scrollArea={scrollArea}
     />
   );
 }

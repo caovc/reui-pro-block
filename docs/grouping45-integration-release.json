@@ -1,0 +1,74 @@
+{
+  "scope": "Native DataGrid bill of materials and reporting groups",
+  "base": "634762c9e80f3e6531a67a0db85ee8e4dcb17fde",
+  "files": [
+    {
+      "path": "src/blocks/data/grid-grouping-materials.tsx",
+      "operation": "write",
+      "sha256": "c8c79eeee7cae01b3e89b3db19f773360c8ed0fd639139ef4920b4fb4ea9d296",
+      "bytes": 37334
+    },
+    {
+      "path": "src/blocks/data/grid-grouping-reporting.tsx",
+      "operation": "write",
+      "sha256": "8429ec3da6e2f3df0277164fed31ad93494775d70f6e1042ef365867edf5bb16",
+      "bytes": 45984
+    },
+    {
+      "path": "tests/grid-grouping-trees-round2.spec.ts",
+      "operation": "write",
+      "sha256": "6e47e6ac5d62c79a3c4bf6f78552279c260fe51b714a8e647a283b8b5fe48734",
+      "bytes": 13848
+    },
+    {
+      "path": "docs/grid-grouping-trees-round2-refinement.md",
+      "operation": "write",
+      "sha256": "a9735807ab5cbbd52a816edd67a95a2f3218160e36181e97303387615091a05e",
+      "bytes": 12640
+    },
+    {
+      "path": "src/blocks/data/grid-grouping.tsx",
+      "operation": "write",
+      "sha256": "e74a1f3e4dd0dcf7b69d6864fcf7831c2725b448ecfa0360d1e51ce647f3a026",
+      "bytes": 20837
+    },
+    {
+      "path": "src/lib/source-targets.ts",
+      "operation": "write",
+      "sha256": "e96b80e4079dfadcb0b406a61b36a47ffabd4f8343075455f156c5eee6b4586b",
+      "bytes": 18709
+    },
+    {
+      "path": "src/blocks/data/grid-advanced-model-grid.tsx",
+      "operation": "write",
+      "sha256": "1d03ccb408b0a8430b60b3b15e1ff007740e6e22dde4677a5650827406834725",
+      "bytes": 17799
+    },
+    {
+      "path": "tests/grid-advanced-grouping.spec.ts",
+      "operation": "write",
+      "sha256": "fc3d859d3e707fec72cc90a2be7e3960545652ea82d635d131a611d449d6a1ef",
+      "bytes": 15678
+    },
+    {
+      "path": "src/blocks/data/grid-grouping-trees.tsx",
+      "operation": "delete",
+      "baselineSHA256": "5166cffbf9fbcb0c92567f5dda64627fa2c76bac744d910e7422fed7b7b89e91"
+    }
+  ],
+  "reuse": "Actual official free DataGrid/Filters/Frame/ScrollArea; opt-in horizontal scroll plumbing defaults unchanged for other model grids",
+  "changes": "Independent materials hierarchy/details/display and reporting groups/periods/actions replace old duplicate tree variants; delete obsolete shared tree module; source defaults open actual leaves",
+  "verification": {
+    "owner": "Main strict; two actual249file projects strict;65production and2source checks",
+    "rootIndependent": "Latest ebd clean narrow9 payload;Vite-only,65/65 production,format8/tooling3/lint0errors",
+    "newExport": "2 fresh249projects source/default/copy/file/deps/licenses exact;248 files match prior owner strict exports, remaining Activity file matches already published aa00 and its separate245file strict export",
+    "currentRoot": "Replayed exact9patch on634762c;Tabs Cohorts focus consumer and latestCohort sourcehooks retained; no additional runtime change/build",
+    "receipt": "/private/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-grid45-final-acceptance-yljngxsf/receipt.json"
+  },
+  "remaining": [
+    "Owner public-reference ledger retains Reporting phone width1206 vs1144 and menu/font2\u20134px differences",
+    "No new independent full public pixel audit claimed",
+    "Grouping6\u20137 and new official catalog additions remain separate"
+  ],
+  "publication": "Root serial commit/push; own cumulativeCI and Pages pending"
+}

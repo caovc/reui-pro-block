@@ -324,6 +324,10 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
     return paths("commerce", commerce[block.category]);
   }
   if (block.group === "data-grid") {
+    if (block.category === "grouping" && block.index >= 3 && block.index < 5) {
+      const module = ["grid-grouping-materials", "grid-grouping-reporting"][block.index - 3];
+      return paths("data", module, "grid-grouping");
+    }
     if (block.category === "grouping" && block.index < 3) {
       const module = ["grid-grouping-roadmap", "grid-grouping-revenue", "grid-grouping-cohorts"][
         block.index

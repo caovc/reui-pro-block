@@ -157,12 +157,14 @@ test("cohort grouping changes bands and notes visibility without changing totals
 });
 test("BOM search reveals matched descendants and a valid roll-up", async ({ page }) => {
   await page.goto(url("grouping", 4));
-  await page.getByRole("button", { name: "Set tree depth Collapse", exact: true }).click();
+  await page.getByRole("radio", { name: "Set tree depth Collapse", exact: true }).click();
   await expect(page.getByText("Copper Winding", { exact: true })).toHaveCount(0);
   await page.getByLabel("Search parts...", { exact: true }).fill("Copper");
   await expect(page.getByText("Copper Winding", { exact: true })).toBeVisible();
   await expect(page.getByText("Drive System", { exact: true })).toBeVisible();
-  await expect(page.getByText("$22.20", { exact: true })).toBeVisible();
+  await expect(
+    page.getByRole("row").filter({ hasText: "PRT-1112" }).getByText("$22.20", { exact: true }),
+  ).toBeVisible();
 });
 test("reporting selection cascades to every descendant, including collapsed people", async ({
   page,
