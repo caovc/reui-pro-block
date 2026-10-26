@@ -9,6 +9,12 @@
   line-height: 20px;
   -webkit-font-smoothing: antialiased;
 }
+/* The mobile portal inherits this Flow instance's reference typography.
+   Explicit preview font selectors remain authoritative over this fallback. */
+.fg-mobile-sheet {
+  --font-sans: var(--fg-inspector-origin-font-sans, Inter, Arial, sans-serif);
+  font-family: var(--fg-inspector-origin-font-family, var(--font-sans));
+}
 .fg-flow {
   height: 100svh;
   min-height: 540px;
@@ -21,14 +27,20 @@
 .fg-gantt * {
   box-sizing: border-box;
 }
-.fg-flow button,
+.fg-flow button:not(:where(.fg-native-controls *)),
 .fg-gantt button,
 .fg-portal button {
   font-family: inherit;
   font-size: 14px;
   font-weight: 500;
 }
-.fg-flow svg,
+@layer base {
+  .fg-flow svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+}
 .fg-gantt svg,
 .fg-portal svg {
   width: 16px;
@@ -326,13 +338,8 @@
 }
 .fg-node-menu {
   position: absolute;
-  right: 5px;
+  right: 4px;
   top: 12px;
-  width: 20px !important;
-  height: 24px !important;
-  min-width: 20px !important;
-  padding: 0 !important;
-  color: var(--muted-foreground);
 }
 .fg-tree-node .fg-node-copy {
   padding-right: 18px;
@@ -719,7 +726,7 @@
   z-index: 12;
   box-shadow: none;
 }
-.fg-controls button {
+.fg-controls button:not([data-slot="toggle-group-item"]) {
   height: 28px !important;
   min-width: 28px;
   width: 28px;
@@ -3157,4 +3164,11 @@
   content: "•";
   margin-right: 6px;
   color: var(--muted-foreground);
+}
+
+.fg-native-controls {
+  position: absolute;
+  left: 24px;
+  bottom: 24px;
+  z-index: 12;
 }

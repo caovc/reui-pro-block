@@ -17,12 +17,14 @@ import {
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { FlowFidelityNode } from "./flow-fidelity-node";
+import { FlowCanvasToolbar } from "./flow-canvas-toolbar";
 import { FlowInspectorTabs, FlowPeriodControl } from "./flow-inspector-tabs";
 import { Badge } from "@/components/reui/badge";
 import { Frame, FramePanel } from "@/components/reui/frame";
 import { IconTile } from "@/components/reui/icon-tile";
 import { MiniAvatar } from "./flow-gantt-avatars";
 import { FGSelect } from "./flow-gantt-select";
+import { useFlowPortalFont } from "./flow-portal-font";
 import { useEffect, useRef, useState } from "react";
 import {
   Check,
@@ -34,6 +36,8 @@ import {
   Download,
   Eye,
   GitBranch,
+  Grid2x2,
+  SquareDashedMousePointer,
   Target,
   LayoutGrid,
   Workflow,
@@ -340,7 +344,7 @@ type CanvasNode = RFNode<{
   root?: boolean;
 }>;
 type CanvasEdge = RFEdge<{ path: string; content: React.ReactNode; dash?: string }>;
-function OfficialNode({ data }: NodeProps<CanvasNode>) {
+function OfficialNode({ data, isConnectable }: NodeProps<CanvasNode>) {
   const targetStyle =
     data.pipeline && !data.attachment
       ? { left: 40, top: 28 }
@@ -352,6 +356,7 @@ function OfficialNode({ data }: NodeProps<CanvasNode>) {
     <>
       {!data.root && (
         <Handle
+          isConnectable={isConnectable}
           type="target"
           position={data.vertical ? Position.Top : Position.Left}
           className={data.incoming ? "fg-port-connected" : ""}
@@ -360,6 +365,7 @@ function OfficialNode({ data }: NodeProps<CanvasNode>) {
       )}
       {data.content}
       <Handle
+        isConnectable={isConnectable}
         type="source"
         position={data.vertical ? Position.Bottom : Position.Right}
         className={data.outgoing ? "fg-port-connected" : ""}
@@ -367,6 +373,7 @@ function OfficialNode({ data }: NodeProps<CanvasNode>) {
       />
       {data.attachmentSource && (
         <Handle
+          isConnectable={isConnectable}
           id="attachment"
           type="source"
           position={Position.Bottom}
@@ -415,12 +422,14 @@ function FieldHelp({ label }: { label: string }) {
   );
 }
 function FlowInspectorShell({
+  originRef,
   className,
   title,
   onClose,
   children,
   compact,
 }: {
+  originRef: React.RefObject<HTMLElement | null>;
   className: string;
   title: string;
   onClose: () => void;
@@ -428,6 +437,7 @@ function FlowInspectorShell({
   compact: boolean;
 }) {
   const [mobile, setMobile] = useState(() => window.matchMedia("(max-width:600px)").matches);
+  const portalFont = useFlowPortalFont(originRef, mobile);
   useEffect(() => {
     const media = window.matchMedia("(max-width:600px)");
     const update = () => setMobile(media.matches);
@@ -449,6 +459,7 @@ function FlowInspectorShell({
     >
       <SheetContent
         className={`fg-mobile-sheet ${compact ? "fg-mobile-sheet-compact" : ""}`}
+        style={portalFont}
         showCloseButton={false}
         aria-describedby={undefined}
       >
@@ -499,7 +510,7 @@ function FlowEditor({ block }: BlockProps) {
   const [model, setModel] = useState("Sonnet 5");
   const [testResultsCleared, setTestResultsCleared] = useState(false);
   const [locked, setLocked] = useState(false);
-  const [snap, setSnap] = useState(false);
+  const [snap, setSnap] = useState(variant === 0);
   const [mode, setMode] = useState("Pan");
   const [view, setView] = useState<View>(() =>
     startingView(window.innerWidth, window.innerHeight - 48, variant),
@@ -511,6 +522,7 @@ function FlowEditor({ block }: BlockProps) {
   const [runStates, setRunStates] = useState<Record<string, RunState>>({});
   const [cursor, setCursor] = useState(0);
   const canvas = useRef<HTMLDivElement>(null);
+  const contextInspectorOpening = useRef(false);
   const dirty = JSON.stringify(graph) !== saved;
   const touched = useRef(false);
   const flowApi = useRef<ReactFlowInstance<CanvasNode, CanvasEdge> | null>(null);
@@ -776,6 +788,7 @@ function FlowEditor({ block }: BlockProps) {
   }, [variant]);
   useEffect(() => {
     const key = (e: KeyboardEvent) => {
+      if (variant <= 1 && e.defaultPrevented) return;
       if ((e.target as HTMLElement).closest("input,textarea,select,[contenteditable]")) return;
       if (e.key === "Escape") {
         setInspected(null);
@@ -959,7 +972,7 @@ function FlowEditor({ block }: BlockProps) {
           {n.id !== "trigger" && (
             <>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onSelect={() => setDeleting(n.id)}>
+              <DropdownMenuItem variant="destructive" onSelect={() => setDeleting(n.id)}>
                 <Trash2 />
                 Delete
               </DropdownMenuItem>
@@ -1033,7 +1046,8 @@ function FlowEditor({ block }: BlockProps) {
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="ghost"
-                      className="fg-node-menu"
+                      size="icon-xs"
+                      className="fg-node-menu text-muted-foreground"
                       aria-label={`Actions for ${n.title}`}
                       onPointerDown={(event) => event.stopPropagation()}
                     >
@@ -1042,7 +1056,9 @@ function FlowEditor({ block }: BlockProps) {
                       />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="fg-portal">{nodeActions(n)}</DropdownMenuContent>
+                  <DropdownMenuContent className="fg-portal w-44" align="end">
+                    {nodeActions(n)}
+                  </DropdownMenuContent>
                 </DropdownMenu>
               )}
               {variant === 0 && selected === n.id && (
@@ -1350,14 +1366,55 @@ function FlowEditor({ block }: BlockProps) {
             </Frame>
           )}
         </ContextMenuTrigger>
-        <ContextMenuContent className="fg-portal min-w-44">
+        <ContextMenuContent
+          className={variant === 0 ? "fg-portal w-48" : "fg-portal min-w-44"}
+          onCloseAutoFocus={(event) => {
+            if (variant === 0 && contextInspectorOpening.current) {
+              contextInspectorOpening.current = false;
+              const focused = canvas.current?.ownerDocument.activeElement;
+              // Keep a focus destination already chosen in the new editor or popup.
+              // Otherwise retain the menu's native return to its node trigger.
+              if (
+                focused instanceof HTMLElement &&
+                focused !== focused.ownerDocument.body &&
+                !focused.closest('[data-slot="context-menu-content"]')
+              ) {
+                event.preventDefault();
+              }
+            }
+          }}
+        >
           {variant < 2 ? (
             <>
               {variant === 0 && (
-                <ContextMenuItem onSelect={() => add(n)}>Add step after</ContextMenuItem>
+                <>
+                  <ContextMenuItem
+                    onSelect={() => {
+                      contextInspectorOpening.current = true;
+                      add(n);
+                    }}
+                  >
+                    Add step after
+                  </ContextMenuItem>
+                  <ContextMenuSeparator />
+                </>
               )}
-              <ContextMenuItem onSelect={() => open(n, false)}>View details</ContextMenuItem>
-              <ContextMenuItem onSelect={() => open(n, true)}>Edit step</ContextMenuItem>
+              <ContextMenuItem
+                onSelect={() => {
+                  if (variant === 0) contextInspectorOpening.current = true;
+                  open(n, false);
+                }}
+              >
+                View details
+              </ContextMenuItem>
+              <ContextMenuItem
+                onSelect={() => {
+                  if (variant === 0) contextInspectorOpening.current = true;
+                  open(n, true);
+                }}
+              >
+                Edit step
+              </ContextMenuItem>
               {variant === 1 && (
                 <>
                   <ContextMenuItem onSelect={() => add(n, undefined, true)}>
@@ -1366,7 +1423,9 @@ function FlowEditor({ block }: BlockProps) {
                   {n.id !== "trigger" && (
                     <>
                       <ContextMenuSeparator />
-                      <ContextMenuItem onSelect={() => setDeleting(n.id)}>Delete</ContextMenuItem>
+                      <ContextMenuItem variant="destructive" onSelect={() => setDeleting(n.id)}>
+                        Delete
+                      </ContextMenuItem>
                     </>
                   )}
                 </>
@@ -1679,7 +1738,10 @@ function FlowEditor({ block }: BlockProps) {
                   <MoreHorizontal />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="fg-portal" align="end">
+              <DropdownMenuContent
+                className={variant === 0 ? "fg-portal w-56" : "fg-portal"}
+                align="end"
+              >
                 {variant === 1 ? (
                   <>
                     <DropdownMenuItem
@@ -1721,7 +1783,12 @@ function FlowEditor({ block }: BlockProps) {
                 ) : variant === 0 ? (
                   <>
                     <DropdownMenuLabel>Canvas</DropdownMenuLabel>
-                    <DropdownMenuCheckboxItem checked={snap} onCheckedChange={setSnap}>
+                    <DropdownMenuCheckboxItem
+                      checked={snap}
+                      onCheckedChange={setSnap}
+                      onSelect={(event) => event.preventDefault()}
+                    >
+                      <Grid2x2 />
                       Snap to grid
                     </DropdownMenuCheckboxItem>
                     <DropdownMenuItem
@@ -1736,6 +1803,7 @@ function FlowEditor({ block }: BlockProps) {
                         });
                       }}
                     >
+                      <RotateCcw />
                       Reset layout
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
@@ -1743,11 +1811,13 @@ function FlowEditor({ block }: BlockProps) {
                     <DropdownMenuItem
                       onSelect={() => setSelection(graph.nodes.map((node) => node.id))}
                     >
+                      <SquareDashedMousePointer />
                       Select all steps
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       onSelect={() => navigator.clipboard.writeText(JSON.stringify(graph, null, 2))}
                     >
+                      <Copy />
                       Copy as JSON
                     </DropdownMenuItem>
                   </>
@@ -1879,14 +1949,15 @@ function FlowEditor({ block }: BlockProps) {
           onConnect={(connection) => {
             if (connection.target) connect(connection.target, connection.source);
           }}
-          nodesDraggable={!locked}
-          nodesConnectable={!locked}
+          nodesDraggable={!locked && (variant >= 2 || mode === "Select")}
+          nodesConnectable={!locked && (variant >= 2 || mode === "Select")}
           snapToGrid={snap}
-          snapGrid={[24, 24]}
+          snapGrid={variant === 0 ? [20, 20] : [24, 24]}
           panOnDrag={mode === "Pan"}
           selectionOnDrag={mode === "Select"}
           panOnScroll
           zoomOnScroll={false}
+          zoomOnDoubleClick={variant >= 2}
           zoomOnPinch
           minZoom={0.2}
           maxZoom={2}
@@ -1926,93 +1997,114 @@ function FlowEditor({ block }: BlockProps) {
           </ViewportPortal>
         </ReactFlow>
       </div>
-      <div className="fg-controls">
-        <IconButton label="Select" active={mode === "Select"} onClick={() => setMode("Select")}>
-          <MousePointer2 />
-        </IconButton>
-        <IconButton label="Pan" active={mode === "Pan"} onClick={() => setMode("Pan")}>
-          <Hand />
-        </IconButton>
-        {variant === 0 && <span className="fg-control-sep" />}
-        <IconButton label="Zoom out" onClick={() => zoomBy(1 / 1.2)}>
-          <Minus />
-        </IconButton>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button
-              className="fg-zoom-value"
-              aria-label={`Zoom level ${Math.round(view.zoom * 100)}%`}
-            >
-              {Math.round(view.zoom * 100)}%
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="fg-portal">
-            {[0.5, 0.75, 1, 1.25, 1.5].map((z) => (
-              <DropdownMenuItem key={z} onSelect={() => setView((v) => ({ ...v, zoom: z }))}>
-                {z * 100}%
-              </DropdownMenuItem>
-            ))}
-            <DropdownMenuItem onSelect={fit}>Fit to view</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-        <IconButton label="Zoom in" onClick={() => zoomBy(1.2)}>
-          <Plus />
-        </IconButton>
-        <span className="fg-control-sep" />
-        {variant === 0 ? (
-          <>
-            <IconButton label="Undo" disabled={!past.length} onClick={undo}>
-              <Undo2 />
-            </IconButton>
-            <IconButton label="Redo" disabled={!future.length} onClick={redo}>
-              <Redo2 />
-            </IconButton>
-            <span className="fg-control-sep" />
-            <IconButton
-              label={locked ? "Unlock canvas" : "Lock canvas"}
-              active={locked}
-              pressed={locked}
-              onClick={() => setLocked(!locked)}
-            >
-              {locked ? <UnlockKeyhole /> : <LockKeyhole />}
-            </IconButton>
-          </>
-        ) : variant === 1 ? (
-          <IconButton label="Tidy tree" onClick={autoLayout}>
-            <Workflow />
+      {variant <= 1 ? (
+        <FlowCanvasToolbar
+          variant={variant === 0 ? 0 : 1}
+          mode={mode}
+          onModeChange={setMode}
+          zoom={view.zoom}
+          onZoomOut={() => zoomBy(1 / 1.2)}
+          onZoomIn={() => zoomBy(1.2)}
+          onZoomChange={(zoom) => setView((previous) => ({ ...previous, zoom }))}
+          onFit={fit}
+          canUndo={past.length > 0}
+          canRedo={future.length > 0}
+          onUndo={undo}
+          onRedo={redo}
+          locked={locked}
+          onLockedChange={setLocked}
+          onTidy={autoLayout}
+        />
+      ) : (
+        <div className="fg-controls">
+          <IconButton label="Select" active={mode === "Select"} onClick={() => setMode("Select")}>
+            <MousePointer2 />
           </IconButton>
-        ) : variant === 2 ? (
-          <IconButton
-            label="Focus failed task"
-            onClick={() => {
-              const node = graph.nodes.find((n) => stateFor(n) === "Failed");
-              if (node) {
-                open(node, true);
-                setView((v) => ({ ...v, x: 150 - node.x * v.zoom, y: 150 - node.y * v.zoom }));
-              }
-            }}
-          >
-            <TriangleAlert />
+          <IconButton label="Pan" active={mode === "Pan"} onClick={() => setMode("Pan")}>
+            <Hand />
           </IconButton>
-        ) : (
-          <>
+          {variant === 0 && <span className="fg-control-sep" />}
+          <IconButton label="Zoom out" onClick={() => zoomBy(1 / 1.2)}>
+            <Minus />
+          </IconButton>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button
+                className="fg-zoom-value"
+                aria-label={`Zoom level ${Math.round(view.zoom * 100)}%`}
+              >
+                {Math.round(view.zoom * 100)}%
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="fg-portal">
+              {[0.5, 0.75, 1, 1.25, 1.5].map((z) => (
+                <DropdownMenuItem key={z} onSelect={() => setView((v) => ({ ...v, zoom: z }))}>
+                  {z * 100}%
+                </DropdownMenuItem>
+              ))}
+              <DropdownMenuItem onSelect={fit}>Fit to view</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <IconButton label="Zoom in" onClick={() => zoomBy(1.2)}>
+            <Plus />
+          </IconButton>
+          <span className="fg-control-sep" />
+          {variant === 0 ? (
+            <>
+              <IconButton label="Undo" disabled={!past.length} onClick={undo}>
+                <Undo2 />
+              </IconButton>
+              <IconButton label="Redo" disabled={!future.length} onClick={redo}>
+                <Redo2 />
+              </IconButton>
+              <span className="fg-control-sep" />
+              <IconButton
+                label={locked ? "Unlock canvas" : "Lock canvas"}
+                active={locked}
+                pressed={locked}
+                onClick={() => setLocked(!locked)}
+              >
+                {locked ? <UnlockKeyhole /> : <LockKeyhole />}
+              </IconButton>
+            </>
+          ) : variant === 1 ? (
+            <IconButton label="Tidy tree" onClick={autoLayout}>
+              <Workflow />
+            </IconButton>
+          ) : variant === 2 ? (
             <IconButton
-              label="Focus north star"
+              label="Focus failed task"
               onClick={() => {
-                const node = graph.nodes.find((n) => n.role === "North Star");
-                if (node) open(node, true);
+                const node = graph.nodes.find((n) => stateFor(n) === "Failed");
+                if (node) {
+                  open(node, true);
+                  setView((v) => ({ ...v, x: 150 - node.x * v.zoom, y: 150 - node.y * v.zoom }));
+                }
               }}
             >
-              <Target />
+              <TriangleAlert />
             </IconButton>
-            <IconButton label="Auto layout" onClick={autoLayout}>
-              <LayoutGrid />
-            </IconButton>
-          </>
-        )}
-      </div>
+          ) : (
+            <>
+              <IconButton
+                label="Focus north star"
+                onClick={() => {
+                  const node = graph.nodes.find((n) => n.role === "North Star");
+                  if (node) open(node, true);
+                }}
+              >
+                <Target />
+              </IconButton>
+              <IconButton label="Auto layout" onClick={autoLayout}>
+                <LayoutGrid />
+              </IconButton>
+            </>
+          )}
+        </div>
+      )}
       {current && (
         <FlowInspectorShell
+          originRef={canvas}
           className={`fg-inspector ${variant >= 2 ? "fg-floating" : ""}`}
           title={current.title}
           compact={variant >= 2}

@@ -1,0 +1,52 @@
+{
+  "scope": "Flow native toolbar, menus, selection and double-click details",
+  "base": "111335976bda1714c30fbf0b1053418e7e043a03",
+  "files": {
+    "src/blocks/application/flow-gantt-flow.tsx": "ad9a18063edfd42c955e2c2465cbc56e0f2bcffd2961bb2e1e1744d04a37e9a5",
+    "src/blocks/application/flow-gantt-refined.css": "fd1f2fea1806126527de07a654cf0ea619b7ee5abee32a0491980aa3ce10e81c",
+    "src/blocks/application/flow-fidelity-node.tsx": "767fe071c0cff94c0dfafeafdcda8bb5a63d16ca528f2b6acc7fe53fa1641e6f",
+    "src/blocks/application/flow-portal-font.ts": "24e591198f89d74737362f3564d891d2265f90519d93dfdbfaf88f79e7186823",
+    "src/blocks/application/flow-canvas-toolbar.tsx": "e127134d99fc66e384818725f52647f39f09a855b7335a3291de2678dad0a68a",
+    "tests/flow-fidelity-round2.spec.ts": "0ba3197c134922759c47774a28c17ce21ee5b5f76b3440b56d3208331c95765e",
+    "tests/flow-gantt-refinement.spec.ts": "cb5048d999da80493b6c29a2344476630e4b0d24b561dc66dad3328433533218",
+    "tests/flow-detail-fidelity.spec.ts": "b5ae69a9ca01b977fd2157213302ee7a8f37fffbcc5cb7d747a39896e2b12d1e",
+    "docs/flow-detail-fidelity.md": "5c2fe10a97803ee7f281ea47695d63c9b06df8c7be584378a91e1d969eb83cc6"
+  },
+  "reuse": "Actual official free Card/ToggleGroup/Toggle/Separator/Button/Tooltip with existing Frame/Badge/IconTile/InspectorTabs; native radio semantics retained",
+  "custom": "React Flow engine and domain graph/history runner remain necessary beyond free component library; instance-local portal font fallback preserves explicit theme choices",
+  "verification": {
+    "main": "b131 repaired strict0 and64/64 once immutableprod; old54PASS/6FAIL retained",
+    "paint": "Only2 consumer checked-state classes after64; Vite-only0 and21targeted,includingall4old+4newdoubleclick; no third mainstrict",
+    "source": "4Examples times6actualfiles view/copy/singlefile/ZIPexact; each378with375commonbytes,3metadata differences",
+    "standalone": {
+      "representativeStrictRuns": 1,
+      "representative": "flow-2",
+      "normalInstallExit": 0,
+      "normalInstallAuditVulnerabilities": 0,
+      "strictExit": 0,
+      "actualNode": "22.23.3",
+      "actualNpm": "10.9.9",
+      "configurationUnchanged": "/tmp/flow-detail-paint-v4-flow2-original-config.json",
+      "installLog": "/tmp/flow-detail-paint-v4-flow2-install.log",
+      "strictLog": "/tmp/flow-detail-paint-v4-flow2-strict-build.log",
+      "resolvedDependencies": "/tmp/flow-detail-paint-v4-flow2-installed-dependencies.json",
+      "flow1OnlyViteRuns": 1,
+      "flow1ViteExit": 0,
+      "flow1ViteLog": "/tmp/flow-detail-paint-v4-flow1-vite-build.log",
+      "independentViewportFlows": 4,
+      "smoke": "/tmp/flow-detail-paint-v4-standalone-v2-smoke.json",
+      "settledPhoneCaptureSupplement": "/tmp/flow-detail-paint-v4-standalone-settled-captures.json",
+      "original378SourceIntegrityAndDist": "/tmp/flow-detail-paint-v4-standalone-integrity.json"
+    },
+    "latestBaseZipIntersection": [],
+    "queuedSource5ZipIntersection": [],
+    "compat": "Owner latest-compat proves Flowly caller unchanged asideInvite and SourceTargets Flow route unchanged. Current111 test/docs only adds no runtime.",
+    "rootVisual": "Inspected actual desktopPan and390 settlededitor screenshots;selectedPanvisible andphonefooter/fieldsfit"
+  },
+  "remaining": [
+    "Native Radix radio/focus semantics differ from public BaseUI; no fake role or pressed bridge",
+    "Field/AlertDialog detailed migration remains separate planned scope",
+    "Original artwork and domain state intentionally independent; no complete pixel-parity claim"
+  ],
+  "publication": "Root serial commit andpush; own cumulativeCI/Pages pending"
+}

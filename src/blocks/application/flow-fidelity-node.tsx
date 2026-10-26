@@ -79,7 +79,7 @@ export const FlowFidelityNode = forwardRef<HTMLDivElement, FlowFidelityNodeProps
         className={`flow-fidelity-node ${className}`}
       >
         {children && <div className="flow-fidelity-node-controls">{children}</div>}
-        <FramePanel fit>
+        <FramePanel fit className="shadow-none">
           <FrameHeader className="flow-fidelity-node-body">
             <IconTile variant={solidIcon ? "solid" : "outline"} size="sm">
               {icon}

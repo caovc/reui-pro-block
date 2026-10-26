@@ -34,7 +34,13 @@ for (const width of [1440, 390]) {
           width: node.clientWidth + 2,
           height: node.clientHeight + 2,
           border: style.borderTopWidth,
-          shadow: style.boxShadow,
+          radius: style.borderRadius,
+          background: style.backgroundColor,
+          visibleShadow:
+            style.boxShadow !== "none" &&
+            !style.boxShadow
+              .split(/,(?![^()]*\))/)
+              .every((layer) => /^rgba\([^)]*,\s*0\)/.test(layer.trim())),
           tile: !!panel.querySelector('[data-slot="icon-tile"]'),
           footer: !!panel.querySelector('[data-slot="frame-panel-footer"]'),
         };
@@ -43,10 +49,13 @@ for (const width of [1440, 390]) {
         width: id === "flow-1" ? 240 : 256,
         height: id === "flow-1" ? 83 : 79,
         border: "1px",
+        radius: "10px",
+        visibleShadow: false,
         tile: true,
         footer: true,
       });
-      expect(metrics.shadow).not.toBe("none");
+      expect(metrics.background).not.toBe("transparent");
+      expect(metrics.background).not.toBe("rgba(0, 0, 0, 0)");
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(width);
       if (id === "flow-1")
         await expect(nodes.first().locator('[data-slot="badge"]')).toHaveText("Success");
@@ -224,7 +233,7 @@ test("workflow menu offers the observed canvas and selection actions", async ({
   ]);
   await expect(
     page.getByRole("menuitemcheckbox", { name: "Snap to grid", exact: true }),
-  ).toHaveAttribute("aria-checked", "false");
+  ).toHaveAttribute("aria-checked", "true");
   await page.getByRole("menuitem", { name: "Select all steps", exact: true }).click();
   await expect(page.locator(".react-flow__node.selected")).toHaveCount(5);
   await page.getByRole("button", { name: "Workflow actions", exact: true }).click();

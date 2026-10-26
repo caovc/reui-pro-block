@@ -17,6 +17,11 @@ test.beforeEach(async ({ page }) => {
 
 test("lead flow uses engine dragging, undo and dirty-aware updates", async ({ page }) => {
   await open(page, "flow-1");
+  await page.getByRole("radio", { name: "Select", exact: true }).click();
+  // This case checks free dragging and Undo. Quantized snapping is covered separately.
+  await page.getByRole("button", { name: "Workflow actions", exact: true }).click();
+  await page.getByRole("menuitemcheckbox", { name: "Snap to grid", exact: true }).click();
+  await page.keyboard.press("Escape");
   const node = page.locator('[data-flow-node="condition"]');
   await page.evaluate(() => document.fonts.ready);
   const start = (await node.boundingBox())!;
@@ -166,7 +171,7 @@ test("resource gantt rejects capacity conflicts and saves a valid booking", asyn
 test("box selection retains its delete action and fit includes a moved node", async ({ page }) => {
   await open(page, "flow-1");
   const node = page.locator(".react-flow__node").first();
-  await page.getByRole("button", { name: "Select", exact: true }).click();
+  await page.getByRole("radio", { name: "Select", exact: true }).click();
   const selected = (await node.boundingBox())!;
   await page.mouse.move(selected.x - 12, selected.y - 12);
   await page.mouse.down();
