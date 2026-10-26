@@ -1,5 +1,6 @@
 /* Independent domain geometry over the actual free ReUI DataGrid renderer. */
 .freight-grid {
+  --cell-py: calc(var(--spacing) * 1.5);
   /* Calibrated semantic tones share one oklab blend against the current surface. */
   --freight-heat-opacity: 80%;
   --freight-deep-loss: color-mix(
@@ -89,18 +90,31 @@
   background: color-mix(in oklab, var(--muted) 40%, transparent);
 }
 .freight-band-dot {
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
   flex-shrink: 0;
   border-radius: 50%;
   background: var(--freight-band);
 }
+/* The free footer cell has no overflow reserve API in the current registry.
+   Reuse the underlying Base UI overflow attribute and scrollbar size token. */
+.freight-grid [data-has-overflow-x] .freight-footer-cell {
+  padding-bottom: calc(var(--cell-py) + var(--data-grid-scrollbar-size, 0.625rem));
+}
 .freight-legend-backhaul {
-  width: 14px;
+  position: relative;
+  display: inline-block;
+  width: 16px;
   height: 12px;
+  flex-shrink: 0;
   border: 1px solid var(--border);
-  background: linear-gradient(145deg, transparent 50%, var(--muted-foreground) 51%);
-  opacity: 0.35;
+}
+.freight-legend-backhaul::after {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in oklab, var(--foreground) 15%, transparent);
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  content: "";
 }
 .freight-grid [data-slot="data-grid-table-head"] [data-col-id^="to-"] {
   font-size: 12px;
@@ -126,19 +140,19 @@
 }
 
 .freight-band-dot[data-band="Deep Loss"] {
-  background: var(--color-red-600);
+  background: var(--destructive);
 }
 .freight-band-dot[data-band="Loss"] {
-  background: var(--color-red-400);
+  background: color-mix(in oklab, var(--destructive) 50%, transparent);
 }
 .freight-band-dot[data-band="Thin"] {
-  background: var(--color-amber-500);
+  background: var(--warning);
 }
 .freight-band-dot[data-band="Healthy"] {
-  background: var(--color-emerald-300);
+  background: color-mix(in oklab, var(--success) 50%, transparent);
 }
 .freight-band-dot[data-band="Strong"] {
-  background: var(--color-emerald-500);
+  background: var(--success);
 }
 
 .freight-grid:has(.freight-heat[data-destination="OPO"]:is(:hover, :focus-visible))

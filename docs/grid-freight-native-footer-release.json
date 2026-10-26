@@ -1,0 +1,104 @@
+{
+  "baseCommit": "55fc794cac909ac53118ab1e54646e6a8ecbc22a",
+  "payloadFiles": [
+    {
+      "path": "src/blocks/data/grid-advanced-freight.tsx",
+      "beforeSha256": "c7a5c8f10a32ec590e185c33859397a57d351658de100ad7224b57ec1760f1f2",
+      "afterSha256": "24552bbd3a61f30b752e893a916c456fe1ad37ecd3429942b339645d440423a9"
+    },
+    {
+      "path": "src/blocks/data/grid-advanced-freight.css",
+      "beforeSha256": "da405c3e90860de92db914cb415ced2519da0908b1af8e67eb3fd759bf025dae",
+      "afterSha256": "5acfe95a7c5f72b6ff8d7cea2846a538c606be3c4d4731b7d006784ed95d10ae"
+    },
+    {
+      "path": "tests/grid-advanced-freight.spec.ts",
+      "beforeSha256": "b1c38543ac885b688c179df9dc4685222cc599e16db4c2a16731aab8f4053a28",
+      "afterSha256": "02c729ca22f5e4a24d87193ee8739b520281640751506cab241c2101d334912f"
+    }
+  ],
+  "actualFreeComponents": [
+    "ReUI DataGrid native TanStack raw lane filtering model",
+    "ToggleGroup/ToggleGroupItem multiple outline sm spacing0",
+    "Existing IconHint + Tooltip",
+    "Existing mobile single Select",
+    "FrameFooter and DataGridTableFootRow/Cell",
+    "Underlying free BaseUI ScrollArea native overflow attribute and scrollbar-size token"
+  ],
+  "duplicateImplementationsCorrected": [
+    "Manual border wrapper + ghostButton margin strip replaced by actual native multiple ToggleGroup",
+    "Consumer fixed h26/py0 footer and h41 compact rows removed in favor of actual free spacing and native border/content"
+  ],
+  "customAndReasons": [
+    "Current free Radix/Base footer cells lack observed scrollbar padding reserve, so consumer CSS extends existing native overflow state; no new observer/controller or fixed total height",
+    "Original multi-band OR criteria composition calls unchanged domain predicate in native globalFilterFn",
+    "Original threshold tooltip text: public contents unobserved; existing local -8/0/6/12 thresholds preserved",
+    "Original CSS Backhaul mark and semantic dot tokens; no upstream media/SVG"
+  ],
+  "effectiveCoverage": "Original5PASS plus correctednew1PASS; do not claim first6 once allPASS",
+  "testOnlyCorrection": "One group→toolbar locator in appended case only; product source/assets and all assertion/action/budget values unchanged; affected1 only, original5 not rerun",
+  "source1": {
+    "files": 304,
+    "supportingRawExactCount": 294,
+    "SVGCount": 0,
+    "viewerDOMCopySingleZIPExact": true,
+    "pageErrors": [],
+    "archiveSHA256": "6cdab518e414d494b999750e69106c6c7a0befa4b86257cf2f1c8492682e76e2",
+    "rawExactLicenses": ["LICENSE", "THIRD_PARTY_NOTICES.md"],
+    "generatedThemeExact": true,
+    "originalChangedMembers": []
+  },
+  "actualStrict": {
+    "pid": 41922,
+    "cmd": ["npm", "run", "build"],
+    "cwd": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-freight-gap6-55fc-tuzu4_p5/source1/export-original-12",
+    "originalScript": "tsc --noEmit && vite build",
+    "exitCode": 0,
+    "seconds": 11.619
+  },
+  "actualNative2": {
+    "startTime": "2026-10-26T14:20:00.792Z",
+    "duration": 1495.185,
+    "expected": 2,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "residuals": [
+    "Original fixtures/threshold tooltip descriptions/LucideFlag intentionally differ from private reference materials; no upstream media/SVG copied",
+    "Only light Compact1440/390 newly measured; no fresh dark/comfortable geometry or unmeasured total-pixel fidelity claim",
+    "Backhaul gap2px residual from previous window now resolved by native gap6; new measured Backhaul wrapper and phoneSelect plus five desktop toggle boxes match direct same-state reference"
+  ],
+  "previousWindow": {
+    "path": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-freight-native-55fc-smj95lg_",
+    "receiptSHA256": "2cc1723f7e4479db666c38c087d7c620a2bcbb4eb2bc2c01166d56d4f08abd61",
+    "nativeTestsNotRerun": true,
+    "carryoverBasis": "Only Backhaul label spacing4→6 changed. All fixture/domain/filter/store/props/action/assertion/test bytes retained; original5PASS plus role-corrected affected1PASS preserved. New change has fresh original main, geometry, Source and actual strict/native2."
+  },
+  "validationReceiptSHA256": "e2a5009f32a681628c18866e01d887dfed4e1e111408527ba3538509f2ddf4c3",
+  "mainBuild": {
+    "exitCode": 0,
+    "seconds": 21.649,
+    "immutableDistFiles": 657
+  },
+  "geometry": {
+    "desktop": {
+      "viewport": 1440,
+      "tableHeight": 550,
+      "footHeight": 27,
+      "outerFooterHeight": 44
+    },
+    "phone": {
+      "viewport": 390,
+      "tableHeight": 560,
+      "footHeight": 37,
+      "outerFooterHeight": 72,
+      "scrollLeft": 686,
+      "pinnedX": [17, 66],
+      "documentWidth": 390
+    },
+    "nativeLegendAndBackhaulBoxes": "Exact measured public same-state match; actual PNGs viewed",
+    "fixedTotalHeight": false
+  },
+  "publication": "Root-scoped milestone; GitHub CI and Pages remain separate gates. No deployment claimed by this receipt."
+}

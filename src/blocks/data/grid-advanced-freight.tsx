@@ -9,12 +9,12 @@ import {
   type SortingState,
 } from "@tanstack/react-table";
 import {
-  ArrowDownLeft,
   ArrowRight,
   Columns3,
   Download,
   Ellipsis,
   Filter,
+  Flag,
   MapPin,
   Plus,
   RotateCcw,
@@ -292,6 +292,17 @@ function IconHint({ label, children }: { label: string; children: ReactElement }
 
 export type FreightCargoProps = { loadNetwork?: (signal: AbortSignal) => Promise<FreightBook> };
 
+type FreightBandCriteria = Omit<FreightCriteria, "band"> & { bands: FreightBand[] };
+
+// Original demo descriptions follow the existing domain thresholds.
+const freightBandHints: Record<FreightBand, string> = {
+  "Deep Loss": "Margin below -8%",
+  Loss: "Margin from -8% to below 0%",
+  Thin: "Margin from 0% to below 6%",
+  Healthy: "Margin from 6% to below 12%",
+  Strong: "Margin 12% or higher",
+};
+
 export default function FreightCargo({ loadNetwork }: FreightCargoProps = {}) {
   const [book, setBook] = useState<FreightBook>(() =>
     loadNetwork ? { lanes: [], history: [] } : createFreightBook(),
@@ -302,7 +313,7 @@ export default function FreightCargo({ loadNetwork }: FreightCargoProps = {}) {
   const [undoBooks, setUndoBooks] = useState<FreightBook[]>([]);
   const [query, setQuery] = useState(createFilterQuery);
   const [search, setSearch] = useState("");
-  const [band, setBand] = useState<FreightBand | "All Margins">("All Margins");
+  const [selectedBands, setSelectedBands] = useState<FreightBand[]>([]);
   const [mode, setMode] = useState<"loads" | "profit">("loads");
   const [panel, setPanel] = useState<FreightPanel>(null);
   const gridRef = useRef<HTMLDivElement>(null);
@@ -376,10 +387,16 @@ export default function FreightCargo({ loadNetwork }: FreightCargoProps = {}) {
     media.addEventListener("change", update);
     return () => media.removeEventListener("change", update);
   }, []);
-  const criteria = useMemo<FreightCriteria>(
-    () => ({ text: search, query, band }),
-    [search, query, band],
+  const criteria = useMemo<FreightBandCriteria>(
+    () => ({ text: search, query, bands: selectedBands }),
+    [search, query, selectedBands],
   );
+  const mobileBandValue =
+    selectedBands.length === 0
+      ? "All Margins"
+      : selectedBands.length === 1
+        ? (selectedBands[0] ?? "")
+        : "";
   // The complete directed lane records enter the native filtering model.
   // The second model below renders the terminal pivot, not a replacement query engine.
   const laneTable = useTable({
@@ -389,8 +406,19 @@ export default function FreightCargo({ loadNetwork }: FreightCargoProps = {}) {
     getRowId: (lane) => lane.id,
     manualPagination: true,
     state: { globalFilter: criteria },
-    globalFilterFn: (row, _column, value) =>
-      freightLaneMatches(row.original, value as FreightCriteria, freightTerminals),
+    globalFilterFn: (row, _column, value) => {
+      const { bands, ...laneCriteria } = value as FreightBandCriteria;
+      if (!bands.length) {
+        return freightLaneMatches(
+          row.original,
+          { ...laneCriteria, band: "All Margins" },
+          freightTerminals,
+        );
+      }
+      return bands.some((band) =>
+        freightLaneMatches(row.original, { ...laneCriteria, band }, freightTerminals),
+      );
+    },
   });
   const nativeLaneRows = laneTable.getFilteredRowModel().rows;
   const matchingLanes = useMemo(() => nativeLaneRows.map((row) => row.original), [nativeLaneRows]);
@@ -401,7 +429,7 @@ export default function FreightCargo({ loadNetwork }: FreightCargoProps = {}) {
   const selectedIds = Object.keys(selection);
   const selectedLanes = activeLanes.filter((lane) => selection[lane.origin]);
   const selectedTotals = freightTotals(selectedLanes);
-  const isFiltered = search.trim() !== "" || query.rules.length > 0 || band !== "All Margins";
+  const isFiltered = search.trim() !== "" || query.rules.length > 0 || selectedBands.length > 0;
   const exportLanes = useCallback((lanes: FreightLane[]) => {
     downloadCsv(
       "bricklane-freight-lanes",
@@ -595,7 +623,7 @@ export default function FreightCargo({ loadNetwork }: FreightCargoProps = {}) {
   const resetQuery = () => {
     setSearch("");
     setQuery(createFilterQuery());
-    setBand("All Margins");
+    setSelectedBands([]);
   };
   const clearVisibility = () => matrixTable.setColumnVisibility({});
   function commit(next: FreightBook, label: string) {
@@ -641,28 +669,37 @@ export default function FreightCargo({ loadNetwork }: FreightCargoProps = {}) {
         <DataGridTableFootRowCell
           key={column.id}
           className={cn(
-            "h-[26px] px-1 py-0 text-center text-xs font-normal bg-background",
-            column.id === "origin" && "sticky start-[49px] z-30 text-left px-2",
-            column.id === "select" && "sticky start-0 z-30 pl-4",
+            "freight-footer-cell bg-background",
+            column.id === "origin" && "sticky start-[49px] z-30",
+            column.id === "select" && "sticky start-0 z-30",
           )}
         >
           {column.id === "origin" ? (
-            <span className="whitespace-nowrap">
-              <ArrowDownLeft className="inline size-3" /> Inbound
+            <span className="flex items-center gap-1.5 text-sm font-medium text-foreground">
+              <Flag aria-hidden="true" className="size-3.5 shrink-0 opacity-60" />
+              <span className="[text-box:trim-both_cap_alphabetic]">Inbound</span>
             </span>
           ) : column.id.startsWith("to-") ? (
             (() => {
               const summary = freightTotals(filteredPivot.inbound.get(column.id.slice(3)) || []);
-              return mode === "loads"
-                ? summary.loads || "—"
-                : freightMoney(summary.profitCents, true);
+              return (
+                <span className="flex justify-center text-xs">
+                  <span className="font-medium tabular-nums [text-box:trim-both_cap_alphabetic]">
+                    {mode === "loads"
+                      ? summary.loads || "—"
+                      : freightMoney(summary.profitCents, true)}
+                  </span>
+                </span>
+              );
             })()
           ) : column.id === "out" ? (
-            mode === "loads" ? (
-              totals.loads.toLocaleString("en-GB")
-            ) : (
-              freightMoney(totals.profitCents, true)
-            )
+            <span className="flex justify-center text-sm">
+              <span className="font-medium tabular-nums [text-box:trim-both_cap_alphabetic]">
+                {mode === "loads"
+                  ? totals.loads.toLocaleString("en-GB")
+                  : freightMoney(totals.profitCents, true)}
+              </span>
+            </span>
           ) : null}
         </DataGridTableFootRowCell>
       ))}
@@ -672,7 +709,7 @@ export default function FreightCargo({ loadNetwork }: FreightCargoProps = {}) {
     <Frame
       dense
       ref={gridRef}
-      className="freight-grid mx-auto w-full min-w-0 max-w-[1216px] text-sm"
+      className="freight-grid mx-auto w-full min-w-0 max-w-[1216px]"
       role="region"
       aria-label="Freight & Cargo Services"
       data-density={roomy ? "comfortable" : "compact"}
@@ -933,7 +970,7 @@ export default function FreightCargo({ loadNetwork }: FreightCargoProps = {}) {
           tableClassNames={{
             base: "text-sm",
             headerRow: "h-8",
-            bodyRow: roomy ? "h-[49px]" : "h-[41px]",
+            bodyRow: roomy ? "h-[49px]" : undefined,
             footer: "bg-background",
             edgeCell: "",
           }}
@@ -944,7 +981,7 @@ export default function FreightCargo({ loadNetwork }: FreightCargoProps = {}) {
             </DataGridScrollArea>
           </DataGridContainer>
         </DataGrid>
-        <FrameFooter className="flex-row flex-wrap items-center justify-between gap-x-3 gap-y-2 px-4 py-2">
+        <FrameFooter className="flex-row flex-wrap items-center justify-between gap-x-4 gap-y-2">
           <div className="flex flex-wrap items-center gap-1.5 text-xs">
             <span className="font-medium">{isFiltered ? "In view" : "Network"}</span>
             <span className="text-muted-foreground">
@@ -955,31 +992,37 @@ export default function FreightCargo({ loadNetwork }: FreightCargoProps = {}) {
             <span>{totals.losing} losing</span>
           </div>
           <div className="flex items-center gap-3">
-            <span className="flex items-center gap-1 text-xs text-muted-foreground">
+            <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
               <span className="freight-legend-backhaul" />
               Backhaul
             </span>
-            <div className="hidden sm:flex items-center overflow-hidden rounded-lg border">
-              {freightBands.map((value) => (
-                <Button
-                  key={value}
-                  variant="ghost"
-                  size="sm"
-                  aria-pressed={band === value}
-                  className="h-7 gap-1.5 rounded-none border-r px-2 text-xs last:border-r-0"
-                  onClick={() => setBand(band === value ? "All Margins" : value)}
-                >
-                  <span className="freight-band-dot" data-band={value} />
-                  {value}
-                </Button>
-              ))}
-            </div>
-            <Select
-              value={band}
-              onValueChange={(value) => setBand(value as FreightBand | "All Margins")}
+            <ToggleGroup
+              type="multiple"
+              variant="outline"
+              size="sm"
+              spacing={0}
+              value={selectedBands}
+              onValueChange={(values) => setSelectedBands(values as FreightBand[])}
+              aria-label="Margin bands"
+              className="hidden sm:flex"
             >
-              <SelectTrigger aria-label="Margin band" className="h-8 w-36 sm:hidden">
-                <SelectValue />
+              {freightBands.map((value) => (
+                <IconHint key={value} label={freightBandHints[value]}>
+                  <ToggleGroupItem value={value} className="gap-1.5">
+                    <span aria-hidden="true" className="freight-band-dot" data-band={value} />
+                    {value}
+                  </ToggleGroupItem>
+                </IconHint>
+              ))}
+            </ToggleGroup>
+            <Select
+              value={mobileBandValue}
+              onValueChange={(value) =>
+                setSelectedBands(value === "All Margins" ? [] : [value as FreightBand])
+              }
+            >
+              <SelectTrigger aria-label="Margin bands" className="h-8 w-36 sm:hidden">
+                <SelectValue placeholder={`${selectedBands.length} Bands`} />
               </SelectTrigger>
               <SelectContent>
                 {["All Margins", ...freightBands].map((value) => (

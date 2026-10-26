@@ -30,7 +30,7 @@ test("Freight filters native lane records, conserves inbound loads and resets an
         .locator("tbody tr[data-row-id]")
         .evaluateAll((rows) => rows.map((row) => row.getBoundingClientRect().height)),
     )
-    .toEqual(Array(12).fill(41));
+    .toEqual([...Array(11).fill(41), 40]);
   const search = page.getByRole("textbox", { name: "Search terminals and shippers", exact: true });
   await search.fill("Valencia");
   const matching = createFreightBook().lanes.filter(
@@ -149,4 +149,82 @@ test("Freight phone retains native pinned columns while the matrix scrolls", asy
   const after = await origin.boundingBox();
   expect(after!.x).toBeCloseTo(before!.x, 1);
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(390);
+});
+
+test("Freight multiple margin bands filter native lanes with keyboard support and mobile replacement", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto(route);
+  const lanes = createFreightBook().lanes.filter((lane) => lane.active);
+  // Per-kilometre prices determine the sign and ratio; loads and distance cancel.
+  const losing = lanes.filter((lane) => lane.rateCents < lane.costCents);
+  const deep = losing.filter(
+    (lane) => (lane.rateCents - lane.costCents) * 100 < -8 * lane.rateCents,
+  );
+  const thin = lanes.filter(
+    (lane) =>
+      lane.rateCents >= lane.costCents &&
+      (lane.rateCents - lane.costCents) * 100 < 6 * lane.rateCents,
+  );
+  const outColumnIndex = await network(page)
+    .getByRole("columnheader", { name: "Out", exact: true })
+    .evaluate((header) => (header as HTMLTableCellElement).cellIndex);
+  const expectNativeLoads = async (expected: typeof lanes) => {
+    const origins = new Set(expected.map((lane) => lane.origin));
+    await expect(network(page).locator("tbody tr[data-row-id]")).toHaveCount(origins.size);
+    for (const origin of origins) {
+      const terminal = freightTerminals.find((candidate) => candidate.id === origin)!;
+      const loads = expected
+        .filter((lane) => lane.origin === origin)
+        .reduce((sum, lane) => sum + lane.loads, 0);
+      await expect(originRow(page, terminal.city).locator("td").nth(outColumnIndex)).toHaveText(
+        loads.toLocaleString("en-GB"),
+      );
+    }
+    await expect(
+      network(page).locator("tfoot tr").last().locator("td").nth(outColumnIndex),
+    ).toHaveText(expected.reduce((sum, lane) => sum + lane.loads, 0).toLocaleString("en-GB"));
+  };
+  const group = network(page).getByRole("toolbar", { name: "Margin bands", exact: true });
+  const deepToggle = group.getByRole("button", { name: "Deep Loss", exact: true });
+  const lossToggle = group.getByRole("button", { name: "Loss", exact: true });
+  const thinToggle = group.getByRole("button", { name: "Thin", exact: true });
+  expect(deep.length).toBeGreaterThan(0);
+  expect(thin.length).toBeGreaterThan(0);
+
+  await expectNativeLoads(lanes);
+  await deepToggle.click();
+  await expect(deepToggle).toHaveAttribute("aria-pressed", "true");
+  await expectNativeLoads(deep);
+  await deepToggle.focus();
+  await deepToggle.press("ArrowRight");
+  await expect(lossToggle).toBeFocused();
+  await lossToggle.press("ArrowRight");
+  await expect(thinToggle).toBeFocused();
+  await thinToggle.press("Space");
+  await expect(deepToggle).toHaveAttribute("aria-pressed", "true");
+  await expect(thinToggle).toHaveAttribute("aria-pressed", "true");
+  await expect(group.locator('[aria-pressed="true"]')).toHaveCount(2);
+  await expectNativeLoads([...deep, ...thin]);
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  const mobileBand = network(page).getByRole("combobox", { name: "Margin bands", exact: true });
+  await expect(mobileBand).toHaveText("2 Bands");
+  await mobileBand.click();
+  await page.getByRole("option", { name: "Thin", exact: true }).click();
+  await expect(mobileBand).toHaveText("Thin");
+  await expectNativeLoads(thin);
+
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await expect(deepToggle).toHaveAttribute("aria-pressed", "false");
+  await expect(lossToggle).toHaveAttribute("aria-pressed", "false");
+  await expect(thinToggle).toHaveAttribute("aria-pressed", "true");
+  await thinToggle.focus();
+  await thinToggle.press("Space");
+  await expect(group.locator('[aria-pressed="true"]')).toHaveCount(0);
+  await expectNativeLoads(lanes);
+  await expect(
+    network(page).locator('[data-slot="frame-panel-footer"]').getByText("Network", { exact: true }),
+  ).toBeVisible();
 });
