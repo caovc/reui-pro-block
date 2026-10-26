@@ -27,7 +27,7 @@
 .fg-gantt * {
   box-sizing: border-box;
 }
-.fg-flow button:not(:where(.fg-native-controls *)),
+.fg-flow button:not(:where(.fg-native-controls *, .fg-native-inspector-fields *)),
 .fg-gantt button,
 .fg-portal button {
   font-family: inherit;
@@ -615,12 +615,12 @@
   flex-direction: column;
   gap: 20px;
 }
-.fg-inspector label {
+.fg-inspector label:not(:where(.fg-native-inspector-fields *)) {
   font-size: 14px;
   line-height: 20px;
   font-weight: 500;
 }
-.fg-inspector input,
+.fg-inspector input:not(:where(.fg-native-inspector-fields *)),
 .fg-inspector textarea,
 .fg-inspector select {
   width: 100%;
@@ -639,7 +639,7 @@
   height: 72px;
   resize: vertical;
 }
-.fg-inspector input:focus,
+.fg-inspector input:not(:where(.fg-native-inspector-fields *)):focus,
 .fg-inspector select:focus {
   box-shadow: 0 0 0 2px var(--ring);
 }
@@ -2655,7 +2655,7 @@
   width: 100%;
   height: 100%;
 }
-.fg-inspector input:disabled {
+.fg-inspector input:not(:where(.fg-native-inspector-fields *)):disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }

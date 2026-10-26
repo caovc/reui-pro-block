@@ -1,0 +1,64 @@
+{
+  "milestone": "Flow inspector actual free ReUI field migration",
+  "integrationBase": "7ecb56d0338bd4c5421a9f0a017df80b1bb78648",
+  "freeReuse": {
+    "textFields": ["c-field-1", "c-input-1"],
+    "helper": ["c-tooltip-1 actual Tooltip/Button/Info"],
+    "select": [
+      "c-select-2 rich ItemText -> empty SelectValue native portal",
+      "c-field-3 native FieldLabel htmlFor/trigger id",
+      "c-select-1 position popper"
+    ],
+    "deletion": ["c-alert-dialog-2 actual size sm / native Footer Cancel+Action"]
+  },
+  "removedApproximations": [
+    "raw nested Title/Detail labels and inputs in Flow1–2",
+    "handwritten small far-right helpers for migrated fields",
+    "FGSelect option-only adapter for Flow1 Category/Owner",
+    "default wide/phone-stacked Flow2 deletion consumer"
+  ],
+  "customScope": [
+    "domain options/help copy and callbacks",
+    "local original20px avatars",
+    "native Tooltip arrow offset/collision API",
+    "existing origin portal-font hook",
+    "native onCloseAutoFocus return to existing connected node action trigger when Cancel/Escape closes external-menu dialog"
+  ],
+  "validation": {
+    "strictMainBuild": {
+      "exitCode": 0,
+      "latestIntegrationExitCode": 0
+    },
+    "immutableProduction": {
+      "passed": 36,
+      "workers": 1,
+      "retries": 0,
+      "timeoutMs": 30000
+    },
+    "sourceRoundtrip": {
+      "blocks": 4,
+      "filesPerBlock": 4,
+      "viewerCopySingleFileExact": true,
+      "actualZipMembers": 406,
+      "commonMembersIdentical": 403
+    },
+    "actualDownloadedProjects": {
+      "strictBuildsPassed": 4,
+      "runtimeCasesPassed": 4,
+      "normalInstall": "One actual project; remaining three used matching physical dependencies and private caches."
+    },
+    "fontEvidence": {
+      "productionFontRequests": "HTTP 200, original Inter and Geist bytes",
+      "actualGlyphProbe": "Flow 1 desktop used custom Inter for label and input",
+      "auxiliaryFontFaceSetCheck": "An additional diagnostic failed because matching duplicate font declarations were not all loaded; retained separately and not treated as production suite success."
+    }
+  },
+  "preservedScope": {
+    "cssFallbackGuards": 5,
+    "guardDeclarationsAndGanttPortalBranchesUnchanged": true,
+    "oldSpecsUnchanged": true,
+    "sourceRoutingUnchanged": true
+  },
+  "knownResidual": "Existing inspector header66 vs reference67 shifts field/popup/tooltip section -1px. No fake leaf margin. Avatar artwork intentionally original local replacement.",
+  "publication": "Commit, push, CI and Pages are separate release steps."
+}

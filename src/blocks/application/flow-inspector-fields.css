@@ -1,0 +1,19 @@
+/* Tooltip portals retain this Flow instance's explicit font boundary. */
+.fg-inspector-field-tooltip,
+.fg-inspector-field-select-content,
+.fg-inspector-field-dialog {
+  font-family: var(--fg-inspector-origin-font-family, var(--font-sans));
+}
+
+.fg-inspector-field-dialog [data-slot="alert-dialog-title"] {
+  font-family: inherit;
+}
+
+.fg-inspector-owner-choice {
+  display: inline-flex;
+}
+
+.fg-inspector-owner-choice .fg-person {
+  width: 20px;
+  height: 20px;
+}

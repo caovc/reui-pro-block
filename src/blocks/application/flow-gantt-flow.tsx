@@ -18,6 +18,7 @@ import {
 import "@xyflow/react/dist/style.css";
 import { FlowFidelityNode } from "./flow-fidelity-node";
 import { FlowCanvasToolbar } from "./flow-canvas-toolbar";
+import { FlowInspectorTextFields, FlowWorkflowSelectFields } from "./flow-inspector-fields";
 import { FlowInspectorTabs, FlowPeriodControl } from "./flow-inspector-tabs";
 import { Badge } from "@/components/reui/badge";
 import { Frame, FramePanel } from "@/components/reui/frame";
@@ -522,6 +523,16 @@ function FlowEditor({ block }: BlockProps) {
   const [runStates, setRunStates] = useState<Record<string, RunState>>({});
   const [cursor, setCursor] = useState(0);
   const canvas = useRef<HTMLDivElement>(null);
+  const deletePortalFont = useFlowPortalFont(canvas, variant === 1 && !!deleting);
+  const deleteReturnFocus = useRef<HTMLButtonElement | null>(null);
+  useEffect(() => {
+    if (variant !== 1 || !deleting) return;
+    // The menu opens this dialog without an AlertDialogTrigger in its own tree.
+    deleteReturnFocus.current =
+      canvas.current?.querySelector<HTMLButtonElement>(
+        `[data-flow-node="${CSS.escape(deleting)}"] [data-slot="dropdown-menu-trigger"]`,
+      ) ?? null;
+  }, [deleting, variant]);
   const contextInspectorOpening = useRef(false);
   const dirty = JSON.stringify(graph) !== saved;
   const touched = useRef(false);
@@ -2228,49 +2239,33 @@ function FlowEditor({ block }: BlockProps) {
                 <>
                   {!draft ? null : (
                     <>
-                      <label htmlFor="fg-step-title">
-                        <span className="fg-field-label">
-                          Title{variant < 2 && <FieldHelp label="Title" />}
-                        </span>
-                        <input
-                          id="fg-step-title"
-                          aria-label="Title"
-                          value={draft.title}
-                          onChange={(e) => setDraft({ ...draft, title: e.target.value })}
+                      {variant < 2 ? (
+                        <FlowInspectorTextFields
+                          variant={variant === 0 ? "workflow" : "agent"}
+                          title={draft.title}
+                          detail={draft.detail}
+                          onTitleChange={(title) => setDraft({ ...draft, title })}
+                          onDetailChange={(detail) => setDraft({ ...draft, detail })}
                         />
-                      </label>
-                      {variant < 2 && (
-                        <label htmlFor="fg-step-detail">
-                          <span className="fg-field-label">
-                            Detail
-                            <FieldHelp label="Detail" />
-                          </span>
+                      ) : (
+                        <label htmlFor="fg-step-title">
+                          <span className="fg-field-label">Title</span>
                           <input
-                            aria-label="Detail"
-                            id="fg-step-detail"
-                            value={draft.detail}
-                            onChange={(e) => setDraft({ ...draft, detail: e.target.value })}
+                            id="fg-step-title"
+                            aria-label="Title"
+                            value={draft.title}
+                            onChange={(e) => setDraft({ ...draft, title: e.target.value })}
                           />
                         </label>
                       )}
                       {variant === 0 && (
-                        <label>
-                          <span className="fg-field-label">
-                            Category
-                            <FieldHelp label="Category" />
-                          </span>
-                          <FGSelect
-                            aria-label="Category"
-                            value={draft.category ?? "Action"}
-                            onChange={(e) => setDraft({ ...draft, category: e.target.value })}
-                          >
-                            {["Webhook", "Condition", "Data", "Email", "Delay", "Action"].map(
-                              (c) => (
-                                <option key={c}>{c}</option>
-                              ),
-                            )}
-                          </FGSelect>
-                        </label>
+                        <FlowWorkflowSelectFields
+                          category={draft.category ?? "Action"}
+                          owner={draft.owner}
+                          owners={owners}
+                          onCategoryChange={(category) => setDraft({ ...draft, category })}
+                          onOwnerChange={(owner) => setDraft({ ...draft, owner })}
+                        />
                       )}
                       {variant === 1 && (
                         <label>
@@ -2318,23 +2313,6 @@ function FlowEditor({ block }: BlockProps) {
                             />
                           </label>
                         )}
-                      {variant === 0 && (
-                        <label>
-                          <span className="fg-field-label">
-                            Owner
-                            <FieldHelp label="Owner" />
-                          </span>
-                          <FGSelect
-                            aria-label="Owner"
-                            value={draft.owner}
-                            onChange={(e) => setDraft({ ...draft, owner: e.target.value })}
-                          >
-                            {owners.map((o) => (
-                              <option key={o}>{o}</option>
-                            ))}
-                          </FGSelect>
-                        </label>
-                      )}
                       {variant === 2 && (
                         <>
                           <label>
@@ -2657,7 +2635,19 @@ function FlowEditor({ block }: BlockProps) {
           if (!open) setDeleting(null);
         }}
       >
-        <AlertDialogContent className="fg-portal">
+        <AlertDialogContent
+          size="sm"
+          className="fg-inspector-field-dialog"
+          style={deletePortalFont}
+          onCloseAutoFocus={(event) => {
+            const origin = deleteReturnFocus.current;
+            if (origin?.isConnected) {
+              event.preventDefault();
+              origin.focus();
+            }
+            deleteReturnFocus.current = null;
+          }}
+        >
           <AlertDialogHeader>
             <AlertDialogTitle>Delete Step?</AlertDialogTitle>
             <AlertDialogDescription>
