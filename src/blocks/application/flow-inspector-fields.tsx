@@ -1,5 +1,5 @@
 import { useId, useRef, useState, type ReactNode } from "react";
-import { Clock, Database, GitBranch, Info, Mail, Webhook, Zap } from "lucide-react";
+import { Clock, Code, Database, GitBranch, Info, Mail, Webhook, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
@@ -12,11 +12,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { IconTile } from "@/components/reui/icon-tile";
+import { BrandIcon } from "./flow-gantt-brand";
 import { MiniAvatar } from "./flow-gantt-avatars";
 import { useFlowPortalFont } from "./flow-portal-font";
 import "./flow-inspector-fields.css";
 
-type FieldName = "Title" | "Detail" | "Category" | "Owner";
+type FieldName = "Title" | "Detail" | "Category" | "Owner" | "App";
 
 function FlowFieldHelp({ label, children }: { label: FieldName; children: string }) {
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -55,6 +57,7 @@ interface FlowSelectOption {
   value: string;
   label: string;
   leading: ReactNode;
+  content?: ReactNode;
 }
 
 function FlowSelectField({
@@ -64,7 +67,7 @@ function FlowSelectField({
   options,
   onValueChange,
 }: {
-  label: "Category" | "Owner";
+  label: "Category" | "Owner" | "App";
   help: string;
   value: string | undefined;
   options: readonly FlowSelectOption[];
@@ -97,8 +100,12 @@ function FlowSelectField({
           <SelectGroup className="p-0">
             {options.map((option) => (
               <SelectItem key={option.value} value={option.value} textValue={option.label}>
-                {option.leading}
-                {option.label}
+                {option.content ?? (
+                  <>
+                    {option.leading}
+                    {option.label}
+                  </>
+                )}
               </SelectItem>
             ))}
           </SelectGroup>
@@ -232,5 +239,86 @@ export function FlowInspectorTextFields({
         </Field>
       </FieldGroup>
     </TooltipProvider>
+  );
+}
+
+const agentApps = ["Stripe", "Neon", "Claude", "ClickUp", "Resend", "Slack", "Custom Code"];
+
+/** App marks use the same free IconTile that appears in the reference rows. */
+export function FlowAgentAppField({
+  value,
+  onValueChange,
+}: {
+  value: string;
+  onValueChange: (value: string) => void;
+}) {
+  return (
+    <TooltipProvider>
+      <FieldGroup className="fg-native-inspector-fields fg-inspector-app-fields">
+        <FlowSelectField
+          label="App"
+          help="The service this step calls. Its mark is what the node shows."
+          value={value}
+          onValueChange={onValueChange}
+          options={agentApps.map((app) => ({
+            value: app,
+            label: app,
+            leading: null,
+            content: (
+              <span className="inline-flex items-center gap-2 align-middle">
+                <IconTile size="xs" aria-hidden="true">
+                  {app === "Custom Code" ? (
+                    <Code className="size-3.5" />
+                  ) : (
+                    <BrandIcon app={app} className="size-3.5" />
+                  )}
+                </IconTile>
+                {app}
+              </span>
+            ),
+          }))}
+        />
+      </FieldGroup>
+    </TooltipProvider>
+  );
+}
+
+const agentModels = ["Opus 5", "Sonnet 5", "Haiku 4.5"];
+
+/** Graph state and model Undo stay in the consumer, outside the native Select. */
+export function FlowAgentModelSelect({
+  value,
+  leading,
+  onValueChange,
+}: {
+  value: string;
+  leading: ReactNode;
+  onValueChange: (value: string) => void;
+}) {
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const [open, setOpen] = useState(false);
+  const portalFont = useFlowPortalFont(triggerRef, open);
+
+  return (
+    <Select value={value} onValueChange={onValueChange} open={open} onOpenChange={setOpen}>
+      <SelectTrigger ref={triggerRef} aria-label="Model" className="w-fit font-normal">
+        {leading}
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent
+        position="popper"
+        align="start"
+        className="fg-inspector-field-select-content"
+        style={portalFont}
+      >
+        <SelectGroup className="p-0">
+          {agentModels.map((model) => (
+            <SelectItem key={model} value={model} textValue={model} data-value={model}>
+              {model}
+            </SelectItem>
+          ))}
+        </SelectGroup>
+      </SelectContent>
+    </Select>
   );
 }

@@ -1,0 +1,195 @@
+{
+  "milestone": "Flow 2 native App and Model controls",
+  "status": "LOCAL_VALIDATION_COMPLETE_AWAITING_ROOT_SERIAL_PUBLICATION",
+  "baseCommit": "7fc739cbd837e2a10625ec04cbeea022aa1cab06",
+  "reference": "https://reui.io/preview/base/flow-2?embed=1",
+  "implementation": {
+    "app": "Replace legacy FGSelect consumer with existing real free Field/Label/Select/Tooltip composition; native ItemText projects seven rich values containing the actual free IconTile xs API.",
+    "model": "Replace legacy FGSelect consumer with actual free Select; plain text options, trigger-only original local mark, natural width and max-lg visibility.",
+    "css": "Only two legacy selector boundaries exclude the native Model subtree; every existing declaration and all other guards remain unchanged.",
+    "preservation": "Model domain callback including results clearing and Undo is byte-identical; Title/Detail, workflow Category/Owner, Path, readonly and compact deletion branches unchanged.",
+    "sourceTargets": "Default still points to actual flow-gantt-flow.tsx; no new module or route added."
+  },
+  "actualFreeReuse": [
+    "ReUI c-field-3: Field, FieldGroup, FieldLabel",
+    "ReUI c-select-1 and c-select-2: real Select primitives and rich ItemText",
+    "ReUI c-tooltip-1: native Tooltip and adjacent help",
+    "ReUI IconTile: real xs 24px container / 14px glyph API"
+  ],
+  "customPartsAndReason": [
+    "Existing local original service marks replace original website media and extracted SVGs.",
+    "Existing Flow graph state, draft saving and toast Undo are domain behavior absent from generic free controls.",
+    "Existing portal font inheritance stays scoped to the owning Flow instance."
+  ],
+  "brandingAndLicenses": {
+    "site": "Bricklane",
+    "paidReferenceMediaDistributed": false,
+    "officialFreeMITAndFontOFLPreserved": true,
+    "newProductAssets": false
+  },
+  "validation": {
+    "normalMainBuild": {
+      "attempt": 1,
+      "command": "npm run build",
+      "exitCode": 0,
+      "seconds": 24.75222611427307,
+      "node": "22.23.3",
+      "normalPostinstall": true,
+      "dependencyProvision": "Physical matching dependency clone; no new installation claimed."
+    },
+    "existingRegression": {
+      "selected": 36,
+      "passed": 36,
+      "workers": 1,
+      "retries": 0,
+      "testTimeoutMs": 30000,
+      "expectTimeoutMs": 5000,
+      "originalTestsChanged": false
+    },
+    "newAppRegression": {
+      "cases": 2,
+      "widths": [1440, 390],
+      "passed": 2,
+      "meaningfulBehavior": [
+        "label activation",
+        "keyboard typeahead",
+        "Escape focus",
+        "Cancel discards draft",
+        "Save persists after reopening",
+        "toast Undo restores original app"
+      ],
+      "initialFailurePreserved": "Initial two failures assumed label click kept focus on trigger; actual native label activation opens modal Select. Approved four-line test addition verifies selected Neon focus and Escape before original business assertions."
+    },
+    "externalUI": {
+      "widths": [1440, 390, 1023, 1024],
+      "passed": 4,
+      "recorded": [
+        "computed typography and original HTTP font resources",
+        "App seven 32px rows, 24px tiles and 14px glyphs",
+        "App 224x44 help and correct copy",
+        "Model three plain 28px rows, 144x84 popup, weight400 and natural width",
+        "Model hidden at1023 and visible at1024",
+        "Escape, Model Undo and App draft/persistence"
+      ],
+      "initialHelperFailurePreserved": "Four first-pass diagnostics measured an accessibility-hidden trigger only after opening its modal Select. Approved correction only moves trigger bounding box sampling before its original click; all assertions unchanged."
+    },
+    "sourceFourWays": {
+      "ids": ["flow-1", "flow-2", "flow-3", "flow-4"],
+      "filesPerId": 4,
+      "defaultActualImplementation": "flow-gantt-flow.tsx",
+      "viewerCopySingleAndFreshZipBytesExact": true,
+      "consoleOrPageErrors": 0
+    },
+    "freshExportClosure": {
+      "filesPerZip": 406,
+      "commonIdenticalFiles": 403,
+      "onlyVariantDifferences": ["README.md", "package.json", "src/Example.tsx"],
+      "supportingCodeFilesExactPerZip": [343, 343, 343, 343],
+      "svgHandling": "Only explicit21path/sourceSHA/downloadSHA entries; 18 quote-only and3 trim+quote mappings plus complete XML equality.",
+      "oldToNewChangedPaths": [
+        "src/blocks/application/flow-gantt-flow.tsx",
+        "src/blocks/application/flow-gantt-refined.css",
+        "src/blocks/application/flow-inspector-fields.tsx",
+        "src/blocks/application/rich-text-block-actions.tsx",
+        "src/blocks/application/whiteboard.tsx"
+      ],
+      "oldArchivesUsedAsNewRuntimeEvidence": false
+    },
+    "actualDownloadedFlow2": {
+      "strictCommand": "npm run build (tsc --noEmit && vite build)",
+      "attempt": 1,
+      "exitCode": 0,
+      "seconds": 9.026557207107544,
+      "original406FilesUnmodified": true,
+      "dependencyProvision": "Physical clone of Root normally installed actual Flow1 dependencies: full package except name identical; source lock root dependencies/devDependencies identical. New ZIP contains no lock. No new installation claimed.",
+      "runtimeCases": 5,
+      "runtimePassed": 5,
+      "runtimeWidths": [1440, 390],
+      "runtimeSeconds": 10.5,
+      "otherNewFlowArchivesStrictBuildsClaimed": false
+    },
+    "normalFormatCheck": "PASS, whole candidate1389 files before this receipt; receipt scoped formatted separately",
+    "normalScopedOxlint": "PASS, product3+newtest",
+    "fontRequestInterceptionOrFixture": false
+  },
+  "knownResiduals": [
+    "Existing inspector header remains1px shorter: App trigger/popup y is source y-1 at1440 and390. No leaf offset was added.",
+    "Service glyph artwork and avatar stay original local substitutes.",
+    "This milestone validates App/Model; it does not claim every Flow pixel and interaction is identical."
+  ],
+  "protected": {
+    "package.json": "86969ff3a1ba681c0b648bbb6d87dc8a31dee12123da659d06ba3d2c5c58d090",
+    "package-lock.json": "dce9f31b044d2c3ed421262cbc0df9b2206a12fba5bcef6a4e4444a0f0ca312b",
+    "src/lib/source-targets.ts": "13b42fcb14c8f8eec0e2ce3456b9bd23cc1347c367de88a77e0b85dc18a62cc0",
+    "tsconfig.app.json": "02dcd1ac111c9ad1e1dcd4763d424d8411c2452be89cae264d149786f910d2b6",
+    "vite.config.ts": "be57aa455383c0951bf4f52e12723b403a16e3f7ea040dbd41ef8d39a401f86e"
+  },
+  "productAndTest": [
+    {
+      "path": "src/blocks/application/flow-gantt-flow.tsx",
+      "source": "/tmp/flow2-app-model-final-product-test-freeze-v1/src/blocks/application/flow-gantt-flow.tsx",
+      "sha256": "f255f27fd365754880d1a607496110026b3491e2c437f96ee6bc3201134ae6eb"
+    },
+    {
+      "path": "src/blocks/application/flow-inspector-fields.tsx",
+      "source": "/tmp/flow2-app-model-final-product-test-freeze-v1/src/blocks/application/flow-inspector-fields.tsx",
+      "sha256": "6b77cf6ec28df7de1f88c2628e2ac25e4aeff2d1b3aec343fd9d12681628e7a6"
+    },
+    {
+      "path": "src/blocks/application/flow-gantt-refined.css",
+      "source": "/tmp/flow2-app-model-final-product-test-freeze-v1/src/blocks/application/flow-gantt-refined.css",
+      "sha256": "375829e8f2ee2d4fe015442654b93620998bf52960d8f2e2ffe45714a2ebdd05"
+    },
+    {
+      "path": "tests/flow-agent-native-select.spec.ts",
+      "source": "/tmp/flow2-app-model-final-product-test-freeze-v1/tests/flow-agent-native-select.spec.ts",
+      "sha256": "fbb6c42b838a50b8bb7e2f4f33fa62bba1db0202507b5828dbd590a3e2c24533"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "/tmp/flow2-app-model-main-v1-terminal.json",
+      "sha256": "0f7ea33c6bf31347a7452a93a71c9879ff3c931dbeff20fe65cc965e3209530f"
+    },
+    {
+      "path": "/tmp/flow2-app-model-production36-run-v1-terminal.json",
+      "sha256": "524d3fdf8eac9ad008d7d7f5ec52aea356d0e8fa9876fcc4f1cd6562d21916b1"
+    },
+    {
+      "path": "/tmp/flow2-app-model-new2-run-v2-terminal.json",
+      "sha256": "f689fdeea6076c10d5feb733cb055e2b8c6eecefbab67c5f8d1fd84f9669407a"
+    },
+    {
+      "path": "/tmp/flow2-app-model-immutable-ui-0t4Pd5/report.json",
+      "sha256": "d37b0aae3067595467ee643bd56220fd5c9867cf3238fa6e153821353683a997"
+    },
+    {
+      "path": "/tmp/flow2-app-model-source-roundtrip-v1.json",
+      "sha256": "9796acc34ea74883c12c6437d7890a209e395209cb95e69f116698af604c2a8a"
+    },
+    {
+      "path": "/tmp/flow2-app-model-zip-closure-v1.json",
+      "sha256": "1505ba8d9c60009153fc96aa1ac53ccf273011064e8b42411c3301b086e4f10b"
+    },
+    {
+      "path": "/tmp/flow2-app-model-actual-strict-v1-terminal.json",
+      "sha256": "bcfc692e3aa4102f695b8c68f1b6db4fb552902c2219e91505cfa247b66e0a9a"
+    },
+    {
+      "path": "/tmp/flow2-app-model-actual-runtime5-run-v1-terminal.json",
+      "sha256": "23de58f3af57e94fcfe4f4099aa405ba0d9d295e3e59cc2ad58ea23f5d6ca8ec"
+    }
+  ],
+  "preservedFailures": [
+    "/tmp/flow2-app-model-new2-run-v1-terminal.json",
+    "/tmp/flow2-app-model-new2-v1-artifacts",
+    "/tmp/flow2-app-model-immutable-ui-TaIad1/report.json"
+  ],
+  "publication": {
+    "owner": "Root main chat",
+    "sharedWorkspaceOrGitMutatedHere": false,
+    "committed": false,
+    "pushed": false,
+    "previewDeploymentConfirmed": false
+  }
+}

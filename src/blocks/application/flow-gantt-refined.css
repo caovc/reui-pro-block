@@ -27,7 +27,10 @@
 .fg-gantt * {
   box-sizing: border-box;
 }
-.fg-flow button:not(:where(.fg-native-controls *, .fg-native-inspector-fields *)),
+.fg-flow
+  button:not(
+    :where(.fg-native-controls *, .fg-native-inspector-fields *, .fg-native-model-select *)
+  ),
 .fg-gantt button,
 .fg-portal button {
   font-family: inherit;
@@ -2019,7 +2022,7 @@
 .fg-setting-line .fg-select-trigger {
   width: 100px !important;
 }
-.fg-model-select {
+.fg-model-select:not(:where(.fg-native-model-select)) {
   width: 124px;
   flex-shrink: 0;
 }

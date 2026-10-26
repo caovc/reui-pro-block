@@ -18,7 +18,12 @@ import {
 import "@xyflow/react/dist/style.css";
 import { FlowFidelityNode } from "./flow-fidelity-node";
 import { FlowCanvasToolbar } from "./flow-canvas-toolbar";
-import { FlowInspectorTextFields, FlowWorkflowSelectFields } from "./flow-inspector-fields";
+import {
+  FlowAgentAppField,
+  FlowAgentModelSelect,
+  FlowInspectorTextFields,
+  FlowWorkflowSelectFields,
+} from "./flow-inspector-fields";
 import { FlowInspectorTabs, FlowPeriodControl } from "./flow-inspector-tabs";
 import { Badge } from "@/components/reui/badge";
 import { Frame, FramePanel } from "@/components/reui/frame";
@@ -1592,13 +1597,11 @@ function FlowEditor({ block }: BlockProps) {
             </PopoverContent>
           </Popover>
           {variant === 1 && (
-            <div className="fg-model-select">
-              <FGSelect
-                aria-label="Model"
-                icon={<BrandIcon app="Claude" />}
+            <div className="fg-model-select fg-native-model-select w-fit shrink-0 max-lg:hidden">
+              <FlowAgentModelSelect
+                leading={<BrandIcon app="Claude" />}
                 value={model}
-                onChange={(e) => {
-                  const value = e.target.value;
+                onValueChange={(value) => {
                   const previousModel = model;
                   const previousGraph = graph;
                   const previousResults = runStates;
@@ -1628,13 +1631,7 @@ function FlowEditor({ block }: BlockProps) {
                     ),
                   });
                 }}
-              >
-                {["Opus 5", "Sonnet 5", "Haiku 4.5"].map((value) => (
-                  <option key={value} value={value}>
-                    {value}
-                  </option>
-                ))}
-              </FGSelect>
+              />
             </div>
           )}
           <Button
@@ -2268,29 +2265,10 @@ function FlowEditor({ block }: BlockProps) {
                         />
                       )}
                       {variant === 1 && (
-                        <label>
-                          <span className="fg-field-label">
-                            App
-                            <FieldHelp label="App" />
-                          </span>
-                          <FGSelect
-                            aria-label="App"
-                            value={draft.app ?? "Custom Code"}
-                            onChange={(e) => setDraft({ ...draft, app: e.target.value })}
-                          >
-                            {[
-                              "Stripe",
-                              "Neon",
-                              "Claude",
-                              "ClickUp",
-                              "Resend",
-                              "Slack",
-                              "Custom Code",
-                            ].map((c) => (
-                              <option key={c}>{c}</option>
-                            ))}
-                          </FGSelect>
-                        </label>
+                        <FlowAgentAppField
+                          value={draft.app ?? "Custom Code"}
+                          onValueChange={(app) => setDraft({ ...draft, app })}
+                        />
                       )}
                       {variant === 1 &&
                         graph.edges.some((edge) => edge.target === current.id && edge.label) && (
