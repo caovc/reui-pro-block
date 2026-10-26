@@ -24,6 +24,14 @@ jobs:
       - run: npm run test:tooling
       - run: npm run lint
       - run: npm run build
+      - name: Use Ubuntu HTTPS package mirrors
+        run: |
+          if [ -f /etc/apt/apt-mirrors.txt ]; then
+            printf '%s\tpriority:%s\n' \
+              'https://archive.ubuntu.com/ubuntu/' 1 \
+              'https://security.ubuntu.com/ubuntu/' 2 | \
+              sudo tee /etc/apt/apt-mirrors.txt
+          fi
       - run: npx playwright install --with-deps chromium
       - run: npm test
       - name: Upload failed browser test diagnostics

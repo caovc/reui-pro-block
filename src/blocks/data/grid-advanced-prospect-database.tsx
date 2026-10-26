@@ -679,10 +679,11 @@ export default function ProspectDatabase({ loadCompanies }: Props = {}) {
               Companies that fit your customer profile
             </FrameDescription>
           </div>
-          <div className="ml-auto flex shrink-0 gap-2">
+          <div className="ml-auto flex shrink-0 gap-2 max-sm:gap-1.5">
             <Button
               variant="outline"
-              size="default"
+              size="icon"
+              className="sm:w-auto sm:gap-1.5 sm:px-2.5"
               aria-label="Hand Over"
               onClick={() => setHandover(true)}
             >
@@ -691,6 +692,8 @@ export default function ProspectDatabase({ loadCompanies }: Props = {}) {
             </Button>
             <Button
               ref={addCompanyRef}
+              size="icon"
+              className="sm:w-auto sm:gap-1.5 sm:px-2.5"
               aria-label="Add Company"
               onClick={(event) => openEditor(null, event.currentTarget)}
             >
@@ -871,7 +874,8 @@ export default function ProspectDatabase({ loadCompanies }: Props = {}) {
                   />
                   <Button
                     variant={mine ? "secondary" : "outline"}
-                    size="default"
+                    size="icon"
+                    className="sm:w-auto sm:gap-1.5 sm:px-2.5"
                     aria-label="My Accounts"
                     aria-pressed={mine}
                     onClick={() => setMine((value) => !value)}
@@ -918,7 +922,13 @@ export default function ProspectDatabase({ loadCompanies }: Props = {}) {
                 <CascaderTrigger
                   aria-label="Columns"
                   showIcon={false}
-                  render={<Button variant="outline" />}
+                  render={
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="sm:w-auto sm:gap-1.5 sm:px-2.5"
+                    />
+                  }
                 >
                   <Columns3 />
                   <span className="hidden sm:inline">Columns</span>

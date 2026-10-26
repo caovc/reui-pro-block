@@ -1,0 +1,429 @@
+{
+  "schemaVersion": 1,
+  "recordedUTC": "2026-10-26T16:54:21.923946+00:00",
+  "status": "LOCAL_VERIFIED_CONSUMER_SCOPE_WITH_STATIC_INFRA_READY_FOR_ROOT_RELEASE",
+  "precommitScope": {
+    "baseCommit": "f755f99c63d3e4d268a46c0eac53102d331e81de",
+    "runtimeLeaf": "src/blocks/data/grid-advanced-prospect-database.tsx",
+    "runtimeBeforeSHA256": "a951d410ad7f655b867f206c0bfb14522b6b8513b119a0c4c4303a5d15b456ed",
+    "runtimeAfterSHA256": "aa5ec92d61aeb8f9fc6a47be4530019e89dc7803be50f8a8bbae167d158ad797",
+    "payloadPaths": [
+      ".github/workflows/deploy.yml",
+      "docs/catalog-followup-plan-2026-10-26.md",
+      "docs/grid-prospect-mobile-controls-release.json",
+      "src/blocks/data/grid-advanced-prospect-database.tsx"
+    ],
+    "noCatalogOrDependencyChanges": true,
+    "sourceTargetsUnchanged": true,
+    "runtimeExactlyOwnerReviewedFiveHunks": true,
+    "rootOnlyNormalHookCommitAndPush": true
+  },
+  "ownerEvidence": {
+    "directory": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-prospect-controls-f755-yz0g0520",
+    "closedValidationReceipt": {
+      "path": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-prospect-controls-f755-yz0g0520/closed-validation-receipt.json",
+      "sha256": "e91599cf45ee767ac32e2dd9396eb96d750eb37397b1cc819a7ae4e13ea2ebf0"
+    },
+    "verifiedOneLeafDiff": {
+      "path": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-prospect-controls-f755-yz0g0520/verified-one-leaf.diff",
+      "sha256": "0af2211cb45761e932abaa49be886ae9ebdb0bec36aaf28082176977be42b66f"
+    },
+    "freshReviewerActions": "Static private integration and formatting/lint only; no new compiler, browser, runtime, install or Git operation."
+  },
+  "actualFreeReuse": [
+    "Existing free Button size icon API size8",
+    "Existing Button variant/focus/disabled/aria/ref event behavior",
+    "Existing free CascaderTrigger render remains a real Button, native combobox role preserved"
+  ],
+  "correctedApproximation": "Hidden mobile text previously left default button horizontal padding and38/42px widths. Actual icon variant supplies32px shape; responsive classes restore original desktop default geometry. No primitive, CSS controller or observer introduced.",
+  "customComposition": "Consumer responsive class composition only; no missing free capability claimed",
+  "scopeGuard": {
+    "preserved": "One existing consumer leaf, four native Button size choices and one max-sm Header gap; no test/data/model/route/import/vendor/sharedCSS change",
+    "noHandlersDataModelsTestsRoutesImportsVendorOrSharedComponentChange": true,
+    "sourceTargets": "Already resolves advanced22 to the actual consumer leaf; no hook edit required.",
+    "licensesAndBrand": "Existing actual free REUI implementation and required MIT/OFL/third-party notices remain. No new media, original-site avatars, paid screenshots, extracted SVG or ReUI/KeenThemes identity added; Bricklane identity retained."
+  },
+  "ownerMainGates": [
+    {
+      "stage": "postinstall",
+      "exitCode": 0,
+      "seconds": 0.27,
+      "log": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-prospect-controls-f755-yz0g0520/postinstall.log"
+    },
+    {
+      "stage": "format",
+      "exitCode": 0,
+      "seconds": 0.733,
+      "log": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-prospect-controls-f755-yz0g0520/format.log"
+    },
+    {
+      "stage": "format-check",
+      "exitCode": 0,
+      "seconds": 0.321,
+      "log": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-prospect-controls-f755-yz0g0520/format-check.log"
+    },
+    {
+      "stage": "lint",
+      "exitCode": 0,
+      "seconds": 0.568,
+      "log": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-prospect-controls-f755-yz0g0520/lint.log"
+    },
+    {
+      "stage": "native-list",
+      "exitCode": 0,
+      "seconds": 0.406,
+      "log": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-prospect-controls-f755-yz0g0520/native-list.log"
+    },
+    {
+      "stage": "build",
+      "exitCode": 0,
+      "seconds": 21.868,
+      "log": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-prospect-controls-f755-yz0g0520/build.log"
+    }
+  ],
+  "ownerDependencyProvenance": {
+    "origin": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-freight-gap6-55fc-tuzu4_p5/candidate/node_modules",
+    "originalNormal834Lineage": true,
+    "packageAndLockExact": true,
+    "wholeNodeModulesSymlink": false,
+    "privateCachesCleared": [
+      "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-prospect-controls-f755-yz0g0520/candidate/node_modules/.vite-temp",
+      "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-prospect-controls-f755-yz0g0520/candidate/node_modules/.tmp"
+    ],
+    "normalPostinstall": 0,
+    "freshInstallClaim": false
+  },
+  "ownerNativeFive": {
+    "stats": {
+      "startTime": "2026-10-26T16:41:16.873Z",
+      "duration": 6549.703,
+      "expected": 5,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "cases": [
+      "intent cards keep the base-filter denominator and compose My Accounts and search",
+      "company creation validates identity and preserves a genuine zero employee count",
+      "handover changes open account owners and retains closed accounts",
+      "free Cascader updates actual native visibility and Settings reset restores it",
+      "phone filtered editor Save restores a visible fallback after its company row leaves My Accounts"
+    ],
+    "wallSecondsPerRootHandoff": 6.778,
+    "standardTimeoutSeconds": 30,
+    "workers": 1,
+    "retries": 0,
+    "scope": "Original selected five business/focus cases, run once against owner immutable production; not repeated during this private integration."
+  },
+  "ownerGeometry": [
+    {
+      "width": 1440,
+      "fourControls": [
+        {
+          "name": "Hand Over",
+          "box": {
+            "x": 1048.640625,
+            "y": 59.5,
+            "width": 115.328125,
+            "height": 32
+          },
+          "dataSize": "icon",
+          "role": null,
+          "paddingLeft": "10px",
+          "paddingRight": "10px",
+          "gap": "6px"
+        },
+        {
+          "name": "Add Company",
+          "box": {
+            "x": 1171.96875,
+            "y": 59.5,
+            "width": 139.03125,
+            "height": 32
+          },
+          "dataSize": "icon",
+          "role": null,
+          "paddingLeft": "10px",
+          "paddingRight": "10px",
+          "gap": "6px"
+        },
+        {
+          "name": "My Accounts",
+          "box": {
+            "x": 477.78125,
+            "y": 201,
+            "width": 136.125,
+            "height": 32
+          },
+          "dataSize": "icon",
+          "role": null,
+          "paddingLeft": "10px",
+          "paddingRight": "10px",
+          "gap": "6px"
+        },
+        {
+          "name": "Columns",
+          "box": {
+            "x": 1150.921875,
+            "y": 201,
+            "width": 121.078125,
+            "height": 32
+          },
+          "dataSize": "icon",
+          "role": "combobox",
+          "paddingLeft": "10px",
+          "paddingRight": "10px",
+          "gap": "6px"
+        }
+      ],
+      "headerParentGap": "8px",
+      "desktopBaselinePreserved": true,
+      "keyboardReached": ["Hand Over", "Add Company", "My Accounts", "Columns"],
+      "documentWidth": 1440,
+      "PNG": "/private/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-prospect-controls-f755-yz0g0520//prospect-controls-1440.png",
+      "PNGsha256": "93cf8ebd3182205f77de0bfb976f09d071ccba663ff383845a57290dd52fcd6d",
+      "PNGActuallyViewed": true
+    },
+    {
+      "width": 390,
+      "fourControls": [
+        {
+          "name": "Hand Over",
+          "box": {
+            "x": 287,
+            "y": 43.5,
+            "width": 32,
+            "height": 32
+          },
+          "dataSize": "icon",
+          "role": null,
+          "paddingLeft": "0px",
+          "paddingRight": "0px",
+          "gap": "normal"
+        },
+        {
+          "name": "Add Company",
+          "box": {
+            "x": 325,
+            "y": 43.5,
+            "width": 32,
+            "height": 32
+          },
+          "dataSize": "icon",
+          "role": null,
+          "paddingLeft": "0px",
+          "paddingRight": "0px",
+          "gap": "normal"
+        },
+        {
+          "name": "My Accounts",
+          "box": {
+            "x": 118,
+            "y": 190.484375,
+            "width": 32,
+            "height": 32
+          },
+          "dataSize": "icon",
+          "role": null,
+          "paddingLeft": "0px",
+          "paddingRight": "0px",
+          "gap": "normal"
+        },
+        {
+          "name": "Columns",
+          "box": {
+            "x": 286,
+            "y": 190.484375,
+            "width": 32,
+            "height": 32
+          },
+          "dataSize": "icon",
+          "role": "combobox",
+          "paddingLeft": "0px",
+          "paddingRight": "0px",
+          "gap": "normal"
+        }
+      ],
+      "headerParentGap": "6px",
+      "desktopBaselinePreserved": false,
+      "keyboardReached": ["Hand Over", "Add Company", "My Accounts", "Columns"],
+      "documentWidth": 390,
+      "PNG": "/private/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-prospect-controls-f755-yz0g0520//prospect-controls-390.png",
+      "PNGsha256": "6b7c1b5d9247ac43ed4de630d6ae3a7c765122a2d4242b0703de0382279a8e77",
+      "PNGActuallyViewed": true
+    }
+  ],
+  "ownerObservedStates": [
+    "390 four trigger widths32/heights32/padding0; parent Header gap6; header HandOver/Add x287/325 matches recordedpublic",
+    "1440 four actual boxes/padding/gap/fonts match earlier measured localbaseline exactly, nativeColumns combobox retained",
+    "Actual Tab1/2/6/7 reaches four targets in both widths; :focus-visible true; no claim about transition-end ring pixel geometry",
+    "390 other existing toolbar origins remainMyAccounts118/Columns286, y190.484375; no manual offsets to hide prior Frame inset/upstream placement differences"
+  ],
+  "sourceFourWay": {
+    "files": 304,
+    "rawSupportingSourceMembers": 294,
+    "SVGCount": 0,
+    "defaultViewerDOMSingleZIPExact": true,
+    "actualCopyExact": true,
+    "copySHA256": "aa5ec92d61aeb8f9fc6a47be4530019e89dc7803be50f8a8bbae167d158ad797",
+    "sourcePageErrors": [],
+    "copyPageErrors": [],
+    "ZIPArchiveSHA256": "7d4ef936462a793769dfe52f0a3c916557ef74e3730c037ade8fa65cc93dbc22",
+    "originalZipChangedMembers": [],
+    "rawExactLicenses": ["LICENSE", "THIRD_PARTY_NOTICES.md"],
+    "generatedThemeExact": true,
+    "clipboardSequence": "Source viewer/single/ZIP first without clipboard permissions; Root then released global clipboard for actual Copy only; three prior steps were not repeated; browser/context closed and clipboard window explicitly released"
+  },
+  "actualExportStructuralClosure": {
+    "memberCount": 304,
+    "declaredDependencyKeys": 59,
+    "literalModuleReferences": 2357,
+    "CSSReferences": 5,
+    "missing": [],
+    "normal699WholePackageExceptNameEqual": true,
+    "compilerOrInstallOrRuntimeRun": false,
+    "RootWaiver": "Root explicitly waived duplicate actual ZIP cold build for class-only5hunk/noimports/no deps/no collector changes. No new actual strict/runtime pass claimed."
+  },
+  "actualExportExecutionGate": {
+    "status": "NOT_REPEATED_WITH_EXPLICIT_ROOT_CLASS_ONLY_WAIVER",
+    "basis": "Five consumer class/API size hunks only; imports, models, data, shared source, dependencies and collector unchanged. Actual 304-member UI ZIP and source/copy/single/ZIP equality verified by owner.",
+    "newActualInstallStrictRuntimePassClaimed": false,
+    "doNotSubstituteOldBaseline": "Any prior dependency or export baseline remains its own evidence; it is not a new actual exported build/runtime pass."
+  },
+  "immutableProduction": {
+    "server": {
+      "URL": "http://127.0.0.1:54202",
+      "pid": 91925,
+      "directory": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-prospect-controls-f755-yz0g0520/candidate/dist",
+      "readOnly": true,
+      "fileCount": 654,
+      "manifestSHA256": "e902295e55e637504a234f63541577d758e33a0ce29da38149db0aec0109c886"
+    },
+    "dist": {
+      "manifest": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-prospect-controls-f755-yz0g0520/frozen-main-dist.json",
+      "manifestSHA256": "e902295e55e637504a234f63541577d758e33a0ce29da38149db0aec0109c886",
+      "files": 654,
+      "changed": []
+    },
+    "browserContextsClosed": true,
+    "clipboardReleased": true
+  },
+  "remainingVisualDifferences": [
+    "Desktop My Accounts and Columns widths remain wider than the recorded public reference; this mobile icon-size milestone deliberately preserves existing desktop boxes.",
+    "Phone My Accounts x118 / Columns x286 and toolbar y190.484375 retain prior Frame/inset/upstream placement differences; no manual offsets introduced.",
+    "Native focus-visible and keyboard reachability were observed; settled ring pixel geometry and complete cross-state visual fidelity are not claimed."
+  ],
+  "infrastructure": {
+    "status": "STATIC_LOCAL_REVIEWED_AWAITING_REAL_LINUX_RUN",
+    "change": "Before the unchanged Playwright --with-deps command, conditionally replace only the ephemeral runner known mirror-list file with official Ubuntu HTTPS archive priority1 and security priority2.",
+    "file": ".github/workflows/deploy.yml",
+    "observation": {
+      "path": "/tmp/bricklane-main-f755f99-live-apt-observation.txt",
+      "sha256": "32b3a98e4d3b398552fbddcab285976393105545c5083053de3c9b0894794064",
+      "scope": "Root actual f755 live CI observation: Azure apt installation stalled for 9+ minutes; archive Hit/Get also present. This is not a completed run failure."
+    },
+    "primaryReferences": [
+      {
+        "url": "https://raw.githubusercontent.com/actions/runner-images/main/images/ubuntu/scripts/build/configure-apt-sources.sh",
+        "finding": "Current runner image config puts HTTP Azure priority1 before HTTPS archive2/security3; independently fetched during static preparation."
+      },
+      {
+        "url": "https://manpages.ubuntu.com/manpages/noble/man1/apt-transport-mirror.1.html",
+        "finding": "Root independently verified lower priority is preferred. Subagent fetch timed out; Root primary verification is the source of this statement."
+      }
+    ],
+    "corroboratingIssue": {
+      "url": "https://github.com/actions/runner-images/issues/14594",
+      "scope": "Root supplied same-symptom report only; not proof of this run outcome."
+    },
+    "preserved": [
+      "cancel-in-progress:false",
+      "original npx playwright install --with-deps chromium",
+      "npm ci, format, tooling, lint, build, original full npm test",
+      "original workers3, timeout30s and retries0",
+      "Ubuntu source definitions and signed-by settings",
+      "no continue-on-error, skipped tests, timeout hiding or font-cache change"
+    ],
+    "macSudoOrAptExecuted": false,
+    "validation": "YAML parser, embedded bash -n, exact printf TAB/LF output only; no infrastructure execution or production rebuild.",
+    "staticProof": {
+      "status": "STATIC_LOCAL_REVIEWED_AWAITING_REAL_LINUX_RUN",
+      "yamlParser": "Ruby Psych safe_load; YAML1.1 on-key normalization not used for workflow trigger semantics; exact inverse-parent bytes additionally verified",
+      "yamlExitCode": 0,
+      "workflowReverseExact": true,
+      "singleStepImmediatelyBeforeOriginalPlaywright": true,
+      "bashSyntaxExitCode": 0,
+      "actualPrintfBytesHex": "68747470733a2f2f617263686976652e7562756e74752e636f6d2f7562756e74752f097072696f726974793a310a68747470733a2f2f73656375726974792e7562756e74752e636f6d2f7562756e74752f097072696f726974793a320a",
+      "actualPrintfSHA256": "8ba8fe8d0f2a9b4a0cb09b6332a7387a8251707fadc3532c51a60dd7eceee018",
+      "actualPrintfMatchesExpected": true,
+      "sudoOrAptExecuted": false,
+      "initialOptionalParserUnavailable": "Python PyYAML and Node yaml/js-yaml absent; no package installed, final parser uses existing Ruby Psych."
+    }
+  },
+  "publicationBoundary": {
+    "recordType": "Precommit local verification scope, not a live publication-status document.",
+    "followingRootCommit": "Root must run normal hooks and verify the exact stage SHA, then separately record successful push, this commit complete Linux CI and Pages deployment.",
+    "f755RunAtRootHandoff": {
+      "runId": 40360693782,
+      "formatToolingLintBuild": "GREEN",
+      "browserInstall": "Root latest observation: apt stage over15 minutes; run remains in_progress, suite not started.",
+      "completeSuite": "NOT_STARTED",
+      "CI": "PENDING",
+      "Pages": "PENDING",
+      "readerTransportEOF": "A single CLI watcher EOF was transport-only; Root API subsequently confirmed in_progress, not a CI failure.",
+      "cancelAction": "NONE; original run retained."
+    },
+    "queuePolicy": "Published workflow cancel-in-progress:false; new push queues without cancelling a healthy run.",
+    "previousVerifiedPublishedBaseline": [
+      {
+        "path": "/tmp/bricklane-pages-9c80801-full-ci-proof.json",
+        "sha256": "f104c6072ac5cce845c40608473e263c98e57c40f258cd44244c8a0a69bf362f",
+        "scope": "Published 9c baseline only; not evidence for this future release commit.",
+        "proof": {
+          "commit": "9c80801fa5f3826ea481c980138244977fc473ce",
+          "run": 40349748360,
+          "buildJob": 121675172846,
+          "deployJob": 121690354984,
+          "conclusion": "success",
+          "pages": "success",
+          "fullTestSummary": "1620 passed (24.8m)",
+          "originalFullLog": "/tmp/bricklane-main-9c80801-complete-ci.log",
+          "logSHA256": "44546b75e124a6d4b2b86a7f18b280e1afb7921ccdbc99294171eb3ff3a2f719",
+          "liveProof": "/tmp/bricklane-pages-9c80801-live-freight-proof.json"
+        }
+      },
+      {
+        "path": "/tmp/bricklane-pages-9c80801-live-freight-proof.json",
+        "sha256": "d541e23e09bec57b3034196a26145cb12fd07c20a70838655b9e2451a7791c7c",
+        "scope": "Published 9c baseline only; not evidence for this future release commit.",
+        "proof": {
+          "commit": "9c80801fa5f3826ea481c980138244977fc473ce",
+          "CI": 40349748360,
+          "fullTestsPassed": 1620,
+          "fullTestTime": "24.8m",
+          "pagesDeployment": "success",
+          "url": "https://caovc.github.io/reui-pro-block/#/block/data-grid/advanced/data-grid-advanced-12",
+          "actualBrowserChecks": {
+            "freshReload": true,
+            "marginBandsNativeToolbar": true,
+            "initialLoads": 2667,
+            "deepLossLoads": 873,
+            "deepLossAndThinLoads": 1376,
+            "codeDefault": "src/blocks/data/grid-advanced-freight.tsx",
+            "codeImportsActualToggleGroup": true
+          },
+          "screenshot": "/tmp/bricklane-pages-9c80801-freight.png",
+          "verifiedAt": "2026-10-26T16:39:04.338Z"
+        }
+      }
+    ]
+  },
+  "privateStaticChecks": {
+    "scopeFormat": "PASS",
+    "fullFormat": "PASS;1422 matched files in clean candidate",
+    "leafLint": "PASS;0errors",
+    "yamlAndBash": "PASS; no Mac sudo or apt executed",
+    "evidenceDirectory": "/tmp/bricklane-grid22-root-release-tmvsc6ua",
+    "notRuntimeEvidence": true
+  }
+}

@@ -91,3 +91,37 @@ passes did not certify the subsequently measured visual state. Do not overwrite 
 or reuse62650 source packages as if they contain the final CSS. Remaining real structure gaps
 are the upload action-icon slot and Public Details Info/Tooltip slot, including the8.75px phone
 residual. No artificial spacer/control or claim of pixel-perfect reproduction is introduced.
+
+## Prospect Grid22 mobile controls and CI mirrors — scoped follow-up, 2026-10-27
+
+The [mobile controls release record](grid-prospect-mobile-controls-release.json) isolates five
+consumer hunks in the actual Prospect Database leaf. The existing free Button icon-size API now
+supplies four 32px phone controls; responsive classes restore the measured desktop boxes, and
+the existing free CascaderTrigger continues rendering the real Button with its combobox role.
+The phone header gap is 6px. Data, reducers, event handlers, native focus, imports, source targets,
+shared components, dependencies and licensing remain unchanged. This corrects the previous
+hidden-label/default-padding approximation; it adds no bespoke interaction engine or artwork.
+
+The exact f755 owner candidate passed one original strict main build in 21.868s and five original
+business/focus cases once. Owner 1440/390 geometry and keyboard observations retain the known
+desktop widths and earlier phone toolbar-placement differences. These checks do not certify all
+visual states. The same immutable 654-file production output supplied source view, actual Copy,
+single-file download and the real 304-member ZIP; source phase and later clipboard grant are
+recorded separately. Raw supporting sources, two licenses and generated theme are exact, with
+2357 module references plus five CSS references and no missing local edges. Root explicitly waived
+duplicate exported-project install/strict/runtime for this class-only scope; none is claimed as a
+new pass. The prior baseline or static closure is not relabelled as fresh execution.
+
+A separate workflow-only infrastructure adjustment conditionally writes the existing ephemeral
+Ubuntu runner mirror list with the official HTTPS archive at priority1 and security at priority2,
+before the original Playwright `--with-deps` command. It preserves the Ubuntu source/signing
+configuration, full test command, workers/timeouts/retries and serial Pages queue. Root's actual
+f755 observation shows slow Azure apt fallback, not a completed suite result. Local verification
+covers YAML, Bash syntax and exact TAB/LF output; real Linux effectiveness remains pending.
+
+The previous 9c baseline completed all1620 CI checks in24.8m and deployed successfully. Root
+also verified live Freight native margin filtering (873 deep-loss loads, 1376 after adding Thin)
+and the actual source default leaf. Those are distinct 9c evidence. At this precommit handoff,
+f755's format/tooling/lint/build were green but its browser installation and complete CI/Pages
+were pending. Root coordinates normal-hook commit/push for this narrow four-path release and
+checks that resulting commit's Linux CI and Pages separately; push alone is not deployment.
