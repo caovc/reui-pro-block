@@ -28,6 +28,7 @@ const meta = import.meta.glob(
     "/LICENSE",
     "/THIRD_PARTY_NOTICES.md",
     "/src/blocks/assets/Inter-LICENSE.txt",
+    "/src/blocks/**/assets/**/*.{md,txt}",
     "/src/templates/**/assets/*.{txt,md}",
     "/src/components/reui/*.{md,txt}",
     "/docs/*provenance*.md",
@@ -93,10 +94,15 @@ export default function Example() {
 }\n`;
   files["src/blocks/assets/Inter-LICENSE.txt"] = meta["/src/blocks/assets/Inter-LICENSE.txt"];
   for (const [path, content] of Object.entries(meta)) {
+    const assetDirectory = path.slice(0, path.lastIndexOf("/") + 1);
+    const blockAssetNote =
+      path.startsWith("/src/blocks/") &&
+      [...requiredAssets].some((asset) => asset.startsWith(assetDirectory));
     if (
       path.startsWith(`/src/templates/${template.family}/`) ||
       path.startsWith("/src/components/reui/") ||
-      path.startsWith("/docs/")
+      path.startsWith("/docs/") ||
+      blockAssetNote
     )
       files[path.slice(1)] = content;
   }

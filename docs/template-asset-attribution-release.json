@@ -1,0 +1,16 @@
+{
+  "scope": "Preserve referenced block asset attribution in template project exports",
+  "frozenFiles": {
+    "src/templates/source.ts": "e9ef9442fa59507988de9cc24b6097fdf5db17d074a97944a1769f856d7f0573"
+  },
+  "change": "Raw metadata glob includes block asset directories; include each directory note only when requiredAssets contains an asset from that directory. Existing family/ReUI/font/provenance inclusions retained.",
+  "engineChangesIncluded": false,
+  "verification": {
+    "semantic": "/tmp/bricklane-engines/assets-only/verification.json: real collect fixture with7 real references and1615-byte attribution, positive/no-reference/unrelated-directory cases PASS",
+    "actualUI": "/tmp/bricklane-templates-round3/business-layout-qa/assets-ui-audit.json; six actual174-entry future Business-layout downloads each include6licensedJPG/11originalSVG/Inter,7blockasset bytes and exact1615-byte correspondingATTRIBUTION, no unrelated commerce notes",
+    "strict": "Business layout strict completed before metadata-only addition; actual Vite UI metadata mapping and source bytes independently verified; no extra cold TypeScript rebuild for this string-glob/Set predicate change",
+    "formatToolingLint": "/tmp/bricklane-template-attribution-root-static.log"
+  },
+  "limits": "Future engine imports/scripts/dependencies are excluded. This adds attribution records, not new media references.",
+  "publication": "Root serial commit/push, own CI/Pages separate checks"
+}
