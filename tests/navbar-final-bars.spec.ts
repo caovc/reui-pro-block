@@ -8,7 +8,10 @@ for (const width of [1440, 390]) {
   }) => {
     await page.setViewportSize({ width, height: 844 });
     await page.goto("./#/preview/application/navbar/navbar-12");
-    await page.getByRole("button", { name: "Product", exact: true }).click();
+    const productTrigger = page.getByRole("button", { name: "Product", exact: true });
+    await productTrigger.hover();
+    await expect(productTrigger).toHaveAttribute("aria-expanded", "true");
+    await expect(productTrigger).toHaveAttribute("data-state", "open");
     const products = page.getByLabel("Product pages", { exact: true });
     await expect(products).toBeVisible();
     await expect(products.getByRole("link")).toHaveCount(8);
@@ -30,7 +33,12 @@ for (const width of [1440, 390]) {
       "Corporate cards",
     );
     await expect(products).toBeHidden();
-    await page.getByRole("button", { name: "Company", exact: true }).click();
+    const companyTrigger = page.getByRole("button", { name: "Company", exact: true });
+    // A hover-open native trigger toggles closed on click; its exiting panel is
+    // briefly still visible. Synchronize with open state before choosing a page.
+    await companyTrigger.hover();
+    await expect(companyTrigger).toHaveAttribute("aria-expanded", "true");
+    await expect(companyTrigger).toHaveAttribute("data-state", "open");
     const company = page.getByLabel("Company pages", { exact: true });
     await expect(company).toBeVisible();
     await expect(company.getByRole("link")).toHaveCount(6);
@@ -134,7 +142,18 @@ test("free native NavigationMenu opens on hover and retains keyboard/Escape beha
   await product.click();
   await expect(product).toHaveAttribute("aria-expanded", "false");
   await expect(page.getByLabel("Product pages", { exact: true })).toBeHidden();
-  await page.getByRole("button", { name: "Company", exact: true }).hover();
+  const company = page.getByRole("button", { name: "Company", exact: true });
+  await company.hover();
+  await expect(company).toHaveAttribute("aria-expanded", "true");
+  await expect(page.getByLabel("Company pages", { exact: true })).toBeVisible();
+  // Preserve the real native toggle contract for both triggers. This is the
+  // transition that made the former direct-click Company test race its exit.
+  await company.click();
+  await expect(company).toHaveAttribute("aria-expanded", "false");
+  await expect(page.getByLabel("Company pages", { exact: true })).toBeHidden();
+  await page.getByRole("heading", { name: "Navbar", exact: true }).hover();
+  await company.hover();
+  await expect(company).toHaveAttribute("aria-expanded", "true");
   await expect(page.getByLabel("Company pages", { exact: true })).toBeVisible();
   await page.getByRole("heading", { name: "Navbar", exact: true }).hover();
   await expect(page.getByLabel("Company pages", { exact: true })).toBeHidden();
