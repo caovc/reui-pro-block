@@ -1,5 +1,5 @@
 import type { ScheduledTask, useEchoScheduledModel } from "./workflow-models";
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   CalendarClock,
   ClipboardList,
@@ -58,9 +58,11 @@ const suggestions = [
 export function EchoScheduled({
   onOpen,
   records,
+  createFromChat,
 }: {
   onOpen: (name: string) => void;
   records: ReturnType<typeof useEchoScheduledModel>;
+  createFromChat?: { id: number; title: string; prompt?: string };
 }) {
   const [tasks, setTasks] = records;
   const [filter, setFilter] = useState("All");
@@ -70,14 +72,25 @@ export function EchoScheduled({
   const [prompt, setPrompt] = useState("");
   const [repeat, setRepeat] = useState("Weekly");
   const [time, setTime] = useState("Morning");
-  function edit(task?: ScheduledTask) {
+  const [chatTarget, setChatTarget] = useState("");
+  const consumedRequest = useRef<number | null>(null);
+  const edit = useCallback((task?: ScheduledTask) => {
+    setChatTarget("");
     setEditing(task?.id ?? null);
     setName(task?.name ?? "");
     setPrompt(task?.prompt ?? "");
     setRepeat(task?.repeat ?? "Weekly");
     setTime(task?.time ?? "Morning");
     setOpen(true);
-  }
+  }, []);
+  useEffect(() => {
+    if (!createFromChat || consumedRequest.current === createFromChat.id) return;
+    consumedRequest.current = createFromChat.id;
+    edit();
+    setName(createFromChat.title);
+    setPrompt(createFromChat.prompt ?? "");
+    setChatTarget(createFromChat.title);
+  }, [createFromChat, edit]);
   return (
     <div className="echo-scheduled">
       <div className="wf-page-heading">
@@ -198,7 +211,7 @@ export function EchoScheduled({
       <SideForm
         open={open}
         title={editing === null ? "New Task" : "Edit Task"}
-        description="Scheduled task"
+        description={chatTarget ? `Writes into ${chatTarget}` : "Scheduled task"}
         onClose={() => setOpen(false)}
         submit={editing === null ? "Add Task" : "Save Task"}
         onSubmit={() => {

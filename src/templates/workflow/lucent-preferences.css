@@ -1,0 +1,415 @@
+.wf-lucent-preferences {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.wf-lucent-preferences .wf-lucent-general > [data-slot="frame"] {
+  --frame-panel-radius: var(--radius-xl);
+  gap: 0;
+  padding: 0;
+  background: var(--muted);
+}
+
+.wf-lucent-general > [data-slot="frame"] > [data-slot="frame-panel-header"] {
+  padding: 10px 8px;
+}
+
+.wf-lucent-preferences [data-slot="frame-panel-title"] {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.wf-lucent-general [data-slot="frame-panel-description"] {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.wf-lucent-preferences [data-slot="frame"] > [data-slot="frame-panel"] {
+  margin: 0 -1px -1px;
+  padding: 0;
+  background: var(--background);
+}
+
+.wf-lucent-preferences .workspace-settings-row {
+  display: grid;
+  min-width: 0;
+  width: 100%;
+  grid-template-columns: minmax(0, 384px) minmax(0, 1fr);
+  align-items: start;
+  gap: 16px;
+  padding: 16px;
+}
+
+.wf-lucent-preferences .workspace-settings-row > [data-slot="field-content"] {
+  min-width: 0;
+  gap: 2px;
+}
+
+.wf-lucent-preferences .workspace-settings-row [data-slot="field-title"],
+.wf-lucent-preferences .workspace-settings-row [data-slot="field-label"] {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.wf-lucent-general .workspace-settings-row [data-slot="field-description"] {
+  margin: 0;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.wf-lucent-preferences .workspace-settings-control {
+  min-width: 0;
+}
+
+.wf-lucent-general .workspace-settings-control > input,
+.wf-lucent-general .workspace-settings-control > [data-slot="select-trigger"],
+.wf-lucent-general .workspace-settings-control > [data-slot="input-group"] {
+  width: 100%;
+  height: 32px;
+}
+
+.wf-lucent-preferences .workspace-settings-row [data-slot="badge"],
+.wf-lucent-preferences .wf-lucent-rule-item [data-slot="badge"] {
+  height: 18px;
+  flex-shrink: 0;
+  padding: 0 4px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 16px;
+}
+
+.wf-lucent-general label[for="lucent-general-apiEndpoint"] [data-slot="badge"] {
+  color: var(--destructive);
+}
+
+.wf-lucent-origin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.wf-lucent-origin-actions > button {
+  height: 32px;
+}
+
+.wf-lucent-general [data-slot="color-picker-swatches"] {
+  --color-picker-swatch-size: 28px;
+  display: flex;
+  width: max-content;
+  max-width: 100%;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 12px;
+}
+
+.wf-lucent-region-fields {
+  display: grid;
+  gap: 12px;
+}
+
+.wf-lucent-region-fields > div {
+  display: grid;
+  gap: 8px;
+}
+
+.wf-lucent-region-fields label {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 19.25px;
+}
+
+.wf-lucent-icon-select {
+  position: relative;
+}
+
+.wf-lucent-icon-select > svg {
+  position: absolute;
+  z-index: 1;
+  top: 9px;
+  left: 12px;
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+}
+
+.wf-lucent-icon-select [data-slot="select-trigger"] {
+  height: 32px;
+  padding-left: 32px;
+}
+
+.wf-lucent-general [data-slot="toggle-group"] {
+  width: fit-content;
+  max-width: 100%;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0;
+  background: transparent;
+}
+
+.wf-lucent-general [data-slot="toggle-group-item"] {
+  scroll-margin: 4px;
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 12.8px;
+  line-height: 17.6px;
+}
+
+.wf-lucent-interface {
+  display: grid;
+  gap: 12px;
+}
+
+.wf-lucent-interface > div {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.wf-lucent-interface [data-slot="switch"] {
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.wf-lucent-interface label {
+  display: block;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 19.25px;
+}
+
+.wf-lucent-interface p {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.wf-lucent-general [data-slot="frame-panel-footer"] {
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 8px 16px;
+}
+
+.wf-lucent-general [data-slot="frame-panel-footer"] > button {
+  height: 32px;
+}
+
+.wf-lucent-import-notice,
+.wf-lucent-save-error {
+  margin-top: 12px;
+}
+
+.wf-lucent-save-error {
+  margin: 12px 16px 0;
+}
+
+.wf-lucent-notification-rules {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.wf-lucent-notification-rules > header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 28px;
+}
+
+.wf-lucent-notification-rules > header p {
+  margin: 2px 0 0;
+  color: var(--muted-foreground);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.wf-lucent-notification-rules .wf-lucent-rule-frame {
+  gap: 0;
+  padding: 0;
+}
+
+.wf-lucent-notification-rules [data-slot="frame-panel-header"] {
+  padding: 0;
+}
+
+.wf-lucent-rule-group-trigger {
+  width: 100%;
+  height: 37px;
+  justify-content: space-between;
+  padding: 8px 16px;
+  border-radius: inherit;
+}
+
+.wf-lucent-rule-group-trigger > svg {
+  width: 16px;
+  height: 16px;
+  color: var(--muted-foreground);
+  transition: rotate 150ms;
+}
+
+.wf-lucent-rule-group-trigger[data-state="closed"] > svg {
+  rotate: -90deg;
+}
+
+.wf-lucent-notification-rules [data-slot="select-trigger"] {
+  width: 160px;
+  height: 32px;
+}
+
+.wf-lucent-preferences .wf-lucent-badge-green {
+  color: var(--color-emerald-700);
+}
+
+.wf-lucent-preferences .wf-lucent-badge-blue {
+  color: var(--color-blue-700);
+}
+
+.wf-lucent-preferences .wf-lucent-badge-purple {
+  color: var(--color-violet-700);
+}
+
+.wf-lucent-preferences .wf-lucent-badge-orange {
+  color: var(--color-orange-700);
+}
+
+.wf-lucent-origin-dialog {
+  width: 450px;
+  max-width: calc(100vw - 32px);
+}
+
+.wf-lucent-origin-dialog [data-slot="dialog-header"] {
+  gap: 6px;
+}
+
+.wf-lucent-origin-dialog [data-slot="dialog-description"] {
+  line-height: 21px;
+}
+
+.wf-lucent-origin-list {
+  display: grid;
+  max-height: min(40vh, 360px);
+  gap: 6px;
+  overflow-y: auto;
+}
+
+.wf-lucent-origin-list [data-slot="item"] {
+  min-width: 0;
+  padding: 6px 10px;
+}
+
+.wf-lucent-origin-list code {
+  overflow-wrap: anywhere;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.wf-lucent-origin-dialog [data-slot="dialog-footer"] {
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+@media (max-width: 760px) {
+  .wf-lucent-general .workspace-settings-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .wf-lucent-general .workspace-settings-control > input,
+  .wf-lucent-general .workspace-settings-control [data-slot="input-group-input"] {
+    font-size: 16px;
+  }
+
+  .wf-lucent-origin-actions {
+    flex-direction: column;
+  }
+
+  .wf-lucent-origin-actions > button {
+    width: 100%;
+  }
+}
+
+.wf-lucent-notification-rules [data-slot="item-actions"]:has(.wf-lucent-custom-window-note) {
+  max-width: 160px;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.wf-lucent-custom-window-note {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.wf-lucent-rule-content > [data-slot="frame-panel"] {
+  margin: 0 -1px -1px;
+  padding: 0;
+  background: var(--background);
+}
+
+.wf-lucent-general-fields {
+  gap: 0;
+}
+
+.wf-lucent-general .workspace-settings-row label[data-slot="field-label"] {
+  line-height: 19.25px;
+}
+
+.wf-lucent-interface > div > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.wf-lucent-general [data-slot="toggle-group"] {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding: 3px;
+  margin: -3px;
+  max-width: calc(100% + 6px);
+}
+
+.wf-lucent-general > [data-slot="frame"] > [data-slot="frame-panel"] {
+  margin-bottom: 0;
+}
+
+.wf-lucent-rule-item {
+  padding: 10px 16px;
+}
+
+.wf-lucent-rule-item [data-slot="item-content"] {
+  min-width: 0;
+}
+
+.wf-lucent-rule-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wf-lucent-rule-frame > [data-slot="frame-panel-header"] {
+  border-radius: var(--frame-radius) var(--frame-radius) 0 0;
+}
+
+.wf-lucent-general [data-slot="color-picker-swatch-item"][aria-selected="true"] {
+  box-shadow:
+    0 0 0 2px var(--background),
+    0 0 0 4px var(--ring);
+}

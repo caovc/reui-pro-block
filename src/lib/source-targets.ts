@@ -522,7 +522,14 @@ export function templateImplementationTargets(template: {
       "ai-operations",
     ],
     tempo: ["ai-operations", "workflow-account-settings", "workflow-account-menu"],
-    lucent: ["lucent-clusters", "lucent-hosts", "lucent-registry"],
+    lucent: [
+      "lucent-clusters",
+      "lucent-hosts",
+      "lucent-registry",
+      "lucent-general-settings",
+      "lucent-notification-rules",
+      "lucent-origins-dialog",
+    ],
     pulse: ["pulse-knowledge", "pulse-reports", "pulse-settings"],
     cohort: [
       "cohort-people",
@@ -533,7 +540,23 @@ export function templateImplementationTargets(template: {
       "cohort-timesheets",
     ],
     roster: ["roster-approvals", "roster-import", "roster-directory", "roster-settings"],
-    echo: ["echo-composer", "echo-projects"],
+    echo: [
+      "echo-sidebar",
+      "echo-settings",
+      "echo-chat-actions",
+      "echo-composer",
+      "echo-projects",
+      "echo-scheduled",
+      "echo-artifacts",
+    ],
+    flowly: [
+      "flowly-settings",
+      "flowly-settings-fields",
+      "flowly-settings-components",
+      "flowly-settings-members",
+      "flowly-settings-integrations",
+      "flowly-settings-webhooks",
+    ],
   };
   const modules = [
     sharedModules[template.id] ?? template.id,

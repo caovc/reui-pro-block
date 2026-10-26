@@ -1,3 +1,4 @@
+import "./lucent-layout.css";
 import { useLucentSecurityModel, useLucentIntegrationsModel } from "./workflow-models";
 import { LucentSecurity, LucentIntegrations } from "./lucent-settings";
 import { useState } from "react";
@@ -32,7 +33,6 @@ import {
   CreateDialog,
   Detail,
   ExportButton,
-  WorkspaceSettings,
   EmptyResults,
 } from "./shared";
 import { Switch } from "@/components/ui/switch";
@@ -44,6 +44,10 @@ import { useLucentInfrastructureModel } from "./lucent-infrastructure-model";
 import { LucentClusters } from "./lucent-clusters";
 import { LucentHosts } from "./lucent-hosts";
 import { LucentRegistry } from "./lucent-registry";
+import { LucentGeneralSettings } from "./lucent-general-settings";
+import { LucentNotificationRules } from "./lucent-notification-rules";
+import "@/blocks/reference.css";
+import "./lucent-preferences.css";
 const services = ["api-gateway", "orders-db", "edge-cache", "recommender"];
 const initialFlags = [
   "Checkout canary routing",
@@ -438,7 +442,11 @@ export default function Lucent() {
       ) : view === "Security" ? (
         <LucentSecurity model={securityModel} />
       ) : view === "Settings" ? (
-        <WorkspaceSettings />
+        <div className="wf-lucent-preferences">
+          <h1 className="sr-only">Settings</h1>
+          <LucentGeneralSettings />
+          <LucentNotificationRules />
+        </div>
       ) : view === "Integrations" ? (
         <LucentIntegrations model={integrationModel} />
       ) : (

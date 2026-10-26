@@ -1,0 +1,13 @@
+# Lucent document header and content bounds
+
+The existing Lucent Shell identifies itself as `DevOps`. CodeGraph and the template caller search confirm that this brand is used by Lucent alone. This correction imports a consumer-scoped `lucent-layout.css`; it does not change the shared Shell, native Sidebar primitives, global CSS or other template brands.
+
+The reference Settings, Security and Integrations pages all use a document scroller, a sticky 48px header at top0/z20, and 16px content padding. The previous local header was static and49px tall. Its mobile content padding was12px; the Settings leaf compensated with a desktop−1px top margin and mobile3px/4px margins. The new layout uses the real48px header and16px mobile padding, and removes those Settings compensations. General's previously verified frame geometry remains identical at1440 and390.
+
+The local full preview has its own36px toolbar. It was static and would scroll away, so reserving36px for a sticky template header alone would leave an empty strip. Only a TemplateWorkspace containing the Lucent `wf-devops` root now keeps that toolbar sticky at top0/z30. Its template header remains immediately below it at36px. Isolated previews and exported projects have no toolbar and use top0. Menus, dialogs and the native Sidebar retain their existing providers, handlers and portal layers.
+
+Six browser cases cover all three pages at both viewport sizes, each exercising isolated and full previews: twelve rendered states passed. Header position/height remain correct after real document scrolling; the complete preview toolbar remains at0. Content padding is16px and there is no document horizontal overflow. Both General frame rectangles remain exact: desktop x272/y64/w1152/h937.25 and mobile x16/y64/w358/h1365.25, with36px added only in the full preview. The original ten Lucent settings interaction/font cases were rerun after this layout correction and all passed. The actual downloaded-project behavior and strict build remain separate release gates.
+
+The original six-file Lucent freeze is immutable. This parent delta records the new CSS, its leaf import and removal of compensating margins separately. Reference screenshots remain private. The reference audit and production-style warm evidence are under `/tmp/bricklane-templates-round3/lucent-header-readonly/` and `/tmp/bricklane-templates-layout/lucent-header-delta-v1/`.
+
+Security and Integrations still have separate earlier content-density and interaction differences. This correction proves their header behavior and base content bounds; it does not claim their complete contents now match the reference. Header actions, original Bricklane artwork and domain models remain unchanged.

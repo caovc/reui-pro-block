@@ -5,11 +5,11 @@ import { FlowlyAgents } from "./flowly-agents";
 import {
   ArrowRight,
   Bot,
-  Brain,
   Filter,
   MoreHorizontal,
   Star,
-  GitBranch,
+  BrainCircuit,
+  SplinePointer,
   LayoutDashboard,
   Pencil,
   Plus,
@@ -17,17 +17,7 @@ import {
   UserRoundPlus,
   Workflow,
 } from "lucide-react";
-import {
-  Shell,
-  Panel,
-  Stat,
-  Button,
-  Input,
-  Status,
-  Segments,
-  CreateDialog,
-  WorkspaceSettings,
-} from "./shared";
+import { Shell, Panel, Stat, Button, Input, Status, Segments, CreateDialog } from "./shared";
 import { toast } from "sonner";
 import { WorkflowGrid, type WorkflowField } from "./grid";
 import { Person } from "./controls";
@@ -40,6 +30,13 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { WorkflowList, WorkflowCreate, type WorkflowRecord } from "./flowly-workflows";
+import { useFlowlySettingsModel } from "./flowly-settings-model";
+import {
+  FlowlySettingsBody,
+  FlowlySettingsNavigation,
+  FlowlySettingsBreadcrumb,
+  FlowlySettingsHeaderAction,
+} from "./flowly-settings";
 const seed = [
   {
     name: "Churn Risk Digest",
@@ -175,6 +172,7 @@ const seed = [
   },
 ];
 export default function Flowly() {
+  const settings = useFlowlySettingsModel();
   const agentRecords = useFlowlyAgentsModel();
   const [view, setView] = useState("Dashboard");
   const [extraWorkflows, setExtraWorkflows] = useState<WorkflowRecord[]>([]);
@@ -359,15 +357,25 @@ export default function Flowly() {
       brand="Flowly"
       compact
       view={view}
-      setView={setView}
+      setView={(next) => {
+        if (next === "Settings" && view !== "Settings") settings.setSection(null);
+        setView(next);
+      }}
+      mobileSecondaryNavigation={
+        view === "Settings" ? <FlowlySettingsNavigation model={settings} /> : undefined
+      }
+      mobileSecondaryWidth={200}
+      closeMobileOnSelect={(next) => next !== "Settings"}
+      headerTitle={view === "Settings" ? <FlowlySettingsBreadcrumb model={settings} /> : undefined}
+      headerActions={
+        view === "Settings" ? <FlowlySettingsHeaderAction model={settings} /> : undefined
+      }
       nav={[
         { label: "Dashboard", icon: LayoutDashboard },
-        { label: "Workflow", icon: Workflow },
+        { label: "Workflow", icon: SplinePointer },
         { label: "Agent Builder", icon: Bot },
-        { label: "Workflows", icon: GitBranch },
-        { label: "Agents", icon: Bot },
-        { label: "Runs", icon: Workflow },
-        { label: "AI tools", icon: Brain },
+        { label: "Workflows", icon: Workflow },
+        { label: "Agents", icon: BrainCircuit },
         { label: "Settings", icon: Settings },
       ]}
       actions={
@@ -591,7 +599,7 @@ export default function Flowly() {
           }}
         />
       ) : view === "Settings" ? (
-        <WorkspaceSettings />
+        <FlowlySettingsBody model={settings} />
       ) : (
         <Panel
           title={view}

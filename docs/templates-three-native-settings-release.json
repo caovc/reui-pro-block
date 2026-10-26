@@ -1,0 +1,75 @@
+{
+  "baseline": "6e06f311bb990513ddc82595b951b88b0e75c14d",
+  "templates": ["echo", "flowly", "lucent"],
+  "changes": [
+    "Echo uses the real native Sidebar provider and seven distinct settings sections; profile, local history, notifications, security and billing retain their actual state transitions.",
+    "Flowly has ten distinct settings routes, native member/integration/webhook operations, and controlled header and sidebar slots that retain defaults for other templates.",
+    "Lucent has separate General and notification drafts, real local origin validation, free ColorPicker/CalendarSelect controls and matching document headers."
+  ],
+  "actualFreeReuse": [
+    "Sidebar",
+    "Layout",
+    "Frame",
+    "Item compositions",
+    "NumberField",
+    "CalendarSelect",
+    "ColorPicker",
+    "official free avatar-upload implementation",
+    "CodeBlock"
+  ],
+  "corrections": [
+    "Replaced simplified sidebar and settings surfaces with real free-component compositions.",
+    "Template source targets add only Echo/Flowly/Lucent implementation priorities while retaining all existing Map/Grid targets.",
+    "The existing Echo Artifacts test locates its real native tab rather than a button."
+  ],
+  "validation": {
+    "originalStrictMainBuild": "passed",
+    "originalProductionTests": {
+      "passed": 85,
+      "failed": 0,
+      "workers": 1,
+      "retries": 0,
+      "timeoutMs": 30000
+    },
+    "actualSourceFourWayTestsPassed": 3,
+    "actualDownloads": {
+      "projects": 3,
+      "membersEach": 256,
+      "byteIdenticalCommonMembers": 253,
+      "differentMembers": ["README.md", "package.json", "src/Example.tsx"],
+      "freshNormalInstalls": 1,
+      "matchingIndependentPhysicalDependencyClones": 2,
+      "originalStrictBuildsPassed": 3,
+      "originalExportRuntimeCasesPassed": 6
+    },
+    "separateLucentSettledScreenshots": {
+      "widths": [1440, 390],
+      "nativeEntranceAnimation": "awaited animation.finished; no forced or disabled animation",
+      "opacity": 1,
+      "runningFiniteAnimations": 0,
+      "consoleWarningsAndErrors": 0,
+      "pageErrors": 0,
+      "failedOr4xxRequests": 0,
+      "escapeReturnsRealTriggerFocus": true
+    },
+    "nativeFonts": "Actual Default/Serif/Mono/Reset tests passed in native and portal controls.",
+    "formatAndScopedOxlint": "passed"
+  },
+  "limits": [
+    "Actions use local demo state and do not send real invitations, email or service requests.",
+    "This milestone does not include separate Flux, Drive, Lucent Access or Mesh engine work.",
+    "Visual fidelity remains subject to each template ledger; the old mid-animation Lucent PNG is retained as a diagnostic and is not steady-state proof."
+  ],
+  "materials": "Original Bricklane branding, licensed replacement portraits, free-source MIT and font OFL retained in the actual exports.",
+  "deployment": "Requires successful Actions and Pages deployment after commit/push; local verification is not a deployment claim.",
+  "evidenceSHA256": {
+    "settings-next-669-main.json": "ae647f3b038f2c39183f23e47764fedf6436b594b1dc6d9b3fbdace8c0422f10",
+    "report.json": "ab98bbc4014213e9155229f9813d4c528716b7988e56a3ea4cf55128a148c5fe",
+    "postproof.json": "f8289c31c5cd2cbc293ec2275671b5ed93e0eaef59bdd97cab1b4ed2c639fb94",
+    "zip-comparison.json": "8fe3fb5ad97408f2d13009d40a997bd722f4304534bd40478859cf74c7167e87",
+    "bricklane-template41-actual-echo-install-process.json": "50297f0f9e4666414a50b2c4749f71755e04d71e5f860cd05a951063f72b84ff",
+    "bricklane-template41-actual-strict-results.json": "f08c26c5ce822b0a1719fd298591e98996303d2ec02e599780238fd79c05a7ea",
+    "settings-next-669-final-release-proof.json": "296ee350bd57273f44190ca56845a6b1bfa37c19a15571db7d36b4056f3edb13",
+    "evidence.json": "93ac6e953eda706b531413170a7431a6411556a90cb5ce761088ad29d6fd5762"
+  }
+}

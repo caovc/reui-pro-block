@@ -1,0 +1,21 @@
+/* Lucent uses the document layout; its actual Shell brand is DevOps. */
+.wf-root.wf-devops.wf-native-layout[data-layout="document"] > .wf-main > .wf-header {
+  position: sticky;
+  top: var(--template-toolbar-height, 0px);
+  z-index: 20;
+  height: 48px;
+  min-height: 48px;
+}
+
+/* Keep the local preview toolbar in the same reserved space while scrolling. */
+.template-workspace:has(.wf-root.wf-devops) > .template-workspace-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
+
+@media (max-width: 767px) {
+  .wf-root.wf-devops.wf-native-layout > .wf-main > .wf-content {
+    padding: 16px;
+  }
+}

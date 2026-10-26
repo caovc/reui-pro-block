@@ -87,7 +87,7 @@ test("Echo Artifacts switches only its sidebar then opens and downloads the sele
   page,
 }) => {
   await page.goto("/#/template-preview/echo");
-  await page.getByRole("button", { name: "Artifacts", exact: true }).click();
+  await page.getByRole("tab", { name: "Artifacts", exact: true }).click();
   await expect(
     page.getByRole("heading", { name: "How can I help you?", exact: true }),
   ).toBeVisible();

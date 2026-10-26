@@ -1,0 +1,370 @@
+.echo-settings-scroller {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  padding: 20px 40px;
+}
+.echo-settings-content {
+  width: 100%;
+  max-width: 896px;
+  margin-inline: auto;
+  padding-bottom: 20px;
+}
+.echo-settings-heading {
+  margin-bottom: 32px;
+}
+.echo-settings-heading h1 {
+  margin: 0;
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 600;
+  letter-spacing: -0.4px;
+}
+.echo-settings-heading p {
+  margin: 0;
+  color: var(--muted-foreground);
+  line-height: 22.75px;
+}
+.echo-settings-tabs {
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr);
+  align-items: start;
+  gap: 32px;
+  min-width: 0;
+}
+.echo-settings-rail-scroll {
+  min-width: 0;
+}
+.echo-settings-rail {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  width: 160px;
+  height: auto;
+  gap: 4px;
+  padding: 0;
+  background: transparent;
+}
+.echo-settings-rail [data-slot="tabs-trigger"] {
+  flex: none;
+  height: 34px;
+  justify-content: flex-start;
+  gap: 12px;
+  padding: 7px 12px;
+  border: 0;
+  color: var(--muted-foreground);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  white-space: nowrap;
+}
+.echo-settings-rail [data-slot="tabs-trigger"][data-state="active"] {
+  background: var(--muted);
+  color: var(--foreground);
+  box-shadow: none;
+}
+.echo-settings-rail [data-slot="tabs-trigger"] svg {
+  width: 16px;
+  height: 16px;
+}
+.echo-settings-sections,
+.echo-settings-section {
+  min-width: 0;
+}
+.echo-settings-section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin: 0;
+}
+.echo-settings-card {
+  min-width: 0;
+  padding: 0;
+  background: transparent;
+}
+.echo-settings-card-panel {
+  min-width: 0;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 16px;
+  background: var(--background);
+  border: 0;
+  box-shadow: 0 0 0 1px var(--border);
+}
+.echo-settings-card-panel > [data-slot="frame-panel-header"] {
+  min-height: 70px;
+  padding: 12px 20px 16px;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+}
+.echo-settings-card-panel [data-slot="frame-panel-title"] {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 22px;
+}
+.echo-settings-card-panel [data-slot="frame-panel-description"] {
+  line-height: 20px;
+}
+.echo-settings-card-fields {
+  gap: 0;
+}
+.echo-settings-card-fields > .workspace-settings-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 16px;
+  min-width: 0;
+  margin: 0;
+  padding: 12px 20px;
+}
+.echo-settings-card-fields .workspace-settings-row > [data-slot="field-content"] {
+  gap: 2px;
+}
+.echo-settings-card-fields [data-slot="field-label"],
+.echo-settings-card-fields [data-slot="field-title"] {
+  font-weight: 500;
+  line-height: 19.25px;
+}
+.echo-settings-card-fields [data-slot="field-title"] {
+  line-height: 20px;
+}
+.echo-settings-card-fields [data-slot="field-description"] {
+  margin: 0;
+  font-size: 14px;
+  line-height: 21px;
+}
+.echo-settings-card-fields .workspace-settings-control {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  min-width: 0;
+}
+.echo-settings-card-fields .workspace-settings-control:has(> [role="switch"]),
+.echo-settings-card-fields .workspace-settings-control:has(> .echo-appearance) {
+  align-items: flex-end;
+}
+.echo-settings-card-fields
+  .workspace-settings-control
+  > button:not([role="combobox"]):not([role="switch"]) {
+  align-self: flex-end;
+}
+.echo-settings-card-fields input,
+.echo-settings-card-fields [data-slot="select-trigger"],
+.echo-settings-card-fields [data-slot="input-group"] {
+  height: 32px;
+  min-height: 32px;
+  width: 100%;
+  font-size: 14px;
+}
+.echo-settings-card-fields [data-slot="input-group"] input {
+  height: 30px;
+  min-height: 0;
+}
+.echo-settings-card-fields textarea {
+  min-height: 80px;
+  width: 100%;
+}
+.echo-settings-card-fields [data-slot="badge"] {
+  padding: 0 4px;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 16px;
+}
+.echo-settings-card-panel > [data-slot="frame-panel-footer"] {
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 20px;
+  border-top: 1px solid var(--border);
+  background: var(--muted);
+}
+.echo-settings-card-panel button[data-slot="button"] {
+  height: 30px;
+  min-height: 30px;
+  padding-inline: 10px;
+  font-size: 14px;
+}
+.echo-settings-pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+}
+.echo-settings-pair > div,
+.echo-password-fields > div {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 8px;
+}
+.echo-password-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.echo-appearance {
+  display: flex;
+  width: fit-content;
+  gap: 0;
+  padding: 3px;
+  border-radius: 20px;
+  background: var(--muted);
+}
+.echo-appearance [data-slot="toggle-group-item"] {
+  min-width: 24px;
+  width: 24px;
+  height: 24px;
+  padding: 4px;
+  border: 0;
+  border-radius: 50%;
+  color: var(--muted-foreground);
+}
+.echo-appearance [data-slot="toggle-group-item"][data-state="on"] {
+  background: var(--background);
+  color: var(--foreground);
+  box-shadow: 0 1px 2px #00000012;
+}
+.echo-appearance svg {
+  width: 14px;
+  height: 14px;
+}
+.echo-profile-notice {
+  padding: 12px;
+  border-radius: 10px;
+}
+.echo-profile-notice [data-slot="alert-title"] {
+  font-weight: 500;
+}
+.echo-profile-notice [data-slot="alert-description"] {
+  font-size: 14px;
+}
+.echo-settings-card-fields textarea#echo-settings-style {
+  min-height: 64px;
+}
+.echo-settings-card-fields textarea#echo-settings-bio {
+  min-height: 96px;
+}
+.echo-session-name {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.echo-session-name svg {
+  width: 16px;
+  height: 16px;
+}
+.echo-plan-description {
+  display: block;
+  max-width: 324px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.echo-plan-description > span {
+  color: var(--foreground);
+}
+.echo-settings-compound {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.echo-settings-compound > .workspace-settings-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.echo-settings-compound .workspace-settings-control {
+  width: 100%;
+}
+.echo-payment-control {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  color: var(--muted-foreground);
+}
+.echo-settings-card-fields .workspace-settings-avatar > .relative > div {
+  width: 40px;
+  height: 40px;
+}
+.echo-settings-status {
+  margin: 12px 0 0;
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.echo-settings-dialog {
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+}
+.echo-settings-dialog-list {
+  display: flex;
+  flex-direction: column;
+  max-height: 60dvh;
+  overflow-y: auto;
+}
+.echo-settings-dialog-list > div {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+.echo-settings-dialog-list small {
+  color: var(--muted-foreground);
+}
+@media (max-width: 767px) {
+  .echo-settings-scroller {
+    padding: 20px 16px;
+  }
+  .echo-settings-heading {
+    margin-bottom: 32px;
+  }
+  .echo-settings-heading p {
+    line-height: 24px;
+  }
+  .echo-settings-tabs {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .echo-settings-rail-scroll {
+    width: 100%;
+    overflow-x: auto;
+    padding: 3px;
+    margin: -3px;
+    scrollbar-width: thin;
+  }
+  .echo-settings-rail {
+    flex-direction: row;
+    width: max-content;
+    min-width: 100%;
+    gap: 4px;
+  }
+  .echo-settings-rail [data-slot="tabs-trigger"] {
+    height: 32px;
+    gap: 12px;
+    padding: 6px 12px;
+  }
+  .echo-settings-card-fields > .workspace-settings-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+    padding: 12px 20px;
+  }
+  .echo-settings-card-fields .workspace-settings-control:has(> [role="switch"]),
+  .echo-settings-card-fields .workspace-settings-control:has(> .echo-appearance) {
+    align-items: flex-start;
+  }
+  .echo-settings-card-fields
+    .workspace-settings-control
+    > button:not([role="combobox"]):not([role="switch"]) {
+    align-self: flex-start;
+  }
+  .echo-settings-sections {
+    width: 100%;
+  }
+}
