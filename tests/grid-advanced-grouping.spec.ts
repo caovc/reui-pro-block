@@ -199,20 +199,23 @@ test("reporting selection cascades to every descendant, including collapsed peop
 });
 test("editorial desk regroups real rows and repeats the column header", async ({ page }) => {
   await page.goto(url("grouping", 6));
-  await page.getByRole("button", { name: "Desk", exact: true }).click();
-  await expect(page.getByRole("button", { name: "Collapse Culture", exact: true })).toBeVisible();
+  await page.getByRole("radio", { name: "Desk", exact: true }).click();
+  await expect(page.getByRole("region", { name: "Culture stories", exact: true })).toBeVisible();
   await expect(
     page.getByRole("columnheader").filter({
       has: page.getByRole("button", { name: "Story", exact: true }),
     }),
-  ).toHaveCount(3);
-  await page.getByLabel("Search stories...", { exact: true }).fill("Last Dry");
+  ).toHaveCount(4);
+  await page.getByRole("textbox", { name: "Search stories", exact: true }).fill("Last Dry");
   await expect(page.getByText("The Last Dry Winter", { exact: true })).toBeVisible();
   await expect(page.getByText("Cheap Money Ends", { exact: true })).toHaveCount(0);
 });
 test("delivery bulk action moves selected engagements between stage tables", async ({ page }) => {
   await page.goto(url("grouping", 7));
-  await page.getByRole("checkbox", { name: "Select Stripe", exact: true }).check();
+  await page
+    .getByRole("region", { name: "Discovery engagements", exact: true })
+    .getByRole("checkbox", { name: "Select Stripe", exact: true })
+    .check();
   await page.getByRole("button", { name: "Move to ready", exact: true }).click();
   const rows = page.locator("table").last();
   await expect(rows).toContainText("Stripe");
@@ -227,7 +230,13 @@ for (const family of ["advanced", "grouping"]) {
       page.on("pageerror", (e) => errors.push(e.message));
       await page.setViewportSize({ width: 390, height: 844 });
       await page.goto(url(family, n));
-      await expect(page.locator("h2")).toBeVisible();
+      const landmark =
+        family === "grouping" && n === 6
+          ? page.getByRole("heading", { name: "Drafting", exact: true })
+          : family === "grouping" && n === 7
+            ? page.getByRole("region", { name: "Delivery Board", exact: true })
+            : page.locator("h2");
+      await expect(landmark).toBeVisible();
       await expect(page.locator("table").first()).toBeVisible();
       await expect
         .poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth))

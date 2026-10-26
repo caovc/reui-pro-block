@@ -1,0 +1,44 @@
+{
+  "scope": "Grouping 6 Editorial and 7 Delivery actual free ReUI composition",
+  "base": "e5f76f05b190b14a2e4d2b8fa614f16fd4d62113",
+  "payload": {
+    "src/blocks/data/grid-grouping-editorial.tsx": "09df2221c6795e5d0a16c5dd0b3b56c326702853000872a70909d3fa0c4baec1",
+    "src/blocks/data/grid-grouping-delivery.tsx": "de33e96e3b8c08b5ba8862d8a9cd939d22ce33087529f7166d073d81d64005cb",
+    "tests/grid-grouping-studio-round2.spec.ts": "7877e679b14f98e1a13e6e8f9b702a59cd00e77e26bd2156f159a6f8ec0b587e",
+    "docs/grid-grouping-studio-round2-refinement.md": "710c8d996d02230cb752c26059fc318d6eeebc8a884eca83e87c5806fad790c9",
+    "src/blocks/data/grid-grouping.tsx": "a79a940b0e50b6443b8f7a4c96605a2c60b96ada8ee61f887242c072229b099d",
+    "src/lib/source-targets.ts": "648f7fd0a8218cc55d1fd78e4ff294f27e511c5c69f2c60750616b1d381c74cb",
+    "tests/grid-advanced-grouping.spec.ts": "77a0fcffd74f726d3e72ced79548f4e9ff6d67d256056ab49c29c94dcbeb2d8f"
+  },
+  "reuse": [
+    "Actual free ReUI DataGrid, DataGridTable, DataGridScrollArea, DataGridColumnHeader, Frame, Badge and existing official example adapters",
+    "Native menus, filters and grouped tables replace duplicated approximations"
+  ],
+  "verification": {
+    "owner": "Original main strict0;79 unique planned/focused cases across documented runs, not one79clean run. Original obsolete h2 failure retained; named DeliveryBoard region corrected.",
+    "independent": "17/17 once; fullformat, tooling3 and scopedlint passed; necessary b131 Vite-only0 and fresh2 actual exports.",
+    "exports": "251 members each. Original ZIP6 strict0 and ZIP7 Vite0,4standalone views. Two later Sidebar files verified against separately typed official native implementation. No duplicate cold compiler.",
+    "latestBaseQualification": {
+      "6": {
+        "members": 251,
+        "latestPublishedChangedFileIntersection": [],
+        "zipSHA256": "df8a9d5753d773a60156e8bb642da2bb28ab4712e7bd19a765572f71955a1101"
+      },
+      "7": {
+        "members": 251,
+        "latestPublishedChangedFileIntersection": [],
+        "zipSHA256": "2ade8d9d399d9d43ad1b119864960d81344155d16472101b9f8e756538048229"
+      }
+    },
+    "receipt": {
+      "path": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-grid67-independent-acceptance-i3xy0s45/release-receipt.json",
+      "sha256": "1ce9a7fd3d06c767a1b77d928930c9f2290e1f295dcf65b8abec67743be94cbf"
+    }
+  },
+  "remaining": [
+    "Original replacement portraits/artwork",
+    "Shared portal tooltip font and menu typography residuals in owner ledger",
+    "Domain seed content and progress-tone thresholds include independently authored/inferred details"
+  ],
+  "publication": "Root serial commit/push; current cumulative CI and Pages deployment pending"
+}

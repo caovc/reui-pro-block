@@ -292,3 +292,9 @@ Business, Workflow and Collaboration shared shells now compose the actual free S
 The original116-case cumulative production suite and later latest-Tabs116 compatibility passed. Deeper export checks then found a real Mesh Projects phone header overflow395px; the final consumerCSS repair uses its three existing SVG actions at28px and restores390px document width, with Newtask/form/native focus preserved. Final26/26 layout cases passed on one immutable Vite build. The actual215-file Flux project changes only thatCSS against the preceding215-file integration export;214 common files are exact. The earlier213-file representative project has its own strict-build proof. Theme and Workflow representative actual projects strict-built; the6Business/2Collab original-config Vite bundles and16 desktop/phone flows retain exact prior configs and shared-source coverage.
 
 The [integration record](templates-native-layout-integration-release.json) distinguishes those gates, preserves original failures and documents11 localSVG quote-only Vite normalization as XML-equivalent rather than byte-identical. Other source/media/font/license bytes are exact. Custom drive/Echo child layouts, richer settings and actual engines remain separate. New fullCI/Pages for this15-file milestone remains pending.
+
+### Grouping 6–7 独立实现合并（2026-10-26）
+
+实际复用免费 ReUI DataGrid、Frame、Badge 及原生菜单，替换 Editorial / Delivery 的重复近似实现，并把代码预览默认定位到实际叶文件。独立生产验证 17/17 通过，两个实际下载项目的实现、复制、单文件与 ZIP 已核对；代表 ZIP 严格构建与另包 Vite、4 个视口结果分别保留。最新模板侧栏 15 文件与两个 251 文件导出闭包无交集，合并保留 WorkflowShell 和既有 Pricing 源路由。原有失败证据及共享字体、菜单细节差异见专项记录。
+
+本批提交、推送与 Pages 成功分开记录；截至本条准备合并时，最新累计 CI 仍在运行，前一轮手机 Tabs 真实触摸滑动失败正在诊断。
