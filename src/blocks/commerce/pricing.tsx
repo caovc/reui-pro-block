@@ -20,6 +20,9 @@ import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { AnalyticsPricing, AgencyPricing } from "./pricing-refined";
+import { SeatStepperPricing } from "./pricing-seat-stepper";
+import { PlanComparisonPricing } from "./pricing-plan-comparison";
+import { PerSeatPricing } from "./pricing-per-seat";
 
 const plans = [
   {
@@ -481,6 +484,9 @@ function GeneralPricing({ block }: BlockProps) {
 }
 
 export function Pricing(props: BlockProps) {
+  if (props.block.index === 0) return <SeatStepperPricing />;
+  if (props.block.index === 1) return <PlanComparisonPricing />;
+  if (props.block.index === 2) return <PerSeatPricing />;
   if (props.block.index === 4) return <AnalyticsPricing />;
   if (props.block.index === 5) return <AgencyPricing />;
   return <GeneralPricing {...props} />;

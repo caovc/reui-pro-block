@@ -1,0 +1,377 @@
+.pc2-pricing {
+  container: plan-comparison / inline-size;
+  width: 100%;
+  background: var(--background);
+  color: var(--foreground);
+}
+
+.pc2-container {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 100%;
+  max-width: 1152px;
+  margin-inline: auto;
+  padding: 48px 16px;
+}
+
+.pc2-intro,
+.pc2-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.pc2-intro {
+  gap: 44px;
+}
+
+.pc2-copy {
+  gap: 20px;
+}
+
+.pc2-copy h2 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 36px;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+.pc2-copy p {
+  max-width: 640px;
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 14px;
+  line-height: 20px;
+  text-wrap: balance;
+}
+
+.pc2-plan-picker {
+  gap: 8px;
+}
+
+.pc2-card {
+  width: 100%;
+  gap: 0;
+  overflow: clip;
+  padding-block: 0;
+}
+
+/* The stock Table's horizontal scroll container must not become the sticky
+   header's scrolling ancestor. The whole page scrolls in this composition. */
+.pc2-card [data-slot="table-container"] {
+  overflow: visible;
+}
+
+.pc2-table {
+  table-layout: fixed;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.pc2-table th,
+.pc2-table td {
+  height: auto;
+  padding: 10px 8px;
+  white-space: normal;
+  font-weight: 400;
+  vertical-align: middle;
+}
+
+.pc2-table .pc2-label {
+  padding-inline: 16px 12px;
+  font-weight: 500;
+  text-align: left;
+}
+
+.pc2-plan-names .pc2-label {
+  width: 55%;
+  padding-block: 0;
+}
+
+.pc2-table [data-plan] {
+  box-shadow: inset 1px 0 0 var(--border);
+  font-variant-numeric: tabular-nums;
+}
+
+.pc2-plan-head {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--card);
+}
+
+.pc2-plan-head tr {
+  border-bottom: 0;
+}
+
+.pc2-plan-head tr:hover {
+  background: transparent;
+}
+
+.pc2-table .pc2-plan {
+  padding-top: 16px;
+  padding-bottom: 0;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+.pc2-plan-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  column-gap: 8px;
+  row-gap: 2px;
+}
+
+.pc2-price {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.pc2-plan-actions .pc2-label {
+  padding-block: 0;
+  box-shadow: inset 0 -1px 0 var(--border);
+}
+
+.pc2-plan-actions [data-plan] {
+  padding-top: 12px;
+  padding-bottom: 16px;
+  box-shadow:
+    inset 1px 0 0 var(--border),
+    inset 0 -1px 0 var(--border);
+}
+
+.pc2-plan-action {
+  width: 100%;
+  font-size: 12.8px;
+  line-height: 18.2857px;
+}
+
+.pc2-plan-action:focus-visible {
+  outline: none;
+}
+
+.pc2-table .pc2-section-band,
+.pc2-table .pc2-section-band:hover {
+  border-block: 1px solid var(--border);
+  background: color-mix(in oklab, var(--muted) 50%, transparent);
+}
+
+.pc2-table tbody:first-of-type .pc2-section-band {
+  border-top: 0;
+}
+
+.pc2-section-band .pc2-label {
+  padding-block: 12px;
+}
+
+.pc2-section-band [data-plan] {
+  box-shadow: none;
+}
+
+.pc2-section-caption {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.pc2-section-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pc2-section-name {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: -0.025em;
+}
+
+.pc2-section-description,
+.pc2-rate {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+}
+
+.pc2-table tr[data-group="true"] {
+  border-bottom: 0;
+}
+
+.pc2-table .pc2-detail-row .pc2-label {
+  padding-inline-start: 32px;
+  color: var(--muted-foreground);
+  font-weight: 400;
+}
+
+.pc2-table tbody:last-child tr:last-child th,
+.pc2-table tbody:last-child tr:last-child td {
+  padding-bottom: 16px;
+}
+
+.pc2-feature-hint {
+  position: relative;
+  cursor: pointer;
+  scroll-margin-top: 160px;
+  text-align: left;
+  text-decoration: underline dotted color-mix(in oklab, var(--muted-foreground) 50%, transparent);
+  text-underline-offset: 4px;
+  outline: none;
+}
+
+.pc2-feature-hint::after {
+  position: absolute;
+  inset: -10px 0;
+  content: "";
+}
+
+.pc2-feature-hint:hover {
+  text-decoration-color: var(--foreground);
+}
+
+.pc2-feature-hint:focus-visible {
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 50%, transparent);
+}
+
+.pc2-hint-content {
+  width: max-content;
+  max-width: 256px;
+  padding: 10px;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.pc2-amount,
+.pc2-allowance {
+  font-variant-numeric: tabular-nums;
+}
+
+.pc2-allowance {
+  display: flex;
+  flex-direction: column;
+}
+
+.pc2-included,
+.pc2-unavailable {
+  display: flex;
+  align-items: center;
+}
+
+.pc2-included {
+  color: var(--success);
+}
+
+.pc2-unavailable {
+  color: var(--muted-foreground);
+}
+
+.pc2-included svg,
+.pc2-unavailable svg {
+  width: 16px;
+  height: 16px;
+}
+
+@container plan-comparison (width < 768px) {
+  .pc2-card [data-plan] {
+    display: none;
+  }
+
+  .pc2-card[data-active-plan="free"] [data-plan="free"],
+  .pc2-card[data-active-plan="pro"] [data-plan="pro"],
+  .pc2-card[data-active-plan="team"] [data-plan="team"],
+  .pc2-card[data-active-plan="unlimited"] [data-plan="unlimited"] {
+    display: table-cell;
+    padding-inline-end: 16px;
+  }
+}
+
+@container plan-comparison (min-width: 640px) {
+  .pc2-container {
+    padding-inline: 24px;
+  }
+}
+
+@container plan-comparison (min-width: 672px) {
+  .pc2-copy h2 {
+    font-size: 36px;
+    line-height: 40px;
+  }
+
+  .pc2-copy p {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .pc2-copy p span {
+    display: block;
+  }
+}
+
+@container plan-comparison (min-width: 768px) {
+  .pc2-plan-picker {
+    display: none;
+  }
+
+  .pc2-plan-names .pc2-label {
+    width: auto;
+  }
+
+  .pc2-card [data-plan] {
+    display: table-cell;
+    padding-inline: 8px;
+  }
+
+  .pc2-table .pc2-plan {
+    box-sizing: content-box;
+    width: min(15cqw, 176px);
+  }
+
+  .pc2-card [data-plan]:last-child {
+    padding-inline-end: 16px;
+  }
+
+  .pc2-plan-summary {
+    flex-direction: column;
+    align-items: start;
+    gap: 2px;
+  }
+}
+
+@container plan-comparison (min-width: 896px) {
+  .pc2-container {
+    padding-block: 64px;
+  }
+
+  .pc2-card [data-plan] {
+    padding-inline: 12px;
+  }
+
+  .pc2-card [data-plan]:last-child {
+    padding-inline-end: 16px;
+  }
+}
+
+@container plan-comparison (min-width: 1024px) {
+  .pc2-container {
+    padding-inline: 32px;
+  }
+}
+
+@container plan-comparison (min-width: 1152px) {
+  .pc2-plan-summary {
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+  }
+}

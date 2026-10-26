@@ -1,0 +1,223 @@
+.seat-stepper-pricing {
+  container: seat-stepper-pricing / inline-size;
+  width: 100%;
+  color: var(--foreground);
+  background: var(--background);
+  font-size: 16px;
+  line-height: 24px;
+}
+.seat-stepper-pricing .ssp-container {
+  display: flex;
+  width: 100%;
+  max-width: 1152px;
+  margin-inline: auto;
+  padding: 48px 16px;
+  flex-direction: column;
+  gap: 40px;
+}
+.seat-stepper-pricing .ssp-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 44px;
+  text-align: center;
+}
+.seat-stepper-pricing .ssp-introduction {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.seat-stepper-pricing .ssp-introduction h2 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 36px;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+.seat-stepper-pricing .ssp-introduction p {
+  max-width: 640px;
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--muted-foreground);
+  text-wrap: balance;
+}
+.seat-stepper-pricing .ssp-saving {
+  margin-right: -4px;
+}
+.seat-stepper-pricing .ssp-card {
+  width: 100%;
+  max-width: 448px;
+  margin-inline: auto;
+  padding-block: 0;
+}
+.seat-stepper-pricing .ssp-plans {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  margin: -1px 0 0 -1px;
+  padding: 0;
+  list-style: none;
+}
+.seat-stepper-pricing .ssp-plan {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  grid-row: span 4;
+  grid-template-rows: subgrid;
+  gap: var(--card-spacing);
+  padding-block: var(--card-spacing);
+  border-top: 1px solid var(--border);
+  border-left: 1px solid var(--border);
+}
+.seat-stepper-pricing .ssp-featured {
+  background: var(--muted);
+}
+.seat-stepper-pricing .ssp-name {
+  margin: 0;
+  font: inherit;
+}
+.seat-stepper-pricing .ssp-description {
+  text-wrap: pretty;
+}
+.seat-stepper-pricing .ssp-rate {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.seat-stepper-pricing .ssp-price {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin: 0;
+}
+.seat-stepper-pricing .ssp-amount {
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 36px;
+  letter-spacing: -0.025em;
+  font-variant-numeric: tabular-nums;
+}
+.seat-stepper-pricing .ssp-from,
+.seat-stepper-pricing .ssp-billing {
+  color: var(--muted-foreground);
+}
+.seat-stepper-pricing .ssp-billing,
+.seat-stepper-pricing .ssp-includes {
+  margin: 0;
+}
+.seat-stepper-pricing .ssp-inclusions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.seat-stepper-pricing .ssp-includes {
+  font-weight: 500;
+}
+.seat-stepper-pricing .ssp-features {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.seat-stepper-pricing .ssp-features > li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.seat-stepper-pricing .ssp-feature-icon {
+  display: flex;
+  align-items: center;
+  height: 20px;
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+}
+.seat-stepper-pricing .ssp-feature-icon svg {
+  width: 16px;
+  height: 16px;
+}
+.seat-stepper-pricing .ssp-feature-label {
+  min-width: 0;
+  cursor: default;
+  text-align: left;
+  font-variant-numeric: tabular-nums;
+  outline: none;
+}
+.seat-stepper-pricing .ssp-feature-label:focus-visible {
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--ring) 50%, transparent);
+}
+.seat-stepper-pricing .ssp-actions {
+  display: flex;
+  flex-direction: column;
+  align-self: end;
+  gap: 8px;
+}
+.seat-stepper-pricing .ssp-plan-action {
+  width: 100%;
+}
+.seat-stepper-pricing .ssp-plan-action:focus-visible {
+  outline-style: none;
+}
+.seat-stepper-pricing .ssp-seats {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.seat-stepper-pricing .ssp-seats-group {
+  width: auto;
+}
+.seat-stepper-pricing .ssp-seats-input {
+  width: 40px;
+}
+.seat-stepper-pricing .ssp-popular {
+  position: absolute;
+  top: 0;
+  right: var(--card-spacing);
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  background: linear-gradient(to right in oklch, var(--color-green-500), var(--color-emerald-700));
+  background-origin: border-box;
+  box-shadow:
+    0 1px 3px oklab(0.377998 -0.0755676 0.0147783 / 0.25),
+    0 1px 2px -1px oklab(0.377998 -0.0755676 0.0147783 / 0.25);
+}
+@container seat-stepper-pricing (min-width: 640px) {
+  .seat-stepper-pricing .ssp-container {
+    padding-inline: 24px;
+  }
+}
+@container seat-stepper-pricing (min-width: 672px) {
+  .seat-stepper-pricing .ssp-introduction h2 {
+    font-size: 36px;
+    line-height: 40px;
+  }
+  .seat-stepper-pricing .ssp-introduction p {
+    font-size: 16px;
+    line-height: 24px;
+  }
+  .seat-stepper-pricing .ssp-introduction p > span {
+    display: block;
+  }
+  .seat-stepper-pricing .ssp-card {
+    max-width: none;
+  }
+  .seat-stepper-pricing .ssp-plans {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@container seat-stepper-pricing (min-width: 896px) {
+  .seat-stepper-pricing .ssp-container {
+    padding-block: 64px;
+  }
+}
+@container seat-stepper-pricing (min-width: 1024px) {
+  .seat-stepper-pricing .ssp-container {
+    padding-inline: 32px;
+  }
+  .seat-stepper-pricing .ssp-plans {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

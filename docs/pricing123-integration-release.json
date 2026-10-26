@@ -1,0 +1,44 @@
+{
+  "scope": "Pricing1\u20133 actual free composition and real implementation source targets",
+  "base": "5c6df66d78f54bff481816f578b856bcb3b243ac",
+  "frozenFiles": {
+    "src/blocks/commerce/pricing-seat-stepper.tsx": "5a44992e4fb38822a65c21d8706ed09c0acfad465c9751c9b6281443a2ab9121",
+    "src/blocks/commerce/pricing-seat-stepper.css": "962bd4c3d717ca156ec9e709741ec7dce7ea5de7542e9c66d877b5fa49a0b579",
+    "tests/pricing-seat-stepper.spec.ts": "081facaced3c9be54ba3905cae57b7775c3b403ca28e8deb363312737c4b9cac",
+    "docs/pricing-seat-stepper-refinement.md": "60d9326102a34aaa25dd894fc573d4ebac9d97c8d833ea7bf980f3dbd4cb2baf",
+    "src/blocks/commerce/pricing-plan-comparison.tsx": "94f2201639d22cee5905c4eaef38c1b9fdb0c5b4f6167f1361cc70300dd82f87",
+    "src/blocks/commerce/pricing-plan-comparison.css": "411caa241d022b0e457589057742b87b576fcd922d069bcfb8e6bd8b04bdfb9c",
+    "tests/pricing-plan-comparison.spec.ts": "262b423b1e097cd56b278e956520debdbeb2a17580875d4c1873a412d40d8e76",
+    "docs/pricing-plan-comparison-refinement.md": "02f14a65a348040bc07b5f2b083506a28cbb6efdbc770bb0c8888f5559db72e4",
+    "src/blocks/commerce/pricing-plan-comparison-data.ts": "e3074f211123cffc2a5d9bce1229b46d139a52b8323b6e7ee33990e65dfa4075",
+    "src/blocks/commerce/pricing-per-seat.tsx": "1fececc185c2b435fde8aa9237b04794749a72fe760188c7d5b9c3771c5fd725",
+    "src/blocks/commerce/pricing-per-seat.css": "c84565b7c903e4eaa9299fc63c26861f8505cb807ddb2c34a9e8442fe098f211",
+    "tests/pricing-per-seat.spec.ts": "1718eebb1b34d72a62de241dfe6727227b654591a0ed796d559b19f459c34604",
+    "docs/pricing-per-seat-refinement.md": "cb572b2127290f636aaba43108aabf0429c3d88cef517d8d9563a51aa8a82a26",
+    "tests/pricing-source-refinement.spec.ts": "bf4e84653d296f39a776298684938d2dcfcd2fdfc816521249ead81c31f8e40a"
+  },
+  "protectedPricing56": {
+    "src/blocks/commerce/pricing-refined.tsx": "0fb9915fbcbd4ea30bead7682c9f9066badbc59d300125eb5b452363f7bb5d14",
+    "src/blocks/commerce/pricing-refined.css": "9fb224a323192ab798cc498ca86a6cfb18e821c22e83db95341b18580b8bba03",
+    "src/blocks/commerce/pricing-brandmarks.tsx": "cf7d8f70f4a54a2872dc69483fe4c5a5005d41fafc865b43b69b0896a9a8ac0d",
+    "docs/parallel-pricing-refinement.md": "19445c90248bfe6b08dd11f3a90e057f344a708b90e01efefb8f5a2d3f2bf273"
+  },
+  "sharedHooks": "Only3imports/3dispatch branches; source targets actual3leaves; Pricing FIDELITY row. Existing4/5/6/7/8 fallback behavior retained.",
+  "independentAcceptance": "Original20/20 strict production checks on368dd9f,3actual212-file UI projects strict-built and6site/project geometry/flow comparisons",
+  "finalCumulativeAcceptance": "/tmp/bricklane-pricing17-cumulative-audit/receipt.json; exact17 on10de plus now published Pulse/Roster19 verified5c byte-equivalent; strict and20 cases recorded there",
+  "sourceContract": "Default view/copy/file/actualZIP all real leaf; mandatory3shared hooks included",
+  "remaining": [
+    "Original demoAvatar replaces reference portrait in Pricing3.",
+    "Lucide icon geometry differs from source icon set.",
+    "Native installed Radix radio/tabs semantics and animation/focus follow free components; Pricing2 reference uses Base UI buttons.",
+    "No remote checkout, payment, sharing or backend; observed hash placeholders preserve gallery route and scroll to top.",
+    "Dark mode, all intermediate widths and other browser engines not exhaustively certified."
+  ],
+  "publication": "Root serial hook commit/push; own CI and Pages pending",
+  "latestConfirmedPages": {
+    "sha": "303cc13c0a80a73a89327072f1e72a49b4a5cd61",
+    "run": 40264448297,
+    "fullCases": "1136/1136",
+    "deploy": "success2026-10-26 03:50:44 UTC"
+  }
+}
