@@ -1,0 +1,115 @@
+{
+  "base": "368dd9f6c1189e1a8eadfbfc4bfd8f390eebc573",
+  "ownerBase": "cbd5c2e0192d7fb747fb5d6817b7c8d23a4866b9",
+  "frozenFiles": {
+    "src/templates/business/cohort-time-off.tsx": "ca78cb0a9c05ce27eb59dc061191e3dae829897881a41a86c7a5afafb8c57035",
+    "src/templates/business/cohort-timesheet-data.ts": "0fa49a8e34d36d637f3f4831353e49edbb92e9349484058d900513ca858c280d",
+    "src/templates/business/cohort-timesheets.tsx": "58524f8b6498544402f12765bb96f927aad838dda74dce15b415acb1cc9dfb74",
+    "src/templates/business/cohort.tsx": "51ef4c7b35227dc0124f5d9e16addd24b15ee01230a7a3c18ea9c63cae086ff0",
+    "src/templates/business/cohort-settings.tsx": "bf8ac5f2231c59a12022ec223e252d5537ae8faaa631b2a1400811d3c5b7970f",
+    "src/templates/business/business.css": "892ad0bb92a4a0f7a6a2398b7a95d070d694f4942798ad8b060310060f3dcfd2",
+    "tests/templates-business-round3.spec.ts": "0274db2a87b9663299c3e2e795d8fc3cd083bb8c8ab81f891ed1fca7d0bca290",
+    "docs/templates-cohort-time-fidelity.md": "5e91e8cf6f16cd8a72e1c1d12c98a32676d20b3ebae2c14f1b364147a33bed6b"
+  },
+  "sourceMapping": "Cohort primary stays cohort.tsx; append actual cohort-time-off and cohort-timesheets secondary leaves; .ts model collected through real imports",
+  "rootValidation": {
+    "strictBuild": "PASS /tmp/bricklane-cohort-time-root-build.log",
+    "production": "48/48 in 2.2 minutes, one worker: business round3/refinement, all existing template interactions, source round3/reuse and refined source defaults",
+    "productionLog": "/tmp/bricklane-cohort-time-root-production.log",
+    "newSourceChoicesAndDownload": {
+      "files": [
+        "src/templates/business/cohort-time-off.tsx",
+        "src/templates/business/cohort-timesheets.tsx"
+      ],
+      "matched": [
+        "src/templates/business/cohort-time-off.tsx",
+        "src/templates/business/cohort-timesheets.tsx",
+        "src/templates/business/cohort-timesheet-data.ts",
+        "src/templates/business/cohort.tsx",
+        "src/templates/business/cohort-settings.tsx",
+        "src/templates/business/business.css",
+        "src/components/reui/REUI-LICENSE.txt",
+        "src/components/reui/event-calendar/event-calendar.tsx",
+        "src/components/ui/progress.tsx"
+      ],
+      "entries": 161,
+      "errors": [],
+      "status": "PASS",
+      "scope": "Current template UI view/copy/project ZIP; single-file control is absent and is a separate source-surface follow-up."
+    },
+    "sourceLog": "/tmp/bricklane-cohort-time-root-source.log",
+    "actualOwnerStarter": "161-file actual UI project, six changed runtime bytes and 139 source/font/attribution entries matched; independent exported strict build PASS",
+    "actualStarterFlows": [
+      {
+        "name": "time-off",
+        "width": 1440,
+        "url": "http://127.0.0.1:5388/",
+        "title": "Component preview",
+        "overflow": false,
+        "errors": [],
+        "status": "PASS"
+      },
+      {
+        "name": "timesheets",
+        "width": 1440,
+        "url": "http://127.0.0.1:5388/",
+        "title": "Component preview",
+        "overflow": false,
+        "errors": [],
+        "status": "PASS"
+      },
+      {
+        "name": "time-off",
+        "width": 390,
+        "url": "http://127.0.0.1:5388/",
+        "title": "Component preview",
+        "overflow": false,
+        "errors": [],
+        "status": "PASS"
+      },
+      {
+        "name": "timesheets",
+        "width": 390,
+        "url": "http://127.0.0.1:5388/",
+        "title": "Component preview",
+        "overflow": false,
+        "errors": [],
+        "status": "PASS"
+      }
+    ],
+    "actualStarterEvidence": "/tmp/bricklane-templates-round3/business/cohort-time-export/",
+    "rootVisual": "Root inspected actual phone Timesheet detail: values, editable day, note, native target Progress and Timeline legible and contained",
+    "formatToolingLint": "Full format/tooling/scopedlint recorded in /tmp/bricklane-cohort-time-root-static.log"
+  },
+  "freeReuse": [
+    "Actual free EventCalendar navigation/views/event engine",
+    "CalendarSelect and TimePicker replace native date controls",
+    "Timeline replaces hand-built daily history",
+    "Progress c-progress-8 replaces custom meters",
+    "Existing real DataGrid/Frame/NumberField wrappers and original local avatars"
+  ],
+  "domainRules": [
+    "Per-person and per-week independent decisions/hours/notes",
+    "Pending-only bulk sign-off; Undo and reset preserve edits",
+    "85/105 percent target buckets and part-time targets",
+    "Leave type fixtures, booking/edit/cancel state and date validation"
+  ],
+  "remainingLimits": [
+    "Original branding/photos replaced with Bricklane originals",
+    "Some family spacing/icons remain different",
+    "All calendar views/drag-resize/filter combinations and non-Chromium browsers not exhaustively checked",
+    "People View/Import and other template pages remain separate work",
+    "Current TemplateSourceDialog has view/copy/project download; free CodeBlock/single-file follow-up is separately assigned"
+  ],
+  "ciContext": {
+    "old0bRun": 40259413229,
+    "old0bResult": "1101 passed / 1 failed; old unconditional Navbar12 menu click waited for Corporate cards; original log retained in /tmp/bricklane-comparison123-ci-failure.log",
+    "navbarFix": "368dd9f test-only native hover synchronization; Root strict and all77 production PASS",
+    "correctedRun": 40262462305,
+    "correctedRunStatus": "Running; no deployment success claim",
+    "supersededOldRun": 40261176324,
+    "supersededOldRunAction": "Cancelled after corrected run was queued; old commit lacked the diagnosed Navbar fix",
+    "latestSuccessfulDeployed": "56229f5; Root independently verified live flows"
+  },
+  "publication": "This milestone commit/push/own CI/Pages pending; root serialized release"
+}

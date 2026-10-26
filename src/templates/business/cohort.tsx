@@ -1,3 +1,5 @@
+import { CohortTimeOff, useCohortLeaveState } from "./cohort-time-off";
+import { CohortTimesheets, useCohortTimesheetState } from "./cohort-timesheets";
 import { CohortSettings, useCohortSettingsState, cohortSettingsPages } from "./cohort-settings";
 import { CohortPeople, useCohortPeopleState } from "./cohort-people";
 import { CohortHiring, useCohortHiringState, resetCohortHiring } from "./cohort-hiring";
@@ -79,6 +81,8 @@ const originalRequests: Request[] = [
 ];
 export default function Cohort() {
   const hiringState = useCohortHiringState();
+  const leaveState = useCohortLeaveState();
+  const timesheetState = useCohortTimesheetState();
   const approvalsState = useCohortApprovalsState();
   const [logged, setLogged] = useState(false);
   const [active, setActive] = useState("Dashboard");
@@ -106,7 +110,11 @@ export default function Cohort() {
         setActive(x === "Settings" ? "Organisation" : x === "Directory" ? "People" : x);
       }}
       items={["Dashboard", "Approvals", "People", "Hiring", "Time", "Settings"]}
-      navGroups={{ Settings: cohortSettingsPages, People: ["Directory"] }}
+      navGroups={{
+        Settings: cohortSettingsPages,
+        People: ["Directory"],
+        Time: ["Time off", "Timesheets"],
+      }}
       top={
         <span>
           ⌂ People –{" "}
@@ -114,7 +122,9 @@ export default function Cohort() {
             ? `Settings – ${active}`
             : active === "People"
               ? "Directory"
-              : active}
+              : ["Time off", "Timesheets"].includes(active)
+                ? `Time – ${active}`
+                : active}
         </span>
       }
       footer={
@@ -139,8 +149,20 @@ export default function Cohort() {
           onClearNotes={() =>
             peopleState.setPeople((rows) => rows.map((p) => ({ ...p, notes: "" })))
           }
-          onClearLeave={() => setExtraEvents([])}
+          onClearLeave={() => {
+            setExtraEvents([]);
+            leaveState.reset();
+          }}
+          onClearTimesheets={timesheetState.reset}
         />
+      ) : active === "Time off" ? (
+        <CohortTimeOff
+          model={leaveState}
+          leaveTypes={settingsState.saved.leave.rows?.map((row) => row.name) || []}
+          onLeaveTypes={() => setActive("Policies")}
+        />
+      ) : active === "Timesheets" ? (
+        <CohortTimesheets model={timesheetState} people={peopleState.people} />
       ) : (
         <>
           {active === "People" ? (

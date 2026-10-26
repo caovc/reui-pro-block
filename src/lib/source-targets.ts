@@ -477,7 +477,7 @@ export function templateImplementationTargets(template: {
     ],
     tempo: ["ai-operations"],
     pulse: ["pulse-knowledge", "pulse-reports"],
-    cohort: ["cohort-people", "cohort-settings"],
+    cohort: ["cohort-people", "cohort-settings", "cohort-time-off", "cohort-timesheets"],
     roster: ["roster-approvals", "roster-import", "roster-directory"],
     echo: ["echo-composer", "echo-projects"],
   };

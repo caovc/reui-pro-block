@@ -367,6 +367,7 @@ export function CohortSettings({
   onClearApprovals,
   onClearNotes,
   onClearLeave,
+  onClearTimesheets,
 }: {
   page: string;
   onPage: (page: string) => void;
@@ -376,6 +377,7 @@ export function CohortSettings({
   onClearApprovals: () => void;
   onClearNotes: () => void;
   onClearLeave: () => void;
+  onClearTimesheets: () => void;
 }) {
   const { theme } = useGlobalTheme();
   const [securityConfirmed, setSecurityConfirmed] = useState(false);
@@ -715,6 +717,18 @@ export function CohortSettings({
               onClick={() => {
                 onClearLeave();
                 toast.success("Added calendar events cleared");
+              }}
+            >
+              Clear
+            </Button>
+          </SettingRow>
+          <SettingRow label="Timesheet sign-offs" description="Weeks you signed off or sent back.">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                onClearTimesheets();
+                toast.success("Timesheet sign-offs restored");
               }}
             >
               Clear
