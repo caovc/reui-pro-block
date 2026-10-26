@@ -1,0 +1,12 @@
+/* Flow-only integration rules; Gantt's shared foundation is intentionally untouched. */
+[data-flow-variant="flow-1"] .react-flow__handle,
+[data-flow-variant="flow-2"] .react-flow__handle {
+  width: 6px;
+  height: 6px;
+  min-width: 6px;
+  min-height: 6px;
+  border: 1px solid var(--background);
+}
+.fg-flow-kind-badge {
+  font-weight: 400;
+}

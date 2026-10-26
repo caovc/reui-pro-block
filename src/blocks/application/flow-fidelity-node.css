@@ -1,0 +1,165 @@
+/* Frame's documented spacing variables configure the header/panel/footer;
+   no legacy fg-node/fg-tile surfaces or blanket component resets are used. */
+.flow-fidelity-node {
+  --frame-radius: 10px;
+  --frame-panel-px-adjust: calc(-1 * var(--frame-panel-px-base));
+  --frame-panel-py-adjust: calc(-1 * var(--frame-panel-py-base));
+  --frame-panel-header-py-adjust: 6px;
+  --frame-panel-footer-py-adjust: 4px;
+  --frame-panel-header-gap: 8px;
+  --frame-panel-footer-gap: 8px;
+  width: 240px;
+  font-family: Inter, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  user-select: none;
+}
+.flow-fidelity-node[data-flow-node-variant="1"] {
+  --frame-panel-footer-gap: 6px;
+  width: 256px;
+}
+.flow-fidelity-node[data-selected="true"] {
+  outline: 3px solid color-mix(in oklch, var(--primary) 20%, transparent);
+  outline-offset: 0;
+}
+/* A single panel contains its own header, so align its top border with the
+   dense Frame border just as Frame does for a panel without an inner header. */
+.flow-fidelity-node > [data-slot="frame-panel"] {
+  margin-top: -1px;
+}
+.flow-fidelity-node-body {
+  flex-direction: row;
+  align-items: center;
+}
+.flow-fidelity-node-copy {
+  min-width: 0;
+  flex: 1;
+}
+.flow-fidelity-node[data-flow-node-variant="1"] .flow-fidelity-node-copy {
+  margin-inline-end: 28px;
+}
+.flow-fidelity-node-title,
+.flow-fidelity-node-description {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 16px;
+}
+.flow-fidelity-node-title {
+  font-size: 14px;
+  font-weight: 500;
+}
+.flow-fidelity-node-description {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.flow-fidelity-node[data-flow-node-variant="1"] .flow-fidelity-node-title {
+  font-size: 13px;
+  font-weight: 600;
+}
+.flow-fidelity-node[data-flow-node-variant="1"] .flow-fidelity-node-description {
+  font-size: 13px;
+}
+.flow-fidelity-node-footer {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--border);
+}
+.flow-fidelity-node[data-flow-node-variant="1"] .flow-fidelity-node-footer {
+  justify-content: flex-start;
+  background: color-mix(in oklch, var(--muted) 50%, transparent);
+}
+.flow-fidelity-node-owner {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 6px;
+}
+.flow-fidelity-node-owner .fg-avatar {
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 50%;
+  font-size: 8px;
+  line-height: 12px;
+}
+.flow-fidelity-node-owner .fg-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.flow-fidelity-node-duration {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 16px;
+  font-variant-numeric: tabular-nums;
+}
+.flow-fidelity-node-badge {
+  margin-inline-start: auto;
+}
+.flow-fidelity-run-state {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+}
+.flow-fidelity-run-state > svg {
+  width: 14px;
+  height: 14px;
+}
+.flow-fidelity-run-succeeded {
+  color: var(--success);
+}
+.flow-fidelity-run-failed {
+  color: var(--destructive);
+}
+.flow-fidelity-run-running {
+  color: var(--info);
+}
+.flow-fidelity-run-waiting {
+  color: var(--warning);
+}
+.flow-fidelity-duration-part {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 6px;
+}
+.flow-fidelity-duration-dot {
+  width: 4px;
+  height: 4px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: color-mix(in oklch, var(--muted-foreground) 40%, transparent);
+}
+.flow-fidelity-node-controls {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+.flow-fidelity-node-controls > * {
+  pointer-events: auto;
+}
+@keyframes flow-fidelity-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.flow-fidelity-spin {
+  animation: flow-fidelity-spin 1s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .flow-fidelity-spin {
+    animation: none;
+  }
+}

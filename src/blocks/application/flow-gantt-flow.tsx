@@ -16,6 +16,8 @@ import {
   type ReactFlowInstance,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
+import { FlowFidelityNode } from "./flow-fidelity-node";
+import { Badge } from "@/components/reui/badge";
 import { Frame, FramePanel } from "@/components/reui/frame";
 import { IconTile } from "@/components/reui/icon-tile";
 import { MiniAvatar } from "./flow-gantt-avatars";
@@ -70,6 +72,8 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
+  DropdownMenuLabel,
+  DropdownMenuCheckboxItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -81,12 +85,23 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
 import { seed, graphTitles } from "./flow-gantt-data";
 import type { FlowNode, RunState } from "./flow-gantt-data";
 import { BrandIcon, RunIcon } from "./flow-gantt-brand";
 import type { BlockProps } from "@/data/types";
 import "./flow-gantt-refined.css";
+import "./flow-fidelity-round2.css";
 type Node = FlowNode & {
   kind?: "attachment";
   app?: string;
@@ -292,17 +307,20 @@ const IconButton = ({
   onClick,
   disabled = false,
   active = false,
+  pressed,
 }: {
   label: string;
   children: React.ReactNode;
   onClick?: () => void;
   disabled?: boolean;
   active?: boolean;
+  pressed?: boolean;
 }) => (
   <Button
     className={`fg-icon ${active ? "fg-active" : ""}`}
     variant="ghost"
     aria-label={label}
+    aria-pressed={pressed}
     onClick={onClick}
     disabled={disabled}
   >
@@ -318,6 +336,7 @@ type CanvasNode = RFNode<{
   incoming: boolean;
   outgoing: boolean;
   attachmentSource: boolean;
+  root?: boolean;
 }>;
 type CanvasEdge = RFEdge<{ path: string; content: React.ReactNode; dash?: string }>;
 function OfficialNode({ data }: NodeProps<CanvasNode>) {
@@ -330,12 +349,14 @@ function OfficialNode({ data }: NodeProps<CanvasNode>) {
   const sourceStyle = data.pipeline && !data.attachment ? { right: 40, top: 28 } : undefined;
   return (
     <>
-      <Handle
-        type="target"
-        position={data.vertical ? Position.Top : Position.Left}
-        className={data.incoming ? "fg-port-connected" : ""}
-        style={targetStyle}
-      />
+      {!data.root && (
+        <Handle
+          type="target"
+          position={data.vertical ? Position.Top : Position.Left}
+          className={data.incoming ? "fg-port-connected" : ""}
+          style={targetStyle}
+        />
+      )}
       {data.content}
       <Handle
         type="source"
@@ -475,6 +496,7 @@ function FlowEditor({ block }: BlockProps) {
   const [tab, setTab] = useState("Settings");
   const [period, setPeriod] = useState(0);
   const [model, setModel] = useState("Sonnet 5");
+  const [testResultsCleared, setTestResultsCleared] = useState(false);
   const [locked, setLocked] = useState(false);
   const [snap, setSnap] = useState(false);
   const [mode, setMode] = useState("Pan");
@@ -499,6 +521,18 @@ function FlowEditor({ block }: BlockProps) {
   const completed = Object.values(runStates).filter(
     (s) => s === "Succeeded" || s === "Skipped" || s === "Failed",
   ).length;
+  function durationFor(node: Node) {
+    if (variant !== 1) return node.duration;
+    if (testResultsCleared) return "No test run yet";
+    if (node.id === "model") {
+      return model === "Opus 5"
+        ? "1,768 tokens · USD 0.050"
+        : model === "Haiku 4.5"
+          ? "1,905 tokens · USD 0.011"
+          : "1,842 tokens · USD 0.031";
+    }
+    return node.duration;
+  }
   function change(next: Graph) {
     setPast((p) => [...p.slice(-39), graph]);
     setFuture([]);
@@ -530,7 +564,7 @@ function FlowEditor({ block }: BlockProps) {
     setEditing(edit);
     setTab("Settings");
   }
-  function add(parent?: Node, insertEdge?: Edge) {
+  function add(parent?: Node, insertEdge?: Edge, asBranch = false) {
     const id = `step_${Date.now()}`,
       size = parent ? nodeSize(parent, variant) : { w: 240, h: 83 };
     const n: Node = {
@@ -540,6 +574,7 @@ function FlowEditor({ block }: BlockProps) {
       x: parent ? (variant === 1 ? parent.x : parent.x + size.w + 60) : 320,
       y: parent ? (variant === 1 ? parent.y + 143 : parent.y) : 500,
       parent: parent?.id,
+      branch: asBranch ? "New path" : insertEdge?.label,
       owner: owners[0],
       status: "Idle",
       duration: "Not run",
@@ -587,8 +622,18 @@ function FlowEditor({ block }: BlockProps) {
             label: undefined,
           },
         );
-    else if (parent) edges.push({ id: `${parent.id}-${id}`, source: parent.id, target: id });
+    else if (parent)
+      edges.push({
+        id: `${parent.id}-${id}`,
+        source: parent.id,
+        target: id,
+        label: asBranch ? "New path" : undefined,
+      });
     change({ nodes: [...graph.nodes, n], edges });
+    if (variant === 1) {
+      setTestResultsCleared(true);
+      setRunStates(Object.fromEntries([...runningNodes, n].map((node) => [node.id, "Idle"])));
+    }
     open(n, true);
     toast.success(variant === 3 ? "Metric created" : "Step created");
   }
@@ -614,6 +659,10 @@ function FlowEditor({ block }: BlockProps) {
   }
   function saveNode() {
     if (!draft || !draft.title.trim()) return;
+    const previousGraph = graph;
+    const previousResults = runStates;
+    const previouslyCleared = testResultsCleared;
+    const previousPast = past;
     change({
       nodes: graph.nodes.map((n) =>
         n.id === draft.id
@@ -622,10 +671,31 @@ function FlowEditor({ block }: BlockProps) {
             ? { ...n, role: "Input" }
             : n,
       ),
-      edges: graph.edges,
+      edges: graph.edges.map((edge) =>
+        variant === 1 && edge.target === draft.id && draft.branch !== undefined
+          ? { ...edge, label: draft.branch }
+          : edge,
+      ),
     });
     setEditing(false);
-    toast.success(variant === 3 ? "Metric saved" : variant === 2 ? "Task saved" : "Step saved");
+    if (variant < 2) {
+      if (variant === 1) {
+        setTestResultsCleared(true);
+        setRunStates(Object.fromEntries(runningNodes.map((node) => [node.id, "Idle"])));
+      }
+      toast.success("Step updated", {
+        action: {
+          label: "Undo",
+          onClick: () => {
+            setGraph(previousGraph);
+            setRunStates(previousResults);
+            setTestResultsCleared(previouslyCleared);
+            setPast(previousPast);
+            setFuture([]);
+          },
+        },
+      });
+    } else toast.success(variant === 3 ? "Metric saved" : "Task saved");
   }
   function exportJson() {
     const blob = new Blob([JSON.stringify(graph, null, 2)], {
@@ -670,7 +740,18 @@ function FlowEditor({ block }: BlockProps) {
         };
       }),
     });
-    requestAnimationFrame(() => requestAnimationFrame(fit));
+    requestAnimationFrame(() =>
+      requestAnimationFrame(() => {
+        if (variant === 1 && canvas.current) {
+          touched.current = true;
+          setView({
+            x: (canvas.current.clientWidth - 896) / 2,
+            y: (canvas.current.clientHeight - 762) / 2,
+            zoom: 1,
+          });
+        } else fit();
+      }),
+    );
   }
   function fit() {
     const api = flowApi.current;
@@ -704,7 +785,12 @@ function FlowEditor({ block }: BlockProps) {
         if (e.shiftKey) redo();
         else undo();
       }
-      if ((e.key === "Delete" || e.key === "Backspace") && selected) setDeleting(selected);
+      if (
+        (e.key === "Delete" || e.key === "Backspace") &&
+        selected &&
+        !(variant === 1 && selected === "trigger")
+      )
+        setDeleting(selected);
     };
     window.addEventListener("keydown", key);
     return () => window.removeEventListener("keydown", key);
@@ -764,6 +850,23 @@ function FlowEditor({ block }: BlockProps) {
     };
   }, [run, cursor, variant, graph.nodes, reconcileDone, publishDone]);
   function start() {
+    if (variant === 1) {
+      // The public agent preview evaluates its local fixture immediately; it does
+      // not expose a timed workflow runner or pause/resume state.
+      const results = Object.fromEntries(runningNodes.map((node) => [node.id, node.status]));
+      setRunStates(results);
+      setTestResultsCleared(false);
+      const passed = Object.values(results).filter((status) => status === "Succeeded").length;
+      const failed = Object.values(results).filter((status) => status === "Failed").length;
+      const skipped = Object.values(results).filter((status) => status === "Skipped").length;
+      const disconnected = runningNodes.filter(
+        (node) => !graph.edges.some((edge) => edge.source === node.id || edge.target === node.id),
+      ).length;
+      const description = `${passed} passed, ${failed} failed, ${skipped} skipped, ${disconnected} unconnected.`;
+      if (failed) toast.error("Test failed", { description });
+      else toast.success("Test passed", { description });
+      return;
+    }
     setRunStates(Object.fromEntries(runningNodes.map((n) => [n.id, "Queued"])));
     setCursor(0);
     setRun("running");
@@ -847,10 +950,21 @@ function FlowEditor({ block }: BlockProps) {
         Edit step
       </DropdownMenuItem>
       {variant === 1 ? (
-        <DropdownMenuItem onSelect={() => add(n)}>
-          <GitBranch />
-          Add branch
-        </DropdownMenuItem>
+        <>
+          <DropdownMenuItem onSelect={() => add(n, undefined, true)}>
+            <GitBranch />
+            Add branch
+          </DropdownMenuItem>
+          {n.id !== "trigger" && (
+            <>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onSelect={() => setDeleting(n.id)}>
+                <Trash2 />
+                Delete
+              </DropdownMenuItem>
+            </>
+          )}
+        </>
       ) : (
         <>
           <DropdownMenuItem onSelect={() => duplicate(n)}>
@@ -890,185 +1004,29 @@ function FlowEditor({ block }: BlockProps) {
     return (
       <ContextMenu key={n.id}>
         <ContextMenuTrigger asChild>
-          <Frame
-            dense
-            variant="ghost"
-            key={n.id}
-            role="button"
-            tabIndex={0}
-            aria-label={`Select ${n.title}`}
-            className={`fg-node ${variant === 1 ? "fg-tree-node" : variant === 2 ? (n.kind === "attachment" ? "fg-attachment fg-pipeline-node" : n.id === "publish" ? "fg-approval" : "fg-pipeline-node") : variant === 3 ? "fg-map-node" : ""} ${selection.includes(n.id) ? "fg-selected" : ""}`}
-            data-flow-node={n.id}
-            style={{ position: "relative", left: 0, top: 0, width: size.w, height: size.h }}
-            onClick={(e) => {
-              e.stopPropagation();
-              setSelected(n.id);
-            }}
-            onDoubleClick={(e) => {
-              e.stopPropagation();
-              open(n, variant !== 0);
-            }}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") open(n, variant !== 0);
-            }}
-          >
-            <FramePanel className="fg-flow-node-panel">
-              {isPipeline ? (
-                <>
-                  <IconTile
-                    variant="frame"
-                    size="xl"
-                    className={`fg-service-tile ${n.kind ? "" : statusClass(s)}`}
-                  >
-                    <BrandIcon app={n.app ?? n.title} />
-                    {!n.kind && (
-                      <span className={`fg-service-state ${statusClass(s)}`}>
-                        <RunIcon state={s} />
-                      </span>
-                    )}
-                  </IconTile>
-                  <div className="fg-node-name">{n.title}</div>
-                  <div className={`fg-node-detail ${s === "Failed" ? "fg-error-detail" : ""}`}>
-                    {n.kind
-                      ? n.detail
-                      : n.id === "nightly"
-                        ? "02:00 UTC"
-                        : n.id === "reconcile" && s === "Succeeded"
-                          ? "Reconciled"
-                          : s === "Failed"
-                            ? n.detail
-                            : n.duration === "Not run"
-                              ? n.detail
-                              : n.duration}
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="fg-node-main">
-                    <IconTile
-                      variant="outline"
-                      size="sm"
-                      className="fg-tile"
-                      style={n.id === "form" ? { background: "#181818", color: "#fff" } : undefined}
-                    >
-                      <BrandIcon app={n.app ?? n.category ?? n.role ?? n.title} />
-                    </IconTile>
-                    <span className="fg-node-copy">
-                      <span className="fg-node-name block">{n.title}</span>
-                      <span className="fg-node-detail block">
-                        {variant === 3 ? n.role : n.detail}
-                      </span>
-                    </span>
-                  </div>
-                  {variant === 3 ? (
-                    <div className="fg-map-stats">
-                      <div className="fg-map-mainvalue">
-                        <span>
-                          {value !== undefined
-                            ? n.unit === "Currency"
-                              ? `$${value >= 1000000 ? (value / 1000000).toFixed(1) + "M" : (value / 1000).toFixed(0) + "K"}`
-                              : `${value >= 100000 ? (value / 1000).toFixed(1) + "K" : value.toLocaleString()}${n.unit === "Percent" ? "%" : ""}`
-                            : `${n.progress ?? 0}%`}
-                        </span>
-                        {value !== undefined ? (
-                          <span className="fg-change">
-                            {(n.change?.[period] ?? 0) > 0 ? "+" : ""}
-                            {n.change?.[period] ?? 0}%
-                          </span>
-                        ) : (
-                          <>
-                            <span className="fg-small-progress">
-                              <i style={{ width: `${n.progress}%` }} />
-                            </span>
-                            <span
-                              className={`fg-runbadge ${n.progress === 0 ? "fg-failed" : ""}`}
-                              style={
-                                n.progress === 62
-                                  ? {
-                                      color: "#6d28d9",
-                                      background: "#f5efff",
-                                      borderColor: "#e8d8ff",
-                                    }
-                                  : undefined
-                              }
-                            >
-                              {n.progress === 0
-                                ? "Blocked"
-                                : n.progress === 40
-                                  ? "To Do"
-                                  : "In Progress"}
-                            </span>
-                          </>
-                        )}
-                      </div>
-                      <div className="fg-map-meta">
-                        {value !== undefined ? (
-                          <>
-                            Past {["7 days", "6 weeks", "12 months"][period]}
-                            <span>·</span>
-                            {n.aggregation ?? n.detail}
-                            {!!n.progress && (
-                              <span className="fg-map-goal">
-                                <i>
-                                  <b style={{ width: `${n.progress}%` }} />
-                                </i>
-                                {n.progress}%
-                              </span>
-                            )}
-                          </>
-                        ) : (
-                          n.detail.split(" · ").map((v, i) => (
-                            <span key={v}>
-                              {i > 0 ? " · " : ""}
-                              {v}
-                            </span>
-                          ))
-                        )}
-                      </div>
-                    </div>
-                  ) : n.id === "publish" && variant === 2 ? (
-                    <Button
-                      className="fg-button"
-                      onPointerDown={(e) => e.stopPropagation()}
-                      onClick={() => approve(n.id)}
-                      disabled={s === "Succeeded"}
-                    >
-                      {s === "Succeeded" ? "Approved" : "Approve"}
-                    </Button>
-                  ) : (
-                    <div className="fg-node-run">
-                      {variant === 0 ? (
-                        <>
-                          <span className="fg-avatar">
-                            {n.owner
-                              .split(" ")
-                              .map((s) => s[0])
-                              .join("")}
-                          </span>
-                          <span>{n.duration}</span>
-                          <span className={`fg-runbadge ${statusClass(s)}`}>
-                            <RunIcon state={s} />
-                            {s === "Succeeded" ? "Success" : s}
-                          </span>
-                        </>
-                      ) : (
-                        <>
-                          <span className={statusClass(s)}>
-                            <RunIcon state={s} />
-                          </span>
-                          <span>{n.duration.split(" · ")[0]}</span>
-                          {n.duration.includes(" · ") && (
-                            <>
-                              <span>·</span>
-                              <span>{n.duration.split(" · ")[1]}</span>
-                            </>
-                          )}
-                        </>
-                      )}
-                    </div>
-                  )}
-                </>
-              )}
+          {variant < 2 ? (
+            <FlowFidelityNode
+              variant={variant as 0 | 1}
+              node={{ ...n, duration: durationFor(n) }}
+              status={s}
+              selected={selection.includes(n.id)}
+              icon={<BrandIcon app={n.app ?? n.category ?? n.title} />}
+              data-flow-node={n.id}
+              role="button"
+              tabIndex={0}
+              aria-label={`Select ${n.title}`}
+              onClick={(event) => {
+                event.stopPropagation();
+                setSelected(n.id);
+              }}
+              onDoubleClick={(event) => {
+                event.stopPropagation();
+                open(n, variant !== 0);
+              }}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") open(n, variant !== 0);
+              }}
+            >
               {variant === 1 && (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -1076,14 +1034,10 @@ function FlowEditor({ block }: BlockProps) {
                       variant="ghost"
                       className="fg-node-menu"
                       aria-label={`Actions for ${n.title}`}
-                      onPointerDown={(e) => e.stopPropagation()}
+                      onPointerDown={(event) => event.stopPropagation()}
                     >
                       <MoreHorizontal
-                        style={{
-                          width: 12,
-                          height: 12,
-                          transform: "rotate(90deg)",
-                        }}
+                        style={{ width: 12, height: 12, transform: "rotate(90deg)" }}
                       />
                     </Button>
                   </DropdownMenuTrigger>
@@ -1112,96 +1066,358 @@ function FlowEditor({ block }: BlockProps) {
                 <button
                   className="fg-node-add"
                   aria-label={`Add a step after ${n.title}`}
-                  onPointerDown={(e) => e.stopPropagation()}
+                  onPointerDown={(event) => event.stopPropagation()}
                   onClick={() => add(n)}
                 >
                   <Plus />
                 </button>
               )}
-              {variant === 3 && selected === n.id && (
-                <NodeToolbar
-                  isVisible
-                  position={Position.Top}
-                  offset={8}
-                  className="fg-node-toolbar"
-                >
-                  <IconButton label={`Open ${n.title}`} onClick={() => open(n, true)}>
-                    <Pencil />
-                  </IconButton>
-                  <IconButton label={`Duplicate ${n.title}`} onClick={() => duplicate(n)}>
-                    <Copy />
-                  </IconButton>
-                </NodeToolbar>
-              )}
-              {variant === 2 && selected === n.id && (
-                <NodeToolbar
-                  isVisible
-                  position={Position.Top}
-                  offset={8}
-                  className="fg-node-toolbar"
-                >
-                  <IconButton label={`Open ${n.title}`} onClick={() => open(n, true)}>
-                    <Pencil />
-                  </IconButton>
-                  <IconButton label="Re-run" onClick={() => approve(n.id)}>
-                    <RotateCcw />
-                  </IconButton>
-                  <IconButton
-                    label="Skip"
-                    onClick={() => setRunStates((s) => ({ ...s, [n.id]: "Skipped" }))}
+            </FlowFidelityNode>
+          ) : (
+            <Frame
+              dense
+              variant="ghost"
+              key={n.id}
+              role="button"
+              tabIndex={0}
+              aria-label={`Select ${n.title}`}
+              className={`fg-node ${variant === 1 ? "fg-tree-node" : variant === 2 ? (n.kind === "attachment" ? "fg-attachment fg-pipeline-node" : n.id === "publish" ? "fg-approval" : "fg-pipeline-node") : variant === 3 ? "fg-map-node" : ""} ${selection.includes(n.id) ? "fg-selected" : ""}`}
+              data-flow-node={n.id}
+              style={{ position: "relative", left: 0, top: 0, width: size.w, height: size.h }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelected(n.id);
+              }}
+              onDoubleClick={(e) => {
+                e.stopPropagation();
+                open(n, variant !== 0);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") open(n, variant !== 0);
+              }}
+            >
+              <FramePanel className="fg-flow-node-panel">
+                {isPipeline ? (
+                  <>
+                    <IconTile
+                      variant="frame"
+                      size="xl"
+                      className={`fg-service-tile ${n.kind ? "" : statusClass(s)}`}
+                    >
+                      <BrandIcon app={n.app ?? n.title} />
+                      {!n.kind && (
+                        <span className={`fg-service-state ${statusClass(s)}`}>
+                          <RunIcon state={s} />
+                        </span>
+                      )}
+                    </IconTile>
+                    <div className="fg-node-name">{n.title}</div>
+                    <div className={`fg-node-detail ${s === "Failed" ? "fg-error-detail" : ""}`}>
+                      {n.kind
+                        ? n.detail
+                        : n.id === "nightly"
+                          ? "02:00 UTC"
+                          : n.id === "reconcile" && s === "Succeeded"
+                            ? "Reconciled"
+                            : s === "Failed"
+                              ? n.detail
+                              : n.duration === "Not run"
+                                ? n.detail
+                                : n.duration}
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="fg-node-main">
+                      <IconTile
+                        variant="outline"
+                        size="sm"
+                        className="fg-tile"
+                        style={
+                          n.id === "form" ? { background: "#181818", color: "#fff" } : undefined
+                        }
+                      >
+                        <BrandIcon app={n.app ?? n.category ?? n.role ?? n.title} />
+                      </IconTile>
+                      <span className="fg-node-copy">
+                        <span className="fg-node-name block">{n.title}</span>
+                        <span className="fg-node-detail block">
+                          {variant === 3 ? n.role : n.detail}
+                        </span>
+                      </span>
+                    </div>
+                    {variant === 3 ? (
+                      <div className="fg-map-stats">
+                        <div className="fg-map-mainvalue">
+                          <span>
+                            {value !== undefined
+                              ? n.unit === "Currency"
+                                ? `$${value >= 1000000 ? (value / 1000000).toFixed(1) + "M" : (value / 1000).toFixed(0) + "K"}`
+                                : `${value >= 100000 ? (value / 1000).toFixed(1) + "K" : value.toLocaleString()}${n.unit === "Percent" ? "%" : ""}`
+                              : `${n.progress ?? 0}%`}
+                          </span>
+                          {value !== undefined ? (
+                            <span className="fg-change">
+                              {(n.change?.[period] ?? 0) > 0 ? "+" : ""}
+                              {n.change?.[period] ?? 0}%
+                            </span>
+                          ) : (
+                            <>
+                              <span className="fg-small-progress">
+                                <i style={{ width: `${n.progress}%` }} />
+                              </span>
+                              <span
+                                className={`fg-runbadge ${n.progress === 0 ? "fg-failed" : ""}`}
+                                style={
+                                  n.progress === 62
+                                    ? {
+                                        color: "#6d28d9",
+                                        background: "#f5efff",
+                                        borderColor: "#e8d8ff",
+                                      }
+                                    : undefined
+                                }
+                              >
+                                {n.progress === 0
+                                  ? "Blocked"
+                                  : n.progress === 40
+                                    ? "To Do"
+                                    : "In Progress"}
+                              </span>
+                            </>
+                          )}
+                        </div>
+                        <div className="fg-map-meta">
+                          {value !== undefined ? (
+                            <>
+                              Past {["7 days", "6 weeks", "12 months"][period]}
+                              <span>·</span>
+                              {n.aggregation ?? n.detail}
+                              {!!n.progress && (
+                                <span className="fg-map-goal">
+                                  <i>
+                                    <b style={{ width: `${n.progress}%` }} />
+                                  </i>
+                                  {n.progress}%
+                                </span>
+                              )}
+                            </>
+                          ) : (
+                            n.detail.split(" · ").map((v, i) => (
+                              <span key={v}>
+                                {i > 0 ? " · " : ""}
+                                {v}
+                              </span>
+                            ))
+                          )}
+                        </div>
+                      </div>
+                    ) : n.id === "publish" && variant === 2 ? (
+                      <Button
+                        className="fg-button"
+                        onPointerDown={(e) => e.stopPropagation()}
+                        onClick={() => approve(n.id)}
+                        disabled={s === "Succeeded"}
+                      >
+                        {s === "Succeeded" ? "Approved" : "Approve"}
+                      </Button>
+                    ) : (
+                      <div className="fg-node-run">
+                        {variant === 0 ? (
+                          <>
+                            <span className="fg-avatar">
+                              {n.owner
+                                .split(" ")
+                                .map((s) => s[0])
+                                .join("")}
+                            </span>
+                            <span>{n.duration}</span>
+                            <span className={`fg-runbadge ${statusClass(s)}`}>
+                              <RunIcon state={s} />
+                              {s === "Succeeded" ? "Success" : s}
+                            </span>
+                          </>
+                        ) : (
+                          <>
+                            <span className={statusClass(s)}>
+                              <RunIcon state={s} />
+                            </span>
+                            <span>{n.duration.split(" · ")[0]}</span>
+                            {n.duration.includes(" · ") && (
+                              <>
+                                <span>·</span>
+                                <span>{n.duration.split(" · ")[1]}</span>
+                              </>
+                            )}
+                          </>
+                        )}
+                      </div>
+                    )}
+                  </>
+                )}
+                {variant === 1 && (
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        className="fg-node-menu"
+                        aria-label={`Actions for ${n.title}`}
+                        onPointerDown={(e) => e.stopPropagation()}
+                      >
+                        <MoreHorizontal
+                          style={{
+                            width: 12,
+                            height: 12,
+                            transform: "rotate(90deg)",
+                          }}
+                        />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="fg-portal">
+                      {nodeActions(n)}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                )}
+                {variant === 0 && selected === n.id && (
+                  <NodeToolbar
+                    isVisible
+                    position={Position.Top}
+                    offset={8}
+                    className="fg-node-toolbar"
                   >
-                    <Minus />
-                  </IconButton>
-                  <IconButton label="Duplicate" onClick={() => duplicate(n)}>
-                    <Copy />
-                  </IconButton>
-                </NodeToolbar>
-              )}
-            </FramePanel>
-          </Frame>
+                    <IconButton label={`Add a step after ${n.title}`} onClick={() => add(n)}>
+                      <Plus />
+                    </IconButton>
+                    <IconButton label={`View ${n.title}`} onClick={() => open(n, false)}>
+                      <Eye />
+                    </IconButton>
+                    <IconButton label={`Edit ${n.title}`} onClick={() => open(n, true)}>
+                      <Pencil />
+                    </IconButton>
+                  </NodeToolbar>
+                )}
+                {variant === 1 && isLeaf && (
+                  <button
+                    className="fg-node-add"
+                    aria-label={`Add a step after ${n.title}`}
+                    onPointerDown={(e) => e.stopPropagation()}
+                    onClick={() => add(n)}
+                  >
+                    <Plus />
+                  </button>
+                )}
+                {variant === 3 && selected === n.id && (
+                  <NodeToolbar
+                    isVisible
+                    position={Position.Top}
+                    offset={8}
+                    className="fg-node-toolbar"
+                  >
+                    <IconButton label={`Open ${n.title}`} onClick={() => open(n, true)}>
+                      <Pencil />
+                    </IconButton>
+                    <IconButton label={`Duplicate ${n.title}`} onClick={() => duplicate(n)}>
+                      <Copy />
+                    </IconButton>
+                  </NodeToolbar>
+                )}
+                {variant === 2 && selected === n.id && (
+                  <NodeToolbar
+                    isVisible
+                    position={Position.Top}
+                    offset={8}
+                    className="fg-node-toolbar"
+                  >
+                    <IconButton label={`Open ${n.title}`} onClick={() => open(n, true)}>
+                      <Pencil />
+                    </IconButton>
+                    <IconButton label="Re-run" onClick={() => approve(n.id)}>
+                      <RotateCcw />
+                    </IconButton>
+                    <IconButton
+                      label="Skip"
+                      onClick={() => setRunStates((s) => ({ ...s, [n.id]: "Skipped" }))}
+                    >
+                      <Minus />
+                    </IconButton>
+                    <IconButton label="Duplicate" onClick={() => duplicate(n)}>
+                      <Copy />
+                    </IconButton>
+                  </NodeToolbar>
+                )}
+              </FramePanel>
+            </Frame>
+          )}
         </ContextMenuTrigger>
         <ContextMenuContent className="fg-portal min-w-44">
-          <ContextMenuItem onSelect={() => open(n, true)}>Open details</ContextMenuItem>
-          {variant === 2 && (
+          {variant < 2 ? (
             <>
-              <ContextMenuItem onSelect={() => approve(n.id)}>Re-run task</ContextMenuItem>
-              <ContextMenuItem onSelect={() => setRunStates((s) => ({ ...s, [n.id]: "Skipped" }))}>
-                Skip task
-              </ContextMenuItem>
-              <ContextMenuItem
-                onSelect={() => {
-                  const id = `attachment_${Date.now()}`;
-                  change({
-                    nodes: [
-                      ...graph.nodes,
-                      {
-                        ...n,
-                        id,
-                        kind: "attachment",
-                        title: "New connection",
-                        detail: "Connection",
-                        duration: "",
-                        app: "Database",
-                        x: n.x + 8,
-                        y: n.y + 164,
-                        parent: n.id,
-                        status: "Idle",
-                      },
-                    ],
-                    edges: [
-                      ...graph.edges,
-                      { id: `${n.id}-${id}`, source: n.id, target: id, attachment: true },
-                    ],
-                  });
-                }}
-              >
-                Add attachment
-              </ContextMenuItem>
+              {variant === 0 && (
+                <ContextMenuItem onSelect={() => add(n)}>Add step after</ContextMenuItem>
+              )}
+              <ContextMenuItem onSelect={() => open(n, false)}>View details</ContextMenuItem>
+              <ContextMenuItem onSelect={() => open(n, true)}>Edit step</ContextMenuItem>
+              {variant === 1 && (
+                <>
+                  <ContextMenuItem onSelect={() => add(n, undefined, true)}>
+                    Add branch
+                  </ContextMenuItem>
+                  {n.id !== "trigger" && (
+                    <>
+                      <ContextMenuSeparator />
+                      <ContextMenuItem onSelect={() => setDeleting(n.id)}>Delete</ContextMenuItem>
+                    </>
+                  )}
+                </>
+              )}
+            </>
+          ) : (
+            <>
+              <ContextMenuItem onSelect={() => open(n, true)}>Open details</ContextMenuItem>
+              {variant === 2 && (
+                <>
+                  <ContextMenuItem onSelect={() => approve(n.id)}>Re-run task</ContextMenuItem>
+                  <ContextMenuItem
+                    onSelect={() => setRunStates((s) => ({ ...s, [n.id]: "Skipped" }))}
+                  >
+                    Skip task
+                  </ContextMenuItem>
+                  <ContextMenuItem
+                    onSelect={() => {
+                      const id = `attachment_${Date.now()}`;
+                      change({
+                        nodes: [
+                          ...graph.nodes,
+                          {
+                            ...n,
+                            id,
+                            kind: "attachment",
+                            title: "New connection",
+                            detail: "Connection",
+                            duration: "",
+                            app: "Database",
+                            x: n.x + 8,
+                            y: n.y + 164,
+                            parent: n.id,
+                            status: "Idle",
+                          },
+                        ],
+                        edges: [
+                          ...graph.edges,
+                          { id: `${n.id}-${id}`, source: n.id, target: id, attachment: true },
+                        ],
+                      });
+                    }}
+                  >
+                    Add attachment
+                  </ContextMenuItem>
+                </>
+              )}
+              <ContextMenuItem onSelect={() => duplicate(n)}>Duplicate</ContextMenuItem>
+              <ContextMenuSeparator />
+              <ContextMenuItem onSelect={() => setDeleting(n.id)}>Delete</ContextMenuItem>
             </>
           )}
-          <ContextMenuItem onSelect={() => duplicate(n)}>Duplicate</ContextMenuItem>
-          <ContextMenuSeparator />
-          <ContextMenuItem onSelect={() => setDeleting(n.id)}>Delete</ContextMenuItem>
         </ContextMenuContent>
       </ContextMenu>
     );
@@ -1261,7 +1477,10 @@ function FlowEditor({ block }: BlockProps) {
             </>
           )}
           <span>·</span>
-          <MiniAvatar name={variant === 1 ? "HB" : variant === 2 ? "TL" : "IM"} photo={false} />
+          <MiniAvatar
+            name={variant === 1 ? "HB" : variant === 2 ? "TL" : "IM"}
+            photo={variant === 0}
+          />
           <span>
             {dirty
               ? "Unsaved"
@@ -1318,7 +1537,28 @@ function FlowEditor({ block }: BlockProps) {
                 value={model}
                 onChange={(e) => {
                   const value = e.target.value;
+                  const previousModel = model;
+                  const previousGraph = graph;
+                  const previousResults = runStates;
+                  const previouslyCleared = testResultsCleared;
+                  const previousPast = past;
                   setModel(value);
+                  setRunStates(Object.fromEntries(runningNodes.map((node) => [node.id, "Idle"])));
+                  setTestResultsCleared(true);
+                  toast.success("Model changed", {
+                    description: `Claude ${value}. Last run cleared.`,
+                    action: {
+                      label: "Undo",
+                      onClick: () => {
+                        setModel(previousModel);
+                        setGraph(previousGraph);
+                        setRunStates(previousResults);
+                        setTestResultsCleared(previouslyCleared);
+                        setPast(previousPast);
+                        setFuture([]);
+                      },
+                    },
+                  });
                   change({
                     ...graph,
                     nodes: graph.nodes.map((n) =>
@@ -1448,29 +1688,104 @@ function FlowEditor({ block }: BlockProps) {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="fg-portal" align="end">
-                <DropdownMenuItem onSelect={exportJson}>
-                  <Download />
-                  Export JSON
-                </DropdownMenuItem>
-                <DropdownMenuItem onSelect={fit}>
-                  <Maximize2 />
-                  Fit to view
-                </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => setSnap(!snap)}>
-                  <Check style={{ visibility: snap ? "visible" : "hidden" }} />
-                  Snap to grid
-                </DropdownMenuItem>
-                {variant >= 1 && variant <= 2 && (
-                  <DropdownMenuItem
-                    onSelect={() => {
-                      setRun("idle");
-                      setRunStates({});
-                      setCursor(0);
-                    }}
-                  >
-                    <Square />
-                    Stop run
-                  </DropdownMenuItem>
+                {variant === 1 ? (
+                  <>
+                    <DropdownMenuItem
+                      onSelect={() => {
+                        setRunStates(
+                          Object.fromEntries(runningNodes.map((node) => [node.id, "Idle"])),
+                        );
+                        setTestResultsCleared(true);
+                      }}
+                    >
+                      Clear results
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onSelect={() => {
+                        change(initialGraph(1));
+                        setModel("Sonnet 5");
+                        setRunStates({});
+                        setTestResultsCleared(false);
+                        setSelected(null);
+                        if (canvas.current) {
+                          touched.current = true;
+                          setView({
+                            x: (canvas.current.clientWidth - 896) / 2,
+                            y: (canvas.current.clientHeight - 762) / 2,
+                            zoom: 1,
+                          });
+                        }
+                      }}
+                    >
+                      Restore sample
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      onSelect={() => navigator.clipboard.writeText(JSON.stringify(graph, null, 2))}
+                    >
+                      Copy as JSON
+                    </DropdownMenuItem>
+                  </>
+                ) : variant === 0 ? (
+                  <>
+                    <DropdownMenuLabel>Canvas</DropdownMenuLabel>
+                    <DropdownMenuCheckboxItem checked={snap} onCheckedChange={setSnap}>
+                      Snap to grid
+                    </DropdownMenuCheckboxItem>
+                    <DropdownMenuItem
+                      onSelect={() => {
+                        const original = initialGraph(0);
+                        change({
+                          ...graph,
+                          nodes: graph.nodes.map((node) => {
+                            const fixture = original.nodes.find((item) => item.id === node.id);
+                            return fixture ? { ...node, x: fixture.x, y: fixture.y } : node;
+                          }),
+                        });
+                      }}
+                    >
+                      Reset layout
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuLabel>wf_8k2m4p</DropdownMenuLabel>
+                    <DropdownMenuItem
+                      onSelect={() => setSelection(graph.nodes.map((node) => node.id))}
+                    >
+                      Select all steps
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onSelect={() => navigator.clipboard.writeText(JSON.stringify(graph, null, 2))}
+                    >
+                      Copy as JSON
+                    </DropdownMenuItem>
+                  </>
+                ) : (
+                  <>
+                    <DropdownMenuItem onSelect={exportJson}>
+                      <Download />
+                      Export JSON
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onSelect={fit}>
+                      <Maximize2 />
+                      Fit to view
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onSelect={() => setSnap(!snap)}>
+                      <Check style={{ visibility: snap ? "visible" : "hidden" }} />
+                      Snap to grid
+                    </DropdownMenuItem>
+                    {variant === 2 && (
+                      <DropdownMenuItem
+                        onSelect={() => {
+                          setRun("idle");
+                          setRunStates({});
+                          setCursor(0);
+                        }}
+                      >
+                        <Square />
+                        Stop run
+                      </DropdownMenuItem>
+                    )}
+                  </>
                 )}
               </DropdownMenuContent>
             </DropdownMenu>
@@ -1496,8 +1811,9 @@ function FlowEditor({ block }: BlockProps) {
               vertical: variant === 1 || n.kind === "attachment",
               pipeline: variant === 2 && n.id !== "publish",
               attachment: n.kind === "attachment",
+              root: variant === 0 ? n.id === "form" : variant === 1 ? n.id === "trigger" : false,
               incoming: graph.edges.some((e) => e.target === n.id),
-              outgoing: graph.edges.some((e) => e.source === n.id && !e.attachment),
+              outgoing: variant < 2 || graph.edges.some((e) => e.source === n.id && !e.attachment),
               attachmentSource: graph.edges.some((e) => e.source === n.id && e.attachment),
             },
             width: nodeSize(n, variant).w,
@@ -1663,9 +1979,10 @@ function FlowEditor({ block }: BlockProps) {
             <IconButton
               label={locked ? "Unlock canvas" : "Lock canvas"}
               active={locked}
+              pressed={locked}
               onClick={() => setLocked(!locked)}
             >
-              {locked ? <LockKeyhole /> : <UnlockKeyhole />}
+              {locked ? <UnlockKeyhole /> : <LockKeyhole />}
             </IconButton>
           </>
         ) : variant === 1 ? (
@@ -1711,20 +2028,22 @@ function FlowEditor({ block }: BlockProps) {
         >
           <div className="fg-inspector-head">
             {variant < 2 && (
-              <span className="fg-tile">
+              <IconTile variant="outline" size="sm">
                 <BrandIcon app={current.app ?? current.category ?? current.title} />
-              </span>
+              </IconTile>
             )}
             {variant === 2 && <BrandIcon app={current.app ?? current.title} />}
             <div>
               <strong>{current.title}</strong>
               {variant < 2 && (
                 <div className="fg-inspector-sub">
-                  <span className="fg-runbadge" style={{ fontWeight: 400, margin: 0 }}>
-                    {current.app ?? current.category ?? "Action"}
-                  </span>
+                  <Badge variant="outline" className="fg-flow-kind-badge">
+                    {variant === 0 && current.id === "form"
+                      ? "Trigger"
+                      : (current.app ?? current.category ?? "Action")}
+                  </Badge>
                   <span>·</span>
-                  <span>{current.id}</span>
+                  <span>{variant === 0 && current.id === "form" ? "trigger" : current.id}</span>
                 </div>
               )}
             </div>
@@ -1899,6 +2218,25 @@ function FlowEditor({ block }: BlockProps) {
                         </FGSelect>
                       </label>
                     )}
+                    {variant === 1 &&
+                      graph.edges.some((edge) => edge.target === current.id && edge.label) && (
+                        <label htmlFor="fg-step-path">
+                          <span className="fg-field-label">
+                            Path
+                            <FieldHelp label="Path" />
+                          </span>
+                          <input
+                            id="fg-step-path"
+                            aria-label="Path"
+                            value={
+                              draft.branch ??
+                              graph.edges.find((edge) => edge.target === current.id)?.label ??
+                              ""
+                            }
+                            onChange={(event) => setDraft({ ...draft, branch: event.target.value })}
+                          />
+                        </label>
+                      )}
                     {variant === 0 && (
                       <label>
                         <span className="fg-field-label">
@@ -2113,7 +2451,7 @@ function FlowEditor({ block }: BlockProps) {
                           "Next steps",
                           String(graph.edges.filter((e) => e.source === current.id).length),
                         ],
-                        ["Last run", current.duration],
+                        ["Last run", durationFor(current)],
                       ]
                     : [
                         ["Category", current.category],
@@ -2145,13 +2483,24 @@ function FlowEditor({ block }: BlockProps) {
                 {variant === 0 && <strong className="fg-detail-section">Last run</strong>}
                 <div className="fg-detail-line">
                   <span>{variant === 1 ? "Result" : "Status"}</span>
-                  <span className={`fg-runbadge ${statusClass(stateFor(current))}`}>
+                  <Badge
+                    variant={
+                      stateFor(current) === "Succeeded"
+                        ? "success-light"
+                        : stateFor(current) === "Failed"
+                          ? "destructive-light"
+                          : "outline"
+                    }
+                  >
+                    <RunIcon state={stateFor(current)} />
                     {stateFor(current) === "Succeeded"
                       ? variant === 1
-                        ? "◉ Passed"
+                        ? "Passed"
                         : "Success"
-                      : stateFor(current)}
-                  </span>
+                      : variant === 1 && stateFor(current) === "Idle"
+                        ? "Not run"
+                        : stateFor(current)}
+                  </Badge>
                 </div>
                 {variant === 0 && (
                   <>
@@ -2188,8 +2537,7 @@ function FlowEditor({ block }: BlockProps) {
                   variant="outline"
                   onClick={() => {
                     setDraft({ ...current });
-                    if (window.innerWidth < 600) setInspected(null);
-                    else if (variant < 2) setEditing(false);
+                    if (variant < 2 || window.innerWidth < 600) setInspected(null);
                   }}
                 >
                   Cancel
@@ -2219,8 +2567,34 @@ function FlowEditor({ block }: BlockProps) {
           </div>
         </FlowInspectorShell>
       )}
+      <AlertDialog
+        open={variant === 1 && !!deleting}
+        onOpenChange={(open) => {
+          if (!open) setDeleting(null);
+        }}
+      >
+        <AlertDialogContent className="fg-portal">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Step?</AlertDialogTitle>
+            <AlertDialogDescription>
+              {graph.nodes.find((node) => node.id === deleting)?.title} and{" "}
+              {
+                graph.edges.filter((edge) => edge.source === deleting || edge.target === deleting)
+                  .length
+              }{" "}
+              connections are removed.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction variant="destructive" onClick={() => deleting && remove(deleting)}>
+              Delete Step
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
       <Dialog
-        open={!!deleting}
+        open={variant !== 1 && !!deleting}
         onOpenChange={(o) => {
           if (!o) setDeleting(null);
         }}

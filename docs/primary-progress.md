@@ -215,4 +215,8 @@ Grouping1–3 now have distinct roadmap, revenue and cohort models composed on t
 
 Lucent now has independent Clusters, Hosts and Registry pages with actual native DataGrid, controlled provision and retention state. Independent16/16 production cases, a195-file actual project strict build and frozen source/license checks passed. Existing reference gaps in shared navigation, filters and unavailable metrics remain explicit; shared shell migration is a separate batch. See [integration evidence](lucent-infrastructure-integration-release.json).
 
+## Flow1–2 actual node and reference test state
+
+Flow1–2 now use the actual free Frame/Panel/IconTile/Badge anatomy with the observed failed test fixture and real model undo/reset. Trigger deletion is guarded; other removals use the actual confirmation action. Independent37/37 old/new/source checks passed and actual374-file download bytes were verified. The only old-test change synchronizes the observed Flow2 result; all Gantt, Timeline and modal/drag assertions stay unchanged. Tabs and newly measured menu/font details are separate follow-ups. See [integration evidence](flow12-integration-release.json).
+
 Run40266050417 on5c6df66 later passed1165 and failed one old Checklist connect/manage case; Pages was skipped. Original trace/artifact12627475041 is retained. Root is diagnosing native Accordion animation/input readiness; unrelated local milestone passes do not erase that failure. Latest verified deployed version remains303cc13.

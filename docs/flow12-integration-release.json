@@ -1,0 +1,27 @@
+{
+  "scope": "Flow1\u20132 actual node and reference test state",
+  "combinedBase": "5c6df66d78f54bff481816f578b856bcb3b243ac",
+  "frozenFiles": {
+    "src/blocks/application/flow-gantt-flow.tsx": "074e9a6ce97fc6f886ecf2151b760951fa81eac67d5c85db916af89041ce0c67",
+    "src/blocks/application/flow-fidelity-node.tsx": "ae42c7752f6d3a8035c8101214e86cf35ff9f505c0e40c41e9d2de74f2ad129e",
+    "src/blocks/application/flow-fidelity-node.css": "483f4e25abd6aef726de020081879a2d4402c6eb072743fe98eb6dc23c3b6430",
+    "src/blocks/application/flow-fidelity-round2.css": "1e260a5bfb75115951cec5ffad335ce0a2145173b658507a53606db320fa4fac",
+    "tests/flow-fidelity-round2.spec.ts": "86f8fc5c633f37e096333a476a4501f8ef1c6cbc27cfdde419b9a8d388e01562",
+    "tests/flow-gantt-refinement.spec.ts": "60c4417d6238bfefc624eb21e247ef510da881c29502ea979c8626ed0b5a793b",
+    "docs/flow-round2-refinement.md": "b9080438ef8abc0b899554dd589bba2aef772bd627e4aed9214b1c62cc4da53b"
+  },
+  "independentAcceptance": "Independent37/37 production and strict build passed; final actual374-file source/copy/single/ZIP bytes and MIT/OFL/original artwork verified.",
+  "actualFreeReuseAndCustomGap": "Actual free Frame, Panel, IconTile and Badge node composition retained. Original graph/model/history logic supplies domain behavior.",
+  "remainingLimits": "Flow2 reference failure fixture is4passed/1failed/4skipped; only that legacy assertion changed, all Gantt/Timeline/modal/drag assertions byte-unchanged. Native Tabs and menu/font detail follow-ups are separate frozen batches.",
+  "finalCumulativeAcceptance": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-cumulative-release-qa-yj7ljamp/manifest.json",
+  "finalCumulativeContract": "One clean5c archive plus explicitly frozen pending Pricing/Grouping/Lucent/Flow/Comparison payloads. Shared source hooks applied in recorded order. Strict build and56 new/source cases recorded in final combined receipt, no repeated unchanged ZIP builds.",
+  "publication": "Root serial per-milestone commit/push; own full CI and Pages separately checked.",
+  "knownCI": {
+    "run": 40266050417,
+    "result": "1165passed/1oldChecklisttestfailure;Pages skipped",
+    "artifact": 12627475041,
+    "log": "/tmp/bricklane-settings-ci-failure.log",
+    "diagnosis": "Root retained trace and localoriginalcasePASS; nativeAccordion content was still animating/clipped at pointerclick. Investigation/fix pending; not erased by unrelated milestone tests.",
+    "latestVerifiedPages": "303cc13 1136/1136"
+  }
+}

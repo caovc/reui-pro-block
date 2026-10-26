@@ -41,7 +41,10 @@ test("agent flow changes its actual model and replays the test results", async (
   await choose(page, "Model", "Opus 5");
   await expect(page.locator('[data-flow-node="model"]')).toContainText("Claude Opus 5");
   await page.getByRole("button", { name: "Run test", exact: true }).click();
-  await expect(page.getByText("Test complete", { exact: true })).toBeVisible({ timeout: 15000 });
+  await expect(page.getByText("Test failed", { exact: true })).toBeVisible();
+  await expect(
+    page.getByText("4 passed, 1 failed, 4 skipped, 0 unconnected.", { exact: true }),
+  ).toBeVisible();
   await page.locator('[data-flow-node="guard"]').dblclick();
   await page.getByLabel("Title", { exact: true }).fill("Outbound guardrail");
   await page.getByRole("button", { name: "Save step", exact: true }).click();
