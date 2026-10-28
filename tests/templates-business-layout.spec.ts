@@ -108,7 +108,19 @@ for (const [id, expanded, compact] of [
       await expect(page.getByRole("heading", { name: "Preferences", exact: true })).toBeVisible();
     } else {
       await drawer.getByRole("button", { name: "Settings", exact: true }).first().click();
-      await expect(page.locator(".bt-content")).toContainText("Settings");
+      if (id === "surge" || id === "manifest") {
+        // Settings is the actual native group. Selecting its General child navigates.
+        await expect(drawer).toBeVisible();
+        await drawer.getByRole("button", { name: "General", exact: true }).click();
+        await expect(page.getByRole("textbox", { name: "Store name", exact: true })).toBeVisible();
+      } else if (id === "verve") {
+        await expect(
+          page.getByRole("textbox", { name: "Workspace name", exact: true }),
+        ).toBeVisible();
+      }
+      await expect(page.locator(".bt-content")).toContainText(
+        id === "surge" || id === "manifest" ? "General" : "Settings",
+      );
     }
     await expect(drawer).toBeHidden();
     await expect(trigger).toBeFocused();
@@ -225,7 +237,7 @@ for (const id of ["atlas", "miro"]) {
       await expect(drawer).toBeVisible();
       await expect(trigger).toBeFocused();
       const account = drawer.getByRole("button", {
-        name: `Open account menu for ${id === "atlas" ? "Amara Ortiz" : "Nick Bold"}`,
+        name: `Open account menu for ${id === "atlas" ? "Amara Ortiz" : id === "miro" ? "Mara Ellis" : "Nick Bold"}`,
         exact: true,
       });
       await account.click();

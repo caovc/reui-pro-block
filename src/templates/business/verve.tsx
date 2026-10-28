@@ -10,13 +10,29 @@ import { ReuiDonut } from "@/blocks/data/reui-free-chart-primitives";
 import VervePipeline from "./verve-pipeline";
 import { IconTile } from "@/components/reui/icon-tile";
 import VerveToday from "./verve-today";
+import { VerveAccountSettings } from "./verve-account-settings";
+import { VerveWorkspaceSettings } from "./verve-workspace-settings";
+import { useVerveAccountSettingsModel } from "./verve-account-settings-model";
+import { useVerveSettingsRoute } from "./verve-settings-route";
+import { useVerveConfigurationModel } from "./verve-configuration-model";
+import { VerveSettingsIntegrations } from "./verve-settings-integrations";
+import { VerveSettingsApiKeys } from "./verve-settings-api-keys";
+import { VerveSettingsWebhooks } from "./verve-settings-webhooks";
+import { useVervePeopleBillingModel } from "./verve-settings-people-billing-model";
+import { VerveTeamSettings, VerveBillingSettings } from "./verve-settings-people-billing";
+import {
+  VerveAccountMenuContent,
+  VerveSettingsBreadcrumb,
+  VerveSettingsNavigation,
+  VerveSettingsSummary,
+} from "./verve-settings-navigation";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TrendingUp, Users, ChartNoAxesColumn, TriangleAlert } from "lucide-react";
 import {
   Shell,
@@ -30,7 +46,6 @@ import {
   Period,
   Input,
   DataTable,
-  SettingsPage,
   toast,
   exportCsv,
 } from "./shared";
@@ -54,12 +69,58 @@ export default function Verve() {
   const logState = useVerveLogState();
   const targetState = useVerveTargetState();
   const [donutActive, setDonutActive] = useState<number | null>(null);
-  const [active, setActive] = useState("Dashboard");
+  const account = useVerveAccountSettingsModel();
+  const configuration = useVerveConfigurationModel();
+  const peopleBilling = useVervePeopleBillingModel();
+  const routing = useVerveSettingsRoute();
+  const [activePage, setActivePage] = useState("Dashboard");
+  const settingsVisible =
+    routing.general ||
+    routing.section !== null ||
+    routing.configuration !== null ||
+    routing.workspace !== null;
+  const { setKeyDialogOpen, setEndpointDialogOpen, setIntegrationDetails } = configuration;
+
+  const active = settingsVisible ? "Settings" : activePage;
+  function setActive(page: string) {
+    if (page === "Settings" || page === "General") {
+      routing.navigate("general");
+      return;
+    }
+    if (page === "Profile") {
+      account.setSection("profile");
+      routing.navigate("profile");
+      return;
+    }
+    setActivePage(page);
+    if (settingsVisible) routing.navigate(null);
+  }
+  const accountView = {
+    ...account,
+    section: routing.section ?? account.section,
+  };
   const [period, setPeriod] = useState("Week");
   const [query, setQuery] = useState("");
   const [create, setCreate] = useState(false);
   const [meeting, setMeeting] = useState(false);
   const [completed, setCompleted] = useState<string[]>([]);
+  useEffect(() => {
+    // Native history events can bypass sidebar selection. Close transient
+    // surfaces while keeping account, configuration and billing data mounted.
+    const closeTransientSurfaces = () => {
+      setKeyDialogOpen(false);
+      setEndpointDialogOpen(false);
+      setIntegrationDetails(null);
+      setCreate(false);
+      setMeeting(false);
+    };
+    window.addEventListener("hashchange", closeTransientSurfaces);
+    window.addEventListener("popstate", closeTransientSurfaces);
+    return () => {
+      window.removeEventListener("hashchange", closeTransientSurfaces);
+      window.removeEventListener("popstate", closeTransientSurfaces);
+    };
+  }, [setKeyDialogOpen, setEndpointDialogOpen, setIntegrationDetails]);
   const [deals] = useState<Deal[]>([
     {
       name: "Enterprise rollout",
@@ -104,14 +165,28 @@ export default function Verve() {
   return (
     <Shell
       id="verve"
-      brand="Acme Inc"
+      brand={account.workspace.workspaceName}
       active={active}
       setActive={setActive}
+      account={{
+        name: account.identity.name,
+        organisation: account.identity.email,
+        photo: account.identity.avatar ?? undefined,
+      }}
+      accountMenuContent={
+        <VerveAccountMenuContent
+          model={account}
+          onSelect={(section) => {
+            account.setSection(section);
+            routing.navigate(section);
+          }}
+        />
+      }
       items={rail}
       rail
       top={
         <span className="bt-verve-header">
-          <span>Acme Inc　/　CRM</span>
+          <span>{account.workspace.workspaceName}　/　CRM</span>
           <Input
             aria-label="Search CRM"
             placeholder="Search..."
@@ -143,7 +218,16 @@ export default function Verve() {
         </span>
       }
       aside={
-        active === "Pipeline" ? (
+        settingsVisible ? (
+          <VerveSettingsNavigation
+            general={routing.general}
+            onGeneral={() => routing.navigate("general")}
+            workspace={routing.workspace}
+            onWorkspaceSelect={routing.navigate}
+            configuration={routing.configuration}
+            onConfigurationSelect={routing.navigate}
+          />
+        ) : active === "Pipeline" ? (
           <>
             <p className="bt-nav-label">DEALS</p>
             <NavItems
@@ -168,17 +252,63 @@ export default function Verve() {
         )
       }
       footer={
-        <div className="bt-info">
-          <strong>Forecast rolls up by territory</strong>Commit, best case, and pipeline now total
-          per territory alongside the quarter view.
-          <Button variant="link" size="sm" onClick={() => setActive("Reports")}>
-            Read more
-          </Button>
-        </div>
+        settingsVisible ? (
+          <VerveSettingsSummary />
+        ) : (
+          <div className="bt-info">
+            <strong>Forecast rolls up by territory</strong>Commit, best case, and pipeline now total
+            per territory alongside the quarter view.
+            <Button variant="link" size="sm" onClick={() => setActive("Reports")}>
+              Read more
+            </Button>
+          </div>
+        )
       }
     >
-      {active === "Settings" ? (
-        <SettingsPage brand="Acme Inc" />
+      {settingsVisible ? (
+        <>
+          <VerveSettingsBreadcrumb
+            label={
+              routing.workspace === "billing"
+                ? "Billing"
+                : routing.workspace === "team"
+                  ? "Team Members"
+                  : routing.configuration === "integrations"
+                    ? "Integrations"
+                    : routing.configuration === "api-keys"
+                      ? "API Keys"
+                      : routing.configuration === "webhooks"
+                        ? "Webhooks"
+                        : routing.general
+                          ? "Settings"
+                          : routing.section === "profile"
+                            ? "Profile"
+                            : routing.section === "preferences"
+                              ? "Preferences"
+                              : "Notifications"
+            }
+            homeHref={routing.href(null)}
+            onHome={() => setActive("Dashboard")}
+          />
+          {routing.workspace === "billing" ? (
+            <VerveBillingSettings model={peopleBilling} />
+          ) : routing.workspace === "team" ? (
+            <VerveTeamSettings model={peopleBilling} />
+          ) : routing.configuration === "integrations" ? (
+            <VerveSettingsIntegrations
+              model={configuration}
+              workspaceName={account.workspace.workspaceName}
+            />
+          ) : routing.configuration === "api-keys" ? (
+            <VerveSettingsApiKeys model={configuration} />
+          ) : routing.configuration === "webhooks" ? (
+            <VerveSettingsWebhooks model={configuration} />
+          ) : routing.general ? (
+            <VerveWorkspaceSettings model={account} />
+          ) : (
+            <VerveAccountSettings model={accountView} onSectionChange={routing.navigate} />
+          )}
+        </>
       ) : (
         <>
           <Heading
@@ -456,9 +586,13 @@ export default function Verve() {
               </Panel>
             </>
           ) : active === "Today" ? (
-            <VerveToday open={meeting} onOpenChange={setMeeting} />
+            <VerveToday open={meeting && !settingsVisible} onOpenChange={setMeeting} />
           ) : active === "Pipeline" ? (
-            <VervePipeline open={create} onOpenChange={setCreate} query={query} />
+            <VervePipeline
+              open={create && !settingsVisible}
+              onOpenChange={setCreate}
+              query={query}
+            />
           ) : active === "Contacts" ? (
             <Panel title="All contacts" description="Your sales relationships">
               <Input

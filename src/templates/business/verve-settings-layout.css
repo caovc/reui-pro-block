@@ -1,0 +1,110 @@
+/* Verve-only consumers of actual ReUI SidebarNavigation, Frame and Pro Rows.
+ * Existing MIT/OFL sources remain untouched; no vendor media is introduced. */
+.verve-settings-navigation {
+  display: flex;
+  min-width: 0;
+  flex-shrink: 0;
+  flex-direction: column;
+  gap: 0;
+}
+
+.verve-settings-navigation > .verve-settings-workspace {
+  padding: 0 12px;
+}
+
+.verve-settings-navigation > .verve-settings-configuration {
+  margin-top: 6px;
+  border-top: 1px solid var(--border);
+  padding: 12px 12px 0;
+}
+
+.verve-settings-navigation [data-slot="sidebar-group-label"] {
+  padding-inline: 0;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.bt-verve .verve-settings-navigation [data-slot="sidebar-menu-button"] {
+  height: 30px;
+  min-height: 30px;
+}
+
+.verve-settings-summary {
+  width: 100%;
+  min-width: 0;
+  border-top: 1px solid var(--border);
+  padding: 12px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.verve-settings-summary-title {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+  line-height: 20px;
+}
+
+.verve-settings-summary-title > strong {
+  color: var(--foreground);
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.verve-settings-summary-title > svg,
+.verve-settings-summary-title > [data-slot="badge"] {
+  flex-shrink: 0;
+}
+
+.verve-settings-summary-description {
+  margin: 0;
+}
+
+.verve-settings-breadcrumb {
+  margin-bottom: 24px;
+}
+
+.bt-verve .verve-account-settings .vs-profile-card > [data-slot="frame-panel-header"],
+.bt-verve .verve-account-settings .vs-profile-card > [data-slot="frame-panel-footer"] {
+  padding-inline: 12px;
+}
+
+@media (min-width: 768px) {
+  .bt-layout.bt-verve .bt-sidebar .reui-sidebar-content:has(> .verve-settings-navigation) {
+    gap: 0;
+    padding: 0;
+  }
+
+  .bt-layout.bt-verve .bt-sidebar [data-slot="sidebar-footer"]:has(.verve-settings-summary) {
+    padding: 0;
+  }
+
+  .bt-layout.bt-verve .bt-content:has(> .verve-settings-breadcrumb) {
+    padding-top: 24px;
+  }
+
+  .bt-layout.bt-verve .verve-settings-breadcrumb {
+    margin-bottom: 4px;
+  }
+}
+
+@media (max-width: 767px) {
+  .verve-settings-breadcrumb-context {
+    display: none;
+  }
+
+  /* Keep the existing mobile rail's reserved inline space and native Sheet. */
+  .bt-layout-mobile.bt-verve .verve-settings-navigation > [data-slot="sidebar-group"] {
+    padding-inline: 0;
+  }
+}
+
+/* Restore the actual free Sidebar container token only while Settings is present.
+ * Native data-active/hover semantics and all other Verve routes stay unchanged. */
+:is(.bt-layout.bt-verve, .bt-layout-mobile.bt-verve):has(.verve-settings-navigation)
+  .bt-layout-rail[data-slot="sidebar"] {
+  background: var(--sidebar);
+}

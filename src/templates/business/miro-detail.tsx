@@ -1,3 +1,4 @@
+import { miroClinicSeedDoctors } from "./miro-settings-integration";
 import { useTable, type ColumnDef } from "@tanstack/react-table";
 import {
   DataGrid,
@@ -20,13 +21,7 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { Button, Input, Panel, Tabs, TabsList, TabsTrigger } from "./shared";
 import { Choice, Tone } from "./fidelity";
-const doctors = [
-  "Dr. Amara Chen",
-  "Dr. Ravi Menon",
-  "Dr. Elena Novak",
-  "Dr. Tomas Reyes",
-  "Dr. Hana Sato",
-];
+const doctors = miroClinicSeedDoctors;
 const groups = [
   {
     name: doctors[0],
@@ -239,9 +234,11 @@ export function BookingSheet({
   open,
   onOpenChange,
   onSave,
+  practitioners = doctors,
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
+  practitioners?: string[];
   onSave: (v: {
     patient: string;
     doctor: string;
@@ -256,6 +253,7 @@ export function BookingSheet({
   const [patient, setPatient] = useState("");
   const [procedure, setProcedure] = useState("General Checkup");
   const [doctor, setDoctor] = useState(doctors[0]);
+  const selectedDoctor = practitioners.includes(doctor) ? doctor : (practitioners[0] ?? "");
   const [start, setStart] = useState("08:00 AM");
   const [end, setEnd] = useState("08:30 AM");
   const [status, setStatus] = useState("Booked");
@@ -270,7 +268,8 @@ export function BookingSheet({
           className="bt-sheet-form"
           onSubmit={(e) => {
             e.preventDefault();
-            onSave({ patient, doctor, procedure, time: start, end, date, status });
+            if (!selectedDoctor) return;
+            onSave({ patient, doctor: selectedDoctor, procedure, time: start, end, date, status });
             onOpenChange(false);
           }}
         >
@@ -311,7 +310,12 @@ export function BookingSheet({
             </label>
             <label>
               Practitioner
-              <Choice label="Practitioner" value={doctor} onChange={setDoctor} options={doctors} />
+              <Choice
+                label="Practitioner"
+                value={selectedDoctor}
+                onChange={setDoctor}
+                options={practitioners}
+              />
             </label>
             <label>
               Date
@@ -365,7 +369,7 @@ export function BookingSheet({
             <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
               Cancel
             </Button>
-            <Button type="submit" disabled={!patient}>
+            <Button type="submit" disabled={!patient || !selectedDoctor}>
               Save
             </Button>
           </SheetFooter>

@@ -21,6 +21,7 @@ export function DialogSurface({
   footer,
   initialFocus,
   onEscapeKeyDown,
+  className,
 }: {
   id: number;
   title: ReactNode;
@@ -30,11 +31,12 @@ export function DialogSurface({
   footer: ReactNode;
   initialFocus?: () => void;
   onEscapeKeyDown?: ComponentProps<typeof DialogContent>["onEscapeKeyDown"];
+  className?: string;
 }) {
   return (
     <DialogContent
       data-dialog-entry={id}
-      className="refined-dialog-surface flex max-h-[calc(100svh-2rem)] flex-col overflow-hidden p-0"
+      className={`refined-dialog-surface flex max-h-[calc(100svh-2rem)] flex-col overflow-hidden p-0${className ? ` ${className}` : ""}`}
       onEscapeKeyDown={onEscapeKeyDown}
       onOpenAutoFocus={
         initialFocus

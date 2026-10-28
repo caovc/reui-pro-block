@@ -84,7 +84,12 @@ function EndpointUrl({ endpoint }: { endpoint: FluxEndpoint }) {
     </ItemDescription>
   );
 }
-function EndpointRow({ endpoint, model }: { endpoint: FluxEndpoint; model: FluxSettingsModel }) {
+export type FluxWebhookModel = Pick<
+  FluxSettingsModel,
+  "endpoints" | "setEndpointEnabled" | "removeEndpoint" | "rotateEndpoint"
+>;
+
+function EndpointRow({ endpoint, model }: { endpoint: FluxEndpoint; model: FluxWebhookModel }) {
   const Icon = endpointIcons[endpoint.icon];
   const status = endpoint.enabled ? endpoint.delivery : "Paused";
   const info = (title: string, description: string) =>
@@ -201,7 +206,13 @@ function EndpointRow({ endpoint, model }: { endpoint: FluxEndpoint; model: FluxS
     </Item>
   );
 }
-export function FluxWebhookSettings({ model }: { model: FluxSettingsModel }) {
+export function FluxWebhookSettings({
+  model,
+  onAddEndpoint,
+}: {
+  model: FluxWebhookModel;
+  onAddEndpoint?: () => void;
+}) {
   return (
     <section
       className="flux-settings-page flux-webhooks-page"
@@ -219,11 +230,13 @@ export function FluxWebhookSettings({ model }: { model: FluxSettingsModel }) {
           <Button
             size="default"
             className="rounded-full"
-            onClick={() =>
-              toast.info("Add endpoint", {
-                description: "Add a destination URL and subscribed events.",
-                cancel: { label: "Dismiss", onClick: () => undefined },
-              })
+            onClick={
+              onAddEndpoint ??
+              (() =>
+                toast.info("Add endpoint", {
+                  description: "Add a destination URL and subscribed events.",
+                  cancel: { label: "Dismiss", onClick: () => undefined },
+                }))
             }
           >
             <Plus />

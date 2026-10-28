@@ -141,10 +141,12 @@ export function DriveApprovers({
   value,
   onChange,
   members,
+  inputLabel = "Invoice approvers",
 }: {
   value: string[];
   onChange: (value: string[]) => void;
   members: DriveSettingsMember[];
+  inputLabel?: string;
 }) {
   const anchor = useComboboxAnchor();
   const selected = members.filter((member) => value.includes(member.id));
@@ -177,7 +179,7 @@ export function DriveApprovers({
                 </ComboboxChip>
               ))}
               <ComboboxChipsInput
-                aria-label="Invoice approvers"
+                aria-label={inputLabel}
                 placeholder="Add approvers..."
                 className="text-base leading-6 md:text-sm md:leading-5"
               />

@@ -52,7 +52,15 @@ test("project line tabs, star, 12-person popover and search retain meaningful st
   await expect(page.getByText("Theo Blake", { exact: true })).toBeVisible();
   await expect(page.locator('[data-slot="popover-content"] [data-slot="avatar"]')).toHaveCount(12);
   await page.keyboard.press("Escape");
+  await expect(page.locator('[data-slot="popover-content"]')).toHaveCount(0);
+  await expect(
+    page.getByRole("button", { name: "View 12 collaborators", exact: true }),
+  ).toBeFocused();
   await page.getByRole("button", { name: "Search projects", exact: true }).click();
+  await expect(page.getByRole("button", { name: "Search projects", exact: true })).toHaveAttribute(
+    "aria-expanded",
+    "true",
+  );
   await page.getByRole("textbox", { name: "Search projects", exact: true }).fill("does not exist");
   await expect(page.getByText("No projects found.", { exact: true })).toBeVisible();
   await page.getByRole("textbox", { name: "Search projects", exact: true }).fill("Mobile");

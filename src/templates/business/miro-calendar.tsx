@@ -1,3 +1,5 @@
+import { miroChairColors } from "./miro-settings-data";
+import type { MiroCalendarChairs, MiroCalendarHours } from "./miro-settings-integration";
 import { EventCalendar } from "@/components/reui/event-calendar/event-calendar";
 import { EventCalendarContent } from "@/components/reui/event-calendar/event-calendar-content";
 import { EventCalendarNav } from "@/components/reui/event-calendar/event-calendar-nav";
@@ -193,9 +195,13 @@ export function Agenda({
 export function AppointmentCalendar({
   onCreate,
   bookings = [],
+  hours,
+  chairs,
 }: {
   onCreate: () => void;
   bookings?: Booking[];
+  hours?: MiroCalendarHours;
+  chairs?: MiroCalendarChairs;
 }) {
   const [selected, setSelected] = useState<CalendarEvent | null>(null);
   const [events, setEvents] = useState<CalendarEvent[]>(() => [
@@ -257,6 +263,19 @@ export function AppointmentCalendar({
       }
     );
   });
+  function eventChair(event: CalendarEvent) {
+    const data = event.data;
+    if (!data || typeof data !== "object" || !("doctor" in data) || typeof data.doctor !== "string")
+      return undefined;
+    const doctor = data.doctor;
+    return chairs?.find((chair) => chair.name === doctor);
+  }
+  const visibleEvents = [...events, ...bookingEvents].flatMap((event) => {
+    const chair = eventChair(event);
+    if (chair && !chair.visible) return [];
+    const color = chair && miroChairColors.find((item) => item.id === chair.color)?.color;
+    return [color ? { ...event, color } : event];
+  });
   return (
     <>
       <div className="flex justify-end">
@@ -267,20 +286,21 @@ export function AppointmentCalendar({
       </div>
       <EventCalendar
         className="bt-miro-week"
-        events={[...events, ...bookingEvents]}
+        events={visibleEvents}
         onEventsChange={(next) => {
           setEvents(next.filter((e) => !e.id.startsWith("booking-")));
-          setEditedBookings(
-            Object.fromEntries(
-              next.filter((e) => e.id.startsWith("booking-")).map((e) => [e.id, e]),
-            ),
+          const edited = Object.fromEntries(
+            next.filter((e) => e.id.startsWith("booking-")).map((e) => [e.id, e]),
           );
+          setEditedBookings((current) => (chairs ? { ...current, ...edited } : edited));
         }}
         defaultDate={new Date(2026, 9, 22)}
         defaultView="week"
         weekStartsOn={1}
-        dayStartHour={bookings.some((b) => Number(b.time.split(":")[0]) < 9) ? 8 : 9}
-        dayEndHour={19}
+        dayStartHour={
+          hours?.opens ?? (bookings.some((b) => Number(b.time.split(":")[0]) < 9) ? 8 : 9)
+        }
+        dayEndHour={hours?.closes ?? 19}
         onEventClick={(o) => setSelected(o.event)}
         onSelectSlot={onCreate}
       >

@@ -1,0 +1,111 @@
+{
+  "baseCommit": "772400f74cd566c105becfb5d019de0c4adce231",
+  "originalCI": {
+    "run": 40712239940,
+    "passed": 1774,
+    "failed": 2,
+    "atlasIdentityCase": "Passed after previous selector fix",
+    "artifactBytes": 48090749,
+    "artifactSHA256": "49f427adb7a190c91e37436830992edec1d7b73fb389f94bd57e15dceeeaebe1"
+  },
+  "Navbar": "Original trace records the prior popover exiting while the next search dialog closes. Add native previous content removed, collaborator trigger focus restored and Search expanded postconditions. All17 original statements and7 matchers preserved;3 added native assertions. Settled lifecycle contract, not proof of a rapid-overlap product fix.",
+  "Source": "Wait for the existing named Block source region before the original combo assertion. All24 original statements and9 matcher expressions retained (8 direct plus clipboard expect.poll). Trace shows loading transition and a correct earlier screencast; the precise later polling miss remains unexplained. No unique CPU/network cause claimed.",
+  "budgets": "Original30s/5s, callbacks, config, actual clipboard, single-file and ZIP assertions unchanged. No sleeps, forced clicks, retry or timeout increases.",
+  "necessaryOriginalTwo": {
+    "command": [
+      "npx",
+      "playwright",
+      "test",
+      "tests/navbar-first-run.spec.ts",
+      "tests/solution-deploy-board-source.spec.ts",
+      "--workers=1",
+      "--retries=0",
+      "--output",
+      "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-strategy-atlas-core-v2-ejdgngh_/ci772-native-boundaries2-first-once/artifacts",
+      "--reporter=json",
+      "--grep",
+      "project\\ line\\ tabs,\\ star,\\ 12\\-person\\ popover\\ and\\ search\\ retain\\ meaningful\\ state|solution\\-deploy\\-board\\-source\\.spec\\.ts"
+    ],
+    "cwd": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-strategy-atlas-core-v2-ejdgngh_/candidate",
+    "preview": "http://127.0.0.1:55234/",
+    "environmentOverrides": {},
+    "exit": 0,
+    "seconds": 3.279827457969077,
+    "stats": {
+      "startTime": "2026-10-28T16:18:13.731Z",
+      "duration": 2875.3630000000003,
+      "expected": 2,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "reportSHA256": "c816d24e769663a1ad484e88538d182390043a21fb26af689f291363d79889da"
+  },
+  "independentASTReview": {
+    "status": "No static blocker to Root affected-case acceptance; runtime success not established by this review",
+    "base": "772400f74cd566c105becfb5d019de0c4adce231",
+    "scope": "Two frozen test-only proposals, no other source/config payload",
+    "proposals": [
+      {
+        "manifest": "/tmp/bricklane-navbar-ci-popup-lifecycle-proposal-20261029-v1/manifest.json",
+        "manifestSha256": "6d52f5b3177255f4d4a2adc597c2d0b1a6830835c3a658a6c155407a05f501d7",
+        "path": "tests/navbar-first-run.spec.ts",
+        "beforeSha256": "b769035f70cbcce08a1379eba4145090e1e4e0d526c6c2b00fb2848062de5ba6",
+        "afterSha256": "28951f1e2ca1542395c2f83f6e663b353c1dcef06d2ebbb81bcd4fad0eff05b4"
+      },
+      {
+        "manifest": "/tmp/bricklane-ci-deployboard-source-readiness-static-v1/manifest.json",
+        "manifestSha256": "94597da83c11781ca0e3ad1b68db08038c32b7b2b0a1b27091775f68093832e7",
+        "path": "tests/solution-deploy-board-source.spec.ts",
+        "beforeSha256": "4b0b08def46c2326197e42caa800c4a74beb1efeeab6a583d552c2423b35cf14",
+        "afterSha256": "a0399370dd8ed941c304be3a13520147cee5350ad160339f74eae35afd9f578e"
+      }
+    ],
+    "preservation": {
+      "Navbar": "17 original statements remain byte-exact and ordered; seven original matcher expressions, arguments and order remain. Three added native assertions yield 20 statements and ten matchers. Entire-file inverse byte-exact.",
+      "DeploySource": "24 original statements remain byte-exact and ordered; one added native named region wait yields 25 statements. All nine matcher expressions and arguments/order exact, including original clipboard expect.poll. Entire-file inverse byte-exact.",
+      "callbacks": "Both callback parameters exact; original real click/fill/clipboard/file/ZIP/license assertions preserved.",
+      "timeouts": "No timeout configuration or argument changed in either original test. New region wait supplies no explicit timeout and remains bounded by the original overall case timeout. New Navbar expectations use existing defaults.",
+      "parse": "Both before and after TypeScript syntax diagnostics zero."
+    },
+    "countCorrection": "Deploy Source handoff counted eight direct expect calls; a complete terminal matcher count is nine, including clipboard expect.poll(...).toBe(expected). No assertion is missing in the proposal.",
+    "evidenceBoundary": [
+      "Navbar additions establish settled Escape -> actual previous popup removed -> actual collaborator trigger focused -> original Search click -> native expanded true. They do not prove a product repair for rapid overlapping focus intents.",
+      "Source native region wait establishes loaded UI readiness before original 5s combo matcher. It neither diagnoses entire-interval network loading nor CPU/first-render/accessibility polling causality.",
+      "Supplied original trace reports preserve unresolved causal details. Integrity/membership verified, but this audit does not claim independent trace decoding or visual reproduction."
+    ],
+    "operations": {
+      "independentASTRead": true,
+      "exactOriginalGitShowRead": true,
+      "originalArchiveAndHandoffIntegrityRead": true,
+      "writes": "Only new audit directory under /tmp",
+      "sharedOrProposalOrCandidateWrites": false,
+      "gitMutations": false,
+      "testOrBrowserOrBuildOrServerOrDownloadRuns": false
+    },
+    "auditDevelopment": "Two local auditor guards were corrected: guessed Navbar zero-based indices replaced by actual retained Escape/Search nodes; complete Source matcher enumeration includes expect.poll (nine). These were auditor-development failures, not proposal/runtime failures.",
+    "files": {
+      "evidence-integrity.json": {
+        "bytes": 1686,
+        "sha256": "e5d9c0ee260ae7183d801931f196a53288a8412f98ca43ff4c8dfb3dd1786708"
+      },
+      "Navbar-inverse-original.ts": {
+        "bytes": 8945,
+        "sha256": "b769035f70cbcce08a1379eba4145090e1e4e0d526c6c2b00fb2848062de5ba6"
+      },
+      "ast-proof.json": {
+        "bytes": 3863,
+        "sha256": "a3c9b04af0e1b55802fcd520a6fe3cab2000eda6957a26d910a4203e2eabccf2"
+      },
+      "DeploySource-inverse-original.ts": {
+        "bytes": 2937,
+        "sha256": "4b0b08def46c2326197e42caa800c4a74beb1efeeab6a583d552c2423b35cf14"
+      },
+      "audit.cjs": {
+        "bytes": 6906,
+        "sha256": "60e3e72fa44ea4c64e0215c5367b19c914d7a4191626611d9fc931952e2fe3e1"
+      }
+    }
+  },
+  "independentReceiptSHA256": "01a25abcb113f8a2e39d4a275389a5719c43b23dab6aad3246b4931e0ea3286d"
+}

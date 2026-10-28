@@ -107,6 +107,10 @@ export default function Example() {
     )
       files[path.slice(1)] = content;
   }
+  if (files["src/templates/collaboration/drive-settings-free/phone-input.tsx"] !== undefined) {
+    files["src/templates/collaboration/assets/drive-phone-LICENSES.txt"] =
+      meta["/src/templates/collaboration/assets/drive-phone-LICENSES.txt"];
+  }
   files["src/theme.css"] = sources["/src/index.css"].split(/\n\.brand\s*\{/)[0];
   files["src/styles/shadcn.css"] = sources["/src/styles/shadcn.css"];
   return { files, requiredAssets };

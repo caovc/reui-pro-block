@@ -251,9 +251,13 @@ function ShellContent({
   aside,
   rail = false,
   top,
+  topWrapper = "span",
+  notifications,
+  topbarNotifications,
   footer,
   navGroups,
   account,
+  accountMenuContent,
   sidebarSide = "left",
 }: {
   id: string;
@@ -265,9 +269,13 @@ function ShellContent({
   aside?: ReactNode;
   rail?: boolean;
   top?: ReactNode;
+  topWrapper?: "span" | "div";
+  notifications?: ReactNode;
+  topbarNotifications?: ReactNode;
   footer?: ReactNode;
   navGroups?: Record<string, string[]>;
   account?: { name: string; organisation: string; photo?: string };
+  accountMenuContent?: ReactNode;
   sidebarSide?: "left" | "right";
   reduceAnimations?: boolean;
 }) {
@@ -326,12 +334,16 @@ function ShellContent({
             side={isMobile ? "top" : sidebarSide === "right" ? "left" : "right"}
             align="end"
           >
-            <DropdownMenuLabel>{accountName}</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            {account && (
-              <DropdownMenuItem onSelect={() => select("Profile")}>Profile</DropdownMenuItem>
+            {accountMenuContent ?? (
+              <>
+                <DropdownMenuLabel>{accountName}</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {account && (
+                  <DropdownMenuItem onSelect={() => select("Profile")}>Profile</DropdownMenuItem>
+                )}
+                <DropdownMenuItem onSelect={() => select("Settings")}>Settings</DropdownMenuItem>
+              </>
             )}
-            <DropdownMenuItem onSelect={() => select("Settings")}>Settings</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
@@ -474,7 +486,11 @@ function ShellContent({
         <SidebarTrigger className="bt-expand-trigger" aria-label="Expand sidebar" />
       )}
       {commerce && <Mark />}
-      <span>{top ?? active}</span>
+      {topWrapper === "div" ? (
+        <div className="bt-top-content">{top ?? active}</div>
+      ) : (
+        <span>{top ?? active}</span>
+      )}
       <div className="bt-topbar-right">
         {commerce ? (
           <DropdownMenu>
@@ -492,6 +508,10 @@ function ShellContent({
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
+        ) : topbarNotifications !== undefined ? (
+          topbarNotifications
+        ) : notifications !== undefined ? (
+          notifications
         ) : (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -519,7 +539,7 @@ function ShellContent({
         <>
           {id === "miro" && (
             <>
-              <BusinessNotifications />
+              {notifications !== undefined ? notifications : <BusinessNotifications />}
               <SearchPalette label="Search navigation" iconOnly routes={items} onSelect={select} />
               <SidebarMenu>
                 <SidebarMenuItem>

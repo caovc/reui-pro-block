@@ -1,0 +1,374 @@
+/* Domain consumers of actual ReUI free surfaces and existing Pro renderers.
+ * Reference-derived panel bounds do not replace their native focus/portal UI. */
+.vv-config {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  flex-direction: column;
+  gap: 20px;
+  font-size: 14px;
+  line-height: 20px;
+}
+.vv-config .vv-config-heading,
+.vv-config .vv-config-frame-header {
+  display: flex;
+  min-width: 0;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.vv-config .vv-config-heading h1 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 28px;
+}
+.vv-config .vv-config-heading p {
+  margin: 4px 0 0;
+  color: var(--muted-foreground);
+}
+.vv-config .vv-config-frame-header {
+  padding: 10px 16px;
+}
+.vv-config .vv-config-frame-header [data-slot="frame-panel-title"] {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+}
+.vv-config .vv-config-frame-header [data-slot="frame-panel-description"] {
+  margin-top: 2px;
+  font-size: 14px;
+  line-height: 20px;
+}
+.vv-config .vv-integration-grid {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+.vv-config .vv-integration-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+}
+.vv-config .vv-integration-content [data-slot="frame-panel-description"] {
+  min-height: 44px;
+  font-size: 14px;
+  line-height: 22px;
+}
+.vv-config .vv-integration-footer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+}
+.vv-config .vv-stack-controls {
+  display: flex;
+  min-width: 0;
+  align-items: stretch;
+}
+.vv-config .vv-stack-controls [data-slot="select-trigger"] {
+  width: 192px;
+  min-width: 0;
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+}
+.vv-config .vv-stack-controls [data-slot="code-block-copy"] {
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
+  margin-inline-start: -1px;
+}
+.vv-config .vv-code-panel {
+  min-width: 0;
+  padding: 0;
+}
+.vv-config .vv-env-code {
+  min-width: 0;
+  overflow: hidden;
+}
+.vv-config .vv-env-code [data-slot="code-block"] {
+  border: 0;
+  border-radius: inherit;
+}
+.vv-config .vv-key-row {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 448px);
+  align-items: center;
+  gap: 16px;
+  padding: 16px 12px;
+}
+.vv-config .vv-key-identity {
+  min-width: 0;
+}
+.vv-config .vv-key-identity strong {
+  font-weight: 500;
+}
+.vv-config .vv-key-identity p {
+  margin: 4px 0 0;
+  color: var(--muted-foreground);
+}
+.vv-config .vv-key-value {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
+}
+.vv-config .vv-key-value [data-slot="input-group"] {
+  height: 28px;
+}
+.vv-config .vv-key-value input {
+  min-width: 0;
+  font-size: 12px;
+  line-height: 16px;
+}
+.vv-config .vv-key-value [data-slot="input-group-addon"] {
+  gap: 2px;
+  padding-inline-end: 2px;
+}
+.vv-config .vv-key-last-used {
+  align-self: flex-end;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 18px;
+}
+.vv-config .vv-config-status {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 18px;
+}
+.vv-config .vv-config-status:empty {
+  display: none;
+}
+.vv-config .flux-webhooks-page {
+  width: 100%;
+}
+.vv-config .flux-webhooks-page > [data-slot="frame"] {
+  margin: 0;
+}
+.vv-config-form {
+  min-width: 0;
+  font-size: 14px;
+  line-height: 20px;
+}
+.vv-config-form .workspace-settings-row {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+}
+.vv-config-form .workspace-settings-row > [data-slot="field-content"] {
+  display: contents;
+}
+.vv-config-form .workspace-settings-row > [data-slot="field-content"] > [data-slot="field-label"],
+.vv-config-form .workspace-settings-row > [data-slot="field-content"] > [data-slot="field-title"] {
+  order: 0;
+}
+.vv-config-form .workspace-settings-row > .workspace-settings-control {
+  order: 1;
+  min-width: 0;
+}
+.vv-config-form
+  .workspace-settings-row
+  > [data-slot="field-content"]
+  > [data-slot="field-description"] {
+  order: 2;
+  margin: 0;
+  font-size: 12px;
+  line-height: 16px;
+}
+.vv-config-form .workspace-settings-row input,
+.vv-config-form .workspace-settings-row [data-slot="select-trigger"],
+.vv-config-form .workspace-settings-row [data-slot="input-group"] {
+  min-width: 0;
+  height: 32px;
+}
+.vv-config-form .workspace-settings-row [data-slot="field-label"],
+.vv-config-form .workspace-settings-row [data-slot="field-title"] {
+  justify-content: space-between;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+.vv-config-count {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 400;
+}
+.vv-config-form .vv-checkbox-grid,
+.vv-config-form .vv-scope-grid {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+.vv-config-form .vv-checkbox-option {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  font-size: 13px;
+  line-height: 20px;
+}
+.vv-config-form .vv-scope-grid [data-slot="field"] {
+  gap: 8px;
+}
+.vv-config-form .vv-scope-grid [data-slot="field-title"] {
+  font-weight: 400;
+}
+.ds-dialog:has(#vv-key-create-form) {
+  display: flex;
+  width: min(640px, calc(100vw - 24px));
+  max-width: min(640px, calc(100vw - 24px));
+  max-height: min(672px, calc(100dvh - 24px));
+  flex-direction: column;
+  gap: 0;
+  overflow: hidden;
+  padding: 0;
+}
+.ds-dialog:has(#vv-key-create-form) > [data-slot="dialog-header"] {
+  flex-shrink: 0;
+  padding: 16px 20px;
+}
+.ds-dialog:has(#vv-key-create-form) .ds-dialog-body {
+  min-height: 0;
+  overflow: auto;
+  padding: 8px 20px 20px;
+}
+.ds-dialog:has(#vv-key-create-form) > [data-slot="dialog-footer"] {
+  flex-shrink: 0;
+  gap: 8px;
+  margin: 0;
+  padding: 16px 20px;
+  border-top: 1px solid var(--border);
+  background: var(--muted);
+}
+#vv-key-create-form > [data-slot="field-group"] {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px 16px;
+}
+#vv-key-create-form .workspace-settings-row:has(#vv-key-name),
+#vv-key-create-form .workspace-settings-row:has(.ds-approvers),
+#vv-key-create-form .workspace-settings-row:has(.vv-scope-grid) {
+  grid-column: 1 / -1;
+}
+#vv-key-create-form .ds-approvers {
+  min-height: 42px;
+  gap: 6px;
+}
+#vv-key-create-form [data-slot="combobox-chip"] {
+  gap: 6px;
+}
+#vv-key-create-form [data-slot="combobox-chip-input"] {
+  height: 20px;
+}
+#vv-key-create-form > [data-slot="field-description"] {
+  margin-top: 16px;
+  font-size: 12px;
+}
+.vv-endpoint-sheet[data-slot="sheet-content"] {
+  inset: 16px 16px 16px auto;
+  width: min(448px, calc(100vw - 32px));
+  max-width: calc(100vw - 32px);
+  height: calc(100dvh - 32px);
+  gap: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--radius-xl);
+}
+.vv-endpoint-sheet > [data-slot="sheet-header"] {
+  flex-shrink: 0;
+  padding: 16px 20px;
+  padding-inline-end: 48px;
+  border-bottom: 1px solid var(--border);
+}
+.vv-endpoint-sheet > form {
+  min-height: 0;
+  flex: 1;
+  overflow: auto;
+  padding: 20px;
+}
+.vv-endpoint-sheet > [data-slot="sheet-footer"] {
+  flex-direction: row;
+  flex-shrink: 0;
+  justify-content: flex-end;
+  border-top: 1px solid var(--border);
+}
+@media (max-width: 1023px) {
+  .vv-config .vv-integration-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 767px) {
+  .vv-config .vv-integration-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .vv-config .vv-config-heading,
+  .vv-config .vv-config-frame-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .vv-config .vv-stack-controls {
+    width: 100%;
+  }
+  .vv-config .vv-stack-controls [data-slot="select-trigger"] {
+    width: auto;
+    flex: 1;
+  }
+  .vv-config .vv-key-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+  .vv-config .vv-key-last-used {
+    align-self: flex-start;
+  }
+  .vv-config-form .vv-checkbox-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* A native Item group keeps the observed event list contiguous. */
+.vv-config-form .vv-event-list[data-slot="item-group"] {
+  gap: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+.vv-config-form .vv-event-list > [data-slot="item"] {
+  gap: 8px;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 0;
+}
+.vv-config-form .vv-event-list > [data-slot="item"] + [data-slot="item"] {
+  border-top: 1px solid var(--border);
+}
+.vv-config-form .vv-event-list .vv-config-count {
+  margin-inline-start: auto;
+}
+.vv-config-form .workspace-settings-row.vv-enable-endpoint {
+  flex-direction: row;
+  align-items: flex-start;
+}
+.vv-config-form .vv-enable-endpoint > [data-slot="field-content"] {
+  display: flex;
+}
+.vv-config-form .vv-enable-endpoint > .workspace-settings-control {
+  width: auto;
+}
+@media (max-width: 767px) {
+  #vv-key-create-form > [data-slot="field-group"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

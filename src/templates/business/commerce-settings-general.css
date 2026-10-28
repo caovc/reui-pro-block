@@ -1,0 +1,260 @@
+.commerce-general-page {
+  min-width: 0;
+  padding: 0;
+}
+
+.commerce-general-page > h1 {
+  margin: 0 0 20px;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 28px;
+}
+
+.commerce-general-page .csg-frame {
+  margin: 0;
+  --frame-radius: var(--radius-xl);
+}
+
+.commerce-general-page .csg-frame > [data-slot="frame-panel-header"],
+.commerce-general-page .csg-frame > [data-slot="frame-panel-footer"] {
+  padding: 8px 16px;
+  gap: 0;
+}
+
+.commerce-general-page .csg-frame [data-slot="frame-panel-title"] {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+}
+
+.commerce-general-page .csg-frame [data-slot="frame-panel-description"] {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.commerce-general-page .csg-panel {
+  padding: 0;
+}
+
+.commerce-general-page .csg-fields {
+  gap: 0;
+}
+
+.commerce-general-page .csg-fields > .workspace-settings-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px;
+  min-width: 0;
+}
+
+.commerce-general-page .csg-fields > .workspace-settings-row > [data-slot="field-content"] {
+  flex: 0 0 384px;
+  width: 384px;
+  max-width: 100%;
+  gap: 2px;
+}
+
+.commerce-general-page .csg-fields > .workspace-settings-row > .workspace-settings-control {
+  flex: 1 1 0;
+  width: auto;
+  min-width: 0;
+  gap: 8px;
+}
+
+.commerce-general-page .csg-fields [data-slot="field-label"] {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.375;
+}
+
+.commerce-general-page .csg-fields [data-slot="field-description"] {
+  margin: 0;
+  font-size: 14px;
+  line-height: 21px;
+}
+
+.commerce-general-page .csg-fields [data-slot="field-error"] {
+  margin-top: 4px;
+}
+
+.commerce-general-page .csg-fields input {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.commerce-general-page .csg-fields [data-slot="input-group"],
+.commerce-general-page .csg-fields [data-slot="select-trigger"] {
+  width: 100%;
+  height: 32px;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.commerce-general-page .csg-logo-controls {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.commerce-general-page .csg-logo-preview {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.commerce-general-page .csg-logo-actions {
+  display: flex;
+  min-width: 0;
+  gap: 8px;
+}
+
+.commerce-general-page .csg-brand-colors {
+  display: flex;
+  width: fit-content;
+  max-width: 100%;
+  gap: 12px;
+  --color-picker-swatch-size: 28px;
+}
+
+.commerce-general-page .csg-brand-colors [aria-selected="true"] {
+  box-shadow:
+    0 0 0 2px var(--background),
+    0 0 0 4px var(--muted-foreground);
+}
+
+.commerce-general-page .csg-regional-fields,
+.commerce-general-page .csg-storefront-fields {
+  min-width: 0;
+  gap: 12px;
+}
+
+.commerce-general-page .csg-regional-fields > [data-slot="field"] {
+  gap: 8px;
+}
+
+.commerce-general-page .csg-icon-choice {
+  position: relative;
+  min-width: 0;
+}
+
+.commerce-general-page .csg-icon-choice > svg {
+  position: absolute;
+  z-index: 1;
+  top: 8px;
+  left: 10px;
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+}
+
+.commerce-general-page .csg-icon-choice > [data-slot="select-trigger"] {
+  padding-left: 32px;
+}
+
+/* Native horizontal overflow keeps the three formats reachable on a phone.
+   Four pixels of padding retain each native focus ring; margins preserve flow size. */
+.commerce-general-page .csg-date-scroll {
+  width: calc(100% + 8px);
+  max-width: calc(100% + 8px);
+  margin: -4px;
+  padding: 4px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-padding-inline: 4px;
+}
+
+.commerce-general-page .csg-date-options {
+  width: max-content;
+  flex-wrap: nowrap;
+}
+
+.commerce-general-page .csg-date-options > button {
+  height: 28px;
+  padding-inline: 10px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.commerce-general-page .csg-storefront-option {
+  gap: 12px;
+}
+
+.commerce-general-page .csg-storefront-option > [data-slot="field-content"] {
+  min-width: 0;
+  gap: 2px;
+}
+
+.commerce-general-page .csg-frame > [data-slot="frame-panel-footer"] {
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.commerce-general-page .csg-demo-frame {
+  margin-top: 20px;
+}
+
+.commerce-general-page .csg-demo-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px;
+}
+
+.commerce-general-page .csg-demo-content > p {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 14px;
+  line-height: 21px;
+}
+
+.commerce-general-page .csg-demo-actions {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+@media (max-width: 767px) {
+  .commerce-general-page > h1 {
+    margin-bottom: 16px;
+    font-size: 18px;
+  }
+
+  .commerce-general-page .csg-fields > .workspace-settings-row {
+    flex-direction: column;
+  }
+
+  .commerce-general-page .csg-fields > .workspace-settings-row > [data-slot="field-content"],
+  .commerce-general-page .csg-fields > .workspace-settings-row > .workspace-settings-control {
+    flex: 0 1 auto;
+    width: 100%;
+  }
+
+  .commerce-general-page .csg-fields input {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .commerce-general-page .csg-logo-controls {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .commerce-general-page .csg-logo-actions {
+    flex: 1 1 100%;
+    flex-direction: column;
+  }
+
+  .commerce-general-page .csg-demo-content {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

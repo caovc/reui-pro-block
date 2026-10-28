@@ -1,3 +1,5 @@
+import type { miroInvoiceSummary } from "./miro-settings-model";
+import { miroClinicDoctors, miroClinicSeedDoctors } from "./miro-settings-integration";
 /* Clinic domain state is shared with the sidebar and records workspace. */
 /* eslint-disable react/only-export-components */
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
@@ -36,13 +38,7 @@ type Patient = {
   bookings: number;
   unpaid: number;
 };
-const doctors = [
-  "Dr. Amara Chen",
-  "Dr. Ravi Menon",
-  "Dr. Elena Novak",
-  "Dr. Tomas Reyes",
-  "Dr. Hana Sato",
-];
+const doctors = miroClinicSeedDoctors;
 const names = [
   ["Ifeoma Okafor", "2041"],
   ["Samir Haddad", "2088"],
@@ -363,9 +359,9 @@ function StaffBoard({
             .some((visit) => visit.id === id)
         )
           continue;
-        const doctor = doctors.includes(booking.doctor) ? booking.doctor : doctors[0];
+        const doctor = miroClinicDoctors.includes(booking.doctor) ? booking.doctor : doctors[0];
         next[doctor] = [
-          ...next[doctor],
+          ...(next[doctor] ?? []),
           {
             id,
             patient: booking.patient,
@@ -386,7 +382,7 @@ function StaffBoard({
     <div className="bt-clinic-staff">
       <Kanban value={board} onValueChange={setBoard} getItemValue={(item) => item.id}>
         <KanbanBoard className="bt-clinic-staff-board">
-          {doctors.map((doctor) => (
+          {Object.keys(board).map((doctor) => (
             <KanbanColumn value={doctor} key={doctor} className="bt-clinic-staff-column">
               <header>
                 <img src={demoAvatar(doctor)} alt="" />
@@ -496,6 +492,8 @@ function dataPatientId(name: string) {
   return patientSeed.find((patient) => patient.name === name)?.id ?? "New patient";
 }
 export function ClinicWorkspace({
+  billingSummary,
+  invoiceDueLabel,
   active,
   data,
   record,
@@ -506,6 +504,8 @@ export function ClinicWorkspace({
   bookings,
 }: {
   active: string;
+  billingSummary?: ReturnType<typeof miroInvoiceSummary>;
+  invoiceDueLabel?: (id: string) => string;
   data: ClinicRecords;
   record: string | null;
   onRecord: (id: string | null) => void;
@@ -587,7 +587,10 @@ export function ClinicWorkspace({
                   .toLocaleString()}
               </b>
               <p>
-                {data.invoices.length} invoices raised against completed treatment, none past due.
+                {data.invoices.length} invoices raised against completed treatment,{" "}
+                {billingSummary?.pastDueCount
+                  ? `${billingSummary.pastDueCount} past due.`
+                  : "none past due."}
               </p>
             </span>
           </div>
@@ -596,19 +599,24 @@ export function ClinicWorkspace({
               <dt>CURRENT</dt>
               <dd>
                 $
-                {data.invoices
-                  .filter((item) => item.status === "Open")
-                  .reduce((sum, item) => sum + item.amount, 0)
-                  .toLocaleString()}
+                {(billingSummary
+                  ? billingSummary.outstanding - billingSummary.pastDue
+                  : data.invoices
+                      .filter((item) => item.status === "Open")
+                      .reduce((sum, item) => sum + item.amount, 0)
+                ).toLocaleString()}
               </dd>
               <small>
-                {data.invoices.filter((item) => item.status === "Open").length} invoices
+                {billingSummary
+                  ? billingSummary.outstandingCount - billingSummary.pastDueCount
+                  : data.invoices.filter((item) => item.status === "Open").length}{" "}
+                invoices
               </small>
             </div>
             <div>
               <dt>OVERDUE</dt>
-              <dd>$0</dd>
-              <small>0 invoices</small>
+              <dd>${(billingSummary?.pastDue ?? 0).toLocaleString()}</dd>
+              <small>{billingSummary?.pastDueCount ?? 0} invoices</small>
             </div>
             <div>
               <dt>COLLECTED</dt>
@@ -751,7 +759,9 @@ export function ClinicWorkspace({
                     </span>,
                     item.doctor,
                     `$${item.amount}`,
-                    item.status === "Paid" ? "Settled" : "Due in 29d",
+                    item.status === "Paid"
+                      ? "Settled"
+                      : (invoiceDueLabel?.(item.id) ?? "Due in 29d"),
                     <Tone key="status" tone={item.status === "Paid" ? "green" : "amber"}>
                       {item.status}
                     </Tone>,

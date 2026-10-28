@@ -1,8 +1,8 @@
-import { useRef, useState } from "react";
+import { useRef, useState, type ReactElement } from "react";
 import { Plus, Send, Trash2, Users } from "lucide-react";
 import { Badge } from "@/components/reui/badge";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogClose } from "@/components/ui/dialog";
+import { Dialog, DialogClose, DialogTrigger } from "@/components/ui/dialog";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import {
@@ -25,8 +25,18 @@ const roles = [
 type InviteRow = { id: number; email: string; role: string };
 const emailValid = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 
-export default function CollaboratorInviteDialog() {
+export type CollaboratorInvite = { email: string; role: string };
+
+export default function CollaboratorInviteDialog({
+  trigger,
+  onInvite,
+}: {
+  trigger?: ReactElement;
+  /** Local consumer commit only; returning an error leaves the dialog open. */
+  onInvite?: (invites: readonly CollaboratorInvite[]) => string | null | void;
+} = {}) {
   const [open, setOpen] = useState(false);
+  const [submissionError, setSubmissionError] = useState("");
   const [rows, setRows] = useState<InviteRow[]>([{ id: 1, email: "", role: "member" }]);
   const nextId = useRef(2);
   const [saved, setSaved] = useState<InviteRow[] | null>(null);
@@ -40,37 +50,45 @@ export default function CollaboratorInviteDialog() {
   const canSave =
     nonEmpty.length > 0 && nonEmpty.every((row) => emailValid(row.email)) && !duplicate;
   function updateRow(id: number, patch: Partial<InviteRow>) {
+    setSubmissionError("");
     setRows((current) => current.map((row) => (row.id === id ? { ...row, ...patch } : row)));
   }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogLauncher
-        id={8}
-        title="Invite collaborators"
-        description="Choose the right access for each teammate."
-        icon={<Users />}
-        action="Open collaborator invite"
-        result={
-          saved && (
-            <span>
-              {saved
-                .map((row) => `${row.email} (${roles.find((role) => role.id === row.role)!.name})`)
-                .join(" · ")}
-              . Local drafts only; no invitations sent or access granted.
-            </span>
-          )
-        }
-      >
-        <div className="flex flex-wrap gap-2">
-          {roles.map((role) => (
-            <Badge key={role.id} variant="secondary">
-              {role.name}
-            </Badge>
-          ))}
-        </div>
-      </DialogLauncher>
+      {trigger ? (
+        <DialogTrigger asChild>{trigger}</DialogTrigger>
+      ) : (
+        <DialogLauncher
+          id={8}
+          title="Invite collaborators"
+          description="Choose the right access for each teammate."
+          icon={<Users />}
+          action="Open collaborator invite"
+          result={
+            saved && (
+              <span>
+                {saved
+                  .map(
+                    (row) => `${row.email} (${roles.find((role) => role.id === row.role)!.name})`,
+                  )
+                  .join(" · ")}
+                . Local drafts only; no invitations sent or access granted.
+              </span>
+            )
+          }
+        >
+          <div className="flex flex-wrap gap-2">
+            {roles.map((role) => (
+              <Badge key={role.id} variant="secondary">
+                {role.name}
+              </Badge>
+            ))}
+          </div>
+        </DialogLauncher>
+      )}
       <DialogSurface
+        className={trigger ? "reui-reference" : undefined}
         id={8}
         title="Invite Collaborators"
         description="Add each person with the access they need."
@@ -82,9 +100,17 @@ export default function CollaboratorInviteDialog() {
             <Button
               disabled={!canSave}
               onClick={() => {
-                setSaved(
-                  nonEmpty.map((row) => ({ ...row, email: row.email.trim().toLowerCase() })),
-                );
+                const next = nonEmpty.map((row) => ({
+                  ...row,
+                  email: row.email.trim().toLowerCase(),
+                }));
+                const error = onInvite?.(next.map(({ email, role }) => ({ email, role })));
+                if (error) {
+                  setSubmissionError(error);
+                  return;
+                }
+                setSubmissionError("");
+                setSaved(next);
                 setOpen(false);
               }}
             >
@@ -151,6 +177,7 @@ export default function CollaboratorInviteDialog() {
               )}
             </div>
           ))}
+          {submissionError && <FieldError role="alert">{submissionError}</FieldError>}
           {duplicate && (
             <FieldError>
               Use a different email for each person so every draft has one clear role.

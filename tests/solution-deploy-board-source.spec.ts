@@ -10,6 +10,9 @@ test("Deploy Board default, copy, file and starter preserve the actual leaf and 
   await page.goto("/#/block/solutions/dev-ops/solution-dev-ops-7");
   await page.getByRole("button", { name: "View code", exact: true }).click();
   const dialog = page.getByRole("dialog");
+  await dialog
+    .getByRole("region", { name: "Block source", exact: true })
+    .waitFor({ state: "visible" });
   const leaf = "src/blocks/data/solution-dev-ops-variants/deploy-board.tsx";
   const expected = await readFile(leaf, "utf8");
   await expect(dialog.getByRole("combobox", { name: "Source file" })).toHaveText(leaf);

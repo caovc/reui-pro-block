@@ -1,7 +1,16 @@
 import { OrderEditor } from "./order-editor";
 import { catalogSeed, type CatalogProduct } from "./catalog-data";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MoreHorizontal, Star } from "lucide-react";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import "./commerce-settings-header.css";
 import {
   Shell,
   Heading,
@@ -22,7 +31,6 @@ import {
   DialogDescription,
   DataTable,
   Bars,
-  SettingsPage,
   exportCsv,
   toast,
 } from "./shared";
@@ -33,6 +41,19 @@ import jacket from "./assets/product-6.svg";
 import shoes from "./assets/product-3.svg";
 import shirt from "./assets/product-1.svg";
 import headphones from "./assets/product-8.svg";
+import { CommerceGeneralSettings } from "./commerce-settings-general";
+import { useCommerceGeneralSettingsModel } from "./commerce-settings-general-model";
+import type { CommerceDemoDataAction } from "./commerce-settings-general-data";
+import { CommerceSettingsPage } from "./commerce-settings-domains";
+import { useCommerceSettingsModel } from "./commerce-settings-model";
+import { useCommerceSettingsRoute } from "./commerce-settings-route";
+import {
+  commerceSectionForLabel,
+  commerceSettingsHref,
+  commerceSettingsNavigation,
+} from "./commerce-settings-route-model";
+import { applyCommerceDemoData } from "./commerce-settings-demo-data";
+
 type Product = {
   name: string;
   sku: string;
@@ -84,9 +105,23 @@ const initial: Product[] = [
     image: shirt,
   },
 ];
+
 export default function CommerceTemplate({ id }: { id: string }) {
   const [logged, setLogged] = useState(id !== "manifest");
-  const [active, setActive] = useState("Dashboard");
+  const generalSettings = useCommerceGeneralSettingsModel();
+  const settingsModel = useCommerceSettingsModel();
+  const routing = useCommerceSettingsRoute(id);
+  const [page, setPage] = useState("Dashboard");
+  const active = routing.section ? "Settings" : page;
+  const setActive = (next: string) => {
+    const section =
+      next === "Settings" || next === "Profile" ? "general" : commerceSectionForLabel(next);
+    if (section) routing.navigate(section);
+    else {
+      setPage(next);
+      routing.navigate(null);
+    }
+  };
   const [products, setProducts] = useState(initial);
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("All products");
@@ -108,6 +143,49 @@ export default function CommerceTemplate({ id }: { id: string }) {
     ["Sofia Bennett", "sofia@example.com", "3", "$428"],
     ["Lucas Chen", "lucas@example.com", "12", "$2,140"],
   ]);
+  useEffect(() => {
+    // Browser history changes bypass sidebar onSelect. Close transient record
+    // forms at that external navigation event; keep settings models mounted.
+    const closeTransientForms = () => {
+      setCreate(false);
+      setDetail(null);
+      setEditing(undefined);
+      setEditor(false);
+      setOrderEditor(false);
+    };
+    window.addEventListener("hashchange", closeTransientForms);
+    window.addEventListener("popstate", closeTransientForms);
+    return () => {
+      window.removeEventListener("hashchange", closeTransientForms);
+      window.removeEventListener("popstate", closeTransientForms);
+    };
+  }, []);
+  const demoDefaults = useRef({
+    products: structuredClone(initial),
+    catalog: structuredClone(catalogSeed),
+    orders: structuredClone(orders),
+    customers: structuredClone(customers),
+  });
+  const changeDemoData = (action: CommerceDemoDataAction) => {
+    setProducts((current) => applyCommerceDemoData(action, current, demoDefaults.current.products));
+    setCatalog((current) => applyCommerceDemoData(action, current, demoDefaults.current.catalog));
+    setOrders((current) => applyCommerceDemoData(action, current, demoDefaults.current.orders));
+    setCustomers((current) =>
+      applyCommerceDemoData(action, current, demoDefaults.current.customers),
+    );
+    setDetail(null);
+    setEditing(undefined);
+    setEditor(false);
+    setOrderEditor(false);
+    toast.success(
+      action === "load"
+        ? "Empty demo collections filled"
+        : action === "reset"
+          ? "Demo collections reset"
+          : "Demo collections cleared",
+    );
+  };
+  const settingsLabel = routing.section ? commerceSettingsNavigation[routing.section] : null;
   const items = [
     "Dashboard",
     "Orders",
@@ -194,8 +272,8 @@ export default function CommerceTemplate({ id }: { id: string }) {
   return (
     <Shell
       id={id}
-      brand="Manifest Store"
-      active={editor ? "Products" : orderEditor ? "Orders" : active}
+      brand={generalSettings.headerName}
+      active={settingsLabel ?? (editor ? "Products" : orderEditor ? "Orders" : active)}
       setActive={(x) => {
         setActive(x);
         setQuery("");
@@ -203,11 +281,54 @@ export default function CommerceTemplate({ id }: { id: string }) {
         setOrderEditor(false);
       }}
       items={items}
+      navGroups={{ Settings: Object.values(commerceSettingsNavigation) }}
+      topWrapper={settingsLabel ? "div" : "span"}
       top={
-        <span>
-          Manifest Store <span className="text-muted-foreground"> / </span>{" "}
-          {editor ? "Products" : orderEditor ? "Orders" : active}
-        </span>
+        settingsLabel ? (
+          <Breadcrumb
+            className="commerce-settings-breadcrumb"
+            aria-label="Store settings breadcrumb"
+          >
+            <BreadcrumbList className="flex-nowrap">
+              <BreadcrumbItem className="commerce-settings-breadcrumb-context">
+                <BreadcrumbLink
+                  href={commerceSettingsHref(window.location.hash, id, null)}
+                  onClick={(event) => {
+                    if (
+                      event.button !== 0 ||
+                      event.metaKey ||
+                      event.ctrlKey ||
+                      event.shiftKey ||
+                      event.altKey
+                    )
+                      return;
+                    event.preventDefault();
+                    setActive("Dashboard");
+                  }}
+                >
+                  {generalSettings.headerName}
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator className="commerce-settings-breadcrumb-context">
+                /
+              </BreadcrumbSeparator>
+              <BreadcrumbItem className="commerce-settings-breadcrumb-context">
+                <BreadcrumbLink href={routing.href("general")}>Settings</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator className="commerce-settings-breadcrumb-context">
+                /
+              </BreadcrumbSeparator>
+              <BreadcrumbItem>
+                <BreadcrumbPage>{settingsLabel}</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        ) : (
+          <span>
+            {generalSettings.headerName} <span className="text-muted-foreground"> / </span>{" "}
+            {editor ? "Products" : orderEditor ? "Orders" : active}
+          </span>
+        )
       }
       footer={
         <div className="bt-info">
@@ -219,7 +340,7 @@ export default function CommerceTemplate({ id }: { id: string }) {
         </div>
       }
     >
-      {orderEditor ? (
+      {orderEditor && !routing.section ? (
         <OrderEditor
           products={catalog}
           customers={customers}
@@ -244,7 +365,7 @@ export default function CommerceTemplate({ id }: { id: string }) {
             toast.success("Order created");
           }}
         />
-      ) : editor ? (
+      ) : editor && !routing.section ? (
         <ProductEditor
           product={editing}
           onCancel={() => setEditor(false)}
@@ -269,11 +390,22 @@ export default function CommerceTemplate({ id }: { id: string }) {
           }}
         />
       ) : active === "Settings" ? (
-        <SettingsPage brand="Manifest Store" />
+        routing.section === "general" || !routing.section ? (
+          <CommerceGeneralSettings
+            model={generalSettings}
+            onDemoDataAction={id === "surge" ? changeDemoData : undefined}
+          />
+        ) : (
+          <CommerceSettingsPage
+            section={routing.section}
+            model={settingsModel}
+            orderUsage={{ count: orders.length, label: "Orders in this preview" }}
+          />
+        )
       ) : (
         <>
           <Heading
-            title={active === "Dashboard" ? "Welcome to Manifest Store" : active}
+            title={active === "Dashboard" ? `Welcome to ${generalSettings.headerName}` : active}
             action={
               active === "Orders"
                 ? "New order"
@@ -557,7 +689,7 @@ export default function CommerceTemplate({ id }: { id: string }) {
               ? "Add customer"
               : "New product"
         }
-        open={create}
+        open={create && !routing.section}
         onOpenChange={setCreate}
         fields={
           active === "Customers"
@@ -603,7 +735,7 @@ export default function CommerceTemplate({ id }: { id: string }) {
           toast.success("Record created");
         }}
       />
-      <Dialog open={!!detail} onOpenChange={(v) => !v && setDetail(null)}>
+      <Dialog open={!!detail && !routing.section} onOpenChange={(v) => !v && setDetail(null)}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{detail?.name}</DialogTitle>

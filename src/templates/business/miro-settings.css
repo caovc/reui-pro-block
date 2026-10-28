@@ -1,0 +1,297 @@
+/* Consumer layout only. Actual free Tabs/Frame/Fields/Select/NumberField/upload
+ * keep their interactions; no Sidebar, settings engine or global overrides. */
+.miro-settings-navigation {
+  min-width: 0;
+  width: 100%;
+  color: var(--foreground);
+}
+.miro-settings-navigation > header {
+  display: flex;
+  height: 50px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid var(--border);
+  padding: 0 16px 0 12px;
+  font-size: 14px;
+  line-height: 20px;
+}
+.miro-settings-navigation > header strong {
+  font-weight: 600;
+}
+.miro-settings-tabs {
+  display: flex;
+  width: 100%;
+  height: auto;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 4px;
+  border: 0;
+  border-radius: 0;
+  padding: 12px;
+  background: transparent;
+}
+.miro-settings-tabs > [role="tab"] {
+  min-width: 0;
+  height: 34px;
+  min-height: 34px;
+  flex: none;
+  justify-content: flex-start;
+  gap: 12px;
+  border: 0;
+  border-radius: 8px;
+  padding: 6px 12px;
+  color: var(--muted-foreground);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  box-shadow: none;
+}
+.miro-settings-tabs > [role="tab"]:is([data-state="active"], [data-active]) {
+  background: var(--muted);
+  color: var(--foreground);
+  box-shadow: none;
+}
+.miro-settings-tabs > [role="tab"] > svg {
+  width: 16px;
+  height: 16px;
+}
+.miro-settings {
+  min-width: 0;
+  width: 100%;
+}
+.miro-settings [data-slot="tabs-content"] {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+}
+.miro-settings-card {
+  min-width: 0;
+  gap: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 0;
+  background: var(--background);
+  color: var(--foreground);
+}
+.miro-settings-card > [data-slot="frame-panel-header"] {
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  padding: 12px 20px 16px;
+}
+.miro-settings-card [data-slot="frame-panel-title"] {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+}
+.miro-settings-card [data-slot="frame-panel-description"] {
+  color: var(--muted-foreground);
+  font-size: 14px;
+  line-height: 20px;
+}
+.miro-settings-card > [data-slot="frame-panel"] {
+  min-width: 0;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: var(--background);
+  box-shadow: none;
+}
+.miro-settings-card > [data-slot="frame-panel"]::before {
+  content: none;
+}
+.miro-settings-card .workspace-settings-row {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: minmax(0, 0.61fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 24px;
+  margin: 0;
+  border-bottom: 1px solid var(--border);
+  padding: 12px 20px;
+}
+.miro-settings-card .workspace-settings-row:last-child {
+  border-bottom: 0;
+}
+.miro-settings-card .workspace-settings-row > [data-slot="field-content"] {
+  gap: 0;
+}
+.miro-settings-card [data-slot="field-label"],
+.miro-settings-card [data-slot="field-title"] {
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+}
+.miro-settings-card [data-slot="field-description"] {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 14px;
+  line-height: 20px;
+}
+.miro-settings-card .workspace-settings-control {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+}
+.miro-settings-card
+  :is([data-slot="input"], [data-slot="input-group"], [data-slot="select-trigger"]) {
+  min-width: 0;
+  height: 32px;
+  min-height: 32px;
+  font-size: 14px;
+  line-height: 20px;
+  box-shadow: none;
+}
+.miro-settings-card [data-slot="input-group-input"] {
+  font-size: 14px;
+}
+.miro-settings-card [data-slot="textarea"] {
+  min-height: 96px;
+  font-size: 14px;
+  line-height: 20px;
+}
+.miro-settings-card .workspace-settings-avatar {
+  align-items: center;
+  gap: 8px;
+}
+.miro-settings-card .workspace-settings-avatar [class*="group/avatar"] {
+  width: 40px;
+  height: 40px;
+}
+.miro-settings-card .workspace-settings-avatar button {
+  height: 30px;
+  min-height: 30px;
+  padding: 4px 10px;
+  font-size: 13px;
+}
+.miro-settings-card .workspace-settings-avatar > div:last-child {
+  gap: 8px;
+}
+.miro-profile-details {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.miro-settings-card .miro-profile-details .workspace-settings-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border: 0;
+  padding: 0;
+}
+.miro-profile-details .workspace-settings-control {
+  width: 100%;
+}
+.miro-verified {
+  border: 1px solid color-mix(in oklab, var(--success) 25%, transparent);
+  background: color-mix(in oklab, var(--success) 10%, var(--background));
+  padding: 0 6px;
+  color: var(--success);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+}
+.miro-settings-card .miro-settings-actions {
+  display: flex;
+  min-height: 56px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  border-top: 1px solid var(--border);
+  padding: 12px 20px;
+  background: color-mix(in oklab, var(--muted) 35%, var(--background));
+}
+.miro-settings-card .miro-setting-compact > .workspace-settings-control {
+  width: 160px;
+  max-width: 100%;
+  justify-self: end;
+}
+.miro-settings-card .miro-chair-row > .workspace-settings-control {
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+.miro-chair-row [data-slot="select-trigger"] {
+  width: 144px;
+}
+.miro-settings-card .miro-chair-row > .workspace-settings-control > [role="switch"] {
+  align-self: center;
+}
+.miro-price-input {
+  width: 144px;
+  margin-inline-start: auto;
+}
+.miro-price-input > [data-slot="number-field"] {
+  min-width: 0;
+  width: auto;
+  flex: 1;
+  gap: 0;
+}
+.miro-price-input [data-slot="number-field-group"] {
+  min-width: 0;
+  min-height: 30px;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.miro-price-input [data-slot="number-field-input"] {
+  width: 100%;
+  min-width: 0;
+  height: 30px;
+  padding: 4px 8px 4px 0;
+  text-align: left;
+  font-size: 14px;
+}
+.miro-settings-card .miro-setting-summary > .workspace-settings-control {
+  align-items: flex-end;
+  padding-top: 0;
+  font-size: 14px;
+  line-height: 20px;
+}
+.miro-settings-card .miro-alert-row > .workspace-settings-control {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.miro-alert-row > .workspace-settings-control > span {
+  color: var(--muted-foreground);
+  font-size: 14px;
+}
+.miro-settings-card .miro-alert-row > .workspace-settings-control > [role="switch"] {
+  align-self: center;
+}
+@media (max-width: 767px) {
+  .miro-settings-card .workspace-settings-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+  .miro-settings-card .miro-profile-details .workspace-settings-row {
+    gap: 4px;
+  }
+  .miro-settings-card .miro-setting-compact > .workspace-settings-control {
+    width: 100%;
+    justify-self: stretch;
+  }
+  .miro-setting-compact [data-slot="select-trigger"] {
+    width: 100%;
+  }
+  .miro-price-input {
+    width: 100%;
+  }
+  .miro-settings-card .miro-setting-summary > .workspace-settings-control {
+    align-items: flex-start;
+  }
+  .miro-settings-card .miro-settings-actions {
+    flex-wrap: wrap;
+  }
+}

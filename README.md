@@ -23,6 +23,8 @@ Open `#/templates` from the top navigation or sidebar. The collection covers Mes
 
 These are independent React implementations based on the public previews. They preserve the main visual structure and provide local demo interactions. They are not the original premium projects or complete replacements for their server-side features: authentication, AI responses, invitations, email delivery, and production data services require your own backend. Laravel/Next.js/TanStack server architecture is not reproduced.
 
+Surge and Manifest include store settings, team, payments, notifications, billing, locations, and suppliers. Miro includes profile, clinic configuration, billing, and notification preferences. Verve includes account, workspace, people, billing, integrations, API keys, and webhooks. These settings use actual free ReUI compositions with local validation and session state; source view and runnable exports include their implementations and licenses. See [settings implementation and verification](docs/templates-settings-release-2026-10-29.json).
+
 ## Development
 
 Requires Node.js 24+ and npm.

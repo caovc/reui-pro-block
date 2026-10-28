@@ -1,0 +1,25 @@
+.commerce-settings-breadcrumb {
+  min-width: 0;
+}
+
+@media (max-width: 767px) {
+  .commerce-settings-breadcrumb-context {
+    display: none;
+  }
+}
+
+/* Preserve the actual free Sidebar trail and button sizing in Commerce only. */
+.bt-app:is(.bt-manifest, .bt-surge)
+  .bt-reui-navigation
+  [data-slot="sidebar-menu-item"]:has([data-slot="sidebar-menu-sub-button"][data-active="true"])
+  > [data-slot="sidebar-menu-button"][aria-label="Settings"] {
+  background: var(--sidebar-accent);
+}
+
+.bt-app:is(.bt-manifest, .bt-surge) .bt-reui-navigation [data-slot="sidebar-menu-sub-button"] {
+  width: 100%;
+}
+
+.bt-app:is(.bt-manifest, .bt-surge) .bt-reui-navigation [data-slot="sidebar-menu-sub"] {
+  margin-inline: calc(var(--spacing) * 3.5);
+}

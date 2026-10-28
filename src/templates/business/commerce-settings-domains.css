@@ -1,0 +1,279 @@
+.commerce-settings-domains {
+  min-width: 0;
+  padding: 0;
+}
+
+.commerce-settings-domains .csd-page-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.commerce-settings-domains h1 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 32px;
+}
+
+.commerce-settings-domains .csd-frame {
+  min-width: 0;
+}
+
+.commerce-settings-domains .csd-frame > [data-slot="frame-panel-header"] {
+  padding: 8px 16px;
+}
+
+.commerce-settings-domains .csd-frame [data-slot="frame-panel-title"],
+.commerce-settings-domains .csd-frame [data-slot="frame-panel-description"] {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.commerce-settings-domains .csd-frame > [data-slot="frame-panel-footer"] {
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 8px 16px;
+}
+
+.commerce-settings-domains .csd-fit-panel {
+  padding: 0;
+}
+
+.commerce-settings-domains .csd-record-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 8px 56px 8px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--muted-foreground);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.commerce-settings-domains .csd-record-list,
+.commerce-settings-domains .csd-provider-list {
+  gap: 0;
+}
+
+.commerce-settings-domains [data-slot="item-separator"] {
+  margin-block: 0;
+}
+
+.commerce-settings-domains .csd-frame [data-slot="item"] {
+  flex-wrap: nowrap;
+  gap: 12px;
+  border: 0;
+  border-radius: 0;
+  padding: 12px 16px;
+}
+
+.commerce-settings-domains .csd-frame [data-slot="item-content"] {
+  min-width: 0;
+  gap: 2px;
+}
+
+.commerce-settings-domains .csd-frame [data-slot="item-title"] {
+  max-width: 100%;
+  overflow: visible;
+  line-height: 20px;
+}
+
+.commerce-settings-domains .csd-frame [data-slot="item-description"] {
+  display: block;
+  margin: 0;
+  overflow: visible;
+  font-size: 14px;
+  line-height: 20px;
+  overflow-wrap: anywhere;
+}
+
+.commerce-settings-domains .csd-record-icon,
+.commerce-settings-domains .csd-provider-icon {
+  align-self: center;
+  width: 32px;
+  height: 32px;
+  transform: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 1px 2px color-mix(in oklch, var(--foreground) 8%, transparent);
+  background: var(--muted);
+}
+
+.commerce-settings-domains .csd-provider-icon {
+  background: var(--background);
+}
+
+.commerce-settings-domains .csd-empty {
+  padding: 24px 16px;
+  color: var(--muted-foreground);
+  font-size: 14px;
+}
+
+.commerce-settings-domains .csd-billing-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.commerce-settings-domains .csd-plan-heading {
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.commerce-settings-domains .csd-usage-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+}
+
+.commerce-settings-domains .csd-usage-row > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.commerce-settings-domains .csd-usage-row > div:first-child > :last-child {
+  color: var(--muted-foreground);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.commerce-settings-domains .csd-usage-row [data-slot="progress"] {
+  height: 4px;
+}
+
+.commerce-settings-domains .csd-invoice-table {
+  min-width: 480px;
+  font-size: 14px;
+}
+
+.commerce-settings-domains .csd-invoice-table th,
+.commerce-settings-domains .csd-invoice-table td {
+  padding: 8px 16px;
+  line-height: 20px;
+}
+
+.commerce-settings-domains .csd-invoice-table th:not(:first-child),
+.commerce-settings-domains .csd-invoice-table td:not(:first-child) {
+  width: 90px;
+  text-align: right;
+}
+
+.commerce-settings-domains .csd-notification-panel {
+  padding: 16px;
+}
+
+.commerce-settings-domains .csd-tabs-scroll {
+  min-width: 0;
+  max-width: 100%;
+  margin: -4px;
+  padding: 4px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-padding-inline: 4px;
+}
+
+.commerce-settings-domains .csd-tabs-scroll > [data-slot="tabs-list"] {
+  width: max-content;
+  flex-wrap: nowrap;
+}
+
+.commerce-settings-domains .csd-notification-tab {
+  margin-top: 16px;
+}
+
+.commerce-settings-domains .csd-notification-table {
+  min-width: 360px;
+  font-size: 14px;
+}
+
+.commerce-settings-domains
+  .csd-notification-tab
+  > [data-slot="table-container"]
+  + [data-slot="table-container"] {
+  margin-top: 24px;
+}
+
+.commerce-settings-domains .csd-notification-table th,
+.commerce-settings-domains .csd-notification-table td {
+  padding: 8px 0;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.commerce-settings-domains .csd-notification-table th:not(:first-child),
+.commerce-settings-domains .csd-notification-table td:not(:first-child) {
+  width: 60px;
+  text-align: center;
+}
+
+.commerce-settings-domains .csd-team-heading {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.commerce-settings-domains .csd-team-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.commerce-settings-domains .csd-team-filters {
+  min-width: 0;
+  flex: 1;
+}
+
+.commerce-settings-domains .csd-team-table {
+  min-width: 1126px;
+}
+
+.commerce-settings-domains .csd-team-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.commerce-settings-domains .csd-local-notice,
+.commerce-settings-domains .csd-demo-note {
+  margin: 12px 0 0;
+  color: var(--muted-foreground);
+  font-size: 13px;
+  line-height: 20px;
+}
+
+@media (max-width: 767px) {
+  .commerce-settings-domains h1 {
+    font-size: 18px;
+  }
+
+  .commerce-settings-domains .csd-frame [data-slot="item"] {
+    flex-wrap: wrap;
+  }
+
+  .commerce-settings-domains .csd-frame [data-slot="item-content"] {
+    flex-basis: calc(100% - 44px);
+  }
+
+  .commerce-settings-domains .csd-frame [data-slot="item-actions"] {
+    margin-left: 44px;
+  }
+
+  .commerce-settings-domains .csd-page-heading {
+    margin-bottom: 16px;
+  }
+}

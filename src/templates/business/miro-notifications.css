@@ -1,0 +1,72 @@
+/* Miro-only opt-in geometry. Other Shell consumers keep their exact span branch. */
+.bt-miro .bt-topbar > .bt-top-content {
+  min-width: 0;
+}
+
+@media (min-width: 761px) {
+  .bt-miro .bt-topbar > .bt-top-content {
+    flex: 1;
+  }
+}
+
+.miro-notifications-trigger {
+  position: relative;
+}
+
+.miro-notifications-trigger .miro-notifications-dot {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 6px;
+  min-width: 0;
+  height: 6px;
+  padding: 0;
+}
+
+.miro-notifications-menu {
+  width: 320px;
+  max-width: calc(100vw - 16px);
+}
+
+.miro-notifications-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.miro-notifications-items {
+  max-height: min(320px, 55svh);
+  overflow-y: auto;
+  gap: 0;
+}
+
+.miro-notifications-items > [data-slot="item"] {
+  padding: 10px 8px;
+  border: 0;
+  border-radius: 0;
+}
+
+.miro-notifications-items > [data-slot="item"] + [data-slot="item"] {
+  border-top: 1px solid var(--border);
+}
+
+.miro-notifications-items [data-slot="item-title"] {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.miro-notifications-items [data-slot="item-description"] {
+  display: block;
+  margin: 0;
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.miro-notifications-empty {
+  margin: 0;
+  padding: 12px 8px;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--muted-foreground);
+}

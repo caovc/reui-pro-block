@@ -1,0 +1,372 @@
+/* Consumer layout for actual ReUI Frame/Pro Rows. No shared stylesheet or UI
+ * behavior is replaced. Both pages use their parent Shell's content geometry. */
+.verve-settings {
+  width: 100%;
+  min-width: 0;
+  color: var(--foreground);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.verve-settings .vs-account-tabs {
+  gap: 20px;
+}
+
+.verve-settings .vs-cards {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.verve-settings .vs-cards > form {
+  min-width: 0;
+}
+
+.verve-settings .ds-card {
+  width: 100%;
+  min-width: 0;
+  --frame-radius: var(--radius-xl);
+}
+
+.verve-settings .ds-card > [data-slot="frame-panel-header"] {
+  display: flex;
+  min-height: 52px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 20px;
+}
+
+.verve-settings .ds-card-heading {
+  min-width: 0;
+}
+
+.verve-settings .ds-card-heading [data-slot="frame-panel-title"] {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.verve-settings .ds-card-heading [data-slot="frame-panel-description"] {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.verve-settings .ds-card-content {
+  min-width: 0;
+  padding: 0;
+  box-shadow: none;
+}
+
+.verve-settings .ds-card > [data-slot="frame-panel-footer"] {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 6px 20px;
+}
+
+.verve-settings .ds-card .workspace-settings-row {
+  display: grid;
+  grid-template-columns: minmax(0, 384px) minmax(0, 1fr);
+  align-items: start;
+  gap: 16px;
+  margin: 0;
+  padding: 16px 20px;
+}
+
+.verve-settings .ds-card .workspace-settings-row > [data-slot="field-content"] {
+  min-width: 0;
+  gap: 0;
+}
+
+.verve-settings .ds-card [data-slot="field-label"],
+.verve-settings .ds-card [data-slot="field-title"] {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 19.25px;
+}
+
+.verve-settings .ds-card [data-slot="field-description"] {
+  margin: 0;
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.verve-settings .ds-card .workspace-settings-control {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  max-width: 544px;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.verve-settings .ds-card input,
+.verve-settings .ds-card textarea,
+.verve-settings .ds-card [data-slot="select-trigger"] {
+  width: 100%;
+  min-width: 0;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.verve-settings .ds-card input,
+.verve-settings .ds-card [data-slot="select-trigger"],
+.verve-settings .ds-card [data-slot="input-group"] {
+  height: 32px;
+  min-height: 32px;
+}
+
+.verve-settings .ds-card .vs-phone-input input {
+  height: 28px;
+  min-height: 28px;
+}
+
+.verve-settings .ds-card textarea {
+  min-height: 96px;
+}
+
+.verve-settings .vs-public-details {
+  gap: 12px;
+}
+
+.verve-settings .vs-public-details > [data-slot="field"] {
+  gap: 8px;
+}
+
+.verve-settings .ds-card .ds-rich-choice {
+  max-width: 272px;
+  align-self: flex-end;
+}
+
+.verve-settings .ds-rich-choice .ds-choice-description > span:last-child {
+  display: none;
+}
+
+.verve-settings .ds-choice-description {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+}
+
+.verve-settings .vs-upload > div:first-child > div {
+  width: 40px;
+  height: 40px;
+}
+
+.verve-settings .vs-logo-upload > div:first-child > div {
+  border-radius: var(--radius-md);
+}
+
+.verve-settings .vs-upload > div:nth-child(2) {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.verve-settings .vs-helper,
+.verve-settings .vs-demo-note,
+.verve-settings .vs-inline-notice,
+.verve-settings .vs-page-status {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.verve-settings .vs-demo-note {
+  margin: 0;
+}
+
+.verve-settings .vs-page-status {
+  margin: 12px 0 0;
+}
+
+.verve-settings .vs-page-status:empty {
+  display: none;
+}
+
+.verve-settings .vs-inline-notice {
+  margin: 0;
+  padding: 12px 20px;
+}
+
+.verve-settings .vs-preference-items {
+  gap: 0;
+}
+
+.verve-settings .vs-preference-items > [data-slot="item"] {
+  flex-wrap: nowrap;
+  padding: 16px 20px;
+  border: 0;
+  border-radius: 0;
+}
+
+.verve-settings .vs-preference-items [data-slot="item-content"] {
+  min-width: 0;
+}
+
+.verve-settings .vs-preference-items [data-slot="item-title"] {
+  width: auto;
+  flex-wrap: wrap;
+  white-space: normal;
+}
+
+.verve-settings .vs-preference-items [data-slot="item-title"] h2 {
+  margin: 0;
+  font: inherit;
+}
+
+.verve-settings .vs-preference-items [data-slot="item-description"] {
+  overflow: visible;
+  -webkit-line-clamp: unset;
+}
+
+.verve-settings .vs-preference-items > [data-slot="item-separator"] {
+  margin: 0;
+}
+
+.verve-settings .vs-notifications {
+  gap: 16px;
+}
+
+.verve-settings .vs-notification-matrix + .vs-notification-matrix {
+  margin-top: 20px;
+}
+
+.verve-settings .vs-matrix-table {
+  width: 100%;
+  min-width: 480px;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.verve-settings .vs-matrix-table th,
+.verve-settings .vs-matrix-table td {
+  padding: 12px 16px;
+}
+
+.verve-settings .vs-matrix-table th:first-child,
+.verve-settings .vs-matrix-table td:first-child {
+  width: 100%;
+}
+
+.verve-settings .vs-matrix-table th:not(:first-child),
+.verve-settings .vs-matrix-table td:not(:first-child) {
+  min-width: 76px;
+  text-align: center;
+}
+
+.verve-settings .vs-workspace-heading {
+  margin: 0 0 20px;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 28px;
+}
+
+.verve-settings .vs-summary {
+  display: flex;
+  flex-direction: column;
+}
+
+.verve-settings .vs-summary-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 20px;
+}
+
+.verve-settings .vs-summary-row p {
+  margin: 0;
+}
+
+.verve-settings .vs-summary-label {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.verve-settings .vs-summary-value {
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.verve-settings .vs-summary-description {
+  margin-top: 4px;
+  color: var(--muted-foreground);
+}
+
+.vs-brand-preview {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.vs-brand-preview .vs-brand-preview-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.vs-brand-preview img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.vs-brand-preview p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 1100px) {
+  .verve-settings .ds-card .workspace-settings-row {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .verve-settings .ds-card .workspace-settings-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .verve-settings .ds-card .workspace-settings-control {
+    max-width: none;
+  }
+
+  .verve-settings .ds-card .ds-rich-choice {
+    max-width: none;
+    align-self: stretch;
+  }
+
+  .verve-settings .ds-card input,
+  .verve-settings .ds-card textarea,
+  .verve-settings .ds-card [data-slot="select-trigger"] {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .verve-settings
+    .vs-preference-items
+    > [data-slot="item"]:has([data-slot="item-actions"] > button:not([role="switch"])) {
+    flex-wrap: wrap;
+  }
+
+  .verve-settings .vs-preference-items [data-slot="item-actions"] {
+    flex-shrink: 0;
+  }
+}
+
+.verve-settings .vs-accent-colors {
+  display: flex;
+  width: fit-content;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 12px;
+}

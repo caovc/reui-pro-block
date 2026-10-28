@@ -79,6 +79,7 @@ export function DriveSettingsCard({
   action,
   hideHeader = false,
   className = "",
+  dense = true,
 }: {
   title: string;
   description: string;
@@ -87,9 +88,10 @@ export function DriveSettingsCard({
   action?: ReactNode;
   hideHeader?: boolean;
   className?: string;
+  dense?: boolean;
 }) {
   return (
-    <Frame dense className={`ds-card ${className}`}>
+    <Frame dense={dense} className={`ds-card ${className}`}>
       {!hideHeader && (
         <FrameHeader>
           <div className="ds-card-heading">

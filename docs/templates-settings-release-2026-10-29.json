@@ -1,0 +1,640 @@
+{
+  "milestone": "Surge, Manifest, Miro and Verve settings; native CI state boundaries",
+  "baseCommit": "772400f74cd566c105becfb5d019de0c4adce231",
+  "publication": "Locally verified release input. Commit, push, full CI and Pages are separate subsequent gates; this document does not assert deployment success.",
+  "catalog": {
+    "blocks": 671,
+    "categories": 79,
+    "groups": 7,
+    "templates": 18,
+    "pendingOfficialBlocks": ["data-grid-advanced-15", "data-grid-advanced-16"],
+    "retainedLegacy": "solution-dev-ops-7"
+  },
+  "actualFreeReuse": {
+    "Commerce": "Existing ReuiSidebarNavigation/SidebarProvider, Frame, SettingsRow/SettingsFields rendering actual Field, LocalAvatarUpload/use-file-upload, native Breadcrumb, DataGrid/Filters/Cascader and dialog/sheet/select/switch/tabs compositions.",
+    "Miro": "Existing actual EventCalendar, native Tabs for configuration, free fields/Frame/avatar upload and native notification controls. Application route and notification state reuse the same model.",
+    "Verve": "Actual ReuiSidebarNavigation, Frame and existing SettingsRow/SettingsFields composed from real Field controls, real Drive PhoneInput implementation, existing upload hook, native Tabs/Select/Switch/Dialog/Sheet. Existing Flux webhook application leaf and Drive approvers/PDF helpers are reused application code, not claimed as official free Pro blocks."
+  },
+  "duplicateImplementationsCorrected": [
+    "Removed consumer double padding instead of modifying the shared shell.",
+    "Profile uses native Frame dense=false through an optional DriveSettingsCard dense prop with default true; removed manual imitation of Frame padding, panel margins and radius.",
+    "Preserved native sidebar active state and mobile Sheet; compact breadcrumbs use actual free breadcrumb composition.",
+    "Locations captures the real opener through native menu lifecycle and returns actual focus after closing."
+  ],
+  "remainingInteractions": "New Verve Team View/Edit/Delete and Import, Manage plan, View usage; Calendar Connect; Commerce Cancel/Change plan, Payment method Update and Add provider currently only show notices. These local interactive models remain follow-ups and are not claimed complete. Verve Sign Out has no server session; Security Status is a static demo summary.",
+  "customDomainGaps": "Original fixtures, route/schema/validation, local CRUD and session-only domain state are application behavior absent from generic free controls. No authentication, billing, mail delivery or server API is implemented.",
+  "sharedDefaultProtection": "New optional composition props preserve their existing defaults. Existing Drive profile/persistence and complete product cases passed in the V3 affected run; no unrelated WIP included.",
+  "verification": {
+    "priorInputs": "Original semantic run:24 passed/16 failed across two suites; V3 affected run18 passed/5 failed, followed by necessary5 passed. These separate inputs/runs are retained and are not described as one full current-input pass.",
+    "v4RuntimeDelta": "Exactly three consumer visual files differ from V3; original strict build, 658 immutable assets, visual8 and real Source4 then four original downloaded projects verified on V4.",
+    "strictBuild": {
+      "name": "original-strict-build-once",
+      "command": ["npm", "run", "build"],
+      "cwd": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-templates-settings-772-visual-v4-5am562mz/candidate",
+      "exit": 0,
+      "seconds": 22.427472292096354,
+      "log": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-templates-settings-772-visual-v4-5am562mz/original-strict-build-once.log",
+      "logSHA256": "882ac9dd36d95d6d4d0afdbf78b7d6429a19d1d49a1468b8c9a625f272b926ca"
+    },
+    "format": {
+      "name": "full-format-check",
+      "command": ["npm", "run", "format:check"],
+      "cwd": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-templates-settings-772-visual-v4-5am562mz/candidate",
+      "exit": 0,
+      "seconds": 0.8523252089507878,
+      "log": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-templates-settings-772-visual-v4-5am562mz/full-format-check.log",
+      "logSHA256": "b14302fa7750df1fd9c9cf83f9e195fa4ad9308351b15b1ac6283da7ed510513"
+    },
+    "lint": {
+      "name": "full-lint",
+      "command": ["npm", "run", "lint"],
+      "cwd": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-templates-settings-772-visual-v4-5am562mz/candidate",
+      "exit": 0,
+      "seconds": 1.1416267909808084,
+      "log": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-templates-settings-772-visual-v4-5am562mz/full-lint.log",
+      "logSHA256": "9ab1a2f4ae1ca9e3989f71a052f069726e9daf7935275135a5f0b24880812531"
+    },
+    "visual8": {
+      "command": [
+        "npx",
+        "playwright",
+        "test",
+        "tests/templates-business-settings-visual.private.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--output",
+        "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-templates-settings-772-visual-v4-5am562mz/visual8-first-once/artifacts",
+        "--reporter=json"
+      ],
+      "cwd": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-templates-settings-772-visual-v4-5am562mz/candidate",
+      "preview": "http://127.0.0.1:53157/",
+      "environmentOverrides": {},
+      "exit": 0,
+      "seconds": 6.864691583905369,
+      "stats": {
+        "startTime": "2026-10-28T15:40:28.314Z",
+        "duration": 6467.812,
+        "expected": 8,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "1cc1fe39e948253cfccaa984eb2ef9792f65c28a3d33b1a0dd0a7c64b1d0a5eb"
+    },
+    "source4": {
+      "command": [
+        "npx",
+        "playwright",
+        "test",
+        "tests/templates-business-settings-source.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--output",
+        "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-templates-settings-772-visual-v4-5am562mz/source4-first-once/artifacts",
+        "--reporter=json"
+      ],
+      "cwd": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-templates-settings-772-visual-v4-5am562mz/candidate",
+      "preview": "http://127.0.0.1:53157/",
+      "environmentOverrides": {},
+      "exit": 0,
+      "seconds": 49.867821916006505,
+      "stats": {
+        "startTime": "2026-10-28T15:43:06.121Z",
+        "duration": 49462.140999999996,
+        "expected": 4,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "7d2d501465ef2d0c21489f9b34cf785632a279c48648e71ba9e2639d3e9e9c08"
+    },
+    "sourceInteractions": "Actual view, clipboard, single-file and original ZIP bytes checked for Surge19, Manifest19, Miro14 and Verve23 sources. Four native Source cases retained in default CI with original30s/5s budgets; observed local durations11.717/10.767/10.480/15.941s do not predict CI performance.",
+    "actualReceivedProjects": [
+      {
+        "id": "surge",
+        "archiveSHA256": "194ef48d501a4a37fb0583a94306c3f4c96cf755794e7eb016105a66be9ade75",
+        "bytes": 1003302,
+        "members": 264,
+        "npmLs": {
+          "name": "actual-surge-npm-ls",
+          "command": ["npm", "ls", "--depth=0"],
+          "cwd": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-templates-settings-772-visual-v4-5am562mz/actual-surge-project",
+          "exit": 0,
+          "seconds": 0.5053624999709427,
+          "log": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-templates-settings-772-visual-v4-5am562mz/actual-surge-npm-ls.log",
+          "logSHA256": "1b70581cdd6c093cba43d98faf8282ad363b234ace12f420085f41830a1d1920"
+        },
+        "originalStrictBuild": {
+          "name": "actual-surge-original-strict-build-once",
+          "command": ["npm", "run", "build"],
+          "cwd": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-templates-settings-772-visual-v4-5am562mz/actual-surge-project",
+          "exit": 0,
+          "seconds": 6.868762707919814,
+          "log": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-templates-settings-772-visual-v4-5am562mz/actual-surge-original-strict-build-once.log",
+          "logSHA256": "cc42bd9533414fe8ce4c17d797ec69ec2cd8c4da151be42b140080c1c316c756"
+        },
+        "native": {
+          "command": [
+            "npx",
+            "playwright",
+            "test",
+            "tests/templates-commerce-settings-native.spec.ts",
+            "--workers=1",
+            "--retries=0",
+            "--output",
+            "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-templates-settings-772-visual-v4-5am562mz/actual-surge-native10-first-once/artifacts",
+            "--reporter=json",
+            "--grep",
+            "surge",
+            "--grep-invert",
+            "actual Customize fonts"
+          ],
+          "cwd": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-templates-settings-772-visual-v4-5am562mz/candidate",
+          "preview": "http://127.0.0.1:55954/",
+          "environmentOverrides": {},
+          "exit": 0,
+          "seconds": 37.85508979205042,
+          "stats": {
+            "startTime": "2026-10-28T16:07:00.327Z",
+            "duration": 37448.128000000004,
+            "expected": 10,
+            "skipped": 0,
+            "unexpected": 0,
+            "flaky": 0
+          },
+          "reportSHA256": "33c73cc532d165af7aeaaea82e4f472c3e308f4f2a84c5f65c1ca54201f649a6"
+        },
+        "receivedMembersAfterBuild": {
+          "allOriginalMembersExact": true,
+          "memberCount": 264,
+          "immutableDistFiles": 65
+        }
+      },
+      {
+        "id": "manifest",
+        "archiveSHA256": "33fd521cbaa2f70b91e3421f431789bfc049021cc1eaba41eea2822bc9d45de2",
+        "bytes": 1003308,
+        "members": 264,
+        "npmLs": {
+          "name": "actual-manifest-npm-ls",
+          "command": ["npm", "ls", "--depth=0"],
+          "cwd": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-templates-settings-772-visual-v4-5am562mz/actual-manifest-project",
+          "exit": 0,
+          "seconds": 0.33068133296910673,
+          "log": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-templates-settings-772-visual-v4-5am562mz/actual-manifest-npm-ls.log",
+          "logSHA256": "a5e4ede62977ec04ec67c585ed5a4e7e7752dc3415f14912a240563a49622d15"
+        },
+        "originalStrictBuild": {
+          "name": "actual-manifest-original-strict-build-once",
+          "command": ["npm", "run", "build"],
+          "cwd": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-templates-settings-772-visual-v4-5am562mz/actual-manifest-project",
+          "exit": 0,
+          "seconds": 6.850756082916632,
+          "log": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-templates-settings-772-visual-v4-5am562mz/actual-manifest-original-strict-build-once.log",
+          "logSHA256": "ee9a9b72323276db8dd110fff53bd7401ee2db97406adebd26c14ad97a7063b4"
+        },
+        "native": {
+          "command": [
+            "npx",
+            "playwright",
+            "test",
+            "tests/templates-commerce-settings-native.spec.ts",
+            "--workers=1",
+            "--retries=0",
+            "--output",
+            "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-templates-settings-772-visual-v4-5am562mz/actual-manifest-native8-first-once/artifacts",
+            "--reporter=json",
+            "--grep",
+            "manifest",
+            "--grep-invert",
+            "actual Customize fonts"
+          ],
+          "cwd": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-templates-settings-772-visual-v4-5am562mz/candidate",
+          "preview": "http://127.0.0.1:56039/",
+          "environmentOverrides": {},
+          "exit": 0,
+          "seconds": 28.609461334068328,
+          "stats": {
+            "startTime": "2026-10-28T16:07:39.035Z",
+            "duration": 28206.076,
+            "expected": 8,
+            "skipped": 0,
+            "unexpected": 0,
+            "flaky": 0
+          },
+          "reportSHA256": "56459c16fbb6f35e7a251a2c14c7343f9ec8b116a3cea93af82e90487086f166"
+        },
+        "receivedMembersAfterBuild": {
+          "allOriginalMembersExact": true,
+          "memberCount": 264,
+          "immutableDistFiles": 65
+        }
+      },
+      {
+        "id": "miro",
+        "archiveSHA256": "a04883c37705ebf4eea1ce23d42816f7f1ed3b3b1196b2ef7013c983a8b90c4d",
+        "bytes": 1003296,
+        "members": 264,
+        "npmLs": {
+          "name": "actual-miro-npm-ls",
+          "command": ["npm", "ls", "--depth=0"],
+          "cwd": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-templates-settings-772-visual-v4-5am562mz/actual-miro-project",
+          "exit": 0,
+          "seconds": 0.3351606249343604,
+          "log": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-templates-settings-772-visual-v4-5am562mz/actual-miro-npm-ls.log",
+          "logSHA256": "da72183884852992fdad9362ccfe8f95d307993fe55f55858f9a353fb894830c"
+        },
+        "originalStrictBuild": {
+          "name": "actual-miro-original-strict-build-once",
+          "command": ["npm", "run", "build"],
+          "cwd": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-templates-settings-772-visual-v4-5am562mz/actual-miro-project",
+          "exit": 0,
+          "seconds": 6.861522790975869,
+          "log": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-templates-settings-772-visual-v4-5am562mz/actual-miro-original-strict-build-once.log",
+          "logSHA256": "df5b10d3597880bde7e900ce407630da61fab2caa245f777d82b3058e29a094d"
+        },
+        "native": {
+          "command": [
+            "npx",
+            "playwright",
+            "test",
+            "tests/templates-miro-settings-native.spec.ts",
+            "tests/templates-miro-bell-native.spec.ts",
+            "--workers=1",
+            "--retries=0",
+            "--output",
+            "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-templates-settings-772-visual-v4-5am562mz/actual-miro-native6-first-once/artifacts",
+            "--reporter=json"
+          ],
+          "cwd": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-templates-settings-772-visual-v4-5am562mz/candidate",
+          "preview": "http://127.0.0.1:56133/",
+          "environmentOverrides": {},
+          "exit": 0,
+          "seconds": 40.43712274997961,
+          "stats": {
+            "startTime": "2026-10-28T16:08:08.623Z",
+            "duration": 40038.77,
+            "expected": 6,
+            "skipped": 0,
+            "unexpected": 0,
+            "flaky": 0
+          },
+          "reportSHA256": "6a63d9b2eeb51cf0eeb24ba2670e99d03f8d2fbe3679283e6ed09da21b0ee73b"
+        },
+        "receivedMembersAfterBuild": {
+          "allOriginalMembersExact": true,
+          "memberCount": 264,
+          "immutableDistFiles": 65
+        }
+      },
+      {
+        "id": "verve",
+        "archiveSHA256": "ea517ec23d7289e939ce76414f2c81fd5c87fe58d434aff145890d750ecf5530",
+        "bytes": 1003298,
+        "members": 264,
+        "npmLs": {
+          "name": "actual-verve-npm-ls",
+          "command": ["npm", "ls", "--depth=0"],
+          "cwd": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-templates-settings-772-visual-v4-5am562mz/actual-verve-project",
+          "exit": 0,
+          "seconds": 0.3791713750688359,
+          "log": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-templates-settings-772-visual-v4-5am562mz/actual-verve-npm-ls.log",
+          "logSHA256": "93061753c7d9978aac7f5b5ade98c7d09ac582ce3b411a249a111aaeeb8b3db1"
+        },
+        "originalStrictBuild": {
+          "name": "actual-verve-original-strict-build-once",
+          "command": ["npm", "run", "build"],
+          "cwd": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-templates-settings-772-visual-v4-5am562mz/actual-verve-project",
+          "exit": 0,
+          "seconds": 6.846612958936021,
+          "log": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-templates-settings-772-visual-v4-5am562mz/actual-verve-original-strict-build-once.log",
+          "logSHA256": "e379adecc541badef32b1b6b97528a04eb4c588b0ab378ab9e1bac8e719586c3"
+        },
+        "native": {
+          "command": [
+            "npx",
+            "playwright",
+            "test",
+            "tests/templates-verve-settings-native.spec.ts",
+            "--workers=1",
+            "--retries=0",
+            "--output",
+            "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-templates-settings-772-visual-v4-5am562mz/actual-verve-native12-first-once/artifacts",
+            "--reporter=json"
+          ],
+          "cwd": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-templates-settings-772-visual-v4-5am562mz/candidate",
+          "preview": "http://127.0.0.1:56213/",
+          "environmentOverrides": {},
+          "exit": 0,
+          "seconds": 30.786088249995373,
+          "stats": {
+            "startTime": "2026-10-28T16:08:50.041Z",
+            "duration": 30379.661,
+            "expected": 12,
+            "skipped": 0,
+            "unexpected": 0,
+            "flaky": 0
+          },
+          "reportSHA256": "34ae9acacea2a51443cbf1eabe201f9b01f29a5656bc4adea4994825f81d7517"
+        },
+        "receivedMembersAfterBuild": {
+          "allOriginalMembersExact": true,
+          "memberCount": 264,
+          "immutableDistFiles": 65
+        }
+      }
+    ],
+    "installation": "Physical matching normally-installed dependency clones, not fresh installs. npm ls succeeded; received package scripts/strict compiler/Example entry and original archive members were not rewritten.",
+    "standaloneExclusion": "The site Customize font UI is absent from exported starters, so the original standalone36 cases exclude only those four site-only cases. Site font cases had passed on V3.",
+    "visualReview": "Root personally inspected new desktop/390px PNGs and used the real Edge account menu to reach Verve /account/profile; no framework overlay visible. Original screenshot references remain private, not distributed.",
+    "limits": [
+      "Independent recreation; no complete pixel-equivalence claim.",
+      "Commerce subnavigation font/button sizing has a known minor residual; Verve phone Profile has no captured original public reference.",
+      "Potential lazy stylesheet font inheritance during unusual cross-family SPA navigation is a static follow-up, not an observed runtime failure."
+    ]
+  },
+  "exportLicenses": "MIT/ReUI notices, Inter/OFL and local-original media attributions retained. Every family archive collecting Drive PhoneInput includes its existing license. Family ZIPs intentionally collect shared family dependencies.",
+  "ownedSources": [
+    {
+      "path": "src/blocks/application/dialog-variants/first-run/free/dialog-surface.tsx",
+      "sha256": "7331e34a3a100256b98b55bcab8421f0100b9b00f927d32337bcced634f23373"
+    },
+    {
+      "path": "src/blocks/application/dialog-variants/workspace/invites.tsx",
+      "sha256": "d62d65a13d5a42c8b7bb1793eb5be6c624182d0393bfec639e5c92584a30b6bb"
+    },
+    {
+      "path": "src/lib/source-targets.ts",
+      "sha256": "2c4794c3a2c224b20dce86f9c1f2ac80b80bf0d5a4fe62fc89b9267491b06c86"
+    },
+    {
+      "path": "src/templates/business/commerce-settings-billing.tsx",
+      "sha256": "3956bbfba73bdd30f77d553a486471f7bf525e83f3378e6898a434b8836d0715"
+    },
+    {
+      "path": "src/templates/business/commerce-settings-data.ts",
+      "sha256": "84ca0b4b874a8e627739dc702e7ec9431b4339e14dbb0be875e9710842ece139"
+    },
+    {
+      "path": "src/templates/business/commerce-settings-demo-data.ts",
+      "sha256": "b50179b96eedb897c31793441785a9628f2d67d9ab6e8b8ab241a45f80e577f6"
+    },
+    {
+      "path": "src/templates/business/commerce-settings-domains.css",
+      "sha256": "f1680e6ea7a358f8668bf13898b2af5ef1f695c7c1c55cde960a2eea072f634c"
+    },
+    {
+      "path": "src/templates/business/commerce-settings-domains.tsx",
+      "sha256": "df2d0bc14882c41ff9f4ba62a6fc83d0a02a02d6c052c5f81b5de16b99593cb2"
+    },
+    {
+      "path": "src/templates/business/commerce-settings-general-data.ts",
+      "sha256": "f8be0118d31c5a620c01a70ebb25ad14da575da738abc7672e81085e6006537c"
+    },
+    {
+      "path": "src/templates/business/commerce-settings-general-model.ts",
+      "sha256": "596c7a2081a05f20ba8726f682182332f8647eb74101bb3c0d3f9944c328ffa6"
+    },
+    {
+      "path": "src/templates/business/commerce-settings-general.css",
+      "sha256": "d301ec3c8b3c878300a87d385fc5518694674b32ed1a2f96982fc4c09256268e"
+    },
+    {
+      "path": "src/templates/business/commerce-settings-general.tsx",
+      "sha256": "3cf032dad1372897c3ba297ae35e5b0d3950fb6d174a56dd950fc982c27a1797"
+    },
+    {
+      "path": "src/templates/business/commerce-settings-header.css",
+      "sha256": "46e956646e38762ef79cac67af188eef80dce476c876f42b313b23cec458a16d"
+    },
+    {
+      "path": "src/templates/business/commerce-settings-model.ts",
+      "sha256": "be360318878b84ac3b185956691a99c2332faa450e7b1c7b4c67cc216026b2d9"
+    },
+    {
+      "path": "src/templates/business/commerce-settings-notifications.tsx",
+      "sha256": "2d2c4eb2a1d966a0e39b677dd1a3b07c14f293fca17bd221779ff6c6756625d3"
+    },
+    {
+      "path": "src/templates/business/commerce-settings-payments.tsx",
+      "sha256": "7c3a2fb99af3a1bd55c5db5447590a888ed1953197e83d73d1e1169ded7c3bac"
+    },
+    {
+      "path": "src/templates/business/commerce-settings-records.tsx",
+      "sha256": "1b3cef2b0a27553954f271dab61ba3dcd037930fb6cda6bc5eb3173eccdbdb70"
+    },
+    {
+      "path": "src/templates/business/commerce-settings-route-model.ts",
+      "sha256": "983f76ee4837c85ba36a742117abba3f58990e244f0ffcd62a39d63cdb4a3137"
+    },
+    {
+      "path": "src/templates/business/commerce-settings-route.ts",
+      "sha256": "c2c31141f55cb4411dbb1c4b397f3e56f9d2eb8ae31b0f55f1fdb3d0647260f1"
+    },
+    {
+      "path": "src/templates/business/commerce-settings-team.tsx",
+      "sha256": "cb3ecedf404d435d6386b0b93ae26813b8d00503b4d65488703c06ca429f9024"
+    },
+    {
+      "path": "src/templates/business/commerce.tsx",
+      "sha256": "224e640ef75b4d915fd99d94f3ff95b25975b02cafe939729ed7986d54e5bd8a"
+    },
+    {
+      "path": "src/templates/business/miro-calendar.tsx",
+      "sha256": "f70754642ee644f7d3f66252d23141d05f74f7b40a7ad0bfc67775d5e3e15576"
+    },
+    {
+      "path": "src/templates/business/miro-detail.tsx",
+      "sha256": "56bbeb8168745be77737ae9b73c40e1ebcb9a4dba258efd5d950b9688b6b26fc"
+    },
+    {
+      "path": "src/templates/business/miro-notifications.css",
+      "sha256": "6e7040df6a47c75209df0b7752e1ee74bdcd3b790689f527d280033dd3711c43"
+    },
+    {
+      "path": "src/templates/business/miro-notifications.tsx",
+      "sha256": "b0b06f560fc83b13c4ce99bbd8b5659a42908ddd1c948c98e557f4d3a971f3fc"
+    },
+    {
+      "path": "src/templates/business/miro-settings-controls.tsx",
+      "sha256": "b6216320b5f0880baf407ec376e82fe879a63d13023bceae35074a56a56643f9"
+    },
+    {
+      "path": "src/templates/business/miro-settings-data.ts",
+      "sha256": "307e437132d5c5bc7778fcc00adfcbd559b6a68457c353600a9c143bfce9bb81"
+    },
+    {
+      "path": "src/templates/business/miro-settings-integration.ts",
+      "sha256": "db306b4c737443e3f93a05c129a4e3e3b91dc1bef7381360489410c668a34a24"
+    },
+    {
+      "path": "src/templates/business/miro-settings-model.ts",
+      "sha256": "48629f4277053d09f3ba24e070ff81d2c21ac18297e2c75c44185a54439fa180"
+    },
+    {
+      "path": "src/templates/business/miro-settings-profile.tsx",
+      "sha256": "d58ff38a2d766aa8b143ecef8a3f783d26bd0a5a21df272461fb3cb19f8e8703"
+    },
+    {
+      "path": "src/templates/business/miro-settings.css",
+      "sha256": "b070a1b42c6dee90c591b4dec30fb0f5d5be0ea5bf5726683aaad6225b222fe6"
+    },
+    {
+      "path": "src/templates/business/miro-settings.tsx",
+      "sha256": "2802b33b87331216f7e7584cfaa4cc134c0fc4d043d98bdb8742a4a32cac0af4"
+    },
+    {
+      "path": "src/templates/business/miro-workspace.tsx",
+      "sha256": "1830926a86ab52abfb0102be4dbf6970e0b6f2649ca641e3fed952c5f7e5f96c"
+    },
+    {
+      "path": "src/templates/business/miro.tsx",
+      "sha256": "7b6b55b6313f314b7d83e493f27624f45a7f69cb87b75ecaa2301b3e24ed39f0"
+    },
+    {
+      "path": "src/templates/business/shared.tsx",
+      "sha256": "5d16a99a15a5763b0ea9bd7d783ce4bede754c8a5e20c19c24ea32bc91fce04d"
+    },
+    {
+      "path": "src/templates/business/verve-account-settings-data.ts",
+      "sha256": "9bf73c670b1fb67bb07024f848e0e71c659b48f922ab33269c1ec842f0584730"
+    },
+    {
+      "path": "src/templates/business/verve-account-settings-model.ts",
+      "sha256": "376dddf1efefa7e5a0cb1a153ae87fb51fbf9f3ee0f203fdad72f38b4b73e16d"
+    },
+    {
+      "path": "src/templates/business/verve-account-settings.css",
+      "sha256": "f946d2bac6a194c5bc13fbb5db5113ba76a85d5b1daea270d8393e9fc5e474d4"
+    },
+    {
+      "path": "src/templates/business/verve-account-settings.tsx",
+      "sha256": "5dc44d4a9399deeb8e19ea4605d884da93119db09f8837fb4565b76c995f93bc"
+    },
+    {
+      "path": "src/templates/business/verve-configuration-data.ts",
+      "sha256": "36551221be69e88b72c4438f63955590de4900db00546963b3324d6c50c404e0"
+    },
+    {
+      "path": "src/templates/business/verve-configuration-model.ts",
+      "sha256": "5490614b9f1b612b2363bafe4b72c724edef76b3042a7811ebdee64be3ce66de"
+    },
+    {
+      "path": "src/templates/business/verve-configuration.css",
+      "sha256": "0c54aac09eb025d23a9736ed2572f3622a2048fd1e879085f797d8d2309a9b09"
+    },
+    {
+      "path": "src/templates/business/verve-key-dialog.tsx",
+      "sha256": "797dcff0476182720bd2d4512f39964e417ad39d12aaace0a99af54936fdd210"
+    },
+    {
+      "path": "src/templates/business/verve-settings-api-keys.tsx",
+      "sha256": "337866cfae90c828dfe6198d5e9f9591dcfae774956265319379cb7b8d483317"
+    },
+    {
+      "path": "src/templates/business/verve-settings-integrations.tsx",
+      "sha256": "4cef6efa418fe26d9e4bf19c6ac04bf5f8610b38d08689d9d98717e52dcd83d9"
+    },
+    {
+      "path": "src/templates/business/verve-settings-layout.css",
+      "sha256": "fd09d552dea9f6ba87c3a5006faac8187328c2be54ac88add20a9a4352a6b76c"
+    },
+    {
+      "path": "src/templates/business/verve-settings-navigation.tsx",
+      "sha256": "0749d3c96ec5e6f2f60aabb711d596048a6fc1316c33c032eed62ca7c07e3bd7"
+    },
+    {
+      "path": "src/templates/business/verve-settings-people-billing-data.ts",
+      "sha256": "bc2c994f316eed37dfd772b6ade1f2651e57cd46beaf48d9a30331c55248f3ff"
+    },
+    {
+      "path": "src/templates/business/verve-settings-people-billing-model.ts",
+      "sha256": "8d36a1e4331a74623c7b3c4048d38a876ba51044d087e097807f2beef54b6d8a"
+    },
+    {
+      "path": "src/templates/business/verve-settings-people-billing-surfaces.tsx",
+      "sha256": "43a217004124a8635ee9b47c5d83a6cd4eea79d259f76f3b0bcfd414e788c03b"
+    },
+    {
+      "path": "src/templates/business/verve-settings-people-billing.css",
+      "sha256": "d10531d57ca5addcd32f31a5746b470e8e93e602da43b1527cb11b5ebb54cb84"
+    },
+    {
+      "path": "src/templates/business/verve-settings-people-billing.tsx",
+      "sha256": "c1a5a9f8da3cca30c7d70408ad55cead09c84696818d84db1d75e70cab7ff238"
+    },
+    {
+      "path": "src/templates/business/verve-settings-route.ts",
+      "sha256": "68c7efc232d559a76257352b771e4562cda71db10d8c9f8b0b880bf711f0c267"
+    },
+    {
+      "path": "src/templates/business/verve-settings-webhooks.tsx",
+      "sha256": "3128c8fa6f0550fb624c16905af79e9636374b36f08af29a41f2153c591a6748"
+    },
+    {
+      "path": "src/templates/business/verve-workspace-settings.tsx",
+      "sha256": "64ebc22b7638f13749d775a5fd88c0dce17e82845dfb11c1a1aca5b947a33573"
+    },
+    {
+      "path": "src/templates/business/verve.tsx",
+      "sha256": "9de857d99d423825b5ff46f65666e918b7e4dc88cf62f76a32db1fdc9779168c"
+    },
+    {
+      "path": "src/templates/collaboration/drive-settings-components.tsx",
+      "sha256": "7000f2b19c6b13d511377d64966a18b81e6f91dffab2801fbaabe4ff628500e3"
+    },
+    {
+      "path": "src/templates/collaboration/drive-settings-free.tsx",
+      "sha256": "490b7c1d8f1cef2419038bef86f5c1e63743fb18c24af700e71f6d01cb0ab162"
+    },
+    {
+      "path": "src/templates/source.ts",
+      "sha256": "d4b90a1b87ddaf8d3b07a8a09b03578737959b78b117fef8ce806799924647cd"
+    },
+    {
+      "path": "src/templates/workflow/flux-settings-webhooks.tsx",
+      "sha256": "7fa0c2be2d5641a1ff9701cfcae8811fbcf5d812b7ae5d5715f7f4a6d7989fbb"
+    },
+    {
+      "path": "tests/commerce-settings-route.test.mjs",
+      "sha256": "7dbc931a6f56eb329eb68e90bb43a303be969a46d4747de0d3de009294e4f02f"
+    },
+    {
+      "path": "tests/templates-business-layout.spec.ts",
+      "sha256": "15323cb7fac0e6eb0ba2902b8790d5be0a08e5134a2406f78102680f86d9f57a"
+    },
+    {
+      "path": "tests/templates-business-settings-source.spec.ts",
+      "sha256": "8b116e955dd40958360d874fa0b56cb499c53b4ca1d14c85e0b601b8f1438c60"
+    },
+    {
+      "path": "tests/templates-commerce-settings-native.spec.ts",
+      "sha256": "e34ef9c7a2f92a7fe1410d00c3ab36b02ea25968d6954fabc4cded34a0f5368e"
+    },
+    {
+      "path": "tests/templates-miro-bell-native.spec.ts",
+      "sha256": "15fd9d9c5b3d476ede3c91f773e4f17eed7fbc664f7f40c8399c97fb5be661a0"
+    },
+    {
+      "path": "tests/templates-miro-settings-native.spec.ts",
+      "sha256": "b2ae4919d4e1554444cbd0a2d2f11748b0b63aa61aae0ab0644b7f04408a9ac6"
+    },
+    {
+      "path": "tests/templates-verve-settings-native.spec.ts",
+      "sha256": "ef4a12121449fa7e6f47a3940a509dbb86819b4d01d4e11357918d54e7d5ab65"
+    }
+  ],
+  "independentReviews": [
+    {
+      "kind": "Actual original archives, closure, source parity and licenses",
+      "receiptSHA256": "6f924ca7c4f747e9867b39cef7c270aa5ab22e513e28b4976427f7efacf0d787",
+      "checks": 677,
+      "result": "No static blocker; no independent runtime replay."
+    },
+    {
+      "kind": "Owned source, real free reuse, shared defaults and test contracts",
+      "receiptSHA256": "d7bc16282d0788a367adce48cc5a6537239b57e7f06ffdb4ddaf70aa6f6999ec",
+      "result": "No static blocker to settings surface milestone; notice-only new actions remain explicitly tracked."
+    }
+  ]
+}
