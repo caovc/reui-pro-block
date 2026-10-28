@@ -275,8 +275,16 @@ for (const width of [1440, 390]) {
       await expect(page.getByLabel("Workspace Name", { exact: true })).toHaveValue(
         "Bricklane renamed studio",
       );
+      // The unchanged form value does not wait for the previous native menu to close.
+      await expect(headerWorkspace(page)).toHaveAccessibleName("Personal");
+      await expect(headerWorkspace(page)).toBeFocused();
       await headerWorkspace(page).click();
+      const menu = page.getByRole("menu");
+      await expect(menu).toBeFocused();
       await page.keyboard.press("Home");
+      await expect(
+        menu.getByRole("menuitem", { name: "Bricklane Free", exact: true }),
+      ).toBeFocused();
       await page.keyboard.press("Enter");
       await expect(headerWorkspace(page)).toHaveAccessibleName("Bricklane");
       await expect(headerWorkspace(page)).toBeFocused();

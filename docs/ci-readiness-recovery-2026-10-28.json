@@ -1,0 +1,110 @@
+{
+  "milestone": "CI native readiness and visible source loading",
+  "base": "358cbfbf9e5f34e9f5b8073581ad3957d19815be",
+  "implementationFiles": [
+    "src/components/site/block-preview.tsx",
+    "tests/solution-dispatch-map-source.spec.ts",
+    "tests/comparison-followups.spec.ts",
+    "tests/drive-pricing-switcher-main.spec.ts",
+    "tests/grid-advanced-factory-scorecard.spec.ts"
+  ],
+  "previousCI": {
+    "run": 40382028877,
+    "passed": 1681,
+    "failed": 4,
+    "pages": "skipped",
+    "artifactSHA256": "1bb20dfe3581427a2c9692918f59c586ac2e49b0a0df9586dba583a0b9851e3b"
+  },
+  "corrections": {
+    "Drive": "Wait for Personal selection and native trigger focus restoration, then reopened menu focus and Home target focus before original Enter; original66 assertions retained in order.",
+    "Factory": "Wait for actual Advanced filter unmount and native Filter focus restoration before focusing Columns; retain original Enter and all result assertions.",
+    "Carousel": "Start original native image-drag gesture on visible third Field card so its65-percent viewport movement is not clamped to a below-midpoint distance; original exact page assertion and18 steps retained.",
+    "Source": "Reuse the existing Skeleton and add visible role=status loading text in both Suspense boundaries. Wait for actual Block source region before original default-leaf assertion; source collector/defaults unchanged."
+  },
+  "originalSourceEvidence": {
+    "run": 40375424916,
+    "passed": 1650,
+    "failed": 1,
+    "observation": "Sheet source assertion ran while lazy fallback remained mounted; no incorrect default leaf or failing module response established."
+  },
+  "reuse": {
+    "existingFreeComponents": [
+      "Skeleton",
+      "Sheet",
+      "Tabs",
+      "ReUI CodeBlock",
+      "ReUI Carousel/Embla",
+      "ReUI Filters/Cascader",
+      "native DropdownMenu"
+    ],
+    "newPrimitiveEngine": false,
+    "mediaFontsLicensesChanged": false,
+    "sourceTargetsChanged": false
+  },
+  "validation": {
+    "cleanGitArchive": true,
+    "dependencies": "Physical copy of normally installed matching358 node_modules; independent caches; normal postinstall executed. Not a fresh install claim.",
+    "checks": [
+      {
+        "gate": "normal-postinstall",
+        "exit": 0,
+        "seconds": 0.2735366669949144
+      },
+      {
+        "gate": "format-check",
+        "exit": 0,
+        "seconds": 1.6160501249833032
+      },
+      {
+        "gate": "lint",
+        "exit": 0,
+        "seconds": 1.0171974590048194
+      },
+      {
+        "gate": "tooling",
+        "exit": 0,
+        "seconds": 1.9781539170071483
+      },
+      {
+        "gate": "strict-main-once",
+        "exit": 0,
+        "seconds": 23.209290000027977
+      }
+    ],
+    "targeted": {
+      "passed": 13,
+      "failed": 0,
+      "workers": 1,
+      "retries": 0,
+      "timeoutMs": 30000,
+      "seconds": 23.58764320902992,
+      "scope": [
+        "original four CI failures plus Carousel keyboard",
+        "original Dispatch source4, including Copy UTF8/file/actual ZIP",
+        "two controlled pending-module desktop/phone loading/focus cases",
+        "Templates category tabs desktop/phone"
+      ]
+    },
+    "immutableDistFiles": 654,
+    "candidateSourceFrozen": true,
+    "previousNewTestFailure": "Joint-candidate first Source4 passed; new2 failed because the broad status locator also resolved the existing CodeBlock statuses after loading. The new locator now targets loading status text only; native statuses/product were unchanged. Original failure retained."
+  },
+  "publication": {
+    "commit": "pending Root normal-hook commit",
+    "push": "pending",
+    "fullOriginalThreeWorkerCI": "pending",
+    "pages": "pending",
+    "lastSuccessfulPagesCommit": "9c80801fa5f3826ea481c980138244977fc473ce"
+  },
+  "excludedFollowups": [
+    "Flux Profile content slots",
+    "Pricing4/5 background-color restoration",
+    "Drive Header/navigation",
+    "other shared WIP10"
+  ],
+  "limits": [
+    "No claim that underlying CPU scheduling was diagnosed.",
+    "No timeout, retry, worker configuration, tolerance, product focus engine or source mapping changes.",
+    "Current local green is not a successful CI or deployment claim."
+  ]
+}

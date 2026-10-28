@@ -64,7 +64,8 @@ test("official Carousel pointer drag changes ranking page without a custom scrol
 }) => {
   await open(page, 4);
   await expect(page.getByRole("button", { name: "Next slide" })).toBeEnabled();
-  const image = page.locator('[data-scorecard="studio"] img');
+  // Start on the third card so the drag crosses a snap midpoint without leaving the viewport.
+  const image = page.locator('[data-scorecard="field"] img');
   const box = (await image.boundingBox())!;
   const viewport = page.locator('[data-slot="carousel-content"]');
   await expect

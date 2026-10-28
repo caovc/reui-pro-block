@@ -179,3 +179,29 @@ Linux Pricing desktop/phone gate passed once in4.751s with1worker/0retries and o
 timeout (run40380933471). Root coordinates the scoped normal-hook release. Full main CI and
 Pages remain separate publication gates. Header Help/Notifications and future Flux Profile
 slots are independent planned follow-ups; current frozen source/download evidence is preserved.
+
+## CI readiness recovery — 2026-10-28
+
+The [recovery receipt](ci-readiness-recovery-2026-10-28.json) records the original
+358cbfb run:1681 passed, four failed, Pages skipped. The failure traces distinguish
+native closing/focus transitions from incorrect menu results. Drive and Factory
+fixtures now wait for their real native focus boundaries before the original keyboard
+actions. The Carousel drag starts on the visible third card so the existing gesture
+crosses its snap midpoint. All original result assertions and timeouts remain.
+
+Both block-source Suspense fallbacks now reuse the existing Skeleton with visible
+loading status. The Dispatch source helper waits for the actual named source region
+before checking its implementation leaf. Two deliberately gated module requests verify
+loading, real source, closing and restored focus at desktop and phone widths. Existing
+Copy, single-file and actual-ZIP checks retain exact source-byte assertions.
+
+A separate clean five-path recovery candidate passed the strict build, full formatting,
+lint and tooling checks, then13 targeted browser cases once with one worker, zero
+retries and the original30-second budget. Templates overflow checks passed at1440/390;
+a fresh native Edge check also confirmed the currently deployed phone tab container
+has equal40px client/scroll heights and Home/End preserves pageY while revealing the
+selected tab horizontally. This last observation belongs to the existing9c deployment.
+
+Root publishes this recovery before unrelated UI follow-ups. Complete three-worker CI
+and an actual successful Pages deployment remain required before the newer Mesh,
+Flux, Prospect and Drive milestones are described as live.

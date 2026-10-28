@@ -7,6 +7,9 @@ async function source(page: Page) {
   await page.goto("./#/block/solutions/map/solution-map-1");
   await page.getByRole("button", { name: "View code", exact: true }).click();
   const dialog = page.getByRole("dialog");
+  await dialog
+    .getByRole("region", { name: "Block source", exact: true })
+    .waitFor({ state: "visible" });
   await expect(dialog.getByRole("combobox", { name: "Source file", exact: true })).toContainText(
     leaf,
   );
@@ -89,3 +92,57 @@ test("Dispatch Map actual UI starter includes the SDK worker composition, real f
   );
   expect(Object.keys(zip).some((path) => /tests\/|playwright|node_modules/.test(path))).toBe(false);
 });
+
+for (const width of [1440, 390]) {
+  test(`Dispatch Map source reports its pending module and restores focus at ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: width === 390 ? 844 : 1000 });
+    const moduleRequest =
+      /\/(?:assets\/source-panel-[^/?]+\.js|src\/components\/site\/source-panel\.tsx)(?:\?.*)?$/;
+    let releaseModule!: () => void;
+    const moduleGate = new Promise<void>((resolve) => {
+      releaseModule = resolve;
+    });
+    let interceptedModule: string | undefined;
+    await page.route(moduleRequest, async (route) => {
+      interceptedModule = route.request().url();
+      await moduleGate;
+      await route.continue();
+    });
+    try {
+      await page.goto("./#/block/solutions/map/solution-map-1");
+      const trigger = page.getByRole("button", { name: "View code", exact: true });
+      await trigger.click();
+      const dialog = page.getByRole("dialog");
+      const loading = dialog.getByRole("status").filter({ hasText: "Loading source code…" });
+      await expect(loading).toHaveText("Loading source code…");
+      await expect(loading).toBeVisible();
+      await expect(loading.locator('[data-slot="skeleton"]')).toHaveAttribute(
+        "aria-hidden",
+        "true",
+      );
+      await expect.poll(() => interceptedModule).toMatch(moduleRequest);
+      await expect(dialog.getByRole("region", { name: "Block source", exact: true })).toHaveCount(
+        0,
+      );
+
+      releaseModule();
+      const region = dialog.getByRole("region", { name: "Block source", exact: true });
+      await region.waitFor({ state: "visible" });
+      await expect(region).toBeVisible();
+      await expect(loading).toBeHidden();
+      await expect(
+        dialog.getByRole("combobox", { name: "Source file", exact: true }),
+      ).toContainText(leaf);
+      await expect(region.locator(".source-code")).toContainText("function DispatchWorkspace");
+      await expect(region.locator(".source-code")).toContainText("FleetMap");
+      await dialog.getByRole("button", { name: "Close", exact: true }).click();
+      await expect(dialog).toBeHidden();
+      await expect(trigger).toBeFocused();
+    } finally {
+      releaseModule();
+      await page.unroute(moduleRequest);
+    }
+  });
+}

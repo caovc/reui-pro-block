@@ -66,8 +66,14 @@ test("advanced Filters and native Cascader are actual keyboard reachable compone
   await expect(page.getByText("No filters yet", { exact: true })).toBeVisible();
   await expect(page.getByRole("button", { name: "Add group", exact: true })).toBeVisible();
   await page.keyboard.press("Escape");
+  // Let the native Filter close animation and focus restoration finish before moving focus.
+  await expect(
+    page.locator('[data-slot="popover-content"][aria-label="Advanced filter"]'),
+  ).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "Filter", exact: true })).toBeFocused();
   const columns = page.getByRole("combobox", { name: "Columns", exact: true });
   await columns.focus();
+  await expect(columns).toBeFocused();
   await page.keyboard.press("Enter");
   await expect(page.getByRole("dialog", { name: "Factory columns", exact: true })).toBeVisible();
   // The free Cascader reveals the selected Spend column's parent on open.

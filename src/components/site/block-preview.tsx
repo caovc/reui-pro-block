@@ -30,6 +30,14 @@ import {
 import { useGlobalTheme } from "./global-theme-store";
 import "./block-preview.css";
 const SourcePanel = lazy(() => import("./source-panel").then((m) => ({ default: m.SourcePanel })));
+function SourceLoading() {
+  return (
+    <div role="status" className="flex flex-col gap-3">
+      <p className="text-sm text-muted-foreground">Loading source code…</p>
+      <Skeleton aria-hidden="true" className="h-96 w-full" />
+    </div>
+  );
+}
 function IconTip({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <Tooltip>
@@ -215,7 +223,7 @@ export function PreviewPanel({ block }: { block: BlockMeta; dark: boolean }) {
               </div>
             </TabsContent>
             <TabsContent value="code">
-              <Suspense fallback={<Skeleton className="h-96 w-full" />}>
+              <Suspense fallback={<SourceLoading />}>
                 <SourcePanel block={block} dark={dark} theme={theme} />
               </Suspense>
             </TabsContent>
@@ -235,7 +243,7 @@ export function PreviewPanel({ block }: { block: BlockMeta; dark: boolean }) {
             <SheetDescription>Installation and source code</SheetDescription>
           </SheetHeader>
           <div className="block-source-scroll">
-            <Suspense fallback={<Skeleton className="h-96 w-full" />}>
+            <Suspense fallback={<SourceLoading />}>
               {sourceOpen && <SourcePanel block={block} dark={dark} theme={theme} />}
             </Suspense>
           </div>
