@@ -1,0 +1,65 @@
+{
+  "milestone": "Dispatch source readiness observation follow-up",
+  "base": "9535e505c5fb8dda6b521349003dd24c1d736196",
+  "scope": ["tests/solution-dispatch-map-source.spec.ts"],
+  "originalCI": {
+    "run": 40648317836,
+    "sha": "b15e60e8c3d0c0e61d17b6488ab44901e618b92e",
+    "passed": 1686,
+    "failed": 1,
+    "deployment": "skipped",
+    "artifactSha256": "7ada0ab6ad4a39dd7fe1f4f2eb1cf9425f6e8d3c8753284ac4c8f22c8bf7cb73",
+    "traceSha256": "140fcaddde6f91a8fb8dc50d298a7c03b76fd436ed12c990c1a3e9ca3f82e734",
+    "diagnosis": "All loading, AX, intercepted-module, source, Close and hidden checks passed. Final focus check began after 28.037 seconds; original 30-second total budget then expired. The trace records no resolved unfocused element, so a product focus defect is not established."
+  },
+  "change": "Await independent read-only assertions together in two stable lifecycle phases: five while the real source module is held and five after its native source region becomes visible. Gate release, native region wait, Close, hidden and focus remain sequential.",
+  "preservation": {
+    "originalFourCases": "byte identical",
+    "allMatcherExpressionsAndParameters": "28 before and after; independently normalized AST multiset identical",
+    "newCaseMatchers": 12,
+    "timeouts": "original test 30s and expect 5s; no retries, sleeps, force, skip or configuration change",
+    "product": "unchanged",
+    "specSha256": "b476e06a344e5198f2afcf110b2f3351077befed35bb704a2916665e2712dfa8"
+  },
+  "validation": {
+    "cleanBase": true,
+    "normalPostinstall": true,
+    "dependencies": "Matching physical copy of normally installed 842-package tree; not a fresh installation.",
+    "strictMainBuild": {
+      "name": "strict-main-build-once",
+      "exit": 0,
+      "seconds": 28.870576750021428,
+      "command": ["npm", "run", "build"]
+    },
+    "format": "full check passed",
+    "lint": "passed",
+    "browser": {
+      "cases": 6,
+      "passed": 6,
+      "workers": 1,
+      "retries": 0,
+      "seconds": 8.299269667011686,
+      "coverage": [
+        "actual implementation leaf",
+        "real clipboard exact UTF-8",
+        "single-file exact UTF-8",
+        "actual UI starter worker/free-component sources and notices",
+        "deliberately gated source module, loading/AX, native close and focus at 1440",
+        "same at 390"
+      ]
+    },
+    "independentASTReview": true
+  },
+  "reuse": "Existing actual free ReUI CodeBlock and Skeleton remain; this follow-up changes only test observation scheduling.",
+  "publication": {
+    "commit": "Root coordinated after validation",
+    "push": "separate from deployment",
+    "completeCI": "pending new original three-worker run",
+    "Pages": "not confirmed"
+  },
+  "limits": [
+    "Local one-worker success does not establish complete three-worker CI success or deployment.",
+    "The 9535e50 complete run is independent and was still running at this freeze.",
+    "Header, Path and AppShell candidates are excluded; their failures and unfinished visual/export gates remain separate."
+  ]
+}

@@ -116,27 +116,26 @@ for (const width of [1440, 390]) {
       await trigger.click();
       const dialog = page.getByRole("dialog");
       const loading = dialog.getByRole("status").filter({ hasText: "Loading source code…" });
-      await expect(loading).toHaveText("Loading source code…");
-      await expect(loading).toBeVisible();
-      await expect(loading.locator('[data-slot="skeleton"]')).toHaveAttribute(
-        "aria-hidden",
-        "true",
-      );
-      await expect.poll(() => interceptedModule).toMatch(moduleRequest);
-      await expect(dialog.getByRole("region", { name: "Block source", exact: true })).toHaveCount(
-        0,
-      );
+      await Promise.all([
+        expect(loading).toHaveText("Loading source code…"),
+        expect(loading).toBeVisible(),
+        expect(loading.locator('[data-slot="skeleton"]')).toHaveAttribute("aria-hidden", "true"),
+        expect.poll(() => interceptedModule).toMatch(moduleRequest),
+        expect(dialog.getByRole("region", { name: "Block source", exact: true })).toHaveCount(0),
+      ]);
 
       releaseModule();
       const region = dialog.getByRole("region", { name: "Block source", exact: true });
       await region.waitFor({ state: "visible" });
-      await expect(region).toBeVisible();
-      await expect(loading).toBeHidden();
-      await expect(
-        dialog.getByRole("combobox", { name: "Source file", exact: true }),
-      ).toContainText(leaf);
-      await expect(region.locator(".source-code")).toContainText("function DispatchWorkspace");
-      await expect(region.locator(".source-code")).toContainText("FleetMap");
+      await Promise.all([
+        expect(region).toBeVisible(),
+        expect(loading).toBeHidden(),
+        expect(dialog.getByRole("combobox", { name: "Source file", exact: true })).toContainText(
+          leaf,
+        ),
+        expect(region.locator(".source-code")).toContainText("function DispatchWorkspace"),
+        expect(region.locator(".source-code")).toContainText("FleetMap"),
+      ]);
       await dialog.getByRole("button", { name: "Close", exact: true }).click();
       await expect(dialog).toBeHidden();
       await expect(trigger).toBeFocused();

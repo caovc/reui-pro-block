@@ -234,3 +234,39 @@ the list reporter; the passing assertions and eight reviewed PNGs are the eviden
 These local gates do not establish a deployment. The current healthy recovery CI
 continues unchanged; this follow-up queues a separate complete CI and Pages gate.
 Remaining official phone-popup, hover and independent SVG bounds are explicit limits.
+
+## Source readiness observation follow-up — 2026-10-28
+
+The [follow-up receipt](ci-source-readiness-followup-2026-10-28.json) preserves the
+original b15 full CI:1686 passed, one new phone source-loading test exhausted its
+30-second total budget, and Pages was skipped. Its trace shows all loading, source,
+Close and hidden assertions passed; final focus observation started after28.037s.
+It provides no resolved unfocused element and does not establish a product focus bug.
+
+Only the new desktop/phone cases now await independent read-only assertions together
+within two already established lifecycle phases. All28 matcher expressions and their
+parameters are independently AST-identical; the original four cases are byte-exact.
+Module release, native region readiness, Close, hidden and focus remain sequential.
+The original30s/5s budgets, real module gate and complete source-byte checks remain.
+
+A clean953 candidate passed a normal postinstall, strict build, full format check and
+lint, then all six original source/export and new loading cases once with one worker
+and zero retries. This local result does not establish the next complete CI or Pages.
+
+## Public catalog drift — 2026-10-28
+
+A fresh read of all79 public category lists found672 unique block URLs, against669
+local entries. Four additions are now planned: [API Request Logs](https://reui.io/blocks/data-grid/base/data-grid-base-9),
+[Strategy Scorecard](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-14),
+[Retail P&L Outlook](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-15), and
+[Store KPI Board](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-16).
+Each direct detail returned an entry-specific title and canonical URL. Implement them
+from actual free ReUI DataGrid, Filters, Chart and native editing/dialog capabilities
+after a separate reference and interaction audit; these new entries are not implemented
+or added to the local count by this documentation update.
+
+The existing solution-dev-ops-7 is no longer listed. Its direct URL returns a generic
+Blocks title without an entry canonical, so its withdrawal, rename or fallback status
+remains unknown; retain the existing implementation pending clarification from public
+evidence. Category sets and all18 template reference URLs still match. Current Advanced
+IDs are1–16 and22; the unobserved17–21 are not inferred as additional entries.
