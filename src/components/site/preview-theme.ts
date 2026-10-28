@@ -1,3 +1,36 @@
+const additionalAccents = {
+  fuchsia: {
+    light: "oklch(0.518 0.253 323.949)",
+    dark: "oklch(0.452 0.211 324.591)",
+    foreground: "oklch(0.977 0.017 320.058)",
+  },
+  green: {
+    light: "oklch(0.527 0.154 150.069)",
+    dark: "oklch(0.448 0.119 151.328)",
+    foreground: "oklch(0.982 0.018 155.826)",
+  },
+  lime: {
+    light: "oklch(0.841 0.238 128.85)",
+    dark: "oklch(0.768 0.233 130.85)",
+    foreground: "oklch(0.405 0.101 131.063)",
+  },
+  purple: {
+    light: "oklch(0.496 0.265 301.924)",
+    dark: "oklch(0.438 0.218 303.724)",
+    foreground: "oklch(0.977 0.014 308.299)",
+  },
+  sky: {
+    light: "oklch(0.5 0.134 242.749)",
+    dark: "oklch(0.443 0.11 240.79)",
+    foreground: "oklch(0.977 0.013 236.62)",
+  },
+  yellow: {
+    light: "oklch(0.852 0.199 91.936)",
+    dark: "oklch(0.795 0.184 86.047)",
+    foreground: "oklch(0.421 0.095 57.708)",
+  },
+} as const;
+
 export const accents = {
   neutral: "#262626",
   blue: "#2563eb",
@@ -11,6 +44,12 @@ export const accents = {
   cyan: "#0e7490",
   indigo: "#4f46e5",
   pink: "#be185d",
+  fuchsia: additionalAccents.fuchsia.light,
+  green: additionalAccents.green.light,
+  lime: additionalAccents.lime.light,
+  purple: additionalAccents.purple.light,
+  sky: additionalAccents.sky.light,
+  yellow: additionalAccents.yellow.light,
 } as const;
 export const fonts = {
   inter: '"Inter", Arial, sans-serif',
@@ -64,8 +103,6 @@ export function normalizeTheme(value: unknown): PreviewTheme {
   }
   if (typeof record.custom === "string" && /^#[0-9a-f]{6}$/i.test(record.custom))
     result.custom = record.custom;
-  // Preserve links created by the previous preview toolbar.
-  if (record.accent === "green") result.accent = "emerald";
   return result;
 }
 export function readTheme(params: URLSearchParams): PreviewTheme {
@@ -83,9 +120,10 @@ export function loadTheme(): PreviewTheme {
   try {
     const saved = localStorage.getItem(previewThemeStorageKey);
     if (saved !== null) return normalizeTheme(JSON.parse(saved));
-    const legacy = normalizeTheme(
-      JSON.parse(localStorage.getItem("blocks-preview-theme-v1") || "null"),
-    );
+    const legacyValue = JSON.parse(localStorage.getItem("blocks-preview-theme-v1") || "null");
+    // The v1 toolbar used green as an Emerald alias. New presets have a real Green palette.
+    if (legacyValue?.accent === "green") legacyValue.accent = "emerald";
+    const legacy = normalizeTheme(legacyValue);
     // v1 persisted blue even when the visitor never opened Customize. Preserve
     // other colors and custom HEX, while removing that implicit blue override.
     if (legacy.accent === "blue" && !legacy.custom) legacy.accent = "default";
@@ -104,7 +142,11 @@ export function isThemeDark(theme: PreviewTheme, inherited: boolean, system: boo
   );
 }
 export function themeCSS(theme: PreviewTheme) {
+  const additionalAccent = theme.custom
+    ? undefined
+    : additionalAccents[theme.accent as keyof typeof additionalAccents];
   const accent = theme.custom || accents[theme.accent as keyof typeof accents];
+  const accentForeground = additionalAccent?.foreground || "#ffffff";
   const color = accent || "var(--primary)";
   const hue =
     theme.base === "stone"
@@ -148,7 +190,7 @@ export function themeCSS(theme: PreviewTheme) {
   const menuTargets =
     ":root:root :is(.sidebar-link.active, .sidebar-block-link.active, [data-sidebar=menu-button][data-active=true])";
   const accentTokens = accent
-    ? `--primary: ${accent}; --primary-foreground: #ffffff; --ring: ${accent}; --sidebar-primary: ${accent}; --sidebar-primary-foreground: #ffffff;`
+    ? `--primary: ${accent}; --primary-foreground: ${accentForeground}; --ring: ${accent}; --sidebar-primary: ${accent}; --sidebar-primary-foreground: ${accentForeground};`
     : "";
   const menuTokens =
     theme.menuAccent === "default"
@@ -169,10 +211,15 @@ ${accent || chart || menuTokens ? `${surfaces} { ${accentTokens}${chart}${menuTo
 ${
   accent
     ? `:root:root .template-surface .ct-limelight { --lime: ${accent}; }
-:root:root .template-surface .ct-lime-cta { --primary-foreground: #ffffff; color: var(--primary-foreground); }`
+:root:root .template-surface .ct-lime-cta { --primary-foreground: ${accentForeground}; color: var(--primary-foreground); }`
     : ""
 }
-${theme.base !== "default" ? `:root:root .template-surface .ct-limelight { --lime-bg: var(--background); --lime-panel: var(--card); --lime-text: var(--foreground); --lime-border: var(--border); --lime-muted: var(--muted-foreground); }` : ""}
+${theme.base !== "default" ? `:root:root .template-surface .ct-limelight { --lime-bg: var(--background); --lime-panel: var(--card); --lime-text: var(--foreground); --lime-border: var(--border); --lime-muted: var(--muted-foreground); }` : ""}${
+    additionalAccent
+      ? `\n:root:root.dark, :root:root.dark :is(.reui-reference, .template-surface, .template-surface > :first-child) { --primary: ${additionalAccent.dark}; --ring: ${additionalAccent.dark}; --sidebar-primary: ${additionalAccent.dark}; }
+:root:root.dark .template-surface .ct-limelight { --lime: ${additionalAccent.dark}; }`
+      : ""
+  }
 ${theme.menuAccent !== "default" ? `${menuTargets} { background: var(--sidebar-accent); color: var(--sidebar-accent-foreground); }` : ""}
 ${theme.menu === "solid" ? `${menuTargets} { background: var(--primary); color: var(--primary-foreground); }` : theme.menu === "outline" ? `${menuTargets} { background: transparent; color: var(--foreground); box-shadow: inset 0 0 0 1px var(--border); }` : ""}
 ${

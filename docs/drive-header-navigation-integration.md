@@ -119,8 +119,11 @@ xs size and callback. The earlier claim that no native variant matched the
 reference was incorrect; no new CSS or Button API is required. Public evidence
 records a hover class declaration, not active-hover computed pixels.
 
-The original model run remains 21 passing pure tests with unchanged five-input
-SHA proof; it was not rerun or promoted to a browser result. Static checks protect
+The earlier isolated model run remains 21 passing pure tests with unchanged
+five-input SHA proof. Root later ran the original aggregate tooling command on
+the final clean candidate: all112 tests passed, including these model files.
+This is an aggregate rerun, not a new isolated21-case run or a browser result.
+Static checks protect
 the native Tree function/table, real Source default, import closure and unrelated
 parent files. Native Sidebar/Settings/Frame and font/media/license records remain
 in use.

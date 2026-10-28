@@ -63,6 +63,7 @@ export default function DataBlock({ block }: BlockProps) {
       "data-grid-expansion-2",
     ].includes(block.id);
     const wideGutter = [
+      "data-grid-base-9",
       "data-grid-advanced-10",
       "data-grid-advanced-11",
       "data-grid-advanced-12",

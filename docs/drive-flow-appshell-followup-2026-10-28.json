@@ -190,7 +190,13 @@
         }
       ],
       "immutableAssets": 654,
-      "dependencies": "Matching normally installed842-package physical clone; not fresh installation."
+      "dependencies": "Matching normally installed842-package physical clone; not fresh installation.",
+      "aggregateToolingTests": {
+        "command": "node --test tests/*.test.mjs",
+        "passed": 112,
+        "failed": 0,
+        "scope": "Includes current Drive model files; this aggregate rerun is distinct from the earlier isolated21-case proof."
+      }
     },
     "Drive": {
       "mainBeforeFinalTone": {

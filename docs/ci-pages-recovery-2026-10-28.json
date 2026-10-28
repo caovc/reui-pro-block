@@ -1,0 +1,89 @@
+{
+  "milestone": "Complete CI and GitHub Pages recovery",
+  "confirmedAtUTC": "2026-10-28T09:40:37Z",
+  "commit": "24f246cf4d28b7108029eb0461bba106d4c60786",
+  "completeCI": {
+    "run": 40659931991,
+    "url": "https://github.com/caovc/reui-pro-block/actions/runs/40659931991",
+    "passed": 1689,
+    "failed": 0,
+    "testMinutes": 29.9,
+    "buildJob": 122726824401,
+    "deployJob": 122740721853,
+    "conclusion": "success",
+    "scope": "Original full3-worker suite, including all affected Flow hover cases, both Flux native widths and both pending-source loading cases. Not a rerun or a subset presented as full CI."
+  },
+  "Pages": {
+    "deployment": 7381938932,
+    "commit": "24f246cf4d28b7108029eb0461bba106d4c60786",
+    "status": "success",
+    "url": "https://caovc.github.io/reui-pro-block/"
+  },
+  "corrections": "Native hover exit avoids an adjacent helper. Username click readiness conditionally waits for trusted scrollend only when the same viewport actually moves; the original native keyboard/avatar behavior remains. Independent source readiness assertions share their established phases without changing lifecycle order.",
+  "nativeLiveBrowserVerification": {
+    "kind": "Root manual native browser interaction, distinct from automated CI",
+    "observedModuleScript": "assets/index-CpwS9jlW.js",
+    "desktopViewport": {
+      "width": 2552,
+      "height": 1322
+    },
+    "phoneViewport": {
+      "width": 390,
+      "height": 844
+    },
+    "verified": [
+      "Freshly reload the real Pages site and open Flux through its actual catalog link.",
+      "Open Account settings and the actual Profile trigger. Click Username, then native Tab focuses the Public Details Info and opens the real tooltip.",
+      "Escape1 closes only the tooltip and retains Profile; Escape2 closes Profile and returns focus to its actual trigger.",
+      "Observed the sequence at both actual desktop and phone sizes; saved and personally viewed the phone screenshot; reset the temporary viewport and retain the Templates deliverable tab."
+    ],
+    "limits": [
+      "Actual desktop width was2552, not a1440 screenshot.",
+      "No new original Linux scroll telemetry was downloaded or inferred. The complete Linux business cases passed, but local native scrolling is a separate observation."
+    ]
+  },
+  "laterFeatureBatch": {
+    "commit": "a25cfdcccf0117a783dcde0f558af76074b6dcfd",
+    "CI": 40665812192,
+    "statusAtRecoveryConfirmation": "Queued separately, subsequently format/tooling/lint/build passed and original full npm test running.",
+    "deploymentAtRecoveryConfirmation": "not yet confirmed",
+    "scope": "Drive Header, Flow Path and AppShell18 controls remain distinct from this24f deployment.",
+    "subsequentConfirmation": {
+      "completeCI": {
+        "run": 40665812192,
+        "url": "https://github.com/caovc/reui-pro-block/actions/runs/40665812192",
+        "passed": 1707,
+        "failed": 0,
+        "minutes": 27.1,
+        "conclusion": "success"
+      },
+      "Pages": {
+        "deployment": 7382503795,
+        "commit": "a25cfdcccf0117a783dcde0f558af76074b6dcfd",
+        "status": "success",
+        "atUTC": "2026-10-28T10:09:21Z",
+        "url": "https://caovc.github.io/reui-pro-block/"
+      },
+      "nativeLiveVerification": {
+        "observedScript": "assets/index-fXeCzIxD.js",
+        "phone": {
+          "width": 390,
+          "height": 844
+        },
+        "HelpBounds": {
+          "x": 16,
+          "y": 16,
+          "width": 358,
+          "height": 812
+        },
+        "checks": [
+          "Actual Adding files link navigates to Filespace Drive, closes Help and returns focus to Help trigger.",
+          "Source default is actual Drive; native selection of drive-header-help.tsx renders exact committed7606 UTF8 bytes.",
+          "Escape closes Source and returns focus to View template source."
+        ],
+        "sourceSHA256": "542222c4a06ae04d575c47fe2b1c454ebda3c8a02863acb7b30e614f10f7d91b"
+      },
+      "scope": "This confirmation updates the later batch only; the original24f as-of receipt remains intact."
+    }
+  }
+}

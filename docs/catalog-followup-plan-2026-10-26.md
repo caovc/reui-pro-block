@@ -327,3 +327,30 @@ separate runs. It documents remaining reference typography, artwork, prose and
 transition limits. This milestone does not claim complete CI or Pages success;
 commit, push and actual preview deployment are checked separately. The four new
 official DataGrid additions remain separate reference and implementation work.
+
+## API Request Logs and additional theme colors — 2026-10-28
+
+Base9 now has an independent API Request Logs implementation built from the actual
+free ReUI DataGrid, Filters, Cascader, Frame, CodeBlock and chart primitives. Its
+real source target and six implementation files drive preview, Copy, single-file
+download and the runnable project download. The catalog increases from669 to670
+only for this implemented entry. Strategy Scorecard, Retail P&L Outlook and Store
+KPI Board remain separately tracked; unobserved Advanced17–21 are not inferred.
+
+The shared theme generator adds the six observed Fuchsia, Green, Lime, Purple, Sky
+and Yellow choices. Existing theme storage, menus and controls remain in use. New
+Green survives v2 storage while legacy v1 Green retains its Emerald migration.
+Lime and Yellow use their actual deep foreground colors, including Limelight CTA;
+dark Limelight follows the same preset value. The previous12 presets produce
+byte-identical CSS across468 existing combinations.
+
+The [release receipt](api-request-logs-theme-colors-2026-10-28.json) records clean
+strict compilation, real source/export checks, original fixture failures and the
+necessary native readiness corrections separately. Original local demo data and
+local replay replace external requests; no paid artwork or original brand marks
+are distributed. Main CI, push and actual Pages deployment remain distinct gates.
+
+The preceding Drive/Flow/AppShell milestone is confirmed live: full CI40665812192
+passed1707 cases and Pages deployment7382503795 succeeded for a25cfdc. Root also
+verified the actual mobile Help link and exact source bytes in the live browser;
+see the [deployment recovery receipt](ci-pages-recovery-2026-10-28.json).

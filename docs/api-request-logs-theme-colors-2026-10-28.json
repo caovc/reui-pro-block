@@ -1,0 +1,230 @@
+{
+  "milestone": "API Request Logs and six additional theme colors",
+  "baseCommit": "a25cfdcccf0117a783dcde0f558af76074b6dcfd",
+  "publication": {
+    "state": "All required local gates verified; normal-hook commit/push and complete CI/Pages are next and not implied by this receipt.",
+    "catalogAfterIntegration": {
+      "blocks": 670,
+      "categories": 79,
+      "templates": 18
+    }
+  },
+  "implementation": {
+    "entry": "data-grid-base-9",
+    "reference": "https://reui.io/blocks/data-grid/base/data-grid-base-9",
+    "sourceFiles": [
+      "src/blocks/data/grid-base-api-request-logs.tsx",
+      "src/blocks/data/grid-base-api-request-logs-chart.tsx",
+      "src/blocks/data/grid-base-api-request-logs-details.tsx",
+      "src/blocks/data/grid-base-api-request-logs-data.ts",
+      "src/blocks/data/grid-base-api-request-logs-model.ts",
+      "src/blocks/data/grid-base-api-request-logs-types.ts"
+    ],
+    "actualFreeReuse": [
+      "DataGrid provider, TanStack table, column headers, selection, pagination and ScrollArea",
+      "Filters full query builder including AND/OR and negation",
+      "Cascader column selection",
+      "Frame, ToggleGroup, Badge and CodeBlock",
+      "ChartContainer, Recharts BarChart, axes and tooltip with existing free striped chart primitive",
+      "Sheet, Tabs, Accordion, Select and ButtonGroup compositions already supplied through the free component library"
+    ],
+    "customDomainAndReasons": [
+      "Original deterministic request fixtures, aggregate buckets and local replay state: free components do not supply an API log application domain.",
+      "Half-hour UTC bucket selection, status totals and error/availability calculations compose existing chart and table state.",
+      "Original release markers and response payloads replace source-site proprietary data/assets.",
+      "Send and Replay append a local demo result only; they do not issue outbound HTTP requests."
+    ],
+    "assets": "Original Bricklane identity and fixtures; native Unicode region flags, existing Lucide icons and local Inter fonts. No original paid screenshots, avatars or extracted SVG artwork."
+  },
+  "domainContract": {
+    "exclusiveEndUTC": "2026-10-28T12:00:00Z",
+    "bucketMinutes": 30,
+    "rangeHours": [6, 24, 72],
+    "windowSelection": "Time preset and chart selection scope both aggregate feed and detailed logs. Search/Filters only scope detailed logs.",
+    "statusLegend": "At least one status class remains enabled; legend visibility scopes series and rows while full-window totals remain unchanged.",
+    "errorRate": "(4xx + 5xx) / total",
+    "availability": "(total - 5xx) / total",
+    "zeroDenominator": "Domain returns0, UI shows dash.",
+    "fixtures": "40 original requests,144 independent72-hour aggregate buckets,3 own hosts,6 regions and3 original release markers. Default976 total intentionally differs from public701."
+  },
+  "themeColors": {
+    "added": ["Fuchsia", "Green", "Lime", "Purple", "Sky", "Yellow"],
+    "actualChangedSource": "src/components/site/preview-theme.ts",
+    "sha256": "c710404ac6a97b8b240bd5e21ecd27dae1954c4f63545c6670129f5b2ebd17f7",
+    "design": "Existing shared theme store, provider, menus and CSS generator; no second theme engine.",
+    "corrections": [
+      "New Green normalizes and persists as Green in v2. Only historical v1 Green migrates to Emerald.",
+      "Lime and Yellow use their measured deep foreground, including Limelight CTA.",
+      "Dark Limelight uses the same additional preset dark primary.",
+      "AppShell2 neutral surfaces remain neutral as observed publicly."
+    ],
+    "existingCompatibility": "12 existing presets and468 old CSS combinations byte-identical."
+  },
+  "localVerification": {
+    "main": {
+      "normalPostinstall": 0,
+      "fullFormatCheck": 0,
+      "lint": 0,
+      "toolingCasesPassed": 119,
+      "originalStrictBuildExit": 0,
+      "strictSeconds": 23.061246208962984,
+      "immutableAssets": 654
+    },
+    "base9Model": {
+      "casesPassed": 7,
+      "sourceSHA256": "74174f7c6870ff81ff01f962858661e291889b9594e78558ad7c2decf5d4e682"
+    },
+    "finalSource2": {
+      "passed": 2,
+      "seconds": 7.628277665935457,
+      "scope": "All six actual runtime files: viewer UTF8, real clipboard, single-file downloads; actual project ZIP and required free dependencies/notices."
+    },
+    "actualBase9Download": {
+      "archiveSHA256": "8f3e3195e5068d2396f1e290ca56727b462bdf2bebe7767e4ff2695adea7680a",
+      "bytes": 1687692,
+      "members": 311,
+      "originalStrictBuildExit": 0,
+      "strictSeconds": 12.226498333038762,
+      "immutableAssets": 58,
+      "allOriginalMembersExactAfterBuild": true,
+      "dependencyTree": "Physical copy of matching normally installed dependencies; not a fresh install.",
+      "packageContract": "All runtime dependencies and overrides match the original exporter. Its original six-key Block dev dependency projection is unchanged. No postinstall is defined.",
+      "runtimeNativePassed": 3,
+      "runtimeSeconds": 7.126479500089772,
+      "deltaFromPreviousVisualZIP": "310 members byte-identical; one actual request-log leaf adds native Funnel icon. Site preview-theme.ts is not in either Base9 ZIP closure.",
+      "independentAudit": {
+        "receiptSHA256": "232c2264623ec0b27dec05b36c6ae6f74e39bee7218460f403ec5d7db880a213",
+        "TSFiles": 287,
+        "CSSFiles": 14,
+        "localImportEdges": 1771,
+        "bareImportEdges": 657,
+        "importedPackages": 28,
+        "missing": 0,
+        "undeclared": 0,
+        "unknown": 0,
+        "rawExact": 303,
+        "generatedExactFromPrior": 8,
+        "svgNormalizationExceptions": 0
+      }
+    },
+    "existingGlobalThemeRegression": {
+      "passed": 4,
+      "seconds": 11.068481999915093
+    },
+    "additionalThemePure": {
+      "passed": 21,
+      "seconds": 0.11654354096390307
+    },
+    "additionalThemeNativeFirst": {
+      "passed": 29,
+      "failed": 1,
+      "seconds": 84.30426349991467,
+      "failure": "Phone test did not find its Mobile viewport control; original trace retained for diagnosis, not relabelled as a pass."
+    },
+    "nativeManual": {
+      "desktopViewport": [1440, 1000],
+      "phoneViewport": [390, 844],
+      "actualPhoneSheetBounds": {
+        "x": 16,
+        "y": 16,
+        "width": 358,
+        "height": 812
+      },
+      "sheetFont": "Inter, Arial, sans-serif",
+      "phoneOuterOverflow": false,
+      "consoleWarningsErrors": [],
+      "interaction": "Actual POST table button opens its request details with real Overview, Request and Response tabs."
+    },
+    "actualAppShell1Download": {
+      "archiveSHA256": "fcc0bea9b79e6f0ff9ee0c9712b7733e8a91116318d16f8aa084d6cf062206df",
+      "members": 412,
+      "actualThemeModuleSHA256": "c710404ac6a97b8b240bd5e21ecd27dae1954c4f63545c6670129f5b2ebd17f7",
+      "actualUITestPassed": 1,
+      "uiSeconds": 2.188655542093329,
+      "normalPostinstall": 0,
+      "originalStrictBuildExit": 0,
+      "strictSeconds": 9.067995125078596,
+      "immutableAssets": 429,
+      "all412OriginalMembersExactAfterBuild": true,
+      "boundary": "Original fixed AppShell1 example, Tooltip provider and Toaster. Site Customizer is not part of this starter entry.",
+      "runtime": {
+        "kind": "Manual native Edge verification on original immutable downloaded412-member project",
+        "steps": [
+          "Click real Deployments child; breadcrumb becomes Dashboard Deployments.",
+          "Click actual Collapse sidebar; trigger becomes Expand sidebar and rail remains visible.",
+          "Click collapsed Pipelines native popup; choose Release Gates.",
+          "Popup closes, breadcrumb becomes Dashboard Release Gates and focus returns to Pipelines."
+        ],
+        "viewport": {
+          "width": 2552,
+          "height": 1322
+        },
+        "consoleWarningsErrors": []
+      },
+      "independentAudit": {
+        "receiptSHA256": "eb91c72b78fa806537072ef217c383efa48c599431aa0b11132b1305fd3fe9a7",
+        "TSFiles": 310,
+        "CSSFiles": 44,
+        "localImportEdges": 1613,
+        "bareImportEdges": 589,
+        "importedDeclaredPackages": 43,
+        "missing": 0,
+        "undeclared": 0,
+        "parseErrors": 0,
+        "unknown": 0,
+        "rawExact": 383,
+        "generated": 8,
+        "namedSVGSerializationCases": 21,
+        "SVGChecks": "Each named SVG matches the actual installed Vite svgToDataURL result and an exact current dist dataURI; XML nodes, attributes and meaningful text agree. No blanket normalization.",
+        "noticesRawExact": 17
+      },
+      "bytes": 3732200
+    },
+    "finalAddedTooling": {
+      "casesPassed": 140,
+      "failed": 0,
+      "seconds": 2.056612665997818,
+      "includes": "Original tooling plus7 request-log model and21 additional theme tests.",
+      "fullLintExit": 0
+    },
+    "additionalThemeNativeNecessaryV2": {
+      "passed": 0,
+      "failed": 1,
+      "seconds": 31.0479,
+      "diagnosis": "The true Mobile viewport control is a radio. After that locator correction, the fixed mobile trigger was inside its iframe viewport but below the visible parent viewport. Actual parent native wheel brought it on screen; a separate measured native click opened the Navigation Sheet and Escape restored focus. No product change."
+    },
+    "reviewedThemeScreenshots": [
+      "Actual native Lime Light AppShell1 navigation/brand",
+      "Actual native Yellow Dark AppShell1 navigation/brand"
+    ],
+    "additionalThemeNativeNecessaryV3": {
+      "passed": 1,
+      "failed": 0,
+      "seconds": 3.9724143340718,
+      "specSHA256": "a510ffe1ea6a40d957d6edb3e13b96a27efbc42698e4222caa41c0b515eb85df",
+      "scope": "Same original phone case; actual radio role and checked state, native parent wheel, whole iframe/opener parent bounds, original Sheet/color/Escape/focus assertions.",
+      "earlier29Cases": "Unchanged and not repeated; first29PASS+two separate phone fixture failures are retained."
+    }
+  },
+  "preservedEarlierFailures": [
+    "Initial native3:2 passed,1 failed. A closed operator popup remained a Radix dismissal layer during its closing lifecycle. Native readiness now waits for actual unmount.",
+    "First necessary filter case passed the filter behavior then failed Root fixed Tab-order assumption because Clear is an intermediate enabled control. Columns setup now opens/closes through actual native input; subsequent Enter/focus assertions remain. Necessary case then passed once.",
+    "Initial visual geometry2 used the wrong Recharts ancestor selector; installed primary source confirms standalone tick-label layer. Corrected selector preserved all geometry assertions; necessary2 passed.",
+    "Previous actual package precheck wrongly demanded Template dev dependency projection for a Block; it failed before compiler/install/build. Corrected check uses the original exporter six-key projection.",
+    "Final actual preview readiness requested a bare origin returning400. The existing slash route returned200; no runner had begun and the same server was reused."
+  ],
+  "limits": [
+    "Official phone baseline initially rendered invalid bars/glyphs; a fresh dark phone reference repaired layout evidence and is not used as a light-color reference.",
+    "No claim of pixel-perfect identity or all unobserved official interactions.",
+    "Arbitrary highlighted response-body round-trip is not claimed; only actual original fixture payloads use the existing CodeBlock.",
+    "Three newly listed Advanced entries and ongoing Template settings refinements are separate, unfinished work."
+  ],
+  "testPolicy": {
+    "workers": 1,
+    "retries": 0,
+    "testTimeoutMs": 30000,
+    "expectTimeoutMs": 5000,
+    "budgetsAndBusinessAssertions": "Original budgets retained; corrections address native fixture lifecycle/setup only.",
+    "browserAvailability": "Browser plugin skill unavailable; regular repository Playwright used for automation, CUA Edge for separate manual native review."
+  }
+}

@@ -1,3 +1,4 @@
+import { ApiRequestLogs } from "./grid-base-api-request-logs";
 import { useCallback, useMemo, useState, type ReactNode } from "react";
 import {
   ArrowDownRight,
@@ -1518,5 +1519,6 @@ export default function BaseGrid({ block }: BlockProps) {
   if (n === 5) return <Support />;
   if (n === 6) return <Members />;
   if (n === 7) return <Modules />;
+  if (n === 9) return <ApiRequestLogs />;
   return <RateCard />;
 }

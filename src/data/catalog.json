@@ -3052,9 +3052,18 @@
         "reference": "https://reui.io/blocks/data-grid/base/data-grid-base-8",
         "index": 7,
         "description": "Cloud SKU rate card data grid with stacked discounts, commit usage bars, and price breakdowns"
+      },
+      {
+        "id": "data-grid-base-9",
+        "name": "API Request Logs",
+        "category": "base",
+        "group": "data-grid",
+        "reference": "https://reui.io/blocks/data-grid/base/data-grid-base-9",
+        "index": 8,
+        "description": "API request logs with status traffic, time-range zoom, structured filters and local request details."
       }
     ],
-    "count": 8
+    "count": 9
   },
   {
     "id": "advanced",
