@@ -418,3 +418,14 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* Icon content is supplied through the real upload buttons' label slots. */
+.workspace-settings-shell.wf-flux-profile-dialog
+  .workspace-settings-avatar
+  [data-slot="button"]:has([data-icon="inline-start"]) {
+  padding-inline-start: 8px;
+}
+
+.wf-flux-profile-dialog .wf-flux-profile-info {
+  border-radius: var(--radius-4xl);
+}

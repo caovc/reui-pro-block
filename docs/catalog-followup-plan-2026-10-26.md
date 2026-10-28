@@ -205,3 +205,32 @@ selected tab horizontally. This last observation belongs to the existing9c deplo
 Root publishes this recovery before unrelated UI follow-ups. Complete three-worker CI
 and an actual successful Pages deployment remain required before the newer Mesh,
 Flux, Prospect and Drive milestones are described as live.
+
+## Profile and Pricing free-component follow-up — 2026-10-28
+
+The [follow-up receipt](profile-pricing-free-followup-2026-10-28.json) records two
+small composition corrections. Flux supplies icon labels through the existing native
+avatar upload slots and adds the actual free Tooltip to the existing Public Details
+title slot. Omitted slots retain the default dialog behavior. Pricing4/5 preserve the
+real free success Badge background color by using background-image for their Pro
+gradients; gradient values, shadows and layout remain.
+
+Original Profile2 and controlled-settings2 regressions passed. New native Info/ARIA,
+two-step Escape, real file chooser, original local avatar preview and Remove checks
+passed on desktop and phone. The phone fixture waits for a real scrollend after its
+Username click, because passive event evidence established that the pending trusted
+ancestor scroll otherwise closes the native Tooltip. The component and SDK remain.
+Both meaningful native cases are retained as permanent regressions.
+
+Flux source viewing, Copy, single files and the actual305-member project match the
+changed files. Its unmodified downloaded entry passed a normal postinstall, strict
+build,1123 local and582 bare import checks, then desktop/phone runtime cases. The
+normal postinstall generated246 additional assets; the original305 members remained
+exact. Matching dependency trees were physical copies of normally installed packages.
+Pricing passed four computed-style/artwork/containment cases and two actual CSS
+view/Copy/file/ZIP cases. Successful computed body attachments were not persisted by
+the list reporter; the passing assertions and eight reviewed PNGs are the evidence.
+
+These local gates do not establish a deployment. The current healthy recovery CI
+continues unchanged; this follow-up queues a separate complete CI and Pages gate.
+Remaining official phone-popup, hover and independent SVG bounds are explicit limits.

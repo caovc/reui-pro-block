@@ -1,0 +1,216 @@
+{
+  "milestone": "Flux Profile content slots and Pricing free Badge base colors",
+  "base": "b15e60e8c3d0c0e61d17b6488ab44901e618b92e",
+  "scope": [
+    "src/blocks/application/dialog-variants/workspace/settings.tsx",
+    "src/templates/workflow/flux-settings-header.tsx",
+    "src/templates/workflow/flux-settings.css",
+    "src/blocks/commerce/pricing-customer-logos.css",
+    "src/blocks/commerce/pricing-refined.css",
+    "tests/flux-profile-slots-native.spec.ts"
+  ],
+  "actualFreeReuse": {
+    "Flux": "Existing AccountSettingsDialog SettingsRow and native LocalAvatarUpload label slots; actual free c-tooltip-1 Tooltip/Button/Info composition. No custom upload, portal or focus engine.",
+    "Pricing": "Existing real free ReUI Badge success variant. Consumer background-image preserves its semantic bg-success color.",
+    "customGap": "Optional Profile label/title presentation and Pro pricing gradients compose existing free primitives; free examples do not supply these template-specific contents."
+  },
+  "unchanged": [
+    "Default AccountSettingsDialog title and Change/Remove behavior when slots omitted",
+    "Profile state, validation, save, cancel, avatar upload handlers",
+    "Source targets and default leaves",
+    "Fonts, licensed artwork, MIT/OFL notices",
+    "Pricing gradient values, shadows and geometry"
+  ],
+  "validation": {
+    "strictMain": {
+      "exit": 0,
+      "seconds": 26.617127666948363,
+      "command": ["npm", "run", "build"],
+      "buildOnce": true
+    },
+    "runtimeBaseEquivalence": {
+      "publishedBase": "b15e60e8c3d0c0e61d17b6488ab44901e618b92e",
+      "originalCandidateArchiveBase": "358cbfbf9e5f34e9f5b8073581ad3957d19815be",
+      "allTrackedSrcCompared": 1046,
+      "onlyRuntimeDifferences": [
+        "src/blocks/application/dialog-variants/workspace/settings.tsx",
+        "src/blocks/commerce/pricing-customer-logos.css",
+        "src/blocks/commerce/pricing-refined.css",
+        "src/templates/workflow/flux-settings-header.tsx",
+        "src/templates/workflow/flux-settings.css"
+      ],
+      "compiledRuntimeGraphEqualsCurrentBasePlusFiveProductFiles": true,
+      "noNewProductBuildRequired": "Only tests/docs evolved after the original strict build; all runtime src bytes and matching package/lock/config remained exact through this guard."
+    },
+    "originalFluxProfile2": {
+      "command": [
+        "npx",
+        "--no-install",
+        "playwright",
+        "test",
+        "tests/templates-flux-header-native.spec.ts",
+        "--grep",
+        "native Profile",
+        "--workers=1",
+        "--retries=0",
+        "--output=/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-resume-ci-fixes-358-vugvr8ln/flux-profile-original2-once"
+      ],
+      "exit": 0,
+      "seconds": 8.001684250077233,
+      "originalTimeoutMs": 30000
+    },
+    "sharedControlledSettings2": {
+      "command": [
+        "npx",
+        "--no-install",
+        "playwright",
+        "test",
+        "tests/settings-panel-controlled.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--output=/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-resume-ci-fixes-358-vugvr8ln/shared-settings-default2-once"
+      ],
+      "exit": 0,
+      "seconds": 3.8553322079824284,
+      "originalTimeoutMs": 30000
+    },
+    "Info": {
+      "desktop": "Original new case passed once, including native chooser and Remove.",
+      "phone": "Original failed then one passive diagnostic confirmed trusted ancestor scroll after Tab closes native tooltip; fixture now waits for actual click-scroll scrollend before original Tab. Phone corrected case passed once, all original ARIA/Escape/chooser assertions retained.",
+      "phoneCorrected": {
+        "command": [
+          "npx",
+          "--no-install",
+          "playwright",
+          "test",
+          "tests/flux-profile-slots-native-scrollend.spec.ts",
+          "--grep",
+          "at 390$",
+          "--workers=1",
+          "--retries=0",
+          "--output=/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-resume-ci-fixes-358-vugvr8ln/flux-info-chooser-phone-v2-once"
+        ],
+        "exit": 0,
+        "seconds": 3.4726266659563407,
+        "originalTimeoutMs": 30000,
+        "temporaryNotForPublication": true
+      },
+      "nativeSDKProductChanged": false,
+      "newPermanentRegressions": 2
+    },
+    "FluxSource1": {
+      "command": [
+        "npx",
+        "--no-install",
+        "playwright",
+        "test",
+        "tests/flux-profile-slots-source.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--output=/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-resume-ci-fixes-358-vugvr8ln/flux-profile-source1-once"
+      ],
+      "exit": 0,
+      "seconds": 4.512793625006452,
+      "originalTimeoutMs": 30000,
+      "temporaryNotForPublication": true
+    },
+    "actualFluxZIP": {
+      "archive": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-resume-ci-fixes-358-vugvr8ln/flux-profile-source1-once/flux-profile-slots-source--52ab1-rofile-slots-source-exports/flux-profile-slots-project.zip",
+      "archiveSHA256": "8f03281633bd81be643f0ebdf20c90617936eba6c39228d1573996a5ca1a3ef1",
+      "members": 305,
+      "project": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-resume-ci-fixes-358-vugvr8ln/actual-flux-profile-project",
+      "dependencyTree": "physical copy of matching normally installed842-package Root tree; not fresh install",
+      "scripts": {
+        "dev": "vite",
+        "build": "tsc --noEmit && vite build",
+        "preview": "vite preview",
+        "postinstall": "node scripts/copy-excalidraw-assets.mjs"
+      },
+      "normalPostinstall": 0,
+      "strictExit": 0,
+      "strictSeconds": 9.426683541038074,
+      "originalMembersStillExact": true
+    },
+    "actualFluxImports": {
+      "files": 551,
+      "localTargets": 1123,
+      "bareTargets": 582,
+      "missing": [],
+      "undeclared": []
+    },
+    "actualFluxRuntime2": {
+      "command": [
+        "npx",
+        "--no-install",
+        "playwright",
+        "test",
+        "tests/flux-profile-actual-runtime.temporary.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--output=/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-resume-ci-fixes-358-vugvr8ln/actual-flux-runtime2-once"
+      ],
+      "exit": 0,
+      "seconds": 5.601492792018689,
+      "originalTimeoutMs": 30000,
+      "scope": "Original unmodified actual UI ZIP built at its root entry; temporary observer entry string only adapted, all Info/ARIA/Escape/chooser/Remove assertions retained",
+      "testSHA256": "8c0ae37cb237c7d81c6394bdbbe47e5976f8391d840fd163902c701b8d1b793f"
+    },
+    "actualFluxFont": "Inter SHA256c940764593d0fe5d596be327ca7558855e018039fb78509aa21921fd3644c3e4; MIT/OFL/notices exact. Other normal-postinstall font files are not claimed as original ZIP members.",
+    "PricingStyle4": {
+      "command": [
+        "npx",
+        "--no-install",
+        "playwright",
+        "test",
+        "tests/pricing45-success-base.temporary.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--output=/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-resume-ci-fixes-358-vugvr8ln/pricing45-style4-once"
+      ],
+      "exit": 0,
+      "seconds": 3.9862284590490162,
+      "originalTimeoutMs": 30000,
+      "temporaryNotForPublication": true
+    },
+    "PricingSource2": {
+      "command": [
+        "npx",
+        "--no-install",
+        "playwright",
+        "test",
+        "tests/pricing45-source-bytes.temporary.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--output=/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-resume-ci-fixes-358-vugvr8ln/pricing45-source2-once"
+      ],
+      "exit": 0,
+      "seconds": 4.299427916994318,
+      "originalTimeoutMs": 30000,
+      "temporaryNotForPublication": true,
+      "display": "CodeBlock line contents compared with only final linebreak structure trimmed; clipboard/singlefile/ZIP raw UTF8 exact"
+    },
+    "visual": "Root personally viewed actual Flux phone Info and desktop original-avatar preview. Pricing owner personally viewed four full and four Badge PNGs.",
+    "telemetryLimit": "Pricing computed assertions executed and passed, but successful body attachments were not persisted by the list reporter; no independent raw-JSON review claimed."
+  },
+  "publication": {
+    "normalHookCommit": "pending",
+    "push": "pending",
+    "completeCI": "pending",
+    "Pages": "pending",
+    "healthyRecoveryRun": 40648317836,
+    "cancelInProgress": false
+  },
+  "knownLimits": [
+    "No fresh independent official mobile Profile popup or hover comparison.",
+    "Independent original Change/Remove SVG bounds unobserved.",
+    "Local Radix role/description semantics retained despite public BaseUI differences.",
+    "No pixel-perfect or whole-catalog completion claim.",
+    "No repeated ZIP strict build for CSS-only changes with unchanged imports/dependencies."
+  ],
+  "separatePending": [
+    "AppShell18 account menu",
+    "Flow2 Path native fields",
+    "Drive Header/navigation",
+    "Grid layout and native ColumnVisibility audit"
+  ]
+}

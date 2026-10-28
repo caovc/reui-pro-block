@@ -1,4 +1,4 @@
-import { useState, type ReactElement } from "react";
+import { useState, type ComponentProps, type ReactElement, type ReactNode } from "react";
 import { Settings2 } from "lucide-react";
 import { demoAvatar, integrationArtwork, svgImage } from "@/lib/demo-artwork";
 import { cn } from "@/lib/utils";
@@ -39,6 +39,13 @@ export type AccountSettingsDialogProps = {
   /** Local or licensed demo artwork; captured once at mount. */
   initialAvatar?: string;
   profileRoleOptions?: readonly string[];
+  /** Optional presentation only; native upload state and callbacks remain owned here. */
+  profilePhotoLabels?: Pick<
+    ComponentProps<typeof LocalAvatarUpload>,
+    "changeLabel" | "removeLabel"
+  >;
+  /** Existing SettingsRow title content; preserves the original title when omitted. */
+  profilePublicDetailsTitle?: ReactNode;
   contentClassName?: string;
 };
 
@@ -48,6 +55,8 @@ export default function AccountSettingsDialog({
   onSave,
   initialAvatar,
   profileRoleOptions,
+  profilePhotoLabels,
+  profilePublicDetailsTitle = "Public Details",
   contentClassName,
 }: AccountSettingsDialogProps = {}) {
   const [open, setOpen] = useState(false);
@@ -80,6 +89,8 @@ export default function AccountSettingsDialog({
         <>
           <SettingsRow title="Profile Photo" description="Shown in comments and mentions.">
             <LocalAvatarUpload
+              changeLabel={profilePhotoLabels?.changeLabel}
+              removeLabel={profilePhotoLabels?.removeLabel}
               defaultAvatar={avatarPreview ?? (defaultAvatar ? originalAvatar : undefined)}
               onDefaultRemove={() => {
                 setDefaultAvatar(false);
@@ -145,7 +156,7 @@ export default function AccountSettingsDialog({
               />
             </InputGroup>
           </SettingsRow>
-          <SettingsRow title="Public Details" description="Shown across Atlas.">
+          <SettingsRow title={profilePublicDetailsTitle} description="Shown across Atlas.">
             <FieldGroup>
               <Field>
                 <FieldLabel htmlFor="workspace-settings-profileRole">Role</FieldLabel>
