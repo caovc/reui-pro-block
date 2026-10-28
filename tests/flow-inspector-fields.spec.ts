@@ -88,6 +88,8 @@ for (const width of [1440, 390]) {
         if (width === 390) {
           await expect.poll(async () => (await surface.boundingBox())!.x).toBe(5);
         }
+        // Leave this row before descending past other native help triggers.
+        await page.mouse.move(width - 10, helpBox.y + helpBox.height / 2);
         await page.mouse.move(width - 10, 850, { steps: 10 });
         await expect(tooltip).toHaveCount(0);
       }

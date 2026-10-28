@@ -3,6 +3,24 @@ import { writeFile } from "node:fs/promises";
 
 const help = "Role, time zone, and website show on your public profile.";
 const issues = new WeakMap<Page, string[]>();
+type ProfileScrollProbe = {
+  read: () => {
+    initialScrollTop: number;
+    initialScrollLeft: number;
+    actualScrollTop: number;
+    actualScrollLeft: number;
+    scrollEvents: number;
+    ended: boolean;
+    trusted: boolean;
+    connected: boolean;
+    sameViewport: boolean;
+    requiresScrollEnd: boolean;
+    ready: boolean;
+  };
+  dispose: () => void;
+};
+type ProfileScrollWindow = Window & { __bricklaneProfileScrollProbe?: ProfileScrollProbe };
+
 const originalAvatar = `<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="#0f766e"/><circle cx="24" cy="24" r="11" fill="#ccfbf1"/></svg>`;
 
 test.beforeEach(async ({ page }) => {
@@ -61,58 +79,94 @@ for (const width of [1440, 390]) {
     await expect(dialog).toBeVisible();
     if (width === 390) {
       await page.evaluate(() => {
-        const viewport = document.querySelector(
-          '.wf-flux-profile-dialog [data-slot="scroll-area-viewport"]',
-        );
+        const selector = '.wf-flux-profile-dialog [data-slot="scroll-area-viewport"]';
+        const viewport = document.querySelector(selector);
         if (!(viewport instanceof HTMLElement)) throw new Error("Profile ScrollArea is missing");
+        const initialScrollTop = viewport.scrollTop;
+        const initialScrollLeft = viewport.scrollLeft;
         const state = {
+          scrollEvents: 0,
           ended: false,
-          initialScrollTop: viewport.scrollTop,
-          finalScrollTop: 0,
           trusted: false,
+          endScrollTop: initialScrollTop,
+          endScrollLeft: initialScrollLeft,
         };
-        (
-          window as Window & { __bricklaneProfileScrollEnd?: typeof state }
-        ).__bricklaneProfileScrollEnd = state;
-        viewport.addEventListener(
-          "scrollend",
-          (event) => {
-            state.finalScrollTop = viewport.scrollTop;
-            state.trusted = event.isTrusted;
-            state.ended = true;
+        const onScroll = (event: Event) => {
+          if (event.target !== viewport) return;
+          state.scrollEvents += 1;
+          state.ended = false;
+          state.trusted = false;
+        };
+        const onScrollEnd = (event: Event) => {
+          if (event.target !== viewport) return;
+          state.ended = true;
+          state.trusted = event.isTrusted;
+          state.endScrollTop = viewport.scrollTop;
+          state.endScrollLeft = viewport.scrollLeft;
+        };
+        viewport.addEventListener("scroll", onScroll, { passive: true });
+        viewport.addEventListener("scrollend", onScrollEnd, { passive: true });
+        (window as ProfileScrollWindow).__bricklaneProfileScrollProbe = {
+          read: () => {
+            const actualScrollTop = viewport.scrollTop;
+            const actualScrollLeft = viewport.scrollLeft;
+            const connected = viewport.isConnected;
+            const sameViewport = document.querySelector(selector) === viewport;
+            const requiresScrollEnd =
+              actualScrollTop !== initialScrollTop ||
+              actualScrollLeft !== initialScrollLeft ||
+              state.scrollEvents > 0;
+            const scrollFinished =
+              state.ended &&
+              state.trusted &&
+              state.endScrollTop === actualScrollTop &&
+              state.endScrollLeft === actualScrollLeft;
+            return {
+              initialScrollTop,
+              initialScrollLeft,
+              actualScrollTop,
+              actualScrollLeft,
+              scrollEvents: state.scrollEvents,
+              ended: state.ended,
+              trusted: state.trusted,
+              connected,
+              sameViewport,
+              requiresScrollEnd,
+              ready: connected && sameViewport && (!requiresScrollEnd || scrollFinished),
+            };
           },
-          { once: true, passive: true },
-        );
+          dispose: () => {
+            viewport.removeEventListener("scroll", onScroll);
+            viewport.removeEventListener("scrollend", onScrollEnd);
+          },
+        };
       });
     }
     await dialog.getByRole("textbox", { name: "Username", exact: true }).click();
     if (width === 390) {
-      await expect
-        .poll(() =>
-          page.evaluate(
-            () =>
-              (
-                window as Window & {
-                  __bricklaneProfileScrollEnd?: { ended: boolean; trusted: boolean };
-                }
-              ).__bricklaneProfileScrollEnd,
-          ),
-        )
-        .toMatchObject({ ended: true, trusted: true });
-      await info.attach("native-username-scrollend", {
-        body: Buffer.from(
-          JSON.stringify(
-            await page.evaluate(
-              () =>
-                (window as Window & { __bricklaneProfileScrollEnd?: unknown })
-                  .__bricklaneProfileScrollEnd,
+      try {
+        await expect(dialog.getByRole("textbox", { name: "Username", exact: true })).toBeFocused();
+        await expect
+          .poll(() =>
+            page.evaluate(() =>
+              (window as ProfileScrollWindow).__bricklaneProfileScrollProbe?.read(),
             ),
-            null,
-            2,
-          ),
-        ),
-        contentType: "application/json",
-      });
+          )
+          .toMatchObject({ connected: true, sameViewport: true, ready: true });
+      } finally {
+        const observation = await page.evaluate(() => {
+          const probe = (window as ProfileScrollWindow).__bricklaneProfileScrollProbe;
+          const result = probe?.read();
+          probe?.dispose();
+          return result;
+        });
+        const evidence = JSON.stringify(observation ?? null, null, 2);
+        await writeFile(info.outputPath("native-username-scroll-readiness.json"), evidence);
+        await info.attach("native-username-scroll-readiness", {
+          body: Buffer.from(evidence),
+          contentType: "application/json",
+        });
+      }
     }
     await page.keyboard.press("Tab");
     const information = dialog.getByRole("button", { name: help, exact: true });

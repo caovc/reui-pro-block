@@ -270,3 +270,27 @@ Blocks title without an entry canonical, so its withdrawal, rename or fallback s
 remains unknown; retain the existing implementation pending clarification from public
 evidence. Category sets and all18 template reference URLs still match. Current Advanced
 IDs are1–16 and22; the unobserved17–21 are not inferred as additional entries.
+
+## Native fixture preconditions — 2026-10-28
+
+The [native-readiness receipt](ci-native-preconditions-followup-2026-10-28.json)
+preserves the953 complete run:1687 passed, two failed, Pages skipped. All original
+recovery cases and both pending-source cases passed in that run. The remaining
+failures were different native prerequisites, identified from the original traces.
+
+Flow's Detail helper closed, but its diagonal exit crossed Category and opened that
+separate helper. A horizontal waypoint now avoids unrelated help controls before
+the original final pointer move and unchanged zero-tooltip assertion. In the phone
+Profile trace, Username was already visible and the unique viewport remained at0;
+there was no scroll to end. The fixture now distinguishes no movement from a real
+scroll. Real movement still requires trusted native scrollend at the current final
+position; all subsequent keyboard, ARIA, Escape and avatar assertions remain.
+
+The clean db candidate has1059 runtime/build inputs byte-identical to the prior
+strict build and reuses its immutable654 assets. Normal postinstall, full formatting
+and lint passed, then the five affected hover/phone cases passed once in9.534s, with
+one worker, zero retries and the original budgets. The local phone actually scrolled
+0→174 with one trusted native end, preserving the moving branch. The new no-movement
+Linux branch awaits complete CI; the original Linux trace establishes that condition.
+No product, SDK, font, workflow or timeout changed. Commit/push and successful Pages
+deployment remain distinct gates; the currently running parent CI is not canceled.

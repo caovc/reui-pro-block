@@ -1,0 +1,71 @@
+{
+  "milestone": "Native hover path and conditional profile scroll readiness",
+  "base": "db5746876452ed146ac7f3eacd553d3b511a4772",
+  "scope": ["tests/flow-inspector-fields.spec.ts", "tests/flux-profile-slots-native.spec.ts"],
+  "originalCI": {
+    "run": 40651020985,
+    "sha": "9535e505c5fb8dda6b521349003dd24c1d736196",
+    "passed": 1687,
+    "failed": 2,
+    "Pages": "skipped",
+    "artifactSha256": "610f98748e8e6bd39923ff04392a1bfdabbb688cad5becc305cc1d997def9612",
+    "sourceLoadingCases": "both passed; original Carousel/Drive/Factory recovery cases also passed"
+  },
+  "findings": {
+    "Flow": "The Title hover closed. During the diagonal move out of Detail, Detail also closed, but the pointer crossed Category and opened a different tooltip. The original zero-tooltip result therefore failed.",
+    "Flux": "The original phone trace records one Profile viewport with actual scrollTop0 before and after the Username click; Username was already visible. No position change occurred, so a scrollend event was not expected. The old unconditional wait imposed a false prerequisite."
+  },
+  "corrections": {
+    "Flow": "Add one native horizontal waypoint at the active helper height before the unchanged final move to width-10,850 with10steps. Avoid traversing an unrelated helper while retaining all original hover/geometry/result assertions.",
+    "Flux": "Passively observe the same connected viewport. Actual position change or an observed scroll still requires a trusted native scrollend matching the current final position; a new scroll invalidates an old end. Without movement or a scroll, proceed after the original Username click and an added focused assertion. Preserve the complete original Tab/Info/ARIA/Escape/filechooser/avatar/Remove sequence."
+  },
+  "preservation": {
+    "productAndSDK": "unchanged",
+    "Flow": "All original matcher expressions/parameters/order and original final pointer move/count0 assertion retained. Only waypoint and explanatory comment added.",
+    "Flux": "Original navigation helper and complete Tab-through-final business tail byte identical. Only conditional readiness prerequisite and focused assertion changed.",
+    "budgets": "Original30s test/5s expect, zero retries; no sleeps, forced interactions, fake scroll, CSS/font overrides or workflow changes.",
+    "files": [
+      {
+        "path": "tests/flow-inspector-fields.spec.ts",
+        "source": "/tmp/flow-inspector-ci953-waypoint-testfix-v1-20261028/frozen/tests/flow-inspector-fields.spec.ts",
+        "before": "bd0207aa505106c2a67ff9cfdbac078b3e23404bf9673a037d98516ee20ded5c",
+        "sha256": "4a3f7795ceb4ca57609524fff27278a02260efa0f7beddaca5642d7d9c0c7571"
+      },
+      {
+        "path": "tests/flux-profile-slots-native.spec.ts",
+        "source": "/tmp/bricklane-engines/flux-profile-ci-scroll-conditional-static-v3-focus-only/tests/flux-profile-slots-native.spec.ts",
+        "before": "25e860fe9ac69e7b8a5c5f75df3f6609519202e6e2a4339e70014a07285b8363",
+        "sha256": "496c574ff9dd39621840cc98efb0119d0d736f91ac9a12699a63b1d12e08495c"
+      }
+    ]
+  },
+  "validation": {
+    "build": "Reused the already strictly built immutable654 files after byte comparison of all1059 tracked runtime/build inputs to a clean db archive; zero differences. No production input changed.",
+    "originalStrictBuildSeconds": 28.870576750021428,
+    "normalPostinstall": "passed",
+    "fullFormatCheck": "passed",
+    "lint": "passed",
+    "targeted": {
+      "passed": 5,
+      "failed": 0,
+      "seconds": 9.534011290990748,
+      "workers": 1,
+      "retries": 0,
+      "scope": "Flow1/2 hover geometry at1440/390, plus the affected Flux phone case"
+    },
+    "observedLocalPhone": "actualscrollTop0\u2192174; one real scroll; ended/trusted/connected/sameViewport/ready all true",
+    "dependencyTree": "Matching physical normally-installed842-package tree, not a fresh installation."
+  },
+  "reuse": "Actual free ReUI Field/Input/Tooltip, ScrollArea and existing avatar upload remain. These corrections change fixtures only.",
+  "publication": {
+    "commit": "Root coordinates scoped normal-hook commit",
+    "push": "separate from deployment",
+    "completeCI": "pending new original3worker run",
+    "Pages": "not confirmed"
+  },
+  "limits": [
+    "The new conditional no-scroll branch has not been executed on Linux locally; its prerequisite is grounded in the original Linux trace and awaits new complete CI.",
+    "Local5PASS is not complete CI or deployment.",
+    "Unpublished Path/AppShell/Header features and their separate artifacts are excluded."
+  ]
+}
