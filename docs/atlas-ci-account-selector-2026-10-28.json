@@ -1,0 +1,33 @@
+{
+  "problem": "After Atlas account settings started using the real parent-owned original account model, its default identity became Amara Ortiz. The existing typography regression still searched for the previous Nick Bold button, so it timed out before checking fonts.",
+  "change": "One exact accessible-name selector now follows the Atlas identity; all other template names, exact matching, 55 matchers, font/portal/focus assertions and original budgets are preserved. Product source and immutable assets are unchanged.",
+  "firstFullCI": {
+    "run": 40699860061,
+    "url": "https://github.com/caovc/reui-pro-block/actions/runs/40699860061",
+    "commit": "11ee9769b4279f5a19ff26123f1bdbd5bc61d7e9",
+    "passed": 1775,
+    "failed": 1,
+    "planned": 1776,
+    "workers": 3,
+    "minutes": 39.9,
+    "Pages": "skipped"
+  },
+  "evidence": {
+    "source": "src/templates/business/atlas-account-settings-data.ts createAtlasAccountProfile.fullName",
+    "actualBrowser": "The same immutable build exposes and opens Open account menu for Amara Ortiz.",
+    "independentStaticReviewSHA256": "9691abd4a8e46d448edb461310b5aae4b869557b33dc96e601c8bc7219daca7f",
+    "wholeFileInverseExact": true,
+    "originalTraceLocalRead": false,
+    "traceTransportLimit": "The original job log and artifact metadata were preserved. GitHub client EOF and signed-file proxy503 prevented local full trace bytes; these transport errors are separate from the CI failure. The fix is supported by the original failed locator, actual model and real browser observation, then the unchanged complete failing test."
+  },
+  "necessaryOriginalAtlasTest": {
+    "passed": 1,
+    "failed": 0,
+    "seconds": 5.587869041017257,
+    "workers": 1,
+    "retries": 0,
+    "originalFontPortalFocusAssertionsExecuted": true,
+    "productRebuild": false
+  },
+  "publication": "Normal-hook patch commit and push follow; a fresh full CI and actual Pages deployment must be confirmed separately. The original failed run is retained."
+}

@@ -225,7 +225,7 @@ for (const id of ["atlas", "miro"]) {
       await expect(drawer).toBeVisible();
       await expect(trigger).toBeFocused();
       const account = drawer.getByRole("button", {
-        name: "Open account menu for Nick Bold",
+        name: `Open account menu for ${id === "atlas" ? "Amara Ortiz" : "Nick Bold"}`,
         exact: true,
       });
       await account.click();
