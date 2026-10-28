@@ -345,6 +345,7 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
         "data-grid-advanced-11": "grid-advanced-factory-scorecard",
         "data-grid-advanced-12": "grid-advanced-freight",
         "data-grid-advanced-13": "grid-advanced-hr-scorecard",
+        "data-grid-advanced-14": "grid-advanced-strategy-scorecard",
         "data-grid-advanced-22": "grid-advanced-prospect-database",
       };
       const module = modules[block.id];
@@ -511,6 +512,7 @@ export function templateImplementationTargets(template: {
     filebox: "drive",
   };
   const secondaryModules: Record<string, string[]> = {
+    atlas: ["atlas-account-settings"],
     filespace: [
       "drive-layout",
       "drive-settings",

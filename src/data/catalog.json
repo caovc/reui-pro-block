@@ -3190,16 +3190,25 @@
         "description": "Monthly HR performance scorecard with grouped metrics, target editing, prior-year comparison and trends."
       },
       {
+        "id": "data-grid-advanced-14",
+        "name": "Strategy Scorecard",
+        "category": "advanced",
+        "group": "data-grid",
+        "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-14",
+        "index": 13,
+        "description": "Strategy scorecard with weighted market actuals, editable KPI values and weights, perspective scores and monthly detail."
+      },
+      {
         "id": "data-grid-advanced-22",
         "name": "Prospect Database",
         "category": "advanced",
         "group": "data-grid",
         "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-22",
-        "index": 13,
+        "index": 14,
         "description": "Prospect account database with structured filters, intent summaries, lists and account handover."
       }
     ],
-    "count": 14
+    "count": 15
   },
   {
     "id": "columns",

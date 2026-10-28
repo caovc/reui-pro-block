@@ -2165,8 +2165,10 @@ function DataGridCellSelection<TData extends object>({
  * padding, so the text keeps its exact place - the Sheets model. The
  * `textarea` control grows downward over the rows below as the text wraps.
  */
-function measureDataGridCellEditorStyle(viewport: HTMLElement): CSSProperties | null {
-  const cell = viewport.querySelector<HTMLElement>("td[data-cell-focused]");
+function measureDataGridCellEditorStyle(
+  viewport: HTMLElement,
+  cell = viewport.querySelector<HTMLElement>("td[data-cell-focused]"),
+): CSSProperties | null {
   if (!cell) return null;
   const cellRect = cell.getBoundingClientRect();
   const viewportRect = viewport.getBoundingClientRect();
@@ -2209,6 +2211,102 @@ function measureDataGridCellEditorStyle(viewport: HTMLElement): CSSProperties | 
   };
 }
 
+interface DataGridCellEditorAnchor {
+  body: HTMLTableSectionElement;
+  row: HTMLTableRowElement;
+  cell: HTMLTableCellElement;
+  rows: { element: Element; id: string | null }[];
+  columns: { element: Element; id: string | null }[];
+  style: CSSProperties;
+}
+
+// Capture the real native cells once per keyed edit session. Child widgets can
+// update their own DOM without changing this table structure or editor anchor.
+function captureDataGridCellEditorAnchor(
+  viewport: HTMLElement,
+  session: DataGridEditorSession,
+): DataGridCellEditorAnchor | null {
+  const cell = viewport.querySelector<HTMLTableCellElement>("td[data-cell-focused]");
+  const row = cell?.closest<HTMLTableRowElement>("tr");
+  const body = row?.closest<HTMLTableSectionElement>("tbody");
+  if (
+    !cell ||
+    !row ||
+    !body ||
+    row.parentElement !== body ||
+    cell.parentElement !== row ||
+    row.getAttribute("data-row-id") !== session.rowId ||
+    cell.getAttribute("data-col-id") !== session.columnId
+  ) {
+    return null;
+  }
+  const style = measureDataGridCellEditorStyle(viewport, cell);
+  if (!style) return null;
+  return {
+    body,
+    row,
+    cell,
+    rows: Array.from(body.children)
+      .filter((element) => element.tagName === "TR")
+      .map((element) => ({
+        element,
+        id: element.getAttribute("data-row-id"),
+      })),
+    columns: Array.from(row.cells).map((element) => ({
+      element,
+      id: element.getAttribute("data-col-id"),
+    })),
+    style,
+  };
+}
+
+function isDataGridCellEditorAnchorValid(
+  viewport: HTMLElement,
+  session: DataGridEditorSession,
+  anchor: DataGridCellEditorAnchor,
+): boolean {
+  const { body, row, cell, rows, columns, style } = anchor;
+  if (
+    !viewport.isConnected ||
+    !viewport.contains(body) ||
+    !row.isConnected ||
+    !cell.isConnected ||
+    row.parentElement !== body ||
+    cell.parentElement !== row ||
+    row.getAttribute("data-row-id") !== session.rowId ||
+    cell.getAttribute("data-col-id") !== session.columnId ||
+    row.cells.length !== columns.length
+  ) {
+    return false;
+  }
+  const currentRows = Array.from(body.children).filter((element) => element.tagName === "TR");
+  if (
+    currentRows.length !== rows.length ||
+    !rows.every(
+      ({ element, id }, index) =>
+        currentRows[index] === element && element.getAttribute("data-row-id") === id,
+    ) ||
+    !columns.every(
+      ({ element, id }, index) =>
+        row.cells[index] === element && element.getAttribute("data-col-id") === id,
+    )
+  ) {
+    return false;
+  }
+  // Reuse the editor's content-coordinate measurement: a page scroll moves
+  // both rects together, and scrolling the viewport is compensated there.
+  // An actual row-height/column-width change must not leave an old overlay
+  // covering another location even if every row and cell kept its identity.
+  const current = measureDataGridCellEditorStyle(viewport, cell);
+  return (
+    current !== null &&
+    current.left === style.left &&
+    current.top === style.top &&
+    current.width === style.width &&
+    current.minHeight === style.minHeight
+  );
+}
+
 function DataGridCellEditorOverlay({
   viewport,
   session,
@@ -2222,11 +2320,17 @@ function DataGridCellEditorOverlay({
   onCommit: (raw: string, advance: DataGridEditorAdvance, refocus?: boolean) => void;
   onCancel: () => void;
 }) {
-  // Measured lazily at first render: the focused td was committed before the
-  // session opened, and the overlay remounts per cell via its key, so one
-  // measurement holds for the editor's lifetime.
-  const [style] = useState<CSSProperties | null>(() => measureDataGridCellEditorStyle(viewport));
+  // The overlay remounts per cell via its key, so its native DOM identities
+  // and measured position belong to this session, not to a later rerender.
+  const [anchor] = useState(() => captureDataGridCellEditorAnchor(viewport, session));
+  const style = anchor?.style ?? null;
   const finishedRef = useRef(false);
+  // The parent supplies an inline callback. Keep it current without tearing
+  // down observation or recapturing a potentially invalidated anchor.
+  const onCancelRef = useRef(onCancel);
+  useEffect(() => {
+    onCancelRef.current = onCancel;
+  }, [onCancel]);
 
   // The caret belongs at the END of the value (the Excel F2 convention);
   // a textarea would otherwise open with it at position 0. Set on mount,
@@ -2238,22 +2342,44 @@ function DataGridCellEditorOverlay({
   };
 
   useEffect(() => {
-    if (!style) onCancel();
-  }, [style, onCancel]);
+    if (!style) {
+      finishedRef.current = true;
+      onCancelRef.current();
+    }
+  }, [style]);
 
-  // External row changes mid-edit (a live update, a re-sort) move or remove
-  // the cell underneath the overlay; the measured position is then a lie and
-  // a commit could land visually elsewhere. Cancel instead: predictable, and
-  // nothing is written that the user cannot see.
+  // Sort/filter/reorder/removal or a replaced cell invalidates this overlay.
+  // Descendant churn (for example, an animated chart in another cell) does
+  // not: it can replace SVG nodes while every real row/cell stays in place.
   useEffect(() => {
-    const body = viewport.querySelector("tbody");
-    if (!body) return;
-    const observer = new MutationObserver(() => {
-      if (!finishedRef.current) onCancel();
+    if (!anchor) return;
+    const cancelIfInvalid = () => {
+      if (finishedRef.current || isDataGridCellEditorAnchorValid(viewport, session, anchor)) return;
+      finishedRef.current = true;
+      onCancelRef.current();
+    };
+    const observer = new MutationObserver(cancelIfInvalid);
+    observer.observe(viewport, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["data-row-id", "data-col-id"],
     });
-    observer.observe(body, { childList: true, subtree: true });
-    return () => observer.disconnect();
-  }, [viewport, onCancel]);
+    // A row above the editor can change height without replacing a node.
+    // Observe actual row boxes as well, including when total body height is
+    // unchanged because another row shrank by the same amount.
+    const resizeObserver =
+      typeof ResizeObserver === "undefined" ? null : new ResizeObserver(cancelIfInvalid);
+    resizeObserver?.observe(viewport);
+    resizeObserver?.observe(anchor.body);
+    resizeObserver?.observe(anchor.cell);
+    for (const { element } of anchor.rows) resizeObserver?.observe(element);
+    cancelIfInvalid();
+    return () => {
+      observer.disconnect();
+      resizeObserver?.disconnect();
+    };
+  }, [viewport, session, anchor]);
 
   if (!style) return null;
 

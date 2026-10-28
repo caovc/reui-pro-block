@@ -8,6 +8,14 @@ import {
 } from "./atlas-access";
 import AtlasUsers from "./atlas-users";
 import { useState } from "react";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { CircleHelp, Settings, Users } from "lucide-react";
 import {
   Shell,
@@ -22,15 +30,35 @@ import {
   Area,
   DataTable,
   RecordDialog,
-  SettingsPage,
   toast,
   exportCsv,
 } from "./shared";
+import { AtlasAccountSettings } from "./atlas-account-settings";
+import { useAtlasAccountSettingsModel } from "./atlas-account-settings-model";
+import { useAtlasAccountRoute } from "./atlas-account-route";
+import "./atlas-account-layout.css";
+
 export default function Atlas() {
   const roleState = useAtlasRoleState();
   const accessState = useAtlasAccessState();
   const auditState = useAtlasAuditState();
-  const [active, setActive] = useState("Dashboard");
+  const account = useAtlasAccountSettingsModel();
+  const routing = useAtlasAccountRoute();
+  const [page, setPage] = useState("Dashboard");
+  const active = routing.section ? "Settings" : page;
+  const setActive = (next: string) => {
+    if (next === "Settings" || next === "Profile") {
+      account.setSection("profile");
+      routing.navigate("profile");
+    } else {
+      setPage(next);
+      routing.navigate(null);
+    }
+  };
+  const accountModel = {
+    ...account,
+    section: routing.section ?? account.section,
+  };
   const [newUser, setNewUser] = useState(false);
   const [users, setUsers] = useState([
     ["Amara Ortiz", "amara@example.com", "Administrator", "Active"],
@@ -44,6 +72,13 @@ export default function Atlas() {
     <Shell
       id="atlas"
       brand="Bricklane"
+      sidebarSide={account.preferences.sidebarPosition === "Right" ? "right" : "left"}
+      reduceAnimations={account.preferences.reduceAnimations}
+      account={{
+        name: account.identity.name,
+        organisation: account.identity.email,
+        photo: account.identity.avatar ?? undefined,
+      }}
       active={active}
       setActive={(x) => {
         setActive(x);
@@ -98,7 +133,40 @@ export default function Atlas() {
           <AtlasAudit model={auditState} />
         </>
       ) : active === "Settings" ? (
-        <SettingsPage brand="Bricklane" />
+        <div className="atlas-account-page">
+          <Breadcrumb className="atlas-account-breadcrumb">
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink
+                  href={routing.href(null)}
+                  onClick={(event) => {
+                    if (
+                      event.button !== 0 ||
+                      event.metaKey ||
+                      event.ctrlKey ||
+                      event.shiftKey ||
+                      event.altKey
+                    )
+                      return;
+                    event.preventDefault();
+                    setActive("Dashboard");
+                  }}
+                >
+                  Dashboard
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Settings</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+          <AtlasAccountSettings
+            model={accountModel}
+            sectionHref={routing.href}
+            onSectionChange={routing.navigate}
+          />
+        </div>
       ) : (
         <>
           <Heading

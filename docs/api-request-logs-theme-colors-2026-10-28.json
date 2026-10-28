@@ -7,6 +7,34 @@
       "blocks": 670,
       "categories": 79,
       "templates": 18
+    },
+    "subsequentConfirmation": {
+      "commit": "47289584889e9f8a2e9a9057c01be2d7e6e624ac",
+      "fullCI": {
+        "run": 40683148395,
+        "passed": 1741,
+        "failed": 0,
+        "workers": 3,
+        "minutes": 32.4,
+        "conclusion": "success"
+      },
+      "Pages": {
+        "deployment": 7385256413,
+        "status": "success",
+        "atUTC": "2026-10-28T12:25:37Z",
+        "url": "https://caovc.github.io/reui-pro-block/"
+      },
+      "nativeLiveVerification": {
+        "module": "assets/index-BE8ZJTSr.js",
+        "catalog": 670,
+        "sourceBytes": 32806,
+        "sourceSHA256": "f30b1aa3235715e7548ef0a23587d81e8a85e9ad339c2c1cd2d35e265825a126",
+        "checks": [
+          "Actual six new Accent choices, Green root primary and iframe data-accent synchronization; restored preceding Rose/Light.",
+          "Actual POST request detail and Request tab body/headers/cURL; no console errors."
+        ],
+        "viewport": [2552, 1275]
+      }
     }
   },
   "implementation": {

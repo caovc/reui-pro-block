@@ -7,6 +7,7 @@ import TechnicianCapacity from "./grid-advanced-technician-capacity";
 import FactoryScorecard from "./grid-advanced-factory-scorecard";
 import FreightCargo from "./grid-advanced-freight";
 import HRScorecard from "./grid-advanced-hr-scorecard";
+import StrategyScorecard from "./grid-advanced-strategy-scorecard";
 import ProspectDatabase from "./grid-advanced-prospect-database";
 import { DomainRecordGrid, domainTextMatches } from "./grid-advanced-model-grid";
 import { campaignPerformanceRows, campaignTargetRows, storePnlRows } from "./grid-advanced-seeds";
@@ -1087,6 +1088,8 @@ export default function AdvancedGrid({ block }: BlockProps) {
       return <FreightCargo />;
     case "data-grid-advanced-13":
       return <HRScorecard />;
+    case "data-grid-advanced-14":
+      return <StrategyScorecard />;
     case "data-grid-advanced-22":
       return <ProspectDatabase />;
     default:

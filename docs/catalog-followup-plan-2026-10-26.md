@@ -354,3 +354,42 @@ The preceding Drive/Flow/AppShell milestone is confirmed live: full CI4066581219
 passed1707 cases and Pages deployment7382503795 succeeded for a25cfdc. Root also
 verified the actual mobile Help link and exact source bytes in the live browser;
 see the [deployment recovery receipt](ci-pages-recovery-2026-10-28.json).
+
+## Strategy Scorecard and Atlas account settings — 2026-10-28
+
+Strategy Scorecard is now implemented through the actual free DataGrid, native
+editing, Filters, column visibility, NumberField and chart components. Original
+local KPI data and weighted domain rules support editable values, real invalid
+paste rejection, Undo, hierarchy, market/month details and KPI CRUD. The actual
+free column-visibility menu gains only an optional children slot; its existing
+provider, column mapping and default behavior remain. The public-style rail uses
+the original cell composition, with a consumer stacking fix for native pinned TDs.
+
+Atlas replaces its reachable generic three-input Settings page with distinct
+Profile, Security and Preferences compositions. Actual SettingsRow/SettingsFields,
+free Frame/Field/AvatarUpload, Breadcrumb and the existing Sidebar engine supply
+the UI. Saved identity, native tab links, Back/Forward, validation, avatar cancel,
+color preference and Sidebar side are connected to the existing template state.
+The sidebar's right-side rail and caption face inward; no overflow is clipped.
+
+Both independently checked surfaces are integrated into one clean candidate.
+View/Copy/single-file and actual project exports use the real implementation files.
+The [Strategy audit](strategy-scorecard-integration-2026-10-28.md),
+[Atlas audit](atlas-account-settings-integration-2026-10-28.md) and
+[joint release receipt](strategy-atlas-release-2026-10-28.json) preserve exact local
+gates, original failures, reference limits and the remaining native editor audit.
+Their local checks do not imply complete CI or deployment.
+
+The local catalog increases670→671 for the actual Strategy entry. It retains all79
+categories and the unlisted legacy DevOps7 implementation. Retail P&L Outlook and
+Store KPI Board remain separate pending additions; Advanced17–21 are not inferred.
+The full [checklist](CATALOG.md) is refreshed from the actual local catalog.
+
+The preceding4728958 milestone is confirmed deployed: original full CI1741passed
+in32.4m, Pages deployment7385256413 succeeded at2026-10-28T12:25:37Z. Root separately
+verified the live module, catalog670, new Green synchronization, exact32806-byte
+Base9 source and real request details. Future Template settings work remains private.
+
+### 2026-10-28 Strategy14 + Atlas 最终本地门槛
+
+共享实际免费 DataGrid 的早期图表动画误取消编辑问题已完成结构/锚点判断修正。原 strict、必要 native4、实际网站 Source2、两个原始收到项目的独立构建均通过；Atlas原入口8项、Strategy原入口13项首次全绿。首次失败与未覆盖取消路径保留在本批审计，手机0.75px残差不伪报通过。当前可达目录671条/79类/7组及18模板；Advanced15/16仍是单独私有待整合项。发布应遵循正常hooks commit→push→全CI→真实Pages成功，分别记录。

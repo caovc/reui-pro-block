@@ -3,7 +3,7 @@
 // Opted out of React Compiler with the rest of the grid (see data-grid.tsx).
 "use no memo";
 
-import type { ReactElement } from "react";
+import type { ReactElement, ReactNode } from "react";
 import { getColumnHeaderLabel, useDataGrid } from "@/components/reui/data-grid/data-grid";
 import type { DataGridFeatures } from "@/components/reui/data-grid/data-grid";
 import type { Table } from "@tanstack/react-table";
@@ -20,9 +20,11 @@ import {
 function DataGridColumnVisibility<TData extends object>({
   table,
   trigger,
+  children,
 }: {
   table: Table<DataGridFeatures, TData>;
   trigger: ReactElement<Record<string, unknown>>;
+  children?: ReactNode;
 }) {
   const { i18n } = useDataGrid();
 
@@ -51,6 +53,7 @@ function DataGridColumnVisibility<TData extends object>({
               );
             })}
         </DropdownMenuGroup>
+        {children}
       </DropdownMenuContent>
     </DropdownMenu>
   );

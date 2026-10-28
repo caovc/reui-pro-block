@@ -227,6 +227,8 @@ export function Shell(props: ComponentProps<typeof ShellContent>) {
   const framed = ["cohort", "verve", "miro"].includes(props.id);
   return (
     <SidebarProvider
+      data-sidebar-side={props.sidebarSide ?? "left"}
+      data-reduce-animations={props.reduceAnimations ? "true" : undefined}
       className={`bt-app bt-layout bt-${props.id} ${props.rail ? "bt-has-rail" : ""} ${framed ? "bt-framed" : ""}`}
       style={
         {
@@ -252,6 +254,7 @@ function ShellContent({
   footer,
   navGroups,
   account,
+  sidebarSide = "left",
 }: {
   id: string;
   brand: string;
@@ -265,6 +268,8 @@ function ShellContent({
   footer?: ReactNode;
   navGroups?: Record<string, string[]>;
   account?: { name: string; organisation: string; photo?: string };
+  sidebarSide?: "left" | "right";
+  reduceAnimations?: boolean;
 }) {
   const { state, isMobile, setOpenMobile, toggleSidebar } = useSidebar();
   const collapsed = !isMobile && state === "collapsed";
@@ -318,7 +323,7 @@ function ShellContent({
           </DropdownMenuTrigger>
           <DropdownMenuContent
             className="reui-reference"
-            side={isMobile ? "top" : "right"}
+            side={isMobile ? "top" : sidebarSide === "right" ? "left" : "right"}
             align="end"
           >
             <DropdownMenuLabel>{accountName}</DropdownMenuLabel>
@@ -556,6 +561,7 @@ function ShellContent({
         {crossHeader && topbar}
         <div className="bt-layout-columns">
           <ReuiSidebar
+            side={sidebarSide}
             width={id === "miro" ? 302 : id === "verve" ? 200 : commerce ? 260 : 256}
             collapsible={rail ? "offcanvas" : "icon"}
             className="bt-sidebar shell-reference"

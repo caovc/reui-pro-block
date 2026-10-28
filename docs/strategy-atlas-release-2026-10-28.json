@@ -1,0 +1,440 @@
+{
+  "milestone": "Strategy Scorecard and Atlas account settings",
+  "baseCommit": "47289584889e9f8a2e9a9057c01be2d7e6e624ac",
+  "publication": {
+    "state": "Local final source, original strict and actual received-project runtime checks passed; normal-hook commit, push, full CI and Pages are subsequent separate steps.",
+    "catalog": {
+      "blocks": 671,
+      "categories": 79,
+      "groups": 7,
+      "templates": 18
+    },
+    "pendingOfficialBlocks": ["data-grid-advanced-15", "data-grid-advanced-16"],
+    "legacyRetained": "solution-dev-ops-7"
+  },
+  "actualFreeReuse": {
+    "Strategy": [
+      "One actual free DataGrid/TanStack provider, native cell editing, filters, columns, clipboard and Undo",
+      "Filters full native query, Frame, NumberField, Chart/Recharts cell visuals, Select, Sheet, Tabs and Dialog",
+      "Existing free column-visibility component with one optional children slot, preserving the original map/provider/handlers/default consumers",
+      "Actual free DataGridCellEditorOverlay now validates native row/cell identity and anchor geometry instead of canceling for every SVG descendant update; existing input, commit, clipboard and Undo APIs retained."
+    ],
+    "Atlas": [
+      "Existing SettingsRow/SettingsFields/SettingsChoice rendering actual free Field components",
+      "Existing LocalAvatarUpload/use-file-upload, Frame, Collapsible, Select, Switch, Badge",
+      "Exact existing free c-breadcrumb-1 primitives",
+      "Existing SidebarProvider/ReuiSidebar with optional side/reduced-motion consumer props; no new engine"
+    ]
+  },
+  "customDomainReasons": {
+    "Strategy": "Original30 KPI/9 objective/4 perspective/10 market fixtures, weighted rollups, manual domain policies, local CRUD and native application wiring are not supplied by a generic free grid.",
+    "Atlas": "Original local account schema, validation, upload lifetime, identity and hash route model are application state, composed with existing free fields."
+  },
+  "Strategy": {
+    "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-14",
+    "firstNative11": {
+      "passed": 7,
+      "failed": 4,
+      "seconds": 67.410165,
+      "retained": true
+    },
+    "fixtureCorrection": "Before-visible innerText now compared to the same actual visible innerText; real NumberField exposes textbox, not a visible spinbutton. Original business requirements and budgets retained.",
+    "necessaryNative5": {
+      "passed": 5,
+      "failed": 0,
+      "seconds": 16.265995,
+      "scope": "Four original failed cases and the original affected phone case; remaining six green cases were not repeated."
+    },
+    "visualCorrections": [
+      "Own spanning perspective rail TD uses z31!important above native pinned TD inline30; no shared table/row-span rewrite.",
+      "Phone uses actual public max-sm:hidden description rule, actual512px grid, real summary dimensions and naturally wrapped status/help.",
+      "Only phone caption uses xclip/yvisible to preserve the actual trimmed glyph paint; all v3/v4 rectangles match."
+    ],
+    "phoneReference": {
+      "viewport": [390, 900],
+      "tableY": 277.46875,
+      "scrollHeight": 512,
+      "footerY": 742.46875,
+      "helpY": 789.46875,
+      "frameBottom": 878.203125,
+      "notAn844PixelReference": true
+    },
+    "source2FinalV4": {
+      "passed": 2,
+      "seconds": 12.17193,
+      "sixActualViewCopySingleFiles": true,
+      "realRequiredSources": 51
+    },
+    "actualProjectBeforeCoreRepair": {
+      "archiveSHA256": "e9f3c2e1a2bdd20d7c8754d1f6c543b805acac49a46af506972e564bb5c8298a",
+      "bytes": 1725298,
+      "members": 317,
+      "originalStrictBuildExit": 0,
+      "strictSeconds": 10.960194999934174,
+      "immutableAssets": 58,
+      "receivedEntryUntouched": true,
+      "all317OriginalMembersExactAfterBuild": true,
+      "nativeFirst": {
+        "passed": 10,
+        "failed": 1,
+        "seconds": 51.379430749919266,
+        "failure": "Raw Value editor existed and had the correct unformatted millions value, then detached before fill. Original trace retained; narrow diagnosis pending."
+      },
+      "independentAudit": {
+        "receiptSHA256": "97d18d2767f814a0baa891cb5c39cd793f25ade692720ad3d4848582cdcc8af4",
+        "TSFiles": 292,
+        "CSSFiles": 15,
+        "localEdges": 1815,
+        "bareEdges": 665,
+        "importedDeclaredPackages": 28,
+        "missingOrUnknown": 0,
+        "rawExact": 309,
+        "generated": 8,
+        "exceptions": 0,
+        "oldV4Comparison": "All317 members, compressed payloads and order byte-identical; archive container differs only in1268 DOS timestamp bytes. No original archive was rewritten."
+      }
+    },
+    "preCoreJointActualZIPCase": {
+      "passed": 1,
+      "seconds": 3.3682344580302015
+    },
+    "actualProject": {
+      "archiveSHA256": "2920d2e386cd58ca5168cd9adad0ca13004bd29a392a4b659d27d85843003f3e",
+      "bytes": 1726365,
+      "members": 317,
+      "coreSHA256": "6fe6842fd5f0f419f0a8cdb6c4c2b15872a2d3b51bbc069343b1d353ff729ad5",
+      "npmLsExit": 0,
+      "originalStrictBuild": {
+        "name": "actual-strategy-original-strict-build-once",
+        "command": ["npm", "run", "build"],
+        "cwd": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-strategy-atlas-core-v2-ejdgngh_/actual-strategy-project",
+        "exit": 0,
+        "seconds": 11.1294012919534,
+        "log": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-strategy-atlas-core-v2-ejdgngh_/actual-strategy-original-strict-build-once.log",
+        "logSHA256": "b1ef0d11cb754d5affdc2ba6c6a107cfc51aa864e526000e1053a7635f58c887"
+      },
+      "native": {
+        "command": [
+          "npx",
+          "playwright",
+          "test",
+          "tests/grid-advanced-strategy-scorecard-native.spec.ts",
+          "--workers=1",
+          "--retries=0",
+          "--output",
+          "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-strategy-atlas-core-v2-ejdgngh_/actual-strategy-native13-first-once/artifacts",
+          "--reporter=json"
+        ],
+        "cwd": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-strategy-atlas-core-v2-ejdgngh_/candidate",
+        "preview": "http://127.0.0.1:55742/",
+        "environmentOverrides": {
+          "BRICKLANE_STRATEGY_URL": "http://127.0.0.1:55742/"
+        },
+        "exit": 0,
+        "seconds": 29.542542707989924,
+        "stats": {
+          "startTime": "2026-10-28T13:40:35.553Z",
+          "duration": 29122.32,
+          "expected": 13,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "reportSHA256": "e7f0ca67da85ff92ef1abbfcceed47b1495d45b0864ac95bfa266bb82bc97d96"
+      },
+      "receivedMembersStillExactAfterBuildAndRun": true,
+      "fixedEntryAndConfigurationUnmodified": true,
+      "installation": "Physical matching normally-installed dependency clone; not a fresh install.",
+      "actualPreviewServer": "Owned session stopped normally after native run."
+    }
+  },
+  "Atlas": {
+    "reference": "https://atlas-admin.reui.io/account/profile",
+    "route2FirstPassed": 2,
+    "firstNative6": {
+      "passed": 5,
+      "failed": 1,
+      "failure": "Real desktop Right sidebar handle/caption overflow; fixed by consumer mirroring, no clipping."
+    },
+    "necessaryRoute1AndNewTheme2": {
+      "passed": 3,
+      "seconds": 4.886077750008553
+    },
+    "originalPermissionsAccess2": {
+      "passed": 2,
+      "seconds": 3.454035000060685,
+      "initialDiscovery": "Anchored CLI grep found0 cases; actual2-case discovery and first execution are recorded separately."
+    },
+    "geometry": {
+      "desktop": "Public x280/y194/1136×911.5 and navY136 match exactly.",
+      "phone": "Public x24/y214/w342/navY156/AccountY64 match; card height1316.75 vs public1316 gives0.75px residual.",
+      "privateGeometryResult": "Initial desktopPASS1/phoneFAIL1 at unchanged0.5px threshold. No wider tolerance or fake green; actual full-page phone screenshot reviewed.",
+      "fullPixelEquivalenceClaimed": false
+    },
+    "sourceInitialFixtureFailures": [
+      "Unused ReuiLayout was incorrectly required by the copied protocol.",
+      "Site-only shared.css was incorrectly required; actual TemplateSurface imports reference.css. Both first failures retained; exporter not changed to add fake files."
+    ],
+    "actualProjectBeforeCoreRepair": {
+      "archiveSHA256": "02f3bacf7d5e11b1001b82e7aa514f03c6004d40769202aa3b70b44b436f03ea",
+      "bytes": 791281,
+      "members": 192,
+      "originalStrictBuildExit": 0,
+      "strictSeconds": 5.960873999982141,
+      "immutableAssets": 16,
+      "nativePassed": 8,
+      "nativeSeconds": 9.735283500049263,
+      "receivedEntryUntouched": true,
+      "all192OriginalMembersExactAfterBuild": true,
+      "independentAudit": {
+        "receiptSHA256": "672f9f2242a31f9e788c08e687a9615624738a883d06bf070e5fab1a06ac5665",
+        "TSFiles": 152,
+        "CSSFiles": 10,
+        "localEdges": 600,
+        "bareEdges": 354,
+        "importedDeclaredPackages": 26,
+        "missingOrUnknown": 0,
+        "rawExact": 173,
+        "generated": 8,
+        "namedSVGSerializations": 11,
+        "SVGRule": "Each actual byte stream matches installed Vite8.3.5 decode, an exact current dist URI, and the full XML tree. No blanket normalization.",
+        "noticesRawExact": 6,
+        "oldAtlasComparison": "191 unchanged members; sole optional ColumnVisibility children extension reverses to the original full file."
+      }
+    },
+    "preCoreJointSource1": {
+      "passed": 1,
+      "seconds": 7.751430708914995,
+      "runtimeFiles": 9,
+      "actualNativeDependencies": 22,
+      "clipboard": "Actual system clipboard; no stub",
+      "singleFiles": "Actual browser downloads, exact UTF8"
+    },
+    "actualProject": {
+      "archiveSHA256": "565a8ce1ba9a4a5e4c976a274f15c9864767e5c481741e7dfa142fee887386c9",
+      "bytes": 792348,
+      "members": 192,
+      "coreSHA256": "6fe6842fd5f0f419f0a8cdb6c4c2b15872a2d3b51bbc069343b1d353ff729ad5",
+      "npmLsExit": 0,
+      "originalStrictBuild": {
+        "name": "actual-atlas-original-strict-build-once",
+        "command": ["npm", "run", "build"],
+        "cwd": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-strategy-atlas-core-v2-ejdgngh_/actual-atlas-project",
+        "exit": 0,
+        "seconds": 7.017825291957706,
+        "log": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-strategy-atlas-core-v2-ejdgngh_/actual-atlas-original-strict-build-once.log",
+        "logSHA256": "3c827449023363bc8a9ad073408a0dae18c54d65963ce1510e4bafe403ed528e"
+      },
+      "native": {
+        "command": [
+          "npx",
+          "playwright",
+          "test",
+          "tests/atlas-account-settings.spec.ts",
+          "--workers=1",
+          "--retries=0",
+          "--output",
+          "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-strategy-atlas-core-v2-ejdgngh_/actual-atlas-native8-first-once/artifacts",
+          "--reporter=json"
+        ],
+        "cwd": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-strategy-atlas-core-v2-ejdgngh_/candidate",
+        "preview": "http://127.0.0.1:55699/",
+        "environmentOverrides": {},
+        "exit": 0,
+        "seconds": 9.697164417011663,
+        "stats": {
+          "startTime": "2026-10-28T13:40:25.416Z",
+          "duration": 9286.403,
+          "expected": 8,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "reportSHA256": "539358156febd3845a346e4a0c1de38ada93eccd377e6f3c79007869b7c2c21a"
+      },
+      "receivedMembersStillExactAfterBuildAndRun": true,
+      "fixedEntryAndConfigurationUnmodified": true,
+      "installation": "Physical matching normally-installed dependency clone; not a fresh install.",
+      "actualPreviewServer": "Owned session stopped normally after native run."
+    }
+  },
+  "packagePolicy": {
+    "installation": "Physical matching normally-installed dependency clones, not fresh installs.",
+    "postinstall": "Neither received project defines one; none fabricated.",
+    "runtimeDependencies": "All54 and overrides exactly match original exporter input.",
+    "devDependencies": "Atlas uses all11 original Template dev dependencies; Strategy uses the original six-key Block projection.",
+    "compiler": "Received strict commands/configurations unchanged."
+  },
+  "priorPublishedMilestone": {
+    "commit": "47289584889e9f8a2e9a9057c01be2d7e6e624ac",
+    "completeCI": {
+      "run": 40683148395,
+      "url": "https://github.com/caovc/reui-pro-block/actions/runs/40683148395",
+      "passed": 1741,
+      "failed": 0,
+      "workers": 3,
+      "minutes": 32.4,
+      "conclusion": "success"
+    },
+    "Pages": {
+      "deployment": 7385256413,
+      "atUTC": "2026-10-28T12:25:37Z",
+      "status": "success",
+      "url": "https://caovc.github.io/reui-pro-block/"
+    },
+    "nativeLiveVerification": "Actual new module/index-BE8ZJTSr, catalog670, newGreen root and iframe, restoredRoseLight, exact32806-byte defaultBase9source f30b1aa…, actualPOSTRequest details and ownJSON/cURL; zero console warnings/errors."
+  },
+  "limits": [
+    "Original fixtures/identity/branding intentionally differ; no premium source/media distributed.",
+    "Strategy month text, indentation, counts and some footer detail remain explicit reference differences.",
+    "Atlas local date/default-view/editor/tooltip preferences are not claimed to alter every other app consumer or persist to a backend.",
+    "RetailP&L, StoreKPI and further Template settings refinements remain separate private work."
+  ],
+  "asOfUTC": "2026-10-28T13:43:02.746602+00:00",
+  "priorJointIntegrationBeforeCoreRepair": {
+    "method": "Clean archive of pushed472 plus exact guarded payloads. SourceTargets combines independent Advanced14 and Atlas map entries with both whole-file inverses exact.",
+    "normalPostinstall": 0,
+    "fullFormatCheck": 0,
+    "fullLint": 0,
+    "toolingPassed": 142,
+    "originalStrictBuildExit": 0,
+    "strictSeconds": 23.1998474590946,
+    "immutableAssets": 654,
+    "sourceCounts": {
+      "AtlasRuntimeFiles": 9,
+      "StrategyRuntimeFiles": 6
+    },
+    "sharedFreeExtension": "Optional ReactNode children import/prop/destructure/render only; default behavior preserved and existing native consumer passed once."
+  },
+  "jointIntegration": {
+    "base": "47289584889e9f8a2e9a9057c01be2d7e6e624ac",
+    "normalPostinstallExit": 0,
+    "fullFormatCheckExit": 0,
+    "fullLintExit": 0,
+    "originalStrictBuild": {
+      "name": "original-strict-build-once",
+      "command": ["npm", "run", "build"],
+      "cwd": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-strategy-atlas-core-v2-ejdgngh_/candidate",
+      "exit": 0,
+      "seconds": 22.415025040972978,
+      "log": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-strategy-atlas-core-v2-ejdgngh_/original-strict-build-once.log",
+      "logSHA256": "0b364847c9f3f30d582ac3e3f50d5cbbc1b29e1a88fd5e155d9a1ab52c79e536"
+    },
+    "immutableAssets": 654,
+    "sourceInput": "25 previously guarded source/test paths plus one actual free-core correction; existing Strategy native spec gains two cases",
+    "independentReview": "Owner and Root reviewed complete patch; separate coordinator manual review found no static blocker. Formal archive review receipt follows."
+  },
+  "coreRepair": {
+    "file": "src/components/reui/data-grid/data-grid-cell-selection.tsx",
+    "beforeSHA256": "4307abe8afb05c8b6d234c38e7b3b6448d7c98dfcb19193b4c080c9ace89fe0f",
+    "afterSHA256": "6fe6842fd5f0f419f0a8cdb6c4c2b15872a2d3b51bbc069343b1d353ff729ad5",
+    "failureCauseEvidence": "Recharts descendant replacement during early native editing is supported by source and original trace comparison; no direct observer callback stack was recorded.",
+    "behavior": "Fixed session anchor captures its own tbody, direct TR/TD identities, IDs/order and relative content coordinates. One viewport MutationObserver watches childList and only row/column identity attributes; ResizeObserver checks actual row/cell boxes. Invalid anchor cancellation sets finishedRef before closing to prevent blur writes.",
+    "defaultBehavior": "Original portal/input/textarea/finish/Enter/Escape/clipboard/Undo render and APIs retained. No duplicate grid/provider. Both observers disconnect on close.",
+    "newNativeRegressionCases": [
+      "Month switch followed by immediate raw Value editing, real CSV and Undo",
+      "Actual responsive row/column reflow cancels dirty Value without write, Undo stays disabled and real CSV retains original raw data"
+    ],
+    "necessaryMainNative": {
+      "command": [
+        "npx",
+        "playwright",
+        "test",
+        "tests/grid-advanced-strategy-scorecard-native.spec.ts",
+        "tests/grid-editing-structure.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--output",
+        "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-strategy-atlas-core-v2-ejdgngh_/necessary-native4-first-once/artifacts",
+        "--reporter=json",
+        "--grep",
+        "native\\ scaled\\ Value\\ editor\\ Enter\\ commits\\ raw\\ millions\\ and\\ CtrlZ\\ restores|month\\ switch\\ then\\ immediate\\ Value\\ edit\\ commits\\ current\\ raw\\ units\\ and\\ Undo\\ restores|real\\ responsive\\ tree\\ and\\ column\\ reflow\\ cancels\\ a\\ dirty\\ Value\\ without\\ writing|task\\ spreadsheet\\ commits\\ a\\ cell\\ and\\ undo\\ restores\\ the\\ prior\\ value"
+      ],
+      "cwd": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-strategy-atlas-core-v2-ejdgngh_/candidate",
+      "preview": "http://127.0.0.1:55234/",
+      "environmentOverrides": {},
+      "exit": 0,
+      "seconds": 10.478994625038467,
+      "stats": {
+        "startTime": "2026-10-28T13:37:03.011Z",
+        "duration": 10064.413999999999,
+        "expected": 4,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "259de2bcdc941c23b4415408194aff354d3c9817f284278efcf2cb940192b0da"
+    },
+    "limits": [
+      "Source and trace inference does not claim a captured callback call stack.",
+      "Sort/filter toolbar clicks normally blur and commit before their action, so these are not claimed as dirty-session cancellation coverage.",
+      "Native ResizeObserver watches size changes, not every possible external CSS position change.",
+      "No natural animation overlap timing was asserted as guaranteed in every successful run."
+    ],
+    "independentReview": {
+      "receipt": "/tmp/bricklane-core-editor-v2-independent-review.json",
+      "sha256": "2ee87ea28fabcd7562ad41af815816987139b6a4b73b581b3c67e5af971e14b9",
+      "staticBlockers": 0,
+      "unmodifiedOtherTopLevelStatements": 41,
+      "originalRenderCommitBlurKeyboardTailExact": true
+    }
+  },
+  "finalSourceFromActualUI": {
+    "command": [
+      "npx",
+      "playwright",
+      "test",
+      "tests/atlas-account-source.spec.ts",
+      "tests/grid-advanced-strategy-scorecard-source.spec.ts",
+      "--workers=1",
+      "--retries=0",
+      "--output",
+      "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-strategy-atlas-core-v2-ejdgngh_/final-source2-first-once/artifacts",
+      "--reporter=json",
+      "--grep",
+      "account\\ runtime\\ Source\\ view,\\ Copy,\\ single\\ file\\ and\\ actual\\ project\\ ZIP\\ match|Advanced14\\ actual\\ starter\\ contains\\ all\\ six\\ implementation\\ files,\\ real\\ free\\ dependencies\\ and\\ notices"
+    ],
+    "cwd": "/var/folders/cq/bm871j297l9bf55pb_q1vysm0000gn/T/bricklane-strategy-atlas-core-v2-ejdgngh_/candidate",
+    "preview": "http://127.0.0.1:55234/",
+    "environmentOverrides": {},
+    "exit": 0,
+    "seconds": 10.017486458993517,
+    "stats": {
+      "startTime": "2026-10-28T13:38:06.477Z",
+      "duration": 9606.207,
+      "expected": 2,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "reportSHA256": "6b113be28b3688492338429d187ac2bd04d643937f042afb74e14373d80b25f8"
+  },
+  "independentFinalArchives": {
+    "state": "CLEAR",
+    "receipts": [
+      {
+        "path": "/tmp/bricklane-strategy-atlas-core-independent-affs4rm2/atlas-final-receipt.json",
+        "sha256": "b3bc0aa56012ea59ff438423f69fc43adb7d3f8a09d67111dac4708e8f5b61e4"
+      },
+      {
+        "path": "/tmp/bricklane-strategy-atlas-core-independent-affs4rm2/strategy14-final-receipt.json",
+        "sha256": "7b86d8b7cc615624255fb8a991f0228057e36130b19e51cfba35631ed7895b7f"
+      },
+      {
+        "path": "/tmp/bricklane-strategy-atlas-core-independent-affs4rm2/receipt.json",
+        "sha256": "23bd391e24065c0c587757554226ffd54cfebc40920dc9c583f244890ef247ae"
+      }
+    ],
+    "delta": "Atlas191 and Strategy316 other members unchanged; each actual archive changes only the reviewed free-core file.",
+    "fullASTClosure": "Atlas152TS/10CSS/600local/354bare; Strategy292TS/15CSS/1815local/665bare; zero parse, missing, undeclared or unknown imports.",
+    "assets": "All11 Atlas SVGs individually reverified against current Vite serializer, current dist URI and XML; local fonts, licenses and8 generated members exact.",
+    "runtimeEvidence": "Independent read-only review; actual build/native receipts above remain distinct."
+  },
+  "localVerificationBudgets": {
+    "timeoutMs": 30000,
+    "expectTimeoutMs": 5000,
+    "workers": 1,
+    "retries": 0,
+    "noForcedActionsOrArtificialDelays": true
+  }
+}

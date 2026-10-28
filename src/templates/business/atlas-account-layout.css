@@ -1,0 +1,73 @@
+/* Atlas consumer layout for the existing native ReUI Sidebar side API. */
+@media (min-width: 768px) {
+  .bt-atlas[data-sidebar-side="right"] .bt-layout-columns {
+    flex-direction: row-reverse;
+  }
+
+  .bt-atlas[data-sidebar-side="right"] .bt-sidebar [data-slot="sidebar-container"] {
+    border-right: 0;
+    border-left: 1px solid var(--border);
+  }
+
+  .bt-atlas[data-sidebar-side="right"] .bt-sidebar .shell-collapse-handle {
+    left: auto;
+    right: 100%;
+    justify-content: flex-end;
+    padding: 0 8px 0 0;
+  }
+
+  .bt-atlas[data-sidebar-side="right"] .bt-sidebar .shell-rail-label {
+    left: auto;
+    right: calc(100% - 8px);
+  }
+}
+
+.bt-atlas[data-reduce-animations="true"] *,
+.bt-atlas[data-reduce-animations="true"] *::before,
+.bt-atlas[data-reduce-animations="true"] *::after {
+  scroll-behavior: auto !important;
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+.atlas-account-page {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.atlas-account-breadcrumb {
+  display: flex;
+  height: 32px;
+  flex-shrink: 0;
+  align-items: center;
+}
+
+@media (max-width: 767px) {
+  .atlas-account-breadcrumb {
+    display: none;
+  }
+
+  .bt-atlas:has(.atlas-account-page) .bt-topbar {
+    height: 64px;
+    min-height: 64px;
+    flex-shrink: 0;
+    gap: 8px;
+    padding: 0 20px;
+    border-bottom: 0;
+  }
+
+  .bt-atlas:has(.atlas-account-page) .bt-topbar > span {
+    display: block;
+  }
+
+  .bt-atlas:has(.atlas-account-page) .bt-topbar-right {
+    display: none;
+  }
+
+  .bt-atlas .bt-content:has(.atlas-account-page) {
+    padding: 0 24px 24px;
+  }
+}

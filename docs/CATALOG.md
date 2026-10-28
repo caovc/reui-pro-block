@@ -1,6 +1,13 @@
-# Public reference checklist
+# Local implementation and public reference checklist
 
-Snapshot 2026-10-22. 78 categories / 662 blocks. These are reference titles, not a claim of pixel-identical completion.
+Updated 2026-10-28. The local catalog has 671 entries across 79 categories and 7 groups, plus 18 templates. Entries record reachable implementations and reference URLs; they do not assert pixel-identical completion.
+
+The latest public audit lists 672 official block URLs. The two pending additions below are not counted as local entries. The local catalog retains legacy `solution-dev-ops-7`, which is absent from the latest listing; see the [follow-up plan](catalog-followup-plan-2026-10-26.md).
+
+## Pending official additions
+
+- [Retail P&L Outlook](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-15) — `data-grid-advanced-15`; private implementation and validation in progress.
+- [Store KPI Board](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-16) — `data-grid-advanced-16`; private implementation and validation in progress.
 
 ## Application / App Shell (36)
 
@@ -376,7 +383,7 @@ Snapshot 2026-10-22. 78 categories / 662 blocks. These are reference titles, not
 - [Product Setup Wizard](https://reui.io/blocks/application/wizard/wizard-6) — `wizard-6`
 - [Fund Transfer](https://reui.io/blocks/application/wizard/wizard-7) — `wizard-7`
 
-## Data Grid / Base (8)
+## Data Grid / Base (9)
 
 - [Customer Balances](https://reui.io/blocks/data-grid/base/data-grid-base-1) — `data-grid-base-1`
 - [Lead Scoring Contacts](https://reui.io/blocks/data-grid/base/data-grid-base-2) — `data-grid-base-2`
@@ -386,8 +393,9 @@ Snapshot 2026-10-22. 78 categories / 662 blocks. These are reference titles, not
 - [Team Members](https://reui.io/blocks/data-grid/base/data-grid-base-6) — `data-grid-base-6`
 - [Project Modules](https://reui.io/blocks/data-grid/base/data-grid-base-7) — `data-grid-base-7`
 - [Cloud Rate Card](https://reui.io/blocks/data-grid/base/data-grid-base-8) — `data-grid-base-8`
+- [API Request Logs](https://reui.io/blocks/data-grid/base/data-grid-base-9) — `data-grid-base-9`
 
-## Data Grid / Advanced (9)
+## Data Grid / Advanced (15)
 
 - [Ad Campaign Performance](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-1) — `data-grid-advanced-1`
 - [Regional Store P&L](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-2) — `data-grid-advanced-2`
@@ -398,6 +406,12 @@ Snapshot 2026-10-22. 78 categories / 662 blocks. These are reference titles, not
 - [Fourplex Pro Forma](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-7) — `data-grid-advanced-7`
 - [Product KPI Grid](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-8) — `data-grid-advanced-8`
 - [Service Visit Planner](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-9) — `data-grid-advanced-9`
+- [Technician Capacity](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-10) — `data-grid-advanced-10`
+- [Factory Scorecard](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-11) — `data-grid-advanced-11`
+- [Freight & Cargo Services](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-12) — `data-grid-advanced-12`
+- [HR Scorecard](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-13) — `data-grid-advanced-13`
+- [Strategy Scorecard](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-14) — `data-grid-advanced-14`
+- [Prospect Database](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-22) — `data-grid-advanced-22`
 
 ## Data Grid / Columns (5)
 
@@ -407,7 +421,7 @@ Snapshot 2026-10-22. 78 categories / 662 blocks. These are reference titles, not
 - [Member Display Columns](https://reui.io/blocks/data-grid/columns/data-grid-columns-4) — `data-grid-columns-4`
 - [Company Attributes](https://reui.io/blocks/data-grid/columns/data-grid-columns-5) — `data-grid-columns-5`
 
-## Data Grid / Drag Drop (4)
+## Data Grid / Drag & Drop (4)
 
 - [Sprint Backlog](https://reui.io/blocks/data-grid/drag-drop/data-grid-drag-drop-1) — `data-grid-drag-drop-1`
 - [Routing Rules](https://reui.io/blocks/data-grid/drag-drop/data-grid-drag-drop-2) — `data-grid-drag-drop-2`
@@ -564,7 +578,7 @@ Snapshot 2026-10-22. 78 categories / 662 blocks. These are reference titles, not
 - [Edge Nodes](https://reui.io/blocks/ai-agents/ai-usage/ai-usage-3) — `ai-usage-3`
 - [Local Models](https://reui.io/blocks/ai-agents/ai-usage/ai-usage-4) — `ai-usage-4`
 
-## Solutions / Dev Ops (6)
+## Solutions / Dev Ops (7)
 
 - [Cron Jobs](https://reui.io/blocks/solutions/dev-ops/solution-dev-ops-1) — `solution-dev-ops-1`
 - [Infra Audit Log](https://reui.io/blocks/solutions/dev-ops/solution-dev-ops-2) — `solution-dev-ops-2`
@@ -572,6 +586,7 @@ Snapshot 2026-10-22. 78 categories / 662 blocks. These are reference titles, not
 - [Firewall Rules](https://reui.io/blocks/solutions/dev-ops/solution-dev-ops-4) — `solution-dev-ops-4`
 - [SLO Error Budgets](https://reui.io/blocks/solutions/dev-ops/solution-dev-ops-5) — `solution-dev-ops-5`
 - [Data Connections](https://reui.io/blocks/solutions/dev-ops/solution-dev-ops-6) — `solution-dev-ops-6`
+- [Deploy Board](https://reui.io/blocks/solutions/dev-ops/solution-dev-ops-7) — `solution-dev-ops-7`; retained legacy entry, no longer in the latest public listing
 
 ## Solutions / AI Ops (9)
 
@@ -680,6 +695,10 @@ Snapshot 2026-10-22. 78 categories / 662 blocks. These are reference titles, not
 
 - [Stadium Seats](https://reui.io/blocks/solutions/digital-twin/solution-digital-twin-1) — `solution-digital-twin-1`
 - [Kart Live Timing](https://reui.io/blocks/solutions/digital-twin/solution-digital-twin-2) — `solution-digital-twin-2`
+
+## Solutions / Map (1)
+
+- [Dispatch Map](https://reui.io/blocks/solutions/map/solution-map-1) — `solution-map-1`
 
 ## eCommerce / Category Card (6)
 

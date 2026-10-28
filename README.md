@@ -1,8 +1,8 @@
 # Bricklane
 
-Independent recreations of **ReUI Pro Blocks and Templates**, built with React, TypeScript, Tailwind CSS and official open-source ReUI components. Bricklane uses an original logo, name, and locally authored demo illustrations. The local development checklist currently contains **669 entries, 79 categories, 7 groups**. The latest public catalog audit lists 669 entries across 79 categories; all indexed additions are represented, while visual and interaction refinements continue.
+Independent recreations of **ReUI Pro Blocks and Templates**, built with React, TypeScript, Tailwind CSS and official open-source ReUI components. Bricklane uses an original logo, name, and locally authored demo illustrations. The local development checklist currently contains **671 entries, 79 categories, 7 groups**, plus 18 template workspaces. The 2026-10-28 public audit found 672 official block URLs. API Request Logs and Strategy Scorecard are included; Retail P&L Outlook and Store KPI Board remain tracked follow-ups. The local catalog also retains the previously listed DevOps7 entry, whose current public status is unclear.
 
-> This is an independent recreation using shared layout families. Catalog coverage is not a claim of 669 pixel-identical copies. No REUI Pro source or premium assets are distributed. See [provenance](THIRD_PARTY_NOTICES.md) and the implementation notes in `docs/`.
+> This is an independent recreation using shared layout families. Catalog coverage is not a claim of 671 pixel-identical copies. No REUI Pro source or premium assets are distributed. See [provenance](THIRD_PARTY_NOTICES.md) and the implementation notes in `docs/`.
 
 ## Explore
 
@@ -37,7 +37,7 @@ npm run test:catalog
 npx playwright test tests/templates.spec.ts tests/template-interactions.spec.ts
 ```
 
-Browser tests require Chromium (`npx playwright install chromium`). `PREVIEW_URL` can target an already running local or deployed server. Catalog smoke tests exercise all 669 individual preview routes; site tests exercise navigation, search, responsive controls, theme persistence, favorites, source view and downloads.
+Browser tests require Chromium (`npx playwright install chromium`). `PREVIEW_URL` can target an already running local or deployed server. Catalog smoke tests exercise all 671 individual preview routes; site tests exercise navigation, search, responsive controls, theme persistence, favorites, source view and downloads.
 
 ## Project layout
 
