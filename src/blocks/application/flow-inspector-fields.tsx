@@ -18,7 +18,7 @@ import { MiniAvatar } from "./flow-gantt-avatars";
 import { useFlowPortalFont } from "./flow-portal-font";
 import "./flow-inspector-fields.css";
 
-type FieldName = "Title" | "Detail" | "Category" | "Owner" | "App";
+type FieldName = "Title" | "Detail" | "Category" | "Owner" | "App" | "Path";
 
 function FlowFieldHelp({ label, children }: { label: FieldName; children: string }) {
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -235,6 +235,39 @@ export function FlowInspectorTextFields({
             className="font-normal"
             value={detail}
             onChange={(event) => onDetailChange(event.target.value)}
+          />
+        </Field>
+      </FieldGroup>
+    </TooltipProvider>
+  );
+}
+
+export function FlowAgentPathField({
+  value,
+  onValueChange,
+}: {
+  value: string;
+  onValueChange: (value: string) => void;
+}) {
+  const id = useId();
+
+  return (
+    <TooltipProvider>
+      <FieldGroup className="fg-native-inspector-fields fg-inspector-path-fields">
+        <Field>
+          <div className="flex items-center gap-1.5">
+            <FieldLabel htmlFor={id} className="leading-none">
+              Path
+            </FieldLabel>
+            <FlowFieldHelp label="Path">
+              The caption on the connector above, naming this outcome.
+            </FlowFieldHelp>
+          </div>
+          <Input
+            id={id}
+            className="font-normal"
+            value={value}
+            onChange={(event) => onValueChange(event.target.value)}
           />
         </Field>
       </FieldGroup>

@@ -1,7 +1,16 @@
+import { ChevronsUpDown, LogOut, Monitor, Moon, Sun } from "lucide-react";
+import {
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+} from "@/components/ui/dropdown-menu";
+import { setGlobalTheme, useGlobalTheme } from "@/components/site/global-theme-store";
 import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import { SidebarCollection, SidebarRailButton } from "@/components/reui/sidebar";
 import { AppShellInset, useShellSidebarState } from "@/components/reui/layout";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Message, MessageAvatar, MessageContent } from "@/components/ui/message";
 import { Bubble, BubbleContent } from "@/components/ui/bubble";
 import { ResponsiveAssistantPanel } from "./responsive-assistant";
@@ -55,6 +64,7 @@ import {
 
 import { Calendar } from "@/components/ui/calendar";
 import {
+  applyAccountTheme,
   Button,
   Badge,
   CreateItemDialog,
@@ -440,7 +450,140 @@ export function Assistant({
     </ResponsiveAssistantPanel>
   );
 }
+
+function useTodoAccountTheme() {
+  const { dark } = useGlobalTheme();
+  useEffect(() => {
+    // The store already observes system preference changes. Standalone exports
+    // reuse the account handler because their entry does not mount GlobalThemeRoot.
+    applyAccountTheme(dark ? "dark" : "light");
+  }, [dark]);
+}
+
+/** AppShell 18 content for the actual free c-sidebar-1 AccountMenu frame.
+ * Exclusive appearance choices retain c-dropdown-menu-7's native RadioGroup.
+ * Identity artwork is the local, licensed Bricklane preview portrait.
+ */
+function TodoAccountMenu({ collapsed }: { collapsed: boolean }) {
+  const { theme } = useGlobalTheme();
+  const { isMobile } = useSidebar();
+  const selectedTheme = theme.mode === "light" || theme.mode === "dark" ? theme.mode : "system";
+  return (
+    <WorkspaceMenu
+      collapsed={collapsed}
+      user
+      displayName="Mira Stone"
+      initial="Mira Stone"
+      subtitle="mira@bricklane.demo"
+      menuProps={{
+        side: isMobile ? "top" : "right",
+        align: "end",
+        sideOffset: 8,
+        className: "w-60",
+      }}
+      triggerContent={
+        <>
+          <span
+            className={
+              collapsed ? "[&_[data-slot=avatar]]:size-6" : "[&_[data-slot=avatar]]:size-8"
+            }
+          >
+            <Face name="Mira Stone" />
+          </span>
+          {!collapsed && (
+            <>
+              <span className="flex min-w-0 flex-1 flex-col text-left">
+                <span className="truncate text-sm font-medium">Mira Stone</span>
+                <span className="truncate text-xs font-normal text-muted-foreground">
+                  mira@bricklane.demo
+                </span>
+              </span>
+              <ChevronsUpDown className="text-muted-foreground" />
+            </>
+          )}
+        </>
+      }
+    >
+      <DropdownMenuGroup>
+        <DropdownMenuLabel className="flex items-center gap-2.5 px-1.5 py-2">
+          <span className="[&_[data-slot=avatar]]:size-8">
+            <Face name="Mira Stone" />
+          </span>
+          <span className="flex min-w-0 flex-col">
+            <span className="truncate text-sm font-medium text-foreground">Mira Stone</span>
+            <span className="truncate text-xs font-normal text-muted-foreground">
+              mira@bricklane.demo
+            </span>
+          </span>
+        </DropdownMenuLabel>
+      </DropdownMenuGroup>
+      <DropdownMenuSeparator />
+      <DropdownMenuGroup>
+        <DropdownMenuItem>
+          <UserRound /> Profile <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <SlidersHorizontal /> Preferences
+        </DropdownMenuItem>
+      </DropdownMenuGroup>
+      <DropdownMenuSeparator />
+      <DropdownMenuGroup>
+        <DropdownMenuItem>
+          <ListChecks /> My Tasks
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <CircleCheck /> Completed
+        </DropdownMenuItem>
+      </DropdownMenuGroup>
+      <DropdownMenuSeparator />
+      <DropdownMenuItem>
+        <CircleHelp /> Help &amp; Support
+      </DropdownMenuItem>
+      <DropdownMenuSeparator />
+      <div className="flex h-9 items-center gap-1.5 px-1.5 text-sm">
+        <Sun className="size-4 shrink-0" aria-hidden="true" />
+        <span>Theme</span>
+        <DropdownMenuRadioGroup
+          value={selectedTheme}
+          onValueChange={(mode) => {
+            applyAccountTheme(mode);
+            setGlobalTheme({ ...theme, mode });
+          }}
+          aria-label="Theme"
+          className="ml-auto flex h-7 gap-0.5 rounded-md bg-muted p-0.5"
+        >
+          {[
+            { value: "light", label: "Light", icon: Sun },
+            { value: "dark", label: "Dark", icon: Moon },
+            { value: "system", label: "System", icon: Monitor },
+          ].map(({ value, label, icon: Icon }) => (
+            <DropdownMenuRadioItem
+              key={value}
+              value={value}
+              aria-label={label}
+              title={label}
+              onSelect={(event) => event.preventDefault()}
+              className="flex size-6 items-center justify-center rounded-sm p-0 data-[state=checked]:bg-background data-[state=checked]:shadow-xs [&>span]:hidden"
+            >
+              <Icon className="size-3.5" />
+            </DropdownMenuRadioItem>
+          ))}
+        </DropdownMenuRadioGroup>
+      </div>
+      <DropdownMenuSeparator />
+      <DropdownMenuItem
+        onSelect={() =>
+          toast("Demo account", { description: "There is no active session to sign out of." })
+        }
+      >
+        <LogOut /> Sign Out <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+      </DropdownMenuItem>
+    </WorkspaceMenu>
+  );
+}
+
 export function TodoShell() {
+  useTodoAccountTheme();
   const { isMobile } = useSidebar();
   const [collapsed] = useShellSidebarState();
   const [active, setActive] = useState("All Tasks");
@@ -475,13 +618,7 @@ export function TodoShell() {
                 <p className="text-[10px] text-muted-foreground">Next milestone in 3 days</p>
               </div>
             )}
-            <WorkspaceMenu
-              collapsed={collapsed}
-              user
-              displayName="Mira Stone"
-              initial="Mira Stone"
-              subtitle="mira@bricklane.demo"
-            />
+            <TodoAccountMenu collapsed={collapsed} />
           </>
         }
       >

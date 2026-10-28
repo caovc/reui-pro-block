@@ -194,7 +194,12 @@ export function DriveMemberDetail({
       <DriveSettingsCard title="Recent files" description="Your most recently modified files.">
         <div className="ds-recent-files">
           {owned.slice(0, 5).map((file) => (
-            <Button key={file.id} variant="ghost" onClick={() => onOpenFile(file.id)}>
+            <Button
+              key={file.id}
+              variant="ghost"
+              data-drive-file-open={file.id}
+              onClick={() => onOpenFile(file.id)}
+            >
               <FileText />
               <span>{file.name}</span>
               <span>{file.size}</span>

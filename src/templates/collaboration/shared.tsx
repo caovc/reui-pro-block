@@ -34,7 +34,7 @@ import "@/blocks/reference.css";
 import "./navigation.css";
 import { BrandGlyph } from "@/components/brand-mark";
 import { demoAvatar, demoPanel } from "@/lib/demo-artwork";
-import { useState, type ReactNode } from "react";
+import { useState, type ComponentProps, type ReactNode } from "react";
 import {
   Bell,
   Search,
@@ -152,6 +152,7 @@ export function Modal({
   onClose,
   children,
   contentClassName,
+  onCloseAutoFocus,
 }: {
   title: string;
   description?: string;
@@ -159,10 +160,12 @@ export function Modal({
   onClose: () => void;
   children: ReactNode;
   contentClassName?: string;
+  onCloseAutoFocus?: ComponentProps<typeof DialogContent>["onCloseAutoFocus"];
 }) {
   return (
     <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
       <DialogContent
+        onCloseAutoFocus={onCloseAutoFocus}
         className={[title === "New Folder" ? "ct-folder-modal" : "", contentClassName]
           .filter(Boolean)
           .join(" ")}

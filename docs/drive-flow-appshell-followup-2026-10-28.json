@@ -1,0 +1,347 @@
+{
+  "milestone": "Drive Header navigation, Flow Path field and AppShell18 account menu",
+  "date": "2026-10-28",
+  "base": "24f246cf4d28b7108029eb0461bba106d4c60786",
+  "scope": [
+    {
+      "path": "src/lib/source-targets.ts",
+      "before": "07b991ca8f4d70c341f7e888a378b8293e2dfdfd0d804eeb0ae2ee0c157b9ac6",
+      "sha256": "f9c7c12a55233203cb9409ec15575afbad8a61450ceb74eadc328d848796d2f6"
+    },
+    {
+      "path": "src/templates/collaboration/drive-file-navigation.ts",
+      "before": null,
+      "sha256": "80ee5194f8ccb6c221617bd6cd7c8ca3c650340fc5efcd6ab16e24c67b277c2a"
+    },
+    {
+      "path": "src/templates/collaboration/drive-header-data.ts",
+      "before": null,
+      "sha256": "bada799035dc38160b568cec62659d6bb505736c3b185bfcb4ea380c9e1175a8"
+    },
+    {
+      "path": "src/templates/collaboration/drive-header-help.tsx",
+      "before": null,
+      "sha256": "542222c4a06ae04d575c47fe2b1c454ebda3c8a02863acb7b30e614f10f7d91b"
+    },
+    {
+      "path": "src/templates/collaboration/drive-header-notifications.tsx",
+      "before": null,
+      "sha256": "0a9e5da07d286ed985c7a9c33bac342d44dca7e997d4e1a4ac88e065f52b55c8"
+    },
+    {
+      "path": "src/templates/collaboration/drive-header.css",
+      "before": null,
+      "sha256": "b1c375a02bb9bd431d4b9c026ccb4d8ba8d0e5855ba241b052bc8b3d389ac139"
+    },
+    {
+      "path": "src/templates/collaboration/drive-route-model.ts",
+      "before": "b9c0bd3613c70f6d62ed6610379f5357269dc47830a41c08fe33a82a2ef67aa5",
+      "sha256": "98695bdd352417555bb84d8277724b7faea9110946b9f3db09a73b02b90d3a9d"
+    },
+    {
+      "path": "src/templates/collaboration/drive-route.ts",
+      "before": "df4dcd8781b65f2cecf3848ca3b4ef8fa4bd8ee0187e5b5126572166ec910791",
+      "sha256": "069f71f85adf1c3d61fbec3111b3d06caa27d9ee96b90f0a55e889155fa49237"
+    },
+    {
+      "path": "src/templates/collaboration/drive-tree-data.ts",
+      "before": null,
+      "sha256": "d88799cd4e04304ed5bc0054ca55f0090696a77ef1b96cf18e1c8f59f770b309"
+    },
+    {
+      "path": "src/templates/collaboration/drive-tree.tsx",
+      "before": "a5b822a1843da1dd733f19d2c4ee49a3d3bd91440d99948aa27aa26f3d375ba4",
+      "sha256": "94233caf7272b0da158bb92b798999c7abbc69e6655bffd6c09f702e2576e2ba"
+    },
+    {
+      "path": "src/templates/collaboration/drive.tsx",
+      "before": "2c50eaab9a70654cba829711216f5f7172171108592d6190fbc33c6a6c617951",
+      "sha256": "9957ff2b462ae17673c52b0011e5580f2363bfe4db7e97c63cc3b8cd997833b0"
+    },
+    {
+      "path": "tests/drive-header-navigation-model.test.mjs",
+      "before": null,
+      "sha256": "7464acbf998555ac99881e6e15540fdd2766ce608fe0d4f33c5e201d6526c3ef"
+    },
+    {
+      "path": "tests/drive-route-model.test.mjs",
+      "before": "e5c0b300f33d4bfd12038416080945bd40407a43bff5148245b6171522db52eb",
+      "sha256": "707ec7fd4d6fa3a21fef6d0b18ead3e6199fd02400971200f255680070e16d5e"
+    },
+    {
+      "path": "tests/templates-drive-header.spec.ts",
+      "before": null,
+      "sha256": "6482d118a4c2da5aa9e3ac9555d85144d9bbcbf650f48eb56932ac88bd0a1c7f"
+    },
+    {
+      "path": "src/blocks/application/flow-gantt-flow.tsx",
+      "before": "f255f27fd365754880d1a607496110026b3491e2c437f96ee6bc3201134ae6eb",
+      "sha256": "2882051a1125b8f08c832ef1db9c41b9c879812ef81246c05480cf6439a85fb5"
+    },
+    {
+      "path": "src/blocks/application/flow-inspector-fields.tsx",
+      "before": "6b77cf6ec28df7de1f88c2628e2ac25e4aeff2d1b3aec343fd9d12681628e7a6",
+      "sha256": "84a236ae8794c43f633a9f75dbf7814139ad0d1f06be7ace492d0d0034a949e7"
+    },
+    {
+      "path": "tests/flow-agent-path-native.spec.ts",
+      "before": null,
+      "sha256": "b7e8c9120975e5d52419b28ebb2a94ecb96e3209c83e0cf4f15108236d4c7b4b"
+    },
+    {
+      "path": "src/blocks/application/shells/chrome.tsx",
+      "before": "258780ac2504495213dbcff4004763fa413911e96532683ed8cf5ab56258a15f",
+      "sha256": "a2c6f546c207e4460fca0441ff5c81e41a72c8a63daf12a02f81c25810e5cdd8"
+    },
+    {
+      "path": "src/blocks/application/shells/productivity.tsx",
+      "before": "400028f8607594fef108835684749dd4f7fdd9575b32cadc8e1f0ee258258251",
+      "sha256": "a959320b23bbd62d795c6bd410d8f4fa2cff3137768895bf1491e62782dbdc54"
+    },
+    {
+      "path": "src/lib/source.ts",
+      "before": "c9d007981c16d9350120d92cf59f73b7075c1dd081472ec73ab8ff8b8c043188",
+      "sha256": "0922cbad46cddb7b763224c1f151e6db98172418bbe4e9adc4d6ea0ef6e90ce4"
+    },
+    {
+      "path": "tests/templates-drive-header-actions.spec.ts",
+      "before": null,
+      "sha256": "b70b75ce1f55a5893bff1ac0c871294ec90e4e12787afc61d05e8a457ae416da"
+    },
+    {
+      "path": "src/templates/collaboration/drive-settings-member-detail.tsx",
+      "before": "d127f184f196b26040db117415bfcefd59dbc7bf842f1e13b421046b52ad2d6c",
+      "sha256": "06c722dd7a26839e8035fc1d7f426654f2e40de429b01f34646128914c336662"
+    },
+    {
+      "path": "src/templates/collaboration/shared.tsx",
+      "before": "38af79358620ac7b157316acfb41e109694577d5fef86eae6d9c8604f6d9e429",
+      "sha256": "d0e72533c2a39f6328337e96e98ba8cc0b65984f5e2e1cba8ffe46fad22aa397"
+    },
+    {
+      "path": "tests/appshell18-account-native-helpers.ts",
+      "before": null,
+      "sha256": "cee83f8b276cd895f37a142998a70f58f56e4db89a5afd1c86b987087fe5ddcd"
+    },
+    {
+      "path": "tests/appshell18-account-native.spec.ts",
+      "before": null,
+      "sha256": "cb83f8794f9c179a9556a3436cd55331893f2f1468abb5dfd45dbb09ded28910"
+    }
+  ],
+  "reuse": {
+    "Drive": [
+      "Existing official free Sheet and DropdownMenu composition",
+      "Item, ItemGroup, IconTile and InputGroup",
+      "ScrollArea, AvatarGroup, Badge, ButtonGroup and existing destructive Button variant",
+      "Native Dialog close-auto-focus callback and actual Tree implementation"
+    ],
+    "Flow": [
+      "Actual free FieldGroup, Field, FieldLabel, Input and existing Button/Tooltip help composition"
+    ],
+    "AppShell18": [
+      "Existing free c-sidebar-1 AccountMenu frame",
+      "Existing free c-dropdown-menu-7 RadioGroup/RadioItem pattern",
+      "Existing single global theme store and shared native theme application"
+    ]
+  },
+  "removedDuplicates": [
+    "Flow Path raw label/input and obsolete handwritten help fallback replaced by the actual free field composition",
+    "AppShell18 account menu now uses existing native menu and radio composition; default WorkspaceMenu callers retain their behavior",
+    "Drive resource cards and grouped actions use actual free Item and ButtonGroup; Revoke uses the existing free destructive tone"
+  ],
+  "customDomainAdapters": {
+    "Drive": "Local activity/help records, file-ID routing, history origin, local decision state and file-preview opener identity are application data and lifecycle absent from generic free primitives. Support links identify this independent Bricklane project.",
+    "Flow": "Incoming-edge draft/save and graph-run/Undo remain with the existing graph domain; the new field only composes free form primitives.",
+    "AppShell18": "Todo account actions adapt the existing shared theme store. A narrow raw-source whitelist includes the two existing site theme modules in downloadable projects."
+  },
+  "validation": {
+    "main": {
+      "checks": [
+        {
+          "name": "normal-postinstall",
+          "command": ["npm", "run", "postinstall"],
+          "exit": 0,
+          "seconds": 0.2353136669844389
+        },
+        {
+          "name": "full-format-check",
+          "command": ["npm", "run", "format:check"],
+          "exit": 0,
+          "seconds": 0.5982643340248615
+        },
+        {
+          "name": "lint",
+          "command": ["npm", "run", "lint"],
+          "exit": 0,
+          "seconds": 1.1276202501030639
+        },
+        {
+          "name": "tooling",
+          "command": ["npm", "run", "test:tooling"],
+          "exit": 0,
+          "seconds": 1.9188059999141842
+        },
+        {
+          "name": "strict-main-build-once",
+          "command": ["npm", "run", "build"],
+          "exit": 0,
+          "seconds": 22.244002165971324
+        }
+      ],
+      "immutableAssets": 654,
+      "dependencies": "Matching normally installed842-package physical clone; not fresh installation."
+    },
+    "Drive": {
+      "mainBeforeFinalTone": {
+        "original10": "8 passed,2 new Grid cases failed at an incorrect role before exercising focus",
+        "necessaryGrid2": "2 passed after correcting only native radio/aria-checked selectors",
+        "geometry4": "4 passed;8 private screenshots reviewed on pre-tone visualV4",
+        "finalTone": "One existing Button variant literal changed from outline to destructive; strict final build and fresh Source/actual-ZIP gates below include it."
+      },
+      "sourceResult": "2 passed;12 runtime targets per template view/real clipboard/single-file/actual ZIP raw-exact;18 native dependencies,7 notices and2 fonts verified",
+      "actualProjects": [
+        {
+          "id": "filespace",
+          "members": 226,
+          "sha256": "9d5297034eeae392f7761d9a3990e9dbff2d9bbd80df9dd3a267c153c5786a3c",
+          "originalMembers": "all226 raw-exact before and after strict build/native runtime",
+          "originalBuildScript": "tsc --noEmit && vite build",
+          "strictBuild": {
+            "name": "original-strict-build-once",
+            "exit": 0,
+            "seconds": 6.298530834028497
+          },
+          "immutableAssets": 34,
+          "runtime": {
+            "passed": 6,
+            "failed": 0,
+            "seconds": 15.57208020798862
+          },
+          "entry": "Original fixed TemplateSurface/Template id=filespace; matching native cases only; Filebox preserves fresh Sign in.",
+          "dependencyPreparation": "Physical matching normal installed-tree clone; received package has no postinstall script,so none fabricated.",
+          "closure": {
+            "sourceFiles": 181,
+            "cssFiles": 22,
+            "localEdges": 743,
+            "bareEdges": 396,
+            "declaredImportedPackages": 29,
+            "parseErrors": 0,
+            "missingLocal": 0,
+            "undeclaredBare": 0,
+            "unknownImports": 0,
+            "method": "Independent AST/CSS audit against actual ZIP names and exported declarations, without resolving through the installed superset."
+          },
+          "candidateByteAudit": {
+            "rawExact": 217,
+            "generatedStarterUsageThemeMetadata": 8,
+            "specificSVGSerializationException": {
+              "path": "src/templates/collaboration/drive-settings-free/bricklane-logo.svg",
+              "sourceSHA256": "99a081aa51bd1c403998323e6b8ea65323d1a15401ac838b7898618a0d34b67c",
+              "actualZIPSHA256": "a7a72bc3f85aea46fcca1dce998cf478bb9aa00bb37cce185dae0b192887fd35",
+              "reason": "Existing Vite ?url inline SVG whitespace/quote serialization, exact compiled data URI located.",
+              "rootProof": "Exact original installed Vite transformation reproduces the ZIP bytes; XML nodes, attributes and meaningful text are identical. Applies to this path only."
+            },
+            "unclassifiedDifferences": 0
+          }
+        },
+        {
+          "id": "filebox",
+          "members": 226,
+          "sha256": "e7c09e0f5b78397c803ce8f09cc924d94fcb0e3cc71673d9427752cb93cbb77d",
+          "originalMembers": "all226 raw-exact before and after strict build/native runtime",
+          "originalBuildScript": "tsc --noEmit && vite build",
+          "strictBuild": {
+            "name": "original-strict-build-once",
+            "exit": 0,
+            "seconds": 6.568198541994207
+          },
+          "immutableAssets": 34,
+          "runtime": {
+            "passed": 4,
+            "failed": 0,
+            "seconds": 12.46560145902913
+          },
+          "entry": "Original fixed TemplateSurface/Template id=filebox; matching native cases only; Filebox preserves fresh Sign in.",
+          "dependencyPreparation": "Physical matching normal installed-tree clone; received package has no postinstall script,so none fabricated.",
+          "closure": {
+            "sourceFiles": 181,
+            "cssFiles": 22,
+            "localEdges": 743,
+            "bareEdges": 396,
+            "declaredImportedPackages": 29,
+            "parseErrors": 0,
+            "missingLocal": 0,
+            "undeclaredBare": 0,
+            "unknownImports": 0,
+            "method": "Independent AST/CSS audit against actual ZIP names and exported declarations, without resolving through the installed superset."
+          },
+          "candidateByteAudit": {
+            "rawExact": 217,
+            "generatedStarterUsageThemeMetadata": 8,
+            "specificSVGSerializationException": {
+              "path": "src/templates/collaboration/drive-settings-free/bricklane-logo.svg",
+              "sourceSHA256": "99a081aa51bd1c403998323e6b8ea65323d1a15401ac838b7898618a0d34b67c",
+              "actualZIPSHA256": "a7a72bc3f85aea46fcca1dce998cf478bb9aa00bb37cce185dae0b192887fd35",
+              "reason": "Existing Vite ?url inline SVG whitespace/quote serialization, exact compiled data URI located.",
+              "rootProof": "Exact original installed Vite transformation reproduces the ZIP bytes; XML nodes, attributes and meaningful text are identical. Applies to this path only."
+            },
+            "unclassifiedDifferences": 0
+          }
+        }
+      ],
+      "sourceSeconds": 18.957320375018753
+    },
+    "Flow": {
+      "mainOriginal13": "11 old cases passed;2 new cases failed at an incorrect9-fragment oracle",
+      "necessaryNew2": "2 passed after asserting actual9 nodes/14 rendered duration fragments; original actions and business assertions retained",
+      "geometry2": "2 passed",
+      "sourceFourway": "1 passed for both changed runtime files",
+      "actualZIP": {
+        "members": 412,
+        "sha256": "a03cd84dfe77fea480fe3b04e85b2b22d0484e9da27ae7228b4eaf617a5a82fd",
+        "originalMembers": "all412 raw-exact",
+        "postinstall": "passed normally",
+        "strictBuildSeconds": 8.67526075,
+        "runtime": "3 passed once; two new Path cases and one original branch regression"
+      },
+      "closure": "409 members identical to independently audited AppShell archive;3 original generated README/package.name/Example metadata differences individually checked; all resolved imports retained."
+    },
+    "AppShell18": {
+      "originalMain7": "4 passed,3 failed at native deferred-keyboard focus/hidden mobile heading observations",
+      "necessary3": "3 passed after synchronizing original keys with real focus and closing native modal navigation before heading observation",
+      "sourceFourway": "Actual two runtime leaves plus both shared theme modules view/Copy/single/ZIP matched; separately downloaded theme CSS verified",
+      "actualZIP": {
+        "members": 412,
+        "sha256": "a1bedce24deb7ede4668708dba715adf4adbb184264af38407e09306ee9fd7cb",
+        "originalMembers": "411 exact; only theme.css appends the exact separately downloaded CSS as an authorized preview customization",
+        "postinstall": "passed normally;246 generated assets recorded separately",
+        "strictBuildSeconds": 9.119479166925885,
+        "closure": "1612 local edges and586 bare edges across42 declared imported packages;0 missing/undeclared",
+        "runtime": "5 passed once; originalZIP/CSS contract plus desktop/phone closed-menu/closed-Sheet theme behavior"
+      },
+      "settledDarkMenu": "Both desktop and phone240x309 native menus reviewed after actual finite menu animation; separate phone Sheet transition is not claimed fully settled.",
+      "permanentRegression": "6 discovered cases; business sequence carried over from the tested runs, only evidence I/O location changed."
+    }
+  },
+  "preservation": {
+    "testBudgets": "Original30s test and5s expect; local one worker,zero retries. No forced actions,sleeps,skips or workflow/compiler relaxation.",
+    "artwork": "Bricklane original brand/local artwork and existing MIT/OFL/third-party notices. No reference screenshots,original avatars or extracted paid SVG assets distributed.",
+    "sourceTargets": "Drive stays the default actual implementation;11 Header support choices added consistently. Flow/AppShell route modules unchanged.",
+    "protectedWIP": "Root protected10 unrelated tracked changes and untracked work remain outside the milestone."
+  },
+  "publication": {
+    "commit": "pending Root scoped normal-hook commit",
+    "push": "pending",
+    "completeCI": "pending new original3-worker run; running24f is not canceled",
+    "Pages": "not yet confirmed; last confirmed public deployment remains9c80801fa5f3826ea481c980138244977fc473ce"
+  },
+  "limits": [
+    "Local targeted success is not complete CI or successful Pages deployment.",
+    "Official Header computed authority covers four settled Filespace panels. Filebox official visual equivalence is not independently observed.",
+    "Original replacement prose,avatar artwork,labels/footer and some notification metadata differ; text wrapping/card heights/section positions retain documented differences.",
+    "Flow Path retains documented typography/color/focus-precondition differences; no pixel-perfect claim.",
+    "AppShell separate phone Sheet transition and official hover geometry remain limited.",
+    "The four newly observed official DataGrid entries remain separate planned work and are not counted as implemented."
+  ]
+}

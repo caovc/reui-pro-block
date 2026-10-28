@@ -1,9 +1,10 @@
-import { Alert, AlertTitle, AlertAction } from "@/components/reui/alert";
+import { Alert, AlertTitle, AlertDescription, AlertAction } from "@/components/reui/alert";
 import { sharedDriveFiles, folderDriveFiles } from "./drive-fixtures";
 import { DriveFolderTree } from "./drive-tree";
+import { getDriveTreeFolders } from "./drive-tree-data";
 import { DriveFilePanels } from "./drive-panels";
 import { ReferenceGrid } from "./reference-grid";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useFileUpload } from "@/hooks/use-file-upload";
 import {
   Folder,
@@ -21,8 +22,6 @@ import {
   FileText,
   Video,
   ChevronRight,
-  Bell,
-  CircleHelp,
   Menu,
   Download,
   ArrowLeft,
@@ -80,7 +79,17 @@ import { useDriveSettingsModel } from "./drive-settings-model";
 import { driveSettingsTitles } from "./drive-settings-data";
 import type { DriveSettingsNavigation } from "./drive-settings-types";
 import { useDriveRoute } from "./drive-route";
-import type { DriveRoute } from "./drive-route-model";
+import type { DriveRoute, DriveView } from "./drive-route-model";
+import {
+  createDriveHeaderBindings,
+  driveFolderLocation,
+  driveHeaderRoute,
+  resolveDriveFileDestination,
+} from "./drive-file-navigation";
+import { DriveHeaderHelp } from "./drive-header-help";
+import { DriveHeaderNotifications } from "./drive-header-notifications";
+import type { DriveHeaderNavigation } from "./drive-header-data";
+import { downloadDrivePdf } from "./drive-settings-downloads";
 import { DrivePricing } from "./drive-pricing";
 import { DriveWorkspaceMenu } from "./drive-workspace-menu";
 import { useDriveWorkspaceModel } from "./drive-workspace-model";
@@ -282,24 +291,62 @@ export default function Drive({ id }: { id: string }) {
   });
   const { theme } = useGlobalTheme();
   const [signed, setSigned] = useState(id !== "filebox");
-  const [view, setView] = useState("Favourites");
+  const [defaultView, setDefaultView] = useState<DriveView>("Favourites");
   const [files, setFiles] = useState<FileRecord[]>(() => [
     ...(id === "filebox" ? fileboxSeeds : seeds),
     ...sharedDriveFiles,
     ...folderDriveFiles,
   ]);
+  const headerRef = useRef<HTMLElement>(null);
+  const previewReturn = useRef<{ fileId: string; origin: string } | null>(null);
   const [query, setQuery] = useState("");
   const [type, setType] = useState("All types");
   const [layout, setLayout] = useState("list");
   const [selected, setSelected] = useState<string[]>([]);
-  const [modal, setModal] = useState("");
-  const [target, setTarget] = useState<FileRecord | null>(null);
+  const [localModal, setModal] = useState("");
+  const [localTarget, setTarget] = useState<FileRecord | null>(null);
   const [mobile, setMobile] = useState(false);
   const [invite, setInvite] = useState(false);
   const [columnVisibility, setColumnVisibility] = useState<Record<string, boolean>>({});
   const [shares, setShares] = useState<
     Record<string, { people: string[][]; team: string; restriction: string }>
   >({});
+  const [headerBindings] = useState(() => createDriveHeaderBindings(files, getDriveTreeFolders()));
+  const treeFolders = getDriveTreeFolders();
+  const destination = resolveDriveFileDestination(
+    route.kind === "files" ? route.location : undefined,
+    files,
+    treeFolders,
+    defaultView,
+    headerBindings,
+  );
+  const view = destination.status === "ready" ? destination.view : defaultView;
+  const routedFile =
+    route.kind === "files" && destination.status === "ready" ? destination.file : null;
+  const routedDocument =
+    route.kind === "files" &&
+    (route.location?.kind === "file" ||
+      (route.location?.kind === "lookup" && route.location.entity === "file"));
+  const target = routedDocument ? routedFile : localTarget;
+  const modal = localModal || (routedFile ? "Preview" : "");
+  const unavailable =
+    route.kind === "missing"
+      ? "This link does not match a location in this local Drive demo."
+      : route.kind === "files" && destination.status !== "ready"
+        ? destination.message
+        : null;
+  const routeKey = JSON.stringify(route);
+  const [previousRouteKey, setPreviousRouteKey] = useState(routeKey);
+  if (previousRouteKey !== routeKey) {
+    // History renders the URL's location. It clears transient UI without pushing another entry.
+    setPreviousRouteKey(routeKey);
+    setModal("");
+    setTarget(null);
+    setQuery("");
+    setSelected([]);
+    setMobile(false);
+    setInvite(false);
+  }
   const [uploadState, uploadActions] = useFileUpload({
     multiple: true,
     maxSize: 100 * 1024 * 1024,
@@ -318,7 +365,7 @@ export default function Drive({ id }: { id: string }) {
         })),
         ...f,
       ]);
-      if (view === "Favourites") setView("My Drive");
+      if (view === "Favourites") openFolder("My Drive");
     },
     onError: (errors) => errors.forEach((error) => toast.error(error)),
   });
@@ -344,11 +391,26 @@ export default function Drive({ id }: { id: string }) {
     if (target) setShares((s) => ({ ...s, [permissionKey]: { ...shared, ...change } }));
   }
   function navigateDrive(destination: DriveRoute) {
+    const location = destination.kind === "files" ? destination.location : undefined;
+    const opener = document.activeElement;
+    previewReturn.current =
+      location?.kind === "file" &&
+      opener instanceof HTMLElement &&
+      opener.dataset.driveFileOpen === location.id
+        ? { fileId: location.id, origin: window.location.hash }
+        : null;
     setModal("");
     setMobile(false);
+    setQuery("");
+    setSelected([]);
     routing.navigate(destination);
   }
 
+  const driveHeaderNavigation: DriveHeaderNavigation = {
+    href: (target) => routing.href(driveHeaderRoute(target, files, treeFolders, headerBindings)),
+    onNavigate: (target) =>
+      navigateDrive(driveHeaderRoute(target, files, treeFolders, headerBindings)),
+  };
   const settingsNavigation: DriveSettingsNavigation = {
     href: (section, memberSlug) => routing.href({ kind: "settings", section, memberSlug }),
     onNavigate: (section, memberSlug) => navigateDrive({ kind: "settings", section, memberSlug }),
@@ -359,8 +421,11 @@ export default function Drive({ id }: { id: string }) {
       <Login
         onLogin={() => {
           setSigned(true);
-          setView("My Drive");
-          navigateDrive({ kind: "files" });
+          setDefaultView("My Drive");
+          // Keep a copied validated destination; bare/login retain the original My Drive entry.
+          if (route.kind === "login" || (route.kind === "files" && !route.location)) {
+            navigateDrive({ kind: "files" });
+          }
         }}
       />
     );
@@ -382,18 +447,28 @@ export default function Drive({ id }: { id: string }) {
     )
     .sort((a, b) => a.name.localeCompare(b.name));
   function openFolder(name: string) {
-    if (route.kind !== "files") navigateDrive({ kind: "files" });
-    setView(name);
+    navigateDrive({
+      kind: "files",
+      location: driveFolderLocation(name, files, treeFolders, headerBindings),
+    });
     setQuery("");
     setSelected([]);
     setMobile(false);
   }
-  function openFile(f: FileRecord) {
-    if (f.type === "Folder") openFolder(f.name);
-    else {
-      setTarget(f);
-      setModal("Preview");
-    }
+  function recordRoute(file: FileRecord): DriveRoute {
+    return {
+      kind: "files",
+      location:
+        file.type === "Folder"
+          ? { kind: "folder", source: "record", id: file.id }
+          : { kind: "file", id: file.id },
+    };
+  }
+  function recordHref(file: FileRecord) {
+    return new URL(routing.href(recordRoute(file)), window.location.href).href;
+  }
+  function openFile(file: FileRecord) {
+    navigateDrive(recordRoute(file));
   }
   function trash(ids: string[]) {
     setFiles((f) => f.map((x) => (ids.includes(x.id) ? { ...x, deleted: true } : x)));
@@ -419,9 +494,7 @@ export default function Drive({ id }: { id: string }) {
             variant={view === label ? "secondary" : "ghost"}
             className="justify-start"
             onClick={() => {
-              setView(String(label));
-              setQuery("");
-              setMobile(false);
+              openFolder(String(label));
             }}
           >
             {typeof Icon !== "string" && <Icon />}
@@ -478,7 +551,7 @@ export default function Drive({ id }: { id: string }) {
           else setModal(action);
         }}
       >
-        <header className="ct-drive-header">
+        <header ref={headerRef} className="ct-drive-header">
           <DriveApplicationTrigger />
           <DriveWorkspaceMenu
             workspaces={workspaceModel.workspaces}
@@ -492,25 +565,16 @@ export default function Drive({ id }: { id: string }) {
               ? driveSettingsTitles[route.section]
               : route.kind === "pricing"
                 ? "Pricing"
-                : view}
+                : unavailable
+                  ? "Unavailable"
+                  : view}
           </span>
           <div className="ct-grow" />
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            aria-label="Help"
-            onClick={() => setModal("Help center")}
-          >
-            <CircleHelp />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            aria-label="Notifications"
-            onClick={() => toast("No new notifications")}
-          >
-            <Bell />
-          </Button>
+          <DriveHeaderHelp navigation={driveHeaderNavigation} />
+          <DriveHeaderNotifications
+            navigation={driveHeaderNavigation}
+            onDownloadAttachment={({ name, lines }) => downloadDrivePdf(name, lines)}
+          />
         </header>
         {route.kind === "settings" ? (
           <DriveSettings
@@ -522,10 +586,7 @@ export default function Drive({ id }: { id: string }) {
             currentPlan={workspaceModel.currentPlan}
             onOpenFile={(fileId) => {
               const file = files.find((entry) => entry.id === fileId && !entry.deleted);
-              if (file) {
-                navigateDrive({ kind: "files" });
-                openFile(file);
-              }
+              if (file) openFile(file);
             }}
             pricingHref={routing.href({ kind: "pricing" })}
             onPricing={() => navigateDrive({ kind: "pricing" })}
@@ -541,6 +602,18 @@ export default function Drive({ id }: { id: string }) {
               }}
             />
           </div>
+        ) : unavailable ? (
+          <main className="reui-reference p-6">
+            <Alert variant="destructive">
+              <AlertTitle>Drive location unavailable</AlertTitle>
+              <AlertDescription>{unavailable}</AlertDescription>
+              <AlertAction>
+                <Button variant="outline" onClick={() => openFolder("My Drive")}>
+                  Back to Drive
+                </Button>
+              </AlertAction>
+            </Alert>
+          </main>
         ) : (
           <div className="ct-drive-body">
             <aside className="ct-drive-sidebar">{side}</aside>
@@ -563,7 +636,7 @@ export default function Drive({ id }: { id: string }) {
                       <Menu />
                     </Button>
                   </SheetTrigger>
-                  <button type="button" className="ct-muted" onClick={() => setView("My Drive")}>
+                  <button type="button" className="ct-muted" onClick={() => openFolder("My Drive")}>
                     My Drive
                   </button>
                   {view !== "My Drive" && (
@@ -737,7 +810,11 @@ export default function Drive({ id }: { id: string }) {
                         value: (f) => f.name,
                         render: (f) => (
                           <div className="ct-drive-filename">
-                            <button type="button" onClick={() => openFile(f)}>
+                            <button
+                              type="button"
+                              data-drive-file-open={f.id}
+                              onClick={() => openFile(f)}
+                            >
                               <FileIcon type={f.type} />
                               <span className="ct-drive-filetext">
                                 <span className="ct-drive-title">{f.name}</span>
@@ -863,9 +940,7 @@ export default function Drive({ id }: { id: string }) {
                                         ),
                                       );
                                     else if (action === "Copy Link") {
-                                      navigator.clipboard.writeText(
-                                        location.href + "?file=" + f.id,
-                                      );
+                                      navigator.clipboard.writeText(recordHref(f));
                                       toast.success("Link copied");
                                     } else if (action === "Download" && f.url) {
                                       const a = document.createElement("a");
@@ -893,6 +968,7 @@ export default function Drive({ id }: { id: string }) {
                         <button
                           type="button"
                           className="ct-drive-grid-file"
+                          data-drive-file-open={f.id}
                           onClick={() => openFile(f)}
                         >
                           <FileIcon type={f.type} />
@@ -911,7 +987,7 @@ export default function Drive({ id }: { id: string }) {
                   reset={() => {
                     setQuery("");
                     setType("All types");
-                    setView("My Drive");
+                    openFolder("My Drive");
                   }}
                 />
               )}
@@ -946,7 +1022,7 @@ export default function Drive({ id }: { id: string }) {
               <Button
                 variant="outline"
                 onClick={() => {
-                  navigator.clipboard.writeText(location.href + "?file=" + target?.id);
+                  if (target) navigator.clipboard.writeText(recordHref(target));
                   toast.success("Link copied");
                 }}
               >
@@ -1092,14 +1168,48 @@ export default function Drive({ id }: { id: string }) {
           }}
         />
         <Modal
+          onCloseAutoFocus={(event) => {
+            const returnTo = previewReturn.current;
+            previewReturn.current = null;
+            if (!returnTo || returnTo.origin !== window.location.hash) return;
+            const scope = headerRef.current?.closest(".ct-drive-native-root");
+            const opener = Array.from(
+              scope?.querySelectorAll<HTMLElement>(
+                `[data-drive-file-open="${CSS.escape(returnTo.fileId)}"]`,
+              ) ?? [],
+            ).find(
+              (candidate) =>
+                candidate.isConnected &&
+                candidate.getClientRects().length > 0 &&
+                !candidate.hasAttribute("disabled"),
+            );
+            if (opener) {
+              opener.focus({ preventScroll: true });
+              if (document.activeElement === opener) event.preventDefault();
+            }
+          }}
           description={modal === "New Folder" ? "Creates a folder inside My Drive." : undefined}
           title={modal === "Preview" ? target?.name || "File preview" : modal}
           open={
             !!modal &&
-            (route.kind === "files" || modal === "Help center") &&
+            route.kind === "files" &&
+            !unavailable &&
             !["Share file", "Details", "Move", "Version History", "Download"].includes(modal)
           }
-          onClose={() => setModal("")}
+          onClose={() => {
+            setModal("");
+            if (modal === "Preview" && routedFile) {
+              routing.closePreview({
+                kind: "files",
+                location: driveFolderLocation(
+                  routedFile.parent,
+                  files,
+                  treeFolders,
+                  headerBindings,
+                ),
+              });
+            }
+          }}
         >
           {modal === "New Folder" || modal === "Rename file" ? (
             <form
@@ -1123,7 +1233,7 @@ export default function Drive({ id }: { id: string }) {
                       parent: view === "Favourites" ? "My Drive" : view,
                     },
                   ]);
-                  setView(view === "Favourites" ? "My Drive" : view);
+                  if (view === "Favourites") openFolder("My Drive");
                 }
                 setModal("");
                 toast.success("Saved");
@@ -1216,22 +1326,6 @@ export default function Drive({ id }: { id: string }) {
                 }}
               >
                 Move to bin
-              </Button>
-            </>
-          ) : modal === "Help center" ? (
-            <>
-              <p>
-                Create folders, upload files, switch between list and grid, and share with
-                teammates.
-              </p>
-              <Button
-                variant="outline"
-                onClick={() => {
-                  setModal("");
-                  uploadActions.openFileDialog();
-                }}
-              >
-                Upload your first file
               </Button>
             </>
           ) : null}

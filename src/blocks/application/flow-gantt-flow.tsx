@@ -21,6 +21,7 @@ import { FlowCanvasToolbar } from "./flow-canvas-toolbar";
 import {
   FlowAgentAppField,
   FlowAgentModelSelect,
+  FlowAgentPathField,
   FlowInspectorTextFields,
   FlowWorkflowSelectFields,
 } from "./flow-inspector-fields";
@@ -73,7 +74,6 @@ import {
   ContextMenuItem,
   ContextMenuSeparator,
 } from "@/components/ui/context-menu";
-import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { Switch } from "@/components/ui/switch";
 import { ButtonGroup } from "@/components/ui/button-group";
@@ -405,28 +405,6 @@ function OfficialEdge({ id, data, markerEnd }: EdgeProps<CanvasEdge>) {
 }
 const nodeTypes = { reui: OfficialNode };
 const edgeTypes = { reui: OfficialEdge };
-function FieldHelp({ label }: { label: string }) {
-  return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <button type="button" className="fg-field-help" aria-label={`About ${label}`}>
-          <CircleHelp />
-        </button>
-      </TooltipTrigger>
-      <TooltipContent side="top">
-        {label === "Title"
-          ? "The step name shown on the canvas."
-          : label === "Detail"
-            ? "A short description of this step."
-            : label === "Owner"
-              ? "The person responsible for this step."
-              : label === "Category"
-                ? "The type of action performed by this step."
-                : "The connected app used by this step."}
-      </TooltipContent>
-    </Tooltip>
-  );
-}
 function FlowInspectorShell({
   originRef,
   className,
@@ -2272,24 +2250,14 @@ function FlowEditor({ block }: BlockProps) {
                       )}
                       {variant === 1 &&
                         graph.edges.some((edge) => edge.target === current.id && edge.label) && (
-                          <label htmlFor="fg-step-path">
-                            <span className="fg-field-label">
-                              Path
-                              <FieldHelp label="Path" />
-                            </span>
-                            <input
-                              id="fg-step-path"
-                              aria-label="Path"
-                              value={
-                                draft.branch ??
-                                graph.edges.find((edge) => edge.target === current.id)?.label ??
-                                ""
-                              }
-                              onChange={(event) =>
-                                setDraft({ ...draft, branch: event.target.value })
-                              }
-                            />
-                          </label>
+                          <FlowAgentPathField
+                            value={
+                              draft.branch ??
+                              graph.edges.find((edge) => edge.target === current.id)?.label ??
+                              ""
+                            }
+                            onValueChange={(branch) => setDraft({ ...draft, branch })}
+                          />
                         )}
                       {variant === 2 && (
                         <>

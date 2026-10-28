@@ -294,3 +294,36 @@ one worker, zero retries and the original budgets. The local phone actually scro
 Linux branch awaits complete CI; the original Linux trace establishes that condition.
 No product, SDK, font, workflow or timeout changed. Commit/push and successful Pages
 deployment remain distinct gates; the currently running parent CI is not canceled.
+
+## Drive Header, Flow Path and AppShell18 — 2026-10-28
+
+The [scoped release receipt](drive-flow-appshell-followup-2026-10-28.json) records
+three completed local implementation gates. Drive now uses the actual free Item,
+Sheet, DropdownMenu and ButtonGroup composition for help and notifications. Real
+file-ID links preserve settings origins, unavailable records and preview focus
+through close and browser history. Both templates expose their actual Drive source
+and eleven support files consistently through view, Copy and download.
+
+Fresh final Source2 passed for both templates. Their actual226-member downloads
+retained every original byte, passed the received strict build, then passed the
+matching Filespace6 and Filebox4 native cases. Filebox keeps its real demo sign-in
+lifecycle. Dependency trees were physical copies of matching normally installed
+packages; these gates do not claim fresh installs.
+
+Flow's Path editor replaces its raw field and obsolete help fallback with the
+actual free Field/Input/Tooltip composition. Save, draft cancellation, run clearing
+and Undo remain with the graph domain. Both changed sources passed real viewing,
+clipboard and download checks; the actual412-member project passed normal
+postinstall, strict compilation and three native business cases.
+
+AppShell18 reuses the existing AccountMenu frame and native radio menu. The existing
+shared theme store follows Dark, Light and System while menus and phone navigation
+are closed. The source collector now includes its two real shared theme modules.
+The actual project passed strict compilation, complete declared dependency closure
+and five theme/export cases, including exact separately downloaded theme CSS.
+
+The receipt preserves initial fixture failures and their necessary corrections as
+separate runs. It documents remaining reference typography, artwork, prose and
+transition limits. This milestone does not claim complete CI or Pages success;
+commit, push and actual preview deployment are checked separately. The four new
+official DataGrid additions remain separate reference and implementation work.

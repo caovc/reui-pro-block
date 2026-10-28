@@ -1,3 +1,4 @@
+import type { ComponentProps, ReactNode } from "react";
 import { SidebarCollection, SidebarNavigation } from "@/components/reui/sidebar";
 import { SidebarRail, SidebarMenuAction, SidebarMenuButton } from "@/components/ui/sidebar";
 import { BrandMark } from "@/components/brand-mark";
@@ -477,6 +478,14 @@ export function UsageCard({
     </Frame>
   );
 }
+/** Existing account-menu mode application, also used by standalone Todo exports. */
+export function applyAccountTheme(value: string) {
+  document.documentElement.classList.toggle(
+    "dark",
+    value === "dark" || (value === "system" && matchMedia("(prefers-color-scheme: dark)").matches),
+  );
+}
+
 export function WorkspaceMenu({
   collapsed = false,
   user = false,
@@ -487,6 +496,9 @@ export function WorkspaceMenu({
   onName,
   card = false,
   compact = false,
+  triggerContent,
+  children,
+  menuProps,
 }: {
   collapsed?: boolean;
   user?: boolean;
@@ -497,16 +509,15 @@ export function WorkspaceMenu({
   onName?: (s: string) => void;
   card?: boolean;
   compact?: boolean;
+  triggerContent?: ReactNode;
+  children?: ReactNode;
+  menuProps?: Omit<ComponentProps<typeof DropdownMenuContent>, "children">;
 }) {
   const [workspace, setWorkspace] = useState(initial);
   const [accountTheme, setAccountTheme] = useState("system");
   function selectAccountTheme(value: string) {
     setAccountTheme(value);
-    document.documentElement.classList.toggle(
-      "dark",
-      value === "dark" ||
-        (value === "system" && matchMedia("(prefers-color-scheme: dark)").matches),
-    );
+    applyAccountTheme(value);
   }
   const Trigger = SidebarMenuButton;
   return (
@@ -522,209 +533,226 @@ export function WorkspaceMenu({
           )}
           aria-label={user ? "Open user menu" : top ? "Switch workspace" : "Open workspace menu"}
         >
-          {user ? (
-            <Face name={displayName} />
-          ) : compact ? (
-            <span
-              className="flex size-4 shrink-0 items-center justify-center text-base"
-              aria-hidden="true"
-            >
-              {workspace === "Vercel" ? "▲" : workspace.slice(0, 1)}
-            </span>
-          ) : (
-            <span className="flex size-6 shrink-0 items-center justify-center rounded-full border text-[10px] font-medium">
-              {workspace === "Claude" ? "C" : workspace === "Vercel" ? "▲" : workspace.slice(0, 1)}
-            </span>
-          )}
-          {!collapsed && (
+          {triggerContent ?? (
             <>
-              <span className="flex min-w-0 flex-1 flex-col text-left">
-                <span className="truncate text-[13px] font-medium">
-                  {user ? displayName : workspace}
+              {user ? (
+                <Face name={displayName} />
+              ) : compact ? (
+                <span
+                  className="flex size-4 shrink-0 items-center justify-center text-base"
+                  aria-hidden="true"
+                >
+                  {workspace === "Vercel" ? "▲" : workspace.slice(0, 1)}
                 </span>
-                {subtitle && (
-                  <span className="flex items-center gap-1 text-[9px] text-muted-foreground">
-                    <span className="size-1.5 rounded-full bg-[var(--chart-3)]" />
-                    {subtitle}
-                  </span>
-                )}
-              </span>
-              {card ? (
-                <Ellipsis className="text-muted-foreground" />
               ) : (
-                <ChevronsUpDown className="text-muted-foreground" />
+                <span className="flex size-6 shrink-0 items-center justify-center rounded-full border text-[10px] font-medium">
+                  {workspace === "Claude"
+                    ? "C"
+                    : workspace === "Vercel"
+                      ? "▲"
+                      : workspace.slice(0, 1)}
+                </span>
+              )}
+              {!collapsed && (
+                <>
+                  <span className="flex min-w-0 flex-1 flex-col text-left">
+                    <span className="truncate text-[13px] font-medium">
+                      {user ? displayName : workspace}
+                    </span>
+                    {subtitle && (
+                      <span className="flex items-center gap-1 text-[9px] text-muted-foreground">
+                        <span className="size-1.5 rounded-full bg-[var(--chart-3)]" />
+                        {subtitle}
+                      </span>
+                    )}
+                  </span>
+                  {card ? (
+                    <Ellipsis className="text-muted-foreground" />
+                  ) : (
+                    <ChevronsUpDown className="text-muted-foreground" />
+                  )}
+                </>
               )}
             </>
           )}
         </Trigger>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        side={card || collapsed ? "right" : top ? "bottom" : "top"}
-        align="end"
-        className="reui-reference w-56"
+        {...menuProps}
+        side={menuProps?.side ?? (card || collapsed ? "right" : top ? "bottom" : "top")}
+        align={menuProps?.align ?? "end"}
+        className={
+          menuProps?.className
+            ? cn("reui-reference w-56", menuProps.className)
+            : "reui-reference w-56"
+        }
       >
-        {card ? (
-          <>
-            {/* ReUI free c-sidebar-1 AccountMenu: identity, grouped actions, sign out. */}
-            <DropdownMenuLabel className="flex items-center gap-2">
-              <Face name={displayName} />
-              <span className="flex min-w-0 flex-col">
-                <span className="truncate">{displayName}</span>
-                <span className="text-xs font-normal text-muted-foreground">
-                  nick@bricklane.demo
+        {children ??
+          (card ? (
+            <>
+              {/* ReUI free c-sidebar-1 AccountMenu: identity, grouped actions, sign out. */}
+              <DropdownMenuLabel className="flex items-center gap-2">
+                <Face name={displayName} />
+                <span className="flex min-w-0 flex-col">
+                  <span className="truncate">{displayName}</span>
+                  <span className="text-xs font-normal text-muted-foreground">
+                    nick@bricklane.demo
+                  </span>
                 </span>
-              </span>
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem
-                onSelect={() =>
-                  toast("Profile selected", {
-                    description: "This preview uses a local sample account.",
-                  })
-                }
-              >
-                <UserRound /> Profile <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onSelect={() =>
-                  toast("Billing & Usage selected", {
-                    description: "Demo plan: Pro · No payment information is collected.",
-                  })
-                }
-              >
-                <CreditCard /> Billing & Usage
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onSelect={() =>
-                  toast("Preferences selected", {
-                    description: "Appearance is available in the Theme menu.",
-                  })
-                }
-              >
-                <SlidersHorizontal /> Preferences <DropdownMenuShortcut>⌘,</DropdownMenuShortcut>
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem
-                onSelect={() =>
-                  toast("Help & Support", {
-                    description: "This is an independent Bricklane preview using local demo data.",
-                  })
-                }
-              >
-                <CircleHelp /> Help & Support
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onSelect={() =>
-                  toast("API Reference", { description: "Demo only. No live API is connected." })
-                }
-              >
-                <FileText /> API Reference
-              </DropdownMenuItem>
-              <DropdownMenuSub>
-                <DropdownMenuSubTrigger>
-                  <Sun /> Theme
-                </DropdownMenuSubTrigger>
-                <DropdownMenuSubContent>
-                  <DropdownMenuRadioGroup value={accountTheme} onValueChange={selectAccountTheme}>
-                    <DropdownMenuRadioItem
-                      value="light"
-                      onSelect={(event) => event.preventDefault()}
-                    >
-                      <Sun /> Light
-                    </DropdownMenuRadioItem>
-                    <DropdownMenuRadioItem
-                      value="dark"
-                      onSelect={(event) => event.preventDefault()}
-                    >
-                      <Moon /> Dark
-                    </DropdownMenuRadioItem>
-                    <DropdownMenuRadioItem
-                      value="system"
-                      onSelect={(event) => event.preventDefault()}
-                    >
-                      <Laptop /> System
-                    </DropdownMenuRadioItem>
-                  </DropdownMenuRadioGroup>
-                </DropdownMenuSubContent>
-              </DropdownMenuSub>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onSelect={() =>
-                toast("Demo account", { description: "There is no active session to sign out of." })
-              }
-            >
-              <LogOut /> Sign Out <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-            </DropdownMenuItem>
-          </>
-        ) : (
-          <>
-            <DropdownMenuLabel>
-              {user ? `${displayName} · nick@bricklane.demo` : "Workspaces"}
-            </DropdownMenuLabel>
-            <DropdownMenuGroup>
-              {["Claude", "Vercel", "Atlas", "Acme Corp"].map((w) => (
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
                 <DropdownMenuItem
-                  key={w}
+                  onSelect={() =>
+                    toast("Profile selected", {
+                      description: "This preview uses a local sample account.",
+                    })
+                  }
+                >
+                  <UserRound /> Profile <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onSelect={() =>
+                    toast("Billing & Usage selected", {
+                      description: "Demo plan: Pro · No payment information is collected.",
+                    })
+                  }
+                >
+                  <CreditCard /> Billing & Usage
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onSelect={() =>
+                    toast("Preferences selected", {
+                      description: "Appearance is available in the Theme menu.",
+                    })
+                  }
+                >
+                  <SlidersHorizontal /> Preferences <DropdownMenuShortcut>⌘,</DropdownMenuShortcut>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                <DropdownMenuItem
+                  onSelect={() =>
+                    toast("Help & Support", {
+                      description:
+                        "This is an independent Bricklane preview using local demo data.",
+                    })
+                  }
+                >
+                  <CircleHelp /> Help & Support
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onSelect={() =>
+                    toast("API Reference", { description: "Demo only. No live API is connected." })
+                  }
+                >
+                  <FileText /> API Reference
+                </DropdownMenuItem>
+                <DropdownMenuSub>
+                  <DropdownMenuSubTrigger>
+                    <Sun /> Theme
+                  </DropdownMenuSubTrigger>
+                  <DropdownMenuSubContent>
+                    <DropdownMenuRadioGroup value={accountTheme} onValueChange={selectAccountTheme}>
+                      <DropdownMenuRadioItem
+                        value="light"
+                        onSelect={(event) => event.preventDefault()}
+                      >
+                        <Sun /> Light
+                      </DropdownMenuRadioItem>
+                      <DropdownMenuRadioItem
+                        value="dark"
+                        onSelect={(event) => event.preventDefault()}
+                      >
+                        <Moon /> Dark
+                      </DropdownMenuRadioItem>
+                      <DropdownMenuRadioItem
+                        value="system"
+                        onSelect={(event) => event.preventDefault()}
+                      >
+                        <Laptop /> System
+                      </DropdownMenuRadioItem>
+                    </DropdownMenuRadioGroup>
+                  </DropdownMenuSubContent>
+                </DropdownMenuSub>
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onSelect={() =>
+                  toast("Demo account", {
+                    description: "There is no active session to sign out of.",
+                  })
+                }
+              >
+                <LogOut /> Sign Out <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+              </DropdownMenuItem>
+            </>
+          ) : (
+            <>
+              <DropdownMenuLabel>
+                {user ? `${displayName} · nick@bricklane.demo` : "Workspaces"}
+              </DropdownMenuLabel>
+              <DropdownMenuGroup>
+                {["Claude", "Vercel", "Atlas", "Acme Corp"].map((w) => (
+                  <DropdownMenuItem
+                    key={w}
+                    onSelect={() => {
+                      setWorkspace(w);
+                      onName?.(w);
+                    }}
+                  >
+                    {w}
+                    {workspace === w && <Check className="ml-auto" />}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                <DropdownMenuItem onSelect={() => toast("Workspace settings selected")}>
+                  <Settings />
+                  Settings
+                </DropdownMenuItem>
+                <DropdownMenuItem
                   onSelect={() => {
-                    setWorkspace(w);
-                    onName?.(w);
+                    document.documentElement.classList.remove("dark");
                   }}
                 >
-                  {w}
-                  {workspace === w && <Check className="ml-auto" />}
+                  <Sun />
+                  Light theme
                 </DropdownMenuItem>
-              ))}
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem onSelect={() => toast("Workspace settings selected")}>
-                <Settings />
-                Settings
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onSelect={() => {
-                  document.documentElement.classList.remove("dark");
-                }}
-              >
-                <Sun />
-                Light theme
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onSelect={() => {
-                  document.documentElement.classList.add("dark");
-                }}
-              >
-                <Moon />
-                Dark theme
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onSelect={() => {
-                  document.documentElement.classList.toggle(
-                    "dark",
-                    matchMedia("(prefers-color-scheme:dark)").matches,
-                  );
-                }}
-              >
-                <Laptop />
-                System theme
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onSelect={() =>
-                  toast("Demo account menu", {
-                    description: "This preview uses a local sample account.",
-                  })
-                }
-              >
-                <LogOut />
-                Sign out
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-          </>
-        )}
+                <DropdownMenuItem
+                  onSelect={() => {
+                    document.documentElement.classList.add("dark");
+                  }}
+                >
+                  <Moon />
+                  Dark theme
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onSelect={() => {
+                    document.documentElement.classList.toggle(
+                      "dark",
+                      matchMedia("(prefers-color-scheme:dark)").matches,
+                    );
+                  }}
+                >
+                  <Laptop />
+                  System theme
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onSelect={() =>
+                    toast("Demo account menu", {
+                      description: "This preview uses a local sample account.",
+                    })
+                  }
+                >
+                  <LogOut />
+                  Sign out
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+            </>
+          ))}
       </DropdownMenuContent>
     </DropdownMenu>
   );

@@ -524,6 +524,8 @@ export function templateImplementationTargets(template: {
       "drive-settings-free/phone-input",
       "drive-pricing",
       "drive-workspace-menu",
+      "drive-header-help",
+      "drive-header-notifications",
     ],
     filebox: [
       "drive-layout",
@@ -539,6 +541,8 @@ export function templateImplementationTargets(template: {
       "drive-settings-free/phone-input",
       "drive-pricing",
       "drive-workspace-menu",
+      "drive-header-help",
+      "drive-header-notifications",
     ],
     mesh: ["mesh-canvas", "mesh-documents", "workflow-account-settings", "workflow-account-menu"],
     flux: [

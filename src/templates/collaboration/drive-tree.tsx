@@ -4,32 +4,7 @@ import { useTree } from "@headless-tree/react";
 import { syncDataLoaderFeature, hotkeysCoreFeature } from "@headless-tree/core";
 import { Tree, TreeItem, TreeItemLabel } from "@/components/reui/tree";
 import "./drive-tree.css";
-type FolderNode = { name: string; children?: string[] };
-const baseNodes: Record<string, FolderNode> = {
-  root: { name: "Drive", children: ["My Drive"] },
-  "My Drive": {
-    name: "My Drive",
-    children: [
-      "Client Deliverables",
-      "Brand Library",
-      "Spring Campaign",
-      "Studio Operations",
-      "Product Design",
-      "Samples",
-    ],
-  },
-  "Client Deliverables": {
-    name: "Client Deliverables",
-    children: ["Northwind Rebrand", "Harbor Coffee"],
-  },
-  "Northwind Rebrand": { name: "Northwind Rebrand" },
-  "Harbor Coffee": { name: "Harbor Coffee" },
-  "Brand Library": { name: "Brand Library", children: [] },
-  "Spring Campaign": { name: "Spring Campaign", children: [] },
-  "Studio Operations": { name: "Studio Operations" },
-  "Product Design": { name: "Product Design", children: [] },
-  Samples: { name: "Samples" },
-};
+import { baseNodes, type FolderNode } from "./drive-tree-data";
 export function DriveFolderTree({
   view,
   onNavigate,
