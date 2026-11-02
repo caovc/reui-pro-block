@@ -156,32 +156,35 @@ for (const { id, name, defaultPath, runtimePaths: initialRuntimePaths } of confi
         ]
       : []),
   ];
-  test(`${id} settings Source view, real Copy, single file and original project ZIP match`, async ({
-    page,
-    context,
-  }, testInfo) => {
-    const faults: string[] = [];
-    page.on("pageerror", (error) => faults.push(error.message));
-    page.on("console", (message) => {
-      if (message.type() === "warning" || message.type() === "error") faults.push(message.text());
-    });
-    await context.grantPermissions(["clipboard-read", "clipboard-write"]);
-    const fresh = new Map<string, Buffer>();
-    for (const filename of runtimePaths) {
-      fresh.set(filename, await readFile(join(process.cwd(), filename)));
-    }
-    const checked: Record<string, unknown>[] = [];
-    await page.goto(`/#/templates/${id}`, { waitUntil: "networkidle" });
-    const sourceTrigger = page.getByRole("button", { name: "View template source", exact: true });
-    await expect(sourceTrigger).toBeVisible();
-    await sourceTrigger.click();
-    const dialog = page.getByRole("dialog", {
-      name: new RegExp(`^${name} source$`, "i"),
-    });
-    await expect(dialog).toBeVisible();
-    const choice = dialog.getByRole("combobox", { name: "Template source file", exact: true });
-    await expect(choice).toHaveText(defaultPath);
-    for (const filename of runtimePaths) {
+  // Each real source file owns its full native selection, view, clipboard and download flow.
+  // Keep the ordinary 30s test/5s assertion limits; project acceptance is independent below.
+  for (const targetPath of runtimePaths) {
+    test(`${id} settings source ${targetPath}: view, real Copy and single file match`, async ({
+      page,
+      context,
+    }, testInfo) => {
+      const faults: string[] = [];
+      page.on("pageerror", (error) => faults.push(error.message));
+      page.on("console", (message) => {
+        if (message.type() === "warning" || message.type() === "error") faults.push(message.text());
+      });
+      await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+      const fresh = new Map<string, Buffer>();
+      for (const filename of runtimePaths) {
+        fresh.set(filename, await readFile(join(process.cwd(), filename)));
+      }
+      const checked: Record<string, unknown>[] = [];
+      await page.goto(`/#/templates/${id}`, { waitUntil: "networkidle" });
+      const sourceTrigger = page.getByRole("button", { name: "View template source", exact: true });
+      await expect(sourceTrigger).toBeVisible();
+      await sourceTrigger.click();
+      const dialog = page.getByRole("dialog", {
+        name: new RegExp(`^${name} source$`, "i"),
+      });
+      await expect(dialog).toBeVisible();
+      const choice = dialog.getByRole("combobox", { name: "Template source file", exact: true });
+      await expect(choice).toHaveText(defaultPath);
+      const filename = targetPath;
       if (filename !== defaultPath) {
         await expect(page.getByRole("listbox")).toHaveCount(0);
         await expect(choice).toHaveAttribute("aria-expanded", "false");
@@ -235,21 +238,55 @@ for (const { id, name, defaultPath, runtimePaths: initialRuntimePaths } of confi
         singleSHA256: hash(singleBytes),
         singleArtifact: artifact,
       });
-    }
+      await writeFile(
+        testInfo.outputPath(`${id}-${basename(targetPath)}-source-proof.json`),
+        `${JSON.stringify({ id, defaultPath, checked }, null, 2)}\n`,
+        "utf8",
+      );
+      await page.keyboard.press("Escape");
+      await expect(dialog).toHaveCount(0);
+      await expect(sourceTrigger).toBeFocused();
+      expect(faults).toEqual([]);
+    });
+  }
 
+  test(`${id} settings original project ZIP matches all runtime and native dependencies`, async ({
+    page,
+    context,
+  }, testInfo) => {
+    const faults: string[] = [];
+    page.on("pageerror", (error) => faults.push(error.message));
+    page.on("console", (message) => {
+      if (message.type() === "warning" || message.type() === "error") faults.push(message.text());
+    });
+    await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+    const fresh = new Map<string, Buffer>();
+    for (const filename of runtimePaths) {
+      fresh.set(filename, await readFile(join(process.cwd(), filename)));
+    }
+    await page.goto(`/#/templates/${id}`, { waitUntil: "networkidle" });
+    const sourceTrigger = page.getByRole("button", { name: "View template source", exact: true });
+    await expect(sourceTrigger).toBeVisible();
+    await sourceTrigger.click();
+    const dialog = page.getByRole("dialog", {
+      name: new RegExp(`^${name} source$`, "i"),
+    });
+    await expect(dialog).toBeVisible();
+    const choice = dialog.getByRole("combobox", { name: "Template source file", exact: true });
+    await expect(choice).toHaveText(defaultPath);
     const project = dialog.getByRole("button", { name: "Download project", exact: true });
     await expect(project).toBeEnabled();
     const pending = page.waitForEvent("download");
     await project.click();
     const archive = await pending;
+    const earlyArchive = testInfo.outputPath(`${id}-original-project.zip`);
+    await archive.saveAs(earlyArchive);
     expect(archive.suggestedFilename()).toBe(`${id}-template.zip`);
     expect(await archive.failure()).toBeNull();
     const archivePath = await archive.path();
     expect(archivePath).toBeTruthy();
     const archiveBytes = await readFile(archivePath!);
     const files = unzipSync(new Uint8Array(archiveBytes));
-    const earlyArchive = testInfo.outputPath(`${id}-original-project.zip`);
-    await archive.saveAs(earlyArchive);
     await writeFile(
       testInfo.outputPath("original-archive-inventory.json"),
       JSON.stringify(
@@ -361,7 +398,7 @@ for (const { id, name, defaultPath, runtimePaths: initialRuntimePaths } of confi
     await archive.saveAs(artifact);
     await writeFile(
       testInfo.outputPath(`${id}-settings-source-proof.json`),
-      `${JSON.stringify({ id, defaultPath, checked, zipChecked, nativeDependencies, licenses, fontChecked, archive: artifact, archiveSHA256: hash(archiveBytes), memberCount: Object.keys(files).length, missingLocalImports: missing }, null, 2)}\n`,
+      `${JSON.stringify({ id, defaultPath, sourceFilesVerifiedByIndependentCases: runtimePaths, zipChecked, nativeDependencies, licenses, fontChecked, archive: artifact, archiveSHA256: hash(archiveBytes), memberCount: Object.keys(files).length, missingLocalImports: missing }, null, 2)}\n`,
       "utf8",
     );
     await page.keyboard.press("Escape");

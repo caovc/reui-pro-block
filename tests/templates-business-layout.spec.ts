@@ -118,8 +118,17 @@ for (const [id, expanded, compact] of [
           page.getByRole("textbox", { name: "Workspace name", exact: true }),
         ).toBeVisible();
       }
+      if (id === "miro") {
+        // The page title belongs to Shell's header; the native body opens My Profile.
+        await expect(
+          page.locator(".bt-topbar").getByRole("heading", { name: "Settings", exact: true }),
+        ).toBeVisible();
+        await expect(
+          page.locator(".bt-content").getByRole("tabpanel", { name: "My Profile", exact: true }),
+        ).toBeVisible();
+      }
       await expect(page.locator(".bt-content")).toContainText(
-        id === "surge" || id === "manifest" ? "General" : "Settings",
+        id === "surge" || id === "manifest" ? "General" : id === "miro" ? "My profile" : "Settings",
       );
     }
     await expect(drawer).toBeHidden();

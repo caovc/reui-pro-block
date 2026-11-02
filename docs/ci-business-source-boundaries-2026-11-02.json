@@ -1,0 +1,95 @@
+{
+  "asOf": "2026-11-02",
+  "baseCommit": "4db11e6c58c25914be6a7f68d30fcea7d6396ba5",
+  "scope": "Two test-only CI corrections",
+  "problem": {
+    "originalRun": "https://github.com/caovc/reui-pro-block/actions/runs/40727061044",
+    "expected": 1820,
+    "passed": 1815,
+    "failed": 5,
+    "deploy": "skipped",
+    "miro": "Settings is the page header; the body contains the actual My Profile form.",
+    "source": "Four compound cases exhausted their 30-second case budget before project download.",
+    "artifact": {
+      "id": 12836882375,
+      "bytes": 85796867,
+      "sha256": "713d86a3aa108eba73ea07ba4800a691e533ee929dd186d0e23304b9c282df50",
+      "freshDownloadIntegrityVerified": true
+    }
+  },
+  "change": {
+    "miro": "Verify actual Settings header and native My Profile tabpanel, preserving drawer contracts.",
+    "source": "75 independent real file flows and 4 actual project ZIP flows.",
+    "originalSourceMatcherCallSitesRetained": 47,
+    "rawViewClipboardSingleFileAndZIPChecksRetained": true,
+    "intentionalBoundary": "Each source test selects default-to-target independently, replacing the previous full-file serial chain.",
+    "testTimeoutMS": 30000,
+    "expectTimeoutMS": 5000,
+    "retriesAdded": false,
+    "skipsAdded": false,
+    "productOrExportGeneratorChanged": false
+  },
+  "currentLocalValidation": {
+    "strictBuild": {
+      "exit": 0,
+      "seconds": 27.32122174999995,
+      "logSHA256": "9b7824c04270bd9b0126f82a48455dda0619094d909b5e3c867a984c22f66e00"
+    },
+    "format": {
+      "exit": 0,
+      "scope": "Complete clean tracked candidate; protected unrelated workspace WIP retained."
+    },
+    "lint": {
+      "exit": 0,
+      "existingWarningsRemain": true
+    },
+    "tooling": {
+      "passed": 144,
+      "failed": 0
+    },
+    "native": {
+      "exit": 0,
+      "seconds": 219.79952316599997,
+      "stats": {
+        "startTime": "2026-11-02T02:10:20.705Z",
+        "duration": 219096.914,
+        "expected": 80,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "65b2b1bdf10a663566aff837868a7d4a7dd7a7eb53ec452c102f873ba5c4d1ed"
+    },
+    "sourceFilesUnchanged": 1117,
+    "productionAssetsUnchanged": 412,
+    "actualZIPs": [
+      {
+        "name": "miro-original-project.zip",
+        "bytes": 1003296,
+        "sha256": "6cc6c075d9bb86d20d5f8183e6b4c72e6c91b0faac753f8cc45f205318c2077c"
+      },
+      {
+        "name": "manifest-original-project.zip",
+        "bytes": 1003308,
+        "sha256": "5608fa3d89ebaa4d3566191c0462ae2334c3ae558295002c1a90965a5a714133"
+      },
+      {
+        "name": "surge-original-project.zip",
+        "bytes": 1003302,
+        "sha256": "69231c2c6d0e6fea65ac62d2e18b17c95ac3695c11f9d35e163bc16788419584"
+      },
+      {
+        "name": "verve-original-project.zip",
+        "bytes": 1003298,
+        "sha256": "d1add4551440208d80457ff027601a2a799a6f1a2b40ca281d7cd9cdbf4d2df5"
+      }
+    ]
+  },
+  "release": {
+    "stateAtRecordCreation": "Local validation complete, before normal-hook commit and push.",
+    "requiresSeparateCIVerification": true,
+    "requiresSeparatePagesVerification": true,
+    "lastVerifiedSuccessfulCommitAtCreation": "47289584889e9f8a2e9a9057c01be2d7e6e624ac"
+  },
+  "remainingScope": "Finance/Verve actions, Retail15/Store16 and new fidelity proposals stay outside this test-only milestone."
+}
