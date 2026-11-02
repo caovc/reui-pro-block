@@ -1,17 +1,19 @@
+import { useMemo } from "react";
+import { useTable, type ColumnDef } from "@tanstack/react-table";
+import {
+  DataGrid,
+  dataGridFeatures,
+  type DataGridFeatures,
+} from "@/components/reui/data-grid/data-grid";
+import { DataGridScrollArea } from "@/components/reui/data-grid/data-grid-scroll-area";
+import { DataGridTable } from "@/components/reui/data-grid/data-grid-table";
 import { Frame, FramePanel } from "@/components/reui/frame";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   commerceNotificationChannels,
   commerceNotificationTabs,
+  type CommerceNotification,
   type CommerceNotificationTab,
 } from "./commerce-settings-data";
 import type { CommerceSettingsModel } from "./commerce-settings-model";
@@ -32,7 +34,7 @@ export function CommerceNotificationSettings({ model }: { model: CommerceSetting
             }}
           >
             <div className="csd-tabs-scroll">
-              <TabsList variant="line" aria-label="Notification categories">
+              <TabsList variant="line" className="p-0" aria-label="Notification categories">
                 {commerceNotificationTabs.map((tab) => (
                   <TabsTrigger key={tab.id} value={tab.id}>
                     {tab.label}
@@ -68,37 +70,86 @@ function NotificationGroups({
   const rows = model.notifications.filter((entry) => entry.tab === tab);
   const groups = [...new Set(rows.map((entry) => entry.group))];
   return groups.map((group) => (
-    <Table key={group} className="csd-notification-table">
-      <TableHeader>
-        <TableRow>
-          <TableHead scope="col">{group}</TableHead>
-          {commerceNotificationChannels.map((channel) => (
-            <TableHead key={channel.id} scope="col">
-              {channel.label}
-            </TableHead>
-          ))}
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {rows
-          .filter((entry) => entry.group === group)
-          .map((entry) => (
-            <TableRow key={entry.id}>
-              <TableCell>{entry.title}</TableCell>
-              {commerceNotificationChannels.map((channel) => (
-                <TableCell key={channel.id}>
-                  <Checkbox
-                    aria-label={`${entry.title} via ${channel.label}`}
-                    checked={entry.channels[channel.id]}
-                    onCheckedChange={(checked) =>
-                      model.setNotification(entry.id, channel.id, checked === true)
-                    }
-                  />
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-      </TableBody>
-    </Table>
+    <NotificationGroupTable
+      key={group}
+      group={group}
+      rows={rows.filter((entry) => entry.group === group)}
+      model={model}
+    />
   ));
+}
+
+/** Each preference group owns its actual free DataGrid table instance. */
+function NotificationGroupTable({
+  group,
+  rows,
+  model,
+}: {
+  group: string;
+  rows: CommerceNotification[];
+  model: CommerceSettingsModel;
+}) {
+  const { setNotification } = model;
+  const columns = useMemo<ColumnDef<DataGridFeatures, CommerceNotification>[]>(
+    () => [
+      {
+        id: "notification",
+        accessorKey: "title",
+        header: group,
+        enableSorting: false,
+        enableHiding: false,
+        meta: {
+          headerClassName: "ps-0 whitespace-normal",
+          cellClassName: "ps-0 whitespace-normal",
+        },
+      },
+      ...commerceNotificationChannels.map(
+        (channel) =>
+          ({
+            id: channel.id,
+            header: channel.label,
+            accessorFn: (entry) => entry.channels[channel.id],
+            enableSorting: false,
+            enableHiding: false,
+            meta: {
+              headerClassName: "w-1 text-center whitespace-nowrap last:pe-0",
+              cellClassName: "w-1 text-center last:pe-0",
+            },
+            cell: ({ row }) => (
+              <Checkbox
+                className="mx-auto"
+                aria-label={`${row.original.title} via ${channel.label}`}
+                checked={row.original.channels[channel.id]}
+                onCheckedChange={(checked) =>
+                  setNotification(row.original.id, channel.id, checked === true)
+                }
+              />
+            ),
+          }) satisfies ColumnDef<DataGridFeatures, CommerceNotification>,
+      ),
+    ],
+    [group, setNotification],
+  );
+  const table = useTable({
+    features: dataGridFeatures,
+    columns,
+    data: rows,
+    getRowId: (entry) => entry.id,
+    manualPagination: true,
+  });
+
+  return (
+    <div className="csd-notification-grid">
+      <DataGrid
+        table={table}
+        recordCount={rows.length}
+        tableLayout={{ width: "auto" }}
+        tableClassNames={{ base: "csd-notification-table" }}
+      >
+        <DataGridScrollArea orientation="horizontal">
+          <DataGridTable />
+        </DataGridScrollArea>
+      </DataGrid>
+    </div>
+  );
 }

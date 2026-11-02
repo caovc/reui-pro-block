@@ -193,29 +193,8 @@
   margin-top: 16px;
 }
 
-.commerce-settings-domains .csd-notification-table {
-  min-width: 360px;
-  font-size: 14px;
-}
-
-.commerce-settings-domains
-  .csd-notification-tab
-  > [data-slot="table-container"]
-  + [data-slot="table-container"] {
-  margin-top: 24px;
-}
-
-.commerce-settings-domains .csd-notification-table th,
-.commerce-settings-domains .csd-notification-table td {
-  padding: 8px 0;
-  font-size: 14px;
-  line-height: 20px;
-}
-
-.commerce-settings-domains .csd-notification-table th:not(:first-child),
-.commerce-settings-domains .csd-notification-table td:not(:first-child) {
-  width: 60px;
-  text-align: center;
+.commerce-settings-domains .csd-notification-grid + .csd-notification-grid {
+  margin-top: 20px;
 }
 
 .commerce-settings-domains .csd-team-heading {

@@ -8,18 +8,22 @@
   }
 }
 
-/* Preserve the actual free Sidebar trail and button sizing in Commerce only. */
+/* Preserve the actual free Sidebar trail and button sizing in Commerce only.
+   Revert unlayered legacy sizing so the free Sidebar utilities supply values. */
 .bt-app:is(.bt-manifest, .bt-surge)
   .bt-reui-navigation
-  [data-slot="sidebar-menu-item"]:has([data-slot="sidebar-menu-sub-button"][data-active="true"])
-  > [data-slot="sidebar-menu-button"][aria-label="Settings"] {
+  [data-sidebar="menu-item"]:has([data-slot="sidebar-menu-sub-button"][data-active="true"])
+  > [data-sidebar="menu-button"][aria-label="Settings"] {
   background: var(--sidebar-accent);
 }
 
 .bt-app:is(.bt-manifest, .bt-surge) .bt-reui-navigation [data-slot="sidebar-menu-sub-button"] {
   width: 100%;
+  height: revert-layer;
+  font-size: revert-layer;
 }
 
 .bt-app:is(.bt-manifest, .bt-surge) .bt-reui-navigation [data-slot="sidebar-menu-sub"] {
   margin-inline: calc(var(--spacing) * 3.5);
+  margin-block: revert-layer;
 }

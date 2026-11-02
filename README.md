@@ -31,6 +31,8 @@ The current candidate forwards Tabs orientation to the native Radix primitive. A
 
 Scoped validation passed 64 affected site cases, 14 Mesh cases, 14 source/export cases and 2 Pricing cases. Seven actual downloaded projects passed their original strict builds and 27 native cases; an additional Mesh font case checked the real font response and loaded text. The [follow-up record](docs/catalog-followup-plan-2026-10-26.md) preserves the original failures, environment preparation and export-theme limits. This is scoped validation, not a claim that all 673 blocks are pixel-identical. The Store source correction also passed 11 necessary checks on the original product input and 7 checks on this candidate with 3 workers. The new source suite passed 14 cases with 3 workers. See the [local acceptance record](docs/fidelity-navigation-tabs-release-2026-11-02.json). The next full CI and Pages deployment remain pending.
 
+Surge and Manifest notification preferences now compose the actual free ReUI DataGrid, native ScrollArea and table. Natural columns fit the phone viewport; the existing Checkbox stays centered and retains keyboard focus through state changes. Four enhanced site cases and two actual downloaded projects passed (original strict builds and 31 native cases), with source/copy/file/ZIP verification. See the [merchant notification acceptance record](docs/commerce-notification-datagrid-release-2026-11-02.json). Its new full CI and Pages deployment remain separate pending gates.
+
 ## Development
 
 Requires Node.js 24+ and npm.

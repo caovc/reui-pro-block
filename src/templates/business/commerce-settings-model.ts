@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { commerceAdditionalProviders } from "./commerce-settings-finance-data";
 import { useCommerceFinanceModel } from "./commerce-settings-finance-model";
 import {
@@ -179,13 +179,18 @@ export function useCommerceSettingsModel() {
     setNotice("Provider connection updated in this demo.");
   }
 
-  function setNotification(id: string, channel: CommerceNotificationChannel, checked: boolean) {
-    setNotifications((current) =>
-      current.map((entry) =>
-        entry.id === id ? { ...entry, channels: { ...entry.channels, [channel]: checked } } : entry,
-      ),
-    );
-  }
+  const setNotification = useCallback(
+    (id: string, channel: CommerceNotificationChannel, checked: boolean) => {
+      setNotifications((current) =>
+        current.map((entry) =>
+          entry.id === id
+            ? { ...entry, channels: { ...entry.channels, [channel]: checked } }
+            : entry,
+        ),
+      );
+    },
+    [],
+  );
 
   function stockCount(kind: "locations" | "suppliers", id: number) {
     return new Set(

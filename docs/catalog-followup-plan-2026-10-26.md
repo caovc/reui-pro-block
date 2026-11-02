@@ -613,3 +613,34 @@ Those failures remain open for their own correction and acceptance. Advanced
 tracked edits, collaboration presence and the AI review workflow still need
 closer implementation work. None of these queued changes is certified by this
 release.
+
+## Merchant notification DataGrid and focus correction — 2026-11-02
+
+Surge and Manifest now compose the actual free ReUI DataGrid, DataGridScrollArea
+and DataGridTable using the installed TanStack v9 API. This replaces the manual
+notification table and fixed mobile widths. A stable consumer wrapper supplies
+the measured 20px group spacing. Existing Sidebar child defaults and native Tabs
+retain their original behavior through the corrected consumer selectors.
+
+The first enhanced run exposed four real centering failures (9.9453125px left
+offset). A consumer-only margin correction fixed alignment. The next run exposed
+four focus failures after successful Checkbox updates: a changing model callback
+regenerated cell component types. Stabilizing that original functional action
+preserves the native element and focus; the shared free primitives are unchanged.
+Both first failures remain preserved. Four necessary enhanced cases then passed
+without changed deadlines or retry settings. Tables measure 324px at phone width,
+20px group spacing and at most 0.0078125px Checkbox content-center error.
+
+Initial Source 8 passed; four unchanged CSS flows are retained and final necessary
+Source 6 passed for the notification/model changes and fresh original projects.
+The resulting two downloaded projects each passed their original strict build;
+Surge 17 and Manifest 14 native cases passed, followed by exact original-member
+and dist integrity checks. Entries and configuration were not repaired. These
+runs use physical clones of normally installed dependencies, not fresh installs.
+
+The [dated acceptance record](commerce-notification-datagrid-release-2026-11-02.json)
+separates site/source checks, actual original projects, original failures and
+publication status. Official Surge geometry supports the comparison; Manifest
+shares the tested consumer contract and has no independent official pixel-match
+claim. Editor and Account improvements remain separate candidates. The new
+commit, complete CI and Pages deployment are pending at this record's creation.

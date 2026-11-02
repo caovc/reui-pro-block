@@ -1,0 +1,288 @@
+{
+  "recordCreatedUTC": "2026-11-02T05:24:05.051227+00:00",
+  "baseCommit": "59bb9cc5608e5b5b714756cb99db8accfcce1cc9",
+  "goalComplete": false,
+  "scope": "Surge and Manifest notification DataGrid composition, native focus stability, Sidebar child sizing and notification Tabs.",
+  "runtimeFiles": [
+    "src/templates/business/commerce-settings-header.css",
+    "src/templates/business/commerce-settings-notifications.tsx",
+    "src/templates/business/commerce-settings-domains.css",
+    "src/templates/business/commerce-settings-model.ts"
+  ],
+  "actualFreeReuse": {
+    "components": [
+      "ReUI DataGrid",
+      "ReUI DataGridScrollArea with native horizontal ScrollArea",
+      "ReUI DataGridTable",
+      "Existing ReUI Frame",
+      "Existing native Checkbox and Tabs support components"
+    ],
+    "tableAPI": "Actual installed TanStack v9 useTable with dataGridFeatures, one stable table per preference group, model callbacks and stable row IDs.",
+    "replaced": "Hand-written notification tables, fixed 360px minimum and fixed channel widths. Natural browser column layout replaces these constraints.",
+    "consumerCorrections": [
+      "Stable consumer wrapper makes the 20px adjacent group selector apply to actual siblings.",
+      "Sidebar uses actual data-sidebar hooks because native Collapsible can replace data-slot. Existing child defaults give 28px height, 14/20 text and zero block margins.",
+      "TabsList uses p-0 with the existing native Tabs implementation.",
+      "mx-auto centers the existing block-level Checkbox in each natural channel cell.",
+      "The existing functional model action uses useCallback to keep column cell component identity stable across updates; shared DataGrid and Checkbox are unchanged."
+    ]
+  },
+  "customScope": {
+    "model": "Existing local notification preferences and other merchant rules remain application-specific; no message is sent. The functional notification update body and API are preserved.",
+    "sourceTargets": "No new runtime route or split file. Existing targets and recursive collector already include all four implementation files and actual free dependencies; defaults, viewer, clipboard, single-file and original projects are checked.",
+    "media": "Original Bricklane branding, authored demo art, previously attributed substitute media and MIT/OFL records remain. No official premium screenshot, logo or extracted preview asset distributed."
+  },
+  "localValidation": {
+    "strictBuild": {
+      "receipt": "commerce-v4-original-strict-build.json",
+      "receiptSHA256": "725a6e617f8c55658ae607d111f102c7c9546939f743ca30c6cf2330c81d6fe4",
+      "exit": 0,
+      "seconds": 32.97867462499926,
+      "logSHA256": "27af36c28dbe0496b69c7042458b2a48e27f184e5ebaf8701af193e7f9478894"
+    },
+    "originalCompatibility4": {
+      "receipt": "commerce-v2-original-notification4-first-once/receipt.json",
+      "receiptSHA256": "bf3f75501cbdd656d8807084a0af34b60908b44439c23a273ce2aeeaf9eca1c6",
+      "exit": 0,
+      "seconds": 9.606692707999173,
+      "stats": {
+        "startTime": "2026-11-02T04:57:21.081Z",
+        "duration": 8917.226,
+        "expected": 4,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "a420e68ff4b3a2658b8567546278fb34c5fd0a05362678954056f485ee98fc1f"
+    },
+    "firstCenterFailure4": {
+      "receipt": "commerce-v2-enhanced4-first-once/receipt.json",
+      "receiptSHA256": "d9d12727ca68300af6c1b1534a645366d8f5271d1ef60b8917017d708c547a96",
+      "exit": 1,
+      "seconds": 17.214147624999896,
+      "stats": {
+        "startTime": "2026-11-02T05:06:07.211Z",
+        "duration": 16637.848,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 4,
+        "flaky": 0
+      },
+      "reportSHA256": "bb9b8842d1bc8f853babdc5e370093fdafa26304e186ddfc1ad2afe0b16aaf2e"
+    },
+    "firstFocusFailure4": {
+      "receipt": "commerce-v3-enhanced4-necessary-once/receipt.json",
+      "receiptSHA256": "1b428249aeaa866590651d3389e2088d325d9ceb1d05ebc02c10a5a6e18c19d9",
+      "exit": 1,
+      "seconds": 39.52454979200047,
+      "stats": {
+        "startTime": "2026-11-02T05:08:56.670Z",
+        "duration": 38897.054,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 4,
+        "flaky": 0
+      },
+      "reportSHA256": "3ac31f0014022d2eaac494689e644076b60f80bf64cfbf5f384e97ff95415eff"
+    },
+    "finalNecessary4": {
+      "receipt": "commerce-v4-enhanced4-necessary-once/receipt.json",
+      "receiptSHA256": "a6e6b9435c3aade398b2e4d8cb1d788e88aba616eb23ccf6ccd3208fbc039954",
+      "exit": 0,
+      "seconds": 28.25293375000001,
+      "stats": {
+        "startTime": "2026-11-02T05:14:03.566Z",
+        "duration": 27225.439,
+        "expected": 4,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "0aaadf6c42b580b07f4b9e38dfca0242abd15a0f7568ac41935c1bf636bcd9d4"
+    },
+    "initialSource8": {
+      "receipt": "commerce-v2-source8-first-once/receipt.json",
+      "receiptSHA256": "52e607d4596094c983f9ec52939bc117cf94e6df0fb253aca6286f3a4ae69c26",
+      "exit": 0,
+      "seconds": 12.990946207999514,
+      "stats": {
+        "startTime": "2026-11-02T05:01:30.375Z",
+        "duration": 12344.686000000002,
+        "expected": 8,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "274f027faeebb78394f3580e0a1e23547f8d1e6839ea55612177267d8ec1e31c"
+    },
+    "finalNecessarySource6": {
+      "receipt": "commerce-v4-source6-necessary-once/receipt.json",
+      "receiptSHA256": "96085fdbd6829d75f305cb647b8430136d78c46cc435805fd2e9649366ca0aa0",
+      "exit": 0,
+      "seconds": 10.599268375000975,
+      "stats": {
+        "startTime": "2026-11-02T05:15:03.599Z",
+        "duration": 10178.967,
+        "expected": 6,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "8b8bca97c6642e41da7c4f60fb7d6d8dd847906367c80f2199d5d9ca79298318"
+    },
+    "actualOriginalProjects": [
+      {
+        "id": "surge",
+        "originalZIP_SHA256": "d160244b421aca28f5872e795ba14e5093de28aac1e29c35de4046e379b242a5",
+        "originalZIPMembers": 278,
+        "originalStrict": {
+          "receipt": "actual-commerce-v4-template-surge-static-and-strict.json",
+          "receiptSHA256": "3f84dc780cabe9dd933641feab0285c8a677c524fae65c8637ac806d0564656c",
+          "exit": 0,
+          "seconds": 17.41140229099983,
+          "logSHA256": "7af40659e8cac082b356280f0e595f3a9c70766224c55bf31ae765cf6fef660a"
+        },
+        "native": {
+          "receipt": "actual-commerce-v4-template-surge-native-once/receipt.json",
+          "receiptSHA256": "ab9b65a96ea17dd9445ee3c8b2981816c06469bef8e154f7a22e3e8a75594c64",
+          "exit": 0,
+          "seconds": 69.5531177920002,
+          "stats": {
+            "startTime": "2026-11-02T05:18:16.486Z",
+            "duration": 69146.43,
+            "expected": 17,
+            "skipped": 0,
+            "unexpected": 0,
+            "flaky": 0
+          },
+          "reportSHA256": "cc6c65a6afa51590cccbac0226c45cc38aa785dc26b38b077a394a2d1ce30fd8"
+        },
+        "afterNativeIntegrity": {
+          "receipt": "actual-commerce-v4-template-surge-post-native-integrity.json",
+          "receiptSHA256": "efbe4ca964b29b4bfd19c154659a2c9a3dbc46335507ec9ef953c6963e6ac354",
+          "exit": 0,
+          "seconds": 0.08726641700013715,
+          "logSHA256": "643fbb10c64cd93c1f4ce4c6a2aadc427a0f5d32580cbe1d7197a860d56e560d"
+        },
+        "originalMembersAndDistExact": true
+      },
+      {
+        "id": "manifest",
+        "originalZIP_SHA256": "441a4e1508d4441e69a899d067b61e71bef3564bb4e46e2666b47fe434713ae4",
+        "originalZIPMembers": 278,
+        "originalStrict": {
+          "receipt": "actual-commerce-v4-template-manifest-static-and-strict.json",
+          "receiptSHA256": "f2c122f61a6c8514c289b652717fd36aaf007efcc3c3faf2a6dc5b3ca8f26a0b",
+          "exit": 0,
+          "seconds": 18.111830499999996,
+          "logSHA256": "5f4d12bb385d2e3a6894f582ace300290d89010155884424a97b8e69a8dd6e18"
+        },
+        "native": {
+          "receipt": "actual-commerce-v4-template-manifest-native-once/receipt.json",
+          "receiptSHA256": "6c2276835d1f76a83cee489dc5bab68afc30a2d5b6b5ec3739fd1e6b6223a30f",
+          "exit": 0,
+          "seconds": 57.36511108299965,
+          "stats": {
+            "startTime": "2026-11-02T05:19:45.244Z",
+            "duration": 56918.728,
+            "expected": 14,
+            "skipped": 0,
+            "unexpected": 0,
+            "flaky": 0
+          },
+          "reportSHA256": "57c214d8d1759ccd1723e8e4957c82d29bb0a4f27bc2be6d7ec2540bf30910a7"
+        },
+        "afterNativeIntegrity": {
+          "receipt": "actual-commerce-v4-template-manifest-post-native-integrity.json",
+          "receiptSHA256": "47c67a796448d36f3eeeeaba77d14e865321592133c7ed6428a746f01e1366bb",
+          "exit": 0,
+          "seconds": 0.08499962499990943,
+          "logSHA256": "643fbb10c64cd93c1f4ce4c6a2aadc427a0f5d32580cbe1d7197a860d56e560d"
+        },
+        "originalMembersAndDistExact": true
+      }
+    ]
+  },
+  "preservedFailureFacts": {
+    "center": "Both templates at both widths measured a 9.9453125px left offset for the first Email Checkbox before the consumer margin correction.",
+    "focus": "Click succeeded and changed only the intended preference, then the original five-second focus assertion remained inactive. A fresh model action regenerated columns and cell function component types consumed by actual flexRender/React.createElement. Stable useCallback fixes that identity churn. Trace does not directly expose a unique DOM ID or body activeElement; these are not claimed as measured facts.",
+    "budgets": "No timeout, retry, forced click, injected focus, DOM/style mutation or hidden-overflow workaround was introduced. Original 30s/5s budgets remain; native runs use one worker and source checks use effective three workers.",
+    "sourceReuse": "Initial eight source checks passed. Four unchanged CSS view/copy/file flows remain valid; final six necessary checks cover notification and newly changed model files plus two freshly downloaded original ZIPs. The final source spec discovers ten cases; no current whole ten-case rerun is claimed."
+  },
+  "actualGeometry": [
+    {
+      "test": "surge Orders notification matrix is independent and persists locally 1440",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "tableWidths": [1098, 1098],
+      "available": [1098, 1098],
+      "gap": 20,
+      "maxCheckboxCenterError": 0.0078125,
+      "geometrySHA256": "d86d2fade060bffbf30062436c11790ff6fb8184372d8ce09db3b73341da058f"
+    },
+    {
+      "test": "surge Orders notification matrix is independent and persists locally 390",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "tableWidths": [324, 324],
+      "available": [324, 324],
+      "gap": 20,
+      "maxCheckboxCenterError": 0.0078125,
+      "geometrySHA256": "c4db0bf2a79a1f46179ed6245ccf320fed7e44bddf02d405f819326a38f108c7"
+    },
+    {
+      "test": "manifest Orders notification matrix is independent and persists locally 1440",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "tableWidths": [1098, 1098],
+      "available": [1098, 1098],
+      "gap": 20,
+      "maxCheckboxCenterError": 0.0078125,
+      "geometrySHA256": "d86d2fade060bffbf30062436c11790ff6fb8184372d8ce09db3b73341da058f"
+    },
+    {
+      "test": "manifest Orders notification matrix is independent and persists locally 390",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "tableWidths": [324, 324],
+      "available": [324, 324],
+      "gap": 20,
+      "maxCheckboxCenterError": 0.0078125,
+      "geometrySHA256": "c4db0bf2a79a1f46179ed6245ccf320fed7e44bddf02d405f819326a38f108c7"
+    }
+  ],
+  "nativeCoverage": [
+    "All seven Sidebar children, current leaf/trail and normal drawer Escape/focus return.",
+    "Actual Tabs bidirectional ARIA, Arrow/Home/End keyboard selection and visible ring/underline clipping bounds.",
+    "Two actual DataGrid tables, 18 accurately labelled Checkboxes, natural table width, complete last channel, padding, mobile text wrap and 20px gap.",
+    "Real click and two Space changes preserve focus, indicator and exact preference snapshots through Tabs and Sidebar navigation."
+  ],
+  "exportLimits": [
+    "Original entries, sources, packages and configs were never repaired for acceptance. Actual ZIPs and all original members plus dist were rechecked after native execution.",
+    "Dependencies are APFS physical clones of normally installed dependencies, not two fresh network installs.",
+    "Standalone native runs exclude gallery-only Customize font cases. Surge17 and Manifest14 include the enhanced notification cases and existing settings/finance/provider behavior.",
+    "Both temporary received-project servers stopped in finally; original archives and all receipts remain preserved.",
+    "Official Surge geometry was inspected. Manifest uses the same verified consumer contract; no independent official Manifest pixel match is claimed.",
+    "Official screenshots remain private QA only. Root personally viewed four actual candidate Checkbox-focus screenshots."
+  ],
+  "publicationAtRecordCreation": {
+    "newCommit": null,
+    "pushed": false,
+    "exactNewCommitFullCI": "pending",
+    "newPages": "pending",
+    "previousMilestoneCommit": "59bb9cc5608e5b5b714756cb99db8accfcce1cc9",
+    "previousMilestoneCI": 41390836649,
+    "previousMilestoneCIStatus": "in progress at record creation; consult its exact outcome",
+    "lastConfirmedPagesCommit": "42ad52a9020208cfc39869441042816f4bc7d6d9",
+    "previewURL": "https://caovc.github.io/reui-pro-block/"
+  },
+  "remaining": "Editor foundation source/archive acceptance, Account route/theme integration and further advanced editor/individual block fidelity remain separate work. This record does not certify complete pixel or interaction parity."
+}
