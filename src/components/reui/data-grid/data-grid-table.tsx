@@ -2231,8 +2231,11 @@ function DataGridTableRenderedRow<TData extends object>({
   rowRef,
   rowIndex,
   centerWindow,
+  afterRow,
 }: {
   row: Row<DataGridFeatures, TData>;
+  /** Static-body presentation content; virtualized callers leave this absent. */
+  afterRow?: ReactNode;
   pinnedBoundary?: DataGridTablePinnedBoundary;
   rowRef?: React.Ref<HTMLTableRowElement>;
   /** Virtualized list index, rendered as data-index for measureElement. */
@@ -2304,6 +2307,7 @@ function DataGridTableRenderedRow<TData extends object>({
         ) : null}
       </DataGridTableBodyRow>
       {row.getIsExpanded() && <DataGridTableBodyRowExpandded row={row} />}
+      {afterRow}
     </Fragment>
   );
 }
@@ -2561,8 +2565,10 @@ function DataGridTableRowExpand<TData extends object>({
 
 function DataGridTableBodyRows<TData extends object>({
   table,
+  rowAfter,
 }: {
   table: DataGridTableInstance<TData>;
+  rowAfter?: (row: Row<DataGridFeatures, TData>) => ReactNode;
 }) {
   const { i18n, isLoading, props } = useDataGrid();
   const pagination = table.state.pagination;
@@ -2645,7 +2651,12 @@ function DataGridTableBodyRows<TData extends object>({
   return (
     <>
       {resolvedRows.map(({ row, pinnedBoundary }) => (
-        <DataGridTableRenderedRow key={row.id} row={row} pinnedBoundary={pinnedBoundary} />
+        <DataGridTableRenderedRow
+          key={row.id}
+          row={row}
+          pinnedBoundary={pinnedBoundary}
+          afterRow={rowAfter?.(row)}
+        />
       ))}
     </>
   );
@@ -2717,11 +2728,17 @@ function DataGridTableHeader<_TData extends object>() {
 function DataGridTable<_TData extends object>({
   footerContent,
   renderHeader = true,
+  rowAfter,
 }: {
   footerContent?: ReactNode;
   renderHeader?: boolean;
+  /**
+   * Optional presentation TRs after a resolved row in this nonvirtual body.
+   * They are outside the row model; virtualized/DnD bodies have no such slot.
+   */
+  rowAfter?: (row: Row<DataGridFeatures, _TData>) => ReactNode;
 }) {
-  const { table, props } = useDataGrid();
+  const { table, props } = useDataGrid<_TData>();
   const mergedHeaderGroups = getDataGridTableMergedHeaderGroups(table);
   const hasRightPinnedColumns = hasDataGridTableRightPinnedColumns(table);
 
@@ -2772,7 +2789,7 @@ function DataGridTable<_TData extends object>({
         )}
 
         <DataGridTableBody>
-          <MemoizedDataGridTableBodyRows table={table} />
+          <MemoizedDataGridTableBodyRows table={table} rowAfter={rowAfter} />
           {props.appendRow}
           <DataGridTableAddRow />
         </DataGridTableBody>

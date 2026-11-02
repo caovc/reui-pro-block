@@ -3199,16 +3199,34 @@
         "description": "Strategy scorecard with weighted market actuals, editable KPI values and weights, perspective scores and monthly detail."
       },
       {
+        "id": "data-grid-advanced-15",
+        "name": "Retail P&L Outlook",
+        "category": "advanced",
+        "group": "data-grid",
+        "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-15",
+        "index": 14,
+        "description": "Retail profit and loss outlook with editable forecast months, annual comparisons, chart bands and line details."
+      },
+      {
+        "id": "data-grid-advanced-16",
+        "name": "Store KPI Board",
+        "category": "advanced",
+        "group": "data-grid",
+        "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-16",
+        "index": 15,
+        "description": "Store sales KPIs with country groups, monthly comparison charts, native sliders and local store editing."
+      },
+      {
         "id": "data-grid-advanced-22",
         "name": "Prospect Database",
         "category": "advanced",
         "group": "data-grid",
         "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-22",
-        "index": 14,
+        "index": 16,
         "description": "Prospect account database with structured filters, intent summaries, lists and account handover."
       }
     ],
-    "count": 15
+    "count": 17
   },
   {
     "id": "columns",

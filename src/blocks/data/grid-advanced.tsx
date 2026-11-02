@@ -29,6 +29,8 @@ import {
 } from "./grid-advanced-shared";
 import { ProductKpis, ProForma, ServiceVisits, StockMix, Wholesale } from "./grid-advanced-sheets";
 import { cellClass, cn, money, useGridSorting } from "./grid-advanced-utils";
+import RetailPnlOutlook from "./grid-advanced-retail-pnl-outlook";
+import StoreKpiBoard from "./grid-advanced-store-kpi-board";
 type Campaign = (typeof campaignPerformanceRows)[number];
 const campaignSeed: Campaign[] = campaignPerformanceRows;
 function CampaignGrid({ targets = false }: { targets?: boolean }) {
@@ -1090,6 +1092,10 @@ export default function AdvancedGrid({ block }: BlockProps) {
       return <HRScorecard />;
     case "data-grid-advanced-14":
       return <StrategyScorecard />;
+    case "data-grid-advanced-15":
+      return <RetailPnlOutlook />;
+    case "data-grid-advanced-16":
+      return <StoreKpiBoard />;
     case "data-grid-advanced-22":
       return <ProspectDatabase />;
     default:

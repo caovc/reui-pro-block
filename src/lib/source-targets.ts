@@ -346,9 +346,20 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
         "data-grid-advanced-12": "grid-advanced-freight",
         "data-grid-advanced-13": "grid-advanced-hr-scorecard",
         "data-grid-advanced-14": "grid-advanced-strategy-scorecard",
+        "data-grid-advanced-15": "grid-advanced-retail-pnl-outlook",
+        "data-grid-advanced-16": "grid-advanced-store-kpi-board",
         "data-grid-advanced-22": "grid-advanced-prospect-database",
       };
       const module = modules[block.id];
+      if (block.id === "data-grid-advanced-15") {
+        return [
+          ...paths("data", module, `${module}-cells`, `${module}-panels`),
+          `src/blocks/data/${module}-data.ts`,
+          `src/blocks/data/${module}-model.ts`,
+          `src/blocks/data/${module}.css`,
+          ...paths("data", "grid-advanced"),
+        ];
+      }
       if (module) return paths("data", module, "grid-advanced");
     }
     if (block.category === "grouping" && block.index >= 5 && block.index < 7) {
@@ -519,6 +530,8 @@ export function templateImplementationTargets(template: {
       "commerce-settings-payments",
       "commerce-settings-notifications",
       "commerce-settings-billing",
+      "commerce-settings-finance-dialogs",
+      "commerce-settings-provider-dialog",
       "commerce-settings-records",
     ],
     manifest: [
@@ -528,6 +541,8 @@ export function templateImplementationTargets(template: {
       "commerce-settings-payments",
       "commerce-settings-notifications",
       "commerce-settings-billing",
+      "commerce-settings-finance-dialogs",
+      "commerce-settings-provider-dialog",
       "commerce-settings-records",
     ],
     miro: [
@@ -541,6 +556,10 @@ export function templateImplementationTargets(template: {
     ],
     verve: [
       "verve-account-settings",
+      "verve-settings-calendar-connection",
+      "verve-settings-member-actions",
+      "verve-settings-member-import",
+      "verve-settings-plan-actions",
       "verve-key-dialog",
       "verve-settings-api-keys",
       "verve-settings-integrations",

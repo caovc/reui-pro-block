@@ -1,4 +1,6 @@
 import { useRef, useState } from "react";
+import { commerceAdditionalProviders } from "./commerce-settings-finance-data";
+import { useCommerceFinanceModel } from "./commerce-settings-finance-model";
 import {
   createCommerceLocations,
   createCommerceMembers,
@@ -26,6 +28,7 @@ export function useCommerceSettingsModel() {
   const [notifications, setNotifications] = useState(createCommerceNotifications);
   const [notificationTab, setNotificationTab] = useState<CommerceNotificationTab>("orders");
   const [notice, setNotice] = useState("");
+  const finance = useCommerceFinanceModel(setNotice);
   const nextLocationId = useRef(104);
   const nextSupplierId = useRef(205);
   const nextMemberId = useRef(13);
@@ -152,13 +155,28 @@ export function useCommerceSettingsModel() {
     setNotice("Member removed from this local preview; real access is unchanged.");
   }
 
+  function addProvider(id: string, label: string): string | null {
+    const entry = commerceAdditionalProviders.find((provider) => provider.id === id);
+    if (!entry) return "Choose a provider from the local directory.";
+    if (providers.some((provider) => provider.id === id)) return "This provider is already added.";
+    const name = label.trim();
+    if (name.length < 2 || name.length > 80)
+      return "Enter a display name between 2 and 80 characters.";
+    if (providers.some((provider) => provider.name.toLowerCase() === name.toLowerCase())) {
+      return "Use a different provider display name.";
+    }
+    setProviders((current) => [...current, { ...entry, name, connected: false }]);
+    setNotice("Provider added to this demo.");
+    return null;
+  }
+
   function toggleProvider(id: string) {
     setProviders((current) =>
       current.map((provider) =>
         provider.id === id ? { ...provider, connected: !provider.connected } : provider,
       ),
     );
-    setNotice("Local provider status updated. No payment gateway was connected or disconnected.");
+    setNotice("Provider connection updated in this demo.");
   }
 
   function setNotification(id: string, channel: CommerceNotificationChannel, checked: boolean) {
@@ -180,6 +198,7 @@ export function useCommerceSettingsModel() {
   }
 
   return {
+    ...finance,
     locations,
     suppliers,
     stockRecords,
@@ -199,6 +218,7 @@ export function useCommerceSettingsModel() {
     updateMember,
     removeMember,
     toggleProvider,
+    addProvider,
     setNotification,
   };
 }

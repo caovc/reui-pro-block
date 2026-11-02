@@ -85,6 +85,8 @@ export async function downloadBundle(block: BlockMeta) {
           esModuleInterop: true,
           strict: true,
           skipLibCheck: true,
+          allowImportingTsExtensions: true,
+          noEmit: true,
           paths: { "@/*": ["./src/*"] },
         },
         include: ["src"],

@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ComponentProps, ReactNode } from "react";
 import { CreditCard, Check } from "lucide-react";
 import { SettingsRow } from "@/blocks/application/dialog-variants/workspace/settings-panel";
 import { Button } from "@/components/ui/button";
@@ -24,15 +24,20 @@ export function VerveSettingsSheet({
   children,
   footer,
   className = "",
+  onCloseAutoFocus,
 }: {
   title: string;
   description: string;
   children: ReactNode;
   footer: ReactNode;
   className?: string;
+  onCloseAutoFocus?: ComponentProps<typeof SheetContent>["onCloseAutoFocus"];
 }) {
   return (
-    <SheetContent className={`vp-sheet reui-reference ${className}`}>
+    <SheetContent
+      className={`vp-sheet reui-reference ${className}`}
+      onCloseAutoFocus={onCloseAutoFocus}
+    >
       <SheetHeader>
         <SheetTitle>{title}</SheetTitle>
         <SheetDescription>{description}</SheetDescription>

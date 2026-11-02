@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { FileWithPreview } from "@/hooks/use-file-upload";
+import { useVerveCalendarModel } from "./verve-settings-calendar-model";
 import {
   createVerveAccountPreferences,
   createVerveNotifications,
@@ -109,6 +110,7 @@ export function useVerveAccountSettingsModel({
     ...initialProfile,
   }));
   const [profileDraft, setProfileDraft] = useState(() => ({ ...profile }));
+  const calendar = useVerveCalendarModel(profile.email);
   const [profileErrors, setProfileErrors] = useState<Errors<VerveProfile>>({});
   const [profilePreferences, setProfilePreferences] = useState(createVerveProfilePreferences);
   const [preferences, setPreferences] = useState(createVerveAccountPreferences);
@@ -269,6 +271,7 @@ export function useVerveAccountSettingsModel({
     setStatus("Workspace preference updated in this preview.");
   }
   return {
+    calendar,
     section,
     setSection,
     profile,

@@ -1,0 +1,637 @@
+{
+  "asOf": "2026-11-02",
+  "baseCommit": "42ad52a9020208cfc39869441042816f4bc7d6d9",
+  "scope": "Retail15, Store16, commerce finance/provider state, Verve member/import/plan/calendar actions, actual source/export closure",
+  "catalog": {
+    "localBlocks": 673,
+    "categories": 79,
+    "groups": 7,
+    "templates": 18,
+    "datedOfficialAudit": {
+      "asOf": "2026-10-28",
+      "ids": 672
+    },
+    "retainedLegacyEntry": "solution-dev-ops-7",
+    "latestOfficialCountClaimed": false,
+    "pixelIdenticalCoverageClaimed": false
+  },
+  "actualFreeReuse": {
+    "retailAndStore": [
+      "Installed ReUI DataGrid provider/table/scroll/cell selection",
+      "ReUI Filters/FiltersQuery, Frame, Badge and IconTile",
+      "Free c-chart-4/c-chart-12 compositions using native ChartContainer and Recharts scales"
+    ],
+    "commerceActions": [
+      "Existing free c-dialog-3/c-dialog-6 DialogSurface composition",
+      "Native Field, Select, Frame and Badge"
+    ],
+    "verveActions": [
+      "Actual ReUI DataGrid, Frame, NumberField and Alert/Badge",
+      "Existing native Sheet and AlertDialog",
+      "Existing official free useFileUpload hook; actual phone input and licenses retained"
+    ],
+    "shadcnSupport": [
+      "Slider, Progress, ButtonGroup, InputGroup, Kbd and ChartContainer support those free compositions; they are not invented ReUI APIs."
+    ],
+    "correctedDuplication": [
+      "Standalone matrix/gap SVG and CSS return ticks now use native ChartContainer/Recharts",
+      "Manual positive-width progress replaced with native Progress",
+      "Action-only notifications replaced with validated local finance/member/import/plan/calendar state"
+    ],
+    "customGaps": [
+      "P&L and store aggregation, CSV grammar, uniqueness/last-admin and plan-seat policies are domain models absent from generic UI components.",
+      "Quantized dot/tick shapes and signed gap display policy compose native chart scales.",
+      "Optional DataGrid rowAfter presentation rows preserve actual record, export and virtualization identities."
+    ]
+  },
+  "localValidation": {
+    "strictBuild": {
+      "receipt": "runtime-v2-original-strict-build.json",
+      "receiptSHA256": "f3282c00db216128d30894522f7714464c0a14bae2e4a8adb0c0170cf4fbaaec",
+      "exit": 0,
+      "seconds": 26.157580415999746,
+      "logSHA256": "d798b6b4279e1e1fb90a62a7a3658cf42dce0cb414c80182e1eaf80886b0ee56"
+    },
+    "format": {
+      "receipt": "runtime-v2-full-format-check.json",
+      "receiptSHA256": "f586a3e8d7556527c97010f76f63781c34bfe12e1a7df0a42361cd9b5069f050",
+      "exit": 0,
+      "seconds": 0.930833999999777,
+      "logSHA256": "fb379c7bc813b5c4db97410b9fe913800b3bb7ae13395145e18a8e4f34a88976"
+    },
+    "lint": {
+      "receipt": "runtime-v2-lint.json",
+      "receiptSHA256": "380509f231a2796ac71f024019fbcfc5ec19b9579fd76a3be0f71e37a583a2b7",
+      "exit": 0,
+      "seconds": 1.3194600420001734,
+      "logSHA256": "b08a16e2e850d8e0fc16b3329b4520f233b07de0574d18f70ce10112e83f3eec",
+      "existingWarningsRemain": true
+    },
+    "tooling": {
+      "passed": 154,
+      "failed": 0,
+      "receipt": "runtime-tooling.json",
+      "receiptSHA256": "a0651f2fac6bbd61efe76c17fceea854be78be3a1d542cf8d2e6e1b29bad5b92",
+      "exit": 0,
+      "seconds": 2.0267912090002937,
+      "logSHA256": "f604e543375bfafbf7be9ffde196f024f0e4d8abab444e2eef5aa7cf58efb7d0",
+      "scope": "Before the two-file native chart CSS/comment correction; tooling sources unchanged."
+    },
+    "firstRecoveredNative91": {
+      "receipt": "runtime-native91-first-once/receipt.json",
+      "receiptSHA256": "e9c24957466842b2a9b0bdaf1e0b8b630e1cf4e17a858775373fcc6a12c6c6ea",
+      "exit": 1,
+      "seconds": 301.3262395840002,
+      "stats": {
+        "startTime": "2026-11-02T02:39:16.713Z",
+        "duration": 300937.698,
+        "expected": 90,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "reportSHA256": "7ea5c6aa397acf59f52f431039e96d1ee64b1b3debeb3780d2ad8697f4966d88"
+    },
+    "firstFailure": "90 passed,1 failed: recovery omitted a later successful historical ChartContainer sizing CSS migration. Initial earlier-stage two-file identity claim was withdrawn.",
+    "necessaryV2Store6": {
+      "receipt": "runtime-v2-store-necessary6-once/receipt.json",
+      "receiptSHA256": "3f35a76555b715d0fddafc21cb25dbc7558818362a9dc53b57083188a23d3c10",
+      "exit": 0,
+      "seconds": 20.60524525000028,
+      "stats": {
+        "startTime": "2026-11-02T02:56:01.757Z",
+        "duration": 19910.017,
+        "expected": 6,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "493b0011db06b43d1c051c684b491a880c87cf6d1eb9714be06e5836cf0945ac"
+    },
+    "all91FreshGreenClaimed": false,
+    "sourceAndDownloads99": {
+      "receipt": "runtime-v2-source99-first-once/receipt.json",
+      "receiptSHA256": "cd5a7b8a0c902a7ffe98e4bde70fd04dd9d8fc75b4792705903a84591eefee65",
+      "exit": 0,
+      "seconds": 273.85047308299954,
+      "stats": {
+        "startTime": "2026-11-02T02:56:33.190Z",
+        "duration": 273448.61799999996,
+        "expected": 99,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "6c7a92de1dcd4b951f29d3df9dc299876b625bc4ce1853e431caf2098aa10091"
+    },
+    "actualBlockExports": [
+      {
+        "identity": "retail15",
+        "originalStrictBuild": {
+          "receipt": "retail15-received-original-strict-build.json",
+          "receiptSHA256": "0b7e19d1bc0ca94ac9c89d0de17f7cfeeed69ca940e6178454c84ac13c2e729d",
+          "exit": 0,
+          "seconds": 13.322298291000152,
+          "logSHA256": "eb59c94d98e05350521a1fa7c50cd215127cd885664a843177471fd78d76b4b4"
+        },
+        "native": {
+          "receipt": "retail15-received-native6-once/receipt.json",
+          "receiptSHA256": "59bbfd02325ce436ab625baf66555435ba0146db9b70280fd7383e8a1b71a3d5",
+          "exit": 0,
+          "seconds": 12.124972292000166,
+          "stats": {
+            "startTime": "2026-11-02T03:01:56.809Z",
+            "duration": 11602.312,
+            "expected": 6,
+            "skipped": 0,
+            "unexpected": 0,
+            "flaky": 0
+          },
+          "reportSHA256": "d10be72a7775c87cb6e77170faf92b9add750d67ad33e1d9e9ab444d412fd0b6"
+        },
+        "afterNativeIntegrity": {
+          "originalZIPExact": true,
+          "allOriginalMembersExact": true,
+          "members": 329,
+          "originalEntryAndConfigExact": true,
+          "distExact": true
+        },
+        "inventoryReceiptSHA256": "eab01457c5452f4e03001d25de32428fc6b3d0a54f54756a8c82de2dc86fcf77"
+      },
+      {
+        "identity": "store16",
+        "originalStrictBuild": {
+          "receipt": "store16-received-original-strict-build.json",
+          "receiptSHA256": "b11aaa29d2eb77da81cc8d329588e9b801ec9e5987a9ec19ee07fa29ad0debff",
+          "exit": 0,
+          "seconds": 16.58997870800067,
+          "logSHA256": "7c6657c394570b580a15dc4a644571b86beaa5d0a112d0a1e5f597f831dcdbf1"
+        },
+        "native": {
+          "receipt": "store16-received-native6-once/receipt.json",
+          "receiptSHA256": "47f36ec8242ba00d22f5b79a7b65995c31c458c4e3ccb7e61b157cf5aa608168",
+          "exit": 0,
+          "seconds": 23.268075291999594,
+          "stats": {
+            "startTime": "2026-11-02T03:02:32.393Z",
+            "duration": 22726.392,
+            "expected": 6,
+            "skipped": 0,
+            "unexpected": 0,
+            "flaky": 0
+          },
+          "reportSHA256": "2b5ef384b2ac728992047d760cefd84f1e0a7818506ca20b0d7e96e77e40227c"
+        },
+        "afterNativeIntegrity": {
+          "originalZIPExact": true,
+          "allOriginalMembersExact": true,
+          "members": 329,
+          "originalEntryAndConfigExact": true,
+          "distExact": true
+        },
+        "inventoryReceiptSHA256": "24d662f9882ba7fd0f924893ee44694679c41c22f3e19c778aef2362b2e674ba"
+      }
+    ],
+    "actualTemplateExports": [
+      {
+        "identity": "surge",
+        "originalZIP": {
+          "sha256": "e0195030002d1042cd64a6f40c3c6bc9abffe8f54ffd765d4efafa5cebb91602",
+          "bytes": 1027089,
+          "originalMembers": 278
+        },
+        "originalStrictBuild": {
+          "exit": 0,
+          "seconds": 9.262003332999484,
+          "logSHA256": "c9e0bddc743e8c1ca7787bc5c33e156aede7eb65182eef874b16c8a6c0c5dfaf"
+        },
+        "staticClosure": {
+          "localEdges": 1052,
+          "externalImports": 478,
+          "missing": 0,
+          "undeclared": 0,
+          "parseDiagnostics": 0
+        },
+        "native": {
+          "receipt": "actual-runtime-v3-surge-native-once/receipt.json",
+          "receiptSHA256": "be03a84581c076a5802acdeaebc921175933ce2ddc6e2b5b1e439d3fcc69814f",
+          "exit": 0,
+          "seconds": 61.509759999999915,
+          "stats": {
+            "startTime": "2026-11-02T03:22:24.595Z",
+            "duration": 61047.861,
+            "expected": 17,
+            "skipped": 0,
+            "unexpected": 0,
+            "flaky": 0
+          },
+          "reportSHA256": "bd13cabb10893389cf673989bcf9d89a4e10fd4909b70158aa8fea8dd0176a98"
+        },
+        "afterNativeIntegrity": {
+          "originalArchiveExact": true,
+          "originalMembersExact": true,
+          "memberMismatches": [],
+          "immutableDistExact": true,
+          "nativePassClaimedByThisScript": false
+        },
+        "acceptanceReceiptSHA256": "cc60622614ba5b2fb12a8580e0ff7b6e75dbd2ad56381785e6751e389b9cb8c0",
+        "postNativeIntegrityReceiptSHA256": "4fe8d7fc8c5f71f37e32d08138d0f3cbe2d37af452fe47a5570e3f1549c7f7a2"
+      },
+      {
+        "identity": "manifest",
+        "originalZIP": {
+          "sha256": "5476c75b12b04f5ff14644c2fe90fa65c0ee3fd5e0054e613f5011a517ffdf39",
+          "bytes": 1027095,
+          "originalMembers": 278
+        },
+        "originalStrictBuild": {
+          "exit": 0,
+          "seconds": 8.227064042000166,
+          "logSHA256": "fcfe349b4718e55a07eee20fd214af0ea6b88def9aa0190101b8acd13e2a9186"
+        },
+        "staticClosure": {
+          "localEdges": 1052,
+          "externalImports": 478,
+          "missing": 0,
+          "undeclared": 0,
+          "parseDiagnostics": 0
+        },
+        "native": {
+          "receipt": "actual-runtime-v3-manifest-native-once/receipt.json",
+          "receiptSHA256": "d8602cd2927dce16fee9880484f35b479e4525a8f49563e7364f71b6d45dd6d0",
+          "exit": 0,
+          "seconds": 49.29109200000039,
+          "stats": {
+            "startTime": "2026-11-02T03:23:42.414Z",
+            "duration": 48883.992,
+            "expected": 14,
+            "skipped": 0,
+            "unexpected": 0,
+            "flaky": 0
+          },
+          "reportSHA256": "671f693ff5e9e5f1eb254fade94bf404bc556e06598fba214d4e7544a43d2fd4"
+        },
+        "afterNativeIntegrity": {
+          "originalArchiveExact": true,
+          "originalMembersExact": true,
+          "memberMismatches": [],
+          "immutableDistExact": true,
+          "nativePassClaimedByThisScript": false
+        },
+        "acceptanceReceiptSHA256": "e10599396eb1af29add9bd060aca1acbacdde814d3d1b8df5838c88dd74cae17",
+        "postNativeIntegrityReceiptSHA256": "ee423672c8a09dbcc43653236167ce1df4887d17c445c8d1861e4242574c038f"
+      },
+      {
+        "identity": "miro",
+        "originalZIP": {
+          "sha256": "5ed103c5337665906e7fe62a49a24f285843f39a333b217dfdc900ccc2d4b763",
+          "bytes": 1027083,
+          "originalMembers": 278
+        },
+        "originalStrictBuild": {
+          "exit": 0,
+          "seconds": 7.694270457999664,
+          "logSHA256": "6e70176b560b6a51568cc9bc897f5b1f7e070fe73e5d0b74875340756b905b54"
+        },
+        "staticClosure": {
+          "localEdges": 1052,
+          "externalImports": 478,
+          "missing": 0,
+          "undeclared": 0,
+          "parseDiagnostics": 0
+        },
+        "native": {
+          "receipt": "actual-runtime-v3-miro-native-once/receipt.json",
+          "receiptSHA256": "b6cef796d0cde8838fbbaee877ff38961b6e969bc575a7911636f2c5171c02dd",
+          "exit": 0,
+          "seconds": 40.78367379199972,
+          "stats": {
+            "startTime": "2026-11-02T03:24:47.294Z",
+            "duration": 40398.274,
+            "expected": 6,
+            "skipped": 0,
+            "unexpected": 0,
+            "flaky": 0
+          },
+          "reportSHA256": "3f65b6c836c056226ed80c69118695e074ade4fd1b93de5dcd59830f54d3274e"
+        },
+        "afterNativeIntegrity": {
+          "originalArchiveExact": true,
+          "originalMembersExact": true,
+          "memberMismatches": [],
+          "immutableDistExact": true,
+          "nativePassClaimedByThisScript": false
+        },
+        "acceptanceReceiptSHA256": "dcd36336affdf4a039c0ac50980cbf0602d93b0253a66d36322786ffaa21f2de",
+        "postNativeIntegrityReceiptSHA256": "05283ee7aefccc775d44378626a76f60fc0fad0a486e4f75e55e63ef9c38a62f"
+      },
+      {
+        "identity": "verve",
+        "originalZIP": {
+          "sha256": "7f72a034813172cb65ebcb3699beb3b3475afb1b15c3f1b5aab5911c9d0f2075",
+          "bytes": 1027085,
+          "originalMembers": 278
+        },
+        "originalStrictBuild": {
+          "exit": 0,
+          "seconds": 7.833230166999783,
+          "logSHA256": "68ce7b1d0ef99526c1b50132c1b6a82526e04c7324161031a24f4c9a58d2537b"
+        },
+        "staticClosure": {
+          "localEdges": 1052,
+          "externalImports": 478,
+          "missing": 0,
+          "undeclared": 0,
+          "parseDiagnostics": 0
+        },
+        "native": {
+          "receipt": "actual-runtime-v3-verve-native-once/receipt.json",
+          "receiptSHA256": "daac1e37fcebeea9c63b467175877e0cc4537eabdc3edb59b63b7f546b1b9510",
+          "exit": 0,
+          "seconds": 65.0710883340007,
+          "stats": {
+            "startTime": "2026-11-02T03:25:43.949Z",
+            "duration": 64665.655999999995,
+            "expected": 25,
+            "skipped": 0,
+            "unexpected": 0,
+            "flaky": 0
+          },
+          "reportSHA256": "1dd8f7ce124bf95406056a23203c38ee9651da38776b7c529855f043d1b4c2f4"
+        },
+        "afterNativeIntegrity": {
+          "originalArchiveExact": true,
+          "originalMembersExact": true,
+          "memberMismatches": [],
+          "immutableDistExact": true,
+          "nativePassClaimedByThisScript": false
+        },
+        "acceptanceReceiptSHA256": "fc449ddf09b9768fc3197e042ffc29a43499e5529ee9f8752b34eb3c59edc52d",
+        "postNativeIntegrityReceiptSHA256": "0abe5f02338a25691b4ce19640448fe3557c012bb73f89de5dc5d2be0cc776bb"
+      }
+    ],
+    "receivedProjectScope": "Original UI-downloaded ZIP, unchanged original entry/package/config/build command; npm ls and original strict builds; physical normal-install dependency clones, not fresh npm installs.",
+    "standaloneEntryAdaptations": "Store6 tests change only site title/hash to the actual received homepage. Four site-customizer-font cases are excluded from standalone Templates because their original exported entry has no site customizer; the site cases already passed.",
+    "testPolicy": {
+      "workers": 1,
+      "retries": 0,
+      "testTimeoutMS": 30000,
+      "expectTimeoutMS": 5000,
+      "skipsAdded": false
+    },
+    "cleanReleaseDiscovery": {
+      "exit": 0,
+      "tests": 1953,
+      "files": 207,
+      "logSHA256": "138f10b2f78b7c3914355031a75d64a99ec1b1ab0a2f468eecb2e44d6284db75",
+      "scope": "Clean tracked42 plus52 frozen runtime/test paths; private received-only variants and13 protected WIP excluded.",
+      "fullExecution": "Not run locally; will require independent exact-head CI."
+    },
+    "unchangedFrozenSources": 1141,
+    "immutableProductionAssets": 413
+  },
+  "archiveValidatorCorrections": {
+    "failedPriorAttemptsRetained": true,
+    "media": "Initial checker incorrectly assumed SVG/Inter only. Exact six existing Unsplash substitute portraits and raw attribution/license/source records are now checked; no arbitrary JPG exemption or ReUI media.",
+    "css": "Initial regex misread url(%23n) inside a quoted inline SVG data URL as a package. Quote-aware PostCSS parsing consumes the full value; real missing references and literal outside-data %23n remain errors.",
+    "parserSHA256": "8325a7846f90d3b92d38e60f6f8ffbf5f1d93a76b4717985d61f363a0592e082",
+    "privateParserFixturesReceiptSHA256": "532fb3f8f18d47cbd4ad60890a49fba56bf14bd8defb4b2bb189b2c62291a4c8",
+    "productOrReceivedFilesChangedForValidator": false
+  },
+  "generatorFix": {
+    "family": "Block",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "strictPreserved": true,
+    "buildCommand": "tsc --noEmit && vite build",
+    "blockDevelopmentDependencyCount": 6,
+    "templateDevelopmentDependencyCount": 11
+  },
+  "brandingAndNotices": "Bricklane original brand/local illustrations; exact licensed substitute portraits, MIT, OFL/Inter, phone-input and third-party attribution retained in actual exports. No original paid preview media or premium source distributed.",
+  "mobileReference": {
+    "url": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-15",
+    "asOf": "2026-11-02",
+    "checked": "Actual388px iframe, narrowed first column and horizontal grid overflow, native Filter/Escape focus return; local390px native screenshot reviewed.",
+    "officialScreenshotsDistributed": false
+  },
+  "release": {
+    "stateAtRecordCreation": "Local gates complete; before normal-hook commit and push.",
+    "lastVerifiedSuccessfulPagesCommit": "42ad52a9020208cfc39869441042816f4bc7d6d9",
+    "requiresExactCommitCIAndIndependentPagesVerification": true
+  },
+  "remaining": [
+    "Backend payments, invitation/email delivery, calendar OAuth and production sessions are local demos only.",
+    "Independent Tabs orientation, AppShell, Mesh navigation, GridTabs and Pricing proposals remain outside this milestone pending their own runtime gates.",
+    "Catalog reachability and representative native checks do not establish complete pixel parity across all states."
+  ],
+  "ownedRuntimeAndTests": [
+    {
+      "path": "src/blocks/data/grid-advanced-retail-pnl-outlook-cells.tsx",
+      "sha256": "96e5393b0b6412ef7bf7e437383b2a4e20bc149e2cc27924a9a03a9342ea1f82"
+    },
+    {
+      "path": "src/blocks/data/grid-advanced-retail-pnl-outlook-data.ts",
+      "sha256": "9eac6085770fbe07cc292084b160936f752b00e93d05eaa604621f0fa681eee1"
+    },
+    {
+      "path": "src/blocks/data/grid-advanced-retail-pnl-outlook-model.ts",
+      "sha256": "45f9c5c321abaf09c53d0790f196c53f0a0e8761ac72342c05559479b26d3b33"
+    },
+    {
+      "path": "src/blocks/data/grid-advanced-retail-pnl-outlook-panels.tsx",
+      "sha256": "c510f77a5610a8332454ddc785eca3a203bc41866cb0993dc59fff706f7f9ef3"
+    },
+    {
+      "path": "src/blocks/data/grid-advanced-retail-pnl-outlook.css",
+      "sha256": "3342fee369576deefb498d9a3ab1a8088b1b41094c7d485d0fe1329d98bb955f"
+    },
+    {
+      "path": "src/blocks/data/grid-advanced-retail-pnl-outlook.tsx",
+      "sha256": "d72607a739cc8ad320137dd32c7f2a35e42c4037dde57983fe63048cc20f5127"
+    },
+    {
+      "path": "src/blocks/data/grid-advanced-store-kpi-board.css",
+      "sha256": "c29f3df7c2f9f690d54dda6946744cd85050ec8d8f2e34dc66a760742b1dfe27"
+    },
+    {
+      "path": "src/blocks/data/grid-advanced-store-kpi-board.tsx",
+      "sha256": "119114093fcc46112d1f9bde6cbdbc096184ba1549c5addfada4ea79213dd12d"
+    },
+    {
+      "path": "src/blocks/data/grid-advanced-store-kpi-charts.tsx",
+      "sha256": "0b1eef4da9e724072b23956719d7801407ac112d5945131a4da734b508630b6c"
+    },
+    {
+      "path": "src/blocks/data/grid-advanced-store-kpi-controls.tsx",
+      "sha256": "bae4b8ba19152d98d2569905fb8a7f8784eba71ffeecf65960a25c4cbfdd70aa"
+    },
+    {
+      "path": "src/blocks/data/grid-advanced-store-kpi-data.ts",
+      "sha256": "341f1f611c01a0c4dd3cfed5741d2e60badd88655183b2fa6a6d3fff20307edb"
+    },
+    {
+      "path": "src/blocks/data/grid-advanced-store-kpi-model.ts",
+      "sha256": "f0f9573d38df2cfcf07a9b0c1c9e624f7717867093fd14a30ded84e645ff51c7"
+    },
+    {
+      "path": "src/blocks/data/grid-advanced.tsx",
+      "sha256": "191d0b5599eed9d9e93b3cde5d8b6bd0a4c8112519f4dce60aee0735a6f18709"
+    },
+    {
+      "path": "src/blocks/data/index.tsx",
+      "sha256": "d6b869709d90b07678ccb6a5f92e6d6837cb9518de83224a8f99a6622f49f7c8"
+    },
+    {
+      "path": "src/components/reui/data-grid/data-grid-table.tsx",
+      "sha256": "f447b384393e67b4ca8976d0b79f674485100c86d6e49082148cb79f5b42019d"
+    },
+    {
+      "path": "src/data/catalog.json",
+      "sha256": "1dfb46770671137fa1f1f0ae730228dfcf2120d0825ca9252be3bae9a87c43fd"
+    },
+    {
+      "path": "src/lib/bundle.ts",
+      "sha256": "8fd6f7c5eef54019ecc1257647bbd9626573a94decbeb87451ae3c1036b1a4d4"
+    },
+    {
+      "path": "src/lib/source-targets.ts",
+      "sha256": "05a631a384abacdee8e4aff7d8dd8649e21bf008f4a0d4da1f075f652208b4b8"
+    },
+    {
+      "path": "src/templates/business/commerce-settings-billing.tsx",
+      "sha256": "724e7060fe22208f428024f7191408752b4fd0bff6d1c1595fb9503c3a1fac19"
+    },
+    {
+      "path": "src/templates/business/commerce-settings-finance-data.ts",
+      "sha256": "88c262ae6be876a4614f8c367898f2e0a315ab0527e6afb36a460b5aed0571c1"
+    },
+    {
+      "path": "src/templates/business/commerce-settings-finance-dialogs.tsx",
+      "sha256": "9ca4d26cb55067fb3eb8d3489772f2df23f5f975c16a03a1cc2ab66894832647"
+    },
+    {
+      "path": "src/templates/business/commerce-settings-finance-model.ts",
+      "sha256": "e0e87c0b44a5dfd972baed84564ef12a67264f588d576ce74860675d7a76df74"
+    },
+    {
+      "path": "src/templates/business/commerce-settings-model.ts",
+      "sha256": "f2d76c5c2c1b5ed4e4265fa7d613e0e64e20da470a6e1dd8bda294540571a3b2"
+    },
+    {
+      "path": "src/templates/business/commerce-settings-payments.tsx",
+      "sha256": "888dca0cbba957aeb6d2a5783a8ec76871775d299bdf888d8fdca21c54ba2db6"
+    },
+    {
+      "path": "src/templates/business/commerce-settings-provider-dialog.tsx",
+      "sha256": "98c6cb78c5d6d15c089218c145db1bd6bff459255dbb1acc71690631cc54d14d"
+    },
+    {
+      "path": "src/templates/business/commerce-settings-team.tsx",
+      "sha256": "68a59da14a02335ee2993de78d995de414926ff86ddf5b6b4fa96978fcd2a35c"
+    },
+    {
+      "path": "src/templates/business/verve-account-settings-model.ts",
+      "sha256": "78178320abd6b21484a99a877f7d573251cad935f07d20c7066356b8a1fffc2d"
+    },
+    {
+      "path": "src/templates/business/verve-account-settings.tsx",
+      "sha256": "72e20572be065f197b74e4228cc11f445526544869e78b617169a0bf6dfd9945"
+    },
+    {
+      "path": "src/templates/business/verve-settings-actions-data.ts",
+      "sha256": "70c083c58357c7577071b20f9345b0ed51e735e3c27523f004388e12615aaa92"
+    },
+    {
+      "path": "src/templates/business/verve-settings-calendar-connection.tsx",
+      "sha256": "ca0e4acbc5133a1c4f92fa50fea4e8c64a15fdf31c1d1bd0e5a3a3c98d7df60e"
+    },
+    {
+      "path": "src/templates/business/verve-settings-calendar-model.ts",
+      "sha256": "b9350a817a64d54a2b95575b962e47d0e5d5655256570f1c23150de4d2f49390"
+    },
+    {
+      "path": "src/templates/business/verve-settings-member-actions-model.ts",
+      "sha256": "c3be8832b482bf8f3e88790685b1a2266ab401f2324df58a3208139df27aff46"
+    },
+    {
+      "path": "src/templates/business/verve-settings-member-actions.tsx",
+      "sha256": "b75689825c7803549001ff5b6b6f939e74ac2099191f709c1c721845f32c131c"
+    },
+    {
+      "path": "src/templates/business/verve-settings-member-import.tsx",
+      "sha256": "06316c4cff7c8122145f99e5a54baad4753540307c8b8a394a7c2a9a8a02d9ec"
+    },
+    {
+      "path": "src/templates/business/verve-settings-people-billing-model.ts",
+      "sha256": "0bdcf0e06aaaa1c510eac12d1e80c55d060e50eebb433608616540e43479298c"
+    },
+    {
+      "path": "src/templates/business/verve-settings-people-billing-surfaces.tsx",
+      "sha256": "59d170d29a8e5c67ec73e73df21afc05ecf782e2f4330ee705312f7f45e97264"
+    },
+    {
+      "path": "src/templates/business/verve-settings-people-billing.tsx",
+      "sha256": "5a17a09c561710f0019461ff9d104bb30122c18afb43aed222ef1b2f4e29a3c7"
+    },
+    {
+      "path": "src/templates/business/verve-settings-plan-actions.tsx",
+      "sha256": "ff496373c75ca504e25a8b60fb82bffe24c770d77c2cbfbeb454c9ff7425f03b"
+    },
+    {
+      "path": "src/templates/business/verve-settings-plan-model.ts",
+      "sha256": "1d06e72fed5e35fdde545e29547d6cb776a63881ade28afdf8c8497e9a1b41e0"
+    },
+    {
+      "path": "tests/catalog.spec.ts",
+      "sha256": "625f51cff7a093a10e4e7d401aef2b709860d2d208f724059f6e9629dfbfe19b"
+    },
+    {
+      "path": "tests/grid-advanced-retail-layout.spec.ts",
+      "sha256": "e993690f0d1328b3ff008e4e28abc7f48ff810ddd6c41e4553cd785bca7fc1e6"
+    },
+    {
+      "path": "tests/grid-advanced-retail-pnl-outlook.spec.ts",
+      "sha256": "4744a1152d0bb13f5c2c78e286528308ce0a95019824543eb76be8f51dd61521"
+    },
+    {
+      "path": "tests/grid-advanced-retail-pnl-outlook.test.mjs",
+      "sha256": "952eb2bd304b66944848d6943e0a02d99c973368898ca5bad70096b04c4a56cc"
+    },
+    {
+      "path": "tests/grid-advanced-retail-source.spec.ts",
+      "sha256": "342545fbee5c056c63c4ab464b464cb6066555f0febf76940402bc050fa53d1b"
+    },
+    {
+      "path": "tests/grid-advanced-store-kpi-free-charts.spec.ts",
+      "sha256": "0b0cec1bbb5e1d0a84b791c9f2e433a9450628c6c8f3578b9a10c6f1abcd8a77"
+    },
+    {
+      "path": "tests/grid-advanced-store-kpi-initial-native.spec.ts",
+      "sha256": "0e88301a599fd456be63a8bb98da643593ad22b048d58b586f04fb05479f5a52"
+    },
+    {
+      "path": "tests/grid-advanced-store-kpi-source.spec.ts",
+      "sha256": "6bcf7cf33599165c8b34faa2f4b1e82dffdc8bced4dcb39295fbe03ee99edb66"
+    },
+    {
+      "path": "tests/templates-business-settings-source.spec.ts",
+      "sha256": "896b8812343f0758df8bc21cc02ac8fdfa2589263f3b491adebe95acf19759ad"
+    },
+    {
+      "path": "tests/templates-commerce-finance-native.spec.ts",
+      "sha256": "9d5ae2e0cc5672c81f9195afe59806826f7f415d31acb7d844147407bd5ba8f0"
+    },
+    {
+      "path": "tests/templates-commerce-provider-exhaustion-native.spec.ts",
+      "sha256": "486a1f1fbadab652c51b13c28f92396b3a2d5c93382cea8a51b04cc9a2df836e"
+    },
+    {
+      "path": "tests/templates-verve-invite-identity-native.spec.ts",
+      "sha256": "a840c9ba2a48dc997291bd34a5a8fdde19c94198e586683356ec2da4edc31794"
+    },
+    {
+      "path": "tests/templates-verve-settings-actions-native.spec.ts",
+      "sha256": "2964dc1d62bbd79bd322015d5abe918e53f8f47dc3baa735763c907212b2c578"
+    }
+  ]
+}

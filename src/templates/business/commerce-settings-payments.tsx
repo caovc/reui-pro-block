@@ -13,6 +13,7 @@ import {
   ItemSeparator,
   ItemTitle,
 } from "@/components/ui/item";
+import { CommerceProviderDialog } from "./commerce-settings-provider-dialog";
 import type { CommerceSettingsModel } from "./commerce-settings-model";
 
 export function CommercePaymentSettings({ model }: { model: CommerceSettingsModel }) {
@@ -20,15 +21,7 @@ export function CommercePaymentSettings({ model }: { model: CommerceSettingsMode
     <>
       <header className="csd-page-heading">
         <h1>Payments</h1>
-        <Button
-          onClick={() =>
-            model.announce(
-              "Add provider: the provider directory is a demo. No payment provider was added.",
-            )
-          }
-        >
-          Add provider
-        </Button>
+        <CommerceProviderDialog model={model} />
       </header>
       <Frame dense className="csd-frame">
         <FramePanel fit className="csd-fit-panel">

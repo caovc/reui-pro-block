@@ -1,8 +1,8 @@
 # Bricklane
 
-Independent recreations of **ReUI Pro Blocks and Templates**, built with React, TypeScript, Tailwind CSS and official open-source ReUI components. Bricklane uses an original logo, name, and locally authored demo illustrations. The local development checklist currently contains **671 entries, 79 categories, 7 groups**, plus 18 template workspaces. The 2026-10-28 public audit found 672 official block URLs. API Request Logs and Strategy Scorecard are included; Retail P&L Outlook and Store KPI Board remain tracked follow-ups. The local catalog also retains the previously listed DevOps7 entry, whose current public status is unclear.
+Independent recreations of **ReUI Pro Blocks and Templates**, built with React, TypeScript, Tailwind CSS and official open-source ReUI components. Bricklane uses an original logo, name, and locally authored demo illustrations. The local development checklist contains **673 entries, 79 categories, 7 groups**, plus **18 template workspaces**. It includes Retail P&L Outlook and Store KPI Board. The dated 2026-10-28 public audit recorded 672 official block IDs; the local catalog also retains legacy `solution-dev-ops-7`, which was absent from that listing. These are local implementation counts and a dated reference snapshot, not a claim about the current official catalog.
 
-> This is an independent recreation using shared layout families. Catalog coverage is not a claim of 671 pixel-identical copies. No REUI Pro source or premium assets are distributed. See [provenance](THIRD_PARTY_NOTICES.md) and the implementation notes in `docs/`.
+> This is an independent recreation using shared layout families. Catalog coverage is not a claim of 673 pixel-identical copies. No REUI Pro source or premium assets are distributed. See [provenance](THIRD_PARTY_NOTICES.md) and the implementation notes in `docs/`.
 
 ## Explore
 
@@ -23,7 +23,7 @@ Open `#/templates` from the top navigation or sidebar. The collection covers Mes
 
 These are independent React implementations based on the public previews. They preserve the main visual structure and provide local demo interactions. They are not the original premium projects or complete replacements for their server-side features: authentication, AI responses, invitations, email delivery, and production data services require your own backend. Laravel/Next.js/TanStack server architecture is not reproduced.
 
-Surge and Manifest include store settings, team, payments, notifications, billing, locations, and suppliers. Miro includes profile, clinic configuration, billing, and notification preferences. Verve includes account, workspace, people, billing, integrations, API keys, and webhooks. These settings use actual free ReUI compositions with local validation and session state; source view and runnable exports include their implementations and licenses. See [settings implementation and verification](docs/templates-settings-release-2026-10-29.json).
+Surge and Manifest include store settings, team, payments, notifications, billing, locations, and suppliers. Miro includes profile, clinic configuration, billing, and notification preferences. Verve includes account, workspace, people, billing, integrations, API keys, and webhooks. These settings use actual free ReUI compositions with local validation and session state; source view and runnable exports include their implementations and licenses. See [settings implementation and verification](docs/templates-settings-release-2026-10-29.json). These local demos add plan changes, cancel/resume, saved payment-method selection and provider connections to Surge/Manifest; Verve adds member view/edit/delete, validated CSV import, plan/seat changes and calendar connection drafts. These actions use local demo state. The [catalog follow-up record](docs/catalog-followup-plan-2026-10-26.md) distinguishes site checks, actual downloaded-project acceptance and deployment status.
 
 ## Development
 
@@ -39,11 +39,11 @@ npm run test:catalog
 npx playwright test tests/templates.spec.ts tests/template-interactions.spec.ts
 ```
 
-Browser tests require Chromium (`npx playwright install chromium`). `PREVIEW_URL` can target an already running local or deployed server. Catalog smoke tests exercise all 671 individual preview routes; site tests exercise navigation, search, responsive controls, theme persistence, favorites, source view and downloads.
+Browser tests require Chromium (`npx playwright install chromium`). `PREVIEW_URL` can target an already running local or deployed server. Catalog smoke tests exercise all 673 individual preview routes; site tests exercise navigation, search, responsive controls, theme persistence, favorites, source view and downloads.
 
 ## Project layout
 
-- `src/data/catalog.json`: exact reference snapshot with titles, ids and URLs
+- `src/data/catalog.json`: local implementation and dated reference snapshot with titles, ids and URLs
 - `src/blocks/application`: application layout families
 - `src/blocks/data`: data grids, charts, AI and solution layouts
 - `src/blocks/commerce`: commerce and marketing layout families

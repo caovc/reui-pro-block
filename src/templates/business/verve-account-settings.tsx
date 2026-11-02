@@ -1,3 +1,4 @@
+import { VerveCalendarConnection } from "./verve-settings-calendar-connection";
 // Actual Pro settings presentation and existing free ReUI compositions.
 // Existing dependency licenses remain in src/components/reui/REUI-LICENSE.txt.
 import { Fragment, useId, useMemo } from "react";
@@ -344,21 +345,18 @@ function Preferences({ model, prefix }: { model: VerveAccountSettingsModel; pref
                       </Badge>
                     </ItemTitle>
                     <ItemDescription>
-                      Connect your calendar so Bricklane can suggest follow-up times.
+                      {model.calendar.connection
+                        ? `${model.calendar.connection.provider} · ${model.calendar.connection.account} · ${model.calendar.connection.calendar} (local demo)`
+                        : "Configure a local calendar connection for this preview; no external events are accessed."}
+                      {model.calendar.notice && (
+                        <span role="status" className="block">
+                          {model.calendar.notice}
+                        </span>
+                      )}
                     </ItemDescription>
                   </ItemContent>
                   <ItemActions>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() =>
-                        model.setStatus(
-                          "Calendar linking needs a connected account. No external calendar was connected in this preview.",
-                        )
-                      }
-                    >
-                      Connect
-                    </Button>
+                    <VerveCalendarConnection model={model.calendar} />
                   </ItemActions>
                 </Item>
                 <ItemSeparator />

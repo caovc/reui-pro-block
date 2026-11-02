@@ -393,3 +393,118 @@ Base9 source and real request details. Future Template settings work remains pri
 ### 2026-10-28 Strategy14 + Atlas 最终本地门槛
 
 共享实际免费 DataGrid 的早期图表动画误取消编辑问题已完成结构/锚点判断修正。原 strict、必要 native4、实际网站 Source2、两个原始收到项目的独立构建均通过；Atlas原入口8项、Strategy原入口13项首次全绿。首次失败与未覆盖取消路径保留在本批审计，手机0.75px残差不伪报通过。当前可达目录671条/79类/7组及18模板；Advanced15/16仍是单独私有待整合项。发布应遵循正常hooks commit→push→全CI→真实Pages成功，分别记录。
+
+## Retail15, Store16 and template actions — local milestone, 2026-11-02
+
+The candidate catalog contains 673 local blocks across 79 categories and 7 groups,
+plus 18 template workspaces. Retail P&L Outlook (`data-grid-advanced-15`) and Store
+KPI Board (`data-grid-advanced-16`) have dedicated runtime leaves, actual source
+routes and runnable project exports. The dated 2026-10-28 reference audit recorded
+672 official IDs; the extra local entry is the retained legacy DevOps7. This is
+not a fresh official-catalog audit, a pixel-identical completion claim or proof of
+live deployment. Advanced17–21 remain uninferred.
+
+### Actual free-component reuse and corrected duplication
+
+Retail15 composes the installed free ReUI DataGrid provider/table/scroll area and
+cell-selection behavior, Filters/FiltersQuery, Frame, Badge and IconTile. Its
+native header/footer uses the existing ButtonGroup, InputGroup and Kbd support
+components; the slash shortcut respects editable fields and open native portals.
+The P&L cell chart uses ChartContainer and Recharts, rather than a separate chart
+engine. This replaces consumer padding and header/footer approximations while
+retaining the real table selection and editing behavior.
+
+Store16 uses the same actual DataGrid, Frame, Filters/FiltersQuery and native
+column-visibility controls. Its monthly matrix and signed gap adapt free ReUI
+`c-chart-4` dotted-bar and `c-chart-12` horizontal-bar compositions: ChartContainer
+and Recharts own real scales and mark positions. Return history uses native
+ComposedChart, Bar and Scatter. Existing Slider and Progress are the shadcn support
+primitives used with these free compositions, not new ReUI APIs. The implementation
+replaces manual positive-width progress bars, standalone SVG matrix/gap plots and
+CSS-positioned return ticks. Native chart wrappers now supply their actual width
+and height; container presence alone is not accepted as a rendered chart.
+
+Surge/Manifest finance and provider forms reuse the existing official free
+`c-dialog-3`/`c-dialog-6` DialogSurface composition, real Field/Select controls,
+Frame and Badge. Plan selection/save/reset, cancellation reason and confirmation,
+resume, stored method/contact validation and provider add/connect/disconnect now
+change local state instead of stopping at action notifications. Cancel/resume
+captures the intent at dialog opening so its closing footer cannot turn into the
+opposite action during the exit animation. `SettingsRow` and `SettingsFields` are
+existing project compositions around actual fields, not official free components
+with invented names.
+
+Verve member actions, CSV import, plan/seat management and calendar connection
+reuse actual free DataGrid, Frame, NumberField, Alert/Badge, native Sheet and
+AlertDialog, and the existing free useFileUpload hook. The importer previews the
+actual parsed rows before validating and committing the batch. Profile UI retains
+the existing actual avatar-upload and phone-input implementation and attribution.
+Member actions replace action-only notifications with view/edit/delete state;
+invite usernames receive a validated unique suffix when domains share a local part.
+
+### Deliberate domain extensions
+
+Free UI primitives do not define the retailer's P&L forecast/accounting rules,
+store KPI aggregation, CSV grammar or membership/plan policies. Those remain
+independent local TypeScript models. Quantized matrix dots, return tick shapes,
+null/zero handling and a signed plotted-gap cap are explicit demo display rules
+on native Recharts scales; raw data and labels retain their original meaning.
+The short-country five-row floor is an explicit Bricklane policy inferred from
+one observed reference state, not a universal vendor rule. The shared optional
+DataGrid `rowAfter` composition supplies blank presentation rows without changing
+record identities, counts, exports or the virtual/DnD paths. Member uniqueness,
+last-admin protection, atomic CSV validation, plan seat rules, payment-provider
+fixtures and calendar drafts likewise require domain state absent from a generic
+component library. No payment gateway, calendar OAuth, email delivery or server
+session is supplied by these demos.
+
+### Current local evidence and retained failures
+
+The first restored site's original 91-case run passed 90 and failed 1: Store's
+matrix had zero rendered SVGs because the recovery missed a later successful
+chart-wrapper CSS migration. The initial intermediate-stage two-file identity
+claim was withdrawn. A fresh V2 candidate restores the historical final CSS and
+its explanatory board comment; exactly those two source files differ and the
+other 1139 sources remain byte-identical. The new original strict site build
+passed. All six affected Store cases then passed once with the original rendered
+SVG/mark checks, 30-second tests and 5-second assertions. This is an affected-six
+result, not a relabelled fresh all-91 pass.
+
+The same V2 site passed 99 source/download cases: 91 per-file template flows plus
+four whole-template ZIP cases, and two source/export cases for each new block.
+They use real native selection, full rendered bytes, actual clipboard and actual
+received single files/ZIPs. Block export configuration now includes
+`allowImportingTsExtensions: true` and `noEmit: true` while retaining strict
+checking and the original `tsc --noEmit && vite build` script.
+
+Each actual received Retail15/Store16 project contains 329 original members. Both
+unmodified downloaded projects passed their original strict build and all six
+representative native cases. Original ZIP bytes, member bytes, Example, config
+and built outputs remained intact after validation. Runtime dependencies were
+physical copies of a normally installed matching tree, not fresh npm installs.
+The Store standalone tests adapt only the actual exported homepage/title; they
+do not replace the received entry or weaken the source assertions. Each Block
+export retains its actual six development dependencies, distinct from Template
+exports' full development dependency set. Required MIT/OFL and third-party
+notices and local original Bricklane media stay in the received projects.
+
+The four actual Template ZIPs were then checked independently: all four original
+strict builds passed; Surge17, Manifest14, Miro6 and Verve25 native cases passed
+once, 62 in total. Source/clipboard/archive checks and these original-project
+runs remain separate results. Every original ZIP, member, entry/config and
+rebuilt dist remained unchanged. The original template entries do not contain
+the site's customizer, so the four site-customizer-font cases remain site-only.
+No received project was repaired for acceptance.
+
+The private validator first rejected six existing licensed Unsplash substitute
+portraits under an over-narrow media assumption, then misread inline SVG
+`url(%23n)` payload as a package. Both failed attempts remain preserved. The
+corrected validator checks only the six exact attributed portrait filenames and
+consumes quoted CSS data URLs as whole values while continuing to reject actual
+missing references. All four actual projects passed these corrected checks.
+
+The clean release identifies 1953 browser cases in207 files, excluding private
+received-entry variants and unrelated shared WIP. This record is created before
+normal-hook commit/push. Exact-head full CI and actual Pages deployment require
+separate verification; this paragraph does not claim they are already successful.
+See [current acceptance record](catalog-actions-673-release-2026-11-02.json).

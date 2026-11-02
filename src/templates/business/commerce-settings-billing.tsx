@@ -27,6 +27,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { commerceInvoices, type CommerceInvoice } from "./commerce-settings-data";
+import {
+  CommerceCancellationDialog,
+  CommercePaymentMethodDialog,
+  CommercePlanDialog,
+} from "./commerce-settings-finance-dialogs";
+import { commerceDemoPaymentMethods } from "./commerce-settings-finance-data";
 import type { CommerceSettingsModel } from "./commerce-settings-model";
 
 const money = (amount: number) =>
@@ -92,6 +98,9 @@ export function CommerceBillingSettings({
   const orderCount = Number.isFinite(orderUsage.count)
     ? Math.max(0, Math.floor(orderUsage.count))
     : 0;
+  const paymentMethod =
+    commerceDemoPaymentMethods.find((entry) => entry.id === model.paymentMethod.methodId) ??
+    commerceDemoPaymentMethods[0];
   return (
     <>
       <header className="csd-page-heading">
@@ -101,42 +110,36 @@ export function CommerceBillingSettings({
         <Frame dense className="csd-frame">
           <FrameHeader className="csd-plan-heading">
             <div>
-              <FrameTitle>Growth plan</FrameTitle>
-              <FrameDescription>$59 / month · renews Nov 1, 2026</FrameDescription>
+              <FrameTitle>{model.plan.name} plan</FrameTitle>
+              <FrameDescription>
+                ${model.plan.price} / month · {model.cancellationReason ? "ends" : "renews"} Nov 1,
+                2026
+              </FrameDescription>
             </div>
-            <Badge variant="success-light">Active</Badge>
+            <Badge variant={model.cancellationReason ? "secondary" : "success-light"}>
+              {model.cancellationReason ? "Cancellation scheduled" : "Active"}
+            </Badge>
           </FrameHeader>
           <FramePanel fit className="csd-usage-panel">
             <Usage
               label={orderUsage.label}
-              detail={`${orderCount} / 2000`}
-              value={orderCount / 20}
+              detail={`${orderCount} / ${model.plan.orders}`}
+              value={(orderCount / model.plan.orders) * 100}
             />
             <Usage
               label="Staff seats"
-              detail={`${model.members.length} / 10`}
-              value={model.members.length * 10}
+              detail={`${model.members.length} / ${model.plan.seats}`}
+              value={(model.members.length / model.plan.seats) * 100}
             />
-            <Usage label="Media storage" detail="2.4 GB / 10 GB" value={24} />
+            <Usage
+              label="Media storage"
+              detail={`2.4 GB / ${model.plan.storage} GB`}
+              value={(2.4 / model.plan.storage) * 100}
+            />
           </FramePanel>
           <FrameFooter>
-            <Button
-              variant="outline"
-              onClick={() =>
-                model.announce("Cancel plan is a local demo. No subscription was cancelled.")
-              }
-            >
-              Cancel plan
-            </Button>
-            <Button
-              onClick={() =>
-                model.announce(
-                  "Change plan: the plan picker is a demo in this template. No subscription was changed.",
-                )
-              }
-            >
-              Change plan
-            </Button>
+            <CommerceCancellationDialog model={model} />
+            <CommercePlanDialog model={model} />
           </FrameFooter>
         </Frame>
         <Frame dense className="csd-frame">
@@ -150,21 +153,11 @@ export function CommerceBillingSettings({
                 <CreditCard aria-hidden="true" />
               </ItemMedia>
               <ItemContent>
-                <ItemTitle>Visa ending 4242</ItemTitle>
-                <ItemDescription>Expires 10 / 2028</ItemDescription>
+                <ItemTitle>{paymentMethod.name}</ItemTitle>
+                <ItemDescription>Expires {paymentMethod.expiry}</ItemDescription>
               </ItemContent>
               <ItemActions>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() =>
-                    model.announce(
-                      "Payment method update is a demo. No card data was collected or changed.",
-                    )
-                  }
-                >
-                  Update
-                </Button>
+                <CommercePaymentMethodDialog model={model} />
               </ItemActions>
             </Item>
           </FramePanel>

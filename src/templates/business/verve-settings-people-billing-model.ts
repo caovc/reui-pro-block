@@ -1,4 +1,7 @@
 import { useCallback, useRef, useState } from "react";
+import { useVerveMemberActions } from "./verve-settings-member-actions-model";
+import { useVervePlanModel } from "./verve-settings-plan-model";
+import { withUniqueVerveInviteUsername } from "./verve-settings-actions-data";
 import type { PaginationState, SortingState } from "@tanstack/react-table";
 import { toast } from "sonner";
 import { downloadDrivePdf } from "../collaboration/drive-settings-downloads";
@@ -189,16 +192,24 @@ export function useVervePeopleBillingModel() {
       setInviteError("Remove duplicate or existing member addresses.");
       return false;
     }
-    const additions = emails.map((email): VerveSettingsMember => ({
-      id: `crm-local-member-${nextMember.current++}`,
-      name: email.split("@")[0].replaceAll(/[._-]/g, " "),
-      username: email.split("@")[0],
-      email,
-      role: inviteRole,
-      billing: "Pending invoice",
-      authentication: inviteAuthentication,
-      joined: verveSettingsDate,
-    }));
+    const occupied = [...members];
+    const additions = emails.map((email): VerveSettingsMember => {
+      const member = withUniqueVerveInviteUsername(
+        {
+          id: `crm-local-member-${nextMember.current++}`,
+          name: email.split("@")[0].replaceAll(/[._-]/g, " "),
+          username: email.split("@")[0],
+          email,
+          role: inviteRole,
+          billing: "Pending invoice",
+          authentication: inviteAuthentication,
+          joined: verveSettingsDate,
+        },
+        occupied,
+      );
+      occupied.push(member);
+      return member;
+    });
     setMembers((current) => [...current, ...additions]);
     setInvitationDrafts((current) => [
       ...current,
@@ -275,7 +286,16 @@ export function useVervePeopleBillingModel() {
       "Demonstration only. No payment or tax document is created.",
     ]);
   }
+  const memberActions = useVerveMemberActions({
+    members,
+    setMembers,
+    allocateId: () => `crm-local-member-${nextMember.current++}`,
+    firstPage,
+  });
+  const planActions = useVervePlanModel(members.length);
   return {
+    memberActions,
+    planActions,
     cardEntry,
     openCard,
     closeCard,

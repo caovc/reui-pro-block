@@ -1,0 +1,635 @@
+/* Consumer layout for the measured Retail P&L composition. The actual free
+ * DataGrid owns column widths, pinning, editing and the single scroll viewport.
+ * Chart marks are original Bricklane data rendered with real ReUI/Recharts. */
+.rpo-frame,
+.rpo-chart-legend,
+.rpo-month-chart,
+.rpo-outlook-chart,
+.rpo-variance-gauge {
+  --rpo-actual: var(--color-blue-500);
+  --rpo-forecast: var(--color-violet-500);
+  --rpo-baseline: color-mix(in oklab, var(--muted-foreground) 18%, var(--background));
+  --rpo-chrome: color-mix(in oklab, var(--muted) 50%, var(--background));
+}
+
+.rpo-frame {
+  width: 100%;
+  max-width: 1216px;
+  min-width: 0;
+  margin-inline: auto;
+  overflow: hidden;
+  gap: 0;
+  padding: 0;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.rpo-frame > [data-slot="frame-panel"] {
+  min-width: 0;
+  padding: 0;
+}
+
+.rpo-toolbar {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 16px;
+  background: var(--rpo-chrome);
+}
+
+.rpo-toolbar-title {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.rpo-toolbar-title h2,
+.rpo-toolbar-title [data-slot="frame-panel-title"] {
+  margin: 0;
+  flex-shrink: 0;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.rpo-toolbar-title p {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.rpo-toolbar-actions {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+}
+
+.rpo-search {
+  min-width: 0;
+  width: 176px;
+}
+
+.rpo-grid {
+  min-width: 0;
+}
+
+.rpo-scroll {
+  /* Observed desktop viewport833 at1000; outer main has48/32 vertical padding,
+   * toolbar48 and footer36 plus the native frame/panel border overlap. */
+  height: var(--rpo-scroll-height, calc(100dvh - 167px));
+  min-height: 240px;
+}
+
+.rpo-table {
+  --rpo-chart-content-height: 143px;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  line-height: 16px;
+}
+
+.rpo-table :is(th, td) {
+  padding-inline: 8px;
+  border-color: var(--border);
+  font-size: 12px;
+  line-height: 16px;
+  vertical-align: middle;
+}
+
+.rpo-table :is(th.rpo-quarter-head, .rpo-quarter-head > th) {
+  height: 29px;
+  padding: 0;
+  background: var(--rpo-chrome);
+  text-align: center;
+  font-weight: 600;
+}
+
+.rpo-table :is(th.rpo-chart-row, .rpo-chart-row > th) {
+  height: 144px;
+  padding: 0;
+  background: var(--background);
+  font-weight: 400;
+}
+
+.rpo-table :is(th.rpo-month-head, .rpo-month-head > th) {
+  height: 32px;
+  padding: 0 8px;
+  background: var(--rpo-chrome);
+  text-align: center;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.rpo-table th.rpo-quarter-head[data-pinned] {
+  top: 0 !important;
+}
+
+.rpo-table th.rpo-chart-row[data-pinned] {
+  top: 29px !important;
+}
+
+.rpo-table th.rpo-month-head[data-pinned] {
+  top: 173px !important;
+}
+
+.rpo-frame[data-chart-band="off"] .rpo-table thead > tr:has(.rpo-chart-row) {
+  display: none;
+}
+
+.rpo-frame[data-chart-band="off"] .rpo-table th.rpo-month-head[data-pinned] {
+  top: 29px !important;
+}
+
+.rpo-table tbody > tr > td {
+  height: 36px;
+  padding-block: 0;
+}
+
+/* Keep native selection wrappers and horizontal clipping. This composition
+ * already requests py-0 cells and has no separate native36px row variant. */
+.rpo-table tbody > tr > td > .truncate {
+  margin-block: 0;
+  padding-block: 0;
+}
+
+.rpo-table th[data-col-id="name"] {
+  text-align: left;
+}
+
+.rpo-table tbody > tr:has(:is(.rpo-section-row, .rpo-margin-row)) > td {
+  height: 52px;
+  background: var(--rpo-chrome);
+}
+
+.rpo-table tbody > tr:has(:is(.rpo-section-row, .rpo-margin-row)[data-selected="true"]) > td {
+  background: color-mix(in oklab, var(--rpo-actual) 9%, var(--background));
+}
+
+.rpo-line-cell,
+.rpo-section-row,
+.rpo-margin-row {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+}
+
+.rpo-margin-row {
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 4px;
+  padding-inline-start: 4px;
+}
+
+.rpo-line-cell {
+  padding-inline-start: 36px;
+}
+
+.rpo-line-name {
+  min-width: 0;
+  overflow: hidden;
+  color: inherit;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rpo-section-row .rpo-line-name {
+  font-weight: 600;
+}
+
+.rpo-line-meta {
+  display: flex;
+  min-width: 0;
+  gap: 4px;
+  overflow: hidden;
+  color: var(--muted-foreground);
+  font-weight: 400;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rpo-note-count {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 3px;
+  color: var(--muted-foreground);
+}
+
+.rpo-note-count > svg {
+  width: 12px;
+  height: 12px;
+}
+
+.rpo-section-mark {
+  --icon-tile-size: 26px;
+  --icon-tile-icon-size: 20px;
+  border: 0;
+  background: transparent;
+  color: var(--muted-foreground);
+}
+
+.rpo-section-mark[data-section="revenue"] {
+  color: var(--rpo-actual);
+}
+
+.rpo-row-amount,
+.rpo-variance-cell {
+  display: inline-flex;
+  max-width: 100%;
+  align-items: flex-end;
+  justify-content: center;
+  flex-direction: column;
+  gap: 4px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.rpo-amount {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.rpo-amount[data-negative="true"] {
+  color: var(--muted-foreground);
+}
+
+.rpo-amount[data-strong="true"] {
+  font-weight: 600;
+}
+
+.rpo-amount[data-forecast="true"] {
+  color: var(--rpo-actual);
+}
+
+.rpo-variance-percent {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  color: var(--muted-foreground);
+}
+
+.rpo-variance-percent > svg {
+  width: 12px;
+  height: 12px;
+}
+
+.rpo-variance-cell[data-status="adverse"] .rpo-variance-percent,
+.rpo-variance-gauge[data-status="adverse"] strong {
+  color: var(--destructive);
+}
+
+.rpo-variance-cell[data-status="favourable"] .rpo-variance-percent,
+.rpo-variance-gauge[data-status="favourable"] strong {
+  color: var(--success);
+}
+
+.rpo-variance-delta {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+}
+
+.rpo-confidence-cell,
+.rpo-confidence-value {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 4px;
+}
+
+.rpo-confidence-value {
+  --rpo-confidence-muted: color-mix(in oklab, var(--muted-foreground) 30%, transparent);
+}
+
+.rpo-confidence-value[data-confidence="high"] {
+  color: var(--success);
+}
+
+.rpo-confidence-value[data-confidence="medium"] {
+  color: var(--warning-foreground);
+}
+
+.rpo-confidence-value[data-confidence="low"] {
+  color: var(--destructive);
+}
+
+.rpo-confidence-chart {
+  width: 32px;
+  height: 16px;
+  flex-shrink: 0;
+  aspect-ratio: auto;
+}
+
+.rpo-confidence-label {
+  height: 16px;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+}
+
+.rpo-confidence-trigger {
+  height: 24px;
+  min-width: 0;
+  max-width: 100%;
+  justify-content: flex-start;
+  gap: 0;
+  padding: 0;
+  background: transparent;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.rpo-confidence-trigger:not(:focus-visible):not([aria-invalid="true"]) {
+  border-color: transparent;
+}
+
+.rpo-confidence-trigger > svg:last-child {
+  display: none;
+}
+
+.rpo-chart-legend {
+  display: flex;
+  height: var(--rpo-chart-content-height, 144px);
+  min-width: 0;
+  align-items: flex-end;
+  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px 12px;
+  color: var(--muted-foreground);
+}
+
+.rpo-chart-legend > span {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.rpo-chart-legend-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rpo-series-dot {
+  display: inline-block;
+  width: 6px;
+  height: 10px;
+  flex-shrink: 0;
+  border-radius: 3px;
+}
+
+.rpo-series-dot[data-series="actual"] {
+  background: var(--rpo-actual);
+}
+
+.rpo-series-dot[data-series="forecast"] {
+  background: var(--rpo-forecast);
+}
+
+.rpo-series-dot[data-series="baseline"] {
+  background: var(--rpo-baseline);
+}
+
+.rpo-month-chart-button {
+  display: flex;
+  position: relative;
+  width: 100%;
+  height: var(--rpo-chart-content-height, 144px);
+  min-width: 0;
+  justify-content: stretch;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.rpo-month-chart-button[aria-pressed="true"] {
+  background: color-mix(in oklab, var(--rpo-actual) 4%, transparent);
+}
+
+.rpo-month-chart {
+  width: 100%;
+  height: var(--rpo-chart-content-height, 144px);
+  min-width: 0;
+  aspect-ratio: auto;
+}
+
+/* Native Button/Select size descendant icons. A Recharts surface is a chart,
+ * so keep its responsive canvas rather than applying the16px icon rung. */
+.rpo-month-chart-button .rpo-month-chart .recharts-surface,
+.rpo-confidence-trigger .rpo-confidence-chart .recharts-surface {
+  width: 100%;
+  height: 100%;
+}
+
+.rpo-outlook-chart {
+  width: 100%;
+  height: var(--rpo-outlook-chart-height, var(--rpo-chart-content-height, 144px));
+  min-width: 0;
+  min-height: 0;
+  max-height: 100%;
+  aspect-ratio: auto;
+}
+
+.rpo-variance-gauge {
+  display: flex;
+  width: 100%;
+  height: var(--rpo-chart-content-height, 144px);
+  min-width: 0;
+  justify-content: flex-end;
+  flex-direction: column;
+  padding: 16px 8px 8px;
+  color: var(--muted-foreground);
+  text-align: left;
+}
+
+.rpo-variance-gauge-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rpo-variance-gauge-value {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 4px;
+  margin-bottom: 12px;
+}
+
+.rpo-variance-gauge-value strong {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 28px;
+}
+
+.rpo-variance-scale {
+  position: relative;
+  width: 100%;
+  height: 8px;
+}
+
+.rpo-variance-scale-chart {
+  width: 100%;
+  height: 8px;
+  aspect-ratio: auto;
+}
+
+.rpo-variance-pointer {
+  position: absolute;
+  z-index: 1;
+  bottom: 8px;
+  left: var(--rpo-pointer);
+  width: 0;
+  height: 0;
+  transform: translateX(-50%);
+  border-top: 6px solid var(--foreground);
+  border-inline: 4px solid transparent;
+}
+
+.rpo-variance-scale-labels {
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+  margin-top: 2px;
+  color: var(--muted-foreground);
+  font-variant-numeric: tabular-nums;
+  line-height: 16px;
+}
+
+.rpo-profit-footer {
+  position: sticky;
+  z-index: 35;
+  bottom: 0;
+  background: var(--rpo-chrome);
+}
+
+.rpo-profit-footer td,
+.rpo-table td.rpo-profit-row {
+  height: 52px;
+  padding-block: 6px;
+  background: var(--rpo-chrome);
+}
+
+.rpo-profit-footer td:first-child {
+  padding-inline-start: 12px;
+}
+
+.rpo-profit-footer .rpo-margin-row {
+  padding-inline-start: 0;
+}
+
+.rpo-profit-footer .rpo-margin-row > strong {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.rpo-legend-footer {
+  display: flex;
+  min-height: 36px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  padding: 8px 16px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.rpo-legend-footer > .rpo-legend-statuses {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+}
+
+@media (max-width: 639px) {
+  .rpo-toolbar {
+    min-height: 0;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 12px 24px;
+  }
+
+  .rpo-toolbar-title {
+    align-items: center;
+  }
+
+  .rpo-toolbar-title p {
+    display: none;
+  }
+
+  .rpo-toolbar-actions {
+    width: 100%;
+  }
+
+  .rpo-search {
+    width: auto;
+    flex: 1;
+  }
+
+  .rpo-scroll {
+    height: 640px;
+    min-height: 0;
+  }
+
+  .rpo-line-cell {
+    padding-inline-start: 36px;
+  }
+
+  .rpo-line-meta {
+    gap: 3px;
+  }
+
+  .rpo-legend-footer {
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 6px 16px;
+    padding: 10px 16px;
+  }
+}
+
+/* Original legend geometry uses native cap/alphabetic text boxes rather than
+ * fractional height offsets. The fixture and triangle marks remain Bricklane's. */
+.rpo-legend-status {
+  display: inline-flex;
+  height: 16px;
+  align-items: center;
+  gap: 6px;
+}
+
+.rpo-legend-triangle {
+  width: 0;
+  height: 0;
+  flex-shrink: 0;
+  border-inline-start: 7px solid transparent;
+  border-top: 7px solid;
+}
+
+.rpo-legend-adverse {
+  border-top-color: var(--destructive);
+}
+
+.rpo-legend-favourable {
+  border-top-color: var(--color-emerald-500);
+}
+
+.rpo-forecast-label {
+  color: var(--rpo-actual);
+}

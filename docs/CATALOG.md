@@ -1,13 +1,8 @@
 # Local implementation and public reference checklist
 
-Updated 2026-10-28. The local catalog has 671 entries across 79 categories and 7 groups, plus 18 templates. Entries record reachable implementations and reference URLs; they do not assert pixel-identical completion.
+Updated 2026-11-02 from `src/data/catalog.json`. The local catalog has 673 entries across 79 categories and 7 groups, plus 18 templates. Entries record reachable implementations and reference URLs; they do not assert pixel-identical completion.
 
-The latest public audit lists 672 official block URLs. The two pending additions below are not counted as local entries. The local catalog retains legacy `solution-dev-ops-7`, which is absent from the latest listing; see the [follow-up plan](catalog-followup-plan-2026-10-26.md).
-
-## Pending official additions
-
-- [Retail P&L Outlook](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-15) — `data-grid-advanced-15`; private implementation and validation in progress.
-- [Store KPI Board](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-16) — `data-grid-advanced-16`; private implementation and validation in progress.
+The dated 2026-10-28 public audit recorded 672 official block IDs. The local catalog now includes Retail P&L Outlook and Store KPI Board, and retains legacy `solution-dev-ops-7`, which was absent from that listing. This checklist does not claim to be the latest official catalog. See the [follow-up plan](catalog-followup-plan-2026-10-26.md) for validation and release status.
 
 ## Application / App Shell (36)
 
@@ -395,7 +390,7 @@ The latest public audit lists 672 official block URLs. The two pending additions
 - [Cloud Rate Card](https://reui.io/blocks/data-grid/base/data-grid-base-8) — `data-grid-base-8`
 - [API Request Logs](https://reui.io/blocks/data-grid/base/data-grid-base-9) — `data-grid-base-9`
 
-## Data Grid / Advanced (15)
+## Data Grid / Advanced (17)
 
 - [Ad Campaign Performance](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-1) — `data-grid-advanced-1`
 - [Regional Store P&L](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-2) — `data-grid-advanced-2`
@@ -411,6 +406,8 @@ The latest public audit lists 672 official block URLs. The two pending additions
 - [Freight & Cargo Services](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-12) — `data-grid-advanced-12`
 - [HR Scorecard](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-13) — `data-grid-advanced-13`
 - [Strategy Scorecard](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-14) — `data-grid-advanced-14`
+- [Retail P&L Outlook](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-15) — `data-grid-advanced-15`
+- [Store KPI Board](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-16) — `data-grid-advanced-16`
 - [Prospect Database](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-22) — `data-grid-advanced-22`
 
 ## Data Grid / Columns (5)
@@ -586,7 +583,7 @@ The latest public audit lists 672 official block URLs. The two pending additions
 - [Firewall Rules](https://reui.io/blocks/solutions/dev-ops/solution-dev-ops-4) — `solution-dev-ops-4`
 - [SLO Error Budgets](https://reui.io/blocks/solutions/dev-ops/solution-dev-ops-5) — `solution-dev-ops-5`
 - [Data Connections](https://reui.io/blocks/solutions/dev-ops/solution-dev-ops-6) — `solution-dev-ops-6`
-- [Deploy Board](https://reui.io/blocks/solutions/dev-ops/solution-dev-ops-7) — `solution-dev-ops-7`; retained legacy entry, no longer in the latest public listing
+- [Deploy Board](https://reui.io/blocks/solutions/dev-ops/solution-dev-ops-7) — `solution-dev-ops-7`; retained legacy entry, absent from the dated 2026-10-28 listing
 
 ## Solutions / AI Ops (9)
 

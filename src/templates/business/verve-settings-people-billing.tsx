@@ -55,10 +55,11 @@ import {
 } from "@/components/ui/combobox";
 import { Switch } from "@/components/ui/switch";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { toast } from "sonner";
+import { VerveMemberActionSurfaces } from "./verve-settings-member-actions";
+import { VerveMemberImport } from "./verve-settings-member-import";
+import { VerveManagePlan, VerveUsageDetails } from "./verve-settings-plan-actions";
 import {
   verveBillingInvoices,
-  verveBillingPlan,
   verveBillingRegions,
   verveMemberAuthentication,
   verveMemberBilling,
@@ -96,31 +97,23 @@ function MemberIdentity({ member }: { member: VerveSettingsMember }) {
 function MemberAction({
   member,
   kind,
+  model,
 }: {
   member: VerveSettingsMember;
   kind: "view" | "edit" | "delete";
+  model: VervePeopleBillingModel;
 }) {
   const Icon = kind === "view" ? Eye : kind === "edit" ? Pencil : Trash2;
   const label = kind === "view" ? "View" : kind === "edit" ? "Edit" : "Delete";
-  function action() {
-    if (kind === "view")
-      toast("Open member", { description: `Review ${member.name}'s profile and recent activity.` });
-    else if (kind === "edit")
-      toast("Edit member", {
-        description: `Open the access and profile editor for ${member.name}.`,
-      });
-    else
-      toast("Delete member", {
-        description: "Member removal is not connected in this local preview.",
-      });
-  }
   return (
     <Button
       type="button"
       variant="ghost"
       size="icon-xs"
       aria-label={`${label} ${member.name}`}
-      onClick={action}
+      data-member-id={member.id}
+      data-member-action={kind}
+      onClick={(event) => model.memberActions.begin(member, kind, event.currentTarget)}
     >
       <Icon aria-hidden />
     </Button>
@@ -321,7 +314,14 @@ function MemberFilters({ model }: { model: VervePeopleBillingModel }) {
 
 export function VerveTeamSettings({ model }: { model: VervePeopleBillingModel }) {
   const { setInviteOpen } = model;
-  useEffect(() => () => setInviteOpen(false), [setInviteOpen]);
+  const closeMember = model.memberActions.close;
+  useEffect(
+    () => () => {
+      setInviteOpen(false);
+      closeMember();
+    },
+    [setInviteOpen, closeMember],
+  );
   const columns: DomainColumn<VerveSettingsMember>[] = [
     {
       id: "member",
@@ -332,9 +332,9 @@ export function VerveTeamSettings({ model }: { model: VervePeopleBillingModel })
         <div className="vp-member-cell">
           <MemberIdentity member={row.original} />
           <div className="vp-member-actions">
-            <MemberAction kind="view" member={row.original} />
-            <MemberAction kind="edit" member={row.original} />
-            <MemberAction kind="delete" member={row.original} />
+            <MemberAction kind="view" member={row.original} model={model} />
+            <MemberAction kind="edit" member={row.original} model={model} />
+            <MemberAction kind="delete" member={row.original} model={model} />
           </div>
         </div>
       ),
@@ -449,18 +449,7 @@ export function VerveTeamSettings({ model }: { model: VervePeopleBillingModel })
                   />
                 </InputGroup>
                 <MemberFilters model={model} />
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() =>
-                    toast("Import members", {
-                      description:
-                        "Connect this button to your CSV import, directory sync, or SCIM provisioning flow.",
-                    })
-                  }
-                >
-                  Import
-                </Button>
+                <VerveMemberImport model={model} />
                 <InviteMembers model={model} />
               </div>
             </FrameHeader>
@@ -479,6 +468,12 @@ export function VerveTeamSettings({ model }: { model: VervePeopleBillingModel })
           </FramePanel>
         </Frame>
       </DataGrid>
+      {model.memberActions.notice && (
+        <p role="status" className="mt-3 text-muted-foreground">
+          {model.memberActions.notice}
+        </p>
+      )}
+      <VerveMemberActionSurfaces model={model.memberActions} />
     </section>
   );
 }
@@ -635,7 +630,7 @@ export function VerveBillingSettings({ model }: { model: VervePeopleBillingModel
     },
     [closeCard, closeBilling],
   );
-  const plan = verveBillingPlan;
+  const plan = model.planActions.plan;
   const renewal = verveInvoiceDate(plan.renewal);
   const columns: DomainColumn<VerveBillingInvoice>[] = [
     { id: "invoice", accessorKey: "id", header: () => "Invoice", enableSorting: false, size: 210 },
@@ -702,14 +697,20 @@ export function VerveBillingSettings({ model }: { model: VervePeopleBillingModel
       <Alert variant={model.renewalReady ? "success" : "destructive"} className="vp-renewal-alert">
         <ShieldAlert aria-hidden />
         <AlertTitle>
-          {model.renewalReady ? "Company card is ready." : "Renewal is blocked."}
+          {model.planActions.status === "Cancelled"
+            ? "Local demo plan is cancelled."
+            : model.renewalReady
+              ? "Company card is ready."
+              : "Renewal is blocked."}
         </AlertTitle>
         <AlertDescription>
-          {model.renewalReady
-            ? `Demo card ending ${model.companyCard?.last4} is set as the default for this local workspace.`
-            : model.companyCard
-              ? "Set a demo card as the default payment method before this local subscription renews."
-              : `No company card is saved. Add one before ${renewal} so renewal, seat changes, and receipt delivery can continue normally.`}
+          {model.planActions.status === "Cancelled"
+            ? "This local demo has no scheduled renewal. Saved members and settings remain available."
+            : model.renewalReady
+              ? `Demo card ending ${model.companyCard?.last4} is set as the default for this local workspace.`
+              : model.companyCard
+                ? "Set a demo card as the default payment method before this local subscription renews."
+                : `No company card is saved. Add one before ${renewal} so renewal, seat changes, and receipt delivery can continue normally.`}
         </AlertDescription>
         <AlertAction>
           <VerveCompanyCard model={model} entry="alert">
@@ -733,21 +734,28 @@ export function VerveBillingSettings({ model }: { model: VervePeopleBillingModel
             </IconTile>
             <div>
               <strong>
-                {plan.name} <Badge variant="warning-light">Trial</Badge>
+                {plan.name} <Badge variant="warning-light">{model.planActions.status}</Badge>
               </strong>
               <p>
                 <span>{verveMoney(plan.unitPrice)}</span> per seat / month
               </p>
               <p>
-                Growth keeps deal history, pipeline automations, and workspace permissions on one
-                monthly plan.
+                The selected demo plan sets seat, contact and automation allowances for this
+                preview.
               </p>
             </div>
           </div>
           <dl>
             {[
               ["Renewal date", renewal],
-              ["Renewal status", model.renewalReady ? "Ready" : "Card required"],
+              [
+                "Renewal status",
+                model.planActions.status === "Cancelled"
+                  ? "Cancelled locally"
+                  : model.renewalReady
+                    ? "Ready"
+                    : "Card required",
+              ],
               ["Billing owner", plan.owner],
             ].map(([title, value]) => (
               <div key={title}>
@@ -759,19 +767,13 @@ export function VerveBillingSettings({ model }: { model: VervePeopleBillingModel
         </FramePanel>
         <FrameFooter className="vp-billing-footer">
           <p>
-            {model.companyCard
-              ? "A demo company card is available for this local subscription."
-              : "Renewal stays paused until a company card is added."}
+            {model.planActions.status === "Cancelled"
+              ? "The local plan is cancelled; use Manage plan to resume the demo."
+              : model.companyCard
+                ? "A demo company card is available for this local subscription."
+                : "Renewal stays paused until a company card is added."}
           </p>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() =>
-              toast("Manage plan", { description: "Change or cancel your Verve subscription." })
-            }
-          >
-            Manage plan
-          </Button>
+          <VerveManagePlan model={model} />
         </FrameFooter>
       </Frame>
       <Frame className="vp-billing-card">
@@ -809,18 +811,17 @@ export function VerveBillingSettings({ model }: { model: VervePeopleBillingModel
           })}
         </FramePanel>
         <FrameFooter className="vp-billing-footer">
-          <p>Usage counters reset on {renewal} with the next billing cycle.</p>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() =>
-              toast("Usage", { description: "Current workspace usage is shown above." })
-            }
-          >
-            View usage
-          </Button>
+          <p>
+            Demo counters for the cycle ending {renewal}; no automatic reset or external metering.
+          </p>
+          <VerveUsageDetails model={model} />
         </FrameFooter>
       </Frame>
+      {model.planActions.notice && (
+        <p role="status" className="text-muted-foreground">
+          {model.planActions.notice}
+        </p>
+      )}
       <div className="vp-section-heading">
         <div>
           <h2>Billing Details</h2>

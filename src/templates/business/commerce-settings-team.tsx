@@ -285,7 +285,7 @@ export function CommerceTeamSettings({ model }: { model: CommerceSettingsModel }
         <div className="csd-team-heading">
           <h1>Team</h1>
           <Badge variant="secondary">
-            {model.members.length} of 10 seats · {pending} pending
+            {model.members.length} of {model.plan.seats} seats · {pending} pending
           </Badge>
         </div>
         <CollaboratorInviteDialog
