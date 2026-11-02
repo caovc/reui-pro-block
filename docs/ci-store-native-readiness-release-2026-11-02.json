@@ -1,0 +1,106 @@
+{
+  "recordCreatedUTC": "2026-11-02T08:56:30.044993+00:00",
+  "baseCommit": "b47894fff943d61389b0324ea4d66a5394fd0cf2",
+  "goalComplete": false,
+  "scope": "Two test-only Store readiness/scenario corrections; no runtime, free component, dependency or configuration changes.",
+  "runtimeSourceChanges": 0,
+  "originalCI": {
+    "commit": "300b437e80cfba04a51d237859b4aa43cfe4825a",
+    "run": 41406253214,
+    "job": 125148826534,
+    "conclusion": "failure",
+    "passed": 1993,
+    "failed": 2,
+    "total": 1995,
+    "browserMinutes": 55.3,
+    "Pages": "skipped",
+    "decodedLog": {
+      "path": "ci300-original-job.log",
+      "sha256": "741dcf7ed877a4f498f3a2e2f877b680ac21feb54c2599b5a18bc1a03ebaafd5"
+    },
+    "artifact": {
+      "id": 13126406150,
+      "bytes": 94742905,
+      "sha256": "a1a303a88ee95e7e500e0ec53e33c9b552935d461abc786bfb08e4266f5a4232",
+      "fullOriginalVerified": true,
+      "files": 713,
+      "traces": 2
+    },
+    "earlierCorrections": "AIchat source readiness, Store sorting and short-rail checks passed in this run; these are two new failure paths."
+  },
+  "failureFactsAndCorrections": [
+    {
+      "test": "grid-advanced-store-kpi-free-charts.spec.ts:30",
+      "actualTraceFact": "At the initial slider-count check the recorded DOM still had two isolated-preview skeletons and no board/search/sliders. The first recorded full board had all five sliders and an empty Search stores field, sampled1144.651ms after the browser expectation failed. This is not an exact mount timestamp. All87 requests returned200; a unique CPU cause is not established.",
+      "correction": "One real Search stores.click after desktop goto, before the original title/count/geometry checks. It enters no text and changes no filter data.",
+      "preservation": "All21 original matchers retain their order. Phone case, helpers, hooks, original30s/5s budgets and retries remain unchanged. Two cases stay two.",
+      "manifest": {
+        "path": "ci300-store-free-charts-proposal-v1/manifest.json",
+        "sha256": "c6da31eb565f5dd08e9f4d37c4b61468a8264c71e1ea3f28752d1c13f395e2cf"
+      }
+    },
+    {
+      "test": "grid-advanced-store-kpi-initial-native.spec.ts:344 original aggregate",
+      "actualTraceFact": "All Cancel, Enter reopen, Name/value/focus, Escape and originating-trigger focus assertions succeeded. The final menu-count check ended around29.929319s; geometry began29.930119s with69.881ms of the original30s left. Timeout occurred during the final geometry evaluation, not at a proven focus defect.",
+      "correction": "Two independent native user scenarios: Cancel/discard then Enter reopen retains the original-value/focus chain; a fresh Edit/Escape scenario retains dialog closure, original trigger focus, menu unmount and full geometry.",
+      "preservation": "All23 original statements and11 matchers retained in their mapped order;8 new fresh-context statements and3 initial checks added. Other four cases and all helpers/imports/hooks byte-identical. Five cases become six; the old combined aggregate is no longer executed.",
+      "scopeLimit": "No Country or Save coverage is invented; the original aggregate did not contain those actions.",
+      "manifest": {
+        "path": "ci300-store-edit-focus-proposal-v1/manifest.json",
+        "sha256": "556dec9154e3e01a88c3418c739c914cb9d97d7c1504f78c35dd03eb8a7ef655"
+      }
+    }
+  ],
+  "necessaryNativeValidation": {
+    "receipt": {
+      "path": "ci300-readiness-native3-necessary-once/receipt.json",
+      "sha256": "9607456c00c95becdfc2da5aeca1be86e507bea14f596126c6f25735e9dd3dee"
+    },
+    "reportSHA256": "f415ea888d6f87f6dbb02b607988cc004c5a432f6eeb0313c1e33b4427d13f16",
+    "seconds": 6.748290542000177,
+    "stats": {
+      "startTime": "2026-11-02T08:48:39.484Z",
+      "duration": 6357.413,
+      "expected": 3,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "effectiveWorkers": 3,
+    "retries": 0,
+    "caseTimeoutMs": 30000,
+    "expectTimeoutMs": 5000,
+    "cases": [
+      "compact signed-chart geometry",
+      "Cancel discards draft and Enter reopens unchanged with native focus",
+      "Escape closes and restores the original trigger, then complete board geometry"
+    ],
+    "limit": "Only the three changed scenarios ran locally. A full two-spec or complete CI pass is not inferred.",
+    "productSourcesExact": 1143,
+    "productDistExact": 658,
+    "newProductBuild": "Unnecessary for test-only changes; exact existing strict-built b478 product served unchanged.",
+    "ownBaselinePreviewStopped": true
+  },
+  "unchangedContracts": {
+    "dependenciesAndConfiguration": true,
+    "freeReUIComponentsAndApplicationState": true,
+    "sourceViewerCollectorAndMappings": true,
+    "brandingAndMITOFLNotices": true,
+    "newTimeoutRetrySkipForceSleepOrInjectedFocusStyle": false
+  },
+  "publication": {
+    "newCommit": null,
+    "committed": false,
+    "pushed": false,
+    "newExactCommitCI": "pending",
+    "newExactCommitPages": "pending",
+    "parentB478Run": 41412969793,
+    "parentB478Status": "pending behind129 at last observation",
+    "editor129Run": 41407711199,
+    "editor129Status": "in_progress at last observation",
+    "lastConfirmedPagesCommit": "4490ce2bc6dc20ffb3adc10e4c17cc8c2f687a4a",
+    "lastConfirmedPagesDeployment": 7485767968,
+    "url": "https://caovc.github.io/reui-pro-block/"
+  },
+  "remaining": "Grid touch stable-target repair, merchant Account native/export acceptance and advanced editor fidelity remain separate work."
+}

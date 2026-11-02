@@ -32,6 +32,9 @@ test("compact signed charts keep each visible bar on its displayed side of zero"
 }, info) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto(route());
+  // Let a real control own lazy-board readiness within the existing case budget.
+  // Clicking the empty search leaves all filtering, values and geometry unchanged.
+  await board(page).getByRole("textbox", { name: "Search stores", exact: true }).click();
   await expect(page).toHaveTitle("Store KPI Board — Preview");
   await expect(board(page).getByRole("slider")).toHaveCount(5);
   await expect(board(page).locator(".store-kpi-matrix-chart svg.recharts-surface")).toHaveCount(5);

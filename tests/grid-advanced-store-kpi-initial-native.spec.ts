@@ -341,7 +341,9 @@ test.describe("Store KPI Board initial native gates", () => {
     await geometry(page, info, "pointer-may-month");
   });
 
-  test("Actions to Edit uses native focus and returns to the unchanged originating button", async ({
+  // Keep Cancel/reopen and Escape as independent native user scenarios.
+  // The former aggregate reached geometry with about 70ms of its 30s budget left.
+  test("Cancel discards a store draft, restores Actions focus and reopens unchanged with Enter", async ({
     page,
   }, info) => {
     const actions = row(page, focusStore.id).getByRole("button", {
@@ -369,6 +371,22 @@ test.describe("Store KPI Board initial native gates", () => {
     // The first native close restored focus; Enter now opens the real menu.
     await page.keyboard.press("Enter");
     await page.getByRole("menuitem", { name: "Edit Store", exact: true }).click();
+    await expect(name).toHaveValue(focusStore.name);
+    await expect(name).toBeFocused();
+  });
+
+  test("Escape closes Edit Store and returns focus to its unchanged originating Actions button", async ({
+    page,
+  }, info) => {
+    const actions = row(page, focusStore.id).getByRole("button", {
+      name: "Actions for " + focusStore.name,
+      exact: true,
+    });
+    await actions.click();
+    await page.getByRole("menuitem", { name: "Edit Store", exact: true }).click();
+    const dialog = page.getByRole("dialog", { name: "Edit Store", exact: true });
+    const name = dialog.getByRole("textbox", { name: "Name", exact: true });
+    await expect(dialog).toBeVisible();
     await expect(name).toHaveValue(focusStore.name);
     await expect(name).toBeFocused();
     await page.keyboard.press("Escape");
