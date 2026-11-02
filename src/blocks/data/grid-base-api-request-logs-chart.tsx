@@ -5,9 +5,20 @@
  * Stacking, request-window selection and release lines are Bricklane extensions.
  * Preserve the ReUI, shadcn and Recharts MIT notices in source exports.
  */
-import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
-import type { ComponentProps, KeyboardEvent } from "react";
-import { Bar, BarChart, CartesianGrid, ReferenceArea, ReferenceLine, XAxis, YAxis } from "recharts";
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from "react";
+import type { ComponentProps, KeyboardEvent, RefObject } from "react";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  getRelativeCoordinate,
+  ReferenceArea,
+  ReferenceLine,
+  usePlotArea,
+  useXAxisInverseDataSnapScale,
+  XAxis,
+  YAxis,
+} from "recharts";
 import {
   ChartContainer,
   ChartTooltip,
@@ -48,6 +59,37 @@ function trafficTickValues({ start, end }: RequestTimeRange): number[] {
 }
 
 type ChartEvent = Parameters<NonNullable<ComponentProps<typeof BarChart>["onMouseMove"]>>[0];
+type ChartTouchEvent = Parameters<NonNullable<ComponentProps<typeof BarChart>["onTouchStart"]>>[1];
+type TouchPointEvent = Pick<ChartTouchEvent, "currentTarget" | "touches">;
+type TouchBucketResolver = (event: TouchPointEvent) => number | undefined;
+
+/** Resolve current touches through the actual chart axis, including gaps and empty bars. */
+function RequestTouchAxis({ resolverRef }: { resolverRef: RefObject<TouchBucketResolver | null> }) {
+  const plot = usePlotArea();
+  const inverseScale = useXAxisInverseDataSnapScale();
+  useLayoutEffect(() => {
+    const resolve: TouchBucketResolver = (event) => {
+      if (!plot || !inverseScale || event.touches.length !== 1) return;
+      const point = getRelativeCoordinate(event)[0];
+      if (
+        !point ||
+        point.relativeX < plot.x ||
+        point.relativeX > plot.x + plot.width ||
+        point.relativeY < plot.y ||
+        point.relativeY > plot.y + plot.height
+      ) {
+        return;
+      }
+      const midpoint = inverseScale(point.relativeX);
+      return typeof midpoint === "number" && Number.isFinite(midpoint) ? midpoint : undefined;
+    };
+    resolverRef.current = resolve;
+    return () => {
+      if (resolverRef.current === resolve) resolverRef.current = null;
+    };
+  }, [plot, inverseScale, resolverRef]);
+  return null;
+}
 
 interface RequestTrafficChartProps {
   buckets: TrafficBucket[];
@@ -68,6 +110,8 @@ export function RequestTrafficChart({
   const id = useId().replace(/:/g, "");
   const containerRef = useRef<HTMLDivElement>(null);
   const dragRef = useRef<{ start: number; end: number } | null>(null);
+  const touchResolverRef = useRef<TouchBucketResolver | null>(null);
+  const activeTouchRef = useRef<{ identifier: number; startedAt: number } | null>(null);
   const [draft, setDraft] = useState<RequestTimeRange | null>(null);
   const [activeTimestamp, setActiveTimestamp] = useState<number | null>(null);
   const visibleClasses = STATUS_CLASSES.filter((status) => classes.includes(status));
@@ -96,11 +140,13 @@ export function RequestTrafficChart({
   );
 
   const cancelDrag = useCallback(() => {
+    activeTouchRef.current = null;
     dragRef.current = null;
     setDraft(null);
   }, []);
 
   const finishDrag = useCallback(() => {
+    activeTouchRef.current = null;
     const drag = dragRef.current;
     if (!drag) return;
     dragRef.current = null;
@@ -112,13 +158,24 @@ export function RequestTrafficChart({
   // A release outside the chart still commits the last native hit bucket.
   // No page-pixel -> bucket coordinate conversion is used.
   useEffect(() => {
+    const cancelMultipleTouches = (event: TouchEvent) => {
+      if (event.touches.length !== 1) cancelDrag();
+    };
+    const finishTouch = (event: TouchEvent) => {
+      if (event.touches.length || event.changedTouches.length !== 1) cancelDrag();
+      else finishDrag();
+    };
     window.addEventListener("mouseup", finishDrag);
-    window.addEventListener("touchend", finishDrag);
+    window.addEventListener("touchstart", cancelMultipleTouches, { passive: true });
+    window.addEventListener("touchend", finishTouch);
+    window.addEventListener("touchcancel", cancelDrag);
     window.addEventListener("pointercancel", cancelDrag);
     window.addEventListener("blur", cancelDrag);
     return () => {
       window.removeEventListener("mouseup", finishDrag);
-      window.removeEventListener("touchend", finishDrag);
+      window.removeEventListener("touchstart", cancelMultipleTouches);
+      window.removeEventListener("touchend", finishTouch);
+      window.removeEventListener("touchcancel", cancelDrag);
       window.removeEventListener("pointercancel", cancelDrag);
       window.removeEventListener("blur", cancelDrag);
     };
@@ -147,6 +204,63 @@ export function RequestTrafficChart({
     if (!drag) return;
     drag.end = bucket.timestamp;
     setDraft(intervalFor(drag.start, drag.end));
+  };
+
+  const bucketForTouch = (event: TouchPointEvent) => {
+    const midpoint = touchResolverRef.current?.(event);
+    return rows.find((row) => row.midpoint === midpoint);
+  };
+
+  const startTouchDrag = (_state: ChartEvent, event: ChartTouchEvent) => {
+    cancelDrag();
+    if (event.touches.length !== 1) return;
+    const bucket = bucketForTouch(event);
+    if (!bucket) return;
+    const touch = event.touches[0];
+    activeTouchRef.current = { identifier: touch.identifier, startedAt: event.timeStamp };
+    containerRef.current?.focus({ preventScroll: true });
+    dragRef.current = { start: bucket.timestamp, end: bucket.timestamp };
+    setActiveTimestamp(bucket.timestamp);
+    setDraft(intervalFor(bucket.timestamp, bucket.timestamp));
+  };
+
+  const moveTouchDrag = (_state: ChartEvent, event: ChartTouchEvent) => {
+    const active = activeTouchRef.current;
+    if (!active || event.timeStamp < active.startedAt) return;
+    if (event.touches.length !== 1 || event.touches[0].identifier !== active.identifier) {
+      cancelDrag();
+      return;
+    }
+    const bucket = bucketForTouch(event);
+    const drag = dragRef.current;
+    if (!bucket || !drag) return;
+    drag.end = bucket.timestamp;
+    setActiveTimestamp(bucket.timestamp);
+    setDraft(intervalFor(drag.start, drag.end));
+  };
+
+  const finishTouchDrag = (_state: ChartEvent, event: ChartTouchEvent) => {
+    const active = activeTouchRef.current;
+    if (!active || event.timeStamp < active.startedAt) return;
+    if (
+      event.touches.length ||
+      event.changedTouches.length !== 1 ||
+      event.changedTouches[0].identifier !== active.identifier
+    ) {
+      cancelDrag();
+      return;
+    }
+    // Recharts throttles touchmove callbacks. Resolve the actual final point as well.
+    const bucket = bucketForTouch({
+      currentTarget: event.currentTarget,
+      touches: event.changedTouches,
+    });
+    const drag = dragRef.current;
+    if (bucket && drag) {
+      drag.end = bucket.timestamp;
+      setActiveTimestamp(bucket.timestamp);
+    }
+    finishDrag();
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
@@ -226,6 +340,7 @@ export function RequestTrafficChart({
         className="h-full w-full aspect-auto text-[13px]"
       >
         <BarChart
+          className="[&_svg]:pointer-events-none [&_svg_*]:pointer-events-none"
           accessibilityLayer
           tabIndex={-1}
           data={rows}
@@ -240,10 +355,11 @@ export function RequestTrafficChart({
           }}
           onMouseMove={moveDrag}
           onMouseUp={finishDrag}
-          onTouchStart={startDrag}
-          onTouchMove={moveDrag}
-          onTouchEnd={finishDrag}
+          onTouchStart={startTouchDrag}
+          onTouchMove={moveTouchDrag}
+          onTouchEnd={finishTouchDrag}
         >
+          <RequestTouchAxis resolverRef={touchResolverRef} />
           <defs>
             {STATUS_CLASSES.map((status) => (
               <ReuiStripePattern

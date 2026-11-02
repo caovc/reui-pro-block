@@ -1,0 +1,198 @@
+{
+  "recordCreatedUTC": "2026-11-02T09:26:55.853735+00:00",
+  "baseCommit": "eb7fe96b33db200f910b982b7830b9fd2689af83",
+  "goalComplete": false,
+  "scope": "Base9 request-traffic chart native first/reverse touch selection and stable event target, retaining existing mouse/keyboard/free chart behavior.",
+  "runtimeFiles": ["src/blocks/data/grid-base-api-request-logs-chart.tsx"],
+  "actualFreeReUIReuse": "Existing official free c-chart-2 composition, ChartContainer/ChartTooltip/ChartTooltipContent and ReuiStripePattern, with native Recharts BarChart, axes and reference shapes retained.",
+  "customGap": "The free plot example does not supply the request-specific drag range and detail-row synchronization. Touch input uses existing public chart-relative coordinates and axis snap hooks; no replacement plot or duplicate tooltip is introduced.",
+  "userBehavior": [
+    "First finger drag starts from its actual first bucket without a preceding hover.",
+    "Reverse and subsequent gestures use their own origins; cancellation discards the draft.",
+    "The real mouse axis Tooltip retains time and three payload values, drag selection and Reset Zoom.",
+    "The selected02:00–06:30UTC interval updates154 requests,11.0percent errors,100percent availability and exact six detail IDs."
+  ],
+  "observedFailureHistory": {
+    "firstBefore": {
+      "receipt": {
+        "path": "grid-touch/before-129c17-first-once/receipt.json",
+        "sha256": "e48a20f108d2c5534c4a3a63ae04f18ca58627a46cb63482f480583c83960ae1"
+      },
+      "fact": "First04:00 readout succeeded, next05:00 sampling remained04:00. Final range assertions were not reached."
+    },
+    "windowOnlyDiagnostic": {
+      "receipt": {
+        "path": "grid-touch/before-129c17-passive-once/receipt.json",
+        "sha256": "51bc7a049119672c495451122d0c03d025697b21944a3762d96b846b9ffc77b8"
+      },
+      "limit": "Window did not see subsequent legacy touch events. This alone did not prove that the browser failed to dispatch them; the later direct-target observer corrected that interpretation."
+    },
+    "inputContractCorrection": {
+      "manifest": {
+        "path": "grid-touch/final-gesture-v2/manifest.json",
+        "sha256": "bbf2022c6290e7461afbd070fcc080f8704609e36635baa8769c0dba14d6b4e3"
+      },
+      "fact": "Removed only the intermediate per-touchMove readout wait so all original native moves and touchEnd can execute continuously. All final range/metrics/IDs/cancel assertions and budgets remain. The old sampling contract is not claimed as preserved or passed."
+    },
+    "correctedBefore": {
+      "receipt": {
+        "path": "grid-touch/before-129c17-final-gesture-v2-once/receipt.json",
+        "sha256": "b8c9ef7d723f3aa4ed1cbe56509c5c90e1311d8c1c46409db8649845e4fa3c06"
+      },
+      "fact": "Unchanged product still failed at the final Reset Zoom assertion after complete native input. Remaining final data checks were retained but not reached."
+    },
+    "C2": {
+      "receipt": {
+        "path": "interaction-refinements-v1-native8-first-once/receipt.json",
+        "sha256": "108aba401c1e9986083aaf7d3893fa55ea53df4d0325421d89daf09b832710f8"
+      },
+      "passed": 6,
+      "failed": 2,
+      "fact": "Shell2, original Base9 native3 and touch cancel1 passed. First and reverse touch still failed to commit; the C2 version was not published."
+    },
+    "directTargetDiagnostic": {
+      "receipt": {
+        "path": "grid-touch/after-c2-target-identity-once/receipt.json",
+        "sha256": "eb4a2279aaaebd0291bbc1391597acd7da44cd9833a07a5a11f7663488dc846f"
+      },
+      "fact": "Original SVG path was connected at touchstart. After the initial state update it was disconnected and no longer the current bar. Direct passive listeners on that old path received every trusted move/end, while connected window pointer events continued and scroll stayed0. Legacy touch events remained attached to the removed path and could not bubble to the chart/window.",
+      "injectedEventFocusStyleOrProductMutation": false
+    }
+  },
+  "finalCorrection": {
+    "touchCoordinates": "Use public getRelativeCoordinate, usePlotArea and useXAxisInverseDataSnapScale for actual start/move/end coordinates, with existing range state and cancellation ownership.",
+    "stableTarget": "One local BarChart class routes hit testing through the stable existing HTML wrapper by marking its pure drawing SVG subtree pointer-events:none. Current SVG children contain no business click controls; native wrapper Tooltip and chart coordinates continue to handle input.",
+    "sourcePreservation": "C3 differs from C2 by one product className attribute. Existing mouse/keyboard declarations, axes, plot/tooltip/reference props retain their mapped original implementations.",
+    "sourceTargets": "Existing leaf already appears in the actual implementation choices and closure; no route, new runtime file or mapping change needed.",
+    "dependencyFloor": "No package/lock changes. Original npm3.8.0 public exports/types were statically verified against the new calls, including registry integrity. Minimum-version runtime is not claimed.",
+    "dependencyEvidence": {
+      "path": "grid-touch/independent-static-review/receipt.json",
+      "sha256": "dc931bbd6bb6faed5d32d4c9efe5d50db71a77a583631feaa6db9b1990ec006b"
+    }
+  },
+  "localAcceptance": {
+    "combinedStrict": {
+      "exit": 0,
+      "seconds": 25.81260491699868,
+      "logSHA256": "6e745baf6e388b978d5eda8113dca9fe0a1d982c4cae50a16238a6603deebe18"
+    },
+    "necessaryNative4": {
+      "path": "grid-touch-c3-native4-first-once/receipt.json",
+      "sha256": "fa1e6752e6040bc8dc0ff464f83f315b3a420562e6be1c73fdf42d5618179fc6",
+      "seconds": 4.944844917001319,
+      "stats": {
+        "startTime": "2026-11-02T09:03:45.053Z",
+        "duration": 3917.5589999999997,
+        "expected": 4,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "b527ebb3ffc6e308540e3f26f4952b761140d066f01a1da4afe893305e113825"
+    },
+    "source2": {
+      "path": "grid-touch-c3-source2-first-once/receipt.json",
+      "sha256": "e09dcc34dfc0cc32cdbe2dffb0cd2aecad72d65aab8d312bd106f38a9b4b1db2",
+      "seconds": 7.150968165999075,
+      "stats": {
+        "startTime": "2026-11-02T09:06:36.441Z",
+        "duration": 6579.698,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "d6a5613b359d687973a7f722caf8ae414809b5f7b70a1967d7bf530c3b2e878f"
+    },
+    "sourceConcurrency": "Configured max3workers for two cases; no claim of three simultaneous cases.",
+    "actualOriginalProject": {
+      "archiveSHA256": "26b3a22d35e3f50afca28c374660fcca01ade44cddbd1552c3814acf15042ded",
+      "originalMembers": 329,
+      "strict": {
+        "exit": 0,
+        "seconds": 11.983076500000607,
+        "logSHA256": "78e670d2a3a7f6369d50a48c831d5bdc1c20900cd7fd82052b6b07cd68c5fa72"
+      },
+      "native7": {
+        "path": "grid-touch-c3-received-original-native-once/receipt.json",
+        "sha256": "12a2308b4f52a84b6bc1d27d011d7f6faa8a7a8150e3efaa2c61bdcd16a11219",
+        "seconds": 9.746559832998173,
+        "stats": {
+          "startTime": "2026-11-02T09:19:23.411Z",
+          "duration": 9349.467999999999,
+          "expected": 7,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "reportSHA256": "2d7adf93f2304fb26e05b088d01e2f809f65697e9510cc6975d209deba607140"
+      },
+      "integrity": {
+        "originalZIPExact": true,
+        "originalMembersExact": 329,
+        "entryPackageConfigExact": true,
+        "immutableDistExact": true,
+        "generatedPublicExact": true,
+        "receivedEntrySourceOrConfigRepaired": false
+      }
+    },
+    "originalNativeScope": "Unchanged existing Base9 native3, corrected continuous-gesture touch3 and independent mouse1. No route/assertion adaptation in the standalone copies.",
+    "originalInstallHook": "This original package has no postinstall; none was added.",
+    "originalEntryPackageConfigurationModified": false,
+    "dependencyMethod": "Existing normal-install physical APFS clones, not fresh dependency installs.",
+    "receivedPreviewStoppedInFinally": true,
+    "browserMethod": "Browser plugin not available; existing Playwright Chromium.",
+    "budget": {
+      "caseMs": 30000,
+      "expectMs": 5000,
+      "retries": 0,
+      "nativeWorkers": 1,
+      "newOverridesSleepForceSkippedAssertionOrInjectedFocusStyle": false
+    },
+    "visual": {
+      "rootPersonallyViewed": true,
+      "frames": [
+        {
+          "path": "grid-touch-c3-root-visual/base9-native-mouse-selected.png",
+          "sha256": "2954f4778fa5bd135b3fb7d5babce654140bdce8d386b413792639e5cbc1d2cc"
+        },
+        {
+          "path": "grid-touch-c3-root-visual/base9-first-phone-touch.png",
+          "sha256": "67a3d4639a19a8bde3892c8eaa3c524d34310c5fdfd081bb5a44572bfae2f0f7"
+        }
+      ],
+      "viewports": ["1440x1000", "390x844"],
+      "observed": "Native Tooltip stays inside the chart; selected range,154 summary and six detail rows are visible. Phone table keeps its native internal horizontal scroll. No official pixel-match claim."
+    }
+  },
+  "licensesAndBrand": "Existing Bricklane demo data, free ReUI MIT, font OFL and third-party declarations retained; actual original package includes the local Inter font and required notices.",
+  "publication": {
+    "committed": false,
+    "pushed": false,
+    "newExactCommitCI": "pending",
+    "newExactCommitPages": "pending",
+    "parentEb7Run": 41416990328,
+    "parentEb7Status": "in_progress npm test at preflight",
+    "editor129Run": 41407711199,
+    "lastConfirmedPagesCommit": "129c17df6e2cb613eb2b92add23601efbb9a797b",
+    "lastConfirmedPagesDeployment": 7488438633,
+    "url": "https://caovc.github.io/reui-pro-block/",
+    "editor129Status": "completed/success",
+    "lastConfirmedPagesSuccessUTC": "2026-11-02T09:19:35Z",
+    "lastConfirmedFullCI": {
+      "run": 41407711199,
+      "commit": "129c17df6e2cb613eb2b92add23601efbb9a797b",
+      "passed": 2006,
+      "failed": 0,
+      "browserMinutes": 53.7,
+      "decodedJobLogSHA256": "fbaf63369af176e0f87b9524c41bf38531201d009e744b2ad5b96585713e1fea"
+    },
+    "preflightCheckedUTC": "2026-11-02T09:33:46.144871+00:00"
+  },
+  "remainingLimits": [
+    "Native vertical pan/multitouch and6h/72h touch scales were not added to this acceptance.",
+    "Future interactive SVG controls or a Brush require reviewing the drawing-only hit-test policy.",
+    "Account integration and advanced editor workflows remain separate work.",
+    "Metadata coverage and scoped native tests do not certify all673 blocks as pixel-identical."
+  ]
+}
