@@ -3,6 +3,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { resolve } from "node:path";
 import { strFromU8, unzipSync } from "fflate";
+import { openSource as openNativeSource, type SourceTarget } from "./fidelity-next-source.helpers";
 
 // Actual implementation, clipboard, single-file and original starter-byte contracts.
 // Byte oracles belong to the same production build used by this test.
@@ -51,30 +52,44 @@ const requiredSources = [
 // from a filename. The permitted font must also equal the OFL-licensed local bytes.
 const permittedStandaloneMedia = ["src/blocks/assets/inter-latin-variable.woff2"];
 
+const retailTarget: SourceTarget = {
+  id: "data-grid-advanced-15",
+  kind: "block",
+  name: "Retail P&L Outlook",
+  route: "./#/block/data-grid/advanced/data-grid-advanced-15",
+  defaultPath: leaf,
+  selectedPath: leaf,
+  requiredFiles: requiredSources,
+};
+
 function currentFile(filename: string) {
   return readFile(resolve(process.cwd(), filename));
 }
 
-async function openSource(page: Page) {
-  // One actual caller route; keep independent from the preview iframe route.
-  await page.goto("./#/block/data-grid/advanced/data-grid-advanced-15");
-  await page.getByRole("button", { name: "View code", exact: true }).click();
-  const dialog = page.getByRole("dialog");
+async function openSource(page: Page, purpose: "file" | "archive" = "file") {
+  // Reuse the real native picker readiness for files. Archive readiness belongs
+  // to the actual Download action; preserve original UI assertions after saving.
+  const { dialog } = await openNativeSource(page, retailTarget, purpose);
   const sourceRegion = dialog.getByRole("region", { name: "Block source", exact: true });
-  await expect(sourceRegion).toBeVisible();
-  await expect(dialog.getByRole("combobox", { name: "Source file", exact: true })).toHaveText(leaf);
-  return { dialog, sourceCode: sourceRegion.locator(".source-code") };
+  if (purpose === "file") {
+    await expect(sourceRegion).toBeVisible();
+    await expect(dialog.getByRole("combobox", { name: "Source file", exact: true })).toHaveText(
+      leaf,
+    );
+  }
+  return { dialog, sourceRegion, sourceCode: sourceRegion.locator(".source-code") };
 }
 
-test("Advanced15 defaults to its implementation and preserves all six viewer, Copy and single-file sources", async ({
-  page,
-  context,
-}) => {
-  await context.grantPermissions(["clipboard-read", "clipboard-write"]);
-  const { dialog, sourceCode } = await openSource(page);
-  const selector = dialog.getByRole("combobox", { name: "Source file", exact: true });
-
-  for (const filename of ownedSources) {
+// Each file keeps the original complete oracle in an independent30s case.
+// The former six-file serial aggregate is no longer executed.
+for (const filename of ownedSources) {
+  test(`Advanced15 preserves viewer, Copy and single-file bytes: ${filename}`, async ({
+    page,
+    context,
+  }) => {
+    await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+    const { dialog, sourceCode } = await openSource(page);
+    const selector = dialog.getByRole("combobox", { name: "Source file", exact: true });
     const expected = await currentFile(filename);
     if (filename !== leaf) {
       await selector.click();
@@ -108,8 +123,8 @@ test("Advanced15 defaults to its implementation and preserves all six viewer, Co
     const downloadedPath = await download.path();
     expect(downloadedPath).not.toBeNull();
     expect(await readFile(downloadedPath!), filename).toEqual(expected);
-  }
-});
+  });
+}
 
 test("Advanced15 actual starter contains all six implementation files, real free dependencies and notices", async ({
   page,
@@ -118,13 +133,15 @@ test("Advanced15 actual starter contains all six implementation files, real free
     requiredSources.map(async (filename) => [filename, await currentFile(filename)] as const),
   );
   const expectedPackage = JSON.parse((await currentFile("package.json")).toString("utf8"));
-  const { dialog } = await openSource(page);
+  const { dialog, sourceRegion } = await openSource(page, "archive");
   const pending = page.waitForEvent("download");
   await dialog.getByRole("button", { name: "Download starter", exact: true }).click();
   const download = await pending;
   expect(download.suggestedFilename()).toBe("data-grid-advanced-15.zip");
   const savedArchivePath = info.outputPath("advanced15-starter.zip");
   await download.saveAs(savedArchivePath);
+  await expect(sourceRegion).toBeVisible();
+  await expect(dialog.getByRole("combobox", { name: "Source file", exact: true })).toHaveText(leaf);
   const downloadedPath = await download.path();
   expect(downloadedPath).not.toBeNull();
 

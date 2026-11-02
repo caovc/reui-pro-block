@@ -41,6 +41,8 @@ API Request Logs now keeps first, reverse and cancelled touch drags on a stable 
 
 Surge and Manifest now share the existing project Account view, composed with official free ReUI Frame/upload and supporting native controls, with Profile/Preferences/Security navigation, actual photo upload, theme, local sign-out/default-view handoff and tooltip/motion preferences. Both unchanged downloaded projects passed original strict builds. Their first native run was33 passed/1 failed; after fixing native mount readiness in the test, the necessary original case passed, completing incremental coverage of34 distinct scenarios. See the [Account acceptance record](docs/commerce-account-release-2026-11-02.json) for source/download verification, retained failures and four still-unconsumed preferences. The preceding chart commit `0b57980` passed all 2017 CI cases and exact Pages deployment; this new Account milestone awaits its own CI and deployment.
 
+The first Account full CI passed2089 of2093 cases, including all76 new Account cases; Pages was skipped after four older source/layout checks failed. Retail source verification now uses independent complete file lifecycles and natural download readiness. Mobile layout checks follow the intentional merchant no-close header while retaining existing navigation/focus behavior. All nine necessary cases passed on the unchanged production build. See the [CI source/layout correction record](docs/ci-account-source-layout-release-2026-11-02.json); a new exact-commit full CI and Pages deployment remain pending.
+
 ## Development
 
 Requires Node.js 24+ and npm.

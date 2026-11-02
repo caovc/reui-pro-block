@@ -1,0 +1,115 @@
+{
+  "recordCreatedUTC": "2026-11-02T13:24:57.143690+00:00",
+  "baseCommit": "9133dd10bc72449d3d3390b62199bbc4deb95d4d",
+  "goalComplete": false,
+  "scope": "Test-only source workflow readiness and deliberate mobile Sidebar header contract correction.",
+  "runtimeSourceChanged": false,
+  "dependenciesConfigurationOrSourceTargetsChanged": false,
+  "actualFreeComponents": "No component implementation is changed. Existing free ReUI Sidebar and supporting native source-view controls remain; this milestone changes two QA files only.",
+  "originalFullCI": {
+    "run": 41439292595,
+    "buildJob": 125256820317,
+    "passed": 2089,
+    "failed": 4,
+    "total": 2093,
+    "browserMinutes": 59.5,
+    "all76NewAccountCasesPassed": true,
+    "Pages": "skipped",
+    "decodedCompleteLogSHA256": "d52605c4d0cc4bf7865c7155b4763f0594e2e0c77ba3302b652e3390652a9955",
+    "originalArtifact": {
+      "artifactID": 13141694509,
+      "run": 41439292595,
+      "commit": "9133dd10bc72449d3d3390b62199bbc4deb95d4d",
+      "bytes": 107873316,
+      "sha256": "f12f63782a117c2e1679855c660fde8a34bc6dc046ac4ec19a05192934449759",
+      "members": 780,
+      "crcAndPathsSafe": true,
+      "traces": [
+        "grid-advanced-retail-sourc-4141c-ee-dependencies-and-notices/trace.zip",
+        "templates-business-layout--3a99c-ses-after-actual-navigation/trace.zip",
+        "grid-advanced-retail-sourc-5e534-opy-and-single-file-sources/trace.zip",
+        "templates-business-layout--b5799-ses-after-actual-navigation/trace.zip"
+      ]
+    }
+  },
+  "originalFindings": {
+    "retailSixFileAggregate": "The first five view/Copy/file lifecycles completed. The sixth panels implementation view passed around29.468s, Copy completed29.673s, then the original30s total deadline expired during its clipboard poll. Recorded clipboard bytes match the expected28158-byte panels source, but the outer poll is not relabeled passed and its final download was not reached.",
+    "retailArchive": "The old opening helper required Block source within5s before downloading. The before snapshot still showed Loading source; the failed-call after snapshot already contained the real region and Download starter. No precise first-ready instant or unique CPU cause is inferred.",
+    "commerceMobile": "The old layout cases expected one Close button for Surge and Manifest. Their intentional merchant header now uses the existing native no-close API, with56px header, visible Search, no brand in the Sheet and75vw width. This is an expected-contract update, not a product close-button regression."
+  },
+  "testChanges": {
+    "retailSource": {
+      "beforeSHA256": "342545fbee5c056c63c4ab464b464cb6066555f0febf76940402bc050fa53d1b",
+      "afterSHA256": "fbcb384b5b1edebf596edae40b1f6b82d5c95b459923c8313a9e53e11da6d9bf",
+      "scope": "Six independent real default/view/Copy/single-file lifecycles plus one actual ZIP case replace the old two-case file. Original per-file statements and matchers, all43 ZIP statements/30 matchers and source-proof/archive outputs remain. ZIP uses its actual download purpose, retaining region/default checks after the original ZIP is saved. Existing native picker/Escape readiness is reused; shared helpers remain unchanged.",
+      "oldSharedThirtySecondSerialAggregateStillExecuted": false,
+      "caseCountBefore": 2,
+      "caseCountAfter": 7,
+      "manifestSHA256": "6e153a1b7e5ba7fda43442bb5ac166d787582f2bdd594e2c951915b6e7155cd5"
+    },
+    "commerceLayout": {
+      "beforeSHA256": "0db15b4058152d38d9e6f156c7f5a12db1e1630b4a58a2c4442f18456837d095",
+      "afterSHA256": "58d531b39148fa2782a5380094714e4c9b903ffdbe06d990d75956f1faa24d4a",
+      "scope": "Only Commerce Close1 becomes intentional0, with positive header/Search and absent-brand guards. Miro0 and other1 remain. Existing navigation, scroll, body, focus and Escape assertions retain their original behavior.",
+      "manifestSHA256": "04db5175139dbd4348ec2aa70f315623ea250a7a6bcb121a7b2fce6282093fe6"
+    }
+  },
+  "localAcceptance": {
+    "necessaryNative9": {
+      "command": [
+        "npx",
+        "playwright",
+        "test",
+        "tests/grid-advanced-retail-source.spec.ts",
+        "tests/templates-business-layout.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--output",
+        "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/ci913-necessary9-first-once/artifacts",
+        "--reporter=json",
+        "--grep",
+        "Advanced15|(?:surge|manifest) mobile sidebar keeps a scrollable body and closes after actual navigation$",
+        "--workers=3",
+        "--trace=on"
+      ],
+      "url": "http://127.0.0.1:55117/",
+      "exit": 0,
+      "seconds": 14.537468499998795,
+      "stats": {
+        "startTime": "2026-11-02T13:20:56.263Z",
+        "duration": 14158.826,
+        "expected": 9,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "b4823b11eb3145208098061f268028f6a6ae0201e6d9cad97e303fc9f62f1902"
+    },
+    "reportSHA256": "b4823b11eb3145208098061f268028f6a6ae0201e6d9cad97e303fc9f62f1902",
+    "workers": 3,
+    "retries": 0,
+    "caseMs": 30000,
+    "expectMs": 5000,
+    "productionSourcesExact": 1149,
+    "productionDistExact": 657,
+    "productOrTestFocusStyleInjectionAdded": false,
+    "sourceHelpersModified": false,
+    "noSleepDeadlineRetryOrSkipOverride": true,
+    "browser": "Browser plugin not available; existing Playwright Chromium against the original production build."
+  },
+  "publicationAtPreflight": {
+    "committed": false,
+    "pushed": false,
+    "newExactCommitCI": "pending",
+    "newExactCommitPages": "pending",
+    "lastConfirmedPagesCommit": "0b5798076324176a8955d68090928f27447a4459",
+    "lastConfirmedPagesDeployment": 7490288667,
+    "url": "https://caovc.github.io/reui-pro-block/"
+  },
+  "remainingLimits": [
+    "The local General navigation still closes the mobile Sidebar; the observed official Surge reference kept it open. This batch preserves the existing local navigation contract and does not claim official interaction identity.",
+    "No final full2098 suite result is inferred from the necessary9 run.",
+    "Wiki table fidelity, Retail Sheet opener focus and Cohort/Pulse free-component migrations remain separate unpublished work.",
+    "The overall catalog fidelity goal is not complete."
+  ]
+}

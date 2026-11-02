@@ -77,9 +77,20 @@ for (const [id, expanded, compact] of [
     await trigger.click();
     const drawer = page.locator(".bt-layout-mobile");
     await expect(drawer).toBeVisible();
+    const commerce = id === "surge" || id === "manifest";
     await expect(drawer.getByRole("button", { name: "Close", exact: true })).toHaveCount(
-      id === "miro" ? 0 : 1,
+      id === "miro" || commerce ? 0 : 1,
     );
+    if (commerce) {
+      // The reference header is Search-only; the native Sidebar API omits its hidden Close.
+      const header = drawer.locator('[data-slot="sidebar-header"]');
+      await expect(header).toHaveCSS("height", "56px");
+      await expect(
+        header.getByRole("button", { name: "Search navigation", exact: true }),
+      ).toBeVisible();
+      await expect(drawer.locator(".bt-brand")).toHaveCount(0);
+      await expect(drawer.locator('[data-slot="sheet-close"]')).toHaveCount(0);
+    }
     await expect(drawer.locator(':scope > div > [data-slot="sidebar-content"]')).toHaveCSS(
       "overflow-y",
       "auto",
