@@ -4,6 +4,7 @@ import { useState, type ReactNode } from "react";
 import { Ellipsis, Plus, Upload, ShieldCheck } from "lucide-react";
 import { GridFrame, NumericField, TinyAvatar } from "@/blocks/data/grid-advanced-shared";
 import { DomainRecordGrid } from "@/blocks/data/grid-advanced-model-grid";
+import { SettingsRow } from "@/blocks/application/dialog-variants/workspace/settings-panel";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -173,13 +174,9 @@ function SettingRow({
   children: ReactNode;
 }) {
   return (
-    <div className="bt-setting-row">
-      <div>
-        <strong>{label}</strong>
-        {description && <p>{description}</p>}
-      </div>
-      <div>{children}</div>
-    </div>
+    <SettingsRow title={label} description={description} className="bt-setting-row">
+      {children}
+    </SettingsRow>
   );
 }
 function EditableList({

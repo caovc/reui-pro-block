@@ -124,6 +124,15 @@ const configs = [
       "src/templates/business/verve-settings-plan-model.ts",
     ],
   },
+  {
+    id: "cohort",
+    name: "Cohort",
+    defaultPath: "src/templates/business/cohort.tsx",
+    runtimePaths: [
+      "src/templates/business/cohort-settings.tsx",
+      "src/templates/business/business.css",
+    ],
+  },
 ] as const;
 
 function hash(bytes: Uint8Array) {

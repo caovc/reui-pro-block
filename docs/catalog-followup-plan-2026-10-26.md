@@ -737,3 +737,9 @@ All necessary9 cases passed together with3workers and zero retries against the u
 Implemented the dedicated four-control Wiki table toolbar using the actual free Checkbox/Field composition and existing ButtonGroup/DropdownMenu, backed by native Tiptap table commands, selection and history. Corrected initial toolbar placement and portalled menu anchor lifetime with native public APIs. Final desktop/phone necessary5 and Source2 pass; the original 415-member download passes strict build plus 11 necessary native cases without entry/config repair. Original 58 oracles remain; this is not a full old-suite rerun.
 
 The [release evidence](editor-wiki-table-release-2026-11-02.json) records component provenance, exact source/QA hashes, preserved Account and CI corrections, reference limitations, historical compatibility scope, and remaining advanced editor/gutter work. Commit, push, full CI and Pages must be confirmed separately.
+
+## Cohort SettingsRow reuse — 2026-11-02
+
+Replaced duplicate Cohort row composition with the existing project SettingsRow built from Field primitives. Preserved the local model, 17 compound callers and 20 other declarations, scoped desktop/phone styles, all Wiki/Account/CI changes and implementation source defaults. Site native2 and Source3 pass; the actual 284-member download passes normal installation, original strict build and native2 with unchanged input members/dist and both preview ports closed.
+
+This is a reuse and behavior-preservation milestone. Official Organisation inspection found fiscal-day combobox and weekday-checkbox differences still requiring actual free-component migration; no full official interaction or visual identity is claimed. See [Cohort evidence](cohort-settings-row-release-2026-11-02.json). Publication and Pages remain separate gates.

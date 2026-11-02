@@ -1,0 +1,156 @@
+{
+  "date": "2026-11-02",
+  "milestone": "Cohort SettingsRow reuse with preserved local behavior",
+  "baseCommit": "8602a0c2ace0a99c3e59d108a1e1188d96fe8a5f",
+  "goalComplete": false,
+  "officialControlFidelityComplete": false,
+  "actualReuse": {
+    "component": "SettingsRow from src/blocks/application/dialog-variants/workspace/settings-panel.tsx",
+    "origin": "Existing project wrapper composed from Field and FieldContent primitives; not an official complete ReUI registry SettingsRow.",
+    "retainedFreeImplementations": ["ReUI Frame", "Existing free form/select/upload components"],
+    "correction": "The Cohort row wrapper now delegates to the existing shared SettingsRow instead of duplicating its row layout.",
+    "customGap": "The section save/discard model and Cohort-specific responsive composition remain project demo behavior."
+  },
+  "scope": {
+    "runtimeFiles": 2,
+    "formalQAFiles": 2,
+    "owned4": [
+      {
+        "path": "src/templates/business/cohort-settings.tsx",
+        "afterSHA256": "1c9110825dd30f618d0a30a86a2482f4aec9ae864f0da1ca81d952aeec0079c4"
+      },
+      {
+        "path": "src/templates/business/business.css",
+        "afterSHA256": "d412962adfddc15358e29b3a28b510b5cbb702552ba42713b0bec9ebf2c54726"
+      },
+      {
+        "path": "tests/cohort-setting-row-native.spec.ts",
+        "afterSHA256": "0c0f29011a489a7c6e1bba4ec31ba2738cb6776d93082ff3db3f281771cd696a"
+      },
+      {
+        "path": "tests/templates-business-settings-source.spec.ts",
+        "afterSHA256": "1670656c0cc3b23bc164777aa61954e9f7126ad8f6527f2f9daaa4ad29481e70"
+      }
+    ],
+    "sourceFiles": 1149,
+    "otherTopLevelStatementsPreserved": 20,
+    "compoundCallersPreserved": 17,
+    "sourceTargetsChanged": false,
+    "WikiAccountAndCICorrectionsPreserved": true,
+    "protectedCollaborationSettingsCSSChanged": false,
+    "mediaAdded": false
+  },
+  "validation": {
+    "normal-install.json": {
+      "exit": 0,
+      "seconds": 7.040106624997861,
+      "logSHA256": "ff36a7e15c77a15ace2b1747e8c903ed58607afd14cc35ede052897d66bd2a97"
+    },
+    "owned-format-check.json": {
+      "exit": 0,
+      "seconds": 0.6193374580034288,
+      "logSHA256": "009354f51fcea1e11a793440d47b752e7cb831dc9d9c66912ab1e8438bd093bd"
+    },
+    "owned-lint.json": {
+      "exit": 0,
+      "seconds": 0.5772038329960196,
+      "logSHA256": "cfaf03c0ecf00e0b0a4a248cf478926108b9517d2901f53cedd5e0b64fef57b7"
+    },
+    "original-strict-build.json": {
+      "exit": 0,
+      "seconds": 23.697770917002345,
+      "logSHA256": "dc1fdb297ef2c3e2889b14463da9da4c197d947fbebb4286db3d01ad81182dcd"
+    },
+    "native2-first-once/receipt.json": {
+      "exit": 0,
+      "seconds": 5.278746625001077,
+      "stats": {
+        "startTime": "2026-11-02T15:03:53.397Z",
+        "duration": 4910.617,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "3be815b1f0bcfd1dd0da9374ce9ab76bbcbf656edafb501dc67cd58ec4342a0c"
+    },
+    "source3-first-once/receipt.json": {
+      "exit": 0,
+      "seconds": 10.887458375000278,
+      "stats": {
+        "startTime": "2026-11-02T15:06:59.541Z",
+        "duration": 10515.378,
+        "expected": 3,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "363c666a425c74cad44e2ab767dac95c1615dc1f9742d735119ba1748927b937"
+    },
+    "received-normal-install.json": {
+      "exit": 0,
+      "seconds": 54.57236904099409,
+      "logSHA256": "bea3a0444dfc0e58f464fbea6d756999256a08ed1d1b1fb9e7440c93dd77c977"
+    },
+    "received-original-strict-build.json": {
+      "exit": 0,
+      "seconds": 6.372740541002713,
+      "logSHA256": "48ee7103f60a20c8d29f8a51016e37c5f963d718d25b9d36372be4c2d907c431"
+    },
+    "received-native2-first-once/receipt.json": {
+      "exit": 0,
+      "seconds": 4.859801833998063,
+      "stats": {
+        "startTime": "2026-11-02T15:13:32.066Z",
+        "duration": 4334.075000000001,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "530fec9a8727cebf0c337d5f535434a03be31b86585281ef22bb8593da775930"
+    }
+  },
+  "actualOriginalDownload": {
+    "filename": "cohort-original-project.zip",
+    "sha256": "844abb95e605106fe534ff7d8ab374de8a6b67bdcbe5a5f048d62cfc2703c974",
+    "members": 284,
+    "dependencies": "Normal npm install in the received project; no shared node_modules link.",
+    "originalSourceEntryPackageConfigRepaired": false,
+    "all284OriginalMembersAndDistExactAfterNative": true,
+    "siteSourceDistPublicExactAfterNative": true,
+    "bothOwnedPreviewPortsClosed": true,
+    "MITOFLAndExistingAttributionsRetained": true
+  },
+  "officialReference": {
+    "url": "https://cohort-hr.reui.io/settings/organisation",
+    "desktopCUAInspected": true,
+    "referenceAssetsDistributed": false,
+    "knownDifferences": [
+      "Official fiscal day uses a combobox; this migration retains the local NumericField.",
+      "Official weekdays expose checkbox semantics; the retained local buttons use aria-pressed."
+    ],
+    "phoneComparison": "Separate reference evidence is still being completed; no complete official geometry or interaction identity is claimed."
+  },
+  "testScope": {
+    "nativeBehavior": "Desktop and phone saved/discarded fiscal fields, native local weekday activation, working-week persistence and navigation.",
+    "source3": "Actual settings implementation and CSS view/copy/single-file bytes plus actual runnable original ZIP.",
+    "zeroTestDiscoveryAttempt": "A CLI grep incorrectly anchored the filename-prefixed full title. The original discovery log remains; correcting only that selector positively discovered exactly three cases, all executed and passed.",
+    "budgetsRetriesOrAssertionsWeakened": false,
+    "fullSuiteRerun": false
+  },
+  "remaining": [
+    "Migrate fiscal-day and weekday controls using the actual official free component implementations after their observed interactions are recorded.",
+    "Other Cohort pages and the complete recreation remain unfinished.",
+    "Full CI and this milestone Pages deployment must be confirmed separately."
+  ],
+  "publicationSnapshot": {
+    "stage": "Local gates complete; recorded before normal-hook milestone publication.",
+    "committed": false,
+    "pushed": false,
+    "CI": "Pending milestone commit",
+    "Pages": "Not yet confirmed for this milestone",
+    "lastVerifiedLiveCommit": "b3e40fed1f7f814afcab2f1dbc2a64c2c68d0bdb",
+    "lastVerifiedLiveFullBrowserPassed": 2098
+  }
+}

@@ -88,3 +88,5 @@ The GitHub Actions workflow builds `dist` and publishes through GitHub Pages. Th
 Independent code is MIT licensed. Retain the third-party notices when redistributing.
 
 Wiki table controls now use actual free ReUI compositions with native Tiptap table selection, header/delete commands and Undo. Final desktop/phone interactions, source view/copy/download and the untouched 415-file runnable ZIP passed the necessary local checks; this does not mark the full recreation complete. See the [Wiki table release evidence](docs/editor-wiki-table-release-2026-11-02.json). Full CI and Pages remain separate release gates.
+
+Cohort settings now reuse the existing Field-based project SettingsRow while preserving local save/discard and responsive behavior. Necessary site2, Source3 and the untouched 284-file original project strict/native2 checks pass. Official fiscal-day and weekday controls still differ and are recorded as remaining work in the [Cohort row release evidence](docs/cohort-settings-row-release-2026-11-02.json).

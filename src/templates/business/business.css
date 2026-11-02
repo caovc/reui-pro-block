@@ -4450,6 +4450,32 @@
   font-size: 12px;
   margin-top: 2px;
 }
+/* Keep Cohort compound rows on the existing layout while reusing Pro SettingsRow. */
+.bt-cohort-settings .bt-setting-row.workspace-settings-row {
+  grid-template-columns: 1fr 1.1fr;
+  align-items: center;
+  gap: 25px;
+}
+.bt-cohort-settings .bt-setting-row > [data-slot="field-content"] {
+  width: auto;
+  gap: 0;
+  line-height: inherit;
+}
+.bt-cohort-settings .bt-setting-row > [data-slot="field-content"] > [data-slot="field-label"] {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: inherit;
+}
+.bt-cohort-settings
+  .bt-setting-row
+  > [data-slot="field-content"]
+  > [data-slot="field-description"] {
+  line-height: inherit;
+}
+.bt-cohort-settings .bt-setting-row > .workspace-settings-control {
+  display: block;
+  width: auto;
+}
 .bt-setting-save {
   display: flex;
   justify-content: space-between;
@@ -4524,6 +4550,10 @@
 }
 @media (max-width: 767px) {
   .bt-setting-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .bt-cohort-settings .bt-setting-row.workspace-settings-row {
     grid-template-columns: 1fr;
     gap: 10px;
   }
