@@ -1,4 +1,5 @@
 import { Extension, Mark, Node, mergeAttributes, type Editor } from "@tiptap/core";
+import { RichTextTaskItem } from "./rich-text-task-item";
 import { ContentsView } from "./rich-text-contents";
 import { ReactNodeViewRenderer } from "@tiptap/react";
 import TextAlign from "@tiptap/extension-text-align";
@@ -71,7 +72,16 @@ export function editorExtensions() {
     Contents,
     Highlight.configure({ multicolor: true }),
     TaskList,
-    TaskItem.configure({ nested: true }),
+    TaskItem.extend({
+      addNodeView: () =>
+        ReactNodeViewRenderer(RichTextTaskItem, {
+          as: "li",
+          attrs: ({ node }) => ({
+            "data-type": "taskItem",
+            "data-checked": String(node.attrs.checked),
+          }),
+        }),
+    }).configure({ nested: true }),
     Mention.configure({
       HTMLAttributes: { class: "document-mention" },
       renderText: ({ node }) => `@${node.attrs.label ?? node.attrs.id}`,

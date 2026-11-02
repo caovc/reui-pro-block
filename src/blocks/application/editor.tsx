@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createInsertSuggestions, type InsertSuggestion } from "./rich-text-suggestion";
+import { Frame, FramePanel, FrameHeader, FrameFooter } from "@/components/reui/frame";
+import { RichTextToolbar, RichTextShortcuts } from "./rich-text-toolbar";
 import { Command, CommandList, CommandItem, CommandEmpty } from "@/components/ui/command";
 import { RichTextBlockActions } from "./rich-text-block-actions";
 import { Scrollspy } from "@/components/reui/scrollspy";
@@ -855,9 +857,14 @@ export default function RichEditorBlock({
     URL.revokeObjectURL(anchor.href);
     toast.success("HTML document downloaded");
   }
-  const plainText = documentHtml.replace(/<[^>]*>/g, " ").replace(/&[^;]+;/g, " ");
+  const plainText = engine?.getText({ blockSeparator: "\n" }) ?? "";
   const words = plainText.trim().split(/\s+/).filter(Boolean).length;
   const showSidebar = kind > 1;
+  const documentFrame = kind === 1 && !compact;
+  const EditorFrame = documentFrame ? Frame : "div";
+  const EditorHeader = documentFrame ? FrameHeader : "header";
+  const EditorSurface = documentFrame ? FramePanel : "div";
+  const EditorFooter = documentFrame ? FrameFooter : "footer";
   function editTable(action: "row" | "column" | "delete-row" | "delete-column" | "delete-table") {
     if (!engine || !editable) return;
     restoreSelection();
@@ -925,7 +932,8 @@ export default function RichEditorBlock({
     };
   });
   return (
-    <div
+    <EditorFrame
+      {...(documentFrame ? { dense: true } : {})}
       className="reui-reference reui-editor flex min-h-[730px] flex-col bg-background"
       data-compact={compact}
       data-readonly={!editable}
@@ -961,14 +969,20 @@ export default function RichEditorBlock({
           </Command>
         </div>
       )}
-      <header className="flex flex-wrap items-center justify-between gap-3 border-b px-5 py-4">
+      <EditorHeader className="flex flex-row flex-wrap items-center justify-between gap-3 border-b px-5 py-4">
         <div className="flex items-center gap-3">
           <FileText className="size-4 text-muted-foreground" />
           <div>
             <h2 className="text-sm font-semibold">
-              {documentTitle ?? (kind === 2 ? "Product design handbook" : block.name)}
+              {documentTitle ??
+                (kind === 2
+                  ? "Product design handbook"
+                  : kind === 1
+                    ? "Project overview"
+                    : block.name)}
             </h2>
             <p className="mt-1 text-[10px] text-muted-foreground">
+              {documentFrame && "Project brief · Edited locally · "}
               {storageError
                 ? "Storage unavailable · keep this tab open"
                 : isSaved
@@ -1005,7 +1019,7 @@ export default function RichEditorBlock({
               </Button>
             </>
           )}
-          {(kind === 2 || kind === 4) && (
+          {(kind === 1 || kind === 2 || kind === 4) && (
             <div className="hidden items-center gap-1.5 sm:flex">
               {["OR", "PB", "AM", "LS"].map((n) => (
                 <Avatar className="size-7" key={n}>
@@ -1014,36 +1028,65 @@ export default function RichEditorBlock({
               ))}
             </div>
           )}
-          <Button className="editor-export" variant="outline" size="sm" onClick={download}>
-            <ArrowDownToLine />
-            Export
-          </Button>
-          <Button
-            className="editor-save"
-            size="sm"
-            onClick={() => {
-              setIsSaved(true);
-              toast.success("Document saved in this preview");
-            }}
-          >
-            Save document
-          </Button>
+          {!documentFrame && (
+            <Button className="editor-export" variant="outline" size="sm" onClick={download}>
+              <ArrowDownToLine />
+              Export
+            </Button>
+          )}
+          {!documentFrame && (
+            <Button
+              className="editor-save"
+              size="sm"
+              onClick={() => {
+                setIsSaved(true);
+                toast.success("Document saved in this preview");
+              }}
+            >
+              Save document
+            </Button>
+          )}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button size="icon-sm" variant="ghost" aria-label="Page actions">
+              <Button
+                size="icon-sm"
+                variant="ghost"
+                aria-label={documentFrame ? "Document actions" : "Page actions"}
+              >
                 <MoreHorizontal />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuCheckboxItem checked={fullWidth} onCheckedChange={setFullWidth}>
-                Full Width
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem checked={smallText} onCheckedChange={setSmallText}>
-                Small Text
-              </DropdownMenuCheckboxItem>
-              <DropdownMenuCheckboxItem checked={locked} onCheckedChange={setLocked}>
-                Lock Page
-              </DropdownMenuCheckboxItem>
+              {documentFrame && (
+                <>
+                  <DropdownMenuCheckboxItem
+                    checked={!locked}
+                    onCheckedChange={() => setLocked(false)}
+                  >
+                    Editing
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem
+                    checked={locked}
+                    onCheckedChange={() => setLocked(true)}
+                  >
+                    Viewing
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuSeparator />
+                </>
+              )}
+              {!documentFrame && (
+                <>
+                  <DropdownMenuCheckboxItem checked={fullWidth} onCheckedChange={setFullWidth}>
+                    Full Width
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem checked={smallText} onCheckedChange={setSmallText}>
+                    Small Text
+                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuCheckboxItem checked={locked} onCheckedChange={setLocked}>
+                    Lock Page
+                  </DropdownMenuCheckboxItem>
+                </>
+              )}
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onSelect={async () => {
@@ -1069,7 +1112,17 @@ export default function RichEditorBlock({
               >
                 Copy Text
               </DropdownMenuItem>
-              <DropdownMenuItem onSelect={download}>Export HTML</DropdownMenuItem>
+              {!documentFrame && (
+                <DropdownMenuItem onSelect={download}>Export HTML</DropdownMenuItem>
+              )}
+              {documentFrame && (
+                <DropdownMenuItem
+                  disabled={!editable}
+                  onSelect={() => engine?.chain().focus().clearContent().run()}
+                >
+                  Clear Document
+                </DropdownMenuItem>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
           {showSidebar && (
@@ -1095,237 +1148,271 @@ export default function RichEditorBlock({
             </Button>
           )}
         </div>
-      </header>
-      <div
-        className="editor-format-toolbar flex flex-wrap items-center gap-1 border-b bg-muted/20 px-3 py-2"
-        aria-label="Document formatting"
-      >
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          aria-label="Undo"
-          disabled={!canUndo}
-          onMouseDown={keepSelection}
-          onClick={undo}
-        >
-          <Undo2 />
-        </Button>
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          aria-label="Redo"
-          disabled={!canRedo}
-          onMouseDown={keepSelection}
-          onClick={redo}
-        >
-          <Redo2 />
-        </Button>
-        <Separator orientation="vertical" className="mx-1 h-5" />
-        <Select defaultValue="p" onValueChange={(v) => command("formatBlock", v)}>
-          <SelectTrigger aria-label="Text style" className="h-8 w-28 border-0 shadow-none">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectItem value="p">Paragraph</SelectItem>
-              <SelectItem value="h1">Heading 1</SelectItem>
-              <SelectItem value="h2">Heading 2</SelectItem>
-              <SelectItem value="h3">Heading 3</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-        <Separator orientation="vertical" className="mx-1 h-5" />
-        <FormatButton
-          label={"Bold"}
-          Icon={Bold}
-          onAction={() => command("bold")}
-          pressed={active.bold}
-        />
-        <FormatButton
-          label={"Italic"}
-          Icon={Italic}
-          onAction={() => command("italic")}
-          pressed={active.italic}
-        />
-        <FormatButton
-          label={"Underline"}
-          Icon={Underline}
-          onAction={() => command("underline")}
-          pressed={active.underline}
-        />
-        <Separator orientation="vertical" className="mx-1 h-5" />
-        <FormatButton
-          label={"Bullet list"}
-          Icon={List}
-          onAction={() => command("insertUnorderedList")}
-        />
-        <FormatButton
-          label={"Numbered list"}
-          Icon={ListOrdered}
-          onAction={() => command("insertOrderedList")}
-        />
-        <FormatButton
-          label={"Insert task list"}
-          Icon={CheckSquare}
-          onAction={() =>
-            insertHtml(
-              '<ul data-task-list="true"><li><input type="checkbox" contenteditable="false" aria-label="Complete task"> New task</li></ul><p><br></p>',
-            )
-          }
-        />
-        <Popover
-          open={linkOpen}
-          onOpenChange={(open) => {
-            if (open) {
-              saveSelection();
-              setLinkText(selectedText);
-            }
-            setLinkOpen(open);
-          }}
-        >
-          <PopoverTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon-sm"
-              aria-label="Insert link"
-              onMouseDown={keepSelection}
-            >
-              <Link />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-80">
-            <form className="flex flex-col gap-4" onSubmit={insertLink}>
-              <Field>
-                <FieldLabel htmlFor="editor-link-label">Link text</FieldLabel>
-                <Input
-                  id="editor-link-label"
-                  value={linkText}
-                  onChange={(e) => setLinkText(e.target.value)}
-                />
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="editor-link-url">URL</FieldLabel>
-                <Input
-                  id="editor-link-url"
-                  value={url}
-                  onChange={(e) => setUrl(e.target.value)}
-                  placeholder="https://example.com"
-                  required
-                />
-              </Field>
-              <Button size="sm" type="submit">
-                Insert link
-              </Button>
-            </form>
-          </PopoverContent>
-        </Popover>
-        <FormatButton
-          label={"Insert table"}
-          Icon={Table2}
-          onAction={() =>
-            insertHtml(
-              "<table><tbody><tr><th>Column 1</th><th>Column 2</th></tr><tr><td>Write here</td><td>Write here</td></tr></tbody></table><p><br></p>",
-            )
-          }
-        />
-        <>
-          <FormatButton
-            label="Strikethrough"
-            Icon={TypeIcon}
-            onAction={() => command("strikeThrough")}
-          />
-          <FormatButton
-            label="Insert quote"
-            Icon={Quote}
-            onAction={() => command("formatBlock", "blockquote")}
-          />
-          <FormatButton
-            label="Insert code block"
-            Icon={Code2}
-            onAction={() => insertHtml("<pre><code>// Add code</code></pre><p><br></p>")}
-          />
-          {(
-            [
-              ["Text color", textColor, setTextColor, "foreColor"],
-              ["Highlight color", highlightColor, setHighlightColor, "hiliteColor"],
-            ] as const
-          ).map(([label, value, setValue, action]) => (
-            <ColorPicker
-              key={label}
-              value={value}
-              onValueChange={(color) => {
-                if (color) {
-                  setValue(color);
-                  command(action, color);
-                }
-              }}
-            >
-              <ColorPickerTrigger aria-label={label} size="icon-sm" onMouseDown={keepSelection}>
-                <ColorPickerSwatch className="size-4 rounded" />
-              </ColorPickerTrigger>
-              <ColorPickerContent />
-            </ColorPicker>
-          ))}
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button size="sm" variant="ghost" onMouseDown={keepSelection}>
-                Table actions
+      </EditorHeader>
+      {!compact && kind !== 2 && engine ? (
+        <RichTextToolbar
+          editor={engine}
+          kind={kind}
+          linkOpen={linkOpen}
+          onLinkOpenChange={setLinkOpen}
+          trailing={
+            kind === 3 ? (
+              <Button
+                variant={suggesting ? "secondary" : "ghost"}
+                size="sm"
+                onClick={() => setSuggesting(!suggesting)}
+              >
+                {suggesting ? "Suggesting" : "Editing"}
                 <ChevronDown />
               </Button>
-            </PopoverTrigger>
-            <PopoverContent className="flex w-48 flex-col gap-1">
-              {(
-                [
-                  ["Add row", "row"],
-                  ["Add column", "column"],
-                  ["Delete row", "delete-row"],
-                  ["Delete column", "delete-column"],
-                  ["Delete table", "delete-table"],
-                ] as const
-              ).map(([label, action]) => (
-                <Button
-                  key={action}
-                  size="sm"
-                  variant="ghost"
-                  className="justify-start"
-                  onMouseDown={keepSelection}
-                  onClick={() => editTable(action)}
-                >
-                  {label}
-                </Button>
-              ))}
-            </PopoverContent>
-          </Popover>
-        </>
-        {kind === 3 && (
-          <>
-            <Separator orientation="vertical" className="mx-1 h-5" />
-            <Button
-              variant={suggesting ? "secondary" : "ghost"}
-              size="sm"
-              onClick={() => setSuggesting(!suggesting)}
-            >
-              {suggesting ? "Suggesting" : "Editing"}
-              <ChevronDown />
-            </Button>
-          </>
-        )}
-        {kind === 5 && (
+            ) : kind === 5 ? (
+              <Button
+                size="sm"
+                variant="ghost"
+                className="ml-auto"
+                onClick={() => {
+                  setPanel("assistant");
+                  runAssistant();
+                }}
+              >
+                <Sparkles />
+                Ask assistant
+              </Button>
+            ) : undefined
+          }
+        />
+      ) : (
+        <div
+          className="editor-format-toolbar flex flex-wrap items-center gap-1 border-b bg-muted/20 px-3 py-2"
+          aria-label="Document formatting"
+        >
           <Button
-            size="sm"
             variant="ghost"
-            className="ml-auto"
-            onClick={() => {
-              setPanel("assistant");
-              runAssistant();
+            size="icon-sm"
+            aria-label="Undo"
+            disabled={!canUndo}
+            onMouseDown={keepSelection}
+            onClick={undo}
+          >
+            <Undo2 />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            aria-label="Redo"
+            disabled={!canRedo}
+            onMouseDown={keepSelection}
+            onClick={redo}
+          >
+            <Redo2 />
+          </Button>
+          <Separator orientation="vertical" className="mx-1 h-5" />
+          <Select defaultValue="p" onValueChange={(v) => command("formatBlock", v)}>
+            <SelectTrigger aria-label="Text style" className="h-8 w-28 border-0 shadow-none">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem value="p">Paragraph</SelectItem>
+                <SelectItem value="h1">Heading 1</SelectItem>
+                <SelectItem value="h2">Heading 2</SelectItem>
+                <SelectItem value="h3">Heading 3</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          <Separator orientation="vertical" className="mx-1 h-5" />
+          <FormatButton
+            label={"Bold"}
+            Icon={Bold}
+            onAction={() => command("bold")}
+            pressed={active.bold}
+          />
+          <FormatButton
+            label={"Italic"}
+            Icon={Italic}
+            onAction={() => command("italic")}
+            pressed={active.italic}
+          />
+          <FormatButton
+            label={"Underline"}
+            Icon={Underline}
+            onAction={() => command("underline")}
+            pressed={active.underline}
+          />
+          <Separator orientation="vertical" className="mx-1 h-5" />
+          <FormatButton
+            label={"Bullet list"}
+            Icon={List}
+            onAction={() => command("insertUnorderedList")}
+          />
+          <FormatButton
+            label={"Numbered list"}
+            Icon={ListOrdered}
+            onAction={() => command("insertOrderedList")}
+          />
+          <FormatButton
+            label={"Insert task list"}
+            Icon={CheckSquare}
+            onAction={() =>
+              insertHtml(
+                '<ul data-task-list="true"><li><input type="checkbox" contenteditable="false" aria-label="Complete task"> New task</li></ul><p><br></p>',
+              )
+            }
+          />
+          <Popover
+            open={linkOpen}
+            onOpenChange={(open) => {
+              if (open) {
+                saveSelection();
+                setLinkText(selectedText);
+              }
+              setLinkOpen(open);
             }}
           >
-            <Sparkles />
-            Ask assistant
-          </Button>
-        )}
-      </div>
-      <div
+            <PopoverTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                aria-label="Insert link"
+                onMouseDown={keepSelection}
+              >
+                <Link />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-80">
+              <form className="flex flex-col gap-4" onSubmit={insertLink}>
+                <Field>
+                  <FieldLabel htmlFor="editor-link-label">Link text</FieldLabel>
+                  <Input
+                    id="editor-link-label"
+                    value={linkText}
+                    onChange={(e) => setLinkText(e.target.value)}
+                  />
+                </Field>
+                <Field>
+                  <FieldLabel htmlFor="editor-link-url">URL</FieldLabel>
+                  <Input
+                    id="editor-link-url"
+                    value={url}
+                    onChange={(e) => setUrl(e.target.value)}
+                    placeholder="https://example.com"
+                    required
+                  />
+                </Field>
+                <Button size="sm" type="submit">
+                  Insert link
+                </Button>
+              </form>
+            </PopoverContent>
+          </Popover>
+          <FormatButton
+            label={"Insert table"}
+            Icon={Table2}
+            onAction={() =>
+              insertHtml(
+                "<table><tbody><tr><th>Column 1</th><th>Column 2</th></tr><tr><td>Write here</td><td>Write here</td></tr></tbody></table><p><br></p>",
+              )
+            }
+          />
+          <>
+            <FormatButton
+              label="Strikethrough"
+              Icon={TypeIcon}
+              onAction={() => command("strikeThrough")}
+            />
+            <FormatButton
+              label="Insert quote"
+              Icon={Quote}
+              onAction={() => command("formatBlock", "blockquote")}
+            />
+            <FormatButton
+              label="Insert code block"
+              Icon={Code2}
+              onAction={() => insertHtml("<pre><code>// Add code</code></pre><p><br></p>")}
+            />
+            {(
+              [
+                ["Text color", textColor, setTextColor, "foreColor"],
+                ["Highlight color", highlightColor, setHighlightColor, "hiliteColor"],
+              ] as const
+            ).map(([label, value, setValue, action]) => (
+              <ColorPicker
+                key={label}
+                value={value}
+                onValueChange={(color) => {
+                  if (color) {
+                    setValue(color);
+                    command(action, color);
+                  }
+                }}
+              >
+                <ColorPickerTrigger aria-label={label} size="icon-sm" onMouseDown={keepSelection}>
+                  <ColorPickerSwatch className="size-4 rounded" />
+                </ColorPickerTrigger>
+                <ColorPickerContent />
+              </ColorPicker>
+            ))}
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button size="sm" variant="ghost" onMouseDown={keepSelection}>
+                  Table actions
+                  <ChevronDown />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="flex w-48 flex-col gap-1">
+                {(
+                  [
+                    ["Add row", "row"],
+                    ["Add column", "column"],
+                    ["Delete row", "delete-row"],
+                    ["Delete column", "delete-column"],
+                    ["Delete table", "delete-table"],
+                  ] as const
+                ).map(([label, action]) => (
+                  <Button
+                    key={action}
+                    size="sm"
+                    variant="ghost"
+                    className="justify-start"
+                    onMouseDown={keepSelection}
+                    onClick={() => editTable(action)}
+                  >
+                    {label}
+                  </Button>
+                ))}
+              </PopoverContent>
+            </Popover>
+          </>
+          {kind === 3 && (
+            <>
+              <Separator orientation="vertical" className="mx-1 h-5" />
+              <Button
+                variant={suggesting ? "secondary" : "ghost"}
+                size="sm"
+                onClick={() => setSuggesting(!suggesting)}
+              >
+                {suggesting ? "Suggesting" : "Editing"}
+                <ChevronDown />
+              </Button>
+            </>
+          )}
+          {kind === 5 && (
+            <Button
+              size="sm"
+              variant="ghost"
+              className="ml-auto"
+              onClick={() => {
+                setPanel("assistant");
+                runAssistant();
+              }}
+            >
+              <Sparkles />
+              Ask assistant
+            </Button>
+          )}
+        </div>
+      )}
+      <EditorSurface
         ref={scrollPane}
         className={`grid flex-1 ${showSidebar && panel ? "xl:grid-cols-[1fr_290px]" : ""}`}
       >
@@ -1388,7 +1475,7 @@ export default function RichEditorBlock({
             </div>
           )}
           <div className="mx-auto max-w-3xl rounded-lg border bg-background shadow-sm">
-            {engine && (
+            {engine && (kind !== 1 || compact) && (
               <RichTextBlockActions
                 editor={engine}
                 fluid={kind === 2 || compact}
@@ -1710,20 +1797,29 @@ export default function RichEditorBlock({
             )}
           </aside>
         )}
-      </div>
-      <footer className="flex flex-wrap items-center justify-between gap-2 border-t px-5 py-3 text-[10px] text-muted-foreground">
+      </EditorSurface>
+      <EditorFooter className="flex flex-row flex-wrap items-center justify-between gap-2 border-t px-5 py-3 text-[10px] text-muted-foreground">
         <span>
-          {words} words · {documentHtml.replace(/<[^>]*>/g, "").length} characters
+          {words.toLocaleString()} words
+          <span className={documentFrame ? "rich-text-character-count" : undefined}>
+            {" "}
+            · {plainText.length.toLocaleString()} characters
+          </span>
+          {documentFrame && ` · ${Math.max(1, Math.ceil(words / 200))} min read`}
         </span>
-        <span>
-          {kind === 3
-            ? `${revisions.length} changes to review`
-            : kind === 4
-              ? "Session-only collaboration demo"
-              : "Rich HTML document"}{" "}
-          · ⌘S to save
-        </span>
-      </footer>
-    </div>
+        {documentFrame ? (
+          <RichTextShortcuts />
+        ) : (
+          <span>
+            {kind === 3
+              ? `${revisions.length} changes to review`
+              : kind === 4
+                ? "Session-only collaboration demo"
+                : "Rich HTML document"}{" "}
+            · ⌘S to save
+          </span>
+        )}
+      </EditorFooter>
+    </EditorFrame>
   );
 }

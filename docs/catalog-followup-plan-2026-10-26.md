@@ -675,3 +675,13 @@ preserves the exact evidence and pending publication gates. A new commit, full C
 and actual Pages deployment still need their own confirmed outcomes.
 
 发布前补充：已核对 `4490ce2` 的 CI `41394076588` 与 Pages deployment `7485767968` 均成功，部署于上海时间 2026-11-02 14:27:53。本次测试修正的新提交仍须独立通过 CI 后才算部署完成。
+
+## 2026-11-02 Document editor foundation V5
+
+This milestone actually reuses the installed free ReUI Frame and ColorPicker, with native Tiptap task/history/link integration where the free registry has no complete editor engine. Document now has the bounded scrolling page, grouped toolbar, edit/view, clear, counts and shortcuts. Supporting source targets keep editor.tsx as default. Contract/Assistant existing controls and Mesh compact behavior remain.
+
+The first owner matrix was31pass/2fail, followed by two necessary passes after a hidden-subtitle fixture correction and the real duplicate-link-bubble fix. Combined V4 Source4 passed, but the actual unmodified Document export then passed strict build and4cases while its Undo case failed: fast typing/heading/alignment shared one native history group. V5 changes only two deliberate block-format callback boundaries using closeHistory before and after; native300ms and the original spec remain unchanged. No received project was repaired.
+
+Final V5 combined strict build passed, as did supporting-source view/copy/single download and two fresh ZIPs (necessary Source3 under3workers). Actual Document414members and Mesh307members passed original postinstall/strict builds, then Document5 and Mesh13 native checks; real200/loaded Mesh font1 is separate. Every original archive/member, entry/package/config, dist and generated-public byte was rechecked, and owned received previews closed in finally. Original failure evidence is retained. No final combined33 or finalfullSource4 pass is inferred.
+
+The [editor foundation record](editor-foundation-release-2026-11-02.json) lists exact evidence and remaining advanced3/4/5/Wiki/default-body gaps. Base449 complete CI and exact Pages are successful; base300 test-only run41406253214 was still running at this preflight. This new Editor commit must pass its own CI before deployment is claimed.

@@ -1,0 +1,297 @@
+{
+  "recordCreatedUTC": "2026-11-02T07:37:34.581078+00:00",
+  "baseCommit": "300b437e80cfba04a51d237859b4aa43cfe4825a",
+  "goalComplete": false,
+  "scope": "Document editor foundation, reusable native toolbar/task view and source exports. Advanced variants remain separate work.",
+  "actualFreeReUIReuse": {
+    "Frame": ["Frame", "FrameHeader", "FramePanel", "FrameFooter"],
+    "ColorPicker": ["ColorPickerContent", "ColorPickerSwatches"],
+    "retained": [
+      "Wiki Scrollspy",
+      "existing registry ButtonGroup, Checkbox, DropdownMenu, Popover and Tooltip"
+    ],
+    "correctedDuplicateImplementation": "Document now uses the installed free Frame composition rather than its previous nested generic card. Highlight presets use the actual free ColorPicker swatch behavior.",
+    "customGap": "The reviewed official free registry has no complete rich-text engine. Tiptap document bindings, native-history boundaries, link presentation and the TaskItem NodeView are custom integration of existing engine and free controls.",
+    "newRegistryAPIClaimed": false
+  },
+  "userVisibleChanges": [
+    "Bounded Document frame with internal body scrolling, single-row toolbar, edit/view and native clear.",
+    "Native heading, marks, alignment, lists, inline code, divider and highlight controls; live word/character/read-time footer and shortcuts.",
+    "Links retain selected text and marks; existing-link bubble is absent while the link popover is open.",
+    "Task checkbox uses the installed registry control inside the native TaskItem node view, including editable-state updates.",
+    "Deliberate block-type and alignment choices use native closeHistory boundaries, preserving prior typing and subsequent Undo/Redo.",
+    "Default source remains editor.tsx; supporting toolbar/task implementations are selectable and included in actual runnable downloads."
+  ],
+  "preservation": {
+    "nativeHistoryDelayMs": 300,
+    "timeoutOverridesAdded": false,
+    "retries": 0,
+    "forceSleepDOMStyleOrFocusInjection": false,
+    "originalV4FidelitySpecByteExactInV5": true,
+    "V5DeltaFromV4": "Only rich-text-toolbar.tsx: existing native closeHistory import/helper and two block-format callbacks. The other seven payload files are unchanged.",
+    "MeshCompactAndWikiToolbarPolicies": "Preserved; the V5 fix does not wrap compact-toolbar commands.",
+    "ContractAndAssistantExistingControls": "Restored during V2 review and retained; advanced workflows are not claimed complete.",
+    "existingCI59CorrectionTestsAndConfiguration": "Exact base300 bytes retained."
+  },
+  "originalFailuresRetained": {
+    "ownerFirst33": {
+      "passed": 31,
+      "failed": 2,
+      "fixes": "Hidden subtitle test target corrected after real formatting succeeded; duplicate existing-link bubble corrected in product. Necessary two cases subsequently passed.",
+      "handoffReceiptSHA256": "fc46ecf2d0c4d8e3d0a8556fbb465470a26112ac4f0ea721adfb529a642d89a0"
+    },
+    "firstActualDocumentV4": {
+      "receipt": "editor-received-combined-v4-document-native-once/receipt.json",
+      "receiptSHA256": "6b4d551fadb8e8d77724442c8a7a9d0c4a5ee2e0a7a3d83f41195316db9ee750",
+      "command": [
+        "npx",
+        "playwright",
+        "test",
+        "tests/editor-fidelity.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--output",
+        "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/editor-received-combined-v4-document-native-once/artifacts",
+        "--reporter=json",
+        "--grep-invert",
+        "contract toolbar retains editing and suggesting input modes|assistant toolbar retains the existing generate shortcut"
+      ],
+      "url": "http://127.0.0.1:50636/",
+      "exit": 1,
+      "seconds": 12.672785208998903,
+      "stats": {
+        "startTime": "2026-11-02T05:57:05.404Z",
+        "duration": 12261.969,
+        "expected": 4,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "reportSHA256": "26ae44973d1a2f0daafd9cd0e14b5880f5fa180d03086d0d569c37a9c4f8ac4b"
+    },
+    "firstActualDocumentV4Fact": "Original strict build passed, native four passed and one failed. Undo after typing, H2 and center alignment removed the heading text through one native history group. No received package was repaired. Mesh V4 was not executed.",
+    "V5Correction": "Native closeHistory zero-step transactions before and after deliberate heading/alignment choices; original delay, selection, test assertions and Undo/Redo handlers retained."
+  },
+  "localAcceptance": {
+    "combinedOriginalStrictBuild": {
+      "receipt": "editor-combined-v5-original-strict-build.json",
+      "receiptSHA256": "2bd014ffe2498ee84b6222ec1514f24825c08cc4f67c713977dd2eaf064b5801",
+      "command": ["npm", "run", "build"],
+      "cwd": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/editor-commerce-combined-v5",
+      "exit": 0,
+      "seconds": 33.788426750001236,
+      "logSHA256": "25ab798d74a3e2fb3ef466602bd765adcccf656d5169f31ec68782f83d780509"
+    },
+    "sourceV4First4": {
+      "receiptSHA256": "0e20e3b35c51fe57a2570400682cedd9dc0ac123c54b1c09b2b46ddd20d8ac2d",
+      "reportSHA256": "f94f109072fd9a0944cb0b4c09139e26fe249f7aeb606dfbf81cdc274bf0cac0",
+      "passed": 4
+    },
+    "sourceV5Necessary3": {
+      "receipt": "editor-combined-v5-source3-necessary-once/receipt.json",
+      "receiptSHA256": "1b3cdd01bb45946079e8f77452bbdfa727f386dda7a813b16d8d630008edf614",
+      "command": [
+        "npx",
+        "playwright",
+        "test",
+        "tests/editor-source-archive.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--output",
+        "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/editor-combined-v5-source3-necessary-once/artifacts",
+        "--reporter=json",
+        "--workers=3",
+        "--grep-invert",
+        "Document default implementation, clipboard and single-file download agree"
+      ],
+      "url": "http://127.0.0.1:50508/",
+      "exit": 0,
+      "seconds": 7.1246264170004,
+      "stats": {
+        "startTime": "2026-11-02T07:29:15.245Z",
+        "duration": 6450.705,
+        "expected": 3,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "a2ea68f1091a404b062ceba010d725bc70da37d41651f7ae0ad05c525d4dba12"
+    },
+    "sourceReuseLimit": "Final V5 reruns supporting-file view/copy/single-file flow and both fresh actual ZIPs. Unchanged default editor.tsx flow retains V4 evidence; a final full Source4 rerun is not claimed.",
+    "actualOriginalProjects": [
+      {
+        "identity": "document",
+        "archiveSHA256": "f1f8d73d22de6b77c8f06ac905ff7be1366aa535564baf2786eccc01afe24e78",
+        "originalMembers": 414,
+        "strict": {
+          "receipt": "editor-received-combined-v5-document-original-strict-build.json",
+          "receiptSHA256": "5d1e3c54d40cb53be64e41744e602655bb88561d2c566e8c7c9213a55a70c217",
+          "command": ["npm", "run", "build"],
+          "cwd": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/editor-received-combined-v5-document/received",
+          "exit": 0,
+          "seconds": 10.15030950000073,
+          "logSHA256": "b8dcf86c240c276c151e1f121e6f2b3b004766369c973dcb56ba99021574b575"
+        },
+        "native": {
+          "receipt": "editor-received-combined-v5-document-native-once/receipt.json",
+          "receiptSHA256": "d5abbd8cae292abd67904a002c38c369d99f0a009877537375ae12b913239e1f",
+          "command": [
+            "npx",
+            "playwright",
+            "test",
+            "tests/editor-fidelity.spec.ts",
+            "--workers=1",
+            "--retries=0",
+            "--output",
+            "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/editor-received-combined-v5-document-native-once/artifacts",
+            "--reporter=json",
+            "--grep-invert",
+            "contract toolbar retains editing and suggesting input modes|assistant toolbar retains the existing generate shortcut"
+          ],
+          "url": "http://127.0.0.1:52598/",
+          "exit": 0,
+          "seconds": 8.021284833001118,
+          "stats": {
+            "startTime": "2026-11-02T07:33:10.339Z",
+            "duration": 7637.645,
+            "expected": 5,
+            "skipped": 0,
+            "unexpected": 0,
+            "flaky": 0
+          },
+          "reportSHA256": "e8c51a5e9e1a3753d5eeec96b42ebecbe3a9b6c5aab7edc0ae0c7ec5fc2ecd03"
+        },
+        "integrity": {
+          "receipt": "editor-received-combined-v5-document/after-native-integrity.json",
+          "receiptSHA256": "2a6bc5d0015a0fd3d888dac8b1e4a877dc6bc51266cd3c1adc1f08abdd337b16",
+          "originalZIPExact": true,
+          "originalMembersExact": 414,
+          "entryPackageConfigExact": true,
+          "immutableDistExact": true,
+          "generatedPublicExact": true,
+          "receivedEntrySourceOrConfigRepaired": false
+        }
+      },
+      {
+        "identity": "mesh",
+        "archiveSHA256": "1d70c7ff2e61cdbe7324ec859d4cd83aded5cec46a80e6e4aa5c919c3eb90383",
+        "originalMembers": 307,
+        "strict": {
+          "receipt": "editor-received-combined-v5-mesh-original-strict-build.json",
+          "receiptSHA256": "70f5c3e2fdda30766e5df16658d853f264c3a44e96dd65360b2f1af0300d2acc",
+          "command": ["npm", "run", "build"],
+          "cwd": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/editor-received-combined-v5-mesh/received",
+          "exit": 0,
+          "seconds": 9.73615612499998,
+          "logSHA256": "7d628994d114a187f1c95885c672a74aec0af907fe4e7abee1fb4024a26cb331"
+        },
+        "native": {
+          "receipt": "editor-received-combined-v5-mesh-native-once/receipt.json",
+          "receiptSHA256": "4dc810b339b0968dd0b542cfd024979402ca514b00fa9d353bdaa976cb050a22",
+          "command": [
+            "npx",
+            "playwright",
+            "test",
+            "tests/mesh-engines.spec.ts",
+            "--workers=1",
+            "--retries=0",
+            "--output",
+            "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/editor-received-combined-v5-mesh-native-once/artifacts",
+            "--reporter=json",
+            "--grep-invert",
+            "actual source preview"
+          ],
+          "url": "http://127.0.0.1:52737/",
+          "exit": 0,
+          "seconds": 23.985653667001316,
+          "stats": {
+            "startTime": "2026-11-02T07:33:37.068Z",
+            "duration": 23585.089,
+            "expected": 13,
+            "skipped": 0,
+            "unexpected": 0,
+            "flaky": 0
+          },
+          "reportSHA256": "d45471593ba4b29912ba4df8c0eb2523bf7aa4de52205d2113c94d46d7cbdb83"
+        },
+        "integrity": {
+          "receipt": "editor-received-combined-v5-mesh/after-native-integrity.json",
+          "receiptSHA256": "13bde0f0bc204c3995aaa75d7de5664a078d01e8ec4db935ec165057067779cc",
+          "originalZIPExact": true,
+          "originalMembersExact": 307,
+          "entryPackageConfigExact": true,
+          "immutableDistExact": true,
+          "generatedPublicExact": true,
+          "receivedEntrySourceOrConfigRepaired": false
+        }
+      }
+    ],
+    "actualOriginalProjectNativeTotal": 18,
+    "separateReal200MeshFont1": {
+      "receipt": "editor-received-combined-v5-mesh-font1-once/receipt.json",
+      "receiptSHA256": "a63ccc436e62fae55f64e94985057e9637a55bc540a6248256d90fc93ee10055",
+      "command": [
+        "npx",
+        "playwright",
+        "test",
+        "tests/mesh-original-local-font-v2.received.private.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--output",
+        "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/editor-received-combined-v5-mesh-font1-once/artifacts",
+        "--reporter=json"
+      ],
+      "url": "http://127.0.0.1:52737/",
+      "exit": 0,
+      "seconds": 2.2501608339989616,
+      "stats": {
+        "startTime": "2026-11-02T07:34:01.197Z",
+        "duration": 1709.6100000000001,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "0a4b66e3030460fc4e3509b3fb6d1cb0ad9ba8565c3744bc23774ef124e96b50"
+    },
+    "separateFontCountIncludedIn18": false,
+    "allOriginalEntryPackageConfigurationAndMembersExact": true,
+    "dependencyMethod": "Physical APFS clones of an existing normal npm installation. Original package postinstall and strict build run unchanged. Not fresh dependency installations.",
+    "receivedPolicy": "No received source, entry, package or configuration repairs. Original archive/member, dist and generated-font bytes rechecked after native work. Owned received previews stopped in finally.",
+    "routeAndAssertionAdaptations": 0,
+    "nativeWorkers": 1,
+    "sourceEffectiveWorkers": 3,
+    "visualEvidence": "Root reviewed four existing V4 desktop1440/phone390 Document and link-popover screenshots. V5 changes only native history boundaries; no final official pixel-match claim.",
+    "browserMethod": "Browser plugin not available; existing configured Playwright Chromium workflow.",
+    "executionSummarySHA256": "5f4921cf1d70cd202cf7343eae676f54051df4d975cd1e02cb6b997a2ba308e7"
+  },
+  "licensesAndBrand": "Original Bricklane content and existing MIT/OFL notices retained. No premium ReUI source, logo, screenshot, avatar or extracted decorative media distributed.",
+  "sourceAndCatalog": {
+    "sources": 1143,
+    "blocks": 673,
+    "categories": 79,
+    "groups": 7,
+    "templates": 18,
+    "sourceTargetNewModules": ["rich-text-toolbar.tsx", "rich-text-task-item.tsx"]
+  },
+  "publication": {
+    "committed": false,
+    "pushed": false,
+    "newExactCommitCI": "pending",
+    "newExactCommitPages": "pending",
+    "lastConfirmedPagesCommit": "4490ce2bc6dc20ffb3adc10e4c17cc8c2f687a4a",
+    "lastConfirmedPagesDeployment": 7485767968,
+    "base300CI": {
+      "run": 41406253214,
+      "status": "in_progress at preflight"
+    },
+    "previewURL": "https://caovc.github.io/reui-pro-block/"
+  },
+  "remaining": [
+    "Document default sample remains shorter and structurally less complete than the official reference; a separate proposal is not included here.",
+    "Wiki block/table contextual controls require separate implementation and acceptance.",
+    "Advanced Contract tracked-review workflow, Collaboration synchronization and Assistant inline-review dock are not completed by this foundation.",
+    "Site compatibility retains earlier scoped owner evidence; no final rerun of all33 is claimed.",
+    "Full CI and exact Pages deployment must be checked after publication; metadata completeness does not certify every block detail."
+  ]
+}

@@ -444,3 +444,237 @@
   font-size: 14px;
   line-height: 24px;
 }
+
+/* Document frame and toolbar use the free ReUI Frame and ColorPicker primitives. */
+.rich-text-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  flex: none;
+  overflow-x: auto;
+  scrollbar-width: none;
+  gap: 2px;
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--background);
+}
+.rich-text-toolbar [data-slot="button-group"] {
+  flex-shrink: 0;
+  gap: 1px;
+}
+.rich-text-toolbar [data-slot="button"] {
+  height: 28px;
+  min-width: 28px;
+  border-radius: 5px;
+}
+.rich-text-toolbar svg {
+  width: 14px;
+  height: 14px;
+  stroke-width: 1.6;
+}
+.rich-text-toolbar > [data-slot="separator"] {
+  height: 16px;
+  flex-shrink: 0;
+  margin-inline: 7px;
+}
+.rich-text-toolbar .rich-text-block-type {
+  justify-content: space-between;
+  width: 104px;
+  font-size: 12px;
+  font-weight: 400;
+}
+.reui-editor[data-kind="1"][data-compact="false"] {
+  height: calc(100dvh - var(--template-toolbar-height, 0px) - 32px);
+  min-height: 420px;
+  margin: 16px;
+  width: calc(100% - 32px);
+  overflow: hidden;
+  background: color-mix(in oklab, var(--muted) 30%, var(--background));
+  border-radius: 14px;
+}
+.reui-editor[data-kind="1"][data-compact="false"] > header {
+  min-height: 54px;
+  padding: 8px 16px;
+  flex-shrink: 0;
+  border: 0;
+}
+.reui-editor[data-kind="1"][data-compact="false"] > header h2 {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+}
+.reui-editor[data-kind="1"][data-compact="false"] > header p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 16px;
+}
+.reui-editor[data-kind="1"][data-compact="false"] > header > div:first-child > svg {
+  display: none;
+}
+.reui-editor[data-kind="1"][data-compact="false"] .rich-text-toolbar {
+  border: 1px solid var(--border);
+  border-radius: 14px 14px 0 0;
+  margin-inline: -1px;
+}
+.reui-editor[data-kind="1"][data-compact="false"] > .grid {
+  display: block;
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 0;
+  margin-top: -1px;
+  border-top: 0;
+  border-radius: 0 0 14px 14px;
+}
+.reui-editor[data-kind="1"][data-compact="false"] main {
+  background: var(--background);
+  padding: 0;
+}
+.reui-editor[data-kind="1"][data-compact="false"] main > div:has(.reui-rich-document) {
+  max-width: 768px;
+  padding: 40px 32px;
+  border: 0;
+  box-shadow: none;
+  border-radius: 0;
+}
+.reui-editor[data-kind="1"][data-compact="false"] .reui-rich-document {
+  min-height: 0;
+  padding: 0;
+  font-size: 16px;
+  line-height: 28px;
+}
+.reui-editor[data-kind="1"][data-compact="false"] .reui-rich-document h1 {
+  font-size: 24px;
+  line-height: 36px;
+  margin: 0;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+.reui-editor[data-kind="1"][data-compact="false"] .reui-rich-document h2 {
+  font-size: 20px;
+  line-height: 32px;
+  margin: 32px 0 0;
+}
+.reui-editor[data-kind="1"][data-compact="false"] .reui-rich-document h3 {
+  font-size: 18px;
+  line-height: 28px;
+}
+.reui-editor[data-kind="1"][data-compact="false"] .reui-rich-document p {
+  margin: 12px 0 0;
+}
+.reui-editor[data-kind="1"][data-compact="false"] .document-subtitle {
+  display: none;
+}
+.reui-editor[data-kind="1"][data-compact="false"] > footer {
+  min-height: 42px;
+  flex-shrink: 0;
+  padding: 4px 16px;
+  font-size: 12px;
+  line-height: 20px;
+  border: 0;
+}
+.rich-text-shortcuts {
+  height: 28px;
+  padding-inline: 8px;
+  font-size: 12px;
+  font-weight: 400;
+  gap: 4px;
+}
+.rich-text-shortcuts svg {
+  width: 12px;
+  height: 12px;
+}
+@media (max-width: 640px) {
+  .reui-editor[data-kind="1"][data-compact="false"] {
+    margin: 16px;
+    width: calc(100% - 32px);
+    height: calc(100dvh - var(--template-toolbar-height, 0px) - 32px);
+  }
+  .reui-editor[data-kind="1"][data-compact="false"] main > div:has(.reui-rich-document) {
+    padding: 24px 16px;
+  }
+  .rich-text-toolbar {
+    padding-inline: 8px;
+    row-gap: 4px;
+  }
+  .rich-text-toolbar > [data-slot="separator"] {
+    margin-inline: 3px;
+  }
+}
+
+.reui-rich-document .rich-text-task-check {
+  display: flex;
+  align-items: center;
+  min-height: 28px;
+}
+.reui-rich-document .rich-text-task-check [data-state="checked"] {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.reui-rich-document li.node-taskItem {
+  display: block;
+}
+.reui-rich-document .rich-text-task-body {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+}
+.reui-rich-document .rich-text-task-body > [data-node-view-content] {
+  min-width: 0;
+  flex: 1;
+}
+.reui-rich-document .rich-text-task-body [data-node-view-content] p {
+  margin: 0;
+}
+
+.rich-text-block-mobile {
+  display: none;
+}
+.reui-editor[data-kind="1"][data-compact="false"] .reui-rich-document :is(ul, ol) {
+  margin: 12px 0 0;
+  padding-left: 24px;
+}
+.reui-editor[data-kind="1"][data-compact="false"] .reui-rich-document li {
+  margin: 0;
+}
+.reui-editor[data-kind="1"][data-compact="false"] .reui-rich-document li + li {
+  margin-top: 4px;
+}
+.reui-editor[data-kind="1"][data-compact="false"] .reui-rich-document li p {
+  margin: 0;
+}
+.reui-editor[data-kind="1"][data-compact="false"] .reui-rich-document ul[data-type="taskList"] {
+  padding-left: 0;
+}
+.reui-editor[data-kind="1"][data-compact="false"] .reui-rich-document blockquote {
+  border-left-width: 2px;
+  padding: 0 0 0 16px;
+  margin: 12px 0 0;
+  font-style: normal;
+}
+.reui-editor[data-kind="1"][data-compact="false"] .reui-rich-document hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: 24px 0;
+}
+.reui-editor[data-kind="1"][data-compact="false"] .reui-rich-document mark:not([data-comment]) {
+  border: 0;
+}
+@media (max-width: 640px) {
+  .rich-text-character-count,
+  .rich-text-shortcuts > span,
+  .rich-text-block-label {
+    display: none;
+  }
+  .rich-text-block-mobile {
+    display: inline;
+    font-size: 14px;
+  }
+  .rich-text-toolbar .rich-text-block-type {
+    width: 44px;
+    min-width: 44px;
+    padding-inline: 8px;
+  }
+}

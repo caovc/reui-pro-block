@@ -142,6 +142,9 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
   if (block.id === "solution-dev-ops-7")
     return paths("data", "solution-dev-ops-variants/deploy-board");
   if (block.group === "application") {
+    if (block.category === "rich-text-editor") {
+      return paths("application", "editor", "rich-text-toolbar", "rich-text-task-item");
+    }
     if (block.category === "navbar" && variant >= 12 && variant <= 13) {
       const module = ["marketing", "editor"][variant - 12];
       return paths("application", `navbar-variants/final-bars/${module}`, "workspace");
