@@ -128,9 +128,10 @@
     "referenceAssetsDistributed": false,
     "knownDifferences": [
       "Official fiscal day uses a combobox; this migration retains the local NumericField.",
-      "Official weekdays expose checkbox semantics; the retained local buttons use aria-pressed."
+      "Official weekdays are ToggleGroup button items with aria-pressed and roving focus; the retained local independent Button collection does not yet reuse ToggleGroup or its group keyboard behavior."
     ],
-    "phoneComparison": "Separate reference evidence is still being completed; no complete official geometry or interaction identity is claimed."
+    "phoneComparison": "Actual visible Organisation mobile DOM confirmed native ToggleGroup buttons: Monday tabindex0 and other sampled days tabindex-1. The observed April fiscal-day popup contains1\u201328 and Escape returns focus to Day. Other month ranges were not verified.",
+    "initialCheckboxInferenceCorrected": true
   },
   "testScope": {
     "nativeBehavior": "Desktop and phone saved/discarded fiscal fields, native local weekday activation, working-week persistence and navigation.",
@@ -140,7 +141,7 @@
     "fullSuiteRerun": false
   },
   "remaining": [
-    "Migrate fiscal-day and weekday controls using the actual official free component implementations after their observed interactions are recorded.",
+    "Migrate the fiscal-day Select and weekday ToggleGroup using their actual official free implementations and observed keyboard behavior.",
     "Other Cohort pages and the complete recreation remain unfinished.",
     "Full CI and this milestone Pages deployment must be confirmed separately."
   ],
