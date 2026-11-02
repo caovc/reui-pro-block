@@ -39,6 +39,8 @@ AppShell1 collapsed navigation uses the actual free ReUI sidebar menu at 192px, 
 
 API Request Logs now keeps first, reverse and cancelled touch drags on a stable native chart target. Existing free ReUI chart/Tooltip behavior, mouse drag, keyboard controls and exact request filtering remain. Four site cases, two source/export cases and seven native cases in an unchanged downloaded starter passed, along with both strict builds. See the [Base9 touch acceptance record](docs/grid-base9-touch-release-2026-11-02.json) for the retained failed candidates and input-contract correction. New full CI and Pages deployment remain separate gates.
 
+Surge and Manifest now share the existing project Account view, composed with official free ReUI Frame/upload and supporting native controls, with Profile/Preferences/Security navigation, actual photo upload, theme, local sign-out/default-view handoff and tooltip/motion preferences. Both unchanged downloaded projects passed original strict builds. Their first native run was33 passed/1 failed; after fixing native mount readiness in the test, the necessary original case passed, completing incremental coverage of34 distinct scenarios. See the [Account acceptance record](docs/commerce-account-release-2026-11-02.json) for source/download verification, retained failures and four still-unconsumed preferences. The preceding chart commit `0b57980` passed all 2017 CI cases and exact Pages deployment; this new Account milestone awaits its own CI and deployment.
+
 ## Development
 
 Requires Node.js 24+ and npm.

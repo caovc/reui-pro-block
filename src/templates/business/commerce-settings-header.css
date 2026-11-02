@@ -27,3 +27,9 @@
   margin-inline: calc(var(--spacing) * 3.5);
   margin-block: revert-layer;
 }
+
+/* Commerce uses the existing Search button as its only mobile header content. */
+.bt-layout-mobile:is(.bt-surge, .bt-manifest) [data-slot="sidebar-header"] {
+  padding: 16px 16px 8px;
+  gap: 8px;
+}

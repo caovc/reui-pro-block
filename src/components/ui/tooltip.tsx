@@ -3,6 +3,7 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Tooltip as TooltipPrimitive } from "radix-ui";
+import { mergeMotionStyle, useMotionPolicy } from "@/components/ui/motion-policy";
 
 function TooltipProvider({
   delayDuration = 0,
@@ -31,6 +32,7 @@ function TooltipContent({
   children,
   ...props
 }: React.ComponentProps<typeof TooltipPrimitive.Content>) {
+  const reduceAnimations = useMotionPolicy();
   return (
     <TooltipPrimitive.Portal>
       <TooltipPrimitive.Content
@@ -41,6 +43,7 @@ function TooltipContent({
           className,
         )}
         {...props}
+        {...(reduceAnimations ? { style: mergeMotionStyle(props.style) } : {})}
       >
         {children}
         <TooltipPrimitive.Arrow className="z-50 size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px] bg-foreground fill-foreground" />

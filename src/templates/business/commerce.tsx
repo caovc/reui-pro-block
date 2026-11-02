@@ -1,6 +1,7 @@
 import { OrderEditor } from "./order-editor";
+import { MotionPolicyProvider } from "@/components/ui/motion-policy";
 import { catalogSeed, type CatalogProduct } from "./catalog-data";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { MoreHorizontal, Star } from "lucide-react";
 import {
   Breadcrumb,
@@ -53,6 +54,9 @@ import {
   commerceSettingsNavigation,
 } from "./commerce-settings-route-model";
 import { applyCommerceDemoData } from "./commerce-settings-demo-data";
+import { CommerceAccountMenuContent, CommerceAccountSettings } from "./commerce-account-settings";
+import { useCommerceAccountSettingsModel } from "./commerce-account-model";
+import { useCommerceAccountRoute } from "./commerce-account-route";
 
 type Product = {
   name: string;
@@ -108,14 +112,24 @@ const initial: Product[] = [
 
 export default function CommerceTemplate({ id }: { id: string }) {
   const [logged, setLogged] = useState(id !== "manifest");
+  const applyDefaultViewOnLogin = useRef(false);
   const generalSettings = useCommerceGeneralSettingsModel();
   const settingsModel = useCommerceSettingsModel();
   const routing = useCommerceSettingsRoute(id);
+  const accountRouting = useCommerceAccountRoute(id);
+  const account = useCommerceAccountSettingsModel();
+  const accountModel = { ...account, section: accountRouting.section ?? account.section };
   const [page, setPage] = useState("Dashboard");
-  const active = routing.section ? "Settings" : page;
+  const active = accountRouting.section ? "Account" : routing.section ? "Settings" : page;
   const setActive = (next: string) => {
-    const section =
-      next === "Settings" || next === "Profile" ? "general" : commerceSectionForLabel(next);
+    if (next === "Profile" || next === "Preferences" || next === "Security") {
+      const section =
+        next === "Profile" ? "profile" : next === "Preferences" ? "preferences" : "security";
+      account.setSection(section);
+      accountRouting.navigate(section);
+      return;
+    }
+    const section = next === "Settings" ? "general" : commerceSectionForLabel(next);
     if (section) routing.navigate(section);
     else {
       setPage(next);
@@ -143,23 +157,23 @@ export default function CommerceTemplate({ id }: { id: string }) {
     ["Sofia Bennett", "sofia@example.com", "3", "$428"],
     ["Lucas Chen", "lucas@example.com", "12", "$2,140"],
   ]);
+  const closeTransientForms = useCallback(() => {
+    setCreate(false);
+    setDetail(null);
+    setEditing(undefined);
+    setEditor(false);
+    setOrderEditor(false);
+  }, []);
   useEffect(() => {
     // Browser history changes bypass sidebar onSelect. Close transient record
     // forms at that external navigation event; keep settings models mounted.
-    const closeTransientForms = () => {
-      setCreate(false);
-      setDetail(null);
-      setEditing(undefined);
-      setEditor(false);
-      setOrderEditor(false);
-    };
     window.addEventListener("hashchange", closeTransientForms);
     window.addEventListener("popstate", closeTransientForms);
     return () => {
       window.removeEventListener("hashchange", closeTransientForms);
       window.removeEventListener("popstate", closeTransientForms);
     };
-  }, []);
+  }, [closeTransientForms]);
   const demoDefaults = useRef({
     products: structuredClone(initial),
     catalog: structuredClone(catalogSeed),
@@ -206,7 +220,24 @@ export default function CommerceTemplate({ id }: { id: string }) {
         (filter === "Low stock" && p.stock > 0 && p.stock < 40) ||
         (filter === "Out of stock" && p.stock === 0)),
   );
-  if (!logged) return <Auth id={id} onLogin={() => setLogged(true)} />;
+  function signOutOfPreview() {
+    applyDefaultViewOnLogin.current = true;
+    closeTransientForms();
+    setQuery("");
+    accountRouting.navigate(null);
+    setLogged(false);
+  }
+  function signInToPreview() {
+    closeTransientForms();
+    setQuery("");
+    // First sign-in still honors an explicit account/store deep link. After a
+    // local sign-out, the selected default view wins over restored owned routes.
+    if (applyDefaultViewOnLogin.current) accountRouting.navigate(null);
+    setPage(account.preferences.defaultView);
+    applyDefaultViewOnLogin.current = false;
+    setLogged(true);
+  }
+  if (!logged) return <Auth id={id} onLogin={signInToPreview} />;
   const stockTable = (
     <>
       <div className="bt-toolbar">
@@ -269,10 +300,28 @@ export default function CommerceTemplate({ id }: { id: string }) {
       />
     </>
   );
-  return (
+  const shell = (
     <Shell
       id={id}
       brand={generalSettings.headerName}
+      sidebarSide={account.preferences.sidebarPosition === "Right" ? "right" : "left"}
+      reduceAnimations={account.preferences.reduceAnimations}
+      showTooltips={account.preferences.showTooltips}
+      account={{
+        name: account.identity.name,
+        organisation: account.identity.email,
+        photo: account.identity.avatar ?? undefined,
+      }}
+      accountMenuContent={
+        <CommerceAccountMenuContent
+          model={account}
+          onSignOut={signOutOfPreview}
+          onSelect={(section) => {
+            account.setSection(section);
+            accountRouting.navigate(section);
+          }}
+        />
+      }
       active={settingsLabel ?? (editor ? "Products" : orderEditor ? "Orders" : active)}
       setActive={(x) => {
         setActive(x);
@@ -284,7 +333,9 @@ export default function CommerceTemplate({ id }: { id: string }) {
       navGroups={{ Settings: Object.values(commerceSettingsNavigation) }}
       topWrapper={settingsLabel ? "div" : "span"}
       top={
-        settingsLabel ? (
+        accountRouting.section ? (
+          <span>{generalSettings.headerName}</span>
+        ) : settingsLabel ? (
           <Breadcrumb
             className="commerce-settings-breadcrumb"
             aria-label="Store settings breadcrumb"
@@ -340,7 +391,13 @@ export default function CommerceTemplate({ id }: { id: string }) {
         </div>
       }
     >
-      {orderEditor && !routing.section ? (
+      {accountRouting.section ? (
+        <CommerceAccountSettings
+          model={accountModel}
+          sectionHref={accountRouting.href}
+          onSectionChange={accountRouting.navigate}
+        />
+      ) : orderEditor && !routing.section ? (
         <OrderEditor
           products={catalog}
           customers={customers}
@@ -774,5 +831,10 @@ export default function CommerceTemplate({ id }: { id: string }) {
         </DialogContent>
       </Dialog>
     </Shell>
+  );
+  return (
+    <MotionPolicyProvider value={account.preferences.reduceAnimations}>
+      {shell}
+    </MotionPolicyProvider>
   );
 }

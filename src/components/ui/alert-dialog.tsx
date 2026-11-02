@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { AlertDialog as AlertDialogPrimitive } from "radix-ui";
 
 import { Button } from "@/components/ui/button";
+import { mergeMotionStyle, useMotionPolicy } from "@/components/ui/motion-policy";
 
 function AlertDialog({ ...props }: React.ComponentProps<typeof AlertDialogPrimitive.Root>) {
   return <AlertDialogPrimitive.Root data-slot="alert-dialog" {...props} />;
@@ -22,6 +23,7 @@ function AlertDialogOverlay({
   className,
   ...props
 }: React.ComponentProps<typeof AlertDialogPrimitive.Overlay>) {
+  const reduceAnimations = useMotionPolicy();
   return (
     <AlertDialogPrimitive.Overlay
       data-slot="alert-dialog-overlay"
@@ -30,6 +32,7 @@ function AlertDialogOverlay({
         className,
       )}
       {...props}
+      {...(reduceAnimations ? { style: mergeMotionStyle(props.style) } : {})}
     />
   );
 }
@@ -41,6 +44,7 @@ function AlertDialogContent({
 }: React.ComponentProps<typeof AlertDialogPrimitive.Content> & {
   size?: "default" | "sm";
 }) {
+  const reduceAnimations = useMotionPolicy();
   return (
     <AlertDialogPortal>
       <AlertDialogOverlay />
@@ -52,6 +56,7 @@ function AlertDialogContent({
           className,
         )}
         {...props}
+        {...(reduceAnimations ? { style: mergeMotionStyle(props.style) } : {})}
       />
     </AlertDialogPortal>
   );

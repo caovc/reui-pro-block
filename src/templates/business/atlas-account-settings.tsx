@@ -1,7 +1,7 @@
 // Inline Atlas account settings, composed from actual existing Pro Settings
 // fields and free ReUI Frame/Field/Collapsible/Select/Switch/AvatarUpload.
 import { Fragment, useId, type ReactNode } from "react";
-import { ChevronDown, Upload } from "lucide-react";
+import { ChevronDown, Upload, X } from "lucide-react";
 import { toast } from "sonner";
 import {
   SettingsChoice,
@@ -36,6 +36,8 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { DrivePhoneInput, DriveTimezone } from "@/templates/collaboration/drive-settings-free";
 import {
   atlasAccountSections,
   atlasPreferenceOptions,
@@ -83,7 +85,15 @@ function InlineCard({
   );
 }
 
-function Profile({ model, prefix }: { model: AtlasAccountSettingsModel; prefix: string }) {
+function Profile({
+  model,
+  prefix,
+  commerce = false,
+}: {
+  model: AtlasAccountSettingsModel;
+  prefix: string;
+  commerce?: boolean;
+}) {
   const value = model.draftProfile;
   const fields: SettingsFieldDefinition[] = [
     {
@@ -127,7 +137,11 @@ function Profile({ model, prefix }: { model: AtlasAccountSettingsModel; prefix: 
     >
       <InlineCard
         title="Profile"
-        description="Manage your personal information and how you appear across the app."
+        description={
+          commerce
+            ? "Manage your personal information and how you appear across the store."
+            : "Manage your personal information and how you appear across the app."
+        }
         label="Profile details"
         footer={
           <>
@@ -166,11 +180,21 @@ function Profile({ model, prefix }: { model: AtlasAccountSettingsModel; prefix: 
               changeLabel={
                 <>
                   <Upload aria-hidden="true" />
-                  Upload
+                  {commerce ? "Change" : "Upload"}
                 </>
               }
               defaultAvatar={value.avatar ?? undefined}
-              className="aas-avatar"
+              className={commerce ? "commerce-account-avatar" : "aas-avatar"}
+              {...(commerce
+                ? {
+                    removeLabel: (
+                      <>
+                        <X aria-hidden="true" />
+                        Remove
+                      </>
+                    ),
+                  }
+                : {})}
               onFileChange={model.changeAvatar}
               onDefaultRemove={model.removeAvatar}
             />
@@ -184,20 +208,39 @@ function Profile({ model, prefix }: { model: AtlasAccountSettingsModel; prefix: 
           <FieldSeparator />
           {fields.map((field) => (
             <Fragment key={field.id}>
-              <SettingsFields
-                fields={[field]}
-                value={values}
-                idPrefix={prefix}
-                onValueChange={(key, next) => {
-                  if (
-                    key === "fullName" ||
-                    key === "email" ||
-                    key === "phone" ||
-                    key === "username"
-                  )
-                    model.updateProfile(key, String(next));
-                }}
-              />
+              {commerce && field.id === "phone" ? (
+                <SettingsRow
+                  id={`${prefix}-phone`}
+                  title="Phone number"
+                  description="For recovery and urgent order alerts."
+                >
+                  <DrivePhoneInput
+                    id={`${prefix}-phone`}
+                    aria-describedby={`${prefix}-phone-description`}
+                    className="commerce-account-phone"
+                    variant="sm"
+                    defaultCountry="US"
+                    value={value.phone as Parameters<typeof DrivePhoneInput>[0]["value"]}
+                    onChange={(next) => model.updateProfile("phone", next)}
+                    popupClassName="reui-reference commerce-account-phone-popup"
+                  />
+                </SettingsRow>
+              ) : (
+                <SettingsFields
+                  fields={[field]}
+                  value={values}
+                  idPrefix={prefix}
+                  onValueChange={(key, next) => {
+                    if (
+                      key === "fullName" ||
+                      key === "email" ||
+                      key === "phone" ||
+                      key === "username"
+                    )
+                      model.updateProfile(key, String(next));
+                  }}
+                />
+              )}
               <FieldSeparator />
             </Fragment>
           ))}
@@ -212,32 +255,50 @@ function Profile({ model, prefix }: { model: AtlasAccountSettingsModel; prefix: 
                 <SettingsChoice
                   id={roleId}
                   value={value.role}
-                  options={atlasRoleOptions}
+                  options={
+                    commerce
+                      ? [
+                          "Store owner",
+                          "Operations manager",
+                          "Fulfilment lead",
+                          "Merchandiser",
+                          "Support lead",
+                        ]
+                      : atlasRoleOptions
+                  }
                   onChange={(next) => model.updateProfile("role", next)}
                 />
               </Field>
               <Field>
                 <FieldLabel htmlFor={zoneId}>Time zone</FieldLabel>
-                <Select
-                  value={value.timeZone}
-                  onValueChange={(next) => model.updateProfile("timeZone", next)}
-                >
-                  <SelectTrigger id={zoneId} className="w-full">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="reui-reference">
-                    {atlasTimeZoneGroups.map((group) => (
-                      <SelectGroup key={group.label}>
-                        <SelectLabel>{group.label}</SelectLabel>
-                        {group.options.map((option) => (
-                          <SelectItem key={option} value={option}>
-                            {option}
-                          </SelectItem>
-                        ))}
-                      </SelectGroup>
-                    ))}
-                  </SelectContent>
-                </Select>
+                {commerce ? (
+                  <DriveTimezone
+                    id={zoneId}
+                    value={value.timeZone}
+                    onChange={(next) => model.updateProfile("timeZone", next)}
+                  />
+                ) : (
+                  <Select
+                    value={value.timeZone}
+                    onValueChange={(next) => model.updateProfile("timeZone", next)}
+                  >
+                    <SelectTrigger id={zoneId} className="w-full">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="reui-reference">
+                      {atlasTimeZoneGroups.map((group) => (
+                        <SelectGroup key={group.label}>
+                          <SelectLabel>{group.label}</SelectLabel>
+                          {group.options.map((option) => (
+                            <SelectItem key={option} value={option}>
+                              {option}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
               </Field>
               <Field>
                 <FieldLabel htmlFor={websiteId}>Website</FieldLabel>
@@ -405,20 +466,34 @@ function Security({ model, prefix }: { model: AtlasAccountSettingsModel; prefix:
   );
 }
 
-function Preferences({ model, prefix }: { model: AtlasAccountSettingsModel; prefix: string }) {
+function Preferences({
+  model,
+  prefix,
+  commerce = false,
+}: {
+  model: AtlasAccountSettingsModel;
+  prefix: string;
+  commerce?: boolean;
+}) {
   const value = model.preferences;
   const definitions = {
     general: [
       {
         id: "defaultView",
         label: "Default view",
-        description: "Choose which page opens when you sign in.",
-        options: atlasPreferenceOptions.defaultView,
+        description: commerce
+          ? "Choose which layout opens when you sign in."
+          : "Choose which page opens when you sign in.",
+        options: commerce
+          ? ["Dashboard", "Orders", "Products", "Analytics"]
+          : atlasPreferenceOptions.defaultView,
       },
       {
         id: "dateFormat",
         label: "Date format",
-        description: "How dates appear across the app.",
+        description: commerce
+          ? "How dates appear across the admin."
+          : "How dates appear across the app.",
         options: atlasPreferenceOptions.dateFormat,
       },
       {
@@ -526,12 +601,57 @@ export function AtlasAccountSettings({
   model,
   sectionHref,
   onSectionChange,
+  presentation = "atlas",
 }: {
   model: AtlasAccountSettingsModel;
   sectionHref: (section: AtlasAccountSection) => string;
   onSectionChange?: (section: AtlasAccountSection) => void;
+  presentation?: "atlas" | "commerce";
 }) {
   const prefix = `atlas-account-${useId().replaceAll(":", "")}`;
+  if (presentation === "commerce") {
+    return (
+      <section
+        className="atlas-account-settings commerce-account-settings"
+        data-reduce-motion={model.preferences.reduceAnimations}
+      >
+        <header className="aas-heading">
+          <h1>Account</h1>
+        </header>
+        <Tabs
+          value={model.section}
+          className="commerce-account-tabs"
+          onValueChange={(value) => {
+            if (value === "profile" || value === "preferences" || value === "security") {
+              model.setSection(value);
+              onSectionChange?.(value);
+            }
+          }}
+        >
+          <TabsList variant="line" aria-label="Account sections" className="gap-1">
+            {(["profile", "preferences", "security"] as const).map((section) => (
+              <TabsTrigger key={section} value={section} className="flex-none">
+                {section === "profile"
+                  ? "Profile"
+                  : section === "preferences"
+                    ? "Preferences"
+                    : "Security"}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+          <TabsContent value="profile">
+            <Profile model={model} prefix={prefix} commerce />
+          </TabsContent>
+          <TabsContent value="preferences">
+            <Preferences model={model} prefix={prefix} commerce />
+          </TabsContent>
+          <TabsContent value="security">
+            <Security model={model} prefix={prefix} />
+          </TabsContent>
+        </Tabs>
+      </section>
+    );
+  }
   return (
     <section
       className="atlas-account-settings"

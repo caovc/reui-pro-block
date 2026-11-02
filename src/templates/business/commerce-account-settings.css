@@ -1,0 +1,118 @@
+/* Commerce consumer of the actual Atlas account pages, Pro settings rows, and
+ * native ReUI Tabs/Frame/Field/PhoneInput. No shared primitive is restyled. */
+.commerce-account-settings .commerce-account-tabs {
+  min-width: 0;
+  gap: 24px;
+}
+
+.commerce-account-settings .commerce-account-tabs > [data-slot="tabs-list"] {
+  gap: 4px;
+  /* Account has native 3px padding; Notifications line tabs are a separate view. */
+  padding: 3px;
+}
+
+.commerce-account-settings .aas-card-header {
+  gap: 0;
+  padding: 8px 16px;
+}
+
+.commerce-account-settings .aas-card-header [data-slot="frame-panel-title"] {
+  font-size: 14px;
+}
+
+.commerce-account-settings .aas-group-trigger {
+  min-height: 40px;
+  padding: 10px 16px;
+  background: color-mix(in oklab, var(--muted) 40%, var(--background));
+}
+
+.commerce-account-settings .aas-compact-fields .workspace-settings-row {
+  padding: 12px 16px;
+}
+
+.commerce-account-settings .aas-compact-fields [data-slot="field-description"] {
+  line-height: 22px;
+}
+
+.commerce-account-settings .commerce-account-phone {
+  width: 100%;
+  min-width: 0;
+}
+
+.commerce-account-settings .commerce-account-phone > input {
+  width: 100%;
+  min-width: 0;
+}
+
+.commerce-account-settings .commerce-account-phone > button {
+  height: 32px;
+}
+
+/* Existing native Sidebar side API owns state, Sheet, and DOM direction. Only
+ * this family's desktop columns and its outside collapse handle are positioned. */
+@media (min-width: 768px) {
+  :is(.bt-surge, .bt-manifest)[data-sidebar-side="right"] .bt-layout-columns {
+    flex-direction: row-reverse;
+  }
+
+  :is(.bt-surge, .bt-manifest)[data-sidebar-side="right"]
+    .bt-sidebar[data-slot="sidebar-container"] {
+    border-right: 0;
+    border-left: 1px solid var(--border);
+  }
+
+  :is(.bt-surge, .bt-manifest)[data-sidebar-side="right"] .bt-sidebar .shell-collapse-handle {
+    left: auto;
+    right: 100%;
+    justify-content: flex-end;
+    padding: 0 8px 0 0;
+  }
+
+  :is(.bt-surge, .bt-manifest)[data-sidebar-side="right"] .bt-sidebar .shell-rail-label {
+    left: auto;
+    right: calc(100% - 8px);
+  }
+}
+
+:is(.bt-surge, .bt-manifest)[data-reduce-animations="true"] *,
+:is(.bt-surge, .bt-manifest)[data-reduce-animations="true"] *::before,
+:is(.bt-surge, .bt-manifest)[data-reduce-animations="true"] *::after {
+  scroll-behavior: auto !important;
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+@media (max-width: 767px) {
+  .commerce-account-settings .aas-compact-fields .workspace-settings-row {
+    flex-wrap: wrap;
+  }
+
+  .commerce-account-settings .aas-compact-fields [data-slot="field-content"] {
+    min-width: 0;
+    flex-basis: 160px;
+  }
+
+  .commerce-account-settings .aas-profile input,
+  .commerce-account-settings .aas-profile textarea,
+  .commerce-account-settings .aas-profile [data-slot="select-trigger"] {
+    font-size: 16px;
+  }
+}
+
+/* Portal descendants carry this consumer class; no global menu rule is changed.
+ * The actual Radix radio item remains the selectable/focusable control. */
+.commerce-account-theme-options > .commerce-account-theme-option {
+  justify-content: center;
+  padding: 4px;
+}
+
+.commerce-account-theme-options > .commerce-account-theme-option > span:first-child {
+  display: none;
+}
+
+/* Site anchor scrolling must not animate native app focus movement after the
+ * free Sidebar opens a focus Tooltip. Keep each Tooltip's native scroll close. */
+html:has(.template-surface:is([data-template="surge"], [data-template="manifest"])) {
+  scroll-behavior: auto;
+}

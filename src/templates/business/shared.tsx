@@ -170,6 +170,7 @@ export function NavItems({
   groups,
   label,
   menuClassName,
+  showTooltips = true,
 }: {
   items: string[];
   active: string;
@@ -178,6 +179,7 @@ export function NavItems({
   groups?: Record<string, string[]>;
   label?: string;
   menuClassName?: string;
+  showTooltips?: boolean;
 }) {
   const closeNavigation = useContext(NavigationCloseContext);
   return (
@@ -185,6 +187,7 @@ export function NavItems({
       <SidebarNavigation
         label={label}
         menuClassName={menuClassName}
+        showTooltips={showTooltips}
         active={active}
         onSelect={(value) => {
           onSelect(value);
@@ -259,6 +262,7 @@ function ShellContent({
   account,
   accountMenuContent,
   sidebarSide = "left",
+  showTooltips = true,
 }: {
   id: string;
   brand: string;
@@ -278,6 +282,7 @@ function ShellContent({
   accountMenuContent?: ReactNode;
   sidebarSide?: "left" | "right";
   reduceAnimations?: boolean;
+  showTooltips?: boolean;
 }) {
   const { state, isMobile, setOpenMobile, toggleSidebar } = useSidebar();
   const collapsed = !isMobile && state === "collapsed";
@@ -301,7 +306,7 @@ function ShellContent({
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
               size="lg"
-              tooltip={accountName}
+              tooltip={showTooltips ? accountName : undefined}
               className="bt-account-button"
               aria-label={`Open account menu for ${accountName}`}
             >
@@ -358,7 +363,7 @@ function ShellContent({
     );
   const header = (
     <>
-      {(!commerce || isMobile) &&
+      {!commerce &&
         !rail &&
         (id === "atlas" ? (
           <div className="bt-sidebar-workspace">
@@ -397,6 +402,7 @@ function ShellContent({
             atlas={id === "atlas"}
             menuClassName={id === "cohort" ? "min-w-48" : undefined}
             groups={navGroups}
+            showTooltips={showTooltips}
             items={
               commerce ? items.filter((item) => !["Analytics", "Settings"].includes(item)) : items
             }
@@ -407,6 +413,7 @@ function ShellContent({
             <NavItems
               label="System"
               groups={navGroups}
+              showTooltips={showTooltips}
               items={items.filter((item) => ["Analytics", "Settings"].includes(item))}
               active={active}
               onSelect={select}
@@ -588,13 +595,17 @@ function ShellContent({
             aria-label={`${brand} navigation`}
             mobileClassName={`reui-reference bt-app bt-sidebar-mobile bt-layout-mobile bt-${id}${rail ? " bt-mobile-with-rail" : ""}`}
             mobileTitle={brand}
-            mobileShowCloseButton={id !== "miro"}
+            mobileShowCloseButton={!commerce && id !== "miro"}
             mobileWidth={id === "cohort" ? "min(288px, calc(100vw - 32px))" : "75vw"}
             header={header}
             footer={sidebarFooter}
             rail={
               id !== "cohort" && !isMobile ? (
-                <CollapseHandle collapsed={collapsed} onToggle={toggleSidebar} />
+                <CollapseHandle
+                  collapsed={collapsed}
+                  onToggle={toggleSidebar}
+                  showTooltips={showTooltips}
+                />
               ) : undefined
             }
           >

@@ -244,6 +244,7 @@ export function SidebarNavigation({
   className,
   menuClassName,
   closeOnSelect = true,
+  showTooltips = true,
 }: {
   items: SidebarNavigationItem[];
   active: string;
@@ -254,6 +255,7 @@ export function SidebarNavigation({
   className?: string;
   menuClassName?: string;
   closeOnSelect?: boolean | ((value: string) => boolean);
+  showTooltips?: boolean;
 }) {
   const { state, isMobile, setOpenMobile } = useSidebar();
   const collapsed = !isMobile && (collapsedProp ?? state === "collapsed");
@@ -290,7 +292,7 @@ export function SidebarNavigation({
                   collapsed && "justify-center px-0",
                   item.accent && "text-primary",
                 )}
-                tooltip={item.label}
+                tooltip={showTooltips ? item.label : undefined}
                 aria-label={item.label}
                 aria-current={isActive ? "page" : undefined}
                 isActive={isActive}

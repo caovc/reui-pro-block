@@ -3,6 +3,7 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Popover as PopoverPrimitive } from "radix-ui";
+import { mergeMotionStyle, useMotionPolicy } from "@/components/ui/motion-policy";
 
 function Popover({ ...props }: React.ComponentProps<typeof PopoverPrimitive.Root>) {
   return <PopoverPrimitive.Root data-slot="popover" {...props} />;
@@ -18,6 +19,7 @@ function PopoverContent({
   sideOffset = 4,
   ...props
 }: React.ComponentProps<typeof PopoverPrimitive.Content>) {
+  const reduceAnimations = useMotionPolicy();
   return (
     <PopoverPrimitive.Portal>
       <PopoverPrimitive.Content
@@ -29,6 +31,7 @@ function PopoverContent({
           className,
         )}
         {...props}
+        {...(reduceAnimations ? { style: mergeMotionStyle(props.style) } : {})}
       />
     </PopoverPrimitive.Portal>
   );

@@ -1,0 +1,329 @@
+{
+  "recordCreatedUTC": "2026-11-02T11:45:04.886617+00:00",
+  "baseCommit": "0b5798076324176a8955d68090928f27447a4459",
+  "goalComplete": false,
+  "scope": "Surge and Manifest local Account Profile, Preferences and Security with real menu navigation, theme/default-view integration and opt-in native tooltip/motion preferences.",
+  "actualFreeReUIReuse": [
+    "Existing project AtlasAccountSettings reuses official free ReUI Frame plus existing shadcn/Radix Field, Tabs, Select, Switch and project SettingsRow/SettingsChoice instead of rebuilding Commerce account fields.",
+    "Existing DrivePhoneInput and DriveTimezone reuse their actual free PhoneInput/BaseUI Combobox compositions.",
+    "Actual free Sidebar/SidebarNavigation and the existing native Radix menus retain selection, keyboard, portal positioning and focus behavior.",
+    "Existing LocalAvatarUpload reuses the free c-file-upload-2/useFileUpload implementation and existing outline Button. Its round div/img preview is not a ui/Avatar import. Commerce supplies presentation arguments to this uploader."
+  ],
+  "correctedDuplication": "Commerce shares the existing Atlas account view/model and free settings/upload controls; no parallel hand-built account form or replacement upload engine is added.",
+  "customGaps": [
+    "Merchant-specific local account state, raw-query-preserving hash routing, menu callbacks and default-view handoff are application integration absent from the free controls.",
+    "Opt-in React motion context forwards local preference values to existing portalled surfaces; it does not replace their primitives or positioning engines.",
+    "Small scoped commerce layout rules supply public-preview spacing, mobile navigation header and avatar/button presentation."
+  ],
+  "verifiedBehavior": [
+    "Native Account menu opens Profile, Preferences and Security; Tabs and raw query deep links agree.",
+    "Mobile navigation uses its native Sheet, 56px header and 75vw width; choosing Account preserves the open Sheet until native Escape/focus return.",
+    "Profile validates name/email. Native phone/country/timezone controls support selection and Save/Cancel; role selector has five actual options; real file chooser/upload/Save/Cancel updates the account image.",
+    "Theme changes agree between menu and Preferences. Four saved default-view choices return through the real local Sign Out/Auth/Back/Log in flow.",
+    "Tooltip preference disables and restores real native navigation/account/collapse hints. Opt-in reduced motion includes portalled Sheet and BaseUI timezone, with no-provider Atlas compatibility checked on the site.",
+    "Commerce avatar stays circular and Remove keeps a real outline and aria-hidden X; upload persistence and Remove/Cancel remain functional."
+  ],
+  "retainedFailureHistory": {
+    "firstSite56": {
+      "passed": 53,
+      "failed": 3,
+      "firstMenu4": {
+        "path": "account-current-first4-once/receipt.json",
+        "sha256": "65b568043a187fde6ed595b4597d623169189ebf95a93c822bb4e125d77981ef"
+      },
+      "remaining52": {
+        "path": "account-current-remaining52-first-once/receipt.json",
+        "sha256": "8d44bad9a4f70529d4c3037552e3bf1c09a91f79956ba3438cd07d146e271902"
+      }
+    },
+    "motionCause": "BaseUI removes a temporary transition shorthand after mount, clearing unchanged React longhands. True-only duration/delay utility classes preserve reduced motion; false behavior and the original computed-duration assertions remain.",
+    "tooltipCause": "Global smooth root scrolling after native keyboard focus triggered the native tooltip ancestor-scroll close. Only mounted Surge/Manifest app surfaces restore instant document scrolling; the native tooltip close behavior and original assertions remain.",
+    "visualCause": "Atlas-specific square-avatar and muted-action rules leaked into Commerce through its old root class. Commerce now supplies its own root class and existing removeLabel presentation, preserving Atlas default false.",
+    "standaloneRoute": "The empty original mount now canonicalizes its owned root to #/ before the unchanged raw query. Site and foreign routes retain their previous behavior.",
+    "originalProjectsFirst": {
+      "passed": 33,
+      "failed": 1,
+      "fact": "Surge17 passed; Manifest16 passed and its restored-false motion comparison failed. Trace proved that the original comparison sampled BaseUI temporary data-starting-style/transition:none, unlike the initial sample after mount cleanup.",
+      "diagnosis": {
+        "path": "account-v3-motion-mount-phase-diagnosis.json",
+        "sha256": "ef2e681bd9c3d54eaa95a969364ae95c250da5e5018642db50b3aed4008eae69"
+      }
+    },
+    "mountReadinessCorrection": {
+      "fact": "Only timezonePhase adds real data-open and absence-of-data-starting-style readiness before the original capture. Every original timing/geometry/focus/selection assertion and budget remains; no false-mode product style was added.",
+      "manifest": {
+        "path": "account-motion-mount-ready-v1/manifest.json",
+        "sha256": "8fbde4df6677ea74da16d114033eafb4daeee553c4d6770f0201bf5b4477b485"
+      }
+    },
+    "noDeadlineRetryForceFocusOrStyleInjectionAdded": true
+  },
+  "localAcceptance": {
+    "combinedStrict": {
+      "command": ["npm", "run", "build"],
+      "cwd": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/account-current-runtime-v3",
+      "exit": 0,
+      "seconds": 24.47848141700524,
+      "logSHA256": "69cfafc542bceea3c2f13dc10abd3ee93fa913b42256df2d60a09691f83aa850"
+    },
+    "v2Necessary5": {
+      "path": "account-v2-necessary5-once/receipt.json",
+      "sha256": "f8165c59191d7734276d436aeb16009aaa830a1aed80a5a0caff1a133da7c331",
+      "seconds": 13.34372883299875,
+      "stats": {
+        "startTime": "2026-11-02T10:28:45.865Z",
+        "duration": 12938.431,
+        "expected": 5,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "96f742ab95a3c2b839b18627babc1371fa2542a98585c818e14649e68f33f4e0"
+    },
+    "v2Source14": {
+      "path": "account-v2-source14-first-once/receipt.json",
+      "sha256": "be787886b37e2c4038ea3a65ad68ce0ab097e8737377978313ec4f7e51f1d34a",
+      "seconds": 19.313660042000265,
+      "stats": {
+        "startTime": "2026-11-02T10:35:41.275Z",
+        "duration": 18930.495,
+        "expected": 14,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "781851eb8c665b307ecbe7a912261fb1d58e5e8cfb6fd34d4fccdcf6108e3632"
+    },
+    "v3Avatar4": {
+      "path": "account-v3-avatar4-first-once/receipt.json",
+      "sha256": "6af4628da4d3a1f50516d04cb90e9594ce65ec99606bad6def80cfa06e3b9893",
+      "seconds": 6.587007916998118,
+      "stats": {
+        "startTime": "2026-11-02T11:13:02.915Z",
+        "duration": 6222.0470000000005,
+        "expected": 4,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "214cc3425c81df53de9afdf4be6d17c07e7021aa2f9df5d8ee1cf26c566adb2e"
+    },
+    "v3NecessarySource4": {
+      "path": "account-v3-source4-first-once/receipt.json",
+      "sha256": "0eb7e167fd29c5865006d40ad7f0200b5e37d20a43e2a4ba9cdf0eb8eea4c36d",
+      "seconds": 8.289488417001849,
+      "stats": {
+        "startTime": "2026-11-02T11:13:41.797Z",
+        "duration": 7915.675,
+        "expected": 4,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "a819b19cf127a3071af63f3d47997c6412534c0f297d166731358c6e4760a1bc"
+    },
+    "siteMountReadiness3": {
+      "path": "account-motion-mount-ready3-site-first-once/receipt.json",
+      "sha256": "be34c5e47b4f3340ec9d31db3565ada1729a2886bea794234126e42c1f4b1f45",
+      "seconds": 7.513364083002671,
+      "stats": {
+        "startTime": "2026-11-02T11:30:58.487Z",
+        "duration": 7134.586,
+        "expected": 3,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "b214e28546f61b52e57a10e1bb3296df01b735c392745141bc105df0466c64d6"
+    },
+    "sourceScope": "Original six changed-consumer file flows on each merchant passed in V2. Final V3 adds two AtlasAccountSettings view/copy/file lifecycles and two fresh ZIP checks. Full Source16 was discovered, not all re-executed. No final combined60-native or full76-new-case pass is inferred.",
+    "actualOriginalProjects": [
+      {
+        "identity": "surge",
+        "archiveSHA256": "9e939abdcadeea335dfe4bc43232c910e77f6e29794b50be77a2068d4db4cffc",
+        "originalMembers": 284,
+        "strict": {
+          "command": ["npm", "run", "build"],
+          "cwd": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/account-v3-received-surge/received",
+          "exit": 0,
+          "seconds": 7.012981749998289,
+          "logSHA256": "3377d1120ad86ecb16f23f5618eb3172a928ad31b1da95f0089e4d09124a2fd9"
+        },
+        "nativeCovered": 17,
+        "firstOriginalNative": {
+          "path": "account-v3-received-surge-native-once/receipt.json",
+          "sha256": "5768955154d5e6a307e81393141ebdbef278f766a7eb7a9725d82b61ba2444ee",
+          "stats": {
+            "startTime": "2026-11-02T11:21:33.021Z",
+            "duration": 48359.381,
+            "expected": 17,
+            "skipped": 0,
+            "unexpected": 0,
+            "flaky": 0
+          },
+          "reportSHA256": "6d9cf2c9191dfa9fb52ee515faec24be1e210342c4e75a7fd21334d60bd3ddca",
+          "seconds": 48.761634125003184
+        },
+        "necessaryOriginalNative": null,
+        "integrity": {
+          "originalZIPExact": true,
+          "originalMembersExact": 284,
+          "entryPackageConfigExact": true,
+          "immutableDistExact": true,
+          "generatedPublicExact": true,
+          "receivedEntrySourceOrConfigRepaired": false
+        }
+      },
+      {
+        "identity": "manifest",
+        "archiveSHA256": "e19175898bb66283481bf15fba0fd4c957ace01fdad5ab731c04b4109c870f26",
+        "originalMembers": 284,
+        "strict": {
+          "command": ["npm", "run", "build"],
+          "cwd": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/account-v3-received-manifest/received",
+          "exit": 0,
+          "seconds": 6.882019708995358,
+          "logSHA256": "cf48ba6dd34bc680f2759cd7e8250ca73c1e772520717c4f406597c554f6c466"
+        },
+        "nativeCovered": 17,
+        "firstOriginalNative": {
+          "path": "account-v3-received-manifest-native-once/receipt.json",
+          "sha256": "caf626b851a31874e5aa340a0795cae9a602e3161d379490e5464fd45d104df2",
+          "stats": {
+            "startTime": "2026-11-02T11:22:22.323Z",
+            "duration": 50668.356,
+            "expected": 16,
+            "skipped": 0,
+            "unexpected": 1,
+            "flaky": 0
+          },
+          "reportSHA256": "fb5999026eb05e150c8875e81e546f1a54d701a83861162b75e8b6e886ebffef",
+          "seconds": 51.05223183299677
+        },
+        "necessaryOriginalNative": {
+          "path": "account-v3-received-manifest-motion-mount-ready1-native-once/receipt.json",
+          "sha256": "c5604b47e5f9bb94b3372077dcda30eb16e694b179e7fbd1c84a6e87ed3ef3bd",
+          "seconds": 3.138376374998188,
+          "stats": {
+            "startTime": "2026-11-02T11:44:26.560Z",
+            "duration": 2656.985,
+            "expected": 1,
+            "skipped": 0,
+            "unexpected": 0,
+            "flaky": 0
+          },
+          "reportSHA256": "18ebbfc4f051a83de05efa026c584e09cbb1fc837ee3def12e2714b8bee2c7d6"
+        },
+        "integrity": {
+          "originalZIPExact": true,
+          "originalMembersExact": 284,
+          "entryPackageConfigExact": true,
+          "immutableDistExact": true,
+          "generatedPublicExact": true,
+          "receivedEntrySourceOrConfigRepaired": false
+        }
+      }
+    ],
+    "originalExecutionScope": "Two original strict builds passed. First native execution33 passed/1 failed. Three site motion cases and only the failed Manifest original case then passed with native mount readiness. All34 distinct original scenarios are covered incrementally; no final combined34 or full17 Manifest rerun is claimed.",
+    "incrementalCoverage": {
+      "path": "account-v3-covered-acceptance.json",
+      "sha256": "5635a6adfdb51063d5e1e77ec6ea6d54b1283a42ad9f0099bb3780618ddbf69c"
+    },
+    "originalNativeScope": "Each unchanged downloaded project: menu/Tabs2, theme2, saved Orders SignOut/Back/Login2, Profile identity/email2, old Settings/general2, Orders notifications2, empty mount1, relevant motion1, navigation Tooltip1, new Avatar/file lifecycle2 =17.",
+    "originalSourceEntryPackageConfigurationModified": false,
+    "dependencyMethod": "Physical APFS clones of normally installed dependencies; not fresh installs. Original postinstall is run only when present.",
+    "receivedPreviewsStoppedInFinally": true,
+    "browserMethod": "Browser plugin not available; existing Playwright Chromium.",
+    "viewports": ["1440x1000", "390x844"],
+    "budget": {
+      "caseMs": 30000,
+      "expectMs": 5000,
+      "nativeWorkers": 1,
+      "sourceMaxWorkers": 3,
+      "retries": 0
+    },
+    "visual": {
+      "browser": "Browser plugin not available; existing Playwright Chromium",
+      "consoleWarningErrorOrPageError": [],
+      "source": "Original Avatar4 trace, last recorded viewport frames; no image processing",
+      "frames": [
+        {
+          "file": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/account-v3-root-visual/commerce-account-avatar-pr-97cb4-ve-X-and-file-lifecycle-390.jpeg",
+          "sha256": "d3c7a11bbc5c254843d6bd1c3750f66cd4059951f751a8a38a6d2f5cc509feb3",
+          "event": {
+            "type": "screencast-frame",
+            "pageId": "page@7d38a695929b87571eedb335760c344c",
+            "file": "screencast/page@7d38a695929b87571eedb335760c344c-1793617986185.jpeg",
+            "width": 390,
+            "height": 844,
+            "timestamp": 3458.285,
+            "frameSwapWallTime": 1793617986199.2869
+          },
+          "trace": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/account-v3-avatar4-first-once/artifacts/commerce-account-avatar-pr-97cb4-ve-X-and-file-lifecycle-390/trace.zip"
+        },
+        {
+          "file": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/account-v3-root-visual/commerce-account-avatar-pr-e666e-e-X-and-file-lifecycle-1440.jpeg",
+          "sha256": "09487a42fea6b6815d21a3a6f37102764503e18ba303533859fe7d62c31d05a5",
+          "event": {
+            "type": "screencast-frame",
+            "pageId": "page@283dd329124d1a4c7862e7f9bed4c2d2",
+            "file": "screencast/page@283dd329124d1a4c7862e7f9bed4c2d2-1793617984710.jpeg",
+            "width": 1440,
+            "height": 1000,
+            "timestamp": 1983.645,
+            "frameSwapWallTime": 1793617984719.9758
+          },
+          "trace": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/account-v3-avatar4-first-once/artifacts/commerce-account-avatar-pr-e666e-e-X-and-file-lifecycle-1440/trace.zip"
+        },
+        {
+          "file": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/account-v3-root-visual/commerce-account-avatar-pr-c7ce0-e-X-and-file-lifecycle-1440.jpeg",
+          "sha256": "09487a42fea6b6815d21a3a6f37102764503e18ba303533859fe7d62c31d05a5",
+          "event": {
+            "type": "screencast-frame",
+            "pageId": "page@83c9981bec3962198f1fbb5f3bbc8310",
+            "file": "screencast/page@83c9981bec3962198f1fbb5f3bbc8310-1793617987423.jpeg",
+            "width": 1440,
+            "height": 1000,
+            "timestamp": 4696.335,
+            "frameSwapWallTime": 1793617987432.76
+          },
+          "trace": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/account-v3-avatar4-first-once/artifacts/commerce-account-avatar-pr-c7ce0-e-X-and-file-lifecycle-1440/trace.zip"
+        },
+        {
+          "file": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/account-v3-root-visual/commerce-account-avatar-pr-f18fe-ve-X-and-file-lifecycle-390.jpeg",
+          "sha256": "d3c7a11bbc5c254843d6bd1c3750f66cd4059951f751a8a38a6d2f5cc509feb3",
+          "event": {
+            "type": "screencast-frame",
+            "pageId": "page@5c1a622df76f221fc02492a34d69accc",
+            "file": "screencast/page@5c1a622df76f221fc02492a34d69accc-1793617988983.jpeg",
+            "width": 390,
+            "height": 844,
+            "timestamp": 6256.468,
+            "frameSwapWallTime": 1793617988995.685
+          },
+          "trace": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/account-v3-avatar4-first-once/artifacts/commerce-account-avatar-pr-f18fe-ve-X-and-file-lifecycle-390/trace.zip"
+        }
+      ],
+      "rootPersonallyViewed": true,
+      "observed": "Native desktop and phone profile frames plus unmodified initial photo-row PNGs show round local portraits and outlined Remove/X controls; no official pixel-identity claim."
+    }
+  },
+  "sourceTargets": "Commerce entry stays the default implementation. Supporting Account/model/route/theme/motion files are available in actual source selection; copied/file bytes and runnable ZIP closure agree. Site-only source-targets metadata is intentionally absent from runnable projects. Editor and Shell additions are preserved.",
+  "licensesAndBrand": "Original Bricklane branding, local/original product art, attributed portraits, free ReUI MIT, Inter OFL and phone/third-party notices remain in the actual original exports. No paid screenshots or original ReUI brand assets are distributed.",
+  "publication": {
+    "committed": false,
+    "pushed": false,
+    "newExactCommitCI": "pending",
+    "newExactCommitPages": "pending",
+    "lastConfirmedPagesCommit": "0b5798076324176a8955d68090928f27447a4459",
+    "lastConfirmedPagesDeployment": 7490288667,
+    "url": "https://caovc.github.io/reui-pro-block/"
+  },
+  "remainingLimits": [
+    "dateFormat, firstDay, autoSaveDrafts and richTextEditing are stored preferences without downstream feature consumption; this milestone does not claim they change every workspace.",
+    "Account/demo authentication and profile persistence are local session state, not backend identity or reload-persistent authentication.",
+    "Auth, sibling Toaster, global source UI and arbitrary JavaScript animations are outside this local motion policy.",
+    "Callable BaseUI style merging has static/strict coverage but no actual callable-style consumer was exercised.",
+    "Other template families, advanced editors and complete visual/interaction fidelity remain unfinished."
+  ]
+}

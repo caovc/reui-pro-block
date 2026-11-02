@@ -2,6 +2,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { DropdownMenu as DropdownMenuPrimitive } from "radix-ui";
 import { CheckIcon, ChevronRightIcon } from "lucide-react";
+import { mergeMotionStyle, useMotionPolicy } from "@/components/ui/motion-policy";
 
 function DropdownMenu({ ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Root>) {
   return <DropdownMenuPrimitive.Root data-slot="dropdown-menu" {...props} />;
@@ -25,6 +26,7 @@ function DropdownMenuContent({
   sideOffset = 4,
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Content>) {
+  const reduceAnimations = useMotionPolicy();
   return (
     <DropdownMenuPrimitive.Portal>
       <DropdownMenuPrimitive.Content
@@ -36,6 +38,7 @@ function DropdownMenuContent({
           className,
         )}
         {...props}
+        {...(reduceAnimations ? { style: mergeMotionStyle(props.style) } : {})}
       />
     </DropdownMenuPrimitive.Portal>
   );
@@ -216,6 +219,7 @@ function DropdownMenuSubContent({
   className,
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.SubContent>) {
+  const reduceAnimations = useMotionPolicy();
   return (
     <DropdownMenuPrimitive.SubContent
       data-slot="dropdown-menu-sub-content"
@@ -224,6 +228,7 @@ function DropdownMenuSubContent({
         className,
       )}
       {...props}
+      {...(reduceAnimations ? { style: mergeMotionStyle(props.style) } : {})}
     />
   );
 }

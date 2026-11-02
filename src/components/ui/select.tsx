@@ -4,6 +4,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Select as SelectPrimitive } from "radix-ui";
 import { ChevronDownIcon, CheckIcon, ChevronUpIcon } from "lucide-react";
+import { mergeMotionStyle, useMotionPolicy } from "@/components/ui/motion-policy";
 
 function Select({ ...props }: React.ComponentProps<typeof SelectPrimitive.Root>) {
   return <SelectPrimitive.Root data-slot="select" {...props} />;
@@ -56,6 +57,7 @@ function SelectContent({
   align = "center",
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Content>) {
+  const reduceAnimations = useMotionPolicy();
   return (
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
@@ -70,6 +72,7 @@ function SelectContent({
         position={position}
         align={align}
         {...props}
+        {...(reduceAnimations ? { style: mergeMotionStyle(props.style) } : {})}
       >
         <SelectScrollUpButton />
         <SelectPrimitive.Viewport

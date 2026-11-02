@@ -4,6 +4,7 @@ import { Dialog as SheetPrimitive } from "radix-ui";
 
 import { Button } from "@/components/ui/button";
 import { XIcon } from "lucide-react";
+import { mergeMotionStyle, useMotionPolicy } from "@/components/ui/motion-policy";
 
 function Sheet({ ...props }: React.ComponentProps<typeof SheetPrimitive.Root>) {
   return <SheetPrimitive.Root data-slot="sheet" {...props} />;
@@ -25,6 +26,7 @@ function SheetOverlay({
   className,
   ...props
 }: React.ComponentProps<typeof SheetPrimitive.Overlay>) {
+  const reduceAnimations = useMotionPolicy();
   return (
     <SheetPrimitive.Overlay
       data-slot="sheet-overlay"
@@ -33,6 +35,7 @@ function SheetOverlay({
         className,
       )}
       {...props}
+      {...(reduceAnimations ? { style: mergeMotionStyle(props.style) } : {})}
     />
   );
 }
@@ -47,6 +50,7 @@ function SheetContent({
   side?: "top" | "right" | "bottom" | "left";
   showCloseButton?: boolean;
 }) {
+  const reduceAnimations = useMotionPolicy();
   return (
     <SheetPortal>
       <SheetOverlay />
@@ -58,6 +62,7 @@ function SheetContent({
           className,
         )}
         {...props}
+        {...(reduceAnimations ? { style: mergeMotionStyle(props.style) } : {})}
       >
         {children}
         {showCloseButton && (

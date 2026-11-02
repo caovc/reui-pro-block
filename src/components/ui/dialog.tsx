@@ -6,6 +6,7 @@ import { Dialog as DialogPrimitive } from "radix-ui";
 
 import { Button } from "@/components/ui/button";
 import { XIcon } from "lucide-react";
+import { mergeMotionStyle, useMotionPolicy } from "@/components/ui/motion-policy";
 
 function Dialog({ ...props }: React.ComponentProps<typeof DialogPrimitive.Root>) {
   return <DialogPrimitive.Root data-slot="dialog" {...props} />;
@@ -27,6 +28,7 @@ function DialogOverlay({
   className,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Overlay>) {
+  const reduceAnimations = useMotionPolicy();
   return (
     <DialogPrimitive.Overlay
       data-slot="dialog-overlay"
@@ -35,6 +37,7 @@ function DialogOverlay({
         className,
       )}
       {...props}
+      {...(reduceAnimations ? { style: mergeMotionStyle(props.style) } : {})}
     />
   );
 }
@@ -47,6 +50,7 @@ function DialogContent({
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
   showCloseButton?: boolean;
 }) {
+  const reduceAnimations = useMotionPolicy();
   return (
     <DialogPortal>
       <DialogOverlay />
@@ -57,6 +61,7 @@ function DialogContent({
           className,
         )}
         {...props}
+        {...(reduceAnimations ? { style: mergeMotionStyle(props.style) } : {})}
       >
         {children}
         {showCloseButton && (

@@ -869,10 +869,12 @@ export function CollapseHandle({
   collapsed,
   onToggle,
   label = "sidebar",
+  showTooltips = true,
 }: {
   collapsed: boolean;
   onToggle: () => void;
   label?: string;
+  showTooltips?: boolean;
 }) {
   return (
     <SidebarRail
@@ -881,14 +883,17 @@ export function CollapseHandle({
       aria-label={`${collapsed ? "Expand" : "Collapse"} ${label}`}
       aria-expanded={!collapsed}
       onClick={onToggle}
+      {...(showTooltips ? {} : { title: undefined })}
     >
       <span className="shell-rail-glyph" aria-hidden="true">
         <span />
         <span />
       </span>
-      <span className="shell-rail-label" aria-hidden="true">
-        {collapsed ? "Expand" : "Collapse"}
-      </span>
+      {showTooltips && (
+        <span className="shell-rail-label" aria-hidden="true">
+          {collapsed ? "Expand" : "Collapse"}
+        </span>
+      )}
     </SidebarRail>
   );
 }

@@ -527,6 +527,8 @@ export function templateImplementationTargets(template: {
   };
   const secondaryModules: Record<string, string[]> = {
     surge: [
+      "commerce-account-settings",
+      "atlas-account-settings",
       "commerce-settings-general",
       "commerce-settings-domains",
       "commerce-settings-team",
@@ -538,6 +540,8 @@ export function templateImplementationTargets(template: {
       "commerce-settings-records",
     ],
     manifest: [
+      "commerce-account-settings",
+      "atlas-account-settings",
       "commerce-settings-general",
       "commerce-settings-domains",
       "commerce-settings-team",
@@ -665,7 +669,12 @@ export function templateImplementationTargets(template: {
       ? ["workflow-shell"]
       : []),
   ];
-  return modules.map((module) => `src/templates/${template.family}/${module}.tsx`);
+  return [
+    ...modules.map((module) => `src/templates/${template.family}/${module}.tsx`),
+    ...(template.family === "business" && ["surge", "manifest"].includes(template.id)
+      ? ["src/components/ui/motion-policy.ts"]
+      : []),
+  ];
 }
 
 export function implementationFirst(files: Record<string, string>, candidates: string[]) {
