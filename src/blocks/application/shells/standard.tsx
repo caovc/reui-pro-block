@@ -412,6 +412,7 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
             <Navigation
               items={nav}
               initialExpanded={variant === 1 ? ["Pipelines"] : variant === 2 ? ["Customers"] : []}
+              menuClassName={variant === 1 ? "min-w-48" : undefined}
               collapsed={collapsed}
               active={active}
               onSelect={setActive}

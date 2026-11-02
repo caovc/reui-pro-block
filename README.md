@@ -35,6 +35,8 @@ Surge and Manifest notification preferences now compose the actual free ReUI Dat
 
 Document Editor now composes the actual free ReUI Frame and ColorPicker with native Tiptap formatting, links, task checkboxes, read-only mode and live counts. Explicit native history boundaries keep heading/alignment Undo separate from typing. Two actual downloaded projects passed their original strict builds and 18 native cases; a separate Mesh case verified real font responses. Source view, copy, single-file download and fresh ZIP closure were checked. See the [editor foundation acceptance record](docs/editor-foundation-release-2026-11-02.json). Advanced tracked review, collaboration synchronization, Wiki contextual controls and the Assistant review dock remain unfinished; this milestone does not claim all five editors are complete. Its new full CI and Pages deployment remain pending.
 
+AppShell1 collapsed navigation uses the actual free ReUI sidebar menu at 192px, retaining native keyboard selection, Inter typography and focus return. Shell2 keeps its default 128px menu. Both site cases, three source/copy/download checks and one unmodified downloaded starter (strict build plus its native Shell1 case) passed. See the [collapsed-menu acceptance record](docs/appshell-collapsed-menu-release-2026-11-02.json). New full CI and Pages deployment remain separate gates.
+
 ## Development
 
 Requires Node.js 24+ and npm.

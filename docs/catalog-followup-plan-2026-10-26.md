@@ -685,3 +685,11 @@ The first owner matrix was31pass/2fail, followed by two necessary passes after a
 Final V5 combined strict build passed, as did supporting-source view/copy/single download and two fresh ZIPs (necessary Source3 under3workers). Actual Document414members and Mesh307members passed original postinstall/strict builds, then Document5 and Mesh13 native checks; real200/loaded Mesh font1 is separate. Every original archive/member, entry/package/config, dist and generated-public byte was rechecked, and owned received previews closed in finally. Original failure evidence is retained. No final combined33 or finalfullSource4 pass is inferred.
 
 The [editor foundation record](editor-foundation-release-2026-11-02.json) lists exact evidence and remaining advanced3/4/5/Wiki/default-body gaps. Base449 complete CI and exact Pages are successful; base300 test-only run41406253214 was still running at this preflight. This new Editor commit must pass its own CI before deployment is claimed.
+
+## 2026-11-02 AppShell1 collapsed menu
+
+The shared Navigation abstraction now forwards the existing free SidebarNavigation optional menuClassName; only AppShell1 supplies min-w-48 to match the observed192px child menu. Other consumers keep undefined and native defaults. No shared primitive is rebuilt and existing source mapping already includes both consumers.
+
+The first combined interaction run was6pass/2fail: both Shell cases passed (192px plus unchanged128px compatibility, Inter14/20, selection, keyboard, Escape and focus), while two first-touch Grid cases failed. Grid is excluded from this Shell-only commit. Source3 passed under3workers with actual view/copy/file for both consumers and a fresh original Shell1 ZIP. The actual Shell closure matches the final clean tree and contains no changed Grid touch module.
+
+Final Shell-only strict build passed. The actual414-member starter passed original postinstall/strict build and the unchanged single Shell1 native case with trace observation. Every original member/entry/package/config/dist/public byte was protected, the owned received preview stopped in finally, and root viewed an unmodified open-menu trace frame. Shell2 compatibility remains site-only. See [the dated record](appshell-collapsed-menu-release-2026-11-02.json) for hashes, bounded SVG serialization and CI/Pages limits.

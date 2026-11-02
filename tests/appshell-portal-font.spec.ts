@@ -130,6 +130,8 @@ test("collapsed navigation children keep reference typography and native keyboar
   const menu = page.getByRole("menu");
   await expect(menu).toBeVisible();
   await expect(menu).toHaveAttribute("data-side", "right");
+  await expect(menu).toHaveCSS("min-width", "192px");
+  await expect.poll(async () => Math.round((await menu.boundingBox())!.width)).toBe(192);
   const first = menu.getByRole("menuitem", { name: "Deployments", exact: true });
   await expect(first).toHaveCSS("font-family", /^Inter,/);
   await expect(first).toHaveCSS("font-size", "14px");
@@ -148,4 +150,26 @@ test("collapsed navigation children keep reference typography and native keyboar
   await page.keyboard.press("Escape");
   await expect(menu).not.toBeVisible();
   await expect(trigger).toBeFocused();
+});
+
+test("other shell navigation retains its default collapsed-menu width and selection", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto(url(2));
+  await expect(page.locator('[data-shell-variant="2"]')).toBeVisible();
+  await page.getByRole("button", { name: "Toggle Sidebar", exact: true }).click();
+  const trigger = page.getByRole("button", { name: "Customers", exact: true });
+  await trigger.click();
+  const menu = page.getByRole("menu");
+  await expect(menu).toHaveCSS("min-width", "128px");
+  await expect.poll(async () => Math.round((await menu.boundingBox())!.width)).toBe(128);
+  await expect(menu).toHaveAttribute("data-side", "right");
+  await menu.getByRole("menuitem", { name: "Accounts", exact: true }).focus();
+  await page.keyboard.press("Enter");
+  await expect(menu).toBeHidden();
+  await expect(trigger).toBeFocused();
+  await expect(page.getByRole("navigation", { name: "Breadcrumb", exact: true })).toContainText(
+    "Accounts",
+  );
 });

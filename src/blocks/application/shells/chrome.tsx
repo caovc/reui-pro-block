@@ -257,6 +257,7 @@ export function Navigation({
   onSelect,
   label = "Platform",
   initialExpanded = [],
+  menuClassName,
 }: {
   items: NavNode[];
   collapsed?: boolean;
@@ -264,6 +265,7 @@ export function Navigation({
   onSelect: (label: string) => void;
   label?: string;
   initialExpanded?: string[];
+  menuClassName?: string;
 }) {
   return (
     <SidebarNavigation
@@ -273,6 +275,7 @@ export function Navigation({
       onSelect={onSelect}
       label={label}
       initialExpanded={initialExpanded}
+      menuClassName={menuClassName}
     />
   );
 }
