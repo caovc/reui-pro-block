@@ -85,102 +85,8 @@ function CampaignGrid({ targets = false }: { targets?: boolean }) {
     [rows, query, status, channel, tab, sort, filterName],
   );
   const totalSpend = filtered.reduce((s, r) => s + r.spend, 0) + (filtered.length === 30 ? 325 : 0);
-  return (
-    <GridFrame
-      title={targets ? "Campaign Targets" : "Campaign Performance"}
-      description={`${rows.length} campaigns · ${targets ? filtered.filter((r) => r.roas >= Number(target || r.roasTarget) && r.cpa <= r.cpaTarget).length + " beating both targets" : filtered.filter((r) => r.status === "Live").length + " live in view · Sep 6 to Oct 5"}`}
-      actions={
-        <>
-          <ExportRows name="campaigns" rows={filtered} />
-          <AddRecord
-            label="New Campaign"
-            title="New campaign"
-            fields={[
-              { name: "name", label: "Campaign name" },
-              { name: "spend", label: "Budget", type: "number", value: "5000" },
-            ]}
-            onSave={(v) =>
-              setRows((rs) => [
-                {
-                  ...campaignSeed[0],
-                  id: Math.max(...rs.map((r) => r.id)) + 1,
-                  name: v.name,
-                  spend: Number(v.spend),
-                },
-                ...rs,
-              ])
-            }
-          />
-        </>
-      }
-    >
-      {!targets && (
-        <div className="grid grid-cols-2 border-b md:grid-cols-6">
-          {[
-            ["Spend", `$${(totalSpend / 1000).toFixed(1)}K`, "76% of $846K budget"],
-            ["Impressions", "43.6M", "2.2% CTR"],
-            [
-              "Conversions",
-              `${(filtered.reduce((s, r) => s + r.conversions, 0) / 1000).toFixed(1)}K`,
-              "-6%",
-            ],
-            ["Blended CPA", "$23.13", "+3.1%"],
-            ["Blended ROAS", "5.0x", `Target ${target}x`],
-            [
-              "Below Target",
-              String(
-                // The public overview uses campaign-specific goals; the shared override below is applied after a user changes the scope.
-                !query &&
-                  !filterName &&
-                  status === "All statuses" &&
-                  channel === "All channels" &&
-                  target === "4.3" &&
-                  rows.length === 30
-                  ? 21
-                  : filtered.filter((r) => r.roas < Number(target || r.roasTarget)).length,
-              ),
-              `of ${filtered.length} campaigns`,
-            ],
-          ].map(([name, value, detail]) => (
-            <div key={name} className="border-r px-4 py-3.5 last:border-r-0">
-              <div className="text-xs text-muted-foreground">{name}</div>
-              <div className="mt-1 text-xl font-semibold">{value}</div>
-              <div
-                className={cn(
-                  "mt-0.5 text-xs",
-                  name === "Conversions" || name === "Blended CPA"
-                    ? "text-rose-500"
-                    : "text-muted-foreground",
-                )}
-              >
-                {detail}
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-      {targets && (
-        <GridTabs
-          value={tab}
-          onChange={(v) => {
-            setTab(v);
-            setPage(0);
-          }}
-          items={["All", "Prospecting", "Retargeting", "Retention"].map((name) => ({
-            name,
-            count:
-              name === "All"
-                ? rows.length
-                : rows.filter((r) =>
-                    name === "Prospecting"
-                      ? r.segment === "Prospecting"
-                      : name === "Retargeting"
-                        ? r.segment === "Retargeting"
-                        : r.segment === "Retention",
-                  ).length,
-          }))}
-        />
-      )}
+  const content = (
+    <>
       <div className="flex flex-wrap items-center gap-2 border-b px-3 py-2">
         <GridSearch
           value={query}
@@ -396,6 +302,109 @@ function CampaignGrid({ targets = false }: { targets?: boolean }) {
         }
         onDelete={(r) => setRows((rs) => rs.filter((x) => x.id !== r.id))}
       />
+    </>
+  );
+  return (
+    <GridFrame
+      title={targets ? "Campaign Targets" : "Campaign Performance"}
+      description={`${rows.length} campaigns · ${targets ? filtered.filter((r) => r.roas >= Number(target || r.roasTarget) && r.cpa <= r.cpaTarget).length + " beating both targets" : filtered.filter((r) => r.status === "Live").length + " live in view · Sep 6 to Oct 5"}`}
+      actions={
+        <>
+          <ExportRows name="campaigns" rows={filtered} />
+          <AddRecord
+            label="New Campaign"
+            title="New campaign"
+            fields={[
+              { name: "name", label: "Campaign name" },
+              { name: "spend", label: "Budget", type: "number", value: "5000" },
+            ]}
+            onSave={(v) =>
+              setRows((rs) => [
+                {
+                  ...campaignSeed[0],
+                  id: Math.max(...rs.map((r) => r.id)) + 1,
+                  name: v.name,
+                  spend: Number(v.spend),
+                },
+                ...rs,
+              ])
+            }
+          />
+        </>
+      }
+    >
+      {!targets && (
+        <div className="grid grid-cols-2 border-b md:grid-cols-6">
+          {[
+            ["Spend", `$${(totalSpend / 1000).toFixed(1)}K`, "76% of $846K budget"],
+            ["Impressions", "43.6M", "2.2% CTR"],
+            [
+              "Conversions",
+              `${(filtered.reduce((s, r) => s + r.conversions, 0) / 1000).toFixed(1)}K`,
+              "-6%",
+            ],
+            ["Blended CPA", "$23.13", "+3.1%"],
+            ["Blended ROAS", "5.0x", `Target ${target}x`],
+            [
+              "Below Target",
+              String(
+                // The public overview uses campaign-specific goals; the shared override below is applied after a user changes the scope.
+                !query &&
+                  !filterName &&
+                  status === "All statuses" &&
+                  channel === "All channels" &&
+                  target === "4.3" &&
+                  rows.length === 30
+                  ? 21
+                  : filtered.filter((r) => r.roas < Number(target || r.roasTarget)).length,
+              ),
+              `of ${filtered.length} campaigns`,
+            ],
+          ].map(([name, value, detail]) => (
+            <div key={name} className="border-r px-4 py-3.5 last:border-r-0">
+              <div className="text-xs text-muted-foreground">{name}</div>
+              <div className="mt-1 text-xl font-semibold">{value}</div>
+              <div
+                className={cn(
+                  "mt-0.5 text-xs",
+                  name === "Conversions" || name === "Blended CPA"
+                    ? "text-rose-500"
+                    : "text-muted-foreground",
+                )}
+              >
+                {detail}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+      {targets ? (
+        <GridTabs
+          label="Campaign segments"
+          value={tab}
+          onChange={(v) => {
+            setTab(v);
+            setPage(0);
+          }}
+          items={["All", "Prospecting", "Retargeting", "Retention"].map((name) => ({
+            name,
+            count:
+              name === "All"
+                ? rows.length
+                : rows.filter((r) =>
+                    name === "Prospecting"
+                      ? r.segment === "Prospecting"
+                      : name === "Retargeting"
+                        ? r.segment === "Retargeting"
+                        : r.segment === "Retention",
+                  ).length,
+          }))}
+        >
+          {content}
+        </GridTabs>
+      ) : (
+        content
+      )}
     </GridFrame>
   );
 }
@@ -798,6 +807,7 @@ function Reliability() {
       }
     >
       <GridTabs
+        label="Service health"
         value={tab}
         onChange={setTab}
         items={["All", "Exhausted", "At Risk", "Healthy"].map((name) => ({
@@ -812,253 +822,254 @@ function Reliability() {
                   : r.budget >= 30),
           ).length,
         }))}
-      />
-      <div className="flex flex-wrap gap-2 border-b px-3 py-2">
-        <GridSearch value={query} onChange={setQuery} placeholder="Search SLOs..." />
-        <div className="ml-auto flex flex-wrap gap-2">
-          <Choice
-            value={objective}
-            onChange={setObjective}
-            options={["Own objective", "99.9%", "99.5%"]}
-            label="Shared objective"
-          />
-          <div className="flex items-center rounded border p-0.5">
-            {["Own", "7D", "28D", "30D"].map((v) => (
-              <button
-                key={v}
-                onClick={() => setWindow(v)}
-                aria-pressed={window === v}
-                className={cn(
-                  "rounded px-2 py-1 text-[13px]",
-                  window === v ? "bg-muted font-medium" : "text-muted-foreground",
-                )}
-              >
-                {v}
-              </button>
-            ))}
-          </div>
-          <Choice
-            label="Team"
-            value={team}
-            onChange={setTeam}
-            options={["All teams", "Payments", "Platform", "Messaging"]}
-          />
-        </div>
-      </div>
-      <div className="grid lg:grid-cols-[1.5fr_1fr]">
-        <div className="min-w-0">
-          <DomainRecordGrid
-            data={adjusted}
-            search={query}
-            rowFilter={(r) =>
-              (team === "All teams" || r.team === team) &&
-              (tab === "All" ||
-                (tab === "Exhausted"
-                  ? r.budget < 0
-                  : tab === "At Risk"
-                    ? r.budget >= 0 && r.budget < 30
-                    : r.budget >= 30))
-            }
-            pagination={{ pageIndex: 0, pageSize: 10 }}
-            onRowClick={(r) => setSelected(r.id)}
-            selection={[String(selected)]}
-            onSelectionChange={(ids) => setSelected(Number(ids.at(-1) || 1))}
-            className="[&_tbody_tr]:h-12"
-            fields={[
-              {
-                id: "name",
-                title: "SLO",
-                value: (r) => r.name,
-                size: 240,
-                className: cellClass,
-                render: (r, _i, _gridRow) => {
-                  return (
-                    <>
-                      <button className="text-left font-medium" onClick={() => setSelected(r.id)}>
-                        {r.name}
-                      </button>
-                      <span className="mt-0.5 block text-xs text-muted-foreground">
-                        {r.team.toLowerCase()} ·{" "}
-                        {objective === "Own objective" ? "99.9%" : objective} ·{" "}
-                        {window === "Own" ? "30d" : window.toLowerCase()}
-                      </span>
-                    </>
-                  );
-                },
-              },
-              {
-                id: "team",
-                title: "Owner",
-                value: (r) => r.team,
-                size: 66,
-                render: (_r, i, _gridRow) => {
-                  return (
-                    <>
-                      <TinyAvatar name={["Mina Stone", "Leo Grant", "Emma Wilson"][i % 3]} />
-                    </>
-                  );
-                },
-              },
-              {
-                id: "trend",
-                title: "90 Days",
-                value: (r) => r.budget,
-                size: 88,
-                render: (r, _i, _gridRow) => {
-                  return (
-                    <>
-                      <Spark seed={r.id} color={r.budget < 0 ? "#fb7185" : "#10b981"} />
-                    </>
-                  );
-                },
-              },
-              {
-                id: "budget",
-                title: "Budget Left ↑",
-                value: (r) => r.budget,
-                size: 110,
-                className: (r) =>
-                  cn(
-                    cellClass,
-                    "font-medium tabular-nums",
-                    r.budget < 0 ? "text-rose-500" : "text-emerald-500",
-                  ),
-                render: (r, _i, _gridRow) => {
-                  return (
-                    <>
-                      {r.budget > 0 ? "+" : ""}
-                      {r.budget.toFixed(1)}%
-                    </>
-                  );
-                },
-              },
-              {
-                id: "runsOut",
-                title: "Runs Out",
-                value: (r) => r.budget,
-                size: 90,
-                className: (r) => cn(cellClass, r.budget < 0 && "text-rose-500"),
-                render: (r, _i, _gridRow) => {
-                  return <>{r.budget < 0 ? "Spent" : `${Math.round(r.budget / 2)} days`}</>;
-                },
-              },
-              {
-                id: "alert",
-                title: "Alert",
-                value: (r) => (r.id === 9 ? "Paging" : "Quiet"),
-                size: 68,
-                render: (_r, i, _gridRow) => {
-                  return (
-                    <>
-                      <DotBadge tone={i === 8 ? "bad" : "muted"}>
-                        {i === 8 ? "Paging" : "Quiet"}
-                      </DotBadge>
-                    </>
-                  );
-                },
-              },
-            ]}
-          />
-        </div>
-        <div className="border-t p-4 lg:border-t-0 lg:border-l">
-          <div className="flex items-start justify-between">
-            <div>
-              <h3 className="font-semibold">Budget Index</h3>
-              <p className="mt-1 text-xs text-muted-foreground">
-                {current?.name} ·{" "}
-                <span className="text-rose-500">{current?.budget.toFixed(1)}%</span> ·{" "}
-                {objective === "Own objective" ? "99.9%" : objective} over{" "}
-                {window === "Own" ? "30D" : window}
-              </p>
-            </div>
-            <Button
-              variant="outline"
-              size="sm"
-              className="h-7 text-xs"
-              onClick={() => setDetails(!details)}
-              aria-expanded={details}
-            >
-              Details
-            </Button>
-          </div>
-          {details && (
-            <div className="my-3 rounded border bg-muted/20 p-3 text-sm">
-              <p className="font-medium">{current?.name}</p>
-              <p className="mt-1 text-muted-foreground">Team: {current?.team}</p>
-              <p className="mt-1 text-muted-foreground">
-                {current && current.budget < 0
-                  ? "The error budget is exhausted. Investigate recent failed requests."
-                  : "Error budget remains available for this measurement window."}
-              </p>
-            </div>
-          )}
-          <svg
-            viewBox="0 0 320 300"
-            role="group"
-            aria-label="SLO error budget lollipop chart"
-            className="mt-5 w-full"
-          >
-            <line x1="32" y1="155" x2="312" y2="155" stroke="currentColor" opacity=".2" />
-            {[0, 1, 2, 3, 4].map((i) => (
-              <g key={i}>
-                <text x="0" y={28 + i * 61} fontSize="9" fill="currentColor" opacity=".5">
-                  {100 - i * 50}%
-                </text>
-                <line
-                  x1="32"
-                  y1={25 + i * 61}
-                  x2="312"
-                  y2={25 + i * 61}
-                  stroke="currentColor"
-                  opacity=".05"
-                />
-              </g>
-            ))}
-            {adjusted.map((r, i) => {
-              const x = 42 + i * 15;
-              const y = 155 - r.budget * 1.2;
-              const color = r.budget < 0 ? "#ef4444" : r.budget < 30 ? "#f59e0b" : "#10b981";
-              return (
-                <g
-                  key={r.id}
-                  onClick={() => setSelected(r.id)}
-                  tabIndex={0}
-                  role="button"
-                  aria-label={`Inspect ${r.name}`}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") setSelected(r.id);
-                  }}
-                  className="cursor-pointer"
+      >
+        <div className="flex flex-wrap gap-2 border-b px-3 py-2">
+          <GridSearch value={query} onChange={setQuery} placeholder="Search SLOs..." />
+          <div className="ml-auto flex flex-wrap gap-2">
+            <Choice
+              value={objective}
+              onChange={setObjective}
+              options={["Own objective", "99.9%", "99.5%"]}
+              label="Shared objective"
+            />
+            <div className="flex items-center rounded border p-0.5">
+              {["Own", "7D", "28D", "30D"].map((v) => (
+                <button
+                  key={v}
+                  onClick={() => setWindow(v)}
+                  aria-pressed={window === v}
+                  className={cn(
+                    "rounded px-2 py-1 text-[13px]",
+                    window === v ? "bg-muted font-medium" : "text-muted-foreground",
+                  )}
                 >
-                  <rect x={x - 6} y="20" width="12" height="265" fill="transparent" />
-                  <line
-                    x1={x}
-                    y1={155}
-                    x2={x}
-                    y2={y}
-                    stroke="currentColor"
-                    opacity=".2"
-                    strokeDasharray="2 2"
-                  />
-                  {selected === r.id && <circle cx={x} cy={y} r="7" fill={color} opacity=".15" />}
-                  <circle cx={x} cy={y} r={selected === r.id ? 4 : 2.5} fill={color} />
-                </g>
-              );
-            })}
-          </svg>
-          <div className="flex justify-center gap-4 text-xs">
-            <span className="text-emerald-500">● Healthy</span>
-            <span className="text-amber-500">● At Risk</span>
-            <span className="text-rose-500">● Exhausted</span>
+                  {v}
+                </button>
+              ))}
+            </div>
+            <Choice
+              label="Team"
+              value={team}
+              onChange={setTeam}
+              options={["All teams", "Payments", "Platform", "Messaging"]}
+            />
           </div>
         </div>
-      </div>
-      <footer className="flex justify-between border-t px-3 py-2 text-xs text-muted-foreground">
-        <span>
-          Showing {filtered.length} of {rows.length} SLOs · 2 muted
-        </span>
-        <span>Measured at {objective.toLowerCase()} · Evaluated Sep 29, 14:20 UTC</span>
-      </footer>
+        <div className="grid lg:grid-cols-[1.5fr_1fr]">
+          <div className="min-w-0">
+            <DomainRecordGrid
+              data={adjusted}
+              search={query}
+              rowFilter={(r) =>
+                (team === "All teams" || r.team === team) &&
+                (tab === "All" ||
+                  (tab === "Exhausted"
+                    ? r.budget < 0
+                    : tab === "At Risk"
+                      ? r.budget >= 0 && r.budget < 30
+                      : r.budget >= 30))
+              }
+              pagination={{ pageIndex: 0, pageSize: 10 }}
+              onRowClick={(r) => setSelected(r.id)}
+              selection={[String(selected)]}
+              onSelectionChange={(ids) => setSelected(Number(ids.at(-1) || 1))}
+              className="[&_tbody_tr]:h-12"
+              fields={[
+                {
+                  id: "name",
+                  title: "SLO",
+                  value: (r) => r.name,
+                  size: 240,
+                  className: cellClass,
+                  render: (r, _i, _gridRow) => {
+                    return (
+                      <>
+                        <button className="text-left font-medium" onClick={() => setSelected(r.id)}>
+                          {r.name}
+                        </button>
+                        <span className="mt-0.5 block text-xs text-muted-foreground">
+                          {r.team.toLowerCase()} ·{" "}
+                          {objective === "Own objective" ? "99.9%" : objective} ·{" "}
+                          {window === "Own" ? "30d" : window.toLowerCase()}
+                        </span>
+                      </>
+                    );
+                  },
+                },
+                {
+                  id: "team",
+                  title: "Owner",
+                  value: (r) => r.team,
+                  size: 66,
+                  render: (_r, i, _gridRow) => {
+                    return (
+                      <>
+                        <TinyAvatar name={["Mina Stone", "Leo Grant", "Emma Wilson"][i % 3]} />
+                      </>
+                    );
+                  },
+                },
+                {
+                  id: "trend",
+                  title: "90 Days",
+                  value: (r) => r.budget,
+                  size: 88,
+                  render: (r, _i, _gridRow) => {
+                    return (
+                      <>
+                        <Spark seed={r.id} color={r.budget < 0 ? "#fb7185" : "#10b981"} />
+                      </>
+                    );
+                  },
+                },
+                {
+                  id: "budget",
+                  title: "Budget Left ↑",
+                  value: (r) => r.budget,
+                  size: 110,
+                  className: (r) =>
+                    cn(
+                      cellClass,
+                      "font-medium tabular-nums",
+                      r.budget < 0 ? "text-rose-500" : "text-emerald-500",
+                    ),
+                  render: (r, _i, _gridRow) => {
+                    return (
+                      <>
+                        {r.budget > 0 ? "+" : ""}
+                        {r.budget.toFixed(1)}%
+                      </>
+                    );
+                  },
+                },
+                {
+                  id: "runsOut",
+                  title: "Runs Out",
+                  value: (r) => r.budget,
+                  size: 90,
+                  className: (r) => cn(cellClass, r.budget < 0 && "text-rose-500"),
+                  render: (r, _i, _gridRow) => {
+                    return <>{r.budget < 0 ? "Spent" : `${Math.round(r.budget / 2)} days`}</>;
+                  },
+                },
+                {
+                  id: "alert",
+                  title: "Alert",
+                  value: (r) => (r.id === 9 ? "Paging" : "Quiet"),
+                  size: 68,
+                  render: (_r, i, _gridRow) => {
+                    return (
+                      <>
+                        <DotBadge tone={i === 8 ? "bad" : "muted"}>
+                          {i === 8 ? "Paging" : "Quiet"}
+                        </DotBadge>
+                      </>
+                    );
+                  },
+                },
+              ]}
+            />
+          </div>
+          <div className="border-t p-4 lg:border-t-0 lg:border-l">
+            <div className="flex items-start justify-between">
+              <div>
+                <h3 className="font-semibold">Budget Index</h3>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  {current?.name} ·{" "}
+                  <span className="text-rose-500">{current?.budget.toFixed(1)}%</span> ·{" "}
+                  {objective === "Own objective" ? "99.9%" : objective} over{" "}
+                  {window === "Own" ? "30D" : window}
+                </p>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-7 text-xs"
+                onClick={() => setDetails(!details)}
+                aria-expanded={details}
+              >
+                Details
+              </Button>
+            </div>
+            {details && (
+              <div className="my-3 rounded border bg-muted/20 p-3 text-sm">
+                <p className="font-medium">{current?.name}</p>
+                <p className="mt-1 text-muted-foreground">Team: {current?.team}</p>
+                <p className="mt-1 text-muted-foreground">
+                  {current && current.budget < 0
+                    ? "The error budget is exhausted. Investigate recent failed requests."
+                    : "Error budget remains available for this measurement window."}
+                </p>
+              </div>
+            )}
+            <svg
+              viewBox="0 0 320 300"
+              role="group"
+              aria-label="SLO error budget lollipop chart"
+              className="mt-5 w-full"
+            >
+              <line x1="32" y1="155" x2="312" y2="155" stroke="currentColor" opacity=".2" />
+              {[0, 1, 2, 3, 4].map((i) => (
+                <g key={i}>
+                  <text x="0" y={28 + i * 61} fontSize="9" fill="currentColor" opacity=".5">
+                    {100 - i * 50}%
+                  </text>
+                  <line
+                    x1="32"
+                    y1={25 + i * 61}
+                    x2="312"
+                    y2={25 + i * 61}
+                    stroke="currentColor"
+                    opacity=".05"
+                  />
+                </g>
+              ))}
+              {adjusted.map((r, i) => {
+                const x = 42 + i * 15;
+                const y = 155 - r.budget * 1.2;
+                const color = r.budget < 0 ? "#ef4444" : r.budget < 30 ? "#f59e0b" : "#10b981";
+                return (
+                  <g
+                    key={r.id}
+                    onClick={() => setSelected(r.id)}
+                    tabIndex={0}
+                    role="button"
+                    aria-label={`Inspect ${r.name}`}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") setSelected(r.id);
+                    }}
+                    className="cursor-pointer"
+                  >
+                    <rect x={x - 6} y="20" width="12" height="265" fill="transparent" />
+                    <line
+                      x1={x}
+                      y1={155}
+                      x2={x}
+                      y2={y}
+                      stroke="currentColor"
+                      opacity=".2"
+                      strokeDasharray="2 2"
+                    />
+                    {selected === r.id && <circle cx={x} cy={y} r="7" fill={color} opacity=".15" />}
+                    <circle cx={x} cy={y} r={selected === r.id ? 4 : 2.5} fill={color} />
+                  </g>
+                );
+              })}
+            </svg>
+            <div className="flex justify-center gap-4 text-xs">
+              <span className="text-emerald-500">● Healthy</span>
+              <span className="text-amber-500">● At Risk</span>
+              <span className="text-rose-500">● Exhausted</span>
+            </div>
+          </div>
+        </div>
+        <footer className="flex justify-between border-t px-3 py-2 text-xs text-muted-foreground">
+          <span>
+            Showing {filtered.length} of {rows.length} SLOs · 2 muted
+          </span>
+          <span>Measured at {objective.toLowerCase()} · Evaluated Sep 29, 14:20 UTC</span>
+        </footer>
+      </GridTabs>
     </GridFrame>
   );
 }

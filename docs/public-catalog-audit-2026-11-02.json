@@ -1,0 +1,924 @@
+{
+  "auditDate": "2026-11-02",
+  "timezone": "Asia/Shanghai",
+  "fetchWindowUTC": {
+    "from": "2026-11-02T03:57:06.560Z",
+    "to": "2026-11-02T03:59:11.960Z"
+  },
+  "fetchWindowAsiaShanghai": {
+    "from": "2026-11-02T11:57:06.560000+08:00",
+    "to": "2026-11-02T11:59:11.960000+08:00"
+  },
+  "officialPublicBlockCount": 672,
+  "localCatalogCount": 673,
+  "officialCategoryCount": 79,
+  "officialGroupCount": 7,
+  "fullIDSetProof": {
+    "sitemapUniqueLeafURLs": 672,
+    "llmsFullUniqueBlockRecords": 672,
+    "categoryMarkdownPagesHTTP200": 79,
+    "categoryMarkdownUniqueBlockRecords": 672,
+    "eachPageDeclaredCountMatchesParsedIDs": true,
+    "threeFullURLIDSetsIdentical": true,
+    "homepageSitemapAndMarkdownCategorySetsIdentical": true
+  },
+  "localComparison": {
+    "missingOfficialIDs": [],
+    "extraLocalIDs": [
+      {
+        "id": "solution-dev-ops-7",
+        "name": "Deploy Board",
+        "classification": "retained legacy example outside the current official public indexes"
+      }
+    ],
+    "matchingShortDisplayTitles": 672,
+    "shortDisplayTitleDifferences": [],
+    "groupCategoryIDMismatches": [],
+    "localCatalogSHA256": "1dfb46770671137fa1f1f0ae730228dfcf2120d0825ca9252be3bae9a87c43fd"
+  },
+  "groups": [
+    {
+      "group": "ai-agents",
+      "official": 22,
+      "local": 22,
+      "missing": 0,
+      "extra": 0
+    },
+    {
+      "group": "application",
+      "official": 305,
+      "local": 305,
+      "missing": 0,
+      "extra": 0
+    },
+    {
+      "group": "chart",
+      "official": 52,
+      "local": 52,
+      "missing": 0,
+      "extra": 0
+    },
+    {
+      "group": "data-grid",
+      "official": 57,
+      "local": 57,
+      "missing": 0,
+      "extra": 0
+    },
+    {
+      "group": "ecommerce",
+      "official": 87,
+      "local": 87,
+      "missing": 0,
+      "extra": 0
+    },
+    {
+      "group": "marketing",
+      "official": 67,
+      "local": 67,
+      "missing": 0,
+      "extra": 0
+    },
+    {
+      "group": "solutions",
+      "official": 82,
+      "local": 83,
+      "missing": 0,
+      "extra": 1
+    }
+  ],
+  "responseEvidence": [
+    {
+      "url": "https://reui.io/llms.txt",
+      "finalURL": "https://reui.io/llms.txt",
+      "startedAtUTC": "2026-11-02T03:57:06.560Z",
+      "fetchedAtUTC": "2026-11-02T03:57:07.533Z",
+      "status": 200,
+      "contentType": "text/plain; charset=utf-8",
+      "bytes": 43115,
+      "sha256": "1c00d4f5d24b88d5aff740b8b6827a61936222e258854902185e3dffa257f863"
+    },
+    {
+      "url": "https://reui.io/llms-full.txt",
+      "finalURL": "https://reui.io/llms-full.txt",
+      "startedAtUTC": "2026-11-02T03:57:06.577Z",
+      "fetchedAtUTC": "2026-11-02T03:57:07.729Z",
+      "status": 200,
+      "contentType": "text/plain; charset=utf-8",
+      "bytes": 359869,
+      "sha256": "cd0d5880d54a697b6b232c0015fc6db4b103e2d25740b82ccad1d1c33091f527"
+    },
+    {
+      "url": "https://reui.io/sitemap.xml",
+      "finalURL": "https://reui.io/sitemap.xml",
+      "startedAtUTC": "2026-11-02T03:57:06.577Z",
+      "fetchedAtUTC": "2026-11-02T03:57:07.247Z",
+      "status": 200,
+      "contentType": "application/xml",
+      "bytes": 209747,
+      "sha256": "5b935d6dfb43b05b527ffc787e62ee9a32d64bcf89f2bcd075848e4e2e2d511a"
+    },
+    {
+      "url": "https://reui.io/blocks",
+      "finalURL": "https://reui.io/blocks",
+      "startedAtUTC": "2026-11-02T03:57:06.577Z",
+      "fetchedAtUTC": "2026-11-02T03:57:07.479Z",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "bytes": 327841,
+      "sha256": "d54eff214c6ef52f7967df83d31ef3ad151abb7a593ce408970e3c2232f60f36"
+    },
+    {
+      "url": "https://reui.io/blocks/ai-agents/agent-activity.md",
+      "finalURL": "https://reui.io/blocks/ai-agents/agent-activity.md",
+      "startedAtUTC": "2026-11-02T03:59:08.803Z",
+      "fetchedAtUTC": "2026-11-02T03:59:09.328Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 3562,
+      "sha256": "2b0197d3d0c9b5795aef7ebfe8d4d1e3b90bd228b5f9d813243ecf384c9d9214"
+    },
+    {
+      "url": "https://reui.io/blocks/ai-agents/ai-chat.md",
+      "finalURL": "https://reui.io/blocks/ai-agents/ai-chat.md",
+      "startedAtUTC": "2026-11-02T03:59:08.736Z",
+      "fetchedAtUTC": "2026-11-02T03:59:09.238Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 6402,
+      "sha256": "a12a43893d4def4970db6e05135bb3c5d110d886d151cf5013d1de4dc605f197"
+    },
+    {
+      "url": "https://reui.io/blocks/ai-agents/ai-usage.md",
+      "finalURL": "https://reui.io/blocks/ai-agents/ai-usage.md",
+      "startedAtUTC": "2026-11-02T03:59:09.033Z",
+      "fetchedAtUTC": "2026-11-02T03:59:09.449Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 3278,
+      "sha256": "8b4e1dc09e02974d370e93ecc36b1742ebe5dd3a384cbe8127a2c46a5a9a5f6b"
+    },
+    {
+      "url": "https://reui.io/blocks/application/app-shell.md",
+      "finalURL": "https://reui.io/blocks/application/app-shell.md",
+      "startedAtUTC": "2026-11-02T03:58:23.343Z",
+      "fetchedAtUTC": "2026-11-02T03:58:24.115Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 14213,
+      "sha256": "14955d3589d153cf09335408e2421415a1a71e43c849f091ca884c4f5e6562a5"
+    },
+    {
+      "url": "https://reui.io/blocks/application/auth.md",
+      "finalURL": "https://reui.io/blocks/application/auth.md",
+      "startedAtUTC": "2026-11-02T03:59:02.156Z",
+      "fetchedAtUTC": "2026-11-02T03:59:03.123Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 8012,
+      "sha256": "1f3ec937ee246335b18c0c9bab6229225f124c89f16572021b8bf6da7f830c9e"
+    },
+    {
+      "url": "https://reui.io/blocks/application/card.md",
+      "finalURL": "https://reui.io/blocks/application/card.md",
+      "startedAtUTC": "2026-11-02T03:59:02.172Z",
+      "fetchedAtUTC": "2026-11-02T03:59:03.307Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 13779,
+      "sha256": "0ef07af12a9e3c5151ee47d53bb60c74fb1c65867ddf0f6bcac2bcaabf6e6ec9"
+    },
+    {
+      "url": "https://reui.io/blocks/application/dashboard.md",
+      "finalURL": "https://reui.io/blocks/application/dashboard.md",
+      "startedAtUTC": "2026-11-02T03:59:02.172Z",
+      "fetchedAtUTC": "2026-11-02T03:59:03.198Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 4552,
+      "sha256": "59afef0f89154765c30677153b4a6bb15bea733eeeea4c20482a5628ec31bf60"
+    },
+    {
+      "url": "https://reui.io/blocks/application/dialog.md",
+      "finalURL": "https://reui.io/blocks/application/dialog.md",
+      "startedAtUTC": "2026-11-02T03:59:02.172Z",
+      "fetchedAtUTC": "2026-11-02T03:59:03.201Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 6672,
+      "sha256": "47b30232fa5a012d855cfd9703dfd378041faf7c01dff069a939e09c6e6c19c2"
+    },
+    {
+      "url": "https://reui.io/blocks/application/empty-state.md",
+      "finalURL": "https://reui.io/blocks/application/empty-state.md",
+      "startedAtUTC": "2026-11-02T03:59:03.124Z",
+      "fetchedAtUTC": "2026-11-02T03:59:03.516Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 6185,
+      "sha256": "33b720a87031b77c4c719334b8b52b7900d33897ba01d525bae10d3dcac90b2b"
+    },
+    {
+      "url": "https://reui.io/blocks/application/event-calendar.md",
+      "finalURL": "https://reui.io/blocks/application/event-calendar.md",
+      "startedAtUTC": "2026-11-02T03:59:03.198Z",
+      "fetchedAtUTC": "2026-11-02T03:59:03.756Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 4285,
+      "sha256": "b743a686d4fc7ffc2b6b6d3634a35d0e3043e070cbfd20276fe0d88147aae8cc"
+    },
+    {
+      "url": "https://reui.io/blocks/application/flow.md",
+      "finalURL": "https://reui.io/blocks/application/flow.md",
+      "startedAtUTC": "2026-11-02T03:59:03.202Z",
+      "fetchedAtUTC": "2026-11-02T03:59:03.754Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 3419,
+      "sha256": "566cb0657175d1248c33888145eed3bcb907a518f3fb6e759aff9a318c788d0e"
+    },
+    {
+      "url": "https://reui.io/blocks/application/form.md",
+      "finalURL": "https://reui.io/blocks/application/form.md",
+      "startedAtUTC": "2026-11-02T03:59:03.307Z",
+      "fetchedAtUTC": "2026-11-02T03:59:03.767Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 6065,
+      "sha256": "68704c24d33e85a811bf4a331b43a213aff7788fdb3993740a73cd4c02aeb9e0"
+    },
+    {
+      "url": "https://reui.io/blocks/application/gantt.md",
+      "finalURL": "https://reui.io/blocks/application/gantt.md",
+      "startedAtUTC": "2026-11-02T03:59:03.517Z",
+      "fetchedAtUTC": "2026-11-02T03:59:03.963Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 3429,
+      "sha256": "3297a92ba6402c1a3b838528934efeed096094445498b51957ef925c5bd05e1c"
+    },
+    {
+      "url": "https://reui.io/blocks/application/kanban-board.md",
+      "finalURL": "https://reui.io/blocks/application/kanban-board.md",
+      "startedAtUTC": "2026-11-02T03:59:03.754Z",
+      "fetchedAtUTC": "2026-11-02T03:59:04.107Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 5467,
+      "sha256": "5d2710a15edfdc6dcb710785e4f30d0ef27bca95bca57a54f398a1ed920715d6"
+    },
+    {
+      "url": "https://reui.io/blocks/application/list.md",
+      "finalURL": "https://reui.io/blocks/application/list.md",
+      "startedAtUTC": "2026-11-02T03:59:03.757Z",
+      "fetchedAtUTC": "2026-11-02T03:59:04.231Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 4656,
+      "sha256": "aebda9e31df3691cbff228d4d830d07ed11b6a28ce48c06cd726030d2eee383a"
+    },
+    {
+      "url": "https://reui.io/blocks/application/navbar.md",
+      "finalURL": "https://reui.io/blocks/application/navbar.md",
+      "startedAtUTC": "2026-11-02T03:59:03.767Z",
+      "fetchedAtUTC": "2026-11-02T03:59:04.323Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 6003,
+      "sha256": "6b506323da6aac0bbdb206d0936ca7aca9cd13b356f0caf5d0d3bd2e96a1ae8b"
+    },
+    {
+      "url": "https://reui.io/blocks/application/onboarding.md",
+      "finalURL": "https://reui.io/blocks/application/onboarding.md",
+      "startedAtUTC": "2026-11-02T03:59:03.964Z",
+      "fetchedAtUTC": "2026-11-02T03:59:04.455Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 4890,
+      "sha256": "39b5a40fb2f4455a3d91581a81d11e71436b3b5594cbec36bebac18a78255565"
+    },
+    {
+      "url": "https://reui.io/blocks/application/profile.md",
+      "finalURL": "https://reui.io/blocks/application/profile.md",
+      "startedAtUTC": "2026-11-02T03:59:04.108Z",
+      "fetchedAtUTC": "2026-11-02T03:59:04.629Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 5498,
+      "sha256": "6ee614828bfd08f1351d74f0c938efcf3d78d4dfe54e0b1ad227024509d12224"
+    },
+    {
+      "url": "https://reui.io/blocks/application/rich-text-editor.md",
+      "finalURL": "https://reui.io/blocks/application/rich-text-editor.md",
+      "startedAtUTC": "2026-11-02T03:59:04.232Z",
+      "fetchedAtUTC": "2026-11-02T03:59:04.672Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 4307,
+      "sha256": "5724c25a0b2357e5d926a8ea49e3741e81bf0c9bf155d60bc4160b81a23cbbe0"
+    },
+    {
+      "url": "https://reui.io/blocks/application/schedule.md",
+      "finalURL": "https://reui.io/blocks/application/schedule.md",
+      "startedAtUTC": "2026-11-02T03:59:04.324Z",
+      "fetchedAtUTC": "2026-11-02T03:59:04.766Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 5230,
+      "sha256": "ac443a0d31a1a1f0d511b13c70623f5ded6bf26cc2f4119a7974653b4e32e0b8"
+    },
+    {
+      "url": "https://reui.io/blocks/application/settings.md",
+      "finalURL": "https://reui.io/blocks/application/settings.md",
+      "startedAtUTC": "2026-11-02T03:59:04.456Z",
+      "fetchedAtUTC": "2026-11-02T03:59:04.980Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 6859,
+      "sha256": "6c1c703f6be535499ba490038529b377f016c6986986d8800c7a8c4b105bfa99"
+    },
+    {
+      "url": "https://reui.io/blocks/application/sheet.md",
+      "finalURL": "https://reui.io/blocks/application/sheet.md",
+      "startedAtUTC": "2026-11-02T03:59:04.630Z",
+      "fetchedAtUTC": "2026-11-02T03:59:05.094Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 10034,
+      "sha256": "fca7d007743248ca147621fde1d54b1442f829bb0afe90e1e2050933333e61cc"
+    },
+    {
+      "url": "https://reui.io/blocks/application/stats.md",
+      "finalURL": "https://reui.io/blocks/application/stats.md",
+      "startedAtUTC": "2026-11-02T03:59:04.673Z",
+      "fetchedAtUTC": "2026-11-02T03:59:05.224Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 6509,
+      "sha256": "7f89a1d40dfda1ee66df5d3aec2eb6648ff5504d63da30f1275332ccff173667"
+    },
+    {
+      "url": "https://reui.io/blocks/application/timeline.md",
+      "finalURL": "https://reui.io/blocks/application/timeline.md",
+      "startedAtUTC": "2026-11-02T03:59:04.767Z",
+      "fetchedAtUTC": "2026-11-02T03:59:05.256Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 4723,
+      "sha256": "133da66c2e8bb38cfde7bb3a97c2155ed9a4040f4037621aaea6634270138f84"
+    },
+    {
+      "url": "https://reui.io/blocks/application/whiteboard.md",
+      "finalURL": "https://reui.io/blocks/application/whiteboard.md",
+      "startedAtUTC": "2026-11-02T03:59:04.981Z",
+      "fetchedAtUTC": "2026-11-02T03:59:05.355Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 2966,
+      "sha256": "d3d819c62520bcabdfdc731630f0385a4fc3e515d6e987139cb9b43bfd5fd649"
+    },
+    {
+      "url": "https://reui.io/blocks/application/wizard.md",
+      "finalURL": "https://reui.io/blocks/application/wizard.md",
+      "startedAtUTC": "2026-11-02T03:59:05.094Z",
+      "fetchedAtUTC": "2026-11-02T03:59:05.795Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 4888,
+      "sha256": "10c32caf71262681165a7fd709b6f5b5768235da9df71eb266daea8d0513f7da"
+    },
+    {
+      "url": "https://reui.io/blocks/chart/area-chart.md",
+      "finalURL": "https://reui.io/blocks/chart/area-chart.md",
+      "startedAtUTC": "2026-11-02T03:59:06.294Z",
+      "fetchedAtUTC": "2026-11-02T03:59:06.856Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 3173,
+      "sha256": "3a5fa8b4d99cbad3314b50fd09cc18acd79e2a982d50b02906884add76dee6f6"
+    },
+    {
+      "url": "https://reui.io/blocks/chart/bar-chart.md",
+      "finalURL": "https://reui.io/blocks/chart/bar-chart.md",
+      "startedAtUTC": "2026-11-02T03:59:06.331Z",
+      "fetchedAtUTC": "2026-11-02T03:59:06.912Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 5812,
+      "sha256": "8389e44043351c575bce9047862fe285bdf911667c47a6dca32eb7bfd4b4df61"
+    },
+    {
+      "url": "https://reui.io/blocks/chart/composed-chart.md",
+      "finalURL": "https://reui.io/blocks/chart/composed-chart.md",
+      "startedAtUTC": "2026-11-02T03:59:06.472Z",
+      "fetchedAtUTC": "2026-11-02T03:59:06.854Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 3448,
+      "sha256": "0da869e92a6328a4fd06dc7458388fd2ada3188a39b160a92e2fb20bf8cb0452"
+    },
+    {
+      "url": "https://reui.io/blocks/chart/line-chart.md",
+      "finalURL": "https://reui.io/blocks/chart/line-chart.md",
+      "startedAtUTC": "2026-11-02T03:59:06.852Z",
+      "fetchedAtUTC": "2026-11-02T03:59:07.239Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 3559,
+      "sha256": "fef2eb20269d9119c4b67843954c75492c001f5bead854e1569ee1f212f5390b"
+    },
+    {
+      "url": "https://reui.io/blocks/chart/pie-chart.md",
+      "finalURL": "https://reui.io/blocks/chart/pie-chart.md",
+      "startedAtUTC": "2026-11-02T03:59:06.855Z",
+      "fetchedAtUTC": "2026-11-02T03:59:07.236Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 2721,
+      "sha256": "1e091b244c71a3dc17056442e281847fb12f51db30e236280a3f05cab5bf8dd6"
+    },
+    {
+      "url": "https://reui.io/blocks/chart/radial-chart.md",
+      "finalURL": "https://reui.io/blocks/chart/radial-chart.md",
+      "startedAtUTC": "2026-11-02T03:59:06.856Z",
+      "fetchedAtUTC": "2026-11-02T03:59:07.241Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 2666,
+      "sha256": "24378bac6a3565202531fddd0c8dac54396ea7e63adac004b9dd61d7f5a251cf"
+    },
+    {
+      "url": "https://reui.io/blocks/chart/sankey-chart.md",
+      "finalURL": "https://reui.io/blocks/chart/sankey-chart.md",
+      "startedAtUTC": "2026-11-02T03:59:06.913Z",
+      "fetchedAtUTC": "2026-11-02T03:59:07.431Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 3094,
+      "sha256": "b20ae51a6fdc345214de8e883fd28eea1c8b4661bbc20c945a8740c33935ebd5"
+    },
+    {
+      "url": "https://reui.io/blocks/chart/slope-chart.md",
+      "finalURL": "https://reui.io/blocks/chart/slope-chart.md",
+      "startedAtUTC": "2026-11-02T03:59:07.237Z",
+      "fetchedAtUTC": "2026-11-02T03:59:07.617Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 2912,
+      "sha256": "90e47401ad9f4e7ff06b859afc285956c28a52a7ea817f67de8ddd522d035e25"
+    },
+    {
+      "url": "https://reui.io/blocks/chart/sparkline.md",
+      "finalURL": "https://reui.io/blocks/chart/sparkline.md",
+      "startedAtUTC": "2026-11-02T03:59:07.239Z",
+      "fetchedAtUTC": "2026-11-02T03:59:07.590Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 5130,
+      "sha256": "87ba446799318d6d6f99046855dafd46d6ce9b3ba143d31be38693d3e4156d47"
+    },
+    {
+      "url": "https://reui.io/blocks/chart/status-tracker.md",
+      "finalURL": "https://reui.io/blocks/chart/status-tracker.md",
+      "startedAtUTC": "2026-11-02T03:59:07.241Z",
+      "fetchedAtUTC": "2026-11-02T03:59:07.615Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 2501,
+      "sha256": "4d64f17e0ee51379e3a4a8991cfb32c7f7916172070a1075121950acff36e7d0"
+    },
+    {
+      "url": "https://reui.io/blocks/data-grid/advanced.md",
+      "finalURL": "https://reui.io/blocks/data-grid/advanced.md",
+      "startedAtUTC": "2026-11-02T03:58:23.326Z",
+      "fetchedAtUTC": "2026-11-02T03:58:24.099Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 8550,
+      "sha256": "24d18adfa24cb9a38cf30610575c971cdafac2f64eb777ee0f8249998cc587e0"
+    },
+    {
+      "url": "https://reui.io/blocks/data-grid/base.md",
+      "finalURL": "https://reui.io/blocks/data-grid/base.md",
+      "startedAtUTC": "2026-11-02T03:59:05.225Z",
+      "fetchedAtUTC": "2026-11-02T03:59:05.778Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 5478,
+      "sha256": "cf87a5b0c0e4cced134b1de59ad5e331f2a7d24b8b6bf888c90f0af2831f343d"
+    },
+    {
+      "url": "https://reui.io/blocks/data-grid/columns.md",
+      "finalURL": "https://reui.io/blocks/data-grid/columns.md",
+      "startedAtUTC": "2026-11-02T03:59:05.258Z",
+      "fetchedAtUTC": "2026-11-02T03:59:05.911Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 3722,
+      "sha256": "8cc59131513a4773c6d6d9069d876c8568ff59eedd09a2f9435ad00a52307804"
+    },
+    {
+      "url": "https://reui.io/blocks/data-grid/drag-drop.md",
+      "finalURL": "https://reui.io/blocks/data-grid/drag-drop.md",
+      "startedAtUTC": "2026-11-02T03:59:05.356Z",
+      "fetchedAtUTC": "2026-11-02T03:59:05.789Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 3787,
+      "sha256": "dd27916fe65fc169fcc75140c7485b0b16b9939b543fee6bf1953f597d9055f6"
+    },
+    {
+      "url": "https://reui.io/blocks/data-grid/editing.md",
+      "finalURL": "https://reui.io/blocks/data-grid/editing.md",
+      "startedAtUTC": "2026-11-02T03:59:05.779Z",
+      "fetchedAtUTC": "2026-11-02T03:59:06.166Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 4886,
+      "sha256": "dd497b07a33c4da251d79093f50fae1c4c92967436fe68865cc44b35e180401b"
+    },
+    {
+      "url": "https://reui.io/blocks/data-grid/expansion.md",
+      "finalURL": "https://reui.io/blocks/data-grid/expansion.md",
+      "startedAtUTC": "2026-11-02T03:59:05.792Z",
+      "fetchedAtUTC": "2026-11-02T03:59:06.293Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 3215,
+      "sha256": "0590557a893156c48950a8591517e2d981c51ed9e068eb7044cce250d38ea201"
+    },
+    {
+      "url": "https://reui.io/blocks/data-grid/filtering.md",
+      "finalURL": "https://reui.io/blocks/data-grid/filtering.md",
+      "startedAtUTC": "2026-11-02T03:59:05.796Z",
+      "fetchedAtUTC": "2026-11-02T03:59:06.330Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 3608,
+      "sha256": "d2a8893ed69a097d16926945eef1c9409fb3ad00709e87c82ae15c5170e4debb"
+    },
+    {
+      "url": "https://reui.io/blocks/data-grid/grouping.md",
+      "finalURL": "https://reui.io/blocks/data-grid/grouping.md",
+      "startedAtUTC": "2026-11-02T03:59:05.912Z",
+      "fetchedAtUTC": "2026-11-02T03:59:06.470Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 4391,
+      "sha256": "a7ead0fa1e2d3b929be4b78a1d449543153a571915da6f237d055824d8947104"
+    },
+    {
+      "url": "https://reui.io/blocks/data-grid/virtualization.md",
+      "finalURL": "https://reui.io/blocks/data-grid/virtualization.md",
+      "startedAtUTC": "2026-11-02T03:59:06.169Z",
+      "fetchedAtUTC": "2026-11-02T03:59:06.851Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 2857,
+      "sha256": "47ddc0cd9e9d9ccdb4601ba046f048d418dcb2b06e97c78604748a4e07d18f5a"
+    },
+    {
+      "url": "https://reui.io/blocks/ecommerce/category-card.md",
+      "finalURL": "https://reui.io/blocks/ecommerce/category-card.md",
+      "startedAtUTC": "2026-11-02T03:59:09.036Z",
+      "fetchedAtUTC": "2026-11-02T03:59:09.473Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 3656,
+      "sha256": "78a98e244eac142d6c1d84c56908025e4c651664a0673033aabd18c21c6225b4"
+    },
+    {
+      "url": "https://reui.io/blocks/ecommerce/checkout.md",
+      "finalURL": "https://reui.io/blocks/ecommerce/checkout.md",
+      "startedAtUTC": "2026-11-02T03:59:09.239Z",
+      "fetchedAtUTC": "2026-11-02T03:59:09.803Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 4174,
+      "sha256": "847b5693f22de49925f3f2f05841e091dd480176d683fc10dc1a2615c4dde483"
+    },
+    {
+      "url": "https://reui.io/blocks/ecommerce/comparison.md",
+      "finalURL": "https://reui.io/blocks/ecommerce/comparison.md",
+      "startedAtUTC": "2026-11-02T03:59:09.329Z",
+      "fetchedAtUTC": "2026-11-02T03:59:09.876Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 3751,
+      "sha256": "ecc2347b3516b235680cb0e4ac91e06374efd369972f0b726b0c618eb8b36a19"
+    },
+    {
+      "url": "https://reui.io/blocks/ecommerce/coupon.md",
+      "finalURL": "https://reui.io/blocks/ecommerce/coupon.md",
+      "startedAtUTC": "2026-11-02T03:59:09.450Z",
+      "fetchedAtUTC": "2026-11-02T03:59:09.963Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 3256,
+      "sha256": "a04f85de1cf60074eef6b74601f58877bf694fe37dc542595552582901442ee8"
+    },
+    {
+      "url": "https://reui.io/blocks/ecommerce/filter-sidebar.md",
+      "finalURL": "https://reui.io/blocks/ecommerce/filter-sidebar.md",
+      "startedAtUTC": "2026-11-02T03:59:09.474Z",
+      "fetchedAtUTC": "2026-11-02T03:59:10.072Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 3896,
+      "sha256": "6b57beccc360dad5d96176d1be48732a62b2aee7714e6e45bb71e099162a7b33"
+    },
+    {
+      "url": "https://reui.io/blocks/ecommerce/product-card.md",
+      "finalURL": "https://reui.io/blocks/ecommerce/product-card.md",
+      "startedAtUTC": "2026-11-02T03:59:09.804Z",
+      "fetchedAtUTC": "2026-11-02T03:59:10.186Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 4888,
+      "sha256": "53ef1bc0728809e91814bf3d2c050a52f73d5d086e40ba3cb94fcafba86e4165"
+    },
+    {
+      "url": "https://reui.io/blocks/ecommerce/product-detail.md",
+      "finalURL": "https://reui.io/blocks/ecommerce/product-detail.md",
+      "startedAtUTC": "2026-11-02T03:59:09.877Z",
+      "fetchedAtUTC": "2026-11-02T03:59:10.331Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 3946,
+      "sha256": "2aefc1c4fcf8bb1e09aa6d6ec2658aab63f15507ab7c7653ddb61e719cc4ae31"
+    },
+    {
+      "url": "https://reui.io/blocks/ecommerce/product-grid.md",
+      "finalURL": "https://reui.io/blocks/ecommerce/product-grid.md",
+      "startedAtUTC": "2026-11-02T03:59:09.964Z",
+      "fetchedAtUTC": "2026-11-02T03:59:10.390Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 3554,
+      "sha256": "8e97b961f0aecbfa4a6d0179ef5fe7dcc24520db36db215c7130c4433ac37d26"
+    },
+    {
+      "url": "https://reui.io/blocks/ecommerce/receipt.md",
+      "finalURL": "https://reui.io/blocks/ecommerce/receipt.md",
+      "startedAtUTC": "2026-11-02T03:59:10.074Z",
+      "fetchedAtUTC": "2026-11-02T03:59:10.702Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 3518,
+      "sha256": "a483d1d7f09bbb2f9bfaa81cd52bc807cbc6c080f67a76f7feb44d1f3809bb26"
+    },
+    {
+      "url": "https://reui.io/blocks/ecommerce/review.md",
+      "finalURL": "https://reui.io/blocks/ecommerce/review.md",
+      "startedAtUTC": "2026-11-02T03:59:10.188Z",
+      "fetchedAtUTC": "2026-11-02T03:59:10.706Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 3934,
+      "sha256": "8792ebb6d9da2be76971f6d97d7aa1ed50e7c1be2e99ff41b94422cdbec9be9e"
+    },
+    {
+      "url": "https://reui.io/blocks/ecommerce/shop-hero.md",
+      "finalURL": "https://reui.io/blocks/ecommerce/shop-hero.md",
+      "startedAtUTC": "2026-11-02T03:59:10.704Z",
+      "fetchedAtUTC": "2026-11-02T03:59:11.052Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 4159,
+      "sha256": "2d236ac0ac38dc194cababcf6a3c98c2467a72541ef3bd3141b28b1ffbd73556"
+    },
+    {
+      "url": "https://reui.io/blocks/ecommerce/shopping-cart.md",
+      "finalURL": "https://reui.io/blocks/ecommerce/shopping-cart.md",
+      "startedAtUTC": "2026-11-02T03:59:10.333Z",
+      "fetchedAtUTC": "2026-11-02T03:59:10.710Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 3999,
+      "sha256": "539070bf927e39468d2aace96355700e5dac51a4b39bc4f7c2a3abeac44aa240"
+    },
+    {
+      "url": "https://reui.io/blocks/ecommerce/wishlist.md",
+      "finalURL": "https://reui.io/blocks/ecommerce/wishlist.md",
+      "startedAtUTC": "2026-11-02T03:59:10.392Z",
+      "fetchedAtUTC": "2026-11-02T03:59:10.858Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 3481,
+      "sha256": "9f2aa5e5ad3e8de65e59f78589b14fc0c5be8d64a035e8b141cce66de985ec18"
+    },
+    {
+      "url": "https://reui.io/blocks/marketing/blog.md",
+      "finalURL": "https://reui.io/blocks/marketing/blog.md",
+      "startedAtUTC": "2026-11-02T03:59:10.709Z",
+      "fetchedAtUTC": "2026-11-02T03:59:11.132Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 3535,
+      "sha256": "1c5d3b4a89d056cdacf5914b9efc99ed133a7da0721531e8ec321de74762b83e"
+    },
+    {
+      "url": "https://reui.io/blocks/marketing/compare.md",
+      "finalURL": "https://reui.io/blocks/marketing/compare.md",
+      "startedAtUTC": "2026-11-02T03:59:10.712Z",
+      "fetchedAtUTC": "2026-11-02T03:59:11.160Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 2593,
+      "sha256": "09e6201bc34f6af8a8e172720715752511ec9f6f9b217ee1e026eef9ffcdd3a7"
+    },
+    {
+      "url": "https://reui.io/blocks/marketing/contact.md",
+      "finalURL": "https://reui.io/blocks/marketing/contact.md",
+      "startedAtUTC": "2026-11-02T03:59:10.860Z",
+      "fetchedAtUTC": "2026-11-02T03:59:11.268Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 3462,
+      "sha256": "c9f019d5108064d8a6292507595afbbcee6e43a4d632c5197eb117f92dcc0860"
+    },
+    {
+      "url": "https://reui.io/blocks/marketing/cta.md",
+      "finalURL": "https://reui.io/blocks/marketing/cta.md",
+      "startedAtUTC": "2026-11-02T03:59:11.053Z",
+      "fetchedAtUTC": "2026-11-02T03:59:11.434Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 6843,
+      "sha256": "f6d107a42eb968a8dc75c563ef9932b1476386d82a7c3e003af2b10694d0551b"
+    },
+    {
+      "url": "https://reui.io/blocks/marketing/faq.md",
+      "finalURL": "https://reui.io/blocks/marketing/faq.md",
+      "startedAtUTC": "2026-11-02T03:59:11.133Z",
+      "fetchedAtUTC": "2026-11-02T03:59:11.522Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 3483,
+      "sha256": "576f86c26c707a6412715552271a325607b2955b5597b9c99812dc3f8ec78718"
+    },
+    {
+      "url": "https://reui.io/blocks/marketing/hero.md",
+      "finalURL": "https://reui.io/blocks/marketing/hero.md",
+      "startedAtUTC": "2026-11-02T03:59:11.161Z",
+      "fetchedAtUTC": "2026-11-02T03:59:11.611Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 6698,
+      "sha256": "b8b177d8fb375e5f2e2303fb6356faba488985a03a51428c5666106c7f4c606b"
+    },
+    {
+      "url": "https://reui.io/blocks/marketing/how-it-works.md",
+      "finalURL": "https://reui.io/blocks/marketing/how-it-works.md",
+      "startedAtUTC": "2026-11-02T03:59:11.269Z",
+      "fetchedAtUTC": "2026-11-02T03:59:11.764Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 3485,
+      "sha256": "c006672e0862742799d56271b604181fbc7e08725cee34be58dced43fee671e8"
+    },
+    {
+      "url": "https://reui.io/blocks/marketing/pricing.md",
+      "finalURL": "https://reui.io/blocks/marketing/pricing.md",
+      "startedAtUTC": "2026-11-02T03:59:11.436Z",
+      "fetchedAtUTC": "2026-11-02T03:59:11.960Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 3968,
+      "sha256": "da7eadce0783811bda511ef9285a39f0fab53845786112bd8811e26217d1b6e1"
+    },
+    {
+      "url": "https://reui.io/blocks/solutions/agents.md",
+      "finalURL": "https://reui.io/blocks/solutions/agents.md",
+      "startedAtUTC": "2026-11-02T03:59:07.616Z",
+      "fetchedAtUTC": "2026-11-02T03:59:08.415Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 5409,
+      "sha256": "67784434d49149f12681d4d9e53c8199ff8bd8703bb47c214db4b913b3503bb4"
+    },
+    {
+      "url": "https://reui.io/blocks/solutions/ai-ops.md",
+      "finalURL": "https://reui.io/blocks/solutions/ai-ops.md",
+      "startedAtUTC": "2026-11-02T03:59:07.432Z",
+      "fetchedAtUTC": "2026-11-02T03:59:07.780Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 5422,
+      "sha256": "19a00272c616c17d477ae12bfbc9b1c1c8e242206546b83d28ed358433eff35b"
+    },
+    {
+      "url": "https://reui.io/blocks/solutions/analytics.md",
+      "finalURL": "https://reui.io/blocks/solutions/analytics.md",
+      "startedAtUTC": "2026-11-02T03:59:07.617Z",
+      "fetchedAtUTC": "2026-11-02T03:59:08.087Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 5010,
+      "sha256": "8ba86baa562518e2171aff3aaca6c6552288851e320c9bfee0161f93bd6aba8b"
+    },
+    {
+      "url": "https://reui.io/blocks/solutions/billing.md",
+      "finalURL": "https://reui.io/blocks/solutions/billing.md",
+      "startedAtUTC": "2026-11-02T03:59:07.782Z",
+      "fetchedAtUTC": "2026-11-02T03:59:08.209Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 5394,
+      "sha256": "d49072594608a63869d480704d0eda1ee6d56cefa14441ea7d9a80713bbd124d"
+    },
+    {
+      "url": "https://reui.io/blocks/solutions/bookings.md",
+      "finalURL": "https://reui.io/blocks/solutions/bookings.md",
+      "startedAtUTC": "2026-11-02T03:59:07.965Z",
+      "fetchedAtUTC": "2026-11-02T03:59:08.336Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 3781,
+      "sha256": "ef15b664b98031e9d156389b1a4da4a1991a87f819f5bd92b914c321afe188f2"
+    },
+    {
+      "url": "https://reui.io/blocks/solutions/crm.md",
+      "finalURL": "https://reui.io/blocks/solutions/crm.md",
+      "startedAtUTC": "2026-11-02T03:59:07.591Z",
+      "fetchedAtUTC": "2026-11-02T03:59:07.964Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 5320,
+      "sha256": "859d6038f1f5678a239a05ea00cf9db2d8f03010e100fe59208c91c71f2c7d8b"
+    },
+    {
+      "url": "https://reui.io/blocks/solutions/dev-ops.md",
+      "finalURL": "https://reui.io/blocks/solutions/dev-ops.md",
+      "startedAtUTC": "2026-11-02T03:58:23.343Z",
+      "fetchedAtUTC": "2026-11-02T03:58:24.114Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 4799,
+      "sha256": "fa89d02dc71a134cf1240938c04ce5cbee605e316e2f4f8986220079f0ba4ba1"
+    },
+    {
+      "url": "https://reui.io/blocks/solutions/digital-twin.md",
+      "finalURL": "https://reui.io/blocks/solutions/digital-twin.md",
+      "startedAtUTC": "2026-11-02T03:59:08.566Z",
+      "fetchedAtUTC": "2026-11-02T03:59:09.035Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 3383,
+      "sha256": "96e8cb95d6c3423a6ebe3d86e34154b1d5b16569ea271a3d37eb0c3c1cb20761"
+    },
+    {
+      "url": "https://reui.io/blocks/solutions/files.md",
+      "finalURL": "https://reui.io/blocks/solutions/files.md",
+      "startedAtUTC": "2026-11-02T03:59:08.089Z",
+      "fetchedAtUTC": "2026-11-02T03:59:08.441Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 2184,
+      "sha256": "5ea3bf1212242f2cf32c73664b634948a8a9a5e602cfb966b660536275917ebd"
+    },
+    {
+      "url": "https://reui.io/blocks/solutions/inventory.md",
+      "finalURL": "https://reui.io/blocks/solutions/inventory.md",
+      "startedAtUTC": "2026-11-02T03:59:08.211Z",
+      "fetchedAtUTC": "2026-11-02T03:59:08.565Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 5296,
+      "sha256": "f3b10b19f34af2b2a3fc3a48fba484a7c8e4c68b758588bd88125009501e7ad0"
+    },
+    {
+      "url": "https://reui.io/blocks/solutions/map.md",
+      "finalURL": "https://reui.io/blocks/solutions/map.md",
+      "startedAtUTC": "2026-11-02T03:59:08.338Z",
+      "fetchedAtUTC": "2026-11-02T03:59:08.734Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 2737,
+      "sha256": "18b5621bd4dfaef31503da79bc06b6b6f86cb71ad5e8954757591bbc257d9690"
+    },
+    {
+      "url": "https://reui.io/blocks/solutions/travel.md",
+      "finalURL": "https://reui.io/blocks/solutions/travel.md",
+      "startedAtUTC": "2026-11-02T03:59:08.417Z",
+      "fetchedAtUTC": "2026-11-02T03:59:08.801Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 2482,
+      "sha256": "4aeeef9fb370efcad72da2c9e0c6f4605d672d19ceac19d4d835ab60e4f1066a"
+    },
+    {
+      "url": "https://reui.io/blocks/solutions/users.md",
+      "finalURL": "https://reui.io/blocks/solutions/users.md",
+      "startedAtUTC": "2026-11-02T03:59:08.442Z",
+      "fetchedAtUTC": "2026-11-02T03:59:09.032Z",
+      "status": 200,
+      "contentType": "text/markdown; charset=utf-8",
+      "bytes": 4443,
+      "sha256": "764faee515567989c18e4590d1a334544ad4d68ccfe0d8a44e84ccc1b019231b"
+    }
+  ],
+  "scope": "Public catalog metadata coverage only. This is not proof of implementation completeness, pixel parity or interaction correctness. No addition/removal/rename date or legacy URL availability is inferred.",
+  "publicationBoundary": "This summary contains only URLs, audit times, response hashes and aggregate results. Raw responses, long metadata descriptions and original site material remain outside the repository in the private audit directory."
+}

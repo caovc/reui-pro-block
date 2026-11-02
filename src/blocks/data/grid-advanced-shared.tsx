@@ -27,6 +27,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import {
   ArrowDownToLine,
@@ -43,6 +44,7 @@ import {
   Trash2,
 } from "lucide-react";
 import {
+  useId,
   useState,
   type ClipboardEventHandler,
   type KeyboardEventHandler,
@@ -166,40 +168,63 @@ export function Choice({
     </Select>
   );
 }
+// Actual official free ReUI c-tabs-7, MIT (c) Keenthemes.
+// https://reui.io/r/radix-nova/c-tabs-7.json
+// One persistent result panel keeps the native grid mounted as its filter changes.
 export function GridTabs({
   value,
   onChange,
   items,
+  label,
+  children,
 }: {
   value: string;
   onChange: (value: string) => void;
   items: (string | { name: string; count: number })[];
+  label: string;
+  children: ReactNode;
 }) {
+  const id = useId();
+  const panelId = `${id}-panel`;
+  const activeIndex = items.findIndex(
+    (item) => (typeof item === "string" ? item : item.name) === value,
+  );
   return (
-    <div className="flex flex-wrap items-center gap-4 border-b px-3" role="tablist">
-      {items.map((item) => {
-        const name = typeof item === "string" ? item : item.name;
-        return (
-          <button
-            key={name}
-            role="tab"
-            aria-selected={value === name}
-            onClick={() => onChange(name)}
-            className={cn(
-              "flex items-center gap-1.5 border-b-2 py-2.5 text-sm",
-              value === name
-                ? "border-foreground font-medium"
-                : "border-transparent text-muted-foreground hover:text-foreground",
-            )}
-          >
-            {name}
-            {typeof item !== "string" && (
-              <span className="rounded bg-muted px-1 text-xs">{item.count}</span>
-            )}
-          </button>
-        );
-      })}
-    </div>
+    <Tabs value={value} onValueChange={onChange} className="min-w-0 gap-0">
+      <TabsList
+        aria-label={label}
+        variant="line"
+        className="h-auto w-full flex-wrap justify-start gap-4 border-b px-3 py-0"
+      >
+        {items.map((item, index) => {
+          const name = typeof item === "string" ? item : item.name;
+          return (
+            <TabsTrigger
+              key={name}
+              value={name}
+              id={`${id}-tab-${index}`}
+              aria-controls={panelId}
+              className="h-auto flex-none gap-2 rounded-none px-0 py-2.5 after:bottom-[-1px]"
+            >
+              {name}
+              {typeof item !== "string" && (
+                <Badge variant="secondary" size="sm">
+                  {item.count}
+                </Badge>
+              )}
+            </TabsTrigger>
+          );
+        })}
+      </TabsList>
+      <TabsContent
+        value={value}
+        id={panelId}
+        aria-labelledby={`${id}-tab-${activeIndex}`}
+        className="min-w-0"
+      >
+        {children}
+      </TabsContent>
+    </Tabs>
   );
 }
 export function TableOptions({

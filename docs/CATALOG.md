@@ -2,7 +2,9 @@
 
 Updated 2026-11-02 from `src/data/catalog.json`. The local catalog has 673 entries across 79 categories and 7 groups, plus 18 templates. Entries record reachable implementations and reference URLs; they do not assert pixel-identical completion.
 
-The dated 2026-10-28 public audit recorded 672 official block IDs. The local catalog now includes Retail P&L Outlook and Store KPI Board, and retains legacy `solution-dev-ops-7`, which was absent from that listing. This checklist does not claim to be the latest official catalog. See the [follow-up plan](catalog-followup-plan-2026-10-26.md) for validation and release status.
+The 2026-11-02 public audit verified 672 official block IDs: the sitemap, full public metadata and all 79 category pages contain the same complete ID set. Every official ID is present locally, and all 672 short display titles match. The sole extra local entry is retained legacy `solution-dev-ops-7` (Deploy Board), outside the current official public indexes. The audit does not establish when that entry left the indexes or whether its old URL remains reachable.
+
+See the [public catalog audit](public-catalog-audit-2026-11-02.md) and [response URLs, timestamps and SHA-256 evidence](public-catalog-audit-2026-11-02.json). These are metadata findings as of the recorded fetch window, separate from implementation fidelity and release acceptance. The [follow-up plan](catalog-followup-plan-2026-10-26.md) records scoped validation, retained failures and the pending next CI and Pages deployment.
 
 ## Application / App Shell (36)
 

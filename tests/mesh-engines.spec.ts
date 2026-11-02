@@ -36,6 +36,7 @@ test("Mesh document edits survive immediate page switching and reload", async ({
   await navigate(page, "Documents");
   await expect(editor).toContainText("Navigation must keep this native paragraph.");
   await page.reload();
+  await expect(editor).toContainText("Navigation must keep this native paragraph.");
   await navigate(page, "Documents");
   await expect(editor).toContainText("Navigation must keep this native paragraph.");
   await expect(page.locator(".mesh-page-header")).toHaveCount(1);
@@ -167,6 +168,8 @@ test("Mesh native drawing flushes on navigation and exports the real scene", asy
     ),
   ).toBe(true);
   await navigate(page, "Canvas");
+  await expect(host).toHaveAttribute("aria-busy", "false");
+  await page.reload();
   await expect(host).toHaveAttribute("aria-busy", "false");
   await page.getByRole("button", { name: "Export canvas", exact: true }).click();
   const download = page.waitForEvent("download");

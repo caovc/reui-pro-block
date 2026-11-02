@@ -1,6 +1,6 @@
 # Bricklane
 
-Independent recreations of **ReUI Pro Blocks and Templates**, built with React, TypeScript, Tailwind CSS and official open-source ReUI components. Bricklane uses an original logo, name, and locally authored demo illustrations. The local development checklist contains **673 entries, 79 categories, 7 groups**, plus **18 template workspaces**. It includes Retail P&L Outlook and Store KPI Board. The dated 2026-10-28 public audit recorded 672 official block IDs; the local catalog also retains legacy `solution-dev-ops-7`, which was absent from that listing. These are local implementation counts and a dated reference snapshot, not a claim about the current official catalog.
+Independent recreations of **ReUI Pro Blocks and Templates**, built with React, TypeScript, Tailwind CSS and official open-source ReUI components. Bricklane uses an original logo, name, and locally authored demo illustrations. The local development checklist contains **673 entries, 79 categories, 7 groups**, plus **18 template workspaces**. The 2026-11-02 public audit verified all **672 official block IDs** against the sitemap, full public metadata and all 79 category pages. All 672 short display titles match the local catalog; the only extra local entry is retained legacy `solution-dev-ops-7` (Deploy Board). See the [public catalog audit](docs/public-catalog-audit-2026-11-02.md) and [dated response evidence](docs/public-catalog-audit-2026-11-02.json). Metadata coverage does not establish visual or interaction fidelity.
 
 > This is an independent recreation using shared layout families. Catalog coverage is not a claim of 673 pixel-identical copies. No REUI Pro source or premium assets are distributed. See [provenance](THIRD_PARTY_NOTICES.md) and the implementation notes in `docs/`.
 
@@ -25,6 +25,12 @@ These are independent React implementations based on the public previews. They p
 
 Surge and Manifest include store settings, team, payments, notifications, billing, locations, and suppliers. Miro includes profile, clinic configuration, billing, and notification preferences. Verve includes account, workspace, people, billing, integrations, API keys, and webhooks. These settings use actual free ReUI compositions with local validation and session state; source view and runnable exports include their implementations and licenses. See [settings implementation and verification](docs/templates-settings-release-2026-10-29.json). These local demos add plan changes, cancel/resume, saved payment-method selection and provider connections to Surge/Manifest; Verve adds member view/edit/delete, validated CSV import, plan/seat changes and calendar connection drafts. These actions use local demo state. The [catalog follow-up record](docs/catalog-followup-plan-2026-10-26.md) distinguishes site checks, actual downloaded-project acceptance and deployment status.
 
+## Current fidelity checks
+
+The current candidate forwards Tabs orientation to the native Radix primitive. Advanced 3 and 4 use the actual free ReUI `c-tabs-7` composition with Badge, preserving their existing grid actions and state. App Shell 2 uses the existing compact SearchForm, and App Shell 18 uses the existing Progress implementation. Mesh keeps document refresh separate from canvas state, and Pricing uses the actual ReUI Badge composition. These changes reuse the existing free implementations; domain state and demo data remain local.
+
+Scoped validation passed 64 affected site cases, 14 Mesh cases, 14 source/export cases and 2 Pricing cases. Seven actual downloaded projects passed their original strict builds and 27 native cases; an additional Mesh font case checked the real font response and loaded text. The [follow-up record](docs/catalog-followup-plan-2026-10-26.md) preserves the original failures, environment preparation and export-theme limits. This is scoped validation, not a claim that all 673 blocks are pixel-identical. The Store source correction also passed 11 necessary checks on the original product input and 7 checks on this candidate with 3 workers. The new source suite passed 14 cases with 3 workers. See the [local acceptance record](docs/fidelity-navigation-tabs-release-2026-11-02.json). The next full CI and Pages deployment remain pending.
+
 ## Development
 
 Requires Node.js 24+ and npm.
@@ -43,7 +49,7 @@ Browser tests require Chromium (`npx playwright install chromium`). `PREVIEW_URL
 
 ## Project layout
 
-- `src/data/catalog.json`: local implementation and dated reference snapshot with titles, ids and URLs
+- `src/data/catalog.json`: local implementations and the verified 2026-11-02 public metadata, plus one retained legacy example
 - `src/blocks/application`: application layout families
 - `src/blocks/data`: data grids, charts, AI and solution layouts
 - `src/blocks/commerce`: commerce and marketing layout families

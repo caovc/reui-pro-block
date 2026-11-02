@@ -28,6 +28,7 @@ import {
 } from "lucide-react";
 import MeshCanvas from "./mesh-canvas";
 import { MeshDocuments } from "./mesh-documents";
+import { readDocumentStore } from "./mesh-document-model";
 import { Person } from "./controls";
 import { blocks } from "@/data/catalog";
 import {
@@ -62,8 +63,14 @@ export default function Mesh() {
   });
   function setView(next: string) {
     const url = new URL(location.href);
-    if (next !== "Documents") url.searchParams.delete("doc");
-    if (next !== "Canvas") url.searchParams.delete("page");
+    if (next === "Documents") {
+      url.searchParams.set("doc", readDocumentStore().active);
+      url.searchParams.delete("page");
+    } else {
+      url.searchParams.delete("doc");
+      if (next === "Canvas") url.searchParams.set("page", "canvas");
+      else url.searchParams.delete("page");
+    }
     if (next !== view) url.searchParams.delete("mode");
     if (url.href !== location.href) history.replaceState(history.state, "", url);
     updateView(next);

@@ -508,3 +508,108 @@ received-entry variants and unrelated shared WIP. This record is created before
 normal-hook commit/push. Exact-head full CI and actual Pages deployment require
 separate verification; this paragraph does not claim they are already successful.
 See [current acceptance record](catalog-actions-673-release-2026-11-02.json).
+
+## Public catalog refresh and fidelity candidate — 2026-11-02
+
+### Complete public metadata comparison
+
+The new public audit supersedes the earlier 2026-10-28 reference snapshot for
+current metadata only. Between 11:57:06 and 11:59:11 Asia/Shanghai on 2026-11-02,
+83 public text responses returned HTTP 200. The sitemap and full public metadata
+each list 672 unique block IDs. All 79 public category Markdown pages produce the
+same complete 672-ID set, and each page's declared count matches its parsed IDs.
+The category sets also match the public blocks page and sitemap. No paid source,
+paid screenshots or original preview assets were accessed for this comparison.
+
+The local catalog contains every official ID, with all 672 short display titles
+and group/category assignments matching. Its 673 entries span 79 categories and
+7 groups, alongside 18 templates. The only extra local entry is retained legacy
+`solution-dev-ops-7` (Deploy Board); the audit does not establish its removal date
+or the availability of its old individual URL. The [public audit summary](public-catalog-audit-2026-11-02.md)
+and [response evidence](public-catalog-audit-2026-11-02.json) provide exact URLs,
+fetch times, SHA-256 values and set comparisons. Raw responses remain outside the
+repository. Metadata agreement is not evidence that all local previews have
+matching pixels, interactions or server features.
+
+### Actual free-component fidelity corrections
+
+The shared Tabs component now forwards its existing orientation prop directly to
+the native Radix Root. Native orientation and keyboard behavior remain with that
+primitive. Advanced 3 and Advanced 4 reuse the actual free ReUI `c-tabs-7`
+composition with Badge. Their business models, filters, sorting, pagination,
+exports and actions remain intact. Advanced 1 retains its original layout and
+does not acquire tabs. Retail 15 and Store 16 retain their existing independent
+imports and routes. The existing source collector already includes the changed
+implementation files, so no new source-target mapping is required.
+
+App Shell 2 reuses the existing compact SearchForm; App Shell 18 reuses Progress.
+Mesh distinguishes document refresh from canvas state, and Pricing uses the
+actual ReUI Badge composition. These are real free-component compositions and
+existing support primitives, not newly named ReUI APIs. Original Bricklane
+branding and substitute preview media, MIT notices and font OFL records remain
+in the source and exports. Domain-specific state and demo policies remain custom
+because UI primitives do not supply those application rules. Rich-text foundation
+work is outside this candidate and has not been built or delivered here.
+
+### Scoped evidence and preserved first failures
+
+The original Tabs orientation check failed once. After forwarding the native
+orientation prop, all 3 necessary cases passed: Miro vertical tabs on desktop and
+phone, and the horizontal navbar case. The original failure remains a separate
+record. The affected site suite passed all 64 cases.
+
+Preparation review found that the archive-based environment omitted the normal
+postinstall asset copy. The initial 64-case site run had passed. A normal
+postinstall supplied those assets without changing any of the 1,141 source files.
+The resulting original strict build passed, and the combined Mesh checks passed
+all 14 cases. This environment repair is not counted as a product-source change.
+The source/export suite passed 14 cases and the Pricing suite passed 2 cases,
+using real source selection, rendered bytes, clipboard and downloaded content.
+
+Seven actual downloaded projects each passed their original strict build; their
+native suites passed 27 cases in total. The received entries, configuration and
+member bytes were preserved rather than repaired for acceptance. App Shell 18's
+standalone case uses its actual exported theme and counts as 1 case; Emerald
+light/dark customizer coverage remains site-only. A separate additional Mesh font
+case passed with an actual HTTP 200 font response, its recorded body SHA-256, and
+real Text/loaded checks. It did not substitute a mocked font response or inject a
+replacement document. These received-project results are separate from site
+source-view and customizer checks.
+
+### Original CI result and pending next release
+
+Commit `3294dc9c9a82c9250493333ad7b0632bd02b09c8` was committed and pushed. Its
+original full CI run 41383410664 finished after 40.9 minutes with 1,951 passed and
+2 failed out of 1,953 cases; Pages was skipped. This failed run remains the
+original result and is not overwritten by later scoped checks.
+
+In the Store source case, all 6 individual file byte assertions succeeded before
+the aggregate case exhausted its total deadline. In the other failing case, the
+ZIP action's asynchronous loader mounted after the original 5-second assertion
+window. These recorded causes concern test readiness and aggregate timing; they
+do not turn the original failures into passes.
+
+The Store correction preserves all original file, clipboard and ZIP assertions,
+splitting the six-file serial chain into six independent flows and waiting for
+real controls through ordinary user actions. The original six-file aggregate
+case is no longer executed. No timeout, retry or forced interaction was added.
+All 11 necessary source cases passed on the original 329 product input with
+3 workers, and all 7 Store cases passed on the combined fidelity candidate with
+3 workers. The new fidelity source suite also passed 14 cases with 3 workers.
+Its seven freshly downloaded archives have exactly the same member names and
+raw member bytes as the accepted original projects; archive timestamps may differ.
+The next release SHA, exact-head full CI and actual Pages deployment are also
+pending. The publishing session must record their actual outcomes before claiming this
+candidate is live. The [local acceptance record](fidelity-navigation-tabs-release-2026-11-02.json)
+records the scoped evidence and its limits. No full-suite or
+successful-deployment result is inferred from the scoped passes above.
+
+### Remaining fidelity queue
+
+The rich-text foundation and Commerce notification DataGrid migration remain
+separate private candidates. The editor first run recorded 31 passes and two
+failures: a duplicate native link overlay and a test selecting a hidden subtitle.
+Those failures remain open for their own correction and acceptance. Advanced
+tracked edits, collaboration presence and the AI review workflow still need
+closer implementation work. None of these queued changes is certified by this
+release.

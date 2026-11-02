@@ -23,7 +23,10 @@ async function openPortal(page: Page, n: number, width: number) {
   const popup =
     n === 2 ? page.getByRole("dialog", { name: "Search", exact: true }) : page.getByRole("menu");
   await expect(popup).toBeVisible();
-  const row = n === 2 ? popup.getByRole("combobox") : popup.getByRole("menuitem").first();
+  const row =
+    n === 2
+      ? popup.getByRole("textbox", { name: "Search", exact: true })
+      : popup.getByRole("menuitem").first();
   await page.evaluate(() => document.fonts.ready);
   return { trigger, popup, row, opener };
 }

@@ -1,0 +1,432 @@
+{
+  "recordCreatedUTC": "2026-11-02T04:51:17.437335+00:00",
+  "baseCommit": "3294dc9c9a82c9250493333ad7b0632bd02b09c8",
+  "goalComplete": false,
+  "scope": "Seven runtime source changes, native fidelity and source/export verification, and Store source CI test correction.",
+  "runtimeFiles": [
+    "src/components/ui/tabs.tsx",
+    "src/blocks/application/shells/standard.tsx",
+    "src/blocks/application/shells/productivity.tsx",
+    "src/blocks/data/grid-advanced-shared.tsx",
+    "src/blocks/data/grid-advanced.tsx",
+    "src/blocks/commerce/pricing-seat-stepper.css",
+    "src/templates/workflow/mesh.tsx"
+  ],
+  "actualFreeReuse": [
+    {
+      "scope": "Advanced 3/4",
+      "components": ["ReUI c-tabs-7 Tabs/List/Trigger composition", "ReUI Badge"],
+      "replaced": "Hand-written tab buttons and count spans; existing native table, models and actions preserved."
+    },
+    {
+      "scope": "App Shell 2",
+      "components": ["Existing SearchForm", "Dialog", "Input", "Kbd"],
+      "replaced": "General Command results with the reference compact input-only search. Free shadcn support primitives are identified by ReUI as free; no separate ReUI registry primitive is claimed."
+    },
+    {
+      "scope": "App Shell 18",
+      "components": ["Existing Progress Root/Indicator"],
+      "replaced": "Hand-drawn nested div progress; native value 56, 4px track and visible 18/32 retained."
+    },
+    {
+      "scope": "Pricing 1",
+      "components": ["Existing ReUI Badge"],
+      "correction": "Use background-image instead of resetting the success background shorthand."
+    },
+    {
+      "scope": "Miro/shared Tabs",
+      "components": ["Existing native Radix Tabs primitive"],
+      "correction": "Forward orientation directly; keyboard behavior remains native."
+    }
+  ],
+  "customScope": {
+    "mesh": "Canonical document and canvas URLs and local state remain application-specific; free UI primitives do not provide these identity rules.",
+    "businessModels": "Existing demo data, filters, exports and local policies are retained.",
+    "sourceTargets": "No new route or product split file. Existing mappings and static closure include all seven runtime files; source default/copy/download and original projects were checked.",
+    "branding": "Original Bricklane mark and existing licensed substitute assets retained. No ReUI premium source, logo, screenshots or extracted preview artwork distributed."
+  },
+  "frozenProductInput": {
+    "receipt": "fidelity-v2-frozen-runtime.json",
+    "receiptSHA256": "97fbb50f84c01264a794a80a2b46315c00e7f15637c0c4d3a22867257363e64d",
+    "sourceFiles": 1141,
+    "distFiles": 659,
+    "generatedPublicFiles": 247,
+    "preparation": "Archive-based v1 omitted normal postinstall assets. Preparation review found the omission after the initial 64 site passes. Normal unchanged postinstall and strict build prepared v2; all 1141 source files stayed identical. This was not a failing Mesh product test."
+  },
+  "localValidation": {
+    "strictBuild": {
+      "receipt": "fidelity-v2-normal-assets-strict-build.json",
+      "receiptSHA256": "0a81c7f08cea994bd8afa6a0056bc281f9bde44d9bfeae0a6683529cd337600f",
+      "exit": 0,
+      "seconds": 26.307703333000063,
+      "logSHA256": "f24b9fc478053d6fe5e7d86212c3956b788b886498ef15cfd0cc9b3ce0e005a6"
+    },
+    "tabsBefore": {
+      "receipt": "tabs-before-1440-original-once/receipt.json",
+      "receiptSHA256": "04867dd004fbf4389e6ff5810c4dfd06b01ca15d5b486a36fb6e94e5ba625f62",
+      "exit": 1,
+      "seconds": 7.0143929169998955,
+      "reportSHA256": "7ec4f8236788cddd8fb55917d158e8c2ff08feb6bbd047b1d2f2a41a37496813",
+      "stats": {
+        "startTime": "2026-11-02T03:37:34.934Z",
+        "duration": 6408.905000000001,
+        "expected": 0,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      }
+    },
+    "tabsAfter3": {
+      "receipt": "fidelity-next-tabs3-once/receipt.json",
+      "receiptSHA256": "8e39758dd00c715fb16881460573a18d86afa660c094d8940541f19f91348f25",
+      "exit": 0,
+      "seconds": 6.175692833000539,
+      "reportSHA256": "f19a766da03c60c489c2e586bb295e7180a2c2992d274f214d59833fd1445bdd",
+      "stats": {
+        "startTime": "2026-11-02T03:38:06.390Z",
+        "duration": 5669.24,
+        "expected": 3,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    "affectedSite64": {
+      "receipt": "fidelity-next-affected-first-once/receipt.json",
+      "receiptSHA256": "90969f26e91dd665e6af15ed526f655933dcdb299bf180b022ac6bc4f94dd2fb",
+      "exit": 0,
+      "seconds": 123.09878037500039,
+      "reportSHA256": "cfedc9e69620d09ede99a7b327945832507dc9e98926d11676dc16c3baaeff46",
+      "stats": {
+        "startTime": "2026-11-02T03:40:14.577Z",
+        "duration": 122588.167,
+        "expected": 64,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    "normalAssetsMesh14": {
+      "receipt": "fidelity-v2-mesh-necessary10-once/receipt.json",
+      "receiptSHA256": "b659886ef86089026684cf6144d36a09988eed3f239f28077b25ac01797c489a",
+      "exit": 0,
+      "seconds": 28.44327054200039,
+      "reportSHA256": "fa59fd2c24218dfe499d97fa346dd1e0972a791a851adadb458ef35d51dc441e",
+      "stats": {
+        "startTime": "2026-11-02T03:45:36.944Z",
+        "duration": 27886.376,
+        "expected": 14,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    "initialSource14AndPricing2": {
+      "receipt": "fidelity-v2-source14-pricing2-first-once/receipt.json",
+      "receiptSHA256": "32360bfd3d106abcd69937fe0059230fba2eb1f3d55b3e02f72d2a9e6d0f22ac",
+      "exit": 0,
+      "seconds": 60.85233083300045,
+      "reportSHA256": "11e5abbc81d1fe6398ffeac4d4b39b8114ffe0a569933f8516867a92e72aa27e",
+      "stats": {
+        "startTime": "2026-11-02T03:50:42.109Z",
+        "duration": 60223.018,
+        "expected": 16,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    "finalSource14At3Workers": {
+      "receipt": "fidelity-v2-source14-readiness3workers-once/receipt.json",
+      "receiptSHA256": "dffe4118f96e21beac37b3adf87c9d14fa18db250ab3407a00cd737f8e08bc15",
+      "exit": 0,
+      "seconds": 22.25020591700013,
+      "reportSHA256": "5eb2bcfcb8099947eced7dee880bd11704f83bc3fd052b50c9035f36d36ec61b",
+      "stats": {
+        "startTime": "2026-11-02T04:35:11.580Z",
+        "duration": 21731.364999999998,
+        "expected": 14,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    "storeCorrectionBaseNecessary11At3Workers": {
+      "receipt": "ci329-hotfix-necessary-first-once/receipt.json",
+      "receiptSHA256": "69f67eb917a6eab1b38314d712b4f89d0243e6fd71acd0771ae6ffe259d261b8",
+      "exit": 0,
+      "seconds": 19.071392791998733,
+      "reportSHA256": "130e9b2f6e6d20890292b2df87fe404e6594d055a4ebd8a58e4a74c880f8bdd3",
+      "stats": {
+        "startTime": "2026-11-02T04:27:20.356Z",
+        "duration": 18675.964,
+        "expected": 11,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    "storeCorrectionCombined7At3Workers": {
+      "receipt": "fidelity-v2-store7-integration-once/receipt.json",
+      "receiptSHA256": "6c0c256856dc60bf17440d3f60983233b206c1820f4bf127bd52df88db2de4ec",
+      "exit": 0,
+      "seconds": 14.454664999999295,
+      "reportSHA256": "fe200727d8b5bac52293809e6b4e25c2b078c74401f81e666219dcae8d298009",
+      "stats": {
+        "startTime": "2026-11-02T04:29:53.054Z",
+        "duration": 13954.909000000001,
+        "expected": 7,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    "actualOriginalExports": [
+      {
+        "id": "app-shell-2",
+        "originalStrictBuild": {
+          "receipt": "fidelity-received-v2-app-shell-2-original-strict-build.json",
+          "receiptSHA256": "932f61d22518f2b9231f5ec81a0274aa07eb103e07315f4c28c1d35cfbefa019",
+          "exit": 0,
+          "seconds": 9.663625416999821,
+          "logSHA256": "1feeb09b603409f5e94f6ef710ea6bb026f110534692037aad004dfa2fb0a16c"
+        },
+        "native": {
+          "receipt": "fidelity-received-v2-app-shell-2-native-once/receipt.json",
+          "receiptSHA256": "9369a9dac4d49fcb8560e83efcacd71b0236479e3130994dd84cc4b049557def",
+          "exit": 0,
+          "seconds": 4.542881082999884,
+          "reportSHA256": "f04b202bf768301bbf90c597b878abcb09462188eeaea69338d853f341faf632",
+          "stats": {
+            "startTime": "2026-11-02T03:57:15.352Z",
+            "duration": 4155.424,
+            "expected": 2,
+            "skipped": 0,
+            "unexpected": 0,
+            "flaky": 0
+          }
+        }
+      },
+      {
+        "id": "app-shell-18",
+        "originalStrictBuild": {
+          "receipt": "fidelity-received-v2-app-shell-18-original-strict-build.json",
+          "receiptSHA256": "5e1c323609b32de1dbc37467fbb6aaa50c0b792772eae5fd9ee4f9934017d1b3",
+          "exit": 0,
+          "seconds": 10.692047208000076,
+          "logSHA256": "8cadfc0c8b8e2105c7e53c9a4865012e047b7ef4bae43579571e33713d835eac"
+        },
+        "native": {
+          "receipt": "shell18-exported-theme-v3-necessary1-once/receipt.json",
+          "receiptSHA256": "a88570d4feefca9372cc3991e82f4db69a766ea5a225c97b385fa97d5c47fdd1",
+          "exit": 0,
+          "seconds": 1.9403940409993083,
+          "reportSHA256": "7128e5f5a9f095de7aa5accd77960d8e7841917ec725ec33a04eeda25339ed63",
+          "stats": {
+            "startTime": "2026-11-02T04:10:10.726Z",
+            "duration": 1464.991,
+            "expected": 1,
+            "skipped": 0,
+            "unexpected": 0,
+            "flaky": 0
+          }
+        }
+      },
+      {
+        "id": "data-grid-advanced-3",
+        "originalStrictBuild": {
+          "receipt": "fidelity-received-v2-data-grid-advanced-3-original-strict-build.json",
+          "receiptSHA256": "23b6d35f554471180c38738b22cb95f9758ad1d86171a20589aaf798f71ff294",
+          "exit": 0,
+          "seconds": 12.853742499999498,
+          "logSHA256": "110b1f9a65ba59c23e95bf53caedf6c73603ae7ad4a4a994b88bfe9fdecfb9b4"
+        },
+        "native": {
+          "receipt": "fidelity-received-v2-data-grid-advanced-3-native-once/receipt.json",
+          "receiptSHA256": "360cf42a7d2478b0bc250006086c3c609721773b1aeffbf5f884cd43240b0f91",
+          "exit": 0,
+          "seconds": 4.150423082999623,
+          "reportSHA256": "6cb39a30c6d9f43155952d4819ec1326379e5d90d2d9ef264bce580c74839cf9",
+          "stats": {
+            "startTime": "2026-11-02T04:11:10.139Z",
+            "duration": 3783.399,
+            "expected": 2,
+            "skipped": 0,
+            "unexpected": 0,
+            "flaky": 0
+          }
+        }
+      },
+      {
+        "id": "data-grid-advanced-4",
+        "originalStrictBuild": {
+          "receipt": "fidelity-received-v2-data-grid-advanced-4-original-strict-build.json",
+          "receiptSHA256": "8ac3cb7aed808529b138b1dc61ccc51057ae48c7af1b5a79e69ae0b8ad1d2f45",
+          "exit": 0,
+          "seconds": 12.28081525000016,
+          "logSHA256": "6266d3cc2a52145a79ca149f5fff0c6b01333bf5b9cb77b3b6eae8e87348ef45"
+        },
+        "native": {
+          "receipt": "fidelity-received-v2-data-grid-advanced-4-native-once/receipt.json",
+          "receiptSHA256": "6034fba94e6bc87772e588e4690bee9df55f148f8a2eff7afc8cf09e3bc6fbfd",
+          "exit": 0,
+          "seconds": 3.5680375000010827,
+          "reportSHA256": "d6eed4e8bcffa721ec29ca381319b8c2a4d3da0aebf08e6175173ad830b5e05b",
+          "stats": {
+            "startTime": "2026-11-02T04:11:33.878Z",
+            "duration": 3191.391,
+            "expected": 2,
+            "skipped": 0,
+            "unexpected": 0,
+            "flaky": 0
+          }
+        }
+      },
+      {
+        "id": "pricing-1",
+        "originalStrictBuild": {
+          "receipt": "fidelity-received-v2-pricing-1-original-strict-build.json",
+          "receiptSHA256": "183fa434d90c99cc953a4d4f42c09a2c2613a2b0baa38ff32519601c4f36fc2c",
+          "exit": 0,
+          "seconds": 6.776936625001326,
+          "logSHA256": "dd340e8e829722c1216a22029373abdcd3ee3fdffdfdcc26191b28871bc48998"
+        },
+        "native": {
+          "receipt": "fidelity-received-v2-pricing-1-native-once/receipt.json",
+          "receiptSHA256": "908d13d35f5c8f9133a5c9caba3f05f6260e5898633ef05e379e7c08f07dd6a9",
+          "exit": 0,
+          "seconds": 3.849782792000042,
+          "reportSHA256": "11350e2f532cbbedecb662ee641349c26fd7c9ef779bc61282576488530b22c6",
+          "stats": {
+            "startTime": "2026-11-02T04:11:51.108Z",
+            "duration": 3483.5879999999997,
+            "expected": 5,
+            "skipped": 0,
+            "unexpected": 0,
+            "flaky": 0
+          }
+        }
+      },
+      {
+        "id": "miro",
+        "originalStrictBuild": {
+          "receipt": "fidelity-received-v2-miro-original-strict-build.json",
+          "receiptSHA256": "83fd29abe48172c125625f6dc16c7771ca1a5ab21581bbfbb098e28f33250ce3",
+          "exit": 0,
+          "seconds": 7.442350625000472,
+          "logSHA256": "5f87eb479cb73bad724c739efd044d02b436ac109713ffc7c7025a99403c1dce"
+        },
+        "native": {
+          "receipt": "fidelity-received-v2-miro-native-once/receipt.json",
+          "receiptSHA256": "50aec5a1ab73545a24cd0e9139663894a797aa85c345df1fecc2597ae2c32161",
+          "exit": 0,
+          "seconds": 5.129288000000088,
+          "reportSHA256": "66a3e92d55a99fdcbadda80d61a55e721547bb179fb91721b23622bf584f1e26",
+          "stats": {
+            "startTime": "2026-11-02T04:12:09.405Z",
+            "duration": 4746.373,
+            "expected": 2,
+            "skipped": 0,
+            "unexpected": 0,
+            "flaky": 0
+          }
+        }
+      },
+      {
+        "id": "mesh",
+        "originalStrictBuild": {
+          "receipt": "fidelity-received-v2-mesh-original-strict-build.json",
+          "receiptSHA256": "2b27840e23d96f5edf90be370b352b6b430afb8597b09b4c9110c7c9b82ed99b",
+          "exit": 0,
+          "seconds": 9.296243916000094,
+          "logSHA256": "5fd1a561983e3423404e932d25937ab14c886dccd8143a1c6ac53873a60d46b1"
+        },
+        "native": {
+          "receipt": "fidelity-received-v2-mesh-native-once/receipt.json",
+          "receiptSHA256": "204a84905974bf5f8fcc9acdaf7f70b9f93aa288029f9af575e438e0fca2e6c7",
+          "exit": 0,
+          "seconds": 22.975035542000114,
+          "reportSHA256": "2f17f16dd05592043ece181432f53491dfed458a569e2c13bb8b892500fe8a9b",
+          "stats": {
+            "startTime": "2026-11-02T04:12:31.204Z",
+            "duration": 22607.181,
+            "expected": 13,
+            "skipped": 0,
+            "unexpected": 0,
+            "flaky": 0
+          }
+        }
+      }
+    ],
+    "additionalActualMeshFont1": {
+      "receipt": "mesh-font-original-v2-native1-once/receipt.json",
+      "receiptSHA256": "d32c9539586d6312090cb11c1173521a721ce3bfffeb5a5e370cfdab9f8967f7",
+      "exit": 0,
+      "seconds": 2.376744332999806,
+      "reportSHA256": "5fbcba789775f932e885db12327f48094f345843b1d0261624033fc92bd1ef97",
+      "stats": {
+        "startTime": "2026-11-02T04:19:26.251Z",
+        "duration": 1880.554,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    "tooling": {
+      "receipt": "fidelity-release-tooling-receipt.json",
+      "receiptSHA256": "de8ac704d2b2e07268cb19e21f8cd90cfebe411b8c0fc1fd73b1ba53c4794c3a",
+      "exit": 0,
+      "logSHA256": "fde7959e6adaca2859f8e6272eb7035df1b118accfb24ff54dca5478412344a9"
+    },
+    "lint": {
+      "receipt": "fidelity-release-final-lint-receipt.json",
+      "receiptSHA256": "23e822bf07b955e1ab16fc593737ac57a2c434030b88e0b382825668d3f01e9d",
+      "exit": 0,
+      "logSHA256": "154d78d84cedb1947b93d27f251e1933df1fcff8ac4a2d7cfe133eac4d252e96"
+    }
+  },
+  "exportAcceptanceLimits": [
+    "Seven original UI-downloaded ZIPs were built and exercised without received source, entry, package or config repairs. Dependency trees were physical clones of normally installed dependencies, not seven fresh network installs.",
+    "Shell 18 original standalone entry has no gallery accent URL handler. Its derived native case checks its actual exported theme; Emerald light/dark customizer coverage remains site-only. Initial unsupported-theme and equivalent color-string failures are retained, then isolated RGBA normalization passed without DOM changes.",
+    "Mesh additional font case used real native text insertion, actual loaded FontFaces, HTTP 200 font response bodies and SHA256 equality; no replacement document or mock font.",
+    "The final readiness run downloaded seven new original ZIP containers. Member names and all raw member bytes equal the accepted original projects; ZIP timestamp/container hashes can differ. New containers are not separately claimed to have been runtime-executed.",
+    "Private received-entry adapter specs and validator attempts are excluded from product source and full CI discovery."
+  ],
+  "originalFullCI": {
+    "commit": "3294dc9c9a82c9250493333ad7b0632bd02b09c8",
+    "run": 41383410664,
+    "conclusion": "failure",
+    "passed": 1951,
+    "failed": 2,
+    "total": 1953,
+    "workers": 3,
+    "browserMinutes": 40.9,
+    "diagnostics": {
+      "receipt": "ci329-original-failure-receipt.json",
+      "receiptSHA256": "0582c124f8963685e5390c1f3c280e62297137edcfa470b97bf87383aecee282"
+    },
+    "facts": [
+      "All six original per-file source/copy/download byte checks succeeded before the aggregate case exhausted its 30-second deadline.",
+      "The ZIP case observed the asynchronous source loading UI beyond the original five-second expectation; chunks returned 200. A unique CPU cause is not established."
+    ],
+    "testOnlyCorrection": "Six independent natural file flows replace the original six-file serial aggregate, plus one original ZIP flow. Every original raw assertion remains. Actual picker open/Escape establishes readiness before default/source assertions; the ZIP uses its actual download control. No timeout, retry, sleep, forced interaction or worker-config change.",
+    "coldSourcePerformance": "The existing shared source chunk is large; this correction does not claim to optimize its size or loading speed."
+  },
+  "publicationAtRecordCreation": {
+    "newCommit": null,
+    "pushed": false,
+    "newExactCommitFullCI": "pending",
+    "newPagesDeployment": "pending",
+    "lastSuccessfulPagesCommit": "42ad52a9020208cfc39869441042816f4bc7d6d9",
+    "lastSuccessfulDeployment": 7483148781,
+    "previewURL": "https://caovc.github.io/reui-pro-block/",
+    "note": "This immutable local acceptance record is written before the release commit. A successful push does not establish a successful Pages deployment."
+  },
+  "remaining": [
+    "Editor foundation including first-run link overlay correction",
+    "Commerce notification DataGrid runtime and actual export acceptance",
+    "Advanced tracked edits, collaboration presence and AI review fidelity",
+    "Further per-block visual and interaction review; catalog coverage is not pixel parity"
+  ]
+}

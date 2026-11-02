@@ -3,7 +3,7 @@ const route = (id: number) => `./#/preview/application/app-shell/app-shell-${id}
 test("shell command palette uses native command filtering and keyboard selection", async ({
   page,
 }) => {
-  await page.goto(route(2));
+  await page.goto(route(3));
   await page.getByRole("button", { name: "Search workspace", exact: true }).click();
   const input = page.getByRole("combobox", {
     name: "Search workspace routes",

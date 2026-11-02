@@ -54,6 +54,7 @@ import {
   X,
 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
+import { Progress } from "@/components/ui/progress";
 import {
   Dialog,
   DialogContent,
@@ -611,9 +612,7 @@ export function TodoShell() {
                 <p className="flex justify-between text-[11px] text-muted-foreground">
                   Focus Progress<span className="text-foreground">18 / 32</span>
                 </p>
-                <div className="my-3 h-1 rounded bg-muted">
-                  <div className="h-full w-[56%] rounded bg-primary" />
-                </div>
+                <Progress value={56} aria-label="Focus progress" className="my-3" />
                 <p className="text-xs font-medium">Launch Campaign</p>
                 <p className="text-[10px] text-muted-foreground">Next milestone in 3 days</p>
               </div>

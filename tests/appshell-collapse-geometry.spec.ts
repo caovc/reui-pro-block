@@ -232,8 +232,10 @@ for (const width of [1280, 1718]) {
     await search.click();
     const palette = page.getByRole("dialog", { name: "Search", exact: true });
     await expect(palette).toBeVisible();
-    await palette.getByRole("combobox").fill("Projects");
+    await palette.getByRole("textbox", { name: "Search", exact: true }).fill("Projects");
     await page.keyboard.press("Enter");
+    await expect(palette).toBeVisible();
+    await page.keyboard.press("Escape");
     await expect(palette).toHaveCount(0);
     await expect(search).toBeFocused();
     await expect(page.getByRole("navigation", { name: "Breadcrumb" })).toContainText("Projects");
@@ -267,8 +269,10 @@ test("floating Sidebar returns focus to the phone opener after a desktop collaps
   const search = sheet.getByRole("button", { name: "Search workspace", exact: true });
   await search.click();
   const palette = page.getByRole("dialog", { name: "Search", exact: true });
-  await palette.getByRole("combobox").fill("Projects");
+  await palette.getByRole("textbox", { name: "Search", exact: true }).fill("Projects");
   await page.keyboard.press("Enter");
+  await expect(palette).toBeVisible();
+  await page.keyboard.press("Escape");
   await expect(palette).toHaveCount(0);
   await expect(search).toBeFocused();
   await page.keyboard.press("Escape");

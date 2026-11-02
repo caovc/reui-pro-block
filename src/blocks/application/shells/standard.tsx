@@ -4,7 +4,16 @@ import {
   SidebarWorkspaceSwitcher,
 } from "@/components/reui/sidebar";
 import { AppShellInset, useShellSidebarState } from "@/components/reui/layout";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Kbd } from "@/components/ui/kbd";
 import {
   Activity,
   BarChart3,
@@ -20,6 +29,7 @@ import {
   Network,
   PanelRight,
   Plus,
+  Search,
   Settings,
   Shield,
   Users,
@@ -175,6 +185,68 @@ function ResourceLinks({ onSelect }: { onSelect: (s: string) => void }) {
     />
   );
 }
+/** Shell 2 uses the free Dialog/Input search composition, rather than a command list. */
+function FloatingSidebarSearch({ collapsed }: { collapsed: boolean }) {
+  const [open, setOpen] = useState(false);
+  const trigger = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const listener = (event: KeyboardEvent) => {
+      if (trigger.current?.closest("[inert]") || !trigger.current?.getClientRects().length) return;
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault();
+        setOpen((current) => !current);
+      }
+    };
+    window.addEventListener("keydown", listener);
+    return () => window.removeEventListener("keydown", listener);
+  }, []);
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button
+          ref={trigger}
+          variant="outline"
+          size={collapsed ? "icon-sm" : "sm"}
+          className={
+            collapsed
+              ? "size-8 shrink-0 justify-center px-0"
+              : "h-8 w-full justify-start gap-2 px-2 font-normal"
+          }
+          aria-label="Search workspace"
+        >
+          <Search />
+          {!collapsed && (
+            <>
+              <span className="flex-1 text-left text-[13px] text-muted-foreground">Search...</span>
+              <Kbd className="h-5 border bg-background text-[10px] font-normal">⌘K</Kbd>
+            </>
+          )}
+        </Button>
+      </DialogTrigger>
+      <DialogContent
+        className="reui-reference gap-0 px-4 py-2 sm:max-w-md [&>[data-slot=dialog-close]]:top-3 [&>[data-slot=dialog-close]]:right-3 [&>[data-slot=dialog-close]]:opacity-60"
+        onCloseAutoFocus={(event) => {
+          event.preventDefault();
+          trigger.current?.focus({ preventScroll: true });
+        }}
+      >
+        <DialogTitle className="sr-only">Search</DialogTitle>
+        <DialogDescription className="sr-only">Search your workspace content.</DialogDescription>
+        <div className="flex items-center gap-2.5">
+          <Search className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+          <Input
+            aria-label="Search"
+            placeholder="Type to search..."
+            className="h-10 border-0 p-0 text-sm shadow-none focus-visible:ring-0"
+          />
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
   const [collapsed, setCollapsed] = useShellSidebarState();
   const { isMobile } = useSidebar();
@@ -296,11 +368,15 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
                 : "shell-standard-search px-2 pt-2 mb-4"
             }
           >
-            <SearchPalette
-              collapsed={collapsed}
-              shortcut={variant === 10 ? "/" : "⌘K"}
-              onSelect={setActive}
-            />
+            {floating ? (
+              <FloatingSidebarSearch collapsed={collapsed} />
+            ) : (
+              <SearchPalette
+                collapsed={collapsed}
+                shortcut={variant === 10 ? "/" : "⌘K"}
+                onSelect={setActive}
+              />
+            )}
           </div>
         )}
         <div className="shell-scroll px-0 pb-3">

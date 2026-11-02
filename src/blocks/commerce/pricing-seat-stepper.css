@@ -178,7 +178,11 @@
   right: var(--card-spacing);
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-  background: linear-gradient(to right in oklch, var(--color-green-500), var(--color-emerald-700));
+  background-image: linear-gradient(
+    to right in oklch,
+    var(--color-green-500),
+    var(--color-emerald-700)
+  );
   background-origin: border-box;
   box-shadow:
     0 1px 3px oklab(0.377998 -0.0755676 0.0147783 / 0.25),

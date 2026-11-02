@@ -98,29 +98,43 @@ async function openSource(page: Page) {
   await page.getByRole("button", { name: "View code", exact: true }).click();
   const dialog = page.getByRole("dialog");
   const sourceRegion = dialog.getByRole("region", { name: "Block source", exact: true });
-  await expect(sourceRegion).toBeVisible();
-  await expect(dialog.getByRole("combobox", { name: "Source file", exact: true })).toHaveText(leaf);
-  return { dialog, sourceCode: sourceRegion.locator(".source-code") };
+  // The production sheet lazy-loads SourcePanel. Let the first actual source
+  // action await its actionable control under the unchanged test deadline.
+  // Callers still assert this exact region and the original default leaf.
+  return { dialog, sourceRegion, sourceCode: sourceRegion.locator(".source-code") };
 }
 
-test("Advanced16 defaults to its implementation and preserves all six viewer, Copy and single-file sources", async ({
-  page,
-  context,
-}) => {
-  await context.grantPermissions(["clipboard-read", "clipboard-write"]);
-  const { dialog, sourceCode } = await openSource(page);
-  const selector = dialog.getByRole("combobox", { name: "Source file", exact: true });
-
-  for (const filename of ownedSources) {
+// Each file is a complete native default-to-target flow in a fresh page. This
+// replaces the aggregate six-file deadline; it does not exercise the previous
+// single-page sequence from board -> CSS -> data -> model -> charts -> controls.
+for (const filename of ownedSources) {
+  test(`Advanced16 preserves viewer, Copy and single-file bytes: ${filename}`, async ({
+    page,
+    context,
+  }) => {
+    await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+    const { dialog, sourceRegion, sourceCode } = await openSource(page);
+    const selector = dialog.getByRole("combobox", { name: "Source file", exact: true });
     const expected = await currentFile(filename);
-    if (filename !== leaf) {
-      await selector.click();
-      const listbox = page.getByRole("listbox");
-      await expect(listbox).toBeVisible();
-      await listbox.getByRole("option", { name: filename, exact: true }).click();
-      await expect(listbox).toBeHidden();
-      await expect(selector).toHaveAttribute("aria-expanded", "false");
-    }
+
+    // Opening the real Select awaits lazy source mounting. Its modal portal
+    // hides the source sheet while open, so close it through the real keyboard
+    // before asserting the default region and restored trigger focus.
+    await selector.click();
+    const listbox = page.getByRole("listbox");
+    await expect(listbox).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(listbox).toBeHidden();
+    await expect(selector).toBeFocused();
+    await expect(sourceRegion).toBeVisible();
+    await expect(dialog.getByRole("combobox", { name: "Source file", exact: true })).toHaveText(
+      leaf,
+    );
+    await selector.click();
+    await expect(listbox).toBeVisible();
+    await listbox.getByRole("option", { name: filename, exact: true }).click();
+    await expect(listbox).toBeHidden();
+    await expect(selector).toHaveAttribute("aria-expanded", "false");
     await expect(selector).toHaveText(filename);
     // Native CodeBlock renders one real line-content span per source line.
     // Reading those spans excludes chrome and preserves blank/trailing LF lines.
@@ -145,15 +159,19 @@ test("Advanced16 defaults to its implementation and preserves all six viewer, Co
     const downloadedPath = await download.path();
     expect(downloadedPath).not.toBeNull();
     expect(await readFile(downloadedPath!), filename).toEqual(expected);
-  }
-});
+  });
+}
 
 test("Advanced16 actual starter contains all six implementation files, real free dependencies and notices", async ({
   page,
 }, info) => {
-  const { dialog } = await openSource(page);
+  const { dialog, sourceRegion } = await openSource(page);
   const pending = page.waitForEvent("download");
+  // This real user action awaits SourcePanel mounting without a new wait or
+  // assertion timeout. Keep the original region and default-source contracts.
   await dialog.getByRole("button", { name: "Download starter", exact: true }).click();
+  await expect(sourceRegion).toBeVisible();
+  await expect(dialog.getByRole("combobox", { name: "Source file", exact: true })).toHaveText(leaf);
   const download = await pending;
   const savedArchivePath = info.outputPath("advanced16-starter.zip");
   await download.saveAs(savedArchivePath);
