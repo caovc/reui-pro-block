@@ -1479,6 +1479,7 @@ export default function RichEditorBlock({
               <RichTextBlockActions
                 editor={engine}
                 fluid={kind === 2 || compact}
+                wiki={kind === 2 && !compact}
                 onInsert={() => {
                   saveSelection();
                   setSlash(true);

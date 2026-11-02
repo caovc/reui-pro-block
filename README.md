@@ -86,3 +86,5 @@ The GitHub Actions workflow builds `dist` and publishes through GitHub Pages. Th
 - [REUI free vs paid materials](https://reui.io/legal/license)
 
 Independent code is MIT licensed. Retain the third-party notices when redistributing.
+
+Wiki table controls now use actual free ReUI compositions with native Tiptap table selection, header/delete commands and Undo. Final desktop/phone interactions, source view/copy/download and the untouched 415-file runnable ZIP passed the necessary local checks; this does not mark the full recreation complete. See the [Wiki table release evidence](docs/editor-wiki-table-release-2026-11-02.json). Full CI and Pages remain separate release gates.

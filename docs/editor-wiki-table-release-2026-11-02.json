@@ -1,0 +1,151 @@
+{
+  "date": "2026-11-02",
+  "milestone": "Wiki table controls, native selection and runnable source closure",
+  "baseCommit": "b3e40fed1f7f814afcab2f1dbc2a64c2c68d0bdb",
+  "goalComplete": false,
+  "reference": "https://reui.io/blocks/application/rich-text-editor/rich-text-editor-2",
+  "referenceEvidence": {
+    "actualMobileBrowserInspected": true,
+    "observed": [
+      "Four compact table controls above the table start",
+      "Header row is an actual checked checkbox control",
+      "Delete menu contains row, column and destructive table deletion",
+      "Deletion menu aligns with its trigger"
+    ],
+    "exactReferenceCSSDimensionsMeasured": false,
+    "officialNonemptyCellTextSelectionVerified": false,
+    "limits": "A later official navigation timed out; selected-text formatting is preserved locally without claiming verified official behavior."
+  },
+  "actualFreeReuse": {
+    "retained": ["Official free ReUI ColorPicker", "Official free ReUI Scrollspy"],
+    "tableComposition": "Official free c-checkbox-14/13 FieldLabel, Field and Checkbox composition, with existing registry Button, ButtonGroup and DropdownMenu implementations.",
+    "checkbox": "The real native Checkbox owns hit testing, keyboard focus and checked state; its fixed indicator is visually represented by an aria-hidden table icon.",
+    "documentFrame": "The existing Document editor uses ReUI Frame; this milestone does not claim Wiki newly uses Frame.",
+    "correctedDuplicatePresentation": "Wiki no longer uses the old generic Table actions popover for caret/cell table controls; its dedicated controls use the existing free component implementations."
+  },
+  "customGap": {
+    "reason": "The installed free ReUI catalog does not supply a full Wiki document/table engine.",
+    "implementation": "Existing native Tiptap TableKit, CellSelection, selection formatting and history; minimal composition and native can/selectedRect guards.",
+    "positioning": "Native BubbleMenu virtual reference reads the real table. Wiki uses the documented updatePosition metadata after native options change.",
+    "menuPortal": "The existing DropdownMenu exposes the native optional Portal container. Only Wiki opts into its actual toolbar to retain focus ancestry and the anchor.",
+    "newPositionOrFocusEngine": false
+  },
+  "behavior": [
+    "Add real rows and columns, toggle header cells, delete rows, columns or the table, with independent native Undo.",
+    "Disable deletion of the final remaining row or column.",
+    "Retain real pointer CellSelection, Escape selection, document marks and history.",
+    "Preserve nonempty text selection Bold and link formatting.",
+    "Place the toolbar above the table start and keep native menus attached on desktop and phone."
+  ],
+  "runtimeOwned": {
+    "src/blocks/application/editor.tsx": "159c6aea4200deca03078d9c46277e03dc0f4f0ae66ea1f16776f17d2051c0a0",
+    "src/blocks/application/rich-text-block-actions.tsx": "af27cd5de7561a2745e5301e331b9ae09fd2052ac1210306cdf89a769115a863",
+    "src/components/ui/dropdown-menu.tsx": "7672aca6e4a4237aba575f7c6995cb9773f2f74b76ce14d9baa237217ecadb6b",
+    "src/lib/source-targets.ts": "faf815884602a9a791a86540793a2bd15a1e4d1e7a4a2ff8a7fe442a64826638"
+  },
+  "formalQA": {
+    "tests/editor-engine.spec.ts": "f99c9c551b1666a5991fcf0de35e40d31d94e14ada7f5b05123aa387c64306c2",
+    "tests/editor-table-selection.spec.ts": "276ee8fe13fe47136acf35ef4c9e62559931e1c9878352e94ba516598299d3e9",
+    "tests/editor-wiki-table.spec.ts": "79484eeaef2a2b0f93f5dea14ae8087d6c95e23c7f93066827d09be3468ad4ce",
+    "tests/editor-wiki-source.spec.ts": "d4c3c6282b0c7ad3821e2274af4ce602867390564764aa69bde93f333be5dfea"
+  },
+  "localValidation": {
+    "strictBuild": {
+      "command": ["npm", "run", "build"],
+      "exit": 0,
+      "seconds": 23.43133795799804,
+      "logSHA256": "bc7e11a07278b4d972286bd399ce5c1bd351632664596d4341df632922d0558e"
+    },
+    "finalNecessary5": {
+      "exit": 0,
+      "seconds": 14.666604958998505,
+      "stats": {
+        "startTime": "2026-11-02T14:15:28.908Z",
+        "duration": 14017.454,
+        "expected": 5,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "df0933565c5b6aa665e4e271522e9abe56a89e9433c506f76783b5b0aece7c03"
+    },
+    "finalSource2": {
+      "exit": 0,
+      "seconds": 6.5292140419987845,
+      "stats": {
+        "startTime": "2026-11-02T14:17:41.517Z",
+        "duration": 6153.866,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "767b5f60ac8441bd51097fbc6009ae9bf8de3c7fcada0a03b6cf66219321265f"
+    },
+    "receivedOriginalNecessary11": {
+      "exit": 0,
+      "seconds": 20.138995333996718,
+      "stats": {
+        "startTime": "2026-11-02T14:52:46.321Z",
+        "duration": 19771.935999999998,
+        "expected": 11,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "c24c08fc69311326e45c208d54f1875fb5a906e6b3ab909350b89015e18aeaa9"
+    },
+    "receivedOriginalStrictBuild": {
+      "command": ["npm", "run", "build"],
+      "exit": 0,
+      "seconds": 8.891395625003497,
+      "logSHA256": "fd3ef59fa8ba579e35fe2c8e7c04f104ddcd5c863fb4f51e3dc38dddfab96a36"
+    },
+    "siteCompatibility3": {
+      "exit": 0,
+      "seconds": 9.485216875000333,
+      "stats": {
+        "startTime": "2026-11-02T12:58:32.272Z",
+        "duration": 9121.295,
+        "expected": 3,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "e91081e7db9ea36e99cf4f64031ac2e0fd5699ffdaccd7c1e9793258d4df113c"
+    },
+    "compatibilityLimit": "Compatibility cases ran on the exact final shared DropdownMenu wrapper before the subsequent Wiki-only position refresh; not a new full-site rerun.",
+    "originalOldOraclesRetained": 58,
+    "allOldCasesRerunOnFinalSite": false,
+    "browser": "Browser plugin not available; existing Playwright workflow used. Official reference inspected separately through CUA.",
+    "rootViewedActualDesktopAndPhoneOpaqueMenuScreenshots": true,
+    "timeoutsRetriesWorkersWeakened": false
+  },
+  "originalDownload": {
+    "filename": "rich-text-editor-2-original-project.zip",
+    "sha256": "5be0a7f3aae7d6ddaa83c3478f28af3d21600dd29434667ff3aa95f3b036ca8a",
+    "members": 415,
+    "sourceViewCopySingleFileAndZIPMatchActualImplementation": true,
+    "exampleIndependentlyGeneratedWithActualCollector": true,
+    "entryPackageConfigModified": false,
+    "dependencies": "Existing physical normal-install APFS clones; not fresh installs",
+    "originalPostinstallExecuted": true,
+    "rawMembersDistAndGeneratedPublicExactAfterNative": true,
+    "previewStoppedFinally": true,
+    "freeMITFontOFLAndMediaAttributionsRetained": true
+  },
+  "sourceTargets": "Retains editor.tsx as default; adds the existing block-actions file to rich-text choices. All 18 template mappings, Account targets and unrelated block mappings are preserved.",
+  "remaining": [
+    "Advanced editor kinds 3/4/5 and the full Wiki gutter/block-command fidelity remain separate work.",
+    "Wiki dedicated table controls omit the previous generic Merge/Split entries.",
+    "No backend collaboration or claim of complete official visual/interaction identity.",
+    "Final full CI and Pages deployment remain pending after this milestone is committed and pushed."
+  ],
+  "release": {
+    "committed": false,
+    "pushed": false,
+    "CI": "Pending milestone commit",
+    "Pages": "Not yet confirmed",
+    "lastVerifiedLiveCommit": "0b5798076324176a8955d68090928f27447a4459"
+  }
+}

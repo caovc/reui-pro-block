@@ -21,14 +21,17 @@ function DropdownMenuTrigger({
 }
 
 function DropdownMenuContent({
+  portalContainer,
   className,
   align = "start",
   sideOffset = 4,
   ...props
-}: React.ComponentProps<typeof DropdownMenuPrimitive.Content>) {
+}: React.ComponentProps<typeof DropdownMenuPrimitive.Content> & {
+  portalContainer?: React.ComponentProps<typeof DropdownMenuPrimitive.Portal>["container"];
+}) {
   const reduceAnimations = useMotionPolicy();
   return (
-    <DropdownMenuPrimitive.Portal>
+    <DropdownMenuPrimitive.Portal container={portalContainer}>
       <DropdownMenuPrimitive.Content
         data-slot="dropdown-menu-content"
         sideOffset={sideOffset}

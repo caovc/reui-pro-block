@@ -66,15 +66,19 @@ test("table row and column commands update the real table and undo reverses them
   const editor = page.getByRole("textbox", { name: "Rich text document", exact: true });
   const table = editor.locator("table").first();
   await table.locator("td").first().click();
-  await page.getByRole("button", { name: "Table actions", exact: true }).click();
-  await page.getByRole("button", { name: "Add row", exact: true }).click();
+  await page
+    .getByRole("toolbar", { name: "Table", exact: true })
+    .getByRole("button", { name: "Add row below", exact: true })
+    .click();
   await expect(table.locator("tr")).toHaveCount(4);
   await page.keyboard.press("Escape");
   await page.getByRole("button", { name: "Undo", exact: true }).click();
   await expect(table.locator("tr")).toHaveCount(3);
   await table.locator("td").first().click();
-  await page.getByRole("button", { name: "Table actions", exact: true }).click();
-  await page.getByRole("button", { name: "Add column", exact: true }).click();
+  await page
+    .getByRole("toolbar", { name: "Table", exact: true })
+    .getByRole("button", { name: "Add column right", exact: true })
+    .click();
   await expect(table.locator("tr").first().locator("th")).toHaveCount(4);
 });
 

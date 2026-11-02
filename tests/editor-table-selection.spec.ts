@@ -44,7 +44,7 @@ test("collapsed pointer selection keeps table actions synchronized without editi
   expect((await nativeState(editor)).table).toBe(false);
   await cell.click();
   await expect.poll(async () => (await nativeState(editor)).table).toBe(true);
-  await expect(page.getByRole("button", { name: "Table actions", exact: true })).toBeVisible();
+  await expect(page.getByRole("toolbar", { name: "Table", exact: true })).toBeVisible();
   const inTable = await nativeState(editor);
   expect(inTable.collapsed).toBe(true);
   expect(inTable.document).toEqual(original.document);
@@ -52,7 +52,7 @@ test("collapsed pointer selection keeps table actions synchronized without editi
 
   await paragraph.click();
   await expect.poll(async () => (await nativeState(editor)).table).toBe(false);
-  await expect(page.getByRole("button", { name: "Table actions", exact: true })).toHaveCount(0);
+  await expect(page.getByRole("toolbar", { name: "Table", exact: true })).toHaveCount(0);
   const after = await nativeState(editor);
   expect(after.collapsed).toBe(true);
   expect(after.document).toEqual(original.document);
