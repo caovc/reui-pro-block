@@ -24,6 +24,13 @@ test("Chat4–6 code drawers default to the actual leaf and copy/download its ex
     await page.getByRole("button", { name: "View code", exact: true }).click();
     const dialog = page.getByRole("dialog");
     const filename = `src/blocks/data/${leaf}.tsx`;
+    const sourceChoice = dialog.getByRole("combobox", { name: "Source file" });
+    await sourceChoice.click();
+    const sourceListbox = page.getByRole("listbox");
+    await expect(sourceListbox).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(sourceListbox).toHaveCount(0);
+    await expect(sourceChoice).toBeFocused();
     await expect(dialog.getByRole("combobox", { name: "Source file" })).toHaveText(filename);
     const expected = await readFile(filename, "utf8");
     await dialog.locator(".source-code").getByRole("button", { name: "Copy", exact: true }).click();

@@ -1,0 +1,132 @@
+{
+  "recordCreatedUTC": "2026-11-02T06:16:16.078831+00:00",
+  "baseCommit": "4490ce2bc6dc20ffb3adc10e4c17cc8c2f687a4a",
+  "goalComplete": false,
+  "runtimeSourceChanges": 0,
+  "scope": "Two test-only native readiness and scenario-budget corrections. Original product source, configuration, source collector and dependencies are unchanged.",
+  "originalCI": {
+    "commit": "59bb9cc5608e5b5b714756cb99db8accfcce1cc9",
+    "run": 41390836649,
+    "buildJob": 125101642487,
+    "conclusion": "failure",
+    "passed": 1981,
+    "failed": 3,
+    "total": 1984,
+    "browserMinutes": 54.4,
+    "Pages": "skipped",
+    "decodedOriginalJobLogSHA256": "5434008eaac22d0b355c59834216fa9a31ddc47832ffe4062b0e4818416dcf99",
+    "artifact": {
+      "id": 13118758551,
+      "bytes": 95679271,
+      "sha256": "e90f7afae026d9091ab1b41cce67d8f05fda58456ddc4e7e86abb4c98f9e24ab"
+    },
+    "fullArtifactVerified": true,
+    "artifactFiles": 684,
+    "traceCount": 3,
+    "note": "All seven previous Store source correction cases and all fourteen new fidelity source cases passed in this run."
+  },
+  "actualFailureFacts": [
+    {
+      "test": "ai-chat-workspace-source.spec.ts:16",
+      "fact": "The five-second default-source assertion failed while the actual Suspense loader remained. The first recorded complete Source file DOM was 409.665ms after that failure. The source-target asset returned 200 and completed earlier; a unique CPU cause is not established.",
+      "correction": "Open the actual native source picker, observe its listbox, Escape, assert closure and focus return, then execute the original default/copy/file assertions.",
+      "preserved": "Original 120-second budget, all three serial source flows, nineteen original matchers and the other ZIP/layout cases remain. No aggregate was removed."
+    },
+    {
+      "test": "grid-advanced-store-kpi-initial-native.spec.ts:229",
+      "fact": "URL and title checks passed; the board first-visible assertion expired before the real board appeared. It did not reach the short-rail geometry checks. Trace requests returned 200; network/CPU is not singled out.",
+      "correction": "Use the real Search stores input click as native lazy-route readiness, then preserve all original URL/title/board and geometry checks."
+    },
+    {
+      "test": "grid-advanced-store-kpi-initial-native.spec.ts:187",
+      "fact": "Ascending/descending order, contiguous markets, rail geometry and collapse/expand checks completed. The final none-sort assertion began around 29.664 seconds, leaving about 0.336 seconds of the original 30-second case budget.",
+      "correction": "Separate the original sorting cycle and descending-rail/country expansion into two independent user scenarios. The second naturally establishes descending order before its original rail checks.",
+      "preserved": "All original assertions remain, including Asc to Desc to None and sorted order after country expansion. The original combined serial scenario is no longer executed; four original cases become five."
+    }
+  ],
+  "budgetsAndActions": {
+    "newTimeoutOverrides": false,
+    "existingAIChatTimeoutSeconds": 120,
+    "otherCaseTimeoutSeconds": 30,
+    "expectTimeoutSeconds": 5,
+    "retries": 0,
+    "effectiveWorkers": 3,
+    "changes": "No fixed sleep, force action, DOM/style mutation, injected focus, skipped assertions or relaxed geometry."
+  },
+  "localNecessaryValidation": {
+    "productCommit": "4490ce2bc6dc20ffb3adc10e4c17cc8c2f687a4a",
+    "storeNative5": {
+      "receipt": "ci59-store-native5-necessary-once/receipt.json",
+      "receiptSHA256": "594e36c7b31eeeea106459723d87cb00f837a1c5972aa24799f6d79dc3b7d42d",
+      "exit": 0,
+      "seconds": 11.374578999999358,
+      "stats": {
+        "startTime": "2026-11-02T06:05:19.229Z",
+        "duration": 10666.882,
+        "expected": 5,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "0484ba20fea3abbb94013443e03dc7d204b57b23c23ba05d2a3ab46e66097faf"
+    },
+    "AIChatSource4": {
+      "receipt": "ci59-aichat-source-necessary-once/receipt.json",
+      "receiptSHA256": "eb5cc581c1ba0b0978a078b081bf4a11bf76561fa1b1212704b2fb6caa4dcd7e",
+      "exit": 0,
+      "seconds": 7.199402915999599,
+      "stats": {
+        "startTime": "2026-11-02T06:12:33.989Z",
+        "duration": 6616.654,
+        "expected": 4,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "62f4986c3fb6598bdcd6da4bce1d813a56bd41ab58840ae18a1368a58e7419b6"
+    },
+    "sourceFilesExact": 1141,
+    "distFilesExact": 659,
+    "sourceAndDistChanged": false,
+    "note": "Two relevant specs passed separately under effective three workers. A combined nine-case or full-suite pass is not inferred."
+  },
+  "staticPreservation": {
+    "AIChatManifest": {
+      "receipt": "ci59-aichat-source-proposal-v1/manifest.json",
+      "receiptSHA256": "006711a0bdbbebe118c9819ea34b12c4d7e5a3aab1da3f0137daa02bc739d4c4"
+    },
+    "StoreManifest": {
+      "receipt": "ci59-store-native-proposal-v1/manifest.json",
+      "receiptSHA256": "3d2e92a1274fe2aba0952b799a4634daae4f51ef5218f7ea46bb6dd98d847e6b"
+    },
+    "AST": "Original assertions and unchanged cases preserved; independent mapping records retained privately."
+  },
+  "publicationAtRecordCreation": {
+    "newCommit": null,
+    "pushed": false,
+    "newExactCommitFullCI": "pending",
+    "Pages": "not yet confirmed",
+    "lastConfirmedPagesCommit": "42ad52a9020208cfc39869441042816f4bc7d6d9",
+    "commerce449Run": 41394076588,
+    "commerce449Status": "in progress at record creation",
+    "previewURL": "https://caovc.github.io/reui-pro-block/",
+    "note": "Historical snapshot at record creation; superseded for base449 by publicationPreflight below."
+  },
+  "remaining": "This corrects test readiness and scenario structure. It does not optimize the large cold source chunk or certify all component fidelity. Editor history grouping and actual exported-project acceptance remain separate work.",
+  "publicationPreflight": {
+    "checkedUTC": "2026-11-02 07:19:22 UTC",
+    "baseRun": 41394076588,
+    "baseCommit": "4490ce2bc6dc20ffb3adc10e4c17cc8c2f687a4a",
+    "baseCI": "success",
+    "basePages": {
+      "id": 7485767968,
+      "sha": "4490ce2bc6dc20ffb3adc10e4c17cc8c2f687a4a",
+      "state": "success",
+      "successUTC": "2026-11-02T06:27:53Z",
+      "successShanghai": "2026-11-02 14:27:53 +08:00",
+      "url": "https://caovc.github.io/reui-pro-block/"
+    },
+    "newTestOnlyCommitCI": "pending",
+    "newTestOnlyCommitPages": "pending"
+  }
+}

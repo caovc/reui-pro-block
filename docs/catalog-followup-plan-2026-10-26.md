@@ -644,3 +644,34 @@ publication status. Official Surge geometry supports the comparison; Manifest
 shares the tested consumer contract and has no independent official pixel-match
 claim. Editor and Account improvements remain separate candidates. The new
 commit, complete CI and Pages deployment are pending at this record's creation.
+
+## Native readiness follow-up after full CI 59bb9cc — 2026-11-02
+
+The original full run 41390836649 completed with 1,981 passed and three failed
+out of 1,984 tests in 54.4 minutes. Pages was skipped. The earlier seven Store
+source corrections and all fourteen new fidelity source cases passed; this run
+exposed different old cases. Its decoded complete log and exact original
+95,679,271-byte artifact (684 files, three traces) remain preserved.
+
+AI Chat source verification reached its five-second default assertion before
+the real lazy-loaded source picker existed. Its original 120-second budget and
+three serial source flows remain; real picker open/Escape readiness now precedes
+all original byte assertions. The Store short-rail case similarly asserted the
+board before the lazy route was interactive. A real empty-search input click now
+precedes its unchanged board and geometry assertions.
+
+The long Store sort/rail case completed its order, market and expansion checks,
+then started the final none-state assertion around 29.664 seconds of a 30-second
+budget. It is split into an independent complete sorting cycle and a descending
+rail/expansion scenario that naturally establishes its own state. All original
+assertions remain; the old serial aggregate is no longer executed. The original
+four-case file now has five cases, with unchanged 30/5-second limits.
+
+On the unchanged 4490ce2 production source and dist, necessary Store 5 and AI Chat
+Source 4 passed separately with three workers and zero retries. No combined
+nine-case or complete CI success is inferred. There are no product, dependency,
+source-collector or configuration changes. The [dated test-only acceptance record](ci-native-readiness-release-2026-11-02.json)
+preserves the exact evidence and pending publication gates. A new commit, full CI
+and actual Pages deployment still need their own confirmed outcomes.
+
+发布前补充：已核对 `4490ce2` 的 CI `41394076588` 与 Pages deployment `7485767968` 均成功，部署于上海时间 2026-11-02 14:27:53。本次测试修正的新提交仍须独立通过 CI 后才算部署完成。

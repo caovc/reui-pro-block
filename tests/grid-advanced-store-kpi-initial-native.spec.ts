@@ -157,6 +157,9 @@ test.describe("Store KPI Board initial native gates", () => {
       if (message.type() === "warning") logs.warnings.push(message.text());
     });
     await page.goto(route());
+    // Native action waits for the real lazy-loaded board within the unchanged test budget.
+    // Clicking an empty search field changes no filter, ordering or geometry contract.
+    await board(page).getByRole("textbox", { name: "Search stores", exact: true }).click();
     await expect(page).toHaveURL(/#\/preview\/data-grid\/advanced\/data-grid-advanced-16$/);
     await expect(page).toHaveTitle("Store KPI Board — Preview");
     await expect(board(page)).toBeVisible();
@@ -184,7 +187,9 @@ test.describe("Store KPI Board initial native gates", () => {
     expect(logs.errors).toEqual([]);
   });
 
-  test("native Sales menu sorting preserves store order, market rail and country expansion", async ({
+  // The former serial sort/rail aggregate exhausted30s at its last none-state expect.
+  // Independent real scenarios retain every original assertion, not one longer deadline.
+  test("native Sales menu sorting preserves ascending and descending store order and clears on repeat", async ({
     page,
   }, info) => {
     await geometry(page, info, "initial-padding-and-grid");
@@ -196,6 +201,17 @@ test.describe("Store KPI Board initial native gates", () => {
     await expect(sales).toHaveAttribute("aria-sort", "descending");
     await expect.poll(() => usIds(page)).toEqual(expectedUsOrder("desc"));
 
+    await sortSales(page, "Desc");
+    await expect(sales).toHaveAttribute("aria-sort", "none");
+  });
+
+  test("descending Sales keeps contiguous market rails and country expansion restores sorted stores", async ({
+    page,
+  }, info) => {
+    const sales = table(page).locator('thead th[data-col-id="sales"]');
+    await sortSales(page, "Desc");
+    await expect(sales).toHaveAttribute("aria-sort", "descending");
+    await expect.poll(() => usIds(page)).toEqual(expectedUsOrder("desc"));
     const ids = await rowIds(page);
     const visited = new Set<string>();
     let previous = "";
@@ -222,8 +238,6 @@ test.describe("Store KPI Board initial native gates", () => {
     await expect.poll(async () => (await usIds(page)).filter((id) => byId.has(id)).length).toBe(0);
     await board(page).getByRole("button", { name: "Expand United States", exact: true }).click();
     await expect.poll(() => usIds(page)).toEqual(expectedUsOrder("desc"));
-    await sortSales(page, "Desc");
-    await expect(sales).toHaveAttribute("aria-sort", "none");
   });
 
   test("single-store search filter keeps the complete country summary inside its short rail", async ({
