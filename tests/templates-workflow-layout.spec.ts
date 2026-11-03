@@ -148,7 +148,7 @@ test("Flux phone keeps a navigation group open, closes only after selecting a ro
 test("Lucent keeps the account visible while the document scrolls", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await openTemplate(page, "lucent");
-  const account = page.getByRole("button", { name: "Account settings", exact: true });
+  const account = page.getByRole("button", { name: "Open user menu", exact: true });
   const initial = await account.boundingBox();
   await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
   await expect.poll(() => page.evaluate(() => scrollY)).toBeGreaterThan(200);
