@@ -747,3 +747,7 @@ This is a reuse and behavior-preservation milestone. Official Organisation inspe
 ## Retail Sheet focus — 2026-11-03
 
 Retained the actual free Sheet and its native lifecycle. The two consumers now remember real View/Actions trigger elements and restore Search after actual removal. Original Months/Notes2 and new native focus2 pass incrementally; Source3 and the actual330-member original project strict/native4 pass with unchanged entry/config/members/dist/public and received preview closed. Original failure evidence remains; no old assertion or budget was weakened. [Release evidence](retail-sheet-focus-release-2026-11-03.json) records provenance, exact hashes, local-demo reference limits and pending publication gates.
+
+## Cohort free controls — 2026-11-03
+
+Replaced numeric day and separate weekday buttons with actual c-select-1/c-toggle-group-5 compositions using unchanged shared primitives. Native group semantics, roving focus, Space activation, save/discard and global mobile width checks pass. Day1..28 follows three actual month-end observations; existing29..31 remain visible without mutation, with static/VM coverage stated separately. Final site2/Source3 and original284-member strict/native2 pass. V2 toolbar-role failures remain; V3 corrects the consumer role with unchanged QA. [Controls evidence](cohort-controls-release-2026-11-03.json) records hashes/provenance and the separate64/66px Sidebar and mobile drawer-navigation work.

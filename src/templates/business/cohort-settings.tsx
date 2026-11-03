@@ -5,6 +5,16 @@ import { Ellipsis, Plus, Upload, ShieldCheck } from "lucide-react";
 import { GridFrame, NumericField, TinyAvatar } from "@/blocks/data/grid-advanced-shared";
 import { DomainRecordGrid } from "@/blocks/data/grid-advanced-model-grid";
 import { SettingsRow } from "@/blocks/application/dialog-variants/workspace/settings-panel";
+// Official free ReUI compositions: c-select-1 and c-toggle-group-5 (MIT, Keenthemes).
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -453,13 +463,28 @@ export function CohortSettings({
                     "December",
                   ]}
                 />
-                <NumericField
-                  label="Fiscal year start day"
-                  value={Number(model.draft.company.fields.day)}
-                  min={1}
-                  max={31}
-                  onValueChange={(value) => field("company", "day", String(value))}
-                />
+                <Select
+                  value={model.draft.company.fields.day}
+                  onValueChange={(value) => field("company", "day", value)}
+                >
+                  <SelectTrigger aria-label="Fiscal year start day" className="cohort-fiscal-day">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent position="popper">
+                    <SelectGroup>
+                      {Array.from({ length: 28 }, (_, index) => String(index + 1)).map((day) => (
+                        <SelectItem key={day} value={day}>
+                          {day}
+                        </SelectItem>
+                      ))}
+                      {["29", "30", "31"].includes(model.draft.company.fields.day) && (
+                        <SelectItem value={model.draft.company.fields.day} disabled>
+                          {model.draft.company.fields.day}
+                        </SelectItem>
+                      )}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
               </div>
             </SettingRow>
           </SettingsSection>
@@ -488,36 +513,31 @@ export function CohortSettings({
               label="Working days"
               description={`${model.draft.working.fields.days.split(",").filter(Boolean).length} days a week: ${model.draft.working.fields.days.split(",").join(", ")}`}
             >
-              <div className="bt-working-days">
-                {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day) => {
-                  const selected = model.draft.working.fields.days.split(",").includes(day);
-                  return (
-                    <Button
-                      key={day}
-                      variant={selected ? "default" : "outline"}
-                      size="sm"
-                      aria-pressed={selected}
-                      onClick={() =>
-                        field(
-                          "working",
-                          "days",
-                          selected
-                            ? model.draft.working.fields.days
-                                .split(",")
-                                .filter((d) => d !== day)
-                                .join(",")
-                            : [
-                                ...model.draft.working.fields.days.split(",").filter(Boolean),
-                                day,
-                              ].join(","),
-                        )
-                      }
-                    >
-                      {day}
-                    </Button>
-                  );
-                })}
-              </div>
+              <ToggleGroup
+                type="multiple"
+                role="group"
+                variant="outline"
+                size="sm"
+                spacing={2}
+                aria-label="Working days"
+                className="cohort-working-days"
+                value={model.draft.working.fields.days.split(",").filter(Boolean)}
+                onValueChange={(days) => field("working", "days", days.join(","))}
+              >
+                {[
+                  ["Mon", "Monday"],
+                  ["Tue", "Tuesday"],
+                  ["Wed", "Wednesday"],
+                  ["Thu", "Thursday"],
+                  ["Fri", "Friday"],
+                  ["Sat", "Saturday"],
+                  ["Sun", "Sunday"],
+                ].map(([day, label]) => (
+                  <ToggleGroupItem key={day} value={day} aria-label={label}>
+                    {day}
+                  </ToggleGroupItem>
+                ))}
+              </ToggleGroup>
             </SettingRow>
           </SettingsSection>
         </>

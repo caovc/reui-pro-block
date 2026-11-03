@@ -1,0 +1,146 @@
+{
+  "date": "2026-11-03",
+  "milestone": "Cohort official free Select and ToggleGroup reuse",
+  "goalComplete": false,
+  "base": "c58e0a0e8738d52b4378a30a91297d0758734d93",
+  "owned3": [
+    {
+      "path": "src/templates/business/cohort-settings.tsx",
+      "sha256": "5e19b28fbb6001e9126b990f557273c251c8751531caf4f4f4b0e858969777ec"
+    },
+    {
+      "path": "src/templates/business/business.css",
+      "sha256": "97ac40cc361e160347f83986b2089843813db41b19e67735a396a840cf3c19c0"
+    },
+    {
+      "path": "tests/cohort-setting-row-native.spec.ts",
+      "sha256": "e1d5059da08d5160cd2588a49298a0f0c4698830705b847455d260c84a89201f"
+    }
+  ],
+  "freeReuse": {
+    "select": {
+      "official": "https://reui.io/r/radix-nova/c-select-1.json",
+      "existingComposition": "src/blocks/commerce/category-card-variants/filters.tsx",
+      "actualImplementation": "src/components/ui/select.tsx"
+    },
+    "toggleGroup": {
+      "official": "https://reui.io/r/radix-nova/c-toggle-group-5.json",
+      "existingComposition": "src/blocks/application/navbar-variants/publishing/free/categories.tsx",
+      "actualImplementations": [
+        "src/components/ui/toggle-group.tsx",
+        "src/components/ui/toggle.tsx"
+      ]
+    },
+    "sharedPrimitivesChanged": false,
+    "correctedDuplicates": "Removed the bespoke numeric-day control and independent weekday Button collection; the existing project Field-based SettingsRow remains.",
+    "customGlue": "Cohort passes standard role=group to match the observed official group while retaining native Radix roving focus. No keyboard or focus engine is reimplemented."
+  },
+  "observedDayRange": {
+    "monthsChecked": ["April", "February", "July"],
+    "nativeEndAndLastVisibleOption": 28,
+    "otherMonthRulesInvented": false,
+    "selectableDays": "1..28",
+    "existing29to31": "Only an existing current value renders as a disabled numeric item. No automatic clamp or model write.",
+    "existingValueProtectionEvidence": "Actual JSX/static VM matrix1/6/28/29/30/31/32; not native production-state injection or native legacy-state coverage."
+  },
+  "gates": {
+    "normal-install.json": {
+      "exit": 0,
+      "seconds": 8.27024658400478,
+      "logSHA256": "70ba42bb6f080cd94e336437fdd1ab222313977cd7c66d1002945c23c47edf58"
+    },
+    "v3-original-strict-build.json": {
+      "exit": 0,
+      "seconds": 23.294285582996963,
+      "logSHA256": "54b97180971b8d5befc8e8aa94920693d2d9a8010563e8d95ad76e62196e35e0"
+    },
+    "v3-native2-first-once/receipt.json": {
+      "exit": 0,
+      "seconds": 8.830635667000024,
+      "stats": {
+        "startTime": "2026-11-03T02:01:49.400Z",
+        "duration": 8325.283,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "ace3acf7700d93893ffb7a210003453b513d44f38740d3cebefe4906ea1de063"
+    },
+    "v3-source3-first-once/receipt.json": {
+      "exit": 0,
+      "seconds": 11.17876137499843,
+      "stats": {
+        "startTime": "2026-11-03T02:01:58.101Z",
+        "duration": 10800.723,
+        "expected": 3,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "9d770ecca88181c50dead59122c8ca7fa6db3dce4995c31443b50e1e17503088"
+    },
+    "received-v3-normal-install.json": {
+      "exit": 0,
+      "seconds": 63.22270391699567,
+      "logSHA256": "fdb22aa785fdd05abe4a58827f1ea1aad1bba44d2ebd8424f74c00098fd36821"
+    },
+    "received-v3-original-strict-build.json": {
+      "exit": 0,
+      "seconds": 7.149333666995517,
+      "logSHA256": "415941b373386dfefcd6085b46e7a16dd6735b5602fc9c28363fcd48821b7b92"
+    },
+    "received-v3-native2-first-once/receipt.json": {
+      "exit": 0,
+      "seconds": 11.318562458000088,
+      "stats": {
+        "startTime": "2026-11-03T02:04:10.697Z",
+        "duration": 10702.555,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "ff95a128c8741df36b56a82b3eaaf5031e2fe4f5daae2b2f73b34b44b28353f1"
+    }
+  },
+  "firstFailure": {
+    "version": "v2",
+    "passed": 0,
+    "failed": 2,
+    "reason": "Both viewports reached the unchanged5s group lookup. Native Radix multiple ToggleGroup defaulted to toolbar; actual traces and original QA remain.",
+    "v3Correction": "Only the Cohort standard role=group prop changed; the complete QA hash remains e1d5059da08d5160cd2588a49298a0f0c4698830705b847455d260c84a89201f.",
+    "assertionsBudgetsOrRetriesWeakened": false
+  },
+  "rawArchive": {
+    "sha256": "31ea152cd82ba763e0f6161140cacbb64bb4e3c153c74229895d399c6018bbe0",
+    "memberCount": 284,
+    "originalInputsUnmodified": true,
+    "entryConfigPackageUnmodified": true
+  },
+  "finalExact": {
+    "siteSource": true,
+    "siteDist": true,
+    "sitePublic": true,
+    "qa": true,
+    "receivedInputs": true,
+    "receivedDist": true,
+    "zip": true
+  },
+  "bothPreviewPortsClosed": true,
+  "MITOFLAndOriginalBricklaneMediaPreserved": true,
+  "sourceTargets": "Unchanged: no new implementation paths; actual view/copy/single-file and runnable ZIP checks cover finalv3 bytes.",
+  "remaining": [
+    "Original collapsed sidebar64 vs local66, independently measured; not changed in this scope.",
+    "Official mobile Policies selection keeps drawer visible; local existing navigation closes it; not changed in this scope.",
+    "Settings tab semantics and broader row/layout geometry remain outside this milestone.",
+    "Day source support29..31 preserved only as disabled current numeric value; tested via static/VM, not native production state injection.",
+    "Other months beyond April/February/July not separately checked; no calendar algorithm invented."
+  ],
+  "publicationSnapshot": {
+    "stage": "Recorded after local gates, before normal-hook commit and push",
+    "CI": "Pending milestone commit",
+    "Pages": "Not yet confirmed for these controls",
+    "lastVerifiedLive": "b9a1fa48dbaa45af285e1e2830a07403fd4060bc"
+  }
+}
