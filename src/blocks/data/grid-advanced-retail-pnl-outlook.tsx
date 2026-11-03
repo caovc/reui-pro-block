@@ -342,7 +342,7 @@ interface PnlGridContextValue {
   onCompare: (value: PnlCompareBase) => void;
   onChartRow: (id: string) => void;
   onMonth: (index: number) => void;
-  onDetail: (id: string) => void;
+  onDetail: (id: string, opener: HTMLButtonElement) => void;
   onConfidence: (id: string, value: PnlConfidence) => void;
   onAdd: (section: PnlSectionId | null) => void;
 }
@@ -432,7 +432,7 @@ function NameCell({ row }: { row: Row<DataGridFeatures, PnlRow> }) {
           variant="ghost"
           className="h-auto min-w-0 flex-1 justify-start truncate px-0 py-1 text-left text-xs font-normal"
           aria-label={`View ${record.name}`}
-          onClick={() => ui.onDetail(record.lineId!)}
+          onClick={(event) => ui.onDetail(record.lineId!, event.currentTarget)}
         >
           <span className="truncate">{record.name}</span>
         </Button>
@@ -576,6 +576,7 @@ function ConfidenceCell({ row }: { row: Row<DataGridFeatures, PnlRow> }) {
 }
 function ActionsCell({ row }: { row: Row<DataGridFeatures, PnlRow> }) {
   const ui = usePnlGrid();
+  const trigger = useRef<HTMLButtonElement>(null);
   const record = row.original;
   return (
     <DropdownMenu>
@@ -585,6 +586,7 @@ function ActionsCell({ row }: { row: Row<DataGridFeatures, PnlRow> }) {
           variant="ghost"
           size="icon"
           className="size-7"
+          ref={trigger}
           aria-label={`Actions for ${record.name}`}
         >
           <Ellipsis aria-hidden className="size-4" />
@@ -592,7 +594,11 @@ function ActionsCell({ row }: { row: Row<DataGridFeatures, PnlRow> }) {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="reui-reference">
         {record.kind === "line" ? (
-          <DropdownMenuItem onSelect={() => ui.onDetail(record.lineId!)}>
+          <DropdownMenuItem
+            onSelect={() => {
+              if (trigger.current) ui.onDetail(record.lineId!, trigger.current);
+            }}
+          >
             Line Details
           </DropdownMenuItem>
         ) : (
@@ -932,6 +938,7 @@ export default function RetailPnlOutlook() {
   const mobile = useIsMobile(640);
   const announced = useRef(0);
   const searchInput = useRef<HTMLInputElement>(null);
+  const detailOpener = useRef<HTMLButtonElement | null>(null);
   useEffect(() => {
     function focusSearch(event: KeyboardEvent) {
       if (
@@ -1125,7 +1132,10 @@ export default function RetailPnlOutlook() {
     onCompare: setCompare,
     onChartRow: setChartId,
     onMonth: (index) => setSelectedMonth((current) => (current === index ? null : index)),
-    onDetail: setSelectedLineId,
+    onDetail: (id, opener) => {
+      detailOpener.current = opener;
+      setSelectedLineId(id);
+    },
     onConfidence: (id, value) => dispatch({ type: "confidence", id, value }),
     onAdd: openAdd,
   };
@@ -1329,6 +1339,16 @@ export default function RetailPnlOutlook() {
         open={Boolean(selectedLine)}
         onOpenChange={(open) => {
           if (!open) setSelectedLineId(null);
+        }}
+        onCloseAutoFocus={(event) => {
+          const opener = detailOpener.current;
+          detailOpener.current = null;
+          // Removing a line also removes its opener; return to the statement search.
+          const target = opener?.isConnected ? opener : searchInput.current;
+          if (target) {
+            event.preventDefault();
+            target.focus({ preventScroll: true });
+          }
         }}
         onConfidence={(id, value) => dispatch({ type: "confidence", id, value })}
         onUpdateLine={(id, patch) => dispatch({ type: "update", id, patch })}

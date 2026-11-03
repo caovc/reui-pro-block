@@ -1,0 +1,125 @@
+{
+  "date": "2026-11-03",
+  "milestone": "Retail line-details Sheet focus lifecycle and Months/Notes coverage",
+  "goalComplete": false,
+  "publicationBase": "b9a1fa48dbaa45af285e1e2830a07403fd4060bc",
+  "runtimeValidationBase": "eed4d3cd51e45ec191efe17c39a485d40340beee",
+  "baseDifference": "Only the two corrected Cohort reference documents changed before publication; source, QA, packages and configs are identical.",
+  "actualReuse": [
+    "Existing ReUI free Sheet/SheetContent and native onCloseAutoFocus API",
+    "Existing ReUI DataGrid, Frame and Tabs composition",
+    "Existing native DropdownMenu and AlertDialog"
+  ],
+  "customGap": "This controlled Sheet has no registered SheetTrigger. Its consumer remembers the actual View or Actions button and restores that connected opener through native close autofocus; after real line removal it returns to the surviving Search input. No modal, focus trap, table engine or shared primitive was rewritten.",
+  "owned4": [
+    {
+      "path": "src/blocks/data/grid-advanced-retail-pnl-outlook.tsx",
+      "beforeSHA256": "d72607a739cc8ad320137dd32c7f2a35e42c4037dde57983fe63048cc20f5127",
+      "afterSHA256": "c8727b94aae7e4967fe1fed20e9d78cd3cc06a824bd877dae097847bd2c290bc"
+    },
+    {
+      "path": "src/blocks/data/grid-advanced-retail-pnl-outlook-panels.tsx",
+      "beforeSHA256": "c510f77a5610a8332454ddc785eca3a203bc41866cb0993dc59fff706f7f9ef3",
+      "afterSHA256": "19acaed88bd38a2c8f7e4493c7afcf1dca2d0fe8a8d05834077c02149233a96d"
+    },
+    {
+      "path": "tests/grid-advanced-retail-sheet.spec.ts",
+      "beforeSHA256": null,
+      "afterSHA256": "b505d53caa0ae4debe14dbe8551cf59f71b1abe5f282e8dacf44936708176121"
+    },
+    {
+      "path": "tests/grid-advanced-retail-sheet-focus.spec.ts",
+      "beforeSHA256": null,
+      "afterSHA256": "9c253b768398618f17e7783b4a1cd1a9f889956ee4e308d699ee951b07193ba0"
+    }
+  ],
+  "sourceTargets": "Unchanged: both existing consumer modules are already exposed; actual view, Copy, single-file and ZIP checks pass.",
+  "localGates": {
+    "retail-focus-v1-original-sheet2-first-once": {
+      "exit": 0,
+      "seconds": 7.629500792005274,
+      "stats": {
+        "startTime": "2026-11-02T15:48:28.730Z",
+        "duration": 6878.483,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "745f4083d62b93926312d325b1574a4ea479828672ffc509c2162d47b453b83a"
+    },
+    "retail-focus-v1-trigger-fallback2-first-once": {
+      "exit": 0,
+      "seconds": 5.2727264589993865,
+      "stats": {
+        "startTime": "2026-11-02T15:48:36.070Z",
+        "duration": 4889.513999999999,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "ec7b165f26dbbe4e6d508d7ddec83d68883d3bbb522a6a673eb50bee4c334cb1"
+    },
+    "retail-focus-v1-source3-first-once": {
+      "exit": 0,
+      "seconds": 6.215047999998205,
+      "stats": {
+        "startTime": "2026-11-02T15:50:23.945Z",
+        "duration": 5834.556,
+        "expected": 3,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "6dab4eb098d954337b64870fb3834eb05e79874a75b029341ffbf813d41d0245"
+    },
+    "retail-focus-v1-received-original-native-once": {
+      "exit": 0,
+      "seconds": 12.091729625004518,
+      "stats": {
+        "startTime": "2026-11-03T01:43:45.133Z",
+        "duration": 11707.138,
+        "expected": 4,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "2deace1ce561964420ea1aa3c9b9628f374d118da18dd27d352b3ff0ee5d0dbd"
+    },
+    "retail-focus-v1-original-strict-build": {
+      "command": ["npm", "run", "build"],
+      "exit": 0,
+      "seconds": 24.08111737499712,
+      "logSHA256": "6e98d18e9880aeee3dfa0e7155f69ba12af5ab71c7766cde9158cdf92f93d1c3"
+    },
+    "retail-focus-v1-received-original-original-strict-build": {
+      "command": ["npm", "run", "build"],
+      "exit": 0,
+      "seconds": 13.058806083994568,
+      "logSHA256": "09f8205d42bd5a8334e2ddf56a7c89c6eda58fee163ef95a9870840c176bed9b"
+    }
+  },
+  "siteNativeAccounting": "Two necessary runs of2 plus2, not one combined4 or a rerun of all old Retail cases.",
+  "originalDownload": {
+    "filename": "advanced15-starter.zip",
+    "members": 330,
+    "sha256": "b34dda5c43fc3eb01334a43d69fd5a1ca38c1344bb41200555ae1e30d4965631",
+    "strictPassed": true,
+    "nativePassed": 4,
+    "entryPackageConfigModified": false,
+    "allOriginalMembersDistAndPublicExact": true,
+    "previewStoppedFinally": true,
+    "dependencies": "Existing physical normal-install APFS clones; not fresh installs",
+    "licensedMedia": "Only the local Inter font, with OFL and existing MIT/third-party notices."
+  },
+  "originalFailure": "First unchanged Sheet2 run failed at real opener focus after Escape; Notes was not executed. The original trace/report are retained, and its assertions were not weakened.",
+  "referenceLimit": "Months and Notes layouts are existing original local-demo completions; exact official layouts were not observed. This milestone does not claim official visual identity.",
+  "scopePreservation": "Wiki, Account, Cohort and the corrected ToggleGroup reference remain intact;13 protected working files remain unchanged.",
+  "publicationSnapshot": {
+    "stage": "Recorded after local gates and before normal-hook commit/push",
+    "CI": "Pending new milestone",
+    "Pages": "Not yet confirmed for Retail",
+    "lastVerifiedLiveCommit": "b9a1fa48dbaa45af285e1e2830a07403fd4060bc"
+  }
+}

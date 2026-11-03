@@ -1,4 +1,4 @@
-import { useId, useState, type FormEvent, type ReactNode } from "react";
+import { useId, useState, type ComponentProps, type FormEvent, type ReactNode } from "react";
 import {
   ArrowDownUp,
   ChartNoAxesCombined,
@@ -746,6 +746,7 @@ export function PnlLineSheet({
   compare,
   open,
   onOpenChange,
+  onCloseAutoFocus,
   onConfidence,
   onUpdateLine,
   onRemoveLine,
@@ -756,6 +757,7 @@ export function PnlLineSheet({
   compare: PnlCompareBase;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  onCloseAutoFocus: ComponentProps<typeof SheetContent>["onCloseAutoFocus"];
   onConfidence: (id: string, value: PnlConfidence) => void;
   onUpdateLine: (id: string, patch: PnlLinePatch) => void;
   onRemoveLine: (id: string) => void;
@@ -763,7 +765,10 @@ export function PnlLineSheet({
 }) {
   return (
     <Sheet open={open && Boolean(line && row)} onOpenChange={onOpenChange}>
-      <SheetContent className="reui-reference rpo-line-sheet gap-0 data-[side=right]:w-full data-[side=right]:sm:max-w-[480px]">
+      <SheetContent
+        className="reui-reference rpo-line-sheet gap-0 data-[side=right]:w-full data-[side=right]:sm:max-w-[480px]"
+        onCloseAutoFocus={onCloseAutoFocus}
+      >
         {line && row && (
           <PnlLineSheetBody
             key={line.id}
