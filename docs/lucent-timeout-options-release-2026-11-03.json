@@ -1,0 +1,209 @@
+{
+  "date": "2026-11-03",
+  "milestone": "Lucent Security five actual timeout choices",
+  "base": "41655571b407211558f4dcd53e7dee7cd9ab54f1",
+  "goalComplete": false,
+  "ownedRuntimeAndQA": [
+    {
+      "path": "src/templates/workflow/lucent-settings.tsx",
+      "candidate": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/lucent-timeout-416-validation-v1/candidate/src/templates/workflow/lucent-settings.tsx",
+      "beforeSHA256": "ce937e4356a7d4fe23da7ede6a771508b329a7311d903fb9d4ad24f7ab5a94c4",
+      "afterSHA256": "2e4f3a878f8aa5b283956ed98f07656a5e01265c4bb2fe23f350f2ed11b209be"
+    },
+    {
+      "path": "tests/lucent-security-item-native.spec.ts",
+      "candidate": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/lucent-timeout-416-validation-v1/candidate/tests/lucent-security-item-native.spec.ts",
+      "beforeSHA256": "15cab6726779cfc9fadedb728c4a1dd958752da7365a622a966b10c95725b8e1",
+      "afterSHA256": "e0cdd676b2f3c1e1975fb6485ee445a09c465b4f5b8032617f1729594bc06f6a"
+    }
+  ],
+  "scope": "Single items literal only; actual Choice/Select/Item/Frame/Separator, default4h, model/setter, CSS/API/SourceTargets and other1149 source files unchanged. Existing native2 scenarios adjusted and strengthened; Source spec/helper untouched.",
+  "reuse": "The existing project Choice still uses actual free ReUI Select; Item/Frame/Separator, shared primitives and models remain unchanged. Only the option literal changes.",
+  "choices": ["30 minutes", "1 hour", "4 hours", "24 hours", "Never"],
+  "default": "4 hours",
+  "gates": {
+    "normal-install.json": {
+      "command": ["npm", "ci"],
+      "cwd": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/lucent-timeout-416-validation-v1/candidate",
+      "exit": 0,
+      "seconds": 5.2414962080001715,
+      "logSHA256": "fd4e0e85f8cb0c7891d2643d662b39fc7328e6139251d2aa3207e67ba4cceea8"
+    },
+    "scoped-format-check.json": {
+      "command": [
+        "npm",
+        "run",
+        "format:check",
+        "--",
+        "src/templates/workflow/lucent-settings.tsx",
+        "tests/lucent-security-item-native.spec.ts"
+      ],
+      "cwd": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/lucent-timeout-416-validation-v1/candidate",
+      "exit": 0,
+      "seconds": 0.15256779199989978,
+      "logSHA256": "0bd47a944f1efc3233bb1d270a6d37f4421e3e0a7f6324e9687b806cd0b4c38d"
+    },
+    "scoped-lint.json": {
+      "command": [
+        "npm",
+        "run",
+        "lint",
+        "--",
+        "src/templates/workflow/lucent-settings.tsx",
+        "tests/lucent-security-item-native.spec.ts"
+      ],
+      "cwd": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/lucent-timeout-416-validation-v1/candidate",
+      "exit": 0,
+      "seconds": 0.5361503749954863,
+      "logSHA256": "426ebcca55075c327bbd98fd53fe5f75f478e853ae47ff77b40a2c30b6496fa2"
+    },
+    "original-strict-build.json": {
+      "command": ["npm", "run", "build"],
+      "cwd": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/lucent-timeout-416-validation-v1/candidate",
+      "exit": 0,
+      "seconds": 23.932317417005834,
+      "logSHA256": "ec5340d6cd1fe8751039550dd0148440082d07c9b7904f8de32b34fa04d96c41"
+    },
+    "native2/receipt.json": {
+      "command": [
+        "npx",
+        "playwright",
+        "test",
+        "tests/lucent-security-item-native.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--output",
+        "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/lucent-timeout-416-validation-v1/native2/artifacts",
+        "--reporter=json"
+      ],
+      "url": "http://127.0.0.1:54867/",
+      "exit": 0,
+      "seconds": 7.552903875002812,
+      "stats": {
+        "startTime": "2026-11-03T05:23:02.116Z",
+        "duration": 7091.539,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "af339bf89d9c62beb3e161269dabbc51fad0076a51ab7477411c92ed4a34950d"
+    },
+    "source2/receipt.json": {
+      "command": [
+        "npx",
+        "playwright",
+        "test",
+        "tests/lucent-security-item-source.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--output",
+        "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/lucent-timeout-416-validation-v1/source2/artifacts",
+        "--reporter=json"
+      ],
+      "url": "http://127.0.0.1:54867/",
+      "exit": 0,
+      "seconds": 6.7335882499974105,
+      "stats": {
+        "startTime": "2026-11-03T05:23:09.585Z",
+        "duration": 6356.864,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "21f21f7665afbe578522d2614227a0e4ad6b846629dc79706f57deb8f9dac143"
+    },
+    "received-normal-install.json": {
+      "command": ["npm", "install"],
+      "cwd": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/lucent-timeout-416-validation-v1/received-lucent",
+      "exit": 0,
+      "seconds": 40.655283791995316,
+      "logSHA256": "eeac54fe46e47739c2a27e9f36bcc114c94a4b7dc63b37cd973f4258402b303f"
+    },
+    "received-original-strict.json": {
+      "command": ["npm", "run", "build"],
+      "cwd": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/lucent-timeout-416-validation-v1/received-lucent",
+      "exit": 0,
+      "seconds": 8.484138416999485,
+      "logSHA256": "402aabe5055d475fef2a5fe3e30a77ad6c22a7304929db9d5ee597043f7f54b2"
+    },
+    "received-native2/receipt.json": {
+      "command": [
+        "npx",
+        "playwright",
+        "test",
+        "tests/lucent-security-item-native.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--output",
+        "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/lucent-timeout-416-validation-v1/received-native2/artifacts",
+        "--reporter=json"
+      ],
+      "url": "http://127.0.0.1:55233/",
+      "exit": 0,
+      "seconds": 7.249701917004131,
+      "stats": {
+        "startTime": "2026-11-03T05:26:05.508Z",
+        "duration": 6889.557,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "dc7ba5f2ed96d75a1f23ada9122259d1680252d150e9c9fb2eec964292d7b59f"
+    }
+  },
+  "qa": "Original24h focus/selection/navigation block retained byte-exact; all originalItem/Frame/Separator/zerooverflow/Switch assertions retained. Home30→Arrow1→Arrow4, EndNever/Esc4, EndNever→ArrowUp24/focus/Enter; new30 andNever each actual focused/inViewport/Enter/Sidebar roundtrip/2FA independent. Original30s/5s/W1R0, no first failure/retry or injected focus/state/style/sleep.",
+  "originalZIP": {
+    "path": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/lucent-timeout-416-validation-v1/source2/artifacts/lucent-security-item-sourc-43c1f-d-complete-licensed-closure/lucent-original-project.zip",
+    "sha256": "d82ea336ed5a002299a2a324241a5c11db63b1eaf8fac984e8b0d16e9d962079",
+    "members": 308,
+    "scripts": {
+      "dev": "vite",
+      "build": "tsc --noEmit && vite build",
+      "preview": "vite preview",
+      "postinstall": "node scripts/copy-excalidraw-assets.mjs"
+    },
+    "normalOriginalPostinstallExecuted": true
+  },
+  "finalIntegrity": {
+    "siteSource": 1150,
+    "siteDist": 657,
+    "sitePublic": 247,
+    "allSiteSourceDistPublicAndFrozenQaExact": true,
+    "rawOriginalMembers": 308,
+    "receivedDist": 475,
+    "receivedPublic": 246,
+    "allRawEntryPackageConfigDistPublicZipExact": true,
+    "rawContainsFinalFiveOptionSource": true,
+    "protected13Exact": true,
+    "ownTabsClosedViewportReset": true,
+    "ports": [
+      {
+        "pid": 18889,
+        "port": 54867,
+        "closed": true
+      },
+      {
+        "pid": 20902,
+        "port": 55233,
+        "closed": true
+      }
+    ]
+  },
+  "scopeOfValidation": "Affected existing1440/390native2, unchanged Source spec actual selected-file/Copy/single1 and freshZIP1, actual original affected2. Unchanged oldIntegration regression was not rerun.",
+  "dependencies": "Normal physical candidate npmci. Clean release uses an independent physical APFS copy; its source matches the strict-built candidate. Original download used normal npm install and its actual original postinstall.",
+  "sourceTargets": "Unchanged; Code default and all targets retained, actual changed source/ZIP bytes verified.",
+  "evidenceSHA256": {
+    "ownedManifest": "219548732d7eebc4bbb68c5a927b5fadd3a91353bf5a3d100d690f2770a65027",
+    "finalReceipt": "cff779defbcef1bb6fae8cd1d2286b3e5b95eb06f1070bcf6745e3fbc673a510"
+  },
+  "browserEvidence": "Actual390x844 menu capture shows allfive options; earlier screenshot resize/capture observations retained privately and are not product failures. No official media copied or distributed.",
+  "limits": [
+    "No backend session-expiry/authentication enforcement or reload persistence implemented",
+    "Transient HMR selection8h absent-item behavior untested; no automaticclamp or sixth legacy choice added",
+    "Other-template/full Sidebar/wholepage fidelity remains active"
+  ],
+  "publication": "Local acceptance snapshot before commit/push; full CI and Pages require separate confirmation."
+}

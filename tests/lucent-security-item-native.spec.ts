@@ -215,20 +215,22 @@ for (const width of [1440, 390]) {
     await timeout.click();
     const listbox = page.getByRole("listbox");
     await expect(listbox).toBeVisible();
-    // This proposal deliberately preserves the local four-item menu; official five-item parity remains a separate gap.
     await expect(listbox.getByRole("option")).toHaveText([
+      "30 minutes",
       "1 hour",
       "4 hours",
-      "8 hours",
       "24 hours",
+      "Never",
     ]);
     await expect(listbox.getByRole("option", { name: "4 hours", exact: true })).toBeFocused();
     await page.keyboard.press("Home");
+    await expect(listbox.getByRole("option", { name: "30 minutes", exact: true })).toBeFocused();
+    await page.keyboard.press("ArrowDown");
     await expect(listbox.getByRole("option", { name: "1 hour", exact: true })).toBeFocused();
     await page.keyboard.press("ArrowDown");
     await expect(listbox.getByRole("option", { name: "4 hours", exact: true })).toBeFocused();
     await page.keyboard.press("End");
-    await expect(listbox.getByRole("option", { name: "24 hours", exact: true })).toBeFocused();
+    await expect(listbox.getByRole("option", { name: "Never", exact: true })).toBeFocused();
     await page.keyboard.press("Escape");
     await expect(timeout).toHaveAttribute("aria-expanded", "false");
     await expect(page.getByRole("listbox")).toHaveCount(0);
@@ -237,6 +239,8 @@ for (const width of [1440, 390]) {
     await timeout.press("Enter");
     await expect(listbox).toBeVisible();
     await page.keyboard.press("End");
+    await expect(listbox.getByRole("option", { name: "Never", exact: true })).toBeFocused();
+    await page.keyboard.press("ArrowUp");
     await expect(listbox.getByRole("option", { name: "24 hours", exact: true })).toBeFocused();
     await page.keyboard.press("Enter");
     await expect(timeout).toHaveText("24 hours");
@@ -249,6 +253,21 @@ for (const width of [1440, 390]) {
     await expect(region.getByRole("combobox", { name: "Session timeout", exact: true })).toHaveText(
       "24 hours",
     );
+    for (const value of ["30 minutes", "Never"]) {
+      await timeout.click();
+      await expect(listbox).toBeVisible();
+      await page.keyboard.press(value === "30 minutes" ? "Home" : "End");
+      const option = listbox.getByRole("option", { name: value, exact: true });
+      await expect(option).toBeFocused();
+      await expect(option).toBeInViewport();
+      await page.keyboard.press("Enter");
+      await expect(timeout).toHaveText(value);
+      await expect(timeout).toBeFocused();
+      await navigate(page, "Integrations", mobile);
+      await navigate(page, "Security", mobile);
+      await expect(timeout).toHaveText(value);
+      await expect(twoFactor).toBeChecked();
+    }
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
       width,
     );

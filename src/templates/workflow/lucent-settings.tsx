@@ -101,7 +101,7 @@ export function LucentSecurity({ model }: { model: ReturnType<typeof useLucentSe
             label="Session timeout"
             value={timeout}
             onChange={setTimeoutValue}
-            items={["1 hour", "4 hours", "8 hours", "24 hours"]}
+            items={["30 minutes", "1 hour", "4 hours", "24 hours", "Never"]}
           />
         </Setting>
         <Setting title="Single active session" description="Limit each user to one active session.">
