@@ -1,0 +1,42 @@
+{
+  "date": "2026-11-04",
+  "milestone": "Flowly whole-page sidebar density, compact footer and live Seats summary",
+  "baseCommit": "3b483bb4f22e362f7344766ecce22dabda0e65aa",
+  "changes": [
+    "Adjust existing actual ReUI Sidebar Group/Menu consumer spacing to the observed desktop rows while retaining already matching mobile rules and positions.",
+    "Pass matching group-data icon-size variants through the two Flowly Footer MenuButton className APIs; desktop and phone Footer now80px. Other workflow brands receive undefined and retain original callbacks/props.",
+    "Restore Members Seats summary through actual ReUI free Base c-progress-2 and its complete official Progress dependency. Native Root8px with2px vertical padding contains the real4px Track/Indicator; percentage derives from existing members/10.",
+    "Use the existing matching mobile summary typography for the Members desktop summary. Keep General group titles visually hidden and existing Integrations/AI Radix Progress consumers unchanged."
+  ],
+  "freeReuse": {
+    "sidebar": "Existing actual ReUI Sidebar, Group, Menu, Footer and MenuButton; no replacement engine.",
+    "progressExample": "https://reui.io/r/base-nova/c-progress-2.json",
+    "progressDependency": "https://ui.shadcn.com/r/styles/base-nova/progress.json",
+    "adaptation": "Complete official Root/Track/Indicator/Label/Value implementation; only cn import adapted. Members-only consumer uses the actual small-track composition. Global Radix Progress unchanged.",
+    "source": "Flowly-only new module appended to existing SourceTargets; default entry remains unchanged."
+  },
+  "customRequired": "Template-specific layout CSS, Flowly-only className override and existing seat-count derivation. No handwritten track, transform, keyboard or focus engine.",
+  "verification": {
+    "reference": "Fresh bounded117s read-only official Members states at1440/390 directly record Seats60%, native progressbar value60, Root8px/padding2px and Track/Indicator4px. Reference tab closed/reset with no open dialogs or errors.",
+    "configuredBuild": "Final original tsc -b && vite build passed in21.461s;1159source/657dist bound to this successful build. No added strict flag.",
+    "site": "First valid native2 passed; enhanced final2 passed after adding actual70%/Undo60% Indicator ratio checks following native transitions. Four unchanged representative navigation/filter/invite/Undo/collapse/phone-focus cases passed.",
+    "source": "Four actual implementation View/Copy/single-file cases and one real ZIP case passed on final built assets.",
+    "download": {
+      "zipSHA256": "d0b3eff086b825af29987e40c3ead0dfd8c4d3954d55bfd18eb6d2271d8a1875",
+      "rawMembers": 316,
+      "normalInstallSeconds": 33.531,
+      "immediatePostinstallAndFinalLockSHA256": "088984afdc8233e13403189d0159be5210387b06db87e9367d73c54051cbb99c",
+      "originalStrictBuildSeconds": 9.953,
+      "firstNativePassed": 2,
+      "originalRawPackageConfigEntryUnchanged": true
+    },
+    "honestFailures": "Initial final build failed TS2322 for number|undefined versus the actual Base number|null API. A mistakenly launched native run hit obsolete prior-scope dist and is invalid acceptance evidence. Both originals are retained. Minimal consumer progress??null correction precedes the successful final build and all valid gates; no wrapper, timeout or tolerance changes."
+  },
+  "boundaries": [
+    "Only this sidebar/Footer/Members-summary scope accepted; complete template fidelity remains open.",
+    "Original reference dark and local light differ; no complete theme color parity claim.",
+    "Other workflow families preserve shared callback/prop AST after removing the Flowly-only presentation delta. Their download closures may contain shared source changes; only this actual Flowly316 project is freshly validated.",
+    "Cloud CI and exact Pages deployment for this new commit require separate verification."
+  ],
+  "licensing": "Bricklane original branding/artwork, actual free source MIT and font OFL notices retained; no paid reference screenshots, avatars or extracted decorative assets distributed."
+}

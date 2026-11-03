@@ -8,16 +8,16 @@
 
 1. Verve Workspace：已提交并推送 `7729059`，恢复单一标题与真实 Frame 的4px内嵌、3px面板间距、20px卡片间距。侧栏和现有设置行继续复用；完整2211项云端检查及对应 Pages 部署已成功，见[该版本 CI/Pages](https://github.com/caovc/reui-pro-block/actions/runs/41676366113)。后续每批仍独立核验。
 2. Filespace / Filebox：完成本批底部导航、存储进度与分隔线。保留已匹配的主侧栏、DriveFolderTree 和 Workspace 卡片。导航需保持真实 href、aria-current、Space/Enter 与手机关闭后回到导航按钮的原生行为；不自行补写键盘引擎。
-3. Flowly：修正二级菜单密度、桌面 footer 与 Members summary 的 Progress，再核对两种宽度的侧栏滚动与独立收起。原站 General 组标题和描述本来就视觉隐藏，不能改成可见标题。
-4. 其余模板分批核对 header、侧栏、footer、主滚动区和手机导航，再深入设置内容。先记录可重现的布局差异，避免仅凭导入了 Sidebar 就宣称整页还原。
+3. Flowly：已按实测修正二级菜单密度、桌面 footer 与 Members summary 的 Progress，并验证两种宽度的原生导航、独立收起与席位变化。原站 General 组标题和描述本来就视觉隐藏，不能改成可见标题。
+4. 下一批先比较 Tempo、Mesh 的整体布局和现有 SettingsPanel，随后 Flux、Lucent；其余模板分批核对 header、侧栏、footer、主滚动区和手机导航，再深入设置内容。先记录可重现的布局差异，避免仅凭导入了 Sidebar 就宣称整页还原。
 
 ## 本轮已浏览范围
 
-| 模板                | 实际复用                                                                                                         | 本批结果与后续                                                                                                                                                                                             |
-| ------------------- | ---------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Verve               | ReUI Sidebar/SidebarNavigation；DriveSettingsCard 中的真实 Frame、Header、Panel、Footer；现有 SettingsRow/Fields | Workspace 布局已通过桌面、手机、源码与实际下载项目检查。header/search/menu、按钮密度、颜色选择和字段行高仍需逐项核对。                                                                                     |
-| Filespace / Filebox | 真实 Sidebar/主 rail、DriveFolderTree、DriveSettingsCard/Frame、设置行与字段                                     | 本批采用官方免费 c-progress-2 组合及真实 Progress，取代缺少进度语义的手写条；导航采用官方 Base c-button-27 及其 Button 依赖，以原生 API 保持链接的键盘行为。保留已匹配的63px rail、256px二级栏与卡片框架。 |
-| Flowly              | 真实 ReUI Sidebar、原生手机 Sheet、Content/Group/Menu，以及现有设置行与字段                                      | 二级菜单原28px、本地26px；桌面主 footer 原80px、本地88px，手机两边80px；Members summary 尚缺原站60% Progress。仅修正相应页面样式和组件组合。                                                               |
+| 模板                | 实际复用                                                                                                         | 本批结果与后续                                                                                                                                                                                                      |
+| ------------------- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Verve               | ReUI Sidebar/SidebarNavigation；DriveSettingsCard 中的真实 Frame、Header、Panel、Footer；现有 SettingsRow/Fields | Workspace 布局已通过桌面、手机、源码与实际下载项目检查。header/search/menu、按钮密度、颜色选择和字段行高仍需逐项核对。                                                                                              |
+| Filespace / Filebox | 真实 Sidebar/主 rail、DriveFolderTree、DriveSettingsCard/Frame、设置行与字段                                     | 本批采用官方免费 c-progress-2 组合及真实 Progress，取代缺少进度语义的手写条；导航采用官方 Base c-button-27 及其 Button 依赖，以原生 API 保持链接的键盘行为。保留已匹配的63px rail、256px二级栏与卡片框架。          |
+| Flowly              | 真实 ReUI Sidebar、原生手机 Sheet、Content/Group/Menu，以及现有设置行与字段                                      | 十个菜单行已匹配28px/12.8px字体及各组位置，手机原位置保留；主 footer 两宽均80px。Members 实际复用免费 Base c-progress-2，原生 Root8px/Track4px，模型进度60%→邀请70%→撤销60%已验证。header、主题和账户菜单仍待后续。 |
 
 Flux、Lucent、Tempo、Mesh、Echo、Atlas、Cohort、Surge、Manifest、Miro、Pulse、Roster、Filebox 的历史局部验收保留，本轮尚未完成其当前整页稳定对比；Filebox 本批侧栏范围除外。Limelight、Overture 按 landing 自身的导航、章节和 footer 核对，不套用应用侧栏结构。Strata 不计入已实现入口。
 

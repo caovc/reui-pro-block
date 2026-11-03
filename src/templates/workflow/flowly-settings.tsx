@@ -34,6 +34,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { Progress as MembersProgress } from "./free/flowly-progress";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -133,6 +134,7 @@ export function FlowlySettingsSummary({ model }: { model: FlowlySettingsModel })
   if (section === "members") {
     value = `${model.members.length} of 10`;
     detail = `${Math.max(0, 10 - model.members.length)} seats left on the Pro plan, ${model.members.filter((member) => member.status === "Invited").length} invited.`;
+    progress = (model.members.length / 10) * 100;
   }
   if (section === "integrations") {
     const connected = model.integrations.filter((item) => item.status !== "Needs setup").length;
@@ -155,7 +157,7 @@ export function FlowlySettingsSummary({ model }: { model: FlowlySettingsModel })
   }
   if (section === "ai-models") progress = 68;
   return (
-    <section className="fs-summary">
+    <section className={`fs-summary${section === "members" ? " fs-summary-members" : ""}`}>
       <div>
         <Icon />
         <strong>{entry.title}</strong>
@@ -164,9 +166,15 @@ export function FlowlySettingsSummary({ model }: { model: FlowlySettingsModel })
         </Badge>
       </div>
       <p>{detail}</p>
-      {progress !== undefined && (
+      {section === "members" ? (
+        <MembersProgress
+          value={progress ?? null}
+          aria-label={`${entry.title}: ${progress}%`}
+          className="**:data-[slot=progress-track]:h-1"
+        />
+      ) : progress !== undefined ? (
         <Progress value={progress} aria-label={`${entry.title} progress`} />
-      )}
+      ) : null}
     </section>
   );
 }

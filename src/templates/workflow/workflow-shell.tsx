@@ -118,6 +118,10 @@ function ShellContent({
   const hasMobileSecondary = isMobile && Boolean(mobileSecondaryNavigation);
   const collapsed = !isMobile && state === "collapsed";
   const iconRail = compact || collapsed;
+  const compactAccountClass =
+    brand === "Flowly"
+      ? "group-data-[collapsible=icon]:size-7! group-data-[collapsible=icon]:p-0!"
+      : undefined;
   const inset = brand === "AgentOps";
   const width = brand === "ReUI" ? 250 : brand === "Flowly" ? 63 : brand === "Mesh" ? 48 : 256;
   const HeaderTitleTag = brand === "AgentOps" && headerTitle !== undefined ? "div" : "span";
@@ -238,6 +242,7 @@ function ShellContent({
             {compact && (
               <SidebarMenuItem>
                 <SidebarMenuButton
+                  className={compactAccountClass}
                   tooltip={brand === "Flowly" ? "Notifications" : "Help"}
                   aria-label={brand === "Flowly" ? "Notifications" : "Help"}
                   onClick={() =>
@@ -266,6 +271,7 @@ function ShellContent({
                 />
               ) : (
                 <SidebarMenuButton
+                  className={compactAccountClass}
                   tooltip="Account settings"
                   aria-label="Account settings"
                   onClick={() => select("Settings")}
