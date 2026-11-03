@@ -1,0 +1,57 @@
+{
+  "date": "2026-11-04",
+  "milestone": "Flux real five-section account panel, native mobile sidebar and free spending widget",
+  "baseCommit": "369c40e369ff25cce52b387a9087ee5ea06adc3a",
+  "changes": [
+    "Extend existing actual WorkflowAccountMenu/SettingsPanel/Fields/Rows/AvatarUpload with an explicit Flux kind, independent31 scalar fields and2 media values across Profile, Workspace, Team, Billing and Preferences;13 dropdown groups preserve observed options/order.",
+    "Preserve the real Workspace page and its four already matching Frame cards. Sidebar Settings interception remains limited to Tempo/Mesh; the new Flux account menu opens its separate native panel.",
+    "Fix observed phone header56/footer52 and keep Sidebar for Overview plus the existing four Settings child routes. Account modal retains the underlying phone Sidebar with native Escape/focus restore.",
+    "Replace handwritten spending card/bar with actual ReUI Frame/c-frame-1 composition and the existing unmodified generic Base c-progress-2 wrapper at free/flowly-progress.tsx. Desktop Frame222x106; real Track/Indicator6px and66% value.",
+    "Use existing global theme API only when Flux theme preference changes relative to saved snapshot. Cancel and unrelated Profile saves leave the active theme unchanged.",
+    "Correct Flux portal/root background and mobile brand margin through scoped semantic-token CSS, restoring Dark/Light/System sidebar text, selected and hover readability."
+  ],
+  "freeReuse": [
+    "Actual existing ReUI Sidebar and native dropdown/radio controls; no new navigation or focus engine.",
+    "Existing real Pro SettingsPanel composed with actual free Fields/Rows/Select/Switch/AvatarUpload and native Dialog.",
+    "Actual free Frame/Header/Panel/Title and actual existing complete Base Progress Root/Track/Indicator; no copied duplicate implementation or new wrapper.",
+    "Original Bricklane demo artwork, unchanged helper source and required MIT/font OFL notices."
+  ],
+  "customRequired": "Flux account snapshots/options/validation and local session state, conditional theme commit through the existing API, routing policy and consumer CSS. Generic free components do not provide these domain rules.",
+  "verification": {
+    "configuredBuild": "Final original tsc -b && vite build-v8 passed;1159source/657dist bound to that successful build. No added strict flag.",
+    "site": "Six final cases pass on both widths, covering five sections, independent time zones, invalid support email blocking Save, role options, local avatar upload, Save/Cancel/identity, native Escape/focus and Sidebar retention, spending free slots, and actual Dark/Light/System save/cancel/provider behavior plus real sidebar colors/hover.",
+    "legacy": "Seventeen unchanged Tempo/Mesh/Flux settings, focus, theme, Sidebar and QuickLinks representative cases passed with original assertions and budgets.",
+    "source": "Eight final source checks cover seven actual files including the reused Base helper, real View/Copy/single-file bytes and the newly downloaded project closure.",
+    "download": {
+      "zipSHA256": "2e695251dca2e50b5239d02e0dc153e211fe2aa9e8d4915b39561724c3353666",
+      "rawMembers": 316,
+      "normalInstallSeconds": 37.768,
+      "immediatePostinstallAndFinalLockSHA256": "c478d6548c567996b5d47faba22455e5bfd4d064308a38dfcd7693036d47908e",
+      "originalStrictBuildSeconds": 7.98,
+      "firstNativePassed": 6,
+      "allRawPackageConfigMainExampleUnchanged": true
+    },
+    "static": "Independent original-field/options contract and product preflights bind final7. Legacy Tempo/Mesh branches and existing Flux Workspace/field modules preserve their behavior.",
+    "failureHistory": "Initial CLI flags were swallowed by an incorrect npm exec delimiter, so that2worker run is invalid bounded-gate evidence and retained. Actual subsequent failures exposed a slot-overwritten footer selector and decorative organization initials in accessible names; both fixed in consumers, without weakening tests. Later passing interaction gates missed a true Dark Sidebar white-background defect. Its screenshots/computed cause are retained; finalv8 adds scoped token correction and direct color assertions. Older Source/ZIP runs are not relabeled as final."
+  },
+  "priorVerifiedDeployment": {
+    "commit": "369c40e369ff25cce52b387a9087ee5ea06adc3a",
+    "runId": 41693845625,
+    "passed": 2230,
+    "deploymentId": 7527933600,
+    "successStatusId": 21281673678,
+    "successUTC": "2026-11-03T19:01:51Z"
+  },
+  "boundaries": [
+    "Sign In disabled; no production authentication/org backend or outbound actions.",
+    "Smooth cursor, language, digest and non-rendering account preferences save local session data; no untested service/UI-wide effects claimed.",
+    "Original Runs expands All runs/Failures; existing local direct Runs and other navigation fidelity remain next separate batch.",
+    "Lucent Profile is a full account page; excluded from Flux modal adaptation and pending its own implementation.",
+    "Original progress stripe/hover and full font/theme pixel parity are not claimed.",
+    "Phone reference/local Spending widget captures use different routes/expanded states; no whole-phone widget y parity claim.",
+    "Theme Save/Cancel is an explicit local-demo contract; reference fields/options were observed without saving original production data.",
+    "Other workflow export closures may include shared source changes; only the final original Flux316 project is freshly built/run here.",
+    "This new commit still needs its own complete CI and exact Pages deployment."
+  ],
+  "licensing": "Independent Bricklane branding/fixtures; actual free MIT/OFL/attribution retained. No paid reference screenshots, original avatars or extracted decorative assets shipped."
+}

@@ -639,6 +639,9 @@ export function templateImplementationTargets(template: {
       "flux-settings-header",
       "approvals",
       "flux-sidebar-quick-links",
+      "free/flowly-progress",
+      "workflow-account-settings",
+      "workflow-account-menu",
     ],
     tempo: ["ai-operations", "workflow-account-settings", "workflow-account-menu"],
     lucent: [

@@ -35,6 +35,8 @@ import {
 } from "lucide-react";
 import { Shell, Panel, Button, Status, Chart, Detail, ExportButton } from "./shared";
 import { Switch } from "@/components/ui/switch";
+import { Progress } from "./free/flowly-progress";
+import { Frame, FrameHeader, FramePanel, FrameTitle } from "@/components/reui/frame";
 import { toast } from "sonner";
 import { IconTile } from "@/components/reui/icon-tile";
 import { Choice } from "./controls";
@@ -121,7 +123,9 @@ export default function Flux() {
         ) : undefined
       }
       headerActions={settingsView ? <FluxSettingsMonitor /> : undefined}
-      closeMobileOnSelect={(nextView) => fluxSettingsView(nextView) === undefined}
+      closeMobileOnSelect={(nextView) =>
+        nextView !== "Overview" && fluxSettingsView(nextView) === undefined
+      }
       nav={[
         { label: "Overview", icon: LayoutDashboard },
         { label: "Runs", icon: Play },
@@ -150,16 +154,23 @@ export default function Flux() {
               setRiskOnly(label === "Failures");
             }}
           />
-          <div className="wf-usage">
-            <strong>Spending Limit</strong>
-            <p>$95.10 of $144.09 this period. Resets Oct 23.</p>
-            <div className="wf-progress">
-              <i style={{ width: "66%" }} />
-            </div>
-            <p>
-              66% Used <span>34% Free</span>
-            </p>
-          </div>
+          <Frame dense spacing="xs" className="wf-flux-spending-limit">
+            <FrameHeader>
+              <FrameTitle className="text-xs leading-4">Spending Limit</FrameTitle>
+            </FrameHeader>
+            <FramePanel className="flex flex-col gap-2">
+              <p>$95.10 of $144.09 this period. Resets Oct 23.</p>
+              <Progress
+                aria-label="Workspace spending limit"
+                value={66}
+                className="h-1.5 gap-0 [&_[data-slot=progress-track]]:h-full [&_[data-slot=progress-track]]:rounded-sm [&_[data-slot=progress-indicator]]:bg-success"
+              />
+              <p className="flex justify-between">
+                <span>66% Used</span>
+                <span>34% Free</span>
+              </p>
+            </FramePanel>
+          </Frame>
         </>
       }
       actions={

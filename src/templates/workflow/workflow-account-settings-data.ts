@@ -8,7 +8,7 @@ import {
 } from "@/blocks/application/dialog-variants/workspace/settings-data";
 import { demoAvatar, integrationArtwork, svgImage } from "@/lib/demo-artwork";
 
-export type WorkflowAccountKind = "tempo" | "mesh";
+export type WorkflowAccountKind = "tempo" | "mesh" | "flux";
 export type WorkflowAccountSection = "profile" | "workspace" | "team" | "billing" | "preferences";
 export type WorkflowAccountSnapshot = {
   values: SettingsValues;
@@ -34,9 +34,55 @@ export const workflowAccountDescriptions: Record<
     billing: "Plan, invoices and AI credits.",
     preferences: "Display, boards, language and summary.",
   },
+  flux: {
+    profile: "Manage your account identity.",
+    workspace: "Update brand and sharing defaults.",
+    team: "Set member access defaults.",
+    billing: "Manage plan and invoice settings.",
+    preferences: "Tune your workspace behavior.",
+  },
 };
 
 export function createWorkflowAccountSnapshot(kind: WorkflowAccountKind): WorkflowAccountSnapshot {
+  if (kind === "flux") {
+    return {
+      values: {
+        fullName: "Nick Bold",
+        email: "nick.agentops@bricklane.example",
+        username: "nick-agentops",
+        role: "Owner",
+        timezone: "(GMT-5) New York",
+        website: "agentops.bricklane.example/nick",
+        bio: "Runs agent operations across Bricklane: run health, approvals, provider routing and spend.",
+        workspaceName: "Bricklane Agent Operations",
+        workspaceURL: "agent-operations",
+        supportEmail: "support.agentops@bricklane.example",
+        landingView: "Pipeline board",
+        externalSharing: true,
+        inviteDomain: "agentops.bricklane.example",
+        defaultRole: "Operator",
+        inviteApproval: true,
+        memberInvites: false,
+        teamVisibility: "Workspace visible",
+        plan: "Enterprise",
+        billingEmail: "billing.agentops@bricklane.example",
+        legalName: "Bricklane Agent Operations Inc.",
+        taxId: "DEMO-AGENTOPS-TAX",
+        purchaseOrder: "BL-OPS-2026-001",
+        spendLimit: "$500 monthly",
+        invoiceCadence: "Monthly",
+        paymentApproval: true,
+        theme: "System",
+        smoothCursor: true,
+        language: "English (US)",
+        preferencesTimezone: "(GMT-5) New York",
+        firstDay: "Monday",
+        digest: "Weekly summary",
+      },
+      avatar: demoAvatar("Nick Bold"),
+      logo: svgImage(integrationArtwork("BL Operations", "#2563eb")),
+    };
+  }
   if (kind === "tempo") {
     return {
       values: {
@@ -218,6 +264,15 @@ export function workflowAccountFields(
   kind: WorkflowAccountKind,
   section: Exclude<WorkflowAccountSection, "profile">,
 ): readonly SettingsFieldDefinition[] {
+  if (kind === "flux") {
+    return fluxFields[section].map((field) => {
+      const choices = workflowAccountOptions(kind, field.id);
+      return {
+        ...field,
+        ...(choices.length ? { options: choices.map((option) => option.label) } : {}),
+      };
+    });
+  }
   const fields = kind === "mesh" ? meshFields[section] : settingsFields[section];
   return fields.map((field) => {
     const choices = workflowAccountOptions(kind, field.id);
@@ -230,6 +285,43 @@ export function workflowAccountFields(
 }
 
 export function workflowProfileFields(kind: WorkflowAccountKind) {
+  if (kind === "flux") {
+    return {
+      identity: [
+        {
+          id: "fullName",
+          label: "Full name",
+          description: "Used across Bricklane Agent Operations.",
+          maxLength: 80,
+        },
+        {
+          id: "email",
+          label: "Email address",
+          description: "Primary sign-in email.",
+          type: "email",
+        },
+        {
+          id: "username",
+          label: "Username",
+          description: "Used in mentions and links.",
+          prefix: "@",
+          maxLength: 80,
+        },
+      ] satisfies SettingsFieldDefinition[],
+      details: [
+        { id: "role", label: "Role" },
+        { id: "timezone", label: "Time zone" },
+        { id: "website", label: "Website", prefix: "https://" },
+      ] satisfies SettingsFieldDefinition[],
+      bio: {
+        id: "bio",
+        label: "Bio",
+        description: "Short profile summary.",
+        type: "textarea",
+        maxLength: 1200,
+      } satisfies SettingsFieldDefinition,
+    };
+  }
   const mesh = kind === "mesh";
   const identity: SettingsFieldDefinition[] = [
     {
@@ -411,5 +503,166 @@ export function workflowAccountOptions(
   kind: WorkflowAccountKind,
   field: string,
 ): readonly WorkflowAccountOption[] {
+  if (kind === "flux") return fluxOptions[field] ?? [];
   return (kind === "tempo" ? tempoOptions : meshOptions)[field] ?? [];
 }
+
+// Flux account fields follow the observed panel. Redacted or identifying values
+// above are independent Bricklane demo fixtures, never another template's model.
+const fluxFields: Record<Exclude<WorkflowAccountSection, "profile">, SettingsFieldDefinition[]> = {
+  workspace: [
+    { id: "workspaceName", label: "Workspace name" },
+    {
+      id: "workspaceURL",
+      label: "Workspace URL",
+      description: "Link for teammates and clients.",
+      suffix: ".agentops.dev",
+    },
+    {
+      id: "supportEmail",
+      label: "Support email",
+      description: "Shown on help surfaces.",
+      type: "email",
+    },
+    {
+      id: "landingView",
+      label: "Default landing view",
+      description: "Choose where teammates start.",
+    },
+    {
+      id: "externalSharing",
+      label: "External sharing",
+      description: "Create client-safe links.",
+      type: "switch",
+    },
+  ],
+  team: [
+    {
+      id: "inviteDomain",
+      label: "Invite domain",
+      description: "Approved email domain.",
+      prefix: "@",
+    },
+    {
+      id: "defaultRole",
+      label: "Default role",
+      description: "Applied to new invited members.",
+    },
+    {
+      id: "inviteApproval",
+      label: "Invite approvals",
+      description: "Require owner review.",
+      type: "switch",
+    },
+    {
+      id: "memberInvites",
+      label: "Member invites",
+      description: "Let members invite teammates.",
+      type: "switch",
+    },
+    {
+      id: "teamVisibility",
+      label: "Team visibility",
+      description: "Control profile discovery.",
+    },
+  ],
+  billing: [
+    { id: "plan", label: "Plan", description: "Current billing package." },
+    {
+      id: "billingEmail",
+      label: "Billing email",
+      description: "Receives invoices.",
+      type: "email",
+    },
+    { id: "legalName", label: "Legal name", description: "Displayed on receipts." },
+    { id: "taxId", label: "Tax ID", description: "Optional business tax reference." },
+    { id: "purchaseOrder", label: "Purchase order", description: "Attached to invoices." },
+    { id: "spendLimit", label: "Spend limit", description: "Alert before the threshold." },
+    { id: "invoiceCadence", label: "Invoice cadence", description: "Choose statement timing." },
+    {
+      id: "paymentApproval",
+      label: "Payment approval",
+      description: "Review plan changes.",
+      type: "switch",
+    },
+  ],
+  preferences: [
+    { id: "theme", label: "Theme", description: "Choose the interface tone." },
+    {
+      id: "smoothCursor",
+      label: "Smooth cursor",
+      description: "Softer pointer motion.",
+      type: "switch",
+    },
+    { id: "language", label: "Language", description: "Set product language." },
+    { id: "preferencesTimezone", label: "Time zone" },
+    { id: "firstDay", label: "First day of week", description: "Controls calendar layout." },
+    { id: "digest", label: "Digest cadence", description: "Pick summary timing." },
+  ],
+};
+
+const fluxTimezones = options([
+  ["(GMT-5) New York", "Eastern team coverage"],
+  ["(GMT-8) Los Angeles", "Pacific team coverage"],
+  ["(GMT+0) London", "Europe team coverage"],
+  ["(GMT+8) Singapore", "APAC team coverage"],
+]);
+
+const fluxOptions: Record<string, WorkflowAccountOption[]> = {
+  role: options([
+    ["Owner", "Full control, including billing"],
+    ["Operator", "Runs agents and clears approvals"],
+    ["Viewer", "Read-only across the workspace"],
+  ]),
+  timezone: fluxTimezones,
+  landingView: options([
+    ["Home overview", "Recent activity first"],
+    ["Pipeline board", "Jump into execution"],
+    ["Priority inbox", "Focus on approvals"],
+  ]),
+  defaultRole: options([
+    ["Operator", "Standard workspace access"],
+    ["Owner", "Manage team settings"],
+    ["Viewer", "Read-only workspace access"],
+  ]),
+  teamVisibility: options([
+    ["Workspace visible", "All teammates can discover profiles"],
+    ["Department only", "Limit discovery to groups"],
+    ["Private", "Hide directory discovery"],
+  ]),
+  plan: options([
+    ["Enterprise", "Current workspace plan"],
+    ["Pro", "Routing rules and spend caps"],
+    ["Team", "Shared runs and approvals"],
+  ]),
+  spendLimit: options([
+    ["$250 monthly", "Alert before $250"],
+    ["$500 monthly", "Alert before $500"],
+    ["$1,000 monthly", "Alert before $1,000"],
+  ]),
+  invoiceCadence: options([
+    ["Monthly", "Send every month"],
+    ["Quarterly", "Bundle by quarter"],
+    ["Annual", "One yearly statement"],
+  ]),
+  theme: options([
+    ["System", "Follow device setting"],
+    ["Light", "Bright workspace tone"],
+    ["Dark", "Low-light workspace tone"],
+  ]),
+  language: options([
+    ["English (US)", "Default product language"],
+    ["English (UK)", "Regional spelling"],
+    ["German", "Regional operations"],
+  ]),
+  preferencesTimezone: fluxTimezones,
+  firstDay: options([
+    ["Monday", "Operational week start"],
+    ["Sunday", "Calendar week start"],
+  ]),
+  digest: options([
+    ["Weekday mornings", "Sent before standup"],
+    ["Daily evenings", "Wrap the workday"],
+    ["Weekly summary", "Monday planning recap"],
+  ]),
+};

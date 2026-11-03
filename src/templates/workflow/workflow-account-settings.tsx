@@ -29,6 +29,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import { setGlobalTheme, useGlobalTheme } from "@/components/site/global-theme-store";
 import {
   createWorkflowAccountSnapshot,
   workflowAccountDescriptions,
@@ -60,6 +61,7 @@ function initialModels() {
   return {
     tempo: createWorkflowAccountSnapshot("tempo"),
     mesh: createWorkflowAccountSnapshot("mesh"),
+    flux: createWorkflowAccountSnapshot("flux"),
   };
 }
 const validEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
@@ -75,6 +77,7 @@ export function WorkflowAccountSettings({
 }: WorkflowAccountSettingsProps) {
   const [saved, setSaved] = useState(initialModels);
   const [status, setStatus] = useState("");
+  const { theme } = useGlobalTheme();
   return (
     <>
       <Dialog open={open} onOpenChange={onOpenChange}>
@@ -90,6 +93,12 @@ export function WorkflowAccountSettings({
               initialSection={initialSection}
               onCancel={() => onOpenChange(false)}
               onSave={(snapshot) => {
+                if (kind === "flux" && snapshot.values.theme !== saved.flux.values.theme) {
+                  const mode = String(snapshot.values.theme).toLowerCase();
+                  if (mode === "light" || mode === "dark" || mode === "system") {
+                    setGlobalTheme({ ...theme, mode });
+                  }
+                }
                 setSaved((current) => ({ ...current, [kind]: snapshot }));
                 onIdentityChange?.({
                   name: String(snapshot.values.fullName),
@@ -255,9 +264,11 @@ function WorkflowAccountForm({
   }
   const invalid =
     !String(draft.values.fullName).trim() ||
-    ["email", "billingEmail", ...(kind === "tempo" ? ["supportEmail"] : [])].some(
-      (id) => !validEmail(String(draft.values[id] ?? "")),
-    );
+    [
+      "email",
+      "billingEmail",
+      ...(kind === "tempo" || kind === "flux" ? ["supportEmail"] : []),
+    ].some((id) => !validEmail(String(draft.values[id] ?? "")));
   const sections = settingsSections.map((entry) => ({
     ...entry,
     description: workflowAccountDescriptions[kind][entry.id],
@@ -266,14 +277,14 @@ function WorkflowAccountForm({
       entry.id === "profile" ? (
         <>
           <SettingsRow
-            title="Profile Photo"
+            title={kind === "flux" ? "Profile photo" : "Profile Photo"}
             description={
               kind === "mesh" ? "Shown on boards and docs." : "Shown in comments and mentions."
             }
           >
             <LocalAvatarUpload
               key={`${kind}-avatar`}
-              label="Upload profile photo"
+              label={kind === "flux" ? "Upload profile avatar" : "Upload profile photo"}
               defaultAvatar={draft.avatar}
               onDefaultRemove={() => removeMedia("avatar")}
               onFileChange={(file) => selectMedia("avatar", file)}
@@ -284,7 +295,7 @@ function WorkflowAccountForm({
             className="wf-account-public-row"
             title={
               <>
-                Public Details
+                {kind === "flux" ? "Public details" : "Public Details"}
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
@@ -292,7 +303,11 @@ function WorkflowAccountForm({
                         variant="ghost"
                         size="icon"
                         className="size-7 text-muted-foreground"
-                        aria-label="About public details"
+                        aria-label={
+                          kind === "flux"
+                            ? "Role, time zone, and website show on your public profile."
+                            : "About public details"
+                        }
                       >
                         <Info className="size-3.5" />
                       </Button>
@@ -306,7 +321,13 @@ function WorkflowAccountForm({
             }
             description={kind === "mesh" ? "Shown with your name." : "Shown across Bricklane."}
           >
-            <div className="wf-account-public-details">{renderFields(profile.details)}</div>
+            <div
+              className="wf-account-public-details"
+              role={kind === "flux" ? "group" : undefined}
+              aria-label={kind === "flux" ? "Public details" : undefined}
+            >
+              {renderFields(profile.details)}
+            </div>
           </SettingsRow>
           {renderFields([profile.bio])}
         </>
@@ -314,7 +335,7 @@ function WorkflowAccountForm({
         <>
           {entry.id === "workspace" && (
             <SettingsRow
-              title="Workspace Logo"
+              title={kind === "flux" ? "Workspace logo" : "Workspace Logo"}
               description={
                 kind === "mesh"
                   ? "Used on invite and summary emails."

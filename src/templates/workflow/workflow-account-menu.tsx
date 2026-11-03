@@ -4,6 +4,7 @@ import {
   Check,
   ChevronsUpDown,
   CreditCard,
+  LogIn,
   LogOut,
   Monitor,
   MoreHorizontal,
@@ -51,6 +52,7 @@ const appearances = [
   { value: "system", label: "System theme", icon: Monitor },
 ] as const;
 const organizations = ["Bricklane Studio", "Northstar", "Acme"];
+const fluxOrganizations = ["Atlas", "Relay", "Orbit"];
 
 /** Private review candidate: actual free menu controls; domain Settings stay in the Pro panel. */
 export function WorkflowAccountMenu({
@@ -66,12 +68,14 @@ export function WorkflowAccountMenu({
   triggerRef: RefObject<HTMLButtonElement | null>;
   onSectionSelect: (section: WorkflowAccountSection, trigger: HTMLButtonElement | null) => void;
 }) {
-  const [organization, setOrganization] = useState(organizations[0]);
+  const organizationsForKind = kind === "flux" ? fluxOrganizations : organizations;
+  const [organization, setOrganization] = useState(organizationsForKind[0]);
   const { isMobile } = useSidebar();
   const opensSettings = useRef(false);
   const { theme } = useGlobalTheme();
   const selectedTheme = theme.mode === "light" || theme.mode === "dark" ? theme.mode : "system";
   const mesh = kind === "mesh";
+  const flux = kind === "flux";
   const entries = accountEntries.filter(
     (entry) => mesh || !["workspace", "team"].includes(entry.id),
   );
@@ -94,24 +98,43 @@ export function WorkflowAccountMenu({
           data-account-kind={kind}
           data-account-collapsed={collapsed}
           className={
-            mesh && collapsed
-              ? buttonVariants({
-                  variant: "ghost",
-                  size: "icon-sm",
-                  className:
-                    "wf-account-menu-trigger wf-account-menu-trigger-mesh flex p-0 group-data-[collapsible=icon]:size-7! group-data-[collapsible=icon]:p-0!",
-                })
-              : mesh
-                ? "wf-account-menu-trigger wf-account-menu-trigger-mesh"
-                : "wf-account-menu-trigger"
+            flux
+              ? "wf-account-menu-trigger wf-account-menu-trigger-flux"
+              : mesh && collapsed
+                ? buttonVariants({
+                    variant: "ghost",
+                    size: "icon-sm",
+                    className:
+                      "wf-account-menu-trigger wf-account-menu-trigger-mesh flex p-0 group-data-[collapsible=icon]:size-7! group-data-[collapsible=icon]:p-0!",
+                  })
+                : mesh
+                  ? "wf-account-menu-trigger wf-account-menu-trigger-mesh"
+                  : "wf-account-menu-trigger"
           }
           aria-label={mesh ? `Open profile for ${identity.name}` : "Open workspace menu"}
-          tooltip={mesh ? identity.name : organization}
+          tooltip={mesh || flux ? identity.name : organization}
         >
-          {mesh ? avatar("size-7 rounded-lg") : <BrandGlyph className="size-4 shrink-0" />}
+          {flux ? (
+            avatar("size-7")
+          ) : mesh ? (
+            avatar("size-7 rounded-lg")
+          ) : (
+            <BrandGlyph className="size-4 shrink-0" />
+          )}
           {!collapsed && (
             <>
-              <span className="min-w-0 flex-1 truncate">{mesh ? identity.name : organization}</span>
+              {flux ? (
+                <span className="min-w-0 flex-1">
+                  <strong className="block truncate font-medium">{identity.name}</strong>
+                  <span className="block truncate text-xs text-muted-foreground">
+                    {organization}
+                  </span>
+                </span>
+              ) : (
+                <span className="min-w-0 flex-1 truncate">
+                  {mesh ? identity.name : organization}
+                </span>
+              )}
               {mesh ? <ChevronsUpDown /> : <MoreHorizontal />}
             </>
           )}
@@ -143,31 +166,44 @@ export function WorkflowAccountMenu({
           <>
             <DropdownMenuLabel>Organizations</DropdownMenuLabel>
             <DropdownMenuGroup>
-              {organizations.map((name) => (
-                <DropdownMenuItem key={name} onSelect={() => setOrganization(name)}>
-                  {name === organizations[0] ? (
+              {organizationsForKind.map((name) => (
+                <DropdownMenuItem
+                  key={name}
+                  onSelect={() => setOrganization(name)}
+                  aria-description={flux ? "Switch organization in this local preview." : undefined}
+                >
+                  {name === organizationsForKind[0] ? (
                     <BrandGlyph />
                   ) : (
-                    <span className="wf-account-organization-mark">{name[0]}</span>
+                    <span
+                      className="wf-account-organization-mark"
+                      aria-hidden={flux ? true : undefined}
+                    >
+                      {name[0]}
+                    </span>
                   )}
                   {name}
                   {name === organization && <Check className="ml-auto" />}
                 </DropdownMenuItem>
               ))}
-              <DropdownMenuItem
-                disabled
-                aria-description="Organization creation is outside this local account-settings preview."
-              >
-                <Plus />
-                New Organization
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                disabled
-                aria-description="Organization management is outside this local account-settings preview."
-              >
-                <Settings />
-                Manage Organizations
-              </DropdownMenuItem>
+              {!flux && (
+                <>
+                  <DropdownMenuItem
+                    disabled
+                    aria-description="Organization creation is outside this local account-settings preview."
+                  >
+                    <Plus />
+                    New Organization
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    disabled
+                    aria-description="Organization management is outside this local account-settings preview."
+                  >
+                    <Settings />
+                    Manage Organizations
+                  </DropdownMenuItem>
+                </>
+              )}
             </DropdownMenuGroup>
           </>
         )}
@@ -175,10 +211,12 @@ export function WorkflowAccountMenu({
         {!mesh && (
           <DropdownMenuLabel className="wf-account-menu-account-label">
             <span>Account</span>
-            <span className="ml-auto inline-flex min-w-0 items-center gap-1.5">
-              {avatar("size-4")}
-              <span className="truncate">{identity.name}</span>
-            </span>
+            {!flux && (
+              <span className="ml-auto inline-flex min-w-0 items-center gap-1.5">
+                {avatar("size-4")}
+                <span className="truncate">{identity.name}</span>
+              </span>
+            )}
           </DropdownMenuLabel>
         )}
         <DropdownMenuGroup>
@@ -221,13 +259,20 @@ export function WorkflowAccountMenu({
           </DropdownMenuRadioGroup>
         </div>
         <DropdownMenuSeparator />
-        <DropdownMenuItem
-          disabled
-          aria-description="This local preview has no authenticated session to sign out of."
-        >
-          <LogOut />
-          Sign Out{!mesh && <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>}
-        </DropdownMenuItem>
+        {flux ? (
+          <DropdownMenuItem disabled>
+            <LogIn />
+            Sign In
+          </DropdownMenuItem>
+        ) : (
+          <DropdownMenuItem
+            disabled
+            aria-description="This local preview has no authenticated session to sign out of."
+          >
+            <LogOut />
+            Sign Out{!mesh && <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>}
+          </DropdownMenuItem>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

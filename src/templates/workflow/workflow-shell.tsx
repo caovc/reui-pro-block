@@ -128,7 +128,14 @@ function ShellContent({
   const inset = brand === "AgentOps";
   const width = brand === "ReUI" ? 250 : brand === "Flowly" ? 63 : brand === "Mesh" ? 48 : 256;
   const HeaderTitleTag = brand === "AgentOps" && headerTitle !== undefined ? "div" : "span";
-  const accountKind = brand === "ReUI" ? "tempo" : brand === "Mesh" ? "mesh" : undefined;
+  const accountKind =
+    brand === "ReUI"
+      ? "tempo"
+      : brand === "Mesh"
+        ? "mesh"
+        : brand === "AgentOps"
+          ? "flux"
+          : undefined;
   const accountTrigger = useRef<HTMLButtonElement>(null);
   const returnFocus = useRef<HTMLElement | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -161,7 +168,7 @@ function ShellContent({
       ? false
       : closeMobileOnSelect?.(value) !== false;
   const select = (value: string) => {
-    if (accountKind && value === "Settings") {
+    if ((accountKind === "tempo" || accountKind === "mesh") && value === "Settings") {
       openSettings("profile");
       return;
     }

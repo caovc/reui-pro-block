@@ -457,3 +457,75 @@
 .wf-mesh .wf-project-status .wf-official-grid th {
   background: var(--card);
 }
+
+/* Flux consumes the same free Sidebar slots on desktop and in its mobile Sheet. */
+.wf-native-mobile.wf-agentops [data-slot="sidebar-header"] {
+  flex: none;
+  height: 56px;
+  gap: 8px;
+}
+
+.wf-native-mobile.wf-agentops .wf-brand {
+  height: 40px;
+  min-height: 40px;
+}
+
+.wf-native-mobile.wf-agentops .wf-native-account [data-slot="sidebar-menu-button"] {
+  height: 36px;
+}
+
+.wf-agentops .wf-flux-spending-limit {
+  margin-top: auto;
+  flex: none;
+}
+
+.wf-agentops .wf-flux-spending-limit [data-slot="frame-panel-title"] {
+  color: var(--wf-amber);
+}
+
+.wf-agentops .wf-flux-spending-limit p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--muted-foreground);
+}
+
+.wf-agentops .wf-flux-spending-limit [data-slot="frame-panel"] > p:first-child {
+  line-height: 16.5px;
+}
+
+.wf-agentops .wf-flux-spending-limit p:last-child {
+  line-height: 12px;
+}
+
+.wf-agentops .wf-flux-spending-limit p:last-child span:first-child {
+  color: var(--foreground);
+}
+
+@media (min-width: 768px) {
+  .wf-agentops .wf-flux-spending-limit {
+    width: 222px;
+  }
+}
+
+.wf-agentops .wf-native-account [data-account-kind="flux"] {
+  height: 36px;
+  padding-block: 4px;
+}
+
+.wf-agentops .wf-native-account [data-account-kind="flux"] > span > strong,
+.wf-agentops .wf-native-account [data-account-kind="flux"] > span > span {
+  font-size: 12px;
+  line-height: 14px;
+}
+
+/* Portalled mobile Sidebar also carries wf-agentops. The old family background
+   must not override the actual Sidebar theme token when the theme changes. */
+.wf-root.wf-agentops.wf-native-layout,
+.wf-native-mobile.wf-agentops {
+  background: var(--background);
+}
+
+.wf-native-mobile.wf-agentops .wf-brand {
+  margin: 0;
+}
