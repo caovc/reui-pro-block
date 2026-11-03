@@ -38,6 +38,8 @@ export function SettingsRow({
   children,
   invalid,
   className,
+  labelClassName,
+  controlClassName,
 }: {
   id?: string;
   title: ReactNode;
@@ -46,10 +48,12 @@ export function SettingsRow({
   children: ReactNode;
   invalid?: boolean;
   className?: string;
+  labelClassName?: string;
+  controlClassName?: string;
 }) {
   return (
     <Field className={cn("workspace-settings-row", className)} data-invalid={invalid}>
-      <FieldContent>
+      <FieldContent className={labelClassName}>
         {id ? (
           <FieldLabel htmlFor={id}>
             {title}
@@ -67,7 +71,7 @@ export function SettingsRow({
           </FieldDescription>
         )}
       </FieldContent>
-      <div className="workspace-settings-control">{children}</div>
+      <div className={cn("workspace-settings-control", controlClassName)}>{children}</div>
     </Field>
   );
 }

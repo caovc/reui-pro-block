@@ -1,0 +1,18 @@
+/* Layout adapter for the existing Pro SettingsRow; legacy consumer selectors stay active. */
+:where(.ct-pulse, .ct-roster) .ct-setting-row.workspace-settings-row > .ct-setting-label {
+  width: auto;
+  min-width: 0;
+  gap: 0;
+  line-height: inherit;
+}
+:where(.ct-pulse, .ct-roster)
+  .ct-setting-row.workspace-settings-row
+  > .ct-setting-label
+  > [data-slot="field-label"] {
+  line-height: inherit;
+}
+:where(.ct-pulse, .ct-roster) .ct-setting-row.workspace-settings-row > .ct-setting-control {
+  display: block;
+  width: auto;
+  min-width: 0;
+}

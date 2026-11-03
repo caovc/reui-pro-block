@@ -640,7 +640,7 @@ export function templateImplementationTargets(template: {
       "lucent-notification-rules",
       "lucent-origins-dialog",
     ],
-    pulse: ["pulse-knowledge", "pulse-reports", "pulse-settings"],
+    pulse: ["pulse-knowledge", "pulse-reports", "pulse-settings", "settings-shared"],
     cohort: [
       "cohort-people",
       "cohort-person-detail",
@@ -649,7 +649,13 @@ export function templateImplementationTargets(template: {
       "cohort-time-off",
       "cohort-timesheets",
     ],
-    roster: ["roster-approvals", "roster-import", "roster-directory", "roster-settings"],
+    roster: [
+      "roster-approvals",
+      "roster-import",
+      "roster-directory",
+      "roster-settings",
+      "settings-shared",
+    ],
     echo: [
       "echo-sidebar",
       "echo-settings",
@@ -679,6 +685,9 @@ export function templateImplementationTargets(template: {
     ...modules.map((module) => `src/templates/${template.family}/${module}.tsx`),
     ...(template.family === "business" && ["surge", "manifest"].includes(template.id)
       ? ["src/components/ui/motion-policy.ts"]
+      : []),
+    ...(template.family === "collaboration" && ["pulse", "roster"].includes(template.id)
+      ? ["src/templates/collaboration/settings-row.css"]
       : []),
   ];
 }

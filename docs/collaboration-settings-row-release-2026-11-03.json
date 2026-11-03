@@ -1,0 +1,229 @@
+{
+  "date": "2026-11-03",
+  "milestone": "Pulse/Roster shared SettingsRow compatible actual reuse B",
+  "base": "2feca08d5dcf447dbf104d7575e3ed06e4f79379",
+  "goalComplete": false,
+  "owned7": [
+    {
+      "path": "src/blocks/application/dialog-variants/workspace/settings-panel.tsx",
+      "beforeSHA256": "2c7efa78e45954ea419c8ccd8b7fcf22442837d7a68ff7548ab84f641821e397",
+      "afterSHA256": "f98ebbc04d84c51c24bc15d8dee021a086b71f57331905c5ad55fe31c7f25df0",
+      "new": false
+    },
+    {
+      "path": "src/templates/collaboration/settings-shared.tsx",
+      "beforeSHA256": "92222b76bfdce51b13a39c2bebce13bf203ac8c7dd0e056b4b3c79cf174de6ae",
+      "afterSHA256": "1aa456d4dd43442253d0128a696f1c686704c2212a1440f6e61000bf264f9ad2",
+      "new": false
+    },
+    {
+      "path": "src/templates/collaboration/settings-row.css",
+      "beforeSHA256": null,
+      "afterSHA256": "909b4902dfdf9369373390e53bba87d07fc9e285876e3126f3e3c3a53c7e533d",
+      "new": true
+    },
+    {
+      "path": "src/lib/source-targets.ts",
+      "beforeSHA256": "faf815884602a9a791a86540793a2bd15a1e4d1e7a4a2ff8a7fe442a64826638",
+      "afterSHA256": "e8999ed01379cb7dbb1f9732c858429b01ade350b130c9a590ebdd5ec0931368",
+      "new": false
+    },
+    {
+      "path": "tests/collaboration-setting-row-native.spec.ts",
+      "beforeSHA256": null,
+      "afterSHA256": "17c26ead2981888c58efb360ff3db012faae36c203fae7fcdee72864b0af25f1",
+      "new": true
+    },
+    {
+      "path": "tests/collaboration-settings-row-source.spec.ts",
+      "beforeSHA256": null,
+      "afterSHA256": "7ac188c5cf6dc96db6a3b41b0076558ddfd149b9ae8b9bc492e8b4d608148c6a",
+      "new": true
+    },
+    {
+      "path": "tests/fidelity-next-source.helpers.ts",
+      "beforeSHA256": "1df491870e109f62ad3ea4f2dbcb438d62499af5251fe4f7869630a7129da125",
+      "afterSHA256": "fe9617ccbb369c5fe5eb239ab7fce6ac9f554b271f22ab4bf7bcd0b3cd9cec7f",
+      "new": false
+    }
+  ],
+  "reuse": {
+    "projectProBlock": "Actual SettingsRow from workspace settings-panel, not an official free SettingsBlock",
+    "actualFreeParts": "Existing ReUI Field/FieldContent/FieldTitle/FieldDescription implementation used by committed official c-radio-group-3; existing Frame/Select/NumberField unchanged",
+    "duplicateCorrected": "Removed handwritten collaboration row/label/control structure, actual Pro SettingsRow renders free Field parts",
+    "customReason": "Three tightly scoped CSS bridges preserve committed Pulse/Roster layout around native Field defaults; official registry lacks this combined business layout. Existing business model/control content unchanged."
+  },
+  "compatibility": {
+    "projectRowAPI": "Optional labelClassName/controlClassName with undefined defaults; the actual Pro Row owns free Field, FieldContent, FieldTitle, FieldDescription and control.",
+    "defaultActualSSRMarkupCases": 144,
+    "actualDirectJSXInventory": 133,
+    "all133CallersBrowserTested": false,
+    "legacyClassesAndH3": "Adapter preserves native heading plus ct-setting-label/control classes using actual slots, not an empty old Row shell.",
+    "CSSBridge": "18 lines/3 scoped rules only; no row grid/padding/border/media rewrite.",
+    "selectorMatrix": "Committed and working CSS dependencies read only; descendant h3/p, direct input/select, swatches/workdays and sibling positions checked. Static specificity conclusions are separate from actual browser comparison.",
+    "beforeAfter": "Before/after22 rendered rows show equal row/control/description/grid and label bounds/fonts/padding at1440/390. Internal label block\u2192flex/gap0 and H3 text width differ intentionally.",
+    "protectedCSS": "Working5380B/f39 remains exact; candidate uses committed3631B. No24line WIP copied, deleted, formatted or submitted."
+  },
+  "sourceVerification": {
+    "sourceCount": 1150,
+    "targets": "Only Pulse/Roster append shared helper and newCSS secondary choices; all18 defaults and other16 arrays unchanged.",
+    "actualUI": "Both helpers/CSS plus one project API view/copy/single-file flow and two actual ZIPs, seven cases.",
+    "QAHelper": "Only the family type union adds collaboration. Before/inverse and emittedJS byte equality preserve the full runtime oracle; prior frozen1df helper copies remain unchanged.",
+    "noFakeFamily": true
+  },
+  "gates": {
+    "normal-install.json": {
+      "exit": 0,
+      "seconds": 7.662751249998109,
+      "logSHA256": "70ba42bb6f080cd94e336437fdd1ab222313977cd7c66d1002945c23c47edf58"
+    },
+    "original-strict-build.json": {
+      "exit": 0,
+      "seconds": 27.338124541995057,
+      "logSHA256": "78873224849a9a5016ad8148c78d033516e5c3c1bee0da4836523d2c5ca3e627"
+    },
+    "native11/receipt.json": {
+      "exit": 0,
+      "seconds": 23.2964453329987,
+      "stats": {
+        "startTime": "2026-11-03T03:42:19.790Z",
+        "duration": 22930.804,
+        "expected": 11,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "78fc3052db3a57fd5bd44ea9ba3f794d7b8646203c954b1ef929066dd82b18d8"
+    },
+    "source7/receipt.json": {
+      "exit": 0,
+      "seconds": 22.39646833400184,
+      "stats": {
+        "startTime": "2026-11-03T03:42:43.234Z",
+        "duration": 21884.717,
+        "expected": 7,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "e49033cff935b80308ef92f1b2af5b51bf78f50cd79608b6a246ec838944fee9"
+    },
+    "pulse-received-normal-install.json": {
+      "exit": 0,
+      "seconds": 36.59247858299932,
+      "logSHA256": "68f0e538e4db81a96df4666f04b949f7952d266db0d2ff96386dff5e055e2ef4"
+    },
+    "pulse-received-original-strict.json": {
+      "exit": 0,
+      "seconds": 6.256107375003921,
+      "logSHA256": "4539296e4230d9f36573286f664a4c6bdf6521886e34523b4efb592ccf093cc3"
+    },
+    "pulse-received-native5/receipt.json": {
+      "exit": 0,
+      "seconds": 9.219846416999644,
+      "stats": {
+        "startTime": "2026-11-03T03:44:34.219Z",
+        "duration": 8786.667,
+        "expected": 5,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "0f57c5e182ab289ca1a5e90493ba81789542914c36e547ac07de5e5e18e8a215"
+    },
+    "roster-received-normal-install.json": {
+      "exit": 0,
+      "seconds": 6.918828542002302,
+      "logSHA256": "873563d32315d1af4b2c662025fa174adb8ad2b10aa41da0e903c8069e330a31"
+    },
+    "roster-received-original-strict.json": {
+      "exit": 0,
+      "seconds": 6.283035499996913,
+      "logSHA256": "b5464a4dd9bdb8415248a0da40740e88ae334ef925e83175e87014572f3288c5"
+    },
+    "roster-received-native5/receipt.json": {
+      "exit": 0,
+      "seconds": 8.122062959002506,
+      "stats": {
+        "startTime": "2026-11-03T03:44:57.401Z",
+        "duration": 7730.821,
+        "expected": 5,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "43d232d1dc06e34078ed78f08522925a4455e491854e9cd64ae479d193dd8ad3"
+    }
+  },
+  "actualPackages": {
+    "pulse": {
+      "members": 228,
+      "archiveSHA256": "74b5784f533dce9c136c4692143f86620669f76d597edbac4cd8535911fb85e9",
+      "finally": {
+        "pid": 56296,
+        "url": "http://127.0.0.1:58822/",
+        "terminated": true,
+        "allOriginalMembersUnchanged": true,
+        "distUnchanged": true,
+        "archiveUnchanged": true
+      }
+    },
+    "roster": {
+      "members": 228,
+      "archiveSHA256": "9ad3a24c148ab737725b3f719e827aed0afd1d2d3d4cfda41787c0ff86dea880",
+      "finally": {
+        "pid": 57022,
+        "url": "http://127.0.0.1:59022/",
+        "terminated": true,
+        "allOriginalMembersUnchanged": true,
+        "distUnchanged": true,
+        "archiveUnchanged": true
+      }
+    }
+  },
+  "finalIntegrity": {
+    "source1150Dist657Public247Unchanged": true,
+    "readonlyBaseline1149SourceDistPublicConfigUnchanged": true,
+    "threeQAHashExact": true,
+    "protectedSettingsCssUnchanged": true,
+    "ownedPreviewPorts": [
+      {
+        "pid": 50273,
+        "port": 56977,
+        "closed": true
+      },
+      {
+        "pid": 50304,
+        "port": 56985,
+        "closed": true
+      },
+      {
+        "pid": 56296,
+        "port": 58822,
+        "closed": true
+      },
+      {
+        "pid": 57022,
+        "port": 59022,
+        "closed": true
+      }
+    ],
+    "browserTabsClosedAndViewportReset": true
+  },
+  "readonlyBeforeBaseline": "Prior frozen layout source1149 exactly matched committed2f; source/dist/public/config remained exact. Only same-theme/font/viewport read-only browser comparisons, no new baseline build or WIP style injection.",
+  "discoveryCorrection": "First anchored title selector discovered only4 and did not execute native tests; corrected positive11/7 discovery then actual executions passed under original budgets.",
+  "brandAndLicenses": "Original Bricklane media and free MIT/OFL notices retained.",
+  "remaining": [
+    "Original Pulse First day has seven options; current consumer has three. Trace save/type and downstream behavior before future fix.",
+    "Official single-control Label/id association and FieldContent side differ from current H3 compatibility structure.",
+    "Original title/description line heights and description margin differ; current milestone preserves committed CSS, not pixel parity.",
+    "Full18-template fidelity remains active; this milestone is not full-goal completion."
+  ],
+  "referenceMeasurementCorrection": "Old official Pulse rowMeasure.label selected the right FieldContent control column; invalid for left-label geometry. Separate structure390 evidence is authoritative; actual left ct-setting-label and right ct-setting-control were used locally.",
+  "publicationSnapshot": {
+    "stage": "Recorded after local gates before normal-hook commit/push",
+    "CI": "Pending new commit",
+    "Pages": "Not yet confirmed for this Row milestone",
+    "lastVerifiedLive": "c58e0a0e8738d52b4378a30a91297d0758734d93"
+  }
+}

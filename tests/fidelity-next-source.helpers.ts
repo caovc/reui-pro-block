@@ -18,7 +18,7 @@ export type SourceTarget = {
   id: string;
   kind: "block" | "template";
   name: string;
-  family?: "business" | "workflow";
+  family?: "business" | "workflow" | "collaboration";
   route: string;
   defaultPath: string;
   selectedPath: string;

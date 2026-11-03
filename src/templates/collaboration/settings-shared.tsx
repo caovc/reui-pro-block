@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { SettingsRow as ProSettingsRow } from "@/blocks/application/dialog-variants/workspace/settings-panel";
 import {
   Frame,
   FrameHeader,
@@ -22,6 +23,7 @@ import {
 } from "@/components/reui/number-field";
 import { Button } from "./shared";
 import "./settings.css";
+import "./settings-row.css";
 
 export function SettingsSection({
   title,
@@ -81,13 +83,15 @@ export function SettingsRow({
   children: ReactNode;
 }) {
   return (
-    <div className="ct-setting-row">
-      <div className="ct-setting-label">
-        <h3>{title}</h3>
-        {description && <p>{description}</p>}
-      </div>
-      <div className="ct-setting-control">{children}</div>
-    </div>
+    <ProSettingsRow
+      title={<h3>{title}</h3>}
+      description={description}
+      className="ct-setting-row"
+      labelClassName="ct-setting-label"
+      controlClassName="ct-setting-control"
+    >
+      {children}
+    </ProSettingsRow>
   );
 }
 export function SettingsSelect({
