@@ -20,6 +20,8 @@ const implementationPaths = [
   "src/templates/workflow/flowly-settings-components.tsx",
   "src/templates/workflow/flowly-settings.css",
   "src/templates/workflow/flowly-settings-members.tsx",
+  "src/templates/workflow/free/flowly-toggle-group.tsx",
+  "src/templates/workflow/free/flowly-radio-group.tsx",
 ] as const;
 const archiveTarget: SourceTarget = {
   id: "flowly",
@@ -41,6 +43,8 @@ const archiveTarget: SourceTarget = {
     "src/blocks/application/dialog-variants/workspace/settings-panel.tsx",
     "src/blocks/application/dialog-variants/workspace/workspace.css",
     "src/components/ui/field.tsx",
+    "src/components/ui/toggle.tsx",
+    "src/lib/utils.ts",
     "src/components/ui/checkbox.tsx",
     "src/components/ui/label.tsx",
     "src/components/ui/switch.tsx",

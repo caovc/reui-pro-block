@@ -680,6 +680,8 @@ export function templateImplementationTargets(template: {
       "flowly-settings-members",
       "flowly-settings-integrations",
       "flowly-settings-webhooks",
+      "free/flowly-toggle-group",
+      "free/flowly-radio-group",
     ],
   };
   const modules = [

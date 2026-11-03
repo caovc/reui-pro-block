@@ -2,7 +2,17 @@
 // Full notice: src/components/reui/REUI-LICENSE.txt (included in project exports).
 import { useMemo, useState } from "react";
 import { useTable, type ColumnDef } from "@tanstack/react-table";
-import { ChevronLeft, ChevronRight, Filter, Search, UserRoundPlus } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Crown,
+  Eye,
+  Filter,
+  Pencil,
+  Search,
+  ShieldCheck,
+  UserRoundPlus,
+} from "lucide-react";
 import {
   DataGrid,
   DataGridContainer,
@@ -21,8 +31,18 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { FieldDescription, FieldGroup, FieldLegend, FieldSet } from "@/components/ui/field";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import {
+  Field,
+  FieldContent,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldLegend,
+  FieldSet,
+  FieldTitle,
+} from "@/components/ui/field";
+import { RadioGroup, RadioGroupItem } from "./free/flowly-radio-group";
+import { ToggleGroup, ToggleGroupItem } from "./free/flowly-toggle-group";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
@@ -319,28 +339,72 @@ function AccessLevels({
   includeOwner?: boolean;
   prefix: string;
 }) {
+  if (!includeOwner) {
+    return (
+      <Field data-reui-example="c-toggle-group-5" className="fs-invite-level">
+        <FieldLabel id={`${prefix}-label`}>Level</FieldLabel>
+        <ToggleGroup
+          value={[value]}
+          onValueChange={(next) => {
+            const selected = next[0];
+            if (selected === "Admin" || selected === "Editor" || selected === "Viewer") {
+              onChange(selected);
+            }
+          }}
+          variant="outline"
+          size="sm"
+          spacing={0}
+          className="w-full"
+          aria-labelledby={`${prefix}-label`}
+          aria-describedby={`${prefix}-description`}
+        >
+          {levels
+            .filter((level) => level !== "Owner")
+            .map((level) => (
+              <ToggleGroupItem key={level} value={level} className="flex-1">
+                {level}
+              </ToggleGroupItem>
+            ))}
+        </ToggleGroup>
+        <FieldDescription id={`${prefix}-description`}>{levelDescriptions[value]}</FieldDescription>
+      </Field>
+    );
+  }
+
+  const icons = { Owner: Crown, Admin: ShieldCheck, Editor: Pencil, Viewer: Eye };
   return (
-    <fieldset className="fs-fieldset">
-      <legend>Level</legend>
+    <FieldSet className="fs-fieldset fs-access-level" data-reui-example="c-radio-group-7">
+      <FieldLegend variant="label">Level</FieldLegend>
       <RadioGroup
         value={value}
-        onValueChange={(next) => onChange(next as MemberLevel)}
-        className="fs-level-options"
+        onValueChange={(next) => {
+          if (levels.includes(next as MemberLevel)) onChange(next as MemberLevel);
+        }}
+        aria-label="Access level"
+        className="sm:grid-cols-2"
       >
-        {levels
-          .filter((level) => includeOwner || level !== "Owner")
-          .map((level) => (
-            <div className="fs-radio-option" key={level}>
-              <RadioGroupItem id={`${prefix}-${level.toLowerCase()}`} value={level} />
-              <div>
-                <Label htmlFor={`${prefix}-${level.toLowerCase()}`}>{level}</Label>
-                {includeOwner && <p className="fs-hint">{levelDescriptions[level]}</p>}
-              </div>
-            </div>
-          ))}
+        {levels.map((level) => {
+          const id = `${prefix}-${level.toLowerCase()}`;
+          const Icon = icons[level];
+          return (
+            <FieldLabel key={level} id={`${id}-label`} htmlFor={id} className="cursor-pointer">
+              <Field orientation="horizontal">
+                <FieldContent>
+                  <FieldTitle>
+                    <Icon aria-hidden="true" className="size-4 text-muted-foreground" />
+                    {level}
+                  </FieldTitle>
+                  <FieldDescription className="text-xs">
+                    {levelDescriptions[level]}
+                  </FieldDescription>
+                </FieldContent>
+                <RadioGroupItem id={id} value={level} aria-labelledby={`${id}-label`} />
+              </Field>
+            </FieldLabel>
+          );
+        })}
       </RadioGroup>
-      {!includeOwner && <p className="fs-hint">{levelDescriptions[value]}</p>}
-    </fieldset>
+    </FieldSet>
   );
 }
 

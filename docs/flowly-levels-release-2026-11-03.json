@@ -1,0 +1,46 @@
+{
+  "date": "2026-11-03",
+  "milestone": "Flowly Level controls and permission cards",
+  "candidateBase": "1eb9f891f5f73a537a452a18ea65c611e014b0f3",
+  "releaseBase": "958536a97488839dd2f74e39368740a9fabcdea1",
+  "changes": [
+    "Invite uses the actual ReUI free c-toggle-group-5 composition and its official Base UI dependency wrapper: group with pressed buttons, connected segments, native focus and selection behavior.",
+    "Change Access uses the actual ReUI free c-radio-group-7 FieldLabel, horizontal Field, FieldContent, FieldTitle and FieldDescription composition with its official Base UI radio wrapper.",
+    "Isolated official wrappers only adapt local cn and existing toggleVariants imports. Global shared primitives, existing Areas composition, domain models and business callbacks remain unchanged.",
+    "SourceTargets includes both actual new modules. Source view, copy, individual download and complete download were checked against implementation bytes."
+  ],
+  "freeReferences": [
+    "https://reui.io/r/base-nova/c-toggle-group-5.json",
+    "https://reui.io/r/base-nova/c-radio-group-7.json",
+    "https://ui.shadcn.com/r/styles/base-nova/toggle-group.json",
+    "https://ui.shadcn.com/r/styles/base-nova/radio-group.json"
+  ],
+  "customization": "Domain labels, validated role value and controlled selection, responsive layout and existing member business behavior. Official free components provide the control mechanics and card composition; no handwritten keyboard engine.",
+  "verification": {
+    "candidate": "Normal npm ci; original configured TypeScript and Vite build; all first-run native4, source6 and existing-native8 passed with zero skipped, unexpected or flaky.",
+    "geometry": "Actual 1440/390 records: Invite height28/gap0; Access cards231x76 in two columns and316x60 in one column, gap8/radius10, description12px/16px/400.",
+    "download": {
+      "zipSHA256": "3521c428daed7632f6fdaa1b083c9a597e2405d9696b04efff5be42315d7c0a7",
+      "rawMembers": 315,
+      "sourceFiles": 306,
+      "normalInstallSeconds": 43.639,
+      "originalStrictBuildSeconds": 9.271,
+      "nativeFirstRunPassed": 4,
+      "rawMembersUnchanged": true,
+      "generatedLockCapturedAfterInstallBeforeBuildAndUnchangedAtFinal": "34cd5a776da739b8296c990e03e862c37703ae1dc553daafae0a6415ccffe36b"
+    },
+    "runtimeSourceFiles": 1157,
+    "evidenceManifestSHA256": "657a1f6a7ddb126b1547f0d049b02be3c2a713a52877b6b79fd4d9cbc52d64bb"
+  },
+  "remainingDifferences": [
+    "Whole Sheet header still lacks intended authored avatar and places Editor badge above Level, shifting absolute Level y by25px; excluded from this Level milestone.",
+    "Original captured dark theme; candidate native checks light theme. Complete dark/light visual parity not certified.",
+    "Existing independent Access Cancel returns details locally, reference closes; kept known mismatch and independently scoped followup.",
+    "Invite parent Areas/header/footer scaffolding and remaining18-template layouts need continued audit.",
+    "Invite Person form still stacks one column on phone locally; original390 screenshot actually keeps two columns. Local Level vertical position is therefore much lower; separate scoped Person-grid correction remains.",
+    "Invite Access/Areas outer scaffold spacing remains compressed; this milestone matches the Level controls and card composition, not complete Sheet spacing.",
+    "Workflow family collection may add the new wrappers to other workflow downloads. Only the actual Flowly315 archive was freshly installed, built and run in this milestone.",
+    "Latest CI and Pages deployment remain separately tracked; local verification does not certify deployment."
+  ],
+  "branding": "Bricklane original identity and existing licensed assets retained. No original paid image, logo, avatar or screenshot added to delivered code."
+}

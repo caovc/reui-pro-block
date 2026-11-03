@@ -578,13 +578,6 @@
 .fs-radio-option > [data-slot="radio-group-item"] {
   margin-top: 2px;
 }
-.fs-level-options {
-  gap: 12px;
-}
-.fs-level-options .fs-hint {
-  margin-top: 4px;
-  font-size: 13px;
-}
 .fs-retry-options {
   display: flex;
   flex-wrap: wrap;
