@@ -31,7 +31,7 @@ export function VerveWorkspaceSettings({ model }: { model: VerveAccountSettingsM
     verveAccentOptions.find((item) => item.label === draft.accent) ?? verveAccentOptions[2];
   return (
     <section className="verve-settings verve-workspace-settings" aria-label="Workspace">
-      <h1 className="vs-workspace-heading">Settings</h1>
+      <h1 className="sr-only">Settings</h1>
       <div className="vs-cards">
         <form
           noValidate
@@ -41,6 +41,7 @@ export function VerveWorkspaceSettings({ model }: { model: VerveAccountSettingsM
           }}
         >
           <DriveSettingsCard
+            dense={false}
             title="Workspace details"
             description="Brand and contact info."
             footer={
@@ -158,6 +159,7 @@ export function VerveWorkspaceSettings({ model }: { model: VerveAccountSettingsM
           </DriveSettingsCard>
         </form>
         <DriveSettingsCard
+          dense={false}
           title="Workspace preferences"
           description="Sharing and automation defaults."
         >
@@ -194,7 +196,11 @@ export function VerveWorkspaceSettings({ model }: { model: VerveAccountSettingsM
             />
           </SettingsRow>
         </DriveSettingsCard>
-        <DriveSettingsCard title="Workspace summary" description="Brand, routing, and region.">
+        <DriveSettingsCard
+          dense={false}
+          title="Workspace summary"
+          description="Brand, routing, and region."
+        >
           <div className="vs-summary">
             <section className="vs-summary-row">
               <div>

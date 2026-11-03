@@ -125,6 +125,49 @@ async function sheetGeometry(dialog: Locator, info: TestInfo, name: string) {
   return measured;
 }
 
+async function inviteSendMetrics(dialog: Locator, info: TestInfo) {
+  const metrics = await dialog
+    .getByRole("button", { name: "Send Invite", exact: true })
+    .evaluate((button) => {
+      const style = getComputedStyle(button);
+      const textNodes = Array.from(button.childNodes).filter(
+        (node) => node.nodeType === Node.TEXT_NODE && node.textContent?.trim(),
+      );
+      const textRanges = textNodes.map((node) => {
+        const range = document.createRange();
+        range.selectNodeContents(node);
+        const rect = range.getBoundingClientRect();
+        return { text: node.textContent, width: rect.width, height: rect.height };
+      });
+      const svg = button.querySelector("svg");
+      const svgRect = svg?.getBoundingClientRect();
+      return {
+        text: button.textContent,
+        textRanges,
+        svgCount: button.querySelectorAll("svg").length,
+        svg: svgRect ? { width: svgRect.width, height: svgRect.height } : null,
+        gap: Number.parseFloat(style.columnGap),
+        paddingLeft: Number.parseFloat(style.paddingLeft),
+        paddingRight: Number.parseFloat(style.paddingRight),
+        borderLeft: Number.parseFloat(style.borderLeftWidth),
+        borderRight: Number.parseFloat(style.borderRightWidth),
+        fontFamily: style.fontFamily,
+        fontSize: style.fontSize,
+        fontWeight: style.fontWeight,
+        lineHeight: style.lineHeight,
+        fontFeatureSettings: style.fontFeatureSettings,
+        fontVariationSettings: style.fontVariationSettings,
+        fontOpticalSizing: style.fontOpticalSizing,
+        fontStatus: document.fonts.status,
+      };
+    });
+  await writeFile(
+    info.outputPath("invite-send-intrinsic.json"),
+    JSON.stringify(metrics, null, 2) + "\n",
+  );
+  return metrics;
+}
+
 async function memberAccess(page: Page) {
   const trigger = page.getByRole("button", { name: "Open Hanna Berg actions", exact: true });
   await trigger.click();
@@ -219,6 +262,26 @@ for (const width of [1440, 390]) {
     await trigger.click();
     const dialog = page.getByRole("dialog", { name: "Invite Member", exact: true });
     await settledDialog(dialog);
+    // Observe the actual open surface before recording screenshot geometry.
+    await expect
+      .poll(() =>
+        dialog.evaluate((root) => {
+          const style = getComputedStyle(root);
+          return {
+            state: root.getAttribute("data-state"),
+            opacity: style.opacity,
+            identityTransform:
+              style.transform === "none" || new DOMMatrixReadOnly(style.transform).isIdentity,
+            activeAnimations: root
+              .getAnimations()
+              .filter(
+                (animation) =>
+                  animation.pending || !["finished", "idle"].includes(animation.playState),
+              ).length,
+          };
+        }),
+      )
+      .toEqual({ state: "open", opacity: "1", identityTransform: true, activeAnimations: 0 });
     const name = dialog.getByRole("textbox", { name: "Name", exact: true });
     await expect(name).toBeFocused();
     const m = await sheetGeometry(dialog, info, "invite-header-footer");
@@ -239,7 +302,33 @@ for (const width of [1440, 390]) {
     expect(caption?.line).toBe("16px");
     expect(cancel?.height).toBeCloseTo(32, 1);
     expect(send?.height).toBeCloseTo(32, 1);
-    expect(send?.width).toBeCloseTo(118.5078125, 1);
+    const intrinsic = await inviteSendMetrics(dialog, info);
+    expect(intrinsic.text).toBe("Send Invite");
+    expect(intrinsic.textRanges).toHaveLength(1);
+    expect(intrinsic.textRanges[0]?.text).toBe("Send Invite");
+    expect(intrinsic.textRanges[0]?.width).toBeGreaterThan(0);
+    expect(intrinsic.svgCount).toBe(1);
+    expect(intrinsic.svg?.width).toBe(16);
+    expect(intrinsic.svg?.height).toBe(16);
+    expect(intrinsic.gap).toBe(6);
+    expect(intrinsic.paddingLeft).toBe(10);
+    expect(intrinsic.paddingRight).toBe(10);
+    expect(intrinsic.borderLeft).toBe(1);
+    expect(intrinsic.borderRight).toBe(1);
+    expect(intrinsic.fontFamily).toBe("Inter, Arial, sans-serif");
+    expect(intrinsic.fontSize).toBe("14px");
+    expect(intrinsic.fontWeight).toBe("500");
+    expect(intrinsic.lineHeight).toBe("20px");
+    expect(send?.width).toBeCloseTo(
+      intrinsic.textRanges[0]!.width +
+        intrinsic.svg!.width +
+        intrinsic.gap +
+        intrinsic.paddingLeft +
+        intrinsic.paddingRight +
+        intrinsic.borderLeft +
+        intrinsic.borderRight,
+      1,
+    );
     expect(caption!.y + caption!.height / 2 - (cancel!.y + cancel!.height / 2)).toBeCloseTo(0, 1);
     expect(send!.y - cancel!.y).toBeCloseTo(width === 1440 ? 0 : 40, 1);
     if (width === 390) expect(send!.x - caption!.x).toBeCloseTo(0, 1);

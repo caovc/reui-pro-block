@@ -108,3 +108,27 @@
   .bt-layout-rail[data-slot="sidebar"] {
   background: var(--sidebar);
 }
+
+/* Workspace page geometry follows the reference page header and framed cards.
+   Account tabs and other CRM pages retain their own layout. */
+.bt-layout.bt-verve .bt-content:has(> .verve-settings-breadcrumb + .verve-workspace-settings) {
+  gap: 16px;
+  padding-top: 16px;
+}
+
+.bt-verve .verve-settings-breadcrumb:has(+ .verve-workspace-settings) {
+  display: flex;
+  min-height: 36px;
+  align-items: center;
+  margin-bottom: 0;
+}
+
+.bt-verve .verve-workspace-settings .vs-cards {
+  gap: 20px;
+}
+
+@media (max-width: 767px) {
+  .bt-layout.bt-verve:has(.verve-workspace-settings) .bt-workspace {
+    border: 1px solid var(--border);
+  }
+}

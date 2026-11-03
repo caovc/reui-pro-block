@@ -1,0 +1,44 @@
+{
+  "date": "2026-11-04",
+  "milestone": "Verve workspace settings Frame composition and page layout",
+  "baseCommit": "7edca2d71236e3c060f58df520c4b4445178c488",
+  "changes": [
+    "Keep one semantic Settings heading while removing its duplicate visible title.",
+    "Use existing DriveSettingsCard dense=false for all three cards, retaining real ReUI Frame header/panel composition.",
+    "Scope page-header spacing, 20px card gaps and mobile workspace border to Verve Workspace settings only. Existing sidebar, model, callbacks and other pages retain their implementations."
+  ],
+  "freeReuse": [
+    "Existing actual ReUI Sidebar family for navigation",
+    "DriveSettingsCard with actual free Frame/FramePanelHeader/FramePanel, existing SettingsRow and Fields"
+  ],
+  "customScope": "Only reference-specific page layout CSS; no new shared primitives or interaction engine.",
+  "sourceDelivery": "Existing source-target defaults unchanged; both changed modules verified in View, Copy, single-file download and actual project ZIP.",
+  "verification": {
+    "configuredBuild": "Original tsc -b && vite build passed; no extra strict flag.",
+    "site": "Layout 2, existing route/save/account 4, source and project archive 3 passed.",
+    "originalDownload": {
+      "zipSHA256": "296cf67a3c97b04f68e61aa40d3bbb2f08a2b8f0531e86112b450dac12c1141a",
+      "rawFiles": 284,
+      "sourceFiles": 276,
+      "normalInstallSeconds": 40.426,
+      "originalStrictBuildSeconds": 6.132,
+      "nativePassed": 4,
+      "postinstallLockSHA256": "15005d592ae34a0153758a3f0cb2ea1f0fad496108503c34fa5df381c71dc280",
+      "rawAndOriginalConfigUnchanged": true
+    },
+    "firstFailures": "First layout test used a fixed reference width and exposed a 15px scrollbar difference. New QA now measures available scrollport minus the original 16px padding on each side; fixed positions, Frame insets, panel and card gaps remain strict. First source launch matched zero cases due to anchored full-title filtering; corrected CLI selection without changing existing test source. Both originals retained."
+  },
+  "limits": [
+    "This milestone covers Verve Workspace layout, not all template pages.",
+    "Footer button density, color picker, header/search/menu details and field line-height differences remain outside this scope.",
+    "Original reference and headless browser scrollbar widths differ; available-width geometry is verified without forcing scrollbars.",
+    "CI success and Pages deployment must be verified after push."
+  ],
+  "licensing": "Bricklane original branding and demo assets; existing free component MIT/font OFL notices retained. No paid reference artwork distributed.",
+  "rootQA": {
+    "scope": "Header Invite geometry oracle and stable capture precondition only; no product changes.",
+    "evidence": "Actual local custom Inter glyphs measured through CDP; direct text Range74.515625 + SVG16 + gap6 + padding20 + borders2 equals native button118.515625. CI historical actual glyph was not captured, so no CI font root cause is asserted.",
+    "preserved": "Original precision1, all other geometry/focus/Cancel/form-association assertions and test counts preserved. Fixed icon, spacing, padding, border and typography checked explicitly. No tolerance increase.",
+    "result": "First revised Invite2 passed on these frozen final Verve production assets without a new build; no submit click was added."
+  }
+}
