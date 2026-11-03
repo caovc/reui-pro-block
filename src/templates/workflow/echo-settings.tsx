@@ -1,4 +1,4 @@
-import { Children, Fragment, useState, type ReactNode } from "react";
+import { Children, Fragment, useId, useState, type ReactNode } from "react";
 import {
   Bell,
   CreditCard,
@@ -11,7 +11,9 @@ import {
   Smartphone,
   Sparkles,
   Sun,
+  Upload,
   User,
+  X,
 } from "lucide-react";
 import {
   SettingsFields,
@@ -21,22 +23,31 @@ import {
 } from "@/blocks/application/dialog-variants/workspace/settings-panel";
 import { LocalAvatarUpload } from "@/blocks/application/dialog-variants/workspace/free/avatar-upload";
 import {
-  Frame,
-  FrameHeader,
-  FrameTitle,
-  FrameDescription,
-  FramePanel,
-  FrameFooter,
-} from "@/components/reui/frame";
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/components/reui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertTitle, AlertDescription, AlertAction } from "@/components/reui/alert";
-import { FieldError, FieldLabel, FieldGroup, FieldSeparator } from "@/components/ui/field";
+import {
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+  FieldGroup,
+  FieldLegend,
+  FieldSeparator,
+  FieldSet,
+} from "@/components/ui/field";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Switch } from "@/components/ui/switch";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
   Dialog,
   DialogContent,
@@ -72,32 +83,44 @@ import "./echo-settings.css";
 function SettingsCard({
   title,
   description,
+  groupLabel = title,
+  groupDescription = description,
   children,
   footer,
 }: {
   title: string;
   description: string;
+  groupLabel?: string;
+  groupDescription?: string;
   children: ReactNode;
   footer?: ReactNode;
 }) {
+  const descriptionId = useId();
+
   return (
-    <Frame variant="ghost" className="echo-settings-card">
-      <FramePanel className="echo-settings-card-panel">
-        <FrameHeader>
-          <FrameTitle>{title}</FrameTitle>
-          <FrameDescription>{description}</FrameDescription>
-        </FrameHeader>
-        <FieldGroup className="echo-settings-card-fields">
-          {Children.toArray(children).map((child, index) => (
-            <Fragment key={index}>
-              {index > 0 && <FieldSeparator />}
-              {child}
-            </Fragment>
-          ))}
-        </FieldGroup>
-        {footer && <FrameFooter>{footer}</FrameFooter>}
-      </FramePanel>
-    </Frame>
+    <Card className="echo-settings-card echo-settings-card-panel">
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
+        <CardDescription>{description}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <FieldSet className="echo-settings-card-fieldset" aria-describedby={descriptionId}>
+          <FieldLegend className="sr-only">{groupLabel}</FieldLegend>
+          <FieldDescription id={descriptionId} className="sr-only">
+            {groupDescription}
+          </FieldDescription>
+          <FieldGroup className="echo-settings-card-fields">
+            {Children.toArray(children).map((child, index) => (
+              <Fragment key={index}>
+                {index > 0 && <FieldSeparator />}
+                {child}
+              </Fragment>
+            ))}
+          </FieldGroup>
+        </FieldSet>
+      </CardContent>
+      {footer && <CardFooter>{footer}</CardFooter>}
+    </Card>
   );
 }
 const sectionIcons = [SlidersHorizontal, Sparkles, User, Bell, Database, Shield, CreditCard];
@@ -139,7 +162,9 @@ export function EchoSettings({
               field.id === "email" &&
               saved.email === echoSettingsInitial.email &&
               draft.email === saved.email ? (
-                <Badge variant="outline">Verified</Badge>
+                <Badge variant="success-outline" aria-hidden="true">
+                  Verified
+                </Badge>
               ) : (
                 field.badge
               ),
@@ -258,11 +283,11 @@ export function EchoSettings({
           <AlertTitle>Complete your profile.</AlertTitle>
           <AlertDescription>Keep your role and timezone current.</AlertDescription>
           <AlertAction>
-            <Button variant="outline" size="sm" onClick={() => model.setProfilePrompt(false)}>
+            <Button variant="outline" size="xs" onClick={() => model.setProfilePrompt(false)}>
               Dismiss
             </Button>
             <Button
-              size="sm"
+              size="xs"
               onClick={() => document.getElementById("echo-settings-name")?.focus()}
             >
               Update
@@ -270,7 +295,13 @@ export function EchoSettings({
           </AlertAction>
         </Alert>
       )}
-      <SettingsCard title="My profile" description="Public account details" footer={footer()}>
+      <SettingsCard
+        title="My profile"
+        description="Public account details"
+        groupLabel="Profile fields"
+        groupDescription="Update your personal profile details."
+        footer={footer()}
+      >
         <SettingsRow title="Photo" description="Shown in comments and mentions.">
           <LocalAvatarUpload
             key={String(draft.avatar)}
@@ -284,6 +315,18 @@ export function EchoSettings({
               }
             }}
             onDefaultRemove={() => change("avatar", "")}
+            changeLabel={
+              <>
+                <Upload aria-hidden="true" />
+                Change
+              </>
+            }
+            removeLabel={
+              <>
+                <X aria-hidden="true" />
+                Remove
+              </>
+            }
           />
         </SettingsRow>
         {fields(echoProfileFields)}
@@ -291,7 +334,18 @@ export function EchoSettings({
           title="Profile details"
           description="Public details shared across the workspace."
         >
-          <div className="echo-settings-compound">{fields(echoProfileDetails.slice(0, 3))}</div>
+          <FieldSet
+            className="echo-settings-profile-details"
+            aria-describedby="echo-settings-profile-details-description"
+          >
+            <FieldLegend className="sr-only">Profile details</FieldLegend>
+            <FieldDescription id="echo-settings-profile-details-description" className="sr-only">
+              Public profile and workspace defaults.
+            </FieldDescription>
+            <FieldGroup className="echo-settings-compound">
+              {fields(echoProfileDetails.slice(0, 3))}
+            </FieldGroup>
+          </FieldSet>
         </SettingsRow>
         {fields(echoProfileDetails.slice(3))}
       </SettingsCard>
@@ -630,15 +684,18 @@ export function EchoSettings({
   );
   const panels: Record<EchoSettingsSection, ReactNode> = {
     General: (
-      <SettingsCard title="General" description="Appearance and defaults">
+      <SettingsCard
+        title="General"
+        description="Appearance and defaults"
+        groupDescription="Control theme, model, and dictation."
+      >
         <SettingsRow title="Appearance" description="Light, dark, or your device.">
-          <ToggleGroup
-            type="single"
+          <RadioGroup
             value={theme.mode === "inherit" ? "system" : theme.mode}
             onValueChange={(value) =>
               value && setGlobalTheme({ ...theme, mode: value as typeof theme.mode })
             }
-            aria-label="Appearance"
+            aria-label="Theme"
             className="echo-appearance"
           >
             {[
@@ -646,11 +703,12 @@ export function EchoSettings({
               { id: "dark", label: "Dark", icon: Moon },
               { id: "system", label: "System", icon: Monitor },
             ].map(({ id, label, icon: Icon }) => (
-              <ToggleGroupItem key={id} value={id} aria-label={label}>
-                <Icon />
-              </ToggleGroupItem>
+              <Label key={id} className="echo-appearance-option">
+                <RadioGroupItem value={id} aria-label={label} className="echo-appearance-radio" />
+                <Icon aria-hidden="true" />
+              </Label>
             ))}
-          </ToggleGroup>
+          </RadioGroup>
         </SettingsRow>
         {fields(
           [
@@ -696,7 +754,12 @@ export function EchoSettings({
           </div>
           <div className="echo-settings-sections">
             {echoSettingsSections.map((name) => (
-              <TabsContent key={name} value={name} className="echo-settings-section">
+              <TabsContent
+                key={name}
+                value={name}
+                aria-label={name}
+                className="echo-settings-section"
+              >
                 {panels[name]}
               </TabsContent>
             ))}

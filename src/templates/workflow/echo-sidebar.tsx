@@ -9,6 +9,7 @@ import {
   LogOut,
   Monitor,
   Moon,
+  Palette,
   Pin,
   Plus,
   SlidersHorizontal,
@@ -22,7 +23,7 @@ import {
   Menu,
   ChevronUp,
 } from "lucide-react";
-import { AppShellLayout, AppShellInset } from "@/components/reui/layout";
+import { AppShellInset } from "@/components/reui/layout";
 import { ReuiSidebar, SidebarCollection, SidebarNavigation } from "@/components/reui/sidebar";
 import {
   SidebarMenu,
@@ -42,18 +43,17 @@ import {
   DropdownMenuLabel,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubTrigger,
-  DropdownMenuSubContent,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
   DropdownMenuShortcut,
 } from "@/components/ui/dropdown-menu";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Separator } from "@/components/ui/separator";
 import { SearchPalette } from "@/blocks/application/shells/chrome";
 import { BrandMark } from "@/components/brand-mark";
 import { setGlobalTheme, useGlobalTheme } from "@/components/site/global-theme-store";
 import { CreateDialog } from "./shared";
 import { EchoChatActions } from "./echo-chat-actions";
+import { EchoResizableLayout } from "./echo-resizable-layout";
 import type { EchoChat, EchoChatHistory } from "./echo-chat-data";
 import type { EchoSettingsModel, EchoSettingsSection } from "./echo-settings-data";
 import "@/blocks/reference.css";
@@ -61,7 +61,7 @@ import "./echo-layout.css";
 
 export { AppShellInset as EchoInset };
 export function EchoLayout({ children }: { children: ReactNode }) {
-  return <AppShellLayout>{children}</AppShellLayout>;
+  return <EchoResizableLayout>{children}</EchoResizableLayout>;
 }
 export type EchoSidebarProps = {
   view: string;
@@ -242,31 +242,36 @@ export function EchoSidebar(props: EchoSidebarProps) {
                 <SlidersHorizontal />
                 Preferences
               </DropdownMenuItem>
-              <DropdownMenuSub>
-                <DropdownMenuSubTrigger>
-                  <Sun />
-                  Theme
-                </DropdownMenuSubTrigger>
-                <DropdownMenuSubContent className="reui-reference">
-                  <DropdownMenuRadioGroup
-                    value={theme.mode === "inherit" ? "system" : theme.mode}
-                    onValueChange={(value) =>
-                      setGlobalTheme({ ...theme, mode: value as typeof theme.mode })
-                    }
-                  >
-                    {[
-                      { id: "light", label: "Light", icon: Sun },
-                      { id: "dark", label: "Dark", icon: Moon },
-                      { id: "system", label: "System", icon: Monitor },
-                    ].map(({ id, label, icon: Icon }) => (
-                      <DropdownMenuRadioItem key={id} value={id}>
-                        <Icon />
-                        {label}
-                      </DropdownMenuRadioItem>
-                    ))}
-                  </DropdownMenuRadioGroup>
-                </DropdownMenuSubContent>
-              </DropdownMenuSub>
+              <DropdownMenuItem
+                className="echo-account-theme-row"
+                onSelect={(event) => event.preventDefault()}
+              >
+                <Palette />
+                <span>Theme</span>
+                <RadioGroup
+                  value={theme.mode === "inherit" ? "system" : theme.mode}
+                  onValueChange={(value) =>
+                    setGlobalTheme({ ...theme, mode: value as typeof theme.mode })
+                  }
+                  aria-label="Theme"
+                  className="echo-account-theme-choices"
+                >
+                  {[
+                    { id: "light", label: "Light", icon: Sun },
+                    { id: "dark", label: "Dark", icon: Moon },
+                    { id: "system", label: "System", icon: Monitor },
+                  ].map(({ id, label, icon: Icon }) => (
+                    <Label key={id} className="echo-account-theme-option">
+                      <RadioGroupItem
+                        value={id}
+                        aria-label={label}
+                        className="echo-account-theme-radio"
+                      />
+                      <Icon aria-hidden="true" />
+                    </Label>
+                  ))}
+                </RadioGroup>
+              </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem
@@ -286,9 +291,9 @@ export function EchoSidebar(props: EchoSidebarProps) {
   return (
     <>
       <ReuiSidebar
-        width={249}
-        gapWidth={249}
-        style={{ "--sidebar-width-icon": "49px" } as React.CSSProperties}
+        width={248}
+        gapWidth={248}
+        style={{ "--sidebar-width-icon": "48px" } as React.CSSProperties}
         className="echo-native-sidebar"
         mobileClassName="reui-reference echo-native-sidebar echo-sidebar-mobile"
         mobileWidth="75vw"
@@ -326,33 +331,40 @@ export function EchoSidebar(props: EchoSidebarProps) {
                 <SidebarTrigger aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"} />
               )}
             </div>
-            {!collapsed && (
-              <Tabs value={group} onValueChange={onGroupChange} className="echo-sidebar-tabs">
-                <TabsList aria-label="Conversation content">
-                  <TabsTrigger value="Chats">Chats</TabsTrigger>
-                  <TabsTrigger value="Artifacts">Artifacts</TabsTrigger>
-                </TabsList>
-              </Tabs>
-            )}
           </>
         }
         footer={
           <div className="echo-native-footer">
-            <SidebarNavigation
-              items={[
-                { label: "Docs", icon: <BookOpen /> },
-                { label: "What is new", icon: <Star /> },
-                { label: "Help", icon: <CircleHelp /> },
-              ]}
-              active={view}
-              onSelect={(value) =>
-                navigate(value === "Help" || value === "Docs" ? "Documentation" : value)
-              }
-            />
+            <SidebarMenu className="echo-footer-links">
+              {[
+                { label: "Docs", href: "https://reui.io/docs", icon: BookOpen },
+                { label: "What is new", href: "https://reui.io/docs/changelog", icon: Star },
+                { label: "Help", href: "https://reui.io/support", icon: CircleHelp },
+              ].map(({ label, href, icon: Icon }) => (
+                <SidebarMenuItem key={label}>
+                  <SidebarMenuButton asChild tooltip={label} aria-label={label}>
+                    <a href={href} target="_blank" rel="noopener noreferrer">
+                      <Icon />
+                      {!collapsed && <span>{label}</span>}
+                    </a>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
             {account}
           </div>
         }
       >
+        {!collapsed && (
+          <div className="echo-sidebar-tabs-wrap">
+            <Tabs value={group} onValueChange={onGroupChange} className="echo-sidebar-tabs">
+              <TabsList aria-label="Conversation content">
+                <TabsTrigger value="Chats">Chats</TabsTrigger>
+                <TabsTrigger value="Artifacts">Artifacts</TabsTrigger>
+              </TabsList>
+            </Tabs>
+          </div>
+        )}
         <div className="echo-native-nav">
           <SidebarMenu>
             <SidebarMenuItem>
@@ -381,6 +393,7 @@ export function EchoSidebar(props: EchoSidebarProps) {
             onSelect={navigate}
           />
         </div>
+        <Separator className="echo-sidebar-divider" />
         {collapsed ? (
           <div className="echo-history-menus">
             {[

@@ -49,10 +49,11 @@ for (const width of [1440, 390]) {
       page.on("pageerror", (error) => errors.push(error.message));
       page.on("console", (message) => message.type() === "error" && errors.push(message.text()));
       if (width === 1440) {
-        await expect(page.locator('[data-slot="sidebar-inset"]')).toHaveJSProperty(
-          "offsetLeft",
-          249,
-        );
+        await expect
+          .poll(async () =>
+            Math.round((await page.locator('[data-slot="sidebar-inset"]').boundingBox())!.x),
+          )
+          .toBe(249);
         await page.keyboard.press("Control+b");
         await expect(page.locator('[data-slot="sidebar"][data-state="collapsed"]')).toBeVisible();
         await expect
@@ -275,18 +276,23 @@ test("Echo menus use native keyboard groups, theme updates and scoped overflow",
   await page.goto("/#/template-preview/echo");
   await expect(page.getByRole("button", { name: "Account menu", exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Account menu", exact: true }).click();
-  const theme = page.getByRole("menuitem", { name: "Theme", exact: true });
-  await theme.focus();
-  await page.keyboard.press("ArrowRight");
-  await expect(page.getByRole("menuitemradio", { name: "Light", exact: true })).toBeVisible();
+  // The observed account menu contains one inline RadioGroup, so the menu's
+  // native Home/Arrow navigation and the group's native arrows are distinct.
   await page.keyboard.press("Home");
-  await expect(page.getByRole("menuitemradio", { name: "Light", exact: true })).toBeFocused();
+  await expect(page.getByRole("menuitem", { name: "Atlas", exact: true })).toBeFocused();
   await page.keyboard.press("ArrowDown");
-  await expect(page.getByRole("menuitemradio", { name: "Dark", exact: true })).toBeFocused();
+  await expect(page.getByRole("menuitem", { name: "Relay", exact: true })).toBeFocused();
+  const theme = page.getByRole("radiogroup", { name: "Theme", exact: true });
+  await theme.getByRole("radio", { name: "Light", exact: true }).click();
+  await expect(theme.getByRole("radio", { name: "Light", exact: true })).toBeChecked();
+  await page.keyboard.press("ArrowRight");
+  await expect(theme.getByRole("radio", { name: "Dark", exact: true })).toBeFocused();
   await page.keyboard.press("Space");
+  await expect(theme.getByRole("radio", { name: "Dark", exact: true })).toBeChecked();
   await expect(page.locator("html")).toHaveClass(/dark/);
   await page.keyboard.press("Escape");
-  await page.keyboard.press("Escape");
+  await expect(page.getByRole("menu")).toBeHidden();
+  await expect(page.getByRole("button", { name: "Account menu", exact: true })).toBeFocused();
   await settings(page, 1440);
   await page.getByRole("radio", { name: "Light", exact: true }).click();
   await expect(page.locator("html")).not.toHaveClass(/dark/);

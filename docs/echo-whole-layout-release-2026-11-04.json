@@ -1,0 +1,79 @@
+{
+  "date": "2026-11-04",
+  "milestone": "Echo native Resizable, Card settings, Frame composer and MessageScroller",
+  "baseCommit": "bb186d753af22cbf34a97e6afe01945935ba609b",
+  "freeReuse": [
+    "Existing actual ReUI Sidebar/Sheet and single AppShell provider; actual Resizable Group/Panel/Separator with public panel sizing API.",
+    "Actual Card/Header/Content/Footer and FieldSet/Legend/Description/Group/Separator; existing Pro settings fields/rows and official avatar upload retained.",
+    "Actual Frame/FrameHeader/FramePanel composer, existing InputGroup/Attachment/upload engine.",
+    "Existing MessageScroller Provider/Root/Viewport/Content/Item/Button and actual Message/Bubble.",
+    "Actual native RadioGroup/RadioGroupItem for inline account theme, connected to the existing shared theme API."
+  ],
+  "correctedDuplicates": [
+    "Fixed-width Sidebar consumer now composed through existing native Resizable.",
+    "Echo Frame-only settings shell changed to actual observed Card and nested FieldSet structure.",
+    "Handwritten composer shell and message scrolling replaced with actual Frame and MessageScroller.",
+    "Nested theme submenu replaced with observed inline native radios with real28px controls."
+  ],
+  "customRequired": "Echo-specific arrangement and CSS, independent Bricklane chat fixtures, existing local domain models and narrow separator click-versus-drag glue. These are app behaviors absent from the free primitive examples; no shared resize/scroll/focus/theme engine copied.",
+  "preserved": [
+    "Independent static review:14 business function AST and current settings/chat/models/Projects/Scheduled/Artifacts remain baseline exact.",
+    "Independent static review:787 non-Echo workflow.css rule bytes/order/at-rule contexts remain baseline exact.",
+    "Single Sidebar provider and original phone Sheet close/focus behavior, real business save/cancel/upload/history remain acceptance requirements."
+  ],
+  "boundaries": [
+    "Original observed Sidebar334/229/transition223 widths are distinct states; local248px initial/min210/max360 and49px collapsed main are not a proven fixed original default or exact original lower bound/keyboard step.",
+    "Original General/MyProfile and composer/native scroll structure were inspected. All seven original settings business writes were not performed; no original Save/backend/reload persistence claim.",
+    "Original summary details were not opened. Dismiss usage behavior is local; no invented original summary popup proof.",
+    "Voice/dictation is disabled with local unavailable feedback; no working speech or AI service claimed.",
+    "Original history-end snapshot has raw scrollTop0, so its name does not establish original auto-follow/end behavior. Local MessageScroller behavior was independently verified in this milestone; the original end-button semantics remain unproven.",
+    "Workflow family imports may affect sibling ZIP closure; only newly downloaded archives actually validated should be named.",
+    "Original ReUI paid screenshots/avatars/decorative SVG remain private reference; original Bricklane marks and permitted local materials only."
+  ],
+  "retainedFailures": [
+    "Original v1 Relay→Atlas breakpoint reset preserved; same-parent native layout corrected before final productionv3.",
+    "Native v2 OKLab parser failure and render-time refs lint warning preserved; final parser/API usage clean.",
+    "Root actual v3 white/transition screenshots held despite7P. Final QA checks real theme endpoints,contrast,animations0 and2paint frames; final three images actually viewed. White-frame cause remains unestablished.",
+    "v3b modal menu hides background Sidebar role; readonly DOM measurement corrected while native role actions/Escape/focus remain. Rejected v3c replacement caused an invalid duplicate execution; preserved separately.",
+    "Root Tempo QA adaptationv1 wrongly compared text Range height15 with CSS line box16.5; corrected new measurement to positive rectangle+one line while original block16.5 assertion stays. First failure retained; no product change."
+  ],
+  "verification": {
+    "configuredBuild": "Original configured build-v3 passed;1179source/657dist byte-bound,14product files frozen. Package/lock/compiler/build configuration unchanged.",
+    "native": "Final7 passed15.818s,workers1/retries0:real native resize/keyboard/clamp/collapse/recent width and organization retention across breakpoints; Card/FieldSet/tab names; inline theme and layered Escape; real Frame/MessageScroller scroll-to-end.",
+    "legacy": "18 existing Echo cases passed44.695s,including original15 Sidebar/settings/history/avatar plus3 composer/project/context/attachment cases.",
+    "source": "14 passed41.238s:actual implementation View/Copy/single-file13 plus licensed project ZIP closure1. SourceTargets names real split files.",
+    "download": {
+      "members": 341,
+      "zipSHA256": "af4ce3b2798cb21860b83f1cfb7c6d95aeb237bfb5ed88f15adcb860323a8013",
+      "normalInstallSeconds": 31.135784,
+      "immediateAndFinalLockSHA256": "998f259e2f65819707e42e01e74532047fbccf4f0054a60b942e65409e90b214",
+      "originalStrictBuildSeconds": 8.197928,
+      "firstNativePassed": 7,
+      "nativeSeconds": 15.597902,
+      "allRawPackageConfigMainExampleUnchanged": true,
+      "externalAdapterOnly": "Physical existing Playwright import and standalone /#/ entry; no package code/config/test/dependency overlay."
+    },
+    "integration": "Root complete formatting/lint zero errors and tooling154 passed; discovery2313cases/267files. Existing unrelated lint warnings remain; Echo-owned lint clean. Final Root Tempo QA and docs separately formatted/linted before submission.",
+    "independent": "Original browser contracts,17snapshot/14product invariance,14business AST and787nonEcho CSS rules reviewed; final QA delta and three actual final screenshots reviewed. These are scoped proofs,not full-template parity."
+  },
+  "publication": {
+    "status": "This new milestone requires its own full CI and exact Pages deployment; commit,push,CI and live preview are separate."
+  },
+  "licensing": "Actual free MIT/OFL/third-party attribution retained in source and runnable download; independent Bricklane branding and fixtures.",
+  "tempoPhoneQAFollowup": {
+    "originalRun": 41724732974,
+    "originalResult": "2291passed/1failed,0skip/flaky/retry; Pages skipped. Only original new phone390 fixed intrinsic width sample failed263.9375vs273,with0.75 tolerance retained. Remaining10native andSource14 passed.",
+    "originalTraceLimits": "Actual card273x117.5,inner291.5,center/gap8/Frame/Progress82 observed; original line199 failure left following height/x/description/Escape/context/health assertions unexecuted. Actual resolved glyph/font root cause was not established.",
+    "change": "Replace only the phone conditional width/x samples with readonly actual description Range plus native Frame/Panel padding,borders and dense negative margins; prove one line and description dominates title/totals. Centering,containment,height117.5,description16.5 and all native action/focus/health tail retained,original0.75 unchanged.",
+    "verification": "Necessary original whole phone case passed on frozen final Echo assets,1passed/0failed/skip/flaky,workers1/retries0,1.844s report/2.192s wall; source/dist/package/protected files unchanged; owned server closed. This local Mac pass is not claimed as a fresh Linux CI pass."
+  },
+  "priorVerifiedDeployment": {
+    "commit": "e274e74bb9319b1c99cd9b91f2f634bc91ab7bd7",
+    "runId": 41718871815,
+    "passed": 2267,
+    "deploymentId": 7532010709,
+    "successStatusId": 21294444294,
+    "successUTC": "2026-11-03T22:12:53Z",
+    "publicIndexByteExactToDeploymentArtifact": true
+  }
+}

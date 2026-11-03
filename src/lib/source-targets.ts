@@ -688,6 +688,8 @@ export function templateImplementationTargets(template: {
       "echo-projects",
       "echo-scheduled",
       "echo-artifacts",
+      "echo-resizable-layout",
+      "echo-message-viewport",
     ],
     flowly: [
       "flowly-settings",

@@ -82,31 +82,34 @@
 }
 .echo-settings-card {
   min-width: 0;
+  gap: 0;
   padding: 0;
-  background: transparent;
 }
 .echo-settings-card-panel {
   min-width: 0;
   padding: 0;
   overflow: hidden;
-  border-radius: 16px;
-  background: var(--background);
-  border: 0;
-  box-shadow: 0 0 0 1px var(--border);
 }
-.echo-settings-card-panel > [data-slot="frame-panel-header"] {
-  min-height: 70px;
+.echo-settings-card-panel > [data-slot="card-header"] {
   padding: 12px 20px 16px;
   gap: 0;
   border-bottom: 1px solid var(--border);
 }
-.echo-settings-card-panel [data-slot="frame-panel-title"] {
+.echo-settings-card-panel [data-slot="card-title"] {
+  font-family: inherit;
   font-size: 16px;
   font-weight: 500;
   line-height: 22px;
 }
-.echo-settings-card-panel [data-slot="frame-panel-description"] {
+.echo-settings-card-panel [data-slot="card-description"] {
   line-height: 20px;
+}
+.echo-settings-card-panel > [data-slot="card-content"] {
+  padding: 0;
+}
+.echo-settings-card-fieldset {
+  min-width: 0;
+  gap: 0;
 }
 .echo-settings-card-fields {
   gap: 0;
@@ -123,12 +126,13 @@
 .echo-settings-card-fields .workspace-settings-row > [data-slot="field-content"] {
   gap: 2px;
 }
-.echo-settings-card-fields [data-slot="field-label"],
-.echo-settings-card-fields [data-slot="field-title"] {
+.echo-settings-card-fields [data-slot="field-label"] {
   font-weight: 500;
+}
+.echo-settings-card-fields label[data-slot="field-label"] {
   line-height: 19.25px;
 }
-.echo-settings-card-fields [data-slot="field-title"] {
+.echo-settings-card-fields div[data-slot="field-label"] {
   line-height: 20px;
 }
 .echo-settings-card-fields [data-slot="field-description"] {
@@ -167,6 +171,8 @@
 .echo-settings-card-fields textarea {
   min-height: 80px;
   width: 100%;
+  font-size: 14px;
+  line-height: 20px;
 }
 .echo-settings-card-fields [data-slot="badge"] {
   padding: 0 4px;
@@ -174,19 +180,12 @@
   font-weight: 400;
   line-height: 16px;
 }
-.echo-settings-card-panel > [data-slot="frame-panel-footer"] {
+.echo-settings-card-panel > [data-slot="card-footer"] {
   flex-direction: row;
   justify-content: flex-end;
   gap: 8px;
   padding: 12px 20px;
   border-top: 1px solid var(--border);
-  background: var(--muted);
-}
-.echo-settings-card-panel button[data-slot="button"] {
-  height: 30px;
-  min-height: 30px;
-  padding-inline: 10px;
-  font-size: 14px;
 }
 .echo-settings-pair {
   display: grid;
@@ -209,37 +208,64 @@
   display: flex;
   width: fit-content;
   gap: 0;
-  padding: 3px;
+  padding: 2px;
   border-radius: 20px;
   background: var(--muted);
 }
-.echo-appearance [data-slot="toggle-group-item"] {
+.echo-appearance-option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   min-width: 24px;
   width: 24px;
   height: 24px;
-  padding: 4px;
-  border: 0;
-  border-radius: 50%;
+  gap: 0;
+  cursor: pointer;
   color: var(--muted-foreground);
 }
-.echo-appearance [data-slot="toggle-group-item"][data-state="on"] {
+.echo-appearance-radio {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted-foreground);
+}
+.echo-appearance-radio::after {
+  inset: 0;
+}
+.echo-appearance-radio[data-state="checked"] {
   background: var(--background);
   color: var(--foreground);
   box-shadow: 0 1px 2px #00000012;
 }
+.echo-appearance-radio > [data-slot="radio-group-indicator"] {
+  display: none;
+}
+.echo-appearance-option:has([data-state="checked"]) {
+  color: var(--foreground);
+}
 .echo-appearance svg {
+  position: relative;
   width: 14px;
   height: 14px;
+  pointer-events: none;
 }
 .echo-profile-notice {
-  padding: 12px;
+  padding: 10px 12px;
   border-radius: 10px;
 }
 .echo-profile-notice [data-slot="alert-title"] {
   font-weight: 500;
+  line-height: 20px;
 }
 .echo-profile-notice [data-slot="alert-description"] {
   font-size: 14px;
+  line-height: 20px;
 }
 .echo-settings-card-fields textarea#echo-settings-style {
   min-height: 64px;
@@ -271,6 +297,10 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+.echo-settings-profile-details {
+  min-width: 0;
+  gap: 12px;
 }
 .echo-settings-compound > .workspace-settings-row {
   display: flex;
@@ -324,9 +354,6 @@
   .echo-settings-heading {
     margin-bottom: 32px;
   }
-  .echo-settings-heading p {
-    line-height: 24px;
-  }
   .echo-settings-tabs {
     display: flex;
     flex-direction: column;
@@ -337,7 +364,10 @@
     overflow-x: auto;
     padding: 3px;
     margin: -3px;
-    scrollbar-width: thin;
+    scrollbar-width: none;
+  }
+  .echo-settings-rail-scroll::-webkit-scrollbar {
+    display: none;
   }
   .echo-settings-rail {
     flex-direction: row;

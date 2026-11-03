@@ -1,0 +1,44 @@
+/* A bounded consumer of ReUI's actual MessageScroller. The primitive controls
+   scroll position and jump visibility; these rules only size the Echo surface. */
+.echo-native-root .echo-main > .echo-message-viewport {
+  min-width: 0;
+  min-height: 0;
+  height: auto;
+  flex: 1;
+}
+
+.echo-message-viewport > [data-slot="message-scroller-viewport"] {
+  min-height: 0;
+}
+
+.echo-message-viewport .echo-message-content {
+  min-width: 0;
+  width: 100%;
+  max-width: 768px;
+  margin-inline: auto;
+  gap: 24px;
+  padding: 24px 16px;
+}
+
+.echo-message-viewport [data-slot="message-scroller-item"] {
+  content-visibility: visible;
+}
+
+.echo-message-viewport [data-slot="message"].echo-message {
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  white-space: normal;
+}
+
+.echo-message-viewport [data-slot="bubble-content"] > p {
+  margin: 0;
+  line-height: inherit;
+}
+
+@media (min-width: 640px) {
+  .echo-message-viewport .echo-message-content {
+    padding-inline: 24px;
+  }
+}

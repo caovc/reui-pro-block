@@ -1,0 +1,49 @@
+.echo-resizable-layout {
+  min-width: 0;
+  min-height: 0;
+}
+
+.echo-resizable-sidebar,
+.echo-resizable-main {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.echo-resizable-sidebar > [data-slot="sidebar"],
+.echo-resizable-sidebar [data-slot="sidebar-gap"],
+.echo-resizable-sidebar [data-slot="sidebar-container"] {
+  width: 100%;
+  transition: none;
+}
+
+.echo-resizable-sidebar [data-slot="sidebar-container"] {
+  border-right: 0;
+}
+
+.echo-resizable-handle {
+  z-index: 10;
+  cursor: col-resize;
+}
+
+.echo-resizable-handle::after {
+  width: 12px;
+}
+
+.echo-resizable-handle:hover,
+.echo-resizable-handle[data-separator="hover"],
+.echo-resizable-handle[data-separator="active"] {
+  background: var(--primary);
+}
+
+@media (width < 768px) {
+  /* Keep the native panel's React subtree; the real Sidebar Sheet portals out.
+     Only the visible main panel participates in the mobile flex layout. */
+  .echo-resizable-layout > #echo-sidebar-panel,
+  .echo-resizable-layout > .echo-resizable-handle {
+    display: none !important;
+  }
+}

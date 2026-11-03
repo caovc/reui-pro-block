@@ -4,7 +4,6 @@ import { useState } from "react";
 import {
   Bookmark,
   BookOpen,
-  ChevronDown,
   Code,
   MessageSquare,
   Paperclip,
@@ -26,6 +25,7 @@ import { useEchoChatHistory } from "./echo-chat-data";
 import { echoModels, useEchoSettingsModel } from "./echo-settings-data";
 import { EchoProjects, type EchoProject } from "./echo-projects";
 import { EchoComposer } from "./echo-composer";
+import { EchoMessageItem, EchoMessageViewport } from "./echo-message-viewport";
 import { EchoScheduled } from "./echo-scheduled";
 import { EchoArtifactList, EchoArtifactPanel } from "./echo-artifacts";
 export default function Echo() {
@@ -39,7 +39,7 @@ export default function Echo() {
     prompt?: string;
   }>();
   const settings = useEchoSettingsModel();
-  const [bookmarked, setBookmarked] = useState(false);
+  const [memoryEnabled, setMemoryEnabled] = useState(true);
   const [artifactIndex, setArtifactIndex] = useState<number | null>(null);
   const [group, setGroup] = useState("Chats");
   const [mode, setMode] = useState("Create");
@@ -191,13 +191,13 @@ export default function Echo() {
                   <span>{view}</span>
                   <div className="wf-header-actions">
                     <Button
-                      variant={bookmarked ? "secondary" : "ghost"}
+                      variant={memoryEnabled ? "secondary" : "ghost"}
                       size="icon-sm"
-                      aria-label="Bookmark chat"
-                      aria-pressed={bookmarked}
-                      onClick={() => setBookmarked(!bookmarked)}
+                      aria-label="Chat memory"
+                      aria-pressed={memoryEnabled}
+                      onClick={() => setMemoryEnabled(!memoryEnabled)}
                     >
-                      <Bookmark fill={bookmarked ? "currentColor" : "none"} />
+                      <Bookmark />
                     </Button>
                     <Select value={model} onValueChange={setModel}>
                       <SelectTrigger aria-label="Select AI model">
@@ -310,13 +310,20 @@ export default function Echo() {
                 </div>
               ) : (
                 <>
-                  <div className={`echo-conversation ${messages.length ? "has-messages" : ""}`}>
+                  <EchoMessageViewport
+                    threadId={messages.length ? (history.activeId ?? "echo-current") : undefined}
+                  >
                     {messages.length ? (
                       messages.map((m, i) => (
-                        <div key={i} className={`echo-message ${m.role}`}>
-                          <strong>{m.role === "user" ? "You" : model}</strong>
-                          <p>{m.text}</p>
-                        </div>
+                        <EchoMessageItem
+                          key={`${history.activeId ?? "local"}-${i}`}
+                          id={`${history.activeId ?? "local"}-${i}`}
+                          anchor={i === messages.length - 1}
+                          role={m.role === "user" ? "user" : "assistant"}
+                          label={m.role === "user" ? String(settings.saved.name) : model}
+                        >
+                          {m.text}
+                        </EchoMessageItem>
                       ))
                     ) : (
                       <>
@@ -335,6 +342,7 @@ export default function Echo() {
                               key={x}
                               size="sm"
                               variant={x === mode ? "secondary" : "outline"}
+                              aria-pressed={x === mode}
                               onClick={() => setMode(x)}
                             >
                               <Icon />
@@ -374,12 +382,8 @@ export default function Echo() {
                         ))}
                       </>
                     )}
-                  </div>
+                  </EchoMessageViewport>
                   <div className="echo-composer">
-                    <div className="echo-context">
-                      Context 64 percent full · Plan limit resets Friday 12:00 PM{" "}
-                      <ChevronDown className="size-3" />
-                    </div>
                     <EchoComposer
                       value={input}
                       onChange={setInput}
@@ -387,6 +391,7 @@ export default function Echo() {
                       onThink={setThink}
                       search={search}
                       onSearch={setSearch}
+                      dictation={Boolean(settings.saved.dictation)}
                       onSend={(context) => send(input, context)}
                     />
                     <p className="echo-disclaimer">

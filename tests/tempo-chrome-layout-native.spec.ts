@@ -196,9 +196,80 @@ for (const width of [1440, 390]) {
       near(usageBox.x + usageBox.width / 2, innerBox.x + innerBox.width / 2, "Usage centered");
       expect(usageBox.width).toBeLessThanOrEqual(innerBox.width);
       if (/^Inter(?:,|$)/.test(font) && Math.abs(innerBox.width - 291.5) <= 0.5) {
-        near(usageBox.width, 263.9375, "default Inter intrinsic width", 0.75);
+        const intrinsic = await description.evaluate((element) => {
+          const panel = element.parentElement!;
+          const frame = panel.parentElement!;
+          const header = frame.querySelector('[data-slot="frame-panel-header"]')!;
+          const title = header.querySelector('[data-slot="frame-panel-title"]')!;
+          const totals = panel.querySelector(".tempo-usage-totals")!;
+          const measureText = (target: Element) => {
+            const range = document.createRange();
+            range.selectNodeContents(target);
+            const bounds = range.getBoundingClientRect();
+            return {
+              width: bounds.width,
+              height: bounds.height,
+              lines: range.getClientRects().length,
+            };
+          };
+          const chrome = (target: Element) => {
+            const css = getComputedStyle(target);
+            return {
+              padding: parseFloat(css.paddingLeft) + parseFloat(css.paddingRight),
+              border: parseFloat(css.borderLeftWidth) + parseFloat(css.borderRightWidth),
+              margin: parseFloat(css.marginLeft) + parseFloat(css.marginRight),
+            };
+          };
+          const totalTexts = Array.from(totals.children, measureText);
+          const css = getComputedStyle(element);
+          return {
+            description: measureText(element),
+            title: measureText(title),
+            totalTexts,
+            totalsGap: parseFloat(getComputedStyle(totals).columnGap),
+            frame: chrome(frame),
+            panel: chrome(panel),
+            header: chrome(header),
+            font: css.font,
+            weight: css.fontWeight,
+            letterSpacing: css.letterSpacing,
+            features: css.fontFeatureSettings,
+            variations: css.fontVariationSettings,
+          };
+        });
+        await info.attach("tempo-phone-natural-content", {
+          body: JSON.stringify(intrinsic, null, 2),
+          contentType: "application/json",
+        });
+        expect(intrinsic.description.lines).toBe(1);
+        expect(intrinsic.description.height).toBeGreaterThan(0);
+        const totalsWidth =
+          intrinsic.totalTexts.reduce((sum, text) => sum + text.width, 0) + intrinsic.totalsGap;
+        expect(intrinsic.description.width).toBeGreaterThan(totalsWidth);
+        const panelWidth =
+          intrinsic.description.width +
+          intrinsic.panel.padding +
+          intrinsic.panel.border +
+          intrinsic.panel.margin;
+        const headerWidth =
+          intrinsic.title.width +
+          intrinsic.header.padding +
+          intrinsic.header.border +
+          intrinsic.header.margin;
+        expect(panelWidth).toBeGreaterThan(headerWidth);
+        // Dense Frame panels extend into the Frame border through their native
+        // negative margins. Measure that chrome once; no fixed glyph width or
+        // measured card width is used to manufacture the expected result.
+        const naturalWidth = panelWidth + intrinsic.frame.padding + intrinsic.frame.border;
+        expect(naturalWidth).toBeLessThanOrEqual(innerBox.width);
+        near(usageBox.width, naturalWidth, "natural single-line intrinsic width", 0.75);
         near(usageBox.height, 117.5, "default Inter phone height", 0.75);
-        near(usageBox.x, 13.78125, "default Inter phone x", 0.75);
+        near(
+          usageBox.x,
+          innerBox.x + (innerBox.width - naturalWidth) / 2,
+          "intrinsic phone x",
+          0.75,
+        );
         near((await rect(description)).height, 16.5, "phone single-line description");
       }
       await page.keyboard.press("Escape");

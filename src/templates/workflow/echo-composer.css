@@ -1,0 +1,153 @@
+/* Echo composes the existing free Frame, InputGroup and Attachment examples.
+   The application still owns draft/context state and the actual upload hook. */
+.echo-root .echo-composer form.echo-frame-composer {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+}
+
+.echo-frame-composer > [data-slot="frame"] {
+  width: 100%;
+}
+
+.echo-frame-composer [data-slot="frame-panel-header"].echo-usage-header {
+  height: 36px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: calc(var(--frame-radius) - 1px) calc(var(--frame-radius) - 1px) 0 0;
+  background: color-mix(in oklab, var(--muted) 40%, transparent);
+}
+
+.echo-frame-composer .echo-usage-summary {
+  display: flex;
+  min-width: 0;
+  height: 24px;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.echo-frame-composer .echo-usage-summary > svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.echo-frame-composer .echo-usage-copy {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.echo-frame-composer .echo-usage-summary > .echo-usage-chevron {
+  width: 12px;
+  height: 12px;
+}
+
+.echo-frame-composer .echo-usage-header > button {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+}
+
+.echo-frame-composer [data-slot="frame-panel"].echo-composer-panel {
+  padding: 0;
+}
+
+.echo-frame-composer [data-slot="input-group"] {
+  min-width: 0;
+  border: 0;
+  border-radius: inherit;
+  box-shadow: none;
+}
+
+.echo-frame-composer [data-slot="input-group-control"] {
+  min-height: 64px;
+  max-height: 192px;
+  padding: 8px 10px;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.echo-frame-composer [data-slot="input-group-addon"] {
+  min-width: 0;
+}
+
+.echo-frame-composer .echo-compose-tools {
+  gap: 4px;
+  padding: 6px 10px 8px;
+}
+
+.echo-frame-composer .echo-compose-tools [data-slot="button"] {
+  height: 32px;
+}
+
+.echo-frame-composer .echo-compose-tools > [data-size="icon-sm"],
+.echo-frame-composer .echo-composer-actions [data-size="icon-sm"] {
+  width: 32px;
+  padding: 0;
+}
+
+.echo-frame-composer .echo-compose-tools > [data-size="sm"] {
+  padding-inline: 8px;
+}
+
+.echo-frame-composer .echo-tool-count {
+  flex-shrink: 0;
+  padding: 0 4px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--muted-foreground);
+  font-size: 10px;
+  line-height: 16px;
+  white-space: nowrap;
+}
+
+.echo-frame-composer .echo-composer-actions {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+}
+
+.echo-frame-composer .echo-dictation-control {
+  display: inline-flex;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: var(--radius-md);
+  outline: none;
+}
+
+.echo-frame-composer .echo-dictation-control:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.echo-dictation-tooltip {
+  max-width: 240px;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.echo-frame-composer .echo-upload-error {
+  margin-top: 8px;
+  color: var(--destructive);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+@media (min-width: 768px) {
+  .echo-frame-composer [data-slot="input-group-control"] {
+    font-size: 14px;
+    line-height: 20px;
+  }
+}

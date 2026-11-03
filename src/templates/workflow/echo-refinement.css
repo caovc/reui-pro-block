@@ -29,46 +29,6 @@
   line-height: 1.5;
 }
 
-.echo-root .echo-composer form.echo-reference-form {
-  padding: 0;
-  border: 0;
-}
-
-.echo-reference-form > [data-slot="input-group"] {
-  border-radius: 16px;
-  background: var(--background);
-}
-
-.echo-reference-form [data-slot="input-group-control"] {
-  min-height: 64px;
-  max-height: 180px;
-  padding: 10px 12px;
-  font-size: 14px;
-}
-
-.echo-reference-form [data-slot="input-group-addon"] {
-  min-width: 0;
-}
-
-.echo-reference-form .echo-compose-tools {
-  gap: 4px;
-  padding: 4px 10px 10px;
-}
-
-.echo-reference-form .echo-compose-tools > button {
-  height: 28px;
-}
-
-.echo-tool-count {
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 0 4px;
-  color: var(--muted-foreground);
-  font-size: 10px;
-  line-height: 16px;
-  white-space: nowrap;
-}
-
 .echo-context-menu {
   width: 252px;
 }
@@ -82,11 +42,6 @@
   display: block;
   margin-top: 2px;
   color: var(--muted-foreground);
-  font-size: 12px;
-}
-
-.echo-upload-error {
-  color: var(--destructive);
   font-size: 12px;
 }
 
