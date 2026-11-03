@@ -19,7 +19,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
+import { Field, FieldContent, FieldDescription, FieldLabel } from "@/components/ui/field";
 
 /** Controlled adaptation of official free c-sheet-1, retaining native focus/close/portal semantics. */
 export function SettingsDrawer({
@@ -131,14 +131,21 @@ export function CheckOption({
   checked: boolean;
   onChange: (checked: boolean) => void;
 }) {
+  // Official free c-checkbox-5: native control followed by linked Field content.
+  const descriptionId = description ? `${id}-description` : undefined;
   return (
-    <div className="fs-check-option">
-      <Checkbox id={id} checked={checked} onCheckedChange={(next) => onChange(next === true)} />
-      <div>
-        <Label htmlFor={id}>{label}</Label>
-        {description && <p className="fs-hint">{description}</p>}
-      </div>
-    </div>
+    <Field orientation="horizontal" className="fs-check-option">
+      <Checkbox
+        id={id}
+        checked={checked}
+        onCheckedChange={(next) => onChange(next === true)}
+        aria-describedby={descriptionId}
+      />
+      <FieldContent>
+        <FieldLabel htmlFor={id}>{label}</FieldLabel>
+        {description && <FieldDescription id={descriptionId}>{description}</FieldDescription>}
+      </FieldContent>
+    </Field>
   );
 }
 

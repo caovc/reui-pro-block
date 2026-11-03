@@ -20,11 +20,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { FieldDescription, FieldGroup, FieldLegend, FieldSet } from "@/components/ui/field";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
-import { SettingsChoice } from "@/blocks/application/dialog-variants/workspace/settings-panel";
+import {
+  SettingsChoice,
+  SettingsRow,
+} from "@/blocks/application/dialog-variants/workspace/settings-panel";
 import { demoAvatar } from "@/lib/demo-artwork";
 import { CheckOption, DetailFacts, RecordMenu, SettingsDrawer } from "./flowly-settings-components";
 import type { FlowlySettingsModel } from "./flowly-settings-model";
@@ -248,27 +253,59 @@ function MemberAreas({
   value,
   onChange,
   prefix,
+  context,
 }: {
   value: MemberArea[];
   onChange: (next: MemberArea[]) => void;
   prefix: string;
+  context: "invite" | "access";
 }) {
   return (
-    <fieldset className="fs-fieldset">
-      <legend>Areas</legend>
-      {areas.map(([area, description]) => (
-        <CheckOption
-          key={area}
-          id={`${prefix}-${area.toLowerCase()}`}
-          label={area}
-          description={description}
-          checked={value.includes(area)}
-          onChange={(checked) =>
-            onChange(checked ? [...value, area] : value.filter((item) => item !== area))
-          }
-        />
-      ))}
-    </fieldset>
+    <FieldSet
+      className={`fs-fieldset fs-member-areas fs-member-areas-${context}`}
+      aria-describedby={context === "access" ? `${prefix}-description` : undefined}
+    >
+      <FieldLegend variant="label">Areas</FieldLegend>
+      {context === "access" && (
+        <FieldDescription id={`${prefix}-description`} className="text-xs">
+          The parts of Bricklane this member can open.
+        </FieldDescription>
+      )}
+      <FieldGroup className="fs-member-area-options">
+        {areas.map(([area, description]) => {
+          const id = `${prefix}-${area.toLowerCase()}`;
+          const checked = value.includes(area);
+          const change = (next: boolean) =>
+            onChange(next ? [...value, area] : value.filter((item) => item !== area));
+          return context === "invite" ? (
+            <SettingsRow
+              key={area}
+              id={id}
+              title={area}
+              description={description}
+              className="fs-invite-area-row"
+            >
+              <Switch
+                id={id}
+                size="sm"
+                checked={checked}
+                onCheckedChange={change}
+                aria-describedby={`${id}-description`}
+              />
+            </SettingsRow>
+          ) : (
+            <CheckOption
+              key={area}
+              id={id}
+              label={area}
+              description={description}
+              checked={checked}
+              onChange={change}
+            />
+          );
+        })}
+      </FieldGroup>
+    </FieldSet>
   );
 }
 function AccessLevels({
@@ -412,7 +449,12 @@ export function FlowlyInviteDrawer({ model }: { model: FlowlySettingsModel }) {
             value={level}
             onChange={setLevel}
           />
-          <MemberAreas prefix="invite-area" value={selected} onChange={setSelected} />
+          <MemberAreas
+            context="invite"
+            prefix="invite-area"
+            value={selected}
+            onChange={setSelected}
+          />
         </section>
         <fieldset className="fs-fieldset">
           <legend>Message</legend>
@@ -558,6 +600,7 @@ export function FlowlyMemberDrawer({
             onChange={(level) => setDraft({ ...draft, level })}
           />
           <MemberAreas
+            context="access"
             prefix="member-area"
             value={draft.areas}
             onChange={(areas) => setDraft({ ...draft, areas })}

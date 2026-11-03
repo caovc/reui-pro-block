@@ -85,7 +85,10 @@ test("Flux provider connection and enabled state survive returning from Overview
   page,
 }) => {
   await page.goto("/#/template-preview/flux");
-  await page.getByRole("button", { name: "Connections", exact: true }).first().click();
+  await page
+    .locator(".wf-flux-quick-links")
+    .getByRole("link", { name: "Connections", exact: true })
+    .click();
   await page
     .getByRole("switch", { name: "Enable provider OpenRoute Primary", exact: true })
     .click();
@@ -96,7 +99,10 @@ test("Flux provider connection and enabled state survive returning from Overview
   await page.getByRole("button", { name: "Add connection", exact: true }).click();
   await page.getByRole("button", { name: "Save", exact: true }).click();
   await page.getByRole("button", { name: "Overview", exact: true }).click();
-  await page.getByRole("button", { name: "Connections", exact: true }).first().click();
+  await page
+    .locator(".wf-flux-quick-links")
+    .getByRole("link", { name: "Connections", exact: true })
+    .click();
   await expect(
     page.getByRole("switch", { name: "Enable provider OpenRoute Primary", exact: true }),
   ).not.toBeChecked();
@@ -111,7 +117,10 @@ test("Flux routing respects locked policies and preserves a saved independent ch
   page,
 }) => {
   await page.goto("/#/template-preview/flux");
-  await page.getByRole("button", { name: "Routing rules", exact: true }).first().click();
+  await page
+    .locator(".wf-flux-quick-links")
+    .getByRole("link", { name: "Routing rules", exact: true })
+    .click();
   await expect(
     page.getByRole("switch", { name: "Safety review Payment Action Drafts", exact: true }),
   ).toBeDisabled();
@@ -125,7 +134,10 @@ test("Flux routing respects locked policies and preserves a saved independent ch
   await page.getByRole("button", { name: "Save", exact: true }).click();
   await expect(page.getByRole("button", { name: "Saved", exact: true })).toBeVisible();
   await page.getByRole("button", { name: "Overview", exact: true }).click();
-  await page.getByRole("button", { name: "Routing rules", exact: true }).first().click();
+  await page
+    .locator(".wf-flux-quick-links")
+    .getByRole("link", { name: "Routing rules", exact: true })
+    .click();
   await expect(
     page.getByRole("switch", { name: "Long context Support Reply Drafts", exact: true }),
   ).toBeChecked();
@@ -172,7 +184,10 @@ test("Flux costs track and edit one independent line across Overview navigation"
   page,
 }) => {
   await page.goto("/#/template-preview/flux");
-  await page.getByRole("button", { name: "Spend overview", exact: true }).first().click();
+  await page
+    .locator(".wf-flux-quick-links")
+    .getByRole("link", { name: "Spend overview", exact: true })
+    .click();
   await page.getByRole("button", { name: "Track Cost", exact: true }).click();
   await page.getByLabel("Target", { exact: true }).fill("QA safety budget");
   await page.getByLabel("Spend", { exact: true }).fill("1700");
@@ -182,7 +197,10 @@ test("Flux costs track and edit one independent line across Overview navigation"
   await page.getByLabel("Spend", { exact: true }).fill("1900");
   await page.getByRole("button", { name: "Save cost", exact: true }).click();
   await page.getByRole("button", { name: "Overview", exact: true }).click();
-  await page.getByRole("button", { name: "Spend overview", exact: true }).first().click();
+  await page
+    .locator(".wf-flux-quick-links")
+    .getByRole("link", { name: "Spend overview", exact: true })
+    .click();
   await page.getByLabel("Filter cost activity", { exact: true }).fill("QA safety budget");
   await page.getByRole("button", { name: "QA safety budget", exact: true }).click();
   await expect(page.getByLabel("Spend", { exact: true })).toHaveValue("1900");
@@ -192,7 +210,10 @@ test("Flux token ledger adds a row, reviews it independently and exports actual 
   page,
 }) => {
   await page.goto("/#/template-preview/flux");
-  await page.getByRole("button", { name: "Token audit", exact: true }).first().click();
+  await page
+    .locator(".wf-flux-quick-links")
+    .getByRole("link", { name: "Token audit", exact: true })
+    .click();
   await page.getByRole("button", { name: "Add Entry", exact: true }).click();
   await page.getByLabel("Input Tokens", { exact: true }).fill("1234");
   await page.getByLabel("Output Tokens", { exact: true }).fill("234");
@@ -203,7 +224,10 @@ test("Flux token ledger adds a row, reviews it independently and exports actual 
   await page.getByRole("button", { name: "Export CSV", exact: true }).click();
   expect((await csv).suggestedFilename()).toBe("token-ledger.csv");
   await page.getByRole("button", { name: "Overview", exact: true }).click();
-  await page.getByRole("button", { name: "Token audit", exact: true }).first().click();
+  await page
+    .locator(".wf-flux-quick-links")
+    .getByRole("link", { name: "Token audit", exact: true })
+    .click();
   await page.getByRole("button", { name: "Go to next page", exact: true }).click();
   await page.getByRole("button", { name: "TOK-7740-328", exact: true }).click();
   await expect(page.getByLabel("Input Tokens", { exact: true })).toHaveValue("1234");
@@ -225,9 +249,22 @@ for (const section of [
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/#/template-preview/flux");
     await page.getByRole("button", { name: "Open navigation", exact: true }).click();
-    if (section === "Failover")
+    if (section === "Failover") {
       await page.getByRole("button", { name: "Providers", exact: true }).click();
-    await page.getByRole("button", { name: section, exact: true }).first().click();
+      await page.getByRole("button", { name: section, exact: true }).first().click();
+    } else {
+      const navigation = page.getByRole("dialog", { name: "AgentOps navigation", exact: true });
+      await navigation
+        .locator(".wf-flux-quick-links")
+        .getByRole("link", { name: section, exact: true })
+        .click();
+      await expect(navigation).toBeVisible();
+      await page.keyboard.press("Escape");
+      await expect(navigation).toHaveCount(0);
+      await expect(
+        page.getByRole("button", { name: "Open navigation", exact: true }),
+      ).toBeFocused();
+    }
     await expect(
       page.getByRole("heading", {
         name:

@@ -1,0 +1,269 @@
+{
+  "milestone": "Flowly native option fields and Flux navigation test alignment",
+  "date": "2026-11-03",
+  "base": "4ce175878c193005b820eefda5db35eb74203f4b",
+  "goalComplete": false,
+  "parentOwnedPayload": [
+    {
+      "path": "src/templates/workflow/flowly-settings-components.tsx",
+      "baseSHA256": "064ad4cc5a150ad4a0518a2ef58cbb3f8b920a456a16b558616501e4a4ffd7a6",
+      "sha256": "52ca2984f9f187d6dc5a1b56f69e4e3d7f7e785d75fa2653f9239e1398fd30f4",
+      "bytes": 4630,
+      "newFile": false
+    },
+    {
+      "path": "src/templates/workflow/flowly-settings-members.tsx",
+      "baseSHA256": "ce4f02eff2e0601339801694719c07d4baf1a35d38f5c028eedd5bf3c802a13c",
+      "sha256": "d213d4a8fc2d3b893ec466d97ee2fe88620d3970cf2a59e3ba7018f1136c94d1",
+      "bytes": 23280,
+      "newFile": false
+    },
+    {
+      "path": "src/templates/workflow/flowly-settings.css",
+      "baseSHA256": "dd762afb3dbab2c266668b42fd893276d51b2e8a7a8604281688c0f02a3069db",
+      "sha256": "9f1bab484feb123a9c8d3431b44098e35a208363cc46233c53e5f223c4553524",
+      "bytes": 20225,
+      "newFile": false
+    },
+    {
+      "path": "tests/flowly-options-native.spec.ts",
+      "baseSHA256": null,
+      "sha256": "1a46895e2b196eabc846725870b9ecfa5e0eb64f7db1272916512fd442d0c609",
+      "bytes": 22264,
+      "newFile": true
+    },
+    {
+      "path": "tests/flowly-options-source.spec.ts",
+      "baseSHA256": null,
+      "sha256": "74d6032fd0a3bd4818223f9085b5c62e571029fdc21f0b4d78e6eecfe1361a04",
+      "bytes": 4701,
+      "newFile": true
+    }
+  ],
+  "rootExtraQA": {
+    "path": "tests/templates-workflow-round3.spec.ts",
+    "sha256": "413609c8ee9fe111a2f18e6ac4f9091fbfed5c40bb6c2104a877021649f2abd2",
+    "productionChanges": false,
+    "actualReportSHA256": "a81e50cefb031135a7e78ded600eb755563244d4e88cf0fa8885e54973c2832d",
+    "actualStats": {
+      "startTime": "2026-11-03T12:25:43.356Z",
+      "duration": 11457.463,
+      "expected": 8,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "previousCI": {
+      "run": 41616612840,
+      "commit": "64919dfaf0f1e23ef390fa152ec64cdcdaa84798",
+      "passed": 2143,
+      "failed": 8,
+      "cause": "Old workflow selectors requested button for four real quicklinks anchors; failed before business assertions.",
+      "originalLogSHA256": "ebc6b373f0d1d3c92184cb93a5cfc6a97686c54a5ec91ce071ce45c82bdbc96f",
+      "originalArtifactSHA256": "bc5e635ad2e6a4c731bd93ca19e219afc836a885977f03bd85deb14a95ef5bbf"
+    },
+    "change": "Use exact links scoped to Quick links; on phone observe keep-open Navigation then real Escape and focus return. Failover remains a primary button. Original data/save/CSV/heading/overflow/error assertions remain.",
+    "noExtraProductionBuildOrZIP": "Only QA changed. Actual8 cases use this same final Flowly candidate source/dist; the final release source is byte identical."
+  },
+  "actualReuiReuse": [
+    "Official free c-checkbox-5 Field(horizontal), FieldContent, FieldLabel, FieldDescription plus existing controlled Checkbox",
+    "Existing actual free FieldSet, FieldLegend(label), FieldGroup and access-group FieldDescription",
+    "Existing project Pro SettingsRow with real FieldLabel/id and FieldDescription; existing Switch size=sm24x14"
+  ],
+  "correctedDuplication": [
+    "CheckOption div/Label/p scaffold replaced by actual official free Field composition",
+    "Same checkbox-only MemberAreas split into actual Invite Switch and Access Checkbox contexts",
+    "Handwritten MemberAreas group wrapper replaced by actual free FieldSet/Legend/Group/Description; preserve linked controlled semantics"
+  ],
+  "necessaryCustomCode": [
+    "Consumer layout CSS sets actual template option gaps/compact descriptions; the free primitives provide general layout and caller styles",
+    "Existing local MemberArea/IntegrationUse/WebhookEvent models own arrays, draft/save/Undo/reset; generic free fields do not provide this demo domain model"
+  ],
+  "siteBuild": "Normal physical npm ci and original configured tsc-b+vite build; no additional strict-mode claim",
+  "gates": {
+    "ci": {
+      "exitCode": 0,
+      "seconds": 5.158,
+      "receipt": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/flowly-options-4ce1758-candidate-v1/logs/ci-receipt.json",
+      "sha256": "efa88e4b1e6e16403ef21a138b54a3b6981c7474e02c6b1fa90c875785cdeef2"
+    },
+    "format-check": {
+      "exitCode": 0,
+      "seconds": 0.647,
+      "receipt": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/flowly-options-4ce1758-candidate-v1/logs/format-check-receipt.json",
+      "sha256": "18a8e1e47ef4953f3be2fcd026cb6aa7f15b87a1cf6d0778cda5debf540a3681"
+    },
+    "own-lint": {
+      "exitCode": 0,
+      "seconds": 0.53,
+      "receipt": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/flowly-options-4ce1758-candidate-v1/logs/own-lint-receipt.json",
+      "sha256": "a6edc19210de4e62868501c827ff82f850ef87376e8f0c6c298b72a7b84bf193"
+    },
+    "build": {
+      "exitCode": 0,
+      "seconds": 23.588,
+      "receipt": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/flowly-options-4ce1758-candidate-v1/logs/build-receipt.json",
+      "sha256": "26c818eae69d7242fcadff7726005caa7973026c11e18ab57c134ee1cef8f1c9"
+    },
+    "format-check-legend": {
+      "exitCode": 0,
+      "seconds": 0.328,
+      "receipt": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/flowly-options-4ce1758-candidate-v1/logs/format-check-legend-receipt.json",
+      "sha256": "38489e16aa227321095614717505cbea5577a9dda6297be0e5ec5d9baec12e89"
+    },
+    "own-lint-legend": {
+      "exitCode": 0,
+      "seconds": 0.211,
+      "receipt": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/flowly-options-4ce1758-candidate-v1/logs/own-lint-legend-receipt.json",
+      "sha256": "a04099baa45b0c34e67b949f9cf125e0009332491d07bdb22c1952b498ab6430"
+    },
+    "build-legend": {
+      "exitCode": 0,
+      "seconds": 21.34,
+      "receipt": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/flowly-options-4ce1758-candidate-v1/logs/build-legend-receipt.json",
+      "sha256": "6ba0b71ad82709a1e4534bab56d47c3bc7b2f583439365d0ad07f093eeb54cba"
+    },
+    "received-install": {
+      "exitCode": 0,
+      "seconds": 46.425,
+      "receipt": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/flowly-options-4ce1758-candidate-v1/logs/received-install-receipt.json",
+      "sha256": "d8d2a1d36329eb04016321fd157bb45795ea82604e8fbe0e7117f473c4254313"
+    },
+    "received-build": {
+      "exitCode": 0,
+      "seconds": 8.702,
+      "receipt": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/flowly-options-4ce1758-candidate-v1/logs/received-build-receipt.json",
+      "sha256": "07e0e9a3569db4562408bdb86d6aa98ad64d259c10c9fc8472b7d4a745f0de6a"
+    }
+  },
+  "reports": {
+    "site-native8": {
+      "path": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/flowly-options-4ce1758-candidate-v1/site-native8/report.json",
+      "sha256": "6fc2fb342c90ba533c35af5b262caa849f97f47cc2f39060cb78528fbab6ced3",
+      "stats": {
+        "startTime": "2026-11-03T11:33:53.045Z",
+        "duration": 5792.261,
+        "expected": 0,
+        "skipped": 7,
+        "unexpected": 1,
+        "flaky": 0
+      }
+    },
+    "site-native8-qav2": {
+      "path": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/flowly-options-4ce1758-candidate-v1/site-native8-qav2/report.json",
+      "sha256": "1e16b7611c6a26155949d276134e8ad44c091eccd2751f9069a006ed5a671bc7",
+      "stats": {
+        "startTime": "2026-11-03T11:38:14.057Z",
+        "duration": 29846.730000000003,
+        "expected": 8,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    "site-source4": {
+      "path": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/flowly-options-4ce1758-candidate-v1/site-source4/report.json",
+      "sha256": "943e4bf693617ba67fd54fe23368c3b25b0f8a3dfbd55281248b04489b02f75f",
+      "stats": {
+        "startTime": "2026-11-03T11:40:12.558Z",
+        "duration": 12865.536,
+        "expected": 4,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    "site-native-members4-legend": {
+      "path": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/flowly-options-4ce1758-candidate-v1/site-native-members4-legend/report.json",
+      "sha256": "2415569d45f03d3e3d4d0185785f8a8e3d05b872fa134dc11f87856f4fa0cf65",
+      "stats": {
+        "startTime": "2026-11-03T12:08:05.243Z",
+        "duration": 13183.677,
+        "expected": 4,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    "site-source-changed3-legend": {
+      "path": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/flowly-options-4ce1758-candidate-v1/site-source-changed3-legend/report.json",
+      "sha256": "2ff019acbb7efed9416094d12b11399d4c9cd82565e71cc96c922764b0eeb6f3",
+      "stats": {
+        "startTime": "2026-11-03T12:09:33.005Z",
+        "duration": 10171.542,
+        "expected": 3,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    "received-native8": {
+      "path": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/flowly-options-4ce1758-candidate-v1/received-native8/report.json",
+      "sha256": "d36b47c5745025060b3f50ec12cf8167a268a11fd60c3ec57bca76ff8060bbd0",
+      "stats": {
+        "startTime": "2026-11-03T12:15:31.463Z",
+        "duration": 27657.553,
+        "expected": 8,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    }
+  },
+  "coverageComposition": {
+    "siteFinalNative8": "Final MemberAreas4 newly passed; Integration/Webhook4 from prior native8 retained with exact body/source/static CSS exclusion proof",
+    "siteFinalSource4": "Final members+CSS+actualZIP3 newly passed; components Source1 carried exact52ca source bytes",
+    "actualFinalReceivedProjectNative8": "All8 real routes/interactions run at52711 served from unchanged received-original/dist; outside native harness from candidate; no entry/config rewrite"
+  },
+  "firstFailure": "Original site-native8 failed at my AgentOps-only crumb locator before settings actions:0P1F7notrun due maxfail1. Exact5 files, JSON, trace and context frozen underfirst-failure-v1. One QA entry selector corrected; W1R0/30s5s unchanged. It is not a passing gate.",
+  "referenceAndGeometry": {
+    "originalAndLocalBrowserLedger": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/flowly-options-4ce1758-candidate-v1/browser-legend-v1/ledger.json",
+    "sha256": "604634a2dab03c12288e5475514c2e632f9835e59b22d14f6aa6847900cc09c0",
+    "staticBlast": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/flowly-options-4ce1758-candidate-v1/member-legend-static-blast-v1.json",
+    "staticBlastSHA256": "b2014f3b2c204f754685e55d7ea23499e8f4af8f077a25c15e1b659194fe7512",
+    "cnConcernResolvedByActualExportAndComputedNative": "field-description-cn-check.json; actual cn removes leading-normal and native16/30P"
+  },
+  "originalProject": {
+    "proof": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/flowly-options-4ce1758-candidate-v1/received-original-final-proof.json",
+    "proofSHA256": "0a389842b2d4753885aff03a0a323aed2a26b3d695bd4da73a30991037d7555f",
+    "archiveSHA256": "91639c2ad4bdb6e5ac7769f50e3a79dca5c4fe8180c7a998add494a12f7358d2",
+    "members": 313,
+    "src": 304,
+    "dist": 473,
+    "public": 246,
+    "allRawMembersUnchanged": true,
+    "strictConfigOriginallyTrue": true,
+    "normalInstallAndPostinstall": true,
+    "rawLockAbsentNormalNpmGeneratedNewLock": "Generated lock hash captured after run; no immediate-postinstall lock hash was captured, so no claim of that new lock pre/post identity"
+  },
+  "sourceTargets": "Exact new4ce47c3 map retained; all3 implementation targets already included, no route/split/newsource file or18default changed",
+  "sourceCounts": {
+    "src": 1155,
+    "dist": 657,
+    "postinstallPublic": 247
+  },
+  "remaining": [
+    "Invite Level still vertical RadioGroup vs original horizontal ToggleGroup; Access Level still vertical vs original2x2 radio cards",
+    "Whole Sheet header/avatar/badge/footer/scroll and row-width differences remain outside this UI scope; not whole Flowly/all18 certification",
+    "Access Cancel still local details destination vs original wholeclose; newWebhook default stillrun.completed vs originalrun.failed, independent unapplied proposal",
+    "NewIntegration Use original blocked by required connection test and not directly reference-covered; two new create contexts not part of UI8",
+    "Existing UseIn/Events raw group scaffolds/legend parent layout need subsequent reference audit beyond the now-correct actual option rows",
+    "Colors/dark-theme and exact physical font-family equality not certified by current light-native matrix"
+  ],
+  "integrity": {
+    "parentOwnedManifestSHA256": "b860fa8eb45de7a4ceacfbdf29bc83dfb1eba0f9aed5188766df52f88574fcd6",
+    "parentReceiptSHA256": "59d6a47a862e220355e9c96cff9c62ef755b79b4bef51eb14ebb1a3c5369fcfe",
+    "parentFinallySHA256": "eee5e38a194ac90c95be09e9e81a9e1c27bdcbbf374f9a7f550d8f22a57cae63",
+    "actualRootProtectedWIP": 13,
+    "paidReferencesPrivateOnly": true,
+    "portsClosed": [52147, 52711, 50810],
+    "MITOFLAndOriginalBrandPreserved": true
+  },
+  "release": {
+    "committed": "pending",
+    "pushed": "pending",
+    "CI": "Separate exact-commit gate",
+    "Pages": "Separate exact-commit gate",
+    "lastVerifiedLive": "2729cba47f480984acb8ec0e5336269575033d42"
+  }
+}

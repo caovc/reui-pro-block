@@ -509,7 +509,7 @@
   border: 0;
   padding: 0;
 }
-.fs-fieldset > legend {
+.fs-fieldset > legend:not([data-slot="field-legend"]) {
   width: 100%;
   margin-bottom: 16px;
   font-size: 14px;
@@ -530,25 +530,45 @@
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 16px;
 }
-.fs-check-option {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-}
-.fs-check-option > [data-slot="checkbox"] {
-  margin-top: 2px;
-  flex-shrink: 0;
-}
-.fs-check-option > div {
+.fs-check-option > [data-slot="field-content"] {
   min-width: 0;
 }
-.fs-check-option label {
-  font-size: 14px;
-  line-height: 20px;
+/* Use In and Events have direct options; Invite Areas keeps its separate 16px stack. */
+.fs-drawer .fs-fieldset:has(> .fs-check-option) {
+  gap: 12px;
 }
-.fs-check-option .fs-hint {
-  margin-top: 4px;
-  font-size: 13px;
+/* Keep the measured settings consumers on the actual free Field composition. */
+.fs-member-area-options {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 16px;
+}
+.fs-member-areas-access,
+.fs-member-areas-access .fs-member-area-options {
+  gap: 12px;
+}
+.fs-drawer .fs-member-areas-invite .fs-invite-area-row {
+  gap: 8px;
+}
+.fs-member-areas-invite .fs-invite-area-row > [data-slot="field-content"] {
+  gap: 2px;
+}
+.fs-member-areas-access .fs-check-option [data-slot="field-description"] {
+  font-size: 12px;
+  line-height: 16px;
+}
+.fs-check-option:has(> [id^="webhook-"]) [data-slot="field-label"] {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 16px;
+}
+@media (min-width: 640px) {
+  .fs-member-areas-access .fs-member-area-options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
 }
 .fs-radio-option {
   display: flex;
