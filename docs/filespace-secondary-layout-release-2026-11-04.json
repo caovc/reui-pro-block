@@ -1,0 +1,62 @@
+{
+  "date": "2026-11-04",
+  "milestone": "Filespace and Filebox secondary sidebar layout and native links",
+  "baseCommit": "7729059bc7fcb8229399f76cf00ad873055f3b64",
+  "changes": [
+    "Keep Tree in its own native scroll area, with two actual Separator boundaries and fixed150px navigation/120px storage sections.",
+    "Replace secondary plain buttons with the actual official free Base c-button-27 anchor composition, preserving real href, aria-current, Space/Enter and existing guarded routing callbacks.",
+    "Replace the handwritten storage span with actual c-progress-2 labeled Progress composition; retain demo capacity data.",
+    "Include the new actual wrapper in both source pickers/project closures; preserve primary Sidebar, free Tree engine and Workspace settings cards."
+  ],
+  "freeReuse": {
+    "button": "https://reui.io/r/base-nova/c-button-27.json",
+    "declaredDependency": "https://ui.shadcn.com/r/styles/base-nova/button.json",
+    "adaptation": "Official function/API retained; only cn and equal existing buttonVariants imports adapted. Twenty ordered cva strings match the official dependency. No duplicate styling or handwritten key handlers.",
+    "progress": "Official free radix-nova c-progress-2 labels and existing actual Progress dependency; no custom progress engine.",
+    "separator": "Existing actual Separator dependency, with two nondecorative separator roles."
+  },
+  "customScope": "Template labels, existing Drive routing and consumer layout CSS only; no new focus, keyboard, routing or Tree engine.",
+  "verification": {
+    "configuredBuild": "Original tsc -b && vite build passed in23.442s; no extra strict flag.",
+    "site": "Final four native cases cover both templates1440/390, real Tab/Space/Enter and focus, currentpage/history, actual middle-click new background tab, independent tree wheel scroll/fixed footer, and storage CTA pricing route. Seven original layout cases also passed.",
+    "source": "Two actual source/Copy/file/ZIP cases passed. Final QA only removes unreachable workflow branches; active collaboration arrays/assertions unchanged, format/lint passed.",
+    "firstFailures": "First runner preparation executed zero cases. First actual run failed waiting for page.popup, while the retained trace already recorded a new background BrowserContext.page. Correcting the QA listener to context.page preserved the original product, timeouts and actual tab assertions; no product fix or retry was claimed.",
+    "download": {
+      "filespace": {
+        "zipSHA256": "bb1677015625e21f8dd7f60c3b2ab303bc5c07e1b9853e959a2a21a36884ef13",
+        "rawFiles": 229,
+        "normalInstallSeconds": 41.633,
+        "originalStrictBuildSeconds": 6.247,
+        "nativePassed": 2,
+        "immediatePostinstallAndFinalLockSHA256": "cff84296b1c96f3bedacb11b6a16b0eaeee40d0cfd88a79ecd88157b7c694bfe",
+        "allRawPackageConfigEntryUnchanged": true
+      },
+      "filebox": {
+        "zipSHA256": "51aa28ea138bdb5520f08ca61f3715f76594e26ccdf475e2177d8e77f9f0488f",
+        "rawFiles": 229,
+        "normalInstallSeconds": 41.632,
+        "originalStrictBuildSeconds": 5.953,
+        "nativePassed": 2,
+        "immediatePostinstallAndFinalLockSHA256": "3cc0133b67033d8848afad033f48918a6731012c67f0c9bce37b4b8d421cf880",
+        "allRawPackageConfigEntryUnchanged": true
+      }
+    }
+  },
+  "remaining": [
+    "Only secondary sidebar is accepted; complete template parity remains open.",
+    "Tree consumer density/indentation, header/account menus and other layout areas remain separate work.",
+    "Original Filespace dark versus local light does not certify theme color parity. Public Filebox storage values are mutable demo fixtures.",
+    "Complete cloud CI and exact Pages deployment must be verified independently after push."
+  ],
+  "licensing": "Bricklane original branding/assets; actual official free source MIT and font OFL retained in site and downloaded projects. No paid reference artwork shipped.",
+  "priorVerifiedDeployment": {
+    "commit": "7729059bc7fcb8229399f76cf00ad873055f3b64",
+    "runId": 41676366113,
+    "passed": 2211,
+    "failed": 0,
+    "deploymentId": 7525445766,
+    "successStatusId": 21273768014,
+    "successUTC": "2026-11-03T17:09:26Z",
+    "scope": "Verve and preceding contained milestones; this new Filespace/Filebox release still needs its own CI and deployment."
+  }
+}

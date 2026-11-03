@@ -590,6 +590,7 @@ export function templateImplementationTargets(template: {
     atlas: ["atlas-account-settings"],
     filespace: [
       "drive-layout",
+      "free/drive-button",
       "drive-settings",
       "drive-settings-profile",
       "drive-settings-workspace",
@@ -607,6 +608,7 @@ export function templateImplementationTargets(template: {
     ],
     filebox: [
       "drive-layout",
+      "free/drive-button",
       "drive-settings",
       "drive-settings-profile",
       "drive-settings-workspace",

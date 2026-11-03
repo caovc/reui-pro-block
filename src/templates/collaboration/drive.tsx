@@ -30,6 +30,9 @@ import {
   SlidersHorizontal,
 } from "lucide-react";
 import { Badge } from "@/components/reui/badge";
+import { Progress } from "@/components/ui/progress";
+import { Separator } from "@/components/ui/separator";
+import { Button as DriveButton } from "./free/drive-button";
 import { Item, ItemMedia, ItemContent, ItemTitle, ItemDescription } from "@/components/ui/item";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -477,11 +480,14 @@ export default function Drive({ id }: { id: string }) {
   }
   const side = (
     <>
-      <DriveFolderTree
-        folders={files.filter((file) => file.type === "Folder" && !file.deleted)}
-        view={view}
-        onNavigate={openFolder}
-      />
+      <div className="ct-drive-tree-scroll">
+        <DriveFolderTree
+          folders={files.filter((file) => file.type === "Folder" && !file.deleted)}
+          view={view}
+          onNavigate={openFolder}
+        />
+      </div>
+      <Separator decorative={false} />
       <div className="ct-drive-side-bottom">
         {[
           ["Shared With Me", Users],
@@ -489,31 +495,52 @@ export default function Drive({ id }: { id: string }) {
           ["Favourites", Star],
           ["Bin", Trash2],
         ].map(([label, Icon]) => (
-          <Button
+          <DriveButton
             key={String(label)}
             variant={view === label ? "secondary" : "ghost"}
-            className="justify-start"
-            onClick={() => {
-              openFolder(String(label));
-            }}
+            className="ct-drive-view-link"
+            nativeButton={false}
+            render={
+              <a
+                href={routing.href({
+                  kind: "files",
+                  location: driveFolderLocation(String(label), files, treeFolders, headerBindings),
+                })}
+                aria-current={view === label ? "page" : undefined}
+                onClick={(event) => {
+                  if (
+                    event.defaultPrevented ||
+                    event.button !== 0 ||
+                    event.metaKey ||
+                    event.ctrlKey ||
+                    event.altKey ||
+                    event.shiftKey
+                  ) {
+                    return;
+                  }
+                  event.preventDefault();
+                  openFolder(String(label));
+                }}
+              />
+            }
           >
             {typeof Icon !== "string" && <Icon />}
             {String(label)}
-          </Button>
+          </DriveButton>
         ))}
-        <div className="ct-storage">
-          <div className="ct-between">
-            <b>Storage</b>
-            <span>63% full</span>
-          </div>
-          <div className="ct-progress">
-            <span style={{ width: "63%", background: "var(--foreground)" }} />
-          </div>
-          <p>643.6 MB of 1.00 GB used</p>
-          <Button variant="outline" onClick={() => navigateDrive({ kind: "pricing" })}>
-            Get More Storage
-          </Button>
+      </div>
+      <Separator decorative={false} />
+      <div className="ct-storage">
+        {/* ReUI free c-progress-2: labeled progress with the declared Progress dependency. */}
+        <div className="flex items-center justify-between text-xs leading-4">
+          <span className="font-medium text-foreground">Storage</span>
+          <span className="text-muted-foreground">63% full</span>
         </div>
+        <Progress value={63} aria-label="Storage used" className="h-1 [&>div]:bg-foreground" />
+        <p>643.6 MB of 1.00 GB used</p>
+        <DriveButton variant="outline" onClick={() => navigateDrive({ kind: "pricing" })}>
+          Get More Storage
+        </DriveButton>
       </div>
     </>
   );

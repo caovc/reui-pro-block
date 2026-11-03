@@ -95,8 +95,8 @@
 
 .ct-drive-native-root .ct-drive-sidebar {
   width: 256px;
-  padding: 8px;
-  overflow-y: auto;
+  padding: 0;
+  overflow: hidden;
 }
 
 .ct-drive-native-root .ct-drive-content {
@@ -236,8 +236,8 @@
   min-height: 0;
   flex: 1;
   flex-direction: column;
-  overflow-y: auto;
-  padding: 8px;
+  overflow: hidden;
+  padding: 0;
 }
 
 @media (max-width: 1023px) {
