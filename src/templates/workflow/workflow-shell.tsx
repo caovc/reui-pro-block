@@ -20,6 +20,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -121,7 +122,9 @@ function ShellContent({
   const compactAccountClass =
     brand === "Flowly"
       ? "group-data-[collapsible=icon]:size-7! group-data-[collapsible=icon]:p-0!"
-      : undefined;
+      : brand === "Mesh"
+        ? "group-data-[collapsible=icon]:size-7! p-2!"
+        : undefined;
   const inset = brand === "AgentOps";
   const width = brand === "ReUI" ? 250 : brand === "Flowly" ? 63 : brand === "Mesh" ? 48 : 256;
   const HeaderTitleTag = brand === "AgentOps" && headerTitle !== undefined ? "div" : "span";
@@ -436,7 +439,14 @@ function ShellContent({
         ) : (
           headerContent
         )}
-        <div className="wf-content">{children}</div>
+        {brand === "Mesh" && headerContent !== null ? (
+          // ReUI free c-scroll-area-1 composition with its existing ScrollArea dependency.
+          <ScrollArea className="wf-mesh-scroll">
+            <div className="wf-content">{children}</div>
+          </ScrollArea>
+        ) : (
+          <div className="wf-content">{children}</div>
+        )}
       </AppShellInset>
       {accountKind && (
         <WorkflowAccountSettings

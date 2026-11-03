@@ -1,0 +1,54 @@
+{
+  "date": "2026-11-04",
+  "milestone": "Mesh bounded viewport, native ScrollArea, Footer controls and readable dark project grid",
+  "baseCommit": "058b99d17492d9e7c109508b5ab9c2cfb7b049d0",
+  "changes": [
+    "Bound Mesh document-layout height and flex children to the available viewport, retain48px header, and use the existing actual free ScrollArea for non-engine body scrolling. Native Canvas/Documents body branch remains unchanged.",
+    "Size existing actual Mesh SidebarMenuButton consumers to28px through their supported className API. Help retains8px padding; Profile composes real Button variants with block flex to remove inline baseline space. Footer is84px on desktop and phone.",
+    "Replace Mesh Project Status hardcoded white header background with semantic card background while preserving the actual free DataGrid/Table/ColumnHeader composition.",
+    "Preserve the already matching actual SettingsPanel desktop960x768 and phone366x742.71875, existing handlers/refs and other template defaults."
+  ],
+  "freeReuse": {
+    "scrollArea": "Existing actual ReUI c-scroll-area-1 declared ScrollArea dependency;209 syntax tokens match official source. Native Viewport/Scrollbar used; no custom scroll engine.",
+    "sidebar": "Existing actual ReUI Sidebar/MenuButton/Tooltip and actual buttonVariants styles; no primitive/handler/ref replacement.",
+    "grid": "Existing actual ReUI DataGrid, Table, ColumnHeader, ScrollArea and Pagination; only Mesh-specific background override changes.",
+    "settings": "Existing actual Pro SettingsPanel built from free primitives retained."
+  },
+  "customRequired": "Mesh-specific flex/height/overflow layout and per-control className styling. Original observed scroll owner is a div.no-scrollbar, not proven Radix; the implementation deliberately uses the available actual free component.",
+  "verification": {
+    "reference": "Bounded11m27s original/local1440/390 same-dark comparison through real theme menus, plus separate69s original scroll-owner read. Invalid viewport/entrance/inherited-scroll captures excluded and retained.",
+    "configuredBuild": "Final original tsc -b && vite build-v2 passed;1159src/657dist bound to that successful build. No added strict flag.",
+    "site": "Final two layout cases verify correct viewport/no15px gutter, windowScroll0/header retained, actual Viewport wheel scrolling, Profile open/close/focus with preserved scroll, Footer84 and dark grid readability. Three original engine cases verify real drawing/flush/export and Docs/Canvas responsive single headers.",
+    "source": "Three actual implementation View/Copy/file cases plus one original runnable ZIP passed; unchanged SourceTargets already exposes these modules.",
+    "download": {
+      "zipSHA256": "576f2cec1433800c23648818167b18b503e1de82b7017fd233c5085fc4dd7b03",
+      "rawMembers": 316,
+      "normalInstallSeconds": 35.795,
+      "immediatePostinstallAndFinalLockSHA256": "09224fe97c77d08e97eb3a0423364336a561445354007d024b74731973f5e364",
+      "originalStrictBuildSeconds": 8.247,
+      "firstNativePassed": 2,
+      "allRawPackageConfigEntryUnchanged": true
+    },
+    "firstFailures": "Initial native desktop Footer89 versus84 exposed a real5px inline baseline gap from variant composition; changing only the consumer to flex fixed it. Next run passed desktop but measured phone28px as27.999998 during Sheet entrance. Same5s computed readiness now precedes measurement; exact28, product/build and budgets preserved."
+  },
+  "rootDiagnosticQA": {
+    "scope": "Original Editor first case adds passive DOM/key/input/selection/focus records to diagnose an earlier Linux insertion-position failure; no editor product change.",
+    "preserved": "All21 original actions/assertions retain order, all other Editor cases byte-identical, original budgets/retries preserved. Observer installs before first click; no extra awaits between early click/press/type. One read-only snapshot after All changes saved precedes reload, so unmodified persistence timing is not claimed.",
+    "firstLocalResult": "Single original case passed on these exact production assets in local Mac Chromium;317 records/0 dropped, no source/dist/public/config/protected changes, owned preview closed. This does not establish Linux root cause or a product fix."
+  },
+  "priorVerifiedDeployment": {
+    "commit": "058b99d17492d9e7c109508b5ab9c2cfb7b049d0",
+    "runId": 41685075644,
+    "passed": 2224,
+    "deploymentId": 7527051496,
+    "successStatusId": 21278861769,
+    "successUTC": "2026-11-03T18:20:20Z"
+  },
+  "limits": [
+    "Only this Mesh layout/Footer/grid scope accepted; overall template fidelity and Tempo header/usage remain open.",
+    "Original no-scrollbar owner and current free Radix hover overlay scrollbar differ; no unsupported hidden-original component claim.",
+    "Other workflow download closures may include shared source changes. Only this actual Mesh316 project is freshly validated.",
+    "This new release requires its own CI and exact Pages deployment. Earlier editor failure retained; subsequent passing run does not prove it resolved."
+  ],
+  "licensing": "Bricklane original brand/artwork, actual free MIT and font OFL retained; no paid reference artwork shipped."
+}

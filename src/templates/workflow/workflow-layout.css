@@ -424,3 +424,36 @@
   min-height: 0;
   overflow: visible;
 }
+
+/* Mesh owns a bounded viewport; the existing board/document engines keep their body. */
+.wf-root.wf-mesh.wf-native-layout[data-layout="document"] {
+  height: calc(100dvh - var(--template-toolbar-height, 0px));
+  min-height: 0;
+  overflow: hidden;
+}
+
+.wf-root.wf-mesh.wf-native-layout[data-layout="document"] > .wf-main {
+  overflow: hidden;
+}
+
+.wf-root.wf-mesh.wf-native-layout > .wf-main > .wf-header {
+  height: 48px;
+}
+
+.wf-root.wf-mesh.wf-native-layout .wf-mesh-scroll {
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+}
+
+.wf-root.wf-mesh.wf-native-layout .wf-mesh-scroll .wf-content > * {
+  flex-shrink: 0;
+}
+
+.wf-mesh .wf-native-account [data-slot="sidebar-menu-button"] {
+  font-size: 14px;
+}
+
+.wf-mesh .wf-project-status .wf-official-grid th {
+  background: var(--card);
+}

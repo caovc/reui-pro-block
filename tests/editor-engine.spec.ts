@@ -8,28 +8,242 @@ const route = (kind: number) => `/#/preview/application/rich-text-editor/rich-te
 
 test("Tiptap edits, formats and restores the saved document with native undo and redo", async ({
   page,
-}) => {
+}, testInfo) => {
   await page.goto(route(2));
   const editor = page.getByRole("textbox", { name: "Rich text document", exact: true });
   await expect(editor).toHaveClass(/tiptap/);
-  await editor.click();
-  await editor.press(endDocument);
-  await editor.press("Enter");
-  await page.keyboard.type("A verified editor paragraph");
-  await expect(editor).toContainText("A verified editor paragraph");
-  await page.getByRole("button", { name: "Undo", exact: true }).click();
-  await expect(editor).not.toContainText("A verified editor paragraph");
-  await page.getByRole("button", { name: "Redo", exact: true }).click();
-  await expect(editor).toContainText("A verified editor paragraph");
-  await editor.click();
-  await editor.press(endDocument);
-  await editor.press(startLine);
-  await editor.press(selectLine);
-  await page.getByRole("button", { name: "Bold selection", exact: true }).click();
-  await expect(editor.locator("strong").last()).toHaveText("A verified editor paragraph");
-  await expect(page.getByText("All changes saved", { exact: true })).toBeVisible();
-  await page.reload();
-  await expect(editor.locator("strong").last()).toHaveText("A verified editor paragraph");
+  // Install once before the first click; do not insert awaits between the native actions.
+  const observation = await editor.evaluateHandle((root) => {
+    const document = root.ownerDocument;
+    const limit = 1000;
+    const records: Record<string, unknown>[] = [];
+    const installedAt = performance.now();
+    let dropped = 0;
+    let stopped = false;
+
+    function nodePath(node: Node | null) {
+      if (!node) return null;
+      if (node === root) return "editor";
+      if (!root.contains(node)) return `outside-editor/${node.nodeName}`;
+      const parts: string[] = [];
+      let current: Node | null = node;
+      while (current && current !== root) {
+        const parent: ParentNode | null = current.parentNode;
+        if (!parent) break;
+        let index = 0;
+        for (const sibling of parent.childNodes) {
+          if (sibling === current) break;
+          index += 1;
+        }
+        parts.unshift(`${current.nodeName}[${index}]`);
+        current = parent;
+      }
+      return `editor/${parts.join("/")}`;
+    }
+
+    function describeNode(node: Node | null) {
+      return node
+        ? {
+            path: nodePath(node),
+            nodeType: node.nodeType,
+            // Only sample the synthetic local editor document, never outside input values.
+            text: root.contains(node) ? node.textContent?.slice(0, 160) : undefined,
+          }
+        : null;
+    }
+
+    function activeElement() {
+      const element = document.activeElement;
+      if (!element) return null;
+      return {
+        tag: element.tagName,
+        path: nodePath(element),
+        attributes: Object.fromEntries(
+          ["id", "role", "aria-label", "contenteditable", "tabindex", "type", "class"]
+            .filter((name) => element.hasAttribute(name))
+            .map((name) => [name, element.getAttribute(name)]),
+        ),
+      };
+    }
+
+    function selection() {
+      const current = document.getSelection();
+      return current
+        ? {
+            anchor: describeNode(current.anchorNode),
+            anchorOffset: current.anchorOffset,
+            focus: describeNode(current.focusNode),
+            focusOffset: current.focusOffset,
+            isCollapsed: current.isCollapsed,
+            rangeCount: current.rangeCount,
+          }
+        : null;
+    }
+
+    function record(kind: string, detail: Record<string, unknown> = {}) {
+      if (records.length >= limit) {
+        dropped += 1;
+        return;
+      }
+      records.push({
+        kind,
+        monotonicMs: performance.now(),
+        editorConnected: root.isConnected,
+        documentHasFocus: document.hasFocus(),
+        documentReadyState: document.readyState,
+        fontStatus: document.fonts.status,
+        activeElement: activeElement(),
+        selection: selection(),
+        ...detail,
+      });
+    }
+
+    const types = [
+      "pointerdown",
+      "mousedown",
+      "mouseup",
+      "click",
+      "focusin",
+      "focusout",
+      "keydown",
+      "keyup",
+      "beforeinput",
+      "input",
+      "selectionchange",
+    ];
+    function eventRecord(event: Event, listenerPhase: "capture" | "bubble") {
+      const target = event.target;
+      const element = target instanceof Element ? target : null;
+      const control = element?.closest("button");
+      const relevantControl = ["Undo", "Redo", "Bold selection"].includes(
+        control?.getAttribute("aria-label") ?? "",
+      );
+      if (
+        event.type !== "selectionchange" &&
+        !(target instanceof Node && root.contains(target)) &&
+        !relevantControl
+      )
+        return;
+      const keyboard = event instanceof KeyboardEvent ? event : null;
+      const input = event instanceof InputEvent ? event : null;
+      record("event", {
+        type: event.type,
+        listenerPhase,
+        eventPhase: event.eventPhase,
+        eventTimestampMs: event.timeStamp,
+        defaultPrevented: event.defaultPrevented,
+        isTrusted: event.isTrusted,
+        target: nodePath(target instanceof Node ? target : null),
+        key: keyboard?.key,
+        code: keyboard?.code,
+        ctrlKey: keyboard?.ctrlKey,
+        metaKey: keyboard?.metaKey,
+        shiftKey: keyboard?.shiftKey,
+        altKey: keyboard?.altKey,
+        repeat: keyboard?.repeat,
+        isComposing: keyboard?.isComposing ?? input?.isComposing,
+        inputType: input?.inputType,
+        data: input?.data?.slice(0, 160),
+      });
+    }
+    const capture = (event: Event) => eventRecord(event, "capture");
+    const bubble = (event: Event) => eventRecord(event, "bubble");
+    for (const type of types) {
+      document.addEventListener(type, capture, { capture: true, passive: true });
+      document.addEventListener(type, bubble, { passive: true });
+    }
+    const mutationObserver = new MutationObserver((mutations) => {
+      record("childList", {
+        mutationCount: mutations.length,
+        changes: mutations.slice(0, 12).map((mutation) => ({
+          target: nodePath(mutation.target),
+          added: Array.from(mutation.addedNodes).slice(0, 4).map(describeNode),
+          removed: Array.from(mutation.removedNodes)
+            .slice(0, 4)
+            .map((node) => ({
+              nodeType: node.nodeType,
+              nodeName: node.nodeName,
+              text: node.textContent?.slice(0, 160),
+            })),
+        })),
+        childOrder: Array.from(root.childNodes).slice(0, 24).map(describeNode),
+      });
+    });
+    mutationObserver.observe(root, { childList: true, subtree: true });
+    record("installed", {
+      userAgent: navigator.userAgent,
+      platform: navigator.platform,
+      childOrder: Array.from(root.childNodes).slice(0, 24).map(describeNode),
+    });
+    return {
+      stop() {
+        if (!stopped) {
+          record("stopped");
+          stopped = true;
+          for (const type of types) {
+            document.removeEventListener(type, capture, true);
+            document.removeEventListener(type, bubble);
+          }
+          mutationObserver.disconnect();
+        }
+        return { installedAt, stoppedAt: performance.now(), limit, dropped, records };
+      },
+    };
+  });
+  let observationData: unknown;
+  try {
+    await editor.click();
+    await editor.press(endDocument);
+    await editor.press("Enter");
+    await page.keyboard.type("A verified editor paragraph");
+    await expect(editor).toContainText("A verified editor paragraph");
+    await page.getByRole("button", { name: "Undo", exact: true }).click();
+    await expect(editor).not.toContainText("A verified editor paragraph");
+    await page.getByRole("button", { name: "Redo", exact: true }).click();
+    await expect(editor).toContainText("A verified editor paragraph");
+    await editor.click();
+    await editor.press(endDocument);
+    await editor.press(startLine);
+    await editor.press(selectLine);
+    await page.getByRole("button", { name: "Bold selection", exact: true }).click();
+    await expect(editor.locator("strong").last()).toHaveText("A verified editor paragraph");
+    await expect(page.getByText("All changes saved", { exact: true })).toBeVisible();
+    // This read is after all early native actions and the save assertion, before reload destroys
+    // the handle's execution context. It does not certify unmodified persistence timing.
+    observationData = await observation.evaluate((observer) => observer.stop());
+    await page.reload();
+    await expect(editor.locator("strong").last()).toHaveText("A verified editor paragraph");
+  } finally {
+    if (observationData === undefined) {
+      try {
+        observationData = await observation.evaluate((observer) => observer.stop());
+      } catch (error) {
+        observationData = {
+          collectionError: error instanceof Error ? error.message : String(error),
+        };
+      }
+    }
+    let disposalError: string | undefined;
+    try {
+      await observation.dispose();
+    } catch (error) {
+      disposalError = error instanceof Error ? error.message : String(error);
+    }
+    await testInfo.attach("editor-native-selection-observation.json", {
+      body: Buffer.from(
+        JSON.stringify(
+          {
+            scope: "Passive DOM observation; no PM internals or layout reads",
+            observationData,
+            disposalError,
+          },
+          null,
+          2,
+        ),
+      ),
+      contentType: "application/json",
+    });
+  }
 });
 
 test("slash blocks, mentions and a live contents node use the document schema", async ({

@@ -17,6 +17,7 @@ import {
   Users,
 } from "lucide-react";
 import { BrandGlyph } from "@/components/brand-mark";
+import { buttonVariants } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -93,9 +94,16 @@ export function WorkflowAccountMenu({
           data-account-kind={kind}
           data-account-collapsed={collapsed}
           className={
-            mesh
-              ? "wf-account-menu-trigger wf-account-menu-trigger-mesh"
-              : "wf-account-menu-trigger"
+            mesh && collapsed
+              ? buttonVariants({
+                  variant: "ghost",
+                  size: "icon-sm",
+                  className:
+                    "wf-account-menu-trigger wf-account-menu-trigger-mesh flex p-0 group-data-[collapsible=icon]:size-7! group-data-[collapsible=icon]:p-0!",
+                })
+              : mesh
+                ? "wf-account-menu-trigger wf-account-menu-trigger-mesh"
+                : "wf-account-menu-trigger"
           }
           aria-label={mesh ? `Open profile for ${identity.name}` : "Open workspace menu"}
           tooltip={mesh ? identity.name : organization}
