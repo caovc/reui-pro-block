@@ -1,0 +1,199 @@
+{
+  "milestone": "Contract3 native revision fragments and bulk review",
+  "date": "2026-11-03",
+  "base": "2729cba47f480984acb8ec0e5336269575033d42",
+  "goalComplete": false,
+  "scope": {
+    "runtimeFiles": 4,
+    "newCommittedNativeCases": 4,
+    "privateSourceAuditCases": 1,
+    "siteSourceFiles": 1152,
+    "siteDistFiles": 657,
+    "sitePublicFiles": 247
+  },
+  "implementation": {
+    "summary": "Aggregate all native text revision fragments; resolve current positions in one native transaction with history isolation before and after the review. Single review and bulk actions use the same resolver.",
+    "actualReuse": [
+      "Existing free ReUI DropdownMenu, Button and Badge implementations",
+      "Pinned free c-dropdown-menu-12 Content w-48 composition",
+      "Native Tiptap marks, transactions and ProseMirror history"
+    ],
+    "removedDuplication": "Replaced DOM first-fragment reading and separate review mutation paths with the native collector/resolver.",
+    "necessaryCustomCode": "The free component library does not implement this complete tracked-revision domain engine. Native revision collection, conflict guard and history boundaries remain independent application logic.",
+    "parseRule": "Only the existing explicit ins/del[data-revision] parse rule gains priority60. Mark type names, attributes, serialization, rank, generic strike rules and history delay are unchanged.",
+    "parserImpact": "All editor kinds share this parser. External or stored HTML containing explicit revision markup is now recognized as revision markup; arbitrary documents are not certified unchanged. Previously lost IDs cannot be reconstructed.",
+    "preserved": {
+      "toolbarSHA256": "8ac9d9ed3c2b30c76449723e6ae056d96ee0375efc8368f9dbd15d0eb9cd6de0",
+      "blockActionsSHA256": "af27cd5de7561a2745e5301e331b9ae09fd2052ac1210306cdf89a769115a863",
+      "engineScope": "only attribute-specific parse rule priority60; global rank/schema attrs/type/serialize/history unchanged",
+      "sourceTargets": "rich-text branch explicit actual .ts append; all remaining 2729 bytes incl Flux unchanged",
+      "editorOtherScope": "AST normalized byte exact outside new import/native reader/review resolver/review UI",
+      "mainOrGitWrites": false,
+      "CUAOrOtherBrowserSurfaces": false,
+      "root13WIP": "Never written; candidate is solely tracked archive2729. The explicitly enumerated private protection-check list is separate from Root WIP inventory."
+    }
+  },
+  "gates": {
+    "normalCandidateNpmCiPostinstall": "exit0",
+    "candidateOriginalBuild": "exit0",
+    "scopedOxlintOxfmt": "exit0",
+    "sourceTooling": "2P0F",
+    "finalSiteNative": "4P0F16.244s",
+    "v4InheritedSiteBusiness2": "2P0F1.552s; unchanged cases; final original6 repeats both",
+    "actualUISource": "1P0F4.686s; exact default/helper view copy file/full ZIP; console[]",
+    "finalOriginalNormalNpmInstallPostinstall": "exit0",
+    "finalOriginalUntouchedStrictBuild": "exit0",
+    "finalOriginalNative": "6P0F18.078s",
+    "rawInputPreservation": "all416 byte-exact",
+    "visual": "1440/390 screenshot attachments manually reviewed after real opacity1",
+    "budgets": "W1R0 / test30s / expect5s / maxFailures1; no sleep/force/state injection/increased budget"
+  },
+  "actualReports": {
+    "siteNative4": {
+      "reportSHA256": "54e11445c840cc9364c0c92ff2bfeb104c6f3252dff0f9a4e6ad050cbe66b966",
+      "stats": {
+        "startTime": "2026-11-03T08:56:56.580Z",
+        "duration": 16243.882,
+        "expected": 4,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    "privateSource1": {
+      "reportSHA256": "466594abea3f5d425304e522f2c74ec19e79a9937e8da5c86f0d16f731bf7de0",
+      "stats": {
+        "startTime": "2026-11-03T08:57:38.145Z",
+        "duration": 4685.8460000000005,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    "receivedNative6": {
+      "reportSHA256": "0aef336cacb38faa92cbacd309a93057b3a5b478028fbad8c88874133f341f43",
+      "stats": {
+        "startTime": "2026-11-03T08:59:58.954Z",
+        "duration": 18078.275999999998,
+        "expected": 6,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    }
+  },
+  "coverageLimits": [
+    "Final site4 is fresh on V5; old site business2 was run on unchanged V4 and is honestly retained as incremental coverage.",
+    "The final original downloaded project freshly repeats the four new and two unchanged business cases.",
+    "Source1 is an actual private UI audit with exact default/helper view, clipboard, file and ZIP verification; it is not an additional committed CI test.",
+    "Final screenshots were reviewed at1440/390 widths after actual native opacity1; the phone artifact is a full-page image and is not labelled a390x844 viewport capture."
+  ],
+  "originalProject": {
+    "archiveSHA256": "e15a5f2c398f24cb0298e2babe4e993315c141fe91bd7a8265b836e6c80d48e7",
+    "members": 416,
+    "allRawMembersExactAfterGates": true,
+    "sourceMembers": 408,
+    "candidateByteExactSourceMembers": 384,
+    "xmlCanonicalEquivalentSVGSources": 21,
+    "originalGeneratedEntryThemeSources": 3,
+    "distFiles": 428,
+    "publicFiles": 246,
+    "normalInstallAndOriginalPostinstall": "exit0",
+    "originalStrictBuild": "exit0; no entry/source/package/config repair",
+    "nativeAdapter": "Only external runner import location and generated standalone HTML title differ; raw original entry/config/package never modified",
+    "entrySHA256": "92f86702ec5d1890da983b1a17b1dec478bb5e892a94bd2a3c1a5e089506229b",
+    "packageSHA256": "be346da01bf8b40aed1d036134ca2b440e2054eca15827709b8a5cd9cbe3de4e",
+    "viteConfigSHA256": "ecce25d4ac7432dd74b36a65bf503d728a072a2f403c7767896f29725f7574e8",
+    "tsconfigSHA256": "bf6266ef7838044560bc51c7fbb056f18fd71ef7ad2528da5f6fe9dac9c58821",
+    "generatedLockSHA256": "013e5ea4a5fccfe5422d2f313fd641d1dc98680e486e6583fe953037d75568b8",
+    "cleanupReceiptSHA256": "d476239ecb5246a96391cac2160df2a854928b08a9124309e1d94b98cad0cad1",
+    "finally": {
+      "ownPreview27613": "stopped ctrl-c exit130",
+      "ownPreview27614": "stopped ctrl-c exit130",
+      "heavyBuildInstallAndTestSessions": "all completed exit0; no remaining task processes",
+      "mainWrites": false,
+      "GitWrites": false,
+      "CUAOrOtherBrowserSurfaces": false
+    }
+  },
+  "sourceTargets": "Default remains actual editor.tsx; append the exact rich-text-revisions.ts path. Every other branch and the latest Flux mappings remain byte unchanged.",
+  "retainedObservations": [
+    "V1 intentional baseline reproduces45 days summary becoming4 after real Bold.",
+    "V2 incorrect QA title expectation stops before the business flow; corrected in a separately frozen candidate.",
+    "V3 exposes the original generic strike parser consuming explicit deleted revisions; its original native document and first failure are preserved.",
+    "V4 functional/source/original-package gates pass, but menu width and fade-time visual capture are superseded by V5.",
+    "Auxiliary AST/controller preparation mistakes are recorded separately from formal native failures."
+  ],
+  "integrity": {
+    "parentManifestSHA256": "91e4fd4c5db99487450a2dc2a47a060319e0db73f20f530ec7491c059d117a66",
+    "parentFreezeSHA256": "ecba6f92858461715d79641444498d1838b18ac3a951ec9911a21ec27b5653c5",
+    "independentAcceptanceSHA256": "8fb2fc6d0443a6467db1682016cc1f73ce972c22979563f6b03276e0e7f9a3b6",
+    "actualRootProtectedWIPCount": 13,
+    "parentPrivateRelatedFileCheckIsSeparateFromRootWIP": true,
+    "sourceConsole": [],
+    "brandingAssetsAndMITOFLNoticesUnchanged": true
+  },
+  "remaining": [
+    "not complete3/4/5 fidelity",
+    "no collaboration/Yjs/assistant expansion",
+    "no Final/Original projection/native navigation",
+    "ambiguous overlap declined without mutation; conflict UX deferred",
+    "prior persisted ordinary strike without revision ID cannot be inferred/repaired",
+    "arbitrary HTML import/IME/crossblock and external Link entries not blanket certified",
+    "Inline atom label summaries are not certified by the text-only contract scenarios.",
+    "Slash/handle menu fidelity and the reported handle overlap are separate active work.",
+    "Existing template layout/Sidebar/settings detail remains the current delivery priority. Strata is reference/planning only."
+  ],
+  "release": {
+    "committed": "pending at record creation",
+    "pushed": "pending at record creation",
+    "CI": "Separate exact-commit gate after push",
+    "Pages": "Separate exact-commit deployment gate",
+    "lastVerifiedLive": {
+      "commit": "5d1368a384b082cd8d3c4ca6f9757fa1a94d85e1",
+      "CI": 41597924162,
+      "passed": 2135,
+      "deployment": 7513976422,
+      "successUTC": "2026-11-03T08:31:32Z"
+    }
+  },
+  "parentOwnedPayload": {
+    "src/blocks/application/editor.tsx": {
+      "baselineSHA256": "159c6aea4200deca03078d9c46277e03dc0f4f0ae66ea1f16776f17d2051c0a0",
+      "payloadSHA256": "b2a4143c0ba86b8e95e9530a8fe1b3ceaa22d986c8b797e9d0136e010805b940",
+      "bytes": 68928,
+      "rootMerge": "owned scoped delta"
+    },
+    "src/blocks/application/rich-text-engine.ts": {
+      "baselineSHA256": "b33baed89f6847ae5dd2cc4bc8ec52a87013c4845a33f30ceaefb7dd5dda3068",
+      "payloadSHA256": "fc88a3e7d67013179236edd19909c9d90739be0a40c37083dd8fa720ed50daf8",
+      "bytes": 5257,
+      "rootMerge": "owned scoped delta"
+    },
+    "src/blocks/application/rich-text-revisions.ts": {
+      "baselineSHA256": null,
+      "payloadSHA256": "2108d00c3234349df129f76eb446c5e6da6a0f4c768120a1e5ee54e99e43ccb0",
+      "bytes": 3193,
+      "rootMerge": "owned scoped delta"
+    },
+    "src/lib/source-targets.ts": {
+      "baselineSHA256": "11418ec7303c85f3df24c7a0c8e0322e1d38a668228810fb58203924a94177c7",
+      "payloadSHA256": "33cb2f15b719ffb775148566ac761f9e58314d7d39a2e242dec8824be604e1d4",
+      "bytes": 25086,
+      "rootMerge": "semantic append preserving latest Flux/defaults"
+    },
+    "tests/editor-contract-review.spec.ts": {
+      "baselineSHA256": null,
+      "payloadSHA256": "51dc2525f55eb29e2827dcdb3db3763091f42a06b4f47742524e4c9e2634ae33",
+      "bytes": 9367,
+      "rootMerge": "owned scoped delta"
+    },
+    "docs/contract-native-review-release-2026-11-03.md": {
+      "baselineSHA256": null,
+      "payloadSHA256": "1beb20ec4c939d6f851310783449e922ef657873817cd41ddc9cc440bf5a8220",
+      "bytes": 6853,
+      "rootMerge": "owned scoped delta"
+    }
+  }
+}

@@ -36,7 +36,7 @@ const revisionMark = (name: string, tag: string) =>
         renderHTML: (attributes) => ({ "data-revision": attributes.revision }),
       },
     }),
-    parseHTML: () => [{ tag: `${tag}[data-revision]` }],
+    parseHTML: () => [{ tag: `${tag}[data-revision]`, priority: 60 }],
     renderHTML: ({ HTMLAttributes }) => [tag, mergeAttributes(HTMLAttributes), 0],
   });
 const CommentMark = Mark.create({

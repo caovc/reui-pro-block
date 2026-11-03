@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createInsertSuggestions, type InsertSuggestion } from "./rich-text-suggestion";
+import { collectDocumentRevisions, resolveDocumentRevisions } from "./rich-text-revisions";
 import { Frame, FramePanel, FrameHeader, FrameFooter } from "@/components/reui/frame";
 import { RichTextToolbar, RichTextShortcuts } from "./rich-text-toolbar";
 import { Command, CommandList, CommandItem, CommandEmpty } from "@/components/ui/command";
@@ -541,27 +542,14 @@ export default function RichEditorBlock({
     event.preventDefault();
   }
   const refreshRevisionsFromDocument = useCallback(() => {
-    if (kind !== 3 || !editor.current) return;
-    const root = editor.current;
-    const ids = [
-      ...new Set(
-        Array.from(root.querySelectorAll("[data-revision]")).map(
-          (node) => (node as HTMLElement).dataset.revision!,
-        ),
-      ),
-    ];
+    if (kind !== 3 || !engine || engine.isDestroyed) return;
     setRevisions((previous) =>
-      ids.map((id) => ({
-        id,
-        before: root.querySelector(`del[data-revision="${id}"]`)?.textContent ?? "",
-        after: root.querySelector(`ins[data-revision="${id}"]`)?.textContent ?? "",
-        author:
-          previous.find((item) => item.id === id)?.author ??
-          initialRevisions.find((item) => item.id === id)?.author ??
-          "Alex Morgan",
-      })),
+      collectDocumentRevisions(
+        engine,
+        new Map([...initialRevisions, ...previous].map(({ id, author }) => [id, author])),
+      ),
     );
-  }, [kind]);
+  }, [engine, kind]);
   useEffect(() => {
     if (kind === 3 && documentHtml) refreshRevisionsFromDocument();
   }, [documentHtml, kind, refreshRevisionsFromDocument]);
@@ -763,24 +751,24 @@ export default function RichEditorBlock({
     setComment("");
     toast.success("Comment added locally");
   }
-  function reviewRevision(id: string, accept: boolean) {
+  function reviewRevision(id: string | null, accept: boolean) {
     if (!engine || !editable) return;
-    const changes: { from: number; to: number; mark: string }[] = [];
-    engine.state.doc.descendants((node, pos) => {
-      for (const mark of node.marks)
-        if (mark.attrs.revision === id)
-          changes.push({ from: pos, to: pos + node.nodeSize, mark: mark.type.name });
-    });
-    const transaction = engine.state.tr;
-    for (const change of changes.reverse()) {
-      const keep = accept ? change.mark === "revisionInsert" : change.mark === "revisionDelete";
-      if (keep) transaction.removeMark(change.from, change.to, engine.schema.marks[change.mark]);
-      else transaction.delete(change.from, change.to);
-    }
-    engine.view.dispatch(transaction);
-    setRevisions(revisions.filter((revision) => revision.id !== id));
+    const ids = new Set(
+      id === null ? collectDocumentRevisions(engine).map((item) => item.id) : [id],
+    );
+    if (!resolveDocumentRevisions(engine, ids, accept)) return;
+    savedRange.current = null;
+    refreshRevisionsFromDocument();
     snapshot();
-    toast.success(accept ? "Change accepted" : "Change rejected");
+    toast.success(
+      id === null
+        ? accept
+          ? "All changes accepted"
+          : "All changes rejected"
+        : accept
+          ? "Change accepted"
+          : "Change rejected",
+    );
   }
   function suggestEdit() {
     if (!replacement.trim() || !selectedText) {
@@ -1541,7 +1529,33 @@ export default function RichEditorBlock({
               <>
                 <div className="flex items-center justify-between">
                   <h3 className="text-xs font-semibold">Suggested changes</h3>
-                  <Badge variant="secondary">{revisions.length}</Badge>
+                  <div className="flex items-center gap-1">
+                    <Badge variant="secondary" aria-label="Pending suggested changes">
+                      {revisions.length}
+                    </Badge>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon-sm"
+                          aria-label="Review actions"
+                          disabled={!editable || revisions.length === 0}
+                        >
+                          <MoreHorizontal />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent className="w-48" align="end" aria-label="Review actions">
+                        <DropdownMenuItem onSelect={() => reviewRevision(null, true)}>
+                          <Check />
+                          Accept all changes
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onSelect={() => reviewRevision(null, false)}>
+                          <X />
+                          Reject all changes
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
                 </div>
                 <p className="text-[10px] leading-5 text-muted-foreground">
                   Review each change before finalizing the agreement. This review stays in your
@@ -1567,6 +1581,7 @@ export default function RichEditorBlock({
                         size="sm"
                         className="flex-1"
                         aria-label={`Reject ${r.id} change`}
+                        disabled={!editable}
                         onClick={() => reviewRevision(r.id, false)}
                       >
                         <X />
@@ -1576,6 +1591,7 @@ export default function RichEditorBlock({
                         size="sm"
                         className="flex-1"
                         aria-label={`Accept ${r.id} change`}
+                        disabled={!editable}
                         onClick={() => reviewRevision(r.id, true)}
                       >
                         <Check />
