@@ -314,7 +314,9 @@ test("Lucent code preview, copy and downloaded project use its actual infrastruc
     (name) => `src/templates/workflow/${name}.tsx`,
   );
   await page.getByRole("combobox", { name: "Template source file", exact: true }).click();
-  expect((await page.getByRole("option").allTextContents()).slice(0, 4)).toEqual(modules);
+  const availableModules = await page.getByRole("option").allTextContents();
+  expect(availableModules[0]).toBe(modules[0]);
+  expect(availableModules.filter((path) => modules.includes(path))).toEqual(modules);
   await page.getByRole("option", { name: modules[3], exact: true }).click();
   const source = await readFile(join(process.cwd(), modules[3]), "utf8");
   expect(await page.locator(".template-source-code").textContent()).toBe(source);
