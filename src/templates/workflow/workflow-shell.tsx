@@ -46,6 +46,12 @@ export type NavItem = {
   children?: string[];
 };
 
+type ShellHeaderContext = {
+  view: string;
+  onNavigate: (view: string) => void;
+  onOpenSettings: (trigger?: HTMLElement | null) => void;
+};
+
 type ShellProps = {
   brand: string;
   view: string;
@@ -56,16 +62,28 @@ type ShellProps = {
   compact?: boolean;
   dark?: boolean;
   extra?: ReactNode;
+  retainExtraWhenCollapsed?: boolean;
   taskNavigation?: ReactNode;
   accountMenu?: ReactNode;
+  sidebarHeader?: ReactNode;
+  contextPanel?: ReactNode;
   mobileSecondaryNavigation?: ReactNode;
   mobileSecondaryWidth?: number;
   headerTitle?: ReactNode;
   headerActions?: ReactNode;
   /** Undefined keeps the default header; null hides it; a node replaces it. */
-  headerContent?: ReactNode;
+  headerContent?: ReactNode | ((context: ShellHeaderContext) => ReactNode);
   closeMobileOnSelect?: (view: string) => boolean;
 };
+
+function HeaderContentSlot({
+  render,
+  ...context
+}: ShellHeaderContext & {
+  render: (context: ShellHeaderContext) => ReactNode;
+}) {
+  return render(context);
+}
 
 export function Logo() {
   return (
@@ -109,8 +127,11 @@ function ShellContent({
   compact = false,
   dark = false,
   extra,
+  retainExtraWhenCollapsed = false,
   taskNavigation,
   accountMenu,
+  sidebarHeader,
+  contextPanel,
   mobileSecondaryNavigation,
   mobileSecondaryWidth = 200,
   headerTitle,
@@ -241,7 +262,9 @@ function ShellContent({
         mobileShowCloseButton={false}
         mobileTitle={`${brand === "ReUI" ? "Bricklane" : brand} navigation`}
         header={
-          brand === "Flowly" && isMobile ? undefined : (
+          sidebarHeader !== undefined ? (
+            sidebarHeader
+          ) : brand === "Flowly" && isMobile ? undefined : (
             <>
               <div className="wf-brand">
                 <Logo />
@@ -341,7 +364,7 @@ function ShellContent({
         ) : (
           navigation(nav, navLabel)
         )}
-        {!collapsed && extra && (
+        {(!collapsed || retainExtraWhenCollapsed) && extra && (
           <div className="wf-native-extra" onClick={selectExtra}>
             {extra}
           </div>
@@ -449,6 +472,13 @@ function ShellContent({
               )}
             </div>
           </header>
+        ) : typeof headerContent === "function" ? (
+          <HeaderContentSlot
+            render={headerContent}
+            view={view}
+            onNavigate={select}
+            onOpenSettings={(trigger) => openSettings("profile", trigger)}
+          />
         ) : (
           headerContent
         )}
@@ -461,6 +491,7 @@ function ShellContent({
           <div className="wf-content">{children}</div>
         )}
       </AppShellInset>
+      {contextPanel}
       {accountKind && (
         <WorkflowAccountSettings
           kind={accountKind}

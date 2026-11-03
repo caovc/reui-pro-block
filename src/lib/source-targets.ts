@@ -643,7 +643,15 @@ export function templateImplementationTargets(template: {
       "workflow-account-settings",
       "workflow-account-menu",
     ],
-    tempo: ["ai-operations", "workflow-account-settings", "workflow-account-menu"],
+    tempo: [
+      "ai-operations",
+      "workflow-account-settings",
+      "workflow-account-menu",
+      "tempo-chrome",
+      "tempo-usage",
+      "tempo-notifications",
+      "free/flowly-progress",
+    ],
     lucent: [
       "lucent-account",
       "lucent-account-menu",
@@ -707,6 +715,19 @@ export function templateImplementationTargets(template: {
       : []),
     ...(template.family === "collaboration" && ["pulse", "roster"].includes(template.id)
       ? ["src/templates/collaboration/settings-row.css"]
+      : []),
+    ...(template.id === "tempo"
+      ? [
+          "src/templates/workflow/tempo-notifications-data.ts",
+          "src/templates/workflow/tempo-chrome.css",
+          "src/templates/workflow/tempo-usage.css",
+          "src/templates/workflow/tempo-notifications.css",
+          "src/templates/workflow/tempo-context-panel.css",
+          "src/blocks/application/navbar-variants/toolbars/notifications.tsx",
+          "src/blocks/application/navbar-variants/toolbars/notification-feed-model.ts",
+          "src/blocks/application/shells/calendar-panel.tsx",
+          "src/blocks/data/data-utils.ts",
+        ]
       : []),
     ...(template.id === "lucent"
       ? [

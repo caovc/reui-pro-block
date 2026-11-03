@@ -1,3 +1,8 @@
+import { TempoUsage } from "./tempo-usage";
+import { TempoSidebarHeader, TempoHeader, TempoContextPanel } from "./tempo-chrome";
+import { useNotificationsFeedModel } from "@/blocks/application/navbar-variants/toolbars/notification-feed-model";
+import { tempoNotifications } from "./tempo-notifications-data";
+import { downloadCsv } from "@/blocks/data/data-utils";
 import { AiOperations } from "./ai-operations";
 import { useAiOperationsModel } from "./ai-operations-model";
 import { useTempoReportsModel } from "./workflow-models";
@@ -102,6 +107,8 @@ export default function Tempo() {
   const operationsModel = useAiOperationsModel();
   const segmentRecords = useTempoReportsModel();
   const [view, setView] = useState("Home");
+  const [contextOpen, setContextOpen] = useState(false);
+  const notificationsModel = useNotificationsFeedModel(tempoNotifications);
   const [reportView, setReportView] = useState("Analytics");
   const [period, setPeriod] = useState("Week");
   const [rows, setRows] = useState(seed);
@@ -240,8 +247,33 @@ export default function Tempo() {
     <Shell
       brand="ReUI"
       dark
+      retainExtraWhenCollapsed
       view={view}
       setView={setView}
+      sidebarHeader={<TempoSidebarHeader notificationsModel={notificationsModel} />}
+      headerContent={({ view: currentView, onOpenSettings }) => (
+        <TempoHeader
+          view={currentView}
+          contextOpen={contextOpen}
+          onToggleContext={() => setContextOpen((open) => !open)}
+          onOpenSettings={onOpenSettings}
+          onExport={() => {
+            downloadCsv("Tempo workspace summary", filtered);
+            toast.success("Export ready", {
+              description: "Your workspace summary is downloading.",
+            });
+          }}
+        />
+      )}
+      contextPanel={
+        <TempoContextPanel
+          open={contextOpen}
+          onShowAll={() => {
+            setView("Tasks");
+            setTaskView("Calendar");
+          }}
+        />
+      }
       nav={[
         { label: "Home", icon: Home },
         { label: "Tasks", icon: ListTodo },
@@ -311,16 +343,7 @@ export default function Tempo() {
               </Button>
             ))}
           </div>
-          <div className="wf-usage">
-            <strong>Usage Limit</strong>
-            <p>Your usage resets at the end of the month</p>
-            <div className="wf-progress">
-              <i style={{ width: "82%" }} />
-            </div>
-            <p>
-              82% Used <span>18% Free</span>
-            </p>
-          </div>
+          <TempoUsage />
         </>
       }
     >

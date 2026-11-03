@@ -1,0 +1,205 @@
+/* Tempo consumes the existing Pro CalendarContext and its actual free controls.
+   These overrides belong to that consumer, leaving the other shell variants intact. */
+.tempo-context-panel-content {
+  min-width: 0;
+  width: 100%;
+  font-size: 14px;
+  line-height: 20px;
+  background: var(--background);
+}
+
+.tempo-context-panel-content .tempo-context-scroll {
+  min-height: 0;
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklab, var(--muted-foreground) 25%, transparent) transparent;
+}
+
+.tempo-context-panel-content [data-slot="calendar"] {
+  min-height: 302px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 0;
+  background: transparent;
+}
+
+.tempo-context-panel-content .rdp-month {
+  gap: 8px;
+}
+
+.tempo-context-panel-content .rdp-month_caption {
+  height: 28px;
+  justify-content: flex-start;
+  padding-right: 64px;
+  padding-left: 0;
+}
+
+.tempo-context-panel-content .rdp-caption_label {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.tempo-context-panel-content .rdp-nav {
+  right: 0;
+  left: auto;
+  width: 60px;
+  gap: 4px;
+}
+
+.tempo-context-panel-content .rdp-button_previous,
+.tempo-context-panel-content .rdp-button_next {
+  width: 28px;
+  height: 28px;
+  min-width: 0;
+  padding: 0;
+}
+
+.tempo-context-panel-content .rdp-weekday {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.tempo-context-panel-content .rdp-day > button {
+  font-size: 14px;
+}
+
+.tempo-context-panel-content .shell-calendar-event::after {
+  position: absolute;
+  z-index: 11;
+  top: 5px;
+  left: calc(50% - 2px);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--muted-foreground);
+  content: "";
+  pointer-events: none;
+}
+
+.tempo-context-panel-content .tempo-context-calendars > p,
+.tempo-context-panel-content .tempo-context-agenda > div:first-child > p {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.tempo-context-panel-content .tempo-context-account-header {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 28px;
+}
+
+.tempo-context-panel-content .tempo-context-account-header > button {
+  min-width: 0;
+  height: 28px;
+  flex: 1;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.tempo-context-panel-content
+  .tempo-context-account-header:has(button[aria-expanded="true"])
+  > button {
+  background: var(--muted);
+}
+
+.tempo-context-panel-content .tempo-context-account-header > [data-slot="badge"],
+.tempo-context-panel-content .tempo-context-agenda-actions > [data-slot="badge"] {
+  height: 18px;
+  flex-shrink: 0;
+  padding: 0 4px;
+  border-radius: 4px;
+  font-size: 10px;
+  line-height: 16px;
+}
+
+.tempo-context-panel-content .tempo-context-calendar-choices > div {
+  min-height: 20px;
+}
+
+.tempo-context-panel-content .tempo-context-calendar-dot {
+  width: 8px;
+  height: 8px;
+}
+
+.tempo-context-panel-content .tempo-context-calendar-choices label {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.tempo-context-panel-content .tempo-context-calendars > div > button {
+  height: 24px;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.tempo-context-panel-content .tempo-context-agenda-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tempo-context-panel-content .tempo-context-agenda-actions > button {
+  height: 20px;
+  padding: 0;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  color: var(--muted-foreground);
+}
+
+.tempo-context-panel-content .tempo-context-agenda > div:last-child > button {
+  min-width: 0;
+  width: 100%;
+}
+
+.tempo-context-panel-content
+  .tempo-context-agenda
+  > div:last-child
+  > button
+  > span:nth-child(2)
+  > span:first-child {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.tempo-context-panel-content
+  .tempo-context-agenda
+  > div:last-child
+  > button
+  > span:nth-child(2)
+  > span:last-child {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.tempo-context-panel-content .tempo-context-actions > button:first-child {
+  height: 28px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.tempo-context-panel-content .tempo-context-actions > button:last-child {
+  height: 24px;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.tempo-context-panel-content .tempo-context-timezone {
+  min-height: 53px;
+  align-items: center;
+}
+
+.tempo-context-panel-content .tempo-context-timezone-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.tempo-context-panel-content .tempo-context-timezone-copy > span:last-child {
+  font-size: 12px;
+  line-height: 16px;
+}

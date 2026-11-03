@@ -1,0 +1,66 @@
+{
+  "date": "2026-11-04",
+  "milestone": "Tempo real Sidebar header, free Usage, native notification feed and Context composition",
+  "baseCommit": "e274e74bb9319b1c99cd9b91f2f634bc91ab7bd7",
+  "ownerSourceBase": "2ab2ad7 source tree identical to integration base",
+  "changes": [
+    "Rebuild Tempo chrome through existing WorkflowShell consumer slots:50px sticky header, actual Breadcrumb/AvatarGroup/DropdownMenu,28px toolbar controls, and sidebar notification trigger. Expanded/collapsed/mobile SidebarHeader56/92/56px; existing250/48/292.5px widths and48px footer retained.",
+    "Replace handwritten Usage card/bar with actual free Frame/Header/Title/Panel and the unchanged existing Base c-progress-2 Root/Track/Indicator wrapper.82percent; desktop230x134, phone intrinsic263.9375x117.5, real6px track, hidden0x0 when collapsed. CSS stripe decoration is independently authored.",
+    "Extend the existing actual c-dropdown-menu-11 NotificationsFeed composition with optional Tempo layout/data/filter/actions.19items/5initial unread, All/Unread tabs, local read/dismiss/mark-all. One shared model is used by the default Navbar4 and controlled Tempo consumer; Tempo keeps it outside the phone Sheet.",
+    "Use the real Popover middleware with Tempo-only8px offset and actual phone Sidebar collision boundary, matching320x401 and phone x5/y50. Inner Escape restores Bell focus and retains Sheet; next Escape closes Sheet.",
+    "More Copy link uses actual Clipboard; Share schedule and Export preserve observed toast text, with a real localCSV export. More Settings opens the existing five-section Profile panel through the old Shell API and restores its real More trigger.",
+    "Reuse existing CalendarContext Pro composition with actual Calendar/Checkbox/Avatar and local event/account state. Desktop sticky280px pane shrinks main content; Escape retains it and explicit button closes. Phone reference had no lasting panel, so no new mobile Context Sheet is fabricated.",
+    "Restore Tempo-scoped dark metric/card headers and actual DataGrid th semantic colors. A real final screenshot exposed the remaining white table-header band despite passing v6 gates; only finalv7 is delivered.",
+    "SourceTargets includes all real split implementations, shared model/compositions and the unchanged reused Base helper; source viewing, copy, single-file download and project closure are validated."
+  ],
+  "freeReuse": [
+    "Existing actual ReUI Sidebar/native Sheet, SidebarMenu/Footer and unchanged five-section SettingsPanel/Fields/Rows/AvatarUpload.",
+    "Actual Frame family and existing complete Base Progress wrapper; no duplicate progress implementation or engine.",
+    "Actual existing free c-dropdown-menu-11 rich-row composition with native Popover/Item/Tabs/ScrollArea/Button/Avatar/Badge/Progress; shared controlled model extends domain capability.",
+    "Actual Breadcrumb/AvatarGroup/Separator/DropdownMenu and current settings/focus API. CalendarContext is a reused Pro composition with real Calendar/Checkbox dependencies, not claimed to be a complete official free block."
+  ],
+  "customRequired": "Tempo layout and consumer CSS, independent Bricklane notification/calendar fixtures, local read/dismiss state, clipboard/CSV action wiring and domain arrangement. The free examples do not provide a complete Tempo app, its service data, grouped calendar accounts or persistence rules.",
+  "correctedDuplicates": [
+    "Handwritten Usage card/progress replaced with actual Frame/BaseProgress.",
+    "Notification toast placeholder replaced with the existing real feed implementation and shared model.",
+    "Missing More/settings/Context controls composed from native free controls and existing Pro components."
+  ],
+  "verification": {
+    "configuredBuild": "Final original tsc -b && vite build-v7 passed;1174source/657dist bound. No new dependency or compiler flag change.",
+    "native": "Final11 cases passed at1440/390 with original budgets/workers1/retries0,18.772s. Cover measured geometry, collapse, More/Profile/focus, Context, notification filtering/actions/layered Escape/state retention and actual Dark UI/table-header colors plus copy/toasts/local CSV.",
+    "source": "Final14 passed42.630s:real implementation View/Copy/single-file bytes13 plus newly downloaded licensed project closure1.",
+    "legacy": "19 necessary unchanged Tempo/default Navbar4/Calendar cases passed onv6. Preserved incrementally becausev7 differs only in Tempo Dark th consumer CSS and a read-only check in the existing Dark case.",
+    "tooling": "154passed incremental owner evidence; Root integration also runs complete formatting/lint/tooling/discovery checks.",
+    "download": {
+      "zipSHA256": "d376862a70ba3eda9e51ac61cc163c8c8511623c36b417e812b8710cbbcab17c",
+      "rawMembers": 335,
+      "normalInstallSeconds": 37.626,
+      "immediatePostinstallAndFinalLockSHA256": "4c3412eae15bde417d29c7a49cd894034fb0a8c93cf77ce1c5ec934a8831b92b",
+      "originalStrictBuildSeconds": 8.553,
+      "firstNativePassed": 11,
+      "nativeSeconds": 17.96,
+      "allRawPackageConfigMainExampleUnchanged": true,
+      "externalAdapterOnly": "Physical Playwright import and gallery-to-standalone root mount; no package overlay or runtime dependency symlink."
+    },
+    "independent": "Original browser contracts,14legacy families, fullv6 static and finalv7 two-file delta reviewed; Root actually viewed the original defect and final repaired screenshot and read all7real header colors.",
+    "failureHistory": "Retain early native metadata failure caused by an AX-hidden More trigger locator; only its read-only DOM evidence lookup was corrected, with actions/assertions/budgets preserved. Retain invalid legacy selection with a title-only anchor and zero launched tests; valid19 firstpassed. Actual CUA exposed original offset4/y46 and phone x65 vs reference8/y50/x5; corrected through native Popover props. Finalv6 interaction/source gates passed but actual screenshot still showed white table th on Dark; heldv6 and its normally installed archive are preserved and not relabeled. Finalv7 adds scoped semantic th colors and actual header-color assertions, then rebuilds/downloads/strict-builds/runs the new archive."
+  },
+  "priorVerifiedDeployment": {
+    "commit": "369c40e369ff25cce52b387a9087ee5ea06adc3a",
+    "runId": 41693845625,
+    "passed": 2230,
+    "deploymentId": 7527933600,
+    "successStatusId": 21281673678,
+    "successUTC": "2026-11-03T19:01:51Z"
+  },
+  "boundaries": [
+    "Original notification read/dismiss/Approve/Join/Decline and deep calendar mutations were not executed. Implemented actions are explicit local preview behavior; no service or reload persistence claim.",
+    "Original Copy link bytes were not verified. Share/Export toasts were observed; a bounded3second listener saw no original download, which does not prove it never downloads. Actual CSV is a local demo capability.",
+    "Existing Tasks/Reports/calendar engines and raw task-cell progress remain outside this chrome/Usage milestone. Main/Saved Views navigation density/link fidelity and complete business-page reconstruction remain later work.",
+    "Original Dark theme was compared; full font/theme/all-route pixel parity is not claimed. Default Sidebar remains its existing dark palette independently of main workspace theme.",
+    "CalendarContext local state and fixtures do not constitute a calendar-service connection or actual remote sharing.",
+    "Only the final original Tempo335 project is freshly installed/strict-built/native-run here; other affected export closures are not claimed freshly rerun.",
+    "This new commit still requires its own complete CI and exact Pages deployment."
+  ],
+  "licensing": "Independent Bricklane marks/fixtures/local licensed artwork. Actual free MIT/OFL/attribution retained; no paid reference screenshots, original avatars/logos or extracted decorativeSVG shipped."
+}
