@@ -639,6 +639,7 @@ export function templateImplementationTargets(template: {
       "lucent-general-settings",
       "lucent-notification-rules",
       "lucent-origins-dialog",
+      "lucent-settings",
     ],
     pulse: ["pulse-knowledge", "pulse-reports", "pulse-settings", "settings-shared"],
     cohort: [

@@ -3,7 +3,7 @@ import {
   type useLucentSecurityModel,
   type useLucentIntegrationsModel,
 } from "./workflow-models";
-import { useState, type ReactNode } from "react";
+import { Children, Fragment, useState, type ReactNode } from "react";
 import { ExternalLink, Plus, Zap } from "lucide-react";
 import {
   Frame,
@@ -18,6 +18,8 @@ import { Switch } from "@/components/ui/switch";
 import { Button, Input } from "./shared";
 import { Choice, SideForm } from "./controls";
 import { integrationArtwork } from "@/lib/demo-artwork";
+import { Item, ItemActions, ItemContent, ItemDescription, ItemTitle } from "@/components/ui/item";
+import { Separator } from "@/components/ui/separator";
 
 function Group({
   title,
@@ -28,13 +30,21 @@ function Group({
   description: string;
   children: ReactNode;
 }) {
+  const rows = Children.toArray(children);
   return (
-    <Frame dense spacing="sm" className="wf-policy-group">
+    <Frame dense className="mb-5">
       <FrameHeader>
         <FrameTitle>{title}</FrameTitle>
         <FrameDescription>{description}</FrameDescription>
       </FrameHeader>
-      <FramePanel className="p-0">{children}</FramePanel>
+      <FramePanel className="p-0">
+        {rows.map((row, index) => (
+          <Fragment key={index}>
+            {row}
+            {index < rows.length - 1 && <Separator />}
+          </Fragment>
+        ))}
+      </FramePanel>
     </Frame>
   );
 }
@@ -48,13 +58,13 @@ function Setting({
   children: ReactNode;
 }) {
   return (
-    <div className="wf-policy-row">
-      <div>
-        <strong>{title}</strong>
-        <p>{description}</p>
-      </div>
-      {children}
-    </div>
+    <Item className="px-4">
+      <ItemContent>
+        <ItemTitle>{title}</ItemTitle>
+        <ItemDescription>{description}</ItemDescription>
+      </ItemContent>
+      <ItemActions className="[&>[data-slot=select-trigger]]:w-40">{children}</ItemActions>
+    </Item>
   );
 }
 export function LucentSecurity({ model }: { model: ReturnType<typeof useLucentSecurityModel> }) {
@@ -69,12 +79,12 @@ export function LucentSecurity({ model }: { model: ReturnType<typeof useLucentSe
     );
   }
   return (
-    <div className="wf-lucent-settings">
-      <div className="wf-page-heading">
-        <div>
-          <h1>Security</h1>
-          <p>Define authentication rules and access boundaries for your workspace.</p>
-        </div>
+    <div className="wf-lucent-settings space-y-5">
+      <div className="space-y-0.5">
+        <h1 className="text-xl font-semibold">Security</h1>
+        <p className="text-sm text-muted-foreground">
+          Define authentication rules and access boundaries for your workspace.
+        </p>
       </div>
       <Group
         title="Session Policy"

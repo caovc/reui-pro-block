@@ -1,0 +1,258 @@
+{
+  "date": "2026-11-03",
+  "milestone": "Lucent Security actual free Item composition and measured heading spacing",
+  "goalComplete": false,
+  "validationBase": "63a66fccb18368e5966f1ab78d45d3a222663f6c",
+  "publishBase": "49a974314a8f5f8acac73b5926a5c0982888ee24",
+  "ownedRuntimeAndQA": [
+    {
+      "path": "src/templates/workflow/lucent-settings.tsx",
+      "candidate": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/lucent-security-item-63a-validation-v1/candidate/src/templates/workflow/lucent-settings.tsx",
+      "beforeSHA256": "58fd63ed0785e5112069a8d3100b092ad16a1f0c775e9c0e746e6e1337a97241",
+      "afterSHA256": "ce937e4356a7d4fe23da7ede6a771508b329a7311d903fb9d4ad24f7ab5a94c4",
+      "new": false
+    },
+    {
+      "path": "src/lib/source-targets.ts",
+      "candidate": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/lucent-security-item-63a-validation-v1/candidate/src/lib/source-targets.ts",
+      "beforeSHA256": "e8999ed01379cb7dbb1f9732c858429b01ade350b130c9a590ebdd5ec0931368",
+      "afterSHA256": "e1cdecb06460a239f80f84a764977e391224a19182728791bd9b6282072e0feb",
+      "new": false
+    },
+    {
+      "path": "tests/lucent-security-item-native.spec.ts",
+      "candidate": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/lucent-security-item-63a-validation-v1/candidate/tests/lucent-security-item-native.spec.ts",
+      "beforeSHA256": null,
+      "afterSHA256": "15cab6726779cfc9fadedb728c4a1dd958752da7365a622a966b10c95725b8e1",
+      "new": true
+    },
+    {
+      "path": "tests/lucent-security-item-source.spec.ts",
+      "candidate": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/lucent-security-item-63a-validation-v1/candidate/tests/lucent-security-item-source.spec.ts",
+      "beforeSHA256": null,
+      "afterSHA256": "4e73e30d413497011412a43b411e715eb66eff1e2ac4cfd13536f4e041390661",
+      "new": true
+    }
+  ],
+  "sourceFiles": 1150,
+  "reuse": "Actual existing official free Item/Content/Title/Description/Actions + Frame family + real Separator. Original Switch/Choice/Badge and models kept. No full ProSettingsPanel/Row forced onto Item page.",
+  "customReason": "Consumer px16,mb20,Select160 and heading/root utilities match observed page; free examples supply real structure/typography. Local policy models remain necessary domain state; no backend expiry or server persistence claimed.",
+  "preserved": "All control props/callbacks, models, timeout four choices and Integrations body unchanged. Security changes only its row/group composition and measured root/heading. Shared primitives, CSS and APIs unchanged.",
+  "sourceTargets": "Only Lucent gains its actual existing lucent-settings module; default main/order and other17 arrays retained.",
+  "gates": {
+    "normal-install.json": {
+      "command": ["npm", "ci"],
+      "cwd": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/lucent-security-item-63a-validation-v1/candidate",
+      "exit": 0,
+      "seconds": 5.487158124997222,
+      "logSHA256": "fd4e0e85f8cb0c7891d2643d662b39fc7328e6139251d2aa3207e67ba4cceea8"
+    },
+    "original-strict-v1.json": {
+      "command": ["npm", "run", "build"],
+      "cwd": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/lucent-security-item-63a-validation-v1/candidate",
+      "exit": 0,
+      "seconds": 23.7683469170006,
+      "logSHA256": "07a6bee496244a232ebc4207b817087168db142d042e96b6cf91d6d16ad4199a"
+    },
+    "original-strict-v2.json": {
+      "command": ["npm", "run", "build"],
+      "cwd": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/lucent-security-item-63a-validation-v1/candidate",
+      "exit": 0,
+      "seconds": 21.53876804200263,
+      "logSHA256": "b7a861de6251ec637c3ec97b7339d7cee57303b4c4b263f6664134ac62fea8a8"
+    },
+    "native3-v2/receipt.json": {
+      "command": [
+        "npx",
+        "playwright",
+        "test",
+        "tests/lucent-security-item-native.spec.ts",
+        "tests/templates-workflow-refinement.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--output",
+        "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/lucent-security-item-63a-validation-v1/native3-v2/artifacts",
+        "--reporter=json",
+        "--grep",
+        "Lucent Security Item native|Lucent security policies and integration connections retain distinct local state$"
+      ],
+      "url": "http://127.0.0.1:51253/",
+      "exit": 1,
+      "seconds": 15.096333333000075,
+      "stats": {
+        "startTime": "2026-11-03T04:56:45.147Z",
+        "duration": 14606.387999999999,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 2,
+        "flaky": 0
+      },
+      "reportSHA256": "34aaf8e7c5fc7c35eb5a3d0b39ddff974136cb7d9f6fac71241aa008f8ef45fb"
+    },
+    "native2-qa-v3/receipt.json": {
+      "command": [
+        "npx",
+        "playwright",
+        "test",
+        "tests/lucent-security-item-native.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--output",
+        "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/lucent-security-item-63a-validation-v1/native2-qa-v3/artifacts",
+        "--reporter=json"
+      ],
+      "url": "http://127.0.0.1:51253/",
+      "exit": 0,
+      "seconds": 4.511505291993672,
+      "stats": {
+        "startTime": "2026-11-03T05:01:49.361Z",
+        "duration": 4033.584,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "826f1dec53ea43ec2779b0a31643613778f89b2c59ab9fb7fd2c198eeed69b81"
+    },
+    "source2-v2/receipt.json": {
+      "command": [
+        "npx",
+        "playwright",
+        "test",
+        "tests/lucent-security-item-source.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--output",
+        "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/lucent-security-item-63a-validation-v1/source2-v2/artifacts",
+        "--reporter=json"
+      ],
+      "url": "http://127.0.0.1:51253/",
+      "exit": 0,
+      "seconds": 6.6344513750009355,
+      "stats": {
+        "startTime": "2026-11-03T05:01:53.766Z",
+        "duration": 6261.575,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "426759807aa3c8d1d8e2dc7103013e7a8dd513ef4d4bb72ac9ebf95ab0ba1ea5"
+    },
+    "received-normal-install.json": {
+      "command": ["npm", "install"],
+      "cwd": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/lucent-security-item-63a-validation-v1/received-lucent",
+      "exit": 0,
+      "seconds": 33.37158649999765,
+      "logSHA256": "97dc19e179e0808934bb0a9684c37d2fd6cb98484af20abac6d2db573fa6c246"
+    },
+    "received-original-strict.json": {
+      "command": ["npm", "run", "build"],
+      "cwd": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/lucent-security-item-63a-validation-v1/received-lucent",
+      "exit": 0,
+      "seconds": 8.8656012499996,
+      "logSHA256": "244d332c85e0a35c2cbb6e78403ddab6327ead10b5f2e60d8947089ffa4dcb69"
+    },
+    "received-native3/receipt.json": {
+      "command": [
+        "npx",
+        "playwright",
+        "test",
+        "tests/lucent-security-item-native.spec.ts",
+        "tests/templates-workflow-refinement.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--output",
+        "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/lucent-security-item-63a-validation-v1/received-native3/artifacts",
+        "--reporter=json",
+        "--grep",
+        "Lucent Security Item native|Lucent security policies and integration connections retain distinct local state$"
+      ],
+      "url": "http://127.0.0.1:52523/",
+      "exit": 0,
+      "seconds": 5.182697292002558,
+      "stats": {
+        "startTime": "2026-11-03T05:04:39.440Z",
+        "duration": 4812.456,
+        "expected": 3,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "25ff94537986a7d514e4affa3947653f0d4fdd0c28dc5728d70a215273a03de8"
+    }
+  },
+  "siteCoverage": "Incremental distinct3: unchanged oldIntegration1 passed in initial1P2F; only changed new2 reran and passed after QAfocus guard on byte-exact productv2. Not a new all3 rerun.",
+  "failureEvidence": "First1P2F report/traces preserved. Second End→Enter0.987/1.030ms while Radix schedules focus; added real24h toBeFocused only. No model/source/expectation/budget/focus injection/sleep fix.",
+  "actualZIP": {
+    "path": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/lucent-security-item-63a-validation-v1/source2-v2/artifacts/lucent-security-item-sourc-43c1f-d-complete-licensed-closure/lucent-original-project.zip",
+    "sha256": "8dc1c3d0560d8e1d56d5f665709fa209ce574c0e5456c32206a064b9828925cd",
+    "members": 308,
+    "originalScripts": {
+      "dev": "vite",
+      "build": "tsc --noEmit && vite build",
+      "preview": "vite preview",
+      "postinstall": "node scripts/copy-excalidraw-assets.mjs"
+    },
+    "postinstall": "Executed original asset-copy script normally, final generated public246 preserved before/after native3."
+  },
+  "finalIntegrity": {
+    "siteSource": 1150,
+    "siteDist": 657,
+    "sitePublic": 247,
+    "allSiteInputsDistPublicExact": true,
+    "originalArchiveMembers": 308,
+    "receivedDist": 474,
+    "receivedPublic": 246,
+    "allRawMemberEntryPackageConfigDistPublicZipExact": true,
+    "archiveContainsFinalV2Settings": true,
+    "protected13Exact": true,
+    "ownBrowserTabsClosedViewportReset": true,
+    "ownPreviewPorts": [
+      {
+        "pid": 92768,
+        "port": 49715,
+        "closed": true
+      },
+      {
+        "pid": 99994,
+        "port": 51253,
+        "closed": true
+      },
+      {
+        "pid": 6142,
+        "port": 52523,
+        "closed": true
+      }
+    ]
+  },
+  "visualCoverage": {
+    "viewports": [1440, 390],
+    "countsPerViewport": {
+      "Item": 10,
+      "Frame": 3,
+      "Separator": 7
+    },
+    "measuredMatch": "20 row/slot/control rectangles,6Frame/slot rectangles and14Separator rectangles match stored reference; recorded row style fields match. V1 vertical offsets -16/-15 were corrected through actual heading/root composition.",
+    "scopeLimits": "No all-styles, all-control-tags or pixel identity claim. Official H1/intro separate computed objects and raw scrollY were not captured; their exact classes exist in saved structure HTML. Candidate final settled measurement explicitly records scrollY0.",
+    "candidateTypography": {
+      "h1": "20px/28px/600",
+      "intro": "14px/20px",
+      "ItemDescription": "14px/21px"
+    },
+    "remainingStyleDifferences": "Native Switch tag/IDs, Select background/focused phone border and inherited Frame font values differ or are outside the matched row/rectangle fields; no full template identity claimed."
+  },
+  "evidenceSHA256": {
+    "finalReceipt": "0635f0b2481a4a79773901daebd9c66da8a2fe0c384de6c7f185a1bac66a6d85",
+    "ownedManifest": "572451e82a0a38d85069864e3d56ca9e75740cb8d90b9b4a5918ced45335ef1c",
+    "independentStatic": "be3b3f6d0e71507c698be7f40e305b9cf143d28b3dfaadc63dbbc62fa272bec2"
+  },
+  "dependencies": "Candidate used normal physical npmci with original scripts. Clean release uses an independent physical APFS copy of those dependencies; its complete source equals the final strict-built V2. Received project used normal npm install and its actual original postinstall, generating246public assets.",
+  "brandAndLicense": "No official paid media/SVG source assets copied; existing Bricklane original assets and required REUI MIT/font OFL/third-party notices remain in actual ZIP closure.",
+  "publication": "Local acceptance snapshot before commit/push; full CI and Pages are separate pending gates.",
+  "remaining": [
+    "Local timeout1/4/8/24 menu vs official30m/1h/4h/24h/Never",
+    "Other-template and full Sidebar/header fidelity remain active",
+    "Original h1/intro independent computed objects not captured; no all-styles or pixel-perfect claim"
+  ]
+}
