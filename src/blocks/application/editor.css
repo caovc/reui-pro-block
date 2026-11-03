@@ -678,3 +678,51 @@
     padding-inline: 8px;
   }
 }
+
+/* Menu consumers reuse free ReUI primitives; portal styles are scoped to this composition. */
+.rich-text-slash-popover {
+  width: 288px;
+  max-width: calc(100vw - 16px);
+  padding: 0;
+  border-radius: 14px;
+  background: transparent;
+  box-shadow: none;
+}
+.rich-text-slash-command {
+  border-radius: 14px !important;
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--foreground) 10%, transparent);
+}
+.rich-text-slash-command [data-slot="command-item"] {
+  border-radius: 6px;
+}
+.rich-text-slash-command [cmdk-group-heading] {
+  font-weight: 400;
+}
+.rich-text-slash-command [data-slot="command-shortcut"] {
+  letter-spacing: 0;
+}
+.rich-text-slash-list {
+  max-height: min(288px, calc(var(--radix-popover-content-available-height, 296px) - 8px));
+}
+/* 24 + 2 + 24px controls plus a 4px gap belong inside bounded paper padding. */
+.rich-text-gutter {
+  padding-inline-end: 4px;
+}
+.reui-editor[data-inset-gutter="true"] .reui-rich-document {
+  padding-inline-start: 64px;
+}
+
+.rich-text-handle-menu,
+.rich-text-handle-types {
+  border-radius: 10px;
+}
+.rich-text-handle-menu [data-slot="dropdown-menu-shortcut"] {
+  letter-spacing: 0;
+}
+
+/* Keep the existing fluid/compact desktop measure; reserve the native gutter on narrow screens. */
+@media (max-width: 767px) {
+  .reui-reference.reui-editor[data-kind="2"][data-compact] > .grid > main {
+    padding-inline-start: 64px;
+  }
+}

@@ -150,8 +150,10 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
           "rich-text-toolbar",
           "rich-text-task-item",
           "rich-text-block-actions",
+          "rich-text-insert-menu",
         ),
         "src/blocks/application/rich-text-revisions.ts",
+        "src/blocks/application/rich-text-suggestion.ts",
       ];
     }
     if (block.category === "navbar" && variant >= 12 && variant <= 13) {

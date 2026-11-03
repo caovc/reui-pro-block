@@ -5,6 +5,8 @@ import { Frame, FramePanel, FrameHeader, FrameFooter } from "@/components/reui/f
 import { RichTextToolbar, RichTextShortcuts } from "./rich-text-toolbar";
 import { Command, CommandList, CommandItem, CommandEmpty } from "@/components/ui/command";
 import { RichTextBlockActions } from "./rich-text-block-actions";
+import { RichTextInsertMenu } from "./rich-text-insert-menu";
+import { closeHistory } from "@tiptap/pm/history";
 import { Scrollspy } from "@/components/reui/scrollspy";
 import { EditorContent, useEditor } from "@tiptap/react";
 import { richTextEditorProps } from "./rich-text-selection";
@@ -36,7 +38,6 @@ import {
   Strikethrough as TypeIcon,
   MoreHorizontal,
   Undo2,
-  Users,
   Wifi,
   WifiOff,
   X,
@@ -278,10 +279,9 @@ export default function RichEditorBlock({
   const [canRedo, setCanRedo] = useState(false);
   const [selectedText, setSelectedText] = useState("");
   const [outline, setOutline] = useState<OutlineItem[]>([]);
-  const [slash, setSlash] = useState(false);
-  const [mentions, setMentions] = useState(false);
   const [insertSuggestion, setInsertSuggestion] = useState<InsertSuggestion | null>(null);
   const [menuIndex, setMenuIndex] = useState(0);
+  const [menuNavigationEpoch, setMenuNavigationEpoch] = useState(0);
   const menuChoice = useRef<() => void>(() => {});
   const menuCount = useRef(0);
   const [linkOpen, setLinkOpen] = useState(false);
@@ -326,10 +326,12 @@ export default function RichEditorBlock({
   const updateInsertSuggestion = useCallback((state: InsertSuggestion | null) => {
     setInsertSuggestion(state);
     setMenuIndex(0);
+    setMenuNavigationEpoch(0);
   }, []);
   const handleInsertKey = useCallback((event: globalThis.KeyboardEvent) => {
     if (event.key === "ArrowDown" || event.key === "ArrowUp") {
       event.preventDefault();
+      setMenuNavigationEpoch((epoch) => epoch + 1);
       setMenuIndex(
         (index) =>
           (index + (event.key === "ArrowDown" ? 1 : -1) + menuCount.current) %
@@ -520,8 +522,6 @@ export default function RichEditorBlock({
   }
   function insertHtml(html: string) {
     command("insertHTML", html);
-    setSlash(false);
-    setMentions(false);
   }
   function insertMention(name: string) {
     if (!engine || !editable) return;
@@ -534,8 +534,6 @@ export default function RichEditorBlock({
         { type: "text", text: " " },
       ])
       .run();
-    setMentions(false);
-    setSlash(false);
     snapshot();
   }
   function keepSelection(event: MouseEvent<HTMLButtonElement>) {
@@ -675,10 +673,6 @@ export default function RichEditorBlock({
       setIsSaved(true);
       toast.success("Document saved in this preview");
       return;
-    }
-    if (e.key === "Escape") {
-      setSlash(false);
-      setMentions(false);
     }
   }
   function onPaste(e: ClipboardEvent<HTMLDivElement>) {
@@ -882,22 +876,30 @@ export default function RichEditorBlock({
       '<ul data-task-list="true"><li><input type="checkbox" contenteditable="false" aria-label="Complete task"> New task</li></ul><p><br></p>',
     ],
     ["Quote", Quote, "formatBlock", "blockquote"],
+    ["Code block", Code2, "insertHTML", "<pre><code>// Add your code here</code></pre><p><br></p>"],
+    ["Divider", AlignLeft, "insertHTML", "<hr><p><br></p>"],
     [
       "Table",
       Table2,
       "insertHTML",
       "<table><tbody><tr><th>Column 1</th><th>Column 2</th><th>Column 3</th></tr><tr><td>Write here</td><td>Write here</td><td>Write here</td></tr><tr><td>Write here</td><td>Write here</td><td>Write here</td></tr></tbody></table><p><br></p>",
     ],
-    ["Code block", Code2, "insertHTML", "<pre><code>// Add your code here</code></pre><p><br></p>"],
-    ["Divider", AlignLeft, "insertHTML", "<hr><p><br></p>"],
     ["Contents", List, "insertHTML", '<nav data-type="contents"></nav><p><br></p>'],
   ] as const;
   const mentionNames = compact
     ? ["Leo Grant", "Nora Vale", "Ravi Shah", "Ada Brooks", "Mira Stone"]
     : ["Olivia Rhye", "Phoenix Baker", "Lana Steiner"];
-  const suggestionLabels = (
-    insertSuggestion?.kind === "mention" ? mentionNames : insertItems.map(([label]) => label)
-  ).filter((label) => label.toLowerCase().includes(insertSuggestion?.query.toLowerCase() || ""));
+  const suggestionQuery = insertSuggestion?.query ?? "";
+  const suggestionLabels =
+    insertSuggestion?.kind === "mention"
+      ? mentionNames.filter((label) => label.toLowerCase().includes(suggestionQuery.toLowerCase()))
+      : insertItems
+          .map(([label]) => label)
+          .filter((label) => {
+            const visibleLabel = label === "Task list" ? "To-do List task list" : label;
+            const normalize = (value: string) => value.toLowerCase().replace(/[\s-]/g, "");
+            return normalize(visibleLabel).includes(normalize(suggestionQuery));
+          });
   useLayoutEffect(() => {
     menuCount.current = suggestionLabels.length;
   });
@@ -905,12 +907,40 @@ export default function RichEditorBlock({
     if (!engine || !insertSuggestion) return;
     const from = insertSuggestion.range.from;
     const kind = insertSuggestion.kind;
-    engine.chain().focus().deleteRange(insertSuggestion.range).run();
-    savedRange.current = { from, to: from };
-    if (kind === "mention") insertMention(label);
-    else {
+    if (kind === "mention") {
+      engine.chain().focus().deleteRange(insertSuggestion.range).run();
+      savedRange.current = { from, to: from };
+      insertMention(label);
+    } else {
       const item = insertItems.find(([name]) => name === label);
-      if (item) command(item[2], item[3]);
+      if (!item) return;
+      engine.view.dispatch(closeHistory(engine.state.tr));
+      try {
+        // Delete the trigger and apply the native command in one history event.
+        // Separate dispatches can split wrapping commands (for example Quote).
+        const chain = engine.chain().focus().deleteRange(insertSuggestion.range);
+        switch (item[2]) {
+          case "formatBlock":
+            if (item[3] === "blockquote") chain.toggleBlockquote();
+            else if (item[3] === "p") chain.setParagraph();
+            else chain.toggleHeading({ level: Number(item[3][1]) as 1 | 2 | 3 });
+            break;
+          case "insertUnorderedList":
+            chain.toggleBulletList();
+            break;
+          case "insertOrderedList":
+            chain.toggleOrderedList();
+            break;
+          case "insertHTML":
+            chain.insertContent(normalizeDocument(item[3]));
+            break;
+        }
+        chain.run();
+        snapshot();
+        saveSelection();
+      } finally {
+        if (!engine.isDestroyed) engine.view.dispatch(closeHistory(engine.state.tr));
+      }
     }
     setInsertSuggestion(null);
   }
@@ -928,35 +958,50 @@ export default function RichEditorBlock({
       data-kind={kind}
       data-full-width={fullWidth}
       data-small-text={smallText}
+      data-inset-gutter={kind === 3 || kind === 4 || kind === 5}
     >
-      {insertSuggestion && editable && (
-        <div
-          className="rich-text-insert-menu"
-          style={{
-            top: Math.min(insertSuggestion.rect?.bottom || 120, window.innerHeight - 330) + 6,
-            left: Math.max(8, Math.min(insertSuggestion.rect?.left || 80, window.innerWidth - 292)),
-          }}
-        >
-          <Command shouldFilter={false} value={suggestionLabels[menuIndex]}>
-            <p className="px-3 py-2 text-xs text-muted-foreground">
-              {insertSuggestion.kind === "mention" ? "Mention a teammate" : "Insert a block"}
-            </p>
-            <CommandList>
-              <CommandEmpty>No matching items</CommandEmpty>
-              {suggestionLabels.map((label) => (
-                <CommandItem
-                  key={label}
-                  value={label}
-                  onMouseDown={(event) => event.preventDefault()}
-                  onSelect={() => chooseSuggestion(label)}
-                >
-                  {label}
-                </CommandItem>
-              ))}
-            </CommandList>
-          </Command>
-        </div>
-      )}
+      {insertSuggestion &&
+        editable &&
+        engine &&
+        (insertSuggestion.kind === "block" ? (
+          <RichTextInsertMenu
+            editor={engine}
+            suggestion={insertSuggestion}
+            labels={suggestionLabels}
+            selected={suggestionLabels[menuIndex]}
+            navigationEpoch={menuNavigationEpoch}
+            onSelectedChange={(label) => setMenuIndex(Math.max(0, suggestionLabels.indexOf(label)))}
+            onSelect={chooseSuggestion}
+          />
+        ) : (
+          <div
+            className="rich-text-insert-menu"
+            style={{
+              top: Math.min(insertSuggestion.rect?.bottom || 120, window.innerHeight - 330) + 6,
+              left: Math.max(
+                8,
+                Math.min(insertSuggestion.rect?.left || 80, window.innerWidth - 292),
+              ),
+            }}
+          >
+            <Command shouldFilter={false} value={suggestionLabels[menuIndex]}>
+              <p className="px-3 py-2 text-xs text-muted-foreground">Mention a teammate</p>
+              <CommandList>
+                <CommandEmpty>No matching items</CommandEmpty>
+                {suggestionLabels.map((label) => (
+                  <CommandItem
+                    key={label}
+                    value={label}
+                    onMouseDown={(event) => event.preventDefault()}
+                    onSelect={() => chooseSuggestion(label)}
+                  >
+                    {label}
+                  </CommandItem>
+                ))}
+              </CommandList>
+            </Command>
+          </div>
+        ))}
       <EditorHeader className="flex flex-row flex-wrap items-center justify-between gap-3 border-b px-5 py-4">
         <div className="flex items-center gap-3">
           <FileText className="size-4 text-muted-foreground" />
@@ -1411,57 +1456,6 @@ export default function RichEditorBlock({
               <span>Type / for commands · @ to mention</span>
             </div>
           )}
-          {(slash || mentions) && (
-            <div className="mx-auto mb-3 flex max-w-3xl flex-col gap-1 rounded-lg border bg-background p-3 shadow-sm">
-              <div className="mb-1 flex items-center justify-between px-2 text-xs font-medium">
-                <span>{mentions ? "Mention a teammate" : "Insert a block"}</span>
-                <Button
-                  size="icon-sm"
-                  variant="ghost"
-                  aria-label="Close insert menu"
-                  onClick={() => {
-                    setSlash(false);
-                    setMentions(false);
-                  }}
-                >
-                  <X />
-                </Button>
-              </div>
-              {mentions
-                ? (compact
-                    ? ["Leo Grant", "Nora Vale", "Ravi Shah", "Ada Brooks", "Mira Stone"]
-                    : ["Olivia Rhye", "Phoenix Baker", "Lana Steiner"]
-                  ).map((name) => (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="justify-start"
-                      key={name}
-                      onMouseDown={keepSelection}
-                      onClick={() => insertMention(name)}
-                    >
-                      <Users />
-                      {name}
-                    </Button>
-                  ))
-                : insertItems.map(([label, Icon, action, value]) => (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="justify-start"
-                      key={label}
-                      onMouseDown={keepSelection}
-                      onClick={() => {
-                        command(action, value);
-                        setSlash(false);
-                      }}
-                    >
-                      <Icon />
-                      {label}
-                    </Button>
-                  ))}
-            </div>
-          )}
           <div className="mx-auto max-w-3xl rounded-lg border bg-background shadow-sm">
             {engine && (kind !== 1 || compact) && (
               <RichTextBlockActions
@@ -1470,7 +1464,8 @@ export default function RichEditorBlock({
                 wiki={kind === 2 && !compact}
                 onInsert={() => {
                   saveSelection();
-                  setSlash(true);
+                  // The gutter inserts a native slash prompt at its new paragraph.
+                  // Use the same Suggestion/Command UI as keyboard insertion.
                 }}
                 onLink={() => {
                   saveSelection();

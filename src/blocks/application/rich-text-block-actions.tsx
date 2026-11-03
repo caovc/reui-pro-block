@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { useEditorState } from "@tiptap/react";
 import { DragHandle } from "@tiptap/extension-drag-handle-react";
 import { BubbleMenu } from "@tiptap/react/menus";
 import type { Editor } from "@tiptap/core";
 import { closeHistory } from "@tiptap/pm/history";
-import { TextSelection } from "@tiptap/pm/state";
+import { Selection, TextSelection, type SelectionBookmark } from "@tiptap/pm/state";
 import { CellSelection, isInTable, selectedRect } from "@tiptap/pm/tables";
 import {
   GripVertical,
@@ -19,6 +19,10 @@ import {
   Columns3,
   Table2,
   Trash2,
+  ArrowDown,
+  ArrowUp,
+  Copy,
+  RefreshCw,
 } from "lucide-react";
 import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
@@ -35,6 +39,10 @@ import {
   DropdownMenuSub,
   DropdownMenuSubTrigger,
   DropdownMenuSubContent,
+  DropdownMenuGroup,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuShortcut,
 } from "@/components/ui/dropdown-menu";
 
 function WikiTableControls({ editor }: { editor: Editor }) {
@@ -179,6 +187,28 @@ function WikiTableControls({ editor }: { editor: Editor }) {
 
 const wikiTableBubbleKey = "bricklane-wiki-table-menu";
 
+const blockTypes = [
+  ["Text", "paragraph"],
+  ["Heading 1", "h1"],
+  ["Heading 2", "h2"],
+  ["Heading 3", "h3"],
+  ["Bullet List", "bulletList"],
+  ["Numbered List", "orderedList"],
+  ["To-do List", "taskList"],
+  ["Quote", "quote"],
+  ["Code Block", "codeBlock"],
+] as const;
+
+type BlockType = (typeof blockTypes)[number][1];
+type BlockAction = BlockType | "duplicate" | "delete" | "up" | "down";
+
+function currentBlockType(node: Editor["state"]["doc"] | null): string {
+  if (!node) return "paragraph";
+  if (node.type.name === "heading") return `h${node.attrs.level}`;
+  if (node.type.name === "blockquote") return "quote";
+  return node.type.name;
+}
+
 export function RichTextBlockActions({
   editor,
   onInsert,
@@ -193,6 +223,17 @@ export function RichTextBlockActions({
   onLink: () => void;
 }) {
   const [position, setPosition] = useState(-1);
+  const [blockMenuOpen, setBlockMenuOpen] = useState(false);
+  const menuOwner = useId();
+  const menuSession = useRef(0);
+  const [renderedMenuSession, setRenderedMenuSession] = useState(0);
+  const menuOpen = useRef(false);
+  const menuTarget = useRef(-1);
+  const previousSelection = useRef<SelectionBookmark | null>(null);
+  const closeReason = useRef<"cancel" | "command" | "outside">("cancel");
+  const apple = typeof navigator !== "undefined" && /Mac|iPhone|iPad/.test(navigator.platform);
+  const modifier = apple ? "⌘" : "Ctrl+";
+  const shift = apple ? "⇧" : "Shift+";
   const tableActive = useEditorState({
     editor,
     selector: ({ editor: instance }) => instance.isActive("table"),
@@ -242,108 +283,349 @@ export function RichTextBlockActions({
     }
     return null;
   }
-  function changeBlock(
-    action: "duplicate" | "delete" | "up" | "down" | "paragraph" | "h1" | "h2" | "quote",
-  ) {
-    const node = position >= 0 ? editor.state.doc.nodeAt(position) : null;
-    if (!node) return;
-    const end = position + node.nodeSize;
-    if (action === "delete") editor.chain().focus().deleteRange({ from: position, to: end }).run();
-    else if (action === "duplicate")
-      editor.chain().focus().insertContentAt(end, node.toJSON()).run();
-    else if (action === "up" && position > 0) {
-      const previous = editor.state.doc.resolve(position).nodeBefore;
-      if (previous)
-        editor
-          .chain()
-          .focus()
-          .deleteRange({ from: position, to: end })
-          .insertContentAt(position - previous.nodeSize, node.toJSON())
-          .run();
-    } else if (action === "down") {
+  const changeBlock = useCallback(
+    (action: BlockAction, target: number) => {
+      if (
+        editor.isDestroyed ||
+        !editor.isEditable ||
+        target < 0 ||
+        target >= editor.state.doc.content.size
+      )
+        return false;
+      const node = editor.state.doc.nodeAt(target);
+      if (!node) return false;
+      const end = target + node.nodeSize;
+      const previous = editor.state.doc.resolve(target).nodeBefore;
       const next = editor.state.doc.resolve(end).nodeAfter;
-      if (next)
-        editor
-          .chain()
-          .focus()
-          .deleteRange({ from: position, to: end })
-          .insertContentAt(position + next.nodeSize, node.toJSON())
+      if ((action === "up" && !previous) || (action === "down" && !next)) return false;
+      editor.view.dispatch(closeHistory(editor.state.tr));
+      try {
+        if (action === "delete")
+          return editor.chain().focus().deleteRange({ from: target, to: end }).run();
+        if (action === "duplicate")
+          return editor.chain().focus().insertContentAt(end, node.toJSON()).run();
+        if (action === "up" && previous)
+          return editor
+            .chain()
+            .focus()
+            .deleteRange({ from: target, to: end })
+            .insertContentAt(target - previous.nodeSize, node.toJSON())
+            .run();
+        if (action === "down" && next)
+          return editor
+            .chain()
+            .focus()
+            .deleteRange({ from: target, to: end })
+            .insertContentAt(target + next.nodeSize, node.toJSON())
+            .run();
+        const convertible =
+          node.isTextblock ||
+          ["bulletList", "orderedList", "taskList", "blockquote"].includes(node.type.name);
+        if (!convertible) return false;
+        const chain = editor.chain().focus().setNodeSelection(target).clearNodes();
+        if (action === "paragraph") chain.setParagraph();
+        if (action === "h1") chain.setHeading({ level: 1 });
+        if (action === "h2") chain.setHeading({ level: 2 });
+        if (action === "h3") chain.setHeading({ level: 3 });
+        if (action === "bulletList") chain.toggleBulletList();
+        if (action === "orderedList") chain.toggleOrderedList();
+        if (action === "taskList") chain.toggleTaskList();
+        if (action === "quote") chain.toggleBlockquote();
+        if (action === "codeBlock") chain.setCodeBlock();
+        return chain
+          .command(({ tr }) => {
+            tr.setSelection(
+              Selection.near(tr.doc.resolve(Math.min(target + 1, tr.doc.content.size)), 1),
+            );
+            return true;
+          })
           .run();
-    } else {
-      const chain = editor
-        .chain()
-        .focus()
-        .setTextSelection(position + 1);
-      if (action === "paragraph") chain.setParagraph().run();
-      if (action === "h1") chain.setHeading({ level: 1 }).run();
-      if (action === "h2") chain.setHeading({ level: 2 }).run();
-      if (action === "quote") chain.toggleBlockquote().run();
-    }
+      } finally {
+        if (!editor.isDestroyed) editor.view.dispatch(closeHistory(editor.state.tr));
+      }
+    },
+    [editor],
+  );
+
+  function selectMenuBlock(target: number) {
+    const { doc } = editor.state;
+    const node = target >= 0 && target < doc.content.size ? doc.nodeAt(target) : null;
+    if (!node) return false;
+    const start = Selection.findFrom(doc.resolve(target + 1), 1, true);
+    const end = Selection.findFrom(doc.resolve(target + node.nodeSize - 1), -1, true);
+    if (start && end && start.from <= end.to)
+      editor.commands.setTextSelection({ from: start.from, to: end.to });
+    else editor.commands.setNodeSelection(target);
+    return true;
   }
+
+  function currentBlockPosition() {
+    if (position >= 0) return position;
+    const { selection } = editor.state;
+    return selection.$from.depth ? selection.$from.before(1) : selection.from;
+  }
+
+  function changeMenuOpen(open: boolean) {
+    if (open) {
+      if (editor.isDestroyed || !editor.isEditable) return;
+      // Native DragHandle clears hover on editor keydown (including Tab).
+      // Keyboard activation can still operate on the user's real caret block.
+      const target = currentBlockPosition();
+      if (target < 0 || target >= editor.state.doc.content.size) return;
+      setPosition(target);
+      menuSession.current += 1;
+      setRenderedMenuSession(menuSession.current);
+      previousSelection.current = editor.state.selection.getBookmark();
+      menuTarget.current = target;
+      closeReason.current = "cancel";
+      menuOpen.current = true;
+      // React DragHandle registers its native plugin, not the extension's command set.
+      editor.commands.setMeta("lockDragHandle", true);
+      if (!selectMenuBlock(target)) {
+        menuOpen.current = false;
+        editor.commands.setMeta("lockDragHandle", false);
+        return;
+      }
+    }
+    setBlockMenuOpen(open);
+  }
+
+  function runMenuAction(action: BlockAction) {
+    closeReason.current = "command";
+    if (!changeBlock(action, menuTarget.current)) closeReason.current = "cancel";
+    setBlockMenuOpen(false);
+  }
+
+  useEffect(() => {
+    const view = editor.view;
+    const ownerWindow = view.dom.ownerDocument.defaultView;
+    const handleShortcut = (event: KeyboardEvent) => {
+      if (
+        !editor.isEditable ||
+        event.defaultPrevented ||
+        !(event.metaKey || event.ctrlKey) ||
+        event.altKey
+      )
+        return;
+      const action =
+        !event.shiftKey && event.key.toLowerCase() === "d"
+          ? "duplicate"
+          : event.shiftKey && event.key === "ArrowUp"
+            ? "up"
+            : event.shiftKey && event.key === "ArrowDown"
+              ? "down"
+              : null;
+      if (!action) return;
+      const element = event.target instanceof Element ? event.target : null;
+      const fromMenu =
+        element?.closest("[data-block-menu-owner]")?.getAttribute("data-block-menu-owner") ===
+        menuOwner;
+      if (!view.hasFocus() && !fromMenu) return;
+      const selection = editor.state.selection;
+      const target = fromMenu
+        ? menuTarget.current
+        : selection.$from.depth
+          ? selection.$from.before(1)
+          : selection.from;
+      // ProseMirror's DOM key handler has synchronized the real caret before this bubble listener.
+      event.preventDefault();
+      if (changeBlock(action, target)) {
+        closeReason.current = "command";
+        setBlockMenuOpen(false);
+      }
+    };
+    ownerWindow?.addEventListener("keydown", handleShortcut);
+    return () => ownerWindow?.removeEventListener("keydown", handleShortcut);
+  }, [editor, changeBlock, menuOwner]);
+
+  useEffect(
+    () => () => {
+      if (!editor.isDestroyed && menuOpen.current) editor.commands.setMeta("lockDragHandle", false);
+    },
+    [editor],
+  );
+
+  const blockNode =
+    position >= 0 && position < editor.state.doc.content.size
+      ? editor.state.doc.nodeAt(position)
+      : null;
+  const type = currentBlockType(blockNode);
+  const otherLabels: Record<string, string> = {
+    table: "Table",
+    contents: "Contents",
+    horizontalRule: "Divider",
+  };
+  const typeLabel =
+    blockTypes.find(([, value]) => value === type)?.[0] ??
+    otherLabels[type] ??
+    blockNode?.type.name ??
+    "Text";
+  const convertible = Boolean(
+    blockNode &&
+    (blockNode.isTextblock ||
+      ["bulletList", "orderedList", "taskList", "blockquote"].includes(blockNode.type.name)),
+  );
+  const canMoveUp = position > 0;
+  const canMoveDown = Boolean(
+    blockNode && position + blockNode.nodeSize < editor.state.doc.content.size,
+  );
   return (
     <>
       {editor.isEditable && (
-        <DragHandle editor={editor} onNodeChange={({ pos }) => setPosition(pos)}>
+        <DragHandle
+          editor={editor}
+          onNodeChange={({ pos }) => setPosition(pos)}
+          onElementDragStart={() => {
+            closeReason.current = "outside";
+            setBlockMenuOpen(false);
+            menuOpen.current = false;
+            editor.commands.setMeta("lockDragHandle", false);
+          }}
+        >
           <div className="rich-text-gutter">
             <Button
-              size="icon-sm"
+              size="icon-xs"
               variant="ghost"
               aria-label="Add block below"
+              onMouseDown={(event) => event.preventDefault()}
               onClick={() => {
-                const node = editor.state.doc.nodeAt(position);
+                if (editor.isDestroyed || !editor.isEditable) return;
+                const target = currentBlockPosition();
+                if (target < 0 || target >= editor.state.doc.content.size) return;
+                const node = editor.state.doc.nodeAt(target);
                 if (!node) return;
+                // Suggestion evaluates focus during the insertion transaction.
+                // chain.focus() defers DOM focus, so focus the real view first when
+                // the user adds a block before ever placing a caret in the page.
+                editor.view.focus();
+                editor.view.dispatch(closeHistory(editor.state.tr));
                 editor
                   .chain()
                   .focus()
-                  .insertContentAt(position + node.nodeSize, { type: "paragraph" })
-                  .setTextSelection(position + node.nodeSize + 1)
+                  .insertContentAt(target + node.nodeSize, {
+                    type: "paragraph",
+                    content: [{ type: "text", text: "/" }],
+                  })
+                  .setTextSelection(target + node.nodeSize + 2)
                   .run();
+                editor.view.dispatch(closeHistory(editor.state.tr));
                 onInsert();
               }}
             >
               <Plus />
             </Button>
-            <DropdownMenu>
+            <DropdownMenu open={blockMenuOpen} onOpenChange={changeMenuOpen}>
               <DropdownMenuTrigger asChild>
                 <Button
-                  size="icon-sm"
+                  size="icon-xs"
                   variant="ghost"
                   aria-label="Block actions"
                   title="Drag to move block"
+                  className="relative cursor-grab active:cursor-grabbing"
+                  onClick={() => changeMenuOpen(!blockMenuOpen)}
                 >
-                  <GripVertical />
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-0 flex items-center justify-center"
+                    onPointerDown={(event) => event.stopPropagation()}
+                  >
+                    <GripVertical />
+                  </span>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="start">
-                <DropdownMenuItem onSelect={() => changeBlock("duplicate")}>
-                  Duplicate block
-                </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => changeBlock("up")}>
-                  Move block up
-                </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => changeBlock("down")}>
-                  Move block down
-                </DropdownMenuItem>
-                <DropdownMenuSub>
-                  <DropdownMenuSubTrigger>Turn into</DropdownMenuSubTrigger>
-                  <DropdownMenuSubContent>
-                    {(
-                      [
-                        ["Text", "paragraph"],
-                        ["Heading 1", "h1"],
-                        ["Heading 2", "h2"],
-                        ["Quote", "quote"],
-                      ] as const
-                    ).map(([label, action]) => (
-                      <DropdownMenuItem key={action} onSelect={() => changeBlock(action)}>
-                        {label}
-                      </DropdownMenuItem>
-                    ))}
-                  </DropdownMenuSubContent>
-                </DropdownMenuSub>
+              <DropdownMenuContent
+                align="start"
+                className="rich-text-handle-menu w-52"
+                aria-label="Block actions"
+                data-block-menu-owner={menuOwner}
+                onInteractOutside={() => {
+                  if (closeReason.current !== "command") closeReason.current = "outside";
+                }}
+                onCloseAutoFocus={(event) => {
+                  event.preventDefault();
+                  // An older FocusScope can finish closing after a fresh menu opens.
+                  // Its callback must not restore or unlock the new session.
+                  if (menuSession.current !== renderedMenuSession) return;
+                  if (!editor.isDestroyed) {
+                    if (closeReason.current === "cancel" && previousSelection.current) {
+                      try {
+                        editor.view.dispatch(
+                          editor.state.tr
+                            .setSelection(previousSelection.current.resolve(editor.state.doc))
+                            .setMeta("addToHistory", false),
+                        );
+                      } catch {
+                        // An external document replacement owns its new selection.
+                      }
+                    }
+                    if (closeReason.current !== "outside") editor.commands.focus();
+                    if (menuSession.current !== renderedMenuSession) return;
+                    menuOpen.current = false;
+                    editor.commands.setMeta("lockDragHandle", false);
+                  }
+                }}
+              >
+                <DropdownMenuGroup>
+                  <DropdownMenuLabel>{typeLabel}</DropdownMenuLabel>
+                  <DropdownMenuSub>
+                    <DropdownMenuSubTrigger disabled={!convertible}>
+                      <RefreshCw />
+                      Turn Into
+                    </DropdownMenuSubTrigger>
+                    <DropdownMenuSubContent
+                      className="rich-text-handle-types min-w-40"
+                      aria-label="Turn Into"
+                      data-block-menu-owner={menuOwner}
+                    >
+                      <DropdownMenuRadioGroup
+                        value={type}
+                        onValueChange={(value) => runMenuAction(value as BlockType)}
+                      >
+                        {blockTypes.map(([label, value]) => (
+                          <DropdownMenuRadioItem value={value} key={value}>
+                            {label}
+                          </DropdownMenuRadioItem>
+                        ))}
+                      </DropdownMenuRadioGroup>
+                    </DropdownMenuSubContent>
+                  </DropdownMenuSub>
+                  <DropdownMenuItem
+                    onSelect={() => runMenuAction("duplicate")}
+                    aria-keyshortcuts={apple ? "Meta+D" : "Control+D"}
+                  >
+                    <Copy />
+                    Duplicate
+                    <DropdownMenuShortcut>{modifier}D</DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    disabled={!canMoveUp}
+                    onSelect={() => runMenuAction("up")}
+                    aria-keyshortcuts={apple ? "Meta+Shift+ArrowUp" : "Control+Shift+ArrowUp"}
+                  >
+                    <ArrowUp />
+                    Move Up
+                    <DropdownMenuShortcut>
+                      {modifier}
+                      {shift}↑
+                    </DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    disabled={!canMoveDown}
+                    onSelect={() => runMenuAction("down")}
+                    aria-keyshortcuts={apple ? "Meta+Shift+ArrowDown" : "Control+Shift+ArrowDown"}
+                  >
+                    <ArrowDown />
+                    Move Down
+                    <DropdownMenuShortcut>
+                      {modifier}
+                      {shift}↓
+                    </DropdownMenuShortcut>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onSelect={() => changeBlock("delete")}>
-                  Delete block
+                <DropdownMenuItem variant="destructive" onSelect={() => runMenuAction("delete")}>
+                  <Trash2 />
+                  Delete
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -357,6 +639,7 @@ export function RichTextBlockActions({
         options={wiki ? { placement: tableContext ? "top-start" : "top" } : undefined}
         shouldShow={({ editor: instance, from, to }) =>
           instance.isEditable &&
+          !menuOpen.current &&
           (from !== to || (fluid && instance.isActive("table"))) &&
           !instance.isActive("codeBlock")
         }

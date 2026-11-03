@@ -1,0 +1,386 @@
+{
+  "milestone": "Native block insertion and handle menus; usable gutter on desktop and phone",
+  "date": "2026-11-03",
+  "base": "64919dfaf0f1e23ef390fa152ec64cdcdaa84798",
+  "goalComplete": false,
+  "parentOwnedPayload": [
+    {
+      "path": "src/blocks/application/editor.tsx",
+      "sha256": "78ee90ec316607e045475dc349ac1a18d38accc6bfd34a34156e39137abeb33e",
+      "baseSha256": "b2a4143c0ba86b8e95e9530a8fe1b3ceaa22d986c8b797e9d0136e010805b940",
+      "bytes": 69060
+    },
+    {
+      "path": "src/blocks/application/editor.css",
+      "sha256": "a9ebafab9f04d4431f7303d549ef6d436568438088fdb6541cb1ff4027ab5f3e",
+      "baseSha256": "718f49ebc11ea35c8f9aa6851b37fb0c482d89dd2a76b5df122cd0db28316d6d",
+      "bytes": 17386
+    },
+    {
+      "path": "src/blocks/application/rich-text-block-actions.tsx",
+      "sha256": "190ed592f37f158eea25d27e1661232d1ae5a64a34b174b7c9fd21427f308705",
+      "baseSha256": "af27cd5de7561a2745e5301e331b9ae09fd2052ac1210306cdf89a769115a863",
+      "bytes": 27371
+    },
+    {
+      "path": "src/blocks/application/rich-text-insert-menu.tsx",
+      "sha256": "ee0fe2daca59d338dd365cf968e71a4941f9b642a41ef6f87069ab83782ea947",
+      "baseSha256": null,
+      "bytes": 7612
+    },
+    {
+      "path": "src/blocks/application/rich-text-suggestion.ts",
+      "sha256": "6f8769e0b1725c5fafb07dde80a8fd14b3fe1c4a30997abeb24d282fc1e4b9a3",
+      "baseSha256": "5a02859845b9eeb2757f1669d64c3c4dfb1f1c84e2edc0a75faa97ed2206b160",
+      "bytes": 1683
+    },
+    {
+      "path": "src/lib/source-targets.ts",
+      "sha256": "47c3f6ec448f410dbea4c75bdea24f5d5d1a9c9170cd884f4762f45695003295",
+      "baseSha256": "dc1050a453c76bf112923cf320c8bae16da6d450b209f4ad5338ba0a6fbcbd7d",
+      "bytes": 25311
+    },
+    {
+      "path": "tests/editor-block-menus.spec.ts",
+      "sha256": "cb98a08c04cd72a52076560f7ea96ce6c491e7d940cf18a6010b65e86ce09e64",
+      "baseSha256": null,
+      "bytes": 18641
+    },
+    {
+      "path": "tests/editor-grip-activation.spec.ts",
+      "sha256": "f8642b170456215699bdd17e7229ad922923c2a86ca613ad0df756b1261ef3e7",
+      "baseSha256": null,
+      "bytes": 1861
+    },
+    {
+      "path": "tests/editor-embedded.spec.ts",
+      "sha256": "717ce5dda5dd5afa27d9d6fd6d6d9a46c5bd53064cd280125804b8f475bb65d7",
+      "baseSha256": null,
+      "bytes": 2698
+    },
+    {
+      "path": "tests/editor-menu-source.spec.ts",
+      "sha256": "4c3472dcc1ae5f5c623f38ac083b7baae40ee98117224f011b4ef4090b51e9df",
+      "baseSha256": null,
+      "bytes": 7593
+    }
+  ],
+  "actualFreeReuse": [
+    "Command/Group/Item/List/Shortcut/Empty",
+    "DropdownMenu/Trigger/Content/Sub/Radio/Shortcut",
+    "IconTile elevated sm",
+    "Popover virtualAnchor/Content",
+    "existing Button icon-xs",
+    "existing scroll-fade-y utility"
+  ],
+  "removedDuplication": "Replace the hand-built insertion banner with one native Suggestion/Command path. Reuse real menu, icon tile, popup and drag primitives.",
+  "necessaryCustomGlue": "Free UI primitives do not implement Tiptap Suggestion transaction, selection bookmark/session ownership, block native history, or shared drag/menu activation. Those remain editor consumer glue using public native APIs.",
+  "fixes": [
+    "12 grouped insert choices with two-line labels, shortcut hints, actual keyboard reveal and scroll fade",
+    "Nine native block conversions, duplicate/move/delete, modifiers, selection and session ownership",
+    "Combine slash removal and native insertion in one transaction; isolate subsequent typing and plus insertion through native history",
+    "Use real editor focus for never-focused plus activation; preserve native dragging alongside the same grip menu",
+    "Reserve64px only where required: bounded papers3/4/5; phone fluid/compact2; preserve desktop compact inner padding0",
+    "Keep Code default on actual editor, explicitly include the new menu and changed suggestion.ts while preserving Contract helper.ts and Flux quick links"
+  ],
+  "build": {
+    "site": "normal npmci then original npm run build (tsc -b && vite build), original candidate tsconfig has no strict:true; no extra strict claim",
+    "downloadedOriginal": "exit0; original strict:true config and original tsc --noEmit && vite build preserved",
+    "siteStrictCompilerModeClaim": false,
+    "downloadedStrictTrue": true
+  },
+  "coverage": {
+    "uniqueSiteInteractionBodies": 22,
+    "actualSourceCases": 5,
+    "separateExistingRegressionCases": 3,
+    "originalEntryNativeCases": 4,
+    "newCommittedTests": 27,
+    "fullFinalMatrixRerun": false,
+    "incrementalReports": [
+      {
+        "version": "649-v4/QA-v6",
+        "cases": 1,
+        "scope": "Full slash geometry,12 entries,real8Down5Up selected reveal,filter/no-result,Escape/outside dismissal,Heading3 UndoRedo",
+        "limit": "That run later stopped on hidden-background QA read; only passed slash counted. Unchanged menu/dismissal source carried forward; final atomic command separately covered.",
+        "reportSHA256": "0fa0c36b57a54088c709dbdc02969d261e6a44262becf0ff007cf5982043dd54",
+        "wholeReportStats": {
+          "startTime": "2026-11-03T10:27:27.349Z",
+          "duration": 32083.844,
+          "expected": 1,
+          "skipped": 4,
+          "unexpected": 1,
+          "flaky": 0
+        }
+      },
+      {
+        "version": "649-v6",
+        "cases": 15,
+        "scope": "2 desktop/mobile h/p/list bounds cases including all actual kinds2/3/4/5 and never-focused plus; standaloneDoc1+Meshcompact;12 atomic slash native schema+single UndoRedo cases",
+        "limit": "16th actual drag failed and was corrected. Contract has no seed list, so h/p only.",
+        "reportSHA256": "217863cf646fd3d1835afed6abd01d381388bf58fe74aa7d5622cc62159b47a4",
+        "wholeReportStats": {
+          "startTime": "2026-11-03T10:37:54.122Z",
+          "duration": 21320.365999999998,
+          "expected": 15,
+          "skipped": 0,
+          "unexpected": 1,
+          "flaky": 0
+        }
+      },
+      {
+        "version": "649-v8/activation",
+        "cases": 1,
+        "scope": "9 conversion types/current radio/nativeUndoRedo/bookmark/Escapefocus/two native reopening paths",
+        "limit": "A later unrelated trigger aria-expanded read was QA-hidden; passed9-type case counted once. v9 adds invalid-hover native caret fallback; valid hovered native path unchanged.",
+        "reportSHA256": "2041f7754c83b00649c54570cc8d1f8b51ffd1ff46dbe9fbd6ba515e46309ac0",
+        "wholeReportStats": {
+          "startTime": "2026-11-03T10:46:08.482Z",
+          "duration": 16634.596999999998,
+          "expected": 1,
+          "skipped": 0,
+          "unexpected": 1,
+          "flaky": 0
+        }
+      },
+      {
+        "version": "649-v9/grip-v2",
+        "cases": 1,
+        "scope": "Actual pointerclick and realTab/Enter/Space/ArrowDown menu focus+Escape",
+        "limit": "Native hover prepares visible handle after leaving editable. Does not certify pure keyboard handle discovery while typing; native plugin hides on editing keydown.",
+        "reportSHA256": "0f7ee25b186081e25bf09ce0d687169c3096b8a1c851be000fb36a3494331aa5",
+        "wholeReportStats": {
+          "startTime": "2026-11-03T10:52:30.718Z",
+          "duration": 2397.65,
+          "expected": 1,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        }
+      },
+      {
+        "version": "649-v9/iframe",
+        "cases": 3,
+        "scope": "Actual browser mouse native drag+Undo;actualkind4 detailiframe1440/390 originalplus→H2→type→3Undo exactJSON",
+        "reportSHA256": "cb387cc9b88c42ff375c5636c2feb79b14fca00791958609ad451294b824f884",
+        "wholeReportStats": {
+          "startTime": "2026-11-03T10:53:20.550Z",
+          "duration": 3332.9539999999997,
+          "expected": 3,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        }
+      },
+      {
+        "version": "649-v9/promoted-command-v2",
+        "cases": 1,
+        "scope": "Split complete handleDuplicate/MoveUp/MoveDown/Delete nativeUndoRedo,Modshortcuts,boundarydisabled,plusQuote twoUndo",
+        "reportSHA256": "0702b934382d4729ad7ff5366504c15281e6a1d36d3816b31e46a0db4f54a853",
+        "wholeReportStats": {
+          "startTime": "2026-11-03T11:01:14.971Z",
+          "duration": 4523.6269999999995,
+          "expected": 1,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        }
+      },
+      {
+        "version": "649-v9/Source",
+        "cases": 5,
+        "scope": "Actualkind4 defaultCode view,4 implementation view/Copy/file,actual original417memberZIP+licensed closure",
+        "reportSHA256": "3a114cfb72d65f01c8d28b5c98a9f8b87033c23c3abc57c59becfa816bfda5eb",
+        "wholeReportStats": {
+          "startTime": "2026-11-03T10:55:09.505Z",
+          "duration": 23996.892,
+          "expected": 5,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        }
+      },
+      {
+        "version": "649-v9/regression",
+        "cases": 3,
+        "scope": "Existing Contract accept/reject all split marks native history1440;Wiki table native collapsed-pointer state",
+        "reportSHA256": "ea929135989b647c7ef77770d73b02e9082ef8a39affc6d3bff5a3da62855681",
+        "wholeReportStats": {
+          "startTime": "2026-11-03T10:54:11.417Z",
+          "duration": 9200.277,
+          "expected": 3,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        }
+      },
+      {
+        "version": "649-v9/received-original",
+        "cases": 4,
+        "scope": "Actual kind4 original entry slash/keyboard/UndoRedo;never-focused plusQuote1440/390bounds+twoUndo;currenttype/conversion/realdragUndo",
+        "limit": "Originalkind4 bootstrap, not a substituted Wiki2 or Contract3 entry.",
+        "reportSHA256": "cf7f5902b11b0e3627329edde9cd01d7c3f05c466d5d517d1dcd2cd622041018",
+        "wholeReportStats": {
+          "startTime": "2026-11-03T10:59:10.072Z",
+          "duration": 4652.733,
+          "expected": 4,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        }
+      }
+    ]
+  },
+  "sourceUI": {
+    "cases": 5,
+    "pass": 5,
+    "duration": "24.0s",
+    "rawArchiveSha256": "458c9caee06144e2e6129c6885f0d8faed1bdd4f4395a4fb7fc00166a0310b50",
+    "members": 417
+  },
+  "originalProject": {
+    "archiveSHA256": "458c9caee06144e2e6129c6885f0d8faed1bdd4f4395a4fb7fc00166a0310b50",
+    "rawMembers": 417,
+    "allRawMembersUnchangedAfterGates": true,
+    "entry": "Actual ApplicationBlock rich-text-editor-4 / Collaborative Editor / index3; no substituted Wiki or Contract bootstrap",
+    "candidateByteExactMembers": 388,
+    "xmlEquivalentSVGMembers": 21,
+    "generatedScaffoldingMembers": 8,
+    "sourceMembers": 409,
+    "dist": 428,
+    "public": 246,
+    "normalInstallPostinstall": true,
+    "originalPackageConfigEntryUnchanged": true,
+    "generatedLockSHA256": "7a66d8a99630540c21ae716ed2afee69489255883c2e7517f93a718101fc4a03",
+    "nativeCases": 4
+  },
+  "firstFailures": [
+    {
+      "version": "649-v2/baseline",
+      "class": "QA readiness",
+      "record": "../editor-menu-fidelity-649-v2/first-failure.json"
+    },
+    {
+      "version": "649-v2/baseline-readiness-v3",
+      "class": "Expected unchanged published geometry failure -34/-4 at390 for actualh/p/list",
+      "report": "../editor-menu-fidelity-649-v2/baseline-readiness-v3-report.json"
+    },
+    {
+      "version": "649-v3",
+      "class": "Consumer cmdk List aria-label overwritten by publiclabel default",
+      "record": "../editor-menu-fidelity-649-v3/first-failure.json"
+    },
+    {
+      "version": "649-v4",
+      "class": "QA sampled native opening zoom before settledgeometry; premature build completion polling recorded, no pass from run",
+      "record": "../editor-menu-fidelity-649-v4/first-failure.json"
+    },
+    {
+      "version": "649-v4/QA-v5",
+      "class": "QA trailing-node assumption",
+      "record": "../editor-menu-fidelity-649-v4/native-v5-first-failure.json"
+    },
+    {
+      "version": "649-v4/QA-v6",
+      "class": "QA modal hidden state read",
+      "record": "../editor-menu-fidelity-649-v4/native-v6-first-failure.json"
+    },
+    {
+      "version": "649-v4/QA-v7",
+      "class": "QA modal hidden expected paragraph read",
+      "record": "../editor-menu-fidelity-649-v4/native-v7-first-failure.json"
+    },
+    {
+      "version": "649-v4/QA-v8",
+      "class": "Real plusQuote history split; fixed one native chain in v5",
+      "record": "../editor-menu-fidelity-649-v4/native-v8-first-failure.json"
+    },
+    {
+      "version": "649-v5",
+      "class": "QA dragTo re-resolving hidden target before movement",
+      "record": "../editor-menu-fidelity-649-v5/first-failure.json"
+    },
+    {
+      "version": "649-v5/QA-v2",
+      "class": "Real never-focused plus insertion did not activate Suggestion; fixed real publicview focus in v6",
+      "record": "../editor-menu-fidelity-649-v5/native-v2-first-failure.json"
+    },
+    {
+      "version": "649-v6",
+      "class": "Real native drag blocked by pointerdown menu opening/default cancellation+locking; corrected consumer click versus drag activation in v8",
+      "record": "../editor-menu-fidelity-649-v6/first-failure.json"
+    },
+    {
+      "version": "649-v7",
+      "class": "Rejected incomplete drag fix; delayedlock alone still failed; no v7ref/globalrelease carried forward",
+      "record": "../editor-menu-fidelity-649-v7/first-failure.json"
+    },
+    {
+      "version": "649-v8/activation",
+      "class": "QA modal hidden trigger read",
+      "record": "../editor-menu-fidelity-649-v8/activation-first-failure.json"
+    },
+    {
+      "version": "649-v8/grip-v2",
+      "class": "Keyboard menu absent after native editingTab cleared hover; caret fallback added in v9, prep boundary not claimed as purekeyboarddiscovery",
+      "record": "../editor-menu-fidelity-649-v8/grip-v2-first-failure.json"
+    },
+    {
+      "version": "649-v9",
+      "class": "QA hidden grip focus-read; corrected native preparation and read-only lookup",
+      "record": "first-failure.json"
+    },
+    {
+      "version": "649-v9/promoted-command",
+      "class": "QA grep anchored fulltitle matched0; corrected afterdiscovery1",
+      "record": "promoted-command-first-failure.json"
+    },
+    {
+      "version": "649-v9/static-proof",
+      "class": "Proof list assumed retired legacy menu setters unchanged; exposed actual differences, mandatory native regions exact",
+      "record": "static-proof-preparation.json"
+    }
+  ],
+  "preserved": [
+    "RichText engine/revisions helper/toolbar/selection; packages; free primitives; global shadcn.css exact tracked649",
+    "Contract tracked typing/deletion/review and Wiki table control/reference source exact",
+    "desktop fluid and Mesh640 typography/measure; compact innerpadding0"
+  ],
+  "limitations": [
+    "This is scoped menu, gutter and native command verification, not full fidelity for all five editors.",
+    "The official390 preview hides its gutter. Bricklane deliberately keeps working controls visible with sufficient reserve.",
+    "Keyboard activation is verified after natural hover prepares the native handle; pure keyboard discovery during typing is not certified.",
+    "Original downloaded runtime is kind4; site Wiki2 and Contract3 coverage does not become separate original-package coverage.",
+    "Source/UI and native successes are incremental by unchanged body/source scope; earlier failed reports are preserved and not reclassified as whole-run passes.",
+    "Full page content, advanced collaboration/AI/mode projections and remaining template work retain their own backlog."
+  ],
+  "integrity": {
+    "payloadManifestSHA256": "44a18d1a78f480bb0bb86bd2ded9b45a5acb73e7e17c8f5029a133b9a4f2d706",
+    "freezeSHA256": "1d867a4a362d22460518937ae4e093937b1c9264ca7250917079a1f78f7bba08",
+    "receiptSHA256": "154d42ec2e3f9a043668db5a55d85242b8ed09057b8cc57ba54a8016f4966bb6",
+    "verificationLedgerSHA256": "884302ca38a2dffd056b32be1d8b12e92c018b7a99eb16221f19f57444718e3b",
+    "finallyProofSHA256": "f75ec3601c0e7296680eb81b178fa96dd17ff62555c99c5b5a054344668c555d",
+    "rootProtectedFiles": 13,
+    "ownPortsClosed": [5196, 5197],
+    "paidReferenceAssetsPrivateOnly": true
+  },
+  "release": {
+    "committed": "pending",
+    "pushed": "pending",
+    "CI": "Separate exact-commit gate after push",
+    "Pages": "Separate exact-commit gate",
+    "lastVerifiedLive": {
+      "commit": "2729cba47f480984acb8ec0e5336269575033d42",
+      "CI": 41603369089,
+      "passed": 2140,
+      "deployment": 7515123580
+    },
+    "previousCI": {
+      "commit": "7c540edcf6c94d3f4e9ea57b01122101c18c7f37",
+      "run": 41612297588,
+      "passed": 2143,
+      "failed": 1,
+      "failure": "Flow2 Step created toast occludes Cancel; separate correction pending",
+      "Pages": "skipped"
+    }
+  }
+}
