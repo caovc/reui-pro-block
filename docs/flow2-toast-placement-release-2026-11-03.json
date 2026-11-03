@@ -1,0 +1,114 @@
+{
+  "milestone": "Flow2 creation notification leaves inspector Cancel reachable",
+  "date": "2026-11-03",
+  "base": "f6f1ae3292924a43dff3edf1a03d50492db4041a",
+  "goalComplete": false,
+  "payload": {
+    "src/blocks/application/flow-gantt-flow.tsx": "3e9c3c21a02303305f9b83377aab5cd00c3cb7542e71dcdd961c39ea1092193e",
+    "tests/flow2-toast-placement-native.spec.ts": "c991b05b74efe421eeaa164e3da22b6a4cb672878be508fe0ce8ca0e39bbb362",
+    "tests/flow2-toast-placement-source.spec.ts": "4a90a462cf607e293dbf342facc5d34471e322153e496ca0f7c79dac8f7de95c"
+  },
+  "problem": {
+    "CI": 41612297588,
+    "commit": "7c540edcf6c94d3f4e9ea57b01122101c18c7f37",
+    "passed": 2143,
+    "failed": 1,
+    "Pages": "skipped",
+    "case": "tests/flow-fidelity-round2.spec.ts:142 branch editor persists its created step on cancel and saves an incoming Path label",
+    "evidence": "Original trace shows56 hit interceptions at Cancel center1157.75,868 over27.145s; bottom-right Step created toast covers its footer. Expanded metadata persists. Native hover pause is supported by installed Sonner source; timer callbacks were not directly sampled.",
+    "originalLogSHA256": "2deaf25504e49d3d78ba22e6048fcb2b088445b62f7008d1b979a59f212850fe",
+    "originalDiagnosticsSHA256": "8bbd3620ccacb0c6c43853e61867657304599c70e9b3571d7e96f38b652d2c32"
+  },
+  "implementation": {
+    "actualReuse": "Existing native Sonner per-toast position API; existing free Toaster and ReactFlow inspector/actions remain.",
+    "change": "Only variant1 (Flow2) creation success uses top-center. Other variants/global Toaster/default duration/actions/history/CSS are unchanged.",
+    "necessaryCustomCode": "Application-specific feedback placement is a native option; no new toast, pointer policy or custom overlay implementation.",
+    "notUsed": [
+      "toast suppression",
+      "forced clicks",
+      "waiting for expiry",
+      "test-only dismiss",
+      "global pointer-events changes"
+    ]
+  },
+  "localReports": {
+    "flow2-toast-v1-site-native": {
+      "sha256": "2eeee5b794e028a1981e55baec56123b8a8726554fd03a49197ba772c789fc0b",
+      "stats": {
+        "startTime": "2026-11-03T11:17:01.652Z",
+        "duration": 3249.486,
+        "expected": 3,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    "flow2-toast-v1-source2": {
+      "sha256": "9948f969ed43a9e6dea52524a2fd49a124d00aaea403cbd2b0eaa1cf1400ac85",
+      "stats": {
+        "startTime": "2026-11-03T11:17:05.252Z",
+        "duration": 9627.764,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    "flow2-toast-v1-original-native3": {
+      "sha256": "23e31a82de8e4ca16d9087416bfb09fdbd9ca787a7f4b929f97d9010eb39a327",
+      "stats": {
+        "startTime": "2026-11-03T11:20:25.061Z",
+        "duration": 3141.1040000000003,
+        "expected": 3,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    }
+  },
+  "build": "Original configured site tsc-b+vite passed; original downloaded strict:true tsc-noEmit+vite passed",
+  "originalProject": {
+    "archiveSHA256": "2767777b6d8470eac0ab1f61c91b8a82312f5e557bcdabb73b048c66a55c1e4e",
+    "rawMembers": 417,
+    "sourceMembers": 409,
+    "allRawMembersExactAfterGates": true,
+    "actualEntry": "Flow2 flow-2 index1 ApplicationBlock, no bootstrap repair",
+    "originalPackageConfigUnchanged": true,
+    "originalStrictTrue": true,
+    "nativeCases": 3,
+    "dist": 428,
+    "public": 246,
+    "normalInstallAndOriginalPostinstall": true,
+    "generatedLockSHA256": "8a8eef76fb475d073fcb2fe77f12bd6afbfee578ace83eb99acd3b4caead3c07"
+  },
+  "verificationScope": [
+    "Old failed branch lifecycle passes unchanged, including later Path save assertions.",
+    "New1440/390 cases use ordinary pointer input; the same native toast is observed visible both before and after Cancel.",
+    "Read real geometry and assert the toast does not contain the Cancel center; graph keeps the created tenth node.",
+    "Actual source default, view/Copy/single-file and full licensed project ZIP were checked.",
+    "First formal local native3/Source2/originalNative3 pass with one worker and no retries."
+  ],
+  "integrity": {
+    "receiptSHA256": "cf2f0571cb7f6a80129c4ab7a571ece8ab7ceae104c86e806054647513bc1d3b",
+    "freezeSHA256": "d20dff2390c2aa8ceea3d22ff891f054c468d0af7435b66a5c365e30abd37f1e",
+    "sourceTargetsUnchangedFromBase": true,
+    "protectedFiles": 13,
+    "sitePortClosed": 61297,
+    "originalPortClosed": 61604,
+    "brandingAndLicensesPreserved": true
+  },
+  "limits": [
+    "This certifies the scoped Flow2 creation/cancel path, not every toast or workflow state.",
+    "Original trace hover/timer causality is a source-supported inference, not direct timer instrumentation.",
+    "No claim that the new notification position matches the premium original; it prevents the verified local obstruction.",
+    "Main build follows original compiler configuration; only the downloaded project itself enables strict:true.",
+    "Native toast samples were taken during the original top-entry animation; this verifies position attributes and visible-toast Cancel access, not settled absolute toast coordinates."
+  ],
+  "release": {
+    "committed": "pending",
+    "pushed": "pending",
+    "CI": "Separate exact-commit gate",
+    "Pages": "Separate exact-commit gate",
+    "lastVerifiedLive": "2729cba47f480984acb8ec0e5336269575033d42"
+  }
+}

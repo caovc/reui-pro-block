@@ -642,7 +642,10 @@ function FlowEditor({ block }: BlockProps) {
       setRunStates(Object.fromEntries([...runningNodes, n].map((node) => [node.id, "Idle"])));
     }
     open(n, true);
-    toast.success(variant === 3 ? "Metric created" : "Step created");
+    toast.success(
+      variant === 3 ? "Metric created" : "Step created",
+      variant === 1 ? { position: "top-center" } : undefined,
+    );
   }
   function duplicate(n: Node) {
     const copy = {
