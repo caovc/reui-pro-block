@@ -17,6 +17,7 @@ import {
   SidebarWorkspaceSwitcher,
 } from "@/components/reui/sidebar";
 import { BrandGlyph } from "@/components/brand-mark";
+import { AtlasAccountControl } from "./atlas-shell-chrome";
 import { demoAvatar } from "@/lib/demo-artwork";
 const userAvatar = demoAvatar("Nick Bold");
 /* Shared template primitives and small data helpers intentionally share one module. */
@@ -90,6 +91,7 @@ import {
 import "@/blocks/reference.css";
 import "@/blocks/application/shells/shells.css";
 import "./business-layout.css";
+import "./atlas-shell-chrome.css";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 export {
@@ -260,6 +262,7 @@ function ShellContent({
   topWrapper = "span",
   notifications,
   topbarNotifications,
+  headerActions,
   footer,
   navGroups,
   account,
@@ -279,6 +282,7 @@ function ShellContent({
   topWrapper?: "span" | "div";
   notifications?: ReactNode;
   topbarNotifications?: ReactNode;
+  headerActions?: ReactNode;
   footer?: ReactNode;
   navGroups?: Record<string, string[]>;
   account?: { name: string; organisation: string; photo?: string };
@@ -290,7 +294,9 @@ function ShellContent({
   const { state, isMobile, setOpenMobile, toggleSidebar } = useSidebar();
   const collapsed = !isMobile && state === "collapsed";
   const [workspace, setWorkspace] = useState(brand);
-  const [workspaces, setWorkspaces] = useState([brand]);
+  const [workspaces, setWorkspaces] = useState(
+    id === "atlas" ? [brand, "Northstar", "Relay"] : [brand],
+  );
   const [createWorkspace, setCreateWorkspace] = useState(false);
   const commerce = ["surge", "manifest"].includes(id);
   const crossHeader = commerce || id === "verve";
@@ -302,61 +308,74 @@ function ShellContent({
   const accountName = account?.name || (id === "cohort" ? "Bruno Duarte" : "Nick Bold");
   const accountOrganisation =
     account?.organisation || (id === "cohort" ? "Cohort UK" : "nick@bricklane.demo");
-  const accountControl = (
-    <SidebarMenu>
-      <SidebarMenuItem>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <SidebarMenuButton
-              size="lg"
-              tooltip={showTooltips ? accountName : undefined}
-              className="bt-account-button"
-              aria-label={`Open account menu for ${accountName}`}
-            >
-              <span className="bt-avatar">
-                {account?.photo ? (
-                  <img src={account.photo} alt="" />
-                ) : account ? (
-                  accountName
-                    .split(" ")
-                    .map((word) => word[0])
-                    .slice(0, 2)
-                    .join("")
-                ) : id === "cohort" ? (
-                  "BD"
-                ) : (
-                  <img src={userAvatar} alt="" />
-                )}
-              </span>
-              {!collapsed && !rail && (
-                <span className="bt-account-copy">
-                  <strong>{accountName}</strong>
-                  <small>{accountOrganisation}</small>
+  const accountControl =
+    id === "atlas" ? (
+      <AtlasAccountControl
+        name={accountName}
+        email={accountOrganisation}
+        photo={account?.photo}
+        side={sidebarSide}
+        showTooltips={showTooltips}
+        onNavigate={(value) => {
+          if (value === "Account settings") setActive(value);
+          else select(value);
+        }}
+      />
+    ) : (
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <SidebarMenuButton
+                size="lg"
+                tooltip={showTooltips ? accountName : undefined}
+                className="bt-account-button"
+                aria-label={`Open account menu for ${accountName}`}
+              >
+                <span className="bt-avatar">
+                  {account?.photo ? (
+                    <img src={account.photo} alt="" />
+                  ) : account ? (
+                    accountName
+                      .split(" ")
+                      .map((word) => word[0])
+                      .slice(0, 2)
+                      .join("")
+                  ) : id === "cohort" ? (
+                    "BD"
+                  ) : (
+                    <img src={userAvatar} alt="" />
+                  )}
                 </span>
-              )}
-              {!collapsed && !rail && <ChevronDown className="ml-auto size-3.5" />}
-            </SidebarMenuButton>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            className="reui-reference"
-            side={isMobile ? "top" : sidebarSide === "right" ? "left" : "right"}
-            align="end"
-          >
-            {accountMenuContent ?? (
-              <>
-                <DropdownMenuLabel>{accountName}</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                {account && (
-                  <DropdownMenuItem onSelect={() => select("Profile")}>Profile</DropdownMenuItem>
+                {!collapsed && !rail && (
+                  <span className="bt-account-copy">
+                    <strong>{accountName}</strong>
+                    <small>{accountOrganisation}</small>
+                  </span>
                 )}
-                <DropdownMenuItem onSelect={() => select("Settings")}>Settings</DropdownMenuItem>
-              </>
-            )}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </SidebarMenuItem>
-    </SidebarMenu>
-  );
+                {!collapsed && !rail && <ChevronDown className="ml-auto size-3.5" />}
+              </SidebarMenuButton>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              className="reui-reference"
+              side={isMobile ? "top" : sidebarSide === "right" ? "left" : "right"}
+              align="end"
+            >
+              {accountMenuContent ?? (
+                <>
+                  <DropdownMenuLabel>{accountName}</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  {account && (
+                    <DropdownMenuItem onSelect={() => select("Profile")}>Profile</DropdownMenuItem>
+                  )}
+                  <DropdownMenuItem onSelect={() => select("Settings")}>Settings</DropdownMenuItem>
+                </>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </SidebarMenuItem>
+      </SidebarMenu>
+    );
   const collapseControl =
     isMobile || id !== "cohort" ? null : (
       <SidebarTrigger
@@ -475,7 +494,7 @@ function ShellContent({
   );
   const sidebarFooter = (
     <>
-      {(!collapsed || id === "atlas") && footer && (
+      {id !== "atlas" && !collapsed && footer && (
         <div
           className="bt-custom-footer"
           onClick={(event) => {
@@ -491,7 +510,7 @@ function ShellContent({
     </>
   );
   const topbar = (
-    <header className="bt-topbar">
+    <header className={`bt-topbar${id === "atlas" ? " atlas-topbar" : ""}`}>
       {isMobile && <SidebarTrigger className="bt-mobile-menu" aria-label="Open menu" />}
       {collapsed && rail && !isMobile && (
         <SidebarTrigger className="bt-expand-trigger" aria-label="Expand sidebar" />
@@ -503,7 +522,9 @@ function ShellContent({
         <span>{top ?? active}</span>
       )}
       <div className="bt-topbar-right">
-        {commerce ? (
+        {id === "atlas" ? (
+          headerActions
+        ) : commerce ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="sm" aria-label="Store status">
@@ -597,14 +618,14 @@ function ShellContent({
             collapsible={rail ? "offcanvas" : "icon"}
             className="bt-sidebar shell-reference"
             aria-label={`${brand} navigation`}
-            mobileClassName={`reui-reference bt-app bt-sidebar-mobile bt-layout-mobile bt-${id}${rail ? " bt-mobile-with-rail" : ""}`}
+            mobileClassName={`reui-reference bt-app bt-sidebar-mobile bt-layout-mobile bt-${id}${id === "atlas" ? " shell-reference" : ""}${rail ? " bt-mobile-with-rail" : ""}`}
             mobileTitle={brand}
-            mobileShowCloseButton={!commerce && id !== "miro"}
+            mobileShowCloseButton={!commerce && id !== "miro" && id !== "atlas"}
             mobileWidth={id === "cohort" ? "min(288px, calc(100vw - 32px))" : "75vw"}
             header={header}
             footer={sidebarFooter}
             rail={
-              id !== "cohort" && !isMobile ? (
+              id !== "cohort" && (!isMobile || id === "atlas") ? (
                 <CollapseHandle
                   collapsed={collapsed}
                   onToggle={toggleSidebar}
@@ -615,6 +636,18 @@ function ShellContent({
           >
             {rail && isMobile && applicationRail}
             {navigation}
+            {id === "atlas" && footer && (
+              <div
+                className="bt-atlas-footer-content"
+                onClick={(event) => {
+                  const target =
+                    event.target instanceof Element ? event.target.closest("button, a") : null;
+                  if (target && target.textContent?.trim() !== "Settings") closeNavigation();
+                }}
+              >
+                {footer}
+              </div>
+            )}
           </ReuiSidebar>
           <SidebarInset className="bt-main">
             {!crossHeader && topbar}

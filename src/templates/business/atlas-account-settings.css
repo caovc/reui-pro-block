@@ -1,5 +1,6 @@
 /* Atlas inline account consumer. Real Pro SettingsRow/SettingsFields and free
- * Frame/Field/Select/Collapsible/upload components keep their native behavior. */
+ * Card/Field/Select/Collapsible/upload components keep their native behavior.
+ * Commerce continues to use its existing Frame-specific selectors. */
 .atlas-account-settings {
   width: 100%;
   min-width: 0;
@@ -306,4 +307,80 @@
   .atlas-account-settings .aas-save-status:not(:empty) {
     flex-basis: 100%;
   }
+}
+
+/* The observed Atlas pages use the free Card family. Keep its semantic surface
+ * and original Pro controls while scoping these adaptations away from Commerce. */
+/* Restore the real Card's ring suppressed by the legacy business-wide rule. */
+.atlas-account-settings:not(.commerce-account-settings) .aas-card {
+  border: 0;
+  background: var(--card);
+  box-shadow: var(--tw-ring-shadow);
+}
+
+.atlas-account-settings:not(.commerce-account-settings) .aas-card-content {
+  padding: 0;
+}
+
+.atlas-account-settings:not(.commerce-account-settings) .aas-card-header {
+  gap: 4px;
+}
+
+.atlas-account-settings:not(.commerce-account-settings) .aas-card-header [data-slot="card-title"] {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 22px;
+}
+
+.atlas-account-settings:not(.commerce-account-settings) .aas-card-footer {
+  background: color-mix(in oklab, var(--muted) 50%, transparent);
+}
+
+.atlas-account-settings:not(.commerce-account-settings)
+  .workspace-settings-row
+  > [data-slot="field-content"] {
+  gap: 2px;
+}
+
+.atlas-account-settings:not(.commerce-account-settings) .aas-photo-row [data-slot="field-label"] {
+  line-height: 19.25px;
+}
+
+.atlas-account-settings:not(.commerce-account-settings) .aas-group-header {
+  display: block;
+  gap: 0;
+  padding: 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.atlas-account-settings:not(.commerce-account-settings) .aas-group-trigger {
+  min-height: 46px;
+  padding: 10px 16px 16px;
+  border: 0;
+  background: transparent;
+}
+
+.atlas-account-settings:not(.commerce-account-settings) .aas-group-content {
+  border-top: 0;
+}
+
+.atlas-account-settings:not(.commerce-account-settings)
+  .aas-compact-fields
+  [data-slot="field-label"] {
+  line-height: 19.25px;
+}
+
+.atlas-account-settings:not(.commerce-account-settings) .aas-group-title {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+/* SettingsRow uses the free Field's vertical default. Compact Atlas rows keep
+ * the control at its intrinsic width while their FieldContent fills the row. */
+.atlas-account-settings:not(.commerce-account-settings)
+  .aas-compact-fields
+  .workspace-settings-control {
+  width: auto;
+  flex: 0 0 auto;
 }

@@ -1,0 +1,238 @@
+/* Atlas-only consumer geometry. Native Sidebar owns collapse, Sheet and focus. */
+.bt-layout.bt-atlas .atlas-topbar {
+  display: flex;
+  height: 64px;
+  min-height: 64px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 24px;
+  border: 0;
+}
+.bt-layout.bt-atlas .atlas-topbar > .bt-top-content {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+}
+.bt-atlas .atlas-topbar .bt-heading {
+  display: contents;
+}
+.bt-atlas .atlas-topbar .bt-heading > div:first-child {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.bt-atlas .atlas-topbar .bt-actions > button {
+  height: 32px;
+  min-height: 32px;
+  padding-inline: 12px;
+  font-size: 14px;
+  line-height: 20px;
+}
+.bt-atlas .atlas-topbar .bt-actions > button:last-child {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+.bt-layout.bt-atlas .bt-content {
+  padding-top: 0;
+}
+:is(.bt-layout.bt-atlas .bt-sidebar, .bt-layout-mobile.bt-atlas) [data-slot="sidebar-header"] {
+  height: 52px;
+  min-height: 52px;
+  padding: 8px;
+  gap: 8px;
+}
+:is(.bt-layout.bt-atlas .bt-sidebar, .bt-layout-mobile.bt-atlas) .reui-sidebar-content {
+  padding: 0;
+  gap: 0;
+}
+:is(.bt-layout.bt-atlas .bt-sidebar, .bt-layout-mobile.bt-atlas) [data-slot="sidebar-footer"] {
+  height: 58px;
+  min-height: 58px;
+  padding: 8px 8px 12px;
+  gap: 8px;
+}
+:is(.bt-layout.bt-atlas .bt-sidebar, .bt-layout-mobile.bt-atlas) .bt-reui-navigation {
+  padding: 8px;
+}
+:is(.bt-layout.bt-atlas .bt-sidebar, .bt-layout-mobile.bt-atlas)
+  .reui-sidebar-content
+  > [data-slot="collapsible"] {
+  margin: 8px 8px 0;
+}
+:is(.bt-layout.bt-atlas .bt-sidebar, .bt-layout-mobile.bt-atlas)
+  .reui-sidebar-content
+  > [data-slot="collapsible"]
+  [data-slot="sidebar-menu"] {
+  gap: 1px;
+}
+.bt-atlas-footer-content {
+  margin-top: auto;
+  padding: 8px;
+}
+.atlas-footer-navigation {
+  gap: 0;
+}
+.atlas-footer-navigation [data-slot="sidebar-menu-button"] {
+  height: 28px;
+  padding: 8px;
+  font-size: 12px;
+  line-height: 16px;
+}
+.atlas-footer-navigation [data-slot="sidebar-menu-button"] svg {
+  width: 14px;
+  height: 14px;
+}
+.atlas-account-trigger {
+  height: 38px;
+  min-height: 38px;
+  gap: 8px;
+  padding: 4px 6px;
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 2px #0000000a;
+}
+.atlas-account-avatar {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  border-radius: 6px;
+}
+.atlas-account-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+}
+.atlas-account-menu {
+  width: 240px;
+  min-width: 240px;
+  color: var(--popover-foreground);
+  background: var(--popover);
+}
+.atlas-account-menu .atlas-account-summary {
+  display: flex;
+  height: 52px;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 6px;
+}
+.atlas-account-summary-avatar {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: 6px;
+}
+.atlas-account-summary > span:last-child {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
+}
+.atlas-account-summary strong {
+  color: var(--foreground);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+}
+.atlas-account-summary small {
+  overflow: hidden;
+  color: var(--muted-foreground);
+  text-overflow: ellipsis;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+}
+.atlas-account-menu [data-slot="dropdown-menu-item"] {
+  min-height: 28px;
+  font-size: 14px;
+  line-height: 20px;
+}
+.atlas-account-menu .atlas-account-theme-row {
+  min-height: 36px;
+  cursor: default;
+}
+.atlas-account-theme-row > span {
+  flex: 1;
+}
+.atlas-account-theme-choices {
+  display: flex;
+  width: fit-content;
+  flex-shrink: 0;
+  gap: 0;
+  padding: 0;
+  border-radius: 999px;
+  background: var(--muted);
+}
+.atlas-account-theme-option {
+  position: relative;
+  display: flex;
+  width: 26px;
+  height: 26px;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 50%;
+  color: var(--muted-foreground);
+  cursor: pointer;
+}
+.atlas-account-theme-radio {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+}
+.atlas-account-theme-radio::after {
+  inset: 0;
+}
+.atlas-account-theme-radio > [data-slot="radio-group-indicator"] {
+  display: none;
+}
+.atlas-account-theme-option svg {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+}
+.atlas-account-theme-option:has([data-state="checked"]) {
+  background: var(--background);
+  color: var(--foreground);
+  box-shadow: 0 1px 2px #00000012;
+}
+.atlas-account-theme-option:has(:focus-visible) {
+  outline: 2px solid var(--ring);
+  outline-offset: 1px;
+}
+.bt-layout-mobile.bt-atlas.shell-reference .shell-collapse-handle {
+  display: flex;
+}
+@media (max-width: 767px) {
+  .bt-layout.bt-atlas .atlas-topbar {
+    padding-inline: 24px;
+  }
+  .bt-layout.bt-atlas .atlas-topbar .bt-mobile-menu {
+    width: 16px;
+    height: 28px;
+    margin-right: 8px;
+    padding: 0;
+  }
+  .bt-atlas .atlas-topbar [data-slot="breadcrumb-list"] > :not(:last-child) {
+    display: none;
+  }
+}
+
+.bt-layout.bt-atlas .bt-sidebar > [data-slot="sidebar-inner"] {
+  background: color-mix(in oklab, var(--sidebar) 60%, var(--background));
+}
+.bt-layout-mobile.bt-atlas {
+  background: var(--sidebar);
+}

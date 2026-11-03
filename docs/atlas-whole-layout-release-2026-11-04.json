@@ -1,0 +1,78 @@
+{
+  "date": "2026-11-04",
+  "milestone": "Atlas native Sidebar chrome, account menu and actual Card settings",
+  "baseCommit": "702de67d621f741ca082404631e0be12a91c794b",
+  "changes": [
+    "Compose Atlas-only header and account chrome through the existing BusinessShell. Keep actual Sidebar/Provider/Inset/WorkspaceSwitcher/Navigation/Collection. Top header64px; expanded/collapsed256/48px and ordinary document flow with fixed inner Sidebar/footer are preserved.",
+    "Phone Sidebar has the observed outside native collapse control and no Close button. Observed Sidebar Settings→profile and Account settings→security preserve the Sheet; explicit Escape restores the opener. Other families retain their current policy.",
+    "Account menu uses actual native DropdownMenu/Item/Avatar/Separator and inline native RadioGroup connected to the existing global theme store. Theme selection closes the account menu and retains phone Sheet; routing anchors close the controlled menu on normal navigation without introducing a focus engine.",
+    "Profile/Security/Preferences now use actual free Card/Header/Content/Footer and native Collapsible with existing real fields, settings rows and avatar upload. No FieldSet is fabricated for these original three pages. Commerce explicitly retains its existing Frame rendering branch.",
+    "Restore the real Card ring only in Atlas after existing business CSS suppressed its shadow. Restore intrinsic compact-control width only in Atlas so Security/Preferences labels and descriptions retain their intended space. No shared primitive or global reset is changed.",
+    "Promote the actual Atlas chrome split in SourceTargets; the existing Atlas default implementation and original source ordering remain, with complete licensed dependency closure."
+  ],
+  "freeReuse": [
+    "Actual existing ReUI Sidebar/Provider/Inset,WorkspaceSwitcher,Navigation,Collection,native Sheet and collapse control.",
+    "Actual ReUI Card family,DropdownMenu,Item,Avatar,Separator,RadioGroup,Button,Breadcrumb and native Collapsible.",
+    "Existing Pro settings rows/fields using actual free Field/Input/Select/Switch/InputGroup/Textarea and official avatar upload; existing route/model/theme APIs are reused."
+  ],
+  "correctedDuplicates": [
+    "Replace Atlas Frame-only account shell with the observed actual Card composition.",
+    "Replace the two-item account menu with the observed native grouped menu and inline theme controls.",
+    "Correct Atlas-only mobile close/layout policy and consumer styles rather than copying Sidebar,theme,upload or focus engines."
+  ],
+  "customRequired": "Atlas-specific layout,menu arrangement,original Bricklane identity/fixtures and existing local domain models. Free components do not supply Atlas service data,account authentication,billing,profile persistence or this complete template arrangement.",
+  "verification": {
+    "configuredBuild": "Final original build-v5 passed21.650s;1181source/657dist byte-bound. Package/lock/build configuration unchanged.",
+    "native": "Final7 passed12.460s,workers1/retries0. Covers header/Sidebar/document scroll,Card/field layout,phone keep-open and Escape,actual menu/global theme,route targets and native Collapsible. Root actually viewed final Profile/phoneSecurity/desktopPreferences images and prior unchanged-scope Profile/menu images.",
+    "legacy": "Original17 selection first reached11passed/1failed/5unrun. Only the Atlas composite Sheet scroll-width oracle was changed to the actual navigation body; necessary failing case plus remaining5 then all6 passed13.327s. Original11 evidence is retained incrementally; no claim the original failing tail had already run.",
+    "source": "8passed24.175s:actual View/Copy/single-file bytes7 plus complete licensed original project ZIP1.",
+    "download": {
+      "members": 287,
+      "zipSHA256": "e8772421fc555c430042994f027fc09193425f35b6d00898c88665a093631a5c",
+      "normalInstallSeconds": 35.337104,
+      "immediateAndFinalLockSHA256": "570a79175683fe546a811106af5ffca4a0e9a1086a53b9867805ee562a11813c",
+      "originalStrictBuildSeconds": 6.665966,
+      "firstNativePassed": 7,
+      "nativeSeconds": 12.066619,
+      "allOriginalRawPackageConfigMainExampleUnchanged": true,
+      "externalQAOnly": "Existing physical Playwright import,standalone entry and three exact account URL mount adaptations; no package source,config,dependency or test overlay."
+    },
+    "integration": "Root complete formatting/lint zero errors and tooling154 passed; discovery2328cases/269files. Existing unrelated lint warnings remain. Two-line comment-only evidence wording is formatted separately and preserves all executable test bytes.",
+    "independent": "Original62-file browser evidence,initial four images,Card2 early snapshot,final shared/QA/source delta and actual final images reviewed. Production scope and non-Atlas/Commerce projections checked independently; no full-template or all-route pixel parity claim."
+  },
+  "failureHistory": [
+    "v1 native3passed/1failed/3unrun:phone profile x16 vs observed24 after moving old breadcrumb. Atlas consumer24px padding corrected,original threshold unchanged.",
+    "v2 configured build passed but actual CUA showed missing free Card ring despite correct height. Held image/computed shadow retained; only Atlas restores native ring token.",
+    "v3 native5passed/1failed/1unrun:normal route anchor preventDefault blocked automatic menu close. Existing controlled setOpen(false) added on the two normal route handlers; href/modifier behavior and native focus preserved.",
+    "v4 native6passed/1failed:free Field vertical full-width child rule expanded compact controls and compressed descriptions; Security858.25 vs observed316.5. Atlas-only intrinsic control width restored; final phone Security327x419/y214 and Activity327x222.5/y649 atclient375 match the observed reference.",
+    "Legacy outer Sheet scrollWidth375 vs old293 is retained as a failed composite-width assertion. The observed external collapse control justifies separately checking actual navigation body; no unproven claim that its label caused the entire375 difference. Other families retain293,while Atlas keeps containment,75vw,Close0,href,Sheet/Escape/focus and document overflow checks.",
+    "Two exact new control labels were corrected to include the actual Recommended text. No partial-name relaxation or budget/retry increase.",
+    "Final change after freeze corrects only two comment lines that overstated the375 cause. Original executable test text and all runtime results remain unchanged; no new production build or repeat run."
+  ],
+  "priorVerifiedDeployment": {
+    "commit": "e274e74bb9319b1c99cd9b91f2f634bc91ab7bd7",
+    "runId": 41718871815,
+    "passed": 2267,
+    "deploymentId": 7532010709,
+    "successStatusId": 21294444294,
+    "successUTC": "2026-11-03T22:12:53Z",
+    "publicIndexByteExactToDeploymentArtifact": true
+  },
+  "previousReleaseInCI": {
+    "commit": "702de67d621f741ca082404631e0be12a91c794b",
+    "runId": 41735642179,
+    "statusAtIntegration": "buildsuccess;shards1/3/4passed,lastshard2running;Pagesnotyetverified",
+    "tempoPhoneWholeCase": "Corrected original phone case passed on Linux in1.8s. Whole2313-suite and deployment still pending."
+  },
+  "boundaries": [
+    "Original Save/upload/sign-out/create/payment actions were not executed. Profile changes,invitation/data operations,billing/auth and all service feedback remain explicitly local preview behavior.",
+    "Original Account settings→security and Sidebar Settings→profile were observed; the original Profile menu item was visible but not clicked. Unobserved menu services and all deep dashboard/business routes are not certified.",
+    "Original End samples show document movement,not exact bottom. Local end/footer behavior is independently verified; no exact original end claim.",
+    "Original phone/client375 and local headless390 samples are distinguished. CSS75vw and actual available space are retained; fixed reference widths are not applied universally across scrollbar/font environments.",
+    "Existing account model preserves local saved identity on route return; no backend or reload storage is implied. Its global theme preference is already derived from the shared store; no duplicate theme model was added.",
+    "Only this new original Atlas287 archive is freshly installed,strict-built and native-run here. Business-family sibling dependency closures may grow; those sibling packages are not claimed freshly reinstalled.",
+    "This new commit requires its own complete CI and exact Pages deployment. Push success is separate from a live preview update.",
+    "Local theme radio hitbox26px is a consumer choice; the original exact hitbox was not fully measured, so no original26/28px match is claimed."
+  ],
+  "licensing": "Independent Bricklane marks,identity fixtures and permitted local artwork. Actual free MIT/OFL/third-party attribution retained in runnable export; reference logos,avatars,screenshots and extracted decorativeSVG remain private and are not shipped."
+}

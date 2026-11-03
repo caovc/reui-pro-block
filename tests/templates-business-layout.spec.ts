@@ -82,7 +82,7 @@ for (const [id, expanded, compact] of [
     expect(errors).toEqual([]);
   });
 
-  test(`${id} mobile sidebar keeps a scrollable body and closes after actual navigation`, async ({
+  test(`${id} mobile sidebar keeps a scrollable body and uses native navigation dismissal`, async ({
     page,
   }) => {
     await page.setViewportSize({ width: 390, height: 844 });
@@ -93,7 +93,7 @@ for (const [id, expanded, compact] of [
     await expect(drawer).toBeVisible();
     const commerce = id === "surge" || id === "manifest";
     await expect(drawer.getByRole("button", { name: "Close", exact: true })).toHaveCount(
-      id === "miro" || commerce ? 0 : 1,
+      id === "atlas" || id === "miro" || commerce ? 0 : 1,
     );
     if (commerce) {
       // The reference header is Search-only; the native Sidebar API omits its hidden Close.
@@ -125,7 +125,18 @@ for (const [id, expanded, compact] of [
         )
         .toBe(48);
     }
-    expect(await drawer.evaluate((node) => node.scrollWidth)).toBeLessThanOrEqual(293);
+    if (id === "atlas") {
+      // Atlas includes the observed outside collapse control. Verify the actual
+      // navigation body stays bounded independently of the outer Sheet.
+      const body = drawer.locator(':scope > div > [data-slot="sidebar-content"]');
+      const contentWidth = await body.evaluate((node) => ({
+        scroll: node.scrollWidth,
+        client: node.clientWidth,
+      }));
+      expect(contentWidth.scroll).toBeLessThanOrEqual(contentWidth.client);
+    } else {
+      expect(await drawer.evaluate((node) => node.scrollWidth)).toBeLessThanOrEqual(293);
+    }
     if (id === "cohort") {
       await drawer.getByRole("button", { name: "Settings", exact: true }).click();
       await expect(drawer).toBeVisible();
@@ -133,6 +144,15 @@ for (const [id, expanded, compact] of [
       await preferences.click();
       await expect(drawer).toBeVisible();
       await expect(preferences).toBeFocused();
+      await page.keyboard.press("Escape");
+    } else if (id === "atlas") {
+      // The observed Atlas Settings link navigates while retaining the native Sheet.
+      const settings = drawer.getByRole("link", { name: "Settings", exact: true });
+      await settings.click();
+      await expect(page).toHaveURL(/\/atlas\/account\/profile$/);
+      await expect(drawer).toBeVisible();
+      await expect(settings).toBeFocused();
+      await expect(page.locator(".atlas-account-settings")).toContainText("Profile");
       await page.keyboard.press("Escape");
     } else {
       await drawer.getByRole("button", { name: "Settings", exact: true }).first().click();
@@ -341,7 +361,7 @@ for (const id of ["atlas", "miro"]) {
       await expect(popup).toHaveCSS("font-family", expected);
       await page.screenshot({
         path: testInfo.outputPath(`${id}-${mode}-390.png`),
-        animations: "disabled",
+        animations: id === "atlas" ? "allow" : "disabled",
       });
       if (id === "atlas") {
         await expect(popup.getByRole("menuitem", { name: "Bricklane", exact: true })).toContainText(
@@ -365,7 +385,10 @@ for (const id of ["atlas", "miro"]) {
       const accountMenu = page.getByRole("menu");
       await expect(accountMenu).toHaveCSS("font-family", expected);
       await expect(
-        accountMenu.getByRole("menuitem", { name: "Settings", exact: true }),
+        accountMenu.getByRole("menuitem", {
+          name: id === "atlas" ? "Account settings" : "Settings",
+          exact: true,
+        }),
       ).toBeVisible();
       await page.keyboard.press("Escape");
       await expect(accountMenu).toBeHidden();

@@ -16,7 +16,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { CircleHelp, Settings, Users } from "lucide-react";
 import {
   Shell,
   Heading,
@@ -36,6 +35,7 @@ import {
 import { AtlasAccountSettings } from "./atlas-account-settings";
 import { useAtlasAccountSettingsModel } from "./atlas-account-settings-model";
 import { useAtlasAccountRoute } from "./atlas-account-route";
+import { AtlasFooterNavigation } from "./atlas-shell-chrome";
 import "./atlas-account-layout.css";
 
 export default function Atlas() {
@@ -47,7 +47,10 @@ export default function Atlas() {
   const [page, setPage] = useState("Dashboard");
   const active = routing.section ? "Settings" : page;
   const setActive = (next: string) => {
-    if (next === "Settings" || next === "Profile") {
+    if (next === "Account settings") {
+      account.setSection("security");
+      routing.navigate("security");
+    } else if (next === "Settings" || next === "Profile") {
       account.setSection("profile");
       routing.navigate("profile");
     } else {
@@ -84,29 +87,70 @@ export default function Atlas() {
         setActive(x);
       }}
       items={items}
+      topWrapper="div"
+      top={
+        <Breadcrumb className="atlas-account-breadcrumb">
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              {active === "Dashboard" ? (
+                <BreadcrumbPage>Dashboard</BreadcrumbPage>
+              ) : (
+                <BreadcrumbLink
+                  href={routing.href(null)}
+                  onClick={(event) => {
+                    if (
+                      event.button !== 0 ||
+                      event.metaKey ||
+                      event.ctrlKey ||
+                      event.shiftKey ||
+                      event.altKey
+                    )
+                      return;
+                    event.preventDefault();
+                    setActive("Dashboard");
+                  }}
+                >
+                  Dashboard
+                </BreadcrumbLink>
+              )}
+            </BreadcrumbItem>
+            {active !== "Dashboard" && (
+              <>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>
+                    {routing.section === "security"
+                      ? "Security"
+                      : routing.section === "preferences"
+                        ? "Preferences"
+                        : active}
+                  </BreadcrumbPage>
+                </BreadcrumbItem>
+              </>
+            )}
+          </BreadcrumbList>
+        </Breadcrumb>
+      }
+      headerActions={
+        ![
+          "Users",
+          "All Users",
+          "Roles & Permissions",
+          "Access Control",
+          "Audit Log",
+          "Settings",
+        ].includes(active) ? (
+          <Heading title={active} />
+        ) : undefined
+      }
       footer={
-        <>
-          <div className="bt-nav">
-            <Button variant="ghost" className="justify-start" onClick={() => setActive("Users")}>
-              <Users />
-              Team
-            </Button>
-            <Button variant="ghost" className="justify-start" onClick={() => setActive("Settings")}>
-              <Settings />
-              Settings
-            </Button>
-            <Button
-              variant="ghost"
-              className="justify-start"
-              onClick={() =>
-                setSelected("Contact support at support@example.com for your workspace.")
-              }
-            >
-              <CircleHelp />
-              Help & Support
-            </Button>
-          </div>
-        </>
+        <AtlasFooterNavigation
+          onSelect={(item) => {
+            if (item === "Team") setActive("Users");
+            else if (item === "Settings") setActive("Settings");
+            else setSelected("Contact support at support@example.com for your workspace.");
+          }}
+        />
       }
     >
       {["Users", "All Users"].includes(active) ? (
@@ -134,33 +178,6 @@ export default function Atlas() {
         </>
       ) : active === "Settings" ? (
         <div className="atlas-account-page">
-          <Breadcrumb className="atlas-account-breadcrumb">
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink
-                  href={routing.href(null)}
-                  onClick={(event) => {
-                    if (
-                      event.button !== 0 ||
-                      event.metaKey ||
-                      event.ctrlKey ||
-                      event.shiftKey ||
-                      event.altKey
-                    )
-                      return;
-                    event.preventDefault();
-                    setActive("Dashboard");
-                  }}
-                >
-                  Dashboard
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Settings</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
           <AtlasAccountSettings
             model={accountModel}
             sectionHref={routing.href}
@@ -169,11 +186,6 @@ export default function Atlas() {
         </div>
       ) : (
         <>
-          <Heading
-            title={active}
-            action={active === "Users" ? "Invite user" : undefined}
-            onAction={() => setNewUser(true)}
-          />
           {selected && (
             <div className="bt-info" role="status">
               {selected}

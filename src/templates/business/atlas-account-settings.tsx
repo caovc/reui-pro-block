@@ -1,5 +1,6 @@
 // Inline Atlas account settings, composed from actual existing Pro Settings
-// fields and free ReUI Frame/Field/Collapsible/Select/Switch/AvatarUpload.
+// fields and free ReUI Card/Field/Collapsible/Select/Switch/AvatarUpload.
+// Commerce retains its existing Frame presentation.
 import { Fragment, useId, type ReactNode } from "react";
 import { ChevronDown, Upload, X } from "lucide-react";
 import { toast } from "sonner";
@@ -21,6 +22,14 @@ import {
   FrameTitle,
 } from "@/components/reui/frame";
 import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Field, FieldError, FieldGroup, FieldLabel, FieldSeparator } from "@/components/ui/field";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
@@ -62,13 +71,29 @@ function InlineCard({
   label,
   children,
   footer,
+  commerce = false,
 }: {
   title?: string;
   description?: string;
   label: string;
   children: ReactNode;
   footer?: ReactNode;
+  commerce?: boolean;
 }) {
+  if (!commerce) {
+    return (
+      <Card className="aas-card" role="region" aria-label={label}>
+        {title && (
+          <CardHeader className="aas-card-header">
+            <CardTitle>{title}</CardTitle>
+            {description && <CardDescription>{description}</CardDescription>}
+          </CardHeader>
+        )}
+        <CardContent className="aas-card-content">{children}</CardContent>
+        {footer && <CardFooter className="aas-card-footer">{footer}</CardFooter>}
+      </Card>
+    );
+  }
   return (
     <Frame dense variant="ghost" className="aas-card" role="region" aria-label={label}>
       <FramePanel fit className="aas-card-panel">
@@ -143,6 +168,7 @@ function Profile({
             : "Manage your personal information and how you appear across the app."
         }
         label="Profile details"
+        commerce={commerce}
         footer={
           <>
             <span className="aas-save-status" role="status">
@@ -339,14 +365,37 @@ function Group({
   open,
   onOpenChange,
   children,
+  commerce = false,
 }: {
   title: string;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   children: ReactNode;
+  commerce?: boolean;
 }) {
+  if (!commerce) {
+    return (
+      <Card className="aas-card" role="region" aria-label={`${title} settings`}>
+        <Collapsible open={open} onOpenChange={onOpenChange}>
+          <CardHeader className="aas-group-header">
+            <CollapsibleTrigger asChild>
+              <Button type="button" variant="ghost" className="aas-group-trigger">
+                <CardTitle className="aas-group-title">{title}</CardTitle>
+                <ChevronDown aria-hidden="true" />
+              </Button>
+            </CollapsibleTrigger>
+          </CardHeader>
+          <CollapsibleContent className="aas-group-content">
+            <CardContent className="aas-card-content">
+              <FieldGroup className="aas-compact-fields">{children}</FieldGroup>
+            </CardContent>
+          </CollapsibleContent>
+        </Collapsible>
+      </Card>
+    );
+  }
   return (
-    <InlineCard label={`${title} settings`}>
+    <InlineCard label={`${title} settings`} commerce>
       <Collapsible open={open} onOpenChange={onOpenChange}>
         <CollapsibleTrigger asChild>
           <Button type="button" variant="ghost" className="aas-group-trigger">
@@ -362,11 +411,20 @@ function Group({
   );
 }
 
-function Security({ model, prefix }: { model: AtlasAccountSettingsModel; prefix: string }) {
+function Security({
+  model,
+  prefix,
+  commerce = false,
+}: {
+  model: AtlasAccountSettingsModel;
+  prefix: string;
+  commerce?: boolean;
+}) {
   return (
     <div className="aas-groups">
       <Group
         title="Sign-in"
+        commerce={commerce}
         open={model.openGroups.signIn}
         onOpenChange={(open) => model.setGroupOpen("signIn", open)}
       >
@@ -425,6 +483,7 @@ function Security({ model, prefix }: { model: AtlasAccountSettingsModel; prefix:
       </Group>
       <Group
         title="Activity"
+        commerce={commerce}
         open={model.openGroups.activity}
         onOpenChange={(open) => model.setGroupOpen("activity", open)}
       >
@@ -555,6 +614,7 @@ function Preferences({
       {(["general", "display"] as const).map((group) => (
         <Group
           key={group}
+          commerce={commerce}
           title={group === "general" ? "General" : "Display"}
           open={model.openGroups[group]}
           onOpenChange={(open) => model.setGroupOpen(group, open)}
@@ -646,7 +706,7 @@ export function AtlasAccountSettings({
             <Preferences model={model} prefix={prefix} commerce />
           </TabsContent>
           <TabsContent value="security">
-            <Security model={model} prefix={prefix} />
+            <Security model={model} prefix={prefix} commerce />
           </TabsContent>
         </Tabs>
       </section>
