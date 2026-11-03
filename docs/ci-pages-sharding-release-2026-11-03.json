@@ -1,0 +1,45 @@
+{
+  "date": "2026-11-03",
+  "milestone": "Preserve every browser check while distributing the Pages suite across four runners",
+  "baseCommit": "1eb9f891f5f73a537a452a18ea65c611e014b0f3",
+  "scope": [".github/workflows/deploy.yml", "docs/ci-pages-sharding-release-2026-11-03.json"],
+  "behavior": {
+    "build": "Run the unchanged format, 154 tooling tests, lint, configured TypeScript check and Vite build once.",
+    "browser": "Four Playwright shards each consume the same Pages artifact ID and verify its recorded tar SHA256. Keep the original test config, three workers per runner, 30 second timeout and zero retries. No test filters or exclusions.",
+    "deploy": "Deploy the build job artifact only after build and all four browser jobs succeed. Keep pages concurrency and cancel-in-progress: false.",
+    "diagnostics": "Keep failure traces and native blob reports under unique run, attempt and shard names.",
+    "rerun": "Pass the build artifact name through job output so a deploy-only rerun requests the original successful build name."
+  },
+  "localVerification": {
+    "actionlint": "Official v1.7.12 binary, official release checksum verified, workflow passed. Optional shellcheck binary unavailable; no shellcheck claim.",
+    "independentReview": "Static dependency, artifact, failure propagation and unchanged source review passed.",
+    "discovery": {
+      "environment": "CI=true; original playwright.config.ts; --list only",
+      "total": 2194,
+      "shards": [549, 549, 548, 548],
+      "identity": "Stable Playwright spec ID plus project",
+      "unionExact": true,
+      "duplicateIDs": 0,
+      "browserExecution": false
+    }
+  },
+  "preservation": {
+    "productSourceChanged": false,
+    "testsChanged": false,
+    "packageOrLockChanged": false,
+    "newProductionBuildLocally": false,
+    "existingRunningCIManuallyCancelled": false
+  },
+  "limits": [
+    "First real GitHub run must still verify runner behavior and deployment. Parallel runner availability, install time and actual speed remain unmeasured.",
+    "An expired one-day Pages artifact requires a new build; the digest check does not extend artifact retention.",
+    "The preceding 4ce CI had 2173 passes and 9 failures: eight Flux role locators corrected in 1eb, plus one mobile contract history failure under separate investigation. Sharding does not claim to repair that product failure.",
+    "The first local discovery postprocessor omitted nested describe titles; its false duplicate detection was corrected using the existing five discovery reports and stable spec IDs without rerunning discovery."
+  ],
+  "primarySources": [
+    "https://raw.githubusercontent.com/actions/upload-pages-artifact/v3/action.yml",
+    "https://raw.githubusercontent.com/actions/download-artifact/v5/src/download-artifact.ts",
+    "https://raw.githubusercontent.com/actions/deploy-pages/v4/action.yml",
+    "https://playwright.dev/docs/test-sharding"
+  ]
+}
