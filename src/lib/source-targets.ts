@@ -630,6 +630,7 @@ export function templateImplementationTargets(template: {
       "flux-settings-api-keys",
       "flux-settings-webhooks",
       "flux-settings-header",
+      "approvals",
     ],
     tempo: ["ai-operations", "workflow-account-settings", "workflow-account-menu"],
     lucent: [
@@ -690,6 +691,7 @@ export function templateImplementationTargets(template: {
     ...(template.family === "collaboration" && ["pulse", "roster"].includes(template.id)
       ? ["src/templates/collaboration/settings-row.css"]
       : []),
+    ...(template.id === "flux" ? ["src/templates/workflow/flux-approvals.css"] : []),
   ];
 }
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState, type MouseEvent, type ReactNode } from "react";
 import {
   Plus,
   ShieldCheck,
@@ -7,13 +7,38 @@ import {
   TriangleAlert,
   Trash2,
   CreditCard,
+  CircleCheck,
+  Landmark,
+  Send,
+  ShieldAlert,
+  Clock,
+  Info,
+  Check,
+  X,
+  UserRoundCheck,
+  LockKeyhole,
+  Zap,
 } from "lucide-react";
 import { Button, Input, Panel, Status, ExportButton } from "./shared";
 import { WorkflowGrid, type WorkflowField } from "./grid";
 import { Choice, Person } from "./controls";
 import { Sheet, SheetContent, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { IconTile } from "@/components/reui/icon-tile";
-import { Switch } from "@/components/ui/switch";
+import { Frame, FrameHeader, FrameTitle, FramePanel } from "@/components/reui/frame";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
+import { Item, ItemContent, ItemTitle, ItemMedia, ItemDescription } from "@/components/ui/item";
+import { Badge } from "@/components/reui/badge";
+import {
+  Timeline,
+  TimelineItem,
+  TimelineHeader,
+  TimelineTitle,
+  TimelineIndicator,
+  TimelineSeparator,
+  TimelineContent,
+} from "@/components/reui/timeline";
+import { toast } from "sonner";
+import "./flux-approvals.css";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -131,6 +156,30 @@ const requests: Request[] = [
     reviewer: "Maya Perez",
   },
 ];
+function ApprovalSummaryInfo({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon-sm"
+          className="text-muted-foreground hover:text-foreground -me-1.5 size-6 shrink-0 rounded-4xl [&_svg]:size-3"
+          aria-label={`What ${title} shows`}
+        >
+          <Info />
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent>{children}</TooltipContent>
+    </Tooltip>
+  );
+}
+
+function keepApprovalRoute(event: MouseEvent<HTMLAnchorElement>) {
+  // Keep informational anchors from replacing the hash-based preview route.
+  event.preventDefault();
+}
+
 export function ApprovalInbox() {
   const [rows, setRows] = useState(requests);
   const [selected, setSelected] = useState<Request | null>(null);
@@ -138,15 +187,19 @@ export function ApprovalInbox() {
   const [risk, setRisk] = useState("All risk tiers");
   const [status, setStatus] = useState("All statuses");
   const [overSla, setOverSla] = useState(false);
-  const [policy, setPolicy] = useState([true, true, true, true, true]);
   const [deleteId, setDeleteId] = useState("");
+  const [focusedCoverage, setFocusedCoverage] = useState<string | null>(null);
   const pending = rows.filter((r) => r.status === "Pending").length;
-  const filtered = rows.filter(
-    (r) =>
-      (r.action + " " + r.agent + " " + r.id).toLowerCase().includes(query.toLowerCase()) &&
-      (risk === "All risk tiers" || r.risk === risk) &&
-      (status === "All statuses" || r.status === status) &&
-      (!overSla || r.sla.startsWith("Breached")),
+  const filtered = useMemo(
+    () =>
+      rows.filter(
+        (r) =>
+          (r.action + " " + r.agent + " " + r.id).toLowerCase().includes(query.toLowerCase()) &&
+          (risk === "All risk tiers" || r.risk === risk) &&
+          (status === "All statuses" || r.status === status) &&
+          (!overSla || r.sla.startsWith("Breached")),
+      ),
+    [rows, query, risk, status, overSla],
   );
   const fields: WorkflowField<Request>[] = [
     {
@@ -282,7 +335,7 @@ export function ApprovalInbox() {
           </Panel>
         ))}
       </div>
-      <div className="wf-approval-layout">
+      <div className="wf-approval-layout wf-flux-approval-layout">
         <Panel
           title="Approval Queue"
           description={`${filtered.length} requests in this view`}
@@ -323,66 +376,231 @@ export function ApprovalInbox() {
           </div>
           <WorkflowGrid rows={filtered} fields={fields} pageSize={6} />
         </Panel>
-        <div className="wf-approval-side">
-          <Panel title="Recent Decisions">
-            {[
-              ["APR-7415", "Renewal summary", "Approved", "Maya Perez", "1h ago"],
-              ["APR-7412", "$2,150 refund", "Rejected", "Jonas Reed", "1h 30m ago"],
-              ["APR-7409", "$42 credit", "Approved", "Maya Perez", "2h ago"],
-              ["APR-7404", "Lead purge held", "Rejected", "Jonas Reed", "2h 40m ago"],
-            ].map(([id, name, status, owner, time]) => (
-              <div className="wf-decision-row" key={id}>
-                <div>
-                  <small className="wf-muted">{id}</small>
-                  <strong>{name}</strong>
-                  <Status>{status}</Status>
+        <div className="wf-approval-summary-grid grid min-w-0 grid-cols-1 items-stretch gap-4 @2xl:grid-cols-2 @4xl:grid-cols-3">
+          <Frame
+            dense
+            spacing="sm"
+            className="wf-approval-summary h-full w-full min-w-0 text-base leading-6"
+          >
+            <FrameHeader className="flex-row items-center justify-between gap-3">
+              <FrameTitle>Recent Decisions</FrameTitle>
+              <ApprovalSummaryInfo title="Recent Decisions">
+                The last requests to get a decision, newest first, with who made it and how long
+                ago.
+              </ApprovalSummaryInfo>
+            </FrameHeader>
+            <FramePanel className="flex flex-col">
+              <Timeline value={0}>
+                {[
+                  ["APR-7415", "Renewal summary", "Approved", "Maya Perez", "1h ago"],
+                  ["APR-7412", "$2,150 refund", "Rejected", "Jonas Reed", "1h 30m ago"],
+                  ["APR-7409", "$42 credit", "Approved", "Maya Perez", "2h ago"],
+                  ["APR-7404", "Lead purge held", "Rejected", "Jonas Reed", "2h 40m ago"],
+                ].map(([id, name, status, owner, time], index) => (
+                  <TimelineItem key={id} step={index + 1} className="last:pb-0">
+                    <TimelineHeader>
+                      <TimelineSeparator className="bg-border group-data-[orientation=vertical]/timeline:h-[calc(100%-1.25rem-0.5rem)] group-data-[orientation=vertical]/timeline:translate-y-5" />
+                      <div className="flex flex-wrap items-center gap-2">
+                        <TimelineTitle className="font-semibold">
+                          <a
+                            href="#/template-preview/flux"
+                            onClick={keepApprovalRoute}
+                            className="text-muted-foreground hover:text-primary me-1.5 font-medium tabular-nums underline-offset-2 transition-colors hover:underline"
+                          >
+                            {id}
+                          </a>
+                          <span>{name}</span>
+                        </TimelineTitle>
+                        <Badge
+                          variant={status === "Approved" ? "success-light" : "destructive-light"}
+                          className="rounded-4xl"
+                        >
+                          {status}
+                        </Badge>
+                      </div>
+                      <TimelineIndicator
+                        className={`flex size-5 items-center justify-center border-none ${
+                          status === "Approved"
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-muted text-muted-foreground"
+                        }`}
+                      >
+                        {status === "Approved" ? (
+                          <Check className="size-3" />
+                        ) : (
+                          <X className="size-3" />
+                        )}
+                      </TimelineIndicator>
+                    </TimelineHeader>
+                    <TimelineContent className="mt-1.5">
+                      <div className="wf-approval-owner text-muted-foreground flex min-w-0 items-center gap-1.5 text-xs">
+                        <Person name={owner} />
+                        <span className="bg-input size-1 shrink-0 rounded-full" />
+                        <span className="truncate">{time}</span>
+                      </div>
+                    </TimelineContent>
+                  </TimelineItem>
+                ))}
+              </Timeline>
+            </FramePanel>
+          </Frame>
+          <Frame
+            dense
+            spacing="sm"
+            className="wf-approval-summary h-full w-full min-w-0 text-base leading-6"
+          >
+            <FrameHeader className="flex-row items-center justify-between gap-3">
+              <FrameTitle>Approval Policy</FrameTitle>
+              <ApprovalSummaryInfo title="Approval Policy">
+                The rules that decide whether a request needs a human at all, and which one.
+              </ApprovalSummaryInfo>
+            </FrameHeader>
+            <FramePanel className="flex flex-col gap-4">
+              {[
+                {
+                  title: "Auto-Approve Threshold",
+                  description: "Low-risk actions run without a human reviewer.",
+                  icon: CircleCheck,
+                  color: "bg-emerald-600",
+                },
+                {
+                  title: "Finance Second Approval",
+                  description: "Refunds over $500 need a finance sign-off.",
+                  icon: Landmark,
+                  color: "bg-indigo-600",
+                },
+                {
+                  title: "Bulk Send Cap",
+                  description: "Sends above 2,000 recipients need review.",
+                  icon: Send,
+                  color: "bg-amber-600",
+                },
+                {
+                  title: "Irreversible Action Hold",
+                  description: "Deletes and purges pause for a human.",
+                  icon: ShieldAlert,
+                  color: "bg-rose-600",
+                },
+                {
+                  title: "Review SLA",
+                  description: "Every request gets a decision within 4 hours.",
+                  icon: Clock,
+                  color: "bg-sky-600",
+                },
+              ].map(({ title, description, icon: Icon, color }) => (
+                <div className="flex items-start gap-2.5" key={title}>
+                  <IconTile
+                    variant="elevated"
+                    className={`flex text-white [--icon-tile-radius:10px] ${color}`}
+                    aria-hidden="true"
+                  >
+                    <Icon />
+                  </IconTile>
+                  <div className="min-w-0">
+                    <a
+                      href="#/template-preview/flux"
+                      onClick={keepApprovalRoute}
+                      className="text-foreground hover:text-primary text-sm leading-tight font-medium"
+                    >
+                      {title}
+                    </a>
+                    <p className="text-muted-foreground mt-0.5 text-xs leading-snug">
+                      {description}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <Person name={owner} />
-                  <small>{time}</small>
-                </div>
-              </div>
-            ))}
-          </Panel>
-          <Panel title="Approval Policy">
-            {[
-              ["Auto-Approve Threshold", "Low-risk actions run without a human reviewer."],
-              ["Finance Second Approval", "Refunds over $500 need a finance sign-off."],
-              ["Bulk Send Cap", "Sends above 2,000 recipients need review."],
-              ["Irreversible Action Hold", "Deletes and purges pause for a human."],
-              ["Review SLA", "Every request gets a decision within 4 hours."],
-            ].map(([title, sub], i) => (
-              <div className="wf-policy-row" key={title}>
-                <div>
-                  <strong>{title}</strong>
-                  <p>{sub}</p>
-                </div>
-                <Switch
-                  aria-label={title}
-                  checked={policy[i]}
-                  onCheckedChange={(v) => setPolicy(policy.map((x, j) => (j === i ? v : x)))}
-                />
-              </div>
-            ))}
-          </Panel>
-          <Panel title="Review Coverage">
-            {[
-              ["Ops Lead", "Maya Perez", "Breached high-risk"],
-              ["Finance Desk", "Finance", "Refunds over $500"],
-              ["Privacy Review", "Consent", "EU bulk sends"],
-              ["Safety Review", "Jonas Reed", "Destructive actions"],
-              ["Auto-Approve", "Unattended", "Low-risk actions"],
-              ["SLA Escalation", "On-call", "Past the 4h target"],
-            ].map(([title, owner, sub]) => (
-              <div className="wf-policy-row" key={title}>
-                <div>
-                  <strong>{title}</strong>
-                  <p>{sub}</p>
-                </div>
-                <Status>{owner}</Status>
-              </div>
-            ))}
-          </Panel>
+              ))}
+            </FramePanel>
+          </Frame>
+          <Frame
+            dense
+            spacing="sm"
+            className="wf-approval-summary h-full w-full min-w-0 text-base leading-6"
+          >
+            <FrameHeader className="flex-row items-center justify-between gap-3">
+              <FrameTitle>Review Coverage</FrameTitle>
+              <ApprovalSummaryInfo title="Review Coverage">
+                Who is on each policy rule. Pick one to focus the queue on what it gates; a rule
+                reading Unattended has nobody on it by design.
+              </ApprovalSummaryInfo>
+            </FrameHeader>
+            <FramePanel className="grid grid-cols-2 content-start gap-2">
+              {[
+                {
+                  title: "Ops Lead",
+                  owner: "Maya Perez",
+                  description: "Breached high-risk",
+                  icon: UserRoundCheck,
+                },
+                {
+                  title: "Finance Desk",
+                  owner: "Finance",
+                  description: "Refunds over $500",
+                  icon: Landmark,
+                },
+                {
+                  title: "Privacy Review",
+                  owner: "Consent",
+                  description: "EU bulk sends",
+                  icon: LockKeyhole,
+                },
+                {
+                  title: "Safety Review",
+                  owner: "Jonas Reed",
+                  description: "Destructive actions",
+                  icon: ShieldCheck,
+                },
+                {
+                  title: "Auto-Approve",
+                  owner: "Unattended",
+                  description: "Low-risk actions",
+                  icon: Zap,
+                },
+                {
+                  title: "SLA Escalation",
+                  owner: "On-call",
+                  description: "Past the 4h target",
+                  icon: Clock,
+                },
+              ].map(({ title, owner, description, icon: Icon }) => (
+                <Item
+                  key={title}
+                  asChild
+                  variant="outline"
+                  className={`flex h-full cursor-pointer flex-col items-stretch justify-between gap-4 rounded-2xl p-3 text-left hover:border-primary/30 ${
+                    focusedCoverage === title ? "border-primary/40 bg-muted" : ""
+                  }`}
+                >
+                  <button
+                    type="button"
+                    aria-label={`Focus ${title} coverage`}
+                    aria-pressed={focusedCoverage === title}
+                    onClick={() => {
+                      setFocusedCoverage(title);
+                      toast("Coverage focused", { description: `${title}: ${description}.` });
+                    }}
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <ItemContent className="min-w-0 gap-1">
+                        <ItemTitle className="text-muted-foreground max-w-full truncate text-xs font-medium">
+                          {title}
+                        </ItemTitle>
+                        <span className="text-foreground text-sm leading-tight font-medium">
+                          {owner}
+                        </span>
+                      </ItemContent>
+                      <ItemMedia className="mt-0.5 [&_svg]:size-4 [&_svg]:text-muted-foreground">
+                        <Icon aria-hidden="true" />
+                      </ItemMedia>
+                    </div>
+                    <ItemDescription className="text-xs leading-tight">
+                      {description}
+                    </ItemDescription>
+                  </button>
+                </Item>
+              ))}
+            </FramePanel>
+          </Frame>
         </div>
       </div>
       <Sheet

@@ -1,0 +1,452 @@
+{
+  "milestone": "Flux Approvals native lower layout, informational policy and coverage buttons",
+  "date": "2026-11-03",
+  "base": "5d1368a384b082cd8d3c4ca6f9757fa1a94d85e1",
+  "goalComplete": false,
+  "scope": {
+    "runtimeFiles": 3,
+    "qaFiles": 2,
+    "siteSourceFiles": 1151,
+    "catalogTemplatesImplemented": 18,
+    "officialTemplatesInDatedAudit": 19,
+    "StrataImplementation": "planned separately"
+  },
+  "owned": [
+    {
+      "path": "src/templates/workflow/approvals.tsx",
+      "baseSHA256": "7d81da246d389ddcd4ca177a8ea8b836d88edf170a8ec59b5a6b217ff6a2135c",
+      "candidateSHA256": "0fb676b32a79dcfd434f1763be88fd60a1c7e314ddf276fe559fdae14323eae2"
+    },
+    {
+      "path": "src/templates/workflow/flux-approvals.css",
+      "baseSHA256": null,
+      "candidateSHA256": "e23cd29f21edd213f42fd8430a541a6af7388685eb179766674e36b3a8a7e0c5"
+    },
+    {
+      "path": "src/lib/source-targets.ts",
+      "baseSHA256": "e1cdecb06460a239f80f84a764977e391224a19182728791bd9b6282072e0feb",
+      "candidateSHA256": "11418ec7303c85f3df24c7a0c8e0322e1d38a668228810fb58203924a94177c7"
+    },
+    {
+      "path": "tests/flux-approval-layout-native.spec.ts",
+      "baseSHA256": null,
+      "candidateSHA256": "b2e303c328fc40b1bb084c48ab4bc25cc4a0e41e635ed5d44bb7781f06b91bf0"
+    },
+    {
+      "path": "tests/flux-approval-layout-source.spec.ts",
+      "baseSHA256": null,
+      "candidateSHA256": "0b8dbba76d0f7030a5a99396901b625f4e8f497ee3ff4188daa9248a6832940d"
+    }
+  ],
+  "finalSourceBaseline": {
+    "sharedEditor": {
+      "src/blocks/application/rich-text-toolbar.tsx": "8ac9d9ed3c2b30c76449723e6ae056d96ee0375efc8368f9dbd15d0eb9cd6de0"
+    },
+    "ownFiveFilesByteExactToVerifiedV4": true,
+    "allOtherTrackedFilesByteExactTo5dIncludingEditorQAAndDocs": true,
+    "frozenRuntimeSHA256": "5925dc280a79b375cf191508c568bc2c7b244b193ecfd918220d7e94bfa261b6",
+    "parentFinalReceiptSHA256": "ad5f573fa9de4bdf6ef0acfe4d0963b5e6e60c2e20813a75ba8af3660992420f"
+  },
+  "actualFreeReuse": {
+    "modules": [
+      {
+        "capability": "Frame/FrameHeader/FrameTitle/FramePanel",
+        "path": "src/components/reui/frame.tsx",
+        "sha256": "a80a37a89e4c47eb2ff226557b2f53e528681d09a4a0321d8aebf826b4c3ecd6",
+        "reference": "https://reui.io/docs/components/radix/frame",
+        "vendorOrSharedModuleEdited": false
+      },
+      {
+        "capability": "IconTile",
+        "path": "src/components/reui/icon-tile.tsx",
+        "sha256": "286805a224e4d44a3f8f6873f87f6128206857365f0c1747bf76b2852e90e3af",
+        "reference": "https://reui.io/docs/components/radix/icon-tile",
+        "vendorOrSharedModuleEdited": false
+      },
+      {
+        "capability": "Timeline/Item/Header/Title/Indicator/Separator/Content",
+        "path": "src/components/reui/timeline.tsx",
+        "sha256": "439a41633b9d6d7b77d862058fe7867102de1e9d8695c6e920b22c524e54b00a",
+        "reference": "https://reui.io/r/radix-nova/timeline.json",
+        "vendorOrSharedModuleEdited": false
+      },
+      {
+        "capability": "Item/ItemContent/ItemTitle/ItemMedia/ItemDescription",
+        "path": "src/components/ui/item.tsx",
+        "sha256": "586a27a26a55fe9bce3d097e56608145437f2735abbd5e036a8cca611583322c",
+        "reference": "https://reui.io/r/radix-nova/c-item-1.json",
+        "vendorOrSharedModuleEdited": false
+      },
+      {
+        "capability": "Badge",
+        "path": "src/components/reui/badge.tsx",
+        "sha256": "aa775fdd1638b34a843f5ece24236705d152cc36ea5edce62a62fe5601dde664",
+        "reference": null,
+        "vendorOrSharedModuleEdited": false
+      },
+      {
+        "capability": "Tooltip/TooltipTrigger/TooltipContent",
+        "path": "src/components/ui/tooltip.tsx",
+        "sha256": "f9136b801610c1afbee3db51fed1dcee51e402fbb6efeda59d18beb476f8f661",
+        "reference": "https://reui.io/r/radix-nova/c-tooltip-1.json",
+        "vendorOrSharedModuleEdited": false
+      },
+      {
+        "capability": "Existing Person composition using Avatar",
+        "path": "src/templates/workflow/controls.tsx",
+        "sha256": "d705f0cc9d82f6f4de58218d903843cd9cc2014dd56bac89127b3193868b6c90",
+        "reference": null,
+        "vendorOrSharedModuleEdited": false
+      }
+    ],
+    "renderedCompositions": {
+      "Frame": 3,
+      "policyIconTiles": 5,
+      "coverageNativeItemButtons": 6,
+      "recentTimelineItems": 4
+    },
+    "removedDuplication": "Five unused policy booleans and switch rows, six static coverage summaries, four manual decision rows and three lower Card wrapper compositions.",
+    "necessaryCustomCode": "Scoped measured mobile inset/clip and Person sizing; observed local coverage presentation state; exact-predicate useMemo to prevent observed unrelated page reset; route-safe informational anchors with no invented scroll/detail effect.",
+    "noticesUnchanged": [
+      {
+        "path": "src/components/reui/REUI-LICENSE.txt",
+        "sha256": "09592ffefa6512b68dd7aa9031bc50d5d39cfcc9da08288f5eb1f9d236baca66",
+        "edited": false
+      },
+      {
+        "path": "src/blocks/assets/Inter-LICENSE.txt",
+        "sha256": "262481e844521b326f5ecd053e59b98c8b2da78c8ee1bdbb6e8174305e54935a",
+        "edited": false
+      }
+    ],
+    "assetSubstitutes": "Existing local licensed/original avatars and Lucide glyphs; no original paid SVG/avatar/screenshot is shipped.",
+    "provenanceLimit": "This demonstrates real reuse of existing implementations and unchanged module hashes, not byte identity of entire upstream examples."
+  },
+  "reference": {
+    "officialPreview": "https://flux-agentops.reui.io/",
+    "page": "Approvals",
+    "verifiedBehavior": [
+      "Five Approval Policy rows are informational icon/link rows, not switches.",
+      "Coverage Ops Lead repeat-click stays selected; choosing Finance Desk selects it exclusively. Overview to Approvals resets the local selection.",
+      "Observed coverage clicks do not filter the queue. Natural sorted page2 selection must retain current row IDs, sorting and filters.",
+      "Informational links keep the same app page. The gallery uses a route-safe anchor adaptation without an invented details dialog or scroll reset."
+    ],
+    "visualScope": {
+      "viewports": ["1440 desktop", "390x844 phone"],
+      "phoneRelativeComparison": [
+        {
+          "section": "policy",
+          "frameSizeAndXMatch": true,
+          "originalFrame": {
+            "bottom": 2004.5,
+            "height": 360,
+            "left": 17,
+            "right": 358,
+            "top": 1644.5,
+            "width": 341,
+            "x": 17,
+            "y": 1644.5
+          },
+          "candidateFrame": {
+            "bottom": 444.59375,
+            "height": 360,
+            "left": 17,
+            "right": 358,
+            "top": 84.59375,
+            "width": 341,
+            "x": 17,
+            "y": 84.59375
+          },
+          "absoluteYCompared": false,
+          "all5RowsStylesAndRelativeRectsMatch": true,
+          "colorsGlyphsOuterHeaderNotClaimedEqual": true
+        },
+        {
+          "section": "coverage",
+          "frameSizeAndXMatch": true,
+          "originalFrame": {
+            "bottom": 2387,
+            "height": 366.5,
+            "left": 17,
+            "right": 358,
+            "top": 2020.5,
+            "width": 341,
+            "x": 17,
+            "y": 2020.5
+          },
+          "candidateFrame": {
+            "bottom": 827.09375,
+            "height": 366.5,
+            "left": 17,
+            "right": 358,
+            "top": 460.59375,
+            "width": 341,
+            "x": 17,
+            "y": 460.59375
+          },
+          "absoluteYCompared": false,
+          "all6CardSizesAndRelativeRectsMatch": true
+        },
+        {
+          "recentFramePhone": [
+            {
+              "x": 17,
+              "width": 341,
+              "height": 331
+            }
+          ],
+          "referencePhoneHeight": 331,
+          "scope": "SameEdge390; local portraits/licensedLucide intentional substitutes, no global page/header/queue visual equality claim."
+        }
+      ],
+      "lowerGrid": "Full-width queue followed by container-responsive three/two/one-column summaries; coverage remains two columns inside its Frame.",
+      "desktopAbsoluteYOffsetStillPresent": 76.75,
+      "unverified": [
+        "Full upper header/KPI/queue fidelity",
+        "Absolute phone Y across different scroll positions",
+        "Every color, glyph, background and image identity"
+      ]
+    },
+    "captureLimits": "Earlier fullPage captures were viewport-sized and did not prove the lower phone cards. Later natural inner scrolling and actual viewport captures provide the lower-card evidence; window.scrollY=0 alone is not content-top proof."
+  },
+  "businessPreservation": "Queue fields/decide/JSX and Sheets are byte-exact; filter AST prints identically and only memo deps rows/query/risk/status/overSla change its identity. Natural sorted page2/IDs/filter/sort remain, actual query changes still reset page1, and existing approval-neighbor oracle remains untouched.",
+  "sourceTargets": {
+    "defaultFluxSource": "src/templates/workflow/flux.tsx",
+    "all18DefaultsUnchanged": true,
+    "other17WholeMappingsUnchanged": true,
+    "onlyAdditions": [
+      "src/templates/workflow/approvals.tsx",
+      "src/templates/workflow/flux-approvals.css"
+    ],
+    "metadataComparisonSHA256": "50f96891011106d073c460a241590627913302e63541cc860873dbd7e1f75d14"
+  },
+  "gates": {
+    "normalPhysicalCI": {
+      "command": ["npm", "ci"],
+      "exit": 0,
+      "seconds": 5.796141667000484,
+      "logSHA256": "26448bb4d4bca448470d7658bc06b825ba50c554e09aaa6b4bd39fe83c4904f1"
+    },
+    "fullFormatCheck": {
+      "command": ["npm", "run", "format:check"],
+      "exit": 0,
+      "seconds": 0.6689915000024484,
+      "logSHA256": "97e35b4d6e19b4071e21efcd928ffcd699a6e2964a644a3b5154c1a98738faeb"
+    },
+    "fullLint": {
+      "command": ["npm", "run", "lint"],
+      "exit": 0,
+      "seconds": 0.9667110000009416,
+      "logSHA256": "49f06b87573eac855586092c6f8c3c90663fd8742c0a611c890c5107f67fc0a1"
+    },
+    "originalStrictV5": {
+      "command": ["npm", "run", "build"],
+      "exit": 0,
+      "seconds": 27.50795308299712,
+      "logSHA256": "2efdb7141a3f26012adf7e4bb5b4b46e8e64b2da5ae665ffd1d90e7326dbd843"
+    },
+    "oldSharedBaseV4Native3": {
+      "command": [
+        "npx",
+        "playwright",
+        "test",
+        "tests/flux-approval-layout-native.spec.ts",
+        "tests/template-interactions.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--output",
+        "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/flux-approval-layout-aa19-static-candidate-v1/native3-v4/artifacts",
+        "--reporter=json",
+        "--grep",
+        "Flux approval layout|Flux approval updates the selected request"
+      ],
+      "exit": 0,
+      "seconds": 9.02038962500228,
+      "stats": {
+        "startTime": "2026-11-03T06:57:38.452Z",
+        "duration": 8636.215,
+        "expected": 3,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "83cdee0031e17bbed5ef47282b5f2aab6175252b23b6ea3f9d74df45d61d90fc"
+    },
+    "finalV5Source4": {
+      "command": [
+        "npx",
+        "playwright",
+        "test",
+        "tests/flux-approval-layout-source.spec.ts",
+        "tests/lucent-security-item-source.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--output",
+        "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/flux-approval-layout-aa19-static-candidate-v1/source4/artifacts",
+        "--reporter=json",
+        "--grep",
+        "Flux approval layout|Lucent Security Item actual original ZIP"
+      ],
+      "exit": 0,
+      "seconds": 13.567402332999336,
+      "stats": {
+        "startTime": "2026-11-03T07:53:42.193Z",
+        "duration": 13048.972000000002,
+        "expected": 4,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "5077b99eb85d5510f2d000ecf259acae2f66ab388ee23443000e1a92066abf2c"
+    }
+  },
+  "nativeCoverageLimit": "The site native3 passed on V4 with the old shared editor baseline. Its five owned files are unchanged. Final V5 was independently built and passed Source4, and both actual final5d downloaded packages passed their necessary3/2 native cases. This is not a claim that site native3 was rerun on V5.",
+  "sourceCoverage": "Actual approvals.tsx and CSS view, clipboard Copy and single-file bytes, plus fresh Flux and old Lucent original archives; default implementation remains flux.tsx.",
+  "originalPackages": {
+    "flux": {
+      "archiveSHA256": "baf8793bf42472480aa84a579687bb9ae75d79a28bfd44016550a882144e6ee1",
+      "rawMembers": 309,
+      "distFiles": 473,
+      "publicFiles": 246,
+      "originalNormalPostinstallExecuted": true,
+      "originalSourceEntryPackageConfigDistPublicAndArchiveExact": true,
+      "finalSharedEditorAndApprovalSourceExact": true,
+      "normalInstall": {
+        "command": ["npm", "install"],
+        "exit": 0,
+        "seconds": 52.89983508300065,
+        "logSHA256": "ef08f3aea05f08a3271d1ff356d38c165eb661ca95ed5a04fa963fadcc3a68c3"
+      },
+      "originalStrict": {
+        "command": ["npm", "run", "build"],
+        "exit": 0,
+        "seconds": 9.176446500001475,
+        "logSHA256": "5d1cb7027331c458802cf5e56fb76135ce2b83da83d73a124460d75df957eba2"
+      },
+      "native": {
+        "command": [
+          "npx",
+          "playwright",
+          "test",
+          "tests/flux-approval-layout-native.spec.ts",
+          "tests/template-interactions.spec.ts",
+          "--workers=1",
+          "--retries=0",
+          "--output",
+          "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/flux-approval-layout-aa19-static-candidate-v1/received-flux-native3/artifacts",
+          "--reporter=json",
+          "--grep",
+          "Flux approval layout|Flux approval updates the selected request"
+        ],
+        "exit": 0,
+        "seconds": 9.39741070799937,
+        "stats": {
+          "startTime": "2026-11-03T07:59:13.079Z",
+          "duration": 8997.185,
+          "expected": 3,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "reportSHA256": "e39c9bc6685426abaed1efac8c1a24d1b1a8cb641e291d397322bc55302a5188"
+      }
+    },
+    "lucent": {
+      "archiveSHA256": "8c8122bfc3cfbd1d1226c5811b82760e66a1f976a909af05098f37626ced9ee2",
+      "rawMembers": 309,
+      "distFiles": 473,
+      "publicFiles": 246,
+      "originalNormalPostinstallExecuted": true,
+      "originalSourceEntryPackageConfigDistPublicAndArchiveExact": true,
+      "finalSharedEditorAndApprovalSourceExact": true,
+      "normalInstall": {
+        "command": ["npm", "install"],
+        "exit": 0,
+        "seconds": 9.744241166998108,
+        "logSHA256": "415860be9ce9fa974374a31495cdd76279e999863a26fe74af7b7fe8d3a23a70"
+      },
+      "originalStrict": {
+        "command": ["npm", "run", "build"],
+        "exit": 0,
+        "seconds": 10.765144208002312,
+        "logSHA256": "8defed8d0b7dd301eaeca1152b902c45056f6bdb94d5f1269702e82e14a83e29"
+      },
+      "native": {
+        "command": [
+          "npx",
+          "playwright",
+          "test",
+          "tests/lucent-security-item-native.spec.ts",
+          "--workers=1",
+          "--retries=0",
+          "--output",
+          "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/flux-approval-layout-aa19-static-candidate-v1/received-lucent-native2/artifacts",
+          "--reporter=json"
+        ],
+        "exit": 0,
+        "seconds": 7.778465167000832,
+        "stats": {
+          "startTime": "2026-11-03T08:01:13.190Z",
+          "duration": 7235.486,
+          "expected": 2,
+          "skipped": 0,
+          "unexpected": 0,
+          "flaky": 0
+        },
+        "reportSHA256": "d2e2074d2c6049983d68351886f458e8668530e8adf3ee074333d427fb18dd15"
+      }
+    }
+  },
+  "retainedObservations": [
+    "Natural coverage focus on V3 exposed unrelated pagination reset from a new filtered-array identity. V4 memoizes the exact existing predicate with rows/query/risk/status/overSla dependencies; actual query/data changes still reset pagination.",
+    "Validator insertion/path assertions failed during controller preparation before any package gate ran. Those preparation observations remain distinct from formal native/source runs; all required formal cases passed first attempt without retries.",
+    "The initial V4 free-reuse ledger is a static-stage snapshot; its then-pending export text is superseded by the final V5 Source4 and both actual received-package receipts recorded here."
+  ],
+  "finalIntegrity": {
+    "source": 1151,
+    "dist": 657,
+    "public": 247,
+    "allSiteSourceDistPublicQAAndConfigExact": true,
+    "allNonOwnedTrackedFilesExactly5dIncludingRootQAAndDocs": true,
+    "own5SameV4": true,
+    "protected13Exact": true,
+    "ports": [
+      {
+        "pid": 87011,
+        "port": 63776,
+        "closed": true
+      },
+      {
+        "pid": 89681,
+        "port": 64859,
+        "closed": true
+      },
+      {
+        "pid": 91264,
+        "port": 65335,
+        "closed": true
+      }
+    ],
+    "CUA": "Own tabs closed/reset at V4; no CUA access after Root took the visible browser.",
+    "noHeavyJobsRemaining": true
+  },
+  "release": {
+    "committed": "pending at record creation",
+    "pushed": "pending at record creation",
+    "fullCI": "Separate exact-commit post-push gate",
+    "Pages": "Separate exact-commit deployment gate",
+    "lastVerifiedLive": {
+      "commit": "aa19f4c6b16cc8dfa8ec6686bec3b8875d729e7b",
+      "CI": 41587506287,
+      "passed": 2132,
+      "deployment": 7513106205,
+      "successUTC": "2026-11-03T07:40:41Z"
+    }
+  },
+  "remaining": [
+    "Global upper queue/KPI/header styling and desktop absolute Y offset remain separate fidelity work; no spacer or false absolute-Y equality.",
+    "Original other four coverage clicks, reload persistence and backend semantics were not asserted.",
+    "Local licensed/original portraits and Lucide glyphs intentionally replace original paid artwork.",
+    "Other templates and the full19-template objective remain open."
+  ]
+}

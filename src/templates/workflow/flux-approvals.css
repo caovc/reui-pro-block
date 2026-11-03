@@ -1,0 +1,30 @@
+.wf-approval-layout.wf-flux-approval-layout {
+  grid-template-columns: minmax(0, 1fr);
+  container-type: inline-size;
+}
+
+.wf-flux-approval-layout .wf-approval-owner .wf-person {
+  gap: 6px;
+  color: var(--foreground);
+  font-weight: 500;
+}
+
+.wf-flux-approval-layout .wf-approval-owner .wf-person > [data-slot="avatar"] {
+  width: 20px;
+  height: 20px;
+}
+
+@media (max-width: 767px) {
+  .wf-root.wf-agentops:has(.wf-flux-approval-layout) > .wf-main {
+    border: 1px solid var(--border);
+    overflow: clip;
+  }
+
+  .wf-root.wf-agentops:has(.wf-flux-approval-layout) > .wf-main > .wf-header {
+    height: 48px;
+  }
+
+  .wf-root.wf-agentops:has(.wf-flux-approval-layout) > .wf-main > .wf-content {
+    padding: 16px;
+  }
+}
