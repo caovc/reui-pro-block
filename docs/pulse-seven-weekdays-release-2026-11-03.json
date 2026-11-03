@@ -1,0 +1,236 @@
+{
+  "milestone": "Pulse seven weekday choices",
+  "date": "2026-11-03",
+  "base": "dc5152ed3b8f8ad0ae4a6f570ff3efa48dc2cf42",
+  "goalComplete": false,
+  "publication": "Local acceptance snapshot before commit/push; full CI and Pages are separate pending gates.",
+  "sourceFiles": 1150,
+  "ownedRuntimeAndQA": [
+    {
+      "path": "src/templates/collaboration/pulse-settings.tsx",
+      "beforeSHA256": "a07043ff32ad9ac92ca9a61907685fc2c94496b31e67592b26f7eaca583d3059",
+      "afterSHA256": "d37a431ddff0429b1ae69eda1c7c08c085d09ac9775baa6515c0c2905e286bab",
+      "candidate": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/pulse-first-day-dc-validation-v1/candidate/src/templates/collaboration/pulse-settings.tsx"
+    },
+    {
+      "path": "tests/collaboration-setting-row-native.spec.ts",
+      "beforeSHA256": "17c26ead2981888c58efb360ff3db012faae36c203fae7fcdee72864b0af25f1",
+      "afterSHA256": "966ed0b50676e1fd842fc6f8bbac827cbc5d41e1605991393d68b2d6aed69e88",
+      "candidate": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/pulse-first-day-dc-validation-v1/candidate/tests/collaboration-setting-row-native.spec.ts"
+    },
+    {
+      "path": "tests/collaboration-settings-row-source.spec.ts",
+      "beforeSHA256": "7ac188c5cf6dc96db6a3b41b0076558ddfd149b9ae8b9bc492e8b4d608148c6a",
+      "afterSHA256": "db86411c436b370151f8006d3d9cda80344522b3b398fafd2c7d7e8b69aef85f",
+      "candidate": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/pulse-first-day-dc-validation-v1/candidate/tests/collaboration-settings-row-source.spec.ts"
+    }
+  ],
+  "reuse": {
+    "actual": "Existing SettingsSelect and unchanged free ReUI Select primitives; existing Field-based project SettingsRow retained.",
+    "removedGap": "The First day of week menu omitted Tuesday through Friday. Only the option list changes.",
+    "custom": "Existing session-local draft/save/reset remains; no new custom control, calendar/SLA integration or server persistence."
+  },
+  "gates": {
+    "normal-install.json": {
+      "command": ["npm", "ci"],
+      "cwd": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/pulse-first-day-dc-validation-v1/candidate",
+      "exit": 0,
+      "seconds": 5.333485999995901,
+      "logSHA256": "fd4e0e85f8cb0c7891d2643d662b39fc7328e6139251d2aa3207e67ba4cceea8"
+    },
+    "scoped-format-check.json": {
+      "command": [
+        "npm",
+        "run",
+        "format:check",
+        "--",
+        "src/templates/collaboration/pulse-settings.tsx",
+        "tests/collaboration-setting-row-native.spec.ts",
+        "tests/collaboration-settings-row-source.spec.ts"
+      ],
+      "cwd": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/pulse-first-day-dc-validation-v1/candidate",
+      "exit": 0,
+      "seconds": 0.1461932500023977,
+      "logSHA256": "1a3f0d53a0c32fb24db024bf4bd605fe74f54452e61648efc7aa124db38e321e"
+    },
+    "scoped-lint.json": {
+      "command": [
+        "npm",
+        "run",
+        "lint",
+        "--",
+        "src/templates/collaboration/pulse-settings.tsx",
+        "tests/collaboration-setting-row-native.spec.ts",
+        "tests/collaboration-settings-row-source.spec.ts"
+      ],
+      "cwd": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/pulse-first-day-dc-validation-v1/candidate",
+      "exit": 0,
+      "seconds": 0.49215720900247106,
+      "logSHA256": "35096ae0cb709f56c7372b35f4010f5153378aec19b1a9f377a2a5e94b3a15d5"
+    },
+    "original-strict-build.json": {
+      "command": ["npm", "run", "build"],
+      "cwd": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/pulse-first-day-dc-validation-v1/candidate",
+      "exit": 0,
+      "seconds": 23.768329457998334,
+      "logSHA256": "962576107311e393182f968cff65aa93baa57eaa4027eb2e0353980b2afa872b"
+    },
+    "native5/receipt.json": {
+      "command": [
+        "npx",
+        "playwright",
+        "test",
+        "tests/collaboration-setting-row-native.spec.ts",
+        "tests/templates-collaboration-round3.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--output",
+        "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/pulse-first-day-dc-validation-v1/native5/artifacts",
+        "--reporter=json",
+        "--grep",
+        "pulse native Pro SettingsRow compatibility|Pulse settings (save domains, color and preferences and reset to the saved values|reject invalid domains and import a unique domain list|keep mobile domain and regional controls usable)$"
+      ],
+      "url": "http://127.0.0.1:62434/",
+      "exit": 0,
+      "seconds": 12.725906667001254,
+      "stats": {
+        "startTime": "2026-11-03T04:13:54.479Z",
+        "duration": 12371.630000000001,
+        "expected": 5,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "540719493c82c6bd5d6510ba746ff467012cb95507d1b272b913eaef435dd1dc"
+    },
+    "source2/receipt.json": {
+      "command": [
+        "npx",
+        "playwright",
+        "test",
+        "tests/collaboration-settings-row-source.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--output",
+        "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/pulse-first-day-dc-validation-v1/source2/artifacts",
+        "--reporter=json",
+        "--grep",
+        "pulse SettingRow source pulse-settings\\.tsx:|pulse actual original SettingRow ZIP"
+      ],
+      "url": "http://127.0.0.1:62434/",
+      "exit": 0,
+      "seconds": 7.431085083000653,
+      "stats": {
+        "startTime": "2026-11-03T04:14:07.358Z",
+        "duration": 6924.695000000001,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "f75a44886b764b8e1a969401c43b6f30687d1e6e568d2034caef5cbf5cd45cbb"
+    },
+    "received-normal-install.json": {
+      "command": ["npm", "install"],
+      "cwd": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/pulse-first-day-dc-validation-v1/received-pulse",
+      "exit": 0,
+      "seconds": 36.35047087499697,
+      "logSHA256": "68f0e538e4db81a96df4666f04b949f7952d266db0d2ff96386dff5e055e2ef4"
+    },
+    "received-original-strict.json": {
+      "command": ["npm", "run", "build"],
+      "cwd": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/pulse-first-day-dc-validation-v1/received-pulse",
+      "exit": 0,
+      "seconds": 5.696877374997712,
+      "logSHA256": "95d2e7f8c5917f7d922403e18a9f7c01d90a5dd0d9797121a8edf71920545735"
+    },
+    "received-native5/receipt.json": {
+      "command": [
+        "npx",
+        "playwright",
+        "test",
+        "tests/collaboration-setting-row-native.spec.ts",
+        "tests/templates-collaboration-round3.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--output",
+        "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/pulse-first-day-dc-validation-v1/received-native5/artifacts",
+        "--reporter=json",
+        "--grep",
+        "pulse native Pro SettingsRow compatibility|Pulse settings (save domains, color and preferences and reset to the saved values|reject invalid domains and import a unique domain list|keep mobile domain and regional controls usable)$"
+      ],
+      "url": "http://127.0.0.1:63455/",
+      "exit": 0,
+      "seconds": 9.567033833001915,
+      "stats": {
+        "startTime": "2026-11-03T04:17:13.635Z",
+        "duration": 9212.731,
+        "expected": 5,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "8ce60c4a515d5cd93e9940616943723757d849e5817c5f9605b80aec4305fe44"
+    }
+  },
+  "actualArchive": {
+    "path": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/pulse-first-day-dc-validation-v1/source2/artifacts/collaboration-settings-row-77ee6-d-complete-licensed-closure/pulse-original-project.zip",
+    "sha256": "ac7d868c833326413fd2fb4aedf8689389e6ef4cf33b8a63e47d0f2b9e454443",
+    "members": 228,
+    "sourceClosureOracle": "Existing complete oracle unchanged; actual modified source in View/Copy/single and whole original ZIP exact."
+  },
+  "receivedFinally": {
+    "preview": {
+      "pid": 77011,
+      "url": "http://127.0.0.1:63455/",
+      "project": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/pulse-first-day-dc-validation-v1/received-pulse"
+    },
+    "terminated": true,
+    "nativePass": true,
+    "allOriginalMembersUnchanged": true,
+    "distPublicArchiveUnchanged": true,
+    "originalMemberCount": 228,
+    "publicFileCount": 0
+  },
+  "finalIntegrity": {
+    "all1150SourceDistPublicExact": true,
+    "owned3AndRetainedQaExact": true,
+    "protectedSettingsCssUnchanged": true,
+    "browserOwnTabsClosedViewportReset": true,
+    "ports": [
+      {
+        "pid": 72542,
+        "port": 62434,
+        "closed": true
+      },
+      {
+        "pid": 77011,
+        "port": 63455,
+        "closed": true
+      }
+    ],
+    "distCount": 657,
+    "publicCount": 247
+  },
+  "newAssertions": [
+    "Seven actual option labels/count",
+    "End moves real focus to Sunday, Escape preserves Monday and restores trigger",
+    "ArrowDown Monday→Tuesday; save name/color/week",
+    "Actual Dashboard then Settings navigation preserves saved Tuesday/name/color at both widths",
+    "Tuesday→Wednesday draft; Reset restores saved Tuesday/name/color"
+  ],
+  "scope": {
+    "viewports": [1440, 390],
+    "native": "Affected Pulse subset only; unchanged Roster/default Cohort cases not rerun.",
+    "source": "Changed pulse-settings view/Copy/single-file plus fresh actual original ZIP; unchanged helper/API/CSS flows not rerun.",
+    "dependencies": "Normal physical npm ci in candidate; clean archive uses an independent physical APFS copy of those installed dependencies. Original downloaded project used normal npm install.",
+    "originalScripts": ["dev", "build", "preview"],
+    "noSourceOrEntryRepair": true
+  },
+  "shutdownObservation": "Initial immediate post-SIGTERM socket observation was preserved; the same ports were then observed closed without restarting or rerunning tests.",
+  "remaining": "Pulse native label/id association and typography differences; separate Lucent Item composition and the broader template fidelity goal remain open.",
+  "evidenceSHA256": {
+    "ownedManifest": "c46f57c4243877c4a0d220071ee44c8e96a447319245457f551d7f71ba4bfb5e",
+    "finalReceipt": "8d6c68089c2dde17088a545d4650f67e035518c6b41be0fd78dc5b4c415b5e7f"
+  }
+}

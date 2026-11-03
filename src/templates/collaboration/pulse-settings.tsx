@@ -124,7 +124,15 @@ export function PulseSettings({ model }: { model: PulseSettingsState }) {
             <SettingsSelect
               label="First day of week"
               value={draft.firstDay}
-              options={["Monday", "Sunday", "Saturday"]}
+              options={[
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday",
+                "Sunday",
+              ]}
               onChange={(firstDay) => setDraft({ ...draft, firstDay })}
             />
           </SettingsRow>

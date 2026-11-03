@@ -236,17 +236,52 @@ async function pulseFlow(page: Page, info: TestInfo, width: number) {
   expect(colorStyle.justify).toBe("flex-start");
   expect(colorStyle.maxWidth).toBe("100%");
   expect(colorStyle.swatchSize).toBe("28px");
-  await selectWithKeyboard(page, week, "Monday", "Sunday");
+  await week.click();
+  const weekOptions = page.locator('[data-slot="select-content"]').getByRole("option");
+  await expect(weekOptions).toHaveText([
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+  ]);
+  await expect(weekOptions).toHaveCount(7);
+  await expect(weekOptions.first()).toBeFocused();
+  await page.keyboard.press("End");
+  await expect(weekOptions.last()).toBeFocused();
+  await page.keyboard.press("Escape");
+  await expect(page.locator('[data-slot="select-content"]')).toHaveCount(0);
+  await expect(week).toBeFocused();
+  await expect(week).toHaveText("Monday");
+  await selectWithKeyboard(page, week, "Monday", "Tuesday");
   const savedName = `Bricklane Help Desk ${width}`;
   await name.fill(savedName);
   await colorRow.getByRole("option", { name: "Violet", exact: true }).click();
   await root.getByRole("button", { name: "Save changes", exact: true }).click();
   await expect(root.getByText("All changes saved", { exact: true })).toBeVisible();
+  async function navigate(name: "Dashboard" | "Settings") {
+    if (width === 390) {
+      await page.getByRole("button", { name: "Open navigation", exact: true }).click();
+    }
+    await page.getByRole("button", { name, exact: true }).filter({ visible: true }).first().click();
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+  }
+  await navigate("Dashboard");
+  await expect(name).toHaveCount(0);
+  await navigate("Settings");
+  await expect(name).toHaveValue(savedName);
+  await expect(week).toHaveText("Tuesday");
+  await expect(colorRow.getByRole("option", { name: "Violet", exact: true })).toHaveAttribute(
+    "aria-selected",
+    "true",
+  );
   await name.fill("Unsaved Help Desk");
-  await selectWithKeyboard(page, week, "Sunday", "Saturday");
+  await selectWithKeyboard(page, week, "Tuesday", "Wednesday");
   await root.getByRole("button", { name: "Reset", exact: true }).click();
   await expect(name).toHaveValue(savedName);
-  await expect(week).toHaveText("Sunday");
+  await expect(week).toHaveText("Tuesday");
   await expect(colorRow.getByRole("option", { name: "Violet", exact: true })).toHaveAttribute(
     "aria-selected",
     "true",

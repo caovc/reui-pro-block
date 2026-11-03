@@ -41,7 +41,10 @@ for (const id of ["pulse", "roster"] as const) {
       "src/components/reui/number-field.tsx",
     ],
   };
-  const selectedPaths = [...sharedPaths, ...(id === "pulse" ? [apiPath] : [])];
+  const selectedPaths = [
+    ...sharedPaths,
+    ...(id === "pulse" ? [apiPath, "src/templates/collaboration/pulse-settings.tsx"] : []),
+  ];
   for (const selectedPath of selectedPaths) {
     test(`${id} SettingRow source ${basename(selectedPath)}: actual view, Copy and single-file bytes`, async ({
       page,
