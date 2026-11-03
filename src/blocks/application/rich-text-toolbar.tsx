@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { useEditorState } from "@tiptap/react";
 import { BubbleMenu } from "@tiptap/react/menus";
 import type { Editor } from "@tiptap/core";
@@ -134,6 +134,21 @@ export function RichTextToolbar({
   onLinkOpenChange: (open: boolean) => void;
   trailing?: ReactNode;
 }) {
+  const linkOpenRef = useRef(linkOpen);
+  linkOpenRef.current = linkOpen;
+  const [linkFormGeneration, setLinkFormGeneration] = useState(0);
+  const changeLinkOpen = useCallback(
+    (open: boolean) => {
+      if (open && !linkOpenRef.current) {
+        // A quick reopen must get a fresh form/focus scope even while the old
+        // Popover is still completing its native exit animation.
+        setLinkFormGeneration((generation) => generation + 1);
+      }
+      linkOpenRef.current = open;
+      onLinkOpenChange(open);
+    },
+    [onLinkOpenChange],
+  );
   const state = useEditorState({
     editor,
     selector: ({ editor: current }) => ({
@@ -175,11 +190,11 @@ export function RichTextToolbar({
       )
         return;
       event.preventDefault();
-      onLinkOpenChange(true);
+      changeLinkOpen(true);
     };
     element.addEventListener("keydown", openLink);
     return () => element.removeEventListener("keydown", openLink);
-  }, [editor, onLinkOpenChange]);
+  }, [editor, changeLinkOpen]);
   return (
     <div
       className="editor-format-toolbar rich-text-toolbar"
@@ -330,7 +345,7 @@ export function RichTextToolbar({
             </ColorPickerContent>
           </ColorPicker>
         )}
-        <Popover open={linkOpen} onOpenChange={onLinkOpenChange}>
+        <Popover open={linkOpen} onOpenChange={changeLinkOpen}>
           <PopoverTrigger asChild>
             <Button
               variant={state.link ? "secondary" : "ghost"}
@@ -342,15 +357,18 @@ export function RichTextToolbar({
             </Button>
           </PopoverTrigger>
           <PopoverContent
+            key={linkFormGeneration}
             className="w-80 p-2"
             aria-label="Link"
             align="start"
             onCloseAutoFocus={(event) => {
               event.preventDefault();
-              editor.commands.focus();
+              // An obsolete close callback must not steal focus from a form
+              // that has already reopened while the old content was exiting.
+              if (!linkOpenRef.current) editor.commands.focus();
             }}
           >
-            <RichTextLinkForm editor={editor} onClose={() => onLinkOpenChange(false)} />
+            <RichTextLinkForm editor={editor} onClose={() => changeLinkOpen(false)} />
           </PopoverContent>
         </Popover>
       </ButtonGroup>
@@ -463,7 +481,7 @@ export function RichTextToolbar({
               size="icon-sm"
               aria-label="Edit link"
               onMouseDown={(event) => event.preventDefault()}
-              onClick={() => onLinkOpenChange(true)}
+              onClick={() => changeLinkOpen(true)}
             >
               <Link />
             </Button>

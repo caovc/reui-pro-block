@@ -1,0 +1,251 @@
+{
+  "milestone": "Document Editor native Link dialog rapid reopen",
+  "date": "2026-11-03",
+  "base": "aa19f4c6b16cc8dfa8ec6686bec3b8875d729e7b",
+  "goalComplete": false,
+  "scope": {
+    "runtimeFiles": 1,
+    "qaFiles": 2,
+    "sourceFiles": 1150,
+    "otherSourceFilesByteExact": 1149,
+    "oldEditorSpecPrefixBytesExact": 9076,
+    "defaultSource": "src/blocks/application/editor.tsx",
+    "selectedChangedSource": "src/blocks/application/rich-text-toolbar.tsx",
+    "sourceTargetsUnchanged": true
+  },
+  "changes": [
+    {
+      "path": "src/blocks/application/rich-text-toolbar.tsx",
+      "beforeSHA256": "9dd79bbb47524f17031ebd27966c58c409f25a26d36ee8f45722f709bbdb7ad9",
+      "afterSHA256": "8ac9d9ed3c2b30c76449723e6ae056d96ee0375efc8368f9dbd15d0eb9cd6de0"
+    },
+    {
+      "path": "tests/editor-fidelity.spec.ts",
+      "beforeSHA256": "df80a0c449874f758e8f0345428cca3830bd57067f8b24ca08bd43c53674e801",
+      "afterSHA256": "085c417c3b15d25b5d2686b8760ffcab3156ad71120440c7cf21b6cd89979d7e"
+    },
+    {
+      "path": "tests/editor-link-reopen-source.spec.ts",
+      "beforeSHA256": null,
+      "afterSHA256": "05bcabe1d0cebd7d9ab8801fdc99ec9cad4073c9bed0d45ad32eb3a404d862f2"
+    }
+  ],
+  "retainedFailure": {
+    "run": "https://github.com/caovc/reui-pro-block/actions/runs/41582605777",
+    "passed": 2131,
+    "failed": 1,
+    "originalJobLogSHA256": "b9b2d7799cee413481730a0605de35f29fd68ce2b2f076869fb4ddf2de49a939",
+    "traceSHA256": "c5f837e98d3d4d9942a10f689cab3d5689a9171a9f17d269eda8075d68ec5924",
+    "observation": "The second native shortcut arrived 125.428ms after Apply while the previous closed dialog was still mounted. The reopened dialog was visible and its bubble absent; the pointer Remove action then encountered an unstable, detached target without dispatching input.",
+    "causalLimit": "The trace establishes overlapping exit and reopen lifecycles. It does not directly record execution of a particular obsolete close callback."
+  },
+  "implementation": {
+    "actualReuse": [
+      "Existing official free ReUI Frame and ColorPicker implementations remain in use and byte unchanged.",
+      "Existing supporting Popover, ButtonGroup, Button and Input continue to provide their native primitives; shared implementations and styles are unchanged.",
+      "Native Tiptap link, selection, formatting and history commands are retained."
+    ],
+    "removedDuplicateImplementations": "None in this focused lifecycle correction; no existing free primitive is replaced or duplicated.",
+    "necessaryCustomComposition": "The controlled editor toolbar tracks the latest open state and gives each locally initiated reopen a new content/form generation. An obsolete close autofocus callback cannot focus the editor over an already reopened form. This editor-specific composition is absent from the generic free popup primitive.",
+    "unchanged": [
+      "Native popup animation and focus scopes",
+      "RichTextLinkForm and native Tiptap command bodies",
+      "Vendor modules, package manifest/lock and build configuration",
+      "SourceTargets/default mappings and original Bricklane branding/assets",
+      "Existing editor test assertions and original test/expect budgets"
+    ],
+    "entrypointScope": "Fresh-generation handling covers toolbar/native open changes, the editor shortcut and the inline-link bubble. Advanced BlockActions can set the external controlled state directly; this milestone does not certify every advanced editor entrypoint."
+  },
+  "gates": {
+    "siteNormalInstall": {
+      "command": ["npm", "ci"],
+      "cwd": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/editor-link-reopen-aa19-v1/candidate",
+      "exit": 0,
+      "seconds": 8.243969499999366,
+      "logSHA256": "70ba42bb6f080cd94e336437fdd1ab222313977cd7c66d1002945c23c47edf58"
+    },
+    "siteOriginalStrict": {
+      "command": ["npm", "run", "build"],
+      "cwd": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/editor-link-reopen-aa19-v1/candidate",
+      "exit": 0,
+      "seconds": 27.600932583998656,
+      "logSHA256": "c36baef5b3bc2ccf8280ef219a9438e69bc671e303b2572f04dba0492d9f3bb2"
+    },
+    "siteNative2": {
+      "command": [
+        "npx",
+        "playwright",
+        "test",
+        "tests/editor-fidelity.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--output",
+        "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/editor-link-reopen-v1-native2/artifacts",
+        "--reporter=json",
+        "--grep",
+        "link popover retains formatted selection and edits and removes the native link$|rapid link form reopen retains focus and permits pointer removal$"
+      ],
+      "url": "http://127.0.0.1:59972/",
+      "exit": 0,
+      "seconds": 5.09893029199884,
+      "stats": {
+        "startTime": "2026-11-03T07:27:15.023Z",
+        "duration": 4595.737999999999,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "3a4ab724b057349235de37d15516a63f46aadc3a34ef44f4d08a13f676512cfc"
+    },
+    "source2": {
+      "command": [
+        "npx",
+        "playwright",
+        "test",
+        "tests/editor-link-reopen-source.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--output",
+        "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/editor-link-reopen-v1-source2/artifacts",
+        "--reporter=json"
+      ],
+      "url": "http://127.0.0.1:59972/",
+      "exit": 0,
+      "seconds": 10.49274429200159,
+      "stats": {
+        "startTime": "2026-11-03T07:27:20.014Z",
+        "duration": 10091.329,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "1a9797d409cf09571df7e60b89cd951afc6b98b288ded313a9a1a74943b74709"
+    },
+    "receivedNormalInstall": {
+      "command": ["npm", "install"],
+      "cwd": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/editor-link-reopen-aa19-v1/received-editor",
+      "exit": 0,
+      "seconds": 43.34638441699644,
+      "logSHA256": "95f0e5fe37201c630c5e5c1fe5782f03b7b622fb2edc5819a4b8718cb23dfc4d"
+    },
+    "receivedOriginalStrict": {
+      "command": ["npm", "run", "build"],
+      "cwd": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/editor-link-reopen-aa19-v1/received-editor",
+      "exit": 0,
+      "seconds": 9.256797292000556,
+      "logSHA256": "933f735273b3462725482c2f8f2e343fa643f599dc0a215b579c3ae6cf911eae"
+    },
+    "receivedNative2": {
+      "command": [
+        "npx",
+        "playwright",
+        "test",
+        "tests/editor-fidelity.spec.ts",
+        "--workers=1",
+        "--retries=0",
+        "--output",
+        "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/editor-link-reopen-aa19-v1/received-native2/artifacts",
+        "--reporter=json",
+        "--grep",
+        "link popover retains formatted selection and edits and removes the native link$|rapid link form reopen retains focus and permits pointer removal$"
+      ],
+      "url": "http://127.0.0.1:61210/",
+      "exit": 0,
+      "seconds": 4.925826874998165,
+      "stats": {
+        "startTime": "2026-11-03T07:36:19.139Z",
+        "duration": 4427.8820000000005,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "3179f5fd5ce65c54fdd24a36a37e3af7492c119755c967d64e8a589e9b3f29b6"
+    }
+  },
+  "nativeCoverage": "The unchanged formatted-selection/edit/remove test and one appended four-cycle real-pointer rapid-reopen test pass both on the site and on the actual received project. This is necessary scoped coverage, not a rerun of every editor case.",
+  "sourceCoverage": "Actual default editor view and changed toolbar view, clipboard Copy, single-file bytes and a fresh original project closure pass.",
+  "originalZIP": {
+    "sha256": "3028305a71c591294c2e2ec1f7a2c01f89fdfd0859f18cebddbce37661243852",
+    "members": 415,
+    "sourceMembers": 407,
+    "candidateByteExactMembers": 383,
+    "candidateXmlCanonicalEquivalentSVGMembers": 21,
+    "originalGeneratedEntryAndThemeMembers": 3,
+    "normalOriginalPostinstallExecuted": true,
+    "originalScripts": {
+      "dev": "vite",
+      "build": "tsc --noEmit && vite build",
+      "preview": "vite preview",
+      "postinstall": "node scripts/copy-excalidraw-assets.mjs"
+    },
+    "sourceComparisonLimit": "All415 raw extracted members stay byte exact to the received archive. Relative to the site candidate,383 source files are byte exact,21 Vite-serialized SVGs are XML-canonical equivalent, and3 generated entry/theme files are retained as delivered. These are separate assertions.",
+    "noticesByteExact": [
+      "src/components/reui/REUI-LICENSE.txt",
+      "LICENSE",
+      "THIRD_PARTY_NOTICES.md",
+      "src/blocks/application/assets/auth-editorial/ATTRIBUTION.md",
+      "src/blocks/application/assets/card-brands/ATTRIBUTION.md",
+      "src/blocks/application/assets/card-extended/ATTRIBUTION.md",
+      "src/blocks/application/shells/assets/ATTRIBUTION.md",
+      "src/blocks/assets/Inter-LICENSE.txt"
+    ],
+    "receivedAggregateReceiptSHA256": "e0dbcc19495c1fbad15ce061623f4b1e831d03257786943c4d27385da4e0254a"
+  },
+  "finalIntegrity": {
+    "site": {
+      "frozenCounts": {
+        "sourceHashes": 1150,
+        "distHashes": 657,
+        "publicHashes": 247,
+        "QA": 4
+      },
+      "sourceDistPublicQAUnchanged": true,
+      "ownedPreview": {
+        "pid": 67860,
+        "url": "http://127.0.0.1:59972/",
+        "project": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/editor-link-reopen-aa19-v1/candidate"
+      },
+      "ownedPreviewClosed": true
+    },
+    "received": {
+      "publishableReceived": true,
+      "failure": null,
+      "preview": {
+        "pid": 73567,
+        "url": "http://127.0.0.1:61210/",
+        "project": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/editor-link-reopen-aa19-v1/received-editor"
+      },
+      "ownPreviewTerminated": true,
+      "ownPortClosed": true,
+      "nativePass": true,
+      "allOriginalMembersUnchanged": true,
+      "entryPackageConfigsUnchanged": true,
+      "distUnchanged": true,
+      "publicUnchanged": true,
+      "originalArchiveUnchanged": true,
+      "candidateSourceDistPublicQAUnchanged": true,
+      "candidateFrozenFileUnchanged": true,
+      "protected13Exact": true,
+      "originalMemberCount": 415,
+      "sourceMemberCount": 407,
+      "distFileCount": 428,
+      "publicFileCount": 246,
+      "rootSite59972NotManagedByThisController": true
+    }
+  },
+  "release": {
+    "committed": "pending at record creation",
+    "pushed": "pending at record creation",
+    "fullCI": "Separate exact-commit gate after push",
+    "Pages": "Separate exact-commit deployment gate; last verified live63a66fc"
+  },
+  "remaining": [
+    "Full CI and Pages confirmation for this product correction",
+    "Advanced editor3/4/5 and Wiki gutter fidelity",
+    "Flux approvals final source/export/original-package gates on this new shared toolbar baseline",
+    "Other template detail work and missing Strata implementation"
+  ]
+}

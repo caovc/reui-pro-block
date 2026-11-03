@@ -172,3 +172,47 @@ for (const width of [1440, 390]) {
     await expect(page.getByRole("button", { name: "Shortcuts", exact: true })).toBeFocused();
   });
 }
+
+test("rapid link form reopen retains focus and permits pointer removal", async ({ page }) => {
+  await page.goto(route);
+  const editor = page.getByRole("textbox", { name: "Rich text document", exact: true });
+  const dialog = page.getByRole("dialog", { name: "Link", exact: true });
+  const address = dialog.getByRole("textbox", { name: "Link address", exact: true });
+  const link = editor.getByRole("link", { name: "Rapid link resource", exact: true });
+  const formatted = editor.locator("strong").filter({ hasText: "Rapid link resource" });
+  await editor.locator("p").last().click();
+  await editor.press(endDocument);
+  await editor.press("Enter");
+  await page.keyboard.press("ControlOrMeta+b");
+  await page.keyboard.type("Rapid link resource");
+  await page.keyboard.press("ControlOrMeta+b");
+  await editor.press(startLine);
+  await editor.press(selectLine);
+
+  for (let cycle = 0; cycle < 4; cycle += 1) {
+    const href = `https://example.com/reopen-${cycle}`;
+    await expect(editor).toBeFocused();
+    await page.keyboard.press("ControlOrMeta+k");
+    await expect(dialog).toBeVisible();
+    await expect(address).toBeFocused();
+    await expect(page.getByRole("group", { name: "Link", exact: true })).toHaveCount(0);
+    await address.fill(href);
+    await dialog.getByRole("button", { name: "Apply link", exact: true }).click();
+    await expect(link).toHaveAttribute("href", href);
+    await expect(page.getByRole("group", { name: "Link", exact: true })).toBeVisible();
+
+    // Reopen immediately after applying. Waiting for the previous dialog's exit
+    // here would miss the lifecycle overlap observed in the original CI trace.
+    await link.click();
+    await page.keyboard.press("ControlOrMeta+k");
+    await expect(dialog).toBeVisible();
+    await expect(address).toBeFocused();
+    await expect(address).toHaveValue(href);
+    await expect(page.getByRole("group", { name: "Link", exact: true })).toHaveCount(0);
+    await dialog.getByRole("button", { name: "Remove link", exact: true }).click();
+    await expect(dialog).toHaveCount(0);
+    await expect(link).toHaveCount(0);
+    await expect(formatted).toHaveText("Rapid link resource");
+    await expect(editor).toBeFocused();
+  }
+});
