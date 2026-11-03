@@ -1,0 +1,47 @@
+{
+  "date": "2026-11-03",
+  "milestone": "Flowly invite field layout",
+  "baseCommit": "b73df9ece0da6233a199f683fb4d64efb21edd7b",
+  "productScope": ["src/templates/workflow/flowly-settings-members.tsx"],
+  "behavior": [
+    "Person keeps two columns at360px and wider, including390px, instead of collapsing the phone form to one column.",
+    "Person, Access, Areas and Message use the actual existing free FieldSet, FieldLegend(label), FieldGroup, Field and FieldLabel compositions with24px group separation.",
+    "Message retains an associated screen-reader label and the real free Textarea adaptive height and mobile font behavior.",
+    "Invite values, native Level controls, Areas, submit, row updates, Undo and Cancel retain their existing models and callbacks."
+  ],
+  "freeReuse": [
+    "Existing FieldSet + FieldLegend(label) for Person/Access/Message",
+    "Existing FieldGroup gap4 + two consumer responsive grid rows min360",
+    "Existing Field and FieldLabel, Message sr-only linked label and FieldDescription",
+    "Original Input/Textarea, Pro SettingsChoice, Level wrappers and MemberAreas reused with exact controlled attributes/callbacks. No new custom primitives."
+  ],
+  "customization": "Only domain field grouping and consumer grid/gap classes. No new primitive, global CSS or keyboard/focus engine.",
+  "verification": {
+    "site": "First native6 (existing4 unchanged plus2 field cases) and changed-member Source/Copy/file plus real ZIP2 passed with no skips, unexpected or flaky.",
+    "geometry": "1440/390: Person160.5px, fields59.25px, labels19.25px, controls32px, row and column gap16px; four fieldsets separated24px. Message64px/14px desktop and66px/16px phone. Relative layout verified; absolute y remains affected by header and longer local demo copy.",
+    "originalDownload": {
+      "zipSHA256": "eb89143d6e80ad50052bd769c0d671498062120c9a2336440cc983c7d7945353",
+      "rawMembers": 315,
+      "sourceFiles": 306,
+      "normalInstallSeconds": 41.638,
+      "originalStrictBuildSeconds": 8.194,
+      "nativeFirstRunPassed": 6,
+      "rawMembersAndOriginalConfigsUnchanged": true,
+      "generatedLockCapturedAfterInstallBeforeBuildAndExactAtFinal": "34cd5a776da739b8296c990e03e862c37703ae1dc553daafae0a6415ccffe36b"
+    },
+    "build": "Initial build found an obsolete unused Label import. It was removed and the consumer FieldGroup gap was corrected; the original configured TypeScript and Vite build then passed. First native runs used the final bytes.",
+    "preservation": "Original4 native tests and helpers remain an exact prefix. Controlled attributes and submit callback preserved; models, Areas, Level, shared CSS, dependencies and SourceTargets unchanged.",
+    "manifestSHA256": "d07f6501d1ce65158993a63548270c3d3cb902a823a2855a80941064bfb8682f",
+    "independentAcceptanceSHA256": "bf1974563518b716c30d55cf0f9de450065577c0d1637f032a3838261968ba3a"
+  },
+  "remainingDifferences": [
+    "Sheet header typography, padding and long Bricklane local-demo description make absolute form y differ (measured per case), despite matching relative group layout.",
+    "Member header authored avatar/inlineBadge/Copy email and direct-wrap footer remain separate pending scope.",
+    "Current browser original evidence dark, nativecandidate light; full theme-color fidelity not certified.",
+    "Independent Access Cancel-to-details and webhook default proposals remain unapplied.",
+    "Fidelity work across the remaining templates continues.",
+    "Workflow collection can carry changed member source into other workflow downloads; only this actual Flowly315 archive was freshly installed, built and run.",
+    "Previously passed unrelated cases are retained by byte/body preservation, not represented as a new full regression run.",
+    "Cloud CI and successful Pages deployment are tracked separately; local passing checks do not certify publication."
+  ]
+}

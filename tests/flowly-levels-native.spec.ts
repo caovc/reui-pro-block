@@ -277,3 +277,157 @@ for (const width of [1440, 390]) {
     ).toContainText("Editor");
   });
 }
+
+for (const width of [1440, 390]) {
+  test(`Flowly fields ${width}: native field groups preserve two-column Person, measured gaps, accessible Message and real invite data`, async ({
+    page,
+  }, info) => {
+    await open(page, "Members", width);
+    const trigger = page.getByRole("button", { name: "Invite member", exact: true });
+    await trigger.click();
+    let dialog = page.getByRole("dialog", { name: "Invite Member", exact: true });
+    await settledDialog(dialog);
+    const measured = await dialog.locator("form > fieldset").evaluateAll((sets) => {
+      const metric = (e: Element) => {
+        const b = e.getBoundingClientRect(),
+          s = getComputedStyle(e);
+        return {
+          y: b.y,
+          x: b.x,
+          width: b.width,
+          height: b.height,
+          font: s.fontSize,
+          line: s.lineHeight,
+          weight: s.fontWeight,
+          gap: s.gap,
+          display: s.display,
+          marginBottom: s.marginBottom,
+          position: s.position,
+          slot: e.getAttribute("data-slot"),
+        };
+      };
+      return sets.map((set) => ({
+        name: set.querySelector(":scope > legend")?.textContent,
+        ...metric(set),
+        legend: metric(set.querySelector(":scope > legend")!),
+        rows: Array.from(set.querySelectorAll(':scope > [data-slot="field-group"] > div')).map(
+          metric,
+        ),
+        fields: Array.from(set.querySelectorAll('[data-slot="field"]')).map((field) => ({
+          ...metric(field),
+          label: metric(field.querySelector("label")!),
+          control: field.querySelector(
+            '[data-slot="input"], [data-slot="select-trigger"], textarea',
+          )
+            ? metric(
+                field.querySelector('[data-slot="input"], [data-slot="select-trigger"], textarea')!,
+              )
+            : null,
+        })),
+      }));
+    });
+    await writeFile(
+      info.outputPath("invite-fields-geometry.json"),
+      JSON.stringify(measured, null, 2) + "\n",
+    );
+    expect(measured.map((set) => set.name)).toEqual(["Person", "Access", "Areas", "Message"]);
+    for (const set of measured) {
+      expect(set.slot).toBe("field-set");
+      expect(set.legend.slot).toBe("field-legend");
+      expect(set.legend.height).toBeCloseTo(20, 1);
+      expect(set.legend.marginBottom).toBe("6px");
+    }
+    for (let index = 1; index < measured.length; index++) {
+      expect(measured[index].y - measured[index - 1].y - measured[index - 1].height).toBeCloseTo(
+        24,
+        1,
+      );
+    }
+    const [person, accessGroup, areas, message] = measured;
+    expect(person.height).toBeCloseTo(160.5, 1);
+    expect(person.rows).toHaveLength(2);
+    for (const row of person.rows) {
+      expect(row.display).toBe("grid");
+      expect(row.gap).toBe("16px");
+      expect(row.height).toBeCloseTo(59.25, 1);
+    }
+    expect(person.fields).toHaveLength(4);
+    expect(person.fields[0].y).toBeCloseTo(person.fields[1].y, 1);
+    expect(person.fields[2].y).toBeCloseTo(person.fields[3].y, 1);
+    expect(person.fields[1].x - person.fields[0].x - person.fields[0].width).toBeCloseTo(16, 1);
+    expect(person.fields[2].y - person.fields[0].y - person.fields[0].height).toBeCloseTo(16, 1);
+    for (const [index, field] of person.fields.entries()) {
+      expect(field.height).toBeCloseTo(59.25, 1);
+      expect(field.gap).toBe("8px");
+      expect(field.label.height).toBeCloseTo(19.25, 1);
+      expect(field.label.font).toBe("14px");
+      expect(field.control?.height).toBeCloseTo(32, 1);
+      expect(field.control?.font).toBe(index === 3 || width === 1440 ? "14px" : "16px");
+    }
+    expect(accessGroup.height).toBeCloseTo(110.25, 1);
+    expect(areas.height).toBeCloseTo(243, 1);
+    expect(message.fields[0].label.position).toBe("absolute");
+    expect(message.fields[0].label.height).toBeCloseTo(1, 1);
+    expect(message.fields[0].control?.height).toBeCloseTo(width === 390 ? 66 : 64, 1);
+    expect(message.fields[0].control?.font).toBe(width === 390 ? "16px" : "14px");
+    expect(message.height).toBeCloseTo(width === 390 ? 121 : 119, 1);
+    await page.screenshot({ path: info.outputPath("invite-fields-default.png"), fullPage: false });
+    const name = dialog.getByRole("textbox", { name: "Name", exact: true });
+    const email = dialog.getByRole("textbox", { name: "Work Email", exact: true });
+    const role = dialog.getByRole("textbox", { name: "Role", exact: true });
+    const team = dialog.getByRole("combobox", { name: "Team", exact: true });
+    await expect(name).toBeFocused();
+    await name.press("Tab");
+    await expect(email).toBeFocused();
+    await email.press("Tab");
+    await expect(role).toBeFocused();
+    await role.press("Tab");
+    await expect(team).toBeFocused();
+    await team.click();
+    await page.getByRole("option", { name: "Data", exact: true }).click();
+    await expect(team).toContainText("Data");
+    await name.fill("Draft Fields");
+    await dialog.getByRole("textbox", { name: "Message", exact: true }).fill("Draft message");
+    await dialog.getByRole("button", { name: "Cancel", exact: true }).click();
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+    await expect(trigger).toBeFocused();
+    await trigger.click();
+    dialog = page.getByRole("dialog", { name: "Invite Member", exact: true });
+    await settledDialog(dialog);
+    await expect(dialog.getByRole("textbox", { name: "Name", exact: true })).toHaveValue("");
+    await expect(dialog.getByRole("combobox", { name: "Team", exact: true })).toContainText(
+      "Platform",
+    );
+    await expect(dialog.getByRole("textbox", { name: "Message", exact: true })).toHaveValue("");
+    await dialog.getByRole("textbox", { name: "Name", exact: true }).fill("Ana Field Layout");
+    await dialog
+      .getByRole("textbox", { name: "Work Email", exact: true })
+      .fill("ana.fields@example.test");
+    await dialog.getByRole("textbox", { name: "Role", exact: true }).fill("Layout Engineer");
+    await dialog.getByRole("combobox", { name: "Team", exact: true }).click();
+    await page.getByRole("option", { name: "Data", exact: true }).click();
+    await dialog
+      .getByRole("textbox", { name: "Message", exact: true })
+      .fill("Native field message");
+    await expect(dialog.getByRole("textbox", { name: "Message", exact: true })).toHaveValue(
+      "Native field message",
+    );
+    await page.screenshot({ path: info.outputPath("invite-message-filled.png"), fullPage: false });
+    await dialog.getByRole("button", { name: "Send Invite", exact: true }).click();
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+    await page
+      .getByRole("textbox", { name: "Search members", exact: true })
+      .fill("Ana Field Layout");
+    const member = page.locator(".fs-member-identity").filter({ hasText: "Ana Field Layout" });
+    await expect(member).toContainText("Editor");
+    await member.click();
+    const detail = page.getByRole("dialog", { name: "Ana Field Layout", exact: true });
+    await expect(detail.locator(".fs-facts").first()).toContainText("ana.fields@example.test");
+    await expect(detail.locator(".fs-facts").first()).toContainText("Layout Engineer");
+    await expect(detail.locator(".fs-facts").first()).toContainText("Data");
+    await page.keyboard.press("Escape");
+    const toast = page.locator("[data-sonner-toast]").filter({ hasText: "Demo invitation added" });
+    await toast.getByRole("button", { name: "Undo", exact: true }).click();
+    await expect(member).toHaveCount(0);
+  });
+}

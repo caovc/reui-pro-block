@@ -29,7 +29,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import {
   Field,
@@ -466,73 +465,79 @@ export function FlowlyInviteDrawer({ model }: { model: FlowlySettingsModel }) {
           model.setDialog(null);
         }}
       >
-        <fieldset className="fs-fieldset">
-          <legend>Person</legend>
-          <div className="fs-two-columns">
-            <div className="fs-input-field">
-              <Label htmlFor="invite-name">Name</Label>
-              <Input
-                id="invite-name"
-                required
-                placeholder="Ana Lopez"
-                value={name}
-                onChange={(event) => setName(event.target.value)}
-              />
+        <FieldSet className="fs-fieldset">
+          <FieldLegend variant="label">Person</FieldLegend>
+          <FieldGroup className="gap-4">
+            <div className="grid gap-4 min-[360px]:grid-cols-2">
+              <Field>
+                <FieldLabel htmlFor="invite-name">Name</FieldLabel>
+                <Input
+                  id="invite-name"
+                  required
+                  placeholder="Ana Lopez"
+                  value={name}
+                  onChange={(event) => setName(event.target.value)}
+                />
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="invite-email">Work Email</FieldLabel>
+                <Input
+                  id="invite-email"
+                  required
+                  type="email"
+                  placeholder="ana@brick.test"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                />
+              </Field>
             </div>
-            <div className="fs-input-field">
-              <Label htmlFor="invite-email">Work Email</Label>
-              <Input
-                id="invite-email"
-                required
-                type="email"
-                placeholder="ana@brick.test"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-              />
+            <div className="grid gap-4 min-[360px]:grid-cols-2">
+              <Field>
+                <FieldLabel htmlFor="invite-role">Role</FieldLabel>
+                <Input
+                  id="invite-role"
+                  placeholder="Automation Engineer"
+                  value={role}
+                  onChange={(event) => setRole(event.target.value)}
+                />
+              </Field>
+              <Field>
+                <FieldLabel htmlFor="invite-team">Team</FieldLabel>
+                <SettingsChoice id="invite-team" value={team} options={teams} onChange={setTeam} />
+              </Field>
             </div>
-            <div className="fs-input-field">
-              <Label htmlFor="invite-role">Role</Label>
-              <Input
-                id="invite-role"
-                placeholder="Automation Engineer"
-                value={role}
-                onChange={(event) => setRole(event.target.value)}
-              />
-            </div>
-            <div className="fs-input-field">
-              <Label htmlFor="invite-team">Team</Label>
-              <SettingsChoice id="invite-team" value={team} options={teams} onChange={setTeam} />
-            </div>
-          </div>
-        </fieldset>
-        <section>
-          <h3>Access</h3>
+          </FieldGroup>
+        </FieldSet>
+        <FieldSet className="fs-fieldset">
+          <FieldLegend variant="label">Access</FieldLegend>
           <AccessLevels
             prefix="invite-level"
             includeOwner={false}
             value={level}
             onChange={setLevel}
           />
-          <MemberAreas
-            context="invite"
-            prefix="invite-area"
-            value={selected}
-            onChange={setSelected}
-          />
-        </section>
-        <fieldset className="fs-fieldset">
-          <legend>Message</legend>
-          <div className="fs-input-field">
-            <Label htmlFor="invite-message">Message</Label>
+        </FieldSet>
+        <MemberAreas
+          context="invite"
+          prefix="invite-area"
+          value={selected}
+          onChange={setSelected}
+        />
+        <FieldSet className="fs-fieldset">
+          <FieldLegend variant="label">Message</FieldLegend>
+          <Field>
+            <FieldLabel htmlFor="invite-message" className="sr-only">
+              Message
+            </FieldLabel>
             <Textarea
               id="invite-message"
               placeholder="Welcome aboard. Start with the Lead Enrichment workflow."
               value={message}
               onChange={(event) => setMessage(event.target.value)}
             />
-            <p className="fs-hint">Added to the local invitation draft.</p>
-          </div>
-        </fieldset>
+            <FieldDescription>Added to the local invitation draft.</FieldDescription>
+          </Field>
+        </FieldSet>
       </form>
     </SettingsDrawer>
   );
