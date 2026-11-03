@@ -3,8 +3,13 @@
 import { useMemo, useState } from "react";
 import { useTable, type ColumnDef } from "@tanstack/react-table";
 import {
-  ChevronLeft,
-  ChevronRight,
+  ChevronUp,
+  ChevronDown,
+  Check,
+  Copy,
+  RefreshCw,
+  Send,
+  UserRoundMinus,
   Crown,
   Eye,
   Filter,
@@ -50,6 +55,7 @@ import {
   SettingsRow,
 } from "@/blocks/application/dialog-variants/workspace/settings-panel";
 import { demoAvatar } from "@/lib/demo-artwork";
+import { useCopyToClipboard } from "@/blocks/application/empty-variants/team-setup/free/use-copy-to-clipboard";
 import { CheckOption, DetailFacts, RecordMenu, SettingsDrawer } from "./flowly-settings-components";
 import type { FlowlySettingsModel } from "./flowly-settings-model";
 import type { FlowlyMember, MemberArea, MemberLevel, MemberStatus } from "./flowly-settings-data";
@@ -419,22 +425,23 @@ export function FlowlyInviteDrawer({ model }: { model: FlowlySettingsModel }) {
   return (
     <SettingsDrawer
       title="Invite Member"
-      description="Add someone to Bricklane Labs with the access they need. Local demo; no email will be sent."
+      headerVariant="invite"
+      footerVariant="invite"
+      description="Add someone to Bricklane Labs. Demo only; no email is sent."
       onClose={() => model.setDialog(null)}
       returnFocusRef={model.returnFocusRef}
       footer={
         <>
-          <span className="fs-hint">
+          <p className="fs-invite-footer-caption">
             Joins as {level}, {seats} of the plan's seats left
-          </span>
-          <div>
-            <Button variant="outline" onClick={() => model.setDialog(null)}>
-              Cancel
-            </Button>
-            <Button type="submit" form="flowly-invite-form" disabled={seats === 0}>
-              Send Invite
-            </Button>
-          </div>
+          </p>
+          <Button variant="outline" onClick={() => model.setDialog(null)}>
+            Cancel
+          </Button>
+          <Button type="submit" form="flowly-invite-form" disabled={seats === 0}>
+            <Send aria-hidden="true" />
+            Send Invite
+          </Button>
         </>
       }
     >
@@ -543,6 +550,29 @@ export function FlowlyInviteDrawer({ model }: { model: FlowlySettingsModel }) {
   );
 }
 
+function MemberEmailCopy({ email }: { email: string }) {
+  // Actual official free useCopyToClipboard / c-button-41 feedback composition.
+  const { isCopied, copyToClipboard } = useCopyToClipboard();
+  return (
+    <Button
+      type="button"
+      variant="ghost"
+      size="icon"
+      aria-label={isCopied ? "email copied" : "Copy email"}
+      onClick={() => {
+        if (
+          typeof navigator !== "undefined" &&
+          typeof navigator.clipboard?.writeText === "function"
+        ) {
+          copyToClipboard(email);
+        }
+      }}
+    >
+      {isCopied ? <Check aria-hidden="true" /> : <Copy aria-hidden="true" />}
+    </Button>
+  );
+}
+
 export function FlowlyMemberDrawer({
   model,
   id,
@@ -561,14 +591,17 @@ export function FlowlyMemberDrawer({
   const index = model.members.findIndex((item) => item.id === id);
   const header = (
     <div className="fs-record-heading">
-      <span>{member.email}</span>
+      <span className="fs-member-email-line">
+        <span>{member.email}</span>
+        <MemberEmailCopy key={member.id} email={member.email} />
+      </span>
       {mode === "details" && (
-        <div>
+        <div className="fs-member-record-nav">
           <span>
             {index + 1} of {model.members.length}
           </span>
           <Button
-            size="icon-xs"
+            size="icon"
             variant="ghost"
             aria-label="Previous member"
             disabled={index === 0}
@@ -576,10 +609,10 @@ export function FlowlyMemberDrawer({
               model.setDialog({ kind: "member", id: model.members[index - 1].id, mode })
             }
           >
-            <ChevronLeft />
+            <ChevronUp aria-hidden="true" />
           </Button>
           <Button
-            size="icon-xs"
+            size="icon"
             variant="ghost"
             aria-label="Next member"
             disabled={index === model.members.length - 1}
@@ -587,7 +620,7 @@ export function FlowlyMemberDrawer({
               model.setDialog({ kind: "member", id: model.members[index + 1].id, mode })
             }
           >
-            <ChevronRight />
+            <ChevronDown aria-hidden="true" />
           </Button>
         </div>
       )}
@@ -604,6 +637,26 @@ export function FlowlyMemberDrawer({
   return (
     <SettingsDrawer
       title={member.name}
+      headerVariant="member"
+      footerVariant="member"
+      headerIdentity={{
+        leading: (
+          <Avatar className="size-9">
+            <AvatarImage src={demoAvatar(member.name)} alt={member.name} />
+            <AvatarFallback>
+              {member.name
+                .split(" ")
+                .map((word) => word[0])
+                .join("")}
+            </AvatarFallback>
+          </Avatar>
+        ),
+        titleAccessory: (
+          <Badge variant="outline" className="rounded-sm px-1.25">
+            {member.level}
+          </Badge>
+        ),
+      }}
       description={`${member.role} · ${member.team} · ${member.activity}`}
       header={header}
       returnFocusRef={model.returnFocusRef}
@@ -612,11 +665,11 @@ export function FlowlyMemberDrawer({
         mode === "access" ? (
           <>
             <Button
-              variant="ghost"
-              className="text-destructive"
+              variant="destructive"
               disabled={member.level === "Owner"}
               onClick={() => setRemove(true)}
             >
+              <UserRoundMinus aria-hidden="true" />
               Remove Access
             </Button>
             <div>
@@ -627,16 +680,37 @@ export function FlowlyMemberDrawer({
                 Cancel
               </Button>
               <Button disabled={!dirty} onClick={save}>
+                <Check aria-hidden="true" />
                 Save Access
               </Button>
             </div>
           </>
-        ) : undefined
+        ) : (
+          <>
+            {tab === "details" && (
+              <Button
+                variant="outline"
+                onClick={() =>
+                  model.updateMembers(
+                    model.members.map((item) =>
+                      item.id === id ? { ...item, activity: "Session reset locally" } : item,
+                    ),
+                    "Demo member session reset",
+                  )
+                }
+              >
+                <RefreshCw aria-hidden="true" />
+                Reset Session
+              </Button>
+            )}
+            <Button onClick={() => model.setDialog({ kind: "member", id, mode: "access" })}>
+              <ShieldCheck aria-hidden="true" />
+              Change Access
+            </Button>
+          </>
+        )
       }
     >
-      <Badge variant="outline" className={`fs-level fs-level-${member.level.toLowerCase()}`}>
-        {member.level}
-      </Badge>
       {remove ? (
         <section className="fs-confirmation">
           <h3>Remove {member.name}'s access?</h3>
@@ -706,24 +780,6 @@ export function FlowlyMemberDrawer({
                 ["Last active", member.activity],
               ]}
             />
-            <div className="fs-button-row">
-              <Button
-                variant="outline"
-                onClick={() =>
-                  model.updateMembers(
-                    model.members.map((item) =>
-                      item.id === id ? { ...item, activity: "Session reset locally" } : item,
-                    ),
-                    "Demo member session reset",
-                  )
-                }
-              >
-                Reset Session
-              </Button>
-              <Button onClick={() => model.setDialog({ kind: "member", id, mode: "access" })}>
-                Change Access
-              </Button>
-            </div>
           </TabsContent>
           <TabsContent value="access">
             <DetailFacts
@@ -732,12 +788,6 @@ export function FlowlyMemberDrawer({
                 ["Areas", member.areas.join(", ")],
               ]}
             />
-            <Button
-              variant="outline"
-              onClick={() => model.setDialog({ kind: "member", id, mode: "access" })}
-            >
-              Change Access
-            </Button>
           </TabsContent>
         </Tabs>
       )}

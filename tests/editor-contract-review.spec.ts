@@ -165,7 +165,6 @@ for (const width of [1440, 390]) {
         body: JSON.stringify({ original, resolved, nextInputDelayMs }, null, 2),
         contentType: "application/json",
       });
-      expect(nextInputDelayMs).toBeLessThan(300);
       await page.getByRole("button", { name: "Undo", exact: true }).click();
       await expect
         .poll(async () => (await nativeState(native)).document)
@@ -205,6 +204,7 @@ for (const width of [1440, 390]) {
       );
       expect(errors).toEqual([]);
       await expect(page.locator("vite-error-overlay")).toHaveCount(0);
+      expect(nextInputDelayMs).toBeLessThan(300);
     });
   }
 }

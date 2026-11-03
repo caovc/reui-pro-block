@@ -1,0 +1,60 @@
+{
+  "date": "2026-11-03",
+  "milestone": "Flowly member and invite Sheet composition",
+  "baseCommit": "1fb6bf396d3f2a27f1c2fc544ebad50170acdd0e",
+  "productFiles": [
+    "src/templates/workflow/flowly-settings-components.tsx",
+    "src/templates/workflow/flowly-settings-members.tsx",
+    "src/templates/workflow/flowly-settings.css"
+  ],
+  "changes": [
+    "Opt-in member header combines existing original demoAvatar/Avatar,18px title, inline Badge, actual official copy hook and native SheetClose. Member focus starts on the dialog surface; native Tab reaches Copy then Close.",
+    "Details actions move to a fixed footer with their original callbacks and visibility. Access keeps its nested Cancel/Save group and original Cancel behavior; Invite alone uses direct footer wrapping.",
+    "Invite uses concise Bricklane demo copy, native Name autofocus and actual Sheet close loop. Both viewports match measured header/footer geometry.",
+    "Remove only the extra global focus outline on the member dialog container. Button and input focus styles remain unchanged."
+  ],
+  "freeReuse": [
+    "Actual c-sheet-1 primitives, native close/focus trap/restore APIs; opt-in member initial surface focus",
+    "Existing authored demoAvatar/Avatar, Badge and Button variants",
+    "Actual unchanged official useCopyToClipboard with c-button-41 inline feedback composition; no toast or custom clipboard engine",
+    "Existing Field/Person/Areas/Level form subtree and model callbacks preserved"
+  ],
+  "copyImplementation": {
+    "actualHook": "src/blocks/application/empty-variants/team-setup/free/use-copy-to-clipboard.ts",
+    "feedback": "Inline email copied state from the official hook/c-button-41 pattern. No custom clipboard engine or new toast.",
+    "source": "Actual hook is already reachable in source picker and project closure; SourceTargets and defaults unchanged."
+  },
+  "verification": {
+    "site": "First actual Header6, existingLevel6 and existingOptions8 passed before the member-only surface outline fix. The impacted Member2 with strict outline checks then passed on final build; unaffected cases retained by source/AST/style scope proof. Source5 passed on final bytes.",
+    "download": {
+      "zipSHA256": "599af9156d4ea37cb7b0b1a223009a18fc436312f285b8f236250910d3c1c3bb",
+      "rawMembers": 315,
+      "sourceFiles": 306,
+      "normalInstallSeconds": 45.319,
+      "originalStrictBuildSeconds": 8.228,
+      "firstNativePassed": 12,
+      "rawAndConfigsUnchanged": true,
+      "generatedLockCapturedImmediatelyAfterNormalInstallBeforeBuildAndExactAtFinal": "195108f0a5519128e4442b5c7161d01e85d41035181038b2aedbe952896aa0a2"
+    },
+    "rootQA": "Original4 Contract cases passed on final production assets. Only the unchanged300ms assertion moved after all native Undo/Redo/document/error assertions; same timer and limit, no retry or relaxed budget. This improves diagnosis and does not claim a performance fix.",
+    "preparation": "Initial TypeScript clipboard guard error and zero-case private config launch preserved separately. Root first config load also executed zero cases due to two physical Playwright copies; aligning the QA-only dependency link corrected setup before the first actual4 passed.",
+    "manifestSHA256": "61bb273ea30311f9ae14d74f2aeea4ec733e63b485178db1aab19168641293c7"
+  },
+  "ciEnvironment": {
+    "change": "Keep four shards and exact same built Pages artifact; run one worker per cloud runner through CLI override. Local original config workers3 unchanged.",
+    "preserved": "All tests, original30s test/5s expect/300ms history limits, zero retries and all-shard deployment gate.",
+    "reason": "Isolate runner resources following official Playwright CI guidance. Prior variable composite driver timings motivate environment isolation but do not establish a CPU root cause. Actual cloud duration and stability still require validation.",
+    "primaryReference": "https://playwright.dev/docs/ci#workers"
+  },
+  "remainingDifferences": [
+    "Original reference dark and candidate light; full theme color parity not certified",
+    "Details body alert/facts email copy/status badges remain outside scope",
+    "Member Details Access-tab footer original visibility not measured; prior action visibility retained while relocating",
+    "Navigation tooltip hover/disabled focusability not fully certified; existing disabled conditions/callbacks retained",
+    "Independent Access Cancel-to-details and webhook default proposals still unapplied; other template fidelity incomplete",
+    "Historical nested Sidebar Escape and Flux Tooltip failures are separately recorded. Tooltip has an isolated free-component candidate awaiting baseline and native verification.",
+    "Other workflow download closures may include these source changes; this milestone freshly validates only the actual Flowly315 project.",
+    "Cloud CI and Pages deployment are verified separately."
+  ],
+  "licensing": "Bricklane original mark and demo artwork; actual free Sheet/Avatar/Badge/Button/copy hook licenses retained. No paid screenshot, original avatar or extracted decorative asset shipped."
+}

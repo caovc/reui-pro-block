@@ -22,6 +22,7 @@ const implementationPaths = [
   "src/templates/workflow/flowly-settings-members.tsx",
   "src/templates/workflow/free/flowly-toggle-group.tsx",
   "src/templates/workflow/free/flowly-radio-group.tsx",
+  "src/blocks/application/empty-variants/team-setup/free/use-copy-to-clipboard.ts",
 ] as const;
 const archiveTarget: SourceTarget = {
   id: "flowly",

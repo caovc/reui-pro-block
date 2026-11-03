@@ -960,3 +960,120 @@
   width: 24px;
   height: 24px;
 }
+
+/* Opt-in native member/invite sheets; the four other drawer consumers keep their defaults. */
+.fs-drawer-header-member {
+  gap: 4px;
+  padding: 14px 20px 12px;
+  border-bottom: 0;
+}
+.fs-member-heading-top {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.fs-drawer-member .fs-record-heading {
+  flex: 1;
+  min-width: 0;
+  min-height: 32px;
+  padding-right: 0;
+}
+.fs-member-email-line {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 4px;
+}
+.fs-member-email-line > span {
+  overflow: hidden;
+  font-size: 12px;
+  line-height: 16px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.fs-drawer-member .fs-member-record-nav {
+  flex-shrink: 0;
+  gap: 4px;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  line-height: 16px;
+}
+.fs-member-heading-identity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 4px;
+}
+.fs-member-heading-content {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
+}
+.fs-member-heading-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.fs-drawer-header-member [data-slot="sheet-title"],
+.fs-drawer-header-invite [data-slot="sheet-title"] {
+  padding-right: 0;
+  font-size: 18px;
+  line-height: 28px;
+}
+.fs-drawer-header-member [data-slot="sheet-description"],
+.fs-drawer-header-invite [data-slot="sheet-description"] {
+  font-size: 14px;
+  line-height: 20px;
+}
+.fs-drawer-member > .fs-drawer-body {
+  border-top: 1px solid var(--border);
+}
+.fs-drawer-member .fs-detail-tabs {
+  margin-top: 0;
+}
+.fs-drawer-header-invite {
+  gap: 0;
+  padding: 14px 20px;
+}
+.fs-invite-heading-title {
+  display: flex;
+  min-height: 32px;
+  align-items: center;
+}
+.fs-drawer-header-invite [data-slot="sheet-description"] {
+  margin-top: 4px;
+}
+.fs-drawer-invite > [data-slot="sheet-close"] {
+  top: 14px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+}
+.fs-drawer-footer-member,
+.fs-drawer-footer-invite {
+  justify-content: flex-start;
+  padding: 12px 20px;
+}
+.fs-drawer-footer-member > button:first-child:not(:only-child) {
+  margin-right: 0;
+}
+.fs-drawer-footer-member > div,
+.fs-drawer-footer-member > button:last-child:not(:first-child) {
+  margin-left: auto;
+}
+.fs-drawer-footer-member > div {
+  flex-wrap: nowrap;
+}
+.fs-drawer-footer-invite > .fs-invite-footer-caption {
+  width: auto;
+  margin-right: auto;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+/* The member dialog surface receives initial focus; its controls retain their own focus rings. */
+.fs-drawer.fs-drawer-member {
+  outline: none;
+}

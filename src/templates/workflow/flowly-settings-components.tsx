@@ -1,11 +1,13 @@
 // ReUI free compositions: Copyright (c) 2025 Keenthemes Inc, MIT.
 // Full notice: src/components/reui/REUI-LICENSE.txt (included in project exports).
 import { useRef, type ReactNode, type RefObject } from "react";
-import { MoreHorizontal } from "lucide-react";
+import { MoreHorizontal, X } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
+  SheetClose,
   SheetDescription,
   SheetFooter,
   SheetHeader,
@@ -30,6 +32,9 @@ export function SettingsDrawer({
   onClose,
   header,
   returnFocusRef,
+  headerVariant = "default",
+  headerIdentity,
+  footerVariant = "default",
 }: {
   title: string;
   description?: string;
@@ -38,7 +43,11 @@ export function SettingsDrawer({
   onClose: () => void;
   header?: ReactNode;
   returnFocusRef?: RefObject<HTMLElement | null>;
+  headerVariant?: "default" | "member" | "invite";
+  headerIdentity?: { leading: ReactNode; titleAccessory: ReactNode };
+  footerVariant?: "default" | "member" | "invite";
 }) {
+  const contentRef = useRef<HTMLDivElement>(null);
   const trigger = useRef(
     document.activeElement instanceof HTMLElement ? document.activeElement : null,
   );
@@ -50,7 +59,23 @@ export function SettingsDrawer({
       }}
     >
       <SheetContent
-        className="reui-reference fs-drawer"
+        className={cn(
+          "reui-reference fs-drawer",
+          headerVariant === "member" && "fs-drawer-member",
+          headerVariant === "invite" && "fs-drawer-invite",
+        )}
+        showCloseButton={headerVariant !== "member"}
+        {...(headerVariant === "member"
+          ? {
+              ref: contentRef,
+              // The reference member sheet initially focuses its surface, not Copy.
+              // Use the primitive's autofocus event; its native trap and restoration remain.
+              onOpenAutoFocus: (event: Event) => {
+                event.preventDefault();
+                contentRef.current?.focus();
+              },
+            }
+          : {})}
         onCloseAutoFocus={(event) => {
           const previous = returnFocusRef?.current ?? trigger.current;
           const label = previous?.getAttribute("aria-label");
@@ -65,15 +90,61 @@ export function SettingsDrawer({
           }
         }}
       >
-        <SheetHeader className="fs-drawer-header">
-          {header}
-          <SheetTitle>{title}</SheetTitle>
-          <SheetDescription>
-            {description ?? "Local demo workspace. Changes stay in this browser session."}
-          </SheetDescription>
-        </SheetHeader>
+        {headerVariant === "default" ? (
+          <SheetHeader className="fs-drawer-header">
+            {header}
+            <SheetTitle>{title}</SheetTitle>
+            <SheetDescription>
+              {description ?? "Local demo workspace. Changes stay in this browser session."}
+            </SheetDescription>
+          </SheetHeader>
+        ) : headerVariant === "member" ? (
+          <SheetHeader className="fs-drawer-header fs-drawer-header-member">
+            <div className="fs-member-heading-top">
+              {header}
+              <SheetClose asChild>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  className="-mr-1"
+                  aria-label="Close"
+                >
+                  <X aria-hidden="true" />
+                </Button>
+              </SheetClose>
+            </div>
+            <div className="fs-member-heading-identity">
+              {headerIdentity?.leading}
+              <div className="fs-member-heading-content">
+                <div className="fs-member-heading-title">
+                  <SheetTitle>{title}</SheetTitle>
+                  {headerIdentity?.titleAccessory}
+                </div>
+                <SheetDescription>{description}</SheetDescription>
+              </div>
+            </div>
+          </SheetHeader>
+        ) : (
+          <SheetHeader className="fs-drawer-header fs-drawer-header-invite">
+            <div className="fs-invite-heading-title">
+              <SheetTitle>{title}</SheetTitle>
+            </div>
+            <SheetDescription>{description}</SheetDescription>
+          </SheetHeader>
+        )}
         <div className="fs-drawer-body">{children}</div>
-        {footer && <SheetFooter className="fs-drawer-footer">{footer}</SheetFooter>}
+        {footer && (
+          <SheetFooter
+            className={cn(
+              "fs-drawer-footer",
+              footerVariant === "member" && "fs-drawer-footer-member",
+              footerVariant === "invite" && "fs-drawer-footer-invite",
+            )}
+          >
+            {footer}
+          </SheetFooter>
+        )}
       </SheetContent>
     </Sheet>
   );
