@@ -1,0 +1,168 @@
+{
+  "date": "2026-11-03",
+  "milestone": "Cohort actual ReUI Sidebar layout and mobile navigation",
+  "goalComplete": false,
+  "base": "c4ac11d6da8372e73733619bedee67ad33234d03",
+  "owned6": [
+    {
+      "path": "src/templates/business/shared.tsx",
+      "sha256": "a4efb62d65187da381225782c7c2906ad0e7712c35076f462275c1e7fa4cb843"
+    },
+    {
+      "path": "tests/templates-business-layout.spec.ts",
+      "sha256": "810b66b7c3d0497c46e6dd9dc144b90d95b647704f76d245be7bfd4934e28f6a"
+    },
+    {
+      "path": "tests/templates-business-round3.spec.ts",
+      "sha256": "40a53ca2cb04f6e2e304061662c604016228903f597c1205244c697de68d5755"
+    },
+    {
+      "path": "tests/cohort-setting-row-native.spec.ts",
+      "sha256": "6f0b99fd93bbbf5a400a94eae812f89a38e5467af8ec5e68f12b7f2f0521fea5"
+    },
+    {
+      "path": "tests/templates-cohort-people-detail.spec.ts",
+      "sha256": "7ea92d7a233e8dcd4ffa6d6ef9a98d70b87c345fb40f354f18ea82ea285ce137"
+    },
+    {
+      "path": "tests/templates-business-settings-source.spec.ts",
+      "sha256": "e197672221e87da110db93e25b778ec6c340d5e9c00fc40f9154208dea7993d1"
+    }
+  ],
+  "actualReused": [
+    "Existing free ReUI c-sidebar-1/2/3 ReuiSidebar and SidebarNavigation composition",
+    "Actual SidebarNavigation closeOnSelect API, native SidebarProvider/Inset/Trigger/Sheet focus restoration; no custom state or vendor primitive changes"
+  ],
+  "runtimeScope": "Only business/shared.tsx: NavItems default closeOnSelect remains true and forwards the actual SidebarNavigation API; only Cohort primary navigation opts out of all three close paths and uses its original setActive. No primitive, new state or implementation path added.",
+  "geometry": {
+    "officialAndFinalLocalDesktop": {
+      "expandedSidebar": 256,
+      "collapsedSidebar": 64,
+      "collapsedInsetX": 64
+    },
+    "correctedLocalOldCollapsedWidth": 66,
+    "mobileDrawer": 288,
+    "theme": "light, fontsloaded; actual computed rectangles checked"
+  },
+  "observedNavigation": {
+    "contentReadyLeaves": [
+      "Policies",
+      "Profile",
+      "Dashboard",
+      "Directory",
+      "Time off",
+      "Timesheets"
+    ],
+    "afterNavigation": "Actual current target content and ended route progress; drawer remains visible and clicked link focused.",
+    "Escape": "Dialog closes and returns focus to actual trigger.",
+    "timesheetsCorrection": "First snapshot still showed the old Time off URL. It is retained as invalid; corrected waitForURL/contentready evidence is authoritative, not a product failure.",
+    "otherAccountSearchHeadcount": "Not changed; no unobserved behavior identity is claimed."
+  },
+  "QAChanges": "Preserved original business, geometry, scroll and no-overflow assertions; Cohort auto-close expectations are replaced with positive official keep-open/focus then real Escape. Ordinary Settings buttons use actual first click and native Tab sequence instead of programmatic focus, retaining scroll checks. Other template defaults remain and Atlas has one real site regression.",
+  "gates": {
+    "normal-install.json": {
+      "exit": 0,
+      "seconds": 5.204268916997535,
+      "logSHA256": "fd4e0e85f8cb0c7891d2643d662b39fc7328e6139251d2aa3207e67ba4cceea8"
+    },
+    "original-strict-build.json": {
+      "exit": 0,
+      "seconds": 26.030656666996947,
+      "logSHA256": "2c3a2f0ca1da6731a5455f555d8979ec058cd1ad3c0984a2d88811ff89a10523"
+    },
+    "owned-format-check.json": {
+      "exit": 0,
+      "seconds": 0.5928779590030899,
+      "logSHA256": "f3fd4472aab57d383d425e241bb23c66b122163377143e8827a4418b73fa549f"
+    },
+    "owned-lint.json": {
+      "exit": 0,
+      "seconds": 0.5658912079961738,
+      "logSHA256": "53d2931a0d3706783a16e6e0919fd1697280e640be978e56be8353b49e04ee1e"
+    },
+    "native10-first-once/receipt.json": {
+      "exit": 0,
+      "seconds": 28.92105516599986,
+      "stats": {
+        "startTime": "2026-11-03T02:30:13.658Z",
+        "duration": 28402.052,
+        "expected": 10,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "824275cda4e61d6a004cc26b7bd01061271caacf8a7b61df64c9fd5a8fe9a1d0"
+    },
+    "source2-first-once/receipt.json": {
+      "exit": 0,
+      "seconds": 6.714483583004039,
+      "stats": {
+        "startTime": "2026-11-03T02:30:42.553Z",
+        "duration": 6221.597000000001,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "7719e4742a7290ce9b2aedfe3caab4f39d53c5eb38ad4987da6487b4bca9658b"
+    },
+    "received-normal-install.json": {
+      "exit": 0,
+      "seconds": 37.84349983299762,
+      "logSHA256": "35b9319761dd557b50dd577489b0c7584c4b6966fa95f5ef15d30fcad5f7366d"
+    },
+    "received-original-strict-build.json": {
+      "exit": 0,
+      "seconds": 7.2194727919995785,
+      "logSHA256": "69a356598b8457d6c6096c7cc33f118bf13c0bed2d88b47b3a0e3d2ea17cfc42"
+    },
+    "received-native9-first-once/receipt.json": {
+      "exit": 0,
+      "seconds": 25.674931459005165,
+      "stats": {
+        "startTime": "2026-11-03T02:33:07.929Z",
+        "duration": 25167.062,
+        "expected": 9,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "reportSHA256": "95ea1044f6885b282e71fad997fa02379fb12987a29fc351bb36499535d0e1e6"
+    }
+  },
+  "nativeScopes": {
+    "site": 10,
+    "receivedCohort": 9,
+    "atlasDefaultClose": "site only; Cohort fixed original entry is not modified to support Atlas"
+  },
+  "originalDownload": {
+    "sha256": "d970d827dc8459828fecfee4d297a59420e4a639ffcfd5bcf5373156553d7408",
+    "members": 284,
+    "entryConfigPackageUnmodified": true
+  },
+  "exact": {
+    "siteSource": true,
+    "siteDist": true,
+    "sitePublic": true,
+    "fiveQaFiles": true,
+    "receivedOriginalMembers": true,
+    "receivedDist": true,
+    "rawZip": true
+  },
+  "bothPreviewPortsClosed": true,
+  "sharedSourceVerification": "New actual shared.tsx View/Copy/single-file byte flow plus fresh ZIP; existing Cohort settings/CSS and other template QA config entries are retained.",
+  "sourceTargets": "Unchanged; existing source closure already exposes shared.tsx.",
+  "originalBrandMediaMITOFLPreserved": true,
+  "remaining": [
+    "Other template layout and settings fidelity remain active work.",
+    "Cohort native Settings strip still uses ordinary buttons, not official tab semantics; not changed here.",
+    "Account/search/headcount mobile selection behavior was intentionally outside this observed primary navigation checkpoint.",
+    "Pulse/Roster shared SettingsRow duplication remains for separate owner-coordinated work; protected settings.css not touched."
+  ],
+  "publicationSnapshot": {
+    "stage": "Local gates complete, before normal-hook commit/push",
+    "CI": "Pending new commit",
+    "Pages": "Not yet confirmed for this milestone",
+    "lastVerifiedLive": "b9a1fa48dbaa45af285e1e2830a07403fd4060bc"
+  }
+}

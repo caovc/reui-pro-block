@@ -22,6 +22,9 @@ async function openOrganisation(page: Page, width: number) {
     await expect(menu).toBeVisible();
     await menu.getByRole("button", { name: "Settings", exact: true }).click();
     await menu.getByRole("button", { name: "Organisation", exact: true }).click();
+    await expect(menu).toBeVisible();
+    await expect(menu.getByRole("button", { name: "Organisation", exact: true })).toBeFocused();
+    await page.keyboard.press("Escape");
     await expect(menu).toBeHidden();
     await expect(page.getByRole("button", { name: "Open menu", exact: true })).toBeFocused();
   } else {

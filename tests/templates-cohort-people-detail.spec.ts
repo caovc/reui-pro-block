@@ -130,6 +130,11 @@ test("Cohort mobile View and Edit have independent scrolling, visible footer and
   const menu = page.getByRole("dialog", { name: "Cohort", exact: true });
   await menu.getByRole("button", { name: "People", exact: true }).first().click();
   await menu.getByRole("button", { name: "Directory", exact: true }).click();
+  await expect(menu).toBeVisible();
+  await expect(menu.getByRole("button", { name: "Directory", exact: true })).toBeFocused();
+  await page.keyboard.press("Escape");
+  await expect(menu).toBeHidden();
+  await expect(page.getByRole("button", { name: "Open menu", exact: true })).toBeFocused();
   await action(page, "Amara Okafor", "View profile");
   const profile = page.getByRole("dialog", { name: "Amara Okafor", exact: true });
   expect((await profile.boundingBox())!.width).toBeCloseTo(358, 2);

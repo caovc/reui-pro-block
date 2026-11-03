@@ -131,6 +131,7 @@ const configs = [
     runtimePaths: [
       "src/templates/business/cohort-settings.tsx",
       "src/templates/business/business.css",
+      "src/templates/business/shared.tsx",
     ],
   },
 ] as const;

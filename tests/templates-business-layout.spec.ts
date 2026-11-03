@@ -13,8 +13,19 @@ async function open(page: Page, id: string) {
   await expect(page.locator(".bt-layout")).toBeVisible();
 }
 
+async function expectCohortInset(page: Page, width: number) {
+  const sidebar = await page.locator(".bt-sidebar[data-slot=sidebar-container]").boundingBox();
+  const inset = await page.locator('[data-slot="sidebar-inset"]').boundingBox();
+  expect(sidebar).not.toBeNull();
+  expect(inset).not.toBeNull();
+  expect(Math.abs(sidebar!.x)).toBeLessThanOrEqual(1);
+  expect(Math.abs(sidebar!.width - width)).toBeLessThanOrEqual(1);
+  expect(Math.abs(inset!.x - (sidebar!.x + sidebar!.width))).toBeLessThanOrEqual(1);
+  expect(Math.abs(inset!.x - width)).toBeLessThanOrEqual(1);
+}
+
 for (const [id, expanded, compact] of [
-  ["cohort", 256, 66],
+  ["cohort", 256, 64],
   ["atlas", 256, 48],
   ["surge", 260, 62],
   ["manifest", 260, 62],
@@ -46,6 +57,7 @@ for (const [id, expanded, compact] of [
     await expect
       .poll(() => container.evaluate((node) => node.getBoundingClientRect().width))
       .toBe(expanded);
+    if (id === "cohort") await expectCohortInset(page, expanded);
     const initialMainWidth = await page
       .locator(".bt-main")
       .evaluate((node) => node.getBoundingClientRect().width);
@@ -54,6 +66,7 @@ for (const [id, expanded, compact] of [
     await expect
       .poll(() => container.evaluate((node) => node.getBoundingClientRect().width))
       .toBe(compact);
+    if (id === "cohort") await expectCohortInset(page, compact);
     expect(
       await page.locator(".bt-main").evaluate((node) => node.getBoundingClientRect().width),
     ).toBeGreaterThan(initialMainWidth);
@@ -62,6 +75,7 @@ for (const [id, expanded, compact] of [
     await expect
       .poll(() => container.evaluate((node) => node.getBoundingClientRect().width))
       .toBe(expanded);
+    if (id === "cohort") await expectCohortInset(page, expanded);
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
       1440,
     );
@@ -115,8 +129,11 @@ for (const [id, expanded, compact] of [
     if (id === "cohort") {
       await drawer.getByRole("button", { name: "Settings", exact: true }).click();
       await expect(drawer).toBeVisible();
-      await drawer.getByRole("button", { name: "Preferences", exact: true }).click();
-      await expect(page.getByRole("heading", { name: "Preferences", exact: true })).toBeVisible();
+      const preferences = drawer.getByRole("button", { name: "Preferences", exact: true });
+      await preferences.click();
+      await expect(drawer).toBeVisible();
+      await expect(preferences).toBeFocused();
+      await page.keyboard.press("Escape");
     } else {
       await drawer.getByRole("button", { name: "Settings", exact: true }).first().click();
       if (id === "surge" || id === "manifest") {
@@ -144,15 +161,74 @@ for (const [id, expanded, compact] of [
     }
     await expect(drawer).toBeHidden();
     await expect(trigger).toBeFocused();
+    if (id === "cohort") {
+      await expect(page.getByRole("heading", { name: "Preferences", exact: true })).toBeVisible();
+    }
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
       390,
     );
   });
 }
 
+test("Cohort mobile Policies, Profile and Dashboard keep the native drawer until Escape", async ({
+  page,
+}, info) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  const faults: string[] = [];
+  page.on("pageerror", (error) => faults.push(error.message));
+  page.on("console", (message) => {
+    if (message.type() === "warning" || message.type() === "error") faults.push(message.text());
+  });
+  await open(page, "cohort");
+  const trigger = page.getByRole("button", { name: "Open menu", exact: true });
+  await trigger.click();
+  const drawer = page.getByRole("dialog", { name: "Cohort", exact: true });
+  const content = page.locator(".bt-content");
+  await expect(drawer).toBeVisible();
+  await drawer.getByRole("button", { name: "Settings", exact: true }).click();
+  const observed = [];
+  for (const name of ["Policies", "Profile", "Dashboard"]) {
+    const leaf = drawer.getByRole("button", { name, exact: true });
+    await leaf.click();
+    if (name === "Policies") {
+      // Sheet makes its sibling page aria-hidden; read actual rendered content without clicking it.
+      await expect(
+        content.getByRole("region", { name: "Leave types", exact: true, includeHidden: true }),
+      ).toBeVisible();
+    } else if (name === "Profile") {
+      await expect(content.getByLabel("Full Name", { exact: true })).toBeVisible();
+    } else {
+      await expect(content.getByText("Workforce overview", { exact: true })).toBeVisible();
+    }
+    await expect(leaf).toHaveAttribute("aria-current", "page");
+    await expect(drawer).toBeVisible();
+    await expect(leaf).toBeFocused();
+    await expect.poll(async () => (await drawer.boundingBox())?.x).toBe(0);
+    const bounds = await drawer.boundingBox();
+    expect(bounds).not.toBeNull();
+    expect(bounds!.width).toBe(288);
+    expect(bounds!.x).toBe(0);
+    observed.push({ name, bounds });
+  }
+  await info.attach("cohort-mobile-leaf-navigation", {
+    body: JSON.stringify(observed, null, 2),
+    contentType: "application/json",
+  });
+  await drawer.screenshot({ path: info.outputPath("cohort-dashboard-drawer.png") });
+  await page.keyboard.press("Escape");
+  await expect(drawer).toBeHidden();
+  await expect(trigger).toBeFocused();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+  await info.attach("runtime-faults", {
+    body: JSON.stringify(faults, null, 2),
+    contentType: "application/json",
+  });
+  expect(faults).toEqual([]);
+});
+
 test("Cohort settings and Time remain navigable after collapsing and mobile resizing", async ({
   page,
-}) => {
+}, info) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await open(page, "cohort");
   await page.getByRole("button", { name: "Time", exact: true }).click();
@@ -183,7 +259,32 @@ test("Cohort settings and Time remain navigable after collapsing and mobile resi
     lists.filter((node) => ["auto", "scroll"].includes(node.y) && node.scroll > node.client),
   ).toEqual([]);
   const strip = page.locator(".bt-settings-tabs");
-  await strip.getByRole("button").last().focus();
+  const buttons = strip.getByRole("button");
+  await expect(buttons).toHaveCount(6);
+  const actualButtons = await buttons.evaluateAll((nodes) =>
+    nodes.map((node) => ({
+      tag: node.tagName,
+      role: node.getAttribute("role"),
+      tabIndex: (node as HTMLButtonElement).tabIndex,
+      text: node.textContent?.trim(),
+    })),
+  );
+  await info.attach("cohort-settings-page-buttons", {
+    body: JSON.stringify(actualButtons, null, 2),
+    contentType: "application/json",
+  });
+  expect(actualButtons).toEqual(
+    ["Organisation", "Policies", "Approval flows", "Profile", "Preferences", "Security"].map(
+      (text) => ({ tag: "BUTTON", role: null, tabIndex: 0, text }),
+    ),
+  );
+  await buttons.first().click();
+  await expect(buttons.first()).toBeFocused();
+  for (let index = 1; index < 6; index++) {
+    await page.keyboard.press("Tab");
+    await expect(buttons.nth(index)).toBeFocused();
+  }
+  await expect(buttons.last()).toBeFocused();
   await expect.poll(() => strip.evaluate((node) => node.scrollLeft)).toBeGreaterThan(0);
 });
 

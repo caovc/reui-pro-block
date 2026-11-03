@@ -5,6 +5,14 @@ async function openCohort(page: Page) {
   await page.getByRole("button", { name: "Sign in", exact: true }).click();
   await expect(page.locator(".bt-cohort")).toBeVisible();
 }
+async function closeCohortNavigation(page: Page, name: string) {
+  const menu = page.getByRole("dialog", { name: "Cohort", exact: true });
+  await expect(menu).toBeVisible();
+  await expect(menu.getByRole("button", { name, exact: true })).toBeFocused();
+  await page.keyboard.press("Escape");
+  await expect(menu).toBeHidden();
+  await expect(page.getByRole("button", { name: "Open menu", exact: true })).toBeFocused();
+}
 async function directory(page: Page) {
   const link = page.getByRole("button", { name: "Directory", exact: true });
   if (!(await link.isVisible()))
@@ -169,6 +177,7 @@ test("Cohort mobile settings save profile and apply appearance without losing na
   const menu = page.getByRole("dialog", { name: "Cohort", exact: true });
   await menu.getByRole("button", { name: "Settings", exact: true }).click();
   await menu.getByRole("button", { name: "Profile", exact: true }).click();
+  await closeCohortNavigation(page, "Profile");
   await expect(menu).toBeHidden();
   await page
     .locator(".bt-settings-tabs")
@@ -202,9 +211,11 @@ test("Cohort mobile settings save profile and apply appearance without losing na
   await page.getByRole("option", { name: "Light", exact: true }).click();
   await page.getByRole("button", { name: "Open menu", exact: true }).click();
   await menu.getByRole("button", { name: "Dashboard", exact: true }).click();
+  await closeCohortNavigation(page, "Dashboard");
   await page.getByRole("button", { name: "Open menu", exact: true }).click();
   await menu.getByRole("button", { name: "Settings", exact: true }).click();
   await menu.getByRole("button", { name: "Profile", exact: true }).click();
+  await closeCohortNavigation(page, "Profile");
   await expect(page.getByLabel("Full Name", { exact: true })).toHaveValue("Robin Vale");
   await expect
     .poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth))
@@ -335,6 +346,7 @@ test("Cohort mobile Time pages expose calendar filters and a visible bulk sign-o
   let menu = page.getByRole("dialog", { name: "Cohort", exact: true });
   await menu.getByRole("button", { name: "Time", exact: true }).click();
   await menu.getByRole("button", { name: "Time off", exact: true }).click();
+  await closeCohortNavigation(page, "Time off");
   await page.getByRole("button", { name: "Calendars", exact: true }).click();
   await page.getByRole("menuitemcheckbox", { name: "Annual", exact: true }).click();
   await page.keyboard.press("Escape");
@@ -355,6 +367,7 @@ test("Cohort mobile Time pages expose calendar filters and a visible bulk sign-o
   if (!(await timesheetsLink.isVisible()))
     await menu.getByRole("button", { name: "Time", exact: true }).click();
   await timesheetsLink.click();
+  await closeCohortNavigation(page, "Timesheets");
   const signoff = page.getByRole("button", { name: "Sign off 21", exact: true });
   await expect(signoff).toBeInViewport();
   await signoff.click();

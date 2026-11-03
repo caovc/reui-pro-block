@@ -171,6 +171,7 @@ export function NavItems({
   label,
   menuClassName,
   showTooltips = true,
+  closeOnSelect = true,
 }: {
   items: string[];
   active: string;
@@ -180,6 +181,7 @@ export function NavItems({
   label?: string;
   menuClassName?: string;
   showTooltips?: boolean;
+  closeOnSelect?: boolean;
 }) {
   const closeNavigation = useContext(NavigationCloseContext);
   return (
@@ -188,10 +190,11 @@ export function NavItems({
         label={label}
         menuClassName={menuClassName}
         showTooltips={showTooltips}
+        closeOnSelect={closeOnSelect}
         active={active}
         onSelect={(value) => {
           onSelect(value);
-          closeNavigation();
+          if (closeOnSelect) closeNavigation();
         }}
         items={items.map((label) => {
           const Icon = icons[label as keyof typeof icons] ?? FileText;
@@ -236,7 +239,7 @@ export function Shell(props: ComponentProps<typeof ShellContent>) {
       style={
         {
           "--sidebar-width-icon":
-            props.id === "cohort" ? "66px" : props.id === "atlas" ? "48px" : "62px",
+            props.id === "cohort" ? "64px" : props.id === "atlas" ? "48px" : "62px",
         } as React.CSSProperties
       }
     >
@@ -407,7 +410,8 @@ function ShellContent({
               commerce ? items.filter((item) => !["Analytics", "Settings"].includes(item)) : items
             }
             active={active}
-            onSelect={select}
+            closeOnSelect={id !== "cohort"}
+            onSelect={id === "cohort" ? setActive : select}
           />
           {commerce && (
             <NavItems
