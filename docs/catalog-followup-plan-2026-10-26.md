@@ -763,3 +763,7 @@ Removed duplicate Row markup in favour of the existing Field-based project Row, 
 ## Pulse seven weekday options — 2026-11-03
 
 Expanded only the existing Select option list to Monday through Sunday. At1440/390, native keyboard End/Escape, selection, save, Dashboard→Settings navigation and draft Reset pass; original name/color/geometry assertions remain. Affected native5 and source2 pass; the actual228-member original project normal-install/strict/native5 passes with entry/config/raw members/dist/public/ZIP exact and previews closed. Models, shared Select/Row/API/CSS and SourceTargets remain unchanged. [Release evidence](pulse-seven-weekdays-release-2026-11-03.json) separates this small correction from remaining semantic/typography work, Lucent Item reuse and the active full-template goal.
+
+## Editor Link dialog CI correction — 2026-11-03
+
+Cohort2f full CI passed2115 and failed one existing editor test because a global Remove link selector matched both native bubble and Link dialog. The test now waits for the real dialog before its existing bubble-absence assertions, clicks that dialog’s Remove action and checks closure. Every old assertion remains; no product code, budget, retry, forced focus or fixed sleep was added. The necessary single case passes on exact63a frozen runtime without a rebuild, with preview closed. [Evidence](ci-editor-link-dialog-release-2026-11-03.json) retains the original log/trace and separates this local QA correction from pending full CI/Pages.

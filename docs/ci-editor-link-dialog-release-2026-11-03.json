@@ -1,0 +1,66 @@
+{
+  "date": "2026-11-03",
+  "milestone": "Scope native editor link removal to the ready Link dialog",
+  "base": "63a66fccb18368e5966f1ab78d45d3a222663f6c",
+  "goalComplete": false,
+  "runtimeChanged": false,
+  "sourceFilesUnchanged": 1150,
+  "upstreamCI": {
+    "run": 41567767304,
+    "commit": "2feca08d5dcf447dbf104d7575e3ed06e4f79379",
+    "passed": 2115,
+    "failed": 1,
+    "failure": "Global Remove link locator matched native Link group and Link dialog during transition.",
+    "buildJobLogSHA256": "9d1059b1fb4f3bc1a14d970bd509da694f321e7c2a889b7b024d64616125c38f",
+    "traceSHA256": "8a2bcd5bf58707bbb2813b223d4f677ac5861a901d3c59dcf87c83d62762e588",
+    "errorContextSHA256": "63d6cec82059dbd3037b8d8a574261da26692d5e50fbd11d42609b9391a3e1f0"
+  },
+  "change": "Wait for the real Link dialog before both existing group-absence assertions; remove through that dialog and assert it closes. All earlier assertions remain unchanged. No retry, timeout, forced focus, sleep or product change.",
+  "ownedQA": {
+    "path": "tests/editor-fidelity.spec.ts",
+    "beforeSHA256": "460b93b36fb4c3143ea9ef6824fe47fd23c80a9fa96f3329e45573ba37aaa629",
+    "afterSHA256": "df80a0c449874f758e8f0345428cca3830bd57067f8b24ca08bd43c53674e801",
+    "completeInverseToBase": true
+  },
+  "necessaryNative1": {
+    "command": [
+      "npx",
+      "playwright",
+      "test",
+      "tests/editor-fidelity.spec.ts",
+      "--workers=1",
+      "--retries=0",
+      "--output",
+      "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/ci-link-dialog-v1-native1/artifacts",
+      "--reporter=json",
+      "--grep",
+      "link popover retains formatted selection and edits and removes the native link$"
+    ],
+    "url": "http://127.0.0.1:49875/",
+    "exit": 0,
+    "seconds": 2.039066458004527,
+    "stats": {
+      "startTime": "2026-11-03T04:40:07.318Z",
+      "duration": 1698.1000000000001,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "reportSHA256": "d3811d1967ca56460b5ed360b89d0d67a255241e2d092bf2b59ebda35ed151ce"
+  },
+  "scope": "Only the affected existing test ran locally; not a full editor suite or full Linux CI rerun. Existing exact63a source/dist/public used without rebuilding. QA-only runner dependencies are a symlink, not claimed as strict-build dependencies.",
+  "cleanup": {
+    "preview": {
+      "pid": 93727,
+      "url": "http://127.0.0.1:49875/",
+      "project": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/pulse-first-day-dc-validation-v1/candidate"
+    },
+    "terminatedOwnedGroup": true,
+    "nativePassed": true,
+    "frozenSourceDistPublicExact": true,
+    "previewPortClosed": true
+  },
+  "operatorDiscovery": "Initial start-anchored list found0 tests; preserved without native execution, then corrected positive discovery1 before the single native run.",
+  "publication": "Local acceptance snapshot before commit/push; new full CI and Pages pending."
+}

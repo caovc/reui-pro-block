@@ -83,6 +83,7 @@ test("link popover retains formatted selection and edits and removes the native 
   page,
 }) => {
   await page.goto(route);
+  const linkDialog = page.getByRole("dialog", { name: "Link", exact: true });
   const editor = page.getByRole("textbox", { name: "Rich text document", exact: true });
   await editor.locator("p").last().click();
   await editor.press(endDocument);
@@ -105,6 +106,7 @@ test("link popover retains formatted selection and edits and removes the native 
   );
   await link.click();
   await page.keyboard.press("ControlOrMeta+k");
+  await expect(linkDialog).toBeVisible();
   await expect(page.getByRole("group", { name: "Link", exact: true })).toHaveCount(0);
   await expect(page.getByRole("textbox", { name: "Link address", exact: true })).toHaveValue(
     "https://example.com/brief",
@@ -117,8 +119,10 @@ test("link popover retains formatted selection and edits and removes the native 
   await expect(page.getByRole("group", { name: "Link", exact: true })).toBeVisible();
   await link.click();
   await page.keyboard.press("ControlOrMeta+k");
+  await expect(linkDialog).toBeVisible();
   await expect(page.getByRole("group", { name: "Link", exact: true })).toHaveCount(0);
-  await page.getByRole("button", { name: "Remove link", exact: true }).click();
+  await linkDialog.getByRole("button", { name: "Remove link", exact: true }).click();
+  await expect(linkDialog).toHaveCount(0);
   await expect(link).toHaveCount(0);
   await expect(page.getByRole("group", { name: "Link", exact: true })).toHaveCount(0);
   await expect(editor.locator("strong").filter({ hasText: "Formatted resource" })).toHaveText(
