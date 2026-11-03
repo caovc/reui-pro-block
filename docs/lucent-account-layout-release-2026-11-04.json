@@ -1,0 +1,55 @@
+{
+  "date": "2026-11-04",
+  "milestone": "Lucent native inline account pages and Flux Overview mobile contract QA",
+  "baseCommit": "0f9fd79f04cd393249e099170b44eb3783c77e3c",
+  "changes": [
+    "Add independent Profile/Billing/Preferences full-page Card compositions:20 scalar controls,28 observed options across7 groups and5 original Switch defaults. Existing workspace General Settings Frame and domain models remain.",
+    "Separate menu Preferences /settings from Account tab /account/preferences. Native links preserve gallery/isolated mount, query, modifier behavior and standalone paths, with hash-string snapshot and foreign-route guards.",
+    "Profile Alert Update focuses the real Role control; Dismiss removes only the alert. Save/Cancel operate the local Profile snapshot and identity; Cancel stays on page and shows the discard toast.",
+    "Use actual native uploader with consumer-owned Blob URL cleanup and FileReader generation/abort; saved Profile media is a local DataURL. Real account theme RadioGroup applies Dark/Light/System through the existing provider.",
+    "Expose a narrowly scoped optional accountMenu consumer slot in existing WorkflowShell; its existing fallback stays unchanged. SourceTargets includes actual split implementation files.",
+    "Adapt three old Flux phone test helpers to the observed Overview keep-open behavior:verify retained Sheet, use real Escape and assert native focus return. Preserve Approvals auto-close and all business/layout/coverage checks."
+  ],
+  "freeReuse": [
+    "Existing actual ReUI Sidebar/Menu/Sheet, native DropdownMenu/RadioGroup/Tabs and existing theme API.",
+    "Actual free Card/Header/Content/Footer, FieldSet/Fields/Separator, existing Pro SettingsFields/Rows/Choice and Alert.",
+    "Actual c-file-upload-2 LocalAvatarUpload/useFileUpload and existing Input/Select/Switch/Button implementations; shared free modules preserved."
+  ],
+  "customRequired": "Lucent account routing, demo field values, local Profile save/cancel and field validation, session form state, notice behavior, media ownership cleanup and consumer layout CSS. Free presentation components do not supply these domain rules.",
+  "verification": {
+    "configuredBuild": "Original tsc -b && vite build-v6 passed;1165 source/657dist bound, no additional production rebuild for Root QA.",
+    "site": "14 final native cases passed on1440/390, covering three-page geometry/options, alert/focus, Profile fields/media, local history including two Back actions to Overview, independent Preferences destinations and three theme modes.",
+    "source": "9 final checks passed:actual View/Copy/single-file bytes8 plus newly downloaded licensed project closure1.",
+    "legacy": "29 unchanged Lucent header/workspace/preferences/security and Tempo/Mesh account cases passed.",
+    "rootFluxQA": "5 necessary original cases passed on final Lucent v6 production assets at original budgets, workers1/retries0; actual16.600s,0fail/skip/flaky. QA only3 files; no product navigation rollback or new Tooltip engine.",
+    "download": {
+      "zipSHA256": "ee20c60a444fc384911f36b891bdca4d558ea2a37ed1c93b22ae98fe2c202bc1",
+      "rawMembers": 322,
+      "normalInstallSeconds": 34.336,
+      "immediatePostinstallAndFinalLockSHA256": "f05a24eb42001de9dc5934fb0a1363e116b33fb7bb5cc7cadc3a3202c7d304b6",
+      "originalStrictBuildSeconds": 8.717,
+      "firstNativePassed": 14,
+      "allRawPackageConfigMainExampleUnchanged": true
+    },
+    "independent": "Original contract and final v6 static preflight bind owned12; Root viewed six final desktop/phone actual screenshots.",
+    "failureHistory": "Retain invalidCLI before test spawn, then9P1F nativeSonner hover lifetime interference resolved through real pointer departure and normal dismissal under unchanged budget. Later11P1F2notrun exposed sr-only theme radio hit target; actual same RadioGroupItem now fills its28px visual control with icon pointer-eventsnone. Final14 passed. Original Flux CI2241P3F retained:all3 traces show successful Overview page switch with retained native Sheet; only incompatible old test expectations were adapted."
+  },
+  "priorVerifiedDeployment": {
+    "commit": "369c40e369ff25cce52b387a9087ee5ea06adc3a",
+    "runId": 41693845625,
+    "passed": 2230,
+    "deploymentId": 7527933600,
+    "successStatusId": 21281673678,
+    "successUTC": "2026-11-03T19:01:51Z"
+  },
+  "boundaries": [
+    "Workspace switcher, Services order/status/actions and complete toolbar remain a separate Lucent milestone; no whole-template100percent claim.",
+    "Billing/Preferences are local session drafts with Save feedback/snapshot write; no reload persistence or readback-from-saved behavior claimed. Profile saved snapshot and Cancel are separately implemented.",
+    "Original options/layout/Cancel/Update/Dismiss were observed without original field edits, Save/Reset or financial operations. Full original Back/Forward was not verified; local history gates are local evidence.",
+    "Plan/payment actions are explicit local demo feedback; no authentication, purchase, invoice delivery, notification engine or service backend.",
+    "Phone native Select actions cause real scrollIntoView; fullPage screenshots with a sticky header at current scroll offset are not initial top-viewport comparisons.",
+    "Only the final original Lucent322 project was freshly installed/built/run. Existing shared-shell fallback branches retain original behavior; other export closures are not claimed freshly rerun.",
+    "This new commit still needs its own complete CI and exact Pages deployment."
+  ],
+  "licensing": "Independent Bricklane branding/demo fixtures and local artwork; actual free MIT/OFL/attributions retained. Original paid screenshots, avatars, logos and extracted assets are not distributed."
+}

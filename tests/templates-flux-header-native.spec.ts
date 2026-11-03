@@ -40,8 +40,15 @@ async function navigate(page: Page, width: number, view: "Workspace" | "Security
     await sidebar.getByRole("button", { name: "Settings", exact: true }).click();
   await destination.click();
   if (view === "Overview") {
+    if (width === 390) {
+      await expect(sheet).toBeVisible();
+      await page.keyboard.press("Escape");
+      await expect(sheet).toHaveCount(0);
+      await expect(
+        page.getByRole("button", { name: "Open navigation", exact: true }),
+      ).toBeFocused();
+    }
     await expect(page.getByRole("heading", { name: /Agent Operations/ })).toBeVisible();
-    if (width === 390) await expect(sheet).toHaveCount(0);
   } else {
     await expect(page.locator(".flux-settings-page")).toBeVisible();
     if (width === 390) {

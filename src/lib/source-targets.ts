@@ -645,6 +645,9 @@ export function templateImplementationTargets(template: {
     ],
     tempo: ["ai-operations", "workflow-account-settings", "workflow-account-menu"],
     lucent: [
+      "lucent-account",
+      "lucent-account-menu",
+      "lucent-account-sections",
       "lucent-clusters",
       "lucent-hosts",
       "lucent-registry",
@@ -704,6 +707,13 @@ export function templateImplementationTargets(template: {
       : []),
     ...(template.family === "collaboration" && ["pulse", "roster"].includes(template.id)
       ? ["src/templates/collaboration/settings-row.css"]
+      : []),
+    ...(template.id === "lucent"
+      ? [
+          "src/templates/workflow/lucent-account-model.ts",
+          "src/templates/workflow/lucent-account-routes.ts",
+          "src/templates/workflow/lucent-account.css",
+        ]
       : []),
     ...(template.id === "flux"
       ? [

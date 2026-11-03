@@ -39,7 +39,12 @@ async function navigate(page: Page, name: "Approvals" | "Overview", mobile: bool
     const drawer = page.getByRole("dialog");
     await expect(drawer).toBeVisible();
     await drawer.getByRole("button", { name, exact: true }).click();
+    if (name === "Overview") {
+      await expect(drawer).toBeVisible();
+      await page.keyboard.press("Escape");
+    }
     await expect(drawer).toHaveCount(0);
+    if (name === "Overview") await expect(opener).toBeFocused();
   } else {
     await page.getByRole("button", { name, exact: true }).click();
   }

@@ -57,6 +57,7 @@ type ShellProps = {
   dark?: boolean;
   extra?: ReactNode;
   taskNavigation?: ReactNode;
+  accountMenu?: ReactNode;
   mobileSecondaryNavigation?: ReactNode;
   mobileSecondaryWidth?: number;
   headerTitle?: ReactNode;
@@ -109,6 +110,7 @@ function ShellContent({
   dark = false,
   extra,
   taskNavigation,
+  accountMenu,
   mobileSecondaryNavigation,
   mobileSecondaryWidth = 200,
   headerTitle,
@@ -127,7 +129,8 @@ function ShellContent({
         : undefined;
   const inset = brand === "AgentOps";
   const width = brand === "ReUI" ? 250 : brand === "Flowly" ? 63 : brand === "Mesh" ? 48 : 256;
-  const HeaderTitleTag = brand === "AgentOps" && headerTitle !== undefined ? "div" : "span";
+  const HeaderTitleTag =
+    (brand === "AgentOps" || brand === "DevOps") && headerTitle !== undefined ? "div" : "span";
   const accountKind =
     brand === "ReUI"
       ? "tempo"
@@ -271,29 +274,32 @@ function ShellContent({
               </SidebarMenuItem>
             )}
             <SidebarMenuItem>
-              {accountKind ? (
-                <WorkflowAccountMenu
-                  kind={accountKind}
-                  identity={identity}
-                  collapsed={iconRail}
-                  triggerRef={accountTrigger}
-                  onSectionSelect={openSettings}
-                />
-              ) : (
-                <SidebarMenuButton
-                  className={compactAccountClass}
-                  tooltip="Account settings"
-                  aria-label="Account settings"
-                  onClick={() => select("Settings")}
-                >
-                  <span className="wf-avatar">{dark ? "C" : brand === "DevOps" ? "TO" : "NB"}</span>
-                  {!iconRail && (
-                    <span>
-                      {dark ? "Claude" : brand === "DevOps" ? "Tomas Okonkwo" : "Nick Bold"}
+              {accountMenu ??
+                (accountKind ? (
+                  <WorkflowAccountMenu
+                    kind={accountKind}
+                    identity={identity}
+                    collapsed={iconRail}
+                    triggerRef={accountTrigger}
+                    onSectionSelect={openSettings}
+                  />
+                ) : (
+                  <SidebarMenuButton
+                    className={compactAccountClass}
+                    tooltip="Account settings"
+                    aria-label="Account settings"
+                    onClick={() => select("Settings")}
+                  >
+                    <span className="wf-avatar">
+                      {dark ? "C" : brand === "DevOps" ? "TO" : "NB"}
                     </span>
-                  )}
-                </SidebarMenuButton>
-              )}
+                    {!iconRail && (
+                      <span>
+                        {dark ? "Claude" : brand === "DevOps" ? "Tomas Okonkwo" : "Nick Bold"}
+                      </span>
+                    )}
+                  </SidebarMenuButton>
+                ))}
             </SidebarMenuItem>
           </SidebarMenu>
         }

@@ -1,4 +1,16 @@
 import "./lucent-layout.css";
+import { LucentAccountPage } from "./lucent-account";
+import { useLucentAccountModel } from "./lucent-account-model";
+import { LucentAccountMenu } from "./lucent-account-menu";
+import { useLucentAccountRoute, type LucentDestination } from "./lucent-account-routes";
+import {
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { useLucentSecurityModel, useLucentIntegrationsModel } from "./workflow-models";
 import { LucentSecurity, LucentIntegrations } from "./lucent-settings";
 import { useState } from "react";
@@ -18,6 +30,7 @@ import {
 } from "lucide-react";
 import {
   Shell,
+  Logo,
   Panel,
   Button,
   Input,
@@ -60,7 +73,18 @@ export default function Lucent() {
   const securityModel = useLucentSecurityModel();
   const integrationModel = useLucentIntegrationsModel();
   const infrastructureModel = useLucentInfrastructureModel();
-  const [view, setView] = useState("Overview");
+  const [workspaceView, setWorkspaceView] = useState("Overview");
+  const accountModel = useLucentAccountModel();
+  const accountRoute = useLucentAccountRoute();
+  const view = accountRoute.settings ? "Settings" : workspaceView;
+  const setView = (next: string) => {
+    if (next !== "Settings") setWorkspaceView(next);
+    accountRoute.navigate(next === "Settings" ? "settings" : "root");
+  };
+  const navigateAccount = (destination: LucentDestination) => {
+    if (destination === "root") setWorkspaceView("Overview");
+    accountRoute.navigate(destination);
+  };
   const [period, setPeriod] = useState("30 days");
   const [query, setQuery] = useState("");
   const [flags, setFlags] = useState(initialFlags);
@@ -126,6 +150,55 @@ export default function Lucent() {
       brand="DevOps"
       view={view}
       setView={setView}
+      accountMenu={
+        <LucentAccountMenu
+          name={String(accountModel.profileSaved.fullName)}
+          email={String(accountModel.profileSaved.email)}
+          avatar={accountModel.savedAvatar}
+          href={accountRoute.href}
+          onNavigate={navigateAccount}
+        />
+      }
+      headerTitle={
+        accountRoute.account ? (
+          <Breadcrumb className="lucent-account-breadcrumb">
+            <span className="lucent-account-mobile-brand">
+              <Logo />
+            </span>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink
+                  href={accountRoute.href("root") ?? undefined}
+                  onClick={(event) => {
+                    if (
+                      event.button === 0 &&
+                      !event.metaKey &&
+                      !event.ctrlKey &&
+                      !event.shiftKey &&
+                      !event.altKey
+                    ) {
+                      event.preventDefault();
+                      navigateAccount("root");
+                    }
+                  }}
+                >
+                  Home
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Account</BreadcrumbPage>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>
+                  {accountRoute.account[0].toUpperCase() + accountRoute.account.slice(1)}
+                </BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        ) : undefined
+      }
       nav={[
         { label: "Overview", icon: Home },
         { label: "Delivery", icon: Rocket },
@@ -159,11 +232,17 @@ export default function Lucent() {
       actions={
         <Button variant="outline" size="sm" onClick={() => setInvite(true)}>
           <Users />
-          Invite
+          <span>Invite</span>
         </Button>
       }
     >
-      {view === "Overview" ? (
+      {accountRoute.account ? (
+        <LucentAccountPage
+          page={accountRoute.account}
+          onPageChange={navigateAccount}
+          model={accountModel}
+        />
+      ) : view === "Overview" ? (
         <>
           <div className="wf-grid wf-three">
             <Panel icon={ClipboardCheck} title="Runbook Coverage" description="Verified services">

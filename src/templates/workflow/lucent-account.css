@@ -1,0 +1,283 @@
+/* Lucent consumer composition of the existing free Card/Field/Tabs and Pro rows.
+   The workspace General page and other workflow account panels keep their scopes. */
+.wf-root.wf-devops > .wf-main > .wf-content:has(> .lucent-account-page) {
+  padding: 16px;
+}
+
+.lucent-account-page {
+  min-width: 0;
+  width: 100%;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.lucent-account-page > [data-slot="tabs"] {
+  min-width: 0;
+  gap: 20px;
+}
+
+.lucent-account-page [data-slot="tabs-list"] {
+  flex-shrink: 0;
+}
+
+.lucent-account-page [data-slot="tabs-content"] {
+  min-width: 0;
+  margin: 0;
+}
+
+.lucent-account-page .lucent-account-stack {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.lucent-account-page .lucent-account-card {
+  min-width: 0;
+  gap: 0;
+  padding: 0;
+}
+
+.lucent-account-page .lucent-account-card > [data-slot="card-header"] {
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  padding: 12px 20px 16px;
+}
+
+.lucent-account-page .lucent-account-card [data-slot="card-title"] {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 22px;
+}
+
+.lucent-account-page .lucent-account-card [data-slot="card-description"] {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.lucent-account-page .lucent-account-card > [data-slot="card-content"] {
+  padding: 0;
+}
+
+.lucent-account-page .lucent-account-fields,
+.lucent-account-page .lucent-account-rows {
+  min-width: 0;
+  gap: 0;
+}
+
+.lucent-account-page .lucent-account-rows > .workspace-settings-row {
+  display: grid;
+  min-width: 0;
+  width: 100%;
+  grid-template-columns: minmax(0, 24rem) minmax(0, 1fr);
+  align-items: start;
+  gap: 16px;
+  padding: 12px 20px;
+}
+
+.lucent-account-page .workspace-settings-row > [data-slot="field-content"] {
+  min-width: 0;
+  gap: 2px;
+}
+
+.lucent-account-page [data-slot="field-label"] {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.lucent-account-page label[data-slot="field-label"] {
+  line-height: 19.25px;
+}
+
+.lucent-account-page div[data-slot="field-label"] {
+  line-height: 20px;
+}
+
+.lucent-account-page [data-slot="field-description"]:not(.sr-only) {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
+}
+
+.lucent-account-page .workspace-settings-control {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+}
+
+.lucent-account-page .workspace-settings-control > [role="switch"] {
+  align-self: flex-end;
+}
+
+.lucent-account-page [data-slot="input"],
+.lucent-account-page [data-slot="select-trigger"],
+.lucent-account-page [data-slot="input-group"] {
+  width: 100%;
+  min-width: 0;
+  height: 32px;
+}
+
+.lucent-account-page [data-slot="textarea"] {
+  width: 100%;
+  min-width: 0;
+  height: 96px;
+  min-height: 96px;
+  field-sizing: fixed;
+}
+
+.lucent-account-page .lucent-account-details,
+.lucent-account-page .lucent-account-quiet-hours {
+  min-width: 0;
+  width: 100%;
+  gap: 12px;
+}
+
+.lucent-account-page .lucent-account-details > [data-slot="field-group"] {
+  min-width: 0;
+  gap: 16px;
+}
+
+.lucent-account-page .lucent-account-quiet-hours > [data-slot="field-group"] {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.lucent-account-page .lucent-account-details [data-slot="field-group"] > [data-slot="field"],
+.lucent-account-page .lucent-account-quiet-hours [data-slot="field-group"] > [data-slot="field"] {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  padding: 0;
+}
+
+.lucent-account-page .lucent-account-details .workspace-settings-control {
+  width: 100%;
+}
+
+.lucent-account-page .workspace-settings-control.lucent-account-inline {
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.lucent-account-page .lucent-account-plan-price {
+  color: var(--foreground);
+}
+
+.lucent-account-page .lucent-account-card-summary {
+  color: var(--muted-foreground);
+}
+
+.lucent-account-page .lucent-account-card > [data-slot="card-footer"] {
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 20px;
+}
+
+.lucent-account-page [data-slot="button"] {
+  height: 32px;
+  gap: 6px;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.lucent-account-page [data-slot="button"] > svg {
+  width: 16px;
+  height: 16px;
+}
+
+.lucent-account-page .lucent-account-avatar {
+  gap: 8px;
+}
+
+.lucent-account-page .lucent-account-avatar div[class~="group/avatar"] {
+  width: 40px;
+  height: 40px;
+}
+
+.lucent-account-page .lucent-account-profile-notice {
+  margin-bottom: 24px;
+}
+
+.lucent-account-page .lucent-account-profile-notice [data-slot="alert-title"] {
+  line-height: 20px;
+}
+
+.lucent-account-page .lucent-account-profile-notice [data-slot="alert-description"] {
+  line-height: 20px;
+}
+
+.lucent-account-page .lucent-account-avatar-error {
+  color: var(--destructive);
+}
+
+@media (max-width: 767px) {
+  .lucent-account-page .lucent-account-rows > .workspace-settings-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .lucent-account-page .lucent-account-quiet-hours > [data-slot="field-group"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .lucent-account-page .workspace-settings-control.lucent-account-inline {
+    justify-content: flex-start;
+  }
+}
+
+.lucent-account-mobile-brand {
+  display: none;
+}
+
+.lucent-account-breadcrumb [data-slot="breadcrumb-link"] {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+@media (max-width: 767px) {
+  .lucent-account-breadcrumb {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .lucent-account-mobile-brand {
+    display: inline-flex;
+  }
+
+  .lucent-account-mobile-brand .wf-logo {
+    width: 24px;
+    height: 24px;
+  }
+
+  .lucent-account-breadcrumb [data-slot="breadcrumb-list"] {
+    flex-wrap: nowrap;
+  }
+
+  .lucent-account-breadcrumb [data-slot="breadcrumb-list"] > :not(:last-child) {
+    display: none;
+  }
+
+  .wf-root.wf-devops:has(.lucent-account-page) .wf-header-actions > button:has(svg) {
+    padding-right: 8px;
+    padding-left: 8px;
+  }
+
+  .wf-root.wf-devops:has(.lucent-account-page) .wf-header-actions > button > svg + span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+}

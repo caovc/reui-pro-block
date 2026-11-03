@@ -83,6 +83,10 @@ for (const family of families) {
     await expect(trigger).toBeFocused();
     await trigger.click();
     await drawer.getByRole("button", { name: family.entry, exact: true }).click();
+    if (family.id === "flux") {
+      await expect(drawer).toBeVisible();
+      await page.keyboard.press("Escape");
+    }
     await expect(drawer).toHaveCount(0);
     await expect(trigger).toBeFocused();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(
