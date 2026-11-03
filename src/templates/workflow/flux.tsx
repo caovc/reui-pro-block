@@ -43,6 +43,7 @@ import type { SettingsValues } from "@/blocks/application/dialog-variants/worksp
 import { RunTree } from "./run-tree";
 import { ApprovalInbox } from "./approvals";
 import { FluxFlags } from "./flux-flags";
+import { FluxQuickLinks } from "./flux-sidebar-quick-links";
 const agentSeed = ["Refund Triage", "Invoice Reconciler", "Support Router", "Contract Reader"];
 const incidents = [
   {
@@ -143,25 +144,12 @@ export default function Flux() {
       ]}
       extra={
         <>
-          <div className="wf-nav-group">
-            <p>Quick links</p>
-            {["Failures", "Connections", "Routing rules", "Spend overview", "Token audit"].map(
-              (x) => (
-                <Button
-                  key={x}
-                  variant="ghost"
-                  className="wf-nav-button"
-                  onClick={() => {
-                    setView(x === "Failures" ? "Runs" : x);
-                    setRiskOnly(x === "Failures");
-                  }}
-                >
-                  <Activity />
-                  {x}
-                </Button>
-              ),
-            )}
-          </div>
+          <FluxQuickLinks
+            onSelect={(label) => {
+              setView(label === "Failures" ? "Runs" : label);
+              setRiskOnly(label === "Failures");
+            }}
+          />
           <div className="wf-usage">
             <strong>Spending Limit</strong>
             <p>$95.10 of $144.09 this period. Resets Oct 23.</p>

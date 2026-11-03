@@ -1,0 +1,52 @@
+/* The free SidebarCollection owns disclosure, keyboard and mobile Sheet state.
+   Only this Flux consumer adapts its measured label and shortcut row geometry. */
+.wf-flux-quick-links {
+  flex: none;
+}
+
+.wf-flux-quick-links > [data-slot="collapsible"] {
+  margin-top: 0;
+}
+
+.wf-flux-quick-links [data-slot="sidebar-group-label"] {
+  height: 32px;
+  padding-inline: 12px;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.wf-flux-quick-links [data-slot="sidebar-group-label"]:hover {
+  background: transparent;
+}
+
+.wf-flux-quick-links [data-slot="sidebar-group-label"] > svg {
+  opacity: 0.6;
+  transition: transform 200ms;
+}
+
+.wf-flux-quick-links [data-slot="sidebar-group-label"][data-state="open"] > svg {
+  transform: rotate(90deg);
+}
+
+.wf-flux-quick-links [data-slot="sidebar-menu"] {
+  gap: 1px;
+}
+
+.wf-flux-quick-links [data-slot="sidebar-menu-button"] {
+  height: 36px;
+  border-radius: 999px;
+  padding: 8px 12px;
+  gap: 8px;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  color: color-mix(in oklab, var(--sidebar-foreground) 80%, transparent);
+}
+
+.wf-flux-quick-links [data-slot="sidebar-menu-button"] > svg {
+  width: 16px;
+  height: 16px;
+}

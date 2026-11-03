@@ -1,0 +1,197 @@
+{
+  "milestone": "Flux quick links native SidebarCollection",
+  "date": "2026-11-03",
+  "base": "7c540edcf6c94d3f4e9ea57b01122101c18c7f37",
+  "goalComplete": false,
+  "payload": {
+    "src/components/reui/sidebar.tsx": "22ac628df901c98fd728b556526849667b2bc92d49717b25e9c402ee81e30085",
+    "src/templates/workflow/flux.tsx": "b54394f51fe3ff51264e41930d0607b56b1172e95ddd719ad7e2ae549473a308",
+    "src/templates/workflow/flux-sidebar-quick-links.tsx": "946351ed635e489ef77ed9eca0a9de28020d95be1dc48c01e34356cfb8da521e",
+    "src/templates/workflow/flux-sidebar-quick-links.css": "ebc91f89a9f46827f58151c684e48c99326c3754d064d305b6adc4749671139f",
+    "src/lib/source-targets.ts": "dc1050a453c76bf112923cf320c8bae16da6d450b209f4ad5338ba0a6fbcbd7d",
+    "tests/flux-sidebar-quick-links-native.spec.ts": "d2b0cc43b58a9ce9e1c290ca6d6da7dbf31dec3f5a26520870683f1d36c85d10",
+    "tests/flux-sidebar-quick-links-source.spec.ts": "179ff82a83a523930f10e3167972e03b7b5edb032002fca0815a49655895e86a"
+  },
+  "implementation": {
+    "actualReuse": "FluxQuickLinks actually calls existing SidebarCollection -> real free c-sidebar1/c-sidebar3 Collapsible/Group/Label/Menu/Item/MenuButton, not a copied replacement. Existing native Sidebar/Sheet owns focus/disclosure. Licensed Lucide substitutes only.",
+    "removedDuplication": "Replace handwritten heading and five ghost buttons with the existing free SidebarCollection composition.",
+    "necessaryCustomCode": "Measured consumer CSS plus original domain callback mapping and route-safe same-template anchor adapter; free shared collection lacked anchor rendering and opt-out of mobile close, added optional props with defaults preserved.",
+    "preserved": "Existing domain callbacks and all nine previous Collection consumers keep their defaults; only Flux opts out of mobile close."
+  },
+  "localGates": {
+    "owned-format": {
+      "command": [
+        "npm",
+        "run",
+        "format",
+        "--",
+        "src/components/reui/sidebar.tsx",
+        "src/templates/workflow/flux.tsx",
+        "src/templates/workflow/flux-sidebar-quick-links.tsx",
+        "src/templates/workflow/flux-sidebar-quick-links.css",
+        "src/lib/source-targets.ts",
+        "tests/flux-sidebar-quick-links-native.spec.ts",
+        "tests/flux-sidebar-quick-links-source.spec.ts"
+      ],
+      "cwd": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/flux-quick-links-7c540ed-candidate-v1/candidate",
+      "exit": 0,
+      "seconds": 0.5924962909994065,
+      "logSHA256": "ced1979ac18f2e9c3ab99581f11bfbc51500f9c03d4ff5bf3d7942fde780b85a"
+    },
+    "full-format-check": {
+      "command": ["npm", "run", "format:check"],
+      "cwd": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/flux-quick-links-7c540ed-candidate-v1/candidate",
+      "exit": 0,
+      "seconds": 0.3226467499989667,
+      "logSHA256": "c136615d6d3c1b3e9543e4dc3adf73e9d596d2def240bc0bbf66d637620329b1"
+    },
+    "owned-lint": {
+      "command": [
+        "npm",
+        "run",
+        "lint",
+        "--",
+        "src/components/reui/sidebar.tsx",
+        "src/templates/workflow/flux.tsx",
+        "src/templates/workflow/flux-sidebar-quick-links.tsx",
+        "src/templates/workflow/flux-sidebar-quick-links.css",
+        "src/lib/source-targets.ts",
+        "tests/flux-sidebar-quick-links-native.spec.ts",
+        "tests/flux-sidebar-quick-links-source.spec.ts"
+      ],
+      "cwd": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/flux-quick-links-7c540ed-candidate-v1/candidate",
+      "exit": 0,
+      "seconds": 0.6683115420019021,
+      "logSHA256": "c656b69ec61a0f8cc7cb7ffc8b96d94254450ef069d3b1f4a045dc0456d68ad4"
+    },
+    "original-strict-build": {
+      "command": ["npm", "run", "build"],
+      "cwd": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/flux-quick-links-7c540ed-candidate-v1/candidate",
+      "exit": 0,
+      "seconds": 26.048352041994804,
+      "logSHA256": "dc982d267d6915951a03afc4de72917480daac0661e3fc14e723575e26046f95"
+    },
+    "received-flux-normal-install": {
+      "command": ["npm", "install"],
+      "cwd": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/flux-quick-links-7c540ed-candidate-v1/received-flux",
+      "exit": 0,
+      "seconds": 54.815339959000994,
+      "logSHA256": "a206bf22f19f5621e5871deee991a19f3201c6349faa5879f8a9eb2905876ea8"
+    },
+    "received-flux-original-strict": {
+      "command": ["npm", "run", "build"],
+      "cwd": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/flux-quick-links-7c540ed-candidate-v1/received-flux",
+      "exit": 0,
+      "seconds": 8.744503166999493,
+      "logSHA256": "23868037d048f116de4384858e963c0cd54e350ffcf22c4d97674c9ef1d8e733"
+    }
+  },
+  "actualReports": {
+    "site-native4": {
+      "expected": 4,
+      "seconds": 7.465239040997403,
+      "reportSHA256": "880f540a76b2b5cbea293a1ec3148f8784127c650ebc1466c9c5eabefaf57560",
+      "receiptSHA256": "98ad760a6194d00b34e7e0ec5c5b2896b0ab0c3e2f7bf9de91a9082bee3308cd",
+      "W1R0": true,
+      "nativeBudget": "Original30s tests/5s assertions unchanged"
+    },
+    "source4": {
+      "expected": 4,
+      "seconds": 12.715766749999602,
+      "reportSHA256": "b844e84b888b4ce13a388bd094f43daa56e47f5194f092ac3fbc4c87e142b608",
+      "receiptSHA256": "1188ff69a798f18539e5146428ebe654c793feeb35250d5f30c0cb3445162cf1",
+      "W1R0": true,
+      "nativeBudget": "Original30s tests/5s assertions unchanged"
+    },
+    "received-flux-native3": {
+      "expected": 3,
+      "seconds": 5.797022166996612,
+      "reportSHA256": "fcda41c8e0f922ca97da80f6d59e2ea81d7daf6755185848cd6e94c7a831d1e2",
+      "receiptSHA256": "acb2c39bc01c95b88994119b0d84aa619a715c907a605ec4faf07cb9df3d293f",
+      "W1R0": true,
+      "nativeBudget": "Original30s tests/5s assertions unchanged"
+    }
+  },
+  "originalProject": {
+    "archive": "/Volumes/DEV/DEV/AI-CODE/bricklane-recovery-20261102/flux-quick-links-7c540ed-candidate-v1/source4/artifacts/flux-sidebar-quick-links-s-65a77-d-complete-licensed-closure/flux-original-project.zip",
+    "sha256": "de3e1dbe816d9f8bdc448114df54335b1f4a30daa4842392513349ca8f0aab31",
+    "members": 312,
+    "srcMembers": 303,
+    "dist": 473,
+    "public": 246,
+    "entryPkgConfigExact": {
+      "src/Example.tsx": "79c4189b47aa71e591913b3f2e715ea2eaac0b8c4767a706167429c3c09d6c6f",
+      "src/main.tsx": "e9a3cd55290224a950d8accf250b5db29b4238628c1c9cc936fb18b5bb89b0b5",
+      "package.json": "442da98b00462381e0e589f0fc049d76efa84c182c84bad5c0be3b846c0bf9cc",
+      "tsconfig.json": "99d0b8f9065fe3b6131a79306f935356da545025dd0745084e7067d9b0545e91",
+      "vite.config.ts": "ecce25d4ac7432dd74b36a65bf503d728a072a2f403c7767896f29725f7574e8"
+    },
+    "notices": {
+      "src/blocks/assets/Inter-LICENSE.txt": "262481e844521b326f5ecd053e59b98c8b2da78c8ee1bdbb6e8174305e54935a",
+      "src/blocks/application/shells/assets/ATTRIBUTION.md": "362e992c601d9151b2ecc045e0ca5a3dff11f9791a89081d35494e2dd760806d",
+      "src/components/reui/REUI-LICENSE.txt": "09592ffefa6512b68dd7aa9031bc50d5d39cfcc9da08288f5eb1f9d236baca66",
+      "src/blocks/application/assets/excalidraw/Assistant-OFL.txt": "7eaf6282cfab122b99ffd62a122fc27b6c3c8f2c65b56ff9b3a25badbc64887d",
+      "src/blocks/application/assets/excalidraw/Cascadia-OFL.txt": "51882cd3cdba4e16f220f44ddb08a635c38c44ea6e0975db2574f4be6f958238",
+      "src/blocks/application/assets/excalidraw/Excalifont-OFL.txt": "a8cbce2c463d606aff58468402dd4296981e6d5974ae7b2629debe3d58c4e2e9",
+      "src/blocks/application/assets/excalidraw/Liberation-OFL.txt": "93fed46019c38bbe566b479d22148e2e8a1e85ada614accb0211c37b2c61c19b",
+      "src/blocks/application/assets/excalidraw/Lilita-OFL.txt": "255d5debbb80eb2ea762644311f266a279e8778f00156655a516e2b7781a63e1",
+      "src/blocks/application/assets/excalidraw/Nunito-OFL.txt": "580df76c95a1ec5ab878ceb25bb3d85c6a076804e9c970c8c6972aea775fdf65",
+      "src/blocks/application/assets/excalidraw/Virgil-OFL.txt": "a3ac9cdc65ef304ffb095d8cc877ee93bf1bffa88269693cd42ddf001650ffd0",
+      "src/blocks/application/assets/excalidraw/Xiaolai-OFL.txt": "0df7e09be4c2c850a48bd8beb9cd64b343aad49cd5d3f6cfb2ad2e3d28a56ca4",
+      "LICENSE": "199609262594b9463d2fe5491f6570057abe83e98c11cc8cb6b2c5459597a88e"
+    },
+    "normalPostinstallExecuted": true,
+    "rawOriginalMembersUnchanged": true,
+    "sharedSidebarAndFluxConsumerBytesExact": true,
+    "editor4Exact7c": true
+  },
+  "source": {
+    "files": 1154,
+    "dist": 657,
+    "public": 247,
+    "actualCodeCopySingleDownload": "Three changed implementation files byte verified",
+    "sourceTargets": "All18 defaults and other17 mappings unchanged; Flux adds the actual consumer and CSS. Latest Contract helper.ts retained."
+  },
+  "visualScope": {
+    "phone": "Two stable390x844 reads: drawer x0/w292.5; label/rows x8/w275.5. Native row36/label32 and typography measured.",
+    "desktop": "Relative shortcut geometry checked. HeaderY532 versus reference553 remains.",
+    "scroll": "Natural usage-card reachability observed in one primary-group state. Worst-expanded steady endpoint is not certified."
+  },
+  "limits": [
+    "Quick anchors have no active/page semantics; ReUI Radix runtime emits data-active=false, original omits attr. No byte-identical attribute claim.",
+    "Failures remains old alias Runs plus initialRisk seed: only mounted navigation path tested. Clicking again inside a retained RunTree whose local risk changed is not certified to resync; no RunTree rewrite here.",
+    "Original All runs/Failures parent-child routes and separate Failed Run Sheet remain missing locally; no full Flux or all18 template fidelity claim.",
+    "Upper primary layout leaves initial desktop Quick headerY532 vs reference553; relative quick-row geometry only, no spacer/negative offset.",
+    "Initial mobile native x-18.76 entry-animation sample retained, not absolute acceptance; two stable CUA reads prove drawer0/header+rowsx8.",
+    "Read-only desktop bottom samples include changed primary expansion and mid natural smooth scrolling; do not claim every expanded-state steady footer endpoint certified.",
+    "Modified/new-tab clicks, reload persistence, remaining settings/footers and all other template states not newly tested."
+  ],
+  "integrity": {
+    "parentManifestSHA256": "df376f10f22fa4d5f35cff5f9225eb9f4cecff00c16f86610ac94e372a223bf6",
+    "parentReceiptSHA256": "288a25999d453bf273eec6013757ce1b533214b38b086c32c1280f09697577b2",
+    "parentFinallySHA256": "eb9c4f3b55389292228616aa0dced48ff11530707ec7d64799b05f9a6d489bbf",
+    "referenceLedgerSHA256": "9bdbd7eff5eb5d596500c340a63e258c4c788d8053812c9767a95f0e7dc76afd",
+    "stableCandidateLedgerSHA256": "bfb46863a34cbef85a6e4413eceb6ddc8c2dbe8d9ebefc26c139eb1a06350feb",
+    "protectedFiles": 13,
+    "normalInstallAndOriginalPostinstall": true,
+    "originalAssetsNotDistributed": true,
+    "ownPortsClosed": [50411, 51225, 51635]
+  },
+  "preparationObservations": [
+    "Initial runner default cwd selected an older private candidate; stopped before formal gates, corrected explicit cwd.",
+    "Optional SSR comparison stopped on existing useIsMobile window access; no fake window or SSR pass claim."
+  ],
+  "release": {
+    "committed": "pending",
+    "pushed": "pending",
+    "CI": "Separate exact-commit gate",
+    "Pages": "Separate exact-commit gate",
+    "lastVerifiedLive": {
+      "commit": "2729cba47f480984acb8ec0e5336269575033d42",
+      "CI": 41603369089,
+      "passed": 2140,
+      "deployment": 7515123580,
+      "successUTC": "2026-11-03T09:33:53Z"
+    }
+  }
+}

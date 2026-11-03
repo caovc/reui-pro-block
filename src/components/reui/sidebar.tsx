@@ -188,11 +188,19 @@ export function SidebarCollection({
   rows,
   onSelect,
   headerTrailing,
+  closeOnSelect = true,
 }: {
   label: string;
   headerTrailing?: ReactNode;
-  rows: { label: string; icon: ReactNode; badge?: ReactNode; actions?: ReactNode }[];
+  rows: {
+    label: string;
+    icon: ReactNode;
+    badge?: ReactNode;
+    actions?: ReactNode;
+    href?: string;
+  }[];
   onSelect: (value: string) => void;
+  closeOnSelect?: boolean;
 }) {
   const { isMobile, setOpenMobile } = useSidebar();
   return (
@@ -210,22 +218,31 @@ export function SidebarCollection({
         <CollapsibleContent>
           <SidebarGroupContent>
             <SidebarMenu>
-              {rows.map((row) => (
-                <SidebarMenuItem key={row.label}>
-                  <SidebarMenuButton
-                    className="shell-nav-button"
-                    onClick={() => {
-                      onSelect(row.label);
-                      if (isMobile) setOpenMobile(false);
-                    }}
-                  >
+              {rows.map((row) => {
+                const content = (
+                  <>
                     {row.icon}
                     <span className="truncate">{row.label}</span>
                     {row.badge}
-                  </SidebarMenuButton>
-                  {row.actions}
-                </SidebarMenuItem>
-              ))}
+                  </>
+                );
+                return (
+                  <SidebarMenuItem key={row.label}>
+                    <SidebarMenuButton
+                      asChild={Boolean(row.href)}
+                      className="shell-nav-button"
+                      onClick={(event) => {
+                        if (row.href) event.preventDefault();
+                        onSelect(row.label);
+                        if (isMobile && closeOnSelect) setOpenMobile(false);
+                      }}
+                    >
+                      {row.href ? <a href={row.href}>{content}</a> : content}
+                    </SidebarMenuButton>
+                    {row.actions}
+                  </SidebarMenuItem>
+                );
+              })}
             </SidebarMenu>
           </SidebarGroupContent>
         </CollapsibleContent>
