@@ -549,6 +549,10 @@ export function templateImplementationTargets(template: {
       "commerce-settings-finance-dialogs",
       "commerce-settings-provider-dialog",
       "commerce-settings-records",
+      "surge-shell-chrome",
+      "surge-dashboard",
+      "surge-date-range",
+      "surge-operations",
     ],
     manifest: [
       "commerce-account-settings",

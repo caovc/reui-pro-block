@@ -1,0 +1,314 @@
+/* Surge-only consumers. Native Sidebar, menu, radio and body lock retain ownership. */
+.bt-layout.bt-surge > .bt-workspace > .surge-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  height: 51px;
+  min-height: 51px;
+  gap: 8px;
+  padding: 0 18px;
+  border-bottom: 1px solid var(--border);
+  background: var(--background);
+}
+.bt-surge .surge-topbar > .bt-top-content {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+}
+.bt-surge .surge-topbar > .bt-topbar-right {
+  margin-left: auto;
+}
+.bt-surge .surge-topbar .bt-topbar-right > button {
+  height: 28px;
+  min-height: 28px;
+  padding: 0 8px;
+  font-size: 12px;
+  line-height: 16px;
+}
+.surge-breadcrumb [data-slot="breadcrumb-list"] {
+  flex-wrap: nowrap;
+  gap: 8px;
+}
+.surge-store-switcher {
+  height: 28px;
+  min-height: 28px;
+  gap: 4px;
+  padding: 0 8px;
+  font-size: 12px;
+  line-height: 16px;
+}
+.surge-store-switcher > svg {
+  width: 12px;
+  height: 12px;
+  color: var(--muted-foreground);
+}
+.surge-store-dot {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #a78bfa, #7c3aed);
+}
+.surge-store-menu {
+  min-width: 160px;
+}
+.bt-app.bt-layout.bt-surge .bt-content {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding: 24px;
+}
+.bt-layout.bt-surge .bt-sidebar[data-slot="sidebar-container"] {
+  position: fixed;
+  top: calc(50px + var(--template-toolbar-height, 0px));
+  bottom: 0;
+  height: calc(var(--bt-layout-height) - 50px);
+}
+.bt-layout.bt-surge[data-sidebar-side="left"] .bt-sidebar[data-slot="sidebar-container"] {
+  left: 0;
+  right: auto;
+}
+.bt-layout.bt-surge[data-sidebar-side="right"] .bt-sidebar[data-slot="sidebar-container"] {
+  left: auto;
+  right: 0;
+}
+:is(.bt-layout.bt-surge .bt-sidebar, .bt-layout-mobile.bt-surge) [data-slot="sidebar-header"] {
+  height: 56px;
+  min-height: 56px;
+  justify-content: flex-end;
+  padding: 8px 16px;
+  gap: 8px;
+}
+:is(.bt-layout.bt-surge .bt-sidebar, .bt-layout-mobile.bt-surge) .reui-sidebar-content {
+  padding: 0 8px;
+  gap: 8px;
+  scrollbar-width: none;
+}
+.surge-native-navigation {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  gap: 8px;
+}
+.surge-native-navigation [data-slot="sidebar-group"] {
+  padding: 8px;
+}
+.surge-native-navigation [data-slot="sidebar-group-label"] {
+  height: 32px;
+  padding: 0 8px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+}
+.surge-native-navigation [data-slot="sidebar-menu"] {
+  gap: 1px;
+}
+.surge-native-navigation [data-slot="sidebar-menu-button"] {
+  height: 32px;
+  padding: 8px;
+  font-size: 14px;
+  line-height: 20px;
+}
+.surge-native-navigation [data-slot="sidebar-menu-sub"] {
+  margin: 0 14px;
+  padding: 2px 10px;
+  gap: 4px;
+}
+.surge-native-navigation [data-slot="sidebar-menu-sub-button"] {
+  height: 28px;
+  font-size: 14px;
+  line-height: 20px;
+}
+.surge-nav-popup {
+  min-width: 192px;
+}
+.surge-sidebar-info {
+  flex-shrink: 0;
+  margin-top: auto;
+  padding: 12px 12px 8px;
+}
+.surge-sidebar-info .bt-info {
+  font-size: 12px;
+  line-height: 20px;
+}
+.surge-sidebar-info .bt-info::after {
+  content: "";
+  display: block;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  margin-top: 10px;
+  border-radius: 8px;
+  background: url("./assets/store-study-2.svg") center / cover;
+}
+:is(.bt-layout.bt-surge .bt-sidebar, .bt-layout-mobile.bt-surge) [data-slot="sidebar-footer"] {
+  height: 64px;
+  min-height: 64px;
+  margin-top: 8px;
+  padding: 8px 16px;
+  gap: 8px;
+}
+.bt-layout.bt-surge [data-collapsible="icon"] [data-slot="sidebar-footer"] {
+  height: 48px;
+  min-height: 48px;
+  padding-inline: 16px;
+}
+.surge-account-trigger {
+  height: 48px;
+  min-height: 48px;
+  gap: 8px;
+  padding: 0 4px;
+}
+.surge-account-avatar {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+.surge-account-copy {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  line-height: 16px;
+}
+.surge-account-copy strong {
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 500;
+  text-overflow: ellipsis;
+}
+.surge-account-copy small {
+  overflow: hidden;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  text-overflow: ellipsis;
+}
+.surge-account-menu {
+  width: 224px;
+  min-width: 224px;
+  color: var(--popover-foreground);
+  background: var(--popover);
+}
+.surge-account-menu .surge-account-summary {
+  display: flex;
+  height: 52px;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 6px;
+}
+.surge-account-summary-avatar {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+.surge-account-summary > span:last-child {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+.surge-account-summary strong {
+  color: var(--foreground);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+}
+.surge-account-summary small {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+}
+.surge-account-menu [data-slot="dropdown-menu-item"] {
+  min-height: 28px;
+  font-size: 14px;
+  line-height: 20px;
+}
+.surge-account-menu .surge-account-theme-row {
+  height: 36px;
+  min-height: 36px;
+}
+.surge-account-theme-row > span {
+  flex: 1;
+}
+.surge-account-theme-choices {
+  display: flex;
+  width: fit-content;
+  flex-shrink: 0;
+  gap: 0;
+  padding: 2px;
+  border-radius: 999px;
+  background: var(--muted);
+}
+.surge-account-theme-option {
+  position: relative;
+  display: flex;
+  width: 24px;
+  height: 24px;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 50%;
+  color: var(--muted-foreground);
+  cursor: pointer;
+}
+.surge-account-theme-radio {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+}
+.surge-account-theme-radio::after {
+  inset: 0;
+}
+.surge-account-theme-radio > [data-slot="radio-group-indicator"] {
+  display: none;
+}
+.surge-account-theme-option svg {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+}
+.surge-account-theme-option:has([data-state="checked"]) {
+  color: var(--foreground);
+  background: var(--background);
+  box-shadow: 0 1px 2px #00000012;
+}
+.surge-account-theme-option:has(:focus-visible) {
+  outline: 2px solid var(--ring);
+  outline-offset: 1px;
+}
+.bt-layout-mobile.bt-surge {
+  background: var(--sidebar);
+  color: var(--sidebar-foreground);
+}
+@media (max-width: 767px) {
+  .bt-layout.bt-surge > .bt-workspace > .surge-topbar {
+    padding-inline: 16px;
+  }
+  .bt-app.bt-layout.bt-surge .bt-content {
+    padding: 16px;
+  }
+  .surge-breadcrumb .surge-store-switcher {
+    padding-inline: 8px;
+  }
+  .surge-breadcrumb .surge-store-name {
+    display: none;
+  }
+}
+
+/* Preserve the free FieldTitle's 20px line box without changing associated labels. */
+.bt-surge .commerce-general-page .csg-fields div[data-slot="field-label"] {
+  line-height: 20px;
+}
+
+/* The formats still scroll natively and retain their focus-ring padding. */
+.bt-surge .commerce-general-page .csg-date-scroll {
+  scrollbar-width: none;
+}
+.bt-surge .commerce-general-page .csg-date-scroll::-webkit-scrollbar {
+  display: none;
+}

@@ -66,13 +66,17 @@ async function toggleTooltips(page: Page, enabled: boolean) {
 }
 
 async function tooltipTarget(page: Page, surface: "navigation" | "account") {
+  const surge = (await page.locator(".bt-layout.bt-surge").count()) === 1;
   if (surface === "navigation") {
     return {
-      target: sidebar(page).getByRole("button", { name: "Dashboard", exact: true }),
+      target: sidebar(page).getByRole(surge ? "link" : "button", {
+        name: "Dashboard",
+        exact: true,
+      }),
       label: "Dashboard",
     };
   }
-  const target = sidebar(page).locator(".bt-account-button");
+  const target = sidebar(page).locator(surge ? ".surge-account-trigger" : ".bt-account-button");
   const name = await target.getAttribute("aria-label");
   expect(name).toMatch(/^Open account menu for .+/);
   return { target, label: name!.replace(/^Open account menu for /, "") };

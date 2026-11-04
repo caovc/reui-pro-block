@@ -113,9 +113,21 @@ for (const [id, expanded, compact] of [
     );
     await expect(drawer.locator(':scope > div > [data-slot="sidebar-header"]')).toHaveCount(1);
     await expect(drawer.locator(':scope > div > [data-slot="sidebar-footer"]')).toHaveCount(1);
+    const expectedDrawerWidth =
+      id === "surge"
+        ? await drawer.evaluate((node) => {
+            const removedScrollbar =
+              parseFloat(
+                getComputedStyle(node).getPropertyValue("--removed-body-scroll-bar-size"),
+              ) || 0;
+            return (window.innerWidth - removedScrollbar) * 0.75;
+          })
+        : id === "cohort"
+          ? 288
+          : 292.5;
     await expect
       .poll(() => drawer.evaluate((node) => node.getBoundingClientRect().width))
-      .toBe(id === "cohort" ? 288 : 292.5);
+      .toBe(expectedDrawerWidth);
     if (id === "verve" || id === "miro") {
       await expect(drawer.locator(".bt-mobile-icon-rail")).toHaveCount(1);
       await expect(drawer.locator(".bt-mobile-icon-rail")).toBeVisible();
@@ -156,9 +168,20 @@ for (const [id, expanded, compact] of [
       await expect(settings).toBeFocused();
       await expect(page.locator(".atlas-account-settings")).toContainText("Profile");
       await page.keyboard.press("Escape");
+    } else if (id === "surge") {
+      await drawer.getByRole("button", { name: "Settings", exact: true }).click();
+      const general = drawer.getByRole("link", { name: "General", exact: true });
+      await expect(general).toHaveAttribute("href", "#/template-preview/surge/settings");
+      await general.click();
+      await expect(page).toHaveURL(/\/surge\/settings$/);
+      await expect(drawer).toBeVisible();
+      await expect(general).toBeFocused();
+      await expect(page.locator(".bt-content")).toContainText("General");
+      await page.keyboard.press("Escape");
+      await expect(page.getByRole("textbox", { name: "Store name", exact: true })).toBeVisible();
     } else {
       await drawer.getByRole("button", { name: "Settings", exact: true }).first().click();
-      if (id === "surge" || id === "manifest") {
+      if (id === "manifest") {
         // Settings is the actual native group. Selecting its General child navigates.
         await expect(drawer).toBeVisible();
         await drawer.getByRole("button", { name: "General", exact: true }).click();
@@ -178,7 +201,7 @@ for (const [id, expanded, compact] of [
         ).toBeVisible();
       }
       await expect(page.locator(".bt-content")).toContainText(
-        id === "surge" || id === "manifest" ? "General" : id === "miro" ? "My profile" : "Settings",
+        id === "manifest" ? "General" : id === "miro" ? "My profile" : "Settings",
       );
     }
     await expect(drawer).toBeHidden();

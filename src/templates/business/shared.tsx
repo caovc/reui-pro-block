@@ -18,6 +18,7 @@ import {
 } from "@/components/reui/sidebar";
 import { BrandGlyph } from "@/components/brand-mark";
 import { AtlasAccountControl } from "./atlas-shell-chrome";
+import { SurgeSidebarNavigation } from "./surge-shell-chrome";
 import {
   CohortAccountControl,
   CohortDepartments,
@@ -98,6 +99,7 @@ import "@/blocks/application/shells/shells.css";
 import "./business-layout.css";
 import "./atlas-shell-chrome.css";
 import "./cohort-shell-chrome.css";
+import "./surge-shell-chrome.css";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 export {
@@ -274,6 +276,7 @@ function ShellContent({
   navGroups,
   account,
   accountMenuContent,
+  surgeSidebarAccount,
   sidebarSide = "left",
   showTooltips = true,
 }: {
@@ -295,6 +298,7 @@ function ShellContent({
   navGroups?: Record<string, string[]>;
   account?: { name: string; organisation: string; photo?: string };
   accountMenuContent?: ReactNode;
+  surgeSidebarAccount?: ReactNode;
   sidebarSide?: "left" | "right";
   reduceAnimations?: boolean;
   showTooltips?: boolean;
@@ -317,7 +321,9 @@ function ShellContent({
   const accountOrganisation =
     account?.organisation || (id === "cohort" ? "Cohort UK" : "nick@bricklane.demo");
   const accountControl =
-    id === "atlas" ? (
+    id === "surge" && surgeSidebarAccount ? (
+      surgeSidebarAccount
+    ) : id === "atlas" ? (
       <AtlasAccountControl
         name={accountName}
         email={accountOrganisation}
@@ -443,32 +449,44 @@ function ShellContent({
   );
   const navigation = (
     <>
-      {aside ?? (
-        <>
-          <NavItems
-            label={id === "atlas" ? "Menu" : id === "cohort" ? "Workspace" : "Store"}
-            atlas={id === "atlas"}
-            menuClassName={id === "cohort" ? "min-w-48" : undefined}
-            groups={navGroups}
-            showTooltips={showTooltips}
-            items={
-              commerce ? items.filter((item) => !["Analytics", "Settings"].includes(item)) : items
-            }
-            active={active}
-            closeOnSelect={id !== "cohort"}
-            onSelect={id === "cohort" ? setActive : select}
-          />
-          {commerce && (
+      {id === "surge" && pageHref ? (
+        <SurgeSidebarNavigation
+          items={items}
+          groups={navGroups}
+          active={active}
+          pageHref={pageHref}
+          onNavigate={setActive}
+          showTooltips={showTooltips}
+          side={sidebarSide}
+        />
+      ) : (
+        (aside ?? (
+          <>
             <NavItems
-              label="System"
+              label={id === "atlas" ? "Menu" : id === "cohort" ? "Workspace" : "Store"}
+              atlas={id === "atlas"}
+              menuClassName={id === "cohort" ? "min-w-48" : undefined}
               groups={navGroups}
               showTooltips={showTooltips}
-              items={items.filter((item) => ["Analytics", "Settings"].includes(item))}
+              items={
+                commerce ? items.filter((item) => !["Analytics", "Settings"].includes(item)) : items
+              }
               active={active}
-              onSelect={select}
+              closeOnSelect={id !== "cohort"}
+              onSelect={id === "cohort" ? setActive : select}
             />
-          )}
-        </>
+            {commerce && (
+              <NavItems
+                label="System"
+                groups={navGroups}
+                showTooltips={showTooltips}
+                items={items.filter((item) => ["Analytics", "Settings"].includes(item))}
+                active={active}
+                onSelect={select}
+              />
+            )}
+          </>
+        ))
       )}
       {!collapsed && id === "atlas" && (
         <SidebarCollection
@@ -525,7 +543,7 @@ function ShellContent({
   );
   const sidebarFooter = (
     <>
-      {id !== "atlas" && id !== "cohort" && !collapsed && footer && (
+      {id !== "atlas" && id !== "cohort" && id !== "surge" && !collapsed && footer && (
         <div
           className="bt-custom-footer"
           onClick={(event) => {
@@ -542,7 +560,7 @@ function ShellContent({
   );
   const topbar = (
     <header
-      className={`bt-topbar${id === "atlas" ? " atlas-topbar" : id === "cohort" ? " cohort-topbar" : ""}`}
+      className={`bt-topbar${id === "atlas" ? " atlas-topbar" : id === "cohort" ? " cohort-topbar" : id === "surge" ? " surge-topbar" : ""}`}
     >
       {isMobile && <SidebarTrigger className="bt-mobile-menu" aria-label="Open menu" />}
       {collapsed && rail && !isMobile && (
@@ -654,7 +672,13 @@ function ShellContent({
             mobileClassName={`reui-reference bt-app bt-sidebar-mobile bt-layout-mobile bt-${id}${id === "atlas" ? " shell-reference" : ""}${rail ? " bt-mobile-with-rail" : ""}`}
             mobileTitle={brand}
             mobileShowCloseButton={!commerce && id !== "miro" && id !== "atlas" && id !== "cohort"}
-            mobileWidth={id === "cohort" ? "min(288px, calc(100vw - 32px))" : "75vw"}
+            mobileWidth={
+              id === "cohort"
+                ? "min(288px, calc(100vw - 32px))"
+                : id === "surge"
+                  ? "calc((100vw - var(--removed-body-scroll-bar-size, 0px)) * 0.75)"
+                  : "75vw"
+            }
             header={header}
             footer={sidebarFooter}
             rail={
@@ -679,6 +703,9 @@ function ShellContent({
               </div>
             )}
             {navigation}
+            {id === "surge" && !collapsed && footer && (
+              <div className="surge-sidebar-info">{footer}</div>
+            )}
             {id === "cohort" && !collapsed && footer && (
               <div className="cohort-plan-content">{footer}</div>
             )}

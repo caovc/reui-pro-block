@@ -1,0 +1,101 @@
+{
+  "date": "2026-11-04",
+  "milestone": "Surge whole layout, real Sidebar routes, free DateSelector and observed commerce pages",
+  "baseCommit": "693312c5dd8e9d916b96aa6712eb55d6d782bef3",
+  "changes": [
+    "Keep actual ReUI Sidebar/Provider/Inset and native mobile Sheet. Restore observed260/62 desktop structure,51px sticky full-width header,real Search/account/footer and existing Store/System groups. New Inventory/Customers subnavigation and existing Settings use real anchors and native Collapsible/Sidebar state.",
+    "Preserve observed phone General/Reorder/Groups keep-Sheet navigation and native Escape/focus. Restore the actual Dashboard breadcrumb on phone and parent active state for Settings/Inventory/Customers with SidebarMenuButton isActive.",
+    "Compose actual RadioGroup into the account menu: native Light/Dark/System selection closes the menu while keeping the phone Sheet. Restore account Tooltip description by composing TooltipTrigger outside DropdownMenuTrigger around one real SidebarMenuButton; no nested tooltip or custom focus engine.",
+    "Use actual Frame/Header/Panel for four metrics,charts/categories and stocks. Existing BusinessBars receives observed category units through its existing values API; StripePattern remains the existing actual free implementation. Buttons use the free data-icon hook rather than fixed approximate widths.",
+    "Use the complete official free DateSelector,with real period/operator/calendar engines and existing native Calendar/Tabs/Input/ScrollArea. Add only local Popover draft/apply/cancel and reporting label state; no analytics filtering or backend calculation is invented.",
+    "Add mount-aware Surge routes for ordinary pages,observed Reorder and Groups,and the real/products/new editor. Preserve query text and native modified-link behavior. A Surge consumer adapter handles account navigation from standalone routes without weakening the original Manifest/account guard.",
+    "Implement observed Reorder filters/columns and Groups table/New-group Sheet through actual DataGrid/Frame/Sheet/fields and local domain data. Existing products/customers/settings/account models and callbacks remain; new group actions affect this local session.",
+    "Correct General field-title line heights and date-control scrollbar presentation using consumer CSS. Native horizontal scrolling remains overflow:auto with real scrollWidth greater than clientWidth; no fixed content height is used.",
+    "Keep the actual commerce.tsx source entry and existing source prefix; append four real TSX implementations. Recursive pure TS/CSS/free DateSelector dependencies and licenses remain in the runnable download."
+  ],
+  "freeReuse": [
+    "Existing real ReUI Sidebar/Provider/Inset/Navigation/Collection,Collapsible,SearchPalette and native Sheet/DropdownMenu/Tooltip/RadioGroup API.",
+    "Actual Frame/Header/Panel/Footer,Field/FieldSet/SettingsRow,Button/data-icon,AvatarUpload,PhoneInput/Timezone and existing account settings implementations.",
+    "Complete official free DateSelector from https://reui.io/r/radix-nova/date-selector.json; upstream source SHA fad781690d0d5600eacbbcd7f8ec397e6ace5b83b30ce78cfda916958b161825. Only declared Lucide icon placeholders,full MIT notice and configured formatting are adapted; date selection logic stays exact.",
+    "Existing native Calendar/Input/ScrollArea/Tabs/use-mobile,date-fns/react-day-picker/cn dependencies; no replacement period/filter/calendar engine.",
+    "Existing DomainRecordGrid with real DataGrid/ColumnHeader/ScrollArea/Pagination and numeric accessors; existing BusinessBars/free StripePattern."
+  ],
+  "correctedDuplicates": [
+    "Replace toast-only reporting date action with the complete official free DateSelector.",
+    "Replace raw dashboard headers with real Frame bars and button-only Inventory/Customers navigation with actual free Sidebar/Collapsible anchors.",
+    "Restore actual free Tooltip accessibility and parent active state through consumer composition rather than rewriting vendor primitives."
+  ],
+  "customRequired": "Application route adapters,local reporting-label staging,Reorder/Groups domain records and local group creation,scoped arrangement CSS and independent Bricklane artwork/fixtures. Free UI components do not provide application paths or commerce services. Existing domain models are reused rather than replaced.",
+  "verification": {
+    "configuredBuild": "Finalv5 original strict build passed23.635s;1198source/657dist bound. Package/compiler/vendor/global configuration unchanged.",
+    "native": "One final actual20-case batch passed48.102s:11newnative+2identity+1motion+4Manifest+2additional oldSurge account cases. Intended18 discovery selected20; the count mismatch and historical native18 directory are retained. No second18 batch is claimed or required. W1/R0/default30s/action5s/maxfail1 unchanged.",
+    "legacy": "Finalv5 old26 coverage is13initial passes plus necessary failed+unrun13 passes64.739s. The original13P/1F/12unrun history failure is preserved; updated Surge-only Back/Forward/newURL assertions retain all old business/Manifest bytes and budgets.",
+    "extraLegacy12": "12 additional affected oldSurge account/theme/defaultView cases passed28.326s,including2account+2presettheme+8defaultView/Auth/Back/rawquery. Product source did not change for these QA adapters.",
+    "source": "Finalv5 Source15 passed58.116s,including actual implementation View/Copy/file bytes and one fresh complete licensed ZIP.",
+    "download": {
+      "members": 305,
+      "zipSHA256": "46fdfa66c2147a9579ae568d60ded7db0f44f796fa8823b36c13a5c68f6d1a17",
+      "normalInstallSeconds": 41.483,
+      "immediateAndFinalLockSHA256": "329976cbf3fb653fd5cd5cc1d62b2ea0a7685a2dd7b173316495e6b81c595ed2",
+      "originalStrictBuildSeconds": 9.794,
+      "actualBuiltDistPreviewNativePassed": 11,
+      "previewSeconds": 36.451,
+      "rawOriginalPackageConfigMainExampleUnchanged": true,
+      "externalQAOnly": "Physical controller Playwright imports,host entry and standalone href assertions; original raw project has no source/config/test/dependency overlay. This result is actual built-dist preview,not development-server evidence."
+    },
+    "visual": "Root actually viewed final four images. Phone first4metric Frame x/y/w/h match original client375 raw sample; /Dashboard breadcrumb hold is closed. General Demoheader1783.25 and date scroll36/client36/width317<scroll354 are preserved. Review explicitly uses viewport1425/375 to match original CUA client1425/375; native regressions separately use actual1440/390. No identical full document-height or all-device pixel claim.",
+    "integration": {
+      "status": "passed",
+      "frozenOwnerFiles": 26,
+      "source1198ExactBuildV5": true,
+      "formatCheck": "passed",
+      "lintErrors": 0,
+      "lintWarnings": 388,
+      "toolingPassed": 167,
+      "discoveredCases": 2370,
+      "discoveredFiles": 273,
+      "rootEnvironment": "Clean693archive; dependency symlink to candidate normallyinstalled modules used onlyforRootstaticchecks; noRootprodBuild/install/receivedoverlay"
+    },
+    "independent": "Final26/file/base/source1198/dist657/raw305/import1194/license closure admitted8ab02c; original89/freeDate71dd/route-shared46325/consumer a1e106/history e569/ManifestQA93339/actual4images0238 proofs retained. No full-template/backend equivalence claim.",
+    "lint": {
+      "errors": 0,
+      "warnings": 388,
+      "outsideOwned": 380,
+      "officialDateSelector": 7,
+      "preservedActiveParentEffect": 1,
+      "noSuppressions": true
+    }
+  },
+  "failureHistory": [
+    "v1 CUA retained transitional resize/Sheet samples,then used settled images. Actual button icon padding,bar units,General11.25px and phone breadcrumb differences were corrected locally; screenshots alone were not diagnosed as universal font/state causes.",
+    "v2 first Native7P/1F/3unrun:QA incorrectly expected two months on phone. Official DateSelector uses its unmodified useIsMobile single-month branch. Only that oracle and new visible Dashboard assertions changed; old spec and exact inverse retained.",
+    "Initial old26 command anchored a full title and discovered0cases; setup failure0.603s executed no case. Nonanchored discovery26 preceded real execution.",
+    "v3 old26 first5P/1F/20unrun:real Tooltip visible but account button aria-describedby missing because native Slot trigger composition overwrote it. Fixed actual consumer trigger ordering; vendor/focus engine and original accessibility checks remain.",
+    "v4 build completed but was not treated as tested. Sealed original Settings/Inventory/Customers active-parent state proved an additional missing Sidebar consumer state; v5 fixes both and rebinds new gates/download.",
+    "v5 old26 first13P/1F/12unrun:old in-page editor history expected General after one Back. Actual/products/new adds an entry. Surge-only strengthened Back/Forward/newURL/rawquery checks preserve Manifest and original business assertions; necessary13then passed.",
+    "History preformat diff was preserved as historical; final formatted canonical diff reconstructs current and old exact bytes. It is not silently relabeled.",
+    "Final old-suite scan also found old menuitemradio/rootURL expectations in commerce-account-native. Added that seventh QA file and ran all12affectedSurge cases before release.",
+    "Initial v3 ZIP305 and its install are retained as historical only. Final accepted raw305 archive and install/strict/actual-preview all bind v5."
+  ],
+  "priorVerifiedDeployment": {
+    "commit": "693312c5dd8e9d916b96aa6712eb55d6d782bef3",
+    "runId": 41749103925,
+    "passed": 2344,
+    "deploymentId": 7535290678,
+    "successStatusId": 21304921594,
+    "successUTC": "2026-11-04T01:24:58Z",
+    "publicIndexFirstCSSJSByteExact": true
+  },
+  "boundaries": [
+    "Original date popup appearance,Day/between selection and two desktop calendars were observed. Original Apply/Cancel/other-period results were not executed. Local reporting staging updates labels without recalculating fixture metrics or claiming report-service parity.",
+    "Original Reorder/Lowstock and Groups/Newgroup unsubmitted Sheet were observed. The third Inventory entry,unobserved purchase-order body and Group details remain unfinished scope; local creation is not an original backend integration.",
+    "Original metric menu actions,all export/service/auth/payment effects and deep commerce routes were not fully explored. Local clipboard/CSV/feedback actions are explicitly local.",
+    "Original stock counts163 and current6fixture products are different datasets. Per-SKU costs/reorder thresholds/review counts are not fabricated from screenshots. Compact Search popup retains existing local query capability as a local extension.",
+    "Public Rose Newproduct color was actually traced to user customizer AccentRose/Light; default fresh context is neutral. Global theme controls and actors remain supported rather than hardcoding a global brand color.",
+    "Native original hydration React418 is retained in private reference evidence; local reviewed console is empty. No original site save/create/service mutation was performed.",
+    "New local reporting/operations state exists even with shared Commerce mounting. Disabled Surge route hook has two read-only native hash/history subscriptions with symmetric cleanup; no extra navigation/global write or old-model mutation was found. Full execution is not described as literally unchanged.",
+    "Original phone total Dashboard height2399.5 and local2391 remain distinct; matched card geometry and reviewed routes do not imply entire-template pixel identity.",
+    "This milestone requires its own complete CI and exact Pages deployment after push. Remaining templates/deeper pages continue; overall reconstruction goal remains active."
+  ],
+  "licensing": "Bricklane original mark and permitted local artwork/fixtures; no ReUI/KeenThemes logo,paid screenshots,reference avatars or extracted decorativeSVG distributed. Necessary official MIT notice,OFL and third-party attribution remain in the complete project."
+}

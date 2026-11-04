@@ -69,13 +69,26 @@ async function navigation(page: Page, width: number) {
 }
 async function select(page: Page, width: number, label: string) {
   const nav = await navigation(page, width);
-  const target = nav.getByRole("button", { name: label, exact: true });
+  const surge = (await page.locator(".bt-layout.bt-surge").count()) === 1;
+  const leafName =
+    surge && label === "Customers"
+      ? "All customers"
+      : surge && label === "Inventory"
+        ? "Stock ledger"
+        : label;
+  const target = nav.getByRole(surge ? "link" : "button", { name: leafName, exact: true });
   if (!(await target.isVisible())) {
-    await nav.getByRole("button", { name: "Settings", exact: true }).first().click();
+    const parentName = surge && ["Customers", "Inventory"].includes(label) ? label : "Settings";
+    await nav.getByRole("button", { name: parentName, exact: true }).first().click();
     if (width === 390) await expect(nav).toBeVisible();
   }
   await target.click();
   if (width === 390) {
+    if (surge) {
+      await expect(nav).toBeVisible();
+      await expect(target).toBeFocused();
+      await page.keyboard.press("Escape");
+    }
     await expect(nav).toBeHidden();
     await expect(page.getByRole("button", { name: "Open menu", exact: true })).toBeFocused();
   }
@@ -118,6 +131,7 @@ const notificationTabNames = ["Orders", "Inventory", "Customers", "System"] as c
 
 async function sidebarContract(page: Page, width: number, active: string) {
   const nav = await navigation(page, width);
+  const surge = (await page.locator(".bt-layout.bt-surge").count()) === 1;
   const parent = nav.getByRole("button", { name: "Settings", exact: true });
   if ((await parent.getAttribute("aria-expanded")) !== "true") await parent.click();
   await expect(parent).toHaveAttribute("aria-expanded", "true");
@@ -131,14 +145,12 @@ async function sidebarContract(page: Page, width: number, active: string) {
   await expect(
     list.locator('[data-slot="sidebar-menu-sub-button"][aria-current="page"]'),
   ).toHaveCount(1);
-  await expect(list.getByRole("button", { name: active, exact: true })).toHaveAttribute(
-    "aria-current",
-    "page",
-  );
-  await expect(list.getByRole("button", { name: active, exact: true })).toHaveAttribute(
-    "data-active",
-    "true",
-  );
+  await expect(
+    list.getByRole(surge ? "link" : "button", { name: active, exact: true }),
+  ).toHaveAttribute("aria-current", "page");
+  await expect(
+    list.getByRole(surge ? "link" : "button", { name: active, exact: true }),
+  ).toHaveAttribute("data-active", "true");
   await page.mouse.move(0, 0);
   await settled(page);
   const measured = await item.evaluate((node) => {
@@ -556,6 +568,15 @@ for (const id of ["surge", "manifest"] as const)
       await expect(
         page.locator(".bt-content").getByRole("heading", { name: "New product", exact: true }),
       ).toBeVisible();
+      if (id === "surge") {
+        await expect(page).toHaveURL(/#\/template-preview\/surge\/products\/new\?qa=commerce$/);
+        await page.goBack();
+        await expect(page).toHaveURL(/#\/template-preview\/surge\/products\?qa=commerce$/);
+        await expect(
+          page.locator(".bt-content").getByRole("heading", { name: "Products 8", exact: true }),
+        ).toBeVisible();
+        await expect(page.getByRole("textbox", { name: "Title", exact: true })).toHaveCount(0);
+      }
       await page.goBack();
       await expect(
         page.locator(".bt-content").getByRole("heading", { name: "General", exact: true }),
@@ -568,6 +589,14 @@ for (const id of ["surge", "manifest"] as const)
         page.locator(".bt-content").getByRole("heading", { name: "Products 8", exact: true }),
       ).toBeVisible();
       await expect(page.getByRole("textbox", { name: "Title", exact: true })).toHaveCount(0);
+      if (id === "surge") {
+        await page.goForward();
+        await expect(page).toHaveURL(/#\/template-preview\/surge\/products\/new\?qa=commerce$/);
+        await expect(page.getByRole("textbox", { name: "Title", exact: true })).toBeVisible();
+        await page.goBack();
+        await expect(page).toHaveURL(/#\/template-preview\/surge\/products\?qa=commerce$/);
+        await expect(page.getByRole("textbox", { name: "Title", exact: true })).toHaveCount(0);
+      }
     });
 
     test(`${id} Pro invitation commits only local members and computed seat usage ${width}`, async ({

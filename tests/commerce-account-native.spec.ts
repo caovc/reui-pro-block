@@ -68,7 +68,7 @@ async function openAccountMenu(page: Page, width: number) {
   return menu(page);
 }
 
-async function phoneHeaderContract(page: Page, width: number, info: TestInfo) {
+async function phoneHeaderContract(page: Page, id: Merchant, width: number, info: TestInfo) {
   if (width >= 768) return;
   await page.getByRole("button", { name: "Open menu", exact: true }).click();
   const drawer = sheet(page);
@@ -83,7 +83,16 @@ async function phoneHeaderContract(page: Page, width: number, info: TestInfo) {
   });
   expect(bounds.drawer).not.toBeNull();
   expect(bounds.header).not.toBeNull();
-  expect(Math.abs(bounds.drawer!.width - width * 0.75)).toBeLessThanOrEqual(1);
+  const expectedWidth =
+    id === "surge"
+      ? await drawer.evaluate((node) => {
+          const removedScrollbar =
+            parseFloat(getComputedStyle(node).getPropertyValue("--removed-body-scroll-bar-size")) ||
+            0;
+          return (window.innerWidth - removedScrollbar) * 0.75;
+        })
+      : width * 0.75;
+  expect(Math.abs(bounds.drawer!.width - expectedWidth)).toBeLessThanOrEqual(1);
   expect(Math.abs(bounds.header!.height - 56)).toBeLessThanOrEqual(1);
   await expect(drawer.locator(".bt-brand")).toBeHidden();
   await expect(drawer.locator('[data-slot="sheet-close"]')).toBeHidden();
@@ -120,19 +129,34 @@ async function choice(page: Page, label: string, value: string) {
   await expect(trigger).toBeFocused();
 }
 
-async function chooseStoreGeneral(page: Page, width: number) {
+async function chooseStoreGeneral(page: Page, id: Merchant, width: number) {
   if (width < 768) {
     await page.getByRole("button", { name: "Open menu", exact: true }).click();
     await expect(sheet(page)).toBeVisible();
   }
   const navigation =
     width < 768 ? sheet(page) : page.locator('.bt-sidebar[data-slot="sidebar-container"]');
-  const general = navigation.getByRole("button", { name: "General", exact: true });
+  const general = navigation.getByRole(id === "surge" ? "link" : "button", {
+    name: "General",
+    exact: true,
+  });
   if (!(await general.isVisible())) {
     await navigation.getByRole("button", { name: "Settings", exact: true }).first().click();
   }
+  if (id === "surge") {
+    const current = await hash(page);
+    await expect(general).toHaveAttribute(
+      "href",
+      `${mount(id)}/settings${current.slice(current.indexOf("?"))}`,
+    );
+  }
   await general.click();
   if (width < 768) {
+    if (id === "surge") {
+      await expect(sheet(page)).toBeVisible();
+      await expect(general).toBeFocused();
+      await page.keyboard.press("Escape");
+    }
     await expect(sheet(page)).toBeHidden();
     await expect(page.getByRole("button", { name: "Open menu", exact: true })).toBeFocused();
   }
@@ -203,7 +227,7 @@ for (const id of merchants) {
   for (const width of widths) {
     test(`${id} Account menu, native Tabs and mobile Escape ${width}`, async ({ page }, info) => {
       await open(page, id, width, "/settings");
-      await phoneHeaderContract(page, width, info);
+      await phoneHeaderContract(page, id, width, info);
       await chooseAccount(page, width, "Profile");
       await expectSection(page, id, "Profile", plainQuery);
       const tabs = account(page).getByRole("tablist", { name: "Account sections", exact: true });
@@ -234,22 +258,34 @@ for (const id of merchants) {
       await open(page, id, width, "/account/preferences", themeQuery);
       await expectTheme(page, "light");
       const popup = await openAccountMenu(page, width);
-      await expect(popup.getByRole("menuitemradio", { name: "Light", exact: true })).toBeChecked();
-      await popup.getByRole("menuitemradio", { name: "Dark", exact: true }).click();
+      const themeRole = id === "surge" ? "radio" : "menuitemradio";
+      if (id === "surge") {
+        await expect(popup.getByRole("radiogroup", { name: "Theme", exact: true })).toBeVisible();
+        await expect(popup.getByRole("radio")).toHaveCount(3);
+        await expect(popup.getByRole("menuitemradio")).toHaveCount(0);
+      }
+      await expect(popup.getByRole(themeRole, { name: "Light", exact: true })).toBeChecked();
+      await popup.getByRole(themeRole, { name: "Dark", exact: true }).click();
+      if (id === "surge") {
+        await expect(popup).toBeHidden();
+        const navigation =
+          width < 768 ? sheet(page) : page.locator('.bt-sidebar[data-slot="sidebar-container"]');
+        await expect(
+          navigation.getByRole("button", { name: "Open account menu for Nora Bell", exact: true }),
+        ).toBeFocused();
+      }
       await dismissPhoneSheet(page, width);
       await expectTheme(page, "dark");
-      // Reopen normally after selection; reference menu closure/ArrowRight remain unverified.
+      // Reopen through the real account trigger after the native selection.
       const reopened = await openAccountMenu(page, width);
-      await expect(
-        reopened.getByRole("menuitemradio", { name: "Dark", exact: true }),
-      ).toBeChecked();
+      await expect(reopened.getByRole(themeRole, { name: "Dark", exact: true })).toBeChecked();
       await reopened.getByRole("menuitem", { name: "Security", exact: true }).click();
       await dismissPhoneSheet(page, width);
       await expect(
         account(page).getByRole("tab", { name: "Security", exact: true }),
       ).toHaveAttribute("aria-selected", "true");
       await expectTheme(page, "dark");
-      await chooseStoreGeneral(page, width);
+      await chooseStoreGeneral(page, id, width);
       await expectTheme(page, "dark");
       await chooseAccount(page, width, "Preferences");
       await expect(
@@ -258,9 +294,7 @@ for (const id of merchants) {
       await choice(page, "Color theme", "Light");
       await expectTheme(page, "light");
       const finalMenu = await openAccountMenu(page, width);
-      await expect(
-        finalMenu.getByRole("menuitemradio", { name: "Light", exact: true }),
-      ).toBeChecked();
+      await expect(finalMenu.getByRole(themeRole, { name: "Light", exact: true })).toBeChecked();
     });
 
     for (const view of views) {
@@ -278,7 +312,8 @@ for (const id of merchants) {
         await expect(page.locator(".bt-auth")).toBeVisible();
         await expect(account(page)).toHaveCount(0);
         await login(page);
-        await expect.poll(() => hash(page)).toBe(`${mount(id)}${plainQuery}`);
+        const defaultPath = id === "surge" && view !== "Dashboard" ? `/${view.toLowerCase()}` : "";
+        await expect.poll(() => hash(page)).toBe(`${mount(id)}${defaultPath}${plainQuery}`);
         await expectActualView(page, view);
         await chooseAccount(page, width, "Preferences");
         await expect(

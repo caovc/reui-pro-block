@@ -36,11 +36,17 @@ async function section(page: Page, width: number, name: string) {
     width === 390
       ? page.locator(".bt-layout-mobile")
       : page.locator('.bt-sidebar[data-slot="sidebar-container"]');
-  const target = navigation.getByRole("button", { name, exact: true });
+  const surge = (await page.locator(".bt-layout.bt-surge").count()) === 1;
+  const target = navigation.getByRole(surge ? "link" : "button", { name, exact: true });
   if (!(await target.isVisible()))
     await navigation.getByRole("button", { name: "Settings", exact: true }).first().click();
   await target.click();
   if (width === 390) {
+    if (surge) {
+      await expect(navigation).toBeVisible();
+      await expect(target).toBeFocused();
+      await page.keyboard.press("Escape");
+    }
     await expect(navigation).toBeHidden();
     await expect(page.getByRole("button", { name: "Open menu", exact: true })).toBeFocused();
   }

@@ -57,6 +57,12 @@ import { applyCommerceDemoData } from "./commerce-settings-demo-data";
 import { CommerceAccountMenuContent, CommerceAccountSettings } from "./commerce-account-settings";
 import { useCommerceAccountSettingsModel } from "./commerce-account-model";
 import { useCommerceAccountRoute } from "./commerce-account-route";
+import { useSurgeRoute } from "./surge-route";
+import { SurgeDashboard } from "./surge-dashboard";
+import { useSurgeReportingPeriod } from "./surge-reporting-period";
+import { SurgeOperations } from "./surge-operations";
+import { useSurgeOperationsState } from "./surge-operations-model";
+import { SurgeBreadcrumb, SurgeSidebarAccount } from "./surge-shell-chrome";
 
 type Product = {
   name: string;
@@ -117,23 +123,34 @@ export default function CommerceTemplate({ id }: { id: string }) {
   const settingsModel = useCommerceSettingsModel();
   const routing = useCommerceSettingsRoute(id);
   const accountRouting = useCommerceAccountRoute(id);
+  const surgeRouting = useSurgeRoute(id === "surge");
+  const surgeReporting = useSurgeReportingPeriod();
+  const surgeOperations = useSurgeOperationsState();
   const account = useCommerceAccountSettingsModel();
   const accountModel = { ...account, section: accountRouting.section ?? account.section };
   const [page, setPage] = useState("Dashboard");
-  const active = accountRouting.section ? "Account" : routing.section ? "Settings" : page;
+  const active = accountRouting.section
+    ? "Account"
+    : routing.section
+      ? "Settings"
+      : id === "surge"
+        ? (surgeRouting.page ?? page)
+        : page;
   const setActive = (next: string) => {
     if (next === "Profile" || next === "Preferences" || next === "Security") {
       const section =
         next === "Profile" ? "profile" : next === "Preferences" ? "preferences" : "security";
       account.setSection(section);
-      accountRouting.navigate(section);
+      if (id === "surge") surgeRouting.navigate(next);
+      else accountRouting.navigate(section);
       return;
     }
     const section = next === "Settings" ? "general" : commerceSectionForLabel(next);
     if (section) routing.navigate(section);
     else {
       setPage(next);
-      routing.navigate(null);
+      if (id === "surge") surgeRouting.navigate(next);
+      else routing.navigate(null);
     }
   };
   const [products, setProducts] = useState(initial);
@@ -143,6 +160,7 @@ export default function CommerceTemplate({ id }: { id: string }) {
   const [catalog, setCatalog] = useState(catalogSeed);
   const [editing, setEditing] = useState<CatalogProduct | undefined>();
   const [editor, setEditor] = useState(false);
+  const productEditorVisible = editor || surgeRouting.createProduct;
   const [orderEditor, setOrderEditor] = useState(false);
   const [detail, setDetail] = useState<Product | null>(null);
   const [orders, setOrders] = useState([
@@ -224,7 +242,8 @@ export default function CommerceTemplate({ id }: { id: string }) {
     applyDefaultViewOnLogin.current = true;
     closeTransientForms();
     setQuery("");
-    accountRouting.navigate(null);
+    if (id === "surge") surgeRouting.navigate("Dashboard");
+    else accountRouting.navigate(null);
     setLogged(false);
   }
   function signInToPreview() {
@@ -232,10 +251,18 @@ export default function CommerceTemplate({ id }: { id: string }) {
     setQuery("");
     // First sign-in still honors an explicit account/store deep link. After a
     // local sign-out, the selected default view wins over restored owned routes.
-    if (applyDefaultViewOnLogin.current) accountRouting.navigate(null);
+    if (applyDefaultViewOnLogin.current) {
+      if (id === "surge") surgeRouting.navigate(account.preferences.defaultView);
+      else accountRouting.navigate(null);
+    }
     setPage(account.preferences.defaultView);
     applyDefaultViewOnLogin.current = false;
     setLogged(true);
+  }
+  function createSurgeProduct() {
+    setEditing(undefined);
+    setEditor(true);
+    surgeRouting.navigate("New product");
   }
   if (!logged) return <Auth id={id} onLogin={signInToPreview} />;
   const stockTable = (
@@ -322,7 +349,44 @@ export default function CommerceTemplate({ id }: { id: string }) {
           }}
         />
       }
-      active={settingsLabel ?? (editor ? "Products" : orderEditor ? "Orders" : active)}
+      surgeSidebarAccount={
+        id === "surge" ? (
+          <SurgeSidebarAccount
+            account={{
+              name: account.identity.name,
+              organisation: account.identity.email,
+              photo: account.identity.avatar ?? undefined,
+            }}
+            pageHref={surgeRouting.href}
+            side={account.preferences.sidebarPosition === "Right" ? "right" : "left"}
+            showTooltips={account.preferences.showTooltips}
+            onNavigate={(section) => {
+              account.setSection(section);
+              surgeRouting.navigate(
+                section === "profile"
+                  ? "Profile"
+                  : section === "preferences"
+                    ? "Preferences"
+                    : "Security",
+              );
+            }}
+            onSignOut={signOutOfPreview}
+          />
+        ) : undefined
+      }
+      pageHref={id === "surge" ? surgeRouting.href : undefined}
+      active={
+        settingsLabel ??
+        (productEditorVisible
+          ? "Products"
+          : orderEditor
+            ? "Orders"
+            : id === "surge" && active === "Inventory"
+              ? "Stock ledger"
+              : id === "surge" && active === "Customers"
+                ? "All customers"
+                : active)
+      }
       setActive={(x) => {
         setActive(x);
         setQuery("");
@@ -330,10 +394,30 @@ export default function CommerceTemplate({ id }: { id: string }) {
         setOrderEditor(false);
       }}
       items={items}
-      navGroups={{ Settings: Object.values(commerceSettingsNavigation) }}
-      topWrapper={settingsLabel ? "div" : "span"}
+      navGroups={
+        id === "surge"
+          ? {
+              Inventory: ["Stock ledger", "Reorder queue"],
+              Customers: ["All customers", "Groups"],
+              Settings: Object.values(commerceSettingsNavigation),
+            }
+          : { Settings: Object.values(commerceSettingsNavigation) }
+      }
+      topWrapper={id === "surge" || settingsLabel ? "div" : "span"}
       top={
-        accountRouting.section ? (
+        id === "surge" ? (
+          <SurgeBreadcrumb
+            storeName={generalSettings.headerName}
+            page={
+              accountRouting.section
+                ? ""
+                : (settingsLabel ??
+                  (productEditorVisible ? "Products" : orderEditor ? "Orders" : active))
+            }
+            href={surgeRouting.href}
+            onNavigate={setActive}
+          />
+        ) : accountRouting.section ? (
           <span>{generalSettings.headerName}</span>
         ) : settingsLabel ? (
           <Breadcrumb
@@ -422,10 +506,13 @@ export default function CommerceTemplate({ id }: { id: string }) {
             toast.success("Order created");
           }}
         />
-      ) : editor && !routing.section ? (
+      ) : productEditorVisible && !routing.section ? (
         <ProductEditor
           product={editing}
-          onCancel={() => setEditor(false)}
+          onCancel={() => {
+            setEditor(false);
+            if (id === "surge" && surgeRouting.createProduct) setActive("Products");
+          }}
           onSave={(p) => {
             setCatalog((rows) =>
               editing ? rows.map((r) => (r === editing ? p : r)) : [p, ...rows],
@@ -438,8 +525,11 @@ export default function CommerceTemplate({ id }: { id: string }) {
         <ProductCatalog
           products={catalog}
           onCreate={() => {
-            setEditing(undefined);
-            setEditor(true);
+            if (id === "surge") createSurgeProduct();
+            else {
+              setEditing(undefined);
+              setEditor(true);
+            }
           }}
           onEdit={(p) => {
             setEditing(p);
@@ -459,6 +549,39 @@ export default function CommerceTemplate({ id }: { id: string }) {
             orderUsage={{ count: orders.length, label: "Orders in this preview" }}
           />
         )
+      ) : id === "surge" && (active === "Reorder queue" || active === "Groups") ? (
+        <SurgeOperations
+          page={active}
+          products={products}
+          customers={customers}
+          catalog={catalog}
+          model={surgeOperations}
+          onOpenProduct={setDetail}
+        />
+      ) : id === "surge" && active === "Dashboard" ? (
+        <SurgeDashboard
+          storeName={generalSettings.headerName}
+          products={products}
+          filter={filter}
+          onFilterChange={setFilter}
+          query={query}
+          onQueryChange={setQuery}
+          newProductHref={surgeRouting.href("New product")}
+          onCreateProduct={createSurgeProduct}
+          onOpenProduct={setDetail}
+          onViewCategories={() => setActive("Categories")}
+          onViewCategory={(name) => {
+            setActive("Products");
+            setQuery(name);
+          }}
+          onExport={() =>
+            exportCsv("products", [
+              ["Product", "Category", "Price", "Stock"],
+              ...products.map((p) => [p.name, p.category, String(p.price), String(p.stock)]),
+            ])
+          }
+          reporting={surgeReporting}
+        />
       ) : (
         <>
           <Heading

@@ -2,7 +2,7 @@
 
 预览站使用 Bricklane 原创品牌。本项目是 ReUI Pro Blocks 和 Templates 的独立复刻，官方参考见 [ReUI Templates](https://reui.io/templates)。所有组件优先实际复用 ReUI 免费实现；未提供的业务状态与页面布局在使用这些组件的页面中补充。
 
-本地已有18个模板入口：16个应用、2个 landing。先前核对的官方清单有19个，Strata 仍按单独计划暂停。入口覆盖、交互通过和整页视觉还原是不同结果；本轮稳定的原站与本地页面比较覆盖 Flowly、Filespace、Verve、Tempo、Mesh、Flux、Lucent、Echo、Atlas、Cohort；Filebox 新增了公开演示中的侧栏导航对比，尚不等于整页通过。
+本地已有18个模板入口：16个应用、2个 landing。先前核对的官方清单有19个，Strata 仍按单独计划暂停。入口覆盖、交互通过和整页视觉还原是不同结果；本轮稳定的原站与本地页面比较覆盖 Flowly、Filespace、Verve、Tempo、Mesh、Flux、Lucent、Echo、Atlas、Cohort、Surge；Filebox 新增了公开演示中的侧栏导航对比，尚不等于整页通过。
 
 ## 当前顺序
 
@@ -11,7 +11,7 @@
 3. Flowly：已按实测修正二级菜单密度、桌面 footer 与 Members summary 的 Progress，并验证两种宽度的原生导航、独立收起与席位变化。原站 General 组标题和描述本来就视觉隐藏，不能改成可见标题。
 4. Mesh、Flux 已完成本轮列明的本地布局和账户范围。Lucent 三页账户已通过本地验收；工作区切换与 Services 导航另列下一范围。各版本的完整 CI 和 Pages 以独立记录为准。
 5. Tempo 本批完成50px header、侧栏顶部通知、折叠92px/手机56px顶部、真实 Usage Frame/Progress、通知 Popover 与桌面 Context。桌面和手机布局、原生交互、源码与实际下载项目已验证；主导航/Saved Views 的进一步密度、链接细节及完整业务页面仍待后续。
-6. Echo 本批完成真实 Resizable 侧栏、Card/FieldSet 设置、Frame composer、MessageScroller 和账户 inline Theme。修正断点切换的组织状态重置，保留原聊天与设置业务；源码及341文件原始下载项目已验。Atlas 本批也完成已观察的 header、侧栏与三页账户范围；Cohort 本批完成主区滚动、侧栏内容与设置结构范围；下一批 Surge，随后按既有清单比较其余模板的整体布局，再深入设置内容。
+6. Echo 本批完成真实 Resizable 侧栏、Card/FieldSet 设置、Frame composer、MessageScroller 和账户 inline Theme。修正断点切换的组织状态重置，保留原聊天与设置业务；源码及341文件原始下载项目已验。Atlas 本批也完成已观察的 header、侧栏与三页账户范围；Cohort 本批完成主区滚动、侧栏内容与设置结构范围；Surge 本批也完成侧栏、Dashboard、日期筛选及已观察的 Reorder/Groups 范围；下一批 Manifest，随后继续其余模板整页与设置内容。
 
 ## 本轮已浏览范围
 
@@ -27,8 +27,9 @@
 | Echo                | 实际 Sidebar/Sheet/AppShell、Resizable Group/Panel/Handle；Card/FieldSet/既有设置行与头像上传；Frame/InputGroup/Attachment；MessageScroller/Message/Bubble、RadioGroup | 原生拖拽、键盘、收起恢复及桌面/手机切换状态已验；General/MyProfile 真实 Card、命名面板和分组，composer149px及原生消息滚动已验。7项新增、18项旧回归、14项源码与341文件独立项目通过；quota详情、model popup、语音及服务行为仍列边界。                                                                                                  |
 | Atlas               | 真实 Sidebar/Provider/Inset/WorkspaceSwitcher/Collection；Card/Fields/Rows/头像上传；DropdownMenu/RadioGroup/Collapsible                                               | Header64px、侧栏256/48与document滚动；手机外置收起控制、无Close，已观察设置入口保Sheet。三页改用真实Card，不补原站没有的FieldSet；Commerce保留Frame。外框与紧凑控件自然宽已实际修正，7项新原生、17项旧合同、8项源码和287文件独立项目已验；深业务及未执行菜单服务仍列边界。                                                           |
 | Cohort              | 实际 Sidebar/Inset/Collection/Search；Frame/Header/Panel/Footer/FieldSet；native Tabs/anchors、DropdownMenu；已有免费Base Progress                                     | 主区原生双向滚动、Header56随主区滚动；折叠占位64/container66分开核对。Search/Headcount移Content、accountFooter48、submenu28/font14已验。Profile672左对齐max864，真实手动激活Tabs与FieldSet/Footer48，手机原生焦点回原opener。新增7/源码9、20唯一旧回归及293文件真实生产预览通过；部门bodyfilter、JobTitle帮助/0.75px及深页仍列边界。 |
+| Surge               | 真实 Sidebar/Collapsible/RadioGroup/Tooltip；Frame；完整官方免费 DateSelector/Calendar/Tabs；DataGrid/Filters                                                          | Header51、侧栏260/62、手机原生Sheet及真实子路由；Dashboard Frame和日期选择、Reorder/Groups已观察页面已验。修复account Tooltip描述与父菜单选中；原业务/Manifest保持。最终20原生批次、26唯一旧回归及额外12旧合同、源码15、305文件原项目install/strict/真实preview11通过；PO/GroupDetail和远程服务仍列边界。                            |
 
-Surge、Manifest、Miro、Pulse、Roster、Filebox 的历史局部验收保留，本轮尚未完成其当前整页稳定对比；Filebox 本批侧栏范围除外。Limelight、Overture 按 landing 自身的导航、章节和 footer 核对，不套用应用侧栏结构。Strata 不计入已实现入口。
+Manifest、Miro、Pulse、Roster、Filebox 的历史局部验收保留，本轮尚未完成其当前整页稳定对比；Filebox 本批侧栏范围除外。Limelight、Overture 按 landing 自身的导航、章节和 footer 核对，不套用应用侧栏结构。Strata 不计入已实现入口。
 
 ## 每批交付
 
@@ -37,7 +38,7 @@ Surge、Manifest、Miro、Pulse、Roster、Filebox 的历史局部验收保留�
 - 检查预览、源码查看、复制、单文件下载与实际项目 ZIP 的一致性。新增文件同步维护 SourceTargets；下载项目使用原始脚本独立构建并验证必要交互。
 - 按改动范围完成必要检查，由主会话协调正常 Git hooks、提交和推送；保护其他会话的在制文件。区分“已提交”“已推送”“云端检查通过”“Pages 部署成功”。
 
-截至本批整合，已验证线上版本为 `4a86d6a`，完整2328项 CI、对应 Pages 部署及公开 index/首CSS/首JS 与同一产物的字节核对成功，见[该版本记录](https://github.com/caovc/reui-pro-block/actions/runs/41740571352)。
+截至本批整合，已验证线上版本为 `693312c`，完整2344项浏览器检查、158项工具检查、对应 Pages 部署及公开 index/首CSS/首JS 与同一产物逐字节核对成功，见[该版本记录](https://github.com/caovc/reui-pro-block/actions/runs/41749103925)。
 
 Flux `0f9fd79` 原始 CI 为2241通过、3失败，部署跳过；三份 trace 确认 Overview 页面已切换、手机 Sheet 按官网保持打开，旧测试仍假定关闭。其三处旧预期已适配，并保留真实 Escape、关闭和焦点返回检查。
 
@@ -54,5 +55,7 @@ Atlas 本批沿用真实 ReUI 组件并保留原账户模型。v1边距、v2外�
 Echo `702de67` 后续完整2313项 CI、Pages 与公开 index 字节核对通过，Tempo 修正后的原手机完整用例也在 Linux 通过。Atlas `4a86d6a` 后续完整2328项 CI、Pages 和公开首页及主要资源字节核对通过；各自原失败与阶段记录继续保留。
 
 Cohort 本批由真实 ReUI 组件组合修复主区不可正常滚动、侧栏内容位置、真实手动 Tabs/链接、Profile/Fiscal FieldSet 与 FrameFooter。33个设置业务回调及共享默认分支保持。原64占位与66容器、新原生焦点归属、未入组Tabs入口及Legacy CSS覆盖差异分别保留原证和首败。最终v10的7项原生、9项源码、20个唯一旧/受影响回归通过；293文件原始包独立安装和严格构建后，实际built-dist preview首次7项通过，开发服务器的先前7项不混为生产证据。详见 [Cohort 本批记录](../cohort-whole-layout-release-2026-11-04.json)。
+
+Surge 本批完成真实 Sidebar 子导航、手机层级、原生 Radio/Tooltip、Frame Dashboard、完整官方免费 DateSelector 和已观察的 Reorder/Groups 页面。原 settings/account/products 模型保留；模板路由与本地领域状态作为项目组合。首次手机月历预期、Tooltip描述缺失、独立新产品页面的历史路径及旧主题/默认页预期均保留原证，按实际原生控件和路由修复或补强，没有减少旧业务断言与预算。最终v5绑定1198源码/657产物；新增及受影响页面、15项源码/下载流程和305文件原项目的独立安装、严格构建、实际预览11项通过。Root实际核四图，并区分1425/375视口校准与原生1440/390；完整页面高度、未访问叶页面及后端服务不宣称完全相同，见 [Surge 本批记录](../surge-whole-layout-release-2026-11-04.json)。
 
 本次新提交仍需自己的完整 CI 与对应 Pages 部署。推送成功不代表网站已更新。Strata 继续按既定计划暂停。

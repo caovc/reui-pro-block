@@ -1,0 +1,396 @@
+/* Surge consumes the existing ReUI Frame, chart, grid and calendar components.
+ * All sizing stays inside this dashboard or its own portalled date selector. */
+.bt-surge .surge-dashboard {
+  width: 100%;
+  max-width: 1280px;
+  min-width: 0;
+  margin-inline: auto;
+  color: var(--foreground);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-heading {
+  display: flex;
+  min-height: 32px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-heading h1 {
+  min-width: 0;
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 28px;
+  letter-spacing: -0.4px;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-heading-actions {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+}
+
+.bt-surge .surge-dashboard .surge-reporting-trigger {
+  min-width: 0;
+}
+
+.bt-surge .surge-dashboard .surge-reporting-trigger > span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-metric {
+  min-width: 0;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-metric-header {
+  display: flex;
+  min-height: 44px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 16px;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-metric-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-metric-value {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-metric-value > strong {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32px;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-metric-body > p {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-metric-body > p > strong {
+  color: var(--foreground);
+  font-weight: 500;
+}
+
+.bt-surge .surge-dashboard [data-slot="badge"] {
+  gap: 3px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 16px;
+}
+
+.bt-surge .surge-dashboard [data-slot="badge"] > svg {
+  width: 12px;
+  height: 12px;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-overview {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-velocity {
+  grid-column: span 2;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-panel {
+  min-width: 0;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-panel-header {
+  display: flex;
+  min-height: 58px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 16px;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-panel-header [data-slot="frame-panel-description"] {
+  margin-top: 2px;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-panel-body {
+  min-width: 0;
+  padding: 0;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-velocity .surge-dashboard-panel-body {
+  padding: 16px;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-velocity .bt-chart-large {
+  height: 369.5px;
+  padding: 0;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-category {
+  display: flex;
+  width: 100%;
+  height: auto;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  text-align: left;
+  white-space: normal;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-category:last-child {
+  border-bottom: 0;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-category-label {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-category-label > img {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-category-label strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 17.5px;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-category-label small {
+  display: block;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 15px;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-category > [data-slot="badge"] {
+  flex-shrink: 0;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-stock-tools {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 16px;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-stock-tabs-scroll {
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-stock-tools [data-slot="tabs-list"] {
+  width: max-content;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-stock-tools [data-slot="tabs-trigger"] {
+  flex: none;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-grid {
+  min-width: 0;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-grid table {
+  min-width: 985px;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-grid th {
+  height: 40px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-grid td {
+  height: 60px;
+  padding: 10px 16px;
+  vertical-align: middle;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-grid th:last-child,
+.bt-surge .surge-dashboard .surge-dashboard-grid td:last-child {
+  padding-inline: 4px;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-product {
+  display: flex;
+  width: 100%;
+  height: auto;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 0;
+  border: 0;
+  text-align: left;
+  text-decoration: none;
+  white-space: normal;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-product > img {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-product strong {
+  display: block;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-product small {
+  display: block;
+  margin-top: 2px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-price,
+.bt-surge .surge-dashboard .surge-dashboard-stock {
+  font-weight: 500;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-rating {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-rating > svg {
+  width: 14px;
+  height: 14px;
+  fill: #eab308;
+  stroke: #eab308;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-pagination {
+  padding: 8px 16px;
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-empty {
+  padding: 12px 16px;
+}
+
+.surge-reporting-popover {
+  width: min(494px, calc(100vw - 16px));
+  gap: 12px;
+  padding: 0;
+}
+
+.surge-reporting-popover .surge-reporting-selector {
+  min-width: 0;
+  padding: 12px;
+}
+
+.surge-reporting-popover .surge-date-selector {
+  width: 100%;
+  min-width: 0;
+}
+
+.surge-reporting-popover .surge-reporting-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 0 12px 12px;
+}
+
+@media (max-width: 1023px) {
+  .bt-surge .surge-dashboard .surge-dashboard-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .bt-surge .surge-dashboard .surge-dashboard-overview {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .bt-surge .surge-dashboard .surge-dashboard-velocity {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 767px) {
+  .bt-surge .surge-dashboard .surge-dashboard-heading {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .bt-surge .surge-dashboard .surge-dashboard-heading h1 {
+    font-size: 18px;
+  }
+
+  .bt-surge .surge-dashboard .surge-dashboard-heading-actions {
+    width: 100%;
+  }
+
+  .bt-surge .surge-dashboard .surge-reporting-trigger {
+    flex: 1;
+  }
+
+  .bt-surge .surge-dashboard .surge-dashboard-metrics {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .bt-surge .surge-dashboard .surge-dashboard-velocity .bt-chart-large {
+    height: 340px;
+  }
+}
+
+.bt-surge .surge-dashboard .surge-dashboard-inventory-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.surge-stock-search-popover {
+  width: min(288px, calc(100vw - 16px));
+}
