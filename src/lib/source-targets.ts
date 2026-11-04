@@ -672,6 +672,7 @@ export function templateImplementationTargets(template: {
       "cohort-settings",
       "cohort-time-off",
       "cohort-timesheets",
+      "cohort-shell-chrome",
     ],
     roster: [
       "roster-approvals",

@@ -340,9 +340,9 @@ for (const width of widths) {
     await expect(company(page).getByRole("status")).toHaveText("All changes saved");
 
     const pages = page.locator(".bt-settings-tabs");
-    await pages.getByRole("button", { name: "Policies", exact: true }).click();
+    await pages.getByRole("tab", { name: "Policies", exact: true }).click();
     await expect(page.getByRole("region", { name: "Leave types", exact: true })).toBeVisible();
-    await pages.getByRole("button", { name: "Organisation", exact: true }).click();
+    await pages.getByRole("tab", { name: "Organisation", exact: true }).click();
     await expect(company(page)).toBeVisible();
     await expect(month(page)).toContainText("October");
     await expect(day(page)).toHaveText("9");

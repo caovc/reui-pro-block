@@ -1,0 +1,78 @@
+{
+  "date": "2026-11-04",
+  "milestone": "Cohort actual Sidebar chrome, bounded main, native settings Tabs and Frame fields",
+  "baseCommit": "4a86d6a3ad17aedf38baa48f43c9ed3b1a26a2a0",
+  "changes": [
+    "Keep actual ReUI Sidebar/Provider/Inset/Collection and use the SidebarInset itself as the bounded native two-axis scroll host. Header56 is static inside it and moves with main scrolling; document remains bounded. Phone border1/radius0 and actual overflow are preserved without a guessed scrollbar gutter.",
+    "Distinguish collapsed occupied outer/main64 from actual container66,padding8 and inner50. Expanded remains256. The2px bounding-box relationship is not described as a proven paint collision; no global Sidebar width or provider API is changed.",
+    "Move real Search and actual Headcount Frame/Progress into SidebarContent; account Footer48 remains separate. Replace the handwritten meter with the existing actual free Base c-progress-2 wrapper,92percent. Restore native SidebarSub192 total,28px items/font14 and Headcount title12/16 through Cohort-only consumer selectors.",
+    "Use real Tabs with native manual activation and real anchors for the six settings sections. Arrow focus changes do not select or change route; native entry focus selects the active item when entering the group. Mount-aware routes preserve the actual preview/gallery/standalone forms and local Time query behavior.",
+    "Use real Frame/Header/Panel/Footer and Profile/Fiscal FieldSet with sr-only Legends. Profile672 stays left-aligned inside max864 settings root; footer48 and native Working-week controls retain existing model callbacks. Settings header aligns to that root,phone hides People/separators as observed,uses original opener -ml-1 and licensed local glyphs.",
+    "Keep observed Profile/Preferences/Engineering Sheet behavior and native Escape/focus. Theme is one cycling menu item that retains the menu,not an Atlas-style closing RadioGroup. Sheet-internal phone toggle uses actual free Button plus existing toggleSidebar API,leaving the outside real SidebarTrigger as its single native focus owner.",
+    "Maintain actual cohort.tsx default plus original ordered six secondary sources; append real chrome and retain complete four-way dependency closure for View/Copy/file and runnable project."
+  ],
+  "freeReuse": [
+    "Existing actual Sidebar/Provider/Inset,Navigation/Collection,SearchPalette and native Sheet/focus API. No custom Sheet,focus,scroll or resize engine.",
+    "Actual Frame bars,FieldSet/Legend,Field/Row/InputGroup/Select/Switch,existing official avatar upload and Working-week ToggleGroup.",
+    "Actual Tabs manual activation/roving focus and anchor composition,DropdownMenu/Button/Breadcrumb; licensed locallucide glyphs and independently authored separator line.",
+    "Unchanged existing free Base c-progress-2 implementation in workflow/free/flowly-progress.tsx,directly using @base-ui/react/progress. No nonexistent components/base/progress.tsx is claimed."
+  ],
+  "correctedDuplicates": [
+    "Replace button-only settings navigation with actual native Tabs and hrefs.",
+    "Replace raw GridFrame header/footer presentation with real Frame bars and real semantic Profile/Fiscal FieldSet.",
+    "Replace handwritten Headcount meter with actual declared free Progress and move it to observed SidebarContent.",
+    "Correct missing phone scroll host,duplicate native trigger focus registration and legacy consumer CSS overriding free submenu/title/layout defaults."
+  ],
+  "customRequired": "Cohort arrangement and scoped CSS,the pure application route adapter,independent Bricklane artwork/fixtures and existing local settings/person/Time models. Free UI primitives do not supply these app paths or domain records/services; no model or primitive implementation is duplicated.",
+  "verification": {
+    "configuredBuild": "Final original strict build-v10 passed21.873s;1186source/657dist bound. Package/lock/compiler configuration unchanged.",
+    "native": "Final7 passed20.847s,workers1/retries0 with original budgets. Covers real scroll reachability,header/root geometry,Sidebar slots/submenu/Headcount,Profile fields,phone keep-open and actual Escape focus,theme/native layers and original manual Tabs behavior.",
+    "legacy": "20 unique existing and affected keyboard/Search cases passed incrementally. Original19 batch reached5passed/1failed/13unrun; correcting a new initial roving-tabstop assumption allowed the failed case+unrun13 to pass14. Later actual Header phone hiding required two affected native keyboard/Search cases,also passed. No earlier failing tail is relabeled as executed.",
+    "source": "Final9passed25.566s:8actual implementation View/Copy/single-file bytes plus1complete licensed project ZIP. Prior v6 virtual dependency assertion failure is retained.",
+    "download": {
+      "members": 293,
+      "zipSHA256": "4cc6e34e76a8e1e0dd458f05b7a3cd4a48f5a40c5b6f435e2324dfa14a5f28e3",
+      "normalInstallSeconds": 38.117,
+      "immediateAndFinalLockSHA256": "5606322f1872699de57cbbbbc888d8747e17519b72979ce23eb3b7bed6fc80b4",
+      "originalStrictBuildSeconds": 7.116,
+      "builtDistPreviewFirstNativePassed": 7,
+      "previewSeconds": 17.275,
+      "allOriginalRawPackageConfigMainExampleUnchanged": true,
+      "externalQAOnly": "Physical controller Playwright import,standalone host entry and exact literal/dynamic href mount substitutions. Raw package has no source/config/test/dependency overlay.",
+      "devRunBoundary": "An initial received run used the original dev server and passed7; it is separate evidence. That process was closed,and the actual built-dist preview first7 is the production acceptance authority."
+    },
+    "integration": "Root clean archive has exact final15 and source1186; discovery2344cases/271files. Formatting,lint and158tooling checks are completed before submission. Full baseline lint warnings remain outside owned files; owned15 has0warnings.",
+    "independent": "Original84-file browser contract and64/66supplement,Settings2 business33callback preservation,final15/shared26callback/nonCohort/Atlas projection,pure routing/source closure and actual final four images reviewed. Root original v6 breadcrumb hold is closed by final actual images. These are scoped proofs,not all-template or all-route pixel identity."
+  },
+  "failureHistory": [
+    "First compile failed because URLSearchParams iterator value could be undefined; only the missing string fallback was added under the original strict settings.",
+    "v3 first native0passed/1failed:66px visual container incorrectly expanded occupied footprint/inset to66. Cohort-only occupied width restored64,while observed container66 is preserved.",
+    "v4 first native3passed/1failed:added Sheet SidebarTrigger overwrote shared opener ref. Only its internal phone control became a real free Button using existing toggleSidebar; native outer focus restoration remains authoritative.",
+    "Legacy first5passed/1failed/13unrun:unentered native Radix group has tablist0 and six triggers-1,even with Preferences selected. QA now verifies that initial state and enters with real Tab before asserting focused selected tab; no artificial focus or lower threshold.",
+    "v6 h1 legacy CSS overrode16px margin/weight500. Scoped consumer specificity restored title/tabs/frame spacing. Root then held an actual breadcrumb x273 vs original root412 despite7interaction passes; final settings header aligns to original expanded412/collapsed316 and phone49.",
+    "v7 inline separator span could not carry the intended8x2 dimensions; corrected before any v7 UI gate and rebuilt. v8 phone breadcrumb53 vs49 was traced to original opener -ml-1; consumer margin restored without changing the native trigger.",
+    "v6 Source8passed/1failed because QA requested nonexistent components/base/progress.tsx. Only that fictional required path was removed; actual free wrapper bytes and BaseUI package/license closure stay required. The v6 archive was not installed as the final project.",
+    "v9 actual images exposed old generic CSS overriding submenu and title defaults. Finalv10 restores native submenu28/font14/192 and title12/16; previous version evidence remains.",
+    "Initial received dev7 and later actual preview7 are explicitly distinct; no dev result is labeled as a production preview pass."
+  ],
+  "priorVerifiedDeployment": {
+    "commit": "4a86d6a3ad17aedf38baa48f43c9ed3b1a26a2a0",
+    "runId": 41740571352,
+    "passed": 2328,
+    "deploymentId": 7534191348,
+    "successStatusId": 21301347068,
+    "successUTC": "2026-11-04T00:15:35Z",
+    "publicIndexFirstCSSJSByteExact": true
+  },
+  "boundaries": [
+    "Original Profile Job Title help contents were not explored; phone FieldSet height retains0.75px residual. Desktop Profile geometry is measured; exact all-font/all-route parity is not claimed.",
+    "Department link/query retains Sheet; parsed department is not yet applied to the People model filter,and original body-filter semantics were not observed. This remains later fidelity scope.",
+    "Organisation selection,new organisation and sign-out have explicit local feedback. Original Save/service actions were not performed; local state is not backend or reload persistence.",
+    "Original Search results did not appear. Existing local Search selection is regression-tested,without an original-equivalence claim.",
+    "Original phone main and table surfaces can have bounded horizontal overflow; no claim every child is free of overflow. Known actual main ownership is preserved; no guessed15pxgutter or strip-only redesign.",
+    "Pure route adapter covers observed six settings paths; local Time view uses explicit cohortView query. Deep Dashboard/calendar/People/Time/hiring/approvals and remaining templates still require further comparison.",
+    "Only the final original Cohort293 project is freshly installed/strict-built/actual-preview-run here; sibling family archives are not claimed freshly reinstalled.",
+    "This milestone requires its own complete CI and exact Pages deployment after push. The overall reconstruction goal remains active."
+  ],
+  "licensing": "Original Bricklane mark,permitted local artwork and fixtures. Necessary free MIT/OFL/third-party attribution retained. Reference logo/photo/screenshots and extracted decorativeSVG stay private; no original paid assets shipped."
+}

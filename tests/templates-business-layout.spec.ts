@@ -13,14 +13,16 @@ async function open(page: Page, id: string) {
   await expect(page.locator(".bt-layout")).toBeVisible();
 }
 
-async function expectCohortInset(page: Page, width: number) {
+async function expectCohortInset(page: Page, width: number, containerWidth = width) {
   const sidebar = await page.locator(".bt-sidebar[data-slot=sidebar-container]").boundingBox();
   const inset = await page.locator('[data-slot="sidebar-inset"]').boundingBox();
   expect(sidebar).not.toBeNull();
   expect(inset).not.toBeNull();
   expect(Math.abs(sidebar!.x)).toBeLessThanOrEqual(1);
-  expect(Math.abs(sidebar!.width - width)).toBeLessThanOrEqual(1);
-  expect(Math.abs(inset!.x - (sidebar!.x + sidebar!.width))).toBeLessThanOrEqual(1);
+  expect(Math.abs(sidebar!.width - containerWidth)).toBeLessThanOrEqual(1);
+  expect(
+    Math.abs(inset!.x - (sidebar!.x + sidebar!.width) - (width - containerWidth)),
+  ).toBeLessThanOrEqual(1);
   expect(Math.abs(inset!.x - width)).toBeLessThanOrEqual(1);
 }
 
@@ -65,8 +67,8 @@ for (const [id, expanded, compact] of [
     await expect(sidebar).toHaveAttribute("data-state", "collapsed");
     await expect
       .poll(() => container.evaluate((node) => node.getBoundingClientRect().width))
-      .toBe(compact);
-    if (id === "cohort") await expectCohortInset(page, compact);
+      .toBe(id === "cohort" ? 66 : compact);
+    if (id === "cohort") await expectCohortInset(page, compact, 66);
     expect(
       await page.locator(".bt-main").evaluate((node) => node.getBoundingClientRect().width),
     ).toBeGreaterThan(initialMainWidth);
@@ -93,7 +95,7 @@ for (const [id, expanded, compact] of [
     await expect(drawer).toBeVisible();
     const commerce = id === "surge" || id === "manifest";
     await expect(drawer.getByRole("button", { name: "Close", exact: true })).toHaveCount(
-      id === "atlas" || id === "miro" || commerce ? 0 : 1,
+      id === "cohort" || id === "atlas" || id === "miro" || commerce ? 0 : 1,
     );
     if (commerce) {
       // The reference header is Search-only; the native Sidebar API omits its hidden Close.
@@ -182,7 +184,7 @@ for (const [id, expanded, compact] of [
     await expect(drawer).toBeHidden();
     await expect(trigger).toBeFocused();
     if (id === "cohort") {
-      await expect(page.getByRole("heading", { name: "Preferences", exact: true })).toBeVisible();
+      await expect(page.getByRole("tabpanel", { name: "Preferences", exact: true })).toBeVisible();
     }
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
       390,
@@ -260,7 +262,7 @@ test("Cohort settings and Time remain navigable after collapsing and mobile resi
     .poll(() => page.getByRole("menu").evaluate((node) => node.getBoundingClientRect().width))
     .toBe(192);
   await page.getByRole("menuitem", { name: "Preferences", exact: true }).click();
-  await expect(page.getByRole("heading", { name: "Preferences", exact: true })).toBeVisible();
+  await expect(page.getByRole("tabpanel", { name: "Preferences", exact: true })).toBeVisible();
   await page.setViewportSize({ width: 390, height: 844 });
   await page.getByRole("button", { name: "Open menu", exact: true }).click();
   await page.keyboard.press("Escape");
@@ -279,33 +281,46 @@ test("Cohort settings and Time remain navigable after collapsing and mobile resi
     lists.filter((node) => ["auto", "scroll"].includes(node.y) && node.scroll > node.client),
   ).toEqual([]);
   const strip = page.locator(".bt-settings-tabs");
-  const buttons = strip.getByRole("button");
-  await expect(buttons).toHaveCount(6);
-  const actualButtons = await buttons.evaluateAll((nodes) =>
+  const tabs = strip.getByRole("tab");
+  await expect(tabs).toHaveCount(6);
+  const actualTabs = await tabs.evaluateAll((nodes) =>
     nodes.map((node) => ({
       tag: node.tagName,
       role: node.getAttribute("role"),
-      tabIndex: (node as HTMLButtonElement).tabIndex,
+      tabIndex: (node as HTMLElement).tabIndex,
       text: node.textContent?.trim(),
     })),
   );
-  await info.attach("cohort-settings-page-buttons", {
-    body: JSON.stringify(actualButtons, null, 2),
+  await info.attach("cohort-settings-native-anchor-tabs", {
+    body: JSON.stringify(actualTabs, null, 2),
     contentType: "application/json",
   });
-  expect(actualButtons).toEqual(
+  expect(actualTabs).toEqual(
     ["Organisation", "Policies", "Approval flows", "Profile", "Preferences", "Security"].map(
-      (text) => ({ tag: "BUTTON", role: null, tabIndex: 0, text }),
+      (text) => ({ tag: "A", role: "tab", tabIndex: -1, text }),
     ),
   );
-  await buttons.first().click();
-  await expect(buttons.first()).toBeFocused();
+  // Native Radix enters the unfocused list through its selected tab.
+  await expect(strip).toHaveAttribute("tabindex", "0");
+  await expect(page.getByRole("link", { name: "People", exact: true })).toHaveCount(0);
+  await page.keyboard.press("Tab");
+  await expect(page.getByRole("link", { name: "Settings", exact: true })).toBeFocused();
+  await page.keyboard.press("Tab");
+  await expect(tabs.nth(4)).toBeFocused();
+  await expect(tabs.nth(4)).toHaveAttribute("aria-selected", "true");
+  await expect(tabs.nth(4)).toHaveAttribute("tabindex", "0");
+  await tabs.first().click();
+  await expect(tabs.first()).toBeFocused();
   for (let index = 1; index < 6; index++) {
-    await page.keyboard.press("Tab");
-    await expect(buttons.nth(index)).toBeFocused();
+    await page.keyboard.press("ArrowRight");
+    await expect(tabs.nth(index)).toBeFocused();
+    await expect(tabs.first()).toHaveAttribute("aria-selected", "true");
   }
-  await expect(buttons.last()).toBeFocused();
-  await expect.poll(() => strip.evaluate((node) => node.scrollLeft)).toBeGreaterThan(0);
+  await expect(tabs.last()).toBeFocused();
+  // The observed wide native tab list scrolls the containing main panel.
+  await expect
+    .poll(() => page.locator(".bt-main").evaluate((node) => node.scrollLeft))
+    .toBeGreaterThan(0);
 });
 
 test("Business navigation reuses the working AppShell command palette", async ({ page }) => {

@@ -121,7 +121,7 @@ test("Cohort settings save independently, discard drafts and retain new policies
   await departments.getByRole("button", { name: "Save changes", exact: true }).click();
   await page
     .locator(".bt-settings-tabs")
-    .getByRole("button", { name: "Policies", exact: true })
+    .getByRole("tab", { name: "Policies", exact: true })
     .click();
   const leave = page.getByRole("region", { name: "Leave types", exact: true });
   await leave.getByRole("textbox", { name: "Days per year for Annual", exact: true }).fill("28");
@@ -135,7 +135,7 @@ test("Cohort settings save independently, discard drafts and retain new policies
   await leave.getByRole("button", { name: "Save changes", exact: true }).click();
   await page
     .locator(".bt-settings-tabs")
-    .getByRole("button", { name: "Approval flows", exact: true })
+    .getByRole("tab", { name: "Approval flows", exact: true })
     .click();
   await page.getByLabel("Approver for Expense", { exact: true }).fill("Finance director");
   await page
@@ -149,14 +149,14 @@ test("Cohort settings save independently, discard drafts and retain new policies
   ).toHaveValue("3");
   await page
     .locator(".bt-settings-tabs")
-    .getByRole("button", { name: "Approval flows", exact: true })
+    .getByRole("tab", { name: "Approval flows", exact: true })
     .click();
   await expect(page.getByLabel("Approver for Expense", { exact: true })).toHaveValue(
     "Finance director",
   );
   await page
     .locator(".bt-settings-tabs")
-    .getByRole("button", { name: "Organisation", exact: true })
+    .getByRole("tab", { name: "Organisation", exact: true })
     .click();
   await expect(company.getByLabel("Legal name", { exact: true })).toHaveValue("Bricklane UK");
   await expect(departments).toContainText("Research");
@@ -181,7 +181,7 @@ test("Cohort mobile settings save profile and apply appearance without losing na
   await expect(menu).toBeHidden();
   await page
     .locator(".bt-settings-tabs")
-    .getByRole("button", { name: "Policies", exact: true })
+    .getByRole("tab", { name: "Policies", exact: true })
     .click();
   const leave = page.getByRole("region", { name: "Leave types", exact: true });
   const add = leave.getByRole("button", { name: "Add leave type", exact: true });
@@ -193,7 +193,7 @@ test("Cohort mobile settings save profile and apply appearance without losing na
   await save.click();
   await page
     .locator(".bt-settings-tabs")
-    .getByRole("button", { name: "Profile", exact: true })
+    .getByRole("tab", { name: "Profile", exact: true })
     .click();
   await page.getByLabel("Full Name", { exact: true }).fill("Robin Vale");
   await page
@@ -202,7 +202,7 @@ test("Cohort mobile settings save profile and apply appearance without losing na
     .click();
   await page
     .locator(".bt-settings-tabs")
-    .getByRole("button", { name: "Preferences", exact: true })
+    .getByRole("tab", { name: "Preferences", exact: true })
     .click();
   await page.getByRole("combobox", { name: "Appearance", exact: true }).click();
   await page.getByRole("option", { name: "Dark", exact: true }).click();

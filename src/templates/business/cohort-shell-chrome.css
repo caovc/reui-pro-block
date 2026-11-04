@@ -1,0 +1,372 @@
+/* Cohort consumer geometry; Sidebar remains the sole Sheet/collapse owner. */
+.bt-app.bt-layout.bt-cohort {
+  height: var(--bt-layout-height);
+  min-height: 0;
+  overflow: hidden;
+}
+.bt-app.bt-layout.bt-cohort .bt-main {
+  min-height: 0;
+  overflow: auto;
+}
+.bt-layout.bt-cohort .bt-main > .cohort-topbar {
+  position: static;
+  height: 56px;
+  min-height: 56px;
+  padding: 0 16px;
+  gap: 8px;
+  border: 0;
+}
+.bt-cohort .cohort-topbar .bt-top-content {
+  display: flex;
+  min-width: 0;
+}
+.cohort-breadcrumb .cohort-breadcrumb-separator > span {
+  display: block;
+  width: 8px;
+  height: 2px;
+  background: currentColor;
+}
+@media (min-width: 768px) {
+  .bt-cohort .cohort-topbar:has(.cohort-breadcrumb[data-settings="true"]) > .bt-top-content {
+    width: 100%;
+    max-width: 864px;
+    margin-inline: auto;
+  }
+  .bt-layout.bt-cohort
+    .cohort-topbar:has(.cohort-breadcrumb[data-settings="true"])
+    > .bt-topbar-right {
+    display: none;
+  }
+}
+@media (max-width: 767px) {
+  .bt-layout.bt-cohort .cohort-topbar > .bt-mobile-menu {
+    margin-left: -4px;
+  }
+  .cohort-breadcrumb .cohort-breadcrumb-people,
+  .cohort-breadcrumb .cohort-breadcrumb-separator {
+    display: none;
+  }
+}
+.bt-cohort .cohort-topbar .bt-heading {
+  display: contents;
+}
+.bt-cohort .cohort-topbar .bt-heading > div:first-child {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.bt-cohort .cohort-topbar .bt-actions > button {
+  height: 28px;
+  min-height: 28px;
+  font-size: 14px;
+  line-height: 20px;
+}
+.bt-layout.bt-cohort .bt-sidebar[data-slot="sidebar-container"] {
+  padding: 8px;
+}
+.bt-layout.bt-cohort [data-collapsible="icon"] > .bt-sidebar[data-slot="sidebar-container"] {
+  width: calc(var(--sidebar-width-icon) + 2px);
+}
+.bt-layout.bt-cohort .bt-sidebar > [data-slot="sidebar-inner"] {
+  background: var(--sidebar);
+}
+:is(.bt-layout.bt-cohort .bt-sidebar, .bt-layout-mobile.bt-cohort) [data-slot="sidebar-header"] {
+  min-height: 56px;
+  height: 56px;
+  padding: 8px;
+  gap: 8px;
+}
+.cohort-sidebar-brand {
+  display: flex;
+  width: 100%;
+  height: 40px;
+  align-items: center;
+  gap: 8px;
+}
+.cohort-brand-link {
+  display: inline-flex;
+  min-width: 0;
+  min-height: 40px;
+  flex: 1;
+  align-items: center;
+  gap: 8px;
+  padding: 0 2px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+.cohort-brand-link > svg {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+.cohort-brand-link:focus-visible {
+  outline: 2px solid var(--sidebar-ring);
+  outline-offset: 2px;
+}
+.cohort-sidebar-brand > button {
+  flex-shrink: 0;
+}
+.cohort-sidebar-toggle {
+  width: 28px;
+  height: 28px;
+}
+.bt-layout.bt-cohort [data-collapsible="icon"] [data-slot="sidebar-header"] {
+  min-height: 130px;
+  height: 130px;
+}
+.bt-layout.bt-cohort [data-collapsible="icon"] .cohort-sidebar-brand {
+  height: auto;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.bt-layout.bt-cohort [data-collapsible="icon"] .cohort-brand-link {
+  flex: none;
+}
+:is(.bt-layout.bt-cohort .bt-sidebar, .bt-layout-mobile.bt-cohort) .reui-sidebar-content {
+  padding: 0;
+  gap: 0;
+  scrollbar-width: none;
+}
+.cohort-sidebar-search {
+  flex-shrink: 0;
+  padding: 8px;
+}
+:is(.bt-layout.bt-cohort .bt-sidebar, .bt-layout-mobile.bt-cohort) .bt-reui-navigation {
+  padding: 8px;
+}
+:is(.bt-layout.bt-cohort .bt-sidebar, .bt-layout-mobile.bt-cohort)
+  .bt-reui-navigation
+  [data-slot="sidebar-menu-sub"] {
+  margin: 0 14px;
+}
+:is(.bt-layout.bt-cohort .bt-sidebar, .bt-layout-mobile.bt-cohort)
+  .bt-reui-navigation
+  [data-slot="sidebar-menu-sub-button"] {
+  height: 28px;
+  font-size: 14px;
+}
+:is(.bt-layout.bt-cohort .bt-sidebar, .bt-layout-mobile.bt-cohort) .shell-section-label {
+  padding: 0 8px;
+}
+.cohort-departments {
+  flex-shrink: 0;
+}
+.cohort-departments [data-slot="sidebar-group"] {
+  padding: 8px;
+}
+.cohort-departments [data-slot="sidebar-menu"] {
+  gap: 1px;
+}
+.cohort-department-dot {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  border: 3px solid var(--cohort-department-color);
+  border-right-color: var(--muted);
+  border-radius: 50%;
+}
+.cohort-department-0 {
+  --cohort-department-color: #3b82f6;
+}
+.cohort-department-1 {
+  --cohort-department-color: #a855f7;
+}
+.cohort-department-2 {
+  --cohort-department-color: #34b28c;
+}
+.cohort-department-3 {
+  --cohort-department-color: #fb923c;
+}
+.cohort-department-4 {
+  --cohort-department-color: #f9a8d4;
+}
+.cohort-plan-content {
+  flex-shrink: 0;
+  margin-top: auto;
+  padding: 8px;
+}
+.cohort-headcount-plan {
+  min-width: 0;
+  width: 100%;
+  overflow: hidden;
+}
+.cohort-headcount-plan > [data-slot="frame-panel-header"] {
+  padding: 2px 8px;
+}
+:is(.bt-layout.bt-cohort .bt-sidebar, .bt-layout-mobile.bt-cohort)
+  .cohort-headcount-plan
+  [data-slot="frame-panel-title"] {
+  color: var(--warning);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+}
+.cohort-headcount-plan > [data-slot="frame-panel"] {
+  padding: 8px;
+}
+.cohort-headcount-plan p {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 16.5px;
+}
+.cohort-headcount-plan .cohort-headcount-progress {
+  height: 6px;
+  margin-top: 8px;
+  gap: 0;
+}
+.cohort-headcount-plan [data-slot="progress-track"] {
+  height: 6px;
+  background: var(--muted);
+}
+.cohort-headcount-plan [data-slot="progress-indicator"] {
+  background: var(--success);
+}
+.cohort-headcount-totals {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 16px;
+}
+.cohort-headcount-totals strong {
+  color: var(--foreground);
+  font-weight: 500;
+}
+:is(.bt-layout.bt-cohort .bt-sidebar, .bt-layout-mobile.bt-cohort) [data-slot="sidebar-footer"] {
+  height: 48px;
+  min-height: 48px;
+  padding: 8px;
+  gap: 8px;
+}
+.cohort-account-trigger {
+  height: 32px;
+  min-height: 32px;
+  padding: 0;
+  gap: 8px;
+}
+.cohort-account-avatar {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+.cohort-account-copy {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  line-height: 14px;
+}
+.cohort-account-copy strong {
+  overflow: hidden;
+  font-size: 12px;
+  font-weight: 500;
+  text-overflow: ellipsis;
+}
+.cohort-account-copy small {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--muted-foreground);
+  font-size: 10px;
+}
+.cohort-account-copy i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--success);
+}
+.cohort-account-menu {
+  width: 240px;
+  min-width: 240px;
+  color: var(--popover-foreground);
+  background: var(--popover);
+}
+.cohort-account-menu [data-slot="dropdown-menu-item"] {
+  min-height: 28px;
+  font-size: 14px;
+  line-height: 20px;
+}
+.cohort-account-menu .cohort-account-theme {
+  height: 36px;
+  min-height: 36px;
+}
+.cohort-theme-options {
+  display: flex;
+  margin-left: auto;
+  border-radius: 999px;
+  background: var(--muted);
+}
+.cohort-theme-options > span {
+  display: flex;
+  width: 26px;
+  height: 26px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--muted-foreground);
+}
+.cohort-theme-options > span[data-active="true"] {
+  color: var(--foreground);
+  background: var(--background);
+  box-shadow: 0 1px 2px #00000012;
+}
+.cohort-theme-options svg {
+  width: 14px;
+  height: 14px;
+}
+.cohort-organisation-mark {
+  display: inline-flex;
+  width: 20px;
+  height: 20px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: white;
+  font-size: 9px;
+  line-height: 12px;
+}
+.cohort-organisation-0 {
+  background: #34b28c;
+}
+.cohort-organisation-1 {
+  background: #8b5cf6;
+}
+.cohort-organisation-2 {
+  background: #f59e0b;
+}
+@media (max-width: 767px) {
+  .bt-app.bt-layout.bt-cohort .bt-main {
+    height: var(--bt-layout-height);
+    max-height: var(--bt-layout-height);
+  }
+  .bt-layout-mobile.bt-cohort {
+    background: var(--sidebar);
+  }
+  .bt-layout.bt-cohort .bt-main > .cohort-topbar {
+    padding-inline: 16px;
+  }
+}
+
+/* Preserve the observed real border and header action area at each breakpoint. */
+.bt-layout.bt-cohort .cohort-topbar > .bt-topbar-right {
+  display: flex;
+  margin-inline-start: auto;
+}
+@media (max-width: 767px) {
+  .bt-app.bt-layout.bt-cohort .bt-main {
+    border: 1px solid var(--border);
+    border-radius: 0;
+  }
+}
+
+/* The observed compact container extends 2px beyond its native 64px gap. */
+.bt-layout.bt-cohort .bt-layout-columns > [data-slot="sidebar"][data-collapsible="icon"] {
+  width: var(--sidebar-width-icon);
+}

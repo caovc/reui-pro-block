@@ -35,6 +35,16 @@ import {
   toast,
 } from "./shared";
 import { Auth } from "./auth";
+import { useCohortRoute } from "./cohort-route";
+import { CohortHeadcountPlan } from "./cohort-shell-chrome";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 type Request = {
   name: string;
   type: string;
@@ -85,7 +95,9 @@ export default function Cohort() {
   const timesheetState = useCohortTimesheetState();
   const approvalsState = useCohortApprovalsState();
   const [logged, setLogged] = useState(false);
-  const [active, setActive] = useState("Dashboard");
+  const routing = useCohortRoute();
+  const active = routing.page ?? "Dashboard";
+  const setActive = routing.navigate;
   const [period, setPeriod] = useState("Year");
   const peopleState = useCohortPeopleState();
   const [requests, setRequests] = useState(originalRequests);
@@ -106,42 +118,95 @@ export default function Cohort() {
         photo: settingsState.saved.profile.fields.photo,
       }}
       active={active}
-      setActive={(x) => {
-        setActive(x === "Settings" ? "Organisation" : x === "Directory" ? "People" : x);
-      }}
+      setActive={setActive}
+      pageHref={routing.href}
       items={["Dashboard", "Approvals", "People", "Hiring", "Time", "Settings"]}
       navGroups={{
         Settings: cohortSettingsPages,
         People: ["Directory"],
         Time: ["Time off", "Timesheets"],
       }}
+      topWrapper="div"
       top={
-        <span>
-          ⌂ People –{" "}
-          {cohortSettingsPages.includes(active)
-            ? `Settings – ${active}`
-            : active === "People"
-              ? "Directory"
-              : ["Time off", "Timesheets"].includes(active)
-                ? `Time – ${active}`
-                : active}
-        </span>
+        <Breadcrumb
+          className="cohort-breadcrumb"
+          data-settings={cohortSettingsPages.includes(active)}
+        >
+          <BreadcrumbList>
+            <BreadcrumbItem className="cohort-breadcrumb-people">
+              <BreadcrumbLink
+                className="flex items-center gap-1.5"
+                href={routing.href("People")}
+                onClick={(event) => {
+                  if (
+                    event.button !== 0 ||
+                    event.metaKey ||
+                    event.ctrlKey ||
+                    event.shiftKey ||
+                    event.altKey
+                  )
+                    return;
+                  event.preventDefault();
+                  setActive("People");
+                }}
+              >
+                <Users className="size-3.5" aria-hidden="true" />
+                People
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator className="cohort-breadcrumb-separator">
+              <span />
+            </BreadcrumbSeparator>
+            {cohortSettingsPages.includes(active) && (
+              <>
+                <BreadcrumbItem>
+                  <BreadcrumbLink
+                    href={routing.href("Organisation")}
+                    onClick={(event) => {
+                      if (
+                        event.button !== 0 ||
+                        event.metaKey ||
+                        event.ctrlKey ||
+                        event.shiftKey ||
+                        event.altKey
+                      )
+                        return;
+                      event.preventDefault();
+                      setActive("Organisation");
+                    }}
+                  >
+                    Settings
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator className="cohort-breadcrumb-separator">
+                  <span />
+                </BreadcrumbSeparator>
+              </>
+            )}
+            <BreadcrumbItem>
+              <BreadcrumbPage>{active === "People" ? "Directory" : active}</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
       }
-      footer={
-        <div className="bt-info">
-          <strong>Headcount plan</strong>Approved headcount for FY26. Resets when the plan is
-          re-baselined.
-          <div className="bt-progress mt-3 mb-2">
-            <i style={{ width: "92%" }} />
-          </div>
-          <span>92% Filled　　8% Open</span>
-        </div>
+      headerActions={
+        !cohortSettingsPages.includes(active) &&
+        !["People", "Time off", "Timesheets"].includes(active) ? (
+          <Heading
+            title=""
+            date="Jul 1, 2026 - Jul 30, 2026"
+            action={active === "Time" ? "Add event" : undefined}
+            onAction={() => setCreate(true)}
+          />
+        ) : undefined
       }
+      footer={<CohortHeadcountPlan />}
     >
       {cohortSettingsPages.includes(active) ? (
         <CohortSettings
           page={active}
           onPage={setActive}
+          pageHref={routing.href}
           model={settingsState}
           onClearPeople={peopleState.reset}
           onClearHiring={() => resetCohortHiring(hiringState)}
@@ -173,16 +238,11 @@ export default function Cohort() {
                 Add person
               </Button>
             </div>
-          ) : (
-            <Heading
-              title={active === "Dashboard" ? "" : active}
-              date="Jul 1, 2026 - Jul 30, 2026"
-              action={
-                active === "People" ? "Add person" : active === "Time" ? "Add event" : undefined
-              }
-              onAction={() => setCreate(true)}
-            />
-          )}
+          ) : active !== "Dashboard" ? (
+            <div className="cohort-page-heading">
+              <h1>{active}</h1>
+            </div>
+          ) : null}
           {active === "Dashboard" ? (
             <>
               <Panel
@@ -195,7 +255,7 @@ export default function Cohort() {
                     ["Headcount", String(198 + peopleState.people.length - 21), "+3", Users],
                     ["Open roles", "5", "+2", UserRoundPlus],
                     ["Voluntary attrition", "12.8%", "+0.9", UserRoundMinus],
-                    ["Absence rate", "1%", "-0.6", CalendarDays],
+                    ["Absence rate", "1.5%", "-0.6", CalendarDays],
                   ].map(([label, value, change, Icon], i) => {
                     const MetricIcon = Icon as typeof Users;
                     return (

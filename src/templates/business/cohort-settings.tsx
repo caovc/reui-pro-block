@@ -1,8 +1,8 @@
 /* Cohort owns this model so saved settings survive navigation without browser storage. */
 /* eslint-disable react/only-export-components */
-import { useState, type ReactNode } from "react";
-import { Ellipsis, Plus, Upload, ShieldCheck } from "lucide-react";
-import { GridFrame, NumericField, TinyAvatar } from "@/blocks/data/grid-advanced-shared";
+import { Children, Fragment, useId, useState, type ReactNode } from "react";
+import { Ellipsis, Plus, RotateCcw, Save, Upload, ShieldCheck, X } from "lucide-react";
+import { NumericField, TinyAvatar } from "@/blocks/data/grid-advanced-shared";
 import { DomainRecordGrid } from "@/blocks/data/grid-advanced-model-grid";
 import { SettingsRow } from "@/blocks/application/dialog-variants/workspace/settings-panel";
 // Official free ReUI compositions: c-select-1 and c-toggle-group-5 (MIT, Keenthemes).
@@ -23,8 +23,19 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useGlobalTheme, setGlobalTheme } from "@/components/site/global-theme-store";
 import { useFileUpload } from "@/hooks/use-file-upload";
+import {
+  Frame,
+  FrameDescription,
+  FrameFooter,
+  FrameHeader,
+  FramePanel,
+  FrameTitle,
+} from "@/components/reui/frame";
+import { FieldGroup, FieldLegend, FieldSeparator, FieldSet } from "@/components/ui/field";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Choice } from "./fidelity";
 import { Button, Input, toast } from "./shared";
+import "./cohort-settings-layout.css";
 
 export const cohortSettingsPages = [
   "Organisation",
@@ -34,6 +45,15 @@ export const cohortSettingsPages = [
   "Preferences",
   "Security",
 ];
+const workingDayLabels: Record<string, string> = {
+  Mon: "Monday",
+  Tue: "Tuesday",
+  Wed: "Wednesday",
+  Thu: "Thursday",
+  Fri: "Friday",
+  Sat: "Saturday",
+  Sun: "Sunday",
+};
 type NamedSetting = { id: string; name: string; count: number; days?: number; timezone?: string };
 type SectionValue = { fields: Record<string, string>; rows?: NamedSetting[] };
 type SettingsValues = Record<string, SectionValue>;
@@ -114,6 +134,44 @@ export function useCohortSettingsState() {
   };
 }
 export type CohortSettingsModel = ReturnType<typeof useCohortSettingsState>;
+/** Existing free Frame owns the bars and bordered panel; callers own business data. */
+function CohortSettingsFrame({
+  title,
+  description,
+  actions,
+  children,
+  footer,
+  sectionId,
+}: {
+  title: string;
+  description?: string;
+  actions?: ReactNode;
+  children: ReactNode;
+  footer?: ReactNode;
+  sectionId?: string;
+}) {
+  return (
+    <Frame
+      dense
+      role="region"
+      aria-label={title}
+      className="bt-cohort-setting-section"
+      data-setting-section={sectionId}
+    >
+      <FrameHeader className="cohort-settings-frame-header" data-has-actions={Boolean(actions)}>
+        <div className="cohort-settings-frame-heading">
+          <FrameTitle>{title}</FrameTitle>
+          {description && <FrameDescription>{description}</FrameDescription>}
+        </div>
+        {actions && <div className="cohort-settings-frame-actions">{actions}</div>}
+      </FrameHeader>
+      <FramePanel fit className="cohort-settings-frame-panel">
+        {children}
+      </FramePanel>
+      {footer && <FrameFooter className="bt-setting-save">{footer}</FrameFooter>}
+    </Frame>
+  );
+}
 function SettingsSection({
   id,
   title,
@@ -148,43 +206,59 @@ function SettingsSection({
     toast.success(`${title} saved`);
   }
   return (
-    <GridFrame
+    <CohortSettingsFrame
       title={title}
       description={description}
       actions={action}
-      className="bt-cohort-setting-section"
+      sectionId={id}
+      footer={
+        <>
+          <span role="status">{dirty ? "Unsaved changes" : "All changes saved"}</span>
+          <div>
+            <Button
+              variant="outline"
+              disabled={!dirty}
+              onClick={() => model.setDraft((old) => ({ ...old, [id]: model.saved[id] }))}
+            >
+              {id === "profile" && <RotateCcw size={14} aria-hidden="true" />}
+              {id === "profile" ? "Reset" : "Discard"}
+            </Button>
+            <Button disabled={!dirty} onClick={save}>
+              {id === "profile" && <Save size={14} aria-hidden="true" />}
+              Save changes
+            </Button>
+          </div>
+        </>
+      }
     >
-      {children}
-      <footer className="bt-setting-save">
-        <span role="status">{dirty ? "Unsaved changes" : "All changes saved"}</span>
-        <div>
-          <Button
-            variant="outline"
-            size="sm"
-            disabled={!dirty}
-            onClick={() => model.setDraft((old) => ({ ...old, [id]: model.saved[id] }))}
-          >
-            {id === "profile" ? "Reset" : "Discard"}
-          </Button>
-          <Button size="sm" disabled={!dirty} onClick={save}>
-            Save changes
-          </Button>
-        </div>
-      </footer>
-    </GridFrame>
+      {id === "profile" ? (
+        children
+      ) : (
+        <FieldGroup className="cohort-setting-fields">
+          {Children.toArray(children).map((child, index) => (
+            <Fragment key={index}>
+              {index > 0 && <FieldSeparator />}
+              {child}
+            </Fragment>
+          ))}
+        </FieldGroup>
+      )}
+    </CohortSettingsFrame>
   );
 }
 function SettingRow({
+  id,
   label,
   description,
   children,
 }: {
+  id?: string;
   label: string;
   description?: string;
   children: ReactNode;
 }) {
   return (
-    <SettingsRow title={label} description={description} className="bt-setting-row">
+    <SettingsRow id={id} title={label} description={description} className="bt-setting-row">
       {children}
     </SettingsRow>
   );
@@ -368,6 +442,7 @@ function EditableList({
 export function CohortSettings({
   page,
   onPage,
+  pageHref,
   model,
   onClearPeople,
   onClearHiring,
@@ -378,6 +453,7 @@ export function CohortSettings({
 }: {
   page: string;
   onPage: (page: string) => void;
+  pageHref?: (name: string) => string;
   model: CohortSettingsModel;
   onClearPeople: () => void;
   onClearHiring: () => void;
@@ -387,6 +463,7 @@ export function CohortSettings({
   onClearTimesheets: () => void;
 }) {
   const { theme } = useGlobalTheme();
+  const settingsId = useId();
   const [securityConfirmed, setSecurityConfirmed] = useState(false);
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -412,475 +489,530 @@ export function CohortSettings({
   return (
     <div className="bt-cohort-settings">
       <h1>Settings</h1>
-      <nav className="bt-settings-tabs" aria-label="Settings pages">
-        {cohortSettingsPages.map((name) => (
-          <Button
-            key={name}
-            variant="ghost"
-            aria-current={page === name ? "page" : undefined}
-            onClick={() => onPage(name)}
-          >
-            {name}
-          </Button>
-        ))}
-      </nav>
-      {page === "Organisation" && (
-        <>
-          <SettingsSection
-            id="company"
-            title="Company"
-            description="Company details."
-            model={model}
-          >
-            <SettingRow label="Legal name" description="The registered company name.">
-              <Input
-                aria-label="Legal name"
-                value={model.draft.company.fields.name}
-                onChange={(e) => field("company", "name", e.target.value)}
-              />
-            </SettingRow>
-            <SettingRow
-              label="Fiscal year starts"
-              description="Start of the financial and leave year."
-            >
-              <div className="bt-fiscal-fields">
-                <Choice
-                  label="Fiscal year start month"
-                  value={model.draft.company.fields.month}
-                  onChange={(value) => field("company", "month", value)}
-                  options={[
-                    "January",
-                    "February",
-                    "March",
-                    "April",
-                    "May",
-                    "June",
-                    "July",
-                    "August",
-                    "September",
-                    "October",
-                    "November",
-                    "December",
-                  ]}
-                />
-                <Select
-                  value={model.draft.company.fields.day}
-                  onValueChange={(value) => field("company", "day", value)}
+      <Tabs
+        value={page}
+        onValueChange={onPage}
+        activationMode="manual"
+        className="cohort-settings-tab-root"
+      >
+        <div className="cohort-settings-tabs-scroll">
+          <TabsList variant="line" aria-label="Settings pages" className="bt-settings-tabs">
+            {cohortSettingsPages.map((name) => (
+              <TabsTrigger key={name} value={name} asChild>
+                <a
+                  href={pageHref?.(name)}
+                  aria-current={page === name ? "page" : undefined}
+                  onMouseDown={(event) => {
+                    if (
+                      event.button !== 0 ||
+                      event.metaKey ||
+                      event.ctrlKey ||
+                      event.shiftKey ||
+                      event.altKey
+                    )
+                      event.preventDefault();
+                  }}
+                  onClick={(event) => {
+                    if (
+                      event.button !== 0 ||
+                      event.metaKey ||
+                      event.ctrlKey ||
+                      event.shiftKey ||
+                      event.altKey
+                    )
+                      return;
+                    event.preventDefault();
+                  }}
                 >
-                  <SelectTrigger aria-label="Fiscal year start day" className="cohort-fiscal-day">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent position="popper">
-                    <SelectGroup>
-                      {Array.from({ length: 28 }, (_, index) => String(index + 1)).map((day) => (
-                        <SelectItem key={day} value={day}>
-                          {day}
-                        </SelectItem>
-                      ))}
-                      {["29", "30", "31"].includes(model.draft.company.fields.day) && (
-                        <SelectItem value={model.draft.company.fields.day} disabled>
-                          {model.draft.company.fields.day}
-                        </SelectItem>
-                      )}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </div>
-            </SettingRow>
-          </SettingsSection>
-          <EditableList
-            id="departments"
-            title="Departments"
-            description="Departments people can belong to."
-            add="Add department"
-            model={model}
-          />
-          <EditableList
-            id="locations"
-            title="Locations"
-            description="Offices and regions, with their timezone."
-            add="Add location"
-            kind="location"
-            model={model}
-          />
-          <SettingsSection
-            id="working"
-            title="Working week"
-            description="Days that count as working days."
-            model={model}
-          >
-            <SettingRow
-              label="Working days"
-              description={`${model.draft.working.fields.days.split(",").filter(Boolean).length} days a week: ${model.draft.working.fields.days.split(",").join(", ")}`}
-            >
-              <ToggleGroup
-                type="multiple"
-                role="group"
-                variant="outline"
-                size="sm"
-                spacing={2}
-                aria-label="Working days"
-                className="cohort-working-days"
-                value={model.draft.working.fields.days.split(",").filter(Boolean)}
-                onValueChange={(days) => field("working", "days", days.join(","))}
-              >
-                {[
-                  ["Mon", "Monday"],
-                  ["Tue", "Tuesday"],
-                  ["Wed", "Wednesday"],
-                  ["Thu", "Thursday"],
-                  ["Fri", "Friday"],
-                  ["Sat", "Saturday"],
-                  ["Sun", "Sunday"],
-                ].map(([day, label]) => (
-                  <ToggleGroupItem key={day} value={day} aria-label={label}>
-                    {day}
-                  </ToggleGroupItem>
-                ))}
-              </ToggleGroup>
-            </SettingRow>
-          </SettingsSection>
-        </>
-      )}
-      {page === "Policies" && (
-        <>
-          <EditableList
-            id="leave"
-            title="Leave types"
-            description="Leave types and their yearly entitlement."
-            add="Add leave type"
-            kind="leave"
-            model={model}
-          />
-          <SettingsSection
-            id="rules"
-            title="Leave rules"
-            description="Rules that apply to every leave type."
-            model={model}
-          >
-            <SettingRow
-              label="Carry-over cap"
-              description="Unused days carried into the next leave year."
-            >
-              <NumericField
-                label="Carry-over cap"
-                min={0}
-                max={366}
-                value={Number(model.draft.rules.fields.carry)}
-                onValueChange={(value) => field("rules", "carry", String(value))}
-              />
-            </SettingRow>
-          </SettingsSection>
-          <EditableList
-            id="employment"
-            title="Employment types"
-            description="Contract types."
-            add="Add employment type"
-            model={model}
-          />
-        </>
-      )}
-      {page === "Approval flows" && (
-        <SettingsSection
-          id="approvals"
-          title="Sign-off"
-          description="The role that decides each kind of request."
-          model={model}
-        >
-          {[
-            ["Leave", "Time off requests."],
-            ["Expense", "Spend over the claim threshold."],
-            ["Offer", "Offers to candidates."],
-            ["Compensation", "Salary, band and level changes."],
-            ["Profile change", "Personal and payroll data."],
-          ].map(([name, description]) => (
-            <SettingRow key={name} label={name} description={description}>
-              <Input
-                aria-label={`Approver for ${name}`}
-                value={model.draft.approvals.fields[name]}
-                onChange={(e) => field("approvals", name, e.target.value)}
-              />
-            </SettingRow>
-          ))}
-        </SettingsSection>
-      )}
-      {page === "Profile" && (
-        <SettingsSection
-          id="profile"
-          title="Profile"
-          description="How you appear across the app."
-          model={model}
-        >
-          <div className="bt-profile-heading">Your details</div>
-          <SettingRow label="Photo">
-            <div className="bt-profile-photo">
-              {profile.photo ? (
-                <img src={profile.photo} alt="Your profile" />
-              ) : (
-                <TinyAvatar name={profile.name} />
-              )}
-              <input
-                className="hidden"
-                {...upload.getInputProps({ "aria-label": "Upload profile photo" })}
-              />
-              <Button size="sm" variant="outline" onClick={upload.openFileDialog}>
-                <Upload size={14} />
-                Change
-              </Button>
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() => {
-                  field("profile", "photo", "");
-                  upload.clearFiles();
-                }}
-              >
-                Remove
-              </Button>
-            </div>
-            {profileUpload.errors.map((error) => (
-              <p role="alert" key={error}>
-                {error}
-              </p>
+                  {name}
+                </a>
+              </TabsTrigger>
             ))}
-          </SettingRow>
-          {[
-            ["Full Name", "name"],
-            ["Job Title", "title"],
-            ["Location", "location"],
-          ].map(([label, key]) => (
-            <SettingRow key={key} label={label}>
-              <Input
-                aria-label={label}
-                value={profile[key]}
-                onChange={(e) => field("profile", key, e.target.value)}
-              />
-            </SettingRow>
-          ))}
-        </SettingsSection>
-      )}
-      {page === "Preferences" && (
-        <GridFrame
-          title="Preferences"
-          description="Appearance and stored data."
-          className="bt-cohort-setting-section"
-        >
-          <SettingRow label="Appearance" description="Light, dark, or follow the system.">
-            <Choice
-              label="Appearance"
-              value={model.appearance}
-              options={["Light", "Dark", "System"]}
-              onChange={(value) => {
-                model.setAppearance(value);
-                setGlobalTheme(
-                  { ...theme, mode: value.toLowerCase() as "light" | "dark" | "system" },
-                  false,
-                );
-              }}
-            />
-          </SettingRow>
-          <SettingRow label="People you added" description="Added or edited by you.">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                onClearPeople();
-                toast.success("People restored");
-              }}
-            >
-              Clear
-            </Button>
-          </SettingRow>
-          <SettingRow label="Approval decisions" description="Requests you approved or rejected.">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                onClearApprovals();
-                toast.success("Approval decisions restored");
-              }}
-            >
-              Clear
-            </Button>
-          </SettingRow>
-          <SettingRow label="Hiring pipeline" description="Candidates you moved between stages.">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                onClearHiring();
-                toast.success("Hiring pipeline restored");
-              }}
-            >
-              Clear
-            </Button>
-          </SettingRow>
-          <SettingRow label="Person notes" description="Notes on a person's record.">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                onClearNotes();
-                toast.success("Person notes cleared");
-              }}
-            >
-              Clear
-            </Button>
-          </SettingRow>
-          <SettingRow label="Booked leave" description="Leave you booked, edited or cancelled.">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                onClearLeave();
-                toast.success("Added calendar events cleared");
-              }}
-            >
-              Clear
-            </Button>
-          </SettingRow>
-          <SettingRow label="Timesheet sign-offs" description="Weeks you signed off or sent back.">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                onClearTimesheets();
-                toast.success("Timesheet sign-offs restored");
-              }}
-            >
-              Clear
-            </Button>
-          </SettingRow>
-          <SettingRow
-            label="Organisation settings"
-            description="Departments, locations, policies and approval flows."
-          >
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => {
-                model.setDraft(defaults);
-                model.setSaved(defaults);
-                toast.success("Organisation settings restored");
-              }}
-            >
-              Restore
-            </Button>
-          </SettingRow>
-        </GridFrame>
-      )}
-      {page === "Security" &&
-        (!securityConfirmed ? (
-          <GridFrame
-            title="Confirm password"
-            description="This is a secure area of the application. Please confirm your password before continuing."
-            className="bt-cohort-setting-section"
-          >
-            <form
-              className="bt-security-form"
-              onSubmit={(e) => {
-                e.preventDefault();
-                setSecurityConfirmed(true);
-                setPassword("");
-              }}
-            >
-              <ShieldCheck size={30} />
-              <label>
-                Password
-                <Input
-                  aria-label="Confirm current password"
-                  type="password"
-                  required
-                  minLength={4}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </label>
-              <Button type="submit">Confirm password</Button>
-            </form>
-          </GridFrame>
-        ) : (
-          <>
-            <GridFrame
-              title="Password"
-              description="Choose a strong password for your account."
-              className="bt-cohort-setting-section"
-            >
-              <form
-                className="bt-security-form"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  if (newPassword !== passwordConfirmation) {
-                    toast.error("Passwords must match");
-                    return;
-                  }
-                  setNewPassword("");
-                  setPasswordConfirmation("");
-                  toast.success("Password updated for this demo session");
-                }}
+          </TabsList>
+        </div>
+        <TabsContent value={page} aria-label={page} className="cohort-settings-content">
+          {page === "Organisation" && (
+            <>
+              <SettingsSection
+                id="company"
+                title="Company"
+                description="Company details."
+                model={model}
               >
-                <label>
-                  New password
-                  <Input
-                    aria-label="New password"
-                    type="password"
-                    required
-                    minLength={8}
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                  />
-                </label>
-                <label>
-                  Confirm password
-                  <Input
-                    aria-label="Confirm new password"
-                    type="password"
-                    required
-                    minLength={8}
-                    value={passwordConfirmation}
-                    onChange={(e) => setPasswordConfirmation(e.target.value)}
-                  />
-                </label>
-                <Button type="submit">Update password</Button>
-              </form>
-            </GridFrame>
-            <GridFrame
-              title="Two-factor authentication"
-              description="Protect your account with an additional verification step."
-              className="bt-cohort-setting-section"
-            >
-              <SettingRow label={model.twoFactor ? "Enabled" : "Not enabled"}>
-                <Button size="sm" onClick={() => model.setTwoFactor(!model.twoFactor)}>
-                  {model.twoFactor ? "Disable" : "Enable"} two-factor authentication
-                </Button>
-              </SettingRow>
-            </GridFrame>
-            <GridFrame
-              title="Browser sessions"
-              description="Devices signed in to your account."
-              className="bt-cohort-setting-section"
-            >
-              {model.sessions.map((session, i) => (
                 <SettingRow
-                  key={session}
-                  label={session}
-                  description={i === 0 ? "This device" : "Last active 2 hours ago"}
+                  id={`${settingsId}-legal-name`}
+                  label="Legal name"
+                  description="The registered company name."
                 >
-                  <Button
+                  <Input
+                    id={`${settingsId}-legal-name`}
+                    aria-label="Legal name"
+                    value={model.draft.company.fields.name}
+                    onChange={(e) => field("company", "name", e.target.value)}
+                  />
+                </SettingRow>
+                <SettingRow
+                  label="Fiscal year starts"
+                  description="Start of the financial and leave year."
+                >
+                  <FieldSet className="cohort-fiscal-fieldset">
+                    <FieldLegend className="sr-only">Fiscal year start</FieldLegend>
+                    <FieldGroup className="bt-fiscal-fields">
+                      <Choice
+                        label="Fiscal year start month"
+                        value={model.draft.company.fields.month}
+                        onChange={(value) => field("company", "month", value)}
+                        options={[
+                          "January",
+                          "February",
+                          "March",
+                          "April",
+                          "May",
+                          "June",
+                          "July",
+                          "August",
+                          "September",
+                          "October",
+                          "November",
+                          "December",
+                        ]}
+                      />
+                      <Select
+                        value={model.draft.company.fields.day}
+                        onValueChange={(value) => field("company", "day", value)}
+                      >
+                        <SelectTrigger
+                          aria-label="Fiscal year start day"
+                          className="cohort-fiscal-day"
+                        >
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent position="popper">
+                          <SelectGroup>
+                            {Array.from({ length: 28 }, (_, index) => String(index + 1)).map(
+                              (day) => (
+                                <SelectItem key={day} value={day}>
+                                  {day}
+                                </SelectItem>
+                              ),
+                            )}
+                            {["29", "30", "31"].includes(model.draft.company.fields.day) && (
+                              <SelectItem value={model.draft.company.fields.day} disabled>
+                                {model.draft.company.fields.day}
+                              </SelectItem>
+                            )}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </FieldGroup>
+                  </FieldSet>
+                </SettingRow>
+              </SettingsSection>
+              <EditableList
+                id="departments"
+                title="Departments"
+                description="Departments people can belong to."
+                add="Add department"
+                model={model}
+              />
+              <EditableList
+                id="locations"
+                title="Locations"
+                description="Offices and regions, with their timezone."
+                add="Add location"
+                kind="location"
+                model={model}
+              />
+              <SettingsSection
+                id="working"
+                title="Working week"
+                description="Days that count as working days."
+                model={model}
+              >
+                <SettingRow
+                  label="Working days"
+                  description={`${model.draft.working.fields.days.split(",").filter(Boolean).length} days a week: ${model.draft.working.fields.days
+                    .split(",")
+                    .map((day) => workingDayLabels[day] ?? day)
+                    .join(", ")}`}
+                >
+                  <ToggleGroup
+                    type="multiple"
+                    role="group"
                     variant="outline"
                     size="sm"
-                    disabled={i === 0}
-                    onClick={() =>
-                      model.setSessions((old) => old.filter((item) => item !== session))
-                    }
+                    spacing={2}
+                    aria-label="Working days"
+                    className="cohort-working-days"
+                    value={model.draft.working.fields.days.split(",").filter(Boolean)}
+                    onValueChange={(days) => field("working", "days", days.join(","))}
                   >
-                    Revoke
-                  </Button>
+                    {[
+                      ["Mon", "Monday"],
+                      ["Tue", "Tuesday"],
+                      ["Wed", "Wednesday"],
+                      ["Thu", "Thursday"],
+                      ["Fri", "Friday"],
+                      ["Sat", "Saturday"],
+                      ["Sun", "Sunday"],
+                    ].map(([day, label]) => (
+                      <ToggleGroupItem key={day} value={day} aria-label={label}>
+                        {day}
+                      </ToggleGroupItem>
+                    ))}
+                  </ToggleGroup>
+                </SettingRow>
+              </SettingsSection>
+            </>
+          )}
+          {page === "Policies" && (
+            <>
+              <EditableList
+                id="leave"
+                title="Leave types"
+                description="Leave types and their yearly entitlement."
+                add="Add leave type"
+                kind="leave"
+                model={model}
+              />
+              <SettingsSection
+                id="rules"
+                title="Leave rules"
+                description="Rules that apply to every leave type."
+                model={model}
+              >
+                <SettingRow
+                  label="Carry-over cap"
+                  description="Unused days carried into the next leave year."
+                >
+                  <NumericField
+                    label="Carry-over cap"
+                    min={0}
+                    max={366}
+                    value={Number(model.draft.rules.fields.carry)}
+                    onValueChange={(value) => field("rules", "carry", String(value))}
+                  />
+                </SettingRow>
+              </SettingsSection>
+              <EditableList
+                id="employment"
+                title="Employment types"
+                description="Contract types."
+                add="Add employment type"
+                model={model}
+              />
+            </>
+          )}
+          {page === "Approval flows" && (
+            <SettingsSection
+              id="approvals"
+              title="Sign-off"
+              description="The role that decides each kind of request."
+              model={model}
+            >
+              {[
+                ["Leave", "Time off requests."],
+                ["Expense", "Spend over the claim threshold."],
+                ["Offer", "Offers to candidates."],
+                ["Compensation", "Salary, band and level changes."],
+                ["Profile change", "Personal and payroll data."],
+              ].map(([name, description]) => (
+                <SettingRow key={name} label={name} description={description}>
+                  <Input
+                    aria-label={`Approver for ${name}`}
+                    value={model.draft.approvals.fields[name]}
+                    onChange={(e) => field("approvals", name, e.target.value)}
+                  />
                 </SettingRow>
               ))}
-            </GridFrame>
-          </>
-        ))}
+            </SettingsSection>
+          )}
+          {page === "Profile" && (
+            <SettingsSection
+              id="profile"
+              title="Profile"
+              description="How you appear across the app."
+              model={model}
+            >
+              <FieldSet className="cohort-profile-fieldset">
+                <FieldLegend className="sr-only">Your details</FieldLegend>
+                <FieldGroup className="cohort-profile-fields">
+                  <SettingRow label="Photo">
+                    <div className="bt-profile-photo">
+                      {profile.photo ? (
+                        <img src={profile.photo} alt="Your profile" />
+                      ) : (
+                        <TinyAvatar name={profile.name} />
+                      )}
+                      <input
+                        className="hidden"
+                        {...upload.getInputProps({ "aria-label": "Upload profile photo" })}
+                      />
+                      <Button size="sm" variant="outline" onClick={upload.openFileDialog}>
+                        <Upload size={14} />
+                        Change
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => {
+                          field("profile", "photo", "");
+                          upload.clearFiles();
+                        }}
+                      >
+                        <X size={14} aria-hidden="true" />
+                        Remove
+                      </Button>
+                    </div>
+                    {profileUpload.errors.map((error) => (
+                      <p role="alert" key={error}>
+                        {error}
+                      </p>
+                    ))}
+                  </SettingRow>
+                  {[
+                    ["Full Name", "name"],
+                    ["Job Title", "title"],
+                    ["Location", "location"],
+                  ].map(([label, key]) => (
+                    <SettingRow key={key} id={`${settingsId}-${key}`} label={label}>
+                      <Input
+                        id={`${settingsId}-${key}`}
+                        aria-label={label}
+                        value={profile[key]}
+                        onChange={(e) => field("profile", key, e.target.value)}
+                      />
+                    </SettingRow>
+                  ))}
+                </FieldGroup>
+              </FieldSet>
+            </SettingsSection>
+          )}
+          {page === "Preferences" && (
+            <CohortSettingsFrame title="Preferences" description="Appearance and stored data.">
+              <SettingRow label="Appearance" description="Light, dark, or follow the system.">
+                <Choice
+                  label="Appearance"
+                  value={model.appearance}
+                  options={["Light", "Dark", "System"]}
+                  onChange={(value) => {
+                    model.setAppearance(value);
+                    setGlobalTheme(
+                      { ...theme, mode: value.toLowerCase() as "light" | "dark" | "system" },
+                      false,
+                    );
+                  }}
+                />
+              </SettingRow>
+              <SettingRow label="People you added" description="Added or edited by you.">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    onClearPeople();
+                    toast.success("People restored");
+                  }}
+                >
+                  Clear
+                </Button>
+              </SettingRow>
+              <SettingRow
+                label="Approval decisions"
+                description="Requests you approved or rejected."
+              >
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    onClearApprovals();
+                    toast.success("Approval decisions restored");
+                  }}
+                >
+                  Clear
+                </Button>
+              </SettingRow>
+              <SettingRow
+                label="Hiring pipeline"
+                description="Candidates you moved between stages."
+              >
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    onClearHiring();
+                    toast.success("Hiring pipeline restored");
+                  }}
+                >
+                  Clear
+                </Button>
+              </SettingRow>
+              <SettingRow label="Person notes" description="Notes on a person's record.">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    onClearNotes();
+                    toast.success("Person notes cleared");
+                  }}
+                >
+                  Clear
+                </Button>
+              </SettingRow>
+              <SettingRow label="Booked leave" description="Leave you booked, edited or cancelled.">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    onClearLeave();
+                    toast.success("Added calendar events cleared");
+                  }}
+                >
+                  Clear
+                </Button>
+              </SettingRow>
+              <SettingRow
+                label="Timesheet sign-offs"
+                description="Weeks you signed off or sent back."
+              >
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    onClearTimesheets();
+                    toast.success("Timesheet sign-offs restored");
+                  }}
+                >
+                  Clear
+                </Button>
+              </SettingRow>
+              <SettingRow
+                label="Organisation settings"
+                description="Departments, locations, policies and approval flows."
+              >
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    model.setDraft(defaults);
+                    model.setSaved(defaults);
+                    toast.success("Organisation settings restored");
+                  }}
+                >
+                  Restore
+                </Button>
+              </SettingRow>
+            </CohortSettingsFrame>
+          )}
+          {page === "Security" &&
+            (!securityConfirmed ? (
+              <CohortSettingsFrame
+                title="Confirm password"
+                description="This is a secure area of the application. Please confirm your password before continuing."
+              >
+                <form
+                  className="bt-security-form"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    setSecurityConfirmed(true);
+                    setPassword("");
+                  }}
+                >
+                  <ShieldCheck size={30} />
+                  <label>
+                    Password
+                    <Input
+                      aria-label="Confirm current password"
+                      type="password"
+                      required
+                      minLength={4}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                  </label>
+                  <Button type="submit">Confirm password</Button>
+                </form>
+              </CohortSettingsFrame>
+            ) : (
+              <>
+                <CohortSettingsFrame
+                  title="Password"
+                  description="Choose a strong password for your account."
+                >
+                  <form
+                    className="bt-security-form"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      if (newPassword !== passwordConfirmation) {
+                        toast.error("Passwords must match");
+                        return;
+                      }
+                      setNewPassword("");
+                      setPasswordConfirmation("");
+                      toast.success("Password updated for this demo session");
+                    }}
+                  >
+                    <label>
+                      New password
+                      <Input
+                        aria-label="New password"
+                        type="password"
+                        required
+                        minLength={8}
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                      />
+                    </label>
+                    <label>
+                      Confirm password
+                      <Input
+                        aria-label="Confirm new password"
+                        type="password"
+                        required
+                        minLength={8}
+                        value={passwordConfirmation}
+                        onChange={(e) => setPasswordConfirmation(e.target.value)}
+                      />
+                    </label>
+                    <Button type="submit">Update password</Button>
+                  </form>
+                </CohortSettingsFrame>
+                <CohortSettingsFrame
+                  title="Two-factor authentication"
+                  description="Protect your account with an additional verification step."
+                >
+                  <SettingRow label={model.twoFactor ? "Enabled" : "Not enabled"}>
+                    <Button size="sm" onClick={() => model.setTwoFactor(!model.twoFactor)}>
+                      {model.twoFactor ? "Disable" : "Enable"} two-factor authentication
+                    </Button>
+                  </SettingRow>
+                </CohortSettingsFrame>
+                <CohortSettingsFrame
+                  title="Browser sessions"
+                  description="Devices signed in to your account."
+                >
+                  {model.sessions.map((session, i) => (
+                    <SettingRow
+                      key={session}
+                      label={session}
+                      description={i === 0 ? "This device" : "Last active 2 hours ago"}
+                    >
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        disabled={i === 0}
+                        onClick={() =>
+                          model.setSessions((old) => old.filter((item) => item !== session))
+                        }
+                      >
+                        Revoke
+                      </Button>
+                    </SettingRow>
+                  ))}
+                </CohortSettingsFrame>
+              </>
+            ))}
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

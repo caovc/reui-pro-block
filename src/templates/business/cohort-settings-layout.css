@@ -1,0 +1,227 @@
+/* Cohort settings compose the existing free Tabs, Frame and Field components.
+ * Spacing belongs to this consumer; shared controls and saved models stay native. */
+.bt-layout.bt-cohort .bt-cohort-settings > h1 {
+  margin: 0 0 16px;
+  font-weight: 500;
+  line-height: 28px;
+}
+
+.bt-cohort-settings .cohort-settings-tab-root {
+  min-width: 0;
+  gap: 16px;
+}
+
+.bt-cohort-settings .cohort-settings-tabs-scroll {
+  min-width: 0;
+  overflow: visible;
+}
+
+.bt-cohort-settings .cohort-settings-tab-root .bt-settings-tabs {
+  width: max-content;
+  max-width: none;
+  height: 32px;
+  gap: 4px;
+  margin: 0;
+  padding: 3px;
+  overflow: visible;
+}
+
+.bt-cohort-settings .bt-settings-tabs [data-slot="tabs-trigger"] {
+  flex: none;
+  text-decoration: none;
+}
+
+.bt-cohort-settings .cohort-settings-content {
+  flex: none;
+  min-width: 0;
+  margin: 0;
+}
+
+.bt-cohort-settings .bt-cohort-setting-section {
+  width: 100%;
+  min-width: 0;
+  border-radius: var(--radius-xl);
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.bt-cohort-settings .cohort-settings-frame-header {
+  min-height: 52px;
+  padding: 8px 16px;
+  gap: 0;
+}
+
+.bt-cohort-settings .cohort-settings-frame-header[data-has-actions="true"] {
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.bt-cohort-settings .cohort-settings-frame-heading [data-slot="frame-panel-description"] {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.bt-cohort-settings
+  .cohort-settings-frame-header[data-has-actions="true"]
+  [data-slot="frame-panel-description"] {
+  margin-top: 4px;
+}
+
+.bt-cohort-settings .cohort-settings-frame-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.bt-cohort-settings .cohort-settings-frame-actions > button {
+  height: 32px;
+  font-size: 14px;
+}
+
+.bt-cohort-settings .cohort-settings-frame-panel {
+  min-width: 0;
+  padding: 0;
+}
+
+.bt-cohort-settings .cohort-setting-fields {
+  gap: 0;
+}
+
+.bt-cohort-settings .bt-setting-row.workspace-settings-row {
+  grid-template-columns: minmax(0, 384px) minmax(0, 1fr);
+  align-items: start;
+  gap: 16px;
+}
+
+.bt-cohort-settings .cohort-setting-fields .bt-setting-row {
+  border-bottom: 0;
+}
+
+.bt-cohort-settings .bt-setting-row > [data-slot="field-content"] {
+  min-width: 0;
+  gap: 2px;
+  line-height: 20px;
+}
+
+.bt-cohort-settings .bt-setting-row > [data-slot="field-content"] > [data-slot="field-label"] {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.bt-cohort-settings .bt-setting-row > [data-slot="field-content"] > [data-slot="field-label"][for] {
+  line-height: 19.25px;
+}
+
+.bt-cohort-settings
+  .bt-setting-row
+  > [data-slot="field-content"]
+  > [data-slot="field-description"] {
+  margin: 0;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.bt-cohort-settings .cohort-fiscal-fieldset {
+  width: 100%;
+  min-width: 0;
+  gap: 12px;
+}
+
+.bt-cohort-settings .cohort-fiscal-fieldset .bt-fiscal-fields {
+  flex-direction: row;
+  gap: 12px;
+}
+
+.bt-cohort-settings .bt-setting-save {
+  min-height: 48px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 16px;
+  background: transparent;
+}
+
+.bt-cohort-settings .bt-setting-save > span {
+  min-width: 0;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.bt-cohort-settings .bt-setting-save > div {
+  flex-shrink: 0;
+  gap: 12px;
+}
+
+.bt-cohort-settings .bt-setting-save button {
+  height: 32px;
+}
+
+.bt-cohort-settings [data-setting-section="profile"] {
+  max-width: 672px;
+  margin-inline: 0;
+}
+
+.bt-cohort-settings [data-setting-section="profile"] .cohort-settings-frame-panel {
+  padding: 16px;
+}
+
+.bt-cohort-settings .cohort-profile-fieldset {
+  min-width: 0;
+  gap: 0;
+}
+
+.bt-cohort-settings .cohort-profile-fields {
+  gap: 20px;
+}
+
+.bt-cohort-settings .cohort-profile-fields > .bt-setting-row.workspace-settings-row {
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  align-items: center;
+  gap: 24px;
+  padding: 0;
+  border: 0;
+}
+
+.bt-cohort-settings .cohort-profile-fields > .bt-setting-row:first-child {
+  align-items: start;
+}
+
+.bt-cohort-settings .bt-profile-photo {
+  gap: 8px;
+}
+
+.bt-cohort-settings [data-setting-section="departments"] .cohort-settings-frame-panel {
+  max-height: 336px;
+  overflow-y: auto;
+}
+
+@media (min-width: 1024px) {
+  .bt-cohort-settings .cohort-settings-frame-header[data-has-actions="true"] {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 767px) {
+  .bt-cohort-settings .bt-setting-row.workspace-settings-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .bt-cohort-settings .cohort-profile-fields > .bt-setting-row.workspace-settings-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .bt-cohort-settings .cohort-settings-frame-actions,
+  .bt-cohort-settings .cohort-settings-frame-actions > button {
+    width: 100%;
+  }
+}
+
+/* The original settings title begins immediately below the 56px main header. */
+.bt-layout.bt-cohort .bt-content:has(.bt-cohort-settings) {
+  padding-top: 0;
+}

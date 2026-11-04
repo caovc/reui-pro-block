@@ -18,6 +18,11 @@ import {
 } from "@/components/reui/sidebar";
 import { BrandGlyph } from "@/components/brand-mark";
 import { AtlasAccountControl } from "./atlas-shell-chrome";
+import {
+  CohortAccountControl,
+  CohortDepartments,
+  CohortSidebarHeader,
+} from "./cohort-shell-chrome";
 import { demoAvatar } from "@/lib/demo-artwork";
 const userAvatar = demoAvatar("Nick Bold");
 /* Shared template primitives and small data helpers intentionally share one module. */
@@ -92,6 +97,7 @@ import "@/blocks/reference.css";
 import "@/blocks/application/shells/shells.css";
 import "./business-layout.css";
 import "./atlas-shell-chrome.css";
+import "./cohort-shell-chrome.css";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 export {
@@ -263,6 +269,7 @@ function ShellContent({
   notifications,
   topbarNotifications,
   headerActions,
+  pageHref,
   footer,
   navGroups,
   account,
@@ -283,6 +290,7 @@ function ShellContent({
   notifications?: ReactNode;
   topbarNotifications?: ReactNode;
   headerActions?: ReactNode;
+  pageHref?: (page: string, department?: string) => string;
   footer?: ReactNode;
   navGroups?: Record<string, string[]>;
   account?: { name: string; organisation: string; photo?: string };
@@ -320,6 +328,15 @@ function ShellContent({
           if (value === "Account settings") setActive(value);
           else select(value);
         }}
+      />
+    ) : id === "cohort" && pageHref ? (
+      <CohortAccountControl
+        name={accountName}
+        organisation={accountOrganisation}
+        photo={account?.photo}
+        pageHref={pageHref}
+        onNavigate={setActive}
+        showTooltips={showTooltips}
       />
     ) : (
       <SidebarMenu>
@@ -385,7 +402,16 @@ function ShellContent({
     );
   const header = (
     <>
-      {!commerce &&
+      {id === "cohort" && pageHref ? (
+        <CohortSidebarHeader
+          brand={brand}
+          pageHref={pageHref}
+          onDashboard={() => setActive("Dashboard")}
+          notifications={<BusinessNotifications />}
+        />
+      ) : null}
+      {id !== "cohort" &&
+        !commerce &&
         !rail &&
         (id === "atlas" ? (
           <div className="bt-sidebar-workspace">
@@ -405,7 +431,7 @@ function ShellContent({
             {collapseControl}
           </div>
         ))}
-      {!rail && (!aside || isMobile) && id !== "atlas" && (
+      {!rail && (!aside || isMobile) && id !== "atlas" && id !== "cohort" && (
         <SearchPalette
           label="Search navigation"
           collapsed={collapsed}
@@ -469,32 +495,37 @@ function ShellContent({
           }
         />
       )}
-      {!collapsed && id === "cohort" && (
-        <SidebarCollection
-          label="Headcount by department"
-          rows={["Engineering", "People", "Sales", "Customer Success", "Design"].map(
-            (label, index) => ({
-              label,
-              icon: (
-                <span className="inline-flex size-4 shrink-0 items-center justify-center">
-                  <span
-                    className="bt-metric-dot"
-                    style={{
-                      background: ["#3b82f6", "#a855f7", "#bbf7d0", "#fb923c", "#f9a8d4"][index],
-                    }}
-                  />
-                </span>
-              ),
-            }),
-          )}
-          onSelect={() => select("People")}
-        />
+      {!collapsed && id === "cohort" && pageHref ? (
+        <CohortDepartments pageHref={pageHref} />
+      ) : (
+        !collapsed &&
+        id === "cohort" && (
+          <SidebarCollection
+            label="Headcount by department"
+            rows={["Engineering", "People", "Sales", "Customer Success", "Design"].map(
+              (label, index) => ({
+                label,
+                icon: (
+                  <span className="inline-flex size-4 shrink-0 items-center justify-center">
+                    <span
+                      className="bt-metric-dot"
+                      style={{
+                        background: ["#3b82f6", "#a855f7", "#bbf7d0", "#fb923c", "#f9a8d4"][index],
+                      }}
+                    />
+                  </span>
+                ),
+              }),
+            )}
+            onSelect={() => select("People")}
+          />
+        )
       )}
     </>
   );
   const sidebarFooter = (
     <>
-      {id !== "atlas" && !collapsed && footer && (
+      {id !== "atlas" && id !== "cohort" && !collapsed && footer && (
         <div
           className="bt-custom-footer"
           onClick={(event) => {
@@ -510,7 +541,9 @@ function ShellContent({
     </>
   );
   const topbar = (
-    <header className={`bt-topbar${id === "atlas" ? " atlas-topbar" : ""}`}>
+    <header
+      className={`bt-topbar${id === "atlas" ? " atlas-topbar" : id === "cohort" ? " cohort-topbar" : ""}`}
+    >
       {isMobile && <SidebarTrigger className="bt-mobile-menu" aria-label="Open menu" />}
       {collapsed && rail && !isMobile && (
         <SidebarTrigger className="bt-expand-trigger" aria-label="Expand sidebar" />
@@ -522,7 +555,7 @@ function ShellContent({
         <span>{top ?? active}</span>
       )}
       <div className="bt-topbar-right">
-        {id === "atlas" ? (
+        {id === "atlas" || id === "cohort" ? (
           headerActions
         ) : commerce ? (
           <DropdownMenu>
@@ -620,7 +653,7 @@ function ShellContent({
             aria-label={`${brand} navigation`}
             mobileClassName={`reui-reference bt-app bt-sidebar-mobile bt-layout-mobile bt-${id}${id === "atlas" ? " shell-reference" : ""}${rail ? " bt-mobile-with-rail" : ""}`}
             mobileTitle={brand}
-            mobileShowCloseButton={!commerce && id !== "miro" && id !== "atlas"}
+            mobileShowCloseButton={!commerce && id !== "miro" && id !== "atlas" && id !== "cohort"}
             mobileWidth={id === "cohort" ? "min(288px, calc(100vw - 32px))" : "75vw"}
             header={header}
             footer={sidebarFooter}
@@ -635,7 +668,20 @@ function ShellContent({
             }
           >
             {rail && isMobile && applicationRail}
+            {id === "cohort" && (
+              <div className="cohort-sidebar-search">
+                <SearchPalette
+                  label="Search navigation"
+                  collapsed={collapsed}
+                  routes={[...new Set([...items, ...Object.values(navGroups ?? {}).flat()])]}
+                  onSelect={select}
+                />
+              </div>
+            )}
             {navigation}
+            {id === "cohort" && !collapsed && footer && (
+              <div className="cohort-plan-content">{footer}</div>
+            )}
             {id === "atlas" && footer && (
               <div
                 className="bt-atlas-footer-content"
