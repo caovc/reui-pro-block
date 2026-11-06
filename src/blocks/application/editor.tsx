@@ -3,6 +3,13 @@ import { createInsertSuggestions, type InsertSuggestion } from "./rich-text-sugg
 import { collectDocumentRevisions, resolveDocumentRevisions } from "./rich-text-revisions";
 import { Frame, FramePanel, FrameHeader, FrameFooter } from "@/components/reui/frame";
 import { RichTextToolbar, RichTextShortcuts } from "./rich-text-toolbar";
+import {
+  ContractModeControl,
+  ContractReviewNavigation,
+  ContractSuggestions,
+  type ContractMarkup,
+  type ContractMode,
+} from "./rich-text-contract-review";
 import { Command, CommandList, CommandItem, CommandEmpty } from "@/components/ui/command";
 import { RichTextBlockActions } from "./rich-text-block-actions";
 import { RichTextInsertMenu } from "./rich-text-insert-menu";
@@ -269,7 +276,13 @@ export default function RichEditorBlock({
   const [locked, setLocked] = useState(false);
   const [fullWidth, setFullWidth] = useState(false);
   const [smallText, setSmallText] = useState(false);
-  const editable = !readOnly && !locked;
+  const [contractMode, setContractMode] = useState<ContractMode>("suggesting");
+  const [contractMarkup, setContractMarkup] = useState<ContractMarkup>("all");
+  const [activeRevisionId, setActiveRevisionId] = useState<string | null>(null);
+  const editable =
+    !readOnly &&
+    !locked &&
+    (kind !== 3 || (contractMode !== "viewing" && contractMarkup === "all"));
   const [active, setActive] = useState({
     bold: false,
     italic: false,
@@ -312,7 +325,7 @@ export default function RichEditorBlock({
   const [showResolved, setShowResolved] = useState(false);
   const [online, setOnline] = useState(true);
   const [revisions, setRevisions] = useState<Revision[]>(kind === 3 ? initialRevisions : []);
-  const [suggesting, setSuggesting] = useState(kind === 3);
+  const suggesting = kind === 3 && contractMode === "suggesting";
   const [replacement, setReplacement] = useState("");
   const [prompt, setPrompt] = useState("Make this more concise and actionable.");
   const [suggestion, setSuggestion] = useState("");
@@ -754,15 +767,26 @@ export default function RichEditorBlock({
     savedRange.current = null;
     refreshRevisionsFromDocument();
     snapshot();
-    toast.success(
-      id === null
-        ? accept
-          ? "All changes accepted"
-          : "All changes rejected"
-        : accept
-          ? "Change accepted"
-          : "Change rejected",
-    );
+    if (kind === 3 && id === null) {
+      toast.success(`${ids.size} suggestions ${accept ? "accepted" : "rejected"}`, {
+        action: {
+          label: "Undo",
+          onClick: () => {
+            if (!engine.isDestroyed && engine.isEditable) undo();
+          },
+        },
+      });
+    } else {
+      toast.success(
+        id === null
+          ? accept
+            ? "All changes accepted"
+            : "All changes rejected"
+          : accept
+            ? "Change accepted"
+            : "Change rejected",
+      );
+    }
   }
   function suggestEdit() {
     if (!replacement.trim() || !selectedText) {
@@ -839,6 +863,36 @@ export default function RichEditorBlock({
     URL.revokeObjectURL(anchor.href);
     toast.success("HTML document downloaded");
   }
+  function changeContractMarkup(markup: ContractMarkup) {
+    setLinkOpen(false);
+    setContractMarkup(markup);
+  }
+  const contractReviewExtra = suggesting ? (
+    <form
+      className="flex flex-col gap-3 border-t pt-4"
+      onSubmit={(e) => {
+        e.preventDefault();
+        if (editable) suggestEdit();
+      }}
+    >
+      <p className="text-xs font-medium">Suggest a new edit</p>
+      <p className="text-[10px] leading-5 text-muted-foreground">
+        Select text in the document, then write a replacement.
+      </p>
+      <Textarea
+        aria-label="Suggested replacement"
+        placeholder="Replacement text…"
+        value={replacement}
+        onChange={(e) => setReplacement(e.target.value)}
+        rows={3}
+        disabled={!editable}
+      />
+      <Button size="sm" type="submit" disabled={!editable || !replacement.trim() || !selectedText}>
+        Suggest edit
+        <ArrowRight />
+      </Button>
+    </form>
+  ) : null;
   const plainText = engine?.getText({ blockSeparator: "\n" }) ?? "";
   const words = plainText.trim().split(/\s+/).filter(Boolean).length;
   const showSidebar = kind > 1;
@@ -956,6 +1010,8 @@ export default function RichEditorBlock({
       data-compact={compact}
       data-readonly={!editable}
       data-kind={kind}
+      data-contract-markup={kind === 3 ? contractMarkup : undefined}
+      data-contract-mode={kind === 3 ? contractMode : undefined}
       data-full-width={fullWidth}
       data-small-text={smallText}
       data-inset-gutter={kind === 3 || kind === 4 || kind === 5}
@@ -1027,7 +1083,33 @@ export default function RichEditorBlock({
           </div>
           {kind === 3 && <Badge variant="outline">Draft</Badge>}
         </div>
-        <div className="flex items-center gap-2">
+        <div
+          className={kind === 3 ? "flex flex-wrap items-center gap-2" : "flex items-center gap-2"}
+        >
+          {kind === 3 && (
+            <ContractModeControl
+              mode={contractMode}
+              onModeChange={(mode) => {
+                setLinkOpen(false);
+                setContractMode(mode);
+              }}
+            />
+          )}
+          {kind === 3 && engine && (
+            <ContractSuggestions
+              placement="header"
+              editor={engine}
+              revisions={revisions}
+              activeId={activeRevisionId}
+              onActiveChange={setActiveRevisionId}
+              markup={contractMarkup}
+              onMarkupChange={changeContractMarkup}
+              canResolve={editable}
+              onResolve={reviewRevision}
+            >
+              {contractReviewExtra}
+            </ContractSuggestions>
+          )}
           {kind === 2 && (
             <>
               <Button
@@ -1158,7 +1240,7 @@ export default function RichEditorBlock({
               )}
             </DropdownMenuContent>
           </DropdownMenu>
-          {showSidebar && (
+          {showSidebar && kind !== 3 && (
             <Button
               variant="ghost"
               size="icon-sm"
@@ -1182,23 +1264,31 @@ export default function RichEditorBlock({
           )}
         </div>
       </EditorHeader>
-      {!compact && kind !== 2 && engine ? (
+      {kind === 3 && engine ? (
+        <div className="contract-toolbar-row">
+          <fieldset className="contract-format-fieldset" disabled={!editable}>
+            <RichTextToolbar
+              editor={engine}
+              kind={kind}
+              linkOpen={editable && linkOpen}
+              onLinkOpenChange={setLinkOpen}
+            />
+          </fieldset>
+          <ContractReviewNavigation
+            editor={engine}
+            revisions={revisions}
+            activeId={activeRevisionId}
+            onActiveChange={setActiveRevisionId}
+          />
+        </div>
+      ) : !compact && kind !== 2 && engine ? (
         <RichTextToolbar
           editor={engine}
           kind={kind}
           linkOpen={linkOpen}
           onLinkOpenChange={setLinkOpen}
           trailing={
-            kind === 3 ? (
-              <Button
-                variant={suggesting ? "secondary" : "ghost"}
-                size="sm"
-                onClick={() => setSuggesting(!suggesting)}
-              >
-                {suggesting ? "Suggesting" : "Editing"}
-                <ChevronDown />
-              </Button>
-            ) : kind === 5 ? (
+            kind === 5 ? (
               <Button
                 size="sm"
                 variant="ghost"
@@ -1416,19 +1506,6 @@ export default function RichEditorBlock({
               </PopoverContent>
             </Popover>
           </>
-          {kind === 3 && (
-            <>
-              <Separator orientation="vertical" className="mx-1 h-5" />
-              <Button
-                variant={suggesting ? "secondary" : "ghost"}
-                size="sm"
-                onClick={() => setSuggesting(!suggesting)}
-              >
-                {suggesting ? "Suggesting" : "Editing"}
-                <ChevronDown />
-              </Button>
-            </>
-          )}
           {kind === 5 && (
             <Button
               size="sm"
@@ -1447,7 +1524,7 @@ export default function RichEditorBlock({
       )}
       <EditorSurface
         ref={scrollPane}
-        className={`grid flex-1 ${showSidebar && panel ? "xl:grid-cols-[1fr_290px]" : ""}`}
+        className={`grid flex-1 ${kind === 3 ? "contract-review-layout" : showSidebar && panel ? "xl:grid-cols-[1fr_290px]" : ""}`}
       >
         <main className="relative min-w-0 bg-muted/20 p-4 sm:p-7">
           {kind === 2 && (
@@ -1477,7 +1554,22 @@ export default function RichEditorBlock({
             <EditorContent editor={engine} onKeyDown={onKeyDown} />
           </div>
         </main>
-        {showSidebar && panel && (
+        {kind === 3 && engine && (
+          <ContractSuggestions
+            placement="margin"
+            editor={engine}
+            revisions={revisions}
+            activeId={activeRevisionId}
+            onActiveChange={setActiveRevisionId}
+            markup={contractMarkup}
+            onMarkupChange={changeContractMarkup}
+            canResolve={editable}
+            onResolve={reviewRevision}
+          >
+            {contractReviewExtra}
+          </ContractSuggestions>
+        )}
+        {showSidebar && kind !== 3 && panel && (
           <aside className="flex min-w-0 flex-col gap-5 border-t bg-background p-5 xl:border-l xl:border-t-0">
             {panel === "outline" && (
               <>
@@ -1518,108 +1610,6 @@ export default function RichEditorBlock({
                   Use the formatting toolbar, type / for blocks, or @ to mention a teammate. Tables
                   and headings are editable in place.
                 </p>
-              </>
-            )}
-            {panel === "review" && (
-              <>
-                <div className="flex items-center justify-between">
-                  <h3 className="text-xs font-semibold">Suggested changes</h3>
-                  <div className="flex items-center gap-1">
-                    <Badge variant="secondary" aria-label="Pending suggested changes">
-                      {revisions.length}
-                    </Badge>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button
-                          variant="ghost"
-                          size="icon-sm"
-                          aria-label="Review actions"
-                          disabled={!editable || revisions.length === 0}
-                        >
-                          <MoreHorizontal />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent className="w-48" align="end" aria-label="Review actions">
-                        <DropdownMenuItem onSelect={() => reviewRevision(null, true)}>
-                          <Check />
-                          Accept all changes
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onSelect={() => reviewRevision(null, false)}>
-                          <X />
-                          Reject all changes
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
-                </div>
-                <p className="text-[10px] leading-5 text-muted-foreground">
-                  Review each change before finalizing the agreement. This review stays in your
-                  current session.
-                </p>
-                {revisions.length === 0 && (
-                  <div className="rounded-lg border p-4 text-xs text-muted-foreground">
-                    All suggestions have been reviewed.
-                  </div>
-                )}
-                {revisions.map((r) => (
-                  <div className="flex flex-col gap-3 rounded-lg border p-3" key={r.id}>
-                    <p className="text-xs font-medium">{r.author}</p>
-                    <p className="text-[10px] text-muted-foreground">Suggested a replacement</p>
-                    <div className="rounded bg-muted/50 p-2 text-xs leading-6">
-                      <del>{r.before}</del>
-                      <br />
-                      <strong>{r.after}</strong>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="flex-1"
-                        aria-label={`Reject ${r.id} change`}
-                        disabled={!editable}
-                        onClick={() => reviewRevision(r.id, false)}
-                      >
-                        <X />
-                        Reject
-                      </Button>
-                      <Button
-                        size="sm"
-                        className="flex-1"
-                        aria-label={`Accept ${r.id} change`}
-                        disabled={!editable}
-                        onClick={() => reviewRevision(r.id, true)}
-                      >
-                        <Check />
-                        Accept
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-                {suggesting && (
-                  <form
-                    className="flex flex-col gap-3 border-t pt-4"
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      suggestEdit();
-                    }}
-                  >
-                    <p className="text-xs font-medium">Suggest a new edit</p>
-                    <p className="text-[10px] leading-5 text-muted-foreground">
-                      Select text in the document, then write a replacement.
-                    </p>
-                    <Textarea
-                      aria-label="Suggested replacement"
-                      placeholder="Replacement text…"
-                      value={replacement}
-                      onChange={(e) => setReplacement(e.target.value)}
-                      rows={3}
-                    />
-                    <Button size="sm" type="submit" disabled={!replacement.trim() || !selectedText}>
-                      Suggest edit
-                      <ArrowRight />
-                    </Button>
-                  </form>
-                )}
               </>
             )}
             {panel === "comments" && (

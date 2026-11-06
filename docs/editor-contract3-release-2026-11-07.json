@@ -1,0 +1,84 @@
+{
+  "milestone": "Contract review actions composed from free ReUI controls",
+  "publicationBase": "2fa16995a325866697fc0005d63a00907a74d9b8",
+  "ownerExecutedBase": "3d59223b592e0687249d37dd4410d92ecd022d14",
+  "ownerManifestSHA256": "b71a6e6ad41ad0c150a3ac89ec28357cb7479c23b482aa031d0304a87958b384",
+  "actualFreeReuse": [
+    "Select",
+    "ToggleGroup",
+    "ButtonGroup",
+    "Item",
+    "DropdownMenu",
+    "Sheet",
+    "AlertDialog",
+    "Empty composition as official free ReUI examples consume upstream slots",
+    "Button",
+    "AvatarFallback",
+    "Badge",
+    "Tooltip"
+  ],
+  "customReason": "Contract-specific native revision navigation/projections/confirmation consumer reuse the existing Tiptap engine/resolver/history; native schema/collector/overlap guard protected. No copied original SVG/media/avatar assets.",
+  "sourceTargets": "Only the kind3 module append; preserve all current template and grid mappings.",
+  "siteValidation": {
+    "nativeResult": "same-product union8 = original newv2 run6PASS + corrected readonly geometry readiness phone2PASS; not a single-run8PASS",
+    "bulkInputActualMilliseconds": {
+      "accept1440": 205,
+      "reject1440": 200,
+      "accept390": 284,
+      "reject390": 265
+    },
+    "actualSourceCasesPassed": 4,
+    "failureHistoryPreserved": [
+      {
+        "oldInputMs": 532
+      },
+      {
+        "oldInputMs": 367
+      },
+      {
+        "oldInputMs": 336
+      },
+      {
+        "newMatrixActualX": 38.32470703125,
+        "status": "FAIL at entrance; later corrected only readonly test readiness"
+      }
+    ]
+  },
+  "originalDownloadValidation": {
+    "actualArchiveSHA256": "6ddf6cf710fac6ae51ccb9e4836859950e010dd66be4c6832a7d2b232caf99d3",
+    "members": 419,
+    "normalInstall": "attempt1 ETARGET FAIL preserved; upstream availability separately verified, same original command attempt2 PASS61.426s without flags/pins/overrides",
+    "strictBuild": "first PASS8.867s with original stricttrue/config/entry/Example",
+    "native": "first actual raw single-run8 PASS, W1R0max1,57.013s,0skipped,0flaky",
+    "inputActualMs": {
+      "accept1440": 186,
+      "reject1440": 191,
+      "accept390": 283,
+      "reject390": 282
+    },
+    "allOriginalMembersAndArchiveUnchanged": true,
+    "noRepackOrHarnessInjectedIntoRaw": true,
+    "externalHarnessOnlyAdapter": "root navigation /; original index title Component preview",
+    "actualEntry": "src/main.tsx -> original src/Example.tsx -> original ApplicationBlock block metadata",
+    "actualPreview": "http://127.0.0.1:4269/",
+    "distIndexSHA256": "9bec44634e7e5af01c03277d5c31d3e0fc50aaf92be2f9b53430eb66a3bf3fa8",
+    "httpEntryAnd3LocalReferencesExactDist": true
+  },
+  "independentReviews": {
+    "productV1P2": "8c20bf166fc59b5b767e64ec385f6adb1611d834b986d50c5c996b7c7a871044",
+    "focusV2P2Closed": "27252ea00a5ac5bb7598a2042893c8e92528b8cf6cbe4b6ac153303d62f26a34"
+  },
+  "interveningSourcePaths": [
+    "src/blocks/data/agent-activity-feed.tsx",
+    "src/blocks/data/agent-activity-research.tsx",
+    "src/blocks/data/grid-advanced-sheets.tsx",
+    "src/lib/source-targets.ts",
+    "src/templates/collaboration/drive.tsx",
+    "src/templates/collaboration/filebox-auth.css",
+    "src/templates/collaboration/filebox-auth.tsx",
+    "src/templates/collaboration/roster.tsx"
+  ],
+  "integrationBoundary": "Owned source and QA preimages match. Only the rich text kind3 source mapping is merged into the later current map. Existing independent raw project and native gates are historical scoped evidence; no later whole-tree or new raw execution is claimed. Normal push CI verifies the integrated tree.",
+  "status": "LOCAL_SCOPED_GATES_PASSED_PENDING_NEW_PUSH_CI",
+  "commitPushDeploymentByOwner": false
+}

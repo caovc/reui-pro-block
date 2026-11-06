@@ -726,3 +726,154 @@
     padding-inline-start: 64px;
   }
 }
+
+/* Contract consumer: display projections never rewrite the native document or its history. */
+.reui-editor[data-kind="3"][data-contract-markup="final"] .reui-rich-document del[data-revision],
+.reui-editor[data-kind="3"][data-contract-markup="original"]
+  .reui-rich-document
+  ins[data-revision] {
+  display: none;
+}
+.reui-editor[data-kind="3"] .contract-toolbar-row {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  border-bottom: 1px solid var(--border);
+}
+.reui-editor[data-kind="3"] .contract-format-fieldset {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.reui-editor[data-kind="3"] .contract-format-fieldset .rich-text-toolbar {
+  display: flex;
+  border-bottom: 0;
+}
+.contract-review-navigation {
+  flex-shrink: 0;
+  align-items: center;
+  margin-inline: 8px 16px;
+  color: var(--muted-foreground);
+}
+.contract-review-counter {
+  min-width: 50px;
+  padding-inline: 6px;
+  text-align: center;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.contract-mode-control {
+  min-width: 120px;
+}
+.contract-review-margin,
+.contract-review-sheet {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  padding: 16px 12px;
+  background: var(--background);
+}
+.contract-review-margin {
+  align-self: start;
+  margin: 40px 24px 24px 0;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+.contract-review-panel-heading {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 8px;
+}
+.contract-review-panel-heading [data-slot="badge"] {
+  min-width: 20px;
+  height: 20px;
+  padding-inline: 5px;
+  border-radius: 4px;
+  font-size: 10px;
+}
+.contract-markup-control {
+  flex-shrink: 0;
+  width: 100%;
+}
+.contract-markup-control [data-slot="toggle-group-item"] {
+  flex: 1;
+  height: 28px;
+  min-width: 0;
+  padding-inline: 6px;
+  font-size: 12px;
+  font-weight: 400;
+}
+.contract-review-card {
+  position: relative;
+  align-items: start;
+  padding: 8px 10px;
+  border-color: transparent;
+  border-radius: 10px;
+}
+.contract-review-card[data-current="true"] {
+  background: var(--muted);
+}
+.contract-review-card [data-slot="item-content"] {
+  min-width: 0;
+}
+.contract-review-card-select {
+  justify-content: start;
+  width: 100%;
+  height: auto;
+  padding: 0 64px 0 0;
+  white-space: normal;
+}
+.contract-review-card-actions {
+  position: absolute;
+  inset-block-start: 7px;
+  inset-inline-end: 6px;
+  flex-direction: row-reverse;
+  gap: 0;
+}
+.contract-review-card-actions button {
+  width: 24px;
+  height: 24px;
+}
+.contract-review-card-actions svg {
+  width: 12px;
+  height: 12px;
+}
+.contract-review-diff {
+  padding-inline-start: 35px;
+  font-size: 12px;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+.contract-review-diff del {
+  color: var(--destructive);
+  background: color-mix(in oklab, var(--destructive) 10%, transparent);
+}
+.contract-review-diff strong {
+  background: color-mix(in oklab, var(--chart-2) 17%, transparent);
+  border-bottom: 1px solid var(--chart-2);
+  font-weight: 400;
+}
+/* Sheet is portalled outside the editor root; scope its sizing to this consumer. */
+[data-slot="sheet-content"].contract-review-sheet {
+  width: 100%;
+  max-width: none;
+  height: 100dvh;
+  padding: 16px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+@media (min-width: 1280px) {
+  .reui-editor[data-kind="3"] .contract-review-layout {
+    grid-template-columns: minmax(0, 1fr) 344px;
+  }
+}
+@media (max-width: 640px) {
+  .reui-editor[data-kind="3"] .contract-review-navigation {
+    margin-inline: 4px 8px;
+  }
+}
