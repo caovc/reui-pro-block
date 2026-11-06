@@ -60,7 +60,10 @@ for (const id of ["surge", "manifest"]) {
     await open(page, id);
     if (id === "manifest") await page.getByRole("button", { name: "Log in", exact: true }).click();
     await page
-      .getByRole(id === "surge" ? "link" : "button", { name: "New product", exact: true })
+      .getByRole(id === "surge" || id === "manifest" ? "link" : "button", {
+        name: "New product",
+        exact: true,
+      })
       .click();
     await expect(page.getByRole("heading", { name: "New product", exact: true })).toBeVisible();
     await expect(page.getByRole("dialog")).toHaveCount(0);

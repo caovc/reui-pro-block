@@ -100,6 +100,7 @@ import "./business-layout.css";
 import "./atlas-shell-chrome.css";
 import "./cohort-shell-chrome.css";
 import "./surge-shell-chrome.css";
+import "./manifest-shell-chrome.css";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 export {
@@ -277,6 +278,7 @@ function ShellContent({
   account,
   accountMenuContent,
   surgeSidebarAccount,
+  manifestSidebarAccount,
   sidebarSide = "left",
   showTooltips = true,
 }: {
@@ -299,6 +301,7 @@ function ShellContent({
   account?: { name: string; organisation: string; photo?: string };
   accountMenuContent?: ReactNode;
   surgeSidebarAccount?: ReactNode;
+  manifestSidebarAccount?: ReactNode;
   sidebarSide?: "left" | "right";
   reduceAnimations?: boolean;
   showTooltips?: boolean;
@@ -323,6 +326,8 @@ function ShellContent({
   const accountControl =
     id === "surge" && surgeSidebarAccount ? (
       surgeSidebarAccount
+    ) : id === "manifest" && manifestSidebarAccount ? (
+      manifestSidebarAccount
     ) : id === "atlas" ? (
       <AtlasAccountControl
         name={accountName}
@@ -459,6 +464,16 @@ function ShellContent({
           showTooltips={showTooltips}
           side={sidebarSide}
         />
+      ) : id === "manifest" && pageHref ? (
+        <SurgeSidebarNavigation
+          items={items}
+          groups={navGroups}
+          active={active}
+          pageHref={pageHref}
+          onNavigate={setActive}
+          showTooltips={showTooltips}
+          side={sidebarSide}
+        />
       ) : (
         (aside ?? (
           <>
@@ -543,24 +558,29 @@ function ShellContent({
   );
   const sidebarFooter = (
     <>
-      {id !== "atlas" && id !== "cohort" && id !== "surge" && !collapsed && footer && (
-        <div
-          className="bt-custom-footer"
-          onClick={(event) => {
-            const target =
-              event.target instanceof Element ? event.target.closest("button, a") : null;
-            if (target && !target.hasAttribute("aria-haspopup")) closeNavigation();
-          }}
-        >
-          {footer}
-        </div>
-      )}
+      {id !== "atlas" &&
+        id !== "cohort" &&
+        id !== "surge" &&
+        id !== "manifest" &&
+        !collapsed &&
+        footer && (
+          <div
+            className="bt-custom-footer"
+            onClick={(event) => {
+              const target =
+                event.target instanceof Element ? event.target.closest("button, a") : null;
+              if (target && !target.hasAttribute("aria-haspopup")) closeNavigation();
+            }}
+          >
+            {footer}
+          </div>
+        )}
       {!rail && accountControl}
     </>
   );
   const topbar = (
     <header
-      className={`bt-topbar${id === "atlas" ? " atlas-topbar" : id === "cohort" ? " cohort-topbar" : id === "surge" ? " surge-topbar" : ""}`}
+      className={`bt-topbar${id === "atlas" ? " atlas-topbar" : id === "cohort" ? " cohort-topbar" : id === "surge" ? " surge-topbar" : id === "manifest" ? " manifest-topbar" : ""}`}
     >
       {isMobile && <SidebarTrigger className="bt-mobile-menu" aria-label="Open menu" />}
       {collapsed && rail && !isMobile && (
@@ -670,14 +690,17 @@ function ShellContent({
             className="bt-sidebar shell-reference"
             aria-label={`${brand} navigation`}
             mobileClassName={`reui-reference bt-app bt-sidebar-mobile bt-layout-mobile bt-${id}${id === "atlas" ? " shell-reference" : ""}${rail ? " bt-mobile-with-rail" : ""}`}
-            mobileTitle={brand}
+            mobileTitle={id === "manifest" ? "Sidebar" : brand}
+            {...(id === "manifest" ? { mobileDescription: "Displays the mobile sidebar." } : {})}
             mobileShowCloseButton={!commerce && id !== "miro" && id !== "atlas" && id !== "cohort"}
             mobileWidth={
               id === "cohort"
                 ? "min(288px, calc(100vw - 32px))"
                 : id === "surge"
                   ? "calc((100vw - var(--removed-body-scroll-bar-size, 0px)) * 0.75)"
-                  : "75vw"
+                  : id === "manifest"
+                    ? "calc((100vw - var(--removed-body-scroll-bar-size, 0px)) * 0.75)"
+                    : "75vw"
             }
             header={header}
             footer={sidebarFooter}
@@ -705,6 +728,9 @@ function ShellContent({
             {navigation}
             {id === "surge" && !collapsed && footer && (
               <div className="surge-sidebar-info">{footer}</div>
+            )}
+            {id === "manifest" && !collapsed && footer && (
+              <div className="manifest-sidebar-info">{footer}</div>
             )}
             {id === "cohort" && !collapsed && footer && (
               <div className="cohort-plan-content">{footer}</div>

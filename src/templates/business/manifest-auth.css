@@ -1,0 +1,138 @@
+/* Consumer layout only; Card, Field, Alert and InputGroup retain their free APIs. */
+.bt-auth.manifest-auth {
+  min-height: calc(100dvh - var(--template-toolbar-height, 0px));
+  padding: 32px 16px;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.bt-auth.manifest-auth .manifest-auth-card {
+  width: 100%;
+  max-width: 416px;
+  gap: 0;
+  padding: 0;
+}
+
+.manifest-auth .manifest-auth-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 32px 24px 0;
+  text-align: center;
+}
+
+.manifest-auth .manifest-auth-mark {
+  display: flex;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  color: var(--foreground);
+}
+
+.manifest-auth .manifest-auth-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.manifest-auth .manifest-auth-heading h1 {
+  margin: 0;
+  font-family: inherit;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 28px;
+  letter-spacing: -0.4px;
+}
+
+.manifest-auth .manifest-auth-heading p {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.manifest-auth .manifest-auth-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+}
+
+.manifest-auth .manifest-auth-note {
+  column-gap: 10px;
+}
+
+.manifest-auth .manifest-auth-note p {
+  margin: 0;
+  line-height: 1.625;
+}
+
+.manifest-auth .manifest-auth-note strong {
+  color: var(--foreground);
+  font-weight: 500;
+}
+
+.manifest-auth .manifest-auth-providers {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+}
+
+.manifest-auth .manifest-auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.manifest-auth .manifest-auth-fields {
+  gap: 16px;
+}
+
+.manifest-auth .manifest-auth-password-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.manifest-auth .manifest-auth-password-label a {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 16px;
+  text-decoration: none;
+  text-underline-offset: 4px;
+}
+
+.manifest-auth .manifest-auth-password-label a:hover {
+  text-decoration: underline;
+}
+
+.manifest-auth .manifest-auth-remember {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.manifest-auth .manifest-auth-remember [data-slot="label"] {
+  font-weight: 400;
+}
+
+.manifest-auth .manifest-auth-error {
+  margin: 0;
+  color: var(--destructive);
+}
+
+@media (min-width: 640px) {
+  .manifest-auth .manifest-auth-header {
+    padding: 36px 32px 0;
+  }
+
+  .manifest-auth .manifest-auth-content {
+    padding: 28px 32px 32px;
+  }
+
+  .manifest-auth .manifest-auth-providers {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

@@ -114,7 +114,7 @@ for (const [id, expanded, compact] of [
     await expect(drawer.locator(':scope > div > [data-slot="sidebar-header"]')).toHaveCount(1);
     await expect(drawer.locator(':scope > div > [data-slot="sidebar-footer"]')).toHaveCount(1);
     const expectedDrawerWidth =
-      id === "surge"
+      id === "surge" || id === "manifest"
         ? await drawer.evaluate((node) => {
             const removedScrollbar =
               parseFloat(
@@ -179,14 +179,21 @@ for (const [id, expanded, compact] of [
       await expect(page.locator(".bt-content")).toContainText("General");
       await page.keyboard.press("Escape");
       await expect(page.getByRole("textbox", { name: "Store name", exact: true })).toBeVisible();
+    } else if (id === "manifest") {
+      await drawer.getByRole("button", { name: "Settings", exact: true }).click();
+      await expect(drawer).toBeVisible();
+      const general = drawer.getByRole("link", { name: "General", exact: true });
+      await expect(general).toHaveAttribute("href", "#/template-preview/manifest/settings");
+      await general.click();
+      await expect(page).toHaveURL(/\/manifest\/settings$/);
+      await expect(drawer).toBeVisible();
+      await expect(general).toBeFocused();
+      await expect(page.locator(".bt-content")).toContainText("General");
+      await page.keyboard.press("Escape");
+      await expect(page.getByRole("textbox", { name: "Store name", exact: true })).toBeVisible();
     } else {
       await drawer.getByRole("button", { name: "Settings", exact: true }).first().click();
-      if (id === "manifest") {
-        // Settings is the actual native group. Selecting its General child navigates.
-        await expect(drawer).toBeVisible();
-        await drawer.getByRole("button", { name: "General", exact: true }).click();
-        await expect(page.getByRole("textbox", { name: "Store name", exact: true })).toBeVisible();
-      } else if (id === "verve") {
+      if (id === "verve") {
         await expect(
           page.getByRole("textbox", { name: "Workspace name", exact: true }),
         ).toBeVisible();
@@ -201,7 +208,7 @@ for (const [id, expanded, compact] of [
         ).toBeVisible();
       }
       await expect(page.locator(".bt-content")).toContainText(
-        id === "manifest" ? "General" : id === "miro" ? "My profile" : "Settings",
+        id === "miro" ? "My profile" : "Settings",
       );
     }
     await expect(drawer).toBeHidden();

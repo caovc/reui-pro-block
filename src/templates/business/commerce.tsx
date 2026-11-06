@@ -12,6 +12,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import "./commerce-settings-header.css";
+import "./manifest-settings-layout.css";
 import {
   Shell,
   Heading,
@@ -63,6 +64,9 @@ import { useSurgeReportingPeriod } from "./surge-reporting-period";
 import { SurgeOperations } from "./surge-operations";
 import { useSurgeOperationsState } from "./surge-operations-model";
 import { SurgeBreadcrumb, SurgeSidebarAccount } from "./surge-shell-chrome";
+import { ManifestAuth } from "./manifest-auth";
+import { ManifestDashboard } from "./manifest-dashboard";
+import { useManifestRoute } from "./manifest-route";
 
 type Product = {
   name: string;
@@ -124,6 +128,7 @@ export default function CommerceTemplate({ id }: { id: string }) {
   const routing = useCommerceSettingsRoute(id);
   const accountRouting = useCommerceAccountRoute(id);
   const surgeRouting = useSurgeRoute(id === "surge");
+  const manifestRouting = useManifestRoute(id === "manifest");
   const surgeReporting = useSurgeReportingPeriod();
   const surgeOperations = useSurgeOperationsState();
   const account = useCommerceAccountSettingsModel();
@@ -135,21 +140,27 @@ export default function CommerceTemplate({ id }: { id: string }) {
       ? "Settings"
       : id === "surge"
         ? (surgeRouting.page ?? page)
-        : page;
+        : id === "manifest"
+          ? (manifestRouting.page ?? page)
+          : page;
   const setActive = (next: string) => {
     if (next === "Profile" || next === "Preferences" || next === "Security") {
       const section =
         next === "Profile" ? "profile" : next === "Preferences" ? "preferences" : "security";
       account.setSection(section);
       if (id === "surge") surgeRouting.navigate(next);
+      else if (id === "manifest") manifestRouting.navigate(next);
       else accountRouting.navigate(section);
       return;
     }
     const section = next === "Settings" ? "general" : commerceSectionForLabel(next);
-    if (section) routing.navigate(section);
-    else {
+    if (section) {
+      if (id === "manifest") manifestRouting.navigate(next === "Settings" ? "General" : next);
+      else routing.navigate(section);
+    } else {
       setPage(next);
       if (id === "surge") surgeRouting.navigate(next);
+      else if (id === "manifest") manifestRouting.navigate(next);
       else routing.navigate(null);
     }
   };
@@ -160,7 +171,8 @@ export default function CommerceTemplate({ id }: { id: string }) {
   const [catalog, setCatalog] = useState(catalogSeed);
   const [editing, setEditing] = useState<CatalogProduct | undefined>();
   const [editor, setEditor] = useState(false);
-  const productEditorVisible = editor || surgeRouting.createProduct;
+  const productEditorVisible =
+    editor || surgeRouting.createProduct || manifestRouting.createProduct;
   const [orderEditor, setOrderEditor] = useState(false);
   const [detail, setDetail] = useState<Product | null>(null);
   const [orders, setOrders] = useState([
@@ -243,6 +255,7 @@ export default function CommerceTemplate({ id }: { id: string }) {
     closeTransientForms();
     setQuery("");
     if (id === "surge") surgeRouting.navigate("Dashboard");
+    else if (id === "manifest") manifestRouting.navigate("Dashboard");
     else accountRouting.navigate(null);
     setLogged(false);
   }
@@ -253,6 +266,7 @@ export default function CommerceTemplate({ id }: { id: string }) {
     // local sign-out, the selected default view wins over restored owned routes.
     if (applyDefaultViewOnLogin.current) {
       if (id === "surge") surgeRouting.navigate(account.preferences.defaultView);
+      else if (id === "manifest") manifestRouting.navigate(account.preferences.defaultView);
       else accountRouting.navigate(null);
     }
     setPage(account.preferences.defaultView);
@@ -264,7 +278,18 @@ export default function CommerceTemplate({ id }: { id: string }) {
     setEditor(true);
     surgeRouting.navigate("New product");
   }
-  if (!logged) return <Auth id={id} onLogin={signInToPreview} />;
+  function createManifestProduct() {
+    setEditing(undefined);
+    setEditor(true);
+    manifestRouting.navigate("New product");
+  }
+  if (!logged) {
+    return id === "manifest" ? (
+      <ManifestAuth onLogin={signInToPreview} />
+    ) : (
+      <Auth id={id} onLogin={signInToPreview} />
+    );
+  }
   const stockTable = (
     <>
       <div className="bt-toolbar">
@@ -374,7 +399,34 @@ export default function CommerceTemplate({ id }: { id: string }) {
           />
         ) : undefined
       }
-      pageHref={id === "surge" ? surgeRouting.href : undefined}
+      manifestSidebarAccount={
+        id === "manifest" ? (
+          <SurgeSidebarAccount
+            account={{
+              name: account.identity.name,
+              organisation: account.identity.email,
+              photo: account.identity.avatar ?? undefined,
+            }}
+            pageHref={manifestRouting.href}
+            side={account.preferences.sidebarPosition === "Right" ? "right" : "left"}
+            showTooltips={account.preferences.showTooltips}
+            onNavigate={(section) => {
+              account.setSection(section);
+              manifestRouting.navigate(
+                section === "profile"
+                  ? "Profile"
+                  : section === "preferences"
+                    ? "Preferences"
+                    : "Security",
+              );
+            }}
+            onSignOut={signOutOfPreview}
+          />
+        ) : undefined
+      }
+      pageHref={
+        id === "surge" ? surgeRouting.href : id === "manifest" ? manifestRouting.href : undefined
+      }
       active={
         settingsLabel ??
         (productEditorVisible
@@ -403,7 +455,7 @@ export default function CommerceTemplate({ id }: { id: string }) {
             }
           : { Settings: Object.values(commerceSettingsNavigation) }
       }
-      topWrapper={id === "surge" || settingsLabel ? "div" : "span"}
+      topWrapper={id === "surge" || id === "manifest" || settingsLabel ? "div" : "span"}
       top={
         id === "surge" ? (
           <SurgeBreadcrumb
@@ -415,6 +467,18 @@ export default function CommerceTemplate({ id }: { id: string }) {
                   (productEditorVisible ? "Products" : orderEditor ? "Orders" : active))
             }
             href={surgeRouting.href}
+            onNavigate={setActive}
+          />
+        ) : id === "manifest" ? (
+          <SurgeBreadcrumb
+            storeName={generalSettings.headerName}
+            page={
+              accountRouting.section
+                ? ""
+                : (settingsLabel ??
+                  (productEditorVisible ? "Products" : orderEditor ? "Orders" : active))
+            }
+            href={manifestRouting.href}
             onNavigate={setActive}
           />
         ) : accountRouting.section ? (
@@ -512,6 +576,7 @@ export default function CommerceTemplate({ id }: { id: string }) {
           onCancel={() => {
             setEditor(false);
             if (id === "surge" && surgeRouting.createProduct) setActive("Products");
+            else if (id === "manifest" && manifestRouting.createProduct) setActive("Products");
           }}
           onSave={(p) => {
             setCatalog((rows) =>
@@ -526,6 +591,7 @@ export default function CommerceTemplate({ id }: { id: string }) {
           products={catalog}
           onCreate={() => {
             if (id === "surge") createSurgeProduct();
+            else if (id === "manifest") createManifestProduct();
             else {
               setEditing(undefined);
               setEditor(true);
@@ -569,6 +635,31 @@ export default function CommerceTemplate({ id }: { id: string }) {
           newProductHref={surgeRouting.href("New product")}
           onCreateProduct={createSurgeProduct}
           onOpenProduct={setDetail}
+          onViewCategories={() => setActive("Categories")}
+          onViewCategory={(name) => {
+            setActive("Products");
+            setQuery(name);
+          }}
+          onExport={() =>
+            exportCsv("products", [
+              ["Product", "Category", "Price", "Stock"],
+              ...products.map((p) => [p.name, p.category, String(p.price), String(p.stock)]),
+            ])
+          }
+          reporting={surgeReporting}
+        />
+      ) : id === "manifest" && active === "Dashboard" ? (
+        <ManifestDashboard
+          storeName={generalSettings.headerName}
+          products={products}
+          filter={filter}
+          onFilterChange={setFilter}
+          query={query}
+          onQueryChange={setQuery}
+          newProductHref={manifestRouting.href("New product")}
+          onCreateProduct={createManifestProduct}
+          onOpenProduct={setDetail}
+          categoriesHref={manifestRouting.href("Categories")}
           onViewCategories={() => setActive("Categories")}
           onViewCategory={(name) => {
             setActive("Products");

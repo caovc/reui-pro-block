@@ -1,0 +1,13 @@
+/* Consumer density for the existing free Field and project settings blocks. */
+.bt-manifest .commerce-general-page .csg-fields div[data-slot="field-label"] {
+  line-height: 20px;
+}
+
+/* Keep native horizontal scrolling and focus-ring space without a visible gutter. */
+.bt-manifest .commerce-general-page .csg-date-scroll {
+  scrollbar-width: none;
+}
+
+.bt-manifest .commerce-general-page .csg-date-scroll::-webkit-scrollbar {
+  display: none;
+}

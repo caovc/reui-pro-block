@@ -70,13 +70,17 @@ async function navigation(page: Page, width: number) {
 async function select(page: Page, width: number, label: string) {
   const nav = await navigation(page, width);
   const surge = (await page.locator(".bt-layout.bt-surge").count()) === 1;
+  const manifest = (await page.locator(".bt-layout.bt-manifest").count()) === 1;
   const leafName =
     surge && label === "Customers"
       ? "All customers"
       : surge && label === "Inventory"
         ? "Stock ledger"
         : label;
-  const target = nav.getByRole(surge ? "link" : "button", { name: leafName, exact: true });
+  const target = nav.getByRole(surge || manifest ? "link" : "button", {
+    name: leafName,
+    exact: true,
+  });
   if (!(await target.isVisible())) {
     const parentName = surge && ["Customers", "Inventory"].includes(label) ? label : "Settings";
     await nav.getByRole("button", { name: parentName, exact: true }).first().click();
@@ -84,7 +88,7 @@ async function select(page: Page, width: number, label: string) {
   }
   await target.click();
   if (width === 390) {
-    if (surge) {
+    if (surge || manifest) {
       await expect(nav).toBeVisible();
       await expect(target).toBeFocused();
       await page.keyboard.press("Escape");
@@ -132,6 +136,7 @@ const notificationTabNames = ["Orders", "Inventory", "Customers", "System"] as c
 async function sidebarContract(page: Page, width: number, active: string) {
   const nav = await navigation(page, width);
   const surge = (await page.locator(".bt-layout.bt-surge").count()) === 1;
+  const manifest = (await page.locator(".bt-layout.bt-manifest").count()) === 1;
   const parent = nav.getByRole("button", { name: "Settings", exact: true });
   if ((await parent.getAttribute("aria-expanded")) !== "true") await parent.click();
   await expect(parent).toHaveAttribute("aria-expanded", "true");
@@ -146,10 +151,10 @@ async function sidebarContract(page: Page, width: number, active: string) {
     list.locator('[data-slot="sidebar-menu-sub-button"][aria-current="page"]'),
   ).toHaveCount(1);
   await expect(
-    list.getByRole(surge ? "link" : "button", { name: active, exact: true }),
+    list.getByRole(surge || manifest ? "link" : "button", { name: active, exact: true }),
   ).toHaveAttribute("aria-current", "page");
   await expect(
-    list.getByRole(surge ? "link" : "button", { name: active, exact: true }),
+    list.getByRole(surge || manifest ? "link" : "button", { name: active, exact: true }),
   ).toHaveAttribute("data-active", "true");
   await page.mouse.move(0, 0);
   await settled(page);
@@ -576,6 +581,14 @@ for (const id of ["surge", "manifest"] as const)
           page.locator(".bt-content").getByRole("heading", { name: "Products 8", exact: true }),
         ).toBeVisible();
         await expect(page.getByRole("textbox", { name: "Title", exact: true })).toHaveCount(0);
+      } else if (id === "manifest") {
+        await expect(page).toHaveURL(/#\/template-preview\/manifest\/products\/new\?qa=commerce$/);
+        await page.goBack();
+        await expect(page).toHaveURL(/#\/template-preview\/manifest\/products\?qa=commerce$/);
+        await expect(
+          page.locator(".bt-content").getByRole("heading", { name: "Products 8", exact: true }),
+        ).toBeVisible();
+        await expect(page.getByRole("textbox", { name: "Title", exact: true })).toHaveCount(0);
       }
       await page.goBack();
       await expect(
@@ -595,6 +608,13 @@ for (const id of ["surge", "manifest"] as const)
         await expect(page.getByRole("textbox", { name: "Title", exact: true })).toBeVisible();
         await page.goBack();
         await expect(page).toHaveURL(/#\/template-preview\/surge\/products\?qa=commerce$/);
+        await expect(page.getByRole("textbox", { name: "Title", exact: true })).toHaveCount(0);
+      } else if (id === "manifest") {
+        await page.goForward();
+        await expect(page).toHaveURL(/#\/template-preview\/manifest\/products\/new\?qa=commerce$/);
+        await expect(page.getByRole("textbox", { name: "Title", exact: true })).toBeVisible();
+        await page.goBack();
+        await expect(page).toHaveURL(/#\/template-preview\/manifest\/products\?qa=commerce$/);
         await expect(page.getByRole("textbox", { name: "Title", exact: true })).toHaveCount(0);
       }
     });

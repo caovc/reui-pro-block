@@ -1,0 +1,104 @@
+{
+  "date": "2026-11-06",
+  "milestone": "Manifest Auth, actual Sidebar chrome, Dashboard and observed General layout",
+  "baseCommit": "f96cedc0276de01e922a77139470405a6b8a7bd3",
+  "officialReference": "https://manifest-commerce.reui.io/login",
+  "changes": [
+    "Compose actual Card/CardHeader/CardContent/FieldGroup/Field/InputGroup and Alert for Manifest Auth. Center the desktop416x660 card; use the observed phone358x688 structure,24px inner spacing and vertical Google/Apple buttons. Original Bricklane mark and local demo credentials remain.",
+    "Preserve native email/required validation,password trim-nonempty rule and onLogin() ownership. Logged state stays separate from savedProfile identity. Account/General/routes/uploads stay above the Auth early return and retain their parent lifetime.",
+    "Use actual Sidebar/Provider/Inset/Sheet,Search,DropdownMenu/RadioGroup/Breadcrumb and existing project consumers. Observed expanded260,stickyHeader51,SearchHeader56/accountFooter64 and phone General keep-Sheet behavior are maintained.",
+    "Correct only Manifest mobileTitle/description using existing public Sidebar props. Actual Sidebar accessible name and Displays the mobile sidebar. description are observed; other template props remain unchanged.",
+    "Use actual Frame bars for Manifest-specific metrics,chart/categories and stocks. Reuse existing DomainRecordGrid/free DataGrid for real numeric sort/pagination/search/CSV and parent records rather than fabricating the original163-row dataset.",
+    "Use scoped General consumer CSS and existing real settings Frame/Field model. Phone General document1778 and observed fields/sections are checked; no desktopGeneral geometry is inferred from Surge.",
+    "Add Manifest-owned ordinary/product-new paths with native anchors and raw-query preservation. First login retains an existing owned tail; SignOut/login follows DefaultView. Other template route subscriptions and source paths are preserved.",
+    "Keep the actual Commerce source entry and ordered original source prefix; append actual Manifest Auth and Dashboard TSX. Pure route/CSS and native dependencies remain in the complete project closure."
+  ],
+  "actualOfficialFreeReuse": [
+    "Card/CardHeader/CardContent,Field/FieldGroup/FieldLabel/InputGroup,Alert/AlertDescription",
+    "Sidebar/Provider/Inset/Sheet,Menu/Collapsible,RadioGroup/DropdownMenu/Tooltip/Breadcrumb",
+    "Frame/Header/Panel/Badge,DataGrid/ColumnHeader/Pagination/ScrollArea",
+    "Existing full official DateSelector/Calendar/Tabs implementation when retaining local reporting control; original Manifest popup actions were not observed"
+  ],
+  "projectConsumerReuse": [
+    "SurgeSidebarNavigation/SurgeSidebarAccount/SurgeBreadcrumb are existing project compositions of actual free primitives,not separately official free whole components.",
+    "Existing Commerce account/settings/ProductEditor/domain grid and long-lived reporting state remain reused; no second reporting model or credential-backed profile model is created.",
+    "AuthMark/OAuthIcon/FormDivider and permitted Bricklane/local fixtures are retained."
+  ],
+  "customRequired": "Manifest application routes,local Auth gate and feedback,scoped layout CSS and current commerce datasets/services are project code. Free components provide the actual controls and interactions; they do not provide application routes or backend/auth/reporting services.",
+  "localAuthExtensions": [
+    "Stale local error feedback is cleared when editing or switching reset/login. This differs from the previous Auth mounted-error lifetime.",
+    "A Back to log in control adds a local way to exit reset; Remember gains a form name but is not read by business code or persisted.",
+    "These local feedback/navigation changes are accepted explicitly. Original Forgot/Remember behavior was not observed; full old Auth execution identity is not claimed."
+  ],
+  "verification": {
+    "configuredBuild": "Finalv2 strict build passed27.174s;source1206/dist657 bound. Only shared.tsx mobileTitle/description differs from v1; other1205source files are exact.",
+    "candidate": "79 unique cases passed:Auth4+native9+source14+legacy38+Surgeguard11+identity/motion3. Source14 combines12 unchanged v1 cases with2 affected v2 cases; not every unchanged case is relabeled as rerun. W1/R0/default30s/action5s/maxfail1 retained.",
+    "legacy": "38 existing Manifest cases passed119.549s,with all original business tails and Surge branches retained. Historical directory legacy40 is not an actual40-case claim.",
+    "crossTemplate": "Surge11 passed34.557s and identity/email2+motion1 passed5.792s; shared non-Manifest projection and all Surge runtime source bytes remain separately checked.",
+    "download": {
+      "members": 314,
+      "zipSHA256": "9aca6c56510f7c16ff5f7a0153cd515fa880c63b894ec4c3b6ee6b9d9b2439fe",
+      "normalInstallSeconds": 72.35,
+      "originalStrictBuildSeconds": 9.696,
+      "immediateAndFinalLockSHA256": "82162afabf5e20dac5c00ce92da211955c86e4091af40145bef623d6f27d2e38",
+      "actualBuiltDistFiles": 65,
+      "actualBuiltDistPreviewCasesPassed": 13,
+      "previewSeconds": 29.266,
+      "originalMembersPackageConfigAndDependenciesUnchanged": true,
+      "externalQAOnly": "Host mount and physical controller imports adjusted outside the raw project; no original source/config/dependency overlay."
+    },
+    "source": "13 implementation View/clipboard/single-file paths plus actual project ZIP verified. Independent collector reconstruction matches287 text files+19 assets+8 generated files. Of19 assets,7 match raw source bytes;12SVG match decoded actual dist dataURI bytes and normalize to equivalent XML. Build serialization differences are retained,not called original-file byte identity.",
+    "visual": "Root actually viewed desktop/phone Auth,desktop Dashboard,phone General and dark account Menu. Initial desktop top8/phone two-column OAuth holds are closed. Auth/v1 layout images remain bound by v2 changing only hidden dialog props; v2 native cases separately verify the accessible Sidebar name. No all-route/all-device pixel identity claim.",
+    "ownerStatic": {
+      "formatFiles": 1786,
+      "lintErrors": 0,
+      "existingWarnings": 388,
+      "newManifestWarnings": 0,
+      "toolingPassed": 171,
+      "discoveredOnly": 2397,
+      "discoveryIsNotExecutedFullCI": true
+    },
+    "integration": {
+      "status": "passed",
+      "frozenOwnerFiles": 22,
+      "source1206ExactBuildV2": true,
+      "formatCheck": "passed",
+      "lintErrors": 0,
+      "existingLintWarnings": 388,
+      "toolingPassed": 171,
+      "discoveredCases": 2397,
+      "discoveredFiles": 276,
+      "discoveryIsNotFullExecution": true,
+      "rootEnvironment": "Cleanf96archive; normallyinstalledcandidate dependency link onlyforRootstaticchecks; noRootproductionbuild/install/receivedoverlay"
+    },
+    "independent": "Source final817e11 and Auth finalcea444/8299d6 admit scoped closure and critical model ownership; original83 evidence8e4308 and final5images839d97 retained. No new runtime was performed by these reviewers."
+  },
+  "correctionsAndHistory": [
+    "First settled comparison identified desktop Auth at top8px,phone OAuth horizontal and missing semantic Field/Card layers. These are corrected using actual free components.",
+    "Initial v1 manual review exposed the phone dialog brand-name/description mismatch despite prior geometry passes. v2 corrects only the consumer props,then rebinds affected native/source/ZIP evidence.",
+    "The original83-file browser window has separate setup-inclusive approximate603.3s and successful reference513.424s timings. Its bootstrap failures and exit-animation stage are retained privately rather than relabeled as original site failures.",
+    "The original reference was compared with public693. Current baselinef96 and new candidate evidence are distinct.",
+    "Auth local error-clear/Back/Remember-name differences were identified independently and disclosed in a new metadata receipt. Old receipt/ledger remain unchanged; frozen22 code and successful gates are unchanged."
+  ],
+  "priorVerifiedDeployment": {
+    "commit": "f96cedc0276de01e922a77139470405a6b8a7bd3",
+    "runId": 41759297403,
+    "browserPassed": 2370,
+    "toolingPassed": 167,
+    "deploymentId": 7536467569,
+    "successStatusId": 21308811561,
+    "successUTC": "2026-11-04T02:45:07Z",
+    "freshPublicByteVerificationDate": "2026-11-06",
+    "publicIndexFirstCSSJSByteExact": true
+  },
+  "boundaries": [
+    "Original Inventory/Customers child items/hrefs/bodies,Date popup,first-auth service redirects,Dark Auth and Search behavior were not observed; existing local capability is not presented as original-equivalent.",
+    "Original Manifest collapsed width and desktop General geometry were not sealed. Existing local collapse policy is retained without borrowing Surge measurements.",
+    "Category glyph and chart stripe/tick details remain different. Stock table outer height retains an11px desktop difference and local records lack original per-SKU cost/reorder/rating/count metadata.",
+    "Date staging,compact Search popup,clipboard/CSV and OAuth/passkey/mail/business actions are local demonstrations; metrics are not recalculated by a remote analytics service.",
+    "Remember is not storage. Saved identity/avatar through SignOut/Back/Login has no new combined runtime proof,even though parent ownership and existing separate guards are preserved.",
+    "Full original document height,unobserved pages and backend equivalence are not claimed. Current source/package admission is scoped,not overall reconstruction completion.",
+    "This commit requires its own complete CI and actual Pages/public-byte confirmation after push. Other templates and deeper fidelity remain active."
+  ],
+  "licensing": "Bricklane original mark and permitted local assets remain. Official free MIT,fonts OFL and third-party notices are retained. Reference logos/photos/screenshots/extracted decorative SVG remain private QA and are not distributed."
+}

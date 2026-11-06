@@ -232,7 +232,10 @@ for (const id of ["manifest", "surge"]) {
     await page.goto(`/#/template-preview/${id}`);
     if (id === "manifest") await page.getByRole("button", { name: "Log in", exact: true }).click();
     await page
-      .getByRole(id === "surge" ? "link" : "button", { name: "New product", exact: true })
+      .getByRole(id === "surge" || id === "manifest" ? "link" : "button", {
+        name: "New product",
+        exact: true,
+      })
       .click();
     await page.getByRole("textbox", { name: "Title", exact: true }).fill("Studio travel tote");
     await page.getByRole("textbox", { name: "Subtitle", exact: true }).fill("Everyday carry");
@@ -280,7 +283,10 @@ for (const id of ["manifest", "surge"]) {
     await page.getByRole("button", { name: "Save changes", exact: true }).click();
     await expect(row).toContainText("0 in stock");
     await page
-      .getByRole(id === "surge" ? "link" : "button", { name: "Orders", exact: true })
+      .getByRole(id === "surge" || id === "manifest" ? "link" : "button", {
+        name: "Orders",
+        exact: true,
+      })
       .click();
     await expect(page.getByText("All orders", { exact: true })).toBeVisible();
     await page.getByRole("button", { name: "New order", exact: true }).click();
@@ -313,7 +319,11 @@ for (const id of ["manifest", "surge"]) {
     await expect(
       page.getByRole("row").filter({ hasText: "Maya Thompson" }).filter({ hasText: "$378.68" }),
     ).toBeVisible();
-    await page.getByRole("button", { name: "Customers", exact: true }).click();
+    if (id === "manifest") {
+      await page.getByRole("link", { name: "Customers", exact: true }).click();
+    } else {
+      await page.getByRole("button", { name: "Customers", exact: true }).click();
+    }
     if (id === "surge") {
       await page.getByRole("link", { name: "All customers", exact: true }).click();
     }

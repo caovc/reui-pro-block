@@ -84,7 +84,7 @@ async function phoneHeaderContract(page: Page, id: Merchant, width: number, info
   expect(bounds.drawer).not.toBeNull();
   expect(bounds.header).not.toBeNull();
   const expectedWidth =
-    id === "surge"
+    id === "surge" || id === "manifest"
       ? await drawer.evaluate((node) => {
           const removedScrollbar =
             parseFloat(getComputedStyle(node).getPropertyValue("--removed-body-scroll-bar-size")) ||
@@ -136,14 +136,14 @@ async function chooseStoreGeneral(page: Page, id: Merchant, width: number) {
   }
   const navigation =
     width < 768 ? sheet(page) : page.locator('.bt-sidebar[data-slot="sidebar-container"]');
-  const general = navigation.getByRole(id === "surge" ? "link" : "button", {
+  const general = navigation.getByRole(id === "surge" || id === "manifest" ? "link" : "button", {
     name: "General",
     exact: true,
   });
   if (!(await general.isVisible())) {
     await navigation.getByRole("button", { name: "Settings", exact: true }).first().click();
   }
-  if (id === "surge") {
+  if (id === "surge" || id === "manifest") {
     const current = await hash(page);
     await expect(general).toHaveAttribute(
       "href",
@@ -152,7 +152,7 @@ async function chooseStoreGeneral(page: Page, id: Merchant, width: number) {
   }
   await general.click();
   if (width < 768) {
-    if (id === "surge") {
+    if (id === "surge" || id === "manifest") {
       await expect(sheet(page)).toBeVisible();
       await expect(general).toBeFocused();
       await page.keyboard.press("Escape");
@@ -258,15 +258,15 @@ for (const id of merchants) {
       await open(page, id, width, "/account/preferences", themeQuery);
       await expectTheme(page, "light");
       const popup = await openAccountMenu(page, width);
-      const themeRole = id === "surge" ? "radio" : "menuitemradio";
-      if (id === "surge") {
+      const themeRole = id === "surge" || id === "manifest" ? "radio" : "menuitemradio";
+      if (id === "surge" || id === "manifest") {
         await expect(popup.getByRole("radiogroup", { name: "Theme", exact: true })).toBeVisible();
         await expect(popup.getByRole("radio")).toHaveCount(3);
         await expect(popup.getByRole("menuitemradio")).toHaveCount(0);
       }
       await expect(popup.getByRole(themeRole, { name: "Light", exact: true })).toBeChecked();
       await popup.getByRole(themeRole, { name: "Dark", exact: true }).click();
-      if (id === "surge") {
+      if (id === "surge" || id === "manifest") {
         await expect(popup).toBeHidden();
         const navigation =
           width < 768 ? sheet(page) : page.locator('.bt-sidebar[data-slot="sidebar-container"]');
@@ -312,7 +312,10 @@ for (const id of merchants) {
         await expect(page.locator(".bt-auth")).toBeVisible();
         await expect(account(page)).toHaveCount(0);
         await login(page);
-        const defaultPath = id === "surge" && view !== "Dashboard" ? `/${view.toLowerCase()}` : "";
+        const defaultPath =
+          (id === "surge" || id === "manifest") && view !== "Dashboard"
+            ? `/${view.toLowerCase()}`
+            : "";
         await expect.poll(() => hash(page)).toBe(`${mount(id)}${defaultPath}${plainQuery}`);
         await expectActualView(page, view);
         await chooseAccount(page, width, "Preferences");

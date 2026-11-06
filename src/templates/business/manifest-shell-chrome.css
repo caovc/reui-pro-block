@@ -1,0 +1,122 @@
+/* Manifest consumes the existing free Sidebar composition. Its native provider,
+   Sheet, menus, radios, anchors and focus behavior keep ownership of interaction. */
+.bt-layout.bt-manifest > .bt-workspace > .manifest-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  height: 51px;
+  min-height: 51px;
+  gap: 8px;
+  padding: 0 18px;
+  border-bottom: 1px solid var(--border);
+  background: var(--background);
+}
+
+.bt-manifest .manifest-topbar > .bt-top-content {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+}
+
+.bt-manifest .manifest-topbar > .bt-topbar-right {
+  margin-left: auto;
+}
+
+.bt-manifest .manifest-topbar .bt-topbar-right > button {
+  height: 28px;
+  min-height: 28px;
+  padding: 0 8px;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.bt-app.bt-layout.bt-manifest .bt-content {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding: 24px;
+}
+
+.bt-layout.bt-manifest .bt-sidebar[data-slot="sidebar-container"] {
+  position: fixed;
+  top: calc(50px + var(--template-toolbar-height, 0px));
+  bottom: 0;
+  height: calc(var(--bt-layout-height) - 50px);
+}
+
+.bt-layout.bt-manifest[data-sidebar-side="left"] .bt-sidebar[data-slot="sidebar-container"] {
+  left: 0;
+  right: auto;
+}
+
+.bt-layout.bt-manifest[data-sidebar-side="right"] .bt-sidebar[data-slot="sidebar-container"] {
+  left: auto;
+  right: 0;
+}
+
+:is(.bt-layout.bt-manifest .bt-sidebar, .bt-layout-mobile.bt-manifest)
+  [data-slot="sidebar-header"] {
+  height: 56px;
+  min-height: 56px;
+  justify-content: flex-end;
+  padding: 8px 16px;
+  gap: 8px;
+}
+
+:is(.bt-layout.bt-manifest .bt-sidebar, .bt-layout-mobile.bt-manifest) .reui-sidebar-content {
+  padding: 0 8px;
+  gap: 8px;
+  scrollbar-width: none;
+}
+
+.manifest-sidebar-info {
+  flex-shrink: 0;
+  margin-top: auto;
+  padding: 12px 12px 8px;
+}
+
+.manifest-sidebar-info .bt-info {
+  font-size: 12px;
+  line-height: 20px;
+}
+
+/* An existing, locally authored illustration substitutes for original demo art. */
+.manifest-sidebar-info .bt-info::after {
+  content: "";
+  display: block;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  margin-top: 10px;
+  border-radius: 8px;
+  background: url("./assets/store-study-2.svg") center / cover;
+}
+
+:is(.bt-layout.bt-manifest .bt-sidebar, .bt-layout-mobile.bt-manifest)
+  [data-slot="sidebar-footer"] {
+  height: 64px;
+  min-height: 64px;
+  margin-top: 8px;
+  padding: 8px 16px;
+  gap: 8px;
+}
+
+.bt-layout.bt-manifest [data-collapsible="icon"] [data-slot="sidebar-footer"] {
+  height: 48px;
+  min-height: 48px;
+  padding-inline: 16px;
+}
+
+.bt-layout-mobile.bt-manifest {
+  background: var(--sidebar);
+  color: var(--sidebar-foreground);
+}
+
+@media (max-width: 767px) {
+  .bt-layout.bt-manifest > .bt-workspace > .manifest-topbar {
+    padding-inline: 16px;
+  }
+
+  .bt-app.bt-layout.bt-manifest .bt-content {
+    padding: 16px;
+  }
+}

@@ -566,6 +566,8 @@ export function templateImplementationTargets(template: {
       "commerce-settings-finance-dialogs",
       "commerce-settings-provider-dialog",
       "commerce-settings-records",
+      "manifest-auth",
+      "manifest-dashboard",
     ],
     miro: [
       "miro-settings",
