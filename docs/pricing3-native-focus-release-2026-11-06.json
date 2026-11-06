@@ -1,0 +1,64 @@
+{
+  "milestone": "Pricing 3 native keyboard focus",
+  "status": "LOCAL_GATES_PASSED_PENDING_NEW_PUSH_CI",
+  "publicationBase": "3745de08b6b0b8d03aecb81263ec1ba5d3bc3c6f",
+  "localRuntimeBase": "bd7669f861d6d1810df3feede13d4318feb1593d",
+  "change": "Delete only the consumer three-line box-shadow override so the existing official free ReUI Tabs displays its native three-pixel keyboard focus ring. Preserve the project baseline selected background and foreground.",
+  "actualFreeReuse": [
+    "Existing official free ReUI Tabs and TabsTrigger; no replacement tabs or focus engine."
+  ],
+  "owned": {
+    "src/blocks/commerce/pricing-per-seat.css": "094118b13f426d3f24d5f7f280d3e1b2a1293b57c82c155cfb921d9767258ff7",
+    "tests/pricing-per-seat-native-focus.spec.ts": "16d1d83d1f6f0a432356eaed4bebd8e4f5737d20ea40ad2933f1646ed750fd6a"
+  },
+  "validation": {
+    "actualPublicBefore": "Four missing keyboard focus ring states at desktop/mobile Startup/Growth; real first failure retained.",
+    "siteProductionBuildPassed": true,
+    "matchedDarkNativePassed": 1,
+    "defaultLightNecessaryGroupPassed": 8,
+    "distinctBodies": 8,
+    "sameNewFocusBodyAlsoExecutedInDark": true,
+    "actualSourceViewClipboardSingleFileAndZIPPassed": true,
+    "sourceCaseCount": 1,
+    "originalArchive": {
+      "sha256": "cc4e9a51c301b46a64f616feff9335876731c6ff38fe85f7a4a286d1012646ed",
+      "members": 221,
+      "normalInstallPassed": true,
+      "strictBuildPassed": true,
+      "nativePassed": 1,
+      "strictBuildSeconds": 6.547,
+      "nativeSeconds": 2.379,
+      "nativeEnvironment": "actual original root57522/defaultlight, original16d1 unchanged at1280/390",
+      "allOriginal221And29DistUnchanged": true
+    },
+    "rootStatic": {
+      "formatPassed": true,
+      "scopedTestLintPassed": true,
+      "browserDiscoveryCases": 2431,
+      "browserDiscoveryFiles": 281,
+      "discoveryIsNotExecution": true,
+      "noProductionBuildInSymlinkStaticDirectory": true
+    },
+    "freshMainClosure": "Both owned preimages apply to 3745; bd to 3745 changed source paths intersect the actual original ZIP source closure in zero files after excluding generated starter/theme. No whole-source equality claim.",
+    "budgets": "One worker, zero retries, original action/assertion and timing budgets unchanged.",
+    "independentSourceReviewSHA256": "7e01e15de49a044a656ed3548669d56256e533561c305bc860af133f1ceb5b45",
+    "rootActualReceivedImagesViewed": [390, 1280],
+    "totalSuccessfulExecutions": 11,
+    "totalDistinctBodies": 9,
+    "focusBodyRanInThreeEnvironments": true,
+    "rootEvidenceReferenceHashesExact": true
+  },
+  "retainedFailures": [
+    "Initial actual public keyboard ring failure.",
+    "V1 removal of whole active block changed baseline dark selected background; retained as failed historical attempt.",
+    "Initial external Source loader failed before any case/browser/clipboard; private ESM boundary corrected without changing action/assertion body."
+  ],
+  "limits": [
+    "Reference only establishes the observed keyboard focus ring, not exact active computed background or all-theme parity.",
+    "The background guard preserves the project baseline. A lighter reference Growth fill and brighter local accents remain visual differences outside this focus-only change.",
+    "An earlier suspected Monthly events spacing difference was withdrawn after independent exact-boundary measurement.",
+    "Overall goal remains active; commit/push does not imply deployment."
+  ],
+  "sourceTargets": "No route or source split. Existing actual Pricing 3 default source and dependencies remain unchanged.",
+  "ownerHandoffSHA256": "c74bac86ac570639e620efef31de395f7cc6f96968e6af7b5fad96a12ca3db86"
+}
