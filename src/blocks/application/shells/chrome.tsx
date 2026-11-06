@@ -135,6 +135,7 @@ const primaryBrandVariants = new Set([
 const primaryNavigationVariants = new Set([1, 4, 5, 7, 8, 11, 12, 13, 18, 19, 20]);
 export function shellThemeClasses(variant: number) {
   return cn(
+    variant > 0 && "app-shell-navigation",
     `shell-theme-${variant}`,
     primaryBrandVariants.has(variant) && "shell-theme-brand",
     primaryNavigationVariants.has(variant) && "shell-theme-navigation",

@@ -188,7 +188,7 @@ export function themeCSS(theme: PreviewTheme) {
   const surfaces =
     ":root:root :is(.reui-reference, .template-surface, .template-surface > :first-child)";
   const menuTargets =
-    ":root:root :is(.sidebar-link.active, .sidebar-block-link.active, [data-sidebar=menu-button][data-active=true])";
+    ":root:root :is(.sidebar-link.active, .sidebar-block-link.active, [data-sidebar=menu-button][data-active=true]), :root:root .app-shell-navigation [data-sidebar=menu-sub-button][data-active=true]";
   const accentTokens = accent
     ? `--primary: ${accent}; --primary-foreground: ${accentForeground}; --ring: ${accent}; --sidebar-primary: ${accent}; --sidebar-primary-foreground: ${accentForeground};`
     : "";
