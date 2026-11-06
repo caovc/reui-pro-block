@@ -355,6 +355,7 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
     if (block.id === "data-grid-base-9") return paths("data", "grid-base-api-request-logs");
     if (block.category === "advanced") {
       const modules: Record<string, string> = {
+        "data-grid-advanced-8": "grid-advanced-sheets",
         "data-grid-advanced-10": "grid-advanced-technician-capacity",
         "data-grid-advanced-11": "grid-advanced-factory-scorecard",
         "data-grid-advanced-12": "grid-advanced-freight",

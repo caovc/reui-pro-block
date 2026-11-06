@@ -1,3 +1,4 @@
+import { DataGridColumnVisibility } from "@/components/reui/data-grid/data-grid-column-visibility";
 import {
   Dialog,
   DialogContent,
@@ -13,6 +14,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Clock3,
+  Columns3,
   RefreshCw,
   Send,
   SlidersHorizontal,
@@ -1519,308 +1521,316 @@ export function ProductKpis() {
   const [guardrail, setGuardrail] = useState("15");
   const factor = window === "4W" ? 4 / 13 : window === "26W" ? 2 : 1;
   return (
-    <GridFrame
-      title="Product KPIs"
-      description={`${window === "13W" ? "13" : window === "4W" ? "4" : "26"} weeks to Oct 11, vs prior ${window === "13W" ? "13" : window === "4W" ? "4" : "26"} weeks`}
-      actions={
-        <>
-          <div className="flex rounded border p-0.5">
-            {["4W", "13W", "26W"].map((w) => (
-              <button
-                key={w}
-                onClick={() => setWindow(w)}
-                aria-pressed={window === w}
-                className={cn(
-                  "rounded px-2 py-1 text-[13px]",
-                  window === w && "bg-muted font-medium",
-                )}
-              >
-                {w}
-              </button>
-            ))}
-          </div>
-          <AddRecord
-            label="Add Product"
-            title="Add product"
-            fields={[{ name: "name", label: "Product name" }]}
-            onSave={(v) =>
-              setRows((rs) => [
-                ...rs,
-                {
-                  id: rs.length + 1,
-                  name: v.name,
-                  sku: `NEW-${rs.length + 1}`,
-                  revenue: 0,
-                  profit: 0,
-                  change: 0,
-                  status: "No Sales",
-                },
-              ])
-            }
-          />
-        </>
-      }
-    >
-      <div className="flex flex-wrap items-center gap-2 border-b px-3 py-2">
-        <GridSearch
-          value={query}
-          onChange={(v) => {
-            setQuery(v);
-            setPage(0);
-          }}
-          placeholder="Search products..."
-        />
-        <Choice
-          label="KPI status filter"
-          value={status}
-          onChange={(v) => {
-            setStatus(v);
-            setPage(0);
-          }}
-          options={["All statuses", "On Track", "At Risk", "Off Track", "No Sales", "Returned"]}
-        />
-        <div className="ml-auto flex gap-2">
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button variant="outline" size="sm" className="h-8 text-sm">
-                <SlidersHorizontal />
-                Guardrails
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent className="w-64">
-              <label className="text-sm">
-                Minimum profit margin %
-                <Input
-                  aria-label="Minimum profit margin"
-                  type="number"
-                  value={guardrail}
-                  onChange={(e) => setGuardrail(e.target.value)}
-                  className="mt-2 h-8"
-                />
-              </label>
-              <p className="mt-2 text-[13px] text-muted-foreground">
-                Products below {guardrail}% profit margin are highlighted.
-              </p>
-            </PopoverContent>
-          </Popover>
-          <TableOptions
-            columns={["Revenue Trend", "Promo Calendar", "Profit"]}
-            hidden={hidden}
-            setHidden={setHidden}
-          />
-        </div>
-      </div>
-      <DomainRecordGrid
-        data={rows}
-        search={query}
-        rowFilter={(r) => status === "All statuses" || r.status === status}
-        hidden={hidden}
-        onHiddenChange={setHidden}
-        pagination={{ pageIndex: page, pageSize: nativePageSize }}
-        onPaginationChange={(p) => {
-          setPage(p.pageIndex);
-          setNativePageSize(p.pageSize);
-        }}
-        paginationControls
-        className="[&_tbody_tr]:h-12"
-        fields={[
-          {
-            id: "name",
-            title: "Product",
-            value: (r) => r.name,
-            size: 290,
-            className: cellClass,
-            render: (r, _i, _gridRow) => {
-              return (
-                <>
-                  <div className="flex items-center gap-2">
-                    <img
-                      alt=""
-                      src={productArtwork(r.id, r.name)}
-                      className="size-7 rounded-md object-cover"
-                    />
-                    <div>
-                      <span className="font-medium">{r.name}</span>
-                      <span className="mt-0.5 block text-xs text-muted-foreground">
-                        ID: {(r.id - 1) % 10 < 6 ? "FW" : "AP"}-{5973 - r.id * 67}
-                      </span>
-                    </div>
-                  </div>
-                </>
-              );
-            },
-          },
-          {
-            id: "revenue",
-            title: "Revenue",
-            value: (r) => r.revenue * factor,
-            size: 150,
-            className: cellClass,
-            render: (r, _i, _gridRow) => {
-              return (
-                <>
-                  {r.revenue ? (
-                    <div className="flex items-center gap-2">
-                      <b>${((r.revenue * factor) / 1000).toFixed(1)}K</b>
-                      <span
-                        className={cn(
-                          "text-xs",
-                          r.change > 0 ? "text-emerald-500" : "text-rose-500",
-                        )}
-                      >
-                        {r.change > 0 ? "↗ +" : "↘ "}
-                        {r.change}%
-                      </span>
-                    </div>
-                  ) : (
-                    <span className="text-muted-foreground">
-                      {r.status === "Returned" ? "Returned" : "No sales"}
-                    </span>
-                  )}
-                </>
-              );
-            },
-          },
-          {
-            id: "trend",
-            title: "Revenue Trend",
-            value: (r) => r.change,
-            size: 160,
-            className: cellClass,
-            render: (r, _i, _gridRow) => {
-              return (
-                <>
-                  {r.revenue ? (
-                    <Spark seed={r.id} color="#26a69a" secondary />
-                  ) : (
-                    <span className="text-muted-foreground">
-                      {r.status === "Returned" ? "Returned" : "No sales"}
-                    </span>
-                  )}
-                </>
-              );
-            },
-          },
-          {
-            id: "profit",
-            title: "Profit",
-            value: (r) => r.profit * factor,
-            size: 100,
-            className: (r) =>
-              cn(
-                cellClass,
-                "text-right font-medium",
-                r.revenue && (r.profit / r.revenue) * 100 < Number(guardrail) && "text-rose-500",
-              ),
-            render: (r, _i, _gridRow) => {
-              return (
-                <>
-                  {r.profit
-                    ? `${r.profit < 0 ? "-" : ""}$${((Math.abs(r.profit) * factor) / 1000).toFixed(1)}K`
-                    : "No sales"}
-                </>
-              );
-            },
-          },
-          {
-            id: "calendar",
-            title: "Promo Calendar",
-            value: (r) => r.id,
-            size: 230,
-            className: cellClass,
-            render: (r, _i, _gridRow) => {
-              return (
-                <>
-                  <div
-                    className="flex gap-px"
-                    role="img"
-                    aria-label={`Promo calendar for ${r.name}`}
-                  >
-                    {Array.from({ length: 39 }, (_, i) => (
-                      <span
-                        key={i}
-                        title={`Week ${i + 1}`}
-                        className={cn(
-                          "h-1.5 w-1",
-                          !r.revenue
-                            ? "bg-muted"
-                            : i % 8 === r.id % 8 || i % 5 === 0
-                              ? r.profit < 0
-                                ? "bg-rose-400"
-                                : "bg-violet-300"
-                              : i > 26
-                                ? "bg-emerald-300"
-                                : "bg-muted",
-                        )}
-                      />
-                    ))}
-                  </div>
-                </>
-              );
-            },
-          },
-          {
-            id: "status",
-            title: "KPI Status",
-            value: (r) => r.status,
-            size: 190,
-            className: cellClass,
-            render: (r, _i, _gridRow) => {
-              return (
-                <>
-                  <div className="flex justify-between gap-3">
-                    <span>{r.status}</span>
-                    <span className="text-xs text-muted-foreground">
-                      {r.revenue ? (r.status === "Off Track" ? "0/3 met" : "2/3 met") : ""}
-                    </span>
-                  </div>
-                  <div className="mt-2 flex gap-1">
-                    {Array.from({ length: 3 }, (_, i) => (
-                      <span
-                        key={i}
-                        className={cn(
-                          "h-0.5 w-6 rounded",
-                          !r.revenue
-                            ? "bg-muted"
-                            : r.status === "Off Track"
-                              ? "bg-rose-500"
-                              : i < 2
-                                ? "bg-emerald-500"
-                                : "bg-amber-500",
-                        )}
-                      />
-                    ))}
-                  </div>
-                </>
-              );
-            },
-          },
-          {
-            id: "actions",
-            title: "",
-            value: (r) => r.id,
-            size: 40,
-            render: (r, _i, _gridRow) => {
-              return (
-                <>
-                  <RowMenu
-                    name={r.name}
-                    onDelete={() => setRows((rs) => rs.filter((x) => x.id !== r.id))}
+    <DomainRecordGrid
+      data={rows}
+      search={query}
+      rowFilter={(r) => status === "All statuses" || r.status === status}
+      hidden={hidden}
+      onHiddenChange={setHidden}
+      pagination={{ pageIndex: page, pageSize: nativePageSize }}
+      onPaginationChange={(p) => {
+        setPage(p.pageIndex);
+        setNativePageSize(p.pageSize);
+      }}
+      paginationControls
+      className="[&_tbody_tr]:h-12"
+      fields={[
+        {
+          id: "name",
+          hideable: false,
+          title: "Product",
+          value: (r) => r.name,
+          size: 290,
+          className: cellClass,
+          render: (r, _i, _gridRow) => {
+            return (
+              <>
+                <div className="flex items-center gap-2">
+                  <img
+                    alt=""
+                    src={productArtwork(r.id, r.name)}
+                    className="size-7 rounded-md object-cover"
                   />
-                </>
-              );
-            },
+                  <div>
+                    <span className="font-medium">{r.name}</span>
+                    <span className="mt-0.5 block text-xs text-muted-foreground">
+                      ID: {(r.id - 1) % 10 < 6 ? "FW" : "AP"}-{5973 - r.id * 67}
+                    </span>
+                  </div>
+                </div>
+              </>
+            );
           },
-        ]}
-      />
-      <div className="flex justify-end gap-3 px-3 py-2 text-[11px] text-muted-foreground">
-        <span className="text-violet-400">■ Promo week</span>
-        <span className="text-rose-400">■ Promo at a loss</span>
-        <span className="text-emerald-400">■ At target, full price</span>
-        <span>This period</span>
-        <span>Period before</span>
-      </div>
-    </GridFrame>
+        },
+        {
+          id: "revenue",
+          hideable: false,
+          title: "Revenue",
+          value: (r) => r.revenue * factor,
+          size: 150,
+          className: cellClass,
+          render: (r, _i, _gridRow) => {
+            return (
+              <>
+                {r.revenue ? (
+                  <div className="flex items-center gap-2">
+                    <b>${((r.revenue * factor) / 1000).toFixed(1)}K</b>
+                    <span
+                      className={cn("text-xs", r.change > 0 ? "text-emerald-500" : "text-rose-500")}
+                    >
+                      {r.change > 0 ? "↗ +" : "↘ "}
+                      {r.change}%
+                    </span>
+                  </div>
+                ) : (
+                  <span className="text-muted-foreground">
+                    {r.status === "Returned" ? "Returned" : "No sales"}
+                  </span>
+                )}
+              </>
+            );
+          },
+        },
+        {
+          id: "trend",
+          hideable: true,
+          title: "Revenue Trend",
+          value: (r) => r.change,
+          size: 160,
+          className: cellClass,
+          render: (r, _i, _gridRow) => {
+            return (
+              <>
+                {r.revenue ? (
+                  <Spark seed={r.id} color="#26a69a" secondary />
+                ) : (
+                  <span className="text-muted-foreground">
+                    {r.status === "Returned" ? "Returned" : "No sales"}
+                  </span>
+                )}
+              </>
+            );
+          },
+        },
+        {
+          id: "profit",
+          hideable: true,
+          title: "Profit",
+          value: (r) => r.profit * factor,
+          size: 100,
+          className: (r) =>
+            cn(
+              cellClass,
+              "text-right font-medium",
+              r.revenue && (r.profit / r.revenue) * 100 < Number(guardrail) && "text-rose-500",
+            ),
+          render: (r, _i, _gridRow) => {
+            return (
+              <>
+                {r.profit
+                  ? `${r.profit < 0 ? "-" : ""}$${((Math.abs(r.profit) * factor) / 1000).toFixed(1)}K`
+                  : "No sales"}
+              </>
+            );
+          },
+        },
+        {
+          id: "calendar",
+          hideable: true,
+          title: "Promo Calendar",
+          value: (r) => r.id,
+          size: 230,
+          className: cellClass,
+          render: (r, _i, _gridRow) => {
+            return (
+              <>
+                <div className="flex gap-px" role="img" aria-label={`Promo calendar for ${r.name}`}>
+                  {Array.from({ length: 39 }, (_, i) => (
+                    <span
+                      key={i}
+                      title={`Week ${i + 1}`}
+                      className={cn(
+                        "h-1.5 w-1",
+                        !r.revenue
+                          ? "bg-muted"
+                          : i % 8 === r.id % 8 || i % 5 === 0
+                            ? r.profit < 0
+                              ? "bg-rose-400"
+                              : "bg-violet-300"
+                            : i > 26
+                              ? "bg-emerald-300"
+                              : "bg-muted",
+                      )}
+                    />
+                  ))}
+                </div>
+              </>
+            );
+          },
+        },
+        {
+          id: "status",
+          hideable: false,
+          title: "KPI Status",
+          value: (r) => r.status,
+          size: 190,
+          className: cellClass,
+          render: (r, _i, _gridRow) => {
+            return (
+              <>
+                <div className="flex justify-between gap-3">
+                  <span>{r.status}</span>
+                  <span className="text-xs text-muted-foreground">
+                    {r.revenue ? (r.status === "Off Track" ? "0/3 met" : "2/3 met") : ""}
+                  </span>
+                </div>
+                <div className="mt-2 flex gap-1">
+                  {Array.from({ length: 3 }, (_, i) => (
+                    <span
+                      key={i}
+                      className={cn(
+                        "h-0.5 w-6 rounded",
+                        !r.revenue
+                          ? "bg-muted"
+                          : r.status === "Off Track"
+                            ? "bg-rose-500"
+                            : i < 2
+                              ? "bg-emerald-500"
+                              : "bg-amber-500",
+                      )}
+                    />
+                  ))}
+                </div>
+              </>
+            );
+          },
+        },
+        {
+          id: "actions",
+          hideable: false,
+          title: "",
+          value: (r) => r.id,
+          size: 40,
+          render: (r, _i, _gridRow) => {
+            return (
+              <>
+                <RowMenu
+                  name={r.name}
+                  onDelete={() => setRows((rs) => rs.filter((x) => x.id !== r.id))}
+                />
+              </>
+            );
+          },
+        },
+      ]}
+
+      renderFrame={(content, table) => (
+        <GridFrame
+          title="Product KPIs"
+          description={`${window === "13W" ? "13" : window === "4W" ? "4" : "26"} weeks to Oct 11, vs prior ${window === "13W" ? "13" : window === "4W" ? "4" : "26"} weeks`}
+          actions={
+            <>
+              <div className="flex rounded border p-0.5">
+                {["4W", "13W", "26W"].map((w) => (
+                  <button
+                    key={w}
+                    onClick={() => setWindow(w)}
+                    aria-pressed={window === w}
+                    className={cn(
+                      "rounded px-2 py-1 text-[13px]",
+                      window === w && "bg-muted font-medium",
+                    )}
+                  >
+                    {w}
+                  </button>
+                ))}
+              </div>
+              <AddRecord
+                label="Add Product"
+                title="Add product"
+                fields={[{ name: "name", label: "Product name" }]}
+                onSave={(v) =>
+                  setRows((rs) => [
+                    ...rs,
+                    {
+                      id: rs.length + 1,
+                      name: v.name,
+                      sku: `NEW-${rs.length + 1}`,
+                      revenue: 0,
+                      profit: 0,
+                      change: 0,
+                      status: "No Sales",
+                    },
+                  ])
+                }
+              />
+            </>
+          }
+        >
+          <div className="flex flex-wrap items-center gap-2 border-b px-3 py-2">
+            <GridSearch
+              value={query}
+              onChange={(v) => {
+                setQuery(v);
+                setPage(0);
+              }}
+              placeholder="Search products..."
+            />
+            <Choice
+              label="KPI status filter"
+              value={status}
+              onChange={(v) => {
+                setStatus(v);
+                setPage(0);
+              }}
+              options={["All statuses", "On Track", "At Risk", "Off Track", "No Sales", "Returned"]}
+            />
+            <div className="ml-auto flex gap-2">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="outline" size="sm" className="h-8 text-sm">
+                    <SlidersHorizontal />
+                    Guardrails
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-64">
+                  <label className="text-sm">
+                    Minimum profit margin %
+                    <Input
+                      aria-label="Minimum profit margin"
+                      type="number"
+                      value={guardrail}
+                      onChange={(e) => setGuardrail(e.target.value)}
+                      className="mt-2 h-8"
+                    />
+                  </label>
+                  <p className="mt-2 text-[13px] text-muted-foreground">
+                    Products below {guardrail}% profit margin are highlighted.
+                  </p>
+                </PopoverContent>
+              </Popover>
+              <DataGridColumnVisibility
+                table={table}
+                trigger={
+                  <Button variant="outline" size="sm" className="h-8 text-sm">
+                    <Columns3 />
+                    Display
+                  </Button>
+                }
+              />
+            </div>
+          </div>
+          {content}
+          <div className="flex justify-end gap-3 px-3 py-2 text-[11px] text-muted-foreground">
+            <span className="text-violet-400">■ Promo week</span>
+            <span className="text-rose-400">■ Promo at a loss</span>
+            <span className="text-emerald-400">■ At target, full price</span>
+            <span>This period</span>
+            <span>Period before</span>
+          </div>
+        </GridFrame>
+      )}
+    />
   );
 }
 const kitchenSeed = [

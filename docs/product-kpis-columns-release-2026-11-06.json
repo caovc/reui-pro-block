@@ -1,0 +1,81 @@
+{
+  "milestone": "Product KPI native column visibility and actual default source",
+  "status": "LOCAL_GATES_PASSED_PENDING_NEW_PUSH_CI",
+  "publicationBase": "3d59223b592e0687249d37dd4410d92ecd022d14",
+  "localRuntimeBase": "4e19d9f407ee63eadc46932ab035b7c66daa6b60",
+  "actualFreeReuse": {
+    "component": "DataGridColumnVisibility",
+    "sourceSHA256": "1f7d5a5053d5c0817cfb0e124ead4f6a58276c1bdcec427ecd8d4cd0ccec6093",
+    "existingProviderAndTable": "DomainRecordGrid.renderFrame receives same actual table inside original provider; published model unchanged",
+    "nativeOptionalColumnIds": ["trend", "profit", "calendar"],
+    "customImplementation": "Only application composition using published slot plus per-field hideable flags; no replacement primitive/model/provider"
+  },
+  "scope": "Only ProductKpis uses the existing real table/provider, free DataGridColumnVisibility and existing renderFrame/hideable. All other sheets functions and domain calculations are preserved.",
+  "sourceTargets": "Merge only Advanced8 to grid-advanced-sheets. Default source now opens the real implementation; view/copy/single-file/original ZIP checked.",
+  "nativeMenuOrderDisclosure": "Actual schema order Trend/Profit/Calendar; original reference order not inspected.",
+  "validation": {
+    "siteBuildSeconds": 25.19,
+    "siteNativePassed": 2,
+    "sourcePassed": 2,
+    "originalZIP": {
+      "sha256": "37423cd2057c05cdb181fcab259de10ab5b401770947b0ac8b335feda73f7206",
+      "members": 330,
+      "bytes": 1786032
+    },
+    "originalNormalInstallSeconds": 48.47,
+    "originalStrictBuildSeconds": 10.95,
+    "originalNativePassed": 2,
+    "originalNativeSeconds": 5.04,
+    "allOriginal330SourceEntryConfigPackageUnchanged": true,
+    "workers": 1,
+    "retries": 0,
+    "testMs": 30000,
+    "expectMs": 5000,
+    "maxFailures": 1,
+    "allGatesFirstAttempt": true,
+    "actualSiteAndOriginalViewportConsoleEmpty": true,
+    "runtimeResourcesReleased": true,
+    "freshMainBoundary": {
+      "localRuntimeBase": "4e19d9f407ee63eadc46932ab035b7c66daa6b60",
+      "freshPublicationHead": "3d59223b592e0687249d37dd4410d92ecd022d14",
+      "actualOriginalZIPSourceMemberCount": 320,
+      "freshChangedPaths": [
+        "docs/appshell-submenu-theme-review.md",
+        "src/blocks/application/shells/chrome.tsx",
+        "src/components/site/preview-theme.ts",
+        "tests/appshell-collapse-geometry.spec.ts",
+        "tests/appshell-submenu-theme.spec.ts"
+      ],
+      "actualSourceMemberIntersection": [],
+      "ownPreimages": {
+        "src/blocks/data/grid-advanced-sheets.tsx": {
+          "freshBeforeSHA256": "f8ad8a22374d2593369cfbafedc0423c4320f3bfab9d14d3ce453590f5ad19c4",
+          "matchesFrozenBefore": true
+        },
+        "src/lib/source-targets.ts": {
+          "freshBeforeSHA256": "ab4d383ef451b5c846c7ce388053955fdf0c67d82a7be21735e7a65866f8cf36",
+          "matchesFrozenBefore": true
+        }
+      },
+      "noFreshWholePackageOrRuntimeEquivalenceClaim": true,
+      "previewThemeDelta": "Only menuTargets gained an app-shell-navigation active submenu selector; raw Product source members do not contain preview-theme.ts or shells/chrome.ts.",
+      "scopeLimit": "Static change-scope evidence only; not a fresh Main build/browser/source-package pass. Other owners default36/template evidence is not reported as this owner runtime evidence."
+    },
+    "rootStatic": {
+      "format": true,
+      "scopedLintErrors": 0,
+      "toolingPassed": 182,
+      "browserDiscoveryCases": 2441,
+      "browserDiscoveryFiles": 284,
+      "discoveryIsNotExecution": true,
+      "rootViewedActualReceivedDesktopAndPhonePNG": true
+    }
+  },
+  "limits": [
+    "Native schema menu order Trend/Profit/Calendar differs from the previous handwritten menu; no original pixel parity claim.",
+    "Other manual column consumers remain separate work.",
+    "Store P&L country/kind and profitDelta defects are separate scoped tasks.",
+    "Normal push CI and Pages must still be verified; overall goal remains active."
+  ],
+  "ownerManifestSHA256": "e74171daf47d1277b1d2772fd32a60c700422cabc4163e848d8a5009877421d1"
+}
