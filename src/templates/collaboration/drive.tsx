@@ -74,6 +74,7 @@ import {
   Empty,
 } from "./shared";
 import "./drive.css";
+import { FileboxAuth } from "./filebox-auth";
 import { DriveLayout, DriveApplicationTrigger } from "./drive-layout";
 
 import { DriveSettings } from "./drive-settings";
@@ -419,9 +420,10 @@ export default function Drive({ id }: { id: string }) {
     onNavigate: (section, memberSlug) => navigateDrive({ kind: "settings", section, memberSlug }),
   };
 
+  const LoginView = id === "filebox" ? FileboxAuth : Login;
   if (!signed || route.kind === "login")
     return (
-      <Login
+      <LoginView
         onLogin={() => {
           setSigned(true);
           setDefaultView("My Drive");

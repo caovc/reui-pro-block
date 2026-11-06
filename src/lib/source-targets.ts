@@ -616,6 +616,7 @@ export function templateImplementationTargets(template: {
       "drive-header-notifications",
     ],
     filebox: [
+      "filebox-auth",
       "drive-layout",
       "free/drive-button",
       "drive-settings",

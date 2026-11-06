@@ -1,0 +1,49 @@
+{
+  "milestone": "filebox actual free component reuse",
+  "status": "LOCAL_GATES_PASSED_PENDING_NEW_PUSH_CI",
+  "publicationBase": "be464d8ab3ef78d55906d172b4672a69b25a4a15",
+  "ownerExecutedBase": "a939a2e37925390ea647861c5b8e11bff3b3beed",
+  "actualFreeReuse": [
+    "Actual free FieldGroup/Field/FieldLabel/FieldDescription and InputGroup/Input/Addon/Button replace Filebox custom wrappers.",
+    "Actual AuthShared OAuthIcon/FormDivider replace duplicate provider SVG/divider rendering; existing Card slots/Bricklane Mark retained.",
+    "Drive chooses FileboxAuth only for filebox; original Filespace Login and parent callbacks/facts remain."
+  ],
+  "preservation": [
+    "Drive three-integration-edit inverse recovers base byte-for-byte; all host callback/routing/files/upload/share/settings/workspace facts unchanged.",
+    "Filebox SourceTargets entry inverse recovers base byte-for-byte; no sibling entry change.",
+    "Only view-local password visibility/reset flags; native required/default values/submit retained, no new store."
+  ],
+  "validation": {
+    "siteNativePassed": 6,
+    "actualSourceCasePassed": 1,
+    "portableSourceBindingInverseProven": true,
+    "originalArchiveSHA256": "72f160951a0fb225408afde6a84679bbd82b0626522791d1d244fc1a71bc1aea",
+    "originalArchiveMembers": 232,
+    "normalOriginalInstallPassed": true,
+    "originalStrictBuildPassed": true,
+    "originalNativePassed": 4,
+    "originalNativeScope": "Only owner Filebox4; fixed filebox Example unchanged, Filespace host sibling2 intentionally excluded",
+    "originalMembersLockDistUnchanged": true,
+    "noSourceEntryConfigOverlayOrRepair": true,
+    "visual": {
+      "screenshotsActuallyViewed": 2,
+      "boundary": "Two raw initial Auth screenshots1440/390 actually viewed. Other raw business state checks are native assertions, not screenshots. No original-site comparison."
+    },
+    "actualZIPSourceIntersectionWithInterveningCommits": [
+      "src/blocks/application/shells/chrome.tsx",
+      "src/blocks/data/grid-advanced-model-grid.tsx",
+      "src/components/site/preview-theme.ts",
+      "src/templates/collaboration/roster.tsx"
+    ],
+    "wholeSourceOrNewRawExecutionOnPublicationBaseClaimed": false
+  },
+  "uncertifiedBoundaries": [
+    "No original ReUI Roster/Filebox page geometry/interaction fidelity certification.",
+    "Portable Source specs are statically equivalent to passed private Source1; Root CI executes Main-ready bindings after integration.",
+    "No complete-template/global QA or backend/auth service certification.",
+    "No Root commit/push/actual CI/Pages success claim by child."
+  ],
+  "brandLicense": "Original Bricklane Mark/local licensed assets retained; no original ReUI logo/avatar/paid media extracted. Actual export closure proof preserves MIT/OFL/third-party asset notices.",
+  "ownerManifestSHA256": "4954e55e1072b793b537f58caab25204391514b3fb98d90da82c078813173ee8",
+  "integrationBoundary": "Owned preimages match current be464d8. The actual raw archive intersects four later source files: chrome.tsx and preview-theme.ts only scope the positive AppShell navigation marker; grid-advanced-model-grid.tsx adds an optional renderFrame and preserves callers that omit it; roster.tsx changes a separate template route. Filebox imports and parent state remain unchanged by these deltas. The frozen original archive gates are scoped historical evidence, not whole-tree equality or a new raw execution on be464d8; normal push CI verifies the integrated tree."
+}

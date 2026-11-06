@@ -1,0 +1,28 @@
+.ct-filebox-auth .filebox-auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ct-filebox-auth .filebox-auth-form > [data-slot="field-group"] {
+  gap: 16px;
+}
+
+.ct-filebox-auth .filebox-auth-form [data-slot="field"] {
+  gap: 8px;
+}
+
+.ct-filebox-auth .filebox-auth-password-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.ct-filebox-auth .filebox-auth-password-label [data-slot="field-label"] {
+  width: auto;
+}
+
+.ct-filebox-auth .filebox-auth-divider {
+  margin-block: 24px;
+}
