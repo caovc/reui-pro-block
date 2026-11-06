@@ -4,33 +4,38 @@ import { Agenda, AppointmentCalendar } from "./miro-calendar";
 import { IconTile } from "@/components/reui/icon-tile";
 import { DayBreakdown, BookingSheet } from "./miro-detail";
 import { useMemo, useState } from "react";
-import { Tabs } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent } from "@/components/ui/card";
+import { useEventCalendarSelector } from "@/components/reui/event-calendar/event-calendar";
+import { format, subDays } from "date-fns";
+import { MiroChairBoard } from "./miro-chair-board";
+import { useMiroChairCalendar } from "./miro-chair-calendar";
+import { miroChairStatuses } from "./miro-chair-board-model";
+import { MiroCalendarSidebar, MiroDashboardSidebar, MiroSidebarAccount } from "./miro-shell-chrome";
+import { useMiroRoute } from "./miro-route";
 import { MiroSettings, MiroSettingsNavigation } from "./miro-settings";
 import { MiroNotifications } from "./miro-notifications";
 import { useMiroSettingsModel } from "./miro-settings-model";
-import type { MiroActivity } from "./miro-settings-data";
+import { miroAlertTypes, type MiroActivity } from "./miro-settings-data";
 import {
   adaptMiroClinicInvoices,
   miroClinicAsOf,
   miroClinicInvoiceDueLabel,
-  miroHourLabel,
   miroSavedProfileAvatar,
 } from "./miro-settings-integration";
-import { CalendarCheck, Gauge, Clock, TriangleAlert } from "lucide-react";
 import {
-  Shell,
-  Heading,
-  Panel,
-  Card,
-  CardContent,
-  Button,
-  Badge,
-  Input,
-  Bars,
-  Area,
-  DataTable,
-  toast,
-} from "./shared";
+  CalendarCheck,
+  Gauge,
+  Clock,
+  TriangleAlert,
+  Download,
+  Share2,
+  Printer,
+  Plus,
+} from "lucide-react";
+import { Shell, Heading, Button, Badge, Bars, Area, DataTable, exportCsv, toast } from "./shared";
+import "./miro-layout.css";
+
 const doctors = miroClinicSeedDoctors;
 type Appointment = {
   patient: string;
@@ -55,13 +60,15 @@ export default function Miro() {
   });
   const visibleChairs = settings.chairs.filter((chair) => chair.visible);
   const practitionerNames = visibleChairs.map((chair) => chair.name);
-  const boardHours = Array.from(
-    { length: settings.hours.closes - settings.hours.opens },
-    (_, index) => miroHourLabel(settings.hours.opens + index),
-  );
   const [clinicCreate, setClinicCreate] = useState(false);
   const [clinicRecord, setClinicRecord] = useState<string | null>(null);
-  const [active, setActive] = useState("Dashboard");
+  const [page, setPage] = useState("Dashboard");
+  const routing = useMiroRoute();
+  const active = routing.page ?? page;
+  const setActive = (next: string) => {
+    setPage(next);
+    routing.navigate(next);
+  };
   const [query, setQuery] = useState("");
   const [create, setCreate] = useState(false);
   const [appointments, setAppointments] = useState<Appointment[]>([
@@ -101,6 +108,27 @@ export default function Miro() {
       status: "Completed",
     },
   ]);
+  const [boardStatuses, setBoardStatuses] = useState<readonly string[]>(miroChairStatuses);
+  const chairCalendar = useMiroChairCalendar({
+    appointments,
+    chairs: settings.chairs,
+    hours: settings.hours,
+    query,
+    statuses: boardStatuses,
+    onCreate: () => setCreate(true),
+  });
+  const boardDate = useEventCalendarSelector((state) => state.date, { calendar: chairCalendar });
+  const boardView = useEventCalendarSelector((state) => state.view, { calendar: chairCalendar });
+  const boardRange = useEventCalendarSelector((state) => state.activeRange, {
+    calendar: chairCalendar,
+    isEqual: (previous, next) =>
+      previous.start.getTime() === next.start.getTime() &&
+      previous.end.getTime() === next.end.getTime(),
+  });
+  const boardTitle =
+    boardView === "week"
+      ? `${format(boardRange.start, "MMMM d")} - ${format(subDays(boardRange.end, 1), "d, yyyy")}`
+      : format(boardDate, "MMMM yyyy");
   return (
     <Tabs
       value={settings.section}
@@ -115,6 +143,28 @@ export default function Miro() {
         notifications={<MiroNotifications activities={settings.bellActivities} />}
         topbarNotifications={null}
         active={active}
+        pageHref={routing.href}
+        miroSidebarAccount={
+          <MiroSidebarAccount
+            account={{
+              name: settings.profileSaved.fullName,
+              organisation: settings.profileSaved.email,
+              photo: miroSavedProfileAvatar(settings.profileSaved),
+            }}
+            onProfile={() => {
+              settings.setSection("profile");
+              setActive("Settings");
+            }}
+            onNotifications={() => {
+              settings.setSection("notifications");
+              setActive("Settings");
+            }}
+            onBilling={() => {
+              settings.setSection("billing");
+              setActive("Settings");
+            }}
+          />
+        }
         account={{
           name: settings.profileSaved.fullName,
           organisation: settings.profileSaved.email,
@@ -127,8 +177,8 @@ export default function Miro() {
         }}
         items={[
           "Dashboard",
-          "Appointments",
           "Calendar",
+          "Appointments",
           "Customers",
           "Staff",
           "Payments",
@@ -138,9 +188,16 @@ export default function Miro() {
         top={
           <div className="bt-clinic-header">
             {active === "Settings" ? (
-              <h1 className="m-0 text-sm font-medium">Settings</h1>
+              <h1 className="miro-layout-heading">Settings</h1>
+            ) : active === "Calendar" ? (
+              <h1 className="miro-layout-heading">
+                <span className="miro-layout-month-long">{boardTitle}</span>
+                <span className="miro-layout-month-short">{format(boardDate, "MMM yyyy")}</span>
+              </h1>
             ) : (
-              <strong>{active === "Dashboard" ? "Clinic Dashboard" : active}</strong>
+              <h1 className="miro-layout-heading">
+                {active === "Dashboard" ? "Clinic Dashboard" : active}
+              </h1>
             )}
             <span>
               {active === "Settings" ? null : ["Customers", "Staff", "Payments"].includes(
@@ -155,12 +212,57 @@ export default function Miro() {
                       ? "+ New visit"
                       : "+ New invoice"}
                 </Button>
+              ) : active === "Calendar" ? (
+                <>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    aria-label="Print the day sheet"
+                    onClick={() => window.print()}
+                  >
+                    <Printer />
+                    <span className="miro-header-action-label">Print</span>
+                  </Button>
+                  <Button size="sm" aria-label="New booking" onClick={() => setCreate(true)}>
+                    <Plus />
+                    <span className="miro-header-action-label">New Booking</span>
+                  </Button>
+                </>
+              ) : active === "Appointments" ? (
+                <Button size="sm" onClick={() => setCreate(true)}>
+                  <Plus />
+                  New Appointment
+                </Button>
               ) : (
                 <>
-                  <Button variant="outline" onClick={() => toast.success("Clinic report prepared")}>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    aria-label="Export the day sheet"
+                    onClick={() =>
+                      exportCsv("clinic-day-sheet", [
+                        ["Patient", "Practitioner", "Procedure", "Date", "Start", "End", "Status"],
+                        ...appointments.map((booking) => [
+                          booking.patient,
+                          booking.doctor,
+                          booking.procedure,
+                          booking.date ?? miroClinicAsOf,
+                          booking.time,
+                          booking.end ?? "",
+                          booking.status,
+                        ]),
+                      ])
+                    }
+                  >
+                    <Download />
                     Export
                   </Button>
-                  <Button onClick={() => navigator.clipboard?.writeText(location.href)}>
+                  <Button
+                    size="sm"
+                    aria-label="Share the dashboard"
+                    onClick={() => navigator.clipboard?.writeText(location.href)}
+                  >
+                    <Share2 />
                     Share
                   </Button>
                 </>
@@ -175,67 +277,21 @@ export default function Miro() {
             <Agenda bookings={appointments.slice(5)} onCreate={() => setCreate(true)} />
           ) : ["Customers", "Staff", "Payments"].includes(active) ? (
             <ClinicSidebar active={active} data={clinicRecords} onSelect={setClinicRecord} />
+          ) : active === "Calendar" ? (
+            <MiroCalendarSidebar
+              calendar={chairCalendar}
+              chairs={settings.chairs}
+              appointments={appointments}
+              onCreate={() => setCreate(true)}
+              onChairChange={settings.updateChair}
+            />
           ) : (
-            <>
-              <div className="bt-row">
-                <strong>Open Time</strong>
-                <Clock size={16} />
-              </div>
-              <div>
-                <div className="flex justify-between">
-                  <span>Today · 22 Oct</span>
-                  <Badge variant="outline">18 slots</Badge>
-                </div>
-                <strong className="bt-stat-value">
-                  27h 30m{" "}
-                  <small className="text-xs text-muted-foreground font-normal">
-                    still sellable
-                  </small>
-                </strong>
-                <div className="bt-progress mt-2 mb-2">
-                  <i style={{ width: "70%" }} />
-                </div>
-                <small className="text-muted-foreground">Across 5 chairs that ran</small>
-              </div>
-              <div className="bt-row">
-                <span className="text-xs text-muted-foreground">OPEN BY CHAIR</span>
-                <Badge variant="outline">5 of 9</Badge>
-              </div>
-              <strong>⌄ Chairs that ran</strong>
-              <div className="bt-chair-list">
-                {doctors.map((d, i) => (
-                  <div key={d}>
-                    <span>{d}</span>
-                    <Badge variant="outline">{["6h 45m", "6h", "7h 15m", "3h", "4h 30m"][i]}</Badge>
-                  </div>
-                ))}
-              </div>
-              <div className="bt-row">
-                <span className="text-xs text-muted-foreground">OPEN SLOTS · 30M+</span>
-                <Badge variant="outline">18</Badge>
-              </div>
-              {doctors.map((d, i) => (
-                <button className="bt-open-slot text-left" key={d} onClick={() => setCreate(true)}>
-                  {
-                    [
-                      "8:00 AM to 8:30 AM",
-                      "8:00 AM to 9:00 AM",
-                      "8:00 AM to 10:15 AM",
-                      "8:45 AM to 9:15 AM",
-                      "9:00 AM to 9:30 AM",
-                    ][i]
-                  }
-                  <small>{d} · 30m</small>
-                </button>
-              ))}
-              <Button variant="ghost" onClick={() => setActive("Appointments")}>
-                Show all 18
-              </Button>
-              <Button onClick={() => setCreate(true)}>+ Book the first open slot</Button>
-              <Button variant="outline" onClick={() => setActive("Calendar")}>
-                Open the board on this day
-              </Button>
-            </>
+            <MiroDashboardSidebar
+              chairs={settings.chairs}
+              onCreate={() => setCreate(true)}
+              onShowAll={() => setActive("Appointments")}
+              onOpenBoard={() => setActive("Calendar")}
+            />
           )
         }
       >
@@ -310,36 +366,44 @@ export default function Miro() {
                   })}
                 </div>
                 <div className="bt-grid-2">
-                  <Panel
-                    title="Procedure Mix"
-                    description="Chair Demand"
-                    action={
-                      <span className="text-xs text-muted-foreground">
-                        ● Completed　● Scheduled
-                      </span>
-                    }
-                  >
-                    <Bars
-                      multi
-                      labels={[
-                        "Checkup",
-                        "Scaling",
-                        "Whitening",
-                        "Filling",
-                        "Extraction",
-                        "Crown",
-                        "Braces",
-                        "Implant",
-                      ]}
-                    />
-                  </Panel>
-                  <Panel
-                    title="Patient Volume"
-                    description="Appointments and new patients"
-                    action={<Badge variant="outline">+12.8%</Badge>}
-                  >
-                    <Area />
-                  </Panel>
+                  <Card className="miro-chart-card">
+                    <CardContent>
+                      <div className="miro-chart-heading">
+                        <div>
+                          <h2>Procedure Mix</h2>
+                          <p>Chair Demand</p>
+                        </div>
+                        <span className="text-xs text-muted-foreground">
+                          ● Completed　● Scheduled
+                        </span>
+                      </div>
+                      <Bars
+                        multi
+                        labels={[
+                          "Checkup",
+                          "Scaling",
+                          "Whitening",
+                          "Filling",
+                          "Extraction",
+                          "Crown",
+                          "Braces",
+                          "Implant",
+                        ]}
+                      />
+                    </CardContent>
+                  </Card>
+                  <Card className="miro-chart-card">
+                    <CardContent>
+                      <div className="miro-chart-heading">
+                        <div>
+                          <h2>Patient Volume</h2>
+                          <p>Appointments and new patients</p>
+                        </div>
+                        <Badge variant="outline">+12.8%</Badge>
+                      </div>
+                      <Area />
+                    </CardContent>
+                  </Card>
                 </div>
                 <DayBreakdown />
               </>
@@ -351,98 +415,46 @@ export default function Miro() {
                 onCreate={() => setCreate(true)}
               />
             ) : active === "Calendar" ? (
-              <>
-                <div className="bt-toolbar">
-                  <Input
-                    placeholder="Search appointments..."
-                    aria-label="Search appointments"
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                  />
-                  <Button variant="outline" onClick={() => setActive("Appointments")}>
-                    {active === "Calendar" ? "List view" : "Chair board"}
-                  </Button>
-                </div>
-                {active === "Calendar" ? (
-                  <Panel
-                    title="Chair board"
-                    description={`Thursday, 22 October · ${miroHourLabel(settings.hours.opens)}–${miroHourLabel(settings.hours.closes)}`}
-                  >
-                    <div className="bt-appointment-board">
-                      <div>
-                        <strong>Time</strong>
-                        {boardHours.map((x) => (
-                          <span key={x}>{x}</span>
-                        ))}
-                      </div>
-                      {visibleChairs.map((chair) => (
-                        <div key={chair.id}>
-                          <strong>{chair.name.replace("Dr. ", "")}</strong>
-                          {appointments
-                            .filter((a) => a.doctor === chair.name)
-                            .map((a) => (
-                              <button
-                                className="bt-appointment-block"
-                                key={a.patient}
-                                onClick={() => {
-                                  setAppointments((x) =>
-                                    x.map((p) => (p === a ? { ...p, status: "Arrived" } : p)),
-                                  );
-                                  toast.success(`${a.patient} checked in`);
-                                }}
-                              >
-                                {a.time}
-                                <strong>{a.patient}</strong>
-                                {a.procedure}
-                                <br />
-                                {a.status}
-                              </button>
-                            ))}
-                          <Button variant="outline" size="sm" onClick={() => setCreate(true)}>
-                            + Book slot
-                          </Button>
-                        </div>
-                      ))}
-                    </div>
-                  </Panel>
-                ) : (
-                  <Panel
-                    title="Appointments"
-                    description={`${appointments.length} bookings on your schedule`}
-                  >
-                    <DataTable
-                      onReset={() => setQuery("")}
+              <div className="miro-board-page">
+                <Tabs defaultValue="calendar" orientation="horizontal" className="miro-board-tabs">
+                  <TabsList variant="line">
+                    <TabsTrigger value="calendar">Calendar</TabsTrigger>
+                    <TabsTrigger value="history">Log History</TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="calendar">
+                    <MiroChairBoard
+                      calendar={chairCalendar}
+                      appointments={appointments}
+                      chairs={settings.chairs}
                       query={query}
-                      columns={["Patient", "Doctor", "Procedure", "Time", "Status"]}
-                      rows={appointments.map((a) => [
-                        a.patient,
-                        a.doctor,
-                        a.procedure,
-                        a.time,
-                        a.status,
-                      ])}
-                      onRow={(i) => {
-                        setAppointments((x) =>
-                          x.map((a, j) =>
-                            j === i
-                              ? {
-                                  ...a,
-                                  status:
-                                    a.status === "Arrived"
-                                      ? "In Chair"
-                                      : a.status === "In Chair"
-                                        ? "Completed"
-                                        : "Arrived",
-                                }
-                              : a,
+                      onQueryChange={setQuery}
+                      statuses={boardStatuses}
+                      onStatusesChange={setBoardStatuses}
+                      onChairChange={settings.updateChair}
+                      onCreate={() => setCreate(true)}
+                      onCheckIn={(booking, index) => {
+                        setAppointments((current) =>
+                          current.map((item, position) =>
+                            position === index ? { ...item, status: "Arrived" } : item,
                           ),
                         );
-                        toast.success("Appointment status updated");
+                        toast.success(`${booking.patient} checked in`);
                       }}
                     />
-                  </Panel>
-                )}
-              </>
+                  </TabsContent>
+                  <TabsContent value="history">
+                    <div className="miro-board-history">
+                      <DataTable
+                        columns={["Activity"]}
+                        rows={activities.map((activity) => [
+                          miroAlertTypes.find((item) => item.id === activity.type)?.label ??
+                            "Clinic activity",
+                        ])}
+                      />
+                    </div>
+                  </TabsContent>
+                </Tabs>
+              </div>
             ) : null}
           </>
         )}

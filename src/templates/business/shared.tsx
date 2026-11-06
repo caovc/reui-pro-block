@@ -279,6 +279,7 @@ function ShellContent({
   accountMenuContent,
   surgeSidebarAccount,
   manifestSidebarAccount,
+  miroSidebarAccount,
   sidebarSide = "left",
   showTooltips = true,
 }: {
@@ -302,6 +303,7 @@ function ShellContent({
   accountMenuContent?: ReactNode;
   surgeSidebarAccount?: ReactNode;
   manifestSidebarAccount?: ReactNode;
+  miroSidebarAccount?: ReactNode;
   sidebarSide?: "left" | "right";
   reduceAnimations?: boolean;
   showTooltips?: boolean;
@@ -318,7 +320,7 @@ function ShellContent({
   const closeNavigation = () => setOpenMobile(false);
   function select(value: string) {
     setActive(value);
-    closeNavigation();
+    if (id !== "miro") closeNavigation();
   }
   const accountName = account?.name || (id === "cohort" ? "Bruno Duarte" : "Nick Bold");
   const accountOrganisation =
@@ -328,6 +330,8 @@ function ShellContent({
       surgeSidebarAccount
     ) : id === "manifest" && manifestSidebarAccount ? (
       manifestSidebarAccount
+    ) : id === "miro" && miroSidebarAccount ? (
+      miroSidebarAccount
     ) : id === "atlas" ? (
       <AtlasAccountControl
         name={accountName}
@@ -582,7 +586,12 @@ function ShellContent({
     <header
       className={`bt-topbar${id === "atlas" ? " atlas-topbar" : id === "cohort" ? " cohort-topbar" : id === "surge" ? " surge-topbar" : id === "manifest" ? " manifest-topbar" : ""}`}
     >
-      {isMobile && <SidebarTrigger className="bt-mobile-menu" aria-label="Open menu" />}
+      {isMobile && (
+        <SidebarTrigger
+          className="bt-mobile-menu"
+          aria-label={id === "miro" ? "Toggle Sidebar" : "Open menu"}
+        />
+      )}
       {collapsed && rail && !isMobile && (
         <SidebarTrigger className="bt-expand-trigger" aria-label="Expand sidebar" />
       )}
@@ -637,13 +646,36 @@ function ShellContent({
       width={isMobile || id === "miro" ? 48 : 63}
       className={`bt-icon-rail bt-layout-rail${isMobile ? " bt-mobile-icon-rail" : ""}`}
       aria-label={`${brand} applications`}
-      header={<Mark />}
+      header={
+        id === "miro" && pageHref ? (
+          <a
+            href={pageHref("Dashboard")}
+            aria-label="Bricklane Clinic, back to the dashboard"
+            onClick={(event) => {
+              if (
+                event.button !== 0 ||
+                event.metaKey ||
+                event.ctrlKey ||
+                event.shiftKey ||
+                event.altKey
+              )
+                return;
+              event.preventDefault();
+              select("Dashboard");
+            }}
+          >
+            <Mark />
+          </a>
+        ) : (
+          <Mark />
+        )
+      }
       footer={
         <>
           {id === "miro" && (
             <>
               {notifications !== undefined ? notifications : <BusinessNotifications />}
-              <SearchPalette label="Search navigation" iconOnly routes={items} onSelect={select} />
+              <SearchPalette label="Search" iconOnly routes={items} onSelect={select} />
               <SidebarMenu>
                 <SidebarMenuItem>
                   <SidebarRailButton label="Settings" active={active === "Settings"}>
@@ -690,8 +722,12 @@ function ShellContent({
             className="bt-sidebar shell-reference"
             aria-label={`${brand} navigation`}
             mobileClassName={`reui-reference bt-app bt-sidebar-mobile bt-layout-mobile bt-${id}${id === "atlas" ? " shell-reference" : ""}${rail ? " bt-mobile-with-rail" : ""}`}
-            mobileTitle={id === "manifest" ? "Sidebar" : brand}
-            {...(id === "manifest" ? { mobileDescription: "Displays the mobile sidebar." } : {})}
+            mobileTitle={id === "miro" ? "Sidebar" : id === "manifest" ? "Sidebar" : brand}
+            {...(id === "miro"
+              ? { mobileDescription: "Displays the mobile sidebar." }
+              : id === "manifest"
+                ? { mobileDescription: "Displays the mobile sidebar." }
+                : {})}
             mobileShowCloseButton={!commerce && id !== "miro" && id !== "atlas" && id !== "cohort"}
             mobileWidth={
               id === "cohort"

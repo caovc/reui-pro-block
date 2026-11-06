@@ -81,7 +81,7 @@ for (const id of ["surge", "manifest"]) {
 
 test("Miro booking sheet preserves the reference fields and saves a booking", async ({ page }) => {
   await open(page, "miro");
-  await page.getByRole("button", { name: "+ Book the first open slot", exact: true }).click();
+  await page.getByRole("button", { name: "Book the first open slot", exact: true }).click();
   const sheet = page.getByRole("dialog", { name: "New Booking" });
   await expect(sheet.getByRole("combobox", { name: "Procedure", exact: true })).toBeVisible();
   await expect(sheet.getByRole("combobox", { name: "Practitioner", exact: true })).toBeVisible();
@@ -94,6 +94,29 @@ test("Miro booking sheet preserves the reference fields and saves a booking", as
   await expect(
     page.getByRole("button", { name: /Harriet Pemberton.*Implant Fitting/ }),
   ).toBeVisible();
+  // The real form emits AM/PM values; the resource diary must retain this booking too.
+  await page
+    .locator(".bt-layout-rail")
+    .getByRole("button", { name: "Calendar", exact: true })
+    .click();
+  const resourceEvent = page
+    .locator('.miro-chair-calendar [data-slot="event-calendar-event"]')
+    .filter({ hasText: "Harriet Pemberton" });
+  await expect(resourceEvent).toHaveCount(1);
+  await expect(resourceEvent).toBeVisible();
+  await resourceEvent.click();
+  const bookingPreview = page.getByRole("dialog", { name: "Harriet Pemberton", exact: true });
+  await expect(bookingPreview).toContainText("8:00 AM – 8:30 AM");
+  await expect(bookingPreview).toContainText("30 minutes");
+  await page.keyboard.press("Escape");
+  await expect(page.locator(".miro-chair-preview")).toHaveCount(0);
+  await page
+    .locator(".bt-layout-rail")
+    .getByRole("button", { name: "Dashboard", exact: true })
+    .click();
+  await expect(
+    page.locator('.bt-grid-4 > [data-slot="card"]').filter({ hasText: "Booked Today" }),
+  ).toContainText("17");
 });
 
 test("Filespace stores access changes per file after reopening the share sheet", async ({

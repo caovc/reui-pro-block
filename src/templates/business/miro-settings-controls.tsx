@@ -1,17 +1,15 @@
 import type { ReactNode } from "react";
 import {
-  Frame,
-  FrameFooter,
-  FrameHeader,
-  FramePanel,
-  FrameTitle,
-  FrameDescription,
-} from "@/components/reui/frame";
+  Card,
+  CardFooter,
+  CardHeader,
+  CardContent,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { NumberField, NumberFieldGroup, NumberFieldInput } from "@/components/reui/number-field";
-import {
-  SettingsChoice,
-  SettingsRow,
-} from "@/blocks/application/dialog-variants/workspace/settings-panel";
+import { SettingsChoice } from "@/blocks/application/dialog-variants/workspace/settings-panel";
+import { MiroSettingsField, MiroSettingsFields } from "./miro-settings-fields";
 import { Button } from "@/components/ui/button";
 import { FieldError } from "@/components/ui/field";
 import { InputGroup, InputGroupAddon } from "@/components/ui/input-group";
@@ -44,14 +42,16 @@ export function MiroSettingsCard({
   footer?: ReactNode;
 }) {
   return (
-    <Frame className="miro-settings-card">
-      <FrameHeader>
-        <FrameTitle>{title}</FrameTitle>
-        <FrameDescription>{description}</FrameDescription>
-      </FrameHeader>
-      <FramePanel>{children}</FramePanel>
-      {footer && <FrameFooter className="miro-settings-actions flex-row">{footer}</FrameFooter>}
-    </Frame>
+    <Card className="miro-settings-card">
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
+        <CardDescription>{description}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <MiroSettingsFields legend={title}>{children}</MiroSettingsFields>
+      </CardContent>
+      {footer && <CardFooter className="miro-settings-actions flex-row">{footer}</CardFooter>}
+    </Card>
   );
 }
 const hourLabel = (hour: number) => `${hour % 12 || 12}:00 ${hour % 24 < 12 ? "am" : "pm"}`;
@@ -71,9 +71,9 @@ export function MiroHoursSettings({ model }: { model: MiroSettingsModel }) {
   return (
     <MiroSettingsCard
       title="Opening hours"
-      description="The opening and closing hours shown on your appointment calendars."
+      description="The window both calendars draw, and the day capacity is measured against."
     >
-      <SettingsRow
+      <MiroSettingsField
         id="miro-opens"
         title="Opens"
         description="The first hour on the board, and where it scrolls to."
@@ -86,8 +86,8 @@ export function MiroHoursSettings({ model }: { model: MiroSettingsModel }) {
           onChange={(label) => model.setOpeningHour(opens.indexOf(label))}
           describedBy="miro-opens-description"
         />
-      </SettingsRow>
-      <SettingsRow
+      </MiroSettingsField>
+      <MiroSettingsField
         id="miro-closes"
         title="Closes"
         description="The last hour drawn. Only hours after opening are offered, so the day cannot invert."
@@ -100,7 +100,7 @@ export function MiroHoursSettings({ model }: { model: MiroSettingsModel }) {
           onChange={(label) => model.setClosingHour(model.hours.opens + closes.indexOf(label) + 1)}
           describedBy="miro-closes-description"
         />
-      </SettingsRow>
+      </MiroSettingsField>
     </MiroSettingsCard>
   );
 }
@@ -111,7 +111,7 @@ export function MiroChairsSettings({ model }: { model: MiroSettingsModel }) {
       description={`${model.chairs.filter((chair) => chair.visible).length} of ${model.chairs.length} on the board.`}
     >
       {model.chairs.map((chair) => (
-        <SettingsRow
+        <MiroSettingsField
           key={chair.id}
           title={chair.name}
           description={chair.specialty}
@@ -144,7 +144,7 @@ export function MiroChairsSettings({ model }: { model: MiroSettingsModel }) {
             checked={chair.visible}
             onCheckedChange={(visible) => model.updateChair(chair.id, { visible })}
           />
-        </SettingsRow>
+        </MiroSettingsField>
       ))}
     </MiroSettingsCard>
   );
@@ -174,7 +174,7 @@ export function MiroProcedureSettings({ model }: { model: MiroSettingsModel }) {
         }
       >
         {miroProcedures.map((procedure) => (
-          <SettingsRow
+          <MiroSettingsField
             key={procedure.id}
             id={`miro-price-${procedure.id}`}
             title={procedure.name}
@@ -207,7 +207,7 @@ export function MiroProcedureSettings({ model }: { model: MiroSettingsModel }) {
                 {model.priceErrors[procedure.id]}
               </FieldError>
             )}
-          </SettingsRow>
+          </MiroSettingsField>
         ))}
       </MiroSettingsCard>
     </form>
@@ -221,7 +221,7 @@ export function MiroBillingSettings({ model }: { model: MiroSettingsModel }) {
       title="Billing"
       description="The terms every invoice is raised on and aged against."
     >
-      <SettingsRow
+      <MiroSettingsField
         id="miro-payment-terms"
         title="Payment terms"
         description="Counted from the day the chair ran. Changing it re-ages every invoice in the ledger."
@@ -234,8 +234,8 @@ export function MiroBillingSettings({ model }: { model: MiroSettingsModel }) {
           describedBy="miro-payment-terms-description"
           onChange={(value) => model.setPaymentTerms(miroPaymentTerms[labels.indexOf(value)])}
         />
-      </SettingsRow>
-      <SettingsRow
+      </MiroSettingsField>
+      <MiroSettingsField
         title="Outstanding today"
         description="What these terms leave unpaid across the whole ledger."
         className="miro-setting-summary"
@@ -243,8 +243,8 @@ export function MiroBillingSettings({ model }: { model: MiroSettingsModel }) {
         <span>
           {dollars(summary.outstanding)} over {summary.outstandingCount} invoices
         </span>
-      </SettingsRow>
-      <SettingsRow
+      </MiroSettingsField>
+      <MiroSettingsField
         title="Past due today"
         description="Invoices these terms have already made late."
         className="miro-setting-summary"
@@ -254,7 +254,7 @@ export function MiroBillingSettings({ model }: { model: MiroSettingsModel }) {
             ? `${dollars(summary.pastDue)} over ${summary.pastDueCount} invoices`
             : "None"}
         </span>
-      </SettingsRow>
+      </MiroSettingsField>
     </MiroSettingsCard>
   );
 }
@@ -265,7 +265,7 @@ export function MiroNotificationSettings({ model }: { model: MiroSettingsModel }
       description="The board logs every one of these. Choose which reach the bell."
     >
       {miroAlertTypes.map((alert) => (
-        <SettingsRow
+        <MiroSettingsField
           key={alert.id}
           id={`miro-alert-${alert.id}`}
           title={alert.label}
@@ -278,7 +278,7 @@ export function MiroNotificationSettings({ model }: { model: MiroSettingsModel }
             checked={model.alerts[alert.id]}
             onCheckedChange={(value) => model.setAlert(alert.id, value)}
           />
-        </SettingsRow>
+        </MiroSettingsField>
       ))}
     </MiroSettingsCard>
   );

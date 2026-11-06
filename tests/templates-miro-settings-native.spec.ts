@@ -19,7 +19,7 @@ async function navigation(page: Page) {
   if ((page.viewportSize()?.width ?? 1440) >= 768) return page.locator(".bt-layout-rail");
   const drawer = page.locator(".bt-layout-mobile");
   if (!(await drawer.isVisible())) {
-    await page.getByRole("button", { name: "Open menu", exact: true }).click();
+    await page.getByRole("button", { name: "Toggle Sidebar", exact: true }).click();
   }
   await expect(drawer).toBeVisible();
   return drawer;
@@ -29,7 +29,11 @@ async function navigate(page: Page, name: string) {
   const menu = await navigation(page);
   await menu.getByRole("button", { name, exact: true }).click();
   if ((page.viewportSize()?.width ?? 1440) < 768) {
+    // Ordinary Miro navigation retains the native Sheet until the user dismisses it.
+    await expect(page.locator(".bt-layout-mobile")).toBeVisible();
+    await page.keyboard.press("Escape");
     await expect(page.locator(".bt-layout-mobile")).toBeHidden();
+    await expect(page.getByRole("button", { name: "Toggle Sidebar", exact: true })).toBeFocused();
   }
 }
 
@@ -45,7 +49,7 @@ async function configuration(page: Page, name: string) {
     // Configuration tabs intentionally keep the native drawer open. The user closes it.
     await page.keyboard.press("Escape");
     await expect(page.locator(".bt-layout-mobile")).toBeHidden();
-    await expect(page.getByRole("button", { name: "Open menu", exact: true })).toBeFocused();
+    await expect(page.getByRole("button", { name: "Toggle Sidebar", exact: true })).toBeFocused();
   }
   const panel = page.locator('.miro-settings > [data-slot="tabs-content"][data-state="active"]');
   await expect(panel).toBeVisible();
@@ -64,10 +68,10 @@ async function select(page: Page, trigger: Locator, option: string) {
 
 async function accountIdentity(page: Page, name: string, hasPhoto: boolean) {
   const menu = await navigation(page);
-  const account = menu.getByRole("button", { name: `Open account menu for ${name}`, exact: true });
+  const account = menu.getByRole("button", { name: `Open profile for ${name}`, exact: true });
   await expect(account).toBeVisible();
-  await expect(account.locator(".bt-avatar img")).toHaveCount(hasPhoto ? 1 : 0);
-  if (!hasPhoto) await expect(account.locator(".bt-avatar")).toHaveText("MS");
+  await expect(account.locator(".miro-account-avatar img")).toHaveCount(hasPhoto ? 1 : 0);
+  if (!hasPhoto) await expect(account.locator(".miro-account-avatar")).toHaveText("MS");
   if ((page.viewportSize()?.width ?? 1440) < 768) {
     await page.keyboard.press("Escape");
     await expect(page.locator(".bt-layout-mobile")).toBeHidden();
@@ -154,7 +158,7 @@ for (const width of [1440, 390]) {
       "4 PM",
     ]);
     await page
-      .locator(".bt-content")
+      .locator(".bt-topbar")
       .getByRole("button", { name: "New Appointment", exact: true })
       .click();
     const booking = page.getByRole("dialog", { name: "New Booking", exact: true });

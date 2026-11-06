@@ -1,0 +1,148 @@
+/* Miro-only geometry over ReUI's actual Card and Field components.
+ * Content owns its natural height; outer page padding belongs to miro-layout. */
+.miro-settings-card[data-slot="card"] {
+  gap: 0;
+  border: 0;
+  padding: 0;
+  background: var(--card);
+  color: var(--card-foreground);
+}
+.miro-settings-card > [data-slot="card-header"] {
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  padding: 12px 20px 16px;
+}
+.bt-app.bt-layout.bt-miro .miro-settings-card [data-slot="card-title"] {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 22px;
+}
+.miro-settings-card [data-slot="card-description"] {
+  font-size: 14px;
+  line-height: 20px;
+}
+.miro-settings-card > [data-slot="card-content"] {
+  min-width: 0;
+  padding: 0;
+}
+.miro-settings-card .miro-settings-fields,
+.miro-settings-card .miro-settings-field-group {
+  min-width: 0;
+  gap: 0;
+}
+.miro-settings-card .miro-settings-field {
+  min-width: 0;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 16px;
+  padding: 12px 20px;
+}
+.miro-settings-field > .miro-settings-field-label {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
+}
+.miro-settings-field-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.miro-settings-card [data-slot="field-label"] {
+  width: fit-content;
+  gap: 8px;
+  font-weight: 500;
+  line-height: 14px;
+}
+.miro-settings-card [data-slot="field-description"] {
+  line-height: 21px;
+}
+.miro-settings-field > .miro-settings-field-control {
+  min-width: 0;
+  width: 100%;
+  gap: 2px;
+}
+.miro-settings-card .miro-profile-details {
+  min-width: 0;
+  gap: 12px;
+}
+.miro-settings-card .miro-profile-details-group {
+  min-width: 0;
+  gap: 16px;
+}
+.miro-profile-details-group > [data-slot="field"] {
+  gap: 8px;
+}
+.miro-profile-details-group > [data-slot="field"] > [data-slot="field-label"] {
+  width: 100%;
+}
+.miro-settings-card .miro-verified {
+  height: 20px;
+  gap: 4px;
+  border-radius: 4px;
+  padding: 2px 5px;
+  line-height: 16px;
+}
+.miro-settings-card .workspace-settings-avatar button {
+  height: 28px;
+  min-height: 28px;
+  padding: 4px 10px;
+}
+.miro-settings-card .miro-settings-actions {
+  min-height: 0;
+  flex-wrap: nowrap;
+  padding: 12px 20px;
+  background: color-mix(in oklab, var(--muted) 50%, transparent);
+}
+.miro-settings-actions > button {
+  height: 32px;
+  min-height: 32px;
+  font-size: 14px;
+  line-height: 20px;
+}
+.miro-setting-compact > .miro-settings-field-control {
+  align-items: flex-end;
+}
+.miro-setting-compact > .miro-settings-field-control > [data-slot="select-trigger"] {
+  width: 160px;
+  max-width: 100%;
+}
+.miro-chair-row > .miro-settings-field-control {
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+}
+.miro-setting-summary > .miro-settings-field-control {
+  font-size: 14px;
+  line-height: 20px;
+}
+.miro-alert-row > .miro-settings-field-control {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.miro-alert-row > .miro-settings-field-control > span {
+  color: var(--muted-foreground);
+}
+@container field-group (min-width: 28rem) {
+  .miro-settings-card .miro-settings-field {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+  .miro-settings-field > .miro-settings-field-label {
+    width: 384px;
+    flex: 0 1 384px;
+  }
+  .miro-settings-field > .miro-settings-field-control {
+    width: 312px;
+    flex: 1 1 312px;
+  }
+  .miro-chair-row > .miro-settings-field-control {
+    justify-content: flex-end;
+  }
+  .miro-setting-summary > .miro-settings-field-control {
+    align-items: flex-end;
+  }
+}

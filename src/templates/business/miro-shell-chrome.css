@@ -1,0 +1,479 @@
+/* Miro consumer chrome. Native free primitives own keyboard, focus and state. */
+.miro-secondary-sidebar {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  min-height: 0;
+  flex-direction: column;
+  color: var(--foreground);
+  background: var(--background);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.miro-secondary-header {
+  display: flex;
+  min-height: 50px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.miro-secondary-header > strong {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.miro-secondary-header > svg {
+  width: 16px;
+  height: 16px;
+}
+
+.miro-secondary-sidebar .miro-secondary-scroll {
+  min-height: 0;
+  flex: 1;
+}
+
+.miro-secondary-sidebar .miro-sidebar-section {
+  gap: 0;
+  padding: 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.miro-sidebar-section-heading {
+  display: flex;
+  min-height: 30px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 4px 4px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.miro-sidebar-section-heading > span:first-child {
+  text-transform: uppercase;
+}
+
+.miro-sidebar-count {
+  display: inline-flex;
+  min-width: 18px;
+  height: 20px;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--muted-foreground);
+  background: var(--background);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  white-space: nowrap;
+}
+
+.miro-chair-group .miro-chair-group-trigger {
+  height: 28px;
+  gap: 6px;
+  padding: 4px 6px;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.miro-chair-group-trigger > span:nth-child(2) {
+  min-width: 0;
+  flex: 1;
+}
+
+.miro-chair-group-trigger > svg {
+  width: 12px;
+  height: 12px;
+  transform: rotate(-90deg);
+}
+
+.miro-chair-group-trigger[data-state="open"] {
+  background: var(--muted);
+}
+
+.miro-chair-group-trigger[data-state="open"] > svg {
+  transform: none;
+}
+
+.miro-chair-choice,
+.miro-open-chair {
+  display: flex;
+  min-height: 36px;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 4px 6px 20px;
+}
+
+.miro-chair-choice > [data-slot="label"],
+.miro-open-chair > span:nth-child(2) {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.miro-chair-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+
+.miro-secondary-sidebar .miro-show-every-chair {
+  min-height: 32px;
+  color: var(--muted-foreground);
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.miro-mini-calendar-wrap {
+  flex-shrink: 0;
+  padding: 8px 4px;
+  border-bottom: 1px solid var(--border);
+}
+
+.miro-mini-calendar-wrap .miro-mini-calendar {
+  width: 100%;
+  margin-top: 32px;
+  padding: 0;
+}
+
+.miro-mini-calendar .rdp-month_caption {
+  width: fit-content;
+  max-width: calc(100% - 72px);
+  position: absolute;
+  top: -32px;
+  left: 0;
+  justify-content: flex-start;
+  padding: 0 8px;
+}
+
+.miro-mini-calendar .rdp-nav {
+  top: -32px;
+  right: 8px;
+  left: auto;
+  width: auto;
+  gap: 4px;
+}
+
+.miro-calendar-booked button::before {
+  position: absolute;
+  top: 4px;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: currentColor;
+  content: "";
+}
+
+.miro-up-next-booking,
+.miro-open-slot {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: auto;
+  min-height: 52px;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2px;
+  margin: 2px 0;
+  padding: 6px 8px 6px 24px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.miro-up-next-booking::before,
+.miro-open-slot::before {
+  position: absolute;
+  top: 8px;
+  bottom: 8px;
+  left: 10px;
+  width: 4px;
+  border-radius: 2px;
+  background: var(--miro-booking-color);
+  content: "";
+}
+
+.miro-up-next-booking > strong,
+.miro-open-slot > strong {
+  width: 100%;
+  overflow: hidden;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.miro-up-next-booking > small,
+.miro-open-slot > small {
+  width: 100%;
+  overflow: hidden;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 16px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.miro-sidebar-empty {
+  padding: 12px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+
+.miro-account-navigation .miro-account-trigger {
+  width: 32px;
+  height: 32px;
+  justify-content: center;
+  padding: 4px;
+}
+
+.miro-account-avatar {
+  width: 24px;
+  height: 24px;
+}
+
+.miro-account-menu {
+  width: 224px;
+  max-width: calc(100vw - 16px);
+}
+
+.miro-account-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+}
+
+.miro-account-summary-avatar {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+.miro-account-summary > span {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.miro-account-summary strong,
+.miro-account-summary small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.miro-account-summary strong {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.miro-account-summary small {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+}
+
+.miro-account-menu .miro-account-theme-row {
+  min-height: 36px;
+}
+
+.miro-account-theme-options {
+  display: flex;
+  width: auto;
+  flex-shrink: 0;
+  gap: 2px;
+  margin-left: auto;
+}
+
+.miro-account-theme-option {
+  position: relative;
+  display: flex;
+  width: 24px;
+  height: 24px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--muted-foreground);
+  cursor: pointer;
+}
+
+.miro-account-theme-option > [data-slot="radio-group-item"] {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  opacity: 0;
+}
+
+.miro-account-theme-option > [data-slot="radio-group-item"]::after {
+  inset: 0;
+}
+
+.miro-account-theme-option > svg {
+  pointer-events: none;
+  width: 14px;
+  height: 14px;
+}
+
+.miro-account-theme-option:has([data-state="checked"]) {
+  color: var(--foreground);
+  background: var(--background);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.15);
+}
+
+.miro-account-theme-option:has(:focus-visible) {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.miro-open-time-summary {
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.miro-open-time-summary > div:first-child {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.miro-open-time-summary > div:first-child strong {
+  font-weight: 500;
+}
+
+.miro-open-time-summary p {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin: 0;
+}
+
+.miro-open-time-summary p > strong {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 28px;
+}
+
+.miro-open-time-summary small,
+.miro-open-time-footer {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.miro-open-time-summary [data-slot="progress"] {
+  height: 6px;
+  background: var(--success);
+}
+
+.miro-open-time-summary [data-slot="progress-indicator"] {
+  background: var(--foreground);
+}
+
+.miro-secondary-sidebar .miro-show-all-slots {
+  height: 32px;
+  justify-content: flex-start;
+  color: var(--muted-foreground);
+  font-weight: 400;
+}
+
+.miro-open-time-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.miro-open-time-actions > button {
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.miro-open-time-footer {
+  display: flex;
+  min-height: 52px;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-top: 1px solid var(--border);
+}
+
+.miro-open-time-footer > svg {
+  width: 16px;
+  height: 16px;
+}
+
+.miro-open-time-footer > span {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 767px) {
+  .miro-calendar-sidebar .miro-secondary-header {
+    min-height: 29px;
+    padding-block: 2px;
+  }
+}
+
+/* Existing shell topology remains rail48 + independent secondary302. */
+.bt-layout.bt-miro .bt-sidebar .reui-sidebar-content:has(> .miro-secondary-sidebar),
+.bt-layout-mobile.bt-miro .reui-sidebar-content:has(> .miro-secondary-sidebar) {
+  min-height: 0;
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.bt-layout.bt-miro .bt-topbar {
+  height: 50px;
+  min-height: 50px;
+  flex-shrink: 0;
+  padding: 6px 16px;
+}
+
+:is(.bt-layout.bt-miro, .bt-layout-mobile.bt-miro) .bt-layout-rail {
+  background: var(--sidebar);
+  border-right: 1px solid var(--border);
+}
+
+/* Reserve the actual 48px mobile rail beside the contextual ScrollArea. */
+.bt-layout-mobile.bt-miro.bt-mobile-with-rail
+  > div
+  > .reui-sidebar-content:has(> .miro-secondary-sidebar) {
+  padding-left: 48px;
+}
+
+/* Keep the native ScrollArea content table within this vertical contextual pane.
+   Fixed table layout lets the existing min-width:0 flex labels truncate naturally. */
+.miro-secondary-sidebar .miro-secondary-scroll [data-slot="scroll-area-viewport"] > div {
+  width: 100%;
+  table-layout: fixed;
+}

@@ -26,7 +26,7 @@ async function navigation(page: Page) {
   if ((page.viewportSize()?.width ?? 1440) >= 768) return page.locator(".bt-layout-rail");
   const drawer = page.locator(".bt-layout-mobile");
   if (!(await drawer.isVisible())) {
-    await page.getByRole("button", { name: "Open menu", exact: true }).click();
+    await page.getByRole("button", { name: "Toggle Sidebar", exact: true }).click();
   }
   await expect(drawer).toBeVisible();
   return drawer;
@@ -36,7 +36,11 @@ async function navigate(page: Page, name: string) {
   const menu = await navigation(page);
   await menu.getByRole("button", { name, exact: true }).click();
   if ((page.viewportSize()?.width ?? 1440) < 768) {
+    // Ordinary Miro navigation retains the native Sheet until the user dismisses it.
+    await expect(page.locator(".bt-layout-mobile")).toBeVisible();
+    await page.keyboard.press("Escape");
     await expect(page.locator(".bt-layout-mobile")).toBeHidden();
+    await expect(page.getByRole("button", { name: "Toggle Sidebar", exact: true })).toBeFocused();
   }
 }
 
@@ -322,7 +326,9 @@ for (const width of [1440, 390]) {
         await expect(page.locator(".bt-layout-mobile")).toBeVisible();
         await page.keyboard.press("Escape");
         await expect(page.locator(".bt-layout-mobile")).toBeHidden();
-        await expect(page.getByRole("button", { name: "Open menu", exact: true })).toBeFocused();
+        await expect(
+          page.getByRole("button", { name: "Toggle Sidebar", exact: true }),
+        ).toBeFocused();
       }
       const finalPanel = page.getByRole("tabpanel", { name: "Notifications", exact: true });
       await expect(finalPanel).toBeVisible();

@@ -1,0 +1,238 @@
+/* Miro consumers only: the existing free Sidebar and calendar own scrolling. */
+.bt-app.bt-layout.bt-miro .bt-main {
+  min-height: 0;
+}
+
+.bt-app.bt-layout.bt-miro .bt-content {
+  padding: 18px;
+}
+
+.bt-app.bt-layout.bt-miro [data-slot="card"] {
+  border: 0;
+  box-shadow: var(--tw-ring-shadow);
+}
+
+.bt-app.bt-layout.bt-miro .bt-grid-4 > [data-slot="card"] {
+  height: auto;
+  padding: 12px 0;
+}
+
+.bt-app.bt-layout.bt-miro .bt-grid-4 > [data-slot="card"] > [data-slot="card-content"] {
+  padding: 0 12px;
+}
+
+.bt-app.bt-layout.bt-miro .bt-main:has(.miro-board-page) {
+  overflow: hidden;
+}
+
+.bt-app.bt-layout.bt-miro .bt-content:has(.miro-board-page) {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.miro-board-page {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+}
+
+.miro-board-tabs {
+  min-height: 0;
+  flex: 1;
+  gap: 0;
+}
+
+.bt-app.bt-layout.bt-miro .miro-board-tabs > [data-slot="tabs-list"] {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  min-height: 45px;
+  height: 45px;
+  flex: none;
+  justify-content: flex-start;
+  gap: 20px;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  padding: 0 16px;
+  background: var(--background);
+}
+
+.bt-app.bt-layout.bt-miro .miro-board-tabs > [data-slot="tabs-list"] > [data-slot="tabs-trigger"] {
+  width: auto;
+  flex: none;
+  border-radius: 0;
+  padding: 0;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.miro-board-tabs > [data-slot="tabs-content"] {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+}
+
+.miro-board-tabs > [data-slot="tabs-content"][hidden] {
+  display: none;
+}
+
+.miro-layout-heading {
+  min-width: 0;
+  overflow: hidden;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 24px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.miro-layout-month-short {
+  display: none;
+}
+
+.miro-board-history {
+  min-height: 0;
+  overflow: auto;
+  padding: 18px;
+}
+
+.bt-miro .miro-chart-card {
+  min-width: 0;
+  gap: 0;
+  border: 0;
+  padding: 0;
+}
+
+.bt-miro .miro-chart-card > [data-slot="card-content"] {
+  min-width: 0;
+  padding: 16px;
+}
+
+.miro-chart-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.miro-chart-heading h2 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+}
+
+.miro-chart-heading p {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.bt-app.bt-layout.bt-miro .miro-day-breakdown {
+  gap: 0;
+  border: 0;
+  padding: 0;
+}
+
+.bt-app.bt-layout.bt-miro .miro-day-breakdown > [data-slot="card-header"] {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid var(--border);
+  padding: 12px 16px 16px;
+}
+
+.bt-app.bt-layout.bt-miro .miro-day-breakdown > [data-slot="card-header"] > div:first-child {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.bt-app.bt-layout.bt-miro .miro-day-breakdown [data-slot="card-title"] {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+.bt-app.bt-layout.bt-miro .miro-day-breakdown [data-slot="card-description"] {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.bt-miro .miro-day-breakdown > [data-slot="card-content"] {
+  padding: 0;
+}
+
+.bt-app.bt-layout.bt-miro .miro-day-breakdown [data-slot="tabs-list"] {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 20px;
+  padding: 0 20px;
+}
+
+.bt-app.bt-layout.bt-miro .miro-day-breakdown [data-slot="tabs-trigger"] {
+  width: auto;
+  min-height: 40px;
+  flex: none;
+  padding: 0;
+}
+
+.bt-app.bt-layout.bt-miro .bt-main:has(.bt-miro-week) {
+  overflow: hidden;
+}
+
+.bt-app.bt-layout.bt-miro .bt-content:has(.bt-miro-week) {
+  min-height: 0;
+  flex: 1;
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.bt-miro .bt-content:has(.bt-miro-week) > .flex.justify-end {
+  display: none;
+}
+
+.bt-miro .bt-content > .bt-miro-week {
+  min-height: 0;
+  flex: 1;
+  border: 0;
+  border-radius: 0;
+}
+
+@media (max-width: 767px) {
+  .miro-layout-heading {
+    font-size: 16px;
+    line-height: 20px;
+  }
+
+  .miro-layout-month-long,
+  .miro-header-action-label {
+    display: none;
+  }
+
+  .miro-layout-month-short {
+    display: inline;
+  }
+}
+
+/* The retained shell header owns the title at every responsive width. */
+.bt-app.bt-layout.bt-miro .bt-content > .bt-heading {
+  display: none;
+}

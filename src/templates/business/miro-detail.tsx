@@ -19,7 +19,15 @@ import {
 } from "@/components/ui/sheet";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { Button, Input, Panel, Tabs, TabsList, TabsTrigger } from "./shared";
+import { Button, Input, Tabs, TabsList, TabsTrigger } from "./shared";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Choice, Tone } from "./fidelity";
 const doctors = miroClinicSeedDoctors;
 const groups = [
@@ -169,65 +177,69 @@ export function DayBreakdown() {
       }),
   });
   return (
-    <Panel
-      title="Day Breakdown"
-      description="Every booking on the sheet, against the state it is in."
-      className="bt-day-breakdown"
-      action={
-        <div className="bt-pills">
-          Bookings <Tone tone="neutral">17</Tone> Needs desk <Tone tone="amber">2</Tone>
+    <Card className="bt-day-breakdown miro-day-breakdown">
+      <CardHeader>
+        <div>
+          <CardTitle>Day Breakdown</CardTitle>
+          <CardDescription>Every booking on the sheet, against the state it is in.</CardDescription>
         </div>
-      }
-    >
-      <Tabs value={group} onValueChange={setGroup}>
-        <TabsList variant="line">
-          {["By chair", "By procedure", "By room"].map((x) => (
-            <TabsTrigger value={x} key={x}>
-              {x}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-      </Tabs>
-      <div className="bt-toolbar">
-        <Choice
-          label="Booking filter"
-          value={filter}
-          onChange={setFilter}
-          options={["Everything", "Booked", "Arrived", "In Chair", "Completed", "Cancelled"]}
-        />
-        <Input
-          placeholder="Search buckets"
-          aria-label="Search buckets"
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-        />
-        <label className="bt-pills ml-auto">
-          <Switch checked={notes} onCheckedChange={setNotes} />
-          Notes
-        </label>
-        <Button
-          variant="ghost"
-          onClick={() =>
-            setExpanded(
-              Object.values(expanded).some(Boolean) ? {} : { "0": true, "1": true, "2": true },
-            )
-          }
+        <CardAction>
+          <div className="bt-pills">
+            Bookings <Tone tone="neutral">17</Tone> Needs desk <Tone tone="amber">2</Tone>
+          </div>
+        </CardAction>
+      </CardHeader>
+      <CardContent>
+        <Tabs value={group} onValueChange={setGroup} orientation="horizontal">
+          <TabsList variant="line">
+            {["By chair", "By procedure", "By room"].map((x) => (
+              <TabsTrigger value={x} key={x}>
+                {x}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+        </Tabs>
+        <div className="bt-toolbar">
+          <Choice
+            label="Booking filter"
+            value={filter}
+            onChange={setFilter}
+            options={["Everything", "Booked", "Arrived", "In Chair", "Completed", "Cancelled"]}
+          />
+          <Input
+            placeholder="Search buckets"
+            aria-label="Search buckets"
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+          />
+          <label className="bt-pills ml-auto">
+            <Switch checked={notes} onCheckedChange={setNotes} />
+            Notes
+          </label>
+          <Button
+            variant="ghost"
+            onClick={() =>
+              setExpanded(
+                Object.values(expanded).some(Boolean) ? {} : { "0": true, "1": true, "2": true },
+              )
+            }
+          >
+            <ChevronsDownUp />
+            {Object.values(expanded).some(Boolean) ? "Collapse" : "Expand"}
+          </Button>
+        </div>
+        <DataGrid
+          table={table}
+          recordCount={11}
+          tableLayout={{ width: "auto", rowBorder: true, headerBorder: true }}
+          tableClassNames={{ base: "bt-heat-grid", bodyRow: "h-[53px]" }}
         >
-          <ChevronsDownUp />
-          {Object.values(expanded).some(Boolean) ? "Collapse" : "Expand"}
-        </Button>
-      </div>
-      <DataGrid
-        table={table}
-        recordCount={11}
-        tableLayout={{ width: "auto", rowBorder: true, headerBorder: true }}
-        tableClassNames={{ base: "bt-heat-grid", bodyRow: "h-[53px]" }}
-      >
-        <DataGridScrollArea>
-          <DataGridTable />
-        </DataGridScrollArea>
-      </DataGrid>
-    </Panel>
+          <DataGridScrollArea>
+            <DataGridTable />
+          </DataGridScrollArea>
+        </DataGrid>
+      </CardContent>
+    </Card>
   );
 }
 export function BookingSheet({

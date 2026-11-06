@@ -86,6 +86,8 @@ const configs = [
       "src/templates/business/miro-settings.tsx",
       "src/templates/business/miro-workspace.tsx",
       "src/templates/business/shared.tsx",
+      "src/templates/business/miro-chair-board.tsx",
+      "src/templates/business/miro-shell-chrome.tsx",
     ],
   },
   {

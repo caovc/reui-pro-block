@@ -89,7 +89,10 @@ for (const [id, expanded, compact] of [
   }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await open(page, id);
-    const trigger = page.getByRole("button", { name: "Open menu", exact: true });
+    const trigger = page.getByRole("button", {
+      name: id === "miro" ? "Toggle Sidebar" : "Open menu",
+      exact: true,
+    });
     await trigger.click();
     const drawer = page.locator(".bt-layout-mobile");
     await expect(drawer).toBeVisible();
@@ -107,10 +110,42 @@ for (const [id, expanded, compact] of [
       await expect(drawer.locator(".bt-brand")).toHaveCount(0);
       await expect(drawer.locator('[data-slot="sheet-close"]')).toHaveCount(0);
     }
-    await expect(drawer.locator(':scope > div > [data-slot="sidebar-content"]')).toHaveCSS(
-      "overflow-y",
-      "auto",
-    );
+    if (id === "miro") {
+      await expect(drawer.locator(':scope > div > [data-slot="sidebar-content"]')).toHaveCSS(
+        "overflow-y",
+        "hidden",
+      );
+      // The free ScrollArea owns scrolling inside the bounded Open Time sidebar.
+      const viewport = drawer.locator('.miro-secondary-scroll [data-slot="scroll-area-viewport"]');
+      await expect(viewport).toHaveCount(1);
+      await expect(viewport).toBeVisible();
+      await expect(viewport).toHaveCSS("overflow-y", "scroll");
+      await expect
+        .poll(() => viewport.evaluate((node) => node.scrollHeight - node.clientHeight))
+        .toBeGreaterThan(0);
+      const initialScrollTop = await viewport.evaluate((node) => node.scrollTop);
+      const railSettings = drawer.locator(".bt-mobile-icon-rail").getByRole("button", {
+        name: "Settings",
+        exact: true,
+      });
+      // Observe the native Sheet at its final position before comparing rail geometry.
+      await expect.poll(() => drawer.evaluate((node) => node.getBoundingClientRect().x)).toBe(0);
+      const initialSettingsBounds = await railSettings.boundingBox();
+      expect(initialSettingsBounds).not.toBeNull();
+      await viewport.hover();
+      await page.mouse.wheel(0, 360);
+      await expect
+        .poll(() => viewport.evaluate((node) => node.scrollTop))
+        .toBeGreaterThan(initialScrollTop);
+      expect(await page.evaluate(() => window.scrollY)).toBe(0);
+      await expect(railSettings).toBeVisible();
+      expect(await railSettings.boundingBox()).toEqual(initialSettingsBounds);
+    } else {
+      await expect(drawer.locator(':scope > div > [data-slot="sidebar-content"]')).toHaveCSS(
+        "overflow-y",
+        "auto",
+      );
+    }
     await expect(drawer.locator(':scope > div > [data-slot="sidebar-header"]')).toHaveCount(1);
     await expect(drawer.locator(':scope > div > [data-slot="sidebar-footer"]')).toHaveCount(1);
     const expectedDrawerWidth =
@@ -199,6 +234,11 @@ for (const [id, expanded, compact] of [
         ).toBeVisible();
       }
       if (id === "miro") {
+        await expect(drawer).toBeVisible();
+        await expect(
+          drawer.getByRole("button", { name: "Settings", exact: true }).first(),
+        ).toBeFocused();
+        await page.keyboard.press("Escape");
         // The page title belongs to Shell's header; the native body opens My Profile.
         await expect(
           page.locator(".bt-topbar").getByRole("heading", { name: "Settings", exact: true }),
@@ -378,7 +418,12 @@ for (const id of ["atlas", "miro"]) {
     await controls.goto("/#/templates/atlas", { waitUntil: "networkidle" });
     await controls.getByRole("button", { name: "Customize", exact: true }).click();
     await open(page, id);
-    await page.getByRole("button", { name: "Open menu", exact: true }).click();
+    await page
+      .getByRole("button", {
+        name: id === "miro" ? "Toggle Sidebar" : "Open menu",
+        exact: true,
+      })
+      .click();
     const drawer = page.locator(".bt-layout-mobile");
     for (const [mode, expected] of [
       ["Default", /Inter/],
@@ -394,7 +439,7 @@ for (const id of ["atlas", "miro"]) {
       }
       await expect(drawer).toHaveCSS("font-family", expected);
       const trigger = drawer.getByRole("button", {
-        name: id === "atlas" ? "Switch workspace" : "Search navigation",
+        name: id === "atlas" ? "Switch workspace" : id === "miro" ? "Search" : "Search navigation",
         exact: true,
       });
       await trigger.click();
@@ -406,7 +451,7 @@ for (const id of ["atlas", "miro"]) {
       await expect(popup).toHaveCSS("font-family", expected);
       await page.screenshot({
         path: testInfo.outputPath(`${id}-${mode}-390.png`),
-        animations: id === "atlas" ? "allow" : "disabled",
+        animations: id === "miro" ? "allow" : id === "atlas" ? "allow" : "disabled",
       });
       if (id === "atlas") {
         await expect(popup.getByRole("menuitem", { name: "Bricklane", exact: true })).toContainText(
@@ -423,7 +468,10 @@ for (const id of ["atlas", "miro"]) {
       await expect(drawer).toBeVisible();
       await expect(trigger).toBeFocused();
       const account = drawer.getByRole("button", {
-        name: `Open account menu for ${id === "atlas" ? "Amara Ortiz" : id === "miro" ? "Mara Ellis" : "Nick Bold"}`,
+        name:
+          id === "miro"
+            ? "Open profile for Mara Ellis"
+            : `Open account menu for ${id === "atlas" ? "Amara Ortiz" : id === "miro" ? "Mara Ellis" : "Nick Bold"}`,
         exact: true,
       });
       await account.click();
@@ -431,7 +479,7 @@ for (const id of ["atlas", "miro"]) {
       await expect(accountMenu).toHaveCSS("font-family", expected);
       await expect(
         accountMenu.getByRole("menuitem", {
-          name: id === "atlas" ? "Account settings" : "Settings",
+          name: id === "miro" ? "My Profile" : id === "atlas" ? "Account settings" : "Settings",
           exact: true,
         }),
       ).toBeVisible();

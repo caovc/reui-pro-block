@@ -22,6 +22,7 @@ import type { MiroSettingsModel } from "./miro-settings-model";
 import "@/blocks/reference.css";
 import "@/blocks/application/dialog-variants/workspace/workspace.css";
 import "./miro-settings.css";
+import "./miro-settings-layout.css";
 const icons = {
   profile: UserRound,
   hours: Clock3,

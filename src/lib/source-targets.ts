@@ -577,6 +577,8 @@ export function templateImplementationTargets(template: {
       "miro-calendar",
       "miro-workspace",
       "miro-detail",
+      "miro-chair-board",
+      "miro-shell-chrome",
     ],
     verve: [
       "verve-account-settings",

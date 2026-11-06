@@ -1,0 +1,219 @@
+{
+  "date": "2026-11-06",
+  "project": "Bricklane",
+  "status": "LOCAL_GATES_PASSED_PENDING_NEW_PUSH_CI",
+  "publicationBase": "bd7669f861d6d1810df3feede13d4318feb1593d",
+  "scope": "Miro clinic shell, Settings Card/Fields, actual free resource calendar and source/export consistency; independent recreation, not official ReUI source or full remote-service equivalence.",
+  "reference": {
+    "official": "https://miro-clinic.reui.io/",
+    "library": "https://reui.io/",
+    "sealedFiles": 110,
+    "sealedManifestSHA256": "205ec96519fe92c09d142a503bb39b3562079ff3c454c89325ca5e01630d81d2",
+    "originalWindowSeconds": 274.175,
+    "wrongInitialLive2552FrameExcludedFrom1440Comparison": true,
+    "originalSystemThemeObservedButDarkSelectionNotExecuted": true
+  },
+  "actualFreeReuse": [
+    "Existing ReUI Sidebar/Provider/Inset/Sheet and native DropdownMenu, RadioGroup, Checkbox, Collapsible and ScrollArea.",
+    "Full official free EventCalendar/useEventCalendarState, ResourceView and time-grid Week, public Calendar APIs and selectors; no custom replacement calendar engine.",
+    "Actual Card/Header/Content/Footer plus FieldSet/Legend/Group/Field/Separator/InputGroup, following official free c-card-1 and c-field-1 compositions.",
+    "Existing DataGrid/useTable, NumberField, Select, Tabs/ToggleGroup, Progress, local-avatar upload and global-theme publisher."
+  ],
+  "correctedDuplications": [
+    "Replace manually positioned ChairBoard with the installed free ResourceView and controlled projections from the existing parent appointments.",
+    "Replace Settings Frame wrappers with actual Card/Field composition and DayBreakdown Panel wrapper with actual Card/horizontal Tabs; preserve its original table and group data.",
+    "Use the same calendar instance in the secondary Calendar and main board; avoid a second booking/date/resource fact store."
+  ],
+  "customGaps": [
+    "Miro-specific route/query adapter and business-event/resource projection: free UI does not supply this clinic data model.",
+    "Owned header/rail/sidebar/Card geometry and preview layering CSS; no shared vendor, focus, pointer-events or animation engine patch.",
+    "Explicit local Check in action updates the existing parent appointment fact, replacing the previous implicit event-click status mutation.",
+    "Unassigned/invalid-record diagnostics retain accessible source records; valid AM/PM form output is parsed alongside original 24-hour seed data."
+  ],
+  "observedGeometry": {
+    "desktopRail": 48,
+    "desktopSecondary": 302,
+    "header": 50,
+    "mobileSidebar": 292.5,
+    "profileDesktop": {
+      "x": 368,
+      "y": 68,
+      "width": 1054,
+      "height": 739
+    },
+    "profilePhone": {
+      "x": 18,
+      "y": 68,
+      "width": 339,
+      "height": 1042
+    },
+    "settingsHeader": 71,
+    "settingsDesktopContent": 611,
+    "settingsFooter": 57,
+    "settingsHeaderPadding": "12px 20px 16px",
+    "settingsFooterPadding": "12px 20px",
+    "profileTitle": "500 16px/22px",
+    "mainEventCalendarTopBothViewports": 95,
+    "originalTabsListSlotHeight": 44,
+    "localTabsListIncludingBorder": 45,
+    "phoneNavigationRowHeight": 48,
+    "phoneControlsRowHeight": 40,
+    "phoneResourceViewTop": 183
+  },
+  "preservation": {
+    "sourceCount": 1217,
+    "distCount": 657,
+    "productPaths": 18,
+    "qaPaths": 10,
+    "sharedOther14FunctionsExact": true,
+    "nonMiroSharedBranchesPreserved": true,
+    "oldAppointmentsAndBookingSheetExact": true,
+    "settingsModelDataAndAvatarCallbacksPreserved": true,
+    "dayBreakdownStateTableGroupsPreserved": true,
+    "protectedWorkspaceFiles": 13
+  },
+  "validation": {
+    "strictSiteBuild": {
+      "version": "v11",
+      "seconds": 26.043157875014003,
+      "inventorySHA256": "b508fc2204526cdfd1d6fc7ef836b839df9dcbc6c3a04aea7f672ec778b8ac99"
+    },
+    "native": {
+      "passed": 8,
+      "seconds": 15.420074832974933,
+      "failedSkippedFlakyRetried": 0,
+      "includes": "Native mini-calendar, seven columns, two-row phone toolbar, complete sidebar rows/Options and real reopening/Check in"
+    },
+    "legacyMiro": {
+      "full35PassedOn": "v10",
+      "seconds": 116.40866908297176,
+      "v11NecessarySidebarAndRealBookingCases": 4,
+      "v11Seconds": 12.333893958013505,
+      "reason": "v11 changes only contextual sidebar width CSS; full35 was not relabelled as a new v11 execution"
+    },
+    "sharedSurgeManifestGuard": {
+      "passed": 20,
+      "version": "v7",
+      "seconds": 55.26025529199978,
+      "laterMiroOnlySourceDeltasDoNotChangeThoseConsumers": true
+    },
+    "source": {
+      "uniqueCases": 18,
+      "method": "Twelve unchanged v5 leaves, four v10 leaves, one v11 CSS leaf and v11 fresh ZIP; actual versions and per-case hashes retained",
+      "unionProofSHA256": "b0ab4250c31654a914ccd2fedf973e42e072c61dfb04534060f89fda9a1bfbcb"
+    },
+    "originalProject": {
+      "members": 325,
+      "archiveSHA256": "5e56a095dfab994cf9f383e8acca83e0f4db93072364c56694f27b9ae540d8e7",
+      "normalInstallSeconds": 49.4240487079951,
+      "strictOriginalBuildSeconds": 7.501281125005335,
+      "builtDistFiles": 65,
+      "nativePassed": 9,
+      "nativeScope": "Original eight plus real form Save to Resource event/preview and parent-statistics case",
+      "nativeSeconds": 16.97834333300125,
+      "originalMembersAndImmediateLockStillExactAfterNative": true,
+      "lockSHA256": "a6901feb8398b9fb75de9a4f88fec31e33031c0c7c4bb749ae435b49c43c52ce",
+      "sourcePackageConfigMainExampleOverlay": false,
+      "finalProofSHA256": "2f46a5d82223a1ea50bcc8dabc3793291fe309054dddc004588080bbdffcd24d"
+    },
+    "toolingPassed": 182,
+    "rootStaticChecks": {
+      "format": {
+        "exitCode": 0,
+        "logSHA256": "43de3d661b82764cf6f1ef8566a55d2579f65d6808b41b21a747e62535157e33"
+      },
+      "lint": {
+        "exitCode": 0,
+        "logSHA256": "77f2ecfe6a1a23b881affa79115722cea4d9df5020956e116653139ac3b1e958",
+        "existingWarnings": 388
+      },
+      "tooling": {
+        "exitCode": 0,
+        "logSHA256": "d8540eb9c19a9fb360b522864329fe135a99130be65289bdaa729b9a00e07e2e",
+        "passed": 182
+      },
+      "discovery": {
+        "exitCode": 0,
+        "logSHA256": "cd4ea171cd87752cbeeb15364c59e304237583c902df41c14e114d17b1d30eba",
+        "cases": 2425,
+        "files": 278,
+        "discoveryOnly": true
+      }
+    },
+    "runtimeCleanup": {
+      "ownPorts53041And53043Closed": true,
+      "ownTabsClosedAndViewportReset": true,
+      "proofSHA256": "89f9c164520894abbfd0b9e70c7839a00c9164a1e3efe5bd527aff3376781ca2"
+    },
+    "finalActualImages": {
+      "acceptedScopedImagesByRoot": true,
+      "proofSHA256": "2ed32b3d12d3417c758131c10d0c32a56d694a3e25755e584eecbe644ddaefb9"
+    },
+    "fullBrowserDiscovery": {
+      "cases": 2425,
+      "files": 278,
+      "notExecutedAsLocalFullSuite": true,
+      "deltaFromBase": {
+        "newNative": 8,
+        "newSource": 18,
+        "existingSourceLoopNewPins": 2,
+        "removed": 0
+      }
+    }
+  },
+  "independentEvidence": {
+    "modelV5FailureManifestSHA256": "c36dcbc6752214cc6eb491cdffed24058e6a0a1bcaf3660daef56b5fc93a26fe",
+    "modelV6FixedManifestSHA256": "30fdd98d89503efc703264ff74721c98d928bca71c54c8a72c4d7af86c051900",
+    "rootV7CSSRebindSHA256": "ab53e19fffd83acaa12954296b23b002933591ad167dd80bcb2815963a3ec5da",
+    "sharedRootGuardSHA256": "f400b72c346d58d38920d8f85e4239f6cfa0321f0f1a9265a87de7008b3d55aa",
+    "sourceInitialReportSHA256": "2db51f1bd386225203115d44867346c93a62be1e84a5e98ac7c91e48237a748d",
+    "sourceFinal": {
+      "reportSHA256": "5e17073be31feed1734035e4b9ad3f94d4e4e1fbbddde7a39094db3a3462e526",
+      "afterNativeSHA256": "0bc4c2918700f766891034566f9a19f4728d1a2350838cb2d2dd8f126346a8a9",
+      "indexSHA256": "277b9fe136fd99323dbe5ec724baed776c376b2393f7c28eeb4a9a5261ca5a2b"
+    },
+    "receivedAfterNativeIndependentSHA256": "1c08db47eac064934ebe3e6f86e7a12d46606b383901315054f485ed5b407cbc",
+    "ownerFinalHandoffSHA256": "7042c044d61ea54771dca02e500b6430a4d528eab2655203307e471bb34e001e",
+    "finalOwned28ManifestSHA256": "858ebb32586d94a45ddb96a16263cf5085efbb28bc124725bf3a108d7ab00aaa",
+    "differenceLedgerSHA256": "5cb043567bae88151c165d2ce8b1cbeca558efa2aa866d27d35917a5ab2e48af"
+  },
+  "preservedFirstFailures": [
+    "v1 Settings React185 render loop from consumer option/active-range reference churn; stable consumer options and equality fixed it without changing vendor.",
+    "v2/v3 Header69/Card737 geometry: initial24px hypothesis was wrong. Original title is16px/22px; later global14px/20px CSS won. Scoped specificity restores the original values.",
+    "Native view-control role oracle: installed free single ToggleGroup uses radio/checked rather than original button/pressed; keep native free semantics and disclose the difference.",
+    "Phone initial-focus oracle: native Radix focuses Dashboard rather than the original BaseUI Home link. Test actual initial focus, native Shift+Tab reachability and Escape return separately.",
+    "v5 model rejected normal BookingSheet AM/PM output; v6 fixes real input compatibility with seven pure-model regressions and real form-to-resource native proof.",
+    "Preview reopening overlay intercepted Check in; owned content z51 restores layering over native z50, preserving core pointer/focus/animation behavior.",
+    "Old scroll baseline was sampled during Sheet entrance; wait for actual native drawer x0 before unchanged bounds comparison.",
+    "Mobile secondary content overlapped the actual48px rail; v7 restores owned inset. Old notification/settings booking helper locations adapt to the real header button, without dropping business assertions.",
+    "Final visual review held v7 despite green tests: restore horizontal board tabs, original free mini-calendar nav/caption classes and remove repeated mobile body title.",
+    "Preserve native caption width so it cannot cover previous/next; real clicks and seven-column bounds checked.",
+    "Restore phone navigation/filter two-row composition to resource top183.",
+    "Phone contextual ScrollArea intrinsic table272.359 exceeded pane243.5 and clipped real Options. Owned width100%/table-layoutfixed preserves the native table while making all controls visible."
+  ],
+  "limits": [
+    "Original calendar drag/resize, saved slot-prefill, booking submission/backend Edit, Dark selection and remote service operations were not executed.",
+    "Keep local fictional dates, bookings and chairs; original remote counts and people are not copied. Dashboard Open Time18/27h30 remains the pre-existing local fixture, not an availability service.",
+    "Local Day/Week controls use native radio semantics; native mobile first focus differs as recorded above. No manual focus engine.",
+    "Mini-calendar month navigation drives calendar.api.goTo(month), a local behavior extension whose equivalence to original month-arrow behavior was not observed.",
+    "Original Sign Out row is omitted where this local template has no real auth callback; no fake service action is presented.",
+    "DayBreakdown preserves existing fixture/group/table semantics, including existing header/root count differences; this batch does not certify every business record or whole-page pixel equality.",
+    "Theme, routes, status changes, exports and uploads are local demo behavior; no remote clinic backend is claimed.",
+    "All19 packaged assets match actual built URLs/ZIP; only7 equal Git raw bytes, while12SVG serializations are XML-canonical equivalents. Keep MIT, Inter OFL and licensed-material notices.",
+    "Mini-calendar local phone x52/width235.5 differs from observed x53/width234.5; all seven columns and native navigation fit. Minor indicator/chart details remain listed.",
+    "Dashboard plots currently reuse Recharts and actual free ReuiStripePattern through project BusinessBars/Area. The official c-chart-2/c-chart-13 config/container/tooltip composition is a separate queued Miro-only migration; no claim that the entire project helper is an official free component."
+  ],
+  "branding": "Original Bricklane mark and local/licensed replacement art; no ReUI/KeenThemes logo, paid screenshot, original-site avatar or extracted decorative SVG is shipped.",
+  "previousVerifiedLive": {
+    "commit": "bd7669f861d6d1810df3feede13d4318feb1593d",
+    "run": 42200355737,
+    "browserPassed": 2397,
+    "toolingPassed": 171,
+    "deployment": 7598166809,
+    "status": 21569850623,
+    "publicIndexFirstCSSJSByteExact": true,
+    "proofSHA256": "8dacff7496e510fdfde30f0aaea541789722962b4616224710fd5ae6a883a5fd"
+  },
+  "publication": "Local scoped gates and original-package checks passed. Normal hooks commit/push and new complete CI/Pages/public-byte verification are separate steps; previous verified live remains bd7669f until the new deployment is proved.",
+  "overallGoalComplete": false
+}

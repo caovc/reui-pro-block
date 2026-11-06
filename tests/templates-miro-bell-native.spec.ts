@@ -5,7 +5,7 @@ async function rail(page: Page, width: number) {
   if (width === 390) {
     const drawer = page.locator(".bt-layout-mobile");
     if (!(await drawer.isVisible()))
-      await page.getByRole("button", { name: "Open menu", exact: true }).click();
+      await page.getByRole("button", { name: "Toggle Sidebar", exact: true }).click();
     await expect(drawer).toBeVisible();
     return drawer.locator(".bt-mobile-icon-rail");
   }
@@ -15,12 +15,15 @@ async function closeMobile(page: Page, width: number) {
   if (width === 390) {
     await page.keyboard.press("Escape");
     await expect(page.locator(".bt-layout-mobile")).toBeHidden();
-    await expect(page.getByRole("button", { name: "Open menu", exact: true })).toBeFocused();
+    await expect(page.getByRole("button", { name: "Toggle Sidebar", exact: true })).toBeFocused();
   }
 }
 async function select(page: Page, width: number, name: string) {
   await (await rail(page, width)).getByRole("button", { name, exact: true }).click();
-  if (width === 390) await expect(page.locator(".bt-layout-mobile")).toBeHidden();
+  if (width === 390) {
+    await expect(page.locator(".bt-layout-mobile")).toBeVisible();
+    await closeMobile(page, width);
+  }
 }
 async function alertSettings(page: Page, width: number) {
   await select(page, width, "Settings");
@@ -51,7 +54,7 @@ async function bell(page: Page, width: number, count: number) {
 async function newBooking(page: Page, width: number, patient: string) {
   await select(page, width, "Appointments");
   await page
-    .locator(".bt-content")
+    .locator(".bt-topbar")
     .getByRole("button", { name: "New Appointment", exact: true })
     .click();
   const sheet = page.getByRole("dialog", { name: "New Booking", exact: true });
