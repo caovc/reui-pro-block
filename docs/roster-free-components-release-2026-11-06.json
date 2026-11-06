@@ -1,0 +1,45 @@
+{
+  "milestone": "roster actual free component reuse",
+  "status": "LOCAL_GATES_PASSED_PENDING_NEW_PUSH_CI",
+  "publicationBase": "ca17572eb8d4366773c039f30013fbeaf71a6ce6",
+  "ownerExecutedBase": "a939a2e37925390ea647861c5b8e11bff3b3beed",
+  "actualFreeReuse": [
+    "Existing official c-toggle-group-5 Base Nova: controlled period[period], native keyboard/pressed, ignore empty selection; owner state and195/196/198 preserved.",
+    "Existing official c-progress-2 Base Nova: real Progress track/indicator, value43 and9/21 source facts preserved; no custom progress engine."
+  ],
+  "preservation": [
+    "All source outside two controls/added imports and parent declarations proven equal by static AST receipt. No SourceTargets/global/vendor/model changes."
+  ],
+  "validation": {
+    "siteNativePassed": 8,
+    "actualSourceCasePassed": 1,
+    "portableSourceBindingInverseProven": true,
+    "originalArchiveSHA256": "a58a25571234a5e6b1b76c5cce7876d342040cc8a84f974028a3016b1f42f74a",
+    "originalArchiveMembers": 231,
+    "normalOriginalInstallPassed": true,
+    "originalStrictBuildPassed": true,
+    "originalNativePassed": 8,
+    "originalNativeScope": "All original8 Roster cases",
+    "originalMembersLockDistUnchanged": true,
+    "noSourceEntryConfigOverlayOrRepair": true,
+    "visual": {
+      "screenshotsActuallyViewed": 0,
+      "boundary": "Roster produced no success screenshot; no visual inspection claimed."
+    },
+    "actualZIPSourceIntersectionWithInterveningCommits": [
+      "src/blocks/application/shells/chrome.tsx",
+      "src/blocks/data/grid-advanced-model-grid.tsx",
+      "src/components/site/preview-theme.ts"
+    ],
+    "wholeSourceOrNewRawExecutionOnPublicationBaseClaimed": false
+  },
+  "uncertifiedBoundaries": [
+    "No original ReUI Roster/Filebox page geometry/interaction fidelity certification.",
+    "Portable Source specs are statically equivalent to passed private Source1; Root CI executes Main-ready bindings after integration.",
+    "No complete-template/global QA or backend/auth service certification.",
+    "No Root commit/push/actual CI/Pages success claim by child."
+  ],
+  "brandLicense": "Original Bricklane Mark/local licensed assets retained; no original ReUI logo/avatar/paid media extracted. Actual export closure proof preserves MIT/OFL/third-party asset notices.",
+  "ownerManifestSHA256": "612023a0144cb59da580f2964c8c1f6df71cbced179a0c61da1d2e56aa7e3bac",
+  "integrationBoundary": "Owned preimages match. Intervening DataGrid provider composition preserves all default callers, and AppShell positive marker does not match these template contexts. Separate route consumers remain unchanged. The actual frozen raw project results are scoped evidence, not whole-tree equality on the later publication commit; normal push CI validates integrated code."
+}

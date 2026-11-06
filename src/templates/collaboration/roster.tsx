@@ -5,6 +5,8 @@ import { useRosterImportState } from "./roster-import-model";
 import { RosterApprovals } from "./roster-approvals";
 import { useRosterApprovalsState } from "./roster-approvals-model";
 import { MiniTrend } from "@/blocks/data/sparkline-primitives";
+import { Progress } from "@/templates/workflow/free/flowly-progress";
+import { ToggleGroup, ToggleGroupItem } from "@/templates/workflow/free/flowly-toggle-group";
 import { RosterHiring, useRosterHiringState } from "./roster-hiring";
 import {
   Frame,
@@ -234,18 +236,29 @@ export default function Roster() {
                     Headcount, hiring pressure and absence in one pass.
                   </FrameDescription>
                 </div>
-                <div className="ct-segment">
+                <ToggleGroup
+                  className="ct-segment"
+                  aria-label="Workforce overview period"
+                  value={[period]}
+                  onValueChange={(next) => {
+                    const selected = next[0];
+                    if (selected === "Week" || selected === "Month" || selected === "Year") {
+                      setPeriod(selected);
+                    }
+                  }}
+                  size="sm"
+                  spacing={1}
+                >
                   {["Week", "Month", "Year"].map((p) => (
-                    <Button
-                      size="sm"
-                      variant={period === p ? "outline" : "ghost"}
+                    <ToggleGroupItem
                       key={p}
-                      onClick={() => setPeriod(p)}
+                      value={p}
+                      className="border border-transparent aria-pressed:border-input aria-pressed:bg-background aria-pressed:shadow-xs"
                     >
                       {p}
-                    </Button>
+                    </ToggleGroupItem>
                   ))}
-                </div>
+                </ToggleGroup>
               </div>
             </FrameHeader>
             <FramePanel>
@@ -332,9 +345,12 @@ export default function Roster() {
                     <span className="ct-muted">Reviews complete</span>
                     <b>9 / 21</b>
                   </div>
-                  <div className="ct-progress">
-                    <span style={{ width: "43%" }} />
-                  </div>
+                  <Progress
+                    className="ct-progress gap-0 [&_[data-slot=progress-indicator]]:bg-(--ct-green)"
+                    aria-label="Reviews complete"
+                    aria-valuetext="9 of 21 reviews complete"
+                    value={43}
+                  />
                   <div className="ct-review-stages">
                     {["Not started", "Self review", "Manager review"].map((s) => (
                       <div key={s}>
