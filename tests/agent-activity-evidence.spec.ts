@@ -12,7 +12,7 @@ test("research reveals actual Timeline stages and copies the selected citation U
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
   await open(page, 3);
   await expect(page.locator('[data-slot="timeline"]')).toBeVisible();
-  await expect(page.getByText("Answer ready", { exact: true })).toBeVisible();
+  await expect(page.getByText("Read 3 sources and 2 files", { exact: true })).toBeVisible();
   await expect(page.getByText("High confidence", { exact: true })).toBeVisible();
   expect(await page.locator('[data-slot="timeline-item"][data-completed]').count()).toBe(4);
   await page.getByRole("button", { name: "Copy W3C WAI source URL", exact: true }).click();
@@ -103,7 +103,8 @@ test("research and audit fit a narrow viewport with their actual controls", asyn
   await page.setViewportSize({ width: 390, height: 844 });
   for (const id of [3, 4]) {
     await open(page, id);
-    if (id === 3) await expect(page.getByText("Answer ready", { exact: true })).toBeVisible();
+    if (id === 3)
+      await expect(page.getByText("Read 3 sources and 2 files", { exact: true })).toBeVisible();
     else await expect(page.getByText("run_checks", { exact: true })).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)).toBe(
       false,
