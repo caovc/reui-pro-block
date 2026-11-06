@@ -33,6 +33,11 @@ import { cn } from "@/lib/utils";
 export type DomainColumn<T extends object> = ColumnDef<DataGridFeatures, T>;
 export type DomainRow<T extends object> = Row<DataGridFeatures, T>;
 export type DomainTable<T extends object> = DataGridTableInstance<T>;
+/** Compose frame actions within the existing provider and its real table. */
+export type DomainGridFrame<T extends object> = (
+  content: ReactNode,
+  table: DomainTable<T>,
+) => ReactNode;
 export type { SortingState, ColumnFiltersState, ExpandedState };
 export function domainTextMatches(record: object, search: string): boolean {
   const query = search.trim().toLowerCase();
@@ -294,6 +299,7 @@ export function DomainGridSurface<T extends object>({
   onRowClick,
   paginationControls,
   scrollArea,
+  renderFrame,
 }: {
   table: DomainTable<T>;
   children?: ReactNode;
@@ -306,30 +312,10 @@ export function DomainGridSurface<T extends object>({
   onRowClick?: (row: T) => void;
   paginationControls?: boolean | { noun?: string; sizes?: number[]; className?: string };
   scrollArea?: "horizontal" | "vertical" | "both";
+  renderFrame?: DomainGridFrame<T>;
 }) {
-  return (
-    <DataGrid
-      table={table}
-      recordCount={table.getFilteredRowModel().rows.length}
-      onCellsChange={onCellsChange}
-      onCellEditRequest={onCellEditRequest}
-      onCellSelectionChange={onCellSelectionChange}
-      onRowClick={onRowClick}
-      emptyMessage="No records match your filters."
-      tableLayout={{
-        rowBorder: true,
-        headerBorder: true,
-        headerBackground: false,
-        width: "fixed",
-        ...layout,
-      }}
-      tableClassNames={{
-        base: "text-sm",
-        bodyRow: "h-[45px]",
-        headerRow: "h-8",
-      }}
-      className={cn("min-w-0 w-full", className)}
-    >
+  const content = (
+    <>
       <DataGridContainer className={cn("min-w-0 rounded-none border-0", className)}>
         {scrollArea ? (
           <DataGridScrollArea orientation={scrollArea}>
@@ -358,6 +344,32 @@ export function DomainGridSurface<T extends object>({
           )}
         />
       )}
+    </>
+  );
+  return (
+    <DataGrid
+      table={table}
+      recordCount={table.getFilteredRowModel().rows.length}
+      onCellsChange={onCellsChange}
+      onCellEditRequest={onCellEditRequest}
+      onCellSelectionChange={onCellSelectionChange}
+      onRowClick={onRowClick}
+      emptyMessage="No records match your filters."
+      tableLayout={{
+        rowBorder: true,
+        headerBorder: true,
+        headerBackground: false,
+        width: "fixed",
+        ...layout,
+      }}
+      tableClassNames={{
+        base: "text-sm",
+        bodyRow: "h-[45px]",
+        headerRow: "h-8",
+      }}
+      className={cn("min-w-0 w-full", className)}
+    >
+      {renderFrame ? renderFrame(content, table) : content}
     </DataGrid>
   );
 }
@@ -401,6 +413,7 @@ export interface DomainField<T extends object> {
   size?: number;
   className?: string | ((record: T) => string);
   hidden?: boolean;
+  hideable?: boolean;
 }
 /** Domain accessors feed TanStack's real sorting/filtering models; JSX stays a cell renderer. */
 export function DomainRecordGrid<T extends object>({
@@ -426,11 +439,13 @@ export function DomainRecordGrid<T extends object>({
   rowFilter,
   paginationControls,
   scrollArea,
+  renderFrame,
 }: {
   data: T[];
   fields: DomainField<T>[];
   paginationControls?: boolean | { noun?: string; sizes?: number[]; className?: string };
   scrollArea?: "horizontal" | "vertical" | "both";
+  renderFrame?: DomainGridFrame<T>;
   rowFilter?: (record: T) => boolean;
   search?: string;
   filters?: ColumnFiltersState;
@@ -455,6 +470,7 @@ export function DomainRecordGrid<T extends object>({
       fields.map((field) => ({
         id: field.id,
         accessorFn: field.value,
+        ...(field.hideable === undefined ? {} : { enableHiding: field.hideable }),
         header:
           field.header ||
           (field.id === "select"
@@ -529,6 +545,7 @@ export function DomainRecordGrid<T extends object>({
       layout={layout}
       paginationControls={paginationControls}
       scrollArea={scrollArea}
+      renderFrame={renderFrame}
     />
   );
 }

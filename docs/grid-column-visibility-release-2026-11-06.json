@@ -1,0 +1,80 @@
+{
+  "milestone": "Store P&L native column visibility",
+  "status": "LOCAL_GATES_PASSED_PENDING_NEW_PUSH_CI",
+  "publicationBase": "a939a2e37925390ea647861c5b8e11bff3b3beed",
+  "localRuntimeBase": "bd7669f861d6d1810df3feede13d4318feb1593d",
+  "change": "Replace the handwritten three-column checkbox menu with the actual free ReUI DataGridColumnVisibility using the existing TanStack table and single DataGrid provider.",
+  "actualFreeReuse": [
+    "DataGridColumnVisibility",
+    "DataGrid",
+    "DataGridTable",
+    "DataGridPagination",
+    "DataGridColumnHeader",
+    "native dropdown menu"
+  ],
+  "customComposition": "Optional renderFrame callback composes the existing toolbar/cards/frame inside the same provider. No replacement table, provider or model. Default callers preserve their previous path; unspecified hideable adds no column-definition key.",
+  "sourcePreview": "No route or implementation split was introduced. The existing SourceTargets entry still opens the actual implementation; both changed leaves are checked through viewer, clipboard, single-file download and original project archive.",
+  "validation": {
+    "siteProductionBuild": {
+      "passed": true,
+      "seconds": 26.82
+    },
+    "siteNative": {
+      "passed": 2,
+      "viewports": [1440, 390],
+      "checks": "Same connected table, real IDs, selection, sorting, pagination, keep-open column checkboxes, Space, Escape, physical popup unmount and focus return; console errors/warnings empty."
+    },
+    "existingNonpilotReliability": {
+      "passed": 1
+    },
+    "source": {
+      "passed": 3,
+      "actualClipboardAndDownloads": true
+    },
+    "originalProject": {
+      "archiveSHA256": "6b9b39b986862e30c6a62ebf9484a9b09da2d7a228f44998b37f50760bfa8c1c",
+      "members": 330,
+      "normalInstallPassed": true,
+      "originalStrictBuildPassed": true,
+      "strictBuildSeconds": 11.25,
+      "nativePassed": 2,
+      "nativeSeconds": 4.06,
+      "sourceEntryConfigUnmodified": true,
+      "httpIndexJSAndCSSMatchActualDist": true,
+      "MITAndOFLPreserved": true
+    },
+    "budgets": {
+      "workers": 1,
+      "retries": 0,
+      "testMs": 30000,
+      "expectMs": 5000,
+      "maxFailures": 1
+    },
+    "firstFailurePreserved": "The native modal aria-hides its background. Eight includeHidden options were added only to background role observations; removing them restores the original semantic AST. Real actions, focus, assertions and budgets are unchanged.",
+    "publicationIsolation": "Current a939 runtime preimages equal reviewed before bytes. The 30 Miro changed paths do not intersect the actual Grid original ZIP source closure, excluding starter/theme. Old source1206 is not claimed equal to current1217 and no fresh full application build is claimed before push.",
+    "rootActualImages": "Root viewed the actual original received project's desktop and phone open-menu captures. Scoped acceptance only; no full reference pixel parity claim.",
+    "runtimeCleanup": "Owner browsers/runners exited; both own site57410 and original57412 previews stopped with PID/cwd guards. No resource token remains held.",
+    "rootStaticChecks": {
+      "formatPassed": true,
+      "lintErrors": 0,
+      "existingWarnings": 388,
+      "toolingPassed": 182,
+      "browserDiscoveryCases": 2430,
+      "browserDiscoveryFiles": 280,
+      "discoveryIsNotExecution": true,
+      "productionBuildInStaticSymlinkDirectory": false
+    }
+  },
+  "limits": [
+    "Only Advanced2's native column composition is migrated; other TableOptions callers remain separate.",
+    "Whole-page hierarchy, rollups, Cascader, details and undo remain outstanding.",
+    "Country/kind metadata is index-derived and detached from record fields. The sorted screenshot shows the mismatch but does not establish sorting as its cause.",
+    "Legacy export ordering and static cards are unchanged; no whole-block fidelity claim.",
+    "Overall Bricklane goal remains active. Commit, push and successful preview deployment are separate stages."
+  ],
+  "evidence": {
+    "ownerHandoffSHA256": "71ae9e96078d2285485b18ad3ac7bcac9f0f1132d74d60251726ddf6c97adcf7",
+    "releaseCandidateSHA256": "24af3a47131bcd666ce5db69648dbdb721067a376dee6b7a15ab78f314cdca19",
+    "runtimePatchSHA256": "014b376afe9eb1de6ae4fc27525469fc258d0ea2c4ebadc352611132ad0cf6ab"
+  }
+}

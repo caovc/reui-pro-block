@@ -1,6 +1,7 @@
+import { DataGridColumnVisibility } from "@/components/reui/data-grid/data-grid-column-visibility";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import type { BlockProps } from "@/data/types";
-import { Filter, Settings2 } from "lucide-react";
+import { Columns3, Filter, Settings2 } from "lucide-react";
 import { useMemo, useState } from "react";
 import PerformanceCampaignTable from "./grid-advanced-campaign-table";
 import TechnicianCapacity from "./grid-advanced-technician-capacity";
@@ -456,269 +457,285 @@ function StorePnl() {
               : r.id,
   );
   return (
-    <GridFrame
-      title="Store P&L"
-      description="28 stores · 10 markets · FY26, Oct 2025 to Sep 2026"
-      actions={
-        <>
-          <GridSearch
-            value={search}
-            onChange={(v) => {
-              setSearch(v);
-              setPage(0);
-            }}
-            placeholder="Search stores..."
-          />
-          <TableOptions
-            label="Columns"
-            columns={["YoY", "Profit vs FY25", "Margin"]}
-            hidden={hidden}
-            setHidden={setHidden}
-          />
-          <ExportRows name="stores-pnl" rows={rows} />
-          <AddRecord
-            label="New Store"
-            title="New store"
-            fields={[{ name: "name", label: "Store name" }]}
-            onSave={(v) =>
-              setStores((rs) => [
-                ...rs,
-                {
-                  id: rs.length + 1,
-                  name: v.name,
-                  region: "Americas",
-                  country: "US",
-                  kind: "Standard",
-                  yoyLabel: "New",
-                  priorLabel: "First year",
-                  profit: 0,
-                  profitRank: rs.length + 1,
-                  profitDeltaLabel: "New",
-                  sales: 0,
-                  margin: 0,
-                  plan: 0,
-                },
-              ])
-            }
-          />
-        </>
-      }
-    >
-      <div className="grid grid-cols-2 gap-2 border-b p-2 md:grid-cols-4">
-        {["All Regions", "Americas", "EMEA", "APAC"].map((name, i) => (
-          <button
-            key={name}
-            onClick={() => {
-              setRegion(name);
-              setPage(0);
-            }}
-            aria-pressed={region === name}
-            className={cn(
-              "rounded-lg border p-2 text-left",
-              region === name && "border-foreground/40 bg-muted/30",
-            )}
-          >
-            <div className="flex justify-between text-[13px] font-medium">
-              {["◎", "🇺🇸🇨🇦🇲🇽🇧🇷", "🇬🇧🇫🇷🇩🇪🇪🇸", "🇯🇵🇦🇺"][i]} {name}
-              <span className="text-xs font-normal text-muted-foreground">
-                {i ? stores.filter((s) => s.region === name).length : stores.length} stores
-              </span>
-            </div>
-            <div className="my-1 text-lg font-semibold">
-              {["$122M", "$51M", "$44.1M", "$26.9M"][i]}{" "}
-              <span className={cn("text-xs", i === 2 ? "text-rose-500" : "text-blue-500")}>
-                {["↗ +4.2%", "↗ +7.2%", "↘ -0.6%", "↗ +7.3%"][i]}
-              </span>
-            </div>
-            <div className="flex h-1.5 overflow-hidden rounded bg-blue-500">
-              <span className="ml-auto bg-rose-500" style={{ width: `${4 + i * 3}%` }} />
-            </div>
-            <div className="mt-1 flex justify-between text-xs text-muted-foreground">
-              <span>{[12.8, 16.2, 7.9, 14.2][i]}% margin</span>
-              <span className="text-rose-500">{[5, 1, 3, 1][i]} loss-making</span>
-            </div>
-          </button>
-        ))}
-      </div>
-      <DomainRecordGrid
-        data={stores}
-        search={search}
-        filters={region === "All Regions" ? [] : [{ id: "region", value: region }]}
-        hidden={hidden}
-        onHiddenChange={setHidden}
-        pagination={{ pageIndex: page, pageSize: nativePageSize }}
-        onPaginationChange={(p) => {
-          setPage(p.pageIndex);
-          setNativePageSize(p.pageSize);
-        }}
-        paginationControls
-        selection={selected.map(String)}
-        onSelectionChange={(ids) => setSelected(ids.map(Number))}
-        className="[&_tbody_tr]:h-[51px]"
-        fields={[
-          {
-            id: "select",
-            title: "",
-            value: (r) => r.id,
-            size: 42,
-            render: (_r, _i, row) => (
-              <Checkbox
-                aria-label={`Select ${row.original.name} ${row.original.id}`}
-                checked={row.getIsSelected()}
-                onCheckedChange={(v) => row.toggleSelected(!!v)}
+    <DomainRecordGrid
+      renderFrame={(content, table) => (
+        <GridFrame
+          title="Store P&L"
+          description="28 stores · 10 markets · FY26, Oct 2025 to Sep 2026"
+          actions={
+            <>
+              <GridSearch
+                value={search}
+                onChange={(v) => {
+                  setSearch(v);
+                  setPage(0);
+                }}
+                placeholder="Search stores..."
               />
-            ),
-          },
-          {
-            id: "name",
-            title: "Store",
-            value: (r) => r.name,
-            size: 250,
-            className: cellClass,
-            render: (r, i, _gridRow) => {
-              return (
-                <>
-                  <span className="font-medium">{r.name}</span>
-                  <span className="mt-0.5 block text-xs text-muted-foreground">
-                    {["🇺🇸 US", "🇯🇵 JP", "🇬🇧 GB", "🇨🇦 CA", "🇩🇪 DE"][i % 5]} ·{" "}
-                    {i < 5 ? "Flagship" : "Standard"}
+              <DataGridColumnVisibility
+                table={table}
+                trigger={
+                  <Button variant="outline" size="sm" className="h-8 text-sm">
+                    <Columns3 />
+                    Columns
+                  </Button>
+                }
+              />
+              <ExportRows name="stores-pnl" rows={rows} />
+              <AddRecord
+                label="New Store"
+                title="New store"
+                fields={[{ name: "name", label: "Store name" }]}
+                onSave={(v) =>
+                  setStores((rs) => [
+                    ...rs,
+                    {
+                      id: rs.length + 1,
+                      name: v.name,
+                      region: "Americas",
+                      country: "US",
+                      kind: "Standard",
+                      yoyLabel: "New",
+                      priorLabel: "First year",
+                      profit: 0,
+                      profitRank: rs.length + 1,
+                      profitDeltaLabel: "New",
+                      sales: 0,
+                      margin: 0,
+                      plan: 0,
+                    },
+                  ])
+                }
+              />
+            </>
+          }
+        >
+          <div className="grid grid-cols-2 gap-2 border-b p-2 md:grid-cols-4">
+            {["All Regions", "Americas", "EMEA", "APAC"].map((name, i) => (
+              <button
+                key={name}
+                onClick={() => {
+                  setRegion(name);
+                  setPage(0);
+                }}
+                aria-pressed={region === name}
+                className={cn(
+                  "rounded-lg border p-2 text-left",
+                  region === name && "border-foreground/40 bg-muted/30",
+                )}
+              >
+                <div className="flex justify-between text-[13px] font-medium">
+                  {["◎", "🇺🇸🇨🇦🇲🇽🇧🇷", "🇬🇧🇫🇷🇩🇪🇪🇸", "🇯🇵🇦🇺"][i]} {name}
+                  <span className="text-xs font-normal text-muted-foreground">
+                    {i ? stores.filter((s) => s.region === name).length : stores.length} stores
                   </span>
-                </>
-              );
-            },
+                </div>
+                <div className="my-1 text-lg font-semibold">
+                  {["$122M", "$51M", "$44.1M", "$26.9M"][i]}{" "}
+                  <span className={cn("text-xs", i === 2 ? "text-rose-500" : "text-blue-500")}>
+                    {["↗ +4.2%", "↗ +7.2%", "↘ -0.6%", "↗ +7.3%"][i]}
+                  </span>
+                </div>
+                <div className="flex h-1.5 overflow-hidden rounded bg-blue-500">
+                  <span className="ml-auto bg-rose-500" style={{ width: `${4 + i * 3}%` }} />
+                </div>
+                <div className="mt-1 flex justify-between text-xs text-muted-foreground">
+                  <span>{[12.8, 16.2, 7.9, 14.2][i]}% margin</span>
+                  <span className="text-rose-500">{[5, 1, 3, 1][i]} loss-making</span>
+                </div>
+              </button>
+            ))}
+          </div>
+          {content}
+          <div className="flex justify-end gap-8 border-t bg-muted/20 px-12 py-2 font-semibold">
+            <span>Total {rows.length} stores</span>
+            <span>${rows.reduce((s, r) => s + r.sales, 0).toFixed(1)}M</span>
+            <span>12.8% margin</span>
+          </div>
+        </GridFrame>
+      )}
+      data={stores}
+      search={search}
+      filters={region === "All Regions" ? [] : [{ id: "region", value: region }]}
+      hidden={hidden}
+      onHiddenChange={setHidden}
+      pagination={{ pageIndex: page, pageSize: nativePageSize }}
+      onPaginationChange={(p) => {
+        setPage(p.pageIndex);
+        setNativePageSize(p.pageSize);
+      }}
+      paginationControls
+      selection={selected.map(String)}
+      onSelectionChange={(ids) => setSelected(ids.map(Number))}
+      className="[&_tbody_tr]:h-[51px]"
+      fields={[
+        {
+          id: "select",
+          hideable: false,
+          title: "",
+          value: (r) => r.id,
+          size: 42,
+          render: (_r, _i, row) => (
+            <Checkbox
+              aria-label={`Select ${row.original.name} ${row.original.id}`}
+              checked={row.getIsSelected()}
+              onCheckedChange={(v) => row.toggleSelected(!!v)}
+            />
+          ),
+        },
+        {
+          id: "name",
+          hideable: false,
+          title: "Store",
+          value: (r) => r.name,
+          size: 250,
+          className: cellClass,
+          render: (r, i, _gridRow) => {
+            return (
+              <>
+                <span className="font-medium">{r.name}</span>
+                <span className="mt-0.5 block text-xs text-muted-foreground">
+                  {["🇺🇸 US", "🇯🇵 JP", "🇬🇧 GB", "🇨🇦 CA", "🇩🇪 DE"][i % 5]} ·{" "}
+                  {i < 5 ? "Flagship" : "Standard"}
+                </span>
+              </>
+            );
           },
-          {
-            id: "rank",
-            title: "Sales #",
-            value: (r) => r.id,
-            size: 74,
-            className: cellClass,
-            render: (r, _i, _gridRow) => {
-              return (
-                <>
-                  <span className="rounded-full border px-1.5 text-xs">{r.id}</span>
-                </>
-              );
-            },
+        },
+        {
+          id: "rank",
+          hideable: false,
+          title: "Sales #",
+          value: (r) => r.id,
+          size: 74,
+          className: cellClass,
+          render: (r, _i, _gridRow) => {
+            return (
+              <>
+                <span className="rounded-full border px-1.5 text-xs">{r.id}</span>
+              </>
+            );
           },
-          {
-            id: "sales",
-            title: "Net Sales",
-            value: (r) => r.sales,
-            size: 220,
-            className: cellClass,
-            render: (r, _i, _gridRow) => {
-              return (
-                <>
-                  <div className="flex justify-between gap-4">
-                    <span
-                      className={cn(
-                        "text-xs",
-                        r.plan < 100 ? "text-rose-500" : "text-muted-foreground",
-                      )}
-                    >
-                      {r.plan}% of plan
-                    </span>
-                    <b>${r.sales.toFixed(2)}M</b>
-                  </div>
-                  <div className="mt-1 h-1 rounded bg-muted">
-                    <div
-                      className={cn("h-1 rounded", r.plan < 100 ? "bg-rose-500" : "bg-emerald-500")}
-                      style={{ width: `${Math.min(100, r.plan)}%` }}
-                    />
-                  </div>
-                </>
-              );
-            },
+        },
+        {
+          id: "sales",
+          hideable: false,
+          title: "Net Sales",
+          value: (r) => r.sales,
+          size: 220,
+          className: cellClass,
+          render: (r, _i, _gridRow) => {
+            return (
+              <>
+                <div className="flex justify-between gap-4">
+                  <span
+                    className={cn(
+                      "text-xs",
+                      r.plan < 100 ? "text-rose-500" : "text-muted-foreground",
+                    )}
+                  >
+                    {r.plan}% of plan
+                  </span>
+                  <b>${r.sales.toFixed(2)}M</b>
+                </div>
+                <div className="mt-1 h-1 rounded bg-muted">
+                  <div
+                    className={cn("h-1 rounded", r.plan < 100 ? "bg-rose-500" : "bg-emerald-500")}
+                    style={{ width: `${Math.min(100, r.plan)}%` }}
+                  />
+                </div>
+              </>
+            );
           },
-          {
-            id: "yoyLabel",
-            title: "YoY",
-            value: (r) => r.yoyLabel,
-            size: 110,
-            className: cn(cellClass, "text-blue-500"),
-            render: (r, _i, _gridRow) => {
-              return (
-                <>
-                  {r.yoyLabel}
-                  <span className="block text-xs text-muted-foreground">{r.priorLabel}</span>
-                </>
-              );
-            },
+        },
+        {
+          id: "yoyLabel",
+          hideable: true,
+          title: "YoY",
+          value: (r) => r.yoyLabel,
+          size: 110,
+          className: cn(cellClass, "text-blue-500"),
+          render: (r, _i, _gridRow) => {
+            return (
+              <>
+                {r.yoyLabel}
+                <span className="block text-xs text-muted-foreground">{r.priorLabel}</span>
+              </>
+            );
           },
-          {
-            id: "profitRank",
-            title: "Profit #",
-            value: (r) => r.profitRank,
-            size: 74,
-            className: cellClass,
-            render: (r, _i, _gridRow) => {
-              return <>{r.profitRank}</>;
-            },
+        },
+        {
+          id: "profitRank",
+          hideable: false,
+          title: "Profit #",
+          value: (r) => r.profitRank,
+          size: 74,
+          className: cellClass,
+          render: (r, _i, _gridRow) => {
+            return <>{r.profitRank}</>;
           },
-          {
-            id: "profit",
-            title: "Profit",
-            value: (r) => r.profit,
-            size: 110,
-            className: (r) =>
-              cn(
-                cellClass,
-                "font-medium",
-                r.margin < 0 ? "bg-rose-100 text-rose-700 dark:bg-rose-950" : "bg-blue-500/20",
-              ),
-            render: (r, _i, _gridRow) => {
-              return <>{money(r.profit)}</>;
-            },
-          },
-          {
-            id: "profitDeltaLabel",
-            title: "Profit vs FY25",
-            value: (r) => r.profitDeltaLabel,
-            size: 110,
-            className: cellClass,
-            render: (r, i, _gridRow) => {
-              return (
-                <>
-                  <Delta value={r.margin < 0 ? -140 : 14 + i} />
-                </>
-              );
-            },
-          },
-          {
-            id: "margin",
-            title: "Margin",
-            value: (r) => r.margin,
-            size: 96,
-            className: cellClass,
-            render: (r, _i, _gridRow) => {
-              return (
-                <>
-                  <DotBadge tone={r.margin < 0 ? "bad" : "muted"}>{r.margin.toFixed(1)}%</DotBadge>
-                </>
-              );
-            },
-          },
-          {
-            id: "region",
-            title: "",
-            value: (r) => r.region,
-            size: 42,
-            render: (r) => (
-              <RowMenu
-                name={r.name}
-                onDelete={() => setStores((s) => s.filter((x) => x.id !== r.id))}
-              />
+        },
+        {
+          id: "profit",
+          hideable: false,
+          title: "Profit",
+          value: (r) => r.profit,
+          size: 110,
+          className: (r) =>
+            cn(
+              cellClass,
+              "font-medium",
+              r.margin < 0 ? "bg-rose-100 text-rose-700 dark:bg-rose-950" : "bg-blue-500/20",
             ),
+          render: (r, _i, _gridRow) => {
+            return <>{money(r.profit)}</>;
           },
-        ]}
-      />
-      <div className="flex justify-end gap-8 border-t bg-muted/20 px-12 py-2 font-semibold">
-        <span>Total {rows.length} stores</span>
-        <span>${rows.reduce((s, r) => s + r.sales, 0).toFixed(1)}M</span>
-        <span>12.8% margin</span>
-      </div>
-    </GridFrame>
+        },
+        {
+          id: "profitDeltaLabel",
+          hideable: true,
+          title: "Profit vs FY25",
+          value: (r) => r.profitDeltaLabel,
+          size: 110,
+          className: cellClass,
+          render: (r, i, _gridRow) => {
+            return (
+              <>
+                <Delta value={r.margin < 0 ? -140 : 14 + i} />
+              </>
+            );
+          },
+        },
+        {
+          id: "margin",
+          hideable: true,
+          title: "Margin",
+          value: (r) => r.margin,
+          size: 96,
+          className: cellClass,
+          render: (r, _i, _gridRow) => {
+            return (
+              <>
+                <DotBadge tone={r.margin < 0 ? "bad" : "muted"}>{r.margin.toFixed(1)}%</DotBadge>
+              </>
+            );
+          },
+        },
+        {
+          id: "region",
+          hideable: false,
+          title: "",
+          value: (r) => r.region,
+          size: 42,
+          render: (r) => (
+            <RowMenu
+              name={r.name}
+              onDelete={() => setStores((s) => s.filter((x) => x.id !== r.id))}
+            />
+          ),
+        },
+      ]}
+    />
   );
 }
 const sloNames = [
