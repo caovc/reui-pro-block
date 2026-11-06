@@ -68,8 +68,9 @@ for (const width of [1280, 1718]) {
     await collapse.click();
     const panel = page.locator('[data-slot="sidebar-container"]');
     await expect.poll(async () => (await panel.boundingBox())?.width).toBe(48);
-    const main = (await page.locator('[data-slot="sidebar-inset"]').boundingBox())!;
-    expect(main.x).toBe(48);
+    await expect
+      .poll(async () => (await page.locator('[data-slot="sidebar-inset"]').boundingBox())?.x)
+      .toBe(48);
     const brand = (await page
       .getByRole("button", { name: "Switch workspace", exact: true })
       .locator("svg")
