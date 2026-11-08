@@ -87,21 +87,13 @@ export function VerveMemberImport({ model }: { model: VervePeopleBillingModel })
   const invalid = rows.filter((row) => row.issues.length).length;
   return (
     <Sheet open={open} onOpenChange={changeOpen}>
-      <SheetTrigger asChild>
-        <Button size="sm" variant="outline">
-          Import
-        </Button>
-      </SheetTrigger>
+      <SheetTrigger render={<Button size="sm" variant="outline" />}>Import</SheetTrigger>
       <VerveSettingsSheet
         title="Import members"
         description="Review a local CSV before adding records. No invitations, directory sync or real access changes are sent."
         footer={
           <>
-            <SheetClose asChild>
-              <Button type="button" variant="outline">
-                Cancel
-              </Button>
-            </SheetClose>
+            <SheetClose render={<Button type="button" variant="outline" />}>Cancel</SheetClose>
             <Button
               type="button"
               disabled={busy || !rows.length || invalid > 0 || upload.errors.length > 0}

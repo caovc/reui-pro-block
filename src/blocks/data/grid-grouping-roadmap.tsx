@@ -257,14 +257,10 @@ export default function Roadmap() {
         </div>
         <div className="flex flex-wrap items-center gap-2 sm:ml-auto">
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="h-8">
-                <Bell className="size-3.5" />
-                Signals
-                {signalFilter.length > 0 && (
-                  <Badge variant="secondary">{signalFilter.length}</Badge>
-                )}
-              </Button>
+            <DropdownMenuTrigger render={<Button variant="outline" size="sm" className="h-8" />}>
+              <Bell className="size-3.5" />
+              Signals
+              {signalFilter.length > 0 && <Badge variant="secondary">{signalFilter.length}</Badge>}
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuGroup>

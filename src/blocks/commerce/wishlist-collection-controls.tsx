@@ -2,7 +2,7 @@
  * confirmation and REUI Frame surfaces. Sources: https://reui.io/r/radix-nova/
  * MIT, Keenthemes. Original example photographs are never used.
  */
-import { useState, type ReactNode } from "react";
+import { isValidElement, useState, type ReactNode } from "react";
 import { FolderHeart, Plus, Trash2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarGroup, AvatarImage } from "@/components/ui/avatar";
 import { Frame, FramePanel } from "@/components/reui/frame";
@@ -97,14 +97,18 @@ export function NewWishlistCollection({
   const [shared, setShared] = useState(false);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        {trigger ?? (
-          <Button size="sm">
-            <Plus />
-            New Collection
-          </Button>
-        )}
-      </DialogTrigger>
+      <DialogTrigger
+        render={
+          isValidElement(trigger) ? (
+            trigger
+          ) : (
+            <Button size="sm">
+              <Plus />
+              New Collection
+            </Button>
+          )
+        }
+      ></DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Create a collection</DialogTitle>
@@ -178,15 +182,17 @@ export function DeleteWishlistCollection({
 }) {
   return (
     <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button
-          variant="secondary"
-          size="icon-sm"
-          className="size-7 bg-background/85"
-          aria-label={`Delete ${collection.name}`}
-        >
-          <Trash2 className="size-3.5" />
-        </Button>
+      <AlertDialogTrigger
+        render={
+          <Button
+            variant="secondary"
+            size="icon-sm"
+            className="size-7 bg-background/85"
+            aria-label={`Delete ${collection.name}`}
+          />
+        }
+      >
+        <Trash2 className="size-3.5" />
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

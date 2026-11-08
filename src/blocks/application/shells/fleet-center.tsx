@@ -68,11 +68,9 @@ function ActionMenu({
 }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm">
-          <Icon />
-          {label}
-        </Button>
+      <DropdownMenuTrigger render={<Button variant="outline" size="sm" />}>
+        <Icon />
+        {label}
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="reui-reference">
         <DropdownMenuLabel>{label}</DropdownMenuLabel>
@@ -107,15 +105,21 @@ export function FleetRail() {
       <ReuiMark small />
       <div className="fleet-rail-links">
         {icons.map(([name, Icon]) => (
-          <IconTile asChild size="xs" variant="outline" key={name} className="fleet-rail-icon">
-            <button
-              aria-label={name}
-              title={name}
-              aria-pressed={active === name}
-              onClick={() => setActive(name)}
-            >
-              <Icon />
-            </button>
+          <IconTile
+            size="xs"
+            variant="outline"
+            key={name}
+            className="fleet-rail-icon"
+            render={
+              <button
+                aria-label={name}
+                title={name}
+                aria-pressed={active === name}
+                onClick={() => setActive(name)}
+              />
+            }
+          >
+            <Icon />
           </IconTile>
         ))}
       </div>
@@ -253,20 +257,27 @@ export default function FleetCenter() {
           <div className="fleet-center-panel">
             <div className="fleet-view-grid">
               {pinned.map(([name, Icon]) => (
-                <IconTile asChild variant="solid" key={name} className="fleet-view-tile">
-                  <button aria-pressed={active === name} onClick={() => setActive(name)}>
-                    <Icon />
-                    <span>{name}</span>
-                  </button>
+                <IconTile
+                  variant="solid"
+                  key={name}
+                  className="fleet-view-tile"
+                  render={<button aria-pressed={active === name} onClick={() => setActive(name)} />}
+                >
+                  <Icon />
+                  <span>{name}</span>
                 </IconTile>
               ))}
               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <IconTile asChild variant="solid" className="fleet-view-tile">
-                    <button aria-label="Pin a view">
-                      <Plus />
-                    </button>
-                  </IconTile>
+                <DropdownMenuTrigger
+                  render={
+                    <IconTile
+                      variant="solid"
+                      className="fleet-view-tile"
+                      render={<button aria-label="Pin a view" />}
+                    />
+                  }
+                >
+                  <Plus />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="reui-reference">
                   <DropdownMenuLabel>Pin View</DropdownMenuLabel>

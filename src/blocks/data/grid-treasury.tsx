@@ -83,15 +83,17 @@ function FinancialTooltip({
   const [open, setOpen] = useState(false);
   return (
     <Tooltip open={open} onOpenChange={setOpen}>
-      <TooltipTrigger asChild>
-        <button
-          type="button"
-          aria-label={label}
-          onClick={() => setOpen(true)}
-          className="inline-flex shrink-0 items-center gap-2 rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
-        >
-          {children}
-        </button>
+      <TooltipTrigger
+        render={
+          <button
+            type="button"
+            aria-label={label}
+            onClick={() => setOpen(true)}
+            className="inline-flex shrink-0 items-center gap-2 rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          />
+        }
+      >
+        {children}
       </TooltipTrigger>
       <TooltipContent side="top" sideOffset={7} className="grid-finance-tooltip">
         <div className="flex items-center gap-2">
@@ -523,16 +525,18 @@ export default function TreasuryGrid() {
                   }
                 }}
               >
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    aria-label="Choose treasury month range"
-                    className="min-w-0 border-x rounded-none font-normal"
-                  >
-                    {months[first - 3]} - {months[last - 3]}
-                    <CalendarDays className="ml-7 text-muted-foreground" />
-                  </Button>
+                <PopoverTrigger
+                  render={
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      aria-label="Choose treasury month range"
+                      className="min-w-0 border-x rounded-none font-normal"
+                    />
+                  }
+                >
+                  {months[first - 3]}- {months[last - 3]}
+                  <CalendarDays className="ml-7 text-muted-foreground" />
                 </PopoverTrigger>
                 <PopoverContent align="end" className="w-auto max-w-[calc(100vw-1rem)] p-0">
                   <Calendar

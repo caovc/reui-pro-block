@@ -250,11 +250,9 @@ export function NativeSettings<T extends object>({
 }) {
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <Button size="sm" variant="outline">
-          <SlidersHorizontal />
-          Settings
-        </Button>
+      <PopoverTrigger render={<Button size="sm" variant="outline" />}>
+        <SlidersHorizontal />
+        Settings
       </PopoverTrigger>
       <PopoverContent align="end" className="w-72">
         <strong className="text-xs">Table settings</strong>

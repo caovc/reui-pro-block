@@ -75,10 +75,14 @@ function placeholderPlan(event: MouseEvent<HTMLAnchorElement>) {
 
 function PlanAction({ plan, primary = false }: { plan: UsagePlan; primary?: boolean }) {
   return (
-    <Button asChild variant={primary ? "default" : "outline"} className="pu8-plan-action">
-      <a href="#" aria-label={`${plan.action} for ${plan.name}`} onClick={placeholderPlan}>
-        {plan.action}
-      </a>
+    <Button
+      render={
+        <a href="#" aria-label={`${plan.action} for ${plan.name}`} onClick={placeholderPlan} />
+      }
+      variant={primary ? "default" : "outline"}
+      className="pu8-plan-action"
+    >
+      {plan.action}
     </Button>
   );
 }
@@ -169,32 +173,31 @@ function PlanRail({
           return (
             <Item
               key={plan.id}
-              asChild
+
               size="sm"
               className="pu8-rail-item"
               data-selected={selected === plan.id ? "true" : undefined}
+              render={<label htmlFor={`${id}-${plan.id}`} />}
             >
-              <label htmlFor={`${id}-${plan.id}`}>
-                <RadioGroupItem
-                  id={`${id}-${plan.id}`}
-                  value={plan.id}
-                  aria-label={plan.name}
-                  className="sr-only pu8-rail-radio"
-                />
-                <ItemMedia className="pu8-rail-media">
-                  <IconTile variant="elevated" aria-hidden="true">
-                    <Icon />
-                  </IconTile>
-                </ItemMedia>
-                <ItemContent className="pu8-rail-copy">
-                  <ItemTitle>{plan.name}</ItemTitle>
-                  <ItemDescription>{plan.description}</ItemDescription>
-                </ItemContent>
-                <ItemActions className="pu8-rail-price">
-                  {usageMoney(usageRate(plan, period))}
-                  <span className="sr-only"> per month</span>
-                </ItemActions>
-              </label>
+              <RadioGroupItem
+                id={`${id}-${plan.id}`}
+                value={plan.id}
+                aria-label={plan.name}
+                className="sr-only pu8-rail-radio"
+              />
+              <ItemMedia className="pu8-rail-media">
+                <IconTile variant="elevated" aria-hidden="true">
+                  <Icon />
+                </IconTile>
+              </ItemMedia>
+              <ItemContent className="pu8-rail-copy">
+                <ItemTitle>{plan.name}</ItemTitle>
+                <ItemDescription>{plan.description}</ItemDescription>
+              </ItemContent>
+              <ItemActions className="pu8-rail-price">
+                {usageMoney(usageRate(plan, period))}
+                <span className="sr-only"> per month</span>
+              </ItemActions>
             </Item>
           );
         })}
@@ -300,9 +303,7 @@ export function UsageLimitPricing() {
             <EmptyDescription>A paid plan lifts the monthly limit.</EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
-            <DialogTrigger asChild>
-              <Button variant="outline">View Plans</Button>
-            </DialogTrigger>
+            <DialogTrigger render={<Button variant="outline" />}>View Plans</DialogTrigger>
           </EmptyContent>
         </Empty>
         <DialogContent

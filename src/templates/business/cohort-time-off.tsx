@@ -98,15 +98,17 @@ function LeaveDateField({
   const date = new Date(`${value}T12:00`);
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          type="button"
-          variant="outline"
-          className="justify-start font-normal"
-          aria-label={label}
-        >
-          {format(date, "MMMM do, yyyy")}
-        </Button>
+      <PopoverTrigger
+        render={
+          <Button
+            type="button"
+            variant="outline"
+            className="justify-start font-normal"
+            aria-label={label}
+          />
+        }
+      >
+        {format(date, "MMMM do, yyyy")}
       </PopoverTrigger>
       <PopoverContent className="w-auto p-2" align="start">
         <CalendarSelect
@@ -239,10 +241,10 @@ export function CohortTimeOff({
           <EventCalendarTitle />
           <div className="grow" />
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button className="bt-leave-mobile-filter" size="sm" variant="outline">
-                Calendars
-              </Button>
+            <DropdownMenuTrigger
+              render={<Button className="bt-leave-mobile-filter" size="sm" variant="outline" />}
+            >
+              Calendars
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Calendars</DropdownMenuLabel>

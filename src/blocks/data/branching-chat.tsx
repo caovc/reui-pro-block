@@ -407,15 +407,17 @@ function BranchingChatContent() {
     <div className="reui-reference bc-root">
       <header className="bc-header">
         <Popover open={historyOpen} onOpenChange={setHistoryOpen}>
-          <PopoverTrigger asChild>
-            <Button
-              variant="ghost"
-              className="bc-thread-trigger"
-              aria-label={`Threads, ${thread.title}`}
-            >
-              <span>{thread.title}</span>
-              <ChevronDown />
-            </Button>
+          <PopoverTrigger
+            render={
+              <Button
+                variant="ghost"
+                className="bc-thread-trigger"
+                aria-label={`Threads, ${thread.title}`}
+              />
+            }
+          >
+            <span>{thread.title}</span>
+            <ChevronDown />
           </PopoverTrigger>
           <PopoverContent
             className="reui-reference bc-history"
@@ -484,15 +486,17 @@ function BranchingChatContent() {
           <Star fill={pinned.includes(threadId) ? "currentColor" : "none"} />
         </Button>
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="bc-header-icon"
-              aria-label="Thread options"
-            >
-              <MoreVertical />
-            </Button>
+          <DropdownMenuTrigger
+            render={
+              <Button
+                variant="ghost"
+                size="icon"
+                className="bc-header-icon"
+                aria-label="Thread options"
+              />
+            }
+          >
+            <MoreVertical />
           </DropdownMenuTrigger>
           <DropdownMenuContent className="reui-reference bc-menu bc-thread-options" align="start">
             <DropdownMenuLabel>This thread</DropdownMenuLabel>
@@ -646,16 +650,18 @@ function BranchingChatContent() {
                           <time>{node.time}</time>
                         </MessageHeader>
                         <Collapsible className="bc-thought">
-                          <CollapsibleTrigger asChild>
-                            <Button
-                              variant="ghost"
-                              className="bc-reason-trigger"
-                              aria-label={`Reasoning, thought for ${node.id.includes("a0") ? 4 : 6} seconds`}
-                            >
-                              <ChevronRight />
-                              <Brain />
-                              Thought for {node.id.includes("a0") ? 4 : 6}s
-                            </Button>
+                          <CollapsibleTrigger
+                            render={
+                              <Button
+                                variant="ghost"
+                                className="bc-reason-trigger"
+                                aria-label={`Reasoning, thought for ${node.id.includes("a0") ? 4 : 6} seconds`}
+                              />
+                            }
+                          >
+                            <ChevronRight />
+                            <Brain />
+                            Thought for {node.id.includes("a0") ? 4 : 6}s
                           </CollapsibleTrigger>
                           <CollapsibleContent>
                             <ol className="bc-reason-list">
@@ -792,11 +798,9 @@ function BranchingChatContent() {
                 {["Check it against the 3.3 opener", "List every number I need to verify"].map(
                   (text) => (
                     <Bubble key={text} variant="outline" className="max-w-full">
-                      <BubbleContent asChild>
-                        <button onClick={() => append(text)}>
-                          <CornerDownRight />
-                          {text}
-                        </button>
+                      <BubbleContent render={<button onClick={() => append(text)} />}>
+                        <CornerDownRight />
+                        {text}
                       </BubbleContent>
                     </Bubble>
                   ),
@@ -850,10 +854,10 @@ function BranchingChatContent() {
             />
             <InputGroupAddon align="block-end" className="bc-composer-actions">
               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <InputGroupButton variant="ghost" size="icon-sm" aria-label="Skills">
-                    <Sparkles />
-                  </InputGroupButton>
+                <DropdownMenuTrigger
+                  render={<InputGroupButton variant="ghost" size="icon-sm" aria-label="Skills" />}
+                >
+                  <Sparkles />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="reui-reference bc-menu" align="start">
                   <DropdownMenuLabel>Skills</DropdownMenuLabel>
@@ -873,10 +877,12 @@ function BranchingChatContent() {
                 </DropdownMenuContent>
               </DropdownMenu>
               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <InputGroupButton variant="ghost" size="icon-sm" aria-label="Attach source">
-                    <Paperclip />
-                  </InputGroupButton>
+                <DropdownMenuTrigger
+                  render={
+                    <InputGroupButton variant="ghost" size="icon-sm" aria-label="Attach source" />
+                  }
+                >
+                  <Paperclip />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
                   className="reui-reference bc-menu bc-attach-menu"
@@ -902,19 +908,21 @@ function BranchingChatContent() {
                 </DropdownMenuContent>
               </DropdownMenu>
               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <InputGroupButton
-                    variant="ghost"
-                    className="bc-model-trigger"
-                    size="sm"
-                    aria-label={`Model, ${model}`}
-                  >
-                    <span className="bc-provider">
-                      <ModelMark name={model} />
-                    </span>
-                    <span>{model}</span>
-                    <ChevronDown />
-                  </InputGroupButton>
+                <DropdownMenuTrigger
+                  render={
+                    <InputGroupButton
+                      variant="ghost"
+                      className="bc-model-trigger"
+                      size="sm"
+                      aria-label={`Model, ${model}`}
+                    />
+                  }
+                >
+                  <span className="bc-provider">
+                    <ModelMark name={model} />
+                  </span>
+                  <span>{model}</span>
+                  <ChevronDown />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="reui-reference bc-menu bc-model-menu" align="start">
                   {chatModelGroups.map((group) => (

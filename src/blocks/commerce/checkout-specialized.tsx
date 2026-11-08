@@ -463,15 +463,17 @@ export function ExpressCheckout() {
               This order will use {card}. Review your details above.
             </p>
             <Collapsible open={newCard} onOpenChange={setNewCard}>
-              <CollapsibleTrigger asChild>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  className="w-full justify-between border-t pt-5"
-                >
-                  Use a different card
-                  <ChevronDown className={cn(newCard && "rotate-180")} />
-                </Button>
+              <CollapsibleTrigger
+                render={
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    className="w-full justify-between border-t pt-5"
+                  />
+                }
+              >
+                Use a different card
+                <ChevronDown className={cn(newCard && "rotate-180")} />
               </CollapsibleTrigger>
               <CollapsibleContent className="space-y-4 pt-4">
                 <CheckoutField

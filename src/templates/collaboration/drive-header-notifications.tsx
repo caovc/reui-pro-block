@@ -125,16 +125,18 @@ export function DriveHeaderNotifications({
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          className="drive-notifications-trigger"
-          aria-label="Notifications"
-        >
-          <Bell />
-          {unread > 0 && <span className="drive-notifications-trigger-dot" aria-hidden="true" />}
-        </Button>
+      <SheetTrigger
+        render={
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            className="drive-notifications-trigger"
+            aria-label="Notifications"
+          />
+        }
+      >
+        <Bell />
+        {unread > 0 && <span className="drive-notifications-trigger-dot" aria-hidden="true" />}
       </SheetTrigger>
       <SheetContent
         className="reui-reference drive-header-sheet drive-notifications-sheet"
@@ -160,10 +162,10 @@ export function DriveHeaderNotifications({
             >
               <Check />
             </Button>
-            <SheetClose asChild>
-              <Button variant="ghost" size="icon-sm" aria-label="Dismiss notifications">
-                <X />
-              </Button>
+            <SheetClose
+              render={<Button variant="ghost" size="icon-sm" aria-label="Dismiss notifications" />}
+            >
+              <X />
             </SheetClose>
           </div>
         </SheetHeader>
@@ -240,9 +242,12 @@ export function DriveHeaderNotifications({
                     )}
                     {!rowTarget && notification.kind !== "share" && targetLink ? (
                       notification.kind === "retention" ? (
-                        <Button asChild variant="outline" size="xs" className="w-fit">
-                          {targetLink}
-                        </Button>
+                        <Button
+                          render={targetLink}
+                          variant="outline"
+                          size="xs"
+                          className="w-fit"
+                        ></Button>
                       ) : (
                         targetLink
                       )
@@ -352,18 +357,18 @@ export function DriveHeaderNotifications({
               return rowTarget ? (
                 <div key={notification.id} role="listitem">
                   <Item
-                    asChild
                     className="drive-notification"
                     data-notification={notification.id}
                     data-unread={isUnread}
+                    render={
+                      <a
+                        href={navigation.href(rowTarget)}
+                        aria-label={notification.targetLabel}
+                        onClick={(event) => follow(event, rowTarget, notification)}
+                      />
+                    }
                   >
-                    <a
-                      href={navigation.href(rowTarget)}
-                      aria-label={notification.targetLabel}
-                      onClick={(event) => follow(event, rowTarget, notification)}
-                    >
-                      {content}
-                    </a>
+                    {content}
                   </Item>
                 </div>
               ) : (

@@ -865,11 +865,7 @@ export function TimePickerTrigger({
       children
     );
 
-  return (
-    <PopoverTrigger asChild>
-      <Button {...buttonProps}>{content}</Button>
-    </PopoverTrigger>
-  );
+  return <PopoverTrigger render={<Button {...buttonProps} />}>{content}</PopoverTrigger>;
 }
 
 export type TimePickerInputProps = Omit<
@@ -1023,9 +1019,7 @@ export function TimePickerInput({
         }}
       />
       <InputGroupAddon align="inline-end">
-        <PopoverTrigger asChild>
-          <InputGroupButton {...clockProps}>{CLOCK_ICON}</InputGroupButton>
-        </PopoverTrigger>
+        <PopoverTrigger render={<InputGroupButton {...clockProps} />}>{CLOCK_ICON}</PopoverTrigger>
       </InputGroupAddon>
     </InputGroup>
   );

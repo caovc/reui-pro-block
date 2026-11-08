@@ -212,16 +212,18 @@ function TerminalActions({
   };
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          size="icon-sm"
-          variant="ghost"
-          ref={triggerRef}
-          aria-label={`Actions for ${terminal.city}`}
-          className="size-7"
-        >
-          <Ellipsis className="size-4" />
-        </Button>
+      <DropdownMenuTrigger
+        render={
+          <Button
+            size="icon-sm"
+            variant="ghost"
+            ref={triggerRef}
+            aria-label={`Actions for ${terminal.city}`}
+            className="size-7"
+          />
+        }
+      >
+        <Ellipsis className="size-4" />
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
@@ -282,7 +284,7 @@ function TerminalActions({
 function IconHint({ label, children }: { label: string; children: ReactElement }) {
   return (
     <Tooltip>
-      <TooltipTrigger asChild>{children}</TooltipTrigger>
+      <TooltipTrigger render={children as never}></TooltipTrigger>
       <TooltipContent>
         <p className="text-sm">{label}</p>
       </TooltipContent>
@@ -808,15 +810,17 @@ export default function FreightCargo({ loadNetwork }: FreightCargoProps = {}) {
             <>
               <div className="hidden sm:block">{searchControl}</div>
               <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    size="icon-sm"
-                    aria-label="Search terminals and shippers"
-                    className="size-8 sm:hidden"
-                  >
-                    <Search />
-                  </Button>
+                <PopoverTrigger
+                  render={
+                    <Button
+                      variant="outline"
+                      size="icon-sm"
+                      aria-label="Search terminals and shippers"
+                      className="size-8 sm:hidden"
+                    />
+                  }
+                >
+                  <Search />
                 </PopoverTrigger>
                 <PopoverContent align="start" className="w-72 p-2">
                   {searchControl}
@@ -904,10 +908,17 @@ export default function FreightCargo({ loadNetwork }: FreightCargoProps = {}) {
                 </CascaderContent>
               </Cascader>
               <Popover>
-                <PopoverTrigger asChild>
-                  <Button variant="outline" size="icon-sm" className="size-8" aria-label="Settings">
-                    <Settings className="size-4" />
-                  </Button>
+                <PopoverTrigger
+                  render={
+                    <Button
+                      variant="outline"
+                      size="icon-sm"
+                      className="size-8"
+                      aria-label="Settings"
+                    />
+                  }
+                >
+                  <Settings className="size-4" />
                 </PopoverTrigger>
                 <PopoverContent align="end" className="w-72 space-y-3 p-3.5">
                   <p className="text-xs font-medium">Appearance</p>

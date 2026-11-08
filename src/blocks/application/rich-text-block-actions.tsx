@@ -149,10 +149,18 @@ function WikiTableControls({ editor }: { editor: Editor }) {
           </Field>
         </FieldLabel>
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button type="button" size="icon-sm" variant="ghost" aria-label="Delete" title="Delete">
-              <Trash2 aria-hidden="true" />
-            </Button>
+          <DropdownMenuTrigger
+            render={
+              <Button
+                type="button"
+                size="icon-sm"
+                variant="ghost"
+                aria-label="Delete"
+                title="Delete"
+              />
+            }
+          >
+            <Trash2 aria-hidden="true" />
           </DropdownMenuTrigger>
           <DropdownMenuContent
             portalContainer={menuContainer}
@@ -514,33 +522,43 @@ export function RichTextBlockActions({
             >
               <Plus />
             </Button>
-            <DropdownMenu open={blockMenuOpen} onOpenChange={changeMenuOpen}>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  size="icon-xs"
-                  variant="ghost"
-                  aria-label="Block actions"
-                  title="Drag to move block"
-                  className="relative cursor-grab active:cursor-grabbing"
-                  onClick={() => changeMenuOpen(!blockMenuOpen)}
+            <DropdownMenu
+              open={blockMenuOpen}
+              onOpenChange={(open, details) => {
+                if (
+                  !open &&
+                  details.reason === "outside-press" &&
+                  closeReason.current !== "command"
+                )
+                  closeReason.current = "outside";
+                changeMenuOpen(open);
+              }}
+            >
+              <DropdownMenuTrigger
+                render={
+                  <Button
+                    size="icon-xs"
+                    variant="ghost"
+                    aria-label="Block actions"
+                    title="Drag to move block"
+                    className="relative cursor-grab active:cursor-grabbing"
+                    onClick={() => changeMenuOpen(!blockMenuOpen)}
+                  />
+                }
+              >
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-0 flex items-center justify-center"
+                  onPointerDown={(event) => event.stopPropagation()}
                 >
-                  <span
-                    aria-hidden="true"
-                    className="absolute inset-0 flex items-center justify-center"
-                    onPointerDown={(event) => event.stopPropagation()}
-                  >
-                    <GripVertical />
-                  </span>
-                </Button>
+                  <GripVertical />
+                </span>
               </DropdownMenuTrigger>
               <DropdownMenuContent
                 align="start"
                 className="rich-text-handle-menu w-52"
                 aria-label="Block actions"
                 data-block-menu-owner={menuOwner}
-                onInteractOutside={() => {
-                  if (closeReason.current !== "command") closeReason.current = "outside";
-                }}
                 onCloseAutoFocus={(event) => {
                   event.preventDefault();
                   // An older FocusScope can finish closing after a fresh menu opens.
@@ -671,10 +689,16 @@ export function RichTextBlockActions({
             ))}
             {fluid && tableActive && (
               <Popover>
-                <PopoverTrigger asChild>
-                  <Button size="sm" variant="ghost" onMouseDown={(event) => event.preventDefault()}>
-                    Table actions
-                  </Button>
+                <PopoverTrigger
+                  render={
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onMouseDown={(event) => event.preventDefault()}
+                    />
+                  }
+                >
+                  Table actions
                 </PopoverTrigger>
                 <PopoverContent className="flex w-44 flex-col gap-1">
                   {(

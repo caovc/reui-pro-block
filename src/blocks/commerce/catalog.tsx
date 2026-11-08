@@ -531,7 +531,7 @@ export function SingleProduct({ block }: BlockProps) {
           <p className="text-center text-xs text-muted-foreground">
             Free shipping over $100 · 30-day returns
           </p>
-          <Accordion type="single" collapsible defaultValue="details">
+          <Accordion defaultValue={["details"]}>
             {["details", "shipping", "care"].map((v) => (
               <AccordionItem value={v} key={v}>
                 <AccordionTrigger>
@@ -778,7 +778,7 @@ export function FilterSidebar({ block }: BlockProps) {
         </div>
       )}
       <Accordion
-        type="multiple"
+        multiple
         defaultValue={
           i >= 5 ? ["category", "price"] : ["category", "brand", "price", "size", "stock"]
         }
@@ -881,11 +881,9 @@ export function FilterSidebar({ block }: BlockProps) {
         action={
           i === 4 ? (
             <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="outline">
-                  <SlidersHorizontal data-icon="inline-start" />
-                  Filters {cats.length || ""}
-                </Button>
+              <SheetTrigger render={<Button variant="outline" />}>
+                <SlidersHorizontal data-icon="inline-start" />
+                Filters {cats.length || ""}
               </SheetTrigger>
               <SheetContent>
                 <SheetHeader>

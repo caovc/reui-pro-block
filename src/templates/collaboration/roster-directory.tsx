@@ -287,11 +287,9 @@ export function RosterDirectory({
             </Button>
           ))}
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline">
-                <Filter />
-                Filter
-              </Button>
+            <DropdownMenuTrigger render={<Button variant="outline" />}>
+              <Filter />
+              Filter
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuLabel>Department</DropdownMenuLabel>
@@ -326,11 +324,9 @@ export function RosterDirectory({
             </DropdownMenuContent>
           </DropdownMenu>
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline">
-                <Settings2 />
-                Display
-              </Button>
+            <DropdownMenuTrigger render={<Button variant="outline" />}>
+              <Settings2 />
+              Display
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               {fields.slice(1).map((field) => (

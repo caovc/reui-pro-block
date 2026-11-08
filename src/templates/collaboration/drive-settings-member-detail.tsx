@@ -67,7 +67,34 @@ export function DriveMemberDetail({
         title="Member unavailable"
         description="This member is not in the local workspace."
       >
-        <Button asChild variant="outline">
+        <Button
+          render={
+            <a
+              href={navigation.href("team")}
+              onClick={(event) => {
+                if (
+                  event.button === 0 &&
+                  !event.metaKey &&
+                  !event.ctrlKey &&
+                  !event.shiftKey &&
+                  !event.altKey
+                ) {
+                  event.preventDefault();
+                  navigation.onNavigate("team");
+                }
+              }}
+            />
+          }
+          variant="outline"
+        >
+          Back to team
+        </Button>
+      </DriveSettingsCard>
+    );
+  return (
+    <>
+      <Button
+        render={
           <a
             href={navigation.href("team")}
             onClick={(event) => {
@@ -82,33 +109,14 @@ export function DriveMemberDetail({
                 navigation.onNavigate("team");
               }
             }}
-          >
-            Back to team
-          </a>
-        </Button>
-      </DriveSettingsCard>
-    );
-  return (
-    <>
-      <Button asChild variant="ghost" size="sm" className="ds-back-team">
-        <a
-          href={navigation.href("team")}
-          onClick={(event) => {
-            if (
-              event.button === 0 &&
-              !event.metaKey &&
-              !event.ctrlKey &&
-              !event.shiftKey &&
-              !event.altKey
-            ) {
-              event.preventDefault();
-              navigation.onNavigate("team");
-            }
-          }}
-        >
-          <ArrowLeft />
-          Back to team
-        </a>
+          />
+        }
+        variant="ghost"
+        size="sm"
+        className="ds-back-team"
+      >
+        <ArrowLeft />
+        Back to team
       </Button>
       <DriveSettingsCard title={member.name} description={member.email} hideHeader>
         <div className="ds-member-detail-identity">

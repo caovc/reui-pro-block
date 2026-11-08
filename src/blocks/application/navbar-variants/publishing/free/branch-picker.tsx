@@ -28,17 +28,19 @@ export function BranchPicker({
   return (
     <ButtonGroup>
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="outline"
-            className="max-w-52 gap-2"
-            size="sm"
-            aria-label="Repository branch"
-          >
-            <GitMerge aria-hidden="true" />
-            <span className="truncate">{value}</span>
-            <ChevronDown aria-hidden="true" />
-          </Button>
+        <DropdownMenuTrigger
+          render={
+            <Button
+              variant="outline"
+              className="max-w-52 gap-2"
+              size="sm"
+              aria-label="Repository branch"
+            />
+          }
+        >
+          <GitMerge aria-hidden="true" />
+          <span className="truncate">{value}</span>
+          <ChevronDown aria-hidden="true" />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start" className="w-48">
           <DropdownMenuGroup>

@@ -152,9 +152,7 @@ function MethodPicker() {
           </Button>
           {" or "}
           <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="link">Learn more</Button>
-            </DialogTrigger>
+            <DialogTrigger render={<Button variant="link" />}>Learn more</DialogTrigger>
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Choose a sign-in method</DialogTitle>

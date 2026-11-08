@@ -94,9 +94,7 @@ export default function DurationDialog() {
               following day.
             </FooterHelp>
             <div className="refined-dialog-actions">
-              <DialogClose asChild>
-                <Button variant="outline">Cancel</Button>
-              </DialogClose>
+              <DialogClose render={<Button variant="outline" />}>Cancel</DialogClose>
               <Button
                 onClick={() => {
                   setSaved({ start, end, minutes: duration });

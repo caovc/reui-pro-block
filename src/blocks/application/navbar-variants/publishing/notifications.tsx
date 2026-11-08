@@ -21,24 +21,26 @@ export function AgentNotifications() {
   const [review, setReview] = useState<string | null>(null);
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          aria-label={`Agent notifications, ${read ? 0 : 4} unread`}
-          className="relative"
-        >
-          <Bell />
-          {!read && (
-            <Badge
-              variant="destructive"
-              size="sm"
-              className="absolute -right-1 -top-1 rounded-full px-1"
-            >
-              4
-            </Badge>
-          )}
-        </Button>
+      <PopoverTrigger
+        render={
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            aria-label={`Agent notifications, ${read ? 0 : 4} unread`}
+            className="relative"
+          />
+        }
+      >
+        <Bell />
+        {!read && (
+          <Badge
+            variant="destructive"
+            size="sm"
+            className="absolute -right-1 -top-1 rounded-full px-1"
+          >
+            4
+          </Badge>
+        )}
       </PopoverTrigger>
       <PopoverContent
         align="end"

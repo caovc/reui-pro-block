@@ -173,13 +173,13 @@ export function MiroChairBoard({
               <ToggleGroupItem value="week">Week</ToggleGroupItem>
             </ToggleGroup>
             <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" size="sm" aria-label="Choose chairs">
-                  Choose chairs
-                  <Badge variant="secondary" size="sm">
-                    {visibleChairs.length}
-                  </Badge>
-                </Button>
+              <PopoverTrigger
+                render={<Button variant="outline" size="sm" aria-label="Choose chairs" />}
+              >
+                Choose chairs
+                <Badge variant="secondary" size="sm">
+                  {visibleChairs.length}
+                </Badge>
               </PopoverTrigger>
               <PopoverContent className="reui-reference miro-chair-controls" align="end">
                 <p>Choose chairs</p>
@@ -203,13 +203,11 @@ export function MiroChairBoard({
               </PopoverContent>
             </Popover>
             <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" size="sm" aria-label="Filters">
-                  Filters
-                  <Badge variant="secondary" size="sm">
-                    {statuses?.length ?? miroChairStatuses.length}
-                  </Badge>
-                </Button>
+              <PopoverTrigger render={<Button variant="outline" size="sm" aria-label="Filters" />}>
+                Filters
+                <Badge variant="secondary" size="sm">
+                  {statuses?.length ?? miroChairStatuses.length}
+                </Badge>
               </PopoverTrigger>
               <PopoverContent className="reui-reference miro-chair-controls" align="end">
                 <label htmlFor="miro-chair-search">Search appointments</label>
@@ -253,13 +251,11 @@ export function MiroChairBoard({
                     open={diagnosticOpen === kind}
                     onOpenChange={(open) => setDiagnosticOpen(open ? kind : null)}
                   >
-                    <PopoverTrigger asChild>
-                      <Button variant="outline" size="sm">
-                        {label}
-                        <Badge variant="secondary" size="sm">
-                          {diagnostics[kind].length}
-                        </Badge>
-                      </Button>
+                    <PopoverTrigger render={<Button variant="outline" size="sm" />}>
+                      {label}
+                      <Badge variant="secondary" size="sm">
+                        {diagnostics[kind].length}
+                      </Badge>
                     </PopoverTrigger>
                     <PopoverContent
                       className="reui-reference miro-chair-diagnostics"

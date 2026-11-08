@@ -34,12 +34,12 @@ export function ChoiceMenu({
   return (
     <div className="flex items-center justify-center">
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="sm" aria-label={label} className="w-fit">
-            <Icon data-icon="inline-start" />
-            {label}
-            <ChevronDown data-icon="inline-end" />
-          </Button>
+        <DropdownMenuTrigger
+          render={<Button variant="ghost" size="sm" aria-label={label} className="w-fit" />}
+        >
+          <Icon data-icon="inline-start" />
+          {label}
+          <ChevronDown data-icon="inline-end" />
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuGroup>

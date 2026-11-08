@@ -72,15 +72,17 @@ export function PublishControls({
         <ButtonGroupSeparator className="bg-primary/72" />
 
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              size="icon-sm"
-              className="border-primary-foreground/20 rounded-l-none border-l"
-              aria-label="More publish options"
-              disabled={disabled}
-            >
-              <ChevronDown aria-hidden="true" />
-            </Button>
+          <DropdownMenuTrigger
+            render={
+              <Button
+                size="icon-sm"
+                className="border-primary-foreground/20 rounded-l-none border-l"
+                aria-label="More publish options"
+                disabled={disabled}
+              />
+            }
+          >
+            <ChevronDown aria-hidden="true" />
           </DropdownMenuTrigger>
 
           <DropdownMenuContent sideOffset={8} align="end" className="w-48">
@@ -99,10 +101,10 @@ export function PublishControls({
       </ButtonGroup>
 
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon-sm" aria-label="More actions">
-            <MoreHorizontal aria-hidden="true" />
-          </Button>
+        <DropdownMenuTrigger
+          render={<Button variant="ghost" size="icon-sm" aria-label="More actions" />}
+        >
+          <MoreHorizontal aria-hidden="true" />
         </DropdownMenuTrigger>
 
         <DropdownMenuContent sideOffset={8} align="end" className="w-40">

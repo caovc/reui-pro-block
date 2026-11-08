@@ -55,10 +55,10 @@ export function DashboardActions({
       </Button>
       <ButtonGroupSeparator />
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="sm" aria-label="Dashboard options">
-            {icons.more}
-          </Button>
+        <DropdownMenuTrigger
+          render={<Button variant="outline" size="sm" aria-label="Dashboard options" />}
+        >
+          {icons.more}
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-44" sideOffset={9}>
           <DropdownMenuGroup>

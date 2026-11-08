@@ -102,16 +102,18 @@ export function SettingsDrawer({
           <SheetHeader className="fs-drawer-header fs-drawer-header-member">
             <div className="fs-member-heading-top">
               {header}
-              <SheetClose asChild>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  size="icon"
-                  className="-mr-1"
-                  aria-label="Close"
-                >
-                  <X aria-hidden="true" />
-                </Button>
+              <SheetClose
+                render={
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    className="-mr-1"
+                    aria-label="Close"
+                  />
+                }
+              >
+                <X aria-hidden="true" />
               </SheetClose>
             </div>
             <div className="fs-member-heading-identity">
@@ -166,10 +168,10 @@ export function RecordMenu({
   const trigger = useRef<HTMLButtonElement | null>(null);
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button ref={trigger} variant="ghost" size="icon-sm" aria-label={label}>
-          <MoreHorizontal />
-        </Button>
+      <DropdownMenuTrigger
+        render={<Button ref={trigger} variant="ghost" size="icon-sm" aria-label={label} />}
+      >
+        <MoreHorizontal />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="reui-reference fs-record-menu">
         {items.map((item) => (

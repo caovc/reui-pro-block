@@ -30,11 +30,9 @@ export default function AdminCommandNavbar() {
         </div>
         <div className="toolbar-actions">
           <Dialog open={createOpen} onOpenChange={setCreateOpen}>
-            <DialogTrigger asChild>
-              <Button variant="outline" size="sm">
-                <Plus data-icon="inline-start" />
-                New
-              </Button>
+            <DialogTrigger render={<Button variant="outline" size="sm" />}>
+              <Plus data-icon="inline-start" />
+              New
             </DialogTrigger>
             <DialogSurface
               id={104}

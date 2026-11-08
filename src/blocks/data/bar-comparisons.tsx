@@ -506,10 +506,12 @@ export function InventoryVelocity() {
               icon
             />
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="icon" className="size-7" aria-label="Bar color">
-                  <Palette />
-                </Button>
+              <DropdownMenuTrigger
+                render={
+                  <Button variant="outline" size="icon" className="size-7" aria-label="Bar color" />
+                }
+              >
+                <Palette />
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuRadioGroup

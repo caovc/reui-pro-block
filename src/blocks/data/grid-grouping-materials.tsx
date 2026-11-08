@@ -813,10 +813,10 @@ function PartActions({ row }: { row: MaterialRow }) {
   }
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon-xs" aria-label={`Actions for ${row.id}`}>
-          <Ellipsis className="size-3.5" />
-        </Button>
+      <DropdownMenuTrigger
+        render={<Button variant="ghost" size="icon-xs" aria-label={`Actions for ${row.id}`} />}
+      >
+        <Ellipsis className="size-3.5" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-44">
         <DropdownMenuGroup>
@@ -1131,16 +1131,14 @@ export default function MaterialsTree() {
               </ToggleGroup>
             </div>
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" className="h-8">
-                  <Truck className="size-3.5" />
-                  Supply
-                  {supply.length > 0 && (
-                    <Badge variant="secondary" className="h-5">
-                      {supply.length}
-                    </Badge>
-                  )}
-                </Button>
+              <DropdownMenuTrigger render={<Button variant="outline" size="sm" className="h-8" />}>
+                <Truck className="size-3.5" />
+                Supply
+                {supply.length > 0 && (
+                  <Badge variant="secondary" className="h-5">
+                    {supply.length}
+                  </Badge>
+                )}
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
                 <DropdownMenuGroup>
@@ -1167,11 +1165,9 @@ export default function MaterialsTree() {
               </DropdownMenuContent>
             </DropdownMenu>
             <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" size="sm" className="h-8">
-                  <SlidersHorizontal className="size-3.5" />
-                  Display
-                </Button>
+              <PopoverTrigger render={<Button variant="outline" size="sm" className="h-8" />}>
+                <SlidersHorizontal className="size-3.5" />
+                Display
               </PopoverTrigger>
               <PopoverContent align="end" className="w-[300px] p-0">
                 <FieldGroup className="gap-3 px-3.5 py-3">

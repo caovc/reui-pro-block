@@ -164,18 +164,20 @@ function FilterPathEllipsis({ full }: { full: string }) {
   return (
     <TooltipProvider>
       <Tooltip>
-        <TooltipTrigger asChild>
-          <span
-            aria-hidden="true"
-            data-slot="filter-path-ellipsis"
-            /* A path SEGMENT with no air of its own: the chevron's margin
+        <TooltipTrigger
+          render={
+            <span
+              aria-hidden="true"
+              data-slot="filter-path-ellipsis"
+              /* A path SEGMENT with no air of its own: the chevron's margin
                is all that parts a name from the next, and this used to STACK
                an `mx` on it. Plain inline, no `vertical-align`: `middle` sat
                the dots 1.7px low and inline-block grew the run to 21.17px. */
-            className="text-muted-foreground shrink-0 self-center"
-          >
-            ...
-          </span>
+              className="text-muted-foreground shrink-0 self-center"
+            />
+          }
+        >
+          ...
         </TooltipTrigger>
         <TooltipContent>{full}</TooltipContent>
       </Tooltip>
@@ -495,9 +497,11 @@ export function FilterValuePopover<V, O>({
           (`[&>*:not(:last-child)]:rounded-r-none`,
           `[&>*:not(:first-child)]:border-l-0`), so a nested one keeps its own
           border and the chip reads as separate badges. */}
-      <PopoverTrigger asChild disabled={actions.disabled} {...filterReadOnlyProps(actions)}>
-        {trigger}
-      </PopoverTrigger>
+      <PopoverTrigger
+        disabled={actions.disabled}
+        {...filterReadOnlyProps(actions)}
+        render={trigger as never}
+      ></PopoverTrigger>
       <PopoverContent
         align="start"
         className={cn("w-auto p-0", className)}
@@ -614,9 +618,11 @@ export function FilterOperatorPopover<V, O>({
       }}
     >
       {/* `asChild` for the reason spelled out on the value popover's copy. */}
-      <PopoverTrigger asChild disabled={actions.disabled} {...filterReadOnlyProps(actions)}>
-        {trigger}
-      </PopoverTrigger>
+      <PopoverTrigger
+        disabled={actions.disabled}
+        {...filterReadOnlyProps(actions)}
+        render={trigger as never}
+      ></PopoverTrigger>
       <PopoverContent
         align="start"
         /* RADIX ONLY, the last hop of the handoff. Radix restores focus to
@@ -1029,19 +1035,23 @@ function FilterChipImpl<V, O>({ rule, index }: FilterChipProps<V>) {
           setMenuOpen(next);
         }}
       >
-        <DropdownMenuTrigger asChild disabled={actions.disabled} {...filterReadOnlyProps(actions)}>
-          <Button
-            variant="outline"
-            size={sizes.icon}
-            /* The same surface the three text segments force. Styles whose
+        <DropdownMenuTrigger
+          disabled={actions.disabled}
+          {...filterReadOnlyProps(actions)}
+          render={
+            <Button
+              variant="outline"
+              size={sizes.icon}
+              /* The same surface the three text segments force. Styles whose
                outline button is transparent in dark (sera, luma, rhea) left
                the kebab as a notch in an otherwise filled pill. */
-            className="bg-background dark:bg-input/30"
-            aria-label={actions.labels.chipMenu(field.label)}
-            onPointerDown={() => focusSegment("menu")}
-          >
-            <EllipsisVerticalIcon />
-          </Button>
+              className="bg-background dark:bg-input/30"
+              aria-label={actions.labels.chipMenu(field.label)}
+              onPointerDown={() => focusSegment("menu")}
+            />
+          }
+        >
+          <EllipsisVerticalIcon />
         </DropdownMenuTrigger>
         {/* The SAME sizing the builder's menus use, from one constant: a menu
             that cuts "Convert to group" in one chrome is one defect twice. */}

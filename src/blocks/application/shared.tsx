@@ -239,11 +239,9 @@ export function NewItem({
   const [open, setOpen] = useState(false);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button size="sm">
-          <Plus data-icon="inline-start" />
-          {label}
-        </Button>
+      <DialogTrigger render={<Button size="sm" />}>
+        <Plus data-icon="inline-start" />
+        {label}
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

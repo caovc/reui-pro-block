@@ -1162,14 +1162,16 @@ export default function RichEditorBlock({
             </Button>
           )}
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                size="icon-sm"
-                variant="ghost"
-                aria-label={documentFrame ? "Document actions" : "Page actions"}
-              >
-                <MoreHorizontal />
-              </Button>
+            <DropdownMenuTrigger
+              render={
+                <Button
+                  size="icon-sm"
+                  variant="ghost"
+                  aria-label={documentFrame ? "Document actions" : "Page actions"}
+                />
+              }
+            >
+              <MoreHorizontal />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               {documentFrame && (
@@ -1392,15 +1394,17 @@ export default function RichEditorBlock({
               setLinkOpen(open);
             }}
           >
-            <PopoverTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                aria-label="Insert link"
-                onMouseDown={keepSelection}
-              >
-                <Link />
-              </Button>
+            <PopoverTrigger
+              render={
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  aria-label="Insert link"
+                  onMouseDown={keepSelection}
+                />
+              }
+            >
+              <Link />
             </PopoverTrigger>
             <PopoverContent className="w-80">
               <form className="flex flex-col gap-4" onSubmit={insertLink}>
@@ -1476,11 +1480,11 @@ export default function RichEditorBlock({
               </ColorPicker>
             ))}
             <Popover>
-              <PopoverTrigger asChild>
-                <Button size="sm" variant="ghost" onMouseDown={keepSelection}>
-                  Table actions
-                  <ChevronDown />
-                </Button>
+              <PopoverTrigger
+                render={<Button size="sm" variant="ghost" onMouseDown={keepSelection} />}
+              >
+                Table actions
+                <ChevronDown />
               </PopoverTrigger>
               <PopoverContent className="flex w-48 flex-col gap-1">
                 {(

@@ -554,15 +554,17 @@ export function StrategyScorecard() {
         meta: { cellClassName: "ss14-actions-cell" },
         cell: ({ row }) => (
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                size="icon-xs"
-                variant="ghost"
-                className="ss14-row-menu"
-                aria-label={`Actions for ${row.original.title}`}
-              >
-                <EllipsisVertical />
-              </Button>
+            <DropdownMenuTrigger
+              render={
+                <Button
+                  size="icon-xs"
+                  variant="ghost"
+                  className="ss14-row-menu"
+                  aria-label={`Actions for ${row.original.title}`}
+                />
+              }
+            >
+              <EllipsisVertical />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>{row.original.title}</DropdownMenuLabel>
@@ -963,10 +965,10 @@ export function StrategyScorecard() {
                 }
               />
               <Popover>
-                <PopoverTrigger asChild>
-                  <Button variant="outline" size="icon-sm" aria-label="Scoring">
-                    <SlidersHorizontal />
-                  </Button>
+                <PopoverTrigger
+                  render={<Button variant="outline" size="icon-sm" aria-label="Scoring" />}
+                >
+                  <SlidersHorizontal />
                 </PopoverTrigger>
                 <PopoverContent align="end" className="ss14-scoring-popover">
                   <h3 className="font-medium">Scoring</h3>

@@ -224,10 +224,12 @@ export function FluxConnections({ model }: { model: ReturnType<typeof useFluxPro
                     </Button>
                   )}
                   <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button size="icon-sm" variant="ghost" aria-label={`Actions ${row.name}`}>
-                        <MoreHorizontal />
-                      </Button>
+                    <DropdownMenuTrigger
+                      render={
+                        <Button size="icon-sm" variant="ghost" aria-label={`Actions ${row.name}`} />
+                      }
+                    >
+                      <MoreHorizontal />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                       <DropdownMenuItem onSelect={() => edit(row)}>

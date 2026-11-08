@@ -93,11 +93,9 @@ export function CalendarBlock({ block }: BlockProps) {
           <p className="mt-1 text-xs text-muted-foreground">Your time, thoughtfully organized.</p>
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger asChild>
-            <Button size="sm">
-              <Plus />
-              Add event
-            </Button>
+          <DialogTrigger render={<Button size="sm" />}>
+            <Plus />
+            Add event
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>

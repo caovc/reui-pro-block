@@ -101,10 +101,10 @@ export default function RunOutcomeReport() {
             </FrameDescription>
           </div>
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon-sm" aria-label="Outcome actions">
-                <Ellipsis />
-              </Button>
+            <DropdownMenuTrigger
+              render={<Button variant="ghost" size="icon-sm" aria-label="Outcome actions" />}
+            >
+              <Ellipsis />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={copy}>

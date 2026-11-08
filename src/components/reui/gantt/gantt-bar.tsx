@@ -21,7 +21,7 @@ import {
   toZoned,
 } from "@/components/reui/gantt/gantt-lib";
 import type { GanttOccurrence, GanttSegment } from "@/components/reui/gantt/gantt-types";
-import { Slot } from "radix-ui";
+import { RenderSlot as Slot } from "@/components/ui/render-slot";
 
 import { cn } from "cn";
 import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from "@/components/ui/context-menu";
@@ -386,15 +386,17 @@ function GanttBar<TData = unknown>({
   // button+tooltip flash) are suppressed at the trigger via preventDefault,
   // and press already closes the tooltip in Radix.
   const trigger = menu ? (
-    <ContextMenuTrigger asChild>
-      <TooltipTrigger asChild onFocus={(e) => e.preventDefault()}>
-        {barButton}
-      </TooltipTrigger>
+    <ContextMenuTrigger render={barButton as never}>
+      <TooltipTrigger
+        onFocus={(e) => e.preventDefault()}
+        render={barButton as never}
+      ></TooltipTrigger>
     </ContextMenuTrigger>
   ) : (
-    <TooltipTrigger asChild onFocus={(e) => e.preventDefault()}>
-      {barButton}
-    </TooltipTrigger>
+    <TooltipTrigger
+      onFocus={(e) => e.preventDefault()}
+      render={barButton as never}
+    ></TooltipTrigger>
   );
 
   const barTree = (

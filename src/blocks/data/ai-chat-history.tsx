@@ -22,17 +22,19 @@ export default function ChatHistory({ session }: { session: ChatSession }) {
   );
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="max-w-64 min-w-0 gap-2 text-xs"
-          aria-label="Chat history"
-        >
-          <MessageSquare />
-          <span className="truncate">{session.thread?.title ?? "New conversation"}</span>
-          <ChevronDown className="size-3" />
-        </Button>
+      <PopoverTrigger
+        render={
+          <Button
+            variant="ghost"
+            size="sm"
+            className="max-w-64 min-w-0 gap-2 text-xs"
+            aria-label="Chat history"
+          />
+        }
+      >
+        <MessageSquare />
+        <span className="truncate">{session.thread?.title ?? "New conversation"}</span>
+        <ChevronDown className="size-3" />
       </PopoverTrigger>
       <PopoverContent align="start" className="w-[min(21rem,calc(100vw-2rem))] p-0">
         <div className="space-y-3 p-3">

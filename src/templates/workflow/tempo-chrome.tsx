@@ -105,10 +105,12 @@ export function TempoHeader({
         </AvatarGroup>
         <Separator orientation="vertical" className="h-4" />
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button ref={moreTrigger} variant="ghost" size="icon-sm" aria-label="More options">
-              <Ellipsis />
-            </Button>
+          <DropdownMenuTrigger
+            render={
+              <Button ref={moreTrigger} variant="ghost" size="icon-sm" aria-label="More options" />
+            }
+          >
+            <Ellipsis />
           </DropdownMenuTrigger>
           <DropdownMenuContent
             align="end"

@@ -131,14 +131,16 @@ export function DeliveredOrderReceipt() {
                           {reviews[item.id] ? "Buy again" : "Write review"}
                         </Button>
                         <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button
-                              size="icon-sm"
-                              variant="outline"
-                              aria-label={`More actions for ${item.name}`}
-                            >
-                              <MoreHorizontal />
-                            </Button>
+                          <DropdownMenuTrigger
+                            render={
+                              <Button
+                                size="icon-sm"
+                                variant="outline"
+                                aria-label={`More actions for ${item.name}`}
+                              />
+                            }
+                          >
+                            <MoreHorizontal />
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="start">
                             <DropdownMenuItem
@@ -368,20 +370,18 @@ export function PostPurchaseActionsReceipt() {
               ] as const
             ).map((action) => (
               <Item
-                asChild
                 key={action.kind}
                 variant="outline"
                 className="flex-col justify-center gap-2 py-4 hover:bg-muted/40"
+                render={<button type="button" onClick={() => open({ kind: action.kind })} />}
               >
-                <button type="button" onClick={() => open({ kind: action.kind })}>
-                  <ItemMedia className="self-center! translate-y-0!">
-                    <action.icon className="size-5" />
-                  </ItemMedia>
-                  <ItemContent className="items-center gap-1">
-                    <ItemTitle className="font-medium">{action.title}</ItemTitle>
-                    <ItemDescription className="text-center text-xs">{action.copy}</ItemDescription>
-                  </ItemContent>
-                </button>
+                <ItemMedia className="self-center! translate-y-0!">
+                  <action.icon className="size-5" />
+                </ItemMedia>
+                <ItemContent className="items-center gap-1">
+                  <ItemTitle className="font-medium">{action.title}</ItemTitle>
+                  <ItemDescription className="text-center text-xs">{action.copy}</ItemDescription>
+                </ItemContent>
               </Item>
             ))}
           </div>

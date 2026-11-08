@@ -234,7 +234,7 @@ export function PreviewCustomizer({
           </Button>
         </FrameHeader>
         <FramePanel className="theme-customizer-fields">
-          <Foundation label="Component Library" value="Radix UI" icon={<Library />} />
+          <Foundation label="Component Library" value="Base UI" icon={<Library />} />
           <Foundation label="Style" value="Nova" icon={<Shapes />} />
           <Setting
             label="Base Color"
@@ -343,10 +343,8 @@ export function PreviewCustomizer({
               if (!open) setError("");
             }}
           >
-            <DialogTrigger asChild>
-              <Button variant="outline" size="sm">
-                Open preset
-              </Button>
+            <DialogTrigger render={<Button variant="outline" size="sm" />}>
+              Open preset
             </DialogTrigger>
             <DialogContent className="max-w-md">
               <DialogTitle>Open theme preset</DialogTitle>

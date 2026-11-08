@@ -123,22 +123,14 @@ function InviteMembers({ model }: { model: VervePeopleBillingModel }) {
   const formId = "verve-invite-members";
   return (
     <Sheet open={model.inviteOpen} onOpenChange={model.setInviteOpen}>
-      <SheetTrigger asChild>
-        <Button type="button" size="sm">
-          Add member
-        </Button>
-      </SheetTrigger>
+      <SheetTrigger render={<Button type="button" size="sm" />}>Add member</SheetTrigger>
       <VerveSettingsSheet
         className="vp-invite-sheet"
         title="Add member"
         description="Invite teammates by email and set their role."
         footer={
           <>
-            <SheetClose asChild>
-              <Button variant="outline" type="button">
-                Cancel
-              </Button>
-            </SheetClose>
+            <SheetClose render={<Button variant="outline" type="button" />}>Cancel</SheetClose>
             <Button type="submit" form={formId}>
               Send invites
             </Button>
@@ -269,11 +261,11 @@ function MemberFilters({ model }: { model: VervePeopleBillingModel }) {
   const count = model.roles.length + model.billingStatuses.length + model.authentication.length;
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button size="sm" variant="outline" aria-label="Filter members">
-          Filters{count > 0 && <Badge variant="secondary">{count}</Badge>}
-          <ChevronDown aria-hidden />
-        </Button>
+      <DropdownMenuTrigger
+        render={<Button size="sm" variant="outline" aria-label="Filter members" />}
+      >
+        Filters{count > 0 && <Badge variant="secondary">{count}</Badge>}
+        <ChevronDown aria-hidden />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="vp-team-filter reui-reference">
         <Tabs defaultValue="role">
@@ -484,10 +476,17 @@ function InfoLabel({ title, description }: { title: string; description: string 
       {title}
       <TooltipProvider>
         <Tooltip>
-          <TooltipTrigger asChild>
-            <Button type="button" size="icon-xs" variant="ghost" aria-label={`${title} details`}>
-              <Info aria-hidden />
-            </Button>
+          <TooltipTrigger
+            render={
+              <Button
+                type="button"
+                size="icon-xs"
+                variant="ghost"
+                aria-label={`${title} details`}
+              />
+            }
+          >
+            <Info aria-hidden />
           </TooltipTrigger>
           <TooltipContent className="reui-reference">{description}</TooltipContent>
         </Tooltip>
@@ -499,11 +498,9 @@ function EditBilling({ model }: { model: VervePeopleBillingModel }) {
   const formId = "verve-edit-billing";
   return (
     <Sheet open={model.billingOpen} onOpenChange={model.setBillingOpen}>
-      <SheetTrigger asChild>
-        <Button variant="outline" size="sm">
-          <Pencil aria-hidden />
-          Edit details
-        </Button>
+      <SheetTrigger render={<Button variant="outline" size="sm" />}>
+        <Pencil aria-hidden />
+        Edit details
       </SheetTrigger>
       <VerveSettingsSheet
         className="vp-billing-edit"
@@ -511,11 +508,7 @@ function EditBilling({ model }: { model: VervePeopleBillingModel }) {
         description="Update your invoice contact and payment method."
         footer={
           <>
-            <SheetClose asChild>
-              <Button variant="outline" type="button">
-                Cancel
-              </Button>
-            </SheetClose>
+            <SheetClose render={<Button variant="outline" type="button" />}>Cancel</SheetClose>
             <Button type="submit" form={formId}>
               <VerveSaveIcon />
               Save changes

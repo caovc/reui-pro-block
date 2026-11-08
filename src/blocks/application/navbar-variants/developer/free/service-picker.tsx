@@ -38,18 +38,20 @@ export function ServicePicker({
   return (
     <ButtonGroup aria-label="API service selector">
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            ref={triggerRef}
-            variant="outline"
-            size="sm"
-            className="gap-1.5"
-            aria-label="Select API service"
-          >
-            <Icon data-icon="inline-start" />
-            {service.name}
-            <ChevronDown data-icon="inline-end" />
-          </Button>
+        <DropdownMenuTrigger
+          render={
+            <Button
+              ref={triggerRef}
+              variant="outline"
+              size="sm"
+              className="gap-1.5"
+              aria-label="Select API service"
+            />
+          }
+        >
+          <Icon data-icon="inline-start" />
+          {service.name}
+          <ChevronDown data-icon="inline-end" />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start" className="w-52">
           <DropdownMenuGroup>

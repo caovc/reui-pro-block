@@ -34,12 +34,14 @@ export function CommerceProviderDialog({ model }: { model: CommerceSettingsModel
         setOpen(value);
       }}
     >
-      <DialogTrigger asChild>
-        <Button
-          title={!available.length ? "All local demo providers are already added" : undefined}
-        >
-          Add provider
-        </Button>
+      <DialogTrigger
+        render={
+          <Button
+            title={!available.length ? "All local demo providers are already added" : undefined}
+          />
+        }
+      >
+        Add provider
       </DialogTrigger>
       <DialogSurface
         id={304}
@@ -50,9 +52,7 @@ export function CommerceProviderDialog({ model }: { model: CommerceSettingsModel
             <Button variant="outline" onClick={reset}>
               Reset
             </Button>
-            <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
-            </DialogClose>
+            <DialogClose render={<Button variant="outline" />}>Cancel</DialogClose>
             <Button type="submit" form={formId} disabled={!available.length}>
               Add provider
             </Button>

@@ -98,19 +98,21 @@ function Tool({
 }) {
   return (
     <Tooltip>
-      <TooltipTrigger asChild>
-        <Button
-          type="button"
-          variant={active ? "secondary" : "ghost"}
-          size="icon-sm"
-          aria-label={label}
-          aria-pressed={active}
-          disabled={disabled}
-          onMouseDown={(event) => event.preventDefault()}
-          onClick={action}
-        >
-          {children}
-        </Button>
+      <TooltipTrigger
+        render={
+          <Button
+            type="button"
+            variant={active ? "secondary" : "ghost"}
+            size="icon-sm"
+            aria-label={label}
+            aria-pressed={active}
+            disabled={disabled}
+            onMouseDown={(event) => event.preventDefault()}
+            onClick={action}
+          />
+        }
+      >
+        {children}
       </TooltipTrigger>
       <TooltipContent>
         {label}
@@ -221,19 +223,21 @@ export function RichTextToolbar({
       </ButtonGroup>
       <Separator orientation="vertical" />
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="rich-text-block-type"
-            aria-label={`Block type, ${block.label}`}
-          >
-            <span className="rich-text-block-label">{block.label}</span>
-            <span className="rich-text-block-mobile" aria-hidden="true">
-              T
-            </span>
-            <ChevronDown />
-          </Button>
+        <DropdownMenuTrigger
+          render={
+            <Button
+              variant="ghost"
+              size="sm"
+              className="rich-text-block-type"
+              aria-label={`Block type, ${block.label}`}
+            />
+          }
+        >
+          <span className="rich-text-block-label">{block.label}</span>
+          <span className="rich-text-block-mobile" aria-hidden="true">
+            T
+          </span>
+          <ChevronDown />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start" className="w-52">
           <DropdownMenuLabel>Turn Into</DropdownMenuLabel>
@@ -346,15 +350,17 @@ export function RichTextToolbar({
           </ColorPicker>
         )}
         <Popover open={linkOpen} onOpenChange={changeLinkOpen}>
-          <PopoverTrigger asChild>
-            <Button
-              variant={state.link ? "secondary" : "ghost"}
-              size="icon-sm"
-              aria-label="Insert link"
-              onMouseDown={(event) => event.preventDefault()}
-            >
-              <Link />
-            </Button>
+          <PopoverTrigger
+            render={
+              <Button
+                variant={state.link ? "secondary" : "ghost"}
+                size="icon-sm"
+                aria-label="Insert link"
+                onMouseDown={(event) => event.preventDefault()}
+              />
+            }
+          >
+            <Link />
           </PopoverTrigger>
           <PopoverContent
             key={linkFormGeneration}
@@ -424,16 +430,18 @@ export function RichTextToolbar({
         <>
           <Separator orientation="vertical" />
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="sm"
-                aria-label={`Alignment, ${alignment.label}`}
-                className="gap-1 px-1.5"
-              >
-                <alignment.Icon />
-                <ChevronDown className="size-3" />
-              </Button>
+            <DropdownMenuTrigger
+              render={
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  aria-label={`Alignment, ${alignment.label}`}
+                  className="gap-1 px-1.5"
+                />
+              }
+            >
+              <alignment.Icon />
+              <ChevronDown className="size-3" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="w-52">
               <DropdownMenuLabel>Alignment</DropdownMenuLabel>
@@ -588,11 +596,18 @@ function RichTextLinkForm({ editor, onClose }: { editor: Editor; onClose: () => 
 export function RichTextShortcuts() {
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <Button variant="ghost" size="sm" className="rich-text-shortcuts" aria-label="Shortcuts">
-          <Keyboard />
-          <span>Shortcuts</span>
-        </Button>
+      <PopoverTrigger
+        render={
+          <Button
+            variant="ghost"
+            size="sm"
+            className="rich-text-shortcuts"
+            aria-label="Shortcuts"
+          />
+        }
+      >
+        <Keyboard />
+        <span>Shortcuts</span>
       </PopoverTrigger>
       <PopoverContent
         align="end"

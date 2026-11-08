@@ -308,15 +308,17 @@ function Byline({ names }: { names: string[] }) {
 function StoryActions({ story }: { story: Story }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          aria-label={`Actions for ${story.id}`}
-          className="size-7"
-        >
-          <Ellipsis className="size-4" />
-        </Button>
+      <DropdownMenuTrigger
+        render={
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            aria-label={`Actions for ${story.id}`}
+            className="size-7"
+          />
+        }
+      >
+        <Ellipsis className="size-4" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" collisionPadding={5} className="w-44 text-base leading-6">
         <DropdownMenuGroup>
@@ -673,16 +675,14 @@ export default function EditorialDesk() {
               />
             </InputGroup>
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline">
-                  <Filter data-icon="inline-start" className="size-4" />
-                  Filter
-                  {activeFilters > 0 && (
-                    <Badge variant="secondary" className="h-4 min-w-4 px-1 text-[10px]">
-                      {activeFilters}
-                    </Badge>
-                  )}
-                </Button>
+              <DropdownMenuTrigger render={<Button variant="outline" />}>
+                <Filter data-icon="inline-start" className="size-4" />
+                Filter
+                {activeFilters > 0 && (
+                  <Badge variant="secondary" className="h-4 min-w-4 px-1 text-[10px]">
+                    {activeFilters}
+                  </Badge>
+                )}
               </DropdownMenuTrigger>
               <DropdownMenuContent
                 align={isMobile ? "start" : "end"}
@@ -723,11 +723,9 @@ export default function EditorialDesk() {
               </DropdownMenuContent>
             </DropdownMenu>
             <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline">
-                  <Settings2 data-icon="inline-start" className="size-4" />
-                  Display
-                </Button>
+              <PopoverTrigger render={<Button variant="outline" />}>
+                <Settings2 data-icon="inline-start" className="size-4" />
+                Display
               </PopoverTrigger>
               <PopoverContent
                 align={isMobile ? "start" : "end"}

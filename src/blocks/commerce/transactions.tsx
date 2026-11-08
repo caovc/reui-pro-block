@@ -834,11 +834,9 @@ export function ShoppingCart({ block }: BlockProps) {
             Take a look at what’s in your bag before you head out.
           </p>
           <Sheet>
-            <SheetTrigger asChild>
-              <Button>
-                <ShoppingBag data-icon="inline-start" />
-                Open shopping bag<Badge variant="secondary">{items.length}</Badge>
-              </Button>
+            <SheetTrigger render={<Button />}>
+              <ShoppingBag data-icon="inline-start" />
+              Open shopping bag<Badge variant="secondary">{items.length}</Badge>
             </SheetTrigger>
             <SheetContent className="overflow-auto sm:max-w-lg">
               <SheetHeader>
@@ -1119,10 +1117,8 @@ export function Receipt({ block }: BlockProps) {
                 {i === 3 && (
                   <div className="mt-2 flex flex-wrap gap-2">
                     <Dialog>
-                      <DialogTrigger asChild>
-                        <Button variant="outline" size="sm">
-                          Write review
-                        </Button>
+                      <DialogTrigger render={<Button variant="outline" size="sm" />}>
+                        Write review
                       </DialogTrigger>
                       <DialogContent>
                         <DialogHeader>

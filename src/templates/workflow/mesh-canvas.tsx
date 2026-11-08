@@ -114,18 +114,20 @@ export default function MeshCanvas({ block, onHome }: BlockProps & { onHome: () 
               }
             >
               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="mesh-header-action"
-                    aria-label="Export canvas"
-                    disabled={!controls.ready}
-                  >
-                    <Download />
-                    <span>Export</span>
-                    <ChevronDown className="mesh-export-chevron" />
-                  </Button>
+                <DropdownMenuTrigger
+                  render={
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="mesh-header-action"
+                      aria-label="Export canvas"
+                      disabled={!controls.ready}
+                    />
+                  }
+                >
+                  <Download />
+                  <span>Export</span>
+                  <ChevronDown className="mesh-export-chevron" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem onSelect={controls.exportSvg}>Export SVG</DropdownMenuItem>

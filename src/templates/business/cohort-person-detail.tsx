@@ -265,10 +265,17 @@ export function CohortPersonDetail({
                   return (
                     <TimelineItem key={`${activity.date}-${index}`} step={index + 1}>
                       <TimelineSeparator />
-                      <TimelineIndicator asChild>
-                        <IconTile size="xs" radius="full" variant="soft" data-kind={activity.kind}>
-                          <Icon />
-                        </IconTile>
+                      <TimelineIndicator
+                        render={
+                          <IconTile
+                            size="xs"
+                            radius="full"
+                            variant="soft"
+                            data-kind={activity.kind}
+                          />
+                        }
+                      >
+                        <Icon />
                       </TimelineIndicator>
                       <TimelineContent>
                         <strong>{activity.title}</strong>

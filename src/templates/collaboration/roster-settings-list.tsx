@@ -130,14 +130,16 @@ export function RosterSettingsList({
     size: 112,
     render: (row) => (
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            size="icon-sm"
-            variant="ghost"
-            aria-label={`Actions for ${row.name || "new row"}`}
-          >
-            <MoreHorizontal />
-          </Button>
+        <DropdownMenuTrigger
+          render={
+            <Button
+              size="icon-sm"
+              variant="ghost"
+              aria-label={`Actions for ${row.name || "new row"}`}
+            />
+          }
+        >
+          <MoreHorizontal />
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuItem

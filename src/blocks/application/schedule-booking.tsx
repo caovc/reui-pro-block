@@ -225,10 +225,10 @@ export function TimeRangePicker() {
             </FrameDescription>
           </div>
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="sr-more" aria-label="Session options">
-                <Ellipsis />
-              </Button>
+            <DropdownMenuTrigger
+              render={<Button variant="ghost" className="sr-more" aria-label="Session options" />}
+            >
+              <Ellipsis />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="reui-reference schedule-reference-menu" align="end">
               <DropdownMenuItem>View Profile</DropdownMenuItem>
@@ -295,10 +295,10 @@ export function TimeRangePicker() {
         <FrameFooter className="sr-range-footer">
           <div className="sr-footer-note" aria-live="polite">
             <Tooltip>
-              <TooltipTrigger asChild>
-                <button type="button" aria-label="Selected duration information">
-                  <Info />
-                </button>
+              <TooltipTrigger
+                render={<button type="button" aria-label="Selected duration information" />}
+              >
+                <Info />
               </TooltipTrigger>
               <TooltipContent className="reui-reference">
                 Duration is calculated from your start and end times.

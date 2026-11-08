@@ -34,11 +34,13 @@ export function EventCreator({
   const [time, setTime] = useState("09:00");
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button size="sm" className={wide ? "h-7 w-full justify-start text-xs" : "h-7 text-xs"}>
-          <Plus />
-          New Event
-        </Button>
+      <DialogTrigger
+        render={
+          <Button size="sm" className={wide ? "h-7 w-full justify-start text-xs" : "h-7 text-xs"} />
+        }
+      >
+        <Plus />
+        New Event
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

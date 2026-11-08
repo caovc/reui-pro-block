@@ -169,18 +169,20 @@ export function ContractReviewNavigation({
             </span>
           )}
           <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon-sm"
-                aria-label={label}
-                disabled={revisions.length === 0}
-                onMouseDown={(event) => event.preventDefault()}
-                onClick={() => move(direction)}
-              >
-                <Icon aria-hidden="true" />
-              </Button>
+            <TooltipTrigger
+              render={
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon-sm"
+                  aria-label={label}
+                  disabled={revisions.length === 0}
+                  onMouseDown={(event) => event.preventDefault()}
+                  onClick={() => move(direction)}
+                />
+              }
+            >
+              <Icon aria-hidden="true" />
             </TooltipTrigger>
             <TooltipContent>{label}</TooltipContent>
           </Tooltip>
@@ -265,19 +267,21 @@ function ContractReviewContent({
           {revisions.length}
         </Badge>
         <DropdownMenu modal={!mobile}>
-          <DropdownMenuTrigger asChild>
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon-sm"
-              aria-label="Review actions"
-              title="Resolve all suggestions"
-              ref={reviewActions}
-              disabled={!canResolve || revisions.length === 0}
-              className="ml-auto"
-            >
-              <MoreHorizontal aria-hidden="true" />
-            </Button>
+          <DropdownMenuTrigger
+            render={
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon-sm"
+                aria-label="Review actions"
+                title="Resolve all suggestions"
+                ref={reviewActions}
+                disabled={!canResolve || revisions.length === 0}
+                className="ml-auto"
+              />
+            }
+          >
+            <MoreHorizontal aria-hidden="true" />
           </DropdownMenuTrigger>
           <DropdownMenuContent
             align="end"
@@ -296,10 +300,12 @@ function ContractReviewContent({
           </DropdownMenuContent>
         </DropdownMenu>
         {mobile && (
-          <SheetClose asChild>
-            <Button type="button" variant="ghost" size="icon-sm" aria-label="Close suggestions">
-              <X aria-hidden="true" />
-            </Button>
+          <SheetClose
+            render={
+              <Button type="button" variant="ghost" size="icon-sm" aria-label="Close suggestions" />
+            }
+          >
+            <X aria-hidden="true" />
           </SheetClose>
         )}
       </div>
@@ -453,18 +459,21 @@ export function ContractSuggestions({
   if (desktop) return null;
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger asChild>
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          aria-label={`Suggestions, ${props.revisions.length} open`}
-        >
-          <MessageSquare aria-hidden="true" /> Suggestions
-          <Badge variant="secondary" aria-label="Pending suggested changes">
-            {props.revisions.length}
-          </Badge>
-        </Button>
+      <SheetTrigger
+        render={
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            aria-label={`Suggestions, ${props.revisions.length} open`}
+          />
+        }
+      >
+        <MessageSquare aria-hidden="true" />
+        Suggestions
+        <Badge variant="secondary" aria-label="Pending suggested changes">
+          {props.revisions.length}
+        </Badge>
       </SheetTrigger>
       <SheetContent side="right" showCloseButton={false} className="contract-review-sheet">
         <SheetHeader className="sr-only">

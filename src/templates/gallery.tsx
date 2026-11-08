@@ -136,15 +136,14 @@ export default function TemplateGallery({ dark }: { dark: boolean }) {
                 ))}
               </div>
               <div className="template-list-actions">
-                <Button asChild>
-                  <a href={`#/templates/${template.id}`}>
-                    Open template <ArrowRight />
-                  </a>
+                <Button render={<a href={`#/templates/${template.id}`} />}>
+                  Open template <ArrowRight />
                 </Button>
-                <Button variant="outline" asChild>
-                  <a href={template.reference} target="_blank" rel="noopener noreferrer">
-                    Reference <ExternalLink />
-                  </a>
+                <Button
+                  variant="outline"
+                  render={<a href={template.reference} target="_blank" rel="noopener noreferrer" />}
+                >
+                  Reference <ExternalLink />
                 </Button>
               </div>
             </div>

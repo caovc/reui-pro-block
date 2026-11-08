@@ -34,9 +34,7 @@ export function CommercePlanDialog({ model }: { model: CommerceSettingsModel }) 
         setOpen(value);
       }}
     >
-      <DialogTrigger asChild>
-        <Button>Change plan</Button>
-      </DialogTrigger>
+      <DialogTrigger render={<Button />}>Change plan</DialogTrigger>
       <DialogSurface
         id={301}
         title="Change demo plan"
@@ -46,9 +44,7 @@ export function CommercePlanDialog({ model }: { model: CommerceSettingsModel }) 
             <Button variant="outline" onClick={reset}>
               Reset
             </Button>
-            <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
-            </DialogClose>
+            <DialogClose render={<Button variant="outline" />}>Cancel</DialogClose>
             <Button type="submit" form={formId}>
               Save plan
             </Button>
@@ -114,8 +110,8 @@ export function CommerceCancellationDialog({ model }: { model: CommerceSettingsM
         setOpen(value);
       }}
     >
-      <DialogTrigger asChild>
-        <Button variant="outline">{cancelled ? "Resume plan" : "Cancel plan"}</Button>
+      <DialogTrigger render={<Button variant="outline" />}>
+        {cancelled ? "Resume plan" : "Cancel plan"}
       </DialogTrigger>
       <DialogSurface
         id={302}
@@ -127,9 +123,7 @@ export function CommerceCancellationDialog({ model }: { model: CommerceSettingsM
         }
         footer={
           <>
-            <DialogClose asChild>
-              <Button variant="outline">Keep current plan</Button>
-            </DialogClose>
+            <DialogClose render={<Button variant="outline" />}>Keep current plan</DialogClose>
             <Button
               variant={resuming ? "default" : "destructive"}
               disabled={!open || (!resuming && !confirmed)}
@@ -208,11 +202,7 @@ export function CommercePaymentMethodDialog({ model }: { model: CommerceSettings
         setOpen(value);
       }}
     >
-      <DialogTrigger asChild>
-        <Button size="sm" variant="outline">
-          Update
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger render={<Button size="sm" variant="outline" />}>Update</DialogTrigger>
       <DialogSurface
         id={303}
         title="Update demo payment method"
@@ -222,9 +212,7 @@ export function CommercePaymentMethodDialog({ model }: { model: CommerceSettings
             <Button variant="outline" onClick={reset}>
               Reset
             </Button>
-            <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
-            </DialogClose>
+            <DialogClose render={<Button variant="outline" />}>Cancel</DialogClose>
             <Button type="submit" form={formId}>
               Save payment method
             </Button>

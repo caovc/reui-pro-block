@@ -298,19 +298,21 @@ function WorkflowAccountForm({
                 {kind === "flux" ? "Public details" : "Public Details"}
                 <TooltipProvider>
                   <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="size-7 text-muted-foreground"
-                        aria-label={
-                          kind === "flux"
-                            ? "Role, time zone, and website show on your public profile."
-                            : "About public details"
-                        }
-                      >
-                        <Info className="size-3.5" />
-                      </Button>
+                    <TooltipTrigger
+                      render={
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="size-7 text-muted-foreground"
+                          aria-label={
+                            kind === "flux"
+                              ? "Role, time zone, and website show on your public profile."
+                              : "About public details"
+                          }
+                        />
+                      }
+                    >
+                      <Info className="size-3.5" />
                     </TooltipTrigger>
                     <TooltipContent className="reui-reference">
                       Role, time zone, and website show on your public profile.

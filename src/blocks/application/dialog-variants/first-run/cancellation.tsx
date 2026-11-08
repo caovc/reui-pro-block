@@ -69,10 +69,8 @@ export default function CancellationDialog() {
               This local survey does not cancel a subscription or change billing.
             </FooterHelp>
             <div className="refined-dialog-actions">
-              <DialogClose asChild>
-                <Button variant="outline" ref={keepButton}>
-                  Keep plan
-                </Button>
+              <DialogClose render={<Button variant="outline" ref={keepButton} />}>
+                Keep plan
               </DialogClose>
               <Button
                 disabled={!selected.length}

@@ -401,15 +401,17 @@ export function PulseDirectory({
       value: (r) => r.id,
       render: (r) => (
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              size="icon-sm"
-              variant="ghost"
-              aria-label={`Actions for ${r.name}`}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <MoreHorizontal />
-            </Button>
+          <DropdownMenuTrigger
+            render={
+              <Button
+                size="icon-sm"
+                variant="ghost"
+                aria-label={`Actions for ${r.name}`}
+                onClick={(e) => e.stopPropagation()}
+              />
+            }
+          >
+            <MoreHorizontal />
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem onClick={() => setDraft(r)}>
@@ -486,11 +488,9 @@ export function PulseDirectory({
               }}
             />
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline">
-                  <Filter />
-                  {filter === "All" ? "Filters" : filter}
-                </Button>
+              <DropdownMenuTrigger render={<Button variant="outline" />}>
+                <Filter />
+                {filter === "All" ? "Filters" : filter}
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 {[
@@ -523,11 +523,9 @@ export function PulseDirectory({
             </Button>
             <div className="ct-grow" />
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline">
-                  <Settings2 />
-                  Settings
-                </Button>
+              <DropdownMenuTrigger render={<Button variant="outline" />}>
+                <Settings2 />
+                Settings
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 {fields

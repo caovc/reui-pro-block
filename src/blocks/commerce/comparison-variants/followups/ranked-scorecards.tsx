@@ -24,21 +24,15 @@ import "./visual-followups.css";
 function ScoringMethodology() {
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline">
-          <CircleHelp data-icon="inline-start" />
-          How we score
-        </Button>
+      <DialogTrigger render={<Button variant="outline" />}>
+        <CircleHelp data-icon="inline-start" />
+        How we score
       </DialogTrigger>
       <DialogSurface
         id={0}
         title="About these demo scores"
         description="An independent local extension. The reference link has no methodology target."
-        footer={
-          <DialogClose asChild>
-            <Button>Back to rankings</Button>
-          </DialogClose>
-        }
+        footer={<DialogClose render={<Button />}>Back to rankings</DialogClose>}
       >
         <div className="flex flex-col gap-4 text-sm leading-6">
           <p>

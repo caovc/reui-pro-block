@@ -55,10 +55,8 @@ export default function ConnectionConsentDialog() {
         media={undefined}
         footer={
           <>
-            <DialogClose asChild>
-              <Button variant="outline" className="flex-1">
-                Cancel
-              </Button>
+            <DialogClose render={<Button variant="outline" className="flex-1" />}>
+              Cancel
             </DialogClose>
             <Button
               className="flex-1"

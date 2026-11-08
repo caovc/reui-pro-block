@@ -376,80 +376,84 @@ export function ScopeTree({
             (row.count !== undefined && !["Risks", "Quarantined", "Tasks"].includes(row.name)) ||
             status === "Add";
           return (
-            <TreeItem key={item.getId()} item={item} asChild>
-              <div
-                onFocus={(e) => {
-                  if (e.target === e.currentTarget) item.setFocused();
-                }}
-                aria-selected={active === row.name}
-                data-scope-row={row.name}
-                data-scope-parent={row.parent}
-                data-active={active === row.name}
-                className="shell-scope-item"
-                onDragOver={(e) => e.preventDefault()}
-                onDrop={(e) => {
-                  e.preventDefault();
-                  drop(row.parent, row.name);
-                }}
-              >
-                <TreeItemLabel className="shell-scope-label">
-                  {row.level === 1 && (
-                    <button
-                      draggable
-                      aria-label={`Reorder ${row.name}`}
-                      tabIndex={-1}
-                      className="shell-scope-grip"
-                      onClick={(e) => e.stopPropagation()}
-                      onDragStart={(e) => {
-                        drag.current = { parent: row.parent, name: row.name };
-                        e.dataTransfer.setData("text/plain", row.name);
-                      }}
-                      onKeyDown={(e) => {
-                        if (e.altKey && ["ArrowUp", "ArrowDown"].includes(e.key)) {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          reorder(row.parent, row.name, e.key === "ArrowUp" ? -1 : 1);
-                        }
-                      }}
-                    >
-                      <GripVertical />
-                    </button>
-                  )}
-                  {Icon && <Icon className="shell-scope-node-icon" />}
-                  <span className="truncate">{row.name}</span>
-                  {showCounts && row.count !== undefined && (
-                    <ReuiBadge
-                      variant="secondary"
-                      size="xs"
-                      radius="full"
-                      className="shell-scope-count"
-                    >
-                      {row.count}
-                    </ReuiBadge>
-                  )}
-                  {showStatus && status && status !== "Add" && (
-                    <span
-                      className={`shell-scope-status ${["Stable", "Active"].includes(status) ? "positive" : status === "High" ? "danger" : ""}`}
-                    >
-                      {status === "Stable" && <Shield className="size-2.5" />}
-                      {status}
-                    </span>
-                  )}
-                  {canAdd && (
-                    <button
-                      className="shell-scope-add"
-                      tabIndex={-1}
-                      aria-label={`Add to ${row.name}`}
-                      onClick={(e) => {
+            <TreeItem
+              key={item.getId()}
+              item={item}
+              render={
+                <div
+                  onFocus={(e) => {
+                    if (e.target === e.currentTarget) item.setFocused();
+                  }}
+                  aria-selected={active === row.name}
+                  data-scope-row={row.name}
+                  data-scope-parent={row.parent}
+                  data-active={active === row.name}
+                  className="shell-scope-item"
+                  onDragOver={(e) => e.preventDefault()}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    drop(row.parent, row.name);
+                  }}
+                />
+              }
+            >
+              <TreeItemLabel className="shell-scope-label">
+                {row.level === 1 && (
+                  <button
+                    draggable
+                    aria-label={`Reorder ${row.name}`}
+                    tabIndex={-1}
+                    className="shell-scope-grip"
+                    onClick={(e) => e.stopPropagation()}
+                    onDragStart={(e) => {
+                      drag.current = { parent: row.parent, name: row.name };
+                      e.dataTransfer.setData("text/plain", row.name);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.altKey && ["ArrowUp", "ArrowDown"].includes(e.key)) {
+                        e.preventDefault();
                         e.stopPropagation();
-                        add(row.name);
-                      }}
-                    >
-                      <Plus />
-                    </button>
-                  )}
-                </TreeItemLabel>
-              </div>
+                        reorder(row.parent, row.name, e.key === "ArrowUp" ? -1 : 1);
+                      }
+                    }}
+                  >
+                    <GripVertical />
+                  </button>
+                )}
+                {Icon && <Icon className="shell-scope-node-icon" />}
+                <span className="truncate">{row.name}</span>
+                {showCounts && row.count !== undefined && (
+                  <ReuiBadge
+                    variant="secondary"
+                    size="xs"
+                    radius="full"
+                    className="shell-scope-count"
+                  >
+                    {row.count}
+                  </ReuiBadge>
+                )}
+                {showStatus && status && status !== "Add" && (
+                  <span
+                    className={`shell-scope-status ${["Stable", "Active"].includes(status) ? "positive" : status === "High" ? "danger" : ""}`}
+                  >
+                    {status === "Stable" && <Shield className="size-2.5" />}
+                    {status}
+                  </span>
+                )}
+                {canAdd && (
+                  <button
+                    className="shell-scope-add"
+                    tabIndex={-1}
+                    aria-label={`Add to ${row.name}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      add(row.name);
+                    }}
+                  >
+                    <Plus />
+                  </button>
+                )}
+              </TreeItemLabel>
             </TreeItem>
           );
         })}
@@ -520,15 +524,17 @@ export function ScopePanel({
         </div>
         {dynamic && (
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                size="icon-sm"
-                className="size-7"
-                aria-label="Manage scopes"
-              >
-                <Plus />
-              </Button>
+            <DropdownMenuTrigger
+              render={
+                <Button
+                  variant="outline"
+                  size="icon-sm"
+                  className="size-7"
+                  aria-label="Manage scopes"
+                />
+              }
+            >
+              <Plus />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuGroup>

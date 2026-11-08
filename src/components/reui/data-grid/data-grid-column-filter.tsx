@@ -45,34 +45,32 @@ function DataGridColumnFilter<TData extends object, TValue>({
 
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <Button variant="outline" size="sm">
-          <CirclePlusIcon className="size-4" />
-          {title}
-          {selectedValues?.size > 0 && (
-            <>
-              <Separator orientation="vertical" className="mx-2 h-4" />
-              <Badge variant="secondary" className="px-1 font-normal lg:hidden">
-                {selectedValues.size}
-              </Badge>
-              <div className="hidden gap-x-1 lg:flex">
-                {selectedValues.size > 2 ? (
-                  <Badge variant="secondary" className="px-1 font-normal">
-                    {i18n.labels.filterSelectedCount(selectedValues.size)}
-                  </Badge>
-                ) : (
-                  options
-                    .filter((option) => selectedValues.has(option.value))
-                    .map((option) => (
-                      <Badge variant="secondary" key={option.value} className="px-1 font-normal">
-                        {option.label}
-                      </Badge>
-                    ))
-                )}
-              </div>
-            </>
-          )}
-        </Button>
+      <PopoverTrigger render={<Button variant="outline" size="sm" />}>
+        <CirclePlusIcon className="size-4" />
+        {title}
+        {selectedValues?.size > 0 && (
+          <>
+            <Separator orientation="vertical" className="mx-2 h-4" />
+            <Badge variant="secondary" className="px-1 font-normal lg:hidden">
+              {selectedValues.size}
+            </Badge>
+            <div className="hidden gap-x-1 lg:flex">
+              {selectedValues.size > 2 ? (
+                <Badge variant="secondary" className="px-1 font-normal">
+                  {i18n.labels.filterSelectedCount(selectedValues.size)}
+                </Badge>
+              ) : (
+                options
+                  .filter((option) => selectedValues.has(option.value))
+                  .map((option) => (
+                    <Badge variant="secondary" key={option.value} className="px-1 font-normal">
+                      {option.label}
+                    </Badge>
+                  ))
+              )}
+            </div>
+          </>
+        )}
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0" align="start">
         <div className="p-2">

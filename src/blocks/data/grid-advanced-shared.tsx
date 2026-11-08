@@ -244,11 +244,9 @@ export function TableOptions({
 }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm" className="h-8 text-sm">
-          <Columns3 />
-          {label}
-        </Button>
+      <DropdownMenuTrigger render={<Button variant="outline" size="sm" className="h-8 text-sm" />}>
+        <Columns3 />
+        {label}
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuGroup>
@@ -298,10 +296,10 @@ export function RowMenu({
 }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button aria-label={`Actions for ${name}`} variant="ghost" size="icon-xs">
-          <Ellipsis className="size-3.5" />
-        </Button>
+      <DropdownMenuTrigger
+        render={<Button aria-label={`Actions for ${name}`} variant="ghost" size="icon-xs" />}
+      >
+        <Ellipsis className="size-3.5" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuGroup>

@@ -190,10 +190,12 @@ export function EchoComposer({
             />
             <InputGroupAddon align="block-end" className="echo-compose-tools">
               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <InputGroupButton type="button" size="icon-sm" aria-label="Add context">
-                    <Plus />
-                  </InputGroupButton>
+                <DropdownMenuTrigger
+                  render={
+                    <InputGroupButton type="button" size="icon-sm" aria-label="Add context" />
+                  }
+                >
+                  <Plus />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start" side="top" className="echo-context-menu">
                   <DropdownMenuLabel>Add context</DropdownMenuLabel>
@@ -258,21 +260,23 @@ export function EchoComposer({
                 {dictation && (
                   <TooltipProvider>
                     <Tooltip>
-                      <TooltipTrigger asChild>
-                        <span
-                          className="echo-dictation-control"
-                          tabIndex={0}
-                          aria-label="Dictation unavailable"
+                      <TooltipTrigger
+                        render={
+                          <span
+                            className="echo-dictation-control"
+                            tabIndex={0}
+                            aria-label="Dictation unavailable"
+                          />
+                        }
+                      >
+                        <InputGroupButton
+                          type="button"
+                          size="icon-sm"
+                          aria-label="Dictate message"
+                          disabled
                         >
-                          <InputGroupButton
-                            type="button"
-                            size="icon-sm"
-                            aria-label="Dictate message"
-                            disabled
-                          >
-                            <Mic />
-                          </InputGroupButton>
-                        </span>
+                          <Mic />
+                        </InputGroupButton>
                       </TooltipTrigger>
                       <TooltipContent className="reui-reference echo-dictation-tooltip">
                         Dictation is unavailable in this local preview.

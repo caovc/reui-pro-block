@@ -41,23 +41,26 @@ export function MarketingMegaMenu({ onNavigate }: { onNavigate: (page: Marketing
                     const Icon = page.icon;
                     return (
                       <li key={page.id}>
-                        <NavigationMenuLink asChild className="flex items-start gap-2 p-3">
-                          <a
-                            href={`#${page.id}`}
-                            onClick={(event) => {
-                              event.preventDefault();
-                              setValue("");
-                              onNavigate(page);
-                            }}
-                          >
-                            <Icon aria-hidden="true" className="shrink-0" />
-                            <div className="flex min-w-0 flex-col gap-0.5">
-                              <div className="text-sm font-medium leading-none">{page.title}</div>
-                              <p className="text-xs leading-snug text-muted-foreground">
-                                {page.description}
-                              </p>
-                            </div>
-                          </a>
+                        <NavigationMenuLink
+                          className="flex items-start gap-2 p-3"
+                          render={
+                            <a
+                              href={`#${page.id}`}
+                              onClick={(event) => {
+                                event.preventDefault();
+                                setValue("");
+                                onNavigate(page);
+                              }}
+                            />
+                          }
+                        >
+                          <Icon aria-hidden="true" className="shrink-0" />
+                          <div className="flex min-w-0 flex-col gap-0.5">
+                            <div className="text-sm font-medium leading-none">{page.title}</div>
+                            <p className="text-xs leading-snug text-muted-foreground">
+                              {page.description}
+                            </p>
+                          </div>
                         </NavigationMenuLink>
                       </li>
                     );
@@ -68,21 +71,24 @@ export function MarketingMegaMenu({ onNavigate }: { onNavigate: (page: Marketing
           </NavigationMenuItem>
         ))}
         <NavigationMenuItem>
-          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-            <a
-              href="#pricing"
-              onClick={(event) => {
-                event.preventDefault();
-                setValue("");
-                onNavigate({
-                  title: "Pricing",
-                  description:
-                    "Compare fictional workspace plans in this local demonstration. No purchase or subscription is created.",
-                });
-              }}
-            >
-              Pricing
-            </a>
+          <NavigationMenuLink
+            className={navigationMenuTriggerStyle()}
+            render={
+              <a
+                href="#pricing"
+                onClick={(event) => {
+                  event.preventDefault();
+                  setValue("");
+                  onNavigate({
+                    title: "Pricing",
+                    description:
+                      "Compare fictional workspace plans in this local demonstration. No purchase or subscription is created.",
+                  });
+                }}
+              />
+            }
+          >
+            Pricing
           </NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenuList>

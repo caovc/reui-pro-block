@@ -54,26 +54,31 @@ export function DriveSettings({
             {driveSettingsSections.map((entry) => {
               const Icon = icons[entry];
               return (
-                <Button asChild key={entry} variant="ghost" className="ds-navigation-link">
-                  <a
-                    href={navigation.href(entry)}
-                    aria-current={section === entry ? "page" : undefined}
-                    onClick={(event) => {
-                      if (
-                        event.button === 0 &&
-                        !event.metaKey &&
-                        !event.ctrlKey &&
-                        !event.shiftKey &&
-                        !event.altKey
-                      ) {
-                        event.preventDefault();
-                        navigation.onNavigate(entry);
-                      }
-                    }}
-                  >
-                    <Icon />
-                    {driveSettingsTitles[entry]}
-                  </a>
+                <Button
+                  render={
+                    <a
+                      href={navigation.href(entry)}
+                      aria-current={section === entry ? "page" : undefined}
+                      onClick={(event) => {
+                        if (
+                          event.button === 0 &&
+                          !event.metaKey &&
+                          !event.ctrlKey &&
+                          !event.shiftKey &&
+                          !event.altKey
+                        ) {
+                          event.preventDefault();
+                          navigation.onNavigate(entry);
+                        }
+                      }}
+                    />
+                  }
+                  key={entry}
+                  variant="ghost"
+                  className="ds-navigation-link"
+                >
+                  <Icon />
+                  {driveSettingsTitles[entry]}
                 </Button>
               );
             })}

@@ -44,7 +44,7 @@ interface FlowCanvasToolbarProps {
 function ToolbarHint({ label, children }: { label: string; children: ReactNode }) {
   return (
     <Tooltip>
-      <TooltipTrigger asChild>{children}</TooltipTrigger>
+      <TooltipTrigger render={children as never}></TooltipTrigger>
       <TooltipContent>{label}</TooltipContent>
     </Tooltip>
   );
@@ -127,15 +127,17 @@ export function FlowCanvasToolbar(props: FlowCanvasToolbarProps) {
           <Minus />
         </ToolbarButton>
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="w-12 tabular-nums"
-              aria-label={`Zoom level ${zoomLabel}`}
-            >
-              {zoomLabel}
-            </Button>
+          <DropdownMenuTrigger
+            render={
+              <Button
+                variant="ghost"
+                size="sm"
+                className="w-12 tabular-nums"
+                aria-label={`Zoom level ${zoomLabel}`}
+              />
+            }
+          >
+            {zoomLabel}
           </DropdownMenuTrigger>
           <DropdownMenuContent className="fg-portal">
             {[0.5, 0.75, 1, 1.25, 1.5].map((zoom) => (

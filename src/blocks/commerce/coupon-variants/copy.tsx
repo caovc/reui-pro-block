@@ -33,34 +33,36 @@ export function CouponCopyButton({
   });
   return (
     <Popover open={attempted && !isCopied} onOpenChange={setAttempted}>
-      <PopoverTrigger asChild>
-        <Button
-          size="sm"
-          variant={light ? "secondary" : "default"}
-          aria-label={isCopied ? `Copied ${code}` : `Copy code ${code}`}
-          onClick={() => {
-            if (typeof navigator.clipboard?.writeText === "function") {
-              copyToClipboard(code);
-            } else if (codeId) {
-              const element = document.getElementById(codeId);
-              if (element) {
-                const range = document.createRange();
-                range.selectNodeContents(element);
-                const selection = window.getSelection();
-                selection?.removeAllRanges();
-                selection?.addRange(range);
+      <PopoverTrigger
+        render={
+          <Button
+            size="sm"
+            variant={light ? "secondary" : "default"}
+            aria-label={isCopied ? `Copied ${code}` : `Copy code ${code}`}
+            onClick={() => {
+              if (typeof navigator.clipboard?.writeText === "function") {
+                copyToClipboard(code);
+              } else if (codeId) {
+                const element = document.getElementById(codeId);
+                if (element) {
+                  const range = document.createRange();
+                  range.selectNodeContents(element);
+                  const selection = window.getSelection();
+                  selection?.removeAllRanges();
+                  selection?.addRange(range);
+                }
               }
-            }
-          }}
-        >
-          {label === "Copy" &&
-            (isCopied ? (
-              <Check data-icon="inline-start" />
-            ) : (
-              <TicketPercent data-icon="inline-start" />
-            ))}
-          <span aria-live="polite">{isCopied ? "Copied" : label}</span>
-        </Button>
+            }}
+          />
+        }
+      >
+        {label === "Copy" &&
+          (isCopied ? (
+            <Check data-icon="inline-start" />
+          ) : (
+            <TicketPercent data-icon="inline-start" />
+          ))}
+        <span aria-live="polite">{isCopied ? "Copied" : label}</span>
       </PopoverTrigger>
       <PopoverContent
         align="end"

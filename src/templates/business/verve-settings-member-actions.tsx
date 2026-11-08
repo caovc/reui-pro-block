@@ -35,10 +35,8 @@ export function VerveMemberActionSurfaces({ model }: { model: VerveMemberActions
           onCloseAutoFocus={model.restoreFocus}
           footer={
             <>
-              <SheetClose asChild>
-                <Button type="button" variant="outline">
-                  {edit ? "Cancel" : "Close"}
-                </Button>
+              <SheetClose render={<Button type="button" variant="outline" />}>
+                {edit ? "Cancel" : "Close"}
               </SheetClose>
               {edit ? (
                 <Button type="submit" form="verve-member-edit-form">

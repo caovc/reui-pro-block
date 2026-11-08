@@ -104,15 +104,11 @@ export function CheckoutCrumb({ onBack }: { onBack: () => void }) {
     <Breadcrumb>
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink asChild>
-            <button onClick={onBack}>Store</button>
-          </BreadcrumbLink>
+          <BreadcrumbLink render={<button onClick={onBack} />}>Store</BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
-          <BreadcrumbLink asChild>
-            <button onClick={onBack}>Bag</button>
-          </BreadcrumbLink>
+          <BreadcrumbLink render={<button onClick={onBack} />}>Bag</BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>

@@ -1437,11 +1437,7 @@ export function ColorPickerTrigger({
       children
     );
 
-  return (
-    <PopoverTrigger asChild>
-      <Button {...buttonProps}>{content}</Button>
-    </PopoverTrigger>
-  );
+  return <PopoverTrigger render={<Button {...buttonProps} />}>{content}</PopoverTrigger>;
 }
 
 export type ColorPickerInputProps = Omit<
@@ -1494,10 +1490,8 @@ export function ColorPickerInput({
       className={className}
     >
       <InputGroupAddon align="inline-start">
-        <PopoverTrigger asChild>
-          <InputGroupButton {...swatchProps}>
-            <ColorPickerSwatch />
-          </InputGroupButton>
+        <PopoverTrigger render={<InputGroupButton {...swatchProps} />}>
+          <ColorPickerSwatch />
         </PopoverTrigger>
       </InputGroupAddon>
       <InputGroupInput
@@ -2502,11 +2496,9 @@ export function ColorPickerFields({
       {menu && (
         <InputGroupAddon align="inline-start" className={FORMAT_ADDON_CLASS}>
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <InputGroupButton {...menuProps}>
-                {FORMAT_LABELS[shown]}
-                {CHEVRON_ICON}
-              </InputGroupButton>
+            <DropdownMenuTrigger render={<InputGroupButton {...menuProps} />}>
+              {FORMAT_LABELS[shown]}
+              {CHEVRON_ICON}
             </DropdownMenuTrigger>
             {/* A pick's click bubbles through the portal to InputGroupAddon,
                 whose own handler would move focus into a field. */}

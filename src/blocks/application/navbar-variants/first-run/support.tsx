@@ -18,10 +18,12 @@ export function LocalNotice({ children }: { children: string | null }) {
 export function CollaboratorsPopover() {
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <Button variant="ghost" className="h-auto p-1" aria-label="View 12 collaborators">
-          <PresenceGroup names={collaborators} extra={9} />
-        </Button>
+      <PopoverTrigger
+        render={
+          <Button variant="ghost" className="h-auto p-1" aria-label="View 12 collaborators" />
+        }
+      >
+        <PresenceGroup names={collaborators} extra={9} />
       </PopoverTrigger>
       <PopoverContent align="end" className="w-72">
         <div className="flex flex-col gap-3">
@@ -52,10 +54,10 @@ export function WorkspaceSearch({ onSelect }: { onSelect: (name: string) => void
   );
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button variant="ghost" size="icon-sm" aria-label="Search projects">
-          <Search />
-        </Button>
+      <PopoverTrigger
+        render={<Button variant="ghost" size="icon-sm" aria-label="Search projects" />}
+      >
+        <Search />
       </PopoverTrigger>
       <PopoverContent align="end" className="w-72">
         <Field>

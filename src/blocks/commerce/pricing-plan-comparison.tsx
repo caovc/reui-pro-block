@@ -41,10 +41,8 @@ const dollars = new Intl.NumberFormat("en-US", {
 function FeatureHint({ label, hint }: { label: string; hint: string }) {
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <button type="button" className="pc2-feature-hint">
-          {label}
-        </button>
+      <PopoverTrigger render={<button type="button" className="pc2-feature-hint" />}>
+        {label}
       </PopoverTrigger>
       <PopoverContent
         align="start"
@@ -140,20 +138,20 @@ export function PlanComparisonPricing() {
                 {comparisonPlans.map((plan) => (
                   <TableCell key={plan.id} data-plan={plan.id}>
                     <Button
-                      asChild
+                      render={
+                        <a
+                          href="#"
+                          aria-label={
+                            plan.id === "unlimited" ? "Contact us about Unlimited" : undefined
+                          }
+                          onClick={planPlaceholder}
+                        />
+                      }
                       size="sm"
                       variant={plan.id === "team" ? "default" : "outline"}
                       className="pc2-plan-action"
                     >
-                      <a
-                        href="#"
-                        aria-label={
-                          plan.id === "unlimited" ? "Contact us about Unlimited" : undefined
-                        }
-                        onClick={planPlaceholder}
-                      >
-                        {plan.action}
-                      </a>
+                      {plan.action}
                     </Button>
                   </TableCell>
                 ))}

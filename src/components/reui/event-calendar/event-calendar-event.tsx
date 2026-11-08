@@ -32,7 +32,7 @@ import type {
   EventCalendarSegment,
 } from "@/components/reui/event-calendar/event-calendar-types";
 import { addDays, format } from "date-fns";
-import { Slot } from "radix-ui";
+import { RenderSlot as Slot } from "@/components/ui/render-slot";
 
 import { cn } from "cn";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -512,7 +512,7 @@ function EventCalendarEvent<TData = unknown>({
       {tooltipOn ? (
         <TooltipProvider delayDuration={tooltipOpts?.delay ?? 600}>
           <Tooltip>
-            <TooltipTrigger asChild>{chip}</TooltipTrigger>
+            <TooltipTrigger render={chip as never}></TooltipTrigger>
             <TooltipContent
               side={tooltipOpts?.side ?? "top"}
               className={viewConfig.classNames?.eventTooltip}

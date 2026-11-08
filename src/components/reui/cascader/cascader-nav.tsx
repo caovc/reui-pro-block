@@ -17,7 +17,7 @@ import type {
 } from "@/components/reui/cascader/cascader-types";
 import { Combobox as ComboboxPrimitive } from "@base-ui/react";
 import { useDirection } from "@base-ui/react/direction-provider";
-import { Slot } from "radix-ui";
+import { RenderSlot as Slot } from "@/components/ui/render-slot";
 
 import { cn } from "cn";
 

@@ -231,14 +231,16 @@ export function LucentRegistry({
       size: 58,
       cell: ({ row }) => (
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon-sm"
-              aria-label={`Repository actions ${row.original.name}`}
-            >
-              <MoreHorizontal />
-            </Button>
+          <DropdownMenuTrigger
+            render={
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                aria-label={`Repository actions ${row.original.name}`}
+              />
+            }
+          >
+            <MoreHorizontal />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem onClick={() => setDetailId(row.original.id)}>
@@ -367,11 +369,9 @@ export function LucentRegistry({
             className="wf-registry-filters"
           >
             <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" size="sm">
-                  <SlidersHorizontal />
-                  Settings
-                </Button>
+              <PopoverTrigger render={<Button variant="outline" size="sm" />}>
+                <SlidersHorizontal />
+                Settings
               </PopoverTrigger>
               <PopoverContent align="end" className="wf-registry-settings">
                 <h3>Queue</h3>

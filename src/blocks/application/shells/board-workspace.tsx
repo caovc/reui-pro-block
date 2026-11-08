@@ -100,10 +100,12 @@ function BoardProfile({
 }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon-sm" aria-label="Open profile for Sienna Wells">
-          <Face name="Sienna Wells" index={4} />
-        </Button>
+      <DropdownMenuTrigger
+        render={
+          <Button variant="ghost" size="icon-sm" aria-label="Open profile for Sienna Wells" />
+        }
+      >
+        <Face name="Sienna Wells" index={4} />
       </DropdownMenuTrigger>
       <DropdownMenuContent side="right" align="end" className="reui-reference w-56">
         <DropdownMenuLabel>
@@ -159,14 +161,12 @@ function BoardRail({
     return (
       <SidebarRailButton key={name} label={name} active={name === "Boards"}>
         <Button
-          asChild
+          render={<a href="#" onClick={(e) => e.preventDefault()} />}
           variant={name === "Boards" ? "default" : "ghost"}
           size="icon-sm"
           aria-label={name}
         >
-          <a href="#" onClick={(e) => e.preventDefault()}>
-            <Icon />
-          </a>
+          <Icon />
         </Button>
       </SidebarRailButton>
     );
@@ -266,18 +266,21 @@ export default function BoardWorkspace() {
                       const Icon = [LayoutDashboard, List, MessageSquare, Activity][i];
                       return (
                         <li key={name}>
-                          <Button asChild variant="ghost">
-                            <a
-                              href="#"
-                              aria-current={view === name ? "page" : undefined}
-                              onClick={(e) => {
-                                e.preventDefault();
-                                setView(name);
-                              }}
-                            >
-                              <Icon />
-                              {name}
-                            </a>
+                          <Button
+                            render={
+                              <a
+                                href="#"
+                                aria-current={view === name ? "page" : undefined}
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  setView(name);
+                                }}
+                              />
+                            }
+                            variant="ghost"
+                          >
+                            <Icon />
+                            {name}
                           </Button>
                         </li>
                       );
@@ -320,10 +323,10 @@ export default function BoardWorkspace() {
               <span>Export</span>
             </Button>
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon-sm" aria-label="Board menu">
-                  <Ellipsis />
-                </Button>
+              <DropdownMenuTrigger
+                render={<Button variant="ghost" size="icon-sm" aria-label="Board menu" />}
+              >
+                <Ellipsis />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="reui-reference w-48">
                 <DropdownMenuLabel>Board</DropdownMenuLabel>

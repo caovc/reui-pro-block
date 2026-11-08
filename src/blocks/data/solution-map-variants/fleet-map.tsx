@@ -324,10 +324,10 @@ export const FleetMap = forwardRef<FleetMapHandle, Props>(function FleetMap(prop
             <LocateFixed />
           </Button>
           <Popover>
-            <PopoverTrigger asChild>
-              <Button size="icon" variant="outline" aria-label="Layers and legend">
-                <Layers3 />
-              </Button>
+            <PopoverTrigger
+              render={<Button size="icon" variant="outline" aria-label="Layers and legend" />}
+            >
+              <Layers3 />
             </PopoverTrigger>
             <PopoverContent className="reui-reference">
               <div className="flex flex-col gap-4">

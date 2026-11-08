@@ -21,10 +21,10 @@ export function InvitePopover({ onInvite }: { onInvite: (email: string) => void 
   const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button variant="ghost" size="icon-sm" aria-label="Invite team member">
-          <UserPlus />
-        </Button>
+      <PopoverTrigger
+        render={<Button variant="ghost" size="icon-sm" aria-label="Invite team member" />}
+      >
+        <UserPlus />
       </PopoverTrigger>
       <PopoverContent className="w-72" align="end">
         <form

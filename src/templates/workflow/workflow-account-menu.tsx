@@ -92,53 +92,51 @@ export function WorkflowAccountMenu({
   );
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <SidebarMenuButton
-          ref={triggerRef}
-          data-account-kind={kind}
-          data-account-collapsed={collapsed}
-          className={
-            flux
-              ? "wf-account-menu-trigger wf-account-menu-trigger-flux"
-              : mesh && collapsed
-                ? buttonVariants({
-                    variant: "ghost",
-                    size: "icon-sm",
-                    className:
-                      "wf-account-menu-trigger wf-account-menu-trigger-mesh flex p-0 group-data-[collapsible=icon]:size-7! group-data-[collapsible=icon]:p-0!",
-                  })
-                : mesh
-                  ? "wf-account-menu-trigger wf-account-menu-trigger-mesh"
-                  : "wf-account-menu-trigger"
-          }
-          aria-label={mesh ? `Open profile for ${identity.name}` : "Open workspace menu"}
-          tooltip={mesh || flux ? identity.name : organization}
-        >
-          {flux ? (
-            avatar("size-7")
-          ) : mesh ? (
-            avatar("size-7 rounded-lg")
-          ) : (
-            <BrandGlyph className="size-4 shrink-0" />
-          )}
-          {!collapsed && (
-            <>
-              {flux ? (
-                <span className="min-w-0 flex-1">
-                  <strong className="block truncate font-medium">{identity.name}</strong>
-                  <span className="block truncate text-xs text-muted-foreground">
-                    {organization}
-                  </span>
-                </span>
-              ) : (
-                <span className="min-w-0 flex-1 truncate">
-                  {mesh ? identity.name : organization}
-                </span>
-              )}
-              {mesh ? <ChevronsUpDown /> : <MoreHorizontal />}
-            </>
-          )}
-        </SidebarMenuButton>
+      <DropdownMenuTrigger
+        render={
+          <SidebarMenuButton
+            ref={triggerRef}
+            data-account-kind={kind}
+            data-account-collapsed={collapsed}
+            className={
+              flux
+                ? "wf-account-menu-trigger wf-account-menu-trigger-flux"
+                : mesh && collapsed
+                  ? buttonVariants({
+                      variant: "ghost",
+                      size: "icon-sm",
+                      className:
+                        "wf-account-menu-trigger wf-account-menu-trigger-mesh flex p-0 group-data-[collapsible=icon]:size-7! group-data-[collapsible=icon]:p-0!",
+                    })
+                  : mesh
+                    ? "wf-account-menu-trigger wf-account-menu-trigger-mesh"
+                    : "wf-account-menu-trigger"
+            }
+            aria-label={mesh ? `Open profile for ${identity.name}` : "Open workspace menu"}
+            tooltip={mesh || flux ? identity.name : organization}
+          />
+        }
+      >
+        {flux ? (
+          avatar("size-7")
+        ) : mesh ? (
+          avatar("size-7 rounded-lg")
+        ) : (
+          <BrandGlyph className="size-4 shrink-0" />
+        )}
+        {!collapsed && (
+          <>
+            {flux ? (
+              <span className="min-w-0 flex-1">
+                <strong className="block truncate font-medium">{identity.name}</strong>
+                <span className="block truncate text-xs text-muted-foreground">{organization}</span>
+              </span>
+            ) : (
+              <span className="min-w-0 flex-1 truncate">{mesh ? identity.name : organization}</span>
+            )}
+            {mesh ? <ChevronsUpDown /> : <MoreHorizontal />}
+          </>
+        )}
       </DropdownMenuTrigger>
       <DropdownMenuContent
         className={`reui-reference wf-account-menu wf-account-menu-${kind}`}

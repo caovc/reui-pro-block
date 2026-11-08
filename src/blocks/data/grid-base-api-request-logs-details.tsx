@@ -646,10 +646,12 @@ export function RequestDetails({
                       <ArrowDown />
                     </Button>
                   </ButtonGroup>
-                  <SheetClose asChild>
-                    <Button type="button" variant="ghost" size="icon-sm" aria-label="Close">
-                      <X />
-                    </Button>
+                  <SheetClose
+                    render={
+                      <Button type="button" variant="ghost" size="icon-sm" aria-label="Close" />
+                    }
+                  >
+                    <X />
                   </SheetClose>
                 </div>
                 <div className="flex flex-wrap items-center gap-2">
@@ -707,7 +709,7 @@ export function RequestDetails({
                 </div>
                 <div className="min-h-0 flex-1 overflow-y-auto px-5 py-5">
                   <TabsContent value="overview" className="m-0">
-                    <Accordion type="multiple" defaultValue={["details", "timing", "recent"]}>
+                    <Accordion multiple defaultValue={["details", "timing", "recent"]}>
                       <DetailSection value="details" title="Details">
                         <DetailRows
                           rows={[
@@ -753,7 +755,7 @@ export function RequestDetails({
                     </Accordion>
                   </TabsContent>
                   <TabsContent value="request" className="m-0">
-                    <Accordion type="multiple" defaultValue={["query", "headers", "body", "curl"]}>
+                    <Accordion multiple defaultValue={["query", "headers", "body", "curl"]}>
                       <DetailSection value="query" title="Query">
                         {query.size ? (
                           <DetailRows
@@ -790,7 +792,7 @@ export function RequestDetails({
                     </Accordion>
                   </TabsContent>
                   <TabsContent value="response" className="m-0">
-                    <Accordion type="multiple" defaultValue={["headers", "body"]}>
+                    <Accordion multiple defaultValue={["headers", "body"]}>
                       <DetailSection value="headers" title="Headers">
                         <HeaderRows headers={request.responseHeaders} />
                       </DetailSection>

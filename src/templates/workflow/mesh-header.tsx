@@ -73,27 +73,29 @@ export function MeshHeader({
       {navigation}
       <div className="mesh-page-actions">
         <Popover>
-          <PopoverTrigger asChild>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="mesh-presence"
-              aria-label="People on this page"
-            >
-              <span className="mesh-presence-avatars" aria-hidden="true">
-                {teammates.slice(0, 3).map((person) => (
-                  <Avatar key={person.name} className="size-6 border-2 border-background">
-                    <AvatarFallback
-                      style={{ background: person.color }}
-                      className="text-[8px] text-zinc-800"
-                    >
-                      {person.initials}
-                    </AvatarFallback>
-                  </Avatar>
-                ))}
-              </span>
-              <span>{title === "Canvas" ? "3 here · 1 away" : "4 here"}</span>
-            </Button>
+          <PopoverTrigger
+            render={
+              <Button
+                variant="ghost"
+                size="sm"
+                className="mesh-presence"
+                aria-label="People on this page"
+              />
+            }
+          >
+            <span className="mesh-presence-avatars" aria-hidden="true">
+              {teammates.slice(0, 3).map((person) => (
+                <Avatar key={person.name} className="size-6 border-2 border-background">
+                  <AvatarFallback
+                    style={{ background: person.color }}
+                    className="text-[8px] text-zinc-800"
+                  >
+                    {person.initials}
+                  </AvatarFallback>
+                </Avatar>
+              ))}
+            </span>
+            <span>{title === "Canvas" ? "3 here · 1 away" : "4 here"}</span>
           </PopoverTrigger>
           <PopoverContent align="end" className="w-64">
             <p className="mb-3 flex items-center gap-2 text-sm font-medium">
@@ -131,11 +133,18 @@ export function MeshHeader({
           <span>Ask AI</span>
         </Button>
         <Popover>
-          <PopoverTrigger asChild>
-            <Button variant="outline" size="sm" className="mesh-header-action" aria-label="Share">
-              <Share2 />
-              <span>Share</span>
-            </Button>
+          <PopoverTrigger
+            render={
+              <Button
+                variant="outline"
+                size="sm"
+                className="mesh-header-action"
+                aria-label="Share"
+              />
+            }
+          >
+            <Share2 />
+            <span>Share</span>
           </PopoverTrigger>
           <PopoverContent align="end" className="mesh-share-popover w-80 max-w-[calc(100vw-24px)]">
             <div>

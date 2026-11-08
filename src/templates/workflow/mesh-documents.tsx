@@ -300,10 +300,10 @@ export function MeshDocuments({ onHome }: { onHome: () => void }) {
           </Button>
         </div>
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button size="icon-sm" variant="ghost" aria-label="Doc options">
-              <MoreHorizontal />
-            </Button>
+          <DropdownMenuTrigger
+            render={<Button size="icon-sm" variant="ghost" aria-label="Doc options" />}
+          >
+            <MoreHorizontal />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuGroup>

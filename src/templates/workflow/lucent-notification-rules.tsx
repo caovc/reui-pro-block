@@ -31,11 +31,13 @@ export function LucentNotificationRules() {
         <Collapsible key={group.id} defaultOpen>
           <Frame dense spacing="sm" className="wf-lucent-rule-frame" aria-label={group.title}>
             <FrameHeader>
-              <CollapsibleTrigger asChild>
-                <Button type="button" variant="ghost" className="wf-lucent-rule-group-trigger">
-                  <FrameTitle>{group.title}</FrameTitle>
-                  <ChevronDown aria-hidden="true" />
-                </Button>
+              <CollapsibleTrigger
+                render={
+                  <Button type="button" variant="ghost" className="wf-lucent-rule-group-trigger" />
+                }
+              >
+                <FrameTitle>{group.title}</FrameTitle>
+                <ChevronDown aria-hidden="true" />
               </CollapsibleTrigger>
             </FrameHeader>
             <CollapsibleContent className="wf-lucent-rule-content">

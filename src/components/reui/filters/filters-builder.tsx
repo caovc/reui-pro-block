@@ -253,28 +253,29 @@ export function FiltersBuilder<V, O>({ trigger, className }: FiltersBuilderProps
     >
       <PopoverTrigger
         /* On the TRIGGER so a consumer's own `trigger` wears the state too. */
-        asChild
+
         disabled={actions.disabled}
         {...filterReadOnlyProps(actions)}
-      >
-        {trigger ? (
-          (trigger as React.ReactElement)
-        ) : (
-          <Button
-            variant="outline"
-            size={compact ? sizes.icon : sizes.button}
-            aria-label={compact ? actions.labels.addFilter : undefined}
-            /* THE RESET BOUNCE: the button's base class carries
+        render={
+          trigger
+            ? (trigger as React.ReactElement)
+            : ((
+                <Button
+                  variant="outline"
+                  size={compact ? sizes.icon : sizes.button}
+                  aria-label={compact ? actions.labels.addFilter : undefined}
+                  /* THE RESET BOUNCE: the button's base class carries
                `transition-all`, so flipping the size class eased padding 0 to
                `px-6` in sera over 150ms. Naming a transition REPLACES it. */
-            className="transition-[color,background-color,border-color,box-shadow]"
-          >
-            {/* No filter-plus glyph in phosphor or remixicon. */}
-            <ListFilterPlusIcon />
-            {compact ? null : actions.labels.addFilter}
-          </Button>
-        )}
-      </PopoverTrigger>
+                  className="transition-[color,background-color,border-color,box-shadow]"
+                >
+                  {/* No filter-plus glyph in phosphor or remixicon. */}
+                  <ListFilterPlusIcon />
+                  {compact ? null : actions.labels.addFilter}
+                </Button>
+              ) as never)
+        }
+      ></PopoverTrigger>
       {/* The default, then the root override, then this `className` last, so
         the specific wins. */}
       <PopoverContent

@@ -532,8 +532,8 @@ export function PickupOptionCart() {
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <button onClick={() => setNotice(true)}>Shop</button>
+            <BreadcrumbLink render={<button onClick={() => setNotice(true)} />}>
+              Shop
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />

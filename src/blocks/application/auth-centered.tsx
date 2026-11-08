@@ -237,11 +237,18 @@ export default function CenteredAuth({ block }: BlockProps) {
               These examples demonstrate sign-in layouts and local interface states. Add your own
               account service, privacy policy and terms when using them in a product.
             </p>
-            <Button variant="outline" asChild>
-              <a href="https://github.com/caovc/reui-pro-block" target="_blank" rel="noreferrer">
-                Project documentation
-                <ArrowRight data-icon="inline-end" />
-              </a>
+            <Button
+              variant="outline"
+              render={
+                <a
+                  href="https://github.com/caovc/reui-pro-block"
+                  target="_blank"
+                  rel="noreferrer"
+                />
+              }
+            >
+              Project documentation
+              <ArrowRight data-icon="inline-end" />
             </Button>
           </div>
         )}

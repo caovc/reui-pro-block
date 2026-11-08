@@ -78,16 +78,18 @@ export function FluxSettingsBreadcrumb({
                     https://reui.io/r/radix-nova/c-tooltip-1.json */}
                 <TooltipProvider>
                   <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon-sm"
-                        className="wf-flux-profile-info border-0 p-0 text-muted-foreground"
-                        aria-label={fluxPublicDetailsHelp}
-                      >
-                        <Info aria-hidden="true" />
-                      </Button>
+                    <TooltipTrigger
+                      render={
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon-sm"
+                          className="wf-flux-profile-info border-0 p-0 text-muted-foreground"
+                          aria-label={fluxPublicDetailsHelp}
+                        />
+                      }
+                    >
+                      <Info aria-hidden="true" />
                     </TooltipTrigger>
                     <TooltipContent className="max-w-xs rounded-[var(--radius-xl)] p-3">
                       <p className="text-sm">{fluxPublicDetailsHelp}</p>

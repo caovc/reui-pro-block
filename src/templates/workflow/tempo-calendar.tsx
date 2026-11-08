@@ -100,11 +100,9 @@ export function TempoCalendar() {
             <CalendarNav />
           </span>
           <Popover>
-            <PopoverTrigger asChild>
-              <Button variant="outline" size="sm">
-                <span className="wf-calendar-color-dots">●●●</span>Calendars
-                <ChevronDown />
-              </Button>
+            <PopoverTrigger render={<Button variant="outline" size="sm" />}>
+              <span className="wf-calendar-color-dots">●●●</span>Calendars
+              <ChevronDown />
             </PopoverTrigger>
             <PopoverContent className="wf-calendar-filters">
               {["Work", "Personal", "Meetings"].map((name) => (

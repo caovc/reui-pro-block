@@ -684,11 +684,9 @@ export default function VirtualizationGrid({ block }: BlockProps) {
             Refresh
           </Button>
           <Popover>
-            <PopoverTrigger asChild>
-              <Button variant="outline" size="sm">
-                <Settings2 />
-                {ship ? "Settings" : "View settings"}
-              </Button>
+            <PopoverTrigger render={<Button variant="outline" size="sm" />}>
+              <Settings2 />
+              {ship ? "Settings" : "View settings"}
             </PopoverTrigger>
             <PopoverContent align="end">
               <label className="flex items-center justify-between text-xs">

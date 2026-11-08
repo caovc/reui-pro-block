@@ -174,10 +174,12 @@ export function LucentHosts({ model }: { model: ReturnType<typeof useLucentInfra
       value: () => "",
       render: (row) => (
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon-sm" aria-label={`Host actions ${row.name}`}>
-              <MoreHorizontal />
-            </Button>
+          <DropdownMenuTrigger
+            render={
+              <Button variant="ghost" size="icon-sm" aria-label={`Host actions ${row.name}`} />
+            }
+          >
+            <MoreHorizontal />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem onClick={() => setDetailId(row.id)}>

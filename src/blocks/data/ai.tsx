@@ -135,11 +135,11 @@ function StandardChatBlock({ block }: BlockProps) {
             <Paperclip />
           </Button>
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button size="sm" variant="ghost" className="h-7 text-[11px]">
-                {idx === 4 || idx === 9 ? scope : model}
-                <ChevronDown />
-              </Button>
+            <DropdownMenuTrigger
+              render={<Button size="sm" variant="ghost" className="h-7 text-[11px]" />}
+            >
+              {idx === 4 || idx === 9 ? scope : model}
+              <ChevronDown />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuGroup>

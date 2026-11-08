@@ -32,9 +32,7 @@ export function TemplateRenderer({ id }: { id: string }) {
     return (
       <div className="template-load-state">
         <h1>Template not found</h1>
-        <Button asChild>
-          <a href="#/templates">Browse templates</a>
-        </Button>
+        <Button render={<a href="#/templates" />}>Browse templates</Button>
       </div>
     );
   return (

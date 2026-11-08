@@ -41,7 +41,7 @@ function SourceLoading() {
 function IconTip({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <Tooltip>
-      <TooltipTrigger asChild>{children}</TooltipTrigger>
+      <TooltipTrigger render={children as never}></TooltipTrigger>
       <TooltipContent>{label}</TooltipContent>
     </Tooltip>
   );
@@ -155,15 +155,19 @@ export function PreviewPanel({ block }: { block: BlockMeta; dark: boolean }) {
               </Button>
             </IconTip>
             <IconTip label="Open preview in new tab">
-              <Button variant="ghost" size="icon-sm" asChild>
-                <a
-                  href={previewUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label="Open isolated preview"
-                >
-                  <ExternalLink />
-                </a>
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                render={
+                  <a
+                    href={previewUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Open isolated preview"
+                  />
+                }
+              >
+                <ExternalLink />
               </Button>
             </IconTip>
           </div>

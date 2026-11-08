@@ -84,10 +84,8 @@ export function CouponExpiry({ text, minimum }: { text: string; minimum?: number
 export function CouponTermsDialog({ campaign }: { campaign: CouponCampaign }) {
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="ghost" className="text-muted-foreground">
-          Full terms
-        </Button>
+      <DialogTrigger render={<Button variant="ghost" className="text-muted-foreground" />}>
+        Full terms
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -131,11 +129,9 @@ export function CouponShopPreview({ campaign }: { campaign: CouponCampaign }) {
   const savings = eligible ? (subtotal * campaign.percentage) / 100 : 0;
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button>
-          {campaign.action}
-          <ArrowRight data-icon="inline-end" />
-        </Button>
+      <DialogTrigger render={<Button />}>
+        {campaign.action}
+        <ArrowRight data-icon="inline-end" />
       </DialogTrigger>
       <DialogContent className="max-h-[88vh] overflow-y-auto sm:max-w-xl">
         <DialogHeader>

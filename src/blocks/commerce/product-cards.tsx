@@ -320,12 +320,10 @@ function ListingFilters({
     filters.colors.length;
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <Button variant="outline" size="sm">
-          <SlidersHorizontal data-icon="inline-start" />
-          {mode === "device" ? "Filter" : "Show Filters"}
-          {count > 0 && <Badge variant="secondary">{count}</Badge>}
-        </Button>
+      <PopoverTrigger render={<Button variant="outline" size="sm" />}>
+        <SlidersHorizontal data-icon="inline-start" />
+        {mode === "device" ? "Filter" : "Show Filters"}
+        {count > 0 && <Badge variant="secondary">{count}</Badge>}
       </PopoverTrigger>
       <PopoverContent align="end" className="w-72 p-4">
         <div className="mb-1 flex items-center justify-between">
@@ -766,10 +764,12 @@ function QuickBuyCard() {
                 Most Popular
                 <TooltipProvider>
                   <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button variant="outline" size="sm" className="h-5 px-2 text-[10px]">
-                        5 left
-                      </Button>
+                    <TooltipTrigger
+                      render={
+                        <Button variant="outline" size="sm" className="h-5 px-2 text-[10px]" />
+                      }
+                    >
+                      5 left
                     </TooltipTrigger>
                     <TooltipContent>Only 5 left in the selected size.</TooltipContent>
                   </Tooltip>

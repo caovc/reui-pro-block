@@ -63,7 +63,7 @@ export function ShopCollectionDialog({
 }) {
   return (
     <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogTrigger render={children as never}></DialogTrigger>
       <DialogContent className="max-h-[85dvh] overflow-y-auto sm:max-w-xl">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
@@ -91,14 +91,17 @@ export function ShopCartDialog({ cart }: { cart: ShopCart }) {
   const [confirmed, setConfirmed] = useState(false);
   return (
     <Dialog onOpenChange={() => setConfirmed(false)}>
-      <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          aria-label={`Cart with ${cart.count} ${cart.count === 1 ? "item" : "items"}`}
-        >
-          <ShoppingBag className="size-4" /> Cart <span data-shop-cart-count>{cart.count}</span>
-        </Button>
+      <DialogTrigger
+        render={
+          <Button
+            variant="outline"
+            size="sm"
+            aria-label={`Cart with ${cart.count} ${cart.count === 1 ? "item" : "items"}`}
+          />
+        }
+      >
+        <ShoppingBag className="size-4" />
+        Cart <span data-shop-cart-count>{cart.count}</span>
       </DialogTrigger>
       <DialogContent className="max-h-[85dvh] overflow-y-auto sm:max-w-xl">
         <DialogHeader>

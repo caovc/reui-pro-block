@@ -174,18 +174,20 @@ export function CommerceRecordsSettings({
                         if (open) opener.current = recordButtons.current.get(record.id) ?? null;
                       }}
                     >
-                      <DropdownMenuTrigger asChild>
-                        <Button
-                          size="icon-sm"
-                          variant="ghost"
-                          aria-label={`Actions for ${record.name}`}
-                          ref={(button) => {
-                            if (button) recordButtons.current.set(record.id, button);
-                            else recordButtons.current.delete(record.id);
-                          }}
-                        >
-                          <Ellipsis aria-hidden="true" />
-                        </Button>
+                      <DropdownMenuTrigger
+                        render={
+                          <Button
+                            size="icon-sm"
+                            variant="ghost"
+                            aria-label={`Actions for ${record.name}`}
+                            ref={(button) => {
+                              if (button) recordButtons.current.set(record.id, button);
+                              else recordButtons.current.delete(record.id);
+                            }}
+                          />
+                        }
+                      >
+                        <Ellipsis aria-hidden="true" />
                       </DropdownMenuTrigger>
                       <DropdownMenuContent
                         align="end"

@@ -130,10 +130,10 @@ export function ContentLink({
 export function RecordMenu({ title, onEdit }: { title: string; onEdit: () => void }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon-xs" aria-label={`${title} actions`}>
-          <Ellipsis />
-        </Button>
+      <DropdownMenuTrigger
+        render={<Button variant="ghost" size="icon-xs" aria-label={`${title} actions`} />}
+      >
+        <Ellipsis />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuGroup>

@@ -138,10 +138,10 @@ export function PnlVariancePopover({
 
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <Button type="button" variant="ghost" size="icon" aria-label="Variance">
-          <SlidersHorizontal />
-        </Button>
+      <PopoverTrigger
+        render={<Button type="button" variant="ghost" size="icon" aria-label="Variance" />}
+      >
+        <SlidersHorizontal />
       </PopoverTrigger>
       <PopoverContent
         align="end"
@@ -269,10 +269,10 @@ export function PnlViewMenu({
 }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button type="button" variant="ghost" size="icon" aria-label="View">
-          <Columns3 />
-        </Button>
+      <DropdownMenuTrigger
+        render={<Button type="button" variant="ghost" size="icon" aria-label="View" />}
+      >
+        <Columns3 />
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
@@ -705,11 +705,11 @@ function PnlLineSheetBody({
               Edit Line
             </Button>
             <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button type="button" variant="ghost" className="text-destructive">
-                  <Trash2 />
-                  Remove Line
-                </Button>
+              <AlertDialogTrigger
+                render={<Button type="button" variant="ghost" className="text-destructive" />}
+              >
+                <Trash2 />
+                Remove Line
               </AlertDialogTrigger>
               <AlertDialogContent className="reui-reference rpo-remove-line-dialog">
                 <AlertDialogHeader>

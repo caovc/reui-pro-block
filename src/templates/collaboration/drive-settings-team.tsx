@@ -248,11 +248,11 @@ export function DriveTeamSettings({
               />
             </InputGroup>
             <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" aria-label="Filter by member status">
-                  <Funnel />
-                  Status
-                </Button>
+              <PopoverTrigger
+                render={<Button variant="outline" aria-label="Filter by member status" />}
+              >
+                <Funnel />
+                Status
               </PopoverTrigger>
               <PopoverContent className="reui-reference ds-status-filter" align="start">
                 {statuses.map((status) => (
@@ -355,15 +355,17 @@ function DriveMemberMenu({
   const trigger = useRef<HTMLButtonElement>(null);
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          ref={trigger}
-          variant="ghost"
-          size="icon-sm"
-          aria-label={`Open ${member.name} actions`}
-        >
-          <MoreHorizontal />
-        </Button>
+      <DropdownMenuTrigger
+        render={
+          <Button
+            ref={trigger}
+            variant="ghost"
+            size="icon-sm"
+            aria-label={`Open ${member.name} actions`}
+          />
+        }
+      >
+        <MoreHorizontal />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="reui-reference" align="end">
         <DropdownMenuItem onSelect={() => navigation.onNavigate("team", member.id)}>

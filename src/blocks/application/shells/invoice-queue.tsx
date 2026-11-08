@@ -98,15 +98,17 @@ for (const [i, id] of orders.entries()) {
 function CheckActions({ name }: { name: string }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon-xs"
-          aria-label={`Actions for ${name}`}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <MoreVertical />
-        </Button>
+      <DropdownMenuTrigger
+        render={
+          <Button
+            variant="ghost"
+            size="icon-xs"
+            aria-label={`Actions for ${name}`}
+            onClick={(e) => e.stopPropagation()}
+          />
+        }
+      >
+        <MoreVertical />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="reui-reference">
         <DropdownMenuLabel>Check</DropdownMenuLabel>
@@ -174,10 +176,10 @@ function OrderQueue({
           />
         </div>
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="icon-sm" aria-label="Filter orders">
-              <SlidersHorizontal />
-            </Button>
+          <DropdownMenuTrigger
+            render={<Button variant="outline" size="icon-sm" aria-label="Filter orders" />}
+          >
+            <SlidersHorizontal />
           </DropdownMenuTrigger>
           <DropdownMenuContent className="reui-reference">
             <DropdownMenuLabel>Status</DropdownMenuLabel>
@@ -208,45 +210,49 @@ function OrderQueue({
             .map((item) => {
               const row = item.getItemData();
               return (
-                <TreeItem key={item.getId()} item={item} asChild>
-                  <div
-                    onFocus={(e) => {
-                      if (e.target === e.currentTarget) item.setFocused();
-                    }}
-                    className={`invoice-order-node ${row.check ? "check" : ""}`}
-                    data-active={selected === item.getId()}
-                  >
-                    <TreeItemLabel className="invoice-order-label">
-                      {row.check &&
-                        (row.count ? (
-                          <CircleX className="invoice-failed" />
-                        ) : (
-                          <CircleDot className="invoice-pending" />
-                        ))}
-                      {row.name === "More" && <ChevronDown className="-rotate-90" />}
-                      <span>{row.name}</span>
-                      {row.count && (
-                        <Badge variant="destructive-light" size="xs">
-                          {row.count}
-                        </Badge>
-                      )}
-                      {row.status && (
-                        <Badge
-                          variant={
-                            row.status === "Ready"
-                              ? "success-light"
-                              : row.status === "Overdue"
-                                ? "destructive-light"
-                                : "warning-light"
-                          }
-                          size="sm"
-                        >
-                          {row.status}
-                        </Badge>
-                      )}
-                    </TreeItemLabel>
-                    {selected === item.getId() && row.check && <CheckActions name={row.name} />}
-                  </div>
+                <TreeItem
+                  key={item.getId()}
+                  item={item}
+                  render={
+                    <div
+                      onFocus={(e) => {
+                        if (e.target === e.currentTarget) item.setFocused();
+                      }}
+                      className={`invoice-order-node ${row.check ? "check" : ""}`}
+                      data-active={selected === item.getId()}
+                    />
+                  }
+                >
+                  <TreeItemLabel className="invoice-order-label">
+                    {row.check &&
+                      (row.count ? (
+                        <CircleX className="invoice-failed" />
+                      ) : (
+                        <CircleDot className="invoice-pending" />
+                      ))}
+                    {row.name === "More" && <ChevronDown className="-rotate-90" />}
+                    <span>{row.name}</span>
+                    {row.count && (
+                      <Badge variant="destructive-light" size="xs">
+                        {row.count}
+                      </Badge>
+                    )}
+                    {row.status && (
+                      <Badge
+                        variant={
+                          row.status === "Ready"
+                            ? "success-light"
+                            : row.status === "Overdue"
+                              ? "destructive-light"
+                              : "warning-light"
+                        }
+                        size="sm"
+                      >
+                        {row.status}
+                      </Badge>
+                    )}
+                  </TreeItemLabel>
+                  {selected === item.getId() && row.check && <CheckActions name={row.name} />}
                 </TreeItem>
               );
             })}
@@ -413,15 +419,20 @@ export default function InvoiceQueue() {
               ["Settings", SlidersHorizontal],
             ] as const
           ).map(([name, Icon]) => (
-            <IconTile asChild size="xs" key={name} className="invoice-rail-icon">
-              <button
-                aria-label={name}
-                title={name}
-                aria-pressed={app === name}
-                onClick={() => setApp(name)}
-              >
-                <Icon />
-              </button>
+            <IconTile
+              size="xs"
+              key={name}
+              className="invoice-rail-icon"
+              render={
+                <button
+                  aria-label={name}
+                  title={name}
+                  aria-pressed={app === name}
+                  onClick={() => setApp(name)}
+                />
+              }
+            >
+              <Icon />
             </IconTile>
           ))}
         </div>

@@ -158,15 +158,17 @@ function DispatchWorkspace() {
         </Tabs>
         <div className="dm-simulation">
           <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                aria-label={state.running ? "Pause simulation" : "Run simulation"}
-                onClick={() => act({ type: "running", value: !state.running })}
-              >
-                {state.running ? <Pause /> : <Play />}
-              </Button>
+            <TooltipTrigger
+              render={
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  aria-label={state.running ? "Pause simulation" : "Run simulation"}
+                  onClick={() => act({ type: "running", value: !state.running })}
+                />
+              }
+            >
+              {state.running ? <Pause /> : <Play />}
             </TooltipTrigger>
             <TooltipContent>{state.running ? "Pause" : "Resume"} local simulation</TooltipContent>
           </Tooltip>
@@ -193,19 +195,21 @@ function DispatchWorkspace() {
         </div>
         <div className="dm-toolbar-actions">
           <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                aria-label="Search dispatch"
-                ref={searchButton}
-                onClick={() => {
-                  focus.capture("command");
-                  setCommandOpen(true);
-                }}
-              >
-                <Search />
-              </Button>
+            <TooltipTrigger
+              render={
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  aria-label="Search dispatch"
+                  ref={searchButton}
+                  onClick={() => {
+                    focus.capture("command");
+                    setCommandOpen(true);
+                  }}
+                />
+              }
+            >
+              <Search />
             </TooltipTrigger>
             <TooltipContent>Search dispatch · ⌘K / Ctrl K</TooltipContent>
           </Tooltip>
@@ -225,30 +229,32 @@ function DispatchWorkspace() {
             </Badge>
           </Button>
           <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                className="dm-fullscreen"
-                aria-label="Toggle fullscreen"
-                onClick={async () => {
-                  try {
-                    if (document.fullscreenElement) await document.exitFullscreen();
-                    else if (document.documentElement.requestFullscreen)
-                      await document.documentElement.requestFullscreen();
-                    else
+            <TooltipTrigger
+              render={
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  className="dm-fullscreen"
+                  aria-label="Toggle fullscreen"
+                  onClick={async () => {
+                    try {
+                      if (document.fullscreenElement) await document.exitFullscreen();
+                      else if (document.documentElement.requestFullscreen)
+                        await document.documentElement.requestFullscreen();
+                      else
+                        setFullscreenError(
+                          "Fullscreen is unavailable in this browser. Dispatch remains usable in this view.",
+                        );
+                    } catch {
                       setFullscreenError(
-                        "Fullscreen is unavailable in this browser. Dispatch remains usable in this view.",
+                        "Fullscreen permission was declined. Dispatch remains usable in this view.",
                       );
-                  } catch {
-                    setFullscreenError(
-                      "Fullscreen permission was declined. Dispatch remains usable in this view.",
-                    );
-                  }
-                }}
-              >
-                <Fullscreen />
-              </Button>
+                    }
+                  }}
+                />
+              }
+            >
+              <Fullscreen />
             </TooltipTrigger>
             <TooltipContent>Fullscreen</TooltipContent>
           </Tooltip>
@@ -289,15 +295,17 @@ function DispatchWorkspace() {
               setFleetOpen(open);
             }}
           >
-            <SheetTrigger asChild>
-              <Button
-                className="dm-fleet-handle"
-                variant="outline"
-                size="icon-sm"
-                aria-label="Open fleet panel"
-              >
-                <PanelLeft />
-              </Button>
+            <SheetTrigger
+              render={
+                <Button
+                  className="dm-fleet-handle"
+                  variant="outline"
+                  size="icon-sm"
+                  aria-label="Open fleet panel"
+                />
+              }
+            >
+              <PanelLeft />
             </SheetTrigger>
             <SheetContent
               side="left"

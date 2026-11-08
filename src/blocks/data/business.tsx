@@ -124,10 +124,12 @@ export function FilesBlock() {
   function menu(id: number) {
     return (
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon" className="size-6" aria-label="File actions">
-            <MoreHorizontal />
-          </Button>
+        <DropdownMenuTrigger
+          render={
+            <Button variant="ghost" size="icon" className="size-6" aria-label="File actions" />
+          }
+        >
+          <MoreHorizontal />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuGroup>

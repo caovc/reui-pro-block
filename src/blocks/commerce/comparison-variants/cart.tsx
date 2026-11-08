@@ -62,17 +62,19 @@ export function ComparisonCartDialog() {
   const items = comparisonProducts.filter((product) => (cart.quantities[product.id] || 0) > 0);
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          aria-label={`Cart with ${cart.count} ${cart.count === 1 ? "item" : "items"}`}
-        >
-          <ShoppingBag className="size-4" />
-          Cart
-          <Badge variant="secondary" size="sm" data-comparison-cart-count>
-            {cart.count}
-          </Badge>
-        </Button>
+      <DialogTrigger
+        render={
+          <Button
+            variant="outline"
+            aria-label={`Cart with ${cart.count} ${cart.count === 1 ? "item" : "items"}`}
+          />
+        }
+      >
+        <ShoppingBag className="size-4" />
+        Cart
+        <Badge variant="secondary" size="sm" data-comparison-cart-count>
+          {cart.count}
+        </Badge>
       </DialogTrigger>
       <DialogSurface
         id={0}
@@ -85,8 +87,8 @@ export function ComparisonCartDialog() {
                 Clear cart
               </Button>
             )}
-            <DialogClose asChild>
-              <Button>{items.length ? "Continue browsing" : "Continue comparing"}</Button>
+            <DialogClose render={<Button />}>
+              {items.length ? "Continue browsing" : "Continue comparing"}
             </DialogClose>
           </>
         }

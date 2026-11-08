@@ -87,10 +87,10 @@ export function BarLayers({
 }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon" className="size-7" aria-label={label}>
-          <SlidersHorizontal />
-        </Button>
+      <DropdownMenuTrigger
+        render={<Button variant="outline" size="icon" className="size-7" aria-label={label} />}
+      >
+        <SlidersHorizontal />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Layers</DropdownMenuLabel>
@@ -125,22 +125,24 @@ export function BarChoiceMenu({
 }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          size={icon ? "icon" : "sm"}
-          className={cn("h-7 text-xs", icon ? "w-7" : "")}
-          aria-label={label}
-        >
-          {icon ? (
-            <ArrowDownUp />
-          ) : (
-            <>
-              {value}
-              <ChevronDown />
-            </>
-          )}
-        </Button>
+      <DropdownMenuTrigger
+        render={
+          <Button
+            variant="outline"
+            size={icon ? "icon" : "sm"}
+            className={cn("h-7 text-xs", icon ? "w-7" : "")}
+            aria-label={label}
+          />
+        }
+      >
+        {icon ? (
+          <ArrowDownUp />
+        ) : (
+          <>
+            {value}
+            <ChevronDown />
+          </>
+        )}
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuRadioGroup value={value} onValueChange={onChange}>
@@ -169,14 +171,14 @@ export function BarFilterMenu({
 }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm" className="h-7 text-xs" aria-label={label}>
-          {label}
-          <span className="text-muted-foreground">
-            {selected.length}/{names.length}
-          </span>
-          <ChevronDown />
-        </Button>
+      <DropdownMenuTrigger
+        render={<Button variant="outline" size="sm" className="h-7 text-xs" aria-label={label} />}
+      >
+        {label}
+        <span className="text-muted-foreground">
+          {selected.length}/{names.length}
+        </span>
+        <ChevronDown />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuGroup>
@@ -298,10 +300,12 @@ export function PlotAxes({
 export function BarExpand({ title, children }: { title: string; children: ReactNode }) {
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline" size="icon" className="size-7" aria-label="Expand chart">
-          <Maximize2 />
-        </Button>
+      <DialogTrigger
+        render={
+          <Button variant="outline" size="icon" className="size-7" aria-label="Expand chart" />
+        }
+      >
+        <Maximize2 />
       </DialogTrigger>
       <DialogContent className="max-h-[90vh] overflow-auto sm:max-w-6xl">
         <DialogHeader>

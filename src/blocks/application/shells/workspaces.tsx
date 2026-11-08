@@ -157,11 +157,9 @@ export function CommunityShell() {
               </p>
             </div>
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm">
-                  <Filter />
-                  Manage Feeds<Badge>{filters.length}</Badge>
-                </Button>
+              <DropdownMenuTrigger render={<Button variant="outline" size="sm" />}>
+                <Filter />
+                Manage Feeds<Badge>{filters.length}</Badge>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuGroup>
@@ -515,11 +513,11 @@ export function FavoritesShell() {
             onSelect={setActive}
           />
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button className="shell-nav-button justify-start" variant="ghost">
-                <Ellipsis />
-                {!collapsed && "More"}
-              </Button>
+            <DropdownMenuTrigger
+              render={<Button className="shell-nav-button justify-start" variant="ghost" />}
+            >
+              <Ellipsis />
+              {!collapsed && "More"}
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuGroup>

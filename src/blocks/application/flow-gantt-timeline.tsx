@@ -507,11 +507,9 @@ export default function GanttTimeline({ block }: BlockProps) {
       <label>
         {label}
         <Popover>
-          <PopoverTrigger asChild>
-            <Button variant="outline" className="fg-button fg-date-input">
-              <CalendarDays />
-              {dateLabel(base, draft[key] - (key === "end" ? 1 : 0))}, 2026
-            </Button>
+          <PopoverTrigger render={<Button variant="outline" className="fg-button fg-date-input" />}>
+            <CalendarDays />
+            {dateLabel(base, draft[key] - (key === "end" ? 1 : 0))}, 2026
           </PopoverTrigger>
           <PopoverContent className="fg-portal w-auto p-0">
             <Calendar
@@ -938,10 +936,15 @@ export default function GanttTimeline({ block }: BlockProps) {
             width: v === 3 ? 52 : v === 2 ? 32 : 0,
             render: ({ resource }) => (
               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button className="fg-row-action" aria-label={`Actions for ${resource.title}`}>
-                    <MoreHorizontal />
-                  </button>
+                <DropdownMenuTrigger
+                  render={
+                    <button
+                      className="fg-row-action"
+                      aria-label={`Actions for ${resource.title}`}
+                    />
+                  }
+                >
+                  <MoreHorizontal />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="fg-portal">
                   {rowActions(resource)}
@@ -953,10 +956,10 @@ export default function GanttTimeline({ block }: BlockProps) {
         columnsMenu={
           v === 1 ? undefined : (
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button className="fg-column-menu" aria-label="Columns">
-                  {v === 0 ? <Plus /> : <Settings2 />}
-                </button>
+              <DropdownMenuTrigger
+                render={<button className="fg-column-menu" aria-label="Columns" />}
+              >
+                {v === 0 ? <Plus /> : <Settings2 />}
               </DropdownMenuTrigger>
               <DropdownMenuContent className="fg-portal">
                 {officialColumns.map((c) => (
@@ -1307,17 +1310,19 @@ export default function GanttTimeline({ block }: BlockProps) {
           <div className="fg-actions">
             {v === 0 && (
               <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className="fg-button fg-assignee-filter"
-                    aria-label="Filter by assignee"
-                  >
-                    {["IM", "TL", "HB", "DC"].map((n) => (
-                      <MiniAvatar key={n} name={n} />
-                    ))}
-                    <span>+1</span>
-                  </Button>
+                <PopoverTrigger
+                  render={
+                    <Button
+                      variant="outline"
+                      className="fg-button fg-assignee-filter"
+                      aria-label="Filter by assignee"
+                    />
+                  }
+                >
+                  {["IM", "TL", "HB", "DC"].map((n) => (
+                    <MiniAvatar key={n} name={n} />
+                  ))}
+                  <span>+1</span>
                 </PopoverTrigger>
                 <PopoverContent className="fg-portal w-56">
                   <p className="font-medium mb-3">Assignees</p>
@@ -1342,20 +1347,22 @@ export default function GanttTimeline({ block }: BlockProps) {
             )}
             {v === 1 && (
               <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className="fg-button fg-job-types-button"
-                    aria-label="Job Types"
-                  >
-                    <span className="fg-job-colors">
-                      {["#3b82f6", "#f59e0b", "#06b6d4", "#f43f5e"].map((c) => (
-                        <i key={c} style={{ background: c }} />
-                      ))}
-                    </span>
-                    <span className="fg-job-types-label">Job Types</span>
-                    <ChevronDown />
-                  </Button>
+                <PopoverTrigger
+                  render={
+                    <Button
+                      variant="outline"
+                      className="fg-button fg-job-types-button"
+                      aria-label="Job Types"
+                    />
+                  }
+                >
+                  <span className="fg-job-colors">
+                    {["#3b82f6", "#f59e0b", "#06b6d4", "#f43f5e"].map((c) => (
+                      <i key={c} style={{ background: c }} />
+                    ))}
+                  </span>
+                  <span className="fg-job-types-label">Job Types</span>
+                  <ChevronDown />
                 </PopoverTrigger>
                 <PopoverContent className="fg-portal w-56">
                   <p className="mb-3 font-medium">Show job types</p>
@@ -1386,15 +1393,17 @@ export default function GanttTimeline({ block }: BlockProps) {
             )}
             {v === 2 && (
               <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className="fg-button fg-gantt-settings-button"
-                    aria-label="Settings"
-                  >
-                    <Settings2 />
-                    <span className="fg-gantt-settings-label">Settings</span>
-                  </Button>
+                <PopoverTrigger
+                  render={
+                    <Button
+                      variant="outline"
+                      className="fg-button fg-gantt-settings-button"
+                      aria-label="Settings"
+                    />
+                  }
+                >
+                  <Settings2 />
+                  <span className="fg-gantt-settings-label">Settings</span>
                 </PopoverTrigger>
                 <PopoverContent className="fg-portal w-72">
                   <div className="fg-settings-tabs">
@@ -1463,11 +1472,9 @@ export default function GanttTimeline({ block }: BlockProps) {
             )}
             {v === 3 && (
               <Popover>
-                <PopoverTrigger asChild>
-                  <Button variant="outline" className="fg-button">
-                    <Funnel />
-                    Filter
-                  </Button>
+                <PopoverTrigger render={<Button variant="outline" className="fg-button" />}>
+                  <Funnel />
+                  Filter
                 </PopoverTrigger>
                 <PopoverContent className="fg-portal fg-gantt-filters w-72">
                   <div className="flex justify-between items-center">
@@ -1530,10 +1537,12 @@ export default function GanttTimeline({ block }: BlockProps) {
             </Button>
             {v === 0 && (
               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button className="fg-icon fg-create-more" aria-label="More create options">
-                    <ChevronDown />
-                  </Button>
+                <DropdownMenuTrigger
+                  render={
+                    <Button className="fg-icon fg-create-more" aria-label="More create options" />
+                  }
+                >
+                  <ChevronDown />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="fg-portal">
                   <DropdownMenuItem onSelect={() => add()}>
@@ -1687,14 +1696,14 @@ export default function GanttTimeline({ block }: BlockProps) {
                   <label>
                     Assignee
                     <Popover>
-                      <PopoverTrigger asChild>
-                        <Button variant="outline" className="fg-button fg-date-input">
-                          {draftAssignees.length ? (
-                            draftAssignees.join(", ")
-                          ) : (
-                            <span className="fg-muted">Add assignees...</span>
-                          )}
-                        </Button>
+                      <PopoverTrigger
+                        render={<Button variant="outline" className="fg-button fg-date-input" />}
+                      >
+                        {draftAssignees.length ? (
+                          draftAssignees.join(", ")
+                        ) : (
+                          <span className="fg-muted">Add assignees...</span>
+                        )}
                       </PopoverTrigger>
                       <PopoverContent className="fg-portal w-60">
                         {["IM", "TL", "HB", "DC"].map((a) => (
@@ -1716,20 +1725,22 @@ export default function GanttTimeline({ block }: BlockProps) {
                   <label>
                     Depends on
                     <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant="outline"
-                          className="fg-button fg-date-input"
-                          aria-label="Depends on"
-                        >
-                          {predecessors(draft).length ? (
-                            predecessors(draft)
-                              .map((id) => data.bars.find((b) => b.id === id)?.title)
-                              .join(", ")
-                          ) : (
-                            <span className="fg-muted">Add predecessors...</span>
-                          )}
-                        </Button>
+                      <PopoverTrigger
+                        render={
+                          <Button
+                            variant="outline"
+                            className="fg-button fg-date-input"
+                            aria-label="Depends on"
+                          />
+                        }
+                      >
+                        {predecessors(draft).length ? (
+                          predecessors(draft)
+                            .map((id) => data.bars.find((b) => b.id === id)?.title)
+                            .join(", ")
+                        ) : (
+                          <span className="fg-muted">Add predecessors...</span>
+                        )}
                       </PopoverTrigger>
                       <PopoverContent className="fg-portal w-80 p-0" align="start">
                         <Input

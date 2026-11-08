@@ -323,17 +323,19 @@ export default function ProspectDatabase({ loadCompanies }: Props = {}) {
   const rowActions = useCallback(
     (record: Prospect) => (
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            aria-label={`Actions for ${record.name}`}
-            onClick={(event) => {
-              detailsOpener.current = event.currentTarget;
-            }}
-          >
-            <Ellipsis />
-          </Button>
+        <DropdownMenuTrigger
+          render={
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              aria-label={`Actions for ${record.name}`}
+              onClick={(event) => {
+                detailsOpener.current = event.currentTarget;
+              }}
+            />
+          }
+        >
+          <Ellipsis />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Company</DropdownMenuLabel>
@@ -796,11 +798,9 @@ export default function ProspectDatabase({ loadCompanies }: Props = {}) {
                     {selected.length} {selected.length === 1 ? "company" : "companies"} selected
                   </span>
                   <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="outline" size="sm">
-                        <ListPlus />
-                        <span className="hidden sm:inline">Save to List</span>
-                      </Button>
+                    <DropdownMenuTrigger render={<Button variant="outline" size="sm" />}>
+                      <ListPlus />
+                      <span className="hidden sm:inline">Save to List</span>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-56">
                       <ProspectListItems
@@ -943,10 +943,10 @@ export default function ProspectDatabase({ loadCompanies }: Props = {}) {
                 </CascaderContent>
               </Cascader>
               <Popover>
-                <PopoverTrigger asChild>
-                  <Button variant="outline" size="icon" aria-label="Settings">
-                    <Settings2 />
-                  </Button>
+                <PopoverTrigger
+                  render={<Button variant="outline" size="icon" aria-label="Settings" />}
+                >
+                  <Settings2 />
                 </PopoverTrigger>
                 <PopoverContent align="end" className="w-72 p-0">
                   <FieldGroup className="gap-0">

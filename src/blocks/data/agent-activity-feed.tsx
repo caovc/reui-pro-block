@@ -211,10 +211,10 @@ export default function LiveRunFeed() {
                 </div>
               </div>
               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon-sm" aria-label="Run options">
-                    <Ellipsis />
-                  </Button>
+                <DropdownMenuTrigger
+                  render={<Button variant="ghost" size="icon-sm" aria-label="Run options" />}
+                >
+                  <Ellipsis />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" sideOffset={8} className="reui-reference w-52">
                   <DropdownMenuGroup aria-label="Detail">
@@ -303,16 +303,18 @@ export default function LiveRunFeed() {
                       )}
                     >
                       <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button
-                            size="icon-xs"
-                            variant="ghost"
-                            className="size-6"
-                            aria-label={`Copy ${step.title}`}
-                            onClick={() => copyText(step.target, "Step target")}
-                          >
-                            <Copy className="size-3" />
-                          </Button>
+                        <TooltipTrigger
+                          render={
+                            <Button
+                              size="icon-xs"
+                              variant="ghost"
+                              className="size-6"
+                              aria-label={`Copy ${step.title}`}
+                              onClick={() => copyText(step.target, "Step target")}
+                            />
+                          }
+                        >
+                          <Copy className="size-3" />
                         </TooltipTrigger>
                         <TooltipContent className="reui-reference" side="top" sideOffset={4}>
                           {copyLabel(step)}
@@ -322,16 +324,18 @@ export default function LiveRunFeed() {
                         step.tool !== "search" &&
                         step.tool !== "run_command" && (
                           <Tooltip>
-                            <TooltipTrigger asChild>
-                              <Button
-                                size="icon-xs"
-                                variant="ghost"
-                                className="size-6"
-                                aria-label={`${openLabel(step)}: ${step.title}`}
-                                onClick={() => open(step)}
-                              >
-                                <ExternalLink className="size-3" />
-                              </Button>
+                            <TooltipTrigger
+                              render={
+                                <Button
+                                  size="icon-xs"
+                                  variant="ghost"
+                                  className="size-6"
+                                  aria-label={`${openLabel(step)}: ${step.title}`}
+                                  onClick={() => open(step)}
+                                />
+                              }
+                            >
+                              <ExternalLink className="size-3" />
                             </TooltipTrigger>
                             <TooltipContent className="reui-reference" side="top" sideOffset={4}>
                               {openLabel(step)}

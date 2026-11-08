@@ -338,11 +338,7 @@ export function EntryDatePicker({
           </div>
 
           <DialogFooter>
-            <DialogClose asChild>
-              <Button variant="outline" size="sm">
-                Dismiss
-              </Button>
-            </DialogClose>
+            <DialogClose render={<Button variant="outline" size="sm" />}>Dismiss</DialogClose>
             <Button size="sm" onClick={handleConfirmCustomDate} disabled={!draftDate}>
               Confirm
             </Button>

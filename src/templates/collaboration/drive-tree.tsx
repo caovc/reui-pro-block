@@ -47,16 +47,20 @@ export function DriveFolderTree({
   return (
     <Tree tree={tree} indent={16} className="ct-free-drive-tree" aria-label="Drive folders">
       {tree.getItems().map((item) => (
-        <TreeItem item={item} key={item.getId()} asChild>
-          <button
-            aria-label={item.getItemData().name}
-            aria-current={view === item.getId() ? "page" : undefined}
-          >
-            <TreeItemLabel>
-              <Folder size={16} />
-              <span>{item.getItemData().name}</span>
-            </TreeItemLabel>
-          </button>
+        <TreeItem
+          item={item}
+          key={item.getId()}
+          render={
+            <button
+              aria-label={item.getItemData().name}
+              aria-current={view === item.getId() ? "page" : undefined}
+            />
+          }
+        >
+          <TreeItemLabel>
+            <Folder size={16} />
+            <span>{item.getItemData().name}</span>
+          </TreeItemLabel>
         </TreeItem>
       ))}
     </Tree>

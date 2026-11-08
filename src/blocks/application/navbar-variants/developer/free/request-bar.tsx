@@ -58,15 +58,17 @@ export function RequestBar({
         <InputGroup>
           <InputGroupAddon>
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <InputGroupButton
-                  variant="ghost"
-                  className={cn("gap-1.5 font-mono text-xs", httpMethodColors[method])}
-                  aria-label={`HTTP method: ${method}`}
-                >
-                  {method}
-                  <ChevronDown aria-hidden="true" />
-                </InputGroupButton>
+              <DropdownMenuTrigger
+                render={
+                  <InputGroupButton
+                    variant="ghost"
+                    className={cn("gap-1.5 font-mono text-xs", httpMethodColors[method])}
+                    aria-label={`HTTP method: ${method}`}
+                  />
+                }
+              >
+                {method}
+                <ChevronDown aria-hidden="true" />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="w-28">
                 <DropdownMenuGroup>

@@ -11,7 +11,12 @@ import {
   Undo2,
   X,
 } from "lucide-react";
-import { ContextMenu } from "radix-ui";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu";
 import {
   useTable,
   type ColumnDef,
@@ -729,49 +734,47 @@ export default function SpreadsheetGrid({ block }: BlockProps) {
           },
         },
         cell: ({ row }) => (
-          <ContextMenu.Root>
-            <ContextMenu.Trigger asChild>
-              <div className="flex min-h-7 items-center">{renderValue(row.original, field)}</div>
-            </ContextMenu.Trigger>
-            <ContextMenu.Portal>
-              <ContextMenu.Content className="z-50 min-w-44 rounded-lg border bg-popover p-1 text-sm shadow-md">
-                {[
-                  {
-                    title: "Edit cell",
-                    action: () => api.current?.focusCell(row.id, field.key, { edit: true }),
-                  },
-                  { title: "Fill range down", action: fillDown },
-                  {
-                    title: "Open details",
-                    action: () => setDetail(row.original),
-                  },
-                  {
-                    title: "Duplicate row",
-                    action: () =>
-                      commit([
-                        ...rows,
-                        {
-                          ...row.original,
-                          id: Math.max(...rows.map((r) => r.id)) + 1,
-                        },
-                      ]),
-                  },
-                  {
-                    title: "Delete row",
-                    action: () => commit(rows.filter((r) => r.id !== row.original.id)),
-                  },
-                ].map((item) => (
-                  <ContextMenu.Item
-                    key={item.title}
-                    className="cursor-default rounded px-2 py-1.5 outline-none focus:bg-accent"
-                    onSelect={item.action}
-                  >
-                    {item.title}
-                  </ContextMenu.Item>
-                ))}
-              </ContextMenu.Content>
-            </ContextMenu.Portal>
-          </ContextMenu.Root>
+          <ContextMenu>
+            <ContextMenuTrigger render={<div className="flex min-h-7 items-center" />}>
+              {renderValue(row.original, field)}
+            </ContextMenuTrigger>
+            <ContextMenuContent className="z-50 min-w-44 rounded-lg border bg-popover p-1 text-sm shadow-md">
+              {[
+                {
+                  title: "Edit cell",
+                  action: () => api.current?.focusCell(row.id, field.key, { edit: true }),
+                },
+                { title: "Fill range down", action: fillDown },
+                {
+                  title: "Open details",
+                  action: () => setDetail(row.original),
+                },
+                {
+                  title: "Duplicate row",
+                  action: () =>
+                    commit([
+                      ...rows,
+                      {
+                        ...row.original,
+                        id: Math.max(...rows.map((r) => r.id)) + 1,
+                      },
+                    ]),
+                },
+                {
+                  title: "Delete row",
+                  action: () => commit(rows.filter((r) => r.id !== row.original.id)),
+                },
+              ].map((item) => (
+                <ContextMenuItem
+                  key={item.title}
+                  className="cursor-default rounded px-2 py-1.5 outline-none focus:bg-accent"
+                  onClick={item.action}
+                >
+                  {item.title}
+                </ContextMenuItem>
+              ))}
+            </ContextMenuContent>
+          </ContextMenu>
         ),
       })),
     ],
@@ -992,11 +995,9 @@ export default function SpreadsheetGrid({ block }: BlockProps) {
               </Button>
             )}
             <Popover>
-              <PopoverTrigger asChild>
-                <Button size="sm" variant="outline">
-                  <Columns3 />
-                  Columns {visibleFields.length}
-                </Button>
+              <PopoverTrigger render={<Button size="sm" variant="outline" />}>
+                <Columns3 />
+                Columns {visibleFields.length}
               </PopoverTrigger>
               <PopoverContent align="end">
                 {fields.map((f) => (
@@ -1046,11 +1047,9 @@ export default function SpreadsheetGrid({ block }: BlockProps) {
               </PopoverContent>
             </Popover>
             <Popover>
-              <PopoverTrigger asChild>
-                <Button size="sm" variant="outline">
-                  <Settings2 />
-                  Settings
-                </Button>
+              <PopoverTrigger render={<Button size="sm" variant="outline" />}>
+                <Settings2 />
+                Settings
               </PopoverTrigger>
               <PopoverContent align="end">
                 <label className="flex items-center justify-between text-xs">
@@ -1073,10 +1072,12 @@ export default function SpreadsheetGrid({ block }: BlockProps) {
             </Popover>
             {stock && (
               <Popover>
-                <PopoverTrigger asChild>
-                  <Button size="icon-sm" variant="outline" aria-label="Export reorder plan">
-                    <Download />
-                  </Button>
+                <PopoverTrigger
+                  render={
+                    <Button size="icon-sm" variant="outline" aria-label="Export reorder plan" />
+                  }
+                >
+                  <Download />
                 </PopoverTrigger>
                 <PopoverContent align="end" className="w-44">
                   <Button

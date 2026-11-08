@@ -182,29 +182,31 @@ export function EchoSidebar(props: EchoSidebarProps) {
     <SidebarMenu>
       <SidebarMenuItem>
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <SidebarMenuButton
-              className="echo-account-trigger"
-              aria-label="Account menu"
-              tooltip="Account menu"
-            >
-              <Avatar className="size-8">
-                <AvatarImage src={String(settings.saved.avatar || "")} alt="" />
-                <AvatarFallback>{String(settings.saved.name).slice(0, 2)}</AvatarFallback>
-              </Avatar>
-              {!collapsed && (
-                <>
-                  <span className="echo-account-label">
-                    <strong>{String(settings.saved.name)}</strong>
-                    <small>
-                      <span />
-                      {organization} · Max
-                    </small>
-                  </span>
-                  <Ellipsis className="ml-auto size-4 text-muted-foreground" />
-                </>
-              )}
-            </SidebarMenuButton>
+          <DropdownMenuTrigger
+            render={
+              <SidebarMenuButton
+                className="echo-account-trigger"
+                aria-label="Account menu"
+                tooltip="Account menu"
+              />
+            }
+          >
+            <Avatar className="size-8">
+              <AvatarImage src={String(settings.saved.avatar || "")} alt="" />
+              <AvatarFallback>{String(settings.saved.name).slice(0, 2)}</AvatarFallback>
+            </Avatar>
+            {!collapsed && (
+              <>
+                <span className="echo-account-label">
+                  <strong>{String(settings.saved.name)}</strong>
+                  <small>
+                    <span />
+                    {organization} · Max
+                  </small>
+                </span>
+                <Ellipsis className="ml-auto size-4 text-muted-foreground" />
+              </>
+            )}
           </DropdownMenuTrigger>
           <DropdownMenuContent
             side={collapsed ? "right" : "top"}
@@ -342,11 +344,13 @@ export function EchoSidebar(props: EchoSidebarProps) {
                 { label: "Help", href: "https://reui.io/support", icon: CircleHelp },
               ].map(({ label, href, icon: Icon }) => (
                 <SidebarMenuItem key={label}>
-                  <SidebarMenuButton asChild tooltip={label} aria-label={label}>
-                    <a href={href} target="_blank" rel="noopener noreferrer">
-                      <Icon />
-                      {!collapsed && <span>{label}</span>}
-                    </a>
+                  <SidebarMenuButton
+                    tooltip={label}
+                    aria-label={label}
+                    render={<a href={href} target="_blank" rel="noopener noreferrer" />}
+                  >
+                    <Icon />
+                    {!collapsed && <span>{label}</span>}
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -415,10 +419,10 @@ export function EchoSidebar(props: EchoSidebarProps) {
               <SidebarMenu key={label}>
                 <SidebarMenuItem>
                   <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <SidebarMenuButton tooltip={label} aria-label={label}>
-                        <Icon />
-                      </SidebarMenuButton>
+                    <DropdownMenuTrigger
+                      render={<SidebarMenuButton tooltip={label} aria-label={label} />}
+                    >
+                      <Icon />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent
                       side="right"

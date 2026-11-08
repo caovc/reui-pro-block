@@ -54,17 +54,19 @@ export function TrendChoice({
 }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          className="h-7 gap-1.5 px-2 text-xs"
-          aria-label={`${label}: ${value}`}
-        >
-          {calendar && <CalendarDays className="size-3.5" />}
-          {value}
-          <ChevronDown className="size-3" />
-        </Button>
+      <DropdownMenuTrigger
+        render={
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-7 gap-1.5 px-2 text-xs"
+            aria-label={`${label}: ${value}`}
+          />
+        }
+      >
+        {calendar && <CalendarDays className="size-3.5" />}
+        {value}
+        <ChevronDown className="size-3" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>{label}</DropdownMenuLabel>
@@ -90,12 +92,12 @@ export function TrendLayers({
 }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm" className="h-7 gap-1.5 px-2 text-xs">
-          <SlidersHorizontal className="size-3.5" />
-          {label}
-          <ChevronDown className="size-3" />
-        </Button>
+      <DropdownMenuTrigger
+        render={<Button variant="outline" size="sm" className="h-7 gap-1.5 px-2 text-xs" />}
+      >
+        <SlidersHorizontal className="size-3.5" />
+        {label}
+        <ChevronDown className="size-3" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Chart layers</DropdownMenuLabel>

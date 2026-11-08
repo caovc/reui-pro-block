@@ -101,9 +101,11 @@ export function SidebarRailButton({
   active?: boolean;
 }) {
   return (
-    <SidebarMenuButton asChild isActive={active} tooltip={{ children: label, hidden: false }}>
-      {children}
-    </SidebarMenuButton>
+    <SidebarMenuButton
+      isActive={active}
+      tooltip={{ children: label, hidden: false }}
+      render={children as never}
+    ></SidebarMenuButton>
   );
 }
 
@@ -127,21 +129,23 @@ export function SidebarWorkspaceSwitcher({
     <SidebarMenu>
       <SidebarMenuItem>
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <SidebarMenuButton
-              size="lg"
-              className="h-9 font-semibold data-[state=open]:bg-sidebar-accent group-data-[collapsible=icon]:justify-center"
-              aria-label="Switch workspace"
-              tooltip={collapsed ? { children: value, hidden: false } : undefined}
-            >
-              <BrandMark className="size-6! shrink-0" />
-              {!collapsed && (
-                <>
-                  <span className="min-w-0 flex-1 truncate">{value}</span>
-                  <Ellipsis className="size-3.5 text-muted-foreground" />
-                </>
-              )}
-            </SidebarMenuButton>
+          <DropdownMenuTrigger
+            render={
+              <SidebarMenuButton
+                size="lg"
+                className="h-9 font-semibold data-[state=open]:bg-sidebar-accent group-data-[collapsible=icon]:justify-center"
+                aria-label="Switch workspace"
+                tooltip={collapsed ? { children: value, hidden: false } : undefined}
+              />
+            }
+          >
+            <BrandMark className="size-6! shrink-0" />
+            {!collapsed && (
+              <>
+                <span className="min-w-0 flex-1 truncate">{value}</span>
+                <Ellipsis className="size-3.5 text-muted-foreground" />
+              </>
+            )}
           </DropdownMenuTrigger>
           <DropdownMenuContent
             side={collapsed ? "right" : "bottom"}
@@ -207,13 +211,13 @@ export function SidebarCollection({
     <Collapsible defaultOpen className="mt-6">
       <SidebarGroup className="p-0">
         <SidebarGroupLabel
-          asChild
           className="w-full px-2 text-xs font-normal hover:bg-sidebar-accent"
+          render={
+            <CollapsibleTrigger aria-label={label} className="group/sidebar-collection-trigger" />
+          }
         >
-          <CollapsibleTrigger aria-label={label} className="group/sidebar-collection-trigger">
-            <span className="min-w-0 flex-1 truncate text-start">{label}</span>
-            {headerTrailing ?? <ChevronDown />}
-          </CollapsibleTrigger>
+          <span className="min-w-0 flex-1 truncate text-start">{label}</span>
+          {headerTrailing ?? <ChevronDown />}
         </SidebarGroupLabel>
         <CollapsibleContent>
           <SidebarGroupContent>
@@ -330,7 +334,7 @@ export function SidebarNavigation({
               return (
                 <SidebarMenuItem key={item.label}>
                   <DropdownMenu>
-                    <DropdownMenuTrigger asChild>{button}</DropdownMenuTrigger>
+                    <DropdownMenuTrigger render={button as never}></DropdownMenuTrigger>
                     <DropdownMenuContent
                       side="right"
                       align="start"
@@ -352,7 +356,6 @@ export function SidebarNavigation({
             return (
               <Collapsible
                 key={item.label}
-                asChild
                 open={open}
                 onOpenChange={(value) =>
                   setExpanded((current) =>
@@ -364,7 +367,7 @@ export function SidebarNavigation({
               >
                 <SidebarMenuItem>
                   {item.children ? (
-                    <CollapsibleTrigger asChild>{button}</CollapsibleTrigger>
+                    <CollapsibleTrigger render={button as never}></CollapsibleTrigger>
                   ) : (
                     button
                   )}
@@ -378,14 +381,17 @@ export function SidebarNavigation({
                       <SidebarMenuSub>
                         {item.children.map((child) => (
                           <SidebarMenuSubItem key={child}>
-                            <SidebarMenuSubButton asChild isActive={active === child}>
-                              <button
-                                type="button"
-                                aria-current={active === child ? "page" : undefined}
-                                onClick={() => select(child)}
-                              >
-                                <span>{child}</span>
-                              </button>
+                            <SidebarMenuSubButton
+                              isActive={active === child}
+                              render={
+                                <button
+                                  type="button"
+                                  aria-current={active === child ? "page" : undefined}
+                                  onClick={() => select(child)}
+                                />
+                              }
+                            >
+                              <span>{child}</span>
                             </SidebarMenuSubButton>
                           </SidebarMenuSubItem>
                         ))}

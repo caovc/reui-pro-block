@@ -224,10 +224,12 @@ export function LucentClusters({
       render: (row) =>
         row.group ? null : (
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon-sm" aria-label={`Cluster actions ${row.name}`}>
-                <MoreHorizontal />
-              </Button>
+            <DropdownMenuTrigger
+              render={
+                <Button variant="ghost" size="icon-sm" aria-label={`Cluster actions ${row.name}`} />
+              }
+            >
+              <MoreHorizontal />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={() => setDetailId(row.id)}>
@@ -303,10 +305,8 @@ export function LucentClusters({
             />
             <div className="wf-inline">
               <Popover>
-                <PopoverTrigger asChild>
-                  <Button size="sm" variant="outline">
-                    Health
-                  </Button>
+                <PopoverTrigger render={<Button size="sm" variant="outline" />}>
+                  Health
                 </PopoverTrigger>
                 <PopoverContent>
                   {["Healthy", "Degraded", "At Risk"].map((value) => (
@@ -326,11 +326,9 @@ export function LucentClusters({
                 </PopoverContent>
               </Popover>
               <Popover>
-                <PopoverTrigger asChild>
-                  <Button size="sm" variant="outline">
-                    <SlidersHorizontal />
-                    Display
-                  </Button>
+                <PopoverTrigger render={<Button size="sm" variant="outline" />}>
+                  <SlidersHorizontal />
+                  Display
                 </PopoverTrigger>
                 <PopoverContent>
                   {fields

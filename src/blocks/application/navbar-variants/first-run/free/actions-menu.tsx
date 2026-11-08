@@ -23,15 +23,17 @@ const icons = {
 export function WorkspaceActions({ onAction }: { onAction: (action: string) => void }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          className="-me-1.5"
-          aria-label="More workspace actions"
-        >
-          {icons.more}
-        </Button>
+      <DropdownMenuTrigger
+        render={
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            className="-me-1.5"
+            aria-label="More workspace actions"
+          />
+        }
+      >
+        {icons.more}
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-36">
         <DropdownMenuGroup>

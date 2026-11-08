@@ -284,17 +284,19 @@ function QuotePanel() {
             }}
             tools={
               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="xs"
-                    className="text-xs"
-                    aria-label="Choose reply mode"
-                  >
-                    {mode}
-                    <ChevronDown className="size-3" />
-                  </Button>
+                <DropdownMenuTrigger
+                  render={
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="xs"
+                      className="text-xs"
+                      aria-label="Choose reply mode"
+                    />
+                  }
+                >
+                  {mode}
+                  <ChevronDown className="size-3" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start">
                   <DropdownMenuRadioGroup value={mode} onValueChange={setMode}>
@@ -309,16 +311,18 @@ function QuotePanel() {
             }
           />
           <Popover open={suggestionsOpen} onOpenChange={setSuggestionsOpen}>
-            <PopoverTrigger asChild>
-              <Button
-                type="button"
-                variant="ghost"
-                size="xs"
-                className="sr-only"
-                aria-label="Open prompt palette"
-              >
-                Suggestions
-              </Button>
+            <PopoverTrigger
+              render={
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="xs"
+                  className="sr-only"
+                  aria-label="Open prompt palette"
+                />
+              }
+            >
+              Suggestions
             </PopoverTrigger>
             <PopoverContent
               side="top"

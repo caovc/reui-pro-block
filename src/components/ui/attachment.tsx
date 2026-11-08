@@ -1,7 +1,7 @@
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "cn";
-import { Slot } from "radix-ui";
+import { RenderSlot as Slot } from "@/components/ui/render-slot";
 
 import { Button } from "@/components/ui/button";
 
@@ -149,17 +149,22 @@ function AttachmentAction({
 function AttachmentTrigger({
   className,
   asChild = false,
+  render,
   type,
   ...props
 }: React.ComponentProps<"button"> & {
   asChild?: boolean;
+  render?: React.ReactElement;
 }) {
-  const Comp = asChild ? Slot.Root : "button";
+  const Comp = Slot.Root;
 
   return (
     <Comp
+      defaultTagName="button"
+      asChild={asChild}
+      render={render}
       data-slot="attachment-trigger"
-      type={asChild ? undefined : (type ?? "button")}
+      type={asChild || render ? undefined : (type ?? "button")}
       className={cn("absolute inset-0 z-10 outline-none", className)}
       {...props}
     />

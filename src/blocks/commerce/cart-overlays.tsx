@@ -136,14 +136,12 @@ export function CartDropdown() {
   return (
     <div className="flex min-h-176 justify-center px-4 pt-12" data-cart-variant="6">
       <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <Button variant="outline" className="rounded-full">
-            <ShoppingBag />
-            Cart
-            <Badge variant="secondary" size="sm">
-              {cart.count}
-            </Badge>
-          </Button>
+        <PopoverTrigger render={<Button variant="outline" className="rounded-full" />}>
+          <ShoppingBag />
+          Cart
+          <Badge variant="secondary" size="sm">
+            {cart.count}
+          </Badge>
         </PopoverTrigger>
         <PopoverContent
           sideOffset={10}
@@ -228,13 +226,11 @@ export function AddToCartDrawer() {
   return (
     <div className="flex min-h-176 justify-center px-4 pt-12" data-cart-variant="7">
       <Sheet open={open} onOpenChange={setOpen}>
-        <SheetTrigger asChild>
-          <Button variant="outline">
-            Open cart
-            <Badge size="sm" variant="secondary">
-              {cart.count}
-            </Badge>
-          </Button>
+        <SheetTrigger render={<Button variant="outline" />}>
+          Open cart
+          <Badge size="sm" variant="secondary">
+            {cart.count}
+          </Badge>
         </SheetTrigger>
         <SheetContent
           showCloseButton={false}

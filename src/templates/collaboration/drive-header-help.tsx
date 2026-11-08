@@ -73,10 +73,8 @@ export function DriveHeaderHelp({
   );
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger asChild>
-        <Button variant="ghost" size="icon-sm" aria-label="Help">
-          <CircleHelp />
-        </Button>
+      <SheetTrigger render={<Button variant="ghost" size="icon-sm" aria-label="Help" />}>
+        <CircleHelp />
       </SheetTrigger>
       <SheetContent
         className="reui-reference drive-header-sheet"
@@ -94,10 +92,10 @@ export function DriveHeaderHelp({
                 Find a guide to files, sharing, and your workspace.
               </SheetDescription>
             </div>
-            <SheetClose asChild>
-              <Button variant="ghost" size="icon-sm" aria-label="Dismiss help">
-                <X />
-              </Button>
+            <SheetClose
+              render={<Button variant="ghost" size="icon-sm" aria-label="Dismiss help" />}
+            >
+              <X />
             </SheetClose>
           </div>
           <div className="drive-help-search">
@@ -129,43 +127,43 @@ export function DriveHeaderHelp({
                       return (
                         <div key={guide.id} role="listitem">
                           <Item
-                            asChild
                             variant="outline"
                             className="drive-help-guide hover:bg-muted/30"
+                            render={
+                              <a
+                                href={navigation.href(guide.target)}
+                                onClick={(event) => {
+                                  if (
+                                    event.button !== 0 ||
+                                    event.metaKey ||
+                                    event.ctrlKey ||
+                                    event.shiftKey ||
+                                    event.altKey
+                                  )
+                                    return;
+                                  event.preventDefault();
+                                  setOpen(false);
+                                  navigation.onNavigate(guide.target);
+                                }}
+                              />
+                            }
                           >
-                            <a
-                              href={navigation.href(guide.target)}
-                              onClick={(event) => {
-                                if (
-                                  event.button !== 0 ||
-                                  event.metaKey ||
-                                  event.ctrlKey ||
-                                  event.shiftKey ||
-                                  event.altKey
-                                )
-                                  return;
-                                event.preventDefault();
-                                setOpen(false);
-                                navigation.onNavigate(guide.target);
-                              }}
-                            >
-                              <ItemMedia>
-                                <IconTile size="sm" variant="outline">
-                                  <Icon />
-                                </IconTile>
-                              </ItemMedia>
-                              <ItemContent>
-                                <ItemTitle>
-                                  {guide.title}
-                                  {guide.badge && (
-                                    <Badge size="sm" variant="secondary">
-                                      {guide.badge}
-                                    </Badge>
-                                  )}
-                                </ItemTitle>
-                                <ItemDescription>{guide.description}</ItemDescription>
-                              </ItemContent>
-                            </a>
+                            <ItemMedia>
+                              <IconTile size="sm" variant="outline">
+                                <Icon />
+                              </IconTile>
+                            </ItemMedia>
+                            <ItemContent>
+                              <ItemTitle>
+                                {guide.title}
+                                {guide.badge && (
+                                  <Badge size="sm" variant="secondary">
+                                    {guide.badge}
+                                  </Badge>
+                                )}
+                              </ItemTitle>
+                              <ItemDescription>{guide.description}</ItemDescription>
+                            </ItemContent>
                           </Item>
                         </div>
                       );
@@ -195,17 +193,19 @@ export function DriveHeaderHelp({
         </ScrollArea>
         <SheetFooter className="drive-help-footer">
           <ItemGroup role="group" aria-label="Help resources" className="drive-help-resources">
-            <Button asChild variant="ghost">
-              <a href={documentationHref} target="_blank" rel="noreferrer">
-                <BookOpen aria-hidden="true" />
-                Documentation <ArrowUpRight />
-              </a>
+            <Button
+              render={<a href={documentationHref} target="_blank" rel="noreferrer" />}
+              variant="ghost"
+            >
+              <BookOpen aria-hidden="true" />
+              Documentation <ArrowUpRight />
             </Button>
-            <Button asChild variant="ghost">
-              <a href={supportHref} target="_blank" rel="noreferrer">
-                <LifeBuoy aria-hidden="true" />
-                Support on GitHub <ArrowUpRight />
-              </a>
+            <Button
+              render={<a href={supportHref} target="_blank" rel="noreferrer" />}
+              variant="ghost"
+            >
+              <LifeBuoy aria-hidden="true" />
+              Support on GitHub <ArrowUpRight />
             </Button>
           </ItemGroup>
         </SheetFooter>

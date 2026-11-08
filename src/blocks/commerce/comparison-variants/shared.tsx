@@ -131,15 +131,17 @@ export function SpecLabel({ spec }: { spec: ComparisonSpec }) {
       <span>{spec.label}</span>
       {spec.hint && (
         <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon-xs"
-              className="size-5 shrink-0 text-muted-foreground"
-              aria-label={`About ${spec.label}`}
-            >
-              <CircleHelp className="size-3.5" />
-            </Button>
+          <TooltipTrigger
+            render={
+              <Button
+                variant="ghost"
+                size="icon-xs"
+                className="size-5 shrink-0 text-muted-foreground"
+                aria-label={`About ${spec.label}`}
+              />
+            }
+          >
+            <CircleHelp className="size-3.5" />
           </TooltipTrigger>
           <TooltipContent className="max-w-64">
             <p>{spec.hint}</p>

@@ -3,7 +3,13 @@
 
 "use client";
 
-import { useState, type ButtonHTMLAttributes, type HTMLAttributes, type ReactNode } from "react";
+import {
+  isValidElement,
+  useState,
+  type ButtonHTMLAttributes,
+  type HTMLAttributes,
+  type ReactNode,
+} from "react";
 import {
   useEventCalendarNavigation,
   useEventCalendarSelector,
@@ -14,7 +20,7 @@ import {
 import { toZoned } from "@/components/reui/event-calendar/event-calendar-lib";
 import type { CalendarView } from "@/components/reui/event-calendar/event-calendar-types";
 import { addDays, format } from "date-fns";
-import { Slot } from "radix-ui";
+import { RenderSlot as Slot } from "@/components/ui/render-slot";
 
 import { cn } from "cn";
 import { Button } from "@/components/ui/button";
@@ -102,7 +108,7 @@ function NavTooltip({
   if (tooltips.disabled || content === null || content === undefined) return children;
   return (
     <Tooltip>
-      <TooltipTrigger asChild>{children}</TooltipTrigger>
+      <TooltipTrigger render={children as never}></TooltipTrigger>
       <TooltipContent side={tooltips.side} className={tooltips.className}>
         {content}
       </TooltipContent>
@@ -137,10 +143,10 @@ function EventCalendarNavToday({
         data-active={isToday || undefined}
         className={cn(nav.className, className)}
         onClick={today}
-        asChild={asChild}
+        render={asChild && isValidElement(children) ? children : undefined}
         {...props}
       >
-        {children ?? settings.i18n.labels.today}
+        {!asChild && (children ?? settings.i18n.labels.today)}
       </Button>
     </NavTooltip>
   );
@@ -165,10 +171,10 @@ function EventCalendarNavPrev({
         aria-label={settings.i18n.labels.previous}
         className={cn(nav.className, className)}
         onClick={prev}
-        asChild={asChild}
+        render={asChild && isValidElement(children) ? children : undefined}
         {...props}
       >
-        {children ?? <ChevronLeftIcon className="size-4" aria-hidden="true" />}
+        {!asChild && (children ?? <ChevronLeftIcon className="size-4" aria-hidden="true" />)}
       </Button>
     </NavTooltip>
   );
@@ -193,10 +199,10 @@ function EventCalendarNavNext({
         aria-label={settings.i18n.labels.next}
         className={cn(nav.className, className)}
         onClick={next}
-        asChild={asChild}
+        render={asChild && isValidElement(children) ? children : undefined}
         {...props}
       >
-        {children ?? <ChevronRightIcon className="size-4" aria-hidden="true" />}
+        {!asChild && (children ?? <ChevronRightIcon className="size-4" aria-hidden="true" />)}
       </Button>
     </NavTooltip>
   );
@@ -285,26 +291,30 @@ function EventCalendarViewSwitcher({
           when focus returns on close. Inherits the nav TooltipProvider's
           delayDuration/skipDelayDuration. */}
       <Tooltip open={tipOpen && !open} onOpenChange={setTipOpen}>
-        <DropdownMenuTrigger asChild {...props}>
+        <DropdownMenuTrigger {...props}>
           {/* opens are hover-only; the trigger-focus open that follows a
               menu close is ignored (prevented before Radix opens), closes
               always land */}
-          <TooltipTrigger asChild onFocus={(event) => event.preventDefault()}>
-            <Button
-              variant={nav.variant}
-              size={nav.size}
-              data-slot="event-calendar-view-switcher"
-              aria-label={labels.selectView}
-              className={cn("gap-1", nav.className, className)}
-              asChild={asChild}
-            >
-              {children ?? (
+          <TooltipTrigger
+            onFocus={(event) => event.preventDefault()}
+            render={
+              <Button
+                variant={nav.variant}
+                size={nav.size}
+                data-slot="event-calendar-view-switcher"
+                aria-label={labels.selectView}
+                className={cn("gap-1", nav.className, className)}
+                render={asChild && isValidElement(children) ? children : undefined}
+              />
+            }
+          >
+            {!asChild &&
+              (children ?? (
                 <>
                   {viewLabel(view)}
                   <ChevronDownIcon className="size-4 opacity-60" aria-hidden="true" />
                 </>
-              )}
-            </Button>
+              ))}
           </TooltipTrigger>
         </DropdownMenuTrigger>
         {tipOpen && !open && tooltip !== null && !tooltips.disabled && (
@@ -430,18 +440,21 @@ function EventCalendarDatePicker({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <NavTooltip content={tooltip}>
-        <PopoverTrigger asChild {...props}>
-          <Button
-            variant={nav.variant}
-            size={nav.iconSize}
-            data-slot="event-calendar-date-picker"
-            data-mode={resolved}
-            aria-label={settings.i18n.labels.goToDate}
-            className={cn(nav.className, className)}
-            asChild={asChild}
-          >
-            {children ?? <CalendarIcon className="size-4" aria-hidden="true" />}
-          </Button>
+        <PopoverTrigger
+          {...props}
+          render={
+            <Button
+              variant={nav.variant}
+              size={nav.iconSize}
+              data-slot="event-calendar-date-picker"
+              data-mode={resolved}
+              aria-label={settings.i18n.labels.goToDate}
+              className={cn(nav.className, className)}
+              render={asChild && isValidElement(children) ? children : undefined}
+            />
+          }
+        >
+          {!asChild && (children ?? <CalendarIcon className="size-4" aria-hidden="true" />)}
         </PopoverTrigger>
       </NavTooltip>
       <PopoverContent

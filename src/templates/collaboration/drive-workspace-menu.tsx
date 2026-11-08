@@ -58,22 +58,26 @@ export function DriveWorkspaceMenu({
   return (
     <Dialog open={createOpen} onOpenChange={changeCreateOpen}>
       <DropdownMenu>
-        <DropdownMenuTrigger asChild ref={triggerRef}>
-          {trigger ?? (
-            <Button
-              variant="ghost"
-              size="sm"
-              className="drive-workspace-trigger"
-              aria-label={workspace?.name ?? "Choose workspace"}
-            >
-              <span className="drive-workspace-mark" data-mark={workspace?.mark}>
-                <BrandGlyph />
-              </span>
-              <span>{workspace?.name ?? "Choose workspace"}</span>
-              <ChevronsUpDown aria-hidden="true" />
-            </Button>
-          )}
-        </DropdownMenuTrigger>
+        <DropdownMenuTrigger
+          ref={triggerRef}
+          render={
+            trigger ??
+            ((
+              <Button
+                variant="ghost"
+                size="sm"
+                className="drive-workspace-trigger"
+                aria-label={workspace?.name ?? "Choose workspace"}
+              >
+                <span className="drive-workspace-mark" data-mark={workspace?.mark}>
+                  <BrandGlyph />
+                </span>
+                <span>{workspace?.name ?? "Choose workspace"}</span>
+                <ChevronsUpDown aria-hidden="true" />
+              </Button>
+            ) as never)
+          }
+        ></DropdownMenuTrigger>
         <DropdownMenuContent
           align="start"
           sideOffset={8}
@@ -158,11 +162,7 @@ export function DriveWorkspaceMenu({
             />
           </Field>
           <DialogFooter>
-            <DialogClose asChild>
-              <Button type="button" variant="outline">
-                Cancel
-              </Button>
-            </DialogClose>
+            <DialogClose render={<Button type="button" variant="outline" />}>Cancel</DialogClose>
             <Button type="submit">Create</Button>
           </DialogFooter>
         </form>

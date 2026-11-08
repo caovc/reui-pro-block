@@ -282,10 +282,10 @@ export default function Flowly() {
             <Star fill={stars.includes(r.name) ? "currentColor" : "none"} />
           </Button>
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon-sm" aria-label={`Actions ${r.name}`}>
-                <MoreHorizontal />
-              </Button>
+            <DropdownMenuTrigger
+              render={<Button variant="ghost" size="icon-sm" aria-label={`Actions ${r.name}`} />}
+            >
+              <MoreHorizontal />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuItem

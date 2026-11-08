@@ -73,11 +73,9 @@ function MuteBurn({
     </Button>
   ) : (
     <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button variant="outline" size="sm" className="h-7 text-xs">
-          <BellOff />
-          Mute
-        </Button>
+      <AlertDialogTrigger render={<Button variant="outline" size="sm" className="h-7 text-xs" />}>
+        <BellOff />
+        Mute
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
@@ -903,15 +901,17 @@ export function SyncHistory() {
                     {duration(run.seconds)}
                   </span>
                   <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="size-6"
-                        aria-label={`Actions for ${run.id}`}
-                      >
-                        <MoreHorizontal />
-                      </Button>
+                    <DropdownMenuTrigger
+                      render={
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="size-6"
+                          aria-label={`Actions for ${run.id}`}
+                        />
+                      }
+                    >
+                      <MoreHorizontal />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuGroup>

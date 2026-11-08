@@ -30,10 +30,12 @@ export function WorkspaceTrail({
                 (index === items.length - 1 ? (
                   <BreadcrumbPage>{item.label}</BreadcrumbPage>
                 ) : (
-                  <BreadcrumbLink asChild>
-                    <Button variant="ghost" size="sm" onClick={() => onNavigate?.(item.label)}>
-                      {item.label}
-                    </Button>
+                  <BreadcrumbLink
+                    render={
+                      <Button variant="ghost" size="sm" onClick={() => onNavigate?.(item.label)} />
+                    }
+                  >
+                    {item.label}
                   </BreadcrumbLink>
                 ))}
             </BreadcrumbItem>

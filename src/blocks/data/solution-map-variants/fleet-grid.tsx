@@ -240,11 +240,11 @@ export function FleetGrid({ onDetails }: { onDetails: (id: string) => void }) {
             </CascaderContent>
           </Cascader>
           <Popover>
-            <PopoverTrigger asChild>
-              <Button variant="outline" aria-label="Fleet display settings">
-                <SlidersHorizontal />
-                Settings
-              </Button>
+            <PopoverTrigger
+              render={<Button variant="outline" aria-label="Fleet display settings" />}
+            >
+              <SlidersHorizontal />
+              Settings
             </PopoverTrigger>
             <PopoverContent className="reui-reference">
               <Field orientation="horizontal">

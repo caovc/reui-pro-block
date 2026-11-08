@@ -215,17 +215,18 @@ export function HelpGuides() {
               {articles.map((name) => (
                 <Item
                   key={name}
-                  asChild
+
                   className="rounded-none border-0 border-t border-border p-0"
+                  render={
+                    <Button
+                      variant="ghost"
+                      className="h-auto w-full justify-between rounded-none px-5 py-3 text-xs font-normal"
+                      onClick={() => setArticle(name)}
+                    />
+                  }
                 >
-                  <Button
-                    variant="ghost"
-                    className="h-auto w-full justify-between rounded-none px-5 py-3 text-xs font-normal"
-                    onClick={() => setArticle(name)}
-                  >
-                    <span className="text-left">{name}</span>
-                    <ArrowRight />
-                  </Button>
+                  <span className="text-left">{name}</span>
+                  <ArrowRight />
                 </Item>
               ))}
             </div>

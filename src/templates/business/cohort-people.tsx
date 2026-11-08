@@ -394,13 +394,11 @@ export function CohortPeople({
               ))}
             </div>
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm">
-                  <Filter size={14} />
-                  Filter
-                  {(department !== "All departments" || statusFilter !== "All statuses") &&
-                    ` ${Number(department !== "All departments") + Number(statusFilter !== "All statuses")}`}
-                </Button>
+              <DropdownMenuTrigger render={<Button variant="outline" size="sm" />}>
+                <Filter size={14} />
+                Filter
+                {(department !== "All departments" || statusFilter !== "All statuses") &&
+                  ` ${Number(department !== "All departments") + Number(statusFilter !== "All statuses")}`}
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 {["All departments", ...departments].map((name) => (
@@ -573,23 +571,25 @@ export function CohortPeople({
               size: 112,
               render: (p) => (
                 <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <button aria-label={`Change status for ${p.name}, currently ${p.status}`}>
-                      <Tone
-                        tone={
-                          p.status === "Active"
-                            ? "green"
-                            : p.status === "On leave"
-                              ? "amber"
-                              : "neutral"
-                        }
-                      >
-                        <i
-                          className={`bt-person-status-dot ${p.status === "Active" ? "active" : "away"}`}
-                        />
-                        {p.status}
-                      </Tone>
-                    </button>
+                  <DropdownMenuTrigger
+                    render={
+                      <button aria-label={`Change status for ${p.name}, currently ${p.status}`} />
+                    }
+                  >
+                    <Tone
+                      tone={
+                        p.status === "Active"
+                          ? "green"
+                          : p.status === "On leave"
+                            ? "amber"
+                            : "neutral"
+                      }
+                    >
+                      <i
+                        className={`bt-person-status-dot ${p.status === "Active" ? "active" : "away"}`}
+                      />
+                      {p.status}
+                    </Tone>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
                     {["Active", "Probation", "On leave", "Notice"].map((status) => (
@@ -608,10 +608,12 @@ export function CohortPeople({
               size: 42,
               render: (p) => (
                 <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button size="icon-sm" variant="ghost" aria-label={`Actions for ${p.name}`}>
-                      <Ellipsis size={16} />
-                    </Button>
+                  <DropdownMenuTrigger
+                    render={
+                      <Button size="icon-sm" variant="ghost" aria-label={`Actions for ${p.name}`} />
+                    }
+                  >
+                    <Ellipsis size={16} />
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem onSelect={() => setViewingId(p.id)}>

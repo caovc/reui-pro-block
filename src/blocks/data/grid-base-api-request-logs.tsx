@@ -202,10 +202,10 @@ function RequestActions({
 }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon-sm" aria-label={`Actions for ${request.id}`}>
-          <Ellipsis />
-        </Button>
+      <DropdownMenuTrigger
+        render={<Button variant="ghost" size="icon-sm" aria-label={`Actions for ${request.id}`} />}
+      >
+        <Ellipsis />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onSelect={() => onOpen(request.id)}>View request</DropdownMenuItem>
@@ -309,10 +309,12 @@ function RequestSettings({
   }
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <Button variant="outline" size="icon-sm" className="size-8" aria-label="Settings">
-          <SlidersHorizontal />
-        </Button>
+      <PopoverTrigger
+        render={
+          <Button variant="outline" size="icon-sm" className="size-8" aria-label="Settings" />
+        }
+      >
+        <SlidersHorizontal />
       </PopoverTrigger>
       <PopoverContent align="end" className="reui-reference w-72 p-4">
         <div className="space-y-3">
@@ -689,15 +691,17 @@ export function ApiRequestLogs() {
               </kbd>
             </div>
             <Popover open={searchOpen} onOpenChange={setSearchOpen}>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="icon-sm"
-                  className="size-8 shrink-0 sm:hidden"
-                  aria-label="Search requests"
-                >
-                  <Search />
-                </Button>
+              <PopoverTrigger
+                render={
+                  <Button
+                    variant="outline"
+                    size="icon-sm"
+                    className="size-8 shrink-0 sm:hidden"
+                    aria-label="Search requests"
+                  />
+                }
+              >
+                <Search />
               </PopoverTrigger>
               <PopoverContent align="start" className="reui-reference w-72 p-2">
                 <Input

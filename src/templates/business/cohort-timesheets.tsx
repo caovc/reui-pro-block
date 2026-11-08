@@ -207,12 +207,10 @@ export function CohortTimesheets({
               <ChevronLeft size={14} />
             </Button>
             <Popover open={weekPickerOpen} onOpenChange={setWeekPickerOpen}>
-              <PopoverTrigger asChild>
-                <Button variant="ghost" size="sm">
-                  {week.getDate()} - {days[6].getDate()}{" "}
-                  {week.toLocaleDateString("en-GB", { month: "short" })}
-                  <CalendarDays size={14} />
-                </Button>
+              <PopoverTrigger render={<Button variant="ghost" size="sm" />}>
+                {week.getDate()}- {days[6].getDate()}{" "}
+                {week.toLocaleDateString("en-GB", { month: "short" })}
+                <CalendarDays size={14} />
               </PopoverTrigger>
               <PopoverContent className="w-auto p-2" align="end">
                 <CalendarSelect

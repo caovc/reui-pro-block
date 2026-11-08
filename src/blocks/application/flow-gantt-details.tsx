@@ -837,11 +837,18 @@ export default function GanttDetails({
             <div className="fg-details-spacer" />
           </>
         )}
-        <SheetClose asChild>
-          <Button variant="ghost" size="icon-sm" className="fg-details-close" aria-label="Close">
-            <X />
-            <span className="sr-only">Close</span>
-          </Button>
+        <SheetClose
+          render={
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              className="fg-details-close"
+              aria-label="Close"
+            />
+          }
+        >
+          <X />
+          <span className="sr-only">Close</span>
         </SheetClose>
       </div>
       <div className="fg-details-scroll">

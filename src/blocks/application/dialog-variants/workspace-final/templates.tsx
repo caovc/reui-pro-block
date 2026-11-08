@@ -113,11 +113,9 @@ export default function ProjectTemplatesDialog() {
       </DialogLauncher>
       <DialogContent className="final-project-dialog" showCloseButton={false}>
         <header className="final-project-topbar">
-          <DialogClose asChild>
-            <Button variant="ghost">
-              <ArrowLeft />
-              Back
-            </Button>
+          <DialogClose render={<Button variant="ghost" />}>
+            <ArrowLeft />
+            Back
           </DialogClose>
           <Button variant="outline" onClick={() => setHelp(help === "support" ? null : "support")}>
             Support
@@ -129,12 +127,10 @@ export default function ProjectTemplatesDialog() {
               <div className="flex flex-wrap items-center gap-2">
                 <DialogTitle>Create Project</DialogTitle>
                 <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="secondary" size="sm">
-                      <FileText />
-                      Select template
-                      <ChevronDown />
-                    </Button>
+                  <DropdownMenuTrigger render={<Button variant="secondary" size="sm" />}>
+                    <FileText />
+                    Select template
+                    <ChevronDown />
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="start">
                     {projectTemplates.map((template) => (
@@ -289,9 +285,7 @@ export default function ProjectTemplatesDialog() {
               Project draft
             </Button>
             <div className="flex gap-2">
-              <DialogClose asChild>
-                <Button variant="ghost">Cancel</Button>
-              </DialogClose>
+              <DialogClose render={<Button variant="ghost" />}>Cancel</DialogClose>
               <Button
                 disabled={!draft.name.trim() || !draft.key.trim()}
                 onClick={() => {

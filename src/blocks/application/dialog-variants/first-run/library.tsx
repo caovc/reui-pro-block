@@ -140,50 +140,50 @@ export default function TemplateLibraryDialog() {
                 <ItemGroup>
                   {visible.map((template) => (
                     <Item
-                      asChild
                       variant={selected?.id === template.id ? "muted" : "outline"}
                       key={template.id}
                       className="refined-template-card"
+                      render={
+                        <button
+                          type="button"
+                          aria-label={`Select ${template.name}`}
+                          aria-pressed={selected?.id === template.id}
+                          onClick={() => setSelectedId(template.id)}
+                        />
+                      }
                     >
-                      <button
-                        type="button"
-                        aria-label={`Select ${template.name}`}
-                        aria-pressed={selected?.id === template.id}
-                        onClick={() => setSelectedId(template.id)}
-                      >
-                        <ItemMedia>
-                          <img
-                            src={demoPanel(templateRecords.indexOf(template))}
-                            alt={`${template.name} original demo preview`}
-                          />
-                        </ItemMedia>
-                        <ItemContent className="min-w-0">
-                          <div className="refined-template-card-title">
-                            <ItemTitle>{template.name}</ItemTitle>
-                            <Badge variant="secondary" size="sm">
-                              {template.team}
+                      <ItemMedia>
+                        <img
+                          src={demoPanel(templateRecords.indexOf(template))}
+                          alt={`${template.name} original demo preview`}
+                        />
+                      </ItemMedia>
+                      <ItemContent className="min-w-0">
+                        <div className="refined-template-card-title">
+                          <ItemTitle>{template.name}</ItemTitle>
+                          <Badge variant="secondary" size="sm">
+                            {template.team}
+                          </Badge>
+                        </div>
+                        <ItemDescription>{template.description}</ItemDescription>
+                        <div className="flex flex-wrap gap-1.5">
+                          {template.tags.map((tag, index) => (
+                            <Badge
+                              key={tag}
+                              size="sm"
+                              variant={
+                                index === 1
+                                  ? "focus-light"
+                                  : index === 2
+                                    ? "warning-light"
+                                    : "secondary"
+                              }
+                            >
+                              {tag}
                             </Badge>
-                          </div>
-                          <ItemDescription>{template.description}</ItemDescription>
-                          <div className="flex flex-wrap gap-1.5">
-                            {template.tags.map((tag, index) => (
-                              <Badge
-                                key={tag}
-                                size="sm"
-                                variant={
-                                  index === 1
-                                    ? "focus-light"
-                                    : index === 2
-                                      ? "warning-light"
-                                      : "secondary"
-                                }
-                              >
-                                {tag}
-                              </Badge>
-                            ))}
-                          </div>
-                        </ItemContent>
-                      </button>
+                          ))}
+                        </div>
+                      </ItemContent>
                     </Item>
                   ))}
                 </ItemGroup>

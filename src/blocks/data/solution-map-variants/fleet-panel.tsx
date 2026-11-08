@@ -233,15 +233,17 @@ export function FleetPanel(props: Props) {
         <h2>{vehicle.id}</h2>
         <VehicleStatusBadge status={vehicle.status} />
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon-sm"
-              className="ml-auto"
-              aria-label="More van actions"
-            >
-              <Ellipsis />
-            </Button>
+          <DropdownMenuTrigger
+            render={
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                className="ml-auto"
+                aria-label="More van actions"
+              />
+            }
+          >
+            <Ellipsis />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="reui-reference">
             <DropdownMenuLabel>{vehicle.id}</DropdownMenuLabel>
@@ -389,10 +391,10 @@ export function FleetPanel(props: Props) {
             {stop.failureReason && <p className="text-destructive">{stop.failureReason}</p>}
             <div className="dm-stop-actions">
               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" aria-label="More stop actions">
-                    <Ellipsis />
-                  </Button>
+                <DropdownMenuTrigger
+                  render={<Button variant="outline" size="sm" aria-label="More stop actions" />}
+                >
+                  <Ellipsis />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="reui-reference">
                   <DropdownMenuLabel>{stop.id}</DropdownMenuLabel>

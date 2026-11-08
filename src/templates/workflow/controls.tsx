@@ -137,18 +137,20 @@ export function DateChoice({
   const date = parsed && !Number.isNaN(parsed.getTime()) ? parsed : undefined;
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <Button
-          type="button"
-          variant="outline"
-          className="justify-start font-normal"
-          aria-label={label}
-        >
-          <CalendarDays />
-          {date
-            ? date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
-            : "Pick a date"}
-        </Button>
+      <PopoverTrigger
+        render={
+          <Button
+            type="button"
+            variant="outline"
+            className="justify-start font-normal"
+            aria-label={label}
+          />
+        }
+      >
+        <CalendarDays />
+        {date
+          ? date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
+          : "Pick a date"}
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
         <CalendarSelect

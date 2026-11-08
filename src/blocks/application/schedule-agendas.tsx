@@ -196,13 +196,15 @@ function Attendees({
       {people.length > 3 && (
         <Popover>
           <AvatarGroupCount className="sa-more-count">
-            <PopoverTrigger asChild>
-              <button
-                className="sa-more"
-                aria-label={`${people.length - 3} more: ${people.slice(3).join(", ")}`}
-              >
-                +{people.length - 3}
-              </button>
+            <PopoverTrigger
+              render={
+                <button
+                  className="sa-more"
+                  aria-label={`${people.length - 3} more: ${people.slice(3).join(", ")}`}
+                />
+              }
+            >
+              +{people.length - 3}
             </PopoverTrigger>
           </AvatarGroupCount>
           <PopoverContent className="reui-reference sa-people-popover" align={alignment}>

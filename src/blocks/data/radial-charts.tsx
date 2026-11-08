@@ -458,15 +458,17 @@ function CashInflows() {
               options={["This month", "Last month", "This quarter"]}
             />
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="size-7"
-                  aria-label="Display options"
-                >
-                  <SlidersHorizontal />
-                </Button>
+              <DropdownMenuTrigger
+                render={
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="size-7"
+                    aria-label="Display options"
+                  />
+                }
+              >
+                <SlidersHorizontal />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuGroup>

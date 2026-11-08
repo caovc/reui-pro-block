@@ -2,10 +2,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import type { ButtonHTMLAttributes, CSSProperties, HTMLAttributes } from "react";
+import type { ButtonHTMLAttributes, CSSProperties, HTMLAttributes, ReactElement } from "react";
 import { createContext, Fragment, useContext } from "react";
 import type { ItemInstance } from "@headless-tree/core";
-import { Slot } from "radix-ui";
+import { RenderSlot as Slot } from "@/components/ui/render-slot";
 
 import { cn } from "cn";
 import { Minus, Plus, ChevronDown } from "lucide-react";
@@ -66,6 +66,7 @@ function Tree({
     <TreeContext.Provider value={{ indent, tree, toggleIconType }}>
       <Comp
         data-slot="tree"
+        render={undefined}
         style={mergedStyle}
         className={cn("flex flex-col", className)}
         {...otherProps}
@@ -78,12 +79,14 @@ interface TreeItemProps<T = any> extends Omit<ButtonHTMLAttributes<HTMLButtonEle
   item: ItemInstance<T>;
   indent?: number;
   asChild?: boolean;
+  render?: ReactElement;
 }
 
 function TreeItem<T = any>({
   item,
   className,
   asChild = false,
+  render,
   children,
   ...props
 }: TreeItemProps<T>) {
@@ -119,7 +122,7 @@ function TreeItem<T = any>({
     "aria-expanded": item.isExpanded(),
   };
 
-  const Comp = asChild ? Slot.Root : "button";
+  const Comp = Slot.Root;
 
   return (
     <TreeContext.Provider value={{ ...parentContext, currentItem: item }}>
@@ -133,6 +136,7 @@ function TreeItem<T = any>({
 interface TreeItemLabelProps<T = any> extends HTMLAttributes<HTMLSpanElement> {
   item?: ItemInstance<T>;
   asChild?: boolean;
+  render?: ReactElement;
 }
 
 function TreeItemLabel<T = any>({
@@ -140,6 +144,7 @@ function TreeItemLabel<T = any>({
   children,
   className,
   asChild = false,
+  render,
   ...props
 }: TreeItemLabelProps<T>) {
   const { currentItem, toggleIconType } = useTreeContext<T>();
@@ -154,6 +159,9 @@ function TreeItemLabel<T = any>({
 
   return (
     <Comp
+      defaultTagName="button"
+      asChild={asChild}
+      render={render}
       data-slot="tree-item-label"
       className={cn(
         "in-focus-visible:ring-ring/50 bg-background hover:bg-accent in-data-[selected=true]:bg-accent in-data-[selected=true]:text-accent-foreground in-data-[drag-target=true]:bg-accent flex items-center gap-1 transition-colors not-in-data-[folder=true]:ps-7 in-focus-visible:ring-[3px] in-data-[search-match=true]:bg-blue-50! [&_svg]:pointer-events-none [&_svg]:shrink-0",

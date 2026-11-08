@@ -257,10 +257,17 @@ export default function SloBudgets() {
               New SLO
             </Button>
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="size-7" aria-label="More actions">
-                  <MoreHorizontal />
-                </Button>
+              <DropdownMenuTrigger
+                render={
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="size-7"
+                    aria-label="More actions"
+                  />
+                }
+              >
+                <MoreHorizontal />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuGroup>
@@ -317,22 +324,24 @@ export default function SloBudgets() {
                     </span>
                   </p>
                   <HoverCard openDelay={100} closeDelay={100}>
-                    <HoverCardTrigger asChild>
-                      <button
-                        type="button"
-                        className="rounded outline-offset-2"
-                        aria-label={`Rolling budget ${Math.abs(row.left)}% ${row.left < 0 ? "over budget" : "left"}, ${row.delta > 0 ? "+" : ""}${row.delta} pts over 7 days`}
-                      >
-                        <MiniTrend
-                          label={`${row.name} 28-day budget trend`}
-                          values={values}
-                          beads
-                          colors={values.map((_, i) => (i === 27 ? color : c.gray))}
-                          color={color}
-                          height={38}
-                          domain={[-60, 115]}
+                    <HoverCardTrigger
+                      render={
+                        <button
+                          type="button"
+                          className="rounded outline-offset-2"
+                          aria-label={`Rolling budget ${Math.abs(row.left)}% ${row.left < 0 ? "over budget" : "left"}, ${row.delta > 0 ? "+" : ""}${row.delta} pts over 7 days`}
                         />
-                      </button>
+                      }
+                    >
+                      <MiniTrend
+                        label={`${row.name} 28-day budget trend`}
+                        values={values}
+                        beads
+                        colors={values.map((_, i) => (i === 27 ? color : c.gray))}
+                        color={color}
+                        height={38}
+                        domain={[-60, 115]}
+                      />
                     </HoverCardTrigger>
                     <HoverCardContent
                       align="end"

@@ -72,17 +72,19 @@ export function AtlasAccountControl({
     <SidebarMenu>
       <SidebarMenuItem>
         <DropdownMenu open={open} onOpenChange={setOpen}>
-          <DropdownMenuTrigger asChild>
-            <SidebarMenuButton
-              size="lg"
-              className="atlas-account-trigger"
-              aria-label={`Open account menu for ${name}`}
-              tooltip={showTooltips ? name : undefined}
-            >
-              {avatar("atlas-account-avatar")}
-              {!collapsed && <strong className="atlas-account-name">{name}</strong>}
-              {!collapsed && <Ellipsis className="ml-auto size-3.5 text-muted-foreground" />}
-            </SidebarMenuButton>
+          <DropdownMenuTrigger
+            render={
+              <SidebarMenuButton
+                size="lg"
+                className="atlas-account-trigger"
+                aria-label={`Open account menu for ${name}`}
+                tooltip={showTooltips ? name : undefined}
+              />
+            }
+          >
+            {avatar("atlas-account-avatar")}
+            {!collapsed && <strong className="atlas-account-name">{name}</strong>}
+            {!collapsed && <Ellipsis className="ml-auto size-3.5 text-muted-foreground" />}
           </DropdownMenuTrigger>
           <DropdownMenuContent
             side={isMobile ? "top" : side === "right" ? "left" : "right"}
@@ -98,33 +100,37 @@ export function AtlasAccountControl({
                 </span>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <a
-                  href={routing.href("profile")}
-                  onClick={(event) => {
-                    if (isModifiedClick(event)) return;
-                    event.preventDefault();
-                    onNavigate("Profile");
-                    setOpen(false);
-                  }}
-                >
-                  <UserRound />
-                  Profile<DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-                </a>
+              <DropdownMenuItem
+                render={
+                  <a
+                    href={routing.href("profile")}
+                    onClick={(event) => {
+                      if (isModifiedClick(event)) return;
+                      event.preventDefault();
+                      onNavigate("Profile");
+                      setOpen(false);
+                    }}
+                  />
+                }
+              >
+                <UserRound />
+                Profile<DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <a
-                  href={routing.href("security")}
-                  onClick={(event) => {
-                    if (isModifiedClick(event)) return;
-                    event.preventDefault();
-                    onNavigate("Account settings");
-                    setOpen(false);
-                  }}
-                >
-                  <Settings />
-                  Account settings
-                </a>
+              <DropdownMenuItem
+                render={
+                  <a
+                    href={routing.href("security")}
+                    onClick={(event) => {
+                      if (isModifiedClick(event)) return;
+                      event.preventDefault();
+                      onNavigate("Account settings");
+                      setOpen(false);
+                    }}
+                  />
+                }
+              >
+                <Settings />
+                Account settings
               </DropdownMenuItem>
               <DropdownMenuItem onSelect={() => onNavigate("Billing")}>
                 <CreditCard />

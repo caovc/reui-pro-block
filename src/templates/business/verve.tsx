@@ -197,8 +197,8 @@ export default function Verve() {
             }}
           />
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline">+ Create</Button>
+            <DropdownMenuTrigger render={<Button variant="outline" />}>
+              + Create
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               {["New Deal", "New Contact", "New Company", "Import Data", "Generate Report"].map(

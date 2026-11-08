@@ -275,20 +275,22 @@ function CrmGrid({ kind }: { kind: number }) {
         <div className="tabular-nums">
           {usd(r.amount, 2)}
           <Popover>
-            <PopoverTrigger asChild>
-              <button
-                className={cn(
-                  "mt-0.5 flex items-center gap-1 text-xs",
-                  r.score < 0 ? "text-rose-500" : "text-emerald-500",
-                )}
-              >
-                {r.score < 0 ? (
-                  <ArrowDownRight className="size-3" />
-                ) : (
-                  <ArrowUpRight className="size-3" />
-                )}
-                {Math.abs(r.score)}%
-              </button>
+            <PopoverTrigger
+              render={
+                <button
+                  className={cn(
+                    "mt-0.5 flex items-center gap-1 text-xs",
+                    r.score < 0 ? "text-rose-500" : "text-emerald-500",
+                  )}
+                />
+              }
+            >
+              {r.score < 0 ? (
+                <ArrowDownRight className="size-3" />
+              ) : (
+                <ArrowUpRight className="size-3" />
+              )}
+              {Math.abs(r.score)}%
             </PopoverTrigger>
             <PopoverContent className="w-60 text-xs">
               {r.score < 0
@@ -478,11 +480,9 @@ function CrmGrid({ kind }: { kind: number }) {
           )}
           {kind < 3 ? (
             <Popover>
-              <PopoverTrigger asChild>
-                <Button size="sm" variant="outline">
-                  <Ellipsis />
-                  Actions
-                </Button>
+              <PopoverTrigger render={<Button size="sm" variant="outline" />}>
+                <Ellipsis />
+                Actions
               </PopoverTrigger>
               <PopoverContent align="end" className="w-56">
                 <Button
@@ -1338,10 +1338,10 @@ function RateCard() {
         align: "right",
         cell: (r) => (
           <Popover>
-            <PopoverTrigger asChild>
-              <button className="underline decoration-dotted underline-offset-4">
-                ${r.net.toFixed(4)}
-              </button>
+            <PopoverTrigger
+              render={<button className="underline decoration-dotted underline-offset-4" />}
+            >
+              ${r.net.toFixed(4)}
             </PopoverTrigger>
             <PopoverContent className="w-64 text-xs">
               <p className="font-medium">{r.name} price breakdown</p>

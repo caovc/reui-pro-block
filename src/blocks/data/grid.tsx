@@ -238,10 +238,12 @@ function GenericGridBlock({ block }: BlockProps) {
         width: 42,
         cell: (r) => (
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon-sm" aria-label={`Actions for ${r.name}`}>
-                <ChevronDown />
-              </Button>
+            <DropdownMenuTrigger
+              render={
+                <Button variant="ghost" size="icon-sm" aria-label={`Actions for ${r.name}`} />
+              }
+            >
+              <ChevronDown />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuGroup>

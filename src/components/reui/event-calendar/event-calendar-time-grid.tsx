@@ -49,7 +49,7 @@ import type {
   EventCalendarSegment,
 } from "@/components/reui/event-calendar/event-calendar-types";
 import { addDays, addMinutes, differenceInMinutes, format } from "date-fns";
-import { Slot } from "radix-ui";
+import { RenderSlot as Slot } from "@/components/ui/render-slot";
 
 import { cn } from "cn";
 import { ScrollArea } from "@/components/ui/scroll-area";

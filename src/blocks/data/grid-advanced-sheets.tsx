@@ -401,29 +401,31 @@ function StockModelGrid({
               row.id === "share" ? (
                 <div className="py-1 text-center">
                   <Popover>
-                    <PopoverTrigger asChild>
-                      <button
-                        aria-label={`${name} share details`}
-                        className="w-full overflow-hidden rounded-lg border"
+                    <PopoverTrigger
+                      render={
+                        <button
+                          aria-label={`${name} share details`}
+                          className="w-full overflow-hidden rounded-lg border"
+                        />
+                      }
+                    >
+                      <span className="block bg-muted/20 px-2 py-2 font-medium">
+                        {data.target[i].toFixed(1)}
+                      </span>
+                      <span
+                        className={cn(
+                          "block border-t px-2 py-2",
+                          i === 3 && !costUpdate
+                            ? "text-muted-foreground"
+                            : Math.abs(shares[i] - data.target[i]) > data.tolerance[i]
+                              ? "bg-rose-500/10 text-rose-600"
+                              : Math.abs(shares[i] - data.target[i]) > data.tolerance[i] / 2
+                                ? "bg-amber-500/10 text-amber-600"
+                                : "bg-emerald-500/10 text-emerald-600",
+                        )}
                       >
-                        <span className="block bg-muted/20 px-2 py-2 font-medium">
-                          {data.target[i].toFixed(1)}
-                        </span>
-                        <span
-                          className={cn(
-                            "block border-t px-2 py-2",
-                            i === 3 && !costUpdate
-                              ? "text-muted-foreground"
-                              : Math.abs(shares[i] - data.target[i]) > data.tolerance[i]
-                                ? "bg-rose-500/10 text-rose-600"
-                                : Math.abs(shares[i] - data.target[i]) > data.tolerance[i] / 2
-                                  ? "bg-amber-500/10 text-amber-600"
-                                  : "bg-emerald-500/10 text-emerald-600",
-                          )}
-                        >
-                          {shares[i].toFixed(1)}
-                        </span>
-                      </button>
+                        {shares[i].toFixed(1)}
+                      </span>
                     </PopoverTrigger>
                     <PopoverContent className="w-64 space-y-3">
                       <h3 className="text-sm font-medium">{name} mix settings</h3>
@@ -1787,11 +1789,11 @@ export function ProductKpis() {
             />
             <div className="ml-auto flex gap-2">
               <Popover>
-                <PopoverTrigger asChild>
-                  <Button variant="outline" size="sm" className="h-8 text-sm">
-                    <SlidersHorizontal />
-                    Guardrails
-                  </Button>
+                <PopoverTrigger
+                  render={<Button variant="outline" size="sm" className="h-8 text-sm" />}
+                >
+                  <SlidersHorizontal />
+                  Guardrails
                 </PopoverTrigger>
                 <PopoverContent className="w-64">
                   <label className="text-sm">

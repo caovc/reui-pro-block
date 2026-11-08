@@ -64,13 +64,13 @@ export function MarketplaceAccountMenu({
   return (
     <div className="flex items-center justify-center">
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon-sm" aria-label="Account menu">
-            <Avatar className="size-4">
-              <AvatarImage src={demoAvatar("Maya Stone")} alt="Maya Stone" />
-              <AvatarFallback>MS</AvatarFallback>
-            </Avatar>
-          </Button>
+        <DropdownMenuTrigger
+          render={<Button variant="ghost" size="icon-sm" aria-label="Account menu" />}
+        >
+          <Avatar className="size-4">
+            <AvatarImage src={demoAvatar("Maya Stone")} alt="Maya Stone" />
+            <AvatarFallback>MS</AvatarFallback>
+          </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent className={cn("w-60", dark && "dark")} align="start" sideOffset={8}>
           <div className="flex items-center gap-3 px-1 pt-1.5">

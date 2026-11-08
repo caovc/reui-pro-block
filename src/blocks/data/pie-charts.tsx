@@ -63,15 +63,17 @@ function CapitalInflows() {
           <>
             <span>Capital Inflows</span>
             <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="size-5"
-                  aria-label="About Capital Inflows"
-                >
-                  <Info />
-                </Button>
+              <TooltipTrigger
+                render={
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="size-5"
+                    aria-label="About Capital Inflows"
+                  />
+                }
+              >
+                <Info />
               </TooltipTrigger>
               <TooltipContent>Settled transfers across tracked capital sources.</TooltipContent>
             </Tooltip>
@@ -232,15 +234,17 @@ function BrowserUsage() {
               Compare
             </Toggle>
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="size-7"
-                  aria-label="Display options"
-                >
-                  <SlidersHorizontal />
-                </Button>
+              <DropdownMenuTrigger
+                render={
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="size-7"
+                    aria-label="Display options"
+                  />
+                }
+              >
+                <SlidersHorizontal />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuGroup>
@@ -500,16 +504,18 @@ function CloudSpend() {
               </SelectContent>
             </Select>
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="size-7"
-                  disabled={active !== null}
-                  aria-label="Sort categories"
-                >
-                  <SlidersHorizontal />
-                </Button>
+              <DropdownMenuTrigger
+                render={
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="size-7"
+                    disabled={active !== null}
+                    aria-label="Sort categories"
+                  />
+                }
+              >
+                <SlidersHorizontal />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuRadioGroup value={sort} onValueChange={setSort}>

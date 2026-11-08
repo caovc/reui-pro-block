@@ -164,34 +164,32 @@ function PlanRail({
     >
       {plans.map((plan) => (
         <Item
-          asChild
           variant="outline"
           size="sm"
           className="pud-plan-item"
           data-selected={selected === plan.id}
           key={plan.id}
+          render={<Label htmlFor={`${id}-${plan.id}`} />}
         >
-          <Label htmlFor={`${id}-${plan.id}`}>
-            <RadioGroupItem
-              id={`${id}-${plan.id}`}
-              value={plan.id}
-              aria-label={plan.name}
-              className="pud-plan-radio"
-            />
-            <ItemMedia>
-              <IconTile variant="elevated" aria-hidden="true">
-                <plan.icon />
-              </IconTile>
-            </ItemMedia>
-            <ItemContent>
-              <ItemTitle>{plan.name}</ItemTitle>
-              <ItemDescription>{plan.description}</ItemDescription>
-            </ItemContent>
-            <ItemActions className="pud-rail-price">
-              {currency.format(plan[billing])}
-              <span className="sr-only"> per month</span>
-            </ItemActions>
-          </Label>
+          <RadioGroupItem
+            id={`${id}-${plan.id}`}
+            value={plan.id}
+            aria-label={plan.name}
+            className="pud-plan-radio"
+          />
+          <ItemMedia>
+            <IconTile variant="elevated" aria-hidden="true">
+              <plan.icon />
+            </IconTile>
+          </ItemMedia>
+          <ItemContent>
+            <ItemTitle>{plan.name}</ItemTitle>
+            <ItemDescription>{plan.description}</ItemDescription>
+          </ItemContent>
+          <ItemActions className="pud-rail-price">
+            {currency.format(plan[billing])}
+            <span className="sr-only"> per month</span>
+          </ItemActions>
         </Item>
       ))}
     </RadioGroup>
@@ -289,9 +287,7 @@ export function UpgradePlanPricing() {
             <EmptyDescription>Compare plans and switch in a minute.</EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
-            <DialogTrigger asChild>
-              <Button variant="outline">View Plans</Button>
-            </DialogTrigger>
+            <DialogTrigger render={<Button variant="outline" />}>View Plans</DialogTrigger>
           </EmptyContent>
         </Empty>
       </section>
@@ -343,10 +339,12 @@ export function UpgradePlanPricing() {
               {currency.format(billed)} billed {billing}
             </span>
           </p>
-          <Button asChild>
-            <a href="#" onClick={keepPreviewRoute} aria-label={`${action} for ${plan.name}`}>
-              {action}
-            </a>
+          <Button
+            render={
+              <a href="#" onClick={keepPreviewRoute} aria-label={`${action} for ${plan.name}`} />
+            }
+          >
+            {action}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -141,15 +141,17 @@ export function ProspectOwnerMenu({
   const owner = prospectOwners.find((item) => item.id === record.ownerId);
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <button
-          className="prospect-inline-menu"
-          aria-label={`Owner of ${record.name}: ${owner?.name ?? "unassigned"}. Change`}
-        >
-          <ProspectOwnerAvatar ownerId={record.ownerId} />
-          <span>{owner?.short ?? "Assign"}</span>
-          <ChevronDown className="size-3" />
-        </button>
+      <DropdownMenuTrigger
+        render={
+          <button
+            className="prospect-inline-menu"
+            aria-label={`Owner of ${record.name}: ${owner?.name ?? "unassigned"}. Change`}
+          />
+        }
+      >
+        <ProspectOwnerAvatar ownerId={record.ownerId} />
+        <span>{owner?.short ?? "Assign"}</span>
+        <ChevronDown className="size-3" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="min-w-[204px]">
         <DropdownMenuLabel>Owner</DropdownMenuLabel>
@@ -203,13 +205,15 @@ export function ProspectStatusMenu({
 }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <button
-          className="prospect-inline-menu"
-          aria-label={`Status for ${record.name}: ${record.status}. Change`}
-        >
-          <ProspectStatusBadge status={record.status} />
-        </button>
+      <DropdownMenuTrigger
+        render={
+          <button
+            className="prospect-inline-menu"
+            aria-label={`Status for ${record.name}: ${record.status}. Change`}
+          />
+        }
+      >
+        <ProspectStatusBadge status={record.status} />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-40">
         <DropdownMenuLabel>Status</DropdownMenuLabel>
@@ -418,15 +422,17 @@ export function ProspectDetails({
             </div>
           </div>
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                className="absolute right-12 top-3 size-7"
-                aria-label="More actions"
-              >
-                <Ellipsis />
-              </Button>
+            <DropdownMenuTrigger
+              render={
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  className="absolute right-12 top-3 size-7"
+                  aria-label="More actions"
+                />
+              }
+            >
+              <Ellipsis />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Company</DropdownMenuLabel>
@@ -733,11 +739,9 @@ export function ProspectDetails({
             Edit
           </Button>
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="default">
-                <ListPlus />
-                Save to List
-              </Button>
+            <DropdownMenuTrigger render={<Button variant="default" />}>
+              <ListPlus />
+              Save to List
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
               <ProspectListItems
