@@ -7,6 +7,8 @@ Catalog data is maintained in the application source. Use it to find a candidate
 - **Blocks:** [`src/data/catalog.json`](../src/data/catalog.json) lists block IDs, categories, descriptions, and public references.
 - **Full templates:** [`src/templates/catalog.ts`](../src/templates/catalog.ts) lists template IDs, families, features, and preview references. Templates are separate from the block catalog.
 
+The block JSON does **not** contain a local source path. Resolve a block ID through `src/lib/source-targets.ts` (`blockImplementationCandidates`) and confirm how its family/category router renders it in `src/blocks/application/index.tsx`, `src/blocks/data/index.tsx`, or `src/blocks/commerce/index.tsx`. One block may use several files, and filenames often differ from its ID. For full templates, follow the `family` through `src/templates/renderer.tsx`, then the matching family app and template ID.
+
 ## Read a manual when one exists
 
 - **Block manual:** `docs/agent-guides/blocks/<block-id>.md`
