@@ -70,7 +70,7 @@ Browser tests require Chromium (`npx playwright install chromium`). `PREVIEW_URL
 - `src/components/ui`: shadcn component source generated through its CLI
 - `src/components/site`: source viewer and collection interface
 - `src/templates`: template catalog, preview routing, source export, and three implementation families
-- `docs/CATALOG.md`: full reference checklist
+- `docs/CATALOG.md`: catalog lookup and agent manual guide
 - `docs/plans/2026-10-22-reui-blocks-design.md`: development and release plan
 
 ## Reusing a block
