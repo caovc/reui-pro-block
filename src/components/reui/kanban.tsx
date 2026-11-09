@@ -2,7 +2,7 @@
 "use client";
 
 import * as React from "react";
-import type { CSSProperties, HTMLAttributes, ReactNode } from "react";
+import type { CSSProperties, HTMLAttributes, ReactElement, ReactNode } from "react";
 import {
   createContext,
   useCallback,
@@ -51,7 +51,7 @@ import {
   type AnimateLayoutChanges,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Slot } from "radix-ui";
+import { RenderSlot as Slot } from "@/components/ui/render-slot";
 import { createPortal } from "react-dom";
 
 import { cn } from "cn";
@@ -836,21 +836,26 @@ function KanbanItem({
 export interface KanbanItemHandleProps extends HTMLAttributes<HTMLDivElement> {
   cursor?: boolean;
   asChild?: boolean;
+  render?: ReactElement;
 }
 
 function KanbanItemHandle({
   className,
   asChild = false,
+  render,
   cursor = true,
   children,
   ...props
 }: KanbanItemHandleProps) {
   const { listeners, isDragging, disabled } = useContext(ItemContext);
 
-  const Comp = asChild ? Slot.Root : "div";
+  const Comp = Slot.Root;
 
   return (
     <Comp
+      defaultTagName="div"
+      asChild={asChild}
+      render={render}
       data-slot="kanban-item-handle"
       data-dragging={isDragging}
       data-disabled={disabled}

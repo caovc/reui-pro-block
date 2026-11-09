@@ -68,11 +68,9 @@ function ExportFilter({
 }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" aria-label={`${label}: ${value}`}>
-          {value}
-          <ChevronDown className="size-3" />
-        </Button>
+      <DropdownMenuTrigger render={<Button variant="outline" aria-label={`${label}: ${value}`} />}>
+        {value}
+        <ChevronDown className="size-3" />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuRadioGroup value={value} onValueChange={onChange}>
@@ -156,10 +154,10 @@ export default function ExportsEmpty() {
               Execute
             </Button>
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button size="icon" aria-label="Open download options">
-                  <ChevronDown />
-                </Button>
+              <DropdownMenuTrigger
+                render={<Button size="icon" aria-label="Open download options" />}
+              >
+                <ChevronDown />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuGroup>

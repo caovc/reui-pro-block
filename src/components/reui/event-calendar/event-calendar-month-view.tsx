@@ -49,7 +49,7 @@ import type {
   EventCalendarSegment,
 } from "@/components/reui/event-calendar/event-calendar-types";
 import { addDays, format, getWeek } from "date-fns";
-import { Slot } from "radix-ui";
+import { RenderSlot as Slot } from "@/components/ui/render-slot";
 
 import { cn } from "cn";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";

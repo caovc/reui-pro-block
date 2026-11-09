@@ -90,17 +90,19 @@ export function Choices({
 }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant={variant}
-          size="sm"
-          className={cn("h-8 min-w-0 gap-1.5 px-2 font-normal", compact && "border", className)}
-          aria-label={label}
-        >
-          {Icon && <Icon />}
-          <span className="truncate">{value}</span>
-          <ChevronDown className="size-3" />
-        </Button>
+      <DropdownMenuTrigger
+        render={
+          <Button
+            variant={variant}
+            size="sm"
+            className={cn("h-8 min-w-0 gap-1.5 px-2 font-normal", compact && "border", className)}
+            aria-label={label}
+          />
+        }
+      >
+        {Icon && <Icon />}
+        <span className="truncate">{value}</span>
+        <ChevronDown className="size-3" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start">
         <DropdownMenuLabel>{label}</DropdownMenuLabel>

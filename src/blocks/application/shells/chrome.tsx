@@ -376,22 +376,26 @@ export function RowActions({
 }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        {sidebar ? (
-          <SidebarMenuAction showOnHover aria-label={`Actions for ${name}`}>
-            <Ellipsis />
-          </SidebarMenuAction>
-        ) : (
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            className="size-6 shrink-0 opacity-0 focus:opacity-100 group-hover:opacity-100"
-            aria-label={`Actions for ${name}`}
-          >
-            <Ellipsis />
-          </Button>
-        )}
-      </DropdownMenuTrigger>
+      <DropdownMenuTrigger
+        render={
+          sidebar ? (
+            <SidebarMenuAction showOnHover aria-label={`Actions for ${name}`}>
+              <Ellipsis />
+            </SidebarMenuAction>
+          ) : (
+            ((
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                className="size-6 shrink-0 opacity-0 focus:opacity-100 group-hover:opacity-100"
+                aria-label={`Actions for ${name}`}
+              >
+                <Ellipsis />
+              </Button>
+            ) as never)
+          )
+        }
+      ></DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuGroup>
           <DropdownMenuItem
@@ -526,60 +530,62 @@ export function WorkspaceMenu({
   const Trigger = SidebarMenuButton;
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Trigger
-          size={card ? "lg" : "default"}
-          className={cn(
-            "w-full px-2",
-            card && "shell-account-card border bg-background shadow-xs",
-            collapsed ? "justify-center" : "justify-start",
-            card ? "h-auto p-1.5" : compact ? "h-8" : user ? "h-12" : "h-10",
-          )}
-          aria-label={user ? "Open user menu" : top ? "Switch workspace" : "Open workspace menu"}
-        >
-          {triggerContent ?? (
-            <>
-              {user ? (
-                <Face name={displayName} />
-              ) : compact ? (
-                <span
-                  className="flex size-4 shrink-0 items-center justify-center text-base"
-                  aria-hidden="true"
-                >
-                  {workspace === "Vercel" ? "▲" : workspace.slice(0, 1)}
-                </span>
-              ) : (
-                <span className="flex size-6 shrink-0 items-center justify-center rounded-full border text-[10px] font-medium">
-                  {workspace === "Claude"
-                    ? "C"
-                    : workspace === "Vercel"
-                      ? "▲"
-                      : workspace.slice(0, 1)}
-                </span>
-              )}
-              {!collapsed && (
-                <>
-                  <span className="flex min-w-0 flex-1 flex-col text-left">
-                    <span className="truncate text-[13px] font-medium">
-                      {user ? displayName : workspace}
-                    </span>
-                    {subtitle && (
-                      <span className="flex items-center gap-1 text-[9px] text-muted-foreground">
-                        <span className="size-1.5 rounded-full bg-[var(--chart-3)]" />
-                        {subtitle}
-                      </span>
-                    )}
+      <DropdownMenuTrigger
+        render={
+          <Trigger
+            size={card ? "lg" : "default"}
+            className={cn(
+              "w-full px-2",
+              card && "shell-account-card border bg-background shadow-xs",
+              collapsed ? "justify-center" : "justify-start",
+              card ? "h-auto p-1.5" : compact ? "h-8" : user ? "h-12" : "h-10",
+            )}
+            aria-label={user ? "Open user menu" : top ? "Switch workspace" : "Open workspace menu"}
+          />
+        }
+      >
+        {triggerContent ?? (
+          <>
+            {user ? (
+              <Face name={displayName} />
+            ) : compact ? (
+              <span
+                className="flex size-4 shrink-0 items-center justify-center text-base"
+                aria-hidden="true"
+              >
+                {workspace === "Vercel" ? "▲" : workspace.slice(0, 1)}
+              </span>
+            ) : (
+              <span className="flex size-6 shrink-0 items-center justify-center rounded-full border text-[10px] font-medium">
+                {workspace === "Claude"
+                  ? "C"
+                  : workspace === "Vercel"
+                    ? "▲"
+                    : workspace.slice(0, 1)}
+              </span>
+            )}
+            {!collapsed && (
+              <>
+                <span className="flex min-w-0 flex-1 flex-col text-left">
+                  <span className="truncate text-[13px] font-medium">
+                    {user ? displayName : workspace}
                   </span>
-                  {card ? (
-                    <Ellipsis className="text-muted-foreground" />
-                  ) : (
-                    <ChevronsUpDown className="text-muted-foreground" />
+                  {subtitle && (
+                    <span className="flex items-center gap-1 text-[9px] text-muted-foreground">
+                      <span className="size-1.5 rounded-full bg-[var(--chart-3)]" />
+                      {subtitle}
+                    </span>
                   )}
-                </>
-              )}
-            </>
-          )}
-        </Trigger>
+                </span>
+                {card ? (
+                  <Ellipsis className="text-muted-foreground" />
+                ) : (
+                  <ChevronsUpDown className="text-muted-foreground" />
+                )}
+              </>
+            )}
+          </>
+        )}
       </DropdownMenuTrigger>
       <DropdownMenuContent
         {...menuProps}
@@ -1135,11 +1141,18 @@ export function Notifications({
   if (drawer)
     return (
       <Sheet>
-        <SheetTrigger asChild>
-          <Button size="icon-sm" variant="ghost" className="relative" aria-label="Notifications">
-            <Bell />
-            {!read && <span className="absolute right-1 top-1 size-1.5 rounded-full bg-primary" />}
-          </Button>
+        <SheetTrigger
+          render={
+            <Button
+              size="icon-sm"
+              variant="ghost"
+              className="relative"
+              aria-label="Notifications"
+            />
+          }
+        >
+          <Bell />
+          {!read && <span className="absolute right-1 top-1 size-1.5 rounded-full bg-primary" />}
         </SheetTrigger>
         <SheetContent className="gap-0 px-0 sm:max-w-md">
           <SheetHeader className="sr-only">
@@ -1152,11 +1165,13 @@ export function Notifications({
     );
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <Button size="icon-sm" variant="ghost" className="relative" aria-label="Notifications">
-          <Bell />
-          {!read && <span className="absolute right-1 top-1 size-1.5 rounded-full bg-current" />}
-        </Button>
+      <PopoverTrigger
+        render={
+          <Button size="icon-sm" variant="ghost" className="relative" aria-label="Notifications" />
+        }
+      >
+        <Bell />
+        {!read && <span className="absolute right-1 top-1 size-1.5 rounded-full bg-current" />}
       </PopoverTrigger>
       <PopoverContent side="bottom" align="start" className="w-80 p-0">
         {content}
@@ -1189,19 +1204,21 @@ export function HeaderSwitchers({
           >
             {i > 0 && <span className="mx-1 text-xs text-muted-foreground/50">/</span>}
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-8 min-w-0 gap-1 px-1.5 font-normal"
-                  aria-label={
-                    ["Switch organization", "Switch application", "Switch environment"][i]
-                  }
-                >
-                  {i === 0 && <span className="mr-1 size-3 rounded-full bg-[var(--chart-3)]" />}
-                  <span className="truncate text-xs">{value}</span>
-                  <ChevronsUpDown />
-                </Button>
+              <DropdownMenuTrigger
+                render={
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-8 min-w-0 gap-1 px-1.5 font-normal"
+                    aria-label={
+                      ["Switch organization", "Switch application", "Switch environment"][i]
+                    }
+                  />
+                }
+              >
+                {i === 0 && <span className="mr-1 size-3 rounded-full bg-[var(--chart-3)]" />}
+                <span className="truncate text-xs">{value}</span>
+                <ChevronsUpDown />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start">
                 <DropdownMenuLabel>
@@ -1229,10 +1246,8 @@ export function HeaderSwitchers({
 export function AppsMenu({ onSelect }: { onSelect: (s: string) => void }) {
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <Button variant="ghost" size="icon-sm" aria-label="Apps">
-          <Grid2X2 />
-        </Button>
+      <PopoverTrigger render={<Button variant="ghost" size="icon-sm" aria-label="Apps" />}>
+        <Grid2X2 />
       </PopoverTrigger>
       <PopoverContent align="end" className="w-72 p-0">
         <p className="px-4 py-3 text-xs text-muted-foreground">Apps</p>

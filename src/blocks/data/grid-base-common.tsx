@@ -341,10 +341,10 @@ export function RowMenu({
 }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button size="icon-xs" variant="ghost" aria-label={`Actions for ${name}`}>
-          <Ellipsis />
-        </Button>
+      <DropdownMenuTrigger
+        render={<Button size="icon-xs" variant="ghost" aria-label={`Actions for ${name}`} />}
+      >
+        <Ellipsis />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuGroup>

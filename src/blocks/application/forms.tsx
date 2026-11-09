@@ -1078,11 +1078,9 @@ export function DialogBlock({ block }: BlockProps) {
       </Card>
       {isSheet ? (
         <Sheet open={open} onOpenChange={setOpen}>
-          <SheetTrigger asChild>
-            <Button>
-              Open {block.name}
-              <ChevronRight />
-            </Button>
+          <SheetTrigger render={<Button />}>
+            Open {block.name}
+            <ChevronRight />
           </SheetTrigger>
           <SheetContent className="w-full overflow-y-auto sm:max-w-lg">
             <SheetHeader>
@@ -1094,9 +1092,7 @@ export function DialogBlock({ block }: BlockProps) {
         </Sheet>
       ) : (
         <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger asChild>
-            <Button>Open {block.name}</Button>
-          </DialogTrigger>
+          <DialogTrigger render={<Button />}>Open {block.name}</DialogTrigger>
           <DialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-lg">
             <DialogHeader>
               <DialogTitle>{block.name}</DialogTitle>

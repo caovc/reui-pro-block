@@ -231,41 +231,43 @@ export function PulseBoard({
                 .filter((r) => r.join(" ").toLowerCase().includes(query.toLowerCase()))
                 .map((r) => (
                   <KanbanItem value={r[0]} key={r[0]}>
-                    <KanbanItemHandle asChild>
-                      <button
-                        className={
-                          "ct-ticket-card " +
-                          (r[1] === "Urgent" ? "urgent" : r[1] === "High" ? "high" : "")
-                        }
-                        onClick={() => onOpen(r, stage)}
-                      >
-                        <span className="ct-between">
-                          <small className="ct-muted">{r[0]}</small>
-                          <Badge variant="outline">{r[1]}</Badge>
+                    <KanbanItemHandle
+                      render={
+                        <button
+                          className={
+                            "ct-ticket-card " +
+                            (r[1] === "Urgent" ? "urgent" : r[1] === "High" ? "high" : "")
+                          }
+                          onClick={() => onOpen(r, stage)}
+                        />
+                      }
+                    >
+                      <span className="ct-between">
+                        <small className="ct-muted">{r[0]}</small>
+                        <Badge variant="outline">{r[1]}</Badge>
+                      </span>
+                      <strong>{r[2]}</strong>
+                      <small>
+                        {r[3]} at {r[4]}
+                      </small>
+                      <footer>
+                        <span className="ct-person">
+                          <Avatar name={r[5]} />
+                          {r[5]}
                         </span>
-                        <strong>{r[2]}</strong>
-                        <small>
-                          {r[3]} at {r[4]}
-                        </small>
-                        <footer>
-                          <span className="ct-person">
-                            <Avatar name={r[5]} />
-                            {r[5]}
-                          </span>
-                          <Badge
-                            variant={
-                              r[1] === "Urgent"
-                                ? "destructive-light"
-                                : r[1] === "High"
-                                  ? "warning-light"
-                                  : "info-light"
-                            }
-                          >
-                            <Clock size={12} />
-                            {r[6]}
-                          </Badge>
-                        </footer>
-                      </button>
+                        <Badge
+                          variant={
+                            r[1] === "Urgent"
+                              ? "destructive-light"
+                              : r[1] === "High"
+                                ? "warning-light"
+                                : "info-light"
+                          }
+                        >
+                          <Clock size={12} />
+                          {r[6]}
+                        </Badge>
+                      </footer>
                     </KanbanItemHandle>
                   </KanbanItem>
                 ))}

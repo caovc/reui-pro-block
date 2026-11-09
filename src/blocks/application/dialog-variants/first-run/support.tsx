@@ -43,9 +43,7 @@ export function DialogLauncher({
         </FrameHeader>
         <FramePanel>{children}</FramePanel>
         <FrameFooter>
-          <DialogTrigger asChild>
-            <Button className="w-full">{action}</Button>
-          </DialogTrigger>
+          <DialogTrigger render={<Button className="w-full" />}>{action}</DialogTrigger>
         </FrameFooter>
       </Frame>
       {result && (
@@ -63,11 +61,11 @@ export function FooterHelp({ label, children }: { label: string; children: React
   return (
     <TooltipProvider>
       <Tooltip>
-        <TooltipTrigger asChild>
-          <Button variant="ghost" className="refined-dialog-help" type="button">
-            <Info data-icon="inline-start" />
-            {label}
-          </Button>
+        <TooltipTrigger
+          render={<Button variant="ghost" className="refined-dialog-help" type="button" />}
+        >
+          <Info data-icon="inline-start" />
+          {label}
         </TooltipTrigger>
         <TooltipContent className="max-w-64">{children}</TooltipContent>
       </Tooltip>

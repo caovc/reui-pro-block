@@ -685,7 +685,7 @@ function Limelight() {
               <ArrowRight />
             </Button>
           </div>
-          <Accordion type="single" collapsible defaultValue="faq-0">
+          <Accordion defaultValue={["faq-0"]}>
             {[
               "How fast can we actually be in production?",
               "What does the trial include?",

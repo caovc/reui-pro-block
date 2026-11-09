@@ -203,17 +203,19 @@ export function CommerceTeamSettings({ model }: { model: CommerceSettingsModel }
         minWidth: 40,
         cell: (member) => (
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                aria-label={`Actions for ${member.name}`}
-                onClick={(event) => {
-                  memberOpener.current = event.currentTarget;
-                }}
-              >
-                <Ellipsis aria-hidden="true" />
-              </Button>
+            <DropdownMenuTrigger
+              render={
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  aria-label={`Actions for ${member.name}`}
+                  onClick={(event) => {
+                    memberOpener.current = event.currentTarget;
+                  }}
+                />
+              }
+            >
+              <Ellipsis aria-hidden="true" />
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="end"

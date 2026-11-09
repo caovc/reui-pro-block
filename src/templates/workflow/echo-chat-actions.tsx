@@ -68,10 +68,10 @@ export function EchoChatActions({
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <SidebarMenuAction showOnHover aria-label={`Actions for ${chat.title}`}>
-            <Ellipsis />
-          </SidebarMenuAction>
+        <DropdownMenuTrigger
+          render={<SidebarMenuAction showOnHover aria-label={`Actions for ${chat.title}`} />}
+        >
+          <Ellipsis />
         </DropdownMenuTrigger>
         <DropdownMenuContent side="right" align="start" className="reui-reference min-w-40">
           <DropdownMenuItem onSelect={() => history.update(chat.id, { pinned: !chat.pinned })}>
@@ -182,10 +182,11 @@ export function EchoChatActions({
             </p>
           )}
           <DialogFooter>
-            <Button variant="outline" asChild>
-              <a href={shareUrl} target="_blank" rel="noreferrer">
-                Open shared chat
-              </a>
+            <Button
+              variant="outline"
+              render={<a href={shareUrl} target="_blank" rel="noreferrer" />}
+            >
+              Open shared chat
             </Button>
             <Button
               onClick={async () => {

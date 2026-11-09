@@ -759,20 +759,22 @@ export default function StoreKpiBoard() {
         enableHiding: false,
         cell: ({ row }) => (
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                size="icon-sm"
-                variant="ghost"
-                aria-label={"Actions for " + row.original.label}
-                onPointerDown={(event) => {
-                  actionOrigin.current = event.currentTarget;
-                }}
-                onFocus={(event) => {
-                  actionOrigin.current = event.currentTarget;
-                }}
-              >
-                <Ellipsis />
-              </Button>
+            <DropdownMenuTrigger
+              render={
+                <Button
+                  size="icon-sm"
+                  variant="ghost"
+                  aria-label={"Actions for " + row.original.label}
+                  onPointerDown={(event) => {
+                    actionOrigin.current = event.currentTarget;
+                  }}
+                  onFocus={(event) => {
+                    actionOrigin.current = event.currentTarget;
+                  }}
+                />
+              }
+            >
+              <Ellipsis />
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="end"

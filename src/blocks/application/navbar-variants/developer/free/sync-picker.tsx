@@ -27,12 +27,13 @@ export function SyncPicker({
   const Icon = sourceIcons[value];
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm" className="gap-1.5" aria-label="Sync source">
-          <Icon data-icon="inline-start" />
-          <span className="developer-sync-prefix">Sync from</span> {value}
-          <ChevronDown data-icon="inline-end" />
-        </Button>
+      <DropdownMenuTrigger
+        render={<Button variant="outline" size="sm" className="gap-1.5" aria-label="Sync source" />}
+      >
+        <Icon data-icon="inline-start" />
+        <span className="developer-sync-prefix">Sync from</span>
+        {value}
+        <ChevronDown data-icon="inline-end" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-48">
         <DropdownMenuGroup>

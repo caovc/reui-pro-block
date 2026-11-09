@@ -169,13 +169,17 @@ function NavTree({
           const row = item.getItemData();
           const Icon = row.icon;
           return (
-            <TreeItem key={item.getId()} item={item} asChild>
-              <button aria-selected={active === item.getId()} onFocus={() => item.setFocused()}>
-                <TreeItemLabel>
-                  <Icon />
-                  <span>{row.name}</span>
-                </TreeItemLabel>
-              </button>
+            <TreeItem
+              key={item.getId()}
+              item={item}
+              render={
+                <button aria-selected={active === item.getId()} onFocus={() => item.setFocused()} />
+              }
+            >
+              <TreeItemLabel>
+                <Icon />
+                <span>{row.name}</span>
+              </TreeItemLabel>
             </TreeItem>
           );
         })}
@@ -265,25 +269,27 @@ function NavigationContent({
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="outline"
-            className="observe-workspace-menu"
-            aria-label={`Switch workspace, current ${selectedWorkspace.name}`}
-          >
-            <IconTile variant="solid" size="xs" style={{ background: selectedWorkspace.color }}>
-              <Activity />
-            </IconTile>
-            {!collapsed && (
-              <>
-                <span>
-                  <strong>{selectedWorkspace.name}</strong>
-                  <small>{selectedWorkspace.subtitle}</small>
-                </span>
-                <ChevronsUpDown />
-              </>
-            )}
-          </Button>
+        <DropdownMenuTrigger
+          render={
+            <Button
+              variant="outline"
+              className="observe-workspace-menu"
+              aria-label={`Switch workspace, current ${selectedWorkspace.name}`}
+            />
+          }
+        >
+          <IconTile variant="solid" size="xs" style={{ background: selectedWorkspace.color }}>
+            <Activity />
+          </IconTile>
+          {!collapsed && (
+            <>
+              <span>
+                <strong>{selectedWorkspace.name}</strong>
+                <small>{selectedWorkspace.subtitle}</small>
+              </span>
+              <ChevronsUpDown />
+            </>
+          )}
         </DropdownMenuTrigger>
         <DropdownMenuContent
           side={collapsed ? "right" : "bottom"}
@@ -347,10 +353,10 @@ function NavigationContent({
             {navButton("home")}
             {["endpoints", "hosts", "topology", "queries", ...pins].map((id) => navButton(id))}
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon-sm" aria-label="Explorer">
-                  <ScanSearch />
-                </Button>
+              <DropdownMenuTrigger
+                render={<Button variant="ghost" size="icon-sm" aria-label="Explorer" />}
+              >
+                <ScanSearch />
               </DropdownMenuTrigger>
               <DropdownMenuContent side="right" className="reui-reference">
                 <DropdownMenuGroup>
@@ -413,23 +419,25 @@ function NavigationContent({
         {navButton("sources")}
         {navButton("settings")}
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="outline"
-              className="observe-account-menu"
-              aria-label="Open account menu for Shadcn"
-            >
-              <Face name="Shadcn" />
-              {!collapsed && (
-                <>
-                  <span>
-                    <strong>Shadcn</strong>
-                    <small>Author of Shadcn/ui</small>
-                  </span>
-                  <ChevronsUpDown />
-                </>
-              )}
-            </Button>
+          <DropdownMenuTrigger
+            render={
+              <Button
+                variant="outline"
+                className="observe-account-menu"
+                aria-label="Open account menu for Shadcn"
+              />
+            }
+          >
+            <Face name="Shadcn" />
+            {!collapsed && (
+              <>
+                <span>
+                  <strong>Shadcn</strong>
+                  <small>Author of Shadcn/ui</small>
+                </span>
+                <ChevronsUpDown />
+              </>
+            )}
           </DropdownMenuTrigger>
           <DropdownMenuContent
             side={collapsed ? "right" : "top"}

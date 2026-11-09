@@ -24,7 +24,7 @@ import {
   CommandList,
   CommandShortcut,
 } from "@/components/ui/command";
-import { Popover, PopoverAnchor, PopoverContent } from "@/components/ui/popover";
+import { Popover, PopoverContent } from "@/components/ui/popover";
 import type { InsertSuggestion } from "./rich-text-suggestion";
 
 type BlockPresentation = {
@@ -173,8 +173,8 @@ export function RichTextInsertMenu({
 
   return (
     <Popover open onOpenChange={(open) => !open && suggestion.dismiss()}>
-      <PopoverAnchor virtualRef={anchor} />
       <PopoverContent
+        anchor={anchor.current}
         role="presentation"
         align="start"
         sideOffset={6}

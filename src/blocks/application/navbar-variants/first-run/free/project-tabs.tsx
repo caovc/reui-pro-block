@@ -43,11 +43,11 @@ export function ProjectTabs({
         </TabsList>
         <div className="navbar-phone-tabs">
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" aria-label="Project sections">
-                {projectTabs.find((tab) => tab.value === value)?.label}
-                <ChevronDown data-icon="inline-end" />
-              </Button>
+            <DropdownMenuTrigger
+              render={<Button variant="outline" size="sm" aria-label="Project sections" />}
+            >
+              {projectTabs.find((tab) => tab.value === value)?.label}
+              <ChevronDown data-icon="inline-end" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start">
               <DropdownMenuGroup>

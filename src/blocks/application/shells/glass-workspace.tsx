@@ -83,18 +83,24 @@ export default function GlassWorkspace() {
     }
   }, [theme, themeTouched]);
   const sectionButtons = railItems.map(([name, Icon]) => (
-    <IconTile asChild key={name} variant="outline" size="sm" className="glass-rail-item">
-      <button
-        aria-label={name}
-        title={name}
-        aria-pressed={active === name}
-        onClick={() => {
-          setActive(name);
-          if (isMobile) setOpenMobile(false);
-        }}
-      >
-        <Icon />
-      </button>
+    <IconTile
+      key={name}
+      variant="outline"
+      size="sm"
+      className="glass-rail-item"
+      render={
+        <button
+          aria-label={name}
+          title={name}
+          aria-pressed={active === name}
+          onClick={() => {
+            setActive(name);
+            if (isMobile) setOpenMobile(false);
+          }}
+        />
+      }
+    >
+      <Icon />
     </IconTile>
   ));
   return (
@@ -119,10 +125,10 @@ export default function GlassWorkspace() {
             <LogOut />
           </Button>
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button aria-label="Operator menu" className="glass-operator">
-                <Face name="Kai Meyer" index={2} />
-              </button>
+            <DropdownMenuTrigger
+              render={<button aria-label="Operator menu" className="glass-operator" />}
+            >
+              <Face name="Kai Meyer" index={2} />
             </DropdownMenuTrigger>
             <DropdownMenuContent side="right" align="end" className="reui-reference w-56">
               <DropdownMenuLabel>

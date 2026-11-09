@@ -100,10 +100,16 @@ export function EchoProjects({
                 </button>
                 <ItemActions>
                   <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon-sm" aria-label={`Actions ${projectName}`}>
-                        <MoreVertical />
-                      </Button>
+                    <DropdownMenuTrigger
+                      render={
+                        <Button
+                          variant="ghost"
+                          size="icon-sm"
+                          aria-label={`Actions ${projectName}`}
+                        />
+                      }
+                    >
+                      <MoreVertical />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                       <DropdownMenuItem onSelect={() => onOpen(projectName)}>

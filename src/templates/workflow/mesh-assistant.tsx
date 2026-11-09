@@ -146,10 +146,10 @@ export function MeshAssistant({
             <Plus />
           </Button>
           <Popover>
-            <PopoverTrigger asChild>
-              <Button variant="ghost" size="icon-sm" aria-label="Assistant settings">
-                <Settings2 />
-              </Button>
+            <PopoverTrigger
+              render={<Button variant="ghost" size="icon-sm" aria-label="Assistant settings" />}
+            >
+              <Settings2 />
             </PopoverTrigger>
             <PopoverContent align="end" className="w-72">
               <h3 className="mb-4 text-sm font-semibold">Assistant settings</h3>
@@ -210,11 +210,13 @@ export function MeshAssistant({
                       <>
                         {turn.sources.length > 0 && (
                           <Popover>
-                            <PopoverTrigger asChild>
-                              <Button variant="ghost" size="xs" className="mesh-ai-sources">
-                                <FileText />
-                                {turn.sources.length} sources used
-                              </Button>
+                            <PopoverTrigger
+                              render={
+                                <Button variant="ghost" size="xs" className="mesh-ai-sources" />
+                              }
+                            >
+                              <FileText />
+                              {turn.sources.length}sources used
                             </PopoverTrigger>
                             <PopoverContent align="end" className="w-80 max-h-96 overflow-auto">
                               <h3 className="mb-3 text-sm font-semibold">Sources</h3>

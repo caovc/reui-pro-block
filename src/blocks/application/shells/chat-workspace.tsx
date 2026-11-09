@@ -123,10 +123,12 @@ function ThreadRow({
           <Pin />
         </Button>
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon-xs" aria-label={`Thread actions for ${name}`}>
-              <MoreHorizontal />
-            </Button>
+          <DropdownMenuTrigger
+            render={
+              <Button variant="ghost" size="icon-xs" aria-label={`Thread actions for ${name}`} />
+            }
+          >
+            <MoreHorizontal />
           </DropdownMenuTrigger>
           <DropdownMenuContent className="reui-reference">
             <DropdownMenuGroup>
@@ -216,10 +218,12 @@ export default function ChatWorkspace() {
                 ))}
                 {["Pinned", "Recent"].map((group) => (
                   <DropdownMenu key={group}>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon-sm" aria-label={`${group} chats`}>
-                        {group === "Pinned" ? <Pin /> : <Clock />}
-                      </Button>
+                    <DropdownMenuTrigger
+                      render={
+                        <Button variant="ghost" size="icon-sm" aria-label={`${group} chats`} />
+                      }
+                    >
+                      {group === "Pinned" ? <Pin /> : <Clock />}
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="reui-reference">
                       <DropdownMenuGroup>
@@ -353,11 +357,11 @@ export default function ChatWorkspace() {
                   <Bookmark />
                 </Button>
                 <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="sm" aria-label="Chat model">
-                      {model}
-                      <ChevronDown />
-                    </Button>
+                  <DropdownMenuTrigger
+                    render={<Button variant="outline" size="sm" aria-label="Chat model" />}
+                  >
+                    {model}
+                    <ChevronDown />
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="reui-reference">
                     <DropdownMenuGroup>
@@ -374,10 +378,10 @@ export default function ChatWorkspace() {
                   </DropdownMenuContent>
                 </DropdownMenu>
                 <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon-sm" aria-label="Chat options">
-                      <MoreHorizontal />
-                    </Button>
+                  <DropdownMenuTrigger
+                    render={<Button variant="ghost" size="icon-sm" aria-label="Chat options" />}
+                  >
+                    <MoreHorizontal />
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="reui-reference">
                     <DropdownMenuGroup>

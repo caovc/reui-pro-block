@@ -154,7 +154,7 @@ export function SurgeSidebarNavigation({
                     return (
                       <SidebarMenuItem key={label}>
                         <DropdownMenu>
-                          <DropdownMenuTrigger asChild>{button}</DropdownMenuTrigger>
+                          <DropdownMenuTrigger render={button as never}></DropdownMenuTrigger>
                           <DropdownMenuContent
                             side={side === "right" ? "left" : "right"}
                             align="start"
@@ -163,13 +163,16 @@ export function SurgeSidebarNavigation({
                             <DropdownMenuLabel>{label}</DropdownMenuLabel>
                             <DropdownMenuGroup>
                               {children.map((child) => (
-                                <DropdownMenuItem asChild key={child}>
-                                  <a
-                                    href={pageHref(child)}
-                                    onClick={(event) => activate(event, child)}
-                                  >
-                                    {child}
-                                  </a>
+                                <DropdownMenuItem
+                                  key={child}
+                                  render={
+                                    <a
+                                      href={pageHref(child)}
+                                      onClick={(event) => activate(event, child)}
+                                    />
+                                  }
+                                >
+                                  {child}
                                 </DropdownMenuItem>
                               ))}
                             </DropdownMenuGroup>
@@ -181,7 +184,6 @@ export function SurgeSidebarNavigation({
                   return (
                     <Collapsible
                       key={label}
-                      asChild
                       open={open}
                       onOpenChange={(value) =>
                         setExpanded((current) =>
@@ -191,7 +193,7 @@ export function SurgeSidebarNavigation({
                     >
                       <SidebarMenuItem>
                         {children?.length ? (
-                          <CollapsibleTrigger asChild>{button}</CollapsibleTrigger>
+                          <CollapsibleTrigger render={button as never}></CollapsibleTrigger>
                         ) : (
                           button
                         )}
@@ -200,14 +202,17 @@ export function SurgeSidebarNavigation({
                             <SidebarMenuSub>
                               {children.map((child) => (
                                 <SidebarMenuSubItem key={child}>
-                                  <SidebarMenuSubButton asChild isActive={active === child}>
-                                    <a
-                                      href={pageHref(child)}
-                                      onClick={(event) => activate(event, child)}
-                                      aria-current={active === child ? "page" : undefined}
-                                    >
-                                      {child}
-                                    </a>
+                                  <SidebarMenuSubButton
+                                    isActive={active === child}
+                                    render={
+                                      <a
+                                        href={pageHref(child)}
+                                        onClick={(event) => activate(event, child)}
+                                        aria-current={active === child ? "page" : undefined}
+                                      />
+                                    }
+                                  >
+                                    {child}
                                   </SidebarMenuSubButton>
                                 </SidebarMenuSubItem>
                               ))}
@@ -260,23 +265,25 @@ export function SurgeSidebarAccount({
   // Keep Tooltip outside the menu trigger so both native triggers reach the
   // same button, including the tooltip's accessible description on keyboard focus.
   const trigger = (
-    <DropdownMenuTrigger asChild>
-      <SidebarMenuButton
-        size="lg"
-        className="surge-account-trigger"
-        aria-label={`Open account menu for ${account.name}`}
-      >
-        {avatar("surge-account-avatar")}
-        {!collapsed && (
-          <>
-            <span className="surge-account-copy">
-              <strong>{account.name}</strong>
-              <small>{account.organisation}</small>
-            </span>
-            <ChevronsUpDown className="ml-auto size-3.5 text-muted-foreground" />
-          </>
-        )}
-      </SidebarMenuButton>
+    <DropdownMenuTrigger
+      render={
+        <SidebarMenuButton
+          size="lg"
+          className="surge-account-trigger"
+          aria-label={`Open account menu for ${account.name}`}
+        />
+      }
+    >
+      {avatar("surge-account-avatar")}
+      {!collapsed && (
+        <>
+          <span className="surge-account-copy">
+            <strong>{account.name}</strong>
+            <small>{account.organisation}</small>
+          </span>
+          <ChevronsUpDown className="ml-auto size-3.5 text-muted-foreground" />
+        </>
+      )}
     </DropdownMenuTrigger>
   );
   return (
@@ -285,7 +292,7 @@ export function SurgeSidebarAccount({
         <DropdownMenu open={open} onOpenChange={setOpen}>
           {collapsed && showTooltips ? (
             <Tooltip>
-              <TooltipTrigger asChild>{trigger}</TooltipTrigger>
+              <TooltipTrigger render={trigger as never}></TooltipTrigger>
               <TooltipContent side={side === "right" ? "left" : "right"} align="center">
                 {account.name}
               </TooltipContent>
@@ -312,22 +319,25 @@ export function SurgeSidebarAccount({
                 { label: "Preferences", section: "preferences", icon: Settings },
                 { label: "Security", section: "security", icon: ShieldCheck },
               ].map(({ label, section, icon: Icon }) => (
-                <DropdownMenuItem key={section} asChild>
-                  <a
-                    href={pageHref(label)}
-                    onClick={(event) => {
-                      if (isModifiedClick(event)) return;
-                      event.preventDefault();
-                      onNavigate(section as AtlasAccountSection);
-                      setOpen(false);
-                    }}
-                  >
-                    <Icon aria-hidden="true" />
-                    {label}
-                    {section === "profile" && (
-                      <DropdownMenuShortcut aria-hidden="true">⇧⌘P</DropdownMenuShortcut>
-                    )}
-                  </a>
+                <DropdownMenuItem
+                  key={section}
+                  render={
+                    <a
+                      href={pageHref(label)}
+                      onClick={(event) => {
+                        if (isModifiedClick(event)) return;
+                        event.preventDefault();
+                        onNavigate(section as AtlasAccountSection);
+                        setOpen(false);
+                      }}
+                    />
+                  }
+                >
+                  <Icon aria-hidden="true" />
+                  {label}
+                  {section === "profile" && (
+                    <DropdownMenuShortcut aria-hidden="true">⇧⌘P</DropdownMenuShortcut>
+                  )}
                 </DropdownMenuItem>
               ))}
               <DropdownMenuSeparator />
@@ -396,33 +406,38 @@ export function SurgeBreadcrumb({
       <BreadcrumbList>
         <BreadcrumbItem>
           <DropdownMenu open={open} onOpenChange={setOpen}>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="surge-store-switcher"
-                aria-label={`Open store menu for ${storeName}`}
-              >
-                <span className="surge-store-dot" aria-hidden="true" />
-                <span className="surge-store-name">{storeName}</span>
-                <ChevronsUpDown aria-hidden="true" />
-              </Button>
+            <DropdownMenuTrigger
+              render={
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="surge-store-switcher"
+                  aria-label={`Open store menu for ${storeName}`}
+                />
+              }
+            >
+              <span className="surge-store-dot" aria-hidden="true" />
+              <span className="surge-store-name">{storeName}</span>
+              <ChevronsUpDown aria-hidden="true" />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="reui-reference surge-store-menu" align="start">
               <DropdownMenuLabel>Store</DropdownMenuLabel>
               {["Products", "Inventory", "Orders"].map((target) => (
-                <DropdownMenuItem key={target} asChild>
-                  <a
-                    href={href(target)}
-                    onClick={(event) => {
-                      if (isModifiedClick(event)) return;
-                      event.preventDefault();
-                      onNavigate(target);
-                      setOpen(false);
-                    }}
-                  >
-                    {target}
-                  </a>
+                <DropdownMenuItem
+                  key={target}
+                  render={
+                    <a
+                      href={href(target)}
+                      onClick={(event) => {
+                        if (isModifiedClick(event)) return;
+                        event.preventDefault();
+                        onNavigate(target);
+                        setOpen(false);
+                      }}
+                    />
+                  }
+                >
+                  {target}
                 </DropdownMenuItem>
               ))}
             </DropdownMenuContent>

@@ -95,7 +95,7 @@ const date = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", 
 function Hint({ children, description }: { children: ReactNode; description: string }) {
   return (
     <Tooltip>
-      <TooltipTrigger asChild>{children}</TooltipTrigger>
+      <TooltipTrigger render={children as never}></TooltipTrigger>
       <TooltipContent className="reui-reference">{description}</TooltipContent>
     </Tooltip>
   );
@@ -249,14 +249,16 @@ function ReorderQueue({
         enableSorting: false,
         cell: ({ row }) => (
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                size="icon-sm"
-                variant="ghost"
-                aria-label={`Open actions for ${row.original.product.sku}`}
-              >
-                <Ellipsis />
-              </Button>
+            <DropdownMenuTrigger
+              render={
+                <Button
+                  size="icon-sm"
+                  variant="ghost"
+                  aria-label={`Open actions for ${row.original.product.sku}`}
+                />
+              }
+            >
+              <Ellipsis />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="reui-reference" align="end">
               <DropdownMenuItem onSelect={() => onOpenProduct(row.original.product)}>
@@ -532,8 +534,8 @@ function GroupSearchChip({ rule }: { rule: FilterRule }) {
         rule={rule}
         field={groupSearchField}
         trigger={
-          <ButtonGroupText asChild>
-            <button type="button">{rule.operator || "Select condition"}</button>
+          <ButtonGroupText render={<button type="button" />}>
+            {rule.operator || "Select condition"}
           </ButtonGroupText>
         }
       />
@@ -702,14 +704,16 @@ function CustomerGroups({
         enableSorting: false,
         cell: ({ row }) => (
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                aria-label={`Actions for ${row.original.name}`}
-              >
-                <Ellipsis />
-              </Button>
+            <DropdownMenuTrigger
+              render={
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  aria-label={`Actions for ${row.original.name}`}
+                />
+              }
+            >
+              <Ellipsis />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="reui-reference" align="end">
               <DropdownMenuItem
@@ -763,11 +767,9 @@ function CustomerGroups({
           {groups.length} groups
         </Badge>
         <Sheet open={open} onOpenChange={changeOpen}>
-          <SheetTrigger asChild>
-            <Button className="surge-new-group-trigger">
-              <Plus />
-              New group
-            </Button>
+          <SheetTrigger render={<Button className="surge-new-group-trigger" />}>
+            <Plus />
+            New group
           </SheetTrigger>
           <SheetContent className="reui-reference surge-group-sheet">
             <form
@@ -826,11 +828,7 @@ function CustomerGroups({
                 </Field>
               </div>
               <SheetFooter>
-                <SheetClose asChild>
-                  <Button variant="outline" type="button">
-                    Cancel
-                  </Button>
-                </SheetClose>
+                <SheetClose render={<Button variant="outline" type="button" />}>Cancel</SheetClose>
                 <Button type="submit">Create group</Button>
               </SheetFooter>
             </form>

@@ -141,61 +141,61 @@ export function RosterHiring({
                     )
                     .map((candidate) => (
                       <KanbanItem value={candidate.id} key={candidate.id}>
-                        <KanbanItemHandle asChild>
-                          <button
-                            className="ct-candidate-card"
-                            aria-label={`Open candidate ${candidate.name}`}
-                            onClick={() => {
-                              setDetail(candidate);
-                              setSelectedStage(stage);
-                            }}
-                          >
-                            <span className="ct-person">
-                              <Avatar name={candidate.name} />
-                              <span>
-                                <strong>{candidate.name}</strong>
-                                <small>{role}</small>
-                              </span>
-                            </span>
-                            <span className="ct-candidate-meta">
-                              <MapPin />
-                              {candidate.city}
-                              <span>{candidate.timezone}</span>
-                            </span>
-                            <span className="ct-candidate-meta">
-                              <CalendarDays />
-                              Applied {candidate.applied}
-                            </span>
-                            <span className="ct-candidate-meta">
-                              <CircleDollarSign />
-                              {candidate.salary}
-                            </span>
-                            <span className="ct-between ct-candidate-match">
-                              <span>Match score</span>
-                              <b>{candidate.match}%</b>
-                            </span>
-                            <Progress
-                              aria-label={`${candidate.name} match score`}
-                              value={candidate.match}
-                              className={
-                                candidate.match >= 80 ? "ct-match-blue" : "ct-match-purple"
-                              }
+                        <KanbanItemHandle
+                          render={
+                            <button
+                              className="ct-candidate-card"
+                              aria-label={`Open candidate ${candidate.name}`}
+                              onClick={() => {
+                                setDetail(candidate);
+                                setSelectedStage(stage);
+                              }}
                             />
-                            <span className="ct-between ct-candidate-foot">
-                              <Badge variant="outline">
-                                <i className={`ct-hiring-stage ct-stage-${index}`} />
-                                {scheduled.includes(candidate.id) || stage === "Interview"
-                                  ? "Scheduled"
-                                  : index > 2
-                                    ? "Submitted"
-                                    : "Not scheduled"}
-                              </Badge>
-                              <span className={candidate.stalled ? "ct-candidate-stalled" : ""}>
-                                {candidate.stalled ? "Stalled " : ""}
-                                {candidate.days}d{!candidate.stalled && " in stage"}
-                              </span>
+                          }
+                        >
+                          <span className="ct-person">
+                            <Avatar name={candidate.name} />
+                            <span>
+                              <strong>{candidate.name}</strong>
+                              <small>{role}</small>
                             </span>
-                          </button>
+                          </span>
+                          <span className="ct-candidate-meta">
+                            <MapPin />
+                            {candidate.city}
+                            <span>{candidate.timezone}</span>
+                          </span>
+                          <span className="ct-candidate-meta">
+                            <CalendarDays />
+                            Applied {candidate.applied}
+                          </span>
+                          <span className="ct-candidate-meta">
+                            <CircleDollarSign />
+                            {candidate.salary}
+                          </span>
+                          <span className="ct-between ct-candidate-match">
+                            <span>Match score</span>
+                            <b>{candidate.match}%</b>
+                          </span>
+                          <Progress
+                            aria-label={`${candidate.name} match score`}
+                            value={candidate.match}
+                            className={candidate.match >= 80 ? "ct-match-blue" : "ct-match-purple"}
+                          />
+                          <span className="ct-between ct-candidate-foot">
+                            <Badge variant="outline">
+                              <i className={`ct-hiring-stage ct-stage-${index}`} />
+                              {scheduled.includes(candidate.id) || stage === "Interview"
+                                ? "Scheduled"
+                                : index > 2
+                                  ? "Submitted"
+                                  : "Not scheduled"}
+                            </Badge>
+                            <span className={candidate.stalled ? "ct-candidate-stalled" : ""}>
+                              {candidate.stalled ? "Stalled " : ""}
+                              {candidate.days}d{!candidate.stalled && " in stage"}
+                            </span>
+                          </span>
                         </KanbanItemHandle>
                       </KanbanItem>
                     ))}

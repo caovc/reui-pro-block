@@ -98,14 +98,12 @@ function CampaignGrid({ targets = false }: { targets?: boolean }) {
           placeholder="Search campaign, ID, market..."
         />
         <Popover>
-          <PopoverTrigger asChild>
-            <Button variant="outline" size="sm" className="h-8 text-sm">
-              <Filter />
-              Filter
-              {status !== "All statuses" || channel !== "All channels" ? (
-                <span className="size-1.5 rounded-full bg-blue-500" />
-              ) : null}
-            </Button>
+          <PopoverTrigger render={<Button variant="outline" size="sm" className="h-8 text-sm" />}>
+            <Filter />
+            Filter
+            {status !== "All statuses" || channel !== "All channels" ? (
+              <span className="size-1.5 rounded-full bg-blue-500" />
+            ) : null}
           </PopoverTrigger>
           <PopoverContent align="start" className="w-64 space-y-3">
             <p className="text-sm font-medium">Campaign filters</p>
@@ -154,11 +152,9 @@ function CampaignGrid({ targets = false }: { targets?: boolean }) {
             setDensity={setCompact}
           />
           <Popover>
-            <PopoverTrigger asChild>
-              <Button variant="outline" size="sm" className="h-8 text-sm">
-                <Settings2 />
-                Settings
-              </Button>
+            <PopoverTrigger render={<Button variant="outline" size="sm" className="h-8 text-sm" />}>
+              <Settings2 />
+              Settings
             </PopoverTrigger>
             <PopoverContent className="w-64 space-y-3">
               <p className="text-sm font-medium">Appearance</p>

@@ -3,7 +3,13 @@
 
 "use client";
 
-import { useState, type ButtonHTMLAttributes, type HTMLAttributes, type ReactNode } from "react";
+import {
+  isValidElement,
+  useState,
+  type ButtonHTMLAttributes,
+  type HTMLAttributes,
+  type ReactNode,
+} from "react";
 import {
   useGanttNavigation,
   useGanttScale,
@@ -14,7 +20,7 @@ import {
 import { toZoned } from "@/components/reui/gantt/gantt-lib";
 import type { GanttScale } from "@/components/reui/gantt/gantt-types";
 import { format } from "date-fns";
-import { Slot } from "radix-ui";
+import { RenderSlot as Slot } from "@/components/ui/render-slot";
 
 import { cn } from "cn";
 import { Button } from "@/components/ui/button";
@@ -72,7 +78,7 @@ function NavTooltip({
   if (content === null || content === undefined) return children;
   return (
     <Tooltip>
-      <TooltipTrigger asChild>{children}</TooltipTrigger>
+      <TooltipTrigger render={children as never}></TooltipTrigger>
       <TooltipContent side="bottom">{content}</TooltipContent>
     </Tooltip>
   );
@@ -104,10 +110,10 @@ function GanttNavToday({
         data-active={isToday || undefined}
         className={cn(className)}
         onClick={today}
-        asChild={asChild}
+        render={asChild && isValidElement(children) ? children : undefined}
         {...props}
       >
-        {children ?? settings.i18n.labels.today}
+        {!asChild && (children ?? settings.i18n.labels.today)}
       </Button>
     </NavTooltip>
   );
@@ -126,20 +132,21 @@ function GanttNavPrev({ className, asChild = false, children, tooltip, ...props 
         aria-label={settings.i18n.labels.previous}
         className={cn(className)}
         onClick={prev}
-        asChild={asChild}
+        render={asChild && isValidElement(children) ? children : undefined}
         {...props}
       >
-        {children ?? (
-          <IconPlaceholder
-            lucide="ChevronLeftIcon"
-            tabler="IconChevronLeft"
-            hugeicons="ArrowLeft01Icon"
-            phosphor="CaretLeftIcon"
-            remixicon="RiArrowLeftSLine"
-            className="size-4"
-            aria-hidden="true"
-          />
-        )}
+        {!asChild &&
+          (children ?? (
+            <IconPlaceholder
+              lucide="ChevronLeftIcon"
+              tabler="IconChevronLeft"
+              hugeicons="ArrowLeft01Icon"
+              phosphor="CaretLeftIcon"
+              remixicon="RiArrowLeftSLine"
+              className="size-4"
+              aria-hidden="true"
+            />
+          ))}
       </Button>
     </NavTooltip>
   );
@@ -158,20 +165,21 @@ function GanttNavNext({ className, asChild = false, children, tooltip, ...props 
         aria-label={settings.i18n.labels.next}
         className={cn(className)}
         onClick={next}
-        asChild={asChild}
+        render={asChild && isValidElement(children) ? children : undefined}
         {...props}
       >
-        {children ?? (
-          <IconPlaceholder
-            lucide="ChevronRightIcon"
-            tabler="IconChevronRight"
-            hugeicons="ArrowRight01Icon"
-            phosphor="CaretRightIcon"
-            remixicon="RiArrowRightSLine"
-            className="size-4"
-            aria-hidden="true"
-          />
-        )}
+        {!asChild &&
+          (children ?? (
+            <IconPlaceholder
+              lucide="ChevronRightIcon"
+              tabler="IconChevronRight"
+              hugeicons="ArrowRight01Icon"
+              phosphor="CaretRightIcon"
+              remixicon="RiArrowRightSLine"
+              className="size-4"
+              aria-hidden="true"
+            />
+          ))}
       </Button>
     </NavTooltip>
   );
@@ -257,32 +265,37 @@ function GanttScaleSwitcher({
           force-closed while the menu is up, so it never lingers or flashes
           when focus returns on close. */}
       <Tooltip open={tipOpen && !open} onOpenChange={(next: boolean) => setTipOpen(next)}>
-        <DropdownMenuTrigger asChild>
-          <TooltipTrigger asChild onFocus={(e) => e.preventDefault()}>
-            <Button
-              variant={nav.variant}
-              size={nav.size}
-              data-slot="gantt-scale-switcher"
-              aria-label={labels.selectView}
-              className={cn("gap-1", className)}
-              {...props}
-            >
-              {children ?? (
-                <>
-                  {labels.scales[scale]}
-                  <IconPlaceholder
-                    lucide="ChevronDownIcon"
-                    tabler="IconChevronDown"
-                    hugeicons="ArrowDown01Icon"
-                    phosphor="CaretDownIcon"
-                    remixicon="RiArrowDownSLine"
-                    className="size-4 opacity-60"
-                    aria-hidden="true"
-                  />
-                </>
-              )}
-            </Button>
-          </TooltipTrigger>
+        <DropdownMenuTrigger
+          render={
+            <TooltipTrigger
+              onFocus={(e) => e.preventDefault()}
+              render={
+                <Button
+                  variant={nav.variant}
+                  size={nav.size}
+                  data-slot="gantt-scale-switcher"
+                  aria-label={labels.selectView}
+                  className={cn("gap-1", className)}
+                  {...props}
+                />
+              }
+            />
+          }
+        >
+          {children ?? (
+            <>
+              {labels.scales[scale]}
+              <IconPlaceholder
+                lucide="ChevronDownIcon"
+                tabler="IconChevronDown"
+                hugeicons="ArrowDown01Icon"
+                phosphor="CaretDownIcon"
+                remixicon="RiArrowDownSLine"
+                className="size-4 opacity-60"
+                aria-hidden="true"
+              />
+            </>
+          )}
         </DropdownMenuTrigger>
         {tipOpen && !open && tooltip !== null && (
           <TooltipContent side="bottom">{tooltip ?? labels.selectView}</TooltipContent>
@@ -326,24 +339,26 @@ function GanttDatePicker({ className }: GanttDatePickerProps) {
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant={nav.variant}
-          size={nav.iconSize}
-          data-slot="gantt-date-picker"
-          aria-label={settings.i18n.labels.goToDate}
-          className={cn(className)}
-        >
-          <IconPlaceholder
-            lucide="CalendarIcon"
-            tabler="IconCalendarEvent"
-            hugeicons="Calendar04Icon"
-            phosphor="CalendarBlankIcon"
-            remixicon="RiCalendarLine"
-            className="size-4"
-            aria-hidden="true"
+      <PopoverTrigger
+        render={
+          <Button
+            variant={nav.variant}
+            size={nav.iconSize}
+            data-slot="gantt-date-picker"
+            aria-label={settings.i18n.labels.goToDate}
+            className={cn(className)}
           />
-        </Button>
+        }
+      >
+        <IconPlaceholder
+          lucide="CalendarIcon"
+          tabler="IconCalendarEvent"
+          hugeicons="Calendar04Icon"
+          phosphor="CalendarBlankIcon"
+          remixicon="RiCalendarLine"
+          className="size-4"
+          aria-hidden="true"
+        />
       </PopoverTrigger>
       <PopoverContent align="start" className="w-auto p-0!">
         <Calendar

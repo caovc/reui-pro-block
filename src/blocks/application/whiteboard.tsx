@@ -376,19 +376,19 @@ export default function Whiteboard({
             </div>
             <div className="flex items-center gap-2">
               <Popover>
-                <PopoverTrigger asChild>
-                  <Button variant="ghost" aria-label="On this board, 3 here, 1 away">
-                    <span className="flex">
-                      {["AM", "PC", "OR"].map((name) => (
-                        <Avatar
-                          className="-ml-2 size-6 border-2 border-background first:ml-0"
-                          key={name}
-                        >
-                          <AvatarFallback className="text-[8px]">{name}</AvatarFallback>
-                        </Avatar>
-                      ))}
-                    </span>
-                  </Button>
+                <PopoverTrigger
+                  render={<Button variant="ghost" aria-label="On this board, 3 here, 1 away" />}
+                >
+                  <span className="flex">
+                    {["AM", "PC", "OR"].map((name) => (
+                      <Avatar
+                        className="-ml-2 size-6 border-2 border-background first:ml-0"
+                        key={name}
+                      >
+                        <AvatarFallback className="text-[8px]">{name}</AvatarFallback>
+                      </Avatar>
+                    ))}
+                  </span>
                 </PopoverTrigger>
                 <PopoverContent className="w-64">
                   <h3 className="mb-3 text-sm font-medium">On this board</h3>
@@ -439,11 +439,9 @@ export default function Whiteboard({
               ) : (
                 <>
                   <Popover>
-                    <PopoverTrigger asChild>
-                      <Button size="sm">
-                        <Share2 data-icon="inline-start" />
-                        <span className="hidden sm:inline">Share</span>
-                      </Button>
+                    <PopoverTrigger render={<Button size="sm" />}>
+                      <Share2 data-icon="inline-start" />
+                      <span className="hidden sm:inline">Share</span>
                     </PopoverTrigger>
                     <PopoverContent align="end" className="w-72">
                       <h3 className="mb-3 text-sm font-medium">Share this board</h3>
@@ -483,12 +481,10 @@ export default function Whiteboard({
                     </PopoverContent>
                   </Popover>
                   <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button size="sm" variant="outline">
-                        <ArrowDownToLine data-icon="inline-start" />
-                        <span className="hidden sm:inline">Export</span>
-                        <ChevronDown data-icon="inline-end" />
-                      </Button>
+                    <DropdownMenuTrigger render={<Button size="sm" variant="outline" />}>
+                      <ArrowDownToLine data-icon="inline-start" />
+                      <span className="hidden sm:inline">Export</span>
+                      <ChevronDown data-icon="inline-end" />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuGroup>
@@ -519,10 +515,10 @@ export default function Whiteboard({
           <div className="wb-canvas-wrap" ref={canvasWrap}>
             <div className="wb-topbar">
               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="icon" aria-label="Board menu">
-                    <Menu />
-                  </Button>
+                <DropdownMenuTrigger
+                  render={<Button variant="outline" size="icon" aria-label="Board menu" />}
+                >
+                  <Menu />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <DropdownMenuGroup>
@@ -607,15 +603,17 @@ export default function Whiteboard({
                     ))}
                   </ToggleGroup>
                   <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        size="icon-sm"
-                        variant="ghost"
-                        aria-label="More tools"
-                        aria-pressed={["frame", "laser", "embeddable"].includes(tool)}
-                      >
-                        <MoreHorizontal />
-                      </Button>
+                    <DropdownMenuTrigger
+                      render={
+                        <Button
+                          size="icon-sm"
+                          variant="ghost"
+                          aria-label="More tools"
+                          aria-pressed={["frame", "laser", "embeddable"].includes(tool)}
+                        />
+                      }
+                    >
+                      <MoreHorizontal />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="reui-reference">
                       <DropdownMenuItem disabled={viewOnly} onSelect={() => setTool("frame")}>
@@ -826,10 +824,10 @@ export default function Whiteboard({
                   <ArrowLeft />
                 </Button>
                 <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm" aria-label="Choose a frame">
-                      {presenting ? frames[frame]?.text : `${frames.length} frames`}
-                    </Button>
+                  <DropdownMenuTrigger
+                    render={<Button variant="ghost" size="sm" aria-label="Choose a frame" />}
+                  >
+                    {presenting ? frames[frame]?.text : `${frames.length} frames`}
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
                     <DropdownMenuGroup>

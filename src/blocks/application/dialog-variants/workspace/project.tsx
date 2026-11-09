@@ -30,10 +30,12 @@ function ProjectHelp({ label, children }: { label: string; children: string }) {
   return (
     <TooltipProvider>
       <Tooltip>
-        <TooltipTrigger asChild>
-          <Button type="button" variant="ghost" size="icon-xs" aria-label={`${label} help`}>
-            <Info />
-          </Button>
+        <TooltipTrigger
+          render={
+            <Button type="button" variant="ghost" size="icon-xs" aria-label={`${label} help`} />
+          }
+        >
+          <Info />
         </TooltipTrigger>
         <TooltipContent className="max-w-64">{children}</TooltipContent>
       </Tooltip>
@@ -98,9 +100,7 @@ export default function ProjectCoverDialog() {
         description="Add a focused project space with a cover, brief, priority, labels, and owners."
         footer={
           <>
-            <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
-            </DialogClose>
+            <DialogClose render={<Button variant="outline" />}>Cancel</DialogClose>
             <Button
               disabled={!name.trim() || !members.length}
               onClick={() => {

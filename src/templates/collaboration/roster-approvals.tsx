@@ -101,25 +101,27 @@ export function RosterApprovals({ model }: { model: RosterApprovalsState }) {
       size: 140,
       render: (r) => (
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              size="sm"
-              variant="ghost"
-              aria-label={`Change decision for ${r.title}, currently ${r.decision}`}
+          <DropdownMenuTrigger
+            render={
+              <Button
+                size="sm"
+                variant="ghost"
+                aria-label={`Change decision for ${r.title}, currently ${r.decision}`}
+              />
+            }
+          >
+            <Badge
+              variant={
+                r.decision === "Approved"
+                  ? "success-light"
+                  : r.decision === "Rejected"
+                    ? "destructive-light"
+                    : "warning-light"
+              }
             >
-              <Badge
-                variant={
-                  r.decision === "Approved"
-                    ? "success-light"
-                    : r.decision === "Rejected"
-                      ? "destructive-light"
-                      : "warning-light"
-                }
-              >
-                {r.decision}
-              </Badge>
-              <ChevronDown size={12} />
-            </Button>
+              {r.decision}
+            </Badge>
+            <ChevronDown size={12} />
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             {(["Pending", "Approved", "Rejected"] as ApprovalDecision[]).map((decision) => (
@@ -218,11 +220,9 @@ export function RosterApprovals({ model }: { model: RosterApprovalsState }) {
           ))}
           <div className="ct-grow" />
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline">
-                Actions
-                <ChevronDown />
-              </Button>
+            <DropdownMenuTrigger render={<Button variant="outline" />}>
+              Actions
+              <ChevronDown />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuItem

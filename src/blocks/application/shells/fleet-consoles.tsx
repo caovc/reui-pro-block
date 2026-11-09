@@ -97,10 +97,10 @@ function OperationsSettings({
   const [auto, setAuto] = useState(true);
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon-sm" aria-label="Display options">
-          <SlidersHorizontal />
-        </Button>
+      <DropdownMenuTrigger
+        render={<Button variant="ghost" size="icon-sm" aria-label="Display options" />}
+      >
+        <SlidersHorizontal />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <div className="space-y-4 p-3 text-xs">
@@ -323,10 +323,10 @@ export function OperationsShell({
                     </Button>
                   ))}
                   <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" className="h-16" aria-label="Pin view">
-                        <Plus />
-                      </Button>
+                    <DropdownMenuTrigger
+                      render={<Button variant="ghost" className="h-16" aria-label="Pin view" />}
+                    >
+                      <Plus />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                       <DropdownMenuGroup>

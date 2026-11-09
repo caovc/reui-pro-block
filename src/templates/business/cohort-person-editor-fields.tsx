@@ -24,10 +24,12 @@ export function PersonFieldLabel({ label, help }: { label: string; help?: string
       {label}
       {help && (
         <Tooltip>
-          <TooltipTrigger asChild>
-            <Button type="button" variant="ghost" size="icon-xs" aria-label={`About ${label}`}>
-              <CircleHelp size={12} />
-            </Button>
+          <TooltipTrigger
+            render={
+              <Button type="button" variant="ghost" size="icon-xs" aria-label={`About ${label}`} />
+            }
+          >
+            <CircleHelp size={12} />
           </TooltipTrigger>
           <TooltipContent className="max-w-64">{help}</TooltipContent>
         </Tooltip>

@@ -655,15 +655,17 @@ export default function Drive({ id }: { id: string }) {
             >
               <div className="ct-drive-toolbar">
                 <div className="ct-toolbar">
-                  <SheetTrigger asChild>
-                    <Button
-                      className="ct-drive-folders-trigger"
-                      size="icon"
-                      variant="outline"
-                      aria-label="Open folders"
-                    >
-                      <Menu />
-                    </Button>
+                  <SheetTrigger
+                    render={
+                      <Button
+                        className="ct-drive-folders-trigger"
+                        size="icon"
+                        variant="outline"
+                        aria-label="Open folders"
+                      />
+                    }
+                  >
+                    <Menu />
                   </SheetTrigger>
                   <button type="button" className="ct-muted" onClick={() => openFolder("My Drive")}>
                     My Drive
@@ -718,10 +720,10 @@ export default function Drive({ id }: { id: string }) {
                     </ToggleGroupItem>
                   </ToggleGroup>
                   <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="outline" size="icon" aria-label="Display columns">
-                        <SlidersHorizontal />
-                      </Button>
+                    <DropdownMenuTrigger
+                      render={<Button variant="outline" size="icon" aria-label="Display columns" />}
+                    >
+                      <SlidersHorizontal />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                       {["owner", "type", "size", "modified"].map((key) => (
@@ -784,23 +786,21 @@ export default function Drive({ id }: { id: string }) {
                       ["Spring Campaign", "387.1 KB", "10 items"],
                     ].map(([name, size, count]) => (
                       <Item
-                        asChild
                         variant="outline"
                         className="ct-drive-suggested-item"
                         key={name}
+                        render={<button type="button" onClick={() => openFolder(name)} />}
                       >
-                        <button type="button" onClick={() => openFolder(name)}>
-                          <ItemMedia variant="icon" className="ct-drive-suggested-icon">
-                            <Folder />
-                          </ItemMedia>
-                          <ItemContent>
-                            <ItemTitle>{name}</ItemTitle>
-                            <ItemDescription>
-                              <span>{size}</span>
-                              <span>{count}</span>
-                            </ItemDescription>
-                          </ItemContent>
-                        </button>
+                        <ItemMedia variant="icon" className="ct-drive-suggested-icon">
+                          <Folder />
+                        </ItemMedia>
+                        <ItemContent>
+                          <ItemTitle>{name}</ItemTitle>
+                          <ItemDescription>
+                            <span>{size}</span>
+                            <span>{count}</span>
+                          </ItemDescription>
+                        </ItemContent>
                       </Item>
                     ))}
                   </div>
@@ -930,14 +930,16 @@ export default function Drive({ id }: { id: string }) {
                         title: "",
                         render: (f) => (
                           <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button
-                                size="icon-sm"
-                                variant="ghost"
-                                aria-label={"Actions for " + f.name}
-                              >
-                                <MoreVertical />
-                              </Button>
+                            <DropdownMenuTrigger
+                              render={
+                                <Button
+                                  size="icon-sm"
+                                  variant="ghost"
+                                  aria-label={"Actions for " + f.name}
+                                />
+                              }
+                            >
+                              <MoreVertical />
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className="w-52">
                               {[
@@ -1308,11 +1310,9 @@ export default function Drive({ id }: { id: string }) {
               </p>
               {target.sharedWith && <p>Shared with: {target.sharedWith}</p>}
               {target.url && (
-                <Button asChild>
-                  <a href={target.url} download={target.name}>
-                    <Download />
-                    Download file
-                  </a>
+                <Button render={<a href={target.url} download={target.name} />}>
+                  <Download />
+                  Download file
                 </Button>
               )}
             </div>

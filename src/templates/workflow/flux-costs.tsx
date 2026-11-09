@@ -541,11 +541,9 @@ export function FluxTokenAudit({ model }: { model: ReturnType<typeof useFluxCost
               </Button>
             </div>
             <Popover>
-              <PopoverTrigger asChild>
-                <Button size="sm" variant="outline">
-                  <Settings2 />
-                  View Settings <Status>{visible.length}</Status>
-                </Button>
+              <PopoverTrigger render={<Button size="sm" variant="outline" />}>
+                <Settings2 />
+                View Settings <Status>{visible.length}</Status>
               </PopoverTrigger>
               <PopoverContent>
                 <strong>Visible columns</strong>

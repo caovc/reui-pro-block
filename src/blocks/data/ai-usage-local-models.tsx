@@ -174,10 +174,10 @@ export default function LocalModels() {
           </div>
           <div className="flex flex-wrap gap-2">
             <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" size="sm" aria-label="GPU Memory">
-                  {over ? "Over capacity" : `${total.toFixed(1)} / 192 GB`}
-                </Button>
+              <PopoverTrigger
+                render={<Button variant="outline" size="sm" aria-label="GPU Memory" />}
+              >
+                {over ? "Over capacity" : `${total.toFixed(1)} / 192 GB`}
               </PopoverTrigger>
               <PopoverContent className="space-y-3">
                 <h3 className="text-sm font-medium">GPU Memory</h3>
@@ -218,10 +218,8 @@ export default function LocalModels() {
               </Button>
             )}
             <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" size="sm">
-                  {dirty ? "Pending changes" : "No pending changes"}
-                </Button>
+              <PopoverTrigger render={<Button variant="outline" size="sm" />}>
+                {dirty ? "Pending changes" : "No pending changes"}
               </PopoverTrigger>
               <PopoverContent className="space-y-2 text-xs">
                 {draft
@@ -248,10 +246,10 @@ export default function LocalModels() {
               <Copy />
             </Button>
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button size="icon-sm" variant="outline" aria-label="Server actions">
-                  <MoreHorizontal />
-                </Button>
+              <DropdownMenuTrigger
+                render={<Button size="icon-sm" variant="outline" aria-label="Server actions" />}
+              >
+                <MoreHorizontal />
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuItem onSelect={download}>
@@ -261,10 +259,10 @@ export default function LocalModels() {
               </DropdownMenuContent>
             </DropdownMenu>
             <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button size="icon-sm" variant="outline" aria-label="Restart server">
-                  <RotateCcw />
-                </Button>
+              <AlertDialogTrigger
+                render={<Button size="icon-sm" variant="outline" aria-label="Restart server" />}
+              >
+                <RotateCcw />
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>

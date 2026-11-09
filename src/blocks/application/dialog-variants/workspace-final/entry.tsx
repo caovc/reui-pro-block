@@ -232,9 +232,7 @@ export default function QuickEntryDialog() {
           </div>
         </Tabs>
         <DialogFooter className="final-entry-footer">
-          <DialogClose asChild>
-            <Button variant="outline">Cancel</Button>
-          </DialogClose>
+          <DialogClose render={<Button variant="outline" />}>Cancel</DialogClose>
           <Button
             disabled={!drafts[type].title.trim()}
             onClick={() => {

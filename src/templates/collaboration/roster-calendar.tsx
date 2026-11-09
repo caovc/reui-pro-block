@@ -110,12 +110,10 @@ export function RosterCalendar({
       <div className="ct-calendar-toolbar">
         <EventCalendarNav />
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm">
-              <span className="ct-stream-dots" />
-              Streams
-              <ChevronDown />
-            </Button>
+          <DropdownMenuTrigger render={<Button variant="outline" size="sm" />}>
+            <span className="ct-stream-dots" />
+            Streams
+            <ChevronDown />
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuCheckboxItem checked={timeOff} onCheckedChange={setTimeOff}>

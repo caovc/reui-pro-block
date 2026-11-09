@@ -147,30 +147,32 @@ export function CohortAccountControl({
     <SidebarMenu>
       <SidebarMenuItem>
         <DropdownMenu open={open} onOpenChange={setOpen}>
-          <DropdownMenuTrigger asChild>
-            <SidebarMenuButton
-              size="lg"
-              className="cohort-account-trigger"
-              aria-label={`Open account menu for ${name}`}
-              tooltip={showTooltips ? name : undefined}
-            >
-              <Avatar className="cohort-account-avatar">
-                <AvatarImage src={photo} alt="" />
-                <AvatarFallback>{initials}</AvatarFallback>
-              </Avatar>
-              {!collapsed && (
-                <>
-                  <span className="cohort-account-copy">
-                    <strong>{name}</strong>
-                    <small>
-                      <i aria-hidden="true" />
-                      {organisation}
-                    </small>
-                  </span>
-                  <Ellipsis className="ml-auto size-3.5 text-muted-foreground" />
-                </>
-              )}
-            </SidebarMenuButton>
+          <DropdownMenuTrigger
+            render={
+              <SidebarMenuButton
+                size="lg"
+                className="cohort-account-trigger"
+                aria-label={`Open account menu for ${name}`}
+                tooltip={showTooltips ? name : undefined}
+              />
+            }
+          >
+            <Avatar className="cohort-account-avatar">
+              <AvatarImage src={photo} alt="" />
+              <AvatarFallback>{initials}</AvatarFallback>
+            </Avatar>
+            {!collapsed && (
+              <>
+                <span className="cohort-account-copy">
+                  <strong>{name}</strong>
+                  <small>
+                    <i aria-hidden="true" />
+                    {organisation}
+                  </small>
+                </span>
+                <Ellipsis className="ml-auto size-3.5 text-muted-foreground" />
+              </>
+            )}
           </DropdownMenuTrigger>
           <DropdownMenuContent
             side={collapsed ? "right" : "top"}
@@ -208,33 +210,37 @@ export function CohortAccountControl({
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuLabel>Account</DropdownMenuLabel>
-              <DropdownMenuItem asChild>
-                <a
-                  href={pageHref("Profile")}
-                  onClick={(event) => {
-                    if (isModifiedClick(event)) return;
-                    event.preventDefault();
-                    onNavigate("Profile");
-                    setOpen(false);
-                  }}
-                >
-                  <UserRound />
-                  Profile<DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-                </a>
+              <DropdownMenuItem
+                render={
+                  <a
+                    href={pageHref("Profile")}
+                    onClick={(event) => {
+                      if (isModifiedClick(event)) return;
+                      event.preventDefault();
+                      onNavigate("Profile");
+                      setOpen(false);
+                    }}
+                  />
+                }
+              >
+                <UserRound />
+                Profile<DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <a
-                  href={pageHref("Preferences")}
-                  onClick={(event) => {
-                    if (isModifiedClick(event)) return;
-                    event.preventDefault();
-                    onNavigate("Preferences");
-                    setOpen(false);
-                  }}
-                >
-                  <SlidersHorizontal />
-                  Preferences
-                </a>
+              <DropdownMenuItem
+                render={
+                  <a
+                    href={pageHref("Preferences")}
+                    onClick={(event) => {
+                      if (isModifiedClick(event)) return;
+                      event.preventDefault();
+                      onNavigate("Preferences");
+                      setOpen(false);
+                    }}
+                  />
+                }
+              >
+                <SlidersHorizontal />
+                Preferences
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="cohort-account-theme"
@@ -289,11 +295,9 @@ export function CohortDepartments({
   return (
     <Collapsible defaultOpen className="cohort-departments">
       <SidebarGroup>
-        <SidebarGroupLabel asChild>
-          <CollapsibleTrigger aria-label="Headcount by department">
-            <span className="flex-1 text-left">Headcount by department</span>
-            <ChevronDown />
-          </CollapsibleTrigger>
+        <SidebarGroupLabel render={<CollapsibleTrigger aria-label="Headcount by department" />}>
+          <span className="flex-1 text-left">Headcount by department</span>
+          <ChevronDown />
         </SidebarGroupLabel>
         <CollapsibleContent>
           <SidebarGroupContent>
@@ -301,14 +305,12 @@ export function CohortDepartments({
               {["Engineering", "People", "Sales", "Customer Success", "Design"].map(
                 (label, index) => (
                   <SidebarMenuItem key={label}>
-                    <SidebarMenuButton asChild>
-                      <a href={pageHref("People", label)}>
-                        <span
-                          className={`cohort-department-dot cohort-department-${index}`}
-                          aria-hidden="true"
-                        />
-                        <span>{label}</span>
-                      </a>
+                    <SidebarMenuButton render={<a href={pageHref("People", label)} />}>
+                      <span
+                        className={`cohort-department-dot cohort-department-${index}`}
+                        aria-hidden="true"
+                      />
+                      <span>{label}</span>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ),

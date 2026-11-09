@@ -17,7 +17,7 @@ import {
   EventCalendarWeekView,
 } from "@/components/reui/event-calendar/event-calendar-time-grid";
 import type { CalendarView } from "@/components/reui/event-calendar/event-calendar-types";
-import { Slot } from "radix-ui";
+import { RenderSlot as Slot } from "@/components/ui/render-slot";
 
 import { cn } from "cn";
 

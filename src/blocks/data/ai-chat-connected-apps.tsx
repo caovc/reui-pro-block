@@ -209,22 +209,24 @@ export default function ConnectedAppsChat() {
             <div className="ms-auto flex flex-wrap gap-1">
               {WORK_APPS.filter((app) => connected.includes(app.id)).map((app) => (
                 <Tooltip key={app.id}>
-                  <TooltipTrigger asChild>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon-xs"
-                      aria-label={`Disconnect ${app.label}`}
-                      className="group relative rounded border bg-background text-[9px] font-semibold"
-                      onClick={() =>
-                        setConnected((current) => current.filter((value) => value !== app.id))
-                      }
-                    >
-                      <span aria-hidden="true" className="group-hover:opacity-0">
-                        {app.mark}
-                      </span>
-                      <X className="absolute size-3 opacity-0 group-hover:opacity-100" />
-                    </Button>
+                  <TooltipTrigger
+                    render={
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon-xs"
+                        aria-label={`Disconnect ${app.label}`}
+                        className="group relative rounded border bg-background text-[9px] font-semibold"
+                        onClick={() =>
+                          setConnected((current) => current.filter((value) => value !== app.id))
+                        }
+                      />
+                    }
+                  >
+                    <span aria-hidden="true" className="group-hover:opacity-0">
+                      {app.mark}
+                    </span>
+                    <X className="absolute size-3 opacity-0 group-hover:opacity-100" />
                   </TooltipTrigger>
                   <TooltipContent>{app.label} · remove from next request</TooltipContent>
                 </Tooltip>

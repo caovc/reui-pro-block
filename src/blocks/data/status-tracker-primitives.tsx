@@ -84,10 +84,10 @@ export function TrackerPicker({
 export function TrackerExports({ name, rows }: { name: string; rows: Record<string, unknown>[] }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="size-7" aria-label="More actions">
-          <MoreHorizontal />
-        </Button>
+      <DropdownMenuTrigger
+        render={<Button variant="ghost" size="icon" className="size-7" aria-label="More actions" />}
+      >
+        <MoreHorizontal />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuGroup>
@@ -166,20 +166,22 @@ export function RunCapsules({ runs, name }: { runs: CronRun[]; name: string }) {
             if (!run) return <g />;
             return (
               <HoverCard openDelay={100} closeDelay={100}>
-                <HoverCardTrigger asChild>
-                  <rect
-                    x={props.x}
-                    y={props.y}
-                    width={props.width}
-                    height={Math.max(5, props.height ?? 5)}
-                    rx={4}
-                    fill={trackerColors[run.status]}
-                    role="button"
-                    tabIndex={0}
-                    aria-label={`${name}, run ${run.number}, ${run.status}, ${duration(run.seconds)}`}
-                    className="cursor-help outline-offset-2 focus:stroke-foreground"
-                  />
-                </HoverCardTrigger>
+                <HoverCardTrigger
+                  render={
+                    <rect
+                      x={props.x}
+                      y={props.y}
+                      width={props.width}
+                      height={Math.max(5, props.height ?? 5)}
+                      rx={4}
+                      fill={trackerColors[run.status]}
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`${name}, run ${run.number}, ${run.status}, ${duration(run.seconds)}`}
+                      className="cursor-help outline-offset-2 focus:stroke-foreground"
+                    />
+                  }
+                ></HoverCardTrigger>
                 <StatusDetails title={`${name} · Run ${run.number}`}>
                   <div className="flex items-center justify-between gap-4">
                     <span className="text-xs">Outcome</span>
@@ -212,38 +214,40 @@ export function StageMeter({ run }: { run: DeployRun }) {
         : `${run.status} at ${stages[Math.min(5, passed)]}, ${passed} of 6 stages passed`;
   return (
     <HoverCard openDelay={100} closeDelay={100}>
-      <HoverCardTrigger asChild>
-        <button
-          type="button"
-          aria-label={description}
-          className="flex w-full min-w-0 items-center gap-2 rounded outline-offset-4"
-        >
-          <span className="grid min-w-0 flex-1 grid-cols-6 gap-1">
-            {stages.map((stage, i) => {
-              const waiting = run.status === "Waiting" && i === 5;
-              const value = waiting ? 100 : Math.max(0, Math.min(100, (run.progress - i) * 100));
-              const failed =
-                (run.status === "Failed" || run.status === "Rolled back") && i === passed;
-              const color = waiting
-                ? trackerColors.Waiting
-                : failed
-                  ? trackerColors.Failed
-                  : value === 100
-                    ? trackerColors.Succeeded
-                    : "var(--foreground)";
-              return (
-                <Progress
-                  key={stage}
-                  aria-label={`${stage}: ${waiting ? "Waiting" : failed ? "Failed" : value === 100 ? "Passed" : value ? "Running" : "Queued"}`}
-                  value={value}
-                  className="h-1.5 **:data-[slot=progress-indicator]:bg-[var(--stage-color)]"
-                  style={{ "--stage-color": color } as CSSProperties}
-                />
-              );
-            })}
-          </span>
-          <span className="shrink-0 text-[10px] tabular-nums text-foreground">{passed}/6</span>
-        </button>
+      <HoverCardTrigger
+        render={
+          <button
+            type="button"
+            aria-label={description}
+            className="flex w-full min-w-0 items-center gap-2 rounded outline-offset-4"
+          />
+        }
+      >
+        <span className="grid min-w-0 flex-1 grid-cols-6 gap-1">
+          {stages.map((stage, i) => {
+            const waiting = run.status === "Waiting" && i === 5;
+            const value = waiting ? 100 : Math.max(0, Math.min(100, (run.progress - i) * 100));
+            const failed =
+              (run.status === "Failed" || run.status === "Rolled back") && i === passed;
+            const color = waiting
+              ? trackerColors.Waiting
+              : failed
+                ? trackerColors.Failed
+                : value === 100
+                  ? trackerColors.Succeeded
+                  : "var(--foreground)";
+            return (
+              <Progress
+                key={stage}
+                aria-label={`${stage}: ${waiting ? "Waiting" : failed ? "Failed" : value === 100 ? "Passed" : value ? "Running" : "Queued"}`}
+                value={value}
+                className="h-1.5 **:data-[slot=progress-indicator]:bg-[var(--stage-color)]"
+                style={{ "--stage-color": color } as CSSProperties}
+              />
+            );
+          })}
+        </span>
+        <span className="shrink-0 text-[10px] tabular-nums text-foreground">{passed}/6</span>
       </HoverCardTrigger>
       <StatusDetails title={`${run.service} · ${run.version}`}>
         <div className="flex items-center justify-between gap-4">

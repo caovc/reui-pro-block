@@ -44,10 +44,12 @@ export function VerveCalendarConnection({ model }: { model: VerveCalendarModel }
             if (next) disconnecting.current = false;
           }}
         >
-          <AlertDialogTrigger asChild>
-            <Button type="button" variant="outline" aria-label="Disconnect demo calendar">
-              Disconnect
-            </Button>
+          <AlertDialogTrigger
+            render={
+              <Button type="button" variant="outline" aria-label="Disconnect demo calendar" />
+            }
+          >
+            Disconnect
           </AlertDialogTrigger>
           <AlertDialogContent
             className="reui-reference"

@@ -50,11 +50,11 @@ export default function ProjectWorkspaceNavbar() {
           />
           <Separator orientation="vertical" className="h-5" />
           <Dialog open={createOpen} onOpenChange={setCreateOpen}>
-            <DialogTrigger asChild>
-              <Button size="sm" className="navbar-create" aria-label="Create new">
-                <Plus data-icon="inline-start" />
-                <span>Create New</span>
-              </Button>
+            <DialogTrigger
+              render={<Button size="sm" className="navbar-create" aria-label="Create new" />}
+            >
+              <Plus data-icon="inline-start" />
+              <span>Create New</span>
             </DialogTrigger>
             <DialogContent>
               <DialogHeader>

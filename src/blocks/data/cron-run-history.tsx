@@ -94,15 +94,17 @@ export default function CronRunHistory() {
               onChange={setFilter}
             />
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  aria-label="Display options"
-                  variant="outline"
-                  size="icon"
-                  className="size-8"
-                >
-                  <SlidersHorizontal />
-                </Button>
+              <DropdownMenuTrigger
+                render={
+                  <Button
+                    aria-label="Display options"
+                    variant="outline"
+                    size="icon"
+                    className="size-8"
+                  />
+                }
+              >
+                <SlidersHorizontal />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Run Window</DropdownMenuLabel>

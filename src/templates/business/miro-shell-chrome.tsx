@@ -90,13 +90,15 @@ export function MiroSidebarAccount({
     <SidebarMenu className="miro-account-navigation">
       <SidebarMenuItem>
         <DropdownMenu open={open} onOpenChange={setOpen}>
-          <DropdownMenuTrigger asChild>
-            <SidebarMenuButton
-              className="miro-account-trigger"
-              aria-label={`Open profile for ${account.name}`}
-            >
-              {avatar("miro-account-avatar")}
-            </SidebarMenuButton>
+          <DropdownMenuTrigger
+            render={
+              <SidebarMenuButton
+                className="miro-account-trigger"
+                aria-label={`Open profile for ${account.name}`}
+              />
+            }
+          >
+            {avatar("miro-account-avatar")}
           </DropdownMenuTrigger>
           <DropdownMenuContent
             side="right"
@@ -206,12 +208,12 @@ function ChairGroup({
 }) {
   return (
     <Collapsible defaultOpen={defaultOpen} className="miro-chair-group">
-      <CollapsibleTrigger asChild>
-        <SidebarMenuButton className="miro-chair-group-trigger" aria-label={title}>
-          <ChevronDown />
-          <span>{title}</span>
-          <span className="miro-sidebar-count">{chairs.length}</span>
-        </SidebarMenuButton>
+      <CollapsibleTrigger
+        render={<SidebarMenuButton className="miro-chair-group-trigger" aria-label={title} />}
+      >
+        <ChevronDown />
+        <span>{title}</span>
+        <span className="miro-sidebar-count">{chairs.length}</span>
       </CollapsibleTrigger>
       <CollapsibleContent>
         <SidebarMenu>
@@ -227,15 +229,17 @@ function ChairGroup({
               />
               <Label htmlFor={`miro-sidebar-${chair.id}`}>{chair.name}</Label>
               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    type="button"
-                    size="icon-xs"
-                    variant="ghost"
-                    aria-label={`Options for ${chair.name}`}
-                  >
-                    <MoreHorizontal />
-                  </Button>
+                <DropdownMenuTrigger
+                  render={
+                    <Button
+                      type="button"
+                      size="icon-xs"
+                      variant="ghost"
+                      aria-label={`Options for ${chair.name}`}
+                    />
+                  }
+                >
+                  <MoreHorizontal />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
                   side="right"
@@ -471,12 +475,17 @@ export function MiroDashboardSidebar({
             { title: "Never opened", entries: chairs.slice(5), open: false },
           ].map((group) => (
             <Collapsible key={group.title} defaultOpen={group.open} className="miro-chair-group">
-              <CollapsibleTrigger asChild>
-                <SidebarMenuButton className="miro-chair-group-trigger" aria-label={group.title}>
-                  <ChevronDown />
-                  <span>{group.title}</span>
-                  <span className="miro-sidebar-count">{group.entries.length}</span>
-                </SidebarMenuButton>
+              <CollapsibleTrigger
+                render={
+                  <SidebarMenuButton
+                    className="miro-chair-group-trigger"
+                    aria-label={group.title}
+                  />
+                }
+              >
+                <ChevronDown />
+                <span>{group.title}</span>
+                <span className="miro-sidebar-count">{group.entries.length}</span>
               </CollapsibleTrigger>
               <CollapsibleContent>
                 <SidebarMenu>

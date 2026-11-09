@@ -1,12 +1,8 @@
-/** Official shadcn Radix Nova Breadcrumb, retrieved via npx shadcn view breadcrumb.
- * Only IconPlaceholder converted mechanically to Lucide. Used by official free REUI c-breadcrumb-1.
- * Upstream content SHA-256: 4676c0c62a5699ed4f6b5079cb4e912149307d1150cb0d474c30bbc6e1817feb
- */
 import * as React from "react";
+import { mergeProps } from "@base-ui/react/merge-props";
+import { useRender } from "@base-ui/react/use-render";
 import { cn } from "cn";
-import { Slot } from "radix-ui";
-
-import { ChevronRight, MoreHorizontal } from "lucide-react";
+import { ChevronRightIcon, MoreHorizontalIcon } from "lucide-react";
 
 function Breadcrumb({ className, ...props }: React.ComponentProps<"nav">) {
   return (
@@ -37,22 +33,20 @@ function BreadcrumbItem({ className, ...props }: React.ComponentProps<"li">) {
   );
 }
 
-function BreadcrumbLink({
-  asChild,
-  className,
-  ...props
-}: React.ComponentProps<"a"> & {
-  asChild?: boolean;
-}) {
-  const Comp = asChild ? Slot.Root : "a";
-
-  return (
-    <Comp
-      data-slot="breadcrumb-link"
-      className={cn("transition-colors hover:text-foreground", className)}
-      {...props}
-    />
-  );
+function BreadcrumbLink({ className, render, ...props }: useRender.ComponentProps<"a">) {
+  return useRender({
+    defaultTagName: "a",
+    props: mergeProps<"a">(
+      {
+        className: cn("transition-colors hover:text-foreground", className),
+      },
+      props,
+    ),
+    render,
+    state: {
+      slot: "breadcrumb-link",
+    },
+  });
 }
 
 function BreadcrumbPage({ className, ...props }: React.ComponentProps<"span">) {
@@ -77,7 +71,7 @@ function BreadcrumbSeparator({ children, className, ...props }: React.ComponentP
       className={cn("[&>svg]:size-3.5", className)}
       {...props}
     >
-      {children ?? <ChevronRight className="cn-rtl-flip" />}
+      {children ?? <ChevronRightIcon />}
     </li>
   );
 }
@@ -91,7 +85,7 @@ function BreadcrumbEllipsis({ className, ...props }: React.ComponentProps<"span"
       className={cn("flex size-5 items-center justify-center [&>svg]:size-4", className)}
       {...props}
     >
-      <MoreHorizontal />
+      <MoreHorizontalIcon />
       <span className="sr-only">More</span>
     </span>
   );

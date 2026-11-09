@@ -43,15 +43,14 @@ export function ContextSwitcher({
   return (
     <div className="flex items-center justify-center">
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="sm" aria-label={label} className="max-w-full">
-            <div className="gap-1.5 flex items-center">
-              {activeWorkspace.logo}
-              <span className="text-sm font-medium">{activeWorkspace.name}</span>
-            </div>
-
-            <ChevronsUpDown aria-hidden="true" />
-          </Button>
+        <DropdownMenuTrigger
+          render={<Button variant="ghost" size="sm" aria-label={label} className="max-w-full" />}
+        >
+          <div className="gap-1.5 flex items-center">
+            {activeWorkspace.logo}
+            <span className="text-sm font-medium">{activeWorkspace.name}</span>
+          </div>
+          <ChevronsUpDown aria-hidden="true" />
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56" align="start" sideOffset={8}>
           <DropdownMenuGroup>

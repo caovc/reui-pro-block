@@ -1,7 +1,7 @@
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "cn";
-import { Slot } from "radix-ui";
+import { RenderSlot as Slot } from "@/components/ui/render-slot";
 
 import { Separator } from "@/components/ui/separator";
 
@@ -57,11 +57,19 @@ function Item({
   variant = "default",
   size = "default",
   asChild = false,
+  render,
   ...props
-}: React.ComponentProps<"div"> & VariantProps<typeof itemVariants> & { asChild?: boolean }) {
-  const Comp = asChild ? Slot.Root : "div";
+}: React.ComponentProps<"div"> &
+  VariantProps<typeof itemVariants> & {
+    asChild?: boolean;
+    render?: React.ReactElement;
+  }) {
+  const Comp = Slot.Root;
   return (
     <Comp
+      defaultTagName="div"
+      asChild={asChild}
+      render={render}
       data-slot="item"
       data-variant={variant}
       data-size={size}

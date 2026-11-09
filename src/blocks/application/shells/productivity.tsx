@@ -212,11 +212,11 @@ export function ModelChat() {
           <div className="flex items-center gap-2">
             {collapsed && !isMobile && <SidebarTrigger aria-label="Expand sidebar" />}
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" aria-label="Choose model">
-                  {model}
-                  <ChevronDown />
-                </Button>
+              <DropdownMenuTrigger
+                render={<Button variant="outline" size="sm" aria-label="Choose model" />}
+              >
+                {model}
+                <ChevronDown />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="w-72">
                 <DropdownMenuGroup>

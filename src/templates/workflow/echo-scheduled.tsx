@@ -155,10 +155,16 @@ export function EchoScheduled({
                     }
                   />
                   <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="icon-sm" aria-label={`Actions ${task.name}`}>
-                        <MoreVertical />
-                      </Button>
+                    <DropdownMenuTrigger
+                      render={
+                        <Button
+                          variant="ghost"
+                          size="icon-sm"
+                          aria-label={`Actions ${task.name}`}
+                        />
+                      }
+                    >
+                      <MoreVertical />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                       <DropdownMenuItem onSelect={() => edit(task)}>Edit task</DropdownMenuItem>

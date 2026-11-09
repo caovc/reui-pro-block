@@ -126,10 +126,10 @@ export default function CopilotShell() {
             <Plus />
           </Button>
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button size="icon-sm" variant="ghost" aria-label="Conversation actions">
-                <Ellipsis />
-              </Button>
+            <DropdownMenuTrigger
+              render={<Button size="icon-sm" variant="ghost" aria-label="Conversation actions" />}
+            >
+              <Ellipsis />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={exportTranscript} disabled={!hasTurns}>

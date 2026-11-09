@@ -122,9 +122,7 @@ export default function FinanceAccountDialog() {
               Terms &amp; disclosures
             </Button>
             <div className="flex gap-2">
-              <DialogClose asChild>
-                <Button variant="outline">Not now</Button>
-              </DialogClose>
+              <DialogClose render={<Button variant="outline" />}>Not now</DialogClose>
               <Button
                 disabled={!draft.name.trim() || !draft.tag.trim() || !draft.statement.trim()}
                 onClick={() => {

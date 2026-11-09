@@ -87,18 +87,14 @@ export function VerveCompanyCard({
       open={model.cardEntry === entry}
       onOpenChange={(open) => (open ? model.openCard(entry) : model.closeCard())}
     >
-      <SheetTrigger asChild>{children}</SheetTrigger>
+      <SheetTrigger render={children as never}></SheetTrigger>
       <VerveSettingsSheet
         className="vp-card-sheet"
         title="Add company card"
         description="Save a card so renewal and receipts continue."
         footer={
           <>
-            <SheetClose asChild>
-              <Button variant="outline" type="button">
-                Cancel
-              </Button>
-            </SheetClose>
+            <SheetClose render={<Button variant="outline" type="button" />}>Cancel</SheetClose>
             <Button type="submit" form={formId}>
               <CreditCard aria-hidden />
               Add card

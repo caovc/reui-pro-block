@@ -98,29 +98,29 @@ export function FeaturedDepartment() {
                     {index > 0 && <ItemSeparator className="my-1" />}
                     <CollectionBrowser title={collection.name} categories={collection.categories}>
                       <Item
-                        asChild
                         size="sm"
                         className="rounded-lg py-4 text-left hover:bg-muted/60"
+                        render={
+                          <button
+                            type="button"
+                            aria-label={`Explore ${collection.name}`}
+                            data-department-row={collection.id}
+                          />
+                        }
                       >
-                        <button
-                          type="button"
-                          aria-label={`Explore ${collection.name}`}
-                          data-department-row={collection.id}
-                        >
-                          <ItemMedia variant="image" className="size-20! rounded-lg">
-                            <img src={collection.image} alt="" />
-                          </ItemMedia>
-                          <ItemContent className="min-w-0 gap-2">
-                            <ItemTitle className="leading-5">{collection.name}</ItemTitle>
-                            <ItemDescription className="text-[11px]" data-department-meta>
-                              {collection.count} pieces <span className="px-1">·</span> From{" "}
-                              {collectionPrice(collection.from)}
-                            </ItemDescription>
-                          </ItemContent>
-                          <ItemActions>
-                            <ChevronRight className="size-4 text-muted-foreground" />
-                          </ItemActions>
-                        </button>
+                        <ItemMedia variant="image" className="size-20! rounded-lg">
+                          <img src={collection.image} alt="" />
+                        </ItemMedia>
+                        <ItemContent className="min-w-0 gap-2">
+                          <ItemTitle className="leading-5">{collection.name}</ItemTitle>
+                          <ItemDescription className="text-[11px]" data-department-meta>
+                            {collection.count} pieces <span className="px-1">·</span> From{" "}
+                            {collectionPrice(collection.from)}
+                          </ItemDescription>
+                        </ItemContent>
+                        <ItemActions>
+                          <ChevronRight className="size-4 text-muted-foreground" />
+                        </ItemActions>
                       </Item>
                     </CollectionBrowser>
                   </Fragment>

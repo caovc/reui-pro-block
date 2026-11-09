@@ -20,18 +20,20 @@ export function MiroNotifications({ activities }: { activities: readonly MiroAct
   const count = activities.length;
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          className="miro-notifications-trigger"
-          aria-label={`Notifications, ${count} ${count === 1 ? "activity" : "activities"}`}
-        >
-          <Bell aria-hidden="true" />
-          {count > 0 && (
-            <Badge radius="full" size="sm" className="miro-notifications-dot" aria-hidden="true" />
-          )}
-        </Button>
+      <DropdownMenuTrigger
+        render={
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            className="miro-notifications-trigger"
+            aria-label={`Notifications, ${count} ${count === 1 ? "activity" : "activities"}`}
+          />
+        }
+      >
+        <Bell aria-hidden="true" />
+        {count > 0 && (
+          <Badge radius="full" size="sm" className="miro-notifications-dot" aria-hidden="true" />
+        )}
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"

@@ -43,11 +43,9 @@ export function DropReminder({
           setError("");
         }}
       >
-        <DialogTrigger asChild>
-          <Button className="bg-white text-black hover:bg-white/90">
-            {email ? <BellRing className="size-4" /> : <Bell className="size-4" />}
-            {email ? "Edit Drop Reminder" : "Set A Drop Reminder"}
-          </Button>
+        <DialogTrigger render={<Button className="bg-white text-black hover:bg-white/90" />}>
+          {email ? <BellRing className="size-4" /> : <Bell className="size-4" />}
+          {email ? "Edit Drop Reminder" : "Set A Drop Reminder"}
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
@@ -91,11 +89,7 @@ export function DropReminder({
                   Remove reminder
                 </Button>
               )}
-              <DialogClose asChild>
-                <Button type="button" variant="outline">
-                  Cancel
-                </Button>
-              </DialogClose>
+              <DialogClose render={<Button type="button" variant="outline" />}>Cancel</DialogClose>
               <Button type="submit">{email ? "Update reminder" : "Save reminder"}</Button>
             </DialogFooter>
           </form>

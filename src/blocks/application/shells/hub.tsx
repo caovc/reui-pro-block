@@ -394,16 +394,18 @@ export default function CalendarHub() {
               Today
             </Button>
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="h-7 text-xs"
-                  aria-label={`Calendar view: ${view}`}
-                >
-                  {view}
-                  <ChevronRight />
-                </Button>
+              <DropdownMenuTrigger
+                render={
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-7 text-xs"
+                    aria-label={`Calendar view: ${view}`}
+                  />
+                }
+              >
+                {view}
+                <ChevronRight />
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuGroup>

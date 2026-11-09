@@ -632,16 +632,18 @@ export default function HRScorecard({ loadKpis }: HRScorecardProps = {}) {
         meta: { ...meta, cellClassName: "h-7 p-0 text-center" },
         cell: ({ row }) => (
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                className="size-6"
-                aria-label={`Actions for ${row.original.label}`}
-                data-cell-interactive=""
-              >
-                <MoreVertical className="size-3" />
-              </Button>
+            <DropdownMenuTrigger
+              render={
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  className="size-6"
+                  aria-label={`Actions for ${row.original.label}`}
+                  data-cell-interactive=""
+                />
+              }
+            >
+              <MoreVertical className="size-3" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-44">
               {row.original.kind === "group" ? (
@@ -847,10 +849,10 @@ export default function HRScorecard({ loadKpis }: HRScorecardProps = {}) {
 
   const viewMenu = (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <InputGroupButton size="icon-sm" variant="outline" aria-label="View">
-          <Columns3 />
-        </InputGroupButton>
+      <DropdownMenuTrigger
+        render={<InputGroupButton size="icon-sm" variant="outline" aria-label="View" />}
+      >
+        <Columns3 />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-52">
         <DropdownMenuLabel>Columns</DropdownMenuLabel>
@@ -888,10 +890,10 @@ export default function HRScorecard({ loadKpis }: HRScorecardProps = {}) {
   );
   const thresholdMenu = (
     <Popover>
-      <PopoverTrigger asChild>
-        <InputGroupButton size="icon-sm" variant="outline" aria-label="Thresholds">
-          <SlidersHorizontal />
-        </InputGroupButton>
+      <PopoverTrigger
+        render={<InputGroupButton size="icon-sm" variant="outline" aria-label="Thresholds" />}
+      >
+        <SlidersHorizontal />
       </PopoverTrigger>
       <PopoverContent align="end" className="w-80 space-y-4 p-4 text-sm">
         <h3 className="font-semibold">Score thresholds</h3>

@@ -76,7 +76,7 @@ export function CollectionBrowser({
         if (!value) setSelected(null);
       }}
     >
-      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogTrigger render={children as never}></DialogTrigger>
       <DialogContent className="max-h-[90dvh] overflow-hidden sm:max-w-3xl">
         <DialogHeader>
           <DialogTitle>{selected ? selected.name : title}</DialogTitle>

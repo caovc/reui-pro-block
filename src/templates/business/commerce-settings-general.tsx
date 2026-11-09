@@ -81,11 +81,9 @@ function CommerceLogoURL({ model }: { model: CommerceGeneralSettingsModel }) {
         }
       }}
     >
-      <DialogTrigger asChild>
-        <Button type="button" variant="outline">
-          <Link aria-hidden="true" />
-          Import from URL
-        </Button>
+      <DialogTrigger render={<Button type="button" variant="outline" />}>
+        <Link aria-hidden="true" />
+        Import from URL
       </DialogTrigger>
       <DialogContent className="reui-reference csg-logo-url-dialog">
         <DialogHeader>

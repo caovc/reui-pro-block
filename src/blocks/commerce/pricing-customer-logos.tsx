@@ -184,10 +184,12 @@ function PricingCard({ plan, period }: { plan: Plan; period: Period }) {
         </CardHeader>
         <CardContent className="pcl-rate-and-action">
           <PlanPrice plan={plan} period={period} />
-          <Button asChild variant={plan.featured ? "default" : "outline"} className="pcl-action">
-            <a href="#" role="button" onClick={placeholderLink}>
-              {plan.action}
-            </a>
+          <Button
+            render={<a href="#" role="button" onClick={placeholderLink} />}
+            variant={plan.featured ? "default" : "outline"}
+            className="pcl-action"
+          >
+            {plan.action}
           </Button>
         </CardContent>
         <Separator />

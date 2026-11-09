@@ -68,16 +68,18 @@ export function QuickLinks({
       <h2>{title}</h2>
       <div className="empty-first-link-list">
         {items.map(({ label, icon, onClick }) => (
-          <Item key={label} asChild variant="outline">
-            <Button variant="ghost" className="empty-first-guide" onClick={onClick}>
-              <ItemMedia>{icon}</ItemMedia>
-              <ItemContent>
-                <ItemTitle>{label}</ItemTitle>
-              </ItemContent>
-              <ItemActions>
-                <ChevronRight className="size-4 text-muted-foreground" />
-              </ItemActions>
-            </Button>
+          <Item
+            key={label}
+            variant="outline"
+            render={<Button variant="ghost" className="empty-first-guide" onClick={onClick} />}
+          >
+            <ItemMedia>{icon}</ItemMedia>
+            <ItemContent>
+              <ItemTitle>{label}</ItemTitle>
+            </ItemContent>
+            <ItemActions>
+              <ChevronRight className="size-4 text-muted-foreground" />
+            </ItemActions>
           </Item>
         ))}
       </div>

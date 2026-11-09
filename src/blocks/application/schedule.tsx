@@ -235,13 +235,11 @@ function LegacyScheduleBlock({ block }: BlockProps) {
           </p>
         </div>
         <Popover>
-          <PopoverTrigger asChild>
-            <Button variant="outline">
-              <CalendarDays />
-              {format}
-              {slot && ` · ${slot}`}
-              <ChevronDown />
-            </Button>
+          <PopoverTrigger render={<Button variant="outline" />}>
+            <CalendarDays />
+            {format}
+            {slot && ` · ${slot}`}
+            <ChevronDown />
           </PopoverTrigger>
           <PopoverContent className="w-auto p-3">
             <div className="mb-3 flex flex-col gap-1">

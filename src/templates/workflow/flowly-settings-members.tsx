@@ -225,12 +225,14 @@ export function FlowlyMembersPage({ model }: { model: FlowlySettingsModel }) {
               />
             </InputGroup>
             <Popover>
-              <PopoverTrigger asChild>
-                <Button size="sm" variant="outline" aria-label="Filter members by status">
-                  <Filter />
-                  Status
-                  {selected.length > 0 && <Badge variant="secondary">{selected.length}</Badge>}
-                </Button>
+              <PopoverTrigger
+                render={
+                  <Button size="sm" variant="outline" aria-label="Filter members by status" />
+                }
+              >
+                <Filter />
+                Status
+                {selected.length > 0 && <Badge variant="secondary">{selected.length}</Badge>}
               </PopoverTrigger>
               <PopoverContent align="start" className="reui-reference fs-status-filter">
                 <p>Filter by status</p>

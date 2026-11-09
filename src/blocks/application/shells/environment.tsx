@@ -241,7 +241,7 @@ export function SystemMonitor({ trigger, presentation = "default" }: SystemMonit
   if (presentation === "flux") {
     return (
       <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>{trigger ?? defaultTrigger}</PopoverTrigger>
+        <PopoverTrigger render={trigger ?? (defaultTrigger as never)}></PopoverTrigger>
         <PopoverContent
           align="end"
           sideOffset={8}
@@ -259,7 +259,7 @@ export function SystemMonitor({ trigger, presentation = "default" }: SystemMonit
   }
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>{trigger ?? defaultTrigger}</PopoverTrigger>
+      <PopoverTrigger render={trigger ?? (defaultTrigger as never)}></PopoverTrigger>
       <PopoverContent align="end" className="w-80 p-0">
         <div className="flex items-center justify-between border-b px-3 py-2.5">
           <h3 className="text-xs font-medium">System Monitor</h3>

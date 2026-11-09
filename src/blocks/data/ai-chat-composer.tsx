@@ -139,15 +139,17 @@ export default function ChatComposer({
           />
           <InputGroupAddon align="block-end" className="flex-wrap gap-1 px-2 pb-2">
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <InputGroupButton
-                  type="button"
-                  size="icon-sm"
-                  aria-label="Attach context"
-                  disabled={!available.length}
-                >
-                  <Plus />
-                </InputGroupButton>
+              <DropdownMenuTrigger
+                render={
+                  <InputGroupButton
+                    type="button"
+                    size="icon-sm"
+                    aria-label="Attach context"
+                    disabled={!available.length}
+                  />
+                }
+              >
+                <Plus />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start">
                 <DropdownMenuLabel>Add workspace context</DropdownMenuLabel>
@@ -180,15 +182,17 @@ export default function ChatComposer({
               </InputGroupButton>
             )}
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <InputGroupButton
-                  type="button"
-                  className="h-7 max-w-37 min-w-0 px-2 text-xs"
-                  aria-label="Choose model"
-                >
-                  <span className="truncate">{draft.model}</span>
-                  <ChevronDown className="size-3" />
-                </InputGroupButton>
+              <DropdownMenuTrigger
+                render={
+                  <InputGroupButton
+                    type="button"
+                    className="h-7 max-w-37 min-w-0 px-2 text-xs"
+                    aria-label="Choose model"
+                  />
+                }
+              >
+                <span className="truncate">{draft.model}</span>
+                <ChevronDown className="size-3" />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start">
                 <DropdownMenuLabel>Model · local demo</DropdownMenuLabel>
@@ -203,15 +207,17 @@ export default function ChatComposer({
             </DropdownMenu>
             {effortPicker ? (
               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <InputGroupButton
-                    type="button"
-                    className="h-7 px-2 text-xs"
-                    aria-label="Thinking effort"
-                  >
-                    {draft.effort}
-                    <ChevronDown className="size-3" />
-                  </InputGroupButton>
+                <DropdownMenuTrigger
+                  render={
+                    <InputGroupButton
+                      type="button"
+                      className="h-7 px-2 text-xs"
+                      aria-label="Thinking effort"
+                    />
+                  }
+                >
+                  {draft.effort}
+                  <ChevronDown className="size-3" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start">
                   <DropdownMenuRadioGroup
@@ -276,20 +282,22 @@ export default function ChatComposer({
             : "Local demo replies · review before using"}
         </span>
         <Popover>
-          <PopoverTrigger asChild>
-            <Button
-              type="button"
-              size="xs"
-              variant="ghost"
-              className="h-5 gap-1 px-1 text-[10px]"
-              aria-label="Context window"
-            >
-              <span
-                className="size-2.5 rounded-full border-2 border-muted-foreground/40"
-                aria-hidden="true"
+          <PopoverTrigger
+            render={
+              <Button
+                type="button"
+                size="xs"
+                variant="ghost"
+                className="h-5 gap-1 px-1 text-[10px]"
+                aria-label="Context window"
               />
-              {percent.toFixed(0)}%
-            </Button>
+            }
+          >
+            <span
+              className="size-2.5 rounded-full border-2 border-muted-foreground/40"
+              aria-hidden="true"
+            />
+            {percent.toFixed(0)}%
           </PopoverTrigger>
           <PopoverContent align="end" className="w-64 space-y-3 text-xs">
             <div className="flex items-center justify-between">

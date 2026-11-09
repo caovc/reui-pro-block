@@ -206,16 +206,18 @@ export function LiquidityFlows() {
           <>
             <PeriodButtons value={period} onChange={setPeriod} options={["30D", "90D", "1Y"]} />
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="h-7 gap-1.5 px-2 text-xs"
-                  aria-label={`Assets: ${enabled.length === 4 ? "All assets" : `${enabled.length}/4`}`}
-                >
-                  {enabled.length === 4 ? "All assets" : `Assets ${enabled.length}/4`}
-                  <ChevronDown />
-                </Button>
+              <DropdownMenuTrigger
+                render={
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-7 gap-1.5 px-2 text-xs"
+                    aria-label={`Assets: ${enabled.length === 4 ? "All assets" : `${enabled.length}/4`}`}
+                  />
+                }
+              >
+                {enabled.length === 4 ? "All assets" : `Assets ${enabled.length}/4`}
+                <ChevronDown />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Assets in the pool</DropdownMenuLabel>

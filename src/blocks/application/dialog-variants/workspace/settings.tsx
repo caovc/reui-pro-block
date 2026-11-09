@@ -244,7 +244,7 @@ export default function AccountSettingsDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       {trigger ? (
-        <DialogTrigger asChild>{trigger}</DialogTrigger>
+        <DialogTrigger render={trigger as never}></DialogTrigger>
       ) : (
         <DialogLauncher
           id={10}

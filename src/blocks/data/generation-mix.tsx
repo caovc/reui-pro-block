@@ -450,15 +450,17 @@ export default function GenerationMix() {
       </ToggleGroup>
       <div className="flex items-center">
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              size="icon"
-              variant="outline"
-              className="size-7 rounded-r-none"
-              aria-label="Display options"
-            >
-              <SlidersHorizontal />
-            </Button>
+          <DropdownMenuTrigger
+            render={
+              <Button
+                size="icon"
+                variant="outline"
+                className="size-7 rounded-r-none"
+                aria-label="Display options"
+              />
+            }
+          >
+            <SlidersHorizontal />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-44">
             <DropdownMenuLabel className="text-[11px] font-normal text-muted-foreground">
@@ -506,15 +508,17 @@ export default function GenerationMix() {
           </DropdownMenuContent>
         </DropdownMenu>
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              size="icon"
-              variant="outline"
-              className="-ml-px size-7 rounded-l-none"
-              aria-label="Compare against"
-            >
-              <Scale />
-            </Button>
+          <DropdownMenuTrigger
+            render={
+              <Button
+                size="icon"
+                variant="outline"
+                className="-ml-px size-7 rounded-l-none"
+                aria-label="Compare against"
+              />
+            }
+          >
+            <Scale />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel className="text-[11px] font-normal text-muted-foreground">
@@ -556,15 +560,17 @@ export default function GenerationMix() {
           <Maximize2 />
         </Button>
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              size="icon"
-              variant="outline"
-              className="-ml-px size-7 rounded-l-none"
-              aria-label="More actions"
-            >
-              <MoreHorizontal />
-            </Button>
+          <DropdownMenuTrigger
+            render={
+              <Button
+                size="icon"
+                variant="outline"
+                className="-ml-px size-7 rounded-l-none"
+                aria-label="More actions"
+              />
+            }
+          >
+            <MoreHorizontal />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuGroup>

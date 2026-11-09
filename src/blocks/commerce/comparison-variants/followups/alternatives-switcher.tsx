@@ -62,10 +62,12 @@ function LocalModelDetails({ product }: { product: ComparisonProduct }) {
   const closeButton = useRef<HTMLButtonElement>(null);
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="ghost" size="sm" aria-label={`View ${product.name} sample details`}>
-          Details
-        </Button>
+      <DialogTrigger
+        render={
+          <Button variant="ghost" size="sm" aria-label={`View ${product.name} sample details`} />
+        }
+      >
+        Details
       </DialogTrigger>
       <DialogSurface
         id={0}
@@ -73,9 +75,7 @@ function LocalModelDetails({ product }: { product: ComparisonProduct }) {
         description="Independent local specifications for a fictional model. The original Details destination was not verified."
         initialFocus={() => closeButton.current?.focus()}
         footer={
-          <DialogClose asChild>
-            <Button ref={closeButton}>Back to alternatives</Button>
-          </DialogClose>
+          <DialogClose render={<Button ref={closeButton} />}>Back to alternatives</DialogClose>
         }
       >
         <Frame stacked spacing="sm">

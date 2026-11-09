@@ -89,7 +89,7 @@ function useHash() {
 function IconTip({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <Tooltip>
-      <TooltipTrigger asChild>{children}</TooltipTrigger>
+      <TooltipTrigger render={children as never}></TooltipTrigger>
       <TooltipContent>{label}</TooltipContent>
     </Tooltip>
   );
@@ -325,34 +325,42 @@ export default function App() {
   const sidebarContent = (
     <>
       <div className="sidebar-top">
-        <Button variant={isTemplates ? "secondary" : "ghost"} className="justify-start" asChild>
-          <a
-            href="#/templates"
-            onClick={() => setSidebar(false)}
-            aria-current={isTemplates ? "page" : undefined}
-          >
-            <Monitor data-icon="inline-start" />
-            Templates
-            <Badge variant="outline" className="ml-auto">
-              18
-            </Badge>
-          </a>
+        <Button
+          variant={isTemplates ? "secondary" : "ghost"}
+          className="justify-start"
+          render={
+            <a
+              href="#/templates"
+              onClick={() => setSidebar(false)}
+              aria-current={isTemplates ? "page" : undefined}
+            />
+          }
+        >
+          <Monitor data-icon="inline-start" />
+          Templates
+          <Badge variant="outline" className="ml-auto">
+            18
+          </Badge>
         </Button>
-        <Button variant={isTemplates ? "ghost" : "secondary"} className="justify-start" asChild>
-          <a href="#/" onClick={() => setSidebar(false)}>
-            <LayoutGrid data-icon="inline-start" />
-            All blocks
-            <Badge variant="outline" className="ml-auto">
-              {blocks.length}
-            </Badge>
-          </a>
+        <Button
+          variant={isTemplates ? "ghost" : "secondary"}
+          className="justify-start"
+          render={<a href="#/" onClick={() => setSidebar(false)} />}
+        >
+          <LayoutGrid data-icon="inline-start" />
+          All blocks
+          <Badge variant="outline" className="ml-auto">
+            {blocks.length}
+          </Badge>
         </Button>
-        <Button variant="ghost" className="justify-start" asChild>
-          <a href="#/favorites" onClick={() => setSidebar(false)}>
-            <Heart data-icon="inline-start" />
-            Favorites
-            <span className="ml-auto text-xs text-muted-foreground">{favorites.length}</span>
-          </a>
+        <Button
+          variant="ghost"
+          className="justify-start"
+          render={<a href="#/favorites" onClick={() => setSidebar(false)} />}
+        >
+          <Heart data-icon="inline-start" />
+          Favorites
+          <span className="ml-auto text-xs text-muted-foreground">{favorites.length}</span>
         </Button>
       </div>
       <Separator />
@@ -512,25 +520,33 @@ export default function App() {
               {dark ? <Sun /> : <Moon />}
             </Button>
           </IconTip>
-          <Button variant="ghost" size="icon" asChild>
-            <a
-              href="https://github.com/caovc/reui-pro-block"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="GitHub repository"
-            >
-              <GitHubMark />
-            </a>
+          <Button
+            variant="ghost"
+            size="icon"
+            render={
+              <a
+                href="https://github.com/caovc/reui-pro-block"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="GitHub repository"
+              />
+            }
+          >
+            <GitHubMark />
           </Button>
-          <Button variant="outline" className="hidden sm:flex" asChild>
-            <a
-              href={isTemplates ? "https://reui.io/templates" : "https://reui.io/blocks"}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              REUI reference
-              <ArrowRight data-icon="inline-end" />
-            </a>
+          <Button
+            variant="outline"
+            className="hidden sm:flex"
+            render={
+              <a
+                href={isTemplates ? "https://reui.io/templates" : "https://reui.io/blocks"}
+                target="_blank"
+                rel="noopener noreferrer"
+              />
+            }
+          >
+            REUI reference
+            <ArrowRight data-icon="inline-end" />
           </Button>
         </div>
       </header>
@@ -649,35 +665,43 @@ export default function App() {
                 </a>
               </div>
               <div className="block-pagination">
-                <Button variant="outline" asChild disabled={blockIndex <= 0}>
-                  {blockIndex > 0 ? (
-                    <a href={blockHref(related[blockIndex - 1])}>
-                      <ChevronLeft data-icon="inline-start" />
-                      {related[blockIndex - 1].name}
-                    </a>
-                  ) : (
-                    <span>
-                      <ChevronLeft />
-                      Previous block
-                    </span>
-                  )}
-                </Button>
+                <Button
+                  variant="outline"
+                  render={
+                    blockIndex > 0 ? (
+                      <a href={blockHref(related[blockIndex - 1])}>
+                        <ChevronLeft data-icon="inline-start" />
+                        {related[blockIndex - 1].name}
+                      </a>
+                    ) : (
+                      <span>
+                        <ChevronLeft />
+                        Previous block
+                      </span>
+                    )
+                  }
+                  disabled={blockIndex <= 0}
+                ></Button>
                 <span>
                   {blockIndex + 1} / {related.length}
                 </span>
-                <Button variant="outline" asChild disabled={blockIndex >= related.length - 1}>
-                  {blockIndex < related.length - 1 ? (
-                    <a href={blockHref(related[blockIndex + 1])}>
-                      {related[blockIndex + 1].name}
-                      <ChevronRight data-icon="inline-end" />
-                    </a>
-                  ) : (
-                    <span>
-                      Next block
-                      <ChevronRight />
-                    </span>
-                  )}
-                </Button>
+                <Button
+                  variant="outline"
+                  render={
+                    blockIndex < related.length - 1 ? (
+                      <a href={blockHref(related[blockIndex + 1])}>
+                        {related[blockIndex + 1].name}
+                        <ChevronRight data-icon="inline-end" />
+                      </a>
+                    ) : (
+                      <span>
+                        Next block
+                        <ChevronRight />
+                      </span>
+                    )
+                  }
+                  disabled={blockIndex >= related.length - 1}
+                ></Button>
               </div>
             </>
           ) : (
@@ -921,17 +945,24 @@ export default function App() {
               with source downloads.
             </p>
             <div className="flex gap-2">
-              <Button asChild>
-                <a href="https://github.com/caovc/reui-pro-block" target="_blank" rel="noreferrer">
-                  <GitHubMark data-icon="inline-start" />
-                  Repository
-                </a>
+              <Button
+                render={
+                  <a
+                    href="https://github.com/caovc/reui-pro-block"
+                    target="_blank"
+                    rel="noreferrer"
+                  />
+                }
+              >
+                <GitHubMark data-icon="inline-start" />
+                Repository
               </Button>
-              <Button variant="outline" asChild>
-                <a href="https://reui.io/blocks" target="_blank" rel="noreferrer">
-                  Original reference
-                  <ExternalLink data-icon="inline-end" />
-                </a>
+              <Button
+                variant="outline"
+                render={<a href="https://reui.io/blocks" target="_blank" rel="noreferrer" />}
+              >
+                Original reference
+                <ExternalLink data-icon="inline-end" />
               </Button>
             </div>
           </div>

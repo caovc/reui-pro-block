@@ -580,17 +580,19 @@ function ActionsCell({ row }: { row: Row<DataGridFeatures, PnlRow> }) {
   const record = row.original;
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon"
-          className="size-7"
-          ref={trigger}
-          aria-label={`Actions for ${record.name}`}
-        >
-          <Ellipsis aria-hidden className="size-4" />
-        </Button>
+      <DropdownMenuTrigger
+        render={
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            className="size-7"
+            ref={trigger}
+            aria-label={`Actions for ${record.name}`}
+          />
+        }
+      >
+        <Ellipsis aria-hidden className="size-4" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="reui-reference">
         {record.kind === "line" ? (

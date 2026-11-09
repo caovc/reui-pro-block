@@ -111,9 +111,7 @@ export default function DuplicateContactDialog() {
         description="4 existing contacts may match this one."
         footer={
           <>
-            <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
-            </DialogClose>
+            <DialogClose render={<Button variant="outline" />}>Cancel</DialogClose>
             <Button
               onClick={() => {
                 pending.current = null;

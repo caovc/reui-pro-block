@@ -278,9 +278,7 @@ export default function ChecklistDialog() {
         description="Finalize routing, apps, and fallback rules before launch."
         footer={
           <>
-            <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
-            </DialogClose>
+            <DialogClose render={<Button variant="outline" />}>Cancel</DialogClose>
             <Button
               onClick={() => {
                 setSaved(
@@ -294,12 +292,7 @@ export default function ChecklistDialog() {
           </>
         }
       >
-        <Accordion
-          type="single"
-          collapsible
-          defaultValue="identity"
-          className="refined-checklist-sections"
-        >
+        <Accordion defaultValue={["identity"]} className="refined-checklist-sections">
           {sections.map((section) => (
             <AccordionItem value={section.id} key={section.id}>
               <AccordionTrigger aria-label={section.title}>

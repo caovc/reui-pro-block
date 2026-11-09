@@ -20,7 +20,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { Slot } from "radix-ui";
+import { RenderSlot as Slot } from "@/components/ui/render-slot";
 
 import { cn } from "cn";
 

@@ -192,10 +192,10 @@ export function Actions({
 }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button size="icon-xs" variant="ghost" aria-label={`${label} actions`}>
-          <Ellipsis />
-        </Button>
+      <DropdownMenuTrigger
+        render={<Button size="icon-xs" variant="ghost" aria-label={`${label} actions`} />}
+      >
+        <Ellipsis />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuGroup>

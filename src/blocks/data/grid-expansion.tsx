@@ -290,11 +290,9 @@ function SubtaskGrid() {
       subtitle={`${rows.length} tasks / Sub-tasks ${subtasks ? "on" : "off"}`}
       actions={
         <Popover>
-          <PopoverTrigger asChild>
-            <Button size="sm">
-              <Plus />
-              New task
-            </Button>
+          <PopoverTrigger render={<Button size="sm" />}>
+            <Plus />
+            New task
           </PopoverTrigger>
           <PopoverContent align="end">
             <label htmlFor="new-delivery-task" className="text-xs font-medium">
@@ -396,11 +394,9 @@ function SubtaskGrid() {
         clearLabel=""
       >
         <Popover>
-          <PopoverTrigger asChild>
-            <Button className="ml-auto" size="sm" variant="outline">
-              <Settings2 />
-              Settings
-            </Button>
+          <PopoverTrigger render={<Button className="ml-auto" size="sm" variant="outline" />}>
+            <Settings2 />
+            Settings
           </PopoverTrigger>
           <PopoverContent align="end">
             <label className="flex items-center justify-between text-xs">
@@ -606,10 +602,12 @@ function ReleaseGrid() {
           </span>
           {r.checks.length > 3 && (
             <Popover>
-              <PopoverTrigger asChild>
-                <button className="text-muted-foreground underline-offset-2 hover:underline">
-                  +{r.checks.length - 3} more
-                </button>
+              <PopoverTrigger
+                render={
+                  <button className="text-muted-foreground underline-offset-2 hover:underline" />
+                }
+              >
+                +{r.checks.length - 3}more
               </PopoverTrigger>
               <PopoverContent className="w-[min(90vw,560px)]">
                 {r.checks.slice(3).map((c, j) => checkCard(r, c, j + 3))}
@@ -749,11 +747,9 @@ function ReleaseGrid() {
       subtitle="Upcoming windows, blockers, and checks."
       actions={
         <Popover>
-          <PopoverTrigger asChild>
-            <Button size="sm">
-              <Plus />
-              New review
-            </Button>
+          <PopoverTrigger render={<Button size="sm" />}>
+            <Plus />
+            New review
           </PopoverTrigger>
           <PopoverContent align="end">
             <label htmlFor="release-name" className="text-xs font-medium">
@@ -812,11 +808,9 @@ function ReleaseGrid() {
           options={["All statuses", "Needs approval", "Blocked", "Approved", "Escalated"]}
         />
         <Popover>
-          <PopoverTrigger asChild>
-            <Button className="ml-auto" size="sm" variant="outline">
-              <Settings2 />
-              View Settings
-            </Button>
+          <PopoverTrigger render={<Button className="ml-auto" size="sm" variant="outline" />}>
+            <Settings2 />
+            View Settings
           </PopoverTrigger>
           <PopoverContent align="end">
             <label className="flex items-center justify-between text-xs">

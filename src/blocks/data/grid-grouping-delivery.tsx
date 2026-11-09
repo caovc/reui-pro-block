@@ -342,20 +342,22 @@ function StageTable({
             <div className="flex min-w-0 items-center gap-1">
               <span className="truncate">{row.original.engagement}</span>
               <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    size="icon-xs"
-                    variant="ghost"
-                    className="text-muted-foreground"
-                    aria-label={`Open the brief for ${row.original.engagement}`}
-                    onClick={() =>
-                      toast("Open brief", {
-                        description: `${row.original.client} / ${row.original.engagement}`,
-                      })
-                    }
-                  >
-                    <Link className="size-3.5" />
-                  </Button>
+                <TooltipTrigger
+                  render={
+                    <Button
+                      size="icon-xs"
+                      variant="ghost"
+                      className="text-muted-foreground"
+                      aria-label={`Open the brief for ${row.original.engagement}`}
+                      onClick={() =>
+                        toast("Open brief", {
+                          description: `${row.original.client} / ${row.original.engagement}`,
+                        })
+                      }
+                    />
+                  }
+                >
+                  <Link className="size-3.5" />
                 </TooltipTrigger>
                 <TooltipContent>
                   <p className="text-sm">Open Brief</p>
@@ -364,20 +366,22 @@ function StageTable({
             </div>
           ) : (
             <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="icon-xs"
-                  className="size-6 rounded-full border-dashed text-muted-foreground"
-                  aria-label={`Name the ${row.original.client} engagement`}
-                  onClick={() =>
-                    toast("Name engagement", {
-                      description: `Open the intake form for ${row.original.client}.`,
-                    })
-                  }
-                >
-                  <Plus className="size-3.5" />
-                </Button>
+              <TooltipTrigger
+                render={
+                  <Button
+                    variant="outline"
+                    size="icon-xs"
+                    className="size-6 rounded-full border-dashed text-muted-foreground"
+                    aria-label={`Name the ${row.original.client} engagement`}
+                    onClick={() =>
+                      toast("Name engagement", {
+                        description: `Open the intake form for ${row.original.client}.`,
+                      })
+                    }
+                  />
+                }
+              >
+                <Plus className="size-3.5" />
               </TooltipTrigger>
               <TooltipContent>
                 <p className="text-sm">Name Engagement</p>
@@ -587,18 +591,20 @@ export default function DeliveryStages() {
               </>
             )}
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="h-8 gap-1.5 pr-2.5 pl-2 text-sm leading-5"
-                >
-                  <Filter className="size-3.5" />
-                  Stages
-                  {visibleStages.length !== stageNames.length && (
-                    <Badge variant="secondary">{visibleStages.length}</Badge>
-                  )}
-                </Button>
+              <DropdownMenuTrigger
+                render={
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="h-8 gap-1.5 pr-2.5 pl-2 text-sm leading-5"
+                  />
+                }
+              >
+                <Filter className="size-3.5" />
+                Stages
+                {visibleStages.length !== stageNames.length && (
+                  <Badge variant="secondary">{visibleStages.length}</Badge>
+                )}
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" collisionPadding={5} className="w-48">
                 <DropdownMenuGroup>
@@ -631,15 +637,17 @@ export default function DeliveryStages() {
               </DropdownMenuContent>
             </DropdownMenu>
             <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  className="h-8 gap-1.5 pr-2.5 pl-2 text-sm leading-5"
-                >
-                  <Settings2 className="size-3.5" />
-                  Display
-                </Button>
+              <PopoverTrigger
+                render={
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="h-8 gap-1.5 pr-2.5 pl-2 text-sm leading-5"
+                  />
+                }
+              >
+                <Settings2 className="size-3.5" />
+                Display
               </PopoverTrigger>
               <PopoverContent
                 align="end"

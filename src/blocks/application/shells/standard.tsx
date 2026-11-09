@@ -204,26 +204,28 @@ function FloatingSidebarSearch({ collapsed }: { collapsed: boolean }) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button
-          ref={trigger}
-          variant="outline"
-          size={collapsed ? "icon-sm" : "sm"}
-          className={
-            collapsed
-              ? "size-8 shrink-0 justify-center px-0"
-              : "h-8 w-full justify-start gap-2 px-2 font-normal"
-          }
-          aria-label="Search workspace"
-        >
-          <Search />
-          {!collapsed && (
-            <>
-              <span className="flex-1 text-left text-[13px] text-muted-foreground">Search...</span>
-              <Kbd className="h-5 border bg-background text-[10px] font-normal">⌘K</Kbd>
-            </>
-          )}
-        </Button>
+      <DialogTrigger
+        render={
+          <Button
+            ref={trigger}
+            variant="outline"
+            size={collapsed ? "icon-sm" : "sm"}
+            className={
+              collapsed
+                ? "size-8 shrink-0 justify-center px-0"
+                : "h-8 w-full justify-start gap-2 px-2 font-normal"
+            }
+            aria-label="Search workspace"
+          />
+        }
+      >
+        <Search />
+        {!collapsed && (
+          <>
+            <span className="flex-1 text-left text-[13px] text-muted-foreground">Search...</span>
+            <Kbd className="h-5 border bg-background text-[10px] font-normal">⌘K</Kbd>
+          </>
+        )}
       </DialogTrigger>
       <DialogContent
         className="reui-reference gap-0 px-4 py-2 sm:max-w-md [&>[data-slot=dialog-close]]:top-3 [&>[data-slot=dialog-close]]:right-3 [&>[data-slot=dialog-close]]:opacity-60"
@@ -498,10 +500,10 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
                   ))}
                 </div>
                 <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon-sm" aria-label="More options">
-                      <Ellipsis />
-                    </Button>
+                  <DropdownMenuTrigger
+                    render={<Button variant="ghost" size="icon-sm" aria-label="More options" />}
+                  >
+                    <Ellipsis />
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
                     <DropdownMenuGroup>
@@ -531,10 +533,10 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
                   Auto Refresh
                 </label>
                 <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon-sm" aria-label="More options">
-                      <Ellipsis />
-                    </Button>
+                  <DropdownMenuTrigger
+                    render={<Button variant="ghost" size="icon-sm" aria-label="More options" />}
+                  >
+                    <Ellipsis />
                   </DropdownMenuTrigger>
                   <DropdownMenuContent>
                     <DropdownMenuGroup>

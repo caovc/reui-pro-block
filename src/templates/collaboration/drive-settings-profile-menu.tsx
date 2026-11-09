@@ -46,15 +46,17 @@ export function DriveProfileMenu({
   };
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
-      <DropdownMenuTrigger asChild>
-        <Button
-          size="icon-sm"
-          variant="ghost"
-          className="ct-drive-profile-trigger"
-          aria-label={`Open profile for ${name}`}
-        >
-          <Avatar name="Alex Rivera" />
-        </Button>
+      <DropdownMenuTrigger
+        render={
+          <Button
+            size="icon-sm"
+            variant="ghost"
+            className="ct-drive-profile-trigger"
+            aria-label={`Open profile for ${name}`}
+          />
+        }
+      >
+        <Avatar name="Alex Rivera" />
       </DropdownMenuTrigger>
       <DropdownMenuContent
         side="right"
@@ -76,26 +78,29 @@ export function DriveProfileMenu({
               { section: "billing", title: "Billing", icon: CreditCard },
             ] as const
           ).map(({ section, title, icon: Icon }) => (
-            <DropdownMenuItem key={section} asChild>
-              <a
-                href={navigation.href(section)}
-                onClick={(event) => {
-                  if (
-                    event.button === 0 &&
-                    !event.metaKey &&
-                    !event.ctrlKey &&
-                    !event.shiftKey &&
-                    !event.altKey
-                  ) {
-                    event.preventDefault();
-                    select(section);
-                  }
-                }}
-              >
-                <Icon />
-                {title}
-                {section === "profile" && <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>}
-              </a>
+            <DropdownMenuItem
+              key={section}
+              render={
+                <a
+                  href={navigation.href(section)}
+                  onClick={(event) => {
+                    if (
+                      event.button === 0 &&
+                      !event.metaKey &&
+                      !event.ctrlKey &&
+                      !event.shiftKey &&
+                      !event.altKey
+                    ) {
+                      event.preventDefault();
+                      select(section);
+                    }
+                  }}
+                />
+              }
+            >
+              <Icon />
+              {title}
+              {section === "profile" && <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>}
             </DropdownMenuItem>
           ))}
         </DropdownMenuGroup>
@@ -129,27 +134,29 @@ export function DriveProfileMenu({
           </RadioGroup>
         </div>
         <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <a
-            href={loginHref}
-            onClick={(event) => {
-              if (
-                event.button === 0 &&
-                !event.metaKey &&
-                !event.ctrlKey &&
-                !event.shiftKey &&
-                !event.altKey
-              ) {
-                event.preventDefault();
-                setOpen(false);
-                onSignOut();
-                if (isMobile) setOpenMobile(false);
-              }
-            }}
-          >
-            <LogOut />
-            Sign Out<DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-          </a>
+        <DropdownMenuItem
+          render={
+            <a
+              href={loginHref}
+              onClick={(event) => {
+                if (
+                  event.button === 0 &&
+                  !event.metaKey &&
+                  !event.ctrlKey &&
+                  !event.shiftKey &&
+                  !event.altKey
+                ) {
+                  event.preventDefault();
+                  setOpen(false);
+                  onSignOut();
+                  if (isMobile) setOpenMobile(false);
+                }
+              }}
+            />
+          }
+        >
+          <LogOut />
+          Sign Out<DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

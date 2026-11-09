@@ -264,26 +264,28 @@ function CollaborationShell({
     );
   const account = (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          className="ct-profile ct-account-trigger"
-          aria-label={kind === "roster" ? "Open account menu" : "Open user menu"}
-        >
-          <span aria-hidden="true" className="ct-account-avatar">
-            {profilePhoto}
-            <i data-availability={availability} />
-          </span>
-          {!collapsed && (
-            <>
-              <span>
-                <b>{accountName}</b>
-                <small>{kind === "roster" ? organization : "nick.bold@pulse.io"}</small>
-              </span>
-              {kind === "roster" ? <Ellipsis size={16} /> : <ChevronDown size={14} />}
-            </>
-          )}
-        </Button>
+      <DropdownMenuTrigger
+        render={
+          <Button
+            variant="ghost"
+            className="ct-profile ct-account-trigger"
+            aria-label={kind === "roster" ? "Open account menu" : "Open user menu"}
+          />
+        }
+      >
+        <span aria-hidden="true" className="ct-account-avatar">
+          {profilePhoto}
+          <i data-availability={availability} />
+        </span>
+        {!collapsed && (
+          <>
+            <span>
+              <b>{accountName}</b>
+              <small>{kind === "roster" ? organization : "nick.bold@pulse.io"}</small>
+            </span>
+            {kind === "roster" ? <Ellipsis size={16} /> : <ChevronDown size={14} />}
+          </>
+        )}
       </DropdownMenuTrigger>
       <DropdownMenuContent
         side={isMobile ? "top" : "right"}
@@ -567,11 +569,11 @@ function CollaborationShell({
               </div>
               <span className="ct-muted">/</span>
               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="ct-product-trigger">
-                    {product}
-                    <ChevronDown size={12} />
-                  </Button>
+                <DropdownMenuTrigger
+                  render={<Button variant="ghost" className="ct-product-trigger" />}
+                >
+                  {product}
+                  <ChevronDown size={12} />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="reui-reference" align="start">
                   <DropdownMenuLabel>Supported products</DropdownMenuLabel>
@@ -615,10 +617,12 @@ function CollaborationShell({
                     <Mark />
                     {!collapsed && <b>Roster</b>}
                     <Popover>
-                      <PopoverTrigger asChild>
-                        <Button variant="ghost" size="icon-sm" aria-label="Notifications">
-                          <Bell />
-                        </Button>
+                      <PopoverTrigger
+                        render={
+                          <Button variant="ghost" size="icon-sm" aria-label="Notifications" />
+                        }
+                      >
+                        <Bell />
                       </PopoverTrigger>
                       <PopoverContent className="reui-reference" side="right" align="start">
                         <h2 className="font-medium">Notifications</h2>

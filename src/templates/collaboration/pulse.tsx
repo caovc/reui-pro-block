@@ -312,11 +312,9 @@ export default function Pulse() {
           </Select>
           <div className="ct-grow" />
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline">
-                <SlidersHorizontal />
-                Settings
-              </Button>
+            <DropdownMenuTrigger render={<Button variant="outline" />}>
+              <SlidersHorizontal />
+              Settings
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               {["customer", "stage", "due", "queue", "value", "sla"].map((key) => (
@@ -331,11 +329,9 @@ export default function Pulse() {
             </DropdownMenuContent>
           </DropdownMenu>
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline">
-                <MoreHorizontal />
-                Actions
-              </Button>
+            <DropdownMenuTrigger render={<Button variant="outline" />}>
+              <MoreHorizontal />
+              Actions
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuItem

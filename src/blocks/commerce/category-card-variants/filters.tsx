@@ -88,16 +88,14 @@ export function CollectionFilterPopover({
   }
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <Button variant="outline">
-          <SlidersHorizontal className="size-4" />
-          Filters
-          {active > 0 && (
-            <Badge variant="secondary" size="sm" data-filter-count>
-              {active}
-            </Badge>
-          )}
-        </Button>
+      <PopoverTrigger render={<Button variant="outline" />}>
+        <SlidersHorizontal className="size-4" />
+        Filters
+        {active > 0 && (
+          <Badge variant="secondary" size="sm" data-filter-count>
+            {active}
+          </Badge>
+        )}
       </PopoverTrigger>
       <PopoverContent className="w-[min(22rem,calc(100vw-2rem))]" align="start">
         <PopoverHeader>

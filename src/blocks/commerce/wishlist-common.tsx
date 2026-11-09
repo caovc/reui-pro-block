@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { ReactNode } from "react";
+import { isValidElement, type ReactNode } from "react";
 import {
   ArrowRight,
   Bell,
@@ -260,10 +260,10 @@ export function WishlistBreadcrumb({
     <Breadcrumb className="mb-2 sm:mb-4">
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink asChild>
-            <button type="button" onClick={onShop} className="cursor-pointer">
-              Shop
-            </button>
+          <BreadcrumbLink
+            render={<button type="button" onClick={onShop} className="cursor-pointer" />}
+          >
+            Shop
           </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
@@ -397,19 +397,21 @@ export function RestockAlert({
     [saved, setSaved] = useState(false);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          className={className}
-          onClick={() => {
-            setEmail(alerts[product.id] ?? "");
-            setSaved(false);
-          }}
-        >
-          <Bell />
-          {alerts[product.id] ? "Alert Saved" : label}
-        </Button>
+      <DialogTrigger
+        render={
+          <Button
+            variant="outline"
+            size="sm"
+            className={className}
+            onClick={() => {
+              setEmail(alerts[product.id] ?? "");
+              setSaved(false);
+            }}
+          />
+        }
+      >
+        <Bell />
+        {alerts[product.id] ? "Alert Saved" : label}
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -486,11 +488,11 @@ export function ShareWishlist({
   const link = typeof window === "undefined" ? "" : window.location.href;
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline" size="sm" onClick={() => setCopied(false)}>
-          <Share2 />
-          {label}
-        </Button>
+      <DialogTrigger
+        render={<Button variant="outline" size="sm" onClick={() => setCopied(false)} />}
+      >
+        <Share2 />
+        {label}
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -548,14 +550,18 @@ export function BrowseWishlistItems({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       {trigger !== null && (
-        <DialogTrigger asChild>
-          {trigger ?? (
-            <Button variant="ghost" size="sm">
-              Continue Shopping
-              <ArrowRight />
-            </Button>
-          )}
-        </DialogTrigger>
+        <DialogTrigger
+          render={
+            isValidElement(trigger) ? (
+              trigger
+            ) : (
+              <Button variant="ghost" size="sm">
+                Continue Shopping
+                <ArrowRight />
+              </Button>
+            )
+          }
+        ></DialogTrigger>
       )}
       <DialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-2xl">
         <DialogHeader>

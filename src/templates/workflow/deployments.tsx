@@ -215,10 +215,10 @@ export function Deployments() {
       size: 50,
       render: (r) => (
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button size="icon-sm" variant="ghost" aria-label={`Actions ${r.id}`}>
-              <MoreHorizontal />
-            </Button>
+          <DropdownMenuTrigger
+            render={<Button size="icon-sm" variant="ghost" aria-label={`Actions ${r.id}`} />}
+          >
+            <MoreHorizontal />
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem onSelect={() => setSelected(r)}>View deployment</DropdownMenuItem>

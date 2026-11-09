@@ -149,15 +149,17 @@ function EndpointRow({ endpoint, model }: { endpoint: FluxEndpoint; model: FluxW
           onCheckedChange={(value) => model.setEndpointEnabled(endpoint.id, value)}
         />
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="rounded-full"
-              aria-label={`Open actions for ${endpoint.name}`}
-            >
-              <MoreVertical />
-            </Button>
+          <DropdownMenuTrigger
+            render={
+              <Button
+                variant="ghost"
+                size="icon"
+                className="rounded-full"
+                aria-label={`Open actions for ${endpoint.name}`}
+              />
+            }
+          >
+            <MoreVertical />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="reui-reference">
             <DropdownMenuItem

@@ -98,37 +98,37 @@ export function VerveSettingsWebhooks({ model }: { model: VerveConfigurationMode
               </SettingsRow>
               <SettingsRow title="Subscribed events" invalid={Boolean(errors.events)}>
                 <ItemGroup className="vv-event-list" role="group" aria-label="Subscribed events">
-                  <Item asChild size="xs">
-                    <label className="vv-checkbox-option">
+                  <Item size="xs" render={<label className="vv-checkbox-option" />}>
+                    <Checkbox
+                      checked={allSelected ? true : draft.events.length ? "indeterminate" : false}
+                      onCheckedChange={(checked) =>
+                        model.updateEndpointDraft(
+                          "events",
+                          checked === true ? [...verveWebhookEvents] : [],
+                        )
+                      }
+                    />
+                    Select all{" "}
+                    <span className="vv-config-count">{draft.events.length} selected</span>
+                  </Item>
+                  {verveWebhookEvents.map((eventName) => (
+                    <Item
+                      size="xs"
+                      key={eventName}
+                      render={<label className="vv-checkbox-option" />}
+                    >
                       <Checkbox
-                        checked={allSelected ? true : draft.events.length ? "indeterminate" : false}
+                        checked={draft.events.includes(eventName)}
                         onCheckedChange={(checked) =>
                           model.updateEndpointDraft(
                             "events",
-                            checked === true ? [...verveWebhookEvents] : [],
+                            checked === true
+                              ? [...draft.events, eventName]
+                              : draft.events.filter((value) => value !== eventName),
                           )
                         }
                       />
-                      Select all{" "}
-                      <span className="vv-config-count">{draft.events.length} selected</span>
-                    </label>
-                  </Item>
-                  {verveWebhookEvents.map((eventName) => (
-                    <Item asChild size="xs" key={eventName}>
-                      <label className="vv-checkbox-option">
-                        <Checkbox
-                          checked={draft.events.includes(eventName)}
-                          onCheckedChange={(checked) =>
-                            model.updateEndpointDraft(
-                              "events",
-                              checked === true
-                                ? [...draft.events, eventName]
-                                : draft.events.filter((value) => value !== eventName),
-                            )
-                          }
-                        />
-                        <span className="font-mono">{eventName}</span>
-                      </label>
+                      <span className="font-mono">{eventName}</span>
                     </Item>
                   ))}
                 </ItemGroup>

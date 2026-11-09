@@ -57,7 +57,7 @@ export default function CollaboratorInviteDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       {trigger ? (
-        <DialogTrigger asChild>{trigger}</DialogTrigger>
+        <DialogTrigger render={trigger as never}></DialogTrigger>
       ) : (
         <DialogLauncher
           id={8}
@@ -94,9 +94,7 @@ export default function CollaboratorInviteDialog({
         description="Add each person with the access they need."
         footer={
           <>
-            <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
-            </DialogClose>
+            <DialogClose render={<Button variant="outline" />}>Cancel</DialogClose>
             <Button
               disabled={!canSave}
               onClick={() => {

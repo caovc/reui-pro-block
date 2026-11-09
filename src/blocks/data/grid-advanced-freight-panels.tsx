@@ -472,10 +472,10 @@ function LaneEditor({
           </form>
           <SheetFooter className="flex-row justify-end border-t p-4">
             {original && (
-              <AlertDialogTrigger asChild>
-                <Button variant="outline" className="mr-auto text-destructive">
-                  Close Lane
-                </Button>
+              <AlertDialogTrigger
+                render={<Button variant="outline" className="mr-auto text-destructive" />}
+              >
+                Close Lane
               </AlertDialogTrigger>
             )}
             <Button variant="outline" onClick={onClose}>
@@ -683,10 +683,10 @@ function LaneDialog({
                 </Metric>
               </dl>
               <DialogFooter>
-                <AlertDialogTrigger asChild>
-                  <Button variant="outline" className="text-destructive">
-                    Close Lane
-                  </Button>
+                <AlertDialogTrigger
+                  render={<Button variant="outline" className="text-destructive" />}
+                >
+                  Close Lane
                 </AlertDialogTrigger>
                 <Button onClick={() => onPanel({ kind: "editor", laneId: lane.id })}>
                   Edit Lane

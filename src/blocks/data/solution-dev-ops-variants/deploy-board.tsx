@@ -323,27 +323,29 @@ export default function DeployBoard({
               </div>
               <div className="deploy-board-tools">
                 <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Toggle
-                      variant="outline"
-                      size="sm"
-                      aria-label="Board sound"
-                      pressed={sound}
-                      onPressedChange={(enabled) => {
-                        setSound(enabled);
-                        if (enabled) {
-                          try {
-                            audio.current ??= new AudioContext();
-                            void audio.current.resume().catch(() => setSound(false));
-                          } catch {
-                            setSound(false);
-                            toast.error("Sound is unavailable in this browser");
+                  <TooltipTrigger
+                    render={
+                      <Toggle
+                        variant="outline"
+                        size="sm"
+                        aria-label="Board sound"
+                        pressed={sound}
+                        onPressedChange={(enabled) => {
+                          setSound(enabled);
+                          if (enabled) {
+                            try {
+                              audio.current ??= new AudioContext();
+                              void audio.current.resume().catch(() => setSound(false));
+                            } catch {
+                              setSound(false);
+                              toast.error("Sound is unavailable in this browser");
+                            }
                           }
-                        }
-                      }}
-                    >
-                      {sound ? <Bell /> : <BellOff />}
-                    </Toggle>
+                        }}
+                      />
+                    }
+                  >
+                    {sound ? <Bell /> : <BellOff />}
                   </TooltipTrigger>
                   <TooltipContent className="reui-reference">Board sound</TooltipContent>
                 </Tooltip>

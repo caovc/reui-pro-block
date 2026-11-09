@@ -445,10 +445,10 @@ function ShellContent({
                   {actions}
                   {brand === "Flowly" ? (
                     <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button size="icon" variant="ghost" aria-label="Dashboard menu">
-                          <MoreHorizontal />
-                        </Button>
+                      <DropdownMenuTrigger
+                        render={<Button size="icon" variant="ghost" aria-label="Dashboard menu" />}
+                      >
+                        <MoreHorizontal />
                       </DropdownMenuTrigger>
                       <DropdownMenuContent>
                         {nav.map((n) => (

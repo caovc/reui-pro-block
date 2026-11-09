@@ -350,28 +350,30 @@ export default function NotificationsFeed({
 
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          className={cn("relative", tempo && "tempo-notifications-trigger", triggerClassName)}
-          aria-label={`Notifications, ${unread} unread`}
-        >
-          <Bell />
-          {unread > 0 &&
-            (tempo ? (
-              <span className="tempo-notifications-trigger-dot" aria-hidden="true" />
-            ) : (
-              <Badge
-                variant="destructive"
-                size="sm"
-                className="absolute -right-1 -top-1 rounded-full px-1"
-                aria-hidden="true"
-              >
-                {unread}
-              </Badge>
-            ))}
-        </Button>
+      <PopoverTrigger
+        render={
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            className={cn("relative", tempo && "tempo-notifications-trigger", triggerClassName)}
+            aria-label={`Notifications, ${unread} unread`}
+          />
+        }
+      >
+        <Bell />
+        {unread > 0 &&
+          (tempo ? (
+            <span className="tempo-notifications-trigger-dot" aria-hidden="true" />
+          ) : (
+            <Badge
+              variant="destructive"
+              size="sm"
+              className="absolute -right-1 -top-1 rounded-full px-1"
+              aria-hidden="true"
+            >
+              {unread}
+            </Badge>
+          ))}
       </PopoverTrigger>
       <PopoverContent
         align={tempo ? "start" : "end"}

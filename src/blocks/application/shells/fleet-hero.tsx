@@ -176,12 +176,12 @@ function FleetAccount({
 }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon-sm" aria-label="Evil Rabbit account">
-          <Avatar>
-            <AvatarFallback>ER</AvatarFallback>
-          </Avatar>
-        </Button>
+      <DropdownMenuTrigger
+        render={<Button variant="ghost" size="icon-sm" aria-label="Evil Rabbit account" />}
+      >
+        <Avatar>
+          <AvatarFallback>ER</AvatarFallback>
+        </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent
         side="right"
@@ -269,7 +269,7 @@ function FleetRail({
     );
     return name === "Robots" ? (
       <DropdownMenu key={name}>
-        <DropdownMenuTrigger asChild>{button}</DropdownMenuTrigger>
+        <DropdownMenuTrigger render={button as never}></DropdownMenuTrigger>
         <DropdownMenuContent side="right" align="start" className="reui-reference fleet-glass-menu">
           <DropdownMenuGroup>
             {railSections.map(({ name, icon: Glyph }) => (
@@ -452,15 +452,17 @@ export default function FleetHeroShell() {
           <span />
           <SidebarTrigger aria-label="Open workspace navigation" />
           <DropdownMenu onOpenChange={onSectionMenuOpen}>
-            <DropdownMenuTrigger asChild>
-              <Button
-                ref={mobileSections}
-                variant="ghost"
-                size="icon"
-                aria-label="Open sections menu"
-              >
-                <ChevronDown />
-              </Button>
+            <DropdownMenuTrigger
+              render={
+                <Button
+                  ref={mobileSections}
+                  variant="ghost"
+                  size="icon"
+                  aria-label="Open sections menu"
+                />
+              }
+            >
+              <ChevronDown />
             </DropdownMenuTrigger>
             {sectionsMenu}
           </DropdownMenu>
@@ -479,10 +481,17 @@ export default function FleetHeroShell() {
             ))}
           </ToggleGroup>
           <DropdownMenu onOpenChange={onSectionMenuOpen}>
-            <DropdownMenuTrigger asChild>
-              <Button ref={desktopSections} variant="ghost" size="icon" aria-label="More sections">
-                <Ellipsis />
-              </Button>
+            <DropdownMenuTrigger
+              render={
+                <Button
+                  ref={desktopSections}
+                  variant="ghost"
+                  size="icon"
+                  aria-label="More sections"
+                />
+              }
+            >
+              <Ellipsis />
             </DropdownMenuTrigger>
             {sectionsMenu}
           </DropdownMenu>

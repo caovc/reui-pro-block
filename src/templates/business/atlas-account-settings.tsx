@@ -378,11 +378,11 @@ function Group({
       <Card className="aas-card" role="region" aria-label={`${title} settings`}>
         <Collapsible open={open} onOpenChange={onOpenChange}>
           <CardHeader className="aas-group-header">
-            <CollapsibleTrigger asChild>
-              <Button type="button" variant="ghost" className="aas-group-trigger">
-                <CardTitle className="aas-group-title">{title}</CardTitle>
-                <ChevronDown aria-hidden="true" />
-              </Button>
+            <CollapsibleTrigger
+              render={<Button type="button" variant="ghost" className="aas-group-trigger" />}
+            >
+              <CardTitle className="aas-group-title">{title}</CardTitle>
+              <ChevronDown aria-hidden="true" />
             </CollapsibleTrigger>
           </CardHeader>
           <CollapsibleContent className="aas-group-content">
@@ -397,11 +397,11 @@ function Group({
   return (
     <InlineCard label={`${title} settings`} commerce>
       <Collapsible open={open} onOpenChange={onOpenChange}>
-        <CollapsibleTrigger asChild>
-          <Button type="button" variant="ghost" className="aas-group-trigger">
-            {title}
-            <ChevronDown aria-hidden="true" />
-          </Button>
+        <CollapsibleTrigger
+          render={<Button type="button" variant="ghost" className="aas-group-trigger" />}
+        >
+          {title}
+          <ChevronDown aria-hidden="true" />
         </CollapsibleTrigger>
         <CollapsibleContent className="aas-group-content">
           <FieldGroup className="aas-compact-fields">{children}</FieldGroup>
@@ -723,26 +723,30 @@ export function AtlasAccountSettings({
       </header>
       <nav aria-label="Account sections" className="aas-nav">
         {atlasAccountSections.map((section) => (
-          <Button asChild variant="ghost" key={section.id}>
-            <a
-              href={sectionHref(section.id)}
-              aria-current={model.section === section.id ? "page" : undefined}
-              onClick={(event) => {
-                if (
-                  event.button !== 0 ||
-                  event.metaKey ||
-                  event.ctrlKey ||
-                  event.shiftKey ||
-                  event.altKey
-                )
-                  return;
-                event.preventDefault();
-                model.setSection(section.id);
-                onSectionChange?.(section.id);
-              }}
-            >
-              {section.label}
-            </a>
+          <Button
+            render={
+              <a
+                href={sectionHref(section.id)}
+                aria-current={model.section === section.id ? "page" : undefined}
+                onClick={(event) => {
+                  if (
+                    event.button !== 0 ||
+                    event.metaKey ||
+                    event.ctrlKey ||
+                    event.shiftKey ||
+                    event.altKey
+                  )
+                    return;
+                  event.preventDefault();
+                  model.setSection(section.id);
+                  onSectionChange?.(section.id);
+                }}
+              />
+            }
+            variant="ghost"
+            key={section.id}
+          >
+            {section.label}
           </Button>
         ))}
       </nav>

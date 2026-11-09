@@ -40,21 +40,13 @@ export function VerveManagePlan({ model }: { model: VervePeopleBillingModel }) {
   }
   return (
     <Sheet open={open} onOpenChange={changeOpen}>
-      <SheetTrigger asChild>
-        <Button variant="outline" size="sm">
-          Manage plan
-        </Button>
-      </SheetTrigger>
+      <SheetTrigger render={<Button variant="outline" size="sm" />}>Manage plan</SheetTrigger>
       <VerveSettingsSheet
         title="Manage demo plan"
         description="Change the local plan and seat allowance. No real subscription, renewal or charge is created."
         footer={
           <>
-            <SheetClose asChild>
-              <Button type="button" variant="outline">
-                Cancel
-              </Button>
-            </SheetClose>
+            <SheetClose render={<Button type="button" variant="outline" />}>Cancel</SheetClose>
             <Button ref={submit} type="submit" form="verve-plan-form">
               {action.status === "Cancelled" ? "Resume demo plan" : "Save demo plan"}
             </Button>
@@ -131,10 +123,8 @@ export function VerveManagePlan({ model }: { model: VervePeopleBillingModel }) {
                   if (next) cancelling.current = false;
                 }}
               >
-                <AlertDialogTrigger asChild>
-                  <Button type="button" variant="destructive">
-                    Cancel demo subscription
-                  </Button>
+                <AlertDialogTrigger render={<Button type="button" variant="destructive" />}>
+                  Cancel demo subscription
                 </AlertDialogTrigger>
                 <AlertDialogContent
                   className="reui-reference"
@@ -199,21 +189,11 @@ export function VerveUsageDetails({ model }: { model: VervePeopleBillingModel })
   ];
   return (
     <Sheet>
-      <SheetTrigger asChild>
-        <Button variant="outline" size="sm">
-          View usage
-        </Button>
-      </SheetTrigger>
+      <SheetTrigger render={<Button variant="outline" size="sm" />}>View usage</SheetTrigger>
       <VerveSettingsSheet
         title="Workspace usage"
         description="Local counters and original demo plan limits. Plan changes update allowances; member changes update occupied seats."
-        footer={
-          <SheetClose asChild>
-            <Button type="button" variant="outline">
-              Close
-            </Button>
-          </SheetClose>
-        }
+        footer={<SheetClose render={<Button type="button" variant="outline" />}>Close</SheetClose>}
       >
         <div className="flex flex-col gap-4">
           {metrics.map((metric) => (

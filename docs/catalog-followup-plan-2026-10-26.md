@@ -383,7 +383,10 @@ Their local checks do not imply complete CI or deployment.
 The local catalog increases670→671 for the actual Strategy entry. It retains all79
 categories and the unlisted legacy DevOps7 implementation. Retail P&L Outlook and
 Store KPI Board remain separate pending additions; Advanced17–21 are not inferred.
-The full [checklist](CATALOG.md) is refreshed from the actual local catalog.
+At the time of this entry, the [catalog checklist](CATALOG.md) mirrored the local
+catalog. That generated list has since been removed to avoid duplicating source
+data; current block entries live in `src/data/catalog.json` and full-template
+entries in `src/templates/catalog.ts`. Counts above remain historical snapshots.
 
 The preceding4728958 milestone is confirmed deployed: original full CI1741passed
 in32.4m, Pages deployment7385256413 succeeded at2026-10-28T12:25:37Z. Root separately

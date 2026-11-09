@@ -376,14 +376,16 @@ export function ProjectBoard({
               <KanbanColumnContent value={column}>
                 {groups[column].map((t, i) => (
                   <KanbanItem value={t.id} key={t.id}>
-                    <KanbanItemHandle asChild>
-                      <button
-                        type="button"
-                        className="wf-board-card"
-                        onClick={() => setSelected(t)}
-                      >
-                        {card(t, i + index)}
-                      </button>
+                    <KanbanItemHandle
+                      render={
+                        <button
+                          type="button"
+                          className="wf-board-card"
+                          onClick={() => setSelected(t)}
+                        />
+                      }
+                    >
+                      {card(t, i + index)}
                     </KanbanItemHandle>
                   </KanbanItem>
                 ))}

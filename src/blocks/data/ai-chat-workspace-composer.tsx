@@ -148,15 +148,17 @@ export default function WorkspaceComposer({
           />
           <InputGroupAddon align="block-end" className="flex-wrap gap-1 px-2 pb-2">
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <InputGroupButton
-                  type="button"
-                  size="icon-sm"
-                  aria-label="Attach context"
-                  disabled={!available.length}
-                >
-                  <Plus />
-                </InputGroupButton>
+              <DropdownMenuTrigger
+                render={
+                  <InputGroupButton
+                    type="button"
+                    size="icon-sm"
+                    aria-label="Attach context"
+                    disabled={!available.length}
+                  />
+                }
+              >
+                <Plus />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start">
                 <DropdownMenuLabel>Available workspace files</DropdownMenuLabel>
@@ -177,15 +179,17 @@ export default function WorkspaceComposer({
               </DropdownMenuContent>
             </DropdownMenu>
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <InputGroupButton
-                  type="button"
-                  aria-label="Choose model"
-                  className="max-w-36 min-w-0 text-xs"
-                >
-                  <span className="truncate">{draft.model}</span>
-                  <ChevronDown className="size-3" />
-                </InputGroupButton>
+              <DropdownMenuTrigger
+                render={
+                  <InputGroupButton
+                    type="button"
+                    aria-label="Choose model"
+                    className="max-w-36 min-w-0 text-xs"
+                  />
+                }
+              >
+                <span className="truncate">{draft.model}</span>
+                <ChevronDown className="size-3" />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start">
                 <DropdownMenuLabel>Model · local demo</DropdownMenuLabel>

@@ -88,24 +88,27 @@ export function DriveBillingSettings({
     setDialog(kind);
   };
   const pricing = (
-    <Button asChild variant="outline">
-      <a
-        href={pricingHref}
-        onClick={(event) => {
-          if (
-            event.button === 0 &&
-            !event.metaKey &&
-            !event.ctrlKey &&
-            !event.shiftKey &&
-            !event.altKey
-          ) {
-            event.preventDefault();
-            onPricing();
-          }
-        }}
-      >
-        Manage plan
-      </a>
+    <Button
+      render={
+        <a
+          href={pricingHref}
+          onClick={(event) => {
+            if (
+              event.button === 0 &&
+              !event.metaKey &&
+              !event.ctrlKey &&
+              !event.shiftKey &&
+              !event.altKey
+            ) {
+              event.preventDefault();
+              onPricing();
+            }
+          }}
+        />
+      }
+      variant="outline"
+    >
+      Manage plan
     </Button>
   );
   return (
@@ -230,24 +233,27 @@ export function DriveBillingSettings({
                 {approvals.length}
               </Badge>
             </Button>
-            <Button asChild variant="outline">
-              <a
-                href={pricingHref}
-                onClick={(event) => {
-                  if (
-                    event.button === 0 &&
-                    !event.metaKey &&
-                    !event.ctrlKey &&
-                    !event.shiftKey &&
-                    !event.altKey
-                  ) {
-                    event.preventDefault();
-                    onPricing();
-                  }
-                }}
-              >
-                Review plans
-              </a>
+            <Button
+              render={
+                <a
+                  href={pricingHref}
+                  onClick={(event) => {
+                    if (
+                      event.button === 0 &&
+                      !event.metaKey &&
+                      !event.ctrlKey &&
+                      !event.shiftKey &&
+                      !event.altKey
+                    ) {
+                      event.preventDefault();
+                      onPricing();
+                    }
+                  }}
+                />
+              }
+              variant="outline"
+            >
+              Review plans
             </Button>
           </>
         }

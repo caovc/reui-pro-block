@@ -152,25 +152,27 @@ export function SurgeDashboard({
             <Download data-icon="inline-start" aria-hidden="true" />
             Export
           </Button>
-          <Button asChild>
-            <a
-              href={newProductHref}
-              onClick={(event) => {
-                if (
-                  event.button !== 0 ||
-                  event.metaKey ||
-                  event.ctrlKey ||
-                  event.shiftKey ||
-                  event.altKey
-                )
-                  return;
-                event.preventDefault();
-                onCreateProduct();
-              }}
-            >
-              <Plus data-icon="inline-start" aria-hidden="true" />
-              New product
-            </a>
+          <Button
+            render={
+              <a
+                href={newProductHref}
+                onClick={(event) => {
+                  if (
+                    event.button !== 0 ||
+                    event.metaKey ||
+                    event.ctrlKey ||
+                    event.shiftKey ||
+                    event.altKey
+                  )
+                    return;
+                  event.preventDefault();
+                  onCreateProduct();
+                }}
+              />
+            }
+          >
+            <Plus data-icon="inline-start" aria-hidden="true" />
+            New product
           </Button>
         </div>
       </div>
@@ -186,10 +188,12 @@ export function SurgeDashboard({
             <FrameHeader className="surge-dashboard-metric-header">
               <FrameTitle>{metric.title}</FrameTitle>
               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon-sm" aria-label={`${metric.title} options`}>
-                    <MoreHorizontal />
-                  </Button>
+                <DropdownMenuTrigger
+                  render={
+                    <Button variant="ghost" size="icon-sm" aria-label={`${metric.title} options`} />
+                  }
+                >
+                  <MoreHorizontal />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
                   align="end"
@@ -312,14 +316,16 @@ export function SurgeDashboard({
         action={
           <div className="surge-dashboard-inventory-actions">
             <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant={query ? "secondary" : "ghost"}
-                  size="icon-sm"
-                  aria-label="Search products"
-                >
-                  <Search aria-hidden="true" />
-                </Button>
+              <PopoverTrigger
+                render={
+                  <Button
+                    variant={query ? "secondary" : "ghost"}
+                    size="icon-sm"
+                    aria-label="Search products"
+                  />
+                }
+              >
+                <Search aria-hidden="true" />
               </PopoverTrigger>
               <PopoverContent
                 align="end"

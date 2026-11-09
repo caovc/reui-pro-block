@@ -597,14 +597,16 @@ export default function ReportingTree() {
           enableSorting: false,
           cell: ({ row }) => (
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon-sm"
-                  aria-label={`Actions for ${row.original.name}`}
-                >
-                  <Ellipsis className="size-4" />
-                </Button>
+              <DropdownMenuTrigger
+                render={
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    aria-label={`Actions for ${row.original.name}`}
+                  />
+                }
+              >
+                <Ellipsis className="size-4" />
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-44 text-base leading-6">
                 <DropdownMenuGroup>
@@ -813,16 +815,16 @@ export default function ReportingTree() {
                 </ToggleGroup>
               </div>
               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="h-8 gap-1.5 text-sm">
-                    <Filter className="size-4" />
-                    Filter
-                    {departments.length + statuses.length > 0 && (
-                      <Badge size="sm" variant="secondary">
-                        {departments.length + statuses.length}
-                      </Badge>
-                    )}
-                  </Button>
+                <DropdownMenuTrigger
+                  render={<Button variant="outline" size="sm" className="h-8 gap-1.5 text-sm" />}
+                >
+                  <Filter className="size-4" />
+                  Filter
+                  {departments.length + statuses.length > 0 && (
+                    <Badge size="sm" variant="secondary">
+                      {departments.length + statuses.length}
+                    </Badge>
+                  )}
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
                   align={isMobile ? "start" : "end"}
@@ -887,11 +889,11 @@ export default function ReportingTree() {
                 </DropdownMenuContent>
               </DropdownMenu>
               <Popover>
-                <PopoverTrigger asChild>
-                  <Button variant="outline" size="sm" className="h-8 gap-1.5 text-sm">
-                    <SlidersHorizontal className="size-4" />
-                    Display
-                  </Button>
+                <PopoverTrigger
+                  render={<Button variant="outline" size="sm" className="h-8 gap-1.5 text-sm" />}
+                >
+                  <SlidersHorizontal className="size-4" />
+                  Display
                 </PopoverTrigger>
                 <PopoverContent
                   align={isMobile ? "start" : "end"}

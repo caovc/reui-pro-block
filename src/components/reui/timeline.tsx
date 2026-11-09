@@ -6,9 +6,9 @@
  */
 "use client";
 
-import type { HTMLAttributes, TimeHTMLAttributes } from "react";
+import type { HTMLAttributes, ReactElement, TimeHTMLAttributes } from "react";
 import { createContext, useCallback, useContext, useState } from "react";
-import { Slot } from "radix-ui";
+import { RenderSlot as Slot } from "@/components/ui/render-slot";
 
 import { cn } from "cn";
 
@@ -118,18 +118,23 @@ function TimelineHeader({ className, ...props }: HTMLAttributes<HTMLDivElement>)
 // TimelineIndicator
 interface TimelineIndicatorProps extends HTMLAttributes<HTMLDivElement> {
   asChild?: boolean;
+  render?: ReactElement;
 }
 
 function TimelineIndicator({
   asChild = false,
+  render,
   className,
   children,
   ...props
 }: TimelineIndicatorProps) {
-  const Comp = asChild ? Slot.Root : "div";
+  const Comp = Slot.Root;
 
   return (
     <Comp
+      defaultTagName="div"
+      asChild={asChild}
+      render={render}
       aria-hidden="true"
       className={cn(
         "border-primary/20 group-data-completed/timeline-item:border-primary absolute size-4 rounded-full border-2 group-data-[orientation=horizontal]/timeline:-top-6 group-data-[orientation=horizontal]/timeline:left-0 group-data-[orientation=horizontal]/timeline:-translate-y-1/2 group-data-[orientation=vertical]/timeline:top-0 group-data-[orientation=vertical]/timeline:-left-6 group-data-[orientation=vertical]/timeline:-translate-x-1/2",

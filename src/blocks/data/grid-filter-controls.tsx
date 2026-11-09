@@ -214,11 +214,9 @@ export function FilteringSettings<T extends object>({
 }) {
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <Button variant="outline" className="ml-auto h-8 font-normal">
-          <SlidersHorizontal />
-          Settings
-        </Button>
+      <PopoverTrigger render={<Button variant="outline" className="ml-auto h-8 font-normal" />}>
+        <SlidersHorizontal />
+        Settings
       </PopoverTrigger>
       <PopoverContent align="end" className="w-64 p-4">
         <h3 className="font-medium">Table</h3>

@@ -138,11 +138,9 @@ export default function ChartBlock({ block }: BlockProps) {
         <RefreshCw />
       </Button>
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="sm">
-            Oct 1 – Oct 31, 2026
-            <ChevronDown data-icon="inline-end" />
-          </Button>
+        <DropdownMenuTrigger render={<Button variant="outline" size="sm" />}>
+          Oct 1 – Oct 31, 2026
+          <ChevronDown data-icon="inline-end" />
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuGroup>

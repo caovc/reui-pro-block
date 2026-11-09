@@ -47,15 +47,17 @@ export function SurgeReportingPeriodControl({ model }: { model: SurgeReportingPe
         setOpen(next);
       }}
     >
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          className="surge-reporting-trigger"
-          title={periodLabel(model.value)}
-        >
-          <CalendarDays data-icon="inline-start" aria-hidden="true" />
-          <span>{periodLabel(model.value)}</span>
-        </Button>
+      <PopoverTrigger
+        render={
+          <Button
+            variant="outline"
+            className="surge-reporting-trigger"
+            title={periodLabel(model.value)}
+          />
+        }
+      >
+        <CalendarDays data-icon="inline-start" aria-hidden="true" />
+        <span>{periodLabel(model.value)}</span>
       </PopoverTrigger>
       <PopoverContent
         align="end"

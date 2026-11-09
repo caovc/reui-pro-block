@@ -216,10 +216,12 @@ function FactoryActions({
 }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon-sm" aria-label={`Actions for ${factory.name}`}>
-          <MoreHorizontal />
-        </Button>
+      <DropdownMenuTrigger
+        render={
+          <Button variant="ghost" size="icon-sm" aria-label={`Actions for ${factory.name}`} />
+        }
+      >
+        <MoreHorizontal />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[170px]">
         <DropdownMenuLabel className="text-xs font-normal text-muted-foreground">
@@ -656,10 +658,8 @@ export default function FactoryScorecard({ loadFactories }: FactoryScorecardProp
 
   const settings: ReactNode = (
     <Popover>
-      <PopoverTrigger asChild>
-        <Button variant="ghost" size="icon-sm" aria-label="Settings">
-          <Settings2 />
-        </Button>
+      <PopoverTrigger render={<Button variant="ghost" size="icon-sm" aria-label="Settings" />}>
+        <Settings2 />
       </PopoverTrigger>
       <PopoverContent align="end" className="w-72 space-y-3 p-3 text-sm">
         <div>
@@ -745,12 +745,12 @@ export default function FactoryScorecard({ loadFactories }: FactoryScorecardProp
         </div>
         <div className="flex items-center gap-2">
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button size="sm" variant="outline" className="h-8 font-normal">
-                <CalendarDays />
-                vs {compare}
-                <ChevronDown />
-              </Button>
+            <DropdownMenuTrigger
+              render={<Button size="sm" variant="outline" className="h-8 font-normal" />}
+            >
+              <CalendarDays />
+              vs {compare}
+              <ChevronDown />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-52">
               <DropdownMenuLabel>Compare quarter</DropdownMenuLabel>
@@ -852,16 +852,19 @@ export default function FactoryScorecard({ loadFactories }: FactoryScorecardProp
             </div>
             <div className="lg:hidden">
               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    size="sm"
-                    variant="secondary"
-                    aria-label={`Scorecard lens, ${lens} ${lensCounts[lens]}`}
-                    className="h-8 w-40 justify-between font-normal"
-                  >
-                    {lensCounts[lens]} {lens}
-                    <ChevronDown />
-                  </Button>
+                <DropdownMenuTrigger
+                  render={
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      aria-label={`Scorecard lens, ${lens} ${lensCounts[lens]}`}
+                      className="h-8 w-40 justify-between font-normal"
+                    />
+                  }
+                >
+                  {lensCounts[lens]}
+                  {lens}
+                  <ChevronDown />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   <DropdownMenuRadioGroup

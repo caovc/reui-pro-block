@@ -261,28 +261,28 @@ export function AnalyticsPricing() {
                     </div>
                   </div>
                   <Button
-                    asChild
+                    render={
+                      <a
+                        role="button"
+                        href="#"
+                        onClick={placeholderLink}
+                        aria-label={
+                          plan.name === "Enterprise"
+                            ? "Contact us about Enterprise"
+                            : plan.name === "Free"
+                              ? "Start Free"
+                              : `Choose ${plan.name}`
+                        }
+                      />
+                    }
                     variant={plan.name === "Growth" ? "default" : "outline"}
                     className="rp-plan-action"
                   >
-                    <a
-                      role="button"
-                      href="#"
-                      onClick={placeholderLink}
-                      aria-label={
-                        plan.name === "Enterprise"
-                          ? "Contact us about Enterprise"
-                          : plan.name === "Free"
-                            ? "Start Free"
-                            : `Choose ${plan.name}`
-                      }
-                    >
-                      {plan.name === "Enterprise"
-                        ? "Contact Us"
-                        : plan.name === "Free"
-                          ? "Start Free"
-                          : `Choose ${plan.name}`}
-                    </a>
+                    {plan.name === "Enterprise"
+                      ? "Contact Us"
+                      : plan.name === "Free"
+                        ? "Start Free"
+                        : `Choose ${plan.name}`}
                   </Button>
                   <FeatureList features={plan.features} />
                 </Card>
@@ -308,21 +308,22 @@ export function AnalyticsPricing() {
                     </li>
                   )}
                   <li>
-                    <Item asChild className="rp-help-link">
-                      <a href="#" onClick={placeholderLink}>
-                        <ItemMedia className="rp-help-media">
-                          <IconTile variant="elevated" aria-hidden="true">
-                            <item.icon />
-                          </IconTile>
-                        </ItemMedia>
-                        <ItemContent className="min-w-0 gap-0.5">
-                          <ItemTitle>{item.title}</ItemTitle>
-                          <ItemDescription>{item.note}</ItemDescription>
-                        </ItemContent>
-                        <ItemActions>
-                          <ArrowDown className="rp-help-arrow" aria-hidden="true" />
-                        </ItemActions>
-                      </a>
+                    <Item
+                      className="rp-help-link"
+                      render={<a href="#" onClick={placeholderLink} />}
+                    >
+                      <ItemMedia className="rp-help-media">
+                        <IconTile variant="elevated" aria-hidden="true">
+                          <item.icon />
+                        </IconTile>
+                      </ItemMedia>
+                      <ItemContent className="min-w-0 gap-0.5">
+                        <ItemTitle>{item.title}</ItemTitle>
+                        <ItemDescription>{item.note}</ItemDescription>
+                      </ItemContent>
+                      <ItemActions>
+                        <ArrowDown className="rp-help-arrow" aria-hidden="true" />
+                      </ItemActions>
                     </Item>
                   </li>
                 </Fragment>
@@ -455,22 +456,22 @@ export function AgencyPricing() {
                     </div>
                   </div>
                   <Button
-                    asChild
+                    render={
+                      <a
+                        role="button"
+                        href="#"
+                        onClick={placeholderLink}
+                        aria-label={
+                          plan.name === "Enterprise"
+                            ? "Contact Sales for Enterprise"
+                            : `Start Trial for ${plan.name}`
+                        }
+                      />
+                    }
                     variant={plan.name === "Team" ? "default" : "outline"}
                     className="rp-plan-action"
                   >
-                    <a
-                      role="button"
-                      href="#"
-                      onClick={placeholderLink}
-                      aria-label={
-                        plan.name === "Enterprise"
-                          ? "Contact Sales for Enterprise"
-                          : `Start Trial for ${plan.name}`
-                      }
-                    >
-                      {plan.name === "Enterprise" ? "Contact Sales" : "Start Trial"}
-                    </a>
+                    {plan.name === "Enterprise" ? "Contact Sales" : "Start Trial"}
                   </Button>
                 </div>
                 <Separator className="rp-card-separator" />

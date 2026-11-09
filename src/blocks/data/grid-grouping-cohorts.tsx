@@ -291,19 +291,21 @@ function HeatCell({
   const delta = rate - cohortRate;
   return (
     <HoverCard openDelay={150} closeDelay={100}>
-      <HoverCardTrigger asChild>
-        <div
-          tabIndex={0}
-          aria-label={`${name}, ${metricLabels[metric]}: ${counts[metric].toLocaleString()} of ${counts.answers.toLocaleString()} answers, ${rate}%`}
-          data-cohort-heat={metric}
-          className={cn(
-            "absolute inset-0 flex cursor-help items-center justify-between gap-2 px-2.5 text-xs font-medium tabular-nums outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
-            heatClass(metric, rate),
-          )}
-        >
-          <span>{counts[metric].toLocaleString()}</span>
-          <span className="opacity-80">{rate}%</span>
-        </div>
+      <HoverCardTrigger
+        render={
+          <div
+            tabIndex={0}
+            aria-label={`${name}, ${metricLabels[metric]}: ${counts[metric].toLocaleString()} of ${counts.answers.toLocaleString()} answers, ${rate}%`}
+            data-cohort-heat={metric}
+            className={cn(
+              "absolute inset-0 flex cursor-help items-center justify-between gap-2 px-2.5 text-xs font-medium tabular-nums outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
+              heatClass(metric, rate),
+            )}
+          />
+        }
+      >
+        <span>{counts[metric].toLocaleString()}</span>
+        <span className="opacity-80">{rate}%</span>
       </HoverCardTrigger>
       <HoverCardContent className="w-64 space-y-3 p-3" side="top" align="center">
         <div>

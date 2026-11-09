@@ -138,15 +138,17 @@ export default function OrganizationsEmpty() {
           <FrameFooter className="empty-workspace-org-footer">
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="link"
-                    className="text-muted-foreground"
-                    onClick={() => setHelp(true)}
-                  >
-                    <Info className="size-3.5" />
-                    Learn more about <span className="text-foreground">Organizations</span>
-                  </Button>
+                <TooltipTrigger
+                  render={
+                    <Button
+                      variant="link"
+                      className="text-muted-foreground"
+                      onClick={() => setHelp(true)}
+                    />
+                  }
+                >
+                  <Info className="size-3.5" />
+                  Learn more about <span className="text-foreground">Organizations</span>
                 </TooltipTrigger>
                 <TooltipContent>
                   Organizations group users, teams, roles, and permissions under one account

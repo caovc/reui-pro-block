@@ -36,9 +36,7 @@ function InviteRequest() {
     >
       <p className="auth-access-invite">
         Need access?{" "}
-        <DialogTrigger asChild>
-          <Button variant="link">Request an invite</Button>
-        </DialogTrigger>
+        <DialogTrigger render={<Button variant="link" />}>Request an invite</DialogTrigger>
       </p>
       <DialogContent>
         <DialogHeader>

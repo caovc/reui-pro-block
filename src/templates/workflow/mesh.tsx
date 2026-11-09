@@ -211,11 +211,9 @@ export default function Mesh() {
             Ask AI
           </Button>
           <Popover>
-            <PopoverTrigger asChild>
-              <Button size="sm" variant="outline">
-                <Share2 />
-                Share
-              </Button>
+            <PopoverTrigger render={<Button size="sm" variant="outline" />}>
+              <Share2 />
+              Share
             </PopoverTrigger>
             <PopoverContent className="wf-share-popover" align="end">
               <strong>Share {view}</strong>

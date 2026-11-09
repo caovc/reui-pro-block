@@ -27,17 +27,19 @@ function FlowFieldHelp({ label, children }: { label: FieldName; children: string
 
   return (
     <Tooltip open={open} onOpenChange={setOpen}>
-      <TooltipTrigger asChild>
-        <Button
-          ref={triggerRef}
-          type="button"
-          variant="ghost"
-          size="icon-xs"
-          className="-my-1 text-muted-foreground"
-          aria-label={`About the ${label.toLowerCase()}`}
-        >
-          <Info />
-        </Button>
+      <TooltipTrigger
+        render={
+          <Button
+            ref={triggerRef}
+            type="button"
+            variant="ghost"
+            size="icon-xs"
+            className="-my-1 text-muted-foreground"
+            aria-label={`About the ${label.toLowerCase()}`}
+          />
+        }
+      >
+        <Info />
       </TooltipTrigger>
       {/* The free Radix arrow adds 10px; retain the reference's 4px content gap. */}
       <TooltipContent

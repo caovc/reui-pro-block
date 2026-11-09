@@ -57,11 +57,9 @@ export function LucentOriginsDialog({
         setError("");
       }}
     >
-      <DialogTrigger asChild>
-        <Button type="button" variant="outline">
-          <Plus aria-hidden="true" />
-          Add origin
-        </Button>
+      <DialogTrigger render={<Button type="button" variant="outline" />}>
+        <Plus aria-hidden="true" />
+        Add origin
       </DialogTrigger>
       <DialogContent className="reui-reference wf-lucent-origin-dialog">
         <DialogHeader>
@@ -112,11 +110,7 @@ export function LucentOriginsDialog({
           {error && <FieldError id="lucent-origin-error">{error}</FieldError>}
         </Field>
         <DialogFooter>
-          <DialogClose asChild>
-            <Button type="button" variant="outline">
-              Done
-            </Button>
-          </DialogClose>
+          <DialogClose render={<Button type="button" variant="outline" />}>Done</DialogClose>
           <Button type="button" onClick={addOrigin}>
             Add origin
           </Button>

@@ -80,17 +80,19 @@ function ResearchAction({
 }) {
   return (
     <Tooltip>
-      <TooltipTrigger asChild>
-        <Button
-          type="button"
-          size="icon-xs"
-          variant="ghost"
-          className="size-6 [&_svg]:size-3"
-          aria-label={label}
-          onClick={onClick}
-        >
-          {children}
-        </Button>
+      <TooltipTrigger
+        render={
+          <Button
+            type="button"
+            size="icon-xs"
+            variant="ghost"
+            className="size-6 [&_svg]:size-3"
+            aria-label={label}
+            onClick={onClick}
+          />
+        }
+      >
+        {children}
       </TooltipTrigger>
       <TooltipContent className="reui-reference" side="top" sideOffset={4}>
         {tooltip}

@@ -157,11 +157,9 @@ export default function InventoryShell() {
           </div>
           <div className="flex items-center gap-1">
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button size="sm" className="h-7 text-xs">
-                  <Plus />
-                  Create
-                </Button>
+              <DropdownMenuTrigger render={<Button size="sm" className="h-7 text-xs" />}>
+                <Plus />
+                Create
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuGroup>

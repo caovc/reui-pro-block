@@ -125,10 +125,12 @@ function EditableTiles({ inventoryMode = false }: { inventoryMode?: boolean }) {
                   <Icon />
                 </IconTile>
                 <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon-xs" aria-label={`${tile.name} actions`}>
-                      <Ellipsis />
-                    </Button>
+                  <DropdownMenuTrigger
+                    render={
+                      <Button variant="ghost" size="icon-xs" aria-label={`${tile.name} actions`} />
+                    }
+                  >
+                    <Ellipsis />
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuGroup>

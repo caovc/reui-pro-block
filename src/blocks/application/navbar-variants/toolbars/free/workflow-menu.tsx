@@ -19,10 +19,10 @@ export function WorkflowMenu({ onAction }: { onAction: (action: string) => void 
   return (
     <div className="flex items-center justify-center">
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon-sm" aria-label="Workflow options">
-            <EllipsisVertical aria-hidden="true" />
-          </Button>
+        <DropdownMenuTrigger
+          render={<Button variant="ghost" size="icon-sm" aria-label="Workflow options" />}
+        >
+          <EllipsisVertical aria-hidden="true" />
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-48" align="end">
           <DropdownMenuGroup>

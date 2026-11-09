@@ -162,18 +162,16 @@ export function TillSlipReceipt() {
           </dl>
           <ItemGroup className="gap-4">
             {receiptItems.map((item) => (
-              <Item asChild key={item.id} className="items-start border-0 p-0">
-                <article>
-                  <ItemContent className="gap-1">
-                    <ItemTitle className="text-xs font-semibold">{item.name}</ItemTitle>
-                    <ItemDescription className="text-[11px]">
-                      {item.detail} · {item.qty} × {receiptMoney(item.price)}
-                    </ItemDescription>
-                  </ItemContent>
-                  <ItemActions className="text-xs font-semibold">
-                    {receiptMoney(item.price * item.qty)}
-                  </ItemActions>
-                </article>
+              <Item key={item.id} className="items-start border-0 p-0" render={<article />}>
+                <ItemContent className="gap-1">
+                  <ItemTitle className="text-xs font-semibold">{item.name}</ItemTitle>
+                  <ItemDescription className="text-[11px]">
+                    {item.detail} · {item.qty} × {receiptMoney(item.price)}
+                  </ItemDescription>
+                </ItemContent>
+                <ItemActions className="text-xs font-semibold">
+                  {receiptMoney(item.price * item.qty)}
+                </ItemActions>
               </Item>
             ))}
           </ItemGroup>

@@ -169,14 +169,16 @@ function ActionsCell({ product }: { product: Product }) {
   const state = useContext(InventoryCells)!;
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          size="icon-sm"
-          variant="ghost"
-          aria-label={`Actions for ${product.name || product.sku}`}
-        >
-          <Ellipsis />
-        </Button>
+      <DropdownMenuTrigger
+        render={
+          <Button
+            size="icon-sm"
+            variant="ghost"
+            aria-label={`Actions for ${product.name || product.sku}`}
+          />
+        }
+      >
+        <Ellipsis />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuGroup>

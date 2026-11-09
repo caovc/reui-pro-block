@@ -3,7 +3,7 @@
 // Description: Square container that gives icons a consistent surface
 
 import { cva, type VariantProps } from "class-variance-authority";
-import { Slot } from "radix-ui";
+import { RenderSlot as Slot } from "@/components/ui/render-slot";
 
 import { cn } from "cn";
 
@@ -100,6 +100,7 @@ const iconTileVariants = cva(
 interface IconTileProps
   extends React.ComponentProps<"span">, VariantProps<typeof iconTileVariants> {
   asChild?: boolean;
+  render?: React.ReactElement;
 }
 
 function IconTile({
@@ -108,12 +109,16 @@ function IconTile({
   size = "default",
   radius = "default",
   asChild = false,
+  render,
   ...props
 }: IconTileProps) {
-  const Comp = asChild ? Slot.Root : "span";
+  const Comp = Slot.Root;
 
   return (
     <Comp
+      defaultTagName="span"
+      asChild={asChild}
+      render={render}
       data-slot="icon-tile"
       data-variant={variant}
       data-size={size}

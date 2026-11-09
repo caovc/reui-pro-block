@@ -165,36 +165,38 @@ export function BuyMenu({
 }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          size="sm"
-          variant="ghost"
-          aria-label={`Next buy for ${factory.name}: ${factory.nextBuy}`}
-          className={cn("h-7 gap-1 px-1.5 font-normal", callColors[factory.nextBuy])}
+      <DropdownMenuTrigger
+        render={
+          <Button
+            size="sm"
+            variant="ghost"
+            aria-label={`Next buy for ${factory.name}: ${factory.nextBuy}`}
+            className={cn("h-7 gap-1 px-1.5 font-normal", callColors[factory.nextBuy])}
+          />
+        }
+      >
+        <Badge
+          variant={
+            factory.nextBuy === "Grow"
+              ? "success-light"
+              : factory.nextBuy === "Reduce"
+                ? "warning-light"
+                : factory.nextBuy === "Exit"
+                  ? "destructive-light"
+                  : "outline"
+          }
+          className="h-5 font-normal"
         >
-          <Badge
-            variant={
-              factory.nextBuy === "Grow"
-                ? "success-light"
-                : factory.nextBuy === "Reduce"
-                  ? "warning-light"
-                  : factory.nextBuy === "Exit"
-                    ? "destructive-light"
-                    : "outline"
-            }
-            className="h-5 font-normal"
-          >
-            {factory.nextBuy === "Open" && <CircleAlert className="size-3 text-muted-foreground" />}
-            {factory.nextBuy}
-          </Badge>
-          <ChevronDown className="size-3 text-muted-foreground" />
-          {factory.nextBuy !== factory.suggested && (
-            <CircleAlert
-              className="size-3 text-muted-foreground"
-              aria-label={`Suggested ${factory.suggested}`}
-            />
-          )}
-        </Button>
+          {factory.nextBuy === "Open" && <CircleAlert className="size-3 text-muted-foreground" />}
+          {factory.nextBuy}
+        </Badge>
+        <ChevronDown className="size-3 text-muted-foreground" />
+        {factory.nextBuy !== factory.suggested && (
+          <CircleAlert
+            className="size-3 text-muted-foreground"
+            aria-label={`Suggested ${factory.suggested}`}
+          />
+        )}
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" className="w-[190px]">
         <DropdownMenuLabel className="text-xs font-normal">
@@ -226,48 +228,48 @@ export function OtifLane({ factory, compare }: { factory: FactoryScore; compare:
   const prior = factory.prior?.otif;
   return (
     <Tooltip>
-      <TooltipTrigger asChild>
-        <button
-          type="button"
-          className="factory-otif-lane"
-          aria-label={`${factory.name} OTIF ${percent(factory.current.otif)}, floor ${percent(factory.floor)}`}
-        >
-          <span className="factory-otif-track" aria-hidden="true">
-            <span
-              className="factory-otif-peer"
-              style={{
-                left: `${otifPosition(factory.peerLow)}%`,
-                width: `${otifPosition(factory.peerHigh) - otifPosition(factory.peerLow)}%`,
-              }}
-            />
-            <span className="factory-otif-goal" style={{ left: `${otifPosition(95)}%` }} />
-            <span
-              className="factory-otif-floor"
-              style={{ left: `${otifPosition(factory.floor)}%` }}
-            />
-            {prior !== undefined && (
-              <>
-                <span
-                  className="factory-otif-change"
-                  style={{
-                    left: `${Math.min(otifPosition(prior), otifPosition(factory.current.otif))}%`,
-                    width: `${Math.abs(otifPosition(factory.current.otif) - otifPosition(prior))}%`,
-                  }}
-                />
-                <span className="factory-otif-prior" style={{ left: `${otifPosition(prior)}%` }} />
-              </>
-            )}
-            <span
-              className={cn("factory-otif-current", below && "is-below")}
-              style={{ left: `${otifPosition(factory.current.otif)}%` }}
-            />
-          </span>
+      <TooltipTrigger
+        render={
+          <button
+            type="button"
+            className="factory-otif-lane"
+            aria-label={`${factory.name} OTIF ${percent(factory.current.otif)}, floor ${percent(factory.floor)}`}
+          />
+        }
+      >
+        <span className="factory-otif-track" aria-hidden="true">
           <span
-            className={cn("w-12 shrink-0 text-right tabular-nums", below && "text-destructive")}
-          >
-            {percent(factory.current.otif)}
-          </span>
-        </button>
+            className="factory-otif-peer"
+            style={{
+              left: `${otifPosition(factory.peerLow)}%`,
+              width: `${otifPosition(factory.peerHigh) - otifPosition(factory.peerLow)}%`,
+            }}
+          />
+          <span className="factory-otif-goal" style={{ left: `${otifPosition(95)}%` }} />
+          <span
+            className="factory-otif-floor"
+            style={{ left: `${otifPosition(factory.floor)}%` }}
+          />
+          {prior !== undefined && (
+            <>
+              <span
+                className="factory-otif-change"
+                style={{
+                  left: `${Math.min(otifPosition(prior), otifPosition(factory.current.otif))}%`,
+                  width: `${Math.abs(otifPosition(factory.current.otif) - otifPosition(prior))}%`,
+                }}
+              />
+              <span className="factory-otif-prior" style={{ left: `${otifPosition(prior)}%` }} />
+            </>
+          )}
+          <span
+            className={cn("factory-otif-current", below && "is-below")}
+            style={{ left: `${otifPosition(factory.current.otif)}%` }}
+          />
+        </span>
+        <span className={cn("w-12 shrink-0 text-right tabular-nums", below && "text-destructive")}>
+          {percent(factory.current.otif)}
+        </span>
       </TooltipTrigger>
       <TooltipContent className="max-w-[300px] flex-col items-start gap-2 p-3 text-sm">
         <strong>On Time In Full · {percent(factory.current.otif)}</strong>
@@ -676,21 +678,23 @@ function FactoryDateField({
     <div className="space-y-1.5">
       <Label htmlFor={id}>{label}</Label>
       <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild>
-          <Button
-            id={id}
-            type="button"
-            variant="outline"
-            aria-label={label}
-            className="h-8 w-full justify-start gap-1.5 px-2.5 font-normal"
-          >
-            <CalendarDays className="size-3.5 text-muted-foreground" />
-            {selected.toLocaleDateString("en-US", {
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-            })}
-          </Button>
+        <PopoverTrigger
+          render={
+            <Button
+              id={id}
+              type="button"
+              variant="outline"
+              aria-label={label}
+              className="h-8 w-full justify-start gap-1.5 px-2.5 font-normal"
+            />
+          }
+        >
+          <CalendarDays className="size-3.5 text-muted-foreground" />
+          {selected.toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+          })}
         </PopoverTrigger>
         <PopoverContent align="start" className="w-auto p-0" aria-label={`${label} calendar`}>
           <Calendar

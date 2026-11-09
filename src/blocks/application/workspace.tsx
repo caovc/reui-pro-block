@@ -269,12 +269,10 @@ export function DashboardBlock({ block }: BlockProps) {
           </p>
         </div>
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm">
-              <CalendarDays />
-              {period}
-              <ChevronDown />
-            </Button>
+          <DropdownMenuTrigger render={<Button variant="outline" size="sm" />}>
+            <CalendarDays />
+            {period}
+            <ChevronDown />
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuGroup>
@@ -343,11 +341,9 @@ export function NavBlock({ block }: BlockProps) {
           <Brand />
           <Separator orientation="vertical" className="h-5" />
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm">
-                {block.name.includes("Repo") ? "acme / web-app" : "Acme Workspace"}
-                <ChevronDown />
-              </Button>
+            <DropdownMenuTrigger render={<Button variant="ghost" size="sm" />}>
+              {block.name.includes("Repo") ? "acme / web-app" : "Acme Workspace"}
+              <ChevronDown />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuLabel>Switch workspace</DropdownMenuLabel>

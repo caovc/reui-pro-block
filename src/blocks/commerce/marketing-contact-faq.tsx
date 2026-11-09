@@ -118,14 +118,14 @@ function AnswerList({
   ));
   return multiple ? (
     <Accordion
-      type="multiple"
+      multiple
       defaultValue={[items[0].q]}
       className={cards ? "rm-answer-cards" : "rm-answer-list"}
     >
       {rows}
     </Accordion>
   ) : (
-    <Accordion type="single" collapsible defaultValue={items[0].q} className="rm-answer-list">
+    <Accordion defaultValue={[items[0].q]} className="rm-answer-list">
       {rows}
     </Accordion>
   );

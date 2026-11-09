@@ -159,16 +159,18 @@ const requests: Request[] = [
 function ApprovalSummaryInfo({ title, children }: { title: string; children: ReactNode }) {
   return (
     <Tooltip>
-      <TooltipTrigger asChild>
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon-sm"
-          className="text-muted-foreground hover:text-foreground -me-1.5 size-6 shrink-0 rounded-4xl [&_svg]:size-3"
-          aria-label={`What ${title} shows`}
-        >
-          <Info />
-        </Button>
+      <TooltipTrigger
+        render={
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-sm"
+            className="text-muted-foreground hover:text-foreground -me-1.5 size-6 shrink-0 rounded-4xl [&_svg]:size-3"
+            aria-label={`What ${title} shows`}
+          />
+        }
+      >
+        <Info />
       </TooltipTrigger>
       <TooltipContent>{children}</TooltipContent>
     </Tooltip>
@@ -565,38 +567,37 @@ export function ApprovalInbox() {
               ].map(({ title, owner, description, icon: Icon }) => (
                 <Item
                   key={title}
-                  asChild
+
                   variant="outline"
                   className={`flex h-full cursor-pointer flex-col items-stretch justify-between gap-4 rounded-2xl p-3 text-left hover:border-primary/30 ${
                     focusedCoverage === title ? "border-primary/40 bg-muted" : ""
                   }`}
+                  render={
+                    <button
+                      type="button"
+                      aria-label={`Focus ${title} coverage`}
+                      aria-pressed={focusedCoverage === title}
+                      onClick={() => {
+                        setFocusedCoverage(title);
+                        toast("Coverage focused", { description: `${title}: ${description}.` });
+                      }}
+                    />
+                  }
                 >
-                  <button
-                    type="button"
-                    aria-label={`Focus ${title} coverage`}
-                    aria-pressed={focusedCoverage === title}
-                    onClick={() => {
-                      setFocusedCoverage(title);
-                      toast("Coverage focused", { description: `${title}: ${description}.` });
-                    }}
-                  >
-                    <div className="flex items-start justify-between gap-2">
-                      <ItemContent className="min-w-0 gap-1">
-                        <ItemTitle className="text-muted-foreground max-w-full truncate text-xs font-medium">
-                          {title}
-                        </ItemTitle>
-                        <span className="text-foreground text-sm leading-tight font-medium">
-                          {owner}
-                        </span>
-                      </ItemContent>
-                      <ItemMedia className="mt-0.5 [&_svg]:size-4 [&_svg]:text-muted-foreground">
-                        <Icon aria-hidden="true" />
-                      </ItemMedia>
-                    </div>
-                    <ItemDescription className="text-xs leading-tight">
-                      {description}
-                    </ItemDescription>
-                  </button>
+                  <div className="flex items-start justify-between gap-2">
+                    <ItemContent className="min-w-0 gap-1">
+                      <ItemTitle className="text-muted-foreground max-w-full truncate text-xs font-medium">
+                        {title}
+                      </ItemTitle>
+                      <span className="text-foreground text-sm leading-tight font-medium">
+                        {owner}
+                      </span>
+                    </ItemContent>
+                    <ItemMedia className="mt-0.5 [&_svg]:size-4 [&_svg]:text-muted-foreground">
+                      <Icon aria-hidden="true" />
+                    </ItemMedia>
+                  </div>
+                  <ItemDescription className="text-xs leading-tight">{description}</ItemDescription>
                 </Item>
               ))}
             </FramePanel>

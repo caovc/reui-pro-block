@@ -188,10 +188,10 @@ export default function ApprovalRunConsole() {
                   : "Working"}
           </Badge>
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button aria-label="Approval run actions" variant="ghost" size="icon-xs">
-                <Ellipsis />
-              </Button>
+            <DropdownMenuTrigger
+              render={<Button aria-label="Approval run actions" variant="ghost" size="icon-xs" />}
+            >
+              <Ellipsis />
             </DropdownMenuTrigger>
             {/* Free c-dropdown-menu-8 grouped composition, with the controlled
                 checkbox/radio patterns from c-dropdown-menu-6/7. */}
@@ -276,216 +276,212 @@ export default function ApprovalRunConsole() {
                     foldFinished && (state === "done" || state === "skipped") && "hidden",
                   )}
                 >
-                  <CollapsibleContent asChild>
-                    <div role="listitem" data-approval-step={entry.id} data-step-state={state}>
-                      <Item
-                        variant={gated ? "muted" : "default"}
-                        className={cn("block rounded-lg border-0 p-0", gated && "bg-muted/65 p-3")}
-                      >
-                        <div className="group/approval-row">
-                          <TraceLine
-                            status={
-                              state === "running" && !run.paused
-                                ? "running"
-                                : state === "queued" || state === "skipped"
-                                  ? "pending"
-                                  : undefined
-                            }
-                            className="w-full items-start gap-2"
-                          >
-                            <TraceIcon className="mt-0.5 size-3.5">
-                              <RunIcon entry={entry} state={state} paused={run.paused} />
-                            </TraceIcon>
-                            <TraceTitle className="flex min-w-0 flex-1 flex-col gap-0.5 whitespace-normal sm:flex-row sm:items-center sm:gap-2">
-                              <span
-                                className={cn(
-                                  "min-w-0 text-[13px] leading-5",
-                                  state === "waiting" && "font-medium text-foreground",
-                                )}
-                              >
-                                <span className="sr-only">
-                                  {state === "done"
-                                    ? "Completed: "
-                                    : state === "running"
-                                      ? run.paused
-                                        ? "Paused: "
-                                        : "Running: "
-                                      : state === "queued"
-                                        ? "Queued: "
-                                        : state === "waiting"
-                                          ? "Waiting: "
-                                          : ""}
-                                </span>
-                                <span data-step-title>
-                                  {state === "skipped" ? "Skipped: " : ""}
-                                  {entry.title}
-                                </span>
+                  <CollapsibleContent
+                    render={
+                      <div role="listitem" data-approval-step={entry.id} data-step-state={state} />
+                    }
+                  >
+                    <Item
+                      variant={gated ? "muted" : "default"}
+                      className={cn("block rounded-lg border-0 p-0", gated && "bg-muted/65 p-3")}
+                    >
+                      <div className="group/approval-row">
+                        <TraceLine
+                          status={
+                            state === "running" && !run.paused
+                              ? "running"
+                              : state === "queued" || state === "skipped"
+                                ? "pending"
+                                : undefined
+                          }
+                          className="w-full items-start gap-2"
+                        >
+                          <TraceIcon className="mt-0.5 size-3.5">
+                            <RunIcon entry={entry} state={state} paused={run.paused} />
+                          </TraceIcon>
+                          <TraceTitle className="flex min-w-0 flex-1 flex-col gap-0.5 whitespace-normal sm:flex-row sm:items-center sm:gap-2">
+                            <span
+                              className={cn(
+                                "min-w-0 text-[13px] leading-5",
+                                state === "waiting" && "font-medium text-foreground",
+                              )}
+                            >
+                              <span className="sr-only">
+                                {state === "done"
+                                  ? "Completed: "
+                                  : state === "running"
+                                    ? run.paused
+                                      ? "Paused: "
+                                      : "Running: "
+                                    : state === "queued"
+                                      ? "Queued: "
+                                      : state === "waiting"
+                                        ? "Waiting: "
+                                        : ""}
                               </span>
-                              <span
-                                className="flex min-w-0 items-center gap-1 text-[10px] text-muted-foreground"
-                                data-step-reference
-                              >
-                                {showPaths && (
-                                  <span className="min-w-0 truncate font-mono" data-step-path>
-                                    {provider}
-                                  </span>
-                                )}
-                                {entry.highImpact && (
-                                  <Badge
-                                    size="sm"
-                                    variant="warning-light"
-                                    className="shrink-0 text-[9px]"
-                                  >
-                                    High impact
-                                  </Badge>
-                                )}
-                                <span
-                                  className="ms-auto inline-flex shrink-0 items-center sm:ms-0 sm:opacity-0 sm:transition-opacity sm:group-hover/approval-row:opacity-100 sm:group-focus-within/approval-row:opacity-100"
-                                  data-step-actions
+                              <span data-step-title>
+                                {state === "skipped" ? "Skipped: " : ""}
+                                {entry.title}
+                              </span>
+                            </span>
+                            <span
+                              className="flex min-w-0 items-center gap-1 text-[10px] text-muted-foreground"
+                              data-step-reference
+                            >
+                              {showPaths && (
+                                <span className="min-w-0 truncate font-mono" data-step-path>
+                                  {provider}
+                                </span>
+                              )}
+                              {entry.highImpact && (
+                                <Badge
+                                  size="sm"
+                                  variant="warning-light"
+                                  className="shrink-0 text-[9px]"
                                 >
+                                  High impact
+                                </Badge>
+                              )}
+                              <span
+                                className="ms-auto inline-flex shrink-0 items-center sm:ms-0 sm:opacity-0 sm:transition-opacity sm:group-hover/approval-row:opacity-100 sm:group-focus-within/approval-row:opacity-100"
+                                data-step-actions
+                              >
+                                <Button
+                                  type="button"
+                                  variant="ghost"
+                                  size="icon-xs"
+                                  className="size-5"
+                                  aria-label={`Copy ${entry.target ?? entry.title}`}
+                                  onClick={() => copyTarget(entry)}
+                                >
+                                  <Copy className="size-3" />
+                                </Button>
+                                {entry.target && (
                                   <Button
                                     type="button"
                                     variant="ghost"
                                     size="icon-xs"
                                     className="size-5"
-                                    aria-label={`Copy ${entry.target ?? entry.title}`}
-                                    onClick={() => copyTarget(entry)}
+                                    aria-label={`Open ${entry.target}`}
+                                    onClick={() => toast.info(`${entry.target} · local demo`)}
                                   >
-                                    <Copy className="size-3" />
+                                    <ExternalLink className="size-3" />
                                   </Button>
-                                  {entry.target && (
-                                    <Button
-                                      type="button"
-                                      variant="ghost"
-                                      size="icon-xs"
-                                      className="size-5"
-                                      aria-label={`Open ${entry.target}`}
-                                      onClick={() => toast.info(`${entry.target} · local demo`)}
-                                    >
-                                      <ExternalLink className="size-3" />
-                                    </Button>
-                                  )}
-                                </span>
+                                )}
                               </span>
-                            </TraceTitle>
-                            <TraceDescription
-                              className="min-w-7 text-right text-[10px] leading-5"
-                              data-step-duration
+                            </span>
+                          </TraceTitle>
+                          <TraceDescription
+                            className="min-w-7 text-right text-[10px] leading-5"
+                            data-step-duration
+                          >
+                            {state === "done"
+                              ? durationLabel(entry.durationMs)
+                              : state === "running"
+                                ? run.paused
+                                  ? "Ⅱ"
+                                  : "…"
+                                : "—"}
+                          </TraceDescription>
+                        </TraceLine>
+                      </div>
+                      {gated && (
+                        <ItemContent className="ms-5 mt-2 gap-2" data-inline-approval-gate>
+                          <ItemDescription className="line-clamp-none text-[11px] leading-5">
+                            {entry.detail}
+                          </ItemDescription>
+                          {(entry.kind === "question" || revising) && (
+                            <form
+                              onSubmit={(event) => {
+                                event.preventDefault();
+                                decide(revising ? "revise" : "answer");
+                              }}
                             >
-                              {state === "done"
-                                ? durationLabel(entry.durationMs)
-                                : state === "running"
-                                  ? run.paused
-                                    ? "Ⅱ"
-                                    : "…"
-                                  : "—"}
-                            </TraceDescription>
-                          </TraceLine>
-                        </div>
-                        {gated && (
-                          <ItemContent className="ms-5 mt-2 gap-2" data-inline-approval-gate>
-                            <ItemDescription className="line-clamp-none text-[11px] leading-5">
-                              {entry.detail}
-                            </ItemDescription>
-                            {(entry.kind === "question" || revising) && (
-                              <form
-                                onSubmit={(event) => {
-                                  event.preventDefault();
-                                  decide(revising ? "revise" : "answer");
-                                }}
-                              >
-                                <Field className="w-full">
-                                  <InputGroup className="h-8 bg-background has-disabled:bg-background has-disabled:opacity-100 dark:has-disabled:bg-background">
-                                    <InputGroupInput
-                                      ref={inputRef}
-                                      aria-label={revising ? "Revision notes" : "Workspace slug"}
-                                      placeholder={
-                                        revising
-                                          ? "Tell the agent what to change…"
-                                          : "e.g. bricklane-labs"
-                                      }
-                                      value={note}
-                                      onChange={(event) => setNote(event.target.value)}
-                                      className="min-w-0 text-xs"
-                                    />
-                                    <InputGroupAddon align="inline-end" className="pe-1">
-                                      <InputGroupButton
-                                        type="submit"
-                                        size="xs"
-                                        variant="ghost"
-                                        aria-label={revising ? "Send revision" : "Submit answer"}
-                                        disabled={!note.trim()}
-                                        className="h-6 gap-1 text-[10px]"
-                                      >
-                                        Send
-                                        <ArrowUp className="size-3" />
-                                      </InputGroupButton>
-                                    </InputGroupAddon>
-                                  </InputGroup>
-                                </Field>
-                              </form>
-                            )}
-                            {entry.kind === "approval" && (
-                              <ItemActions className="flex flex-wrap justify-end gap-1.5">
-                                {revising ? (
+                              <Field className="w-full">
+                                <InputGroup className="h-8 bg-background has-disabled:bg-background has-disabled:opacity-100 dark:has-disabled:bg-background">
+                                  <InputGroupInput
+                                    ref={inputRef}
+                                    aria-label={revising ? "Revision notes" : "Workspace slug"}
+                                    placeholder={
+                                      revising
+                                        ? "Tell the agent what to change…"
+                                        : "e.g. bricklane-labs"
+                                    }
+                                    value={note}
+                                    onChange={(event) => setNote(event.target.value)}
+                                    className="min-w-0 text-xs"
+                                  />
+                                  <InputGroupAddon align="inline-end" className="pe-1">
+                                    <InputGroupButton
+                                      type="submit"
+                                      size="xs"
+                                      variant="ghost"
+                                      aria-label={revising ? "Send revision" : "Submit answer"}
+                                      disabled={!note.trim()}
+                                      className="h-6 gap-1 text-[10px]"
+                                    >
+                                      Send
+                                      <ArrowUp className="size-3" />
+                                    </InputGroupButton>
+                                  </InputGroupAddon>
+                                </InputGroup>
+                              </Field>
+                            </form>
+                          )}
+                          {entry.kind === "approval" && (
+                            <ItemActions className="flex flex-wrap justify-end gap-1.5">
+                              {revising ? (
+                                <Button
+                                  size="xs"
+                                  variant="ghost"
+                                  onClick={() => {
+                                    setRevising(false);
+                                    setNote("");
+                                  }}
+                                >
+                                  Cancel revision
+                                </Button>
+                              ) : (
+                                <>
+                                  <Button size="xs" variant="ghost" onClick={() => decide("deny")}>
+                                    Deny
+                                  </Button>
                                   <Button
                                     size="xs"
-                                    variant="ghost"
+                                    variant="outline"
                                     onClick={() => {
-                                      setRevising(false);
-                                      setNote("");
+                                      setRevising(true);
+                                      window.requestAnimationFrame(() => inputRef.current?.focus());
                                     }}
                                   >
-                                    Cancel revision
+                                    Revise
                                   </Button>
-                                ) : (
-                                  <>
-                                    <Button
-                                      size="xs"
-                                      variant="ghost"
-                                      onClick={() => decide("deny")}
-                                    >
-                                      Deny
-                                    </Button>
-                                    <Button
-                                      size="xs"
-                                      variant="outline"
-                                      onClick={() => {
-                                        setRevising(true);
-                                        window.requestAnimationFrame(() =>
-                                          inputRef.current?.focus(),
-                                        );
-                                      }}
-                                    >
-                                      Revise
-                                    </Button>
-                                    <Button size="xs" onClick={() => decide("approve")}>
-                                      Approve
-                                    </Button>
-                                  </>
-                                )}
-                              </ItemActions>
-                            )}
-                          </ItemContent>
-                        )}
-                        {showNotes && !gated && (
-                          <p
-                            className="ms-5 mt-1 text-[11px] leading-5 text-muted-foreground"
-                            data-step-note
-                          >
-                            {entry.detail}
-                          </p>
-                        )}
-                        {decision?.note && !active && (
-                          <p
-                            className="ms-5 mt-1 text-[10px] leading-4 text-muted-foreground"
-                            data-recorded-decision
-                          >
-                            {decision.note}
-                          </p>
-                        )}
-                      </Item>
-                    </div>
+                                  <Button size="xs" onClick={() => decide("approve")}>
+                                    Approve
+                                  </Button>
+                                </>
+                              )}
+                            </ItemActions>
+                          )}
+                        </ItemContent>
+                      )}
+                      {showNotes && !gated && (
+                        <p
+                          className="ms-5 mt-1 text-[11px] leading-5 text-muted-foreground"
+                          data-step-note
+                        >
+                          {entry.detail}
+                        </p>
+                      )}
+                      {decision?.note && !active && (
+                        <p
+                          className="ms-5 mt-1 text-[10px] leading-4 text-muted-foreground"
+                          data-recorded-decision
+                        >
+                          {decision.note}
+                        </p>
+                      )}
+                    </Item>
                   </CollapsibleContent>
                 </Collapsible>
               );

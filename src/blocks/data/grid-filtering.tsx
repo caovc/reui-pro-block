@@ -421,10 +421,12 @@ function BillingGrid() {
       cell: (r) => (
         <>
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon-sm" aria-label={`Actions for ${r.reference}`}>
-                <Ellipsis />
-              </Button>
+            <DropdownMenuTrigger
+              render={
+                <Button variant="ghost" size="icon-sm" aria-label={`Actions for ${r.reference}`} />
+              }
+            >
+              <Ellipsis />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuGroup>
@@ -737,10 +739,12 @@ function AutomationGrid() {
       cell: (r) => (
         <>
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon-sm" aria-label={`Actions for ${r.name}`}>
-                <MoreVertical />
-              </Button>
+            <DropdownMenuTrigger
+              render={
+                <Button variant="ghost" size="icon-sm" aria-label={`Actions for ${r.name}`} />
+              }
+            >
+              <MoreVertical />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-52">
               <DropdownMenuGroup>
@@ -1101,14 +1105,16 @@ function RenewalsGrid() {
       cell: (r) => (
         <>
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                aria-label={`Actions for ${r.name} renewal ${r.id}`}
-              >
-                <Ellipsis />
-              </Button>
+            <DropdownMenuTrigger
+              render={
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  aria-label={`Actions for ${r.name} renewal ${r.id}`}
+                />
+              }
+            >
+              <Ellipsis />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuGroup>
@@ -1350,13 +1356,15 @@ function RiskGrid() {
               ))}
               {r.signals.length > 2 && (
                 <Tooltip>
-                  <TooltipTrigger asChild>
-                    <button
-                      className="rounded border px-1 text-[10px]"
-                      aria-label={`${r.signals.length - 2} more signals`}
-                    >
-                      +{r.signals.length - 2}
-                    </button>
+                  <TooltipTrigger
+                    render={
+                      <button
+                        className="rounded border px-1 text-[10px]"
+                        aria-label={`${r.signals.length - 2} more signals`}
+                      />
+                    }
+                  >
+                    +{r.signals.length - 2}
                   </TooltipTrigger>
                   <TooltipContent>{r.signals.slice(2).join(", ")}</TooltipContent>
                 </Tooltip>
@@ -1404,10 +1412,12 @@ function RiskGrid() {
       cell: (r, row) => (
         <>
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon-sm" aria-label={`Actions for ${r.name}`}>
-                <Ellipsis />
-              </Button>
+            <DropdownMenuTrigger
+              render={
+                <Button variant="ghost" size="icon-sm" aria-label={`Actions for ${r.name}`} />
+              }
+            >
+              <Ellipsis />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuGroup>

@@ -227,10 +227,10 @@ export function NavItems({
 function BusinessNotifications() {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon-sm" aria-label="Notifications">
-          <Bell />
-        </Button>
+      <DropdownMenuTrigger
+        render={<Button variant="ghost" size="icon-sm" aria-label="Notifications" />}
+      >
+        <Bell />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="reui-reference" align="end">
         <DropdownMenuLabel>Notifications</DropdownMenuLabel>
@@ -357,36 +357,38 @@ function ShellContent({
       <SidebarMenu>
         <SidebarMenuItem>
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <SidebarMenuButton
-                size="lg"
-                tooltip={showTooltips ? accountName : undefined}
-                className="bt-account-button"
-                aria-label={`Open account menu for ${accountName}`}
-              >
-                <span className="bt-avatar">
-                  {account?.photo ? (
-                    <img src={account.photo} alt="" />
-                  ) : account ? (
-                    accountName
-                      .split(" ")
-                      .map((word) => word[0])
-                      .slice(0, 2)
-                      .join("")
-                  ) : id === "cohort" ? (
-                    "BD"
-                  ) : (
-                    <img src={userAvatar} alt="" />
-                  )}
-                </span>
-                {!collapsed && !rail && (
-                  <span className="bt-account-copy">
-                    <strong>{accountName}</strong>
-                    <small>{accountOrganisation}</small>
-                  </span>
+            <DropdownMenuTrigger
+              render={
+                <SidebarMenuButton
+                  size="lg"
+                  tooltip={showTooltips ? accountName : undefined}
+                  className="bt-account-button"
+                  aria-label={`Open account menu for ${accountName}`}
+                />
+              }
+            >
+              <span className="bt-avatar">
+                {account?.photo ? (
+                  <img src={account.photo} alt="" />
+                ) : account ? (
+                  accountName
+                    .split(" ")
+                    .map((word) => word[0])
+                    .slice(0, 2)
+                    .join("")
+                ) : id === "cohort" ? (
+                  "BD"
+                ) : (
+                  <img src={userAvatar} alt="" />
                 )}
-                {!collapsed && !rail && <ChevronDown className="ml-auto size-3.5" />}
-              </SidebarMenuButton>
+              </span>
+              {!collapsed && !rail && (
+                <span className="bt-account-copy">
+                  <strong>{accountName}</strong>
+                  <small>{accountOrganisation}</small>
+                </span>
+              )}
+              {!collapsed && !rail && <ChevronDown className="ml-auto size-3.5" />}
             </DropdownMenuTrigger>
             <DropdownMenuContent
               className="reui-reference"
@@ -606,10 +608,10 @@ function ShellContent({
           headerActions
         ) : commerce ? (
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" aria-label="Store status">
-                ◉ Store <Badge variant="warning-light">Attention</Badge>
-              </Button>
+            <DropdownMenuTrigger
+              render={<Button variant="outline" size="sm" aria-label="Store status" />}
+            >
+              ◉ Store <Badge variant="warning-light">Attention</Badge>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="reui-reference" align="end">
               <DropdownMenuLabel>Store</DropdownMenuLabel>
@@ -626,10 +628,10 @@ function ShellContent({
           notifications
         ) : (
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" aria-label="Notifications">
-                <Bell />
-              </Button>
+            <DropdownMenuTrigger
+              render={<Button variant="ghost" size="icon" aria-label="Notifications" />}
+            >
+              <Bell />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="reui-reference" align="end">
               <DropdownMenuLabel>Notifications</DropdownMenuLabel>

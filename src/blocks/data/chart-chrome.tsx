@@ -133,10 +133,12 @@ export function ChartMore({
 }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon" className="size-7" aria-label="More actions">
-          <MoreHorizontal />
-        </Button>
+      <DropdownMenuTrigger
+        render={
+          <Button variant="outline" size="icon" className="size-7" aria-label="More actions" />
+        }
+      >
+        <MoreHorizontal />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuGroup>

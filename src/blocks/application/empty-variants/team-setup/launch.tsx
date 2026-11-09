@@ -86,28 +86,31 @@ export default function LaunchEmpty() {
         </Empty>
         <div className="empty-team-steps">
           {steps.map((step) => (
-            <Item asChild key={step.key}>
-              <Button
-                variant="ghost"
-                className="empty-team-step"
-                data-step={step.key}
-                onClick={() => openStep(step.key)}
-                aria-label={step.title}
-              >
-                <ItemMedia>
-                  <step.icon className="size-4" />
-                </ItemMedia>
-                <ItemContent>
-                  <ItemTitle>{step.title}</ItemTitle>
-                  <ItemDescription>{step.description}</ItemDescription>
-                </ItemContent>
-                {step.done && (
-                  <Check
-                    className="size-4 shrink-0 text-muted-foreground"
-                    aria-label="Completed locally"
-                  />
-                )}
-              </Button>
+            <Item
+              key={step.key}
+              render={
+                <Button
+                  variant="ghost"
+                  className="empty-team-step"
+                  data-step={step.key}
+                  onClick={() => openStep(step.key)}
+                  aria-label={step.title}
+                />
+              }
+            >
+              <ItemMedia>
+                <step.icon className="size-4" />
+              </ItemMedia>
+              <ItemContent>
+                <ItemTitle>{step.title}</ItemTitle>
+                <ItemDescription>{step.description}</ItemDescription>
+              </ItemContent>
+              {step.done && (
+                <Check
+                  className="size-4 shrink-0 text-muted-foreground"
+                  aria-label="Completed locally"
+                />
+              )}
             </Item>
           ))}
         </div>

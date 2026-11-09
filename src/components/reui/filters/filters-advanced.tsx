@@ -435,20 +435,22 @@ function RowIssueHint({ message, className }: { message: string; className?: str
   return (
     <TooltipProvider delayDuration={200}>
       <Tooltip>
-        <TooltipTrigger asChild>
-          <span
-            data-slot="filter-row-issue"
-            /* Focusable so a keyboard user can summon it, but OUT of the
+        <TooltipTrigger
+          render={
+            <span
+              data-slot="filter-row-issue"
+              /* Focusable so a keyboard user can summon it, but OUT of the
                tab order: the sentence is already on the invalid cell. */
-            tabIndex={-1}
-            aria-hidden="true"
-            className={cn(
-              "text-destructive flex shrink-0 items-center justify-center [&_svg]:size-3.5",
-              className,
-            )}
-          >
-            <CircleAlertIcon />
-          </span>
+              tabIndex={-1}
+              aria-hidden="true"
+              className={cn(
+                "text-destructive flex shrink-0 items-center justify-center [&_svg]:size-3.5",
+                className,
+              )}
+            />
+          }
+        >
+          <CircleAlertIcon />
         </TooltipTrigger>
         <TooltipContent side="top">{message}</TooltipContent>
       </Tooltip>
@@ -830,26 +832,30 @@ function FilterAdvancedRowImpl<V, O>({ rule, position }: FilterAdvancedRowProps<
               setPickerOpen(next);
             }}
           >
-            <PopoverTrigger asChild disabled={actions.disabled} {...filterReadOnlyProps(actions)}>
-              <Button
-                variant="outline"
-                size={sizes.button}
-                /* The path is truncated on screen, so the name carries all
+            <PopoverTrigger
+              disabled={actions.disabled}
+              {...filterReadOnlyProps(actions)}
+              render={
+                <Button
+                  variant="outline"
+                  size={sizes.button}
+                  /* The path is truncated on screen, so the name carries all
                    of it: "Primary loca... > State" identifies nothing. */
-                aria-label={pathText}
-                /* And as a `title` - unless the path is COLLAPSED, where the
+                  aria-label={pathText}
+                  /* And as a `title` - unless the path is COLLAPSED, where the
                    ellipsis inside already carries this exact sentence. */
-                title={pathCollapsed ? undefined : pathText}
-                className={CELL_CLASS}
-                {...cellProps("field", active)}
-                onFocus={onCellFocus("field")}
-              >
-                <span className="flex min-w-0 items-center gap-1.5 truncate">
-                  {field.icon}
-                  <span className="truncate">{pathLabel}</span>
-                </span>
-                <ChevronDownIcon />
-              </Button>
+                  title={pathCollapsed ? undefined : pathText}
+                  className={CELL_CLASS}
+                  {...cellProps("field", active)}
+                  onFocus={onCellFocus("field")}
+                />
+              }
+            >
+              <span className="flex min-w-0 items-center gap-1.5 truncate">
+                {field.icon}
+                <span className="truncate">{pathLabel}</span>
+              </span>
+              <ChevronDownIcon />
             </PopoverTrigger>
             <PopoverContent
               align="start"
@@ -986,20 +992,20 @@ function FilterAdvancedRowImpl<V, O>({ rule, position }: FilterAdvancedRowProps<
           }}
         >
           <DropdownMenuTrigger
-            asChild
             disabled={actions.disabled}
             {...filterReadOnlyProps(actions)}
+            render={
+              <Button
+                variant="ghost"
+                size={sizes.icon}
+                aria-label={actions.labels.chipMenu(field.label)}
+                className={ACTION_CONTROL_CLASS}
+                {...cellProps("menu", active)}
+                onFocus={onCellFocus("menu")}
+              />
+            }
           >
-            <Button
-              variant="ghost"
-              size={sizes.icon}
-              aria-label={actions.labels.chipMenu(field.label)}
-              className={ACTION_CONTROL_CLASS}
-              {...cellProps("menu", active)}
-              onFocus={onCellFocus("menu")}
-            >
-              <EllipsisVerticalIcon />
-            </Button>
+            <EllipsisVerticalIcon />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className={cn(FILTER_MENU_CLASS, actions.menuClassName)}>
             {/* Grouping is HERE, not on a chip: the keyboard path to
@@ -1259,17 +1265,21 @@ function FilterGroupMenu<V>({
         setOpen(next);
       }}
     >
-      <DropdownMenuTrigger asChild disabled={actions.disabled} {...filterReadOnlyProps(actions)}>
-        <Button
-          variant="ghost"
-          size={sizes.icon}
-          aria-label={actions.labels.groupMenu}
-          className={ACTION_CONTROL_CLASS}
-          {...cellProps("menu", active)}
-          onFocus={onFocus("menu")}
-        >
-          <EllipsisVerticalIcon />
-        </Button>
+      <DropdownMenuTrigger
+        disabled={actions.disabled}
+        {...filterReadOnlyProps(actions)}
+        render={
+          <Button
+            variant="ghost"
+            size={sizes.icon}
+            aria-label={actions.labels.groupMenu}
+            className={ACTION_CONTROL_CLASS}
+            {...cellProps("menu", active)}
+            onFocus={onFocus("menu")}
+          />
+        }
+      >
+        <EllipsisVerticalIcon />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className={cn(FILTER_MENU_CLASS, actions.menuClassName)}>
         <DropdownMenuItem disabled={locked} onClick={() => actions.duplicateNode(group.id)}>
@@ -1921,38 +1931,38 @@ export function FiltersAdvanced<V, O>({
       {/* `actions.disabled` alone, and READ ONLY DELIBERATELY DOES NOT
           GATE IT: opening this panel is reading, not writing. */}
       <PopoverTrigger
-        asChild
         /* On the TRIGGER rather than the button below it, so a consumer's own
            trigger wears the same state. Still `actions.disabled` alone. */
         disabled={actions.disabled}
-      >
-        {trigger ? (
-          (trigger as React.ReactElement)
-        ) : (
-          <Button
-            variant="outline"
-            size={sizes.button}
-            /* THE COUNT IN THE NAME, not only in the box: a consumer who
+        render={
+          trigger
+            ? (trigger as React.ReactElement)
+            : ((
+                <Button
+                  variant="outline"
+                  size={sizes.button}
+                  /* THE COUNT IN THE NAME, not only in the box: a consumer who
                replaces `trigger` never had the badge, which is hidden. */
-            aria-label={
-              ruleCount > 0
-                ? `${actions.labels.advancedFilter}, ${actions.labels.countAnnouncement(ruleCount)}`
-                : undefined
-            }
-          >
-            <ListFilterIcon />
-            {actions.labels.advancedFilter}
-            {ruleCount > 0 ? (
-              <span
-                aria-hidden="true"
-                className="bg-muted text-muted-foreground rounded-sm px-1.5 text-xs tabular-nums"
-              >
-                {ruleCount}
-              </span>
-            ) : null}
-          </Button>
-        )}
-      </PopoverTrigger>
+                  aria-label={
+                    ruleCount > 0
+                      ? `${actions.labels.advancedFilter}, ${actions.labels.countAnnouncement(ruleCount)}`
+                      : undefined
+                  }
+                >
+                  <ListFilterIcon />
+                  {actions.labels.advancedFilter}
+                  {ruleCount > 0 ? (
+                    <span
+                      aria-hidden="true"
+                      className="bg-muted text-muted-foreground rounded-sm px-1.5 text-xs tabular-nums"
+                    >
+                      {ruleCount}
+                    </span>
+                  ) : null}
+                </Button>
+              ) as never)
+        }
+      ></PopoverTrigger>
       {/* Wide enough for a nested group to keep real words at depth three;
           the rows truncate rather than wrap. */}
       <PopoverContent

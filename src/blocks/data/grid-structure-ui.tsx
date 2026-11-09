@@ -158,10 +158,8 @@ export function StructureMenu({
 }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon-xs" aria-label={label}>
-          <Ellipsis />
-        </Button>
+      <DropdownMenuTrigger render={<Button variant="ghost" size="icon-xs" aria-label={label} />}>
+        <Ellipsis />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuGroup>

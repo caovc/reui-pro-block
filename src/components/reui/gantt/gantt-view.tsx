@@ -69,7 +69,7 @@ import {
   startOfWeek,
   type Locale,
 } from "date-fns";
-import { Slot } from "radix-ui";
+import { RenderSlot as Slot } from "@/components/ui/render-slot";
 
 import { cn } from "cn";
 import { Button } from "@/components/ui/button";
@@ -2557,59 +2557,63 @@ function GanttView({
                   must still show at the zoom limits */}
               <TooltipProvider delayDuration={600} skipDelayDuration={300}>
                 <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="icon-xs"
-                      aria-label={settings.i18n.labels.zoomIn}
-                      aria-disabled={!canZoomIn || undefined}
-                      className="text-muted-foreground hover:text-foreground size-5! rounded-b-none aria-disabled:cursor-not-allowed aria-disabled:opacity-50 aria-disabled:hover:bg-transparent"
-                      onClick={() => {
-                        if (!canZoomIn) return;
-                        // controlled zoom anchors via fineCenterRef when
-                        // the parent adopts; a pre-set anchor would leak
-                        // stale if the parent ignores the proposal
-                        if (viewConfig.zoom === undefined) anchorZoomCenter();
-                        setZoomValue(+(zoom + (zoomRange.step ?? 0.25)).toFixed(2));
-                      }}
-                    >
-                      <IconPlaceholder
-                        lucide="PlusIcon"
-                        tabler="IconPlus"
-                        hugeicons="PlusSignIcon"
-                        phosphor="PlusIcon"
-                        remixicon="RiAddLine"
-                        className="size-3"
-                        aria-hidden="true"
+                  <TooltipTrigger
+                    render={
+                      <Button
+                        variant="ghost"
+                        size="icon-xs"
+                        aria-label={settings.i18n.labels.zoomIn}
+                        aria-disabled={!canZoomIn || undefined}
+                        className="text-muted-foreground hover:text-foreground size-5! rounded-b-none aria-disabled:cursor-not-allowed aria-disabled:opacity-50 aria-disabled:hover:bg-transparent"
+                        onClick={() => {
+                          if (!canZoomIn) return;
+                          // controlled zoom anchors via fineCenterRef when
+                          // the parent adopts; a pre-set anchor would leak
+                          // stale if the parent ignores the proposal
+                          if (viewConfig.zoom === undefined) anchorZoomCenter();
+                          setZoomValue(+(zoom + (zoomRange.step ?? 0.25)).toFixed(2));
+                        }}
                       />
-                    </Button>
+                    }
+                  >
+                    <IconPlaceholder
+                      lucide="PlusIcon"
+                      tabler="IconPlus"
+                      hugeicons="PlusSignIcon"
+                      phosphor="PlusIcon"
+                      remixicon="RiAddLine"
+                      className="size-3"
+                      aria-hidden="true"
+                    />
                   </TooltipTrigger>
                   <TooltipContent side="left">{settings.i18n.labels.zoomIn}</TooltipContent>
                 </Tooltip>
                 <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="icon-xs"
-                      aria-label={settings.i18n.labels.zoomOut}
-                      aria-disabled={!canZoomOut || undefined}
-                      className="text-muted-foreground hover:text-foreground size-5! rounded-t-none border-t aria-disabled:cursor-not-allowed aria-disabled:opacity-50 aria-disabled:hover:bg-transparent"
-                      onClick={() => {
-                        if (!canZoomOut) return;
-                        if (viewConfig.zoom === undefined) anchorZoomCenter();
-                        setZoomValue(+(zoom - (zoomRange.step ?? 0.25)).toFixed(2));
-                      }}
-                    >
-                      <IconPlaceholder
-                        lucide="MinusIcon"
-                        tabler="IconMinus"
-                        hugeicons="MinusSignIcon"
-                        phosphor="MinusIcon"
-                        remixicon="RiSubtractLine"
-                        className="size-3"
-                        aria-hidden="true"
+                  <TooltipTrigger
+                    render={
+                      <Button
+                        variant="ghost"
+                        size="icon-xs"
+                        aria-label={settings.i18n.labels.zoomOut}
+                        aria-disabled={!canZoomOut || undefined}
+                        className="text-muted-foreground hover:text-foreground size-5! rounded-t-none border-t aria-disabled:cursor-not-allowed aria-disabled:opacity-50 aria-disabled:hover:bg-transparent"
+                        onClick={() => {
+                          if (!canZoomOut) return;
+                          if (viewConfig.zoom === undefined) anchorZoomCenter();
+                          setZoomValue(+(zoom - (zoomRange.step ?? 0.25)).toFixed(2));
+                        }}
                       />
-                    </Button>
+                    }
+                  >
+                    <IconPlaceholder
+                      lucide="MinusIcon"
+                      tabler="IconMinus"
+                      hugeicons="MinusSignIcon"
+                      phosphor="MinusIcon"
+                      remixicon="RiSubtractLine"
+                      className="size-3"
+                      aria-hidden="true"
+                    />
                   </TooltipTrigger>
                   <TooltipContent side="left">{settings.i18n.labels.zoomOut}</TooltipContent>
                 </Tooltip>
@@ -3076,7 +3080,7 @@ const GanttTreeRow = memo(function GanttTreeRow({
   if (!menu) return rowNode;
   return (
     <ContextMenu>
-      <ContextMenuTrigger asChild>{rowNode}</ContextMenuTrigger>
+      <ContextMenuTrigger render={rowNode as never}></ContextMenuTrigger>
       <ContextMenuContent data-slot="gantt-resource-menu" className="min-w-44">
         {menu}
       </ContextMenuContent>
@@ -4103,48 +4107,50 @@ function GanttOffscreenChips({
       <TooltipProvider delayDuration={600} skipDelayDuration={300}>
         {chips.map((chip) => (
           <Tooltip key={`${chip.id}-${chip.side}`}>
-            <TooltipTrigger asChild>
-              <button
-                type="button"
-                data-slot="gantt-offscreen-chip"
-                data-side={chip.side}
-                aria-label={settings.i18n.labels.jumpToBar(chip.label)}
-                className="bg-background text-muted-foreground hover:text-foreground pointer-events-auto absolute flex size-5 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border shadow-xs"
-                style={{
-                  top: chip.top,
-                  ...(chip.side === "start"
-                    ? { insetInlineStart: "0.5rem" }
-                    : { insetInlineEnd: "0.875rem" }),
-                }}
-                onClick={() => scrollTo(chip)}
-              >
-                {chip.side === "start" ? (
-                  <IconPlaceholder
-                    lucide="ChevronLeftIcon"
-                    tabler="IconChevronLeft"
-                    hugeicons="ArrowLeft01Icon"
-                    phosphor="CaretLeftIcon"
-                    remixicon="RiArrowLeftSLine"
-                    className="size-3"
-                    aria-hidden="true"
-                  />
-                ) : (
-                  <IconPlaceholder
-                    lucide="ChevronRightIcon"
-                    tabler="IconChevronRight"
-                    hugeicons="ArrowRight01Icon"
-                    phosphor="CaretRightIcon"
-                    remixicon="RiArrowRightSLine"
-                    className="size-3"
-                    aria-hidden="true"
-                  />
-                )}
-                <span
-                  aria-hidden
-                  className="ring-background absolute -end-px -top-px size-1.5 rounded-full ring-1"
-                  style={{ background: chip.color ?? "var(--color-primary)" }}
+            <TooltipTrigger
+              render={
+                <button
+                  type="button"
+                  data-slot="gantt-offscreen-chip"
+                  data-side={chip.side}
+                  aria-label={settings.i18n.labels.jumpToBar(chip.label)}
+                  className="bg-background text-muted-foreground hover:text-foreground pointer-events-auto absolute flex size-5 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border shadow-xs"
+                  style={{
+                    top: chip.top,
+                    ...(chip.side === "start"
+                      ? { insetInlineStart: "0.5rem" }
+                      : { insetInlineEnd: "0.875rem" }),
+                  }}
+                  onClick={() => scrollTo(chip)}
                 />
-              </button>
+              }
+            >
+              {chip.side === "start" ? (
+                <IconPlaceholder
+                  lucide="ChevronLeftIcon"
+                  tabler="IconChevronLeft"
+                  hugeicons="ArrowLeft01Icon"
+                  phosphor="CaretLeftIcon"
+                  remixicon="RiArrowLeftSLine"
+                  className="size-3"
+                  aria-hidden="true"
+                />
+              ) : (
+                <IconPlaceholder
+                  lucide="ChevronRightIcon"
+                  tabler="IconChevronRight"
+                  hugeicons="ArrowRight01Icon"
+                  phosphor="CaretRightIcon"
+                  remixicon="RiArrowRightSLine"
+                  className="size-3"
+                  aria-hidden="true"
+                />
+              )}
+              <span
+                aria-hidden
+                className="ring-background absolute -end-px -top-px size-1.5 rounded-full ring-1"
+                style={{ background: chip.color ?? "var(--color-primary)" }}
+              />
             </TooltipTrigger>
             <TooltipContent side={chip.side === "start" ? "right" : "left"}>
               <div className="font-medium">{chip.label}</div>

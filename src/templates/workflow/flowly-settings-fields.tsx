@@ -273,10 +273,12 @@ export function FlowlyFormPage({ section }: { section: FlowlySettingsSection }) 
               <span className="flex flex-wrap items-center gap-2">
                 Workspace Domain
                 <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button size="icon-xs" variant="ghost" aria-label="Workspace domain info">
-                      <Info />
-                    </Button>
+                  <TooltipTrigger
+                    render={
+                      <Button size="icon-xs" variant="ghost" aria-label="Workspace domain info" />
+                    }
+                  >
+                    <Info />
                   </TooltipTrigger>
                   <TooltipContent className="reui-reference">
                     The public address for shared workspace pages.

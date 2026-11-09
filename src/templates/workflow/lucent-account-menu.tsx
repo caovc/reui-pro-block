@@ -71,25 +71,27 @@ export function LucentAccountMenu({
   ] as const;
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
-      <DropdownMenuTrigger asChild>
-        <SidebarMenuButton aria-label="Open user menu" tooltip={name} className="h-9 gap-2">
-          <Avatar className="size-7">
-            <AvatarImage src={image} alt="" />
-            <AvatarFallback>
-              {name
-                .split(" ")
-                .map((part) => part[0])
-                .join("")
-                .slice(0, 2)}
-            </AvatarFallback>
-          </Avatar>
-          {!collapsed && (
-            <>
-              <span className="min-w-0 flex-1 truncate">{name}</span>
-              <MoreHorizontal className="size-4" />
-            </>
-          )}
-        </SidebarMenuButton>
+      <DropdownMenuTrigger
+        render={
+          <SidebarMenuButton aria-label="Open user menu" tooltip={name} className="h-9 gap-2" />
+        }
+      >
+        <Avatar className="size-7">
+          <AvatarImage src={image} alt="" />
+          <AvatarFallback>
+            {name
+              .split(" ")
+              .map((part) => part[0])
+              .join("")
+              .slice(0, 2)}
+          </AvatarFallback>
+        </Avatar>
+        {!collapsed && (
+          <>
+            <span className="min-w-0 flex-1 truncate">{name}</span>
+            <MoreHorizontal className="size-4" />
+          </>
+        )}
       </DropdownMenuTrigger>
       <DropdownMenuContent
         className="reui-reference w-64"
@@ -112,17 +114,18 @@ export function LucentAccountMenu({
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           {entries.map((entry) => (
-            <DropdownMenuItem key={entry.destination} asChild>
-              <a
-                href={href(entry.destination) ?? undefined}
-                onClick={(event) => navigate(event, entry.destination)}
-              >
-                <entry.icon />
-                {entry.label}
-                {"shortcut" in entry && (
-                  <DropdownMenuShortcut>{entry.shortcut}</DropdownMenuShortcut>
-                )}
-              </a>
+            <DropdownMenuItem
+              key={entry.destination}
+              render={
+                <a
+                  href={href(entry.destination) ?? undefined}
+                  onClick={(event) => navigate(event, entry.destination)}
+                />
+              }
+            >
+              <entry.icon />
+              {entry.label}
+              {"shortcut" in entry && <DropdownMenuShortcut>{entry.shortcut}</DropdownMenuShortcut>}
             </DropdownMenuItem>
           ))}
           <DropdownMenuSeparator />

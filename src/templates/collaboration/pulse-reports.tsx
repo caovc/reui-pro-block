@@ -210,12 +210,10 @@ export function PulseReports({ model }: { model: PulseReportState }) {
       <div className="ct-heading ct-report-heading">
         <p>Resolution rate, handle time and CSAT over time.</p>
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button className="ct-report-export">
-              <Download />
-              Export
-              <ChevronDown />
-            </Button>
+          <DropdownMenuTrigger render={<Button className="ct-report-export" />}>
+            <Download />
+            Export
+            <ChevronDown />
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem onClick={() => download("csv")}>Download CSV</DropdownMenuItem>

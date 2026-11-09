@@ -18,10 +18,10 @@ export function AnalyticsMenu({ onAction }: { onAction: (action: string) => void
   return (
     <div className="flex items-center justify-center">
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon-sm" aria-label="Dashboard options">
-            <Ellipsis aria-hidden="true" />
-          </Button>
+        <DropdownMenuTrigger
+          render={<Button variant="ghost" size="icon-sm" aria-label="Dashboard options" />}
+        >
+          <Ellipsis aria-hidden="true" />
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-48" align="start">
           <DropdownMenuGroup>

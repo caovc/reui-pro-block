@@ -97,15 +97,17 @@ function ChartActions({
         </>
       )}
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="outline"
-            size="icon"
-            className="-ml-px size-7 rounded-l-none"
-            aria-label="More actions"
-          >
-            <MoreHorizontal />
-          </Button>
+        <DropdownMenuTrigger
+          render={
+            <Button
+              variant="outline"
+              size="icon"
+              className="-ml-px size-7 rounded-l-none"
+              aria-label="More actions"
+            />
+          }
+        >
+          <MoreHorizontal />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuGroup>
@@ -144,12 +146,12 @@ function DisplayControl({
 }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm" className="h-7 gap-1.5 px-2 text-[11px]">
-          <SlidersHorizontal />
-          Display
-          <ChevronDown />
-        </Button>
+      <DropdownMenuTrigger
+        render={<Button variant="outline" size="sm" className="h-7 gap-1.5 px-2 text-[11px]" />}
+      >
+        <SlidersHorizontal />
+        Display
+        <ChevronDown />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Chart layers</DropdownMenuLabel>
@@ -332,12 +334,12 @@ export function CampaignImpressions() {
   const toolbar = (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="sm" className="h-7 gap-1.5 px-2 text-[11px]">
-            <CalendarDays />
-            {period}
-            <ChevronDown />
-          </Button>
+        <DropdownMenuTrigger
+          render={<Button variant="outline" size="sm" className="h-7 gap-1.5 px-2 text-[11px]" />}
+        >
+          <CalendarDays />
+          {period}
+          <ChevronDown />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuRadioGroup value={period} onValueChange={setPeriod}>
@@ -350,12 +352,12 @@ export function CampaignImpressions() {
         </DropdownMenuContent>
       </DropdownMenu>
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="sm" className="h-7 gap-1.5 px-2 text-[11px]">
-            <Columns3 />
-            Channels <span className="text-muted-foreground">{channels.length}/4</span>
-            <ChevronDown />
-          </Button>
+        <DropdownMenuTrigger
+          render={<Button variant="outline" size="sm" className="h-7 gap-1.5 px-2 text-[11px]" />}
+        >
+          <Columns3 />
+          Channels <span className="text-muted-foreground">{channels.length}/4</span>
+          <ChevronDown />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuGroup>
@@ -581,17 +583,19 @@ export function OrdersOverview() {
   const toolbar = (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="outline"
-            size="sm"
-            className="h-7 gap-1.5 px-2 text-[11px]"
-            aria-label={`Period: ${period}`}
-          >
-            <CalendarDays />
-            {period}
-            <ChevronDown />
-          </Button>
+        <DropdownMenuTrigger
+          render={
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-7 gap-1.5 px-2 text-[11px]"
+              aria-label={`Period: ${period}`}
+            />
+          }
+        >
+          <CalendarDays />
+          {period}
+          <ChevronDown />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuRadioGroup value={period} onValueChange={setPeriod}>
@@ -636,15 +640,17 @@ export function OrdersOverview() {
           <Maximize2 />
         </Button>
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="outline"
-              size="icon"
-              className="-ml-px size-7 rounded-l-none"
-              aria-label="More actions"
-            >
-              <MoreHorizontal />
-            </Button>
+          <DropdownMenuTrigger
+            render={
+              <Button
+                variant="outline"
+                size="icon"
+                className="-ml-px size-7 rounded-l-none"
+                aria-label="More actions"
+              />
+            }
+          >
+            <MoreHorizontal />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuGroup>
@@ -869,16 +875,18 @@ export function InboundLeads() {
         setDots={setDots}
       />
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="outline"
-            size="sm"
-            className="h-7 gap-1.5 px-2 text-[11px]"
-            aria-label={`Trend line: ${trend}`}
-          >
-            {trend}
-            <ChevronDown />
-          </Button>
+        <DropdownMenuTrigger
+          render={
+            <Button
+              variant="outline"
+              size="sm"
+              className="h-7 gap-1.5 px-2 text-[11px]"
+              aria-label={`Trend line: ${trend}`}
+            />
+          }
+        >
+          {trend}
+          <ChevronDown />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuRadioGroup value={trend} onValueChange={setTrend}>

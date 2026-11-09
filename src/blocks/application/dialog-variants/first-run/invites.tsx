@@ -94,9 +94,7 @@ export default function BulkInviteDialog() {
         description="Add emails and choose the role they start with."
         footer={
           <>
-            <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
-            </DialogClose>
+            <DialogClose render={<Button variant="outline" />}>Cancel</DialogClose>
             <Button onClick={submitInvites} disabled={!recipients.length}>
               <UserPlus data-icon="inline-start" />
               {recipients.length > 1 ? `Send ${recipients.length} invites` : "Send invite"}

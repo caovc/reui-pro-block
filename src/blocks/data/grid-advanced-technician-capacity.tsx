@@ -194,30 +194,32 @@ function CapacityDayHeader({ day, store }: { day: string; store: CapacityStore }
       : `team ${percent}% booked`);
   return (
     <Tooltip>
-      <TooltipTrigger asChild>
-        <button
-          type="button"
-          className={cn("capacity-day-header", day === CAPACITY_TODAY && "bg-muted/70")}
-          aria-label={`${capacityDateLabel(day, true)}${day === CAPACITY_TODAY ? ", today" : ""}, ${loadDescription}`}
-        >
-          <span>{capacityDateLabel(day)}</span>
-          {holiday ? (
-            <span className="text-xs font-normal text-muted-foreground">Closed</span>
-          ) : (
-            <Progress
-              value={Math.min(100, percent)}
-              aria-valuetext={`${totals.booked}h booked of ${totals.capacity}h`}
-              className={cn(
-                "h-1.5",
-                overbooked
-                  ? "[&_[data-slot=progress-indicator]]:bg-red-500"
-                  : percent >= 85
-                    ? "[&_[data-slot=progress-indicator]]:bg-emerald-500"
-                    : "[&_[data-slot=progress-indicator]]:bg-neutral-400",
-              )}
-            />
-          )}
-        </button>
+      <TooltipTrigger
+        render={
+          <button
+            type="button"
+            className={cn("capacity-day-header", day === CAPACITY_TODAY && "bg-muted/70")}
+            aria-label={`${capacityDateLabel(day, true)}${day === CAPACITY_TODAY ? ", today" : ""}, ${loadDescription}`}
+          />
+        }
+      >
+        <span>{capacityDateLabel(day)}</span>
+        {holiday ? (
+          <span className="text-xs font-normal text-muted-foreground">Closed</span>
+        ) : (
+          <Progress
+            value={Math.min(100, percent)}
+            aria-valuetext={`${totals.booked}h booked of ${totals.capacity}h`}
+            className={cn(
+              "h-1.5",
+              overbooked
+                ? "[&_[data-slot=progress-indicator]]:bg-red-500"
+                : percent >= 85
+                  ? "[&_[data-slot=progress-indicator]]:bg-emerald-500"
+                  : "[&_[data-slot=progress-indicator]]:bg-neutral-400",
+            )}
+          />
+        )}
       </TooltipTrigger>
       <TooltipContent>
         {holiday || `${totals.booked}h booked of ${totals.capacity}h · ${totals.free}h free`}
@@ -248,19 +250,21 @@ function CapacityDayCell({
   }
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="ghost"
-          type="button"
-          className={cn(
-            "capacity-day-button",
-            `capacity-day-${value.kind}`,
-            kindFilter !== "All Days" && value.kind !== kindFilter && "opacity-35",
-          )}
-          aria-label={`${person.name}, ${capacityDateLabel(day, true)}, ${value.kind}, ${value.booked}h of ${value.capacity}h booked`}
-        >
-          {dayFigure(value)}
-        </Button>
+      <PopoverTrigger
+        render={
+          <Button
+            variant="ghost"
+            type="button"
+            className={cn(
+              "capacity-day-button",
+              `capacity-day-${value.kind}`,
+              kindFilter !== "All Days" && value.kind !== kindFilter && "opacity-35",
+            )}
+            aria-label={`${person.name}, ${capacityDateLabel(day, true)}, ${value.kind}, ${value.booked}h of ${value.capacity}h booked`}
+          />
+        }
+      >
+        {dayFigure(value)}
       </PopoverTrigger>
       <PopoverContent
         className="capacity-day-popover w-[352px] max-w-[calc(100vw_-_24px)] p-2.5 text-sm"
@@ -606,14 +610,16 @@ export default function TechnicianCapacity({ loadCapacity }: TechnicianCapacityP
         header: () => <span className="sr-only">Actions</span>,
         cell: ({ row }) => (
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon-sm"
-                aria-label={`Actions for ${row.original.name}`}
-              >
-                <MoreHorizontal />
-              </Button>
+            <DropdownMenuTrigger
+              render={
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  aria-label={`Actions for ${row.original.name}`}
+                />
+              }
+            >
+              <MoreHorizontal />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-44">
               <DropdownMenuLabel>Plan</DropdownMenuLabel>
@@ -918,15 +924,17 @@ export default function TechnicianCapacity({ loadCapacity }: TechnicianCapacityP
                     </Button>
                   )}
                   <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="outline"
-                        size="icon-sm"
-                        aria-label="Settings"
-                        className="ml-auto size-8"
-                      >
-                        <SlidersHorizontal />
-                      </Button>
+                    <PopoverTrigger
+                      render={
+                        <Button
+                          variant="outline"
+                          size="icon-sm"
+                          aria-label="Settings"
+                          className="ml-auto size-8"
+                        />
+                      }
+                    >
+                      <SlidersHorizontal />
                     </PopoverTrigger>
                     <PopoverContent align="end" className="w-72 p-2.5 text-sm">
                       <FieldGroup className="gap-3">

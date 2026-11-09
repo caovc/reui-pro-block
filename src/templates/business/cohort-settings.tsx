@@ -406,14 +406,16 @@ function EditableList({
             size: 42,
             render: (r) => (
               <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    size="icon-sm"
-                    variant="ghost"
-                    aria-label={`Actions for ${r.name || "new item"}`}
-                  >
-                    <Ellipsis size={15} />
-                  </Button>
+                <DropdownMenuTrigger
+                  render={
+                    <Button
+                      size="icon-sm"
+                      variant="ghost"
+                      aria-label={`Actions for ${r.name || "new item"}`}
+                    />
+                  }
+                >
+                  <Ellipsis size={15} />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem onSelect={() => setEditing(r.id)}>Edit</DropdownMenuItem>
@@ -498,34 +500,38 @@ export function CohortSettings({
         <div className="cohort-settings-tabs-scroll">
           <TabsList variant="line" aria-label="Settings pages" className="bt-settings-tabs">
             {cohortSettingsPages.map((name) => (
-              <TabsTrigger key={name} value={name} asChild>
-                <a
-                  href={pageHref?.(name)}
-                  aria-current={page === name ? "page" : undefined}
-                  onMouseDown={(event) => {
-                    if (
-                      event.button !== 0 ||
-                      event.metaKey ||
-                      event.ctrlKey ||
-                      event.shiftKey ||
-                      event.altKey
-                    )
+              <TabsTrigger
+                key={name}
+                value={name}
+                render={
+                  <a
+                    href={pageHref?.(name)}
+                    aria-current={page === name ? "page" : undefined}
+                    onMouseDown={(event) => {
+                      if (
+                        event.button !== 0 ||
+                        event.metaKey ||
+                        event.ctrlKey ||
+                        event.shiftKey ||
+                        event.altKey
+                      )
+                        event.preventDefault();
+                    }}
+                    onClick={(event) => {
+                      if (
+                        event.button !== 0 ||
+                        event.metaKey ||
+                        event.ctrlKey ||
+                        event.shiftKey ||
+                        event.altKey
+                      )
+                        return;
                       event.preventDefault();
-                  }}
-                  onClick={(event) => {
-                    if (
-                      event.button !== 0 ||
-                      event.metaKey ||
-                      event.ctrlKey ||
-                      event.shiftKey ||
-                      event.altKey
-                    )
-                      return;
-                    event.preventDefault();
-                  }}
-                >
-                  {name}
-                </a>
+                    }}
+                  />
+                }
+              >
+                {name}
               </TabsTrigger>
             ))}
           </TabsList>

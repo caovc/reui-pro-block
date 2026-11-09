@@ -18,9 +18,7 @@ export function CategoryBreadcrumb({ current }: { current: string }) {
             title="Bricklane Goods"
             categories={["clothing", "footwear", "accessories", "home"]}
           >
-            <BreadcrumbLink asChild>
-              <button type="button">Shop</button>
-            </BreadcrumbLink>
+            <BreadcrumbLink render={<button type="button" />}>Shop</BreadcrumbLink>
           </CollectionBrowser>
         </BreadcrumbItem>
         <BreadcrumbSeparator />

@@ -24,19 +24,21 @@ export function ToolbarDatePicker({
 
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <Button
-          className="group/pick-date w-fit justify-between"
-          size="sm"
-          aria-label="Dashboard date"
-          id={id}
-          variant="outline"
-        >
-          <span className={cn("truncate", !date && "text-muted-foreground")}>
-            {date ? format(date, "PPP") : "Pick a date"}
-          </span>
-          <CalendarIcon aria-hidden="true" />
-        </Button>
+      <PopoverTrigger
+        render={
+          <Button
+            className="group/pick-date w-fit justify-between"
+            size="sm"
+            aria-label="Dashboard date"
+            id={id}
+            variant="outline"
+          />
+        }
+      >
+        <span className={cn("truncate", !date && "text-muted-foreground")}>
+          {date ? format(date, "PPP") : "Pick a date"}
+        </span>
+        <CalendarIcon aria-hidden="true" />
       </PopoverTrigger>
       <PopoverContent align="start" className="w-auto p-0" aria-label="Dashboard calendar">
         <Calendar mode="single" onSelect={onChange} selected={date} />

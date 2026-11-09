@@ -320,10 +320,12 @@ function PriceNote({ plan, team }: { plan: Plan; team: TeamSize }) {
 function PlanAction({ plan }: { plan: Plan }) {
   if (plan.id === "free")
     return (
-      <Button asChild size="lg" className="psp-plan-action">
-        <a role="button" href="#" onClick={placeholderLink}>
-          Start Free
-        </a>
+      <Button
+        render={<a role="button" href="#" onClick={placeholderLink} />}
+        size="lg"
+        className="psp-plan-action"
+      >
+        Start Free
       </Button>
     );
   return (
@@ -361,26 +363,31 @@ function FeatureLabel({ feature, mobile = false }: { feature: Feature; mobile?: 
     <div className="psp-feature-label">
       {label}
       <Tooltip>
-        <TooltipTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon-xs"
-            className="psp-help"
-            aria-label={`About ${feature.label}`}
-          >
-            <Info aria-hidden="true" />
-          </Button>
+        <TooltipTrigger
+          render={
+            <Button
+              variant="ghost"
+              size="icon-xs"
+              className="psp-help"
+              aria-label={`About ${feature.label}`}
+            />
+          }
+        >
+          <Info aria-hidden="true" />
         </TooltipTrigger>
         <TooltipContent className="reui-reference psp-tooltip" side="top" sideOffset={4}>
           {feature.help}
         </TooltipContent>
       </Tooltip>
       {feature.link && (
-        <Button asChild variant="link" size="xs" className="psp-row-link">
-          <a role="button" href="#" onClick={placeholderLink}>
-            {feature.link}
-            <ArrowUpRight aria-hidden="true" />
-          </a>
+        <Button
+          render={<a role="button" href="#" onClick={placeholderLink} />}
+          variant="link"
+          size="xs"
+          className="psp-row-link"
+        >
+          {feature.link}
+          <ArrowUpRight aria-hidden="true" />
         </Button>
       )}
     </div>

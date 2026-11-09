@@ -69,8 +69,8 @@ const plans: Plan[] = [
         icon: SquareTerminal,
       },
       {
-        label: "Base UI and Radix",
-        hint: "Every component ships for both primitive sets.",
+        label: "Base UI",
+        hint: "Components share one accessible primitive foundation.",
         icon: GitBranch,
       },
       {
@@ -245,10 +245,8 @@ function PlanColumn({ plan, period }: { plan: Plan; period: BillingPeriod }) {
                 <feature.icon aria-hidden="true" />
               </span>
               <Tooltip>
-                <TooltipTrigger asChild>
-                  <button type="button" className="ssp-feature-label">
-                    {feature.seats ? `${seats} ${feature.label}` : feature.label}
-                  </button>
+                <TooltipTrigger render={<button type="button" className="ssp-feature-label" />}>
+                  {feature.seats ? `${seats} ${feature.label}` : feature.label}
                 </TooltipTrigger>
                 <TooltipContent
                   side="top"
@@ -284,10 +282,12 @@ function PlanColumn({ plan, period }: { plan: Plan; period: BillingPeriod }) {
             </NumberFieldGroup>
           </NumberField>
         )}
-        <Button asChild variant={featured ? "default" : "secondary"} className="ssp-plan-action">
-          <a href="#" role="button" onClick={placeholderLink}>
-            {plan.action}
-          </a>
+        <Button
+          render={<a href="#" role="button" onClick={placeholderLink} />}
+          variant={featured ? "default" : "secondary"}
+          className="ssp-plan-action"
+        >
+          {plan.action}
         </Button>
       </CardContent>
     </li>

@@ -93,25 +93,27 @@ export default function PlatformNavbar() {
         </div>
         <div className="navbar-header-actions">
           <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" aria-label="Documentation menu">
-                Docs
-                <ChevronDown data-icon="inline-end" />
-              </Button>
+            <DropdownMenuTrigger
+              render={<Button variant="ghost" size="sm" aria-label="Documentation menu" />}
+            >
+              Docs
+              <ChevronDown data-icon="inline-end" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuGroup>
-                <DropdownMenuItem asChild>
-                  <a href="https://ui.shadcn.com/docs" target="_blank" rel="noreferrer">
-                    <BookOpen />
-                    Documentation
-                  </a>
+                <DropdownMenuItem
+                  render={<a href="https://ui.shadcn.com/docs" target="_blank" rel="noreferrer" />}
+                >
+                  <BookOpen />
+                  Documentation
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <a href="https://react.dev/reference/react" target="_blank" rel="noreferrer">
-                    <Code />
-                    API Reference
-                  </a>
+                <DropdownMenuItem
+                  render={
+                    <a href="https://react.dev/reference/react" target="_blank" rel="noreferrer" />
+                  }
+                >
+                  <Code />
+                  API Reference
                 </DropdownMenuItem>
               </DropdownMenuGroup>
             </DropdownMenuContent>
