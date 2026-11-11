@@ -5,7 +5,7 @@ import { getIdentityCss } from "./identity.ts";
 import { profiles } from "./profiles.ts";
 import { styleNotice } from "./notice.ts";
 import { getRadioGroupCss } from "./radio-group.ts";
-import { sheetPopoverCss } from "./sheet-popover.ts";
+import { hoverCardCss, sheetPopoverCss } from "./sheet-popover.ts";
 import { getSliderCss } from "./slider.ts";
 import { getTextEntryCss } from "./text-entry.ts";
 import { getToggleControlsCss } from "./toggle-controls.ts";
@@ -656,6 +656,7 @@ export function getUiStyleCss(value?: string | null): string {
     getCommandCss(name),
     getAlertDialogCss(name),
     sheetPopoverCss(name, { rule, radius, shadow }),
+    hoverCardCss(name, { rule, radius, shadow }),
     getTooltipCss(name),
     tabsCss(profile),
     progressCss(name),

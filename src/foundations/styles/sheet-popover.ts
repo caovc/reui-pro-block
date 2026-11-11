@@ -1,6 +1,6 @@
 import type { UiStyle } from "./index.ts";
 
-// ReUI's free c-sheet-1 and c-popover-1 compose the shadcn primitives.
+// ReUI's free c-sheet-1, c-popover-1 and c-hover-card-1 compose the shadcn primitives.
 // Style deltas come from apps/v4/registry/styles at shadcn-ui/ui@8ab27715521cbd4f87ae6886cd989cbb678f6de7.
 type Style = Exclude<UiStyle, "nova">;
 type CssRules = {
@@ -114,6 +114,26 @@ function fontCss(
   );
 }
 
+function floatingShadowCss(
+  style: Style,
+  content: string,
+  size: "lg" | "2xl",
+  { rule, shadow }: CssRules,
+) {
+  const ring = `${content}${utility("ring-foreground/10")}`;
+  return (
+    shadow(lowSpecificity(`${content}${utility("shadow-md")}`), size) +
+    rule(lowSpecificity(ring), {
+      "--tw-ring-color": "color-mix(in oklab, var(--foreground) 5%, transparent)",
+    }) +
+    (style === "luma" || style === "rhea"
+      ? rule(lowSpecificity(`.dark ${ring}`), {
+          "--tw-ring-color": "color-mix(in oklab, var(--foreground) 10%, transparent)",
+        })
+      : "")
+  );
+}
+
 function sheetCss(style: Style, { rule, shadow }: CssRules) {
   const profile = sheetStyles[style];
   const content = slot("sheet-content");
@@ -188,7 +208,8 @@ function sheetCss(style: Style, { rule, shadow }: CssRules) {
   return sections.join("");
 }
 
-function popoverCss(style: Style, { rule, radius, shadow }: CssRules) {
+function popoverCss(style: Style, rules: CssRules) {
+  const { rule, radius } = rules;
   const profile = popoverStyles[style];
   const content = slot("popover-content");
   const header = slot("popover-header");
@@ -205,20 +226,7 @@ function popoverCss(style: Style, { rule, radius, shadow }: CssRules) {
     );
   }
   if (profile.shadow) {
-    const ring = `${content}${utility("ring-foreground/10")}`;
-    sections.push(
-      shadow(lowSpecificity(`${content}${utility("shadow-md")}`), profile.shadow),
-      rule(lowSpecificity(ring), {
-        "--tw-ring-color": "color-mix(in oklab, var(--foreground) 5%, transparent)",
-      }),
-    );
-    if (style === "luma" || style === "rhea") {
-      sections.push(
-        rule(lowSpecificity(`.dark ${ring}`), {
-          "--tw-ring-color": "color-mix(in oklab, var(--foreground) 10%, transparent)",
-        }),
-      );
-    }
+    sections.push(floatingShadowCss(style, content, profile.shadow, rules));
   }
   if (style === "lyra" || style === "mira") {
     sections.push(
@@ -261,4 +269,43 @@ function popoverCss(style: Style, { rule, radius, shadow }: CssRules) {
 
 export function sheetPopoverCss(style: Style, rules: CssRules) {
   return sheetCss(style, rules) + popoverCss(style, rules);
+}
+
+type HoverCardProfile = {
+  width?: 288;
+  padding?: 16;
+  radius?: "none" | "2xl" | "3xl";
+  shadow?: "lg" | "2xl";
+  compact?: boolean;
+};
+
+const spaciousHoverCard = { width: 288, padding: 16 } as const;
+const roundedHoverCard = { ...spaciousHoverCard, radius: "3xl", shadow: "lg" } as const;
+const hoverCardStyles: Record<Style, HoverCardProfile> = {
+  vega: { padding: 16 },
+  maia: { ...spaciousHoverCard, radius: "2xl", shadow: "2xl" },
+  lyra: { radius: "none", compact: true },
+  mira: { width: 288, compact: true },
+  luma: roundedHoverCard,
+  sera: { ...spaciousHoverCard, radius: "none" },
+  rhea: roundedHoverCard,
+};
+
+export function hoverCardCss(style: Style, rules: CssRules) {
+  const { rule, radius } = rules;
+  const profile = hoverCardStyles[style];
+  const content = slot("hover-card-content");
+  return [
+    profile.width
+      ? rule(lowSpecificity(content), { "--hover-card-width": rem(profile.width) })
+      : "",
+    profile.padding ? paddingCss(rule, content, "p-2.5", profile.padding) : "",
+    profile.radius
+      ? rule(lowSpecificity(`${content}${utility("rounded-lg")}`), {
+          "border-radius": radius(profile.radius),
+        })
+      : "",
+    profile.compact ? fontCss(rule, content, "text-sm", "relaxedCompact") : "",
+    profile.shadow ? floatingShadowCss(style, content, profile.shadow, rules) : "",
+  ].join("");
 }

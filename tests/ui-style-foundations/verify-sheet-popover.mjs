@@ -29,6 +29,18 @@ const popovers = {
   rhea: ["22px", "16px", "16px", "4px", "16px", "14px", "0px 10px 15px -3px"],
 };
 
+// Width, radius, padding, font size/leading, shadow offset and light ring opacity.
+const hoverCards = {
+  nova: ["256px", "10px", "10px", "14px", "20px", "0px 4px 6px -1px", 10],
+  vega: ["256px", "10px", "16px", "14px", "20px", "0px 4px 6px -1px", 10],
+  maia: ["288px", "18px", "16px", "14px", "20px", "0px 25px 50px -12px", 5],
+  lyra: ["256px", "0px", "10px", "12px", "19.5px", "0px 4px 6px -1px", 10],
+  mira: ["288px", "10px", "10px", "12px", "19.5px", "0px 4px 6px -1px", 10],
+  luma: ["288px", "22px", "16px", "14px", "20px", "0px 10px 15px -3px", 5],
+  sera: ["288px", "0px", "16px", "14px", "20px", "0px 4px 6px -1px", 10],
+  rhea: ["288px", "22px", "16px", "14px", "20px", "0px 10px 15px -3px", 5],
+};
+
 const slot = (page, name) => page.locator(`[data-slot="${name}"]`);
 
 async function withOverlay(page, label, overlay, check) {
@@ -105,6 +117,66 @@ async function checkPopover(page, style) {
   });
 }
 
+async function checkHoverCard(page, style, { keyboard = true } = {}) {
+  const trigger = page.getByRole("link", { name: "Hover card preview", exact: true });
+  const content = slot(page, "hover-card-content");
+  const [width, radius, padding, size, leading, shadow, ring] = hoverCards[style];
+  await trigger.hover();
+  await expect(content).toBeVisible();
+  assert.equal(await content.locator("xpath=ancestor::main").count(), 0, "hover card is portaled");
+  await expect(content).toHaveAttribute("data-side", "bottom");
+  await expect(content).toHaveCSS("width", width);
+  await expect(content).toHaveCSS("border-top-left-radius", radius);
+  await expect(content).toHaveCSS("padding-top", padding);
+  await expect(content).toHaveCSS("font-size", size);
+  await expect(content).toHaveCSS("line-height", leading);
+  await expect(content).toHaveCSS("box-shadow", new RegExp(shadow));
+  const ringColor = () =>
+    content.evaluate((element) => getComputedStyle(element).getPropertyValue("--tw-ring-color"));
+  assert.match(await ringColor(), new RegExp(` ${ring}%, transparent\\)`));
+  if (style === "luma" || style === "rhea") {
+    await page.locator("html").evaluate((element) => element.classList.add("dark"));
+    assert.match(await ringColor(), /10%, transparent\)/);
+    await page.locator("html").evaluate((element) => element.classList.remove("dark"));
+  }
+  await content.hover();
+  await expect(content).toBeVisible();
+  await page.mouse.move(0, 0);
+  await expect(content).toBeHidden();
+
+  if (keyboard) {
+    await page.getByRole("button", { name: "Open custom popover", exact: true }).focus();
+    await page.keyboard.press("Tab");
+    await expect(trigger).toBeFocused();
+    await expect(content).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(content).toBeHidden();
+    await expect(trigger).toBeFocused();
+    await page.keyboard.press("Shift+Tab");
+  }
+}
+
+async function checkHoverCardOverrides(page) {
+  await page.getByRole("link", { name: "Custom hover card preview", exact: true }).hover();
+  const content = slot(page, "hover-card-content");
+  await expect(content).toHaveCSS("width", "256px");
+  await expect(content).toHaveCSS("border-top-left-radius", "6px");
+  await expect(content).toHaveCSS("padding-left", "4px");
+  await expect(content).toHaveCSS("padding-top", "12px");
+  await expect(content).toHaveCSS("padding-bottom", "16px");
+  await expect(content).toHaveCSS("font-size", "18px");
+  await expect(content).toHaveCSS("line-height", "22.5px");
+  await expect(content).not.toHaveCSS("box-shadow", /0px 10px 15px -3px/);
+  assert.match(
+    await content.evaluate((element) =>
+      getComputedStyle(element).getPropertyValue("--tw-ring-color"),
+    ),
+    /25%, transparent\)/,
+  );
+  await page.mouse.move(0, 0);
+  await expect(content).toBeHidden();
+}
+
 async function checkOverrides(page) {
   const sheet = slot(page, "sheet-content");
   await withOverlay(page, "Open custom sheet", sheet, async () => {
@@ -157,9 +229,14 @@ try {
       const stylesheet = css ? await page.addStyleTag({ content: css }) : undefined;
       await checkSheet(page, style);
       await checkPopover(page, style);
+      await checkHoverCard(page, style);
       if (style === "sera") await checkOverrides(page);
+      if (style === "luma") await checkHoverCardOverrides(page);
+      await page.setViewportSize({ width: 390, height: 800 });
+      await checkHoverCard(page, style, { keyboard: false });
+      await page.setViewportSize({ width: 900, height: 800 });
       await stylesheet?.evaluate((element) => element.remove());
-      console.log(`${primitive}-${style}: Sheet and Popover match`);
+      console.log(`${primitive}-${style}: Sheet, Popover and HoverCard match`);
     }
     await checkSheet(page, "nova");
     await checkPopover(page, "nova");

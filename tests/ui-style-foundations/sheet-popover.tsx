@@ -1,5 +1,6 @@
 import { createRoot } from "react-dom/client";
 import { Button } from "@/components/ui/button";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import {
   Popover,
   PopoverContent,
@@ -22,7 +23,7 @@ import "@/index.css";
 
 export function SheetPopoverFixture() {
   return (
-    <main className="flex gap-4 p-12" data-library={uiFoundation.primitive}>
+    <main className="flex flex-wrap gap-4 p-12" data-library={uiFoundation.primitive}>
       <Sheet>
         <SheetTrigger asChild>
           <Button>Open sheet</Button>
@@ -80,6 +81,26 @@ export function SheetPopoverFixture() {
           </PopoverHeader>
         </PopoverContent>
       </Popover>
+      <HoverCard openDelay={100} closeDelay={100}>
+        <HoverCardTrigger asChild>
+          <a className="self-center underline" href="#hover-card-reference">
+            Hover card preview
+          </a>
+        </HoverCardTrigger>
+        <HoverCardContent side="bottom" align="start" sideOffset={8}>
+          <p>Preview the saved view and its filters.</p>
+        </HoverCardContent>
+      </HoverCard>
+      <HoverCard openDelay={100} closeDelay={100}>
+        <HoverCardTrigger asChild>
+          <a className="self-center underline" href="#custom-hover-card-reference">
+            Custom hover card preview
+          </a>
+        </HoverCardTrigger>
+        <HoverCardContent className="w-64 rounded-sm px-1 pt-3 text-lg leading-tight shadow-none ring-foreground/25">
+          <p>Preview with local styles.</p>
+        </HoverCardContent>
+      </HoverCard>
     </main>
   );
 }
