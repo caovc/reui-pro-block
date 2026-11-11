@@ -175,6 +175,75 @@ for (const primitive of ["radix", "base"] as const) {
     await lastColumn.locator(".wf-board-card").first().click();
     await expect(page.getByRole("dialog")).toBeVisible();
   });
+
+  test(`${primitive} Mesh Projects drags full previews without scaling cards or lanes`, async ({
+    page,
+  }) => {
+    const prefix = primitive === "base" ? "./base/" : "./";
+    await page.setViewportSize({ width: 1920, height: 900 });
+    await page.goto(`${prefix}#/template-preview/mesh`);
+    await expect(page.locator("html")).toHaveAttribute("data-ui-primitive", primitive);
+    await page.getByRole("button", { name: "Projects", exact: true }).click();
+
+    const board = page.getByRole("region", { name: "Q4 Launch Board", exact: true });
+    const columns = board.locator('[data-slot="kanban-column"]');
+    const todo = board.locator('[data-value="To Do"]');
+    const progress = board.locator('[data-value="In Progress"]');
+    const handle = todo.getByRole("button", { name: "Move To Do column", exact: true });
+    const before = (await progress.boundingBox())!;
+    const beforeColor = await progress
+      .locator(".wf-board-column")
+      .evaluate((panel) => getComputedStyle(panel).backgroundColor);
+    const origin = (await handle.boundingBox())!;
+    await page.mouse.move(origin.x + origin.width / 2, origin.y + origin.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(before.x + before.width * 0.7, origin.y + origin.height / 2, {
+      steps: 18,
+    });
+
+    const lanePreview = page.locator('[data-drag-preview="column"]');
+    await expect(lanePreview).toBeVisible();
+    await expect(lanePreview).toHaveAttribute("inert", "");
+    await expect(lanePreview).toContainText("2. To Do");
+    await expect(lanePreview.locator(".wf-board-card")).toHaveCount(3);
+    await expect(lanePreview).toContainText("Plan a beta diary study with 20 drivers");
+    await expect.poll(async () => (await progress.boundingBox())!.x).toBeLessThan(before.x);
+    const scales = await columns.evaluateAll((lanes) =>
+      lanes.map((lane) => {
+        const { a, d } = new DOMMatrix(getComputedStyle(lane).transform);
+        return [a, d];
+      }),
+    );
+    expect(scales).toEqual(Array.from({ length: 5 }, () => [1, 1]));
+    await page.mouse.up();
+    await expect(lanePreview).toHaveCount(0);
+    await expect(columns.nth(1)).toHaveAttribute("data-value", "In Progress");
+    await expect(progress.locator(".wf-board-column")).toHaveCSS("background-color", beforeColor);
+
+    const taskName = "Test offline maps on older driver phones";
+    const task = todo.locator(".wf-board-card").filter({ hasText: taskName });
+    const target = progress.locator(".wf-board-card").first();
+    const taskBox = (await task.boundingBox())!;
+    const targetBox = (await target.boundingBox())!;
+    await page.mouse.move(taskBox.x + 28, taskBox.y + 38);
+    await page.mouse.down();
+    await page.mouse.move(targetBox.x + 28, targetBox.y + 38, { steps: 18 });
+    const taskPreview = page.locator('[data-drag-preview="item"]');
+    await expect(taskPreview).toContainText(taskName);
+    await expect(taskPreview).toHaveAttribute("inert", "");
+    expect(Math.abs((await taskPreview.boundingBox())!.width - taskBox.width)).toBeLessThan(1);
+    await page.keyboard.press("Escape");
+    await page.mouse.up();
+    await expect(taskPreview).toHaveCount(0);
+    await expect(task).toHaveCount(1);
+
+    await handle.focus();
+    await handle.press("Space");
+    await expect(lanePreview).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(lanePreview).toHaveCount(0);
+    await expect(handle).toBeFocused();
+  });
 }
 
 test("Flux phone keeps a navigation group open, closes only after selecting a route", async ({

@@ -2405,34 +2405,56 @@
 .wf-mesh-board[data-slot="kanban-board"] {
   /* Keep the outer ScrollArea's content wrapper at the viewport width. */
   contain: inline-size;
+  align-items: stretch;
 }
 @media (max-width: 1023px) {
   .wf-mesh-board[data-slot="kanban-board"] {
     gap: 12px;
   }
 }
+/* Sort equal-height lanes, with the colored panel sized to its cards. */
+.wf-mesh-board .wf-mesh-lane {
+  flex: 1 0 280px;
+  min-width: 280px;
+}
 .wf-mesh-board .wf-board-column {
-  flex-grow: 1;
+  width: 100%;
+  min-width: 0;
+  min-height: 256px;
   border: 1px solid #e5e5e5;
   border-radius: 12px;
   padding: 8px;
   background: #fafafa;
 }
-.wf-mesh-board .wf-board-column[data-column="1"] {
+.wf-mesh-board .wf-board-column[data-stage="To Do"] {
   background: #fffbeb60;
   border-color: #fde68a;
 }
-.wf-mesh-board .wf-board-column[data-column="2"] {
+.wf-mesh-board .wf-board-column[data-stage="In Progress"] {
   background: #f5f5f5;
   border-color: #d4d4d4;
 }
-.wf-mesh-board .wf-board-column[data-column="3"] {
+.wf-mesh-board .wf-board-column[data-stage="In Review"] {
   background: #f5f3ff;
   border-color: #ddd6fe;
 }
-.wf-mesh-board .wf-board-column[data-column="4"] {
+.wf-mesh-board .wf-board-column[data-stage="Done"] {
   background: #ecfdf570;
   border-color: #a7f3d0;
+}
+.wf-board-drag-preview {
+  width: 280px;
+  min-height: 0;
+  pointer-events: none;
+}
+.wf-mesh-board.wf-board-drag-preview {
+  background: transparent;
+}
+.wf-mesh-board.wf-board-drag-preview[data-drag-preview="item"] {
+  width: 100%;
+}
+.wf-mesh-board.wf-board-drag-preview :is(.wf-board-column, .wf-board-card-frame) {
+  box-shadow: 0 4px 12px rgb(0 0 0 / 12%);
 }
 .wf-board-card-frame {
   border: 1px solid #ddd !important;

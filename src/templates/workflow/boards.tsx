@@ -332,6 +332,54 @@ export function ProjectBoard({
       </Frame>
     );
   }
+  function lane(column: string, index: number, preview = false) {
+    const content = (
+      <>
+        <header>
+          <strong>
+            {kind === "mesh" ? `${index + 1}. ` : ""}
+            {column}
+          </strong>
+          <Status>{groups[column].length}</Status>
+          <KanbanColumnHandle aria-label={`Move ${column} column`}>
+            <GripVertical className="size-3" />
+          </KanbanColumnHandle>
+        </header>
+        <KanbanColumnContent value={column}>
+          {groups[column].map((task, taskIndex) => (
+            <KanbanItem value={task.id} key={task.id}>
+              {preview ? (
+                <div className="wf-board-card">{card(task, taskIndex + index)}</div>
+              ) : (
+                <KanbanItemHandle asChild>
+                  <button type="button" className="wf-board-card" onClick={() => setSelected(task)}>
+                    {card(task, taskIndex + index)}
+                  </button>
+                </KanbanItemHandle>
+              )}
+            </KanbanItem>
+          ))}
+        </KanbanColumnContent>
+      </>
+    );
+    return (
+      <KanbanColumn
+        className={kind === "mesh" ? "wf-mesh-lane" : "wf-board-column"}
+        data-column={index}
+        value={column}
+        key={column}
+      >
+        {kind === "mesh" ? (
+          <div className="wf-board-column" data-stage={column}>
+            {content}
+          </div>
+        ) : (
+          content
+        )}
+      </KanbanColumn>
+    );
+  }
+
   return (
     <>
       <div className={`wf-board-head ${kind === "mesh" ? "sr-only" : ""}`}>
@@ -342,6 +390,7 @@ export function ProjectBoard({
       <Kanban
         value={groups}
         getItemValue={(t) => t.id}
+        restoreOnCancel={kind === "mesh"}
         onValueChange={(v) => {
           setColumns(Object.keys(v));
           setTasks(
@@ -356,53 +405,39 @@ export function ProjectBoard({
           role="region"
           aria-label={kind === "mesh" ? "Q4 Launch Board" : "Task board"}
         >
-          {columns.map((column, index) => (
-            <KanbanColumn
-              className="wf-board-column"
-              data-column={index}
-              value={column}
-              key={column}
-            >
-              <header>
-                <strong>
-                  {kind === "mesh" ? `${index + 1}. ` : ""}
-                  {column}
-                </strong>
-                <Status>{groups[column].length}</Status>
-                <KanbanColumnHandle aria-label={`Move ${column} column`}>
-                  <GripVertical className="size-3" />
-                </KanbanColumnHandle>
-              </header>
-              <KanbanColumnContent value={column}>
-                {groups[column].map((t, i) => (
-                  <KanbanItem value={t.id} key={t.id}>
-                    <KanbanItemHandle asChild>
-                      <button
-                        type="button"
-                        className="wf-board-card"
-                        onClick={() => setSelected(t)}
-                      >
-                        {card(t, i + index)}
-                      </button>
-                    </KanbanItemHandle>
-                  </KanbanItem>
-                ))}
-              </KanbanColumnContent>
-            </KanbanColumn>
-          ))}
+          {columns.map((column, index) => lane(column, index))}
         </KanbanBoard>
-        <KanbanOverlay>
-          {({ value, variant }) =>
-            variant === "item" ? (
-              <div className={`wf-root wf-${kind}-board`} style={{ width: 280, minHeight: 0 }}>
+        <KanbanOverlay className={kind === "mesh" ? "pointer-events-none" : undefined}>
+          {({ value, variant }) => {
+            const column = String(value);
+            if (variant === "column") {
+              if (kind !== "mesh") return <div className="wf-board-column">{column}</div>;
+              return (
+                <div
+                  className="wf-root wf-mesh-board wf-board-drag-preview"
+                  data-drag-preview="column"
+                  inert
+                >
+                  {lane(column, columns.indexOf(column), true)}
+                </div>
+              );
+            }
+            const task = tasks.find((entry) => entry.id === value);
+            if (!task) return null;
+            const columnIndex = columns.indexOf(task.status);
+            const taskIndex = groups[task.status].indexOf(task);
+            return (
+              <div
+                className={`wf-root wf-${kind}-board wf-board-drag-preview`}
+                data-drag-preview="item"
+                inert
+              >
                 <div className="wf-board-card">
-                  {tasks.find((t) => t.id === value) && card(tasks.find((t) => t.id === value)!)}
+                  {card(task, kind === "mesh" ? taskIndex + columnIndex : 0)}
                 </div>
               </div>
-            ) : (
-              <div className="wf-board-column">{String(value)}</div>
-            )
-          }
+            );
+          }}
         </KanbanOverlay>
       </Kanban>
       <BoardTaskForm
