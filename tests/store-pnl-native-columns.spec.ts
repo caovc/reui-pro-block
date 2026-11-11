@@ -244,7 +244,26 @@ for (const width of [1440, 390]) {
     await expectSameTable(original, table);
 
     const search = frame.getByRole("textbox", { name: "Search stores...", exact: true });
-    await search.fill(selected.name);
+    const searchIcon = frame.locator('[data-slot="input-group-addon"] svg');
+    await expect(search).toHaveAttribute("data-slot", "input-group-control");
+    await expect(searchIcon).toBeVisible();
+    const iconBounds = await searchIcon.boundingBox();
+    if (!iconBounds) throw new Error("The Store P&L search icon must have a visible box.");
+    const field = await search.evaluate((input: HTMLInputElement) => {
+      const style = getComputedStyle(input);
+      const bounds = input.getBoundingClientRect();
+      const textStart = bounds.left + parseFloat(style.paddingLeft);
+      const textEnd = bounds.right - parseFloat(style.paddingRight);
+      const canvas = document.createElement("canvas").getContext("2d");
+      if (!canvas) throw new Error("Could not measure the search placeholder.");
+      canvas.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+      return { textStart, textEnd, placeholderWidth: canvas.measureText(input.placeholder).width };
+    });
+    expect(field.textStart).toBeGreaterThan(iconBounds.x + iconBounds.width);
+    expect(field.textEnd - field.textStart).toBeGreaterThanOrEqual(field.placeholderWidth);
+    await searchIcon.click();
+    await expect(search).toBeFocused();
+    await search.pressSequentially(selected.name);
     await expectRowIds(table, [String(selected.id)]);
     await expectStoreMetadata(table, [selected]);
     await expect(table.getByRole("checkbox", { name: selectedName, exact: true })).toBeChecked();
@@ -261,7 +280,10 @@ for (const width of [1440, 390]) {
       );
     }
     await closeColumns(page, trigger);
-    await search.fill("");
+    await trigger.press("Shift+Tab");
+    await expect(search).toBeFocused();
+    await search.press("ControlOrMeta+A");
+    await search.press("Backspace");
     await expectRowIds(table, ids(descending.slice(0, 10)));
     await expectStoreMetadata(table, descending.slice(0, 10));
     await expectSameTable(original, table);

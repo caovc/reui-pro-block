@@ -12,8 +12,7 @@ import {
   type SourceTarget,
 } from "./fidelity-next-source.helpers";
 
-// Three narrow checks reuse the existing source/clipboard/archive helpers unchanged.
-// Each file gets its own natural UI flow; the third case captures one real original ZIP.
+// Each file gets its own natural UI flow, and the final case captures one real original ZIP.
 const baseTarget: SourceTarget = {
   id: "data-grid-advanced-2",
   kind: "block",
@@ -29,12 +28,14 @@ const baseTarget: SourceTarget = {
     "src/components/reui/data-grid/data-grid-table.tsx",
     "src/components/reui/data-grid/data-grid-pagination.tsx",
     "src/components/ui/dropdown-menu.tsx",
+    "src/components/ui/input-group.tsx",
   ],
 };
 
 for (const selectedPath of [
   "src/blocks/data/grid-advanced.tsx",
   "src/blocks/data/grid-advanced-model-grid.tsx",
+  "src/components/ui/input-group.tsx",
 ]) {
   const target: SourceTarget = { ...baseTarget, selectedPath };
   test(`${target.id} ${basename(target.selectedPath)} changed source: actual default, view, clipboard and single-file bytes`, async ({

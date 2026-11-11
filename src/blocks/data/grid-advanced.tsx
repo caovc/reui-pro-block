@@ -1,7 +1,8 @@
 import { DataGridColumnVisibility } from "@/components/reui/data-grid/data-grid-column-visibility";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import type { BlockProps } from "@/data/types";
-import { Columns3, Filter, Settings2 } from "lucide-react";
+import { Columns3, Filter, Search, Settings2 } from "lucide-react";
 import { useMemo, useState } from "react";
 import PerformanceCampaignTable from "./grid-advanced-campaign-table";
 import TechnicianCapacity from "./grid-advanced-technician-capacity";
@@ -477,14 +478,20 @@ function StorePnl() {
           description="28 stores · 10 markets · FY26, Oct 2025 to Sep 2026"
           actions={
             <>
-              <GridSearch
-                value={search}
-                onChange={(v) => {
-                  setSearch(v);
-                  setPage(0);
-                }}
-                placeholder="Search stores..."
-              />
+              <InputGroup className="flex-none sm:max-w-80 sm:flex-1">
+                <InputGroupAddon>
+                  <Search aria-hidden="true" />
+                </InputGroupAddon>
+                <InputGroupInput
+                  aria-label="Search stores..."
+                  placeholder="Search stores..."
+                  value={search}
+                  onChange={(event) => {
+                    setSearch(event.target.value);
+                    setPage(0);
+                  }}
+                />
+              </InputGroup>
               <DataGridColumnVisibility
                 table={table}
                 trigger={
