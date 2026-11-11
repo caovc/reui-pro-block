@@ -619,19 +619,13 @@ export function FilterOperatorPopover<V, O>({
       </PopoverTrigger>
       <PopoverContent
         align="start"
-        /* RADIX ONLY, the last hop of the handoff. Radix restores focus to
-           this trigger a macrotask AFTER the panel unmounts, which is after
-           `release` has opened the value editor; that restore pulls focus back
-           onto the condition segment and the value menu dismisses itself.
-           Suppressed only while the flag is up, and lowered as it is spent.
-           Base UI hands focus over in the other order and needs nothing. The
-           same guard `FiltersBuilder` runs for the field picker, for the same
-           reason, so the two move together. */
+        /* Radix restores focus after unmounting the operator panel. Base UI
+           requests it before unmounting. Keep the handoff armed through both
+           the focus callback and panel cleanup so either order opens the
+           value editor and leaves focus there. */
         onCloseAutoFocus={(event) => {
           preserveActiveFilterPopoverFocus(event);
-          if (!handoff.current) return;
-          handoff.current = false;
-          event.preventDefault();
+          if (handoff.current) event.preventDefault();
         }}
         /* `w-auto` with a FLOOR: a catalog sizes to its longest label, and a
            boolean field's "is" and "is not" would read as a scrap of paper. */
