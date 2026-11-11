@@ -61,6 +61,12 @@ function libraryEntry(root: URL, library: Library) {
   return new URL(library === "Base UI" ? "base/" : "./", root);
 }
 
+function routeParameters(query: string | undefined) {
+  const parameters = new URLSearchParams(query);
+  parameters.delete("preset");
+  return parameters.toString();
+}
+
 async function chooseLibrary(page: Page, root: URL, library: Library) {
   const current = new URL(page.url());
   const control = libraryControl(await customizer(page));
@@ -74,9 +80,7 @@ async function chooseLibrary(page: Page, root: URL, library: Library) {
       url.origin === root.origin &&
       url.pathname === libraryEntry(root, library).pathname &&
       route === oldRoute &&
-      [...new URLSearchParams(oldQuery)].every(([key, value]) =>
-        new URLSearchParams(query).getAll(key).includes(value),
-      )
+      routeParameters(query) === routeParameters(oldQuery)
     );
   });
   await expect(libraryControl(await customizer(page))).toContainText(library);
@@ -323,8 +327,7 @@ for (const library of libraries) {
         await expect(remember).not.toBeChecked();
       }
 
-      const route = new URL(target.route, libraryEntry(root, library)).href;
-      const resolved = { ...target, route };
+      const resolved = { ...target, route: page.url() };
       const { opener, dialog, choice } = await openSource(page, resolved, "archive");
       const { files } = await captureOriginalArchive(page, resolved, dialog, info);
       const expected = verifyArchive(files, resolved, library);
