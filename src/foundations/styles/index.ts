@@ -2,6 +2,7 @@ import { getAlertDialogCss } from "./alert-dialog.ts";
 import { getCommandCss } from "./command.ts";
 import { getFieldCss } from "./field.ts";
 import { getIdentityCss } from "./identity.ts";
+import { getNumberFieldCss } from "./number-field.ts";
 import { profiles } from "./profiles.ts";
 import { styleNotice } from "./notice.ts";
 import { getRadioGroupCss } from "./radio-group.ts";
@@ -643,6 +644,7 @@ export function getUiStyleCss(value?: string | null): string {
     inputCss(profile),
     getTextEntryCss(name),
     getFieldCss(name),
+    getNumberFieldCss(name, { rule, radius, length }),
     focusCss(profile),
     frameAndCardCss(profile, name),
     itemCss(profile),
