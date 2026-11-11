@@ -1,9 +1,13 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createInsertSuggestions, type InsertSuggestion } from "./rich-text-suggestion";
-import { collectDocumentRevisions, resolveDocumentRevisions } from "./rich-text-revisions";
+import {
+  collectDocumentRevisions,
+  documentProjection,
+  resolveDocumentRevisions,
+} from "./rich-text-revisions";
 import { Frame, FramePanel, FrameHeader, FrameFooter } from "@/components/reui/frame";
 import { RichTextToolbar, RichTextShortcuts } from "./rich-text-toolbar";
-import { AssistantCaret, RichTextAssistant } from "./rich-text-assistant";
+import { AssistantCaret, RichTextAssistant, type AssistantDock } from "./rich-text-assistant";
 import { Badge as ReuiBadge } from "@/components/reui/badge";
 import {
   collaborationExtension,
@@ -37,9 +41,10 @@ import {
   runEditorCommand,
   separateRichTextHistory,
 } from "./rich-text-engine";
-import type { ClipboardEvent, FormEvent, KeyboardEvent, MouseEvent } from "react";
+import type { ClipboardEvent, CSSProperties, FormEvent, KeyboardEvent, MouseEvent } from "react";
 import {
   AlignLeft,
+  PanelRight,
   ArrowDownToLine,
   ArrowRight,
   Bold,
@@ -67,7 +72,16 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -84,6 +98,8 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuGroup,
+  DropdownMenuLabel,
   DropdownMenuCheckboxItem,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
@@ -302,12 +318,14 @@ export default function RichEditorBlock({
   }, [documentHtml]);
   const [isSaved, setIsSaved] = useState(true);
   const [locked, setLocked] = useState(false);
+  const [clearOpen, setClearOpen] = useState(false);
+  const actionsTrigger = useRef<HTMLButtonElement>(null);
   const [fullWidth, setFullWidth] = useState(false);
   const [smallText, setSmallText] = useState(false);
   const [contractMode, setContractMode] = useState<ContractMode>("suggesting");
   const [contractMarkup, setContractMarkup] = useState<ContractMarkup>("all");
   const [activeRevisionId, setActiveRevisionId] = useState<string | null>(null);
-  const [assistantDock, setAssistantDock] = useState<"review" | "ask" | null>("review");
+  const [assistantDock, setAssistantDock] = useState<AssistantDock>("review");
   const [assistantRunning, setAssistantRunning] = useState(false);
   const editable =
     !readOnly &&
@@ -810,24 +828,17 @@ export default function RichEditorBlock({
     setSelectedText("");
   }
   const assistantRevisions = kind === 5 && engine ? collectDocumentRevisions(engine) : [];
-  function copyAssistantDocument(projection: ContractMarkup) {
-    if (!engine) return;
-    const html = engine.getHTML();
-    const exported = new DOMParser().parseFromString(html, "text/html");
-    if (projection !== "all") {
-      exported
-        .querySelectorAll(projection === "final" ? "del[data-revision]" : "ins[data-revision]")
-        .forEach((fragment) => fragment.remove());
-    }
-    const content =
-      projection === "all"
-        ? html
-        : Array.from(exported.body.children)
-            .map((block) => block.textContent)
-            .join("\n\n");
+  function copyDocument(content: string, success: string) {
     navigator.clipboard.writeText(content).then(
-      () => toast.success(projection === "all" ? "Redline HTML copied" : "Document text copied"),
+      () => toast.success(success),
       () => toast.error("Clipboard is unavailable"),
+    );
+  }
+  function copyRedline(projection: ContractMarkup) {
+    if (!engine) return;
+    copyDocument(
+      projection === "all" ? engine.getHTML() : documentProjection(engine, projection),
+      projection === "all" ? "Redline HTML copied" : "Document text copied",
     );
   }
   function download() {
@@ -844,36 +855,52 @@ export default function RichEditorBlock({
     setLinkOpen(false);
     setContractMarkup(markup);
   }
-  const contractReviewExtra = suggesting ? (
-    <form
-      className="flex flex-col gap-3 border-t pt-4"
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (editable) suggestEdit();
-      }}
-    >
-      <p className="text-xs font-medium">Suggest a new edit</p>
-      <p className="text-[10px] leading-5 text-muted-foreground">
-        Select text in the document, then write a replacement.
-      </p>
-      <Textarea
-        aria-label="Suggested replacement"
-        placeholder="Replacement text…"
-        value={replacement}
-        onChange={(e) => setReplacement(e.target.value)}
-        rows={3}
-        disabled={!editable}
-      />
-      <Button size="sm" type="submit" disabled={!editable || !replacement.trim() || !selectedText}>
-        Suggest edit
-        <ArrowRight />
-      </Button>
-    </form>
-  ) : null;
+  const contractReviewExtra =
+    suggesting && selectedText ? (
+      <form
+        className="flex flex-col gap-3 border-t pt-4"
+        onSubmit={(e) => {
+          e.preventDefault();
+          if (editable) suggestEdit();
+        }}
+      >
+        <p className="text-xs font-medium">Suggest a new edit</p>
+        <p className="text-[10px] leading-5 text-muted-foreground">
+          Select text in the document, then write a replacement.
+        </p>
+        <Textarea
+          aria-label="Suggested replacement"
+          placeholder="Replacement text…"
+          value={replacement}
+          onChange={(e) => setReplacement(e.target.value)}
+          rows={3}
+          disabled={!editable}
+        />
+        <Button
+          size="sm"
+          type="submit"
+          disabled={!editable || !replacement.trim() || !selectedText}
+        >
+          Suggest edit
+          <ArrowRight />
+        </Button>
+      </form>
+    ) : null;
   const plainText = engine?.getText({ blockSeparator: "\n" }) ?? "";
   const words = plainText.trim().split(/\s+/).filter(Boolean).length;
   const showSidebar = kind === 2;
   const documentFrame = kind === 1 && !compact;
+  const clearLabel = kind === 2 ? "Clear Page" : "Clear Document";
+  const editorTitle =
+    documentTitle ??
+    [
+      "Project overview",
+      "Product design handbook",
+      "Master Services Agreement",
+      "Shared Drafts",
+      "Workspace Search Rollout",
+    ][kind - 1] ??
+    block.name;
   const EditorFrame = documentFrame ? Frame : "div";
   const EditorHeader = documentFrame ? FrameHeader : "header";
   const EditorSurface = documentFrame ? FramePanel : "div";
@@ -1040,16 +1067,12 @@ export default function RichEditorBlock({
           <FileText className="size-4 text-muted-foreground" />
           <div>
             <h2 className="text-sm font-semibold">
-              {documentTitle ??
-                (kind === 2
-                  ? "Product design handbook"
-                  : kind === 1
-                    ? "Project overview"
-                    : kind === 4
-                      ? "Shared Drafts"
-                      : kind === 5
-                        ? "Workspace Search Rollout"
-                        : block.name)}
+              {editorTitle}
+              {kind === 3 && (
+                <ReuiBadge variant="warning-light" className="ml-2">
+                  In Review
+                </ReuiBadge>
+              )}
               {kind === 4 && (
                 <ReuiBadge variant={online ? "success" : "outline"} className="ml-2">
                   {online ? "Live" : "Offline"}
@@ -1063,19 +1086,22 @@ export default function RichEditorBlock({
               )}
             </h2>
             <p className="mt-1 text-[10px] text-muted-foreground">
+              {kind === 2 && !compact && "Design wiki · "}
+              {kind === 3 && "Northstar Labs · Round 3 · "}
               {kind === 4 && "Shared reply · Product spec · "}
               {kind === 5 && "Rollout plan · Alex Morgan · "}
               {documentFrame && "Project brief · Edited locally · "}
-              {storageError
-                ? "Storage unavailable · keep this tab open"
-                : !online
-                  ? "Edits save locally"
-                  : isSaved
-                    ? "All changes saved"
-                    : "Unsaved changes"}
+              <span>
+                {storageError
+                  ? "Storage unavailable · keep this tab open"
+                  : !online
+                    ? "Edits save locally"
+                    : isSaved
+                      ? "All changes saved"
+                      : "Unsaved changes"}
+              </span>
             </p>
           </div>
-          {kind === 3 && <Badge variant="outline">Draft</Badge>}
         </div>
         <div
           className={kind === 3 ? "flex flex-wrap items-center gap-2" : "flex items-center gap-2"}
@@ -1128,9 +1154,9 @@ export default function RichEditorBlock({
               </Button>
             </>
           )}
-          {(kind === 1 || kind === 2 || kind === 5) && (
+          {(kind === 1 || kind === 2 || kind === 3 || kind === 5) && (
             <div className="hidden items-center gap-1.5 sm:flex">
-              {["OR", "PB", "AM", "LS"].map((n) => (
+              {(kind === 3 ? ["OR", "PB", "AM"] : ["OR", "PB", "AM", "LS"]).map((n) => (
                 <Avatar className="size-7" key={n}>
                   <AvatarFallback className="text-[9px]">{n}</AvatarFallback>
                 </Avatar>
@@ -1200,6 +1226,7 @@ export default function RichEditorBlock({
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
+                ref={actionsTrigger}
                 size="icon-sm"
                 variant="ghost"
                 aria-label={
@@ -1212,13 +1239,13 @@ export default function RichEditorBlock({
             <DropdownMenuContent align="end">
               {kind === 5 ? (
                 <>
-                  <DropdownMenuItem onSelect={() => copyAssistantDocument("final")}>
+                  <DropdownMenuItem onSelect={() => copyRedline("final")}>
                     Copy Final Text
                   </DropdownMenuItem>
-                  <DropdownMenuItem onSelect={() => copyAssistantDocument("original")}>
+                  <DropdownMenuItem onSelect={() => copyRedline("original")}>
                     Copy Original Text
                   </DropdownMenuItem>
-                  <DropdownMenuItem onSelect={() => copyAssistantDocument("all")}>
+                  <DropdownMenuItem onSelect={() => copyRedline("all")}>
                     Copy Redline HTML
                   </DropdownMenuItem>
                 </>
@@ -1234,7 +1261,9 @@ export default function RichEditorBlock({
                   >
                     Copy Link
                   </DropdownMenuItem>
-                  <DropdownMenuItem onSelect={() => copyAssistantDocument("all")}>
+                  <DropdownMenuItem
+                    onSelect={() => copyDocument(engine?.getHTML() ?? "", "HTML copied")}
+                  >
                     Copy HTML
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
@@ -1246,6 +1275,7 @@ export default function RichEditorBlock({
                 <>
                   {documentFrame && (
                     <>
+                      <DropdownMenuLabel>Mode</DropdownMenuLabel>
                       <DropdownMenuCheckboxItem
                         checked={!locked}
                         onCheckedChange={() => setLocked(false)}
@@ -1263,6 +1293,7 @@ export default function RichEditorBlock({
                   )}
                   {!documentFrame && (
                     <>
+                      <DropdownMenuLabel>Page</DropdownMenuLabel>
                       <DropdownMenuCheckboxItem checked={fullWidth} onCheckedChange={setFullWidth}>
                         Full Width
                       </DropdownMenuCheckboxItem>
@@ -1275,53 +1306,93 @@ export default function RichEditorBlock({
                     </>
                   )}
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    onSelect={async () => {
-                      try {
-                        await navigator.clipboard.writeText(engine?.getHTML() || "");
-                        toast.success("HTML copied");
-                      } catch {
-                        toast.error("Clipboard is unavailable");
-                      }
-                    }}
-                  >
-                    Copy HTML
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onSelect={async () => {
-                      try {
-                        await navigator.clipboard.writeText(engine?.getText() || "");
-                        toast.success("Text copied");
-                      } catch {
-                        toast.error("Clipboard is unavailable");
-                      }
-                    }}
-                  >
-                    Copy Text
-                  </DropdownMenuItem>
-                  {!documentFrame && (
-                    <DropdownMenuItem onSelect={download}>Export HTML</DropdownMenuItem>
-                  )}
-                  {documentFrame && (
-                    <DropdownMenuItem
-                      disabled={!editable}
-                      onSelect={() => engine?.chain().focus().clearContent().run()}
-                    >
-                      Clear Document
-                    </DropdownMenuItem>
+                  <DropdownMenuGroup>
+                    <DropdownMenuLabel>Export</DropdownMenuLabel>
+                    {kind === 3 ? (
+                      <>
+                        <DropdownMenuItem onSelect={() => copyRedline("all")}>
+                          Copy Redline HTML
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onSelect={() => copyRedline("final")}>
+                          Copy Final Text
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onSelect={() => copyRedline("original")}>
+                          Copy Original Text
+                        </DropdownMenuItem>
+                      </>
+                    ) : (
+                      <>
+                        <DropdownMenuItem
+                          onSelect={() => copyDocument(engine?.getHTML() ?? "", "HTML copied")}
+                        >
+                          Copy HTML
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onSelect={() => copyDocument(engine?.getText() ?? "", "Text copied")}
+                        >
+                          Copy Text
+                        </DropdownMenuItem>
+                      </>
+                    )}
+                    {!documentFrame && (
+                      <DropdownMenuItem onSelect={download}>Export HTML</DropdownMenuItem>
+                    )}
+                  </DropdownMenuGroup>
+                  {(documentFrame || (kind === 2 && !compact)) && (
+                    <>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem
+                        variant="destructive"
+                        disabled={!editable}
+                        onSelect={() => setClearOpen(true)}
+                      >
+                        {clearLabel}
+                      </DropdownMenuItem>
+                    </>
                   )}
                 </>
               )}
             </DropdownMenuContent>
           </DropdownMenu>
+          <AlertDialog open={clearOpen} onOpenChange={setClearOpen}>
+            <AlertDialogContent
+              onCloseAutoFocus={(event) => {
+                event.preventDefault();
+                actionsTrigger.current?.focus({ preventScroll: true });
+              }}
+            >
+              <AlertDialogHeader>
+                <AlertDialogTitle>{clearLabel}?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Clearing {editorTitle} removes its entire content. You can restore it with Undo.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  variant="destructive"
+                  disabled={!editable}
+                  onClick={() => {
+                    if (!engine || !editable) return;
+                    separateRichTextHistory(engine);
+                    engine.commands.clearContent();
+                    separateRichTextHistory(engine);
+                  }}
+                >
+                  {clearLabel}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
           {showSidebar && (
             <Button
               variant="ghost"
               size="icon-sm"
-              aria-label="Toggle document panel"
+              aria-label="Outline"
+              aria-pressed={Boolean(panel)}
               onClick={() => setPanel(panel ? "" : "outline")}
             >
-              <AlignLeft />
+              <PanelRight />
             </Button>
           )}
         </div>
@@ -1671,52 +1742,58 @@ export default function RichEditorBlock({
             onDraftChange={setDiscussionDraft}
           />
         )}
-        {showSidebar && panel && (
-          <aside className="flex min-w-0 flex-col gap-5 border-t bg-background p-5 xl:border-l xl:border-t-0">
-            {panel === "outline" && (
-              <>
-                <div className="flex items-center justify-between">
-                  <h3 className="text-xs font-semibold">On this page</h3>
-                  <List className="size-4 text-muted-foreground" />
-                </div>
-                <nav aria-label="Document outline">
-                  <Scrollspy
-                    targetRef={scrollPane}
-                    history={false}
-                    className="flex flex-col gap-1"
-                    key={outline.map((item) => item.title).join("|")}
-                  >
-                    {outline.map((item) => (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="h-auto justify-start whitespace-normal py-2 text-left text-xs"
-                        style={{ paddingLeft: 8 + (item.level - 1) * 10 }}
-                        key={item.index}
-                        data-scrollspy-anchor={`editor-heading-${item.index}`}
-                        onClick={() => {
-                          const node = editor.current?.querySelectorAll("h1,h2,h3")[item.index];
-                          node?.scrollIntoView({
-                            behavior: "smooth",
-                            block: "center",
-                          });
-                        }}
-                      >
-                        {item.title}
-                      </Button>
-                    ))}
-                  </Scrollspy>
-                </nav>
-                <Separator />
-                <p className="text-[10px] leading-5 text-muted-foreground">
-                  Use the formatting toolbar, type / for blocks, or @ to mention a teammate. Tables
-                  and headings are editable in place.
-                </p>
-              </>
-            )}
-          </aside>
-        )}
       </EditorSurface>
+      {showSidebar && panel && (
+        <aside className="rich-text-outline flex min-w-0 flex-col gap-5 border-t bg-background p-5 xl:border-l xl:border-t-0">
+          {panel === "outline" && (
+            <>
+              <div className="flex items-center justify-between">
+                <h3 className="text-xs font-semibold">On this page</h3>
+                <List className="size-4 text-muted-foreground" />
+              </div>
+              <nav aria-label="Document outline">
+                <Scrollspy
+                  targetRef={scrollPane}
+                  history={false}
+                  className="flex flex-col gap-1"
+                  key={outline.map((item) => item.title).join("|")}
+                >
+                  {outline.map((item) => (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-auto justify-start whitespace-normal py-2 text-left text-xs"
+                      style={
+                        {
+                          "--editor-outline-depth": item.level - 1,
+                          paddingLeft: 8 + (item.level - 1) * 10,
+                        } as CSSProperties
+                      }
+                      key={item.index}
+                      data-scrollspy-anchor={`editor-heading-${item.index}`}
+                      onClick={() => {
+                        const node = editor.current?.querySelectorAll("h1,h2,h3")[item.index];
+                        node?.scrollIntoView({
+                          behavior: "smooth",
+                          block: "center",
+                        });
+                      }}
+                    >
+                      {item.title}
+                    </Button>
+                  ))}
+                </Scrollspy>
+              </nav>
+              <Separator />
+              <p className="text-[10px] leading-5 text-muted-foreground">
+                Use the formatting toolbar, type / for blocks, or @ to mention a teammate. Tables
+                and headings are editable in place.
+              </p>
+            </>
+          )}
+        </aside>
+      )}
+
       {kind === 5 && engine && (
         <RichTextAssistant
           editor={engine}

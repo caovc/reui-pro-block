@@ -230,6 +230,13 @@ for (const width of [1440, 390]) {
     );
     await page.getByRole("button", { name: "Document actions", exact: true }).click();
     await page.getByRole("menuitem", { name: "Clear Document", exact: true }).click();
+    const confirmation = page.getByRole("alertdialog", { name: "Clear Document?", exact: true });
+    await expect(page.locator(".tiptap")).toHaveText(original!);
+    await confirmation.getByRole("button", { name: "Cancel", exact: true }).click();
+    await expect(page.getByRole("button", { name: "Document actions", exact: true })).toBeFocused();
+    await page.getByRole("button", { name: "Document actions", exact: true }).click();
+    await page.getByRole("menuitem", { name: "Clear Document", exact: true }).click();
+    await confirmation.getByRole("button", { name: "Clear Document", exact: true }).click();
     await expect(editor).toHaveText("");
     await page.getByRole("button", { name: "Undo", exact: true }).click();
     await expect(editor).toHaveText(original!);
@@ -295,3 +302,67 @@ test("rapid link form reopen retains focus and permits pointer removal", async (
     await expect(editor).toBeFocused();
   }
 });
+
+for (const primitive of ["radix", "base"] as const) {
+  const prefix = `./${primitive === "base" ? "base/" : ""}#/preview/application/rich-text-editor`;
+
+  test(`${primitive} wiki keeps the outline in view and confirms a native clear`, async ({
+    page,
+  }) => {
+    await page.goto(`${prefix}/rich-text-editor-2`);
+    const editor = page.getByRole("textbox", { name: "Rich text document", exact: true });
+    const table = editor.getByRole("table");
+    await expect(table).toBeVisible();
+    const rail = page.getByRole("navigation", { name: "Document outline", exact: true });
+    await editor
+      .getByRole("heading", { name: "What’s next", exact: true })
+      .scrollIntoViewIfNeeded();
+    await expect(rail).toBeInViewport();
+    await rail.hover();
+    await rail.getByRole("button", { name: "Useful resources", exact: true }).click();
+    await expect(table).toBeInViewport();
+
+    const menu = page.getByRole("button", { name: "Page actions", exact: true });
+    await menu.click();
+    await page.getByRole("menuitem", { name: "Clear Page", exact: true }).click();
+    const confirmation = page.getByRole("alertdialog", { name: "Clear Page?", exact: true });
+    await expect(confirmation).toBeVisible();
+    await expect(page.locator(".tiptap table")).toBeAttached();
+    await page.keyboard.press("Escape");
+    await expect(menu).toBeFocused();
+    await menu.click();
+    await page.getByRole("menuitem", { name: "Clear Page", exact: true }).click();
+    await confirmation.getByRole("button", { name: "Clear Page", exact: true }).click();
+    await expect(editor).toHaveText("");
+    await page.getByRole("button", { name: "Undo", exact: true }).click();
+    await expect(table).toBeVisible();
+  });
+
+  test(`${primitive} contract copies original, final and redline views without editing the draft`, async ({
+    page,
+    context,
+  }) => {
+    await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+    await page.goto(`${prefix}/rich-text-editor-3`);
+    const editor = page.getByRole("textbox", { name: "Rich text document", exact: true });
+    await expect(editor.locator("ins")).toHaveCount(2);
+    await expect(editor.locator("ins").first()).toHaveCSS("background-color", "rgb(224, 245, 239)");
+    await expect(editor.locator("del").first()).toHaveCSS("background-color", "rgb(252, 226, 229)");
+    const before = await editor.innerHTML();
+    const copy = async (name: string) => {
+      await page.getByRole("button", { name: "Page actions", exact: true }).click();
+      await page.getByRole("menuitem", { name, exact: true }).click();
+      return page.evaluate(() => navigator.clipboard.readText());
+    };
+    const final = await copy("Copy Final Text");
+    expect(final).toContain("45 days");
+    expect(final).not.toContain("30 days");
+    const original = await copy("Copy Original Text");
+    expect(original).toContain("30 days");
+    expect(original).not.toContain("45 days");
+    const redline = await copy("Copy Redline HTML");
+    expect(redline).toContain('<del data-revision="term">30 days</del>');
+    expect(redline).toContain('<ins data-revision="term">45 days</ins>');
+    expect(await editor.innerHTML()).toBe(before);
+  });
+}

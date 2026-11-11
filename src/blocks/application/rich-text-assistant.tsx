@@ -43,7 +43,7 @@ import {
 } from "./rich-text-assistant-plan";
 
 type Run = ReturnType<typeof planAssistant> & { index: number; id: string };
-type Dock = "review" | "ask" | "running" | "findings";
+export type AssistantDock = "review" | "ask" | "findings" | null;
 
 const assistantCaret = new PluginKey<DecorationSet>("assistantCaret");
 
@@ -123,17 +123,18 @@ export function RichTextAssistant({
 }: {
   editor: Editor;
   revisions: readonly DocumentRevision[];
-  dock: "review" | "ask" | null;
-  onDockChange: (dock: "review" | "ask" | null) => void;
+  dock: AssistantDock;
+  onDockChange: (dock: AssistantDock) => void;
   onRunningChange: (running: boolean) => void;
   canRun: boolean;
 }) {
-  const [view, setView] = useState<Dock>(dock ?? "ask");
   const [value, setValue] = useState("");
   const [run, setRun] = useState<Run | null>(null);
   const [selection, setSelection] = useState<AssistantRange | null>(null);
   const [active, setActive] = useState(0);
   const [status, setStatus] = useState("Plan polished");
+  const [findings, setFindings] = useState<Run["findings"]>([]);
+  const view = run ? "running" : dock;
   const input = useRef<HTMLInputElement>(null);
   const index = Math.min(active, Math.max(0, revisions.length - 1));
   const revision = revisions[index];
@@ -151,14 +152,8 @@ export function RichTextAssistant({
   }, [editor]);
 
   useEffect(() => {
-    if (run || !dock) return;
-    setView(dock);
-    if (dock === "ask") input.current?.focus({ preventScroll: true });
-  }, [dock]);
-
-  useEffect(() => {
-    if (view === "ask" && dock === "ask") input.current?.focus({ preventScroll: true });
-  }, [view, dock]);
+    if (view === "ask") input.current?.focus({ preventScroll: true });
+  }, [view]);
 
   useEffect(() => {
     if (!run) return;
@@ -178,18 +173,15 @@ export function RichTextAssistant({
         if (run.edits.length) {
           setActive(0);
           onDockChange("review");
-          setView("review");
         } else {
-          setView("findings");
+          onDockChange("findings");
           setFindings(run.findings);
         }
       },
       run.index === 0 ? 460 : 380,
     );
     return () => window.clearTimeout(timeout);
-  }, [editor, run]);
-
-  const [findings, setFindings] = useState<Run["findings"]>([]);
+  }, [editor, run, onDockChange, onRunningChange]);
 
   function start(prompt: string) {
     if (run || !canRun || !prompt.trim()) return;
@@ -197,7 +189,6 @@ export function RichTextAssistant({
     finishHistory(editor);
     onRunningChange(true);
     setRun({ ...plan, index: 0, id: crypto.randomUUID() });
-    setView("running");
     setValue("");
   }
 
@@ -210,7 +201,7 @@ export function RichTextAssistant({
     finishHistory(editor);
     setRun(null);
     onRunningChange(false);
-    setView("ask");
+    onDockChange("ask");
   }
 
   function locateRevision(id: string) {
@@ -271,7 +262,7 @@ export function RichTextAssistant({
               size="icon-xs"
               variant="ghost"
               aria-label="Back to Ask Assist"
-              onClick={() => setView("ask")}
+              onClick={() => onDockChange("ask")}
             >
               <X />
             </Button>

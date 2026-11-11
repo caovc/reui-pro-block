@@ -48,6 +48,25 @@ export function collectDocumentRevisions(
   return [...revisions.values()];
 }
 
+/** Serialize a projection without changing the document, selection, or history. */
+export function documentProjection(editor: Editor, projection: "final" | "original") {
+  const omitted = projection === "final" ? "revisionDelete" : "revisionInsert";
+  const blocks: string[] = [];
+  editor.state.doc.descendants((node) => {
+    if (!node.isTextblock) return;
+    let text = "";
+    node.forEach((child) => {
+      if (child.marks.some(({ type }) => type.name === omitted)) return;
+      if (child.isText) text += child.text;
+      else if (child.type.name === "hardBreak") text += "\n";
+      else if (child.type.name === "mention") text += `@${child.attrs.label ?? child.attrs.id}`;
+    });
+    if (text || !node.attrs.assistantRevision) blocks.push(text);
+    return false;
+  });
+  return blocks.join("\n\n").trimEnd();
+}
+
 /** Resolve fresh document positions as one native undo event, preserving unrelated marks/attrs. */
 export function resolveDocumentRevisions(
   editor: Editor,

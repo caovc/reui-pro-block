@@ -256,6 +256,7 @@
 }
 /* Wiki pages use the fluid reference layout; the document/contract variants retain their own chrome. */
 .reui-editor[data-kind="2"] {
+  position: relative;
   height: calc(100dvh - var(--template-toolbar-height, 0px));
   min-height: 0;
 }
@@ -334,20 +335,20 @@
   padding-left: 16px;
   font-style: normal;
 }
-.reui-editor[data-kind="2"] > .grid > aside {
+.reui-editor[data-kind="2"] > .rich-text-outline {
   position: absolute;
   z-index: 5;
-  right: 12px;
-  top: 82px;
+  inset-inline-end: 12px;
+  top: 156px;
   width: 32px;
   padding: 0;
   border: 0;
   gap: 0;
 }
-.reui-editor[data-kind="2"] > .grid > aside > :not(nav) {
+.reui-editor[data-kind="2"] > .rich-text-outline > :not(nav) {
   display: none;
 }
-.reui-editor[data-kind="2"] > .grid > aside nav button {
+.reui-editor[data-kind="2"] > .rich-text-outline nav button {
   position: relative;
   height: 12px;
   padding: 0;
@@ -355,18 +356,19 @@
   font-size: 0;
   background: none;
 }
-.reui-editor[data-kind="2"] > .grid > aside nav button:after {
+.reui-editor[data-kind="2"] > .rich-text-outline nav button:after {
   content: "";
   display: block;
   height: 1px;
-  width: 18px;
+  width: calc(22px - 6px * var(--editor-outline-depth, 0));
+  margin-inline-start: auto;
   background: var(--border);
 }
-.reui-editor[data-kind="2"] > .grid > aside nav button[data-active="true"]:after {
+.reui-editor[data-kind="2"] > .rich-text-outline nav button[data-active="true"]:after {
   background: var(--foreground);
   width: 24px;
 }
-.reui-editor[data-kind="2"] > .grid > aside:is(:hover, :focus-within) {
+.reui-editor[data-kind="2"] > .rich-text-outline:is(:hover, :focus-within) {
   width: 228px;
   padding: 12px;
   background: var(--background);
@@ -374,12 +376,12 @@
   border-radius: 9px;
   box-shadow: 0 4px 18px #0000000c;
 }
-.reui-editor[data-kind="2"] > .grid > aside:is(:hover, :focus-within) nav button {
+.reui-editor[data-kind="2"] > .rich-text-outline:is(:hover, :focus-within) nav button {
   height: auto;
   padding-block: 7px;
   font-size: 12px;
 }
-.reui-editor[data-kind="2"] > .grid > aside:is(:hover, :focus-within) nav button:after {
+.reui-editor[data-kind="2"] > .rich-text-outline:is(:hover, :focus-within) nav button:after {
   display: none;
 }
 .reui-editor[data-kind="2"] > footer {
@@ -396,8 +398,8 @@
   .reui-editor[data-kind="2"] > .grid > main {
     padding: 32px 24px 60px;
   }
-  .reui-editor[data-kind="2"] > .grid > aside {
-    right: 4px;
+  .reui-editor[data-kind="2"] > .rich-text-outline {
+    inset-inline-end: 4px;
     width: 20px;
   }
 }
@@ -433,10 +435,6 @@
   margin-top: 8px;
   line-height: 20px;
 }
-.reui-editor[data-kind="2"] > .grid > aside {
-  top: 100px;
-}
-
 .reui-editor[data-kind="2"][data-full-width="true"] main > div:has(.reui-rich-document) {
   max-width: none;
 }
@@ -867,9 +865,78 @@
   overflow-y: auto;
   overscroll-behavior: contain;
 }
+/* The agreement and review margin share one centered workspace. */
+.reui-editor[data-kind="3"] > header {
+  padding: 8px 24px;
+  min-height: 56px;
+}
+.reui-editor[data-kind="3"] > header h2 {
+  font-size: 16px;
+  font-weight: 500;
+}
+.reui-editor[data-kind="3"] > header p {
+  margin-top: 0;
+  font-size: 12px;
+}
+.reui-editor[data-kind="3"] > header > div:first-child > svg,
+.reui-editor[data-kind="3"] :is(.editor-export, .editor-save),
+.reui-editor[data-kind="3"] > footer {
+  display: none;
+}
+.reui-editor[data-kind="3"] .contract-review-layout {
+  width: min(1152px, 100%);
+  margin-inline: auto;
+  gap: 40px;
+  padding: 40px 24px 100px;
+}
+.reui-editor[data-kind="3"] .contract-review-layout > main {
+  padding: 0;
+  background: transparent;
+}
+.reui-editor[data-kind="3"] .contract-review-layout > main > div:has(.reui-rich-document) {
+  max-width: none;
+  margin-inline-start: -64px;
+  border: 0;
+  box-shadow: none;
+}
+.reui-editor[data-kind="3"] .reui-rich-document {
+  padding: 0 0 0 64px;
+  font-size: 16px;
+  line-height: 28px;
+}
+.reui-editor[data-kind="3"] .reui-rich-document h1 {
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+.reui-editor[data-kind="3"] .reui-rich-document .document-subtitle {
+  font-size: 10px;
+}
+.reui-editor[data-kind="3"] .reui-rich-document p {
+  margin: 0 0 16px;
+}
+.reui-editor[data-kind="3"] .reui-rich-document h2 {
+  font-size: 20px;
+  margin: 32px 0 16px;
+}
+.reui-editor[data-kind="3"] .contract-review-margin {
+  position: sticky;
+  top: 16px;
+  max-height: calc(100dvh - 64px);
+  overflow-y: auto;
+  margin: 0;
+}
+.reui-editor[data-kind="3"] .contract-review-diff {
+  font-size: 14px;
+  line-height: 20px;
+}
 @media (min-width: 1280px) {
   .reui-editor[data-kind="3"] .contract-review-layout {
-    grid-template-columns: minmax(0, 1fr) 344px;
+    grid-template-columns: minmax(0, 1fr) 322px;
+  }
+}
+@media (max-width: 1279px) {
+  .reui-editor[data-kind="3"] .contract-review-layout {
+    padding-inline-start: 64px;
   }
 }
 @media (max-width: 640px) {
@@ -929,16 +996,38 @@
 .reui-editor[data-kind="5"] .reui-rich-document p {
   margin: 0 0 16px;
 }
-.reui-editor[data-kind="5"] :is(.reui-rich-document, .rich-text-assistant-diff) ins {
-  color: light-dark(#00634c, #84e2c7);
-  background: light-dark(#e0f5ef, #173c32);
+:where(.reui-editor, .contract-review-sheet) {
+  --editor-insert: #00634c;
+  --editor-insert-bg: #e0f5ef;
+  --editor-insert-border: #52c6a6;
+  --editor-delete: #b50016;
+  --editor-delete-bg: #fce2e5;
+  --editor-comment-bg: #fff7e4;
+  --editor-comment-border: #f0ba32;
+}
+.dark :where(.reui-editor, .contract-review-sheet) {
+  --editor-insert: #84e2c7;
+  --editor-insert-bg: #173c32;
+  --editor-insert-border: #418975;
+  --editor-delete: #fda4ad;
+  --editor-delete-bg: #481f29;
+  --editor-comment-bg: #3e3020;
+  --editor-comment-border: #a67c18;
+}
+.reui-editor:is([data-kind="3"], [data-kind="5"]) .reui-rich-document ins,
+.reui-editor[data-kind="5"] .rich-text-assistant-diff ins,
+.contract-review-diff strong {
+  color: var(--editor-insert);
+  background: var(--editor-insert-bg);
   text-decoration: none;
-  border-bottom: 1px solid light-dark(#52c6a6, #418975);
+  border-bottom: 1px solid var(--editor-insert-border);
   padding: 0;
 }
-.reui-editor[data-kind="5"] :is(.reui-rich-document, .rich-text-assistant-diff) del {
-  color: light-dark(#b50016, #fda4ad);
-  background: light-dark(#fce2e5, #481f29);
+.reui-editor:is([data-kind="3"], [data-kind="5"]) .reui-rich-document del,
+.reui-editor[data-kind="5"] .rich-text-assistant-diff del,
+.contract-review-diff del {
+  color: var(--editor-delete);
+  background: var(--editor-delete-bg);
   padding: 0;
 }
 .reui-editor[data-kind="5"][data-contract-markup="final"] .reui-rich-document del[data-revision],
@@ -1116,8 +1205,8 @@
 }
 .reui-editor[data-kind="4"] .reui-rich-document mark[data-comment] {
   cursor: pointer;
-  background: light-dark(#fff7e4, #3e3020);
-  border-bottom: 2px solid light-dark(#f0ba32, #a67c18);
+  background: var(--editor-comment-bg);
+  border-bottom: 2px solid var(--editor-comment-border);
 }
 .rich-text-discussion {
   position: sticky;
