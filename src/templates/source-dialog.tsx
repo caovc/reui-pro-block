@@ -38,10 +38,11 @@ export default function TemplateSourceDialog({
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
-  const { theme } = useGlobalTheme();
+  const { theme, dark } = useGlobalTheme();
+  const selectionTheme = useMemo(() => ({ ...theme, primitive: uiFoundation.primitive }), [theme]);
   const files = useMemo(
-    () => templateFiles(template, { ...theme, primitive: uiFoundation.primitive }),
-    [template, theme],
+    () => templateFiles(template, selectionTheme, dark),
+    [template, selectionTheme, dark],
   );
   const [selection, setSelection] = useState({
     templateId: template.id,
@@ -152,7 +153,7 @@ export default function TemplateSourceDialog({
                 onClick={async () => {
                   setDownloading(true);
                   try {
-                    await downloadTemplate(template);
+                    await downloadTemplate(template, selectionTheme, dark);
                     toast.success("Project downloaded");
                   } catch {
                     toast.error("Download failed. Please try again.");

@@ -305,7 +305,8 @@ for (const library of libraries) {
       await context.grantPermissions(["clipboard-read", "clipboard-write"]);
       const faults: string[] = [];
       page.on("pageerror", (error) => faults.push(error.message));
-      await page.goto(`./${target.route}`);
+      const inheritedDark = target.kind === "template";
+      await page.goto(`./${target.route}${inheritedDark ? "?theme=dark" : ""}`);
       const root = new URL("./", page.url());
       await chooseLibrary(page, root, library);
       const style = library === "Base UI" ? "Lyra" : "Nova";
@@ -330,6 +331,7 @@ for (const library of libraries) {
         await expect(preview).toHaveCSS("--primary", "#047857");
         await nativeMenu(page, library);
       } else {
+        await expect(page.locator("html")).toHaveClass(/\bdark\b/);
         await expect(page.locator(".template-surface")).toHaveCSS("--primary", "#047857");
         const remember = page.getByRole("checkbox", { name: "Remember me", exact: true });
         await expect(remember).not.toBeChecked();
@@ -362,6 +364,16 @@ for (const library of libraries) {
       const path = info.outputPath(file.suggestedFilename());
       await file.saveAs(path);
       expect(await readFile(path)).toEqual(Buffer.from(files[target.selectedPath]));
+      if (inheritedDark) {
+        const html = archiveText(files, "index.html");
+        expect(html).toContain('class="dark" style="color-scheme: dark"');
+        const example = archiveText(files, "src/Example.tsx");
+        expect(example).toContain('"mode": "inherit"');
+        expect(example).toContain("setInheritedPreviewTheme(exportedTheme, true)");
+        const htmlTarget = { ...resolved, selectedPath: "index.html" };
+        const htmlCode = await selectSource(page, htmlTarget, dialog, choice);
+        await expect.poll(() => sourceText(htmlCode, htmlTarget)).toBe(html);
+      }
       await page.keyboard.press("Escape");
       await expect(dialog).toBeHidden();
       await expect(opener).toBeFocused();

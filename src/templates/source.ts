@@ -1,4 +1,3 @@
-import { getCurrentPreviewTheme } from "@/components/site/global-theme-store";
 import { defaultTheme, themeCSS, type PreviewTheme } from "@/components/site/preview-theme";
 import { excalidrawExportFiles } from "@/lib/excalidraw-export";
 import type { UiFoundation } from "@/lib/ui-foundation";
@@ -51,8 +50,13 @@ function normalize(path: string) {
   }
   return parts.join("/");
 }
-function collect(template: TemplateMeta, selection: UiFoundation | PreviewTheme) {
+function collect(
+  template: TemplateMeta,
+  selection: UiFoundation | PreviewTheme,
+  resolvedDark?: boolean,
+) {
   const theme = { ...defaultTheme, ...selection };
+  const dark = resolvedDark ?? theme.mode === "dark";
   const sources = selectFoundationSources(rawSources, theme);
   const files: Record<string, string> = {};
   const requiredAssets = new Set<string>();
@@ -89,11 +93,11 @@ function collect(template: TemplateMeta, selection: UiFoundation | PreviewTheme)
   files["src/Example.tsx"] = `import { useLayoutEffect } from 'react';
 import Template from '@/templates/${template.family}';
 import { TemplateSurface } from '@/templates/surface';
-import { setGlobalTheme, useGlobalTheme } from '@/components/site/global-theme-store';
+import { setInheritedPreviewTheme, useGlobalTheme } from '@/components/site/global-theme-store';
 import { applyTheme } from '@/components/site/preview-theme';
 
 const exportedTheme = ${JSON.stringify(theme, null, 2)} as const;
-setGlobalTheme(exportedTheme, false);
+setInheritedPreviewTheme(exportedTheme, ${dark});
 
 export default function Example() {
   const { theme, dark } = useGlobalTheme();
@@ -157,7 +161,7 @@ export default function Example() {
     2,
   );
   files["components.json"] = JSON.stringify(getFoundationComponentsConfig(theme), null, 2);
-  files["index.html"] = starterHTML(theme, theme.mode === "dark");
+  files["index.html"] = starterHTML(theme, dark);
   files["src/main.tsx"] = starterMain;
   files["vite.config.ts"] = starterViteConfig;
   files["tsconfig.json"] = JSON.stringify(
@@ -190,10 +194,11 @@ export default function Example() {
 
 export function templateFiles(
   template: TemplateMeta,
-  selection: UiFoundation | PreviewTheme = getCurrentPreviewTheme(),
+  selection: UiFoundation | PreviewTheme,
+  dark?: boolean,
 ) {
   const targets = templateImplementationTargets(template);
-  const files = implementationFirst(collect(template, selection).files, targets);
+  const files = implementationFirst(collect(template, selection, dark).files, targets);
   const implementations = Object.fromEntries(
     targets.filter((path) => files[path] !== undefined).map((path) => [path, files[path]]),
   );
@@ -202,9 +207,10 @@ export function templateFiles(
 
 export async function downloadTemplate(
   template: TemplateMeta,
-  selection: UiFoundation | PreviewTheme = getCurrentPreviewTheme(),
+  selection: PreviewTheme,
+  dark: boolean,
 ) {
-  const { files, requiredAssets } = collect(template, selection);
+  const { files, requiredAssets } = collect(template, selection, dark);
   const payload = Object.fromEntries(
     Object.entries(files).map(([path, source]) => [path, strToU8(source)]),
   );

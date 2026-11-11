@@ -77,6 +77,11 @@ export function setGlobalTheme(value: PreviewTheme, persist = true) {
   }
   persistTheme(theme);
 }
+export function setInheritedPreviewTheme(theme: PreviewTheme, dark: boolean) {
+  getSnapshot();
+  inheritedDark = dark;
+  setGlobalTheme(theme, false);
+}
 export function syncGlobalThemeFromUrl() {
   const params = new URLSearchParams(location.hash.split("?")[1]);
   if (!params.has("preset")) return;
@@ -158,7 +163,6 @@ if (typeof window !== "undefined") {
       event.data?.type !== "reui-preview-theme"
     )
       return;
-    inheritedDark = event.data.dark === true;
-    setGlobalTheme(normalizeTheme(event.data.theme), false);
+    setInheritedPreviewTheme(event.data.theme, event.data.dark === true);
   });
 }
