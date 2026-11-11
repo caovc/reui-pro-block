@@ -20,6 +20,17 @@ async function selection(editor: Locator) {
   });
 }
 
+async function moveCaretTo(page: Page, editor: Locator, target: number) {
+  await expect.poll(async () => (await selection(editor)).synchronized).toBe(true);
+  const caret = await selection(editor);
+  expect(caret.from).toBe(caret.to);
+  const key = caret.from > target ? "ArrowLeft" : "ArrowRight";
+  for (let step = 0; step < Math.abs(caret.from - target); step++) await page.keyboard.press(key);
+  await expect
+    .poll(() => selection(editor))
+    .toMatchObject({ from: target, to: target, synchronized: true });
+}
+
 async function splitRevision(page: Page, editor: Locator, tag: "ins" | "del", text: string) {
   const insertion = editor.locator(`${tag}[data-revision="term"]`);
   await expect(insertion).toHaveText(text);
@@ -44,11 +55,7 @@ async function splitRevision(page: Page, editor: Locator, tag: "ins" | "del", te
   );
   expect(target).toBeGreaterThan(0);
   await insertion.click();
-  await expect.poll(async () => (await selection(editor)).synchronized).toBe(true);
-  const caret = await selection(editor);
-  expect(caret.from).toBe(caret.to);
-  for (let step = caret.from; step > target; step--) await page.keyboard.press("ArrowLeft");
-  for (let step = caret.from; step < target; step++) await page.keyboard.press("ArrowRight");
+  await moveCaretTo(page, editor, target);
   await page.keyboard.press("Shift+ArrowRight");
   await expect
     .poll(() => selection(editor))
@@ -231,11 +238,21 @@ for (const width of [1440, 390]) {
       await expect(counter).toHaveText("2");
       if (width === 390) await expect(review).toBeVisible();
       await openConfirmation();
+      const editBoundary = await native.evaluate(
+        (element, discardedTag) => {
+          const fragment = element.querySelector(`${discardedTag}[data-revision="term"]`);
+          if (!fragment) throw new Error("Missing term revision at the edit boundary");
+          return (element as HTMLElement & { editor: Editor }).editor.view.posAtDOM(fragment, 0);
+        },
+        accept ? "del" : "ins",
+      );
+      // Put both native transactions in the same history time window while the
+      // dialog and sheet exit with their regular animations.
+      const historyTime = Date.now();
+      await page.clock.setFixedTime(historyTime);
       await confirmation
         .getByRole("button", { name: accept ? "Accept All" : "Reject All", exact: true })
         .click();
-      // The actual resolver runs on final confirmation; include its natural exit animations.
-      const resolvedAt = Date.now();
       const resolved = await nativeState(native);
       await page.waitForFunction(
         (mobile) =>
@@ -247,15 +264,20 @@ for (const width of [1440, 390]) {
       );
       await expect(confirmation).toHaveCount(0);
       if (width === 390) await expect(review).toHaveCount(0);
-      // Type immediately into a retained fragment rather than an unrelated paragraph.
+      // The first discarded fragment starts at the cut left by bulk review.
+      // Type there so ProseMirror sees an adjacent edit in the same time window.
       await editor
         .locator("strong")
         .filter({ hasText: accept ? "5" : "0" })
         .click();
+      await moveCaretTo(page, editor, editBoundary);
       await page.keyboard.type("Q");
-      const nextInputDelayMs = Date.now() - resolvedAt;
       await testInfo.attach("native-review-history", {
-        body: JSON.stringify({ original, resolved, focusAfterCancel, nextInputDelayMs }, null, 2),
+        body: JSON.stringify(
+          { original, resolved, focusAfterCancel, editBoundary, historyTime },
+          null,
+          2,
+        ),
         contentType: "application/json",
       });
       await page
@@ -312,7 +334,6 @@ for (const width of [1440, 390]) {
       );
       expect(errors).toEqual([]);
       await expect(page.locator("vite-error-overlay")).toHaveCount(0);
-      expect(nextInputDelayMs).toBeLessThan(300);
     });
   }
 }
