@@ -1,5 +1,6 @@
 import { profiles } from "./profiles.ts";
 import { styleNotice } from "./notice.ts";
+import { sheetPopoverCss } from "./sheet-popover.ts";
 import { getToggleControlsCss } from "./toggle-controls.ts";
 
 export const UI_STYLES = ["nova", "vega", "maia", "lyra", "mira", "luma", "sera", "rhea"] as const;
@@ -599,6 +600,7 @@ export function getUiStyleCss(value?: string | null): string {
     selectCss(name),
     getToggleControlsCss(name),
     dialogCss(profile, name),
+    sheetPopoverCss(name, { rule, radius, shadow }),
     tabsCss(profile),
     typographyCss(name),
     replace(slot("alert"), "rounded-lg", "border-radius", radius(profile.alert.radius)),
