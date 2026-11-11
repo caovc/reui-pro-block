@@ -1,15 +1,20 @@
+import { getCurrentPreviewTheme } from "@/components/site/global-theme-store";
+import { defaultTheme, themeCSS, type PreviewTheme } from "@/components/site/preview-theme";
 import { excalidrawExportFiles } from "@/lib/excalidraw-export";
+import type { UiFoundation } from "@/lib/ui-foundation";
+import { getFoundationComponentsConfig, selectFoundationSources } from "@/lib/ui-foundation-source";
 import { zipSync, strToU8 } from "fflate";
 import type { TemplateMeta } from "./catalog";
 import { implementationFirst, templateImplementationTargets } from "@/lib/source-targets";
 import { starterMain, starterViteConfig, starterHTML } from "@/lib/starter-files";
 
-const sources = import.meta.glob(
+const rawSources = import.meta.glob(
   [
     "/src/templates/{business,workflow,collaboration}/**/*.{ts,tsx,css}",
     "/src/templates/{surface.tsx,reference.css}",
     "/src/blocks/**/*.{ts,tsx,css}",
     "/src/components/**/*.{ts,tsx,css}",
+    "/src/foundations/**/*.{ts,tsx,css}",
     "/src/hooks/**/*.{ts,tsx}",
     "/src/lib/**/*.{ts,tsx}",
     "/src/data/**/*.{ts,json}",
@@ -32,6 +37,7 @@ const meta = import.meta.glob(
     "/src/blocks/**/assets/**/*.{md,txt}",
     "/src/templates/**/assets/*.{txt,md}",
     "/src/components/reui/*.{md,txt}",
+    "/src/foundations/**/*.{md,txt}",
     "/docs/*provenance*.md",
   ],
   { query: "?raw", import: "default", eager: true },
@@ -45,7 +51,9 @@ function normalize(path: string) {
   }
   return parts.join("/");
 }
-function collect(template: TemplateMeta) {
+function collect(template: TemplateMeta, selection: UiFoundation | PreviewTheme) {
+  const theme = { ...defaultTheme, ...selection };
+  const sources = selectFoundationSources(rawSources, theme);
   const files: Record<string, string> = {};
   const requiredAssets = new Set<string>();
   function visit(path: string) {
@@ -62,11 +70,11 @@ function collect(template: TemplateMeta) {
       `${path}/index.tsx`,
       `${path}/index.ts`,
     ].find((name) => sources[name] !== undefined);
-    if (!resolved || files[resolved.slice(1)]) return;
+    if (!resolved || Object.hasOwn(files, resolved.slice(1))) return;
     files[resolved.slice(1)] = sources[resolved];
     const imports = /(?:from\s*|import\s*\(?\s*|url\(\s*)['"]([^'"]+)['"]/g;
     for (const match of sources[resolved].matchAll(imports)) {
-      const target = match[1];
+      const target = match[1].split("?")[0];
       if (target.startsWith("@/")) visit(`/src/${target.slice(2)}`);
       else if (target.startsWith("."))
         visit(normalize(`${resolved.slice(0, resolved.lastIndexOf("/"))}/${target}`));
@@ -81,8 +89,11 @@ function collect(template: TemplateMeta) {
   files["src/Example.tsx"] = `import { useLayoutEffect } from 'react';
 import Template from '@/templates/${template.family}';
 import { TemplateSurface } from '@/templates/surface';
-import { useGlobalTheme } from '@/components/site/global-theme-store';
+import { setGlobalTheme, useGlobalTheme } from '@/components/site/global-theme-store';
 import { applyTheme } from '@/components/site/preview-theme';
+
+const exportedTheme = ${JSON.stringify(theme, null, 2)} as const;
+setGlobalTheme(exportedTheme, false);
 
 export default function Example() {
   const { theme, dark } = useGlobalTheme();
@@ -99,11 +110,15 @@ export default function Example() {
     const blockAssetNote =
       path.startsWith("/src/blocks/") &&
       [...requiredAssets].some((asset) => asset.startsWith(assetDirectory));
+    const foundationNotice =
+      path.startsWith("/src/foundations/") &&
+      (theme.primitive === "base" || !path.startsWith("/src/foundations/base/"));
     if (
       path.startsWith(`/src/templates/${template.family}/`) ||
       path.startsWith("/src/components/reui/") ||
       path.startsWith("/docs/") ||
-      blockAssetNote
+      blockAssetNote ||
+      foundationNotice
     )
       files[path.slice(1)] = content;
   }
@@ -111,24 +126,15 @@ export default function Example() {
     files["src/templates/collaboration/assets/drive-phone-LICENSES.txt"] =
       meta["/src/templates/collaboration/assets/drive-phone-LICENSES.txt"];
   }
-  files["src/theme.css"] = sources["/src/index.css"].split(/\n\.brand\s*\{/)[0];
+  const sharedCss = sources["/src/index.css"].split(/\n\.brand\s*\{/)[0];
+  const customizedCss = themeCSS(theme);
+  files["src/theme.css"] = `${sharedCss}\n${customizedCss}`;
   files["src/styles/shadcn.css"] = sources["/src/styles/shadcn.css"];
-  return { files, requiredAssets };
-}
-export function templateFiles(template: TemplateMeta) {
-  const targets = templateImplementationTargets(template);
-  const files = implementationFirst(collect(template).files, targets);
-  const implementations = Object.fromEntries(
-    targets.filter((path) => files[path] !== undefined).map((path) => [path, files[path]]),
-  );
-  return { ...implementations, ...files };
-}
 
-export async function downloadTemplate(template: TemplateMeta) {
-  const { files, requiredAssets } = collect(template);
   const engineSetup = excalidrawExportFiles(files);
   Object.assign(files, engineSetup);
   const manifest = JSON.parse(meta["/package.json"]);
+  const mode = theme.primitive === "base" ? " --mode base-ui" : "";
   files["package.json"] = JSON.stringify(
     {
       name: `${template.id}-template`,
@@ -136,9 +142,9 @@ export async function downloadTemplate(template: TemplateMeta) {
       private: true,
       type: "module",
       scripts: {
-        dev: "vite",
-        build: "tsc --noEmit && vite build",
-        preview: "vite preview",
+        dev: `vite${mode}`,
+        build: `tsc --noEmit && vite build${mode}`,
+        preview: `vite preview${mode}`,
         ...(engineSetup["scripts/copy-excalidraw-assets.mjs"]
           ? { postinstall: "node scripts/copy-excalidraw-assets.mjs" }
           : {}),
@@ -150,7 +156,8 @@ export async function downloadTemplate(template: TemplateMeta) {
     null,
     2,
   );
-  files["index.html"] = starterHTML;
+  files["components.json"] = JSON.stringify(getFoundationComponentsConfig(theme), null, 2);
+  files["index.html"] = starterHTML(theme, theme.mode === "dark");
   files["src/main.tsx"] = starterMain;
   files["vite.config.ts"] = starterViteConfig;
   files["tsconfig.json"] = JSON.stringify(
@@ -165,6 +172,8 @@ export async function downloadTemplate(template: TemplateMeta) {
         esModuleInterop: true,
         skipLibCheck: true,
         strict: true,
+        allowImportingTsExtensions: true,
+        noEmit: true,
         paths: { "@/*": ["./src/*"] },
       },
       include: ["src"],
@@ -176,6 +185,26 @@ export async function downloadTemplate(template: TemplateMeta) {
     `# ${template.name}\n\nIndependent React recreation of the publicly visible ${template.name} preview.\nReference: ${template.reference}\n\nRun npm install, then npm run dev (Node.js 24+). Entry: src/Example.tsx.\n\nInteractions use local demo data. No production backend, authentication, AI provider, email delivery, or original premium source is included. Shared family modules are included as transitive dependencies. Demo portraits, integration badges, and wallpaper illustrations are original local SVG artwork. No original ReUI preview media is loaded. Licensed stock photos may still require an internet connection. Bundled fonts and licensed images retain their license notices; no premium source or premium media binaries are bundled.\n`;
   files["LICENSE"] = meta["/LICENSE"];
   files["THIRD_PARTY_NOTICES.md"] = meta["/THIRD_PARTY_NOTICES.md"];
+  return { files, requiredAssets };
+}
+
+export function templateFiles(
+  template: TemplateMeta,
+  selection: UiFoundation | PreviewTheme = getCurrentPreviewTheme(),
+) {
+  const targets = templateImplementationTargets(template);
+  const files = implementationFirst(collect(template, selection).files, targets);
+  const implementations = Object.fromEntries(
+    targets.filter((path) => files[path] !== undefined).map((path) => [path, files[path]]),
+  );
+  return { ...implementations, ...files };
+}
+
+export async function downloadTemplate(
+  template: TemplateMeta,
+  selection: UiFoundation | PreviewTheme = getCurrentPreviewTheme(),
+) {
+  const { files, requiredAssets } = collect(template, selection);
   const payload = Object.fromEntries(
     Object.entries(files).map(([path, source]) => [path, strToU8(source)]),
   );
