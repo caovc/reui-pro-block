@@ -1,3 +1,5 @@
+import type { PreviewTheme } from "@/components/site/preview-theme";
+
 /** Load the theme first so its Tailwind layer order precedes component styles. */
 export const starterMain = `import "./theme.css";
 import { createRoot } from "react-dom/client";
@@ -28,8 +30,9 @@ export default defineConfig({
 });
 `;
 
-export const starterHTML = `<!doctype html>
-<html lang="en">
+export function starterHTML(theme: PreviewTheme, dark: boolean) {
+  return `<!doctype html>
+<html lang="en" data-ui-primitive="${theme.primitive}" data-ui-style="${theme.style}" data-accent="${theme.accent}"${dark ? ' class="dark" style="color-scheme: dark"' : ""}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -41,3 +44,4 @@ export const starterHTML = `<!doctype html>
   </body>
 </html>
 `;
+}

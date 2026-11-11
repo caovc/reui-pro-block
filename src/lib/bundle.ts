@@ -1,5 +1,6 @@
 import { zipSync, strToU8 } from "fflate";
 import type { BlockMeta } from "@/data/types";
+import { getCurrentPreviewTheme } from "@/components/site/global-theme-store";
 import { excalidrawExportFiles } from "./excalidraw-export";
 import { blockFiles } from "./source";
 import { starterMain, starterViteConfig, starterHTML } from "./starter-files";
@@ -14,7 +15,10 @@ const packageManifest = import.meta.glob("/package.json", {
   eager: true,
 }) as Record<string, string>;
 export async function downloadBundle(block: BlockMeta) {
-  const files = blockFiles(block);
+  const theme = getCurrentPreviewTheme();
+  const dark = document.documentElement.classList.contains("dark");
+  const files = blockFiles(block, theme);
+  const mode = theme.primitive === "base" ? " --mode base-ui" : "";
   const engineSetup = excalidrawExportFiles(files);
   const payload: Record<string, Uint8Array> = {};
   for (const [path, content] of Object.entries(files))
@@ -46,9 +50,9 @@ export async function downloadBundle(block: BlockMeta) {
         private: true,
         type: "module",
         scripts: {
-          dev: "vite",
-          build: "tsc --noEmit && vite build",
-          preview: "vite preview",
+          dev: `vite${mode}`,
+          build: `tsc --noEmit && vite build${mode}`,
+          preview: `vite preview${mode}`,
           ...(engineSetup["scripts/copy-excalidraw-assets.mjs"]
             ? { postinstall: "node scripts/copy-excalidraw-assets.mjs" }
             : {}),
@@ -68,7 +72,7 @@ export async function downloadBundle(block: BlockMeta) {
       2,
     ),
   );
-  payload["index.html"] = strToU8(starterHTML);
+  payload["index.html"] = strToU8(starterHTML(theme, dark));
   payload["src/main.tsx"] = strToU8(starterMain);
   payload["vite.config.ts"] = strToU8(starterViteConfig);
   payload["tsconfig.json"] = strToU8(
@@ -106,14 +110,16 @@ export async function downloadBundle(block: BlockMeta) {
   }) as Record<string, string>;
   for (const [path, content] of Object.entries(reuiNotices))
     payload[path.slice(1)] = strToU8(content);
-  // These providers are required by main even when a particular family does not import them.
-  const providerRaw = import.meta.glob("/src/components/ui/{tooltip,sonner}.tsx", {
+  const foundationNotices = import.meta.glob("/src/foundations/**/*.{md,txt}", {
     query: "?raw",
     import: "default",
     eager: true,
   }) as Record<string, string>;
-  for (const [path, content] of Object.entries(providerRaw))
-    payload[path.slice(1)] = strToU8(content);
+  for (const [path, content] of Object.entries(foundationNotices)) {
+    if (theme.primitive === "base" || !path.startsWith("/src/foundations/base/")) {
+      payload[path.slice(1)] = strToU8(content);
+    }
+  }
   const notices = import.meta.glob(["/LICENSE", "/THIRD_PARTY_NOTICES.md"], {
     query: "?raw",
     import: "default",
