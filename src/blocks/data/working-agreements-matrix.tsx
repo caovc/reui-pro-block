@@ -235,7 +235,7 @@ export function WorkingAgreementsMatrix({
                 key={week.index}
                 className={cn(
                   weekVisibility(index),
-                  "relative h-14 w-6 p-0 text-center text-xs tabular-nums @min-[880px]:w-[22px]",
+                  "relative h-14 w-6 p-0 text-center text-xs tabular-nums @min-[880px]:w-auto",
                   week.current && "w-10",
                 )}
               >

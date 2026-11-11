@@ -17,6 +17,12 @@ for (const primitive of ["radix", "base"] as const) {
       await expect(page.locator("html")).toHaveAttribute("data-ui-primitive", primitive);
       const matrix = page.getByRole("table", { name: "Payments working agreements by week" });
       await expect(matrix.locator("[data-agreement-row]")).toHaveCount(14);
+      await page.setViewportSize({ width: 940, height: 960 });
+      await expect(matrix.getByRole("columnheader", { name: /Week of/ })).toHaveCount(26);
+      await expect
+        .poll(() => matrix.evaluate((node) => node.scrollWidth <= node.parentElement!.clientWidth))
+        .toBe(true);
+      await page.setViewportSize({ width: 1440, height: 960 });
       const team = page.getByRole("combobox", { name: "Team", exact: true });
       await expect(team).toContainText("Payments");
       await expect(team).not.toContainText("14");
