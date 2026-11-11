@@ -1,0 +1,14 @@
+/* Preserve the existing Miro plot wrappers' natural 218px geometry. */
+.bt-miro .miro-dashboard-chart {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  aspect-ratio: auto;
+}
+
+.bt-miro .miro-dashboard-chart-tooltip {
+  border-color: var(--border);
+  border-radius: 8px;
+  font-size: 12px;
+}

@@ -154,6 +154,16 @@ for (const width of [1440, 390]) {
     await expect(trigger).toBeFocused();
     await trigger.press("ArrowDown");
     await expect(paths).toBeFocused();
+    // Keyboard focus can enter the menu before its opening animation has painted.
+    await expect
+      .poll(() =>
+        menu.evaluate((element) =>
+          element
+            .getAnimations()
+            .every((animation) => !animation.pending && animation.playState !== "running"),
+        ),
+      )
+      .toBe(true);
     // A modal Radix menu intentionally blocks pointer events on background
     // elements. Send an actual outside pointer event instead of asking a
     // locator to wait for an inert background heading to become clickable.

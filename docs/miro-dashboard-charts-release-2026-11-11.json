@@ -1,0 +1,54 @@
+{
+  "milestone": "Miro dashboard uses free ReUI chart components",
+  "publicationBase": "21215384d3dd4b9c92d98d7d0dc22d0010253e9e",
+  "ownerExecutedBase": "a939a2e37925390ea647861c5b8e11bff3b3beed",
+  "ownerManifestSHA256": "713633f75ed3291b31d648b2fb1392252a43137d7a9f3b9d58657d97d1cab88f",
+  "actualFreeReuse": [
+    "ChartContainer",
+    "ChartConfig",
+    "ChartTooltip",
+    "ChartTooltipContent",
+    "existing ReuiStripePattern"
+  ],
+  "gates": {
+    "static": "Source/AST/data/geometry protection and scoped format/lint0",
+    "hostBuild": {
+      "seconds": 25.476136665965896,
+      "receipt": "production-build-http-binding-v1.json"
+    },
+    "hostNative": {
+      "uniquePassedCases": 4,
+      "historicalRuns": "Separate hint-first/reference3/phone2 invocations; union only, old failures retained."
+    },
+    "source1": {
+      "cases": 1,
+      "seconds": 6.6948770839953795,
+      "realClipboard": true,
+      "actualTSXAndCSSViewSingleDownload": true,
+      "firstOriginalZIPMembers": 327
+    },
+    "normalOriginalInstall": {
+      "attempt1": "FAIL ETARGET50.617680625s no lock, original record preserved",
+      "authorizedAttempt2": "PASS47.639428875s same command/package/members, no overlay or special flags"
+    },
+    "originalStrictBuild": {
+      "seconds": 7.0706348329549655,
+      "status": "PASS first original npm run build; no entry/config overlay"
+    },
+    "originalRawNative": {
+      "passed": 4,
+      "failed": 0,
+      "seconds": 15.153495459002443,
+      "status": "PASS actual first all4 run from unchanged327 ZIP build via external host spec",
+      "PNGReview": "Parent actually viewed4 original PNGs; visual-cleanup supplement sealed",
+      "leasesReleased": true
+    }
+  },
+  "remainingLimitations": [
+    "No original-site pixel fidelity claim.",
+    "390 Procedure axis labels remain crowded as existing baseline.",
+    "Existing legend/tooltip label mismatch preserved.",
+    "No claim repeated same-Dec Escape dismissal changed."
+  ],
+  "integrationBoundary": "The current Miro and QA preimages match. The source viewer adds the actual dashboard chart module only to the Miro entry. The exported 327-file starter passed the original scoped build and browser tests on the frozen candidate. GitHub Actions verifies the later integrated revision."
+}

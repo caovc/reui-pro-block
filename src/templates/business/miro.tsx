@@ -33,7 +33,8 @@ import {
   Printer,
   Plus,
 } from "lucide-react";
-import { Shell, Heading, Button, Badge, Bars, Area, DataTable, exportCsv, toast } from "./shared";
+import { Shell, Heading, Button, Badge, DataTable, exportCsv, toast } from "./shared";
+import { MiroProcedureMixChart, MiroPatientVolumeChart } from "./miro-dashboard-charts";
 import "./miro-layout.css";
 
 const doctors = miroClinicSeedDoctors;
@@ -377,8 +378,7 @@ export default function Miro() {
                           ● Completed　● Scheduled
                         </span>
                       </div>
-                      <Bars
-                        multi
+                      <MiroProcedureMixChart
                         labels={[
                           "Checkup",
                           "Scaling",
@@ -401,7 +401,7 @@ export default function Miro() {
                         </div>
                         <Badge variant="outline">+12.8%</Badge>
                       </div>
-                      <Area />
+                      <MiroPatientVolumeChart />
                     </CardContent>
                   </Card>
                 </div>

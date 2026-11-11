@@ -248,7 +248,7 @@ function CollaborationShell({
   function navigate(name: string) {
     setView(name === "Directory" ? "People" : name);
     setQuery("");
-    if (isMobile) setOpenMobile(false);
+    if (kind !== "pulse" && isMobile) setOpenMobile(false);
   }
   const profilePhoto =
     kind === "roster" && rosterIdentity ? (
@@ -429,7 +429,7 @@ function CollaborationShell({
     <>
       <div className="ct-layout-search">
         <SearchPalette
-          label="Search workspace"
+          label={kind === "pulse" ? "Search..." : "Search workspace"}
           collapsed={collapsed}
           routes={
             kind === "roster"
@@ -448,6 +448,7 @@ function CollaborationShell({
         />
       </div>
       <SidebarNavigation
+        {...(kind === "pulse" ? { closeOnSelect: false } : {})}
         className="ct-free-navigation"
         menuClassName={kind === "roster" ? "min-w-48" : undefined}
         label={kind === "roster" ? "Workspace" : "Platform"}
@@ -607,8 +608,16 @@ function CollaborationShell({
               }
               className="ct-sidebar ct-layout-sidebar"
               mobileClassName={`reui-reference ct-app ct-${kind} ct-sidebar ct-layout-sidebar ct-layout-mobile`}
-              mobileWidth={kind === "roster" ? "288px" : "292.5px"}
-              mobileTitle={kind === "roster" ? "Roster" : "Help Desk"}
+              mobileWidth={kind === "pulse" ? "75%" : kind === "roster" ? "288px" : "292.5px"}
+              mobileTitle={
+                kind === "pulse" ? "Sidebar" : kind === "roster" ? "Roster" : "Help Desk"
+              }
+              {...(kind === "pulse"
+                ? {
+                    mobileDescription: "Displays the mobile sidebar.",
+                    mobileShowCloseButton: false,
+                  }
+                : {})}
               header={
                 kind === "roster" ? (
                   <div className="ct-side-brand ct-layout-brand">
@@ -646,7 +655,10 @@ function CollaborationShell({
             <AppShellInset className="ct-main ct-layout-inset">
               <header className="ct-pagebar ct-layout-pagebar">
                 {isMobile && (
-                  <SidebarTrigger className="ct-mobile-menu" aria-label="Open navigation" />
+                  <SidebarTrigger
+                    className="ct-mobile-menu"
+                    aria-label={kind === "pulse" ? "Toggle Sidebar" : "Open navigation"}
+                  />
                 )}
                 <Home size={15} />
                 <span>{kind === "roster" ? "People" : "Home"}</span>

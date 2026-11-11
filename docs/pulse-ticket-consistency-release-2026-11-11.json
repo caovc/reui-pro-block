@@ -1,0 +1,27 @@
+{
+  "milestone": "Pulse dashboard and board share the same ticket records",
+  "publicationBase": "f29d3e01cb9df069e633c17e3db3914eddfd604d",
+  "actualFreeReuse": [
+    "Actual free Kanban operates parent projections with stable ticket ids; no second Board seed/state owner.",
+    "Actual DropdownMenu priority filter, existing Sheet/SheetTitle, Select, Checkbox and DataGrid remain native.",
+    "New Ticket form uses FieldGroup/Field/FieldLabel/Input/Textarea/Select, explicit labels and required/FormData.",
+    "Detail body uses actual Item/Avatar/Badge/Separator; stable ReferenceSheet subject/title/actions stay parent-owned.",
+    "Row Checkbox stopPropagation follows free DataGridTableRowSelect; no preventDefault or replacement selection engine.",
+    "Sidebar changes are guarded Pulse-only consumer props; no provider/vendor rewrite."
+  ],
+  "customLogic": "Ticket identity, view membership, priority/status mutations and CSV projections belong to the local Pulse model. Ticket artwork attribution points to the local generator.",
+  "validation": {
+    "hostNative": "Six cases passed across the two recorded host runs.",
+    "originalStarterMembers": 235,
+    "originalStarterSHA256": "8b96cd78c040848eeff61d9eb689824514f915898a1a94ccc2f960011bd25d91",
+    "originalStarterNormalInstallAndStrictBuildPassed": true,
+    "originalStarterNativePassed": 6,
+    "originalStarterNativeFailed": 0,
+    "originalStarterNativeReportSHA256": "64421c6c7233df49bd66ebd0161e9e12f0dc1d4f6ff2f05ccd1f03c77c5e7ba2",
+    "originalDesktopAndPhoneScreenshotsReviewed": 6,
+    "independentVisualReviewSHA256": "0819fe2722bbacbcf996ae5efce13ae2c1089420adc71cdff4bb71d626b29af7",
+    "rootIntegrationReviewSHA256": "89e326d50b2e32935a36c6be8b34b9edc91ded0830afaceb042bef70b35b2e44"
+  },
+  "remainingLimitation": "The mobile ticket detail title wraps and has different type and spacing from the public reference. This release covers ticket state, form interactions and the source export.",
+  "status": "LOCAL_SCOPED_GATES_PASSED_PENDING_NEW_PUSH_CI"
+}

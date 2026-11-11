@@ -1,0 +1,19 @@
+/* Pulse-only detail density; the shared free Sheet retains its native semantics. */
+.ct-reference-sheet:has(.pulse-ticket-detail) .ct-sheet-body {
+  padding: 0;
+}
+
+.ct-reference-sheet:has(.pulse-ticket-detail) .ct-sheet-heading [data-slot="sheet-title"] {
+  font-size: 18px;
+  line-height: 24px;
+}
+
+/* The shared Sheet body is intentionally bare; this form owns its observed inset. */
+.ct-sheet-body > #pulse-new-ticket-form {
+  padding: 20px;
+}
+
+.ct-reference-sheet:has(#pulse-new-ticket-form) .ct-sheet-footer {
+  justify-content: flex-end;
+  gap: 8px;
+}

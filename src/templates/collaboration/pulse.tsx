@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import { PulseSettings } from "./pulse-settings";
 import { useSettingsDraft, initialPulseSettings } from "./settings-model";
 import "./pulse-secondary.css";
@@ -12,6 +13,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuItem,
   DropdownMenuCheckboxItem,
+  DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
 import {
   Frame,
@@ -21,8 +23,11 @@ import {
   FrameDescription,
 } from "@/components/reui/frame";
 import { PulseBoard } from "./pulse-board";
+import { PulseCreateTicketFields } from "./pulse-ticket-create";
+import { PulseTicketDetail } from "./pulse-ticket-detail";
+import "./pulse-ticket-overlay.css";
 import { ReferenceGrid } from "./reference-grid";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Plus,
   CheckCircle,
@@ -44,140 +49,19 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { Shell, Button, Input, Avatar, ReferenceSheet, Empty } from "./shared";
-type TicketRecord = {
-  id: string;
-  customer: string;
-  email: string;
-  agent: string;
-  stage: string;
-  due: string;
-  queue: string;
-  value: string;
-  sla: string;
-  subject: string;
-};
-const initial: TicketRecord[] = [
-  {
-    id: "TCK-4863",
-    customer: "Quanta Devices",
-    email: "it@quantadevices.com",
-    agent: "Jamal Reid",
-    stage: "Escalated",
-    due: "Today 14:00",
-    queue: "Technical",
-    value: "$91,200",
-    sla: "Blocked",
-    subject: "Nightly export has finished empty since the schema change",
-  },
-  {
-    id: "TCK-4927",
-    customer: "Apex Manufacturing",
-    email: "billing@apexmfg.example",
-    agent: "Priya Patel",
-    stage: "Escalated",
-    due: "Today 13:00",
-    queue: "Billing",
-    value: "$68,400",
-    sla: "Blocked",
-    subject: "Invoice adjustment for annual plan",
-  },
-  {
-    id: "TCK-4821",
-    customer: "Brightwave Media",
-    email: "ops@brightwave.example",
-    agent: "Priya Patel",
-    stage: "Awaiting agent",
-    due: "Today 18:00",
-    queue: "Billing",
-    value: "$38,240",
-    sla: "At Risk",
-    subject: "Payment method needs updating",
-  },
-  {
-    id: "TCK-4914",
-    customer: "Meridian Retail",
-    email: "help@meridian.example",
-    agent: "Diego Ramos",
-    stage: "Pending customer",
-    due: "Today 20:30",
-    queue: "Technical",
-    value: "$33,100",
-    sla: "Delayed",
-    subject: "Webhook deliveries not arriving",
-  },
-  {
-    id: "TCK-4872",
-    customer: "Atlas Freight",
-    email: "accounts@atlas.example",
-    agent: "Priya Patel",
-    stage: "Triage",
-    due: "Today 19:45",
-    queue: "Billing",
-    value: "$22,750",
-    sla: "On Time",
-    subject: "Adding seats to the enterprise plan",
-  },
-  {
-    id: "TCK-4890",
-    customer: "Cobalt Logistics",
-    email: "team@cobaltlogistics.com",
-    agent: "Diego Ramos",
-    stage: "Awaiting agent",
-    due: "Today 17:15",
-    queue: "Account",
-    value: "$15,900",
-    sla: "At Risk",
-    subject: "Role permissions did not carry over from the merged workspace",
-  },
-  {
-    id: "TCK-4834",
-    customer: "Ridgeline Energy",
-    email: "support@ridgelineenergy.com",
-    agent: "Sana Qureshi",
-    stage: "In progress",
-    due: "Today 16:30",
-    queue: "Technical",
-    value: "$12,480",
-    sla: "Delayed",
-    subject: "Technical support escalation",
-  },
-  {
-    id: "TCK-4938",
-    customer: "Cedar & Co",
-    email: "desk@cedarandco.com",
-    agent: "Diego Ramos",
-    stage: "Triage",
-    due: "Tomorrow 09:30",
-    queue: "Account",
-    value: "$8,750",
-    sla: "On Time",
-    subject: "Account support escalation",
-  },
-  {
-    id: "TCK-4855",
-    customer: "Orbit Software",
-    email: "hello@orbitsoftware.dev",
-    agent: "Omar Haddad",
-    stage: "Pending customer",
-    due: "Tomorrow 10:00",
-    queue: "Onboarding",
-    value: "$6,400",
-    sla: "On Time",
-    subject: "Onboarding support escalation",
-  },
-  {
-    id: "TCK-4902",
-    customer: "Vertex Health",
-    email: "care@vertexhealth.io",
-    agent: "Omar Haddad",
-    stage: "In progress",
-    due: "Tomorrow 12:00",
-    queue: "Onboarding",
-    value: "$4,300",
-    sla: "On Time",
-    subject: "Onboarding support escalation",
-  },
-];
+import {
+  applyPulseTicketColumns,
+  createInitialPulseTickets,
+  createPulseBoardTicket,
+  filterPulseTickets,
+  pulseTicketCollection,
+  pulseTicketColumns,
+  removePulseTickets,
+  resolvePulseTickets,
+  savePulseTicket,
+  type PulseTicket as TicketRecord,
+} from "./pulse-ticket-model";
+
 function ResolutionChart() {
   return (
     <svg
@@ -237,7 +121,7 @@ export default function Pulse() {
   const [contactRecords, setContactRecords] = useState(() => initialDirectoryRecords(false));
   const [memberRecords, setMemberRecords] = useState(() => initialDirectoryRecords(true));
   const [query, setQuery] = useState("");
-  const [tickets, setTickets] = useState(initial);
+  const [tickets, setTickets] = useState(createInitialPulseTickets);
   const [filter, setFilter] = useState("All");
   const [selectedTickets, setSelectedTickets] = useState<string[]>([]);
   const [visibleColumns, setVisibleColumns] = useState<Record<string, boolean>>({});
@@ -258,11 +142,23 @@ export default function Pulse() {
   }, []);
   const [page, setPage] = useState(1);
   const [layout, setLayout] = useState("Board");
-  const filtered = tickets.filter(
-    (t) =>
-      Object.values(t).join(" ").toLowerCase().includes(query.toLowerCase()) &&
-      (filter === "All" || t.queue === filter || t.stage === filter || t.sla === filter),
+  const [priority, setPriority] = useState("All");
+  const collection = pulseTicketCollection(tickets, view === "Dashboard");
+  const filtered = filterPulseTickets(
+    collection,
+    query,
+    filter,
+    view === "Tickets" ? priority : "All",
   );
+  const selectedInScope = selectedTickets.filter((id) =>
+    filtered.some((ticket) => ticket.id === id),
+  );
+  const boardColumns = useMemo(
+    () => pulseTicketColumns(tickets, query, filter, priority),
+    [tickets, query, filter, priority],
+  );
+  const creatingBoardTicket = create && !editing && view === "Tickets";
+  const currentPage = Math.min(page, Math.max(1, Math.ceil(filtered.length / 5)));
   const table = (
     <Frame>
       <FrameHeader>
@@ -270,8 +166,8 @@ export default function Pulse() {
           <div>
             <FrameTitle>{view === "Dashboard" ? "Escalation Queue" : "All tickets"}</FrameTitle>
             <FrameDescription>
-              {filtered.length} of {tickets.length} open{" "}
-              {view === "Dashboard" ? "escalations" : "tickets"}
+              {filtered.length} of {collection.length}{" "}
+              {view === "Dashboard" ? "open escalations" : "tickets"}
             </FrameDescription>
           </div>
           <Button onClick={() => setCreate(true)}>
@@ -289,6 +185,7 @@ export default function Pulse() {
             onChange={(e) => {
               setQuery(e.target.value);
               setPage(1);
+              setSelectedTickets([]);
             }}
           />
           <Select
@@ -296,6 +193,7 @@ export default function Pulse() {
             onValueChange={(v) => {
               setFilter(v);
               setPage(1);
+              setSelectedTickets([]);
             }}
           >
             <SelectTrigger aria-label="Filter ticket queue">
@@ -303,7 +201,23 @@ export default function Pulse() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              {["All", "Blocked", "At Risk", "Delayed", "On Time"].map((v) => (
+              {(view === "Dashboard"
+                ? ["All", "Blocked", "At Risk", "Delayed", "On Time"]
+                : [
+                    ...new Set([
+                      "All",
+                      "Technical",
+                      "Billing",
+                      "Onboarding",
+                      "Account",
+                      "Blocked",
+                      "At Risk",
+                      "Delayed",
+                      "On Time",
+                      ...collection.map((ticket) => ticket.stage),
+                    ]),
+                  ]
+              ).map((v) => (
                 <SelectItem key={v} value={v}>
                   {v === "All" ? "Status" : v}
                 </SelectItem>
@@ -339,24 +253,18 @@ export default function Pulse() {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuItem
-                disabled={!selectedTickets.length}
+                disabled={!selectedInScope.length}
                 onClick={() => {
-                  setTickets((t) => t.filter((x) => !selectedTickets.includes(x.id)));
+                  setTickets((t) => removePulseTickets(t, selectedInScope));
                   setSelectedTickets([]);
                 }}
               >
                 Delete selected
               </DropdownMenuItem>
               <DropdownMenuItem
-                disabled={!selectedTickets.length}
+                disabled={!selectedInScope.length}
                 onClick={() => {
-                  setTickets((t) =>
-                    t.map((x) =>
-                      selectedTickets.includes(x.id)
-                        ? { ...x, stage: "Resolved", sla: "On Time" }
-                        : x,
-                    ),
-                  );
+                  setTickets((t) => resolvePulseTickets(t, selectedInScope));
                   setSelectedTickets([]);
                 }}
               >
@@ -364,151 +272,119 @@ export default function Pulse() {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          {view === "Tickets" && (
-            <Button
-              variant="outline"
-              onClick={() => setLayout(layout === "List" ? "Board" : "List")}
-            >
-              {layout === "List" ? "Board view" : "List view"}
-            </Button>
-          )}
         </div>
-        {layout === "Board" && view === "Tickets" ? (
-          <PulseBoard
-            query={query}
-            onCreate={() => setCreate(true)}
-            onOpen={(r, stage) =>
-              setSelected({
-                id: r[0],
-                subject: r[2],
-                customer: r[4],
-                email:
-                  r[3].toLowerCase().replace(" ", ".") +
-                  "@" +
-                  r[4].toLowerCase().replaceAll(" ", "") +
-                  ".com",
-                agent: r[5],
-                stage,
-                queue: "Technical",
-                due: r[6],
-                sla: stage === "SLA Risk" ? "At Risk" : "On Time",
-                value: "—",
-              })
-            }
-          />
-        ) : (
-          <ReferenceGrid
-            columnVisibility={visibleColumns}
-            rows={filtered.slice((page - 1) * 5, page * 5)}
-            onRowClick={setSelected}
-            columns={[
-              {
-                id: "selection",
-                title: "",
-                header: (
-                  <Checkbox
-                    aria-label="Select all escalations"
-                    checked={selectedTickets.length === filtered.length && filtered.length > 0}
-                    onCheckedChange={(value) =>
-                      setSelectedTickets(value ? filtered.map((t) => t.id) : [])
-                    }
-                  />
-                ),
-                render: (t) => (
-                  <Checkbox
-                    aria-label={"Select " + t.id}
-                    checked={selectedTickets.includes(t.id)}
-                    onCheckedChange={(value) =>
-                      setSelectedTickets((s) =>
-                        value ? [...s, t.id] : s.filter((id) => id !== t.id),
-                      )
-                    }
-                  />
-                ),
-              },
-              {
-                id: "ticket",
-                title: "Ticket",
-                value: (t) => t.id,
-                render: (t) => (
-                  <>
-                    <b>{t.id}</b>
-                    <small className="block ct-muted mt-1">
-                      {t.id === "TCK-4863" ? "Phone" : "Email"} · {t.agent}
-                    </small>
-                  </>
-                ),
-              },
-              {
-                id: "customer",
-                title: "Customer",
-                value: (t) => t.customer,
-                render: (t) => (
-                  <span className="ct-person">
-                    <Avatar name={t.customer} />
-                    <span>
-                      {t.customer}
-                      <small>{t.email}</small>
-                    </span>
+        <ReferenceGrid
+          columnVisibility={visibleColumns}
+          rows={filtered.slice((currentPage - 1) * 5, currentPage * 5)}
+          onRowClick={setSelected}
+          columns={[
+            {
+              id: "selection",
+              title: "",
+              header: (
+                <Checkbox
+                  aria-label="Select all escalations"
+                  checked={selectedInScope.length === filtered.length && filtered.length > 0}
+                  onCheckedChange={(value) =>
+                    setSelectedTickets(value ? filtered.map((t) => t.id) : [])
+                  }
+                />
+              ),
+              render: (t) => (
+                <Checkbox
+                  aria-label={"Select " + t.id}
+                  checked={selectedTickets.includes(t.id)}
+                  onClick={(event) => event.stopPropagation()}
+                  onCheckedChange={(value) =>
+                    setSelectedTickets((s) =>
+                      value ? [...s, t.id] : s.filter((id) => id !== t.id),
+                    )
+                  }
+                />
+              ),
+            },
+            {
+              id: "ticket",
+              title: "Ticket",
+              value: (t) => t.id,
+              render: (t) => (
+                <>
+                  <b>{t.id}</b>
+                  <small className="block ct-muted mt-1">
+                    {t.id === "TCK-4863" ? "Phone" : "Email"} · {t.agent}
+                  </small>
+                </>
+              ),
+            },
+            {
+              id: "customer",
+              title: "Customer",
+              value: (t) => t.customer,
+              render: (t) => (
+                <span className="ct-person">
+                  <Avatar name={t.customer} />
+                  <span>
+                    {t.customer}
+                    <small>{t.email}</small>
                   </span>
-                ),
-              },
-              {
-                id: "stage",
-                title: "Stage",
-                value: (t) => t.stage,
-                render: (t) => (
-                  <>
-                    {t.stage}
-                    <div className="ct-progress">
-                      <span style={{ width: t.stage === "Escalated" ? "50%" : "35%" }} />
-                    </div>
-                  </>
-                ),
-              },
-              { id: "due", title: "Due", value: (t) => t.due, render: (t) => t.due },
-              {
-                id: "queue",
-                title: "Queue",
-                value: (t) => t.queue,
-                render: (t) => <Badge variant="outline">{t.queue}</Badge>,
-              },
-              {
-                id: "value",
-                title: "Account value",
-                value: (t) => t.value,
-                render: (t) => t.value,
-              },
-              {
-                id: "sla",
-                title: "SLA",
-                value: (t) => t.sla,
-                render: (t) => (
-                  <Badge
-                    variant={
-                      t.sla === "Blocked"
-                        ? "destructive-light"
-                        : t.sla === "On Time"
-                          ? "success-light"
-                          : "warning-light"
-                    }
-                  >
-                    {t.sla}
-                  </Badge>
-                ),
-              },
-              {
-                id: "actions",
-                title: "",
-                render: (t) => (
-                  <Button size="icon-sm" variant="ghost" aria-label={"Open " + t.id}>
-                    <MoreHorizontal />
-                  </Button>
-                ),
-              },
-            ]}
-          />
-        )}
+                </span>
+              ),
+            },
+            {
+              id: "stage",
+              title: "Stage",
+              value: (t) => t.stage,
+              render: (t) => (
+                <>
+                  {t.stage}
+                  <div className="ct-progress">
+                    <span style={{ width: t.stage === "Escalated" ? "50%" : "35%" }} />
+                  </div>
+                </>
+              ),
+            },
+            { id: "due", title: "Due", value: (t) => t.due, render: (t) => t.due },
+            {
+              id: "queue",
+              title: "Queue",
+              value: (t) => t.queue,
+              render: (t) => <Badge variant="outline">{t.queue}</Badge>,
+            },
+            {
+              id: "value",
+              title: "Account value",
+              value: (t) => t.value,
+              render: (t) => t.value,
+            },
+            {
+              id: "sla",
+              title: "SLA",
+              value: (t) => t.sla,
+              render: (t) => (
+                <Badge
+                  variant={
+                    t.sla === "Blocked"
+                      ? "destructive-light"
+                      : t.sla === "On Time"
+                        ? "success-light"
+                        : "warning-light"
+                  }
+                >
+                  {t.sla}
+                </Badge>
+              ),
+            },
+            {
+              id: "actions",
+              title: "",
+              render: (t) => (
+                <Button size="icon-sm" variant="ghost" aria-label={"Open " + t.id}>
+                  <MoreHorizontal />
+                </Button>
+              ),
+            },
+          ]}
+        />
         {!filtered.length && (
           <Empty
             reset={() => {
@@ -519,23 +395,23 @@ export default function Pulse() {
         )}
         <div className="ct-between mt-4 text-xs ct-muted">
           <span>
-            {filtered.length ? (page - 1) * 5 + 1 : 0} – {Math.min(page * 5, filtered.length)} of{" "}
-            {filtered.length}
+            {filtered.length ? (currentPage - 1) * 5 + 1 : 0} –{" "}
+            {Math.min(currentPage * 5, filtered.length)} of {filtered.length}
           </span>
           <div className="ct-toolbar">
             <Button
               size="sm"
               variant="outline"
-              disabled={page === 1}
-              onClick={() => setPage((p) => p - 1)}
+              disabled={currentPage === 1}
+              onClick={() => setPage(currentPage - 1)}
             >
               Previous
             </Button>
             <Button
               size="sm"
               variant="outline"
-              disabled={page * 5 >= filtered.length}
-              onClick={() => setPage((p) => p + 1)}
+              disabled={currentPage * 5 >= filtered.length}
+              onClick={() => setPage(currentPage + 1)}
             >
               Next
             </Button>
@@ -553,6 +429,7 @@ export default function Pulse() {
         setQuery("");
         setFilter("All");
         setPage(1);
+        setSelectedTickets([]);
       }}
       query={query}
       setQuery={setQuery}
@@ -719,39 +596,62 @@ export default function Pulse() {
             <div className="ct-toolbar">
               <Button
                 variant="outline"
-                onClick={() => setFilter(filter === "All" ? "Technical" : "All")}
+                onClick={() => setLayout(layout === "List" ? "Board" : "List")}
               >
-                <Filter />
-                Filters
+                {layout === "List" ? "Board view" : "List view"}
               </Button>
-              <Button onClick={() => setCreate(true)}>
-                <Plus />
-                New ticket
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline">
+                    <Filter />
+                    {priority === "All" ? "Filters" : priority}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-44">
+                  <DropdownMenuLabel>Priority</DropdownMenuLabel>
+                  {["All", "Urgent", "High", "Normal", "Low"].map((value) => (
+                    <DropdownMenuItem
+                      key={value}
+                      onClick={() => {
+                        setPriority(value);
+                        setPage(1);
+                      }}
+                    >
+                      {value === "All" ? (
+                        "All priorities"
+                      ) : (
+                        <Badge variant="outline">{value}</Badge>
+                      )}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
+              {layout === "Board" && (
+                <Button onClick={() => setCreate(true)}>
+                  <Plus />
+                  New ticket
+                </Button>
+              )}
             </div>
           </div>
-          <PulseBoard
-            query={query}
-            onCreate={() => setCreate(true)}
-            onOpen={(r, stage) =>
-              setSelected({
-                id: r[0],
-                subject: r[2],
-                customer: r[4],
-                email:
-                  r[3].toLowerCase().replace(" ", ".") +
-                  "@" +
-                  r[4].toLowerCase().replaceAll(" ", "") +
-                  ".com",
-                agent: r[5],
-                stage,
-                queue: "Technical",
-                due: r[6],
-                sla: stage === "SLA Risk" ? "At Risk" : "On Time",
-                value: "—",
-              })
-            }
-          />
+          {layout === "Board" ? (
+            <PulseBoard
+              columns={boardColumns}
+              onColumnsChange={(columns) =>
+                setTickets((current) =>
+                  applyPulseTicketColumns(
+                    current,
+                    columns,
+                    filtered.map((ticket) => ticket.id),
+                  ),
+                )
+              }
+              onCreate={() => setCreate(true)}
+              onOpen={setSelected}
+            />
+          ) : (
+            table
+          )}
         </>
       ) : view === "Contacts" || view === "Team" ? (
         <PulseDirectory
@@ -770,204 +670,240 @@ export default function Pulse() {
         <PulseSettings model={settingsModel} />
       )}
       <ReferenceSheet
-        title={editing ? "Edit escalation" : view === "Dashboard" ? "New escalation" : "New ticket"}
-        width={512}
-        open={create}
+        title={
+          create
+            ? editing
+              ? editing.escalation
+                ? "Edit escalation"
+                : "Edit ticket"
+              : creatingBoardTicket
+                ? "New ticket"
+                : "New escalation"
+            : selected?.subject || "Ticket"
+        }
+        width={create ? 512 : 480}
+        open={create || !!selected}
         onClose={() => {
           setCreate(false);
           setEditing(null);
+          setSelected(null);
         }}
         footer={
-          <>
-            <Button
-              variant="outline"
-              className="flex-1"
-              onClick={() => {
-                setCreate(false);
-                setEditing(null);
-              }}
-            >
-              Cancel
-            </Button>
-            <Button className="flex-1" type="submit" form="ct-escalation-form">
-              {editing ? "Save changes" : "Raise escalation"}
-            </Button>
-          </>
+          create ? (
+            <>
+              <Button
+                variant="outline"
+                className={creatingBoardTicket ? undefined : "flex-1"}
+                onClick={() => {
+                  setCreate(false);
+                  setEditing(null);
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                className={creatingBoardTicket ? undefined : "flex-1"}
+                type="submit"
+                form={creatingBoardTicket ? "pulse-new-ticket-form" : "ct-escalation-form"}
+              >
+                {creatingBoardTicket
+                  ? "Create ticket"
+                  : editing
+                    ? "Save changes"
+                    : "Raise escalation"}
+              </Button>
+            </>
+          ) : (
+            <>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon-sm" aria-label="More ticket actions">
+                    <MoreHorizontal />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setEditing(selected);
+                      setSelected(null);
+                      setCreate(true);
+                    }}
+                  >
+                    Edit ticket
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setTickets((current) =>
+                    removePulseTickets(current, selected ? [selected.id] : []),
+                  );
+                  setSelected(null);
+                }}
+              >
+                Delete
+              </Button>
+              <Button
+                onClick={() => {
+                  if (selected)
+                    toast("Reply started", {
+                      description: `${selected.id} · ${selected.requester ? `${selected.requester} at ` : ""}${selected.customer}`,
+                    });
+                }}
+              >
+                Reply
+              </Button>
+            </>
+          )
         }
       >
-        <form
-          key={editing?.id || "new"}
-          id="ct-escalation-form"
-          className="ct-form"
-          onSubmit={(e) => {
-            e.preventDefault();
-            const f = new FormData(e.currentTarget);
-            const ticket: TicketRecord = {
-              id: String(f.get("key")),
-              customer: String(f.get("customer")),
-              email: editing?.email || "",
-              agent: String(f.get("agent")),
-              stage: "Escalated",
-              due: editing?.due || "Today",
-              queue: String(f.get("queue")),
-              value: editing?.value || "—",
-              sla: String(f.get("sla")),
-              subject: String(f.get("subject")),
-            };
-            setTickets((t) =>
-              editing ? t.map((x) => (x.id === editing.id ? ticket : x)) : [ticket, ...t],
-            );
-            setCreate(false);
-            setEditing(null);
-            setPage(1);
-          }}
-        >
-          <div className="ct-field-pair">
+        {creatingBoardTicket ? (
+          <PulseCreateTicketFields
+            formId="pulse-new-ticket-form"
+            agents={[...new Set(tickets.map((ticket) => ticket.agent))]}
+            onSubmit={(values) => {
+              setTickets(
+                (current) =>
+                  savePulseTicket(
+                    current,
+                    createPulseBoardTicket(current, values),
+                    undefined,
+                    false,
+                  ).tickets,
+              );
+              setCreate(false);
+              setEditing(null);
+              setSelectedTickets([]);
+              setPage(1);
+            }}
+          />
+        ) : create ? (
+          <form
+            key={editing?.id || "new"}
+            id="ct-escalation-form"
+            className="ct-form"
+            onSubmit={(e) => {
+              e.preventDefault();
+              const f = new FormData(e.currentTarget);
+              const ticket: TicketRecord = {
+                id: String(f.get("key")),
+                customer: String(f.get("customer")),
+                email: editing?.email || "",
+                agent: String(f.get("agent")),
+                stage: editing && !editing.escalation ? editing.stage : "Escalated",
+                due: editing?.due || "Today",
+                queue: String(f.get("queue")),
+                value: editing?.value || "—",
+                sla: String(f.get("sla")),
+                subject: String(f.get("subject")),
+              };
+              const result = savePulseTicket(tickets, ticket, editing?.id, view === "Dashboard");
+              if (result.error) {
+                const key = e.currentTarget.elements.namedItem("key");
+                if (key instanceof HTMLInputElement) {
+                  key.setCustomValidity(result.error);
+                  key.reportValidity();
+                }
+                return;
+              }
+              setTickets(result.tickets);
+              setSelectedTickets([]);
+              setCreate(false);
+              setEditing(null);
+              setPage(1);
+            }}
+          >
+            <div className="ct-field-pair">
+              <label>
+                Ticket key
+                <Input
+                  name="key"
+                  placeholder="TCK-4821"
+                  defaultValue={editing?.id}
+                  onChange={(event) => event.currentTarget.setCustomValidity("")}
+                  required
+                />
+              </label>
+              <label>
+                SLA state
+                <Select name="sla" defaultValue={editing?.sla} required>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {["Blocked", "At Risk", "Delayed", "On Time"].map((v) => (
+                      <SelectItem value={v} key={v}>
+                        {v}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </label>
+            </div>
             <label>
-              Ticket key
-              <Input name="key" placeholder="TCK-4821" defaultValue={editing?.id} required />
+              Requester
+              <Input
+                name="customer"
+                defaultValue={editing?.customer}
+                placeholder="Atlas Freight"
+                required
+              />
+            </label>
+            <div className="ct-field-pair">
+              <label>
+                Queue
+                <Select name="queue" defaultValue={editing?.queue} required>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a queue" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {["Technical", "Billing", "Onboarding", "Account"].map((v) => (
+                      <SelectItem value={v} key={v}>
+                        {v}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </label>
+              <label>
+                Handling
+                <Select name="handling" defaultValue={editing ? "Manual" : undefined}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a level" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {["Manual", "Automated", "Priority"].map((v) => (
+                      <SelectItem value={v} key={v}>
+                        {v}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </label>
+            </div>
+            <label>
+              Assignee
+              <Input
+                name="agent"
+                defaultValue={editing?.agent}
+                placeholder="Priya Patel"
+                required
+              />
             </label>
             <label>
-              SLA state
-              <Select name="sla" defaultValue={editing?.sla} required>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select" />
-                </SelectTrigger>
-                <SelectContent>
-                  {["Blocked", "At Risk", "Delayed", "On Time"].map((v) => (
-                    <SelectItem value={v} key={v}>
-                      {v}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              What is blocking it
+              <Textarea
+                name="subject"
+                defaultValue={editing?.subject}
+                placeholder="Invoice total disputed after the plan change"
+                required
+              />
             </label>
-          </div>
-          <label>
-            Requester
-            <Input
-              name="customer"
-              defaultValue={editing?.customer}
-              placeholder="Atlas Freight"
-              required
-            />
-          </label>
-          <div className="ct-field-pair">
-            <label>
-              Queue
-              <Select name="queue" defaultValue={editing?.queue} required>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a queue" />
-                </SelectTrigger>
-                <SelectContent>
-                  {["Technical", "Billing", "Onboarding", "Account"].map((v) => (
-                    <SelectItem value={v} key={v}>
-                      {v}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </label>
-            <label>
-              Handling
-              <Select name="handling" defaultValue={editing ? "Manual" : undefined}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a level" />
-                </SelectTrigger>
-                <SelectContent>
-                  {["Manual", "Automated", "Priority"].map((v) => (
-                    <SelectItem value={v} key={v}>
-                      {v}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </label>
-          </div>
-          <label>
-            Assignee
-            <Input name="agent" defaultValue={editing?.agent} placeholder="Priya Patel" required />
-          </label>
-          <label>
-            What is blocking it
-            <Textarea
-              name="subject"
-              defaultValue={editing?.subject}
-              placeholder="Invoice total disputed after the plan change"
-              required
-            />
-          </label>
-        </form>
-      </ReferenceSheet>
-      <ReferenceSheet
-        title={selected?.id || "Ticket"}
-        open={!!selected}
-        onClose={() => setSelected(null)}
-        footer={
-          <>
-            <Button
-              variant="outline"
-              onClick={() => {
-                setTickets((t) => t.filter((x) => x.id !== selected?.id));
-                setSelected(null);
-              }}
-            >
-              Delete
-            </Button>
-            <Button
-              onClick={() => {
-                setEditing(selected);
-                setSelected(null);
-                setCreate(true);
-              }}
-            >
-              Edit
-            </Button>
-          </>
-        }
-      >
-        {selected && (
-          <>
-            <section className="ct-detail-section">
-              <h3>
-                {selected.customer}
-                <Badge variant={selected.sla === "Blocked" ? "destructive-light" : "warning-light"}>
-                  {selected.sla}
-                </Badge>
-                <Badge variant="outline">Manual</Badge>
-              </h3>
-              <p>{selected.subject}</p>
-            </section>
-            <section className="ct-detail-section">
-              <h4>TICKET</h4>
-              <dl>
-                <dt>Queue</dt>
-                <dd>{selected.queue}</dd>
-                <dt>Channel</dt>
-                <dd>{selected.id === "TCK-4863" ? "Phone" : "Email"}</dd>
-                <dt>Stage</dt>
-                <dd>{selected.stage}</dd>
-                <dt>Due by</dt>
-                <dd>{selected.due}</dd>
-                <dt>SLA left</dt>
-                <dd>{selected.sla === "Blocked" ? "-25 min" : "42 min"}</dd>
-              </dl>
-            </section>
-            <section className="ct-detail-section">
-              <h4>HANDLING</h4>
-              <dl>
-                <dt>Assignee</dt>
-                <dd>{selected.agent}</dd>
-                <dt>Replies</dt>
-                <dd>11</dd>
-                <dt>Account value</dt>
-                <dd>{selected.value}</dd>
-                <dt>Contact</dt>
-                <dd>{selected.email}</dd>
-              </dl>
-            </section>
-          </>
-        )}
+          </form>
+        ) : selected ? (
+          <PulseTicketDetail ticket={selected} />
+        ) : null}
       </ReferenceSheet>
     </Shell>
   );
