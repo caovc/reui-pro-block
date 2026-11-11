@@ -2402,7 +2402,17 @@
 .wf-workflow-list .wf-official-grid {
   min-width: 1150px;
 }
+.wf-mesh-board[data-slot="kanban-board"] {
+  /* Keep the outer ScrollArea's content wrapper at the viewport width. */
+  contain: inline-size;
+}
+@media (max-width: 1023px) {
+  .wf-mesh-board[data-slot="kanban-board"] {
+    gap: 12px;
+  }
+}
 .wf-mesh-board .wf-board-column {
+  flex-grow: 1;
   border: 1px solid #e5e5e5;
   border-radius: 12px;
   padding: 8px;

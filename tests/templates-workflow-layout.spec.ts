@@ -129,6 +129,54 @@ test("Mesh phone project header preserves visible actions without document overf
   await expect(page.getByPlaceholder("Task title", { exact: true })).toBeVisible();
 });
 
+for (const primitive of ["radix", "base"] as const) {
+  test(`${primitive} Mesh Projects fills the desktop and keeps narrow scrolling on the board`, async ({
+    page,
+  }) => {
+    const prefix = primitive === "base" ? "./base/" : "./";
+    await page.setViewportSize({ width: 1920, height: 900 });
+    await page.goto(`${prefix}#/template-preview/mesh`);
+    await expect(page.locator("html")).toHaveAttribute("data-ui-primitive", primitive);
+    await page.getByRole("button", { name: "Projects", exact: true }).click();
+
+    const board = page.getByRole("region", { name: "Q4 Launch Board", exact: true });
+    const columns = board.locator('[data-slot="kanban-column"]');
+    await expect(columns).toHaveCount(5);
+    const desktop = await board.evaluate((element) => ({
+      right: element.getBoundingClientRect().right,
+      width: element.clientWidth,
+      columns: Array.from(element.children, (column) => ({
+        width: column.getBoundingClientRect().width,
+        right: column.getBoundingClientRect().right,
+      })),
+    }));
+    expect(desktop.columns.every(({ width }) => width > 280)).toBe(true);
+    expect(
+      desktop.columns.every(({ width }) => Math.abs(width - desktop.columns[0].width) < 1),
+    ).toBe(true);
+    expect(Math.abs(desktop.right - desktop.columns[4].right)).toBeLessThan(1);
+    expect(desktop.width).toBeGreaterThan(1800);
+
+    for (const width of [1440, 390]) {
+      await page.setViewportSize({ width, height: 900 });
+      await expect
+        .poll(() => columns.first().evaluate((column) => column.getBoundingClientRect().width))
+        .toBe(280);
+      await expect
+        .poll(() => board.evaluate((element) => element.scrollWidth > element.clientWidth))
+        .toBe(true);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(width);
+    }
+    await columns.first().hover();
+    await page.mouse.wheel(1800, 0);
+    await expect.poll(() => board.evaluate((element) => element.scrollLeft)).toBeGreaterThan(0);
+    const lastColumn = columns.last();
+    await expect(lastColumn).toBeInViewport();
+    await lastColumn.locator(".wf-board-card").first().click();
+    await expect(page.getByRole("dialog")).toBeVisible();
+  });
+}
+
 test("Flux phone keeps a navigation group open, closes only after selecting a route", async ({
   page,
 }) => {

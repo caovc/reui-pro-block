@@ -20,6 +20,7 @@ const implementationPaths = [
   "src/templates/workflow/workflow-shell.tsx",
   "src/templates/workflow/workflow-account-menu.tsx",
   "src/templates/workflow/workflow-layout.css",
+  "src/templates/workflow/workflow.css",
 ] as const;
 const archiveTarget: SourceTarget = {
   id: "mesh",
