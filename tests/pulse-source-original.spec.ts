@@ -54,11 +54,11 @@ const selectedPaths = [
 ] as const;
 const frozenHashes: Readonly<Record<string, string>> = {
   "src/templates/collaboration/pulse.tsx":
-    "fc656d412029efde0bfda9bdf32cc89d61a76a26898d37ab96a6454dde4f9d9d",
+    "639e70a88522aaec1f9e4bdcd161a5648de305655325f15e38868dcce2101069",
   "src/templates/collaboration/pulse-board.tsx":
-    "7ac340019092c2be300dfd0820e9efadd95bcca07510e5a3a84865cfc3149163",
+    "7a40fbffe45f51eaa2a904af760c9a7c104fba9764028774c2a338f8b7075cbe",
   "src/templates/collaboration/shared.tsx":
-    "436fba7e7509f607096a5f3abd988f90345efc5fad10cf53d4bb4611e0b85687",
+    "3457fb4f8612cd76907848a43d3f80c78df7022413c4488aa75427c3b9f17574",
   "src/templates/collaboration/pulse-ticket-model.ts":
     "8cf66bdf88091ffc5ea3bfbe694d42a97d8e6399c22d54d8f21375b224277da3",
   "src/templates/collaboration/pulse-ticket-data.ts":

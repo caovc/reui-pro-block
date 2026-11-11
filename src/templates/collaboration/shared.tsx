@@ -115,6 +115,7 @@ export function ReferenceSheet({
   description,
   open,
   onClose,
+  onCloseAutoFocus,
   children,
   footer,
   width = 480,
@@ -123,6 +124,7 @@ export function ReferenceSheet({
   description?: string;
   open: boolean;
   onClose: () => void;
+  onCloseAutoFocus?: ComponentProps<typeof SheetContent>["onCloseAutoFocus"];
   children: ReactNode;
   footer?: ReactNode;
   width?: number;
@@ -131,6 +133,7 @@ export function ReferenceSheet({
     <Sheet open={open} onOpenChange={(v) => !v && onClose()}>
       <SheetContent
         className="ct-reference-sheet"
+        onCloseAutoFocus={onCloseAutoFocus}
         style={{ width, maxWidth: "calc(100vw - 32px)" }}
       >
         <div className="ct-sheet-heading">

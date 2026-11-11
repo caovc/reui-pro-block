@@ -27,7 +27,7 @@ import { PulseCreateTicketFields } from "./pulse-ticket-create";
 import { PulseTicketDetail } from "./pulse-ticket-detail";
 import "./pulse-ticket-overlay.css";
 import { ReferenceGrid } from "./reference-grid";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type MouseEventHandler } from "react";
 import {
   Plus,
   CheckCircle,
@@ -128,6 +128,10 @@ export default function Pulse() {
   const [create, setCreate] = useState(false);
   const [selected, setSelected] = useState<TicketRecord | null>(null);
   const [editing, setEditing] = useState<TicketRecord | null>(null);
+  const ticketSheetOpener = useRef<(() => HTMLButtonElement | undefined) | null>(null);
+  const ticketRowOpeners = useRef(new Map<string, HTMLButtonElement>());
+  const ticketSearch = useRef<HTMLInputElement>(null);
+  const newBoardTicket = useRef<HTMLButtonElement>(null);
   const [article, setArticle] = useState(initialArticle);
   useEffect(() => {
     const openLinkedArticle = () => {
@@ -159,6 +163,34 @@ export default function Pulse() {
   );
   const creatingBoardTicket = create && !editing && view === "Tickets";
   const currentPage = Math.min(page, Math.max(1, Math.ceil(filtered.length / 5)));
+
+  function openTicket(ticket: TicketRecord, opener?: HTMLButtonElement) {
+    // Opening the Sheet can remount grid cells. Resolve the row's live button on close.
+    ticketSheetOpener.current = () => opener ?? ticketRowOpeners.current.get(ticket.id);
+    setSelected(ticket);
+  }
+
+  const openNewTicket: MouseEventHandler<HTMLButtonElement> = (event) => {
+    const opener = event.currentTarget;
+    ticketSheetOpener.current = () => opener;
+    setCreate(true);
+  };
+
+  function restoreTicketFocus(event: Event) {
+    const opener = ticketSheetOpener.current?.();
+    ticketSheetOpener.current = null;
+    if (opener?.isConnected) {
+      event.preventDefault();
+      opener.focus({ preventScroll: true });
+    } else {
+      const fallback = ticketSearch.current ?? newBoardTicket.current;
+      if (fallback) {
+        event.preventDefault();
+        fallback.focus();
+      }
+    }
+  }
+
   const table = (
     <Frame>
       <FrameHeader>
@@ -170,7 +202,7 @@ export default function Pulse() {
               {view === "Dashboard" ? "open escalations" : "tickets"}
             </FrameDescription>
           </div>
-          <Button onClick={() => setCreate(true)}>
+          <Button onClick={openNewTicket}>
             <Plus />
             {view === "Dashboard" ? "New escalation" : "New ticket"}
           </Button>
@@ -181,6 +213,7 @@ export default function Pulse() {
           <Input
             placeholder="Search tickets…"
             aria-label="Search tickets"
+            ref={ticketSearch}
             value={query}
             onChange={(e) => {
               setQuery(e.target.value);
@@ -276,7 +309,7 @@ export default function Pulse() {
         <ReferenceGrid
           columnVisibility={visibleColumns}
           rows={filtered.slice((currentPage - 1) * 5, currentPage * 5)}
-          onRowClick={setSelected}
+          onRowClick={openTicket}
           columns={[
             {
               id: "selection",
@@ -378,7 +411,15 @@ export default function Pulse() {
               id: "actions",
               title: "",
               render: (t) => (
-                <Button size="icon-sm" variant="ghost" aria-label={"Open " + t.id}>
+                <Button
+                  size="icon-sm"
+                  variant="ghost"
+                  aria-label={"Open " + t.id}
+                  ref={(button) => {
+                    if (button) ticketRowOpeners.current.set(t.id, button);
+                    else ticketRowOpeners.current.delete(t.id);
+                  }}
+                >
                   <MoreHorizontal />
                 </Button>
               ),
@@ -627,7 +668,7 @@ export default function Pulse() {
                 </DropdownMenuContent>
               </DropdownMenu>
               {layout === "Board" && (
-                <Button onClick={() => setCreate(true)}>
+                <Button ref={newBoardTicket} onClick={openNewTicket}>
                   <Plus />
                   New ticket
                 </Button>
@@ -646,8 +687,8 @@ export default function Pulse() {
                   ),
                 )
               }
-              onCreate={() => setCreate(true)}
-              onOpen={setSelected}
+              onCreate={openNewTicket}
+              onOpen={openTicket}
             />
           ) : (
             table
@@ -683,6 +724,7 @@ export default function Pulse() {
         }
         width={create ? 512 : 480}
         open={create || !!selected}
+        onCloseAutoFocus={restoreTicketFocus}
         onClose={() => {
           setCreate(false);
           setEditing(null);

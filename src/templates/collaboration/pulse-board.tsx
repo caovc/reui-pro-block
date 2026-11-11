@@ -8,6 +8,7 @@ import {
 } from "@/components/reui/kanban";
 import { Badge } from "@/components/reui/badge";
 import { Clock, Plus } from "lucide-react";
+import type { MouseEventHandler } from "react";
 import { Avatar, Button } from "./shared";
 import type { PulseTicket, PulseTicketColumns } from "./pulse-ticket-model";
 
@@ -20,8 +21,8 @@ export function PulseBoard({
 }: {
   columns: PulseTicketColumns;
   onColumnsChange: (columns: PulseTicketColumns) => void;
-  onOpen: (ticket: PulseTicket) => void;
-  onCreate: () => void;
+  onOpen: (ticket: PulseTicket, opener: HTMLButtonElement) => void;
+  onCreate: MouseEventHandler<HTMLButtonElement>;
 }) {
   return (
     <Kanban value={columns} onValueChange={onColumnsChange} getItemValue={(ticket) => ticket.id}>
@@ -46,7 +47,7 @@ export function PulseBoard({
                             ? "high"
                             : "")
                       }
-                      onClick={() => onOpen(ticket)}
+                      onClick={(event) => onOpen(ticket, event.currentTarget)}
                     >
                       <span className="ct-between">
                         <small className="ct-muted">{ticket.id}</small>
