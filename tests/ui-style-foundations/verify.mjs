@@ -111,6 +111,51 @@ const expectedSelect = {
   rhea: [32, 18, 18, 6],
 };
 
+// Checkbox size/radius, then default and small Switch track dimensions.
+const expectedToggles = {
+  nova: [16, 4, 32, 18.4, 24, 14],
+  vega: [16, 4, 32, 18.4, 24, 14],
+  maia: [16, 6, 32, 18.4, 24, 14],
+  lyra: [16, 0, 32, 18.4, 24, 14],
+  mira: [16, 4, 28, 16.6, 24, 14],
+  luma: [16, 5, 44, 20, 28, 16],
+  sera: [18, 0, 33, 18, 25, 14],
+  rhea: [16, 5, 32, 20, 24, 16],
+};
+
+async function checkToggles(page, style) {
+  const [boxSize, boxRadius, switchWidth, switchHeight, smallWidth, smallHeight] =
+    expectedToggles[style];
+  const checkbox = page.getByRole("checkbox", { name: "Example checkbox", exact: true });
+  const custom = page.getByRole("checkbox", { name: "Custom checkbox", exact: true });
+  await expect(checkbox).toHaveCSS("width", `${boxSize}px`);
+  await expect(checkbox).toHaveCSS("border-top-left-radius", `${boxRadius}px`);
+  await expect(custom).toHaveCSS("width", "20px");
+  const customRadius = await custom.evaluate((element) =>
+    parseFloat(getComputedStyle(element).borderTopLeftRadius),
+  );
+  assert.ok(customRadius > 8, `${style} preserves the custom checkbox radius`);
+  await checkbox.press("Space");
+  await expect(checkbox).toBeChecked();
+  await checkbox.press("Space");
+  await expect(checkbox).not.toBeChecked();
+
+  for (const [name, width, height] of [
+    ["Example switch", switchWidth, switchHeight],
+    ["Small switch", smallWidth, smallHeight],
+  ]) {
+    const toggle = page.getByRole("switch", { name, exact: true });
+    await expect(toggle).toHaveCSS("width", `${width}px`);
+    await expect
+      .poll(async () => Math.abs((await toggle.boundingBox()).height - height))
+      .toBeLessThan(0.03);
+    await toggle.press("Space");
+    await expect(toggle).toBeChecked();
+    await toggle.press("Space");
+    await expect(toggle).not.toBeChecked();
+  }
+}
+
 const root = fileURLToPath(new URL("../../", import.meta.url));
 const vite = await createViteServer({
   root,
@@ -155,6 +200,7 @@ try {
       });
       assert.ok(customRadius > 100, `${style} preserves the custom pill radius`);
       await expect(page.getByTestId("line-tabs")).toHaveCSS("border-top-left-radius", "0px");
+      await checkToggles(page, style);
       await page.getByRole("button", { name: "Open menu" }).click();
       await checkSurface(style, "menu");
       await page.keyboard.press("Escape");
@@ -176,7 +222,7 @@ try {
       await page.getByRole("option", { name: "Second choice" }).click();
       await expect(trigger).toHaveAttribute("aria-expanded", "false");
       console.log(
-        `${primitive}-${style}: button, input, Frame, Card, Item, menu, dialog, tabs and Select match`,
+        `${primitive}-${style}: button, input, Frame, Card, Item, menu, dialog, tabs, Select, Checkbox and Switch match`,
       );
     }
 
@@ -191,6 +237,7 @@ try {
     const exported = await page.addStyleTag({ content: getUiStyleCss("luma") });
     await checkSurface("luma", "frame");
     await checkSurface("luma", "button");
+    await checkToggles(page, "luma");
     await exported.evaluate((element) => element.remove());
     await checkSurface("nova", "button");
     await page.close();

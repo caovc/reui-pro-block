@@ -4,6 +4,7 @@ import { Alert } from "@/components/reui/alert";
 import { Frame, FramePanel } from "@/components/reui/frame";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -26,6 +27,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getUiStyleCss, UI_STYLES } from "@/foundations/styles";
 import { uiFoundation } from "@/lib/ui-foundation";
@@ -72,6 +74,12 @@ export function Fixture() {
       <Card data-testid="card">Card</Card>
       <Item data-testid="item">Item</Item>
       <Alert data-testid="alert">Alert</Alert>
+      <div className="flex items-center gap-4">
+        <Checkbox aria-label="Example checkbox" />
+        <Checkbox aria-label="Custom checkbox" className="size-5 rounded-full" />
+        <Switch aria-label="Example switch" />
+        <Switch aria-label="Small switch" size="sm" />
+      </div>
       <Tabs defaultValue="first">
         <TabsList data-testid="tabs">
           <TabsTrigger value="first">First</TabsTrigger>

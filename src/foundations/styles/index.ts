@@ -1,5 +1,6 @@
 import { profiles } from "./profiles.ts";
 import { styleNotice } from "./notice.ts";
+import { getToggleControlsCss } from "./toggle-controls.ts";
 
 export const UI_STYLES = ["nova", "vega", "maia", "lyra", "mira", "luma", "sera", "rhea"] as const;
 export type UiStyle = (typeof UI_STYLES)[number];
@@ -596,6 +597,7 @@ export function getUiStyleCss(value?: string | null): string {
     itemCss(profile),
     menuCss(profile, name),
     selectCss(name),
+    getToggleControlsCss(name),
     dialogCss(profile, name),
     tabsCss(profile),
     typographyCss(name),
