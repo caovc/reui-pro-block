@@ -22,11 +22,6 @@
   padding-left: 32px;
 }
 
-.ct-pulse-settings .ct-settings-date button {
-  height: 32px;
-  font-size: 14px;
-}
-
 .ct-pulse-settings [data-slot="color-picker-swatch-item"][aria-selected="true"] {
   outline: 2px solid var(--muted-foreground);
   outline-offset: 2px;

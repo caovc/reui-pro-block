@@ -5,12 +5,24 @@ import { ColorPicker, ColorPickerSwatches } from "@/components/reui/color-picker
 import { Alert, AlertDescription } from "@/components/reui/alert";
 import { Badge } from "@/components/reui/badge";
 import { Switch } from "@/components/ui/switch";
-import { SmallTabs } from "@/blocks/application/shared";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
+  InputGroupInput,
+} from "@/components/ui/input-group";
+import { ToggleGroup, ToggleGroupItem } from "@/templates/workflow/free/flowly-toggle-group";
 import { useFileUpload } from "@/hooks/use-file-upload";
 import { Button, Input, Modal } from "./shared";
 import { SettingsSection, SettingsRow, SettingsSelect } from "./settings-shared";
 import type { PulseSettingsState } from "./settings-model";
 import "./pulse-settings.css";
+
+// Actual free toggle example: https://reui.io/r/base-nova/c-toggle-group-5.json.
+// Portal follows the existing Pro SettingsFields InputGroup composition.
+// Observed reference: https://pulse-helpdesk.reui.io/settings.
+// Existing MIT notices: src/components/reui/REUI-LICENSE.txt and THIRD_PARTY_NOTICES.md.
+const dateFormats = ["MM/DD/YYYY", "DD/MM/YYYY", "YYYY/MM/DD"] as const;
 
 export function PulseSettings({ model }: { model: PulseSettingsState }) {
   const [domainOpen, setDomainOpen] = useState(false);
@@ -105,9 +117,11 @@ export function PulseSettings({ model }: { model: PulseSettingsState }) {
             }
             description="Where customers go to open and track their tickets."
           >
-            <div className="ct-settings-url">
-              <span>https://</span>
-              <Input
+            <InputGroup>
+              <InputGroupAddon>
+                <InputGroupText>https://</InputGroupText>
+              </InputGroupAddon>
+              <InputGroupInput
                 aria-label="Support portal URL"
                 value={draft.portal}
                 onChange={(e) =>
@@ -115,7 +129,7 @@ export function PulseSettings({ model }: { model: PulseSettingsState }) {
                 }
                 required
               />
-            </div>
+            </InputGroup>
           </SettingsRow>
           <SettingsRow
             title="First day of week"
@@ -243,13 +257,24 @@ export function PulseSettings({ model }: { model: PulseSettingsState }) {
             title="Date display format"
             description="How ticket timestamps and SLA due dates are written."
           >
-            <div className="ct-settings-date" onClick={(event) => event.preventDefault()}>
-              <SmallTabs
-                items={["MM/DD/YYYY", "DD/MM/YYYY", "YYYY/MM/DD"]}
-                value={draft.dateFormat}
-                onChange={(dateFormat) => setDraft({ ...draft, dateFormat })}
-              />
-            </div>
+            <ToggleGroup
+              aria-label="Date display format"
+              className="max-w-full flex-wrap"
+              variant="outline"
+              size="default"
+              spacing={2}
+              value={[draft.dateFormat]}
+              onValueChange={(next) => {
+                const dateFormat = next[0];
+                if (dateFormat) setDraft({ ...draft, dateFormat });
+              }}
+            >
+              {dateFormats.map((dateFormat) => (
+                <ToggleGroupItem key={dateFormat} value={dateFormat}>
+                  {dateFormat}
+                </ToggleGroupItem>
+              ))}
+            </ToggleGroup>
           </SettingsRow>
           <SettingsRow
             title="Agent workspace"
