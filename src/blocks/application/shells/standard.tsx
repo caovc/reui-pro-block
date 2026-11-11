@@ -14,8 +14,10 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Kbd } from "@/components/ui/kbd";
+import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import {
   Activity,
+  Asterisk,
   BarChart3,
   Bot,
   CircleHelp,
@@ -32,6 +34,8 @@ import {
   Search,
   Settings,
   Shield,
+  Sparkles,
+  Triangle,
   Users,
   Workflow,
   Zap,
@@ -185,6 +189,36 @@ function ResourceLinks({ onSelect }: { onSelect: (s: string) => void }) {
     />
   );
 }
+const floatingWorkspaces = ["Vercel", "OpenAI", "Claude"];
+const floatingWorkspaceMarks = {
+  Vercel: <Triangle className="size-4 shrink-0 fill-current" aria-hidden="true" />,
+  OpenAI: <Sparkles className="size-4 shrink-0" aria-hidden="true" />,
+  Claude: <Asterisk className="size-4 shrink-0 text-orange-500" aria-hidden="true" />,
+};
+
+function FloatingWorkspaceActions() {
+  return (
+    <>
+      <DropdownMenuGroup>
+        <DropdownMenuItem>New Organization</DropdownMenuItem>
+        <DropdownMenuItem onSelect={() => toast("Workspace settings selected")}>
+          Account Settings
+        </DropdownMenuItem>
+      </DropdownMenuGroup>
+      <DropdownMenuSeparator />
+      <DropdownMenuItem
+        onSelect={() =>
+          toast("Demo account menu", {
+            description: "This preview uses a local sample account.",
+          })
+        }
+      >
+        Logout
+      </DropdownMenuItem>
+    </>
+  );
+}
+
 /** Shell 2 uses the free Dialog/Input search composition, rather than a command list. */
 function FloatingSidebarSearch({ collapsed }: { collapsed: boolean }) {
   const [open, setOpen] = useState(false);
@@ -256,7 +290,9 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
   const [context, setContext] = useState(true);
   const [auto, setAuto] = useState(true);
   const [newItem, setNewItem] = useState(false);
-  const [workspace, setWorkspace] = useState(variant === 1 ? "Bricklane" : "Atlas");
+  const [workspace, setWorkspace] = useState(
+    variant === 1 ? "Bricklane" : variant === 2 ? "Vercel" : "Atlas",
+  );
   const [workspaces, setWorkspaces] = useState(["Bricklane", "Acme Inc", "Atlas"]);
   const [createWorkspace, setCreateWorkspace] = useState(false);
   const dark = variant === 6 || variant === 9;
@@ -293,6 +329,9 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
       <Sidebar
         width={variant === 6 || variant === 9 ? 250 : apps ? 240 : 256}
         variant={floating ? "floating" : inset ? "inset" : "sidebar"}
+        drawerClassName={
+          floating ? "max-w-full p-0 data-[side=left]:w-(--sidebar-width)" : undefined
+        }
         collapsed={collapsed}
         header={
           variant === 1 ? (
@@ -340,7 +379,15 @@ function InsetNavShell({ variant }: { variant: 1 | 2 | 3 | 6 | 9 | 10 | 12 }) {
           variant === 1 ? (
             <WorkspaceMenu collapsed={collapsed} user card />
           ) : floating ? (
-            <WorkspaceMenu collapsed={collapsed} compact initial="Vercel" onName={setWorkspace} />
+            <SidebarWorkspaceSwitcher
+              collapsed={collapsed}
+              presentation="footer"
+              value={workspace}
+              workspaces={floatingWorkspaces}
+              onSelect={setWorkspace}
+              marks={floatingWorkspaceMarks}
+              actions={<FloatingWorkspaceActions />}
+            />
           ) : apps ? (
             <FooterLinks collapsed={collapsed} onSelect={setActive} />
           ) : (

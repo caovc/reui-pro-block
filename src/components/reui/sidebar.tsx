@@ -9,7 +9,7 @@
  */
 import { useEffect, useState } from "react";
 import type { ComponentProps, ReactNode } from "react";
-import { Check, ChevronDown, ChevronRight, Ellipsis, Plus } from "lucide-react";
+import { Check, ChevronDown, ChevronRight, ChevronsUpDown, Ellipsis, Plus } from "lucide-react";
 import { BrandMark } from "@/components/brand-mark";
 import {
   Sidebar,
@@ -114,66 +114,90 @@ export function SidebarWorkspaceSwitcher({
   onSelect,
   onCreate,
   collapsed: collapsedOverride,
+  presentation = "header",
+  marks,
+  actions,
 }: {
   value: string;
   workspaces: string[];
   onSelect: (name: string) => void;
-  onCreate: () => void;
+  onCreate?: () => void;
   collapsed?: boolean;
+  presentation?: "header" | "footer";
+  marks?: Record<string, ReactNode>;
+  actions?: ReactNode;
 }) {
   const { isMobile, state } = useSidebar();
   const collapsed = !isMobile && (collapsedOverride ?? state === "collapsed");
+  const footer = presentation === "footer";
   return (
     <SidebarMenu>
       <SidebarMenuItem>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton
-              size="lg"
-              className="h-9 font-semibold data-[state=open]:bg-sidebar-accent group-data-[collapsible=icon]:justify-center"
+              size={footer ? "default" : "lg"}
+              className={
+                footer
+                  ? "h-8 w-full px-2 font-normal data-[state=open]:bg-sidebar-accent group-data-[collapsible=icon]:justify-center"
+                  : "h-9 font-semibold data-[state=open]:bg-sidebar-accent group-data-[collapsible=icon]:justify-center"
+              }
               aria-label="Switch workspace"
               tooltip={collapsed ? { children: value, hidden: false } : undefined}
             >
-              <BrandMark className="size-6! shrink-0" />
+              {marks?.[value] ?? <BrandMark className="size-6! shrink-0" />}
               {!collapsed && (
                 <>
                   <span className="min-w-0 flex-1 truncate">{value}</span>
-                  <Ellipsis className="size-3.5 text-muted-foreground" />
+                  {footer ? (
+                    <ChevronsUpDown className="size-4 text-muted-foreground" aria-hidden="true" />
+                  ) : (
+                    <Ellipsis className="size-3.5 text-muted-foreground" />
+                  )}
                 </>
               )}
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
-            side={collapsed ? "right" : "bottom"}
+            side={footer ? "top" : collapsed ? "right" : "bottom"}
             align="start"
-            className="reui-reference min-w-60"
+            sideOffset={footer ? 8 : undefined}
+            className={footer ? "reui-reference w-56" : "reui-reference min-w-60"}
           >
             <DropdownMenuGroup>
-              <DropdownMenuLabel>Workspaces</DropdownMenuLabel>
+              {!footer && <DropdownMenuLabel>Workspaces</DropdownMenuLabel>}
               {workspaces.map((name, index) => (
                 <DropdownMenuItem key={name} onSelect={() => onSelect(name)}>
-                  <span
-                    className={cn(
-                      "flex size-6 shrink-0 items-center justify-center rounded-md text-sm text-white",
-                      index === 0 ? "bg-neutral-900" : index === 1 ? "bg-blue-500" : "bg-rose-500",
-                    )}
-                    aria-hidden="true"
-                  >
-                    {name.slice(0, 1)}
-                  </span>
+                  {marks?.[name] ?? (
+                    <span
+                      className={cn(
+                        "flex size-6 shrink-0 items-center justify-center rounded-md text-sm text-white",
+                        index === 0
+                          ? "bg-neutral-900"
+                          : index === 1
+                            ? "bg-blue-500"
+                            : "bg-rose-500",
+                      )}
+                      aria-hidden="true"
+                    >
+                      {name.slice(0, 1)}
+                    </span>
+                  )}
                   <span className="min-w-0 flex-1 truncate">{name}</span>
                   {name === value && <Check className="ml-auto size-3.5" />}
                 </DropdownMenuItem>
               ))}
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onSelect={onCreate}>
-              <Plus />
-              <span className="flex flex-col">
-                <span>New Workspace</span>
-                <span className="text-xs text-muted-foreground">Collaborate with others.</span>
-              </span>
-            </DropdownMenuItem>
+            {actions ?? (
+              <DropdownMenuItem onSelect={onCreate}>
+                <Plus />
+                <span className="flex flex-col">
+                  <span>New Workspace</span>
+                  <span className="text-xs text-muted-foreground">Collaborate with others.</span>
+                </span>
+              </DropdownMenuItem>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
