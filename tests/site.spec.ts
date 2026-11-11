@@ -36,6 +36,36 @@ test("catalog search, deep link, code viewer and favorites", async ({ page }) =>
   await page.reload();
   await expect(page.locator(".block-tile")).toHaveCount(1);
 });
+
+test("existing Prospect favorites follow its new route and Job Schedule can be saved separately", async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    localStorage.setItem(
+      "blocks-favorites",
+      JSON.stringify(["data-grid/advanced/data-grid-advanced-22"]),
+    );
+  });
+  await page.goto("./#/favorites");
+  const tiles = page.locator(".block-tile");
+  const prospect = tiles.getByRole("link", { name: "Prospect Database data-grid-advanced-23" });
+  const jobSchedule = tiles.getByRole("link", { name: "Job Schedule data-grid-advanced-22" });
+  await expect(tiles).toHaveCount(1);
+  await expect(prospect).toHaveAttribute(
+    "href",
+    "#/block/data-grid/advanced/data-grid-advanced-23",
+  );
+
+  await page.goto("./#/block/data-grid/advanced/data-grid-advanced-22");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Job Schedule");
+  await page.getByRole("button", { name: "Favorite block", exact: true }).click();
+  await page.goto("./#/favorites");
+  await page.reload();
+  await expect(tiles).toHaveCount(2);
+  await expect(prospect).toBeVisible();
+  await expect(jobSchedule).toBeVisible();
+});
+
 test("viewport, theme, customizer and source download", async ({ page }) => {
   await page.goto("./#/block/application/auth/auth-20");
   const frame = page.locator("iframe");

@@ -61,18 +61,41 @@ const TemplatePreview = lazy(() =>
   import("@/templates/renderer").then((module) => ({ default: module.TemplateRenderer })),
 );
 
-function useStored<T>(key: string, fallback: T) {
-  const [value, setValue] = useState<T>(() => {
+const favoritesStorageKey = "blocks-favorites-v2";
+
+function useFavorites() {
+  const [favorites, setFavorites] = useState<string[]>(() => {
     try {
-      return JSON.parse(localStorage.getItem(key) ?? "null") ?? fallback;
+      const current = localStorage.getItem(favoritesStorageKey);
+      const stored: unknown = JSON.parse(
+        current ?? localStorage.getItem("blocks-favorites") ?? "[]",
+      );
+      if (!Array.isArray(stored)) return [];
+      const keys = stored.filter((key): key is string => typeof key === "string");
+      if (current !== null) return keys;
+
+      // Advanced 22 used to be Prospect Database. Its old favorites follow it to Advanced 23.
+      return [
+        ...new Set(
+          keys.map((key) =>
+            key === "data-grid/advanced/data-grid-advanced-22"
+              ? "data-grid/advanced/data-grid-advanced-23"
+              : key,
+          ),
+        ),
+      ];
     } catch {
-      return fallback;
+      return [];
     }
   });
   useEffect(() => {
-    localStorage.setItem(key, JSON.stringify(value));
-  }, [key, value]);
-  return [value, setValue] as const;
+    try {
+      localStorage.setItem(favoritesStorageKey, JSON.stringify(favorites));
+    } catch {
+      // Favorites remain available for the current visit.
+    }
+  }, [favorites]);
+  return [favorites, setFavorites] as const;
 }
 function useHash() {
   const [hash, setHash] = useState(location.hash.slice(1) || "/");
@@ -211,7 +234,7 @@ function NoResults({ clear, favorites = false }: { clear: () => void; favorites?
 export default function App() {
   const hash = useHash();
   const { dark } = useGlobalTheme();
-  const [favorites, setFavorites] = useStored<string[]>("blocks-favorites", []);
+  const [favorites, setFavorites] = useFavorites();
   const [group, setGroup] = useState("all");
   const [query, setQuery] = useState("");
   const [sidebar, setSidebar] = useState(false);
