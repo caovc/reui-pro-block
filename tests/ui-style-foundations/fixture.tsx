@@ -2,6 +2,16 @@ import { useState } from "react";
 import { createRoot } from "react-dom/client";
 import { Alert } from "@/components/reui/alert";
 import { Frame, FramePanel } from "@/components/reui/frame";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -144,6 +154,20 @@ export function Fixture() {
           <DialogDescription>Portaled content uses the selected style.</DialogDescription>
         </DialogContent>
       </Dialog>
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <Button>Open confirmation</Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Example confirmation</AlertDialogTitle>
+            <AlertDialogDescription>Review the action before proceeding.</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </main>
   );
 }

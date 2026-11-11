@@ -48,37 +48,43 @@ test("desktop board tabs support arrows and keep the reference card grid", async
   await expect(page.getByRole("tooltip", { name: "Templates", exact: true })).toBeVisible();
 });
 
-test("mobile board views use a bottom drawer and navigation retains the fixed rail", async ({
-  page,
-}) => {
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto(route);
-  const trigger = page.getByRole("button", {
-    name: "Board views: Board",
-    exact: true,
+for (const primitive of ["radix", "base"] as const) {
+  test(`${primitive} mobile board views use a bottom drawer and navigation retains the fixed rail`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(`${primitive === "base" ? "./base" : "."}${route}`);
+    await expect(page.locator("html")).toHaveAttribute("data-ui-primitive", primitive);
+    const trigger = page.getByRole("button", {
+      name: "Board views: Board",
+      exact: true,
+    });
+    await trigger.click();
+    const drawer = page.getByRole("dialog", { name: "Board Views", exact: true });
+    if (primitive === "base") await expect(drawer).toHaveAttribute("data-swipe-direction", "down");
+    else await expect(drawer).toHaveAttribute("data-vaul-drawer-direction", "bottom");
+    await drawer.getByRole("link", { name: "Activity", exact: true }).click();
+    await expect(drawer).toBeVisible();
+    await expect(drawer.getByRole("link", { name: "Activity", exact: true })).toHaveAttribute(
+      "aria-current",
+      "page",
+    );
+    await page.keyboard.press("Escape");
+    await expect(drawer).toHaveCount(0);
+    await expect(
+      page.getByRole("button", { name: "Board views: Activity", exact: true }),
+    ).toBeFocused();
+    await page.getByRole("button", { name: "Open navigation", exact: true }).click();
+    const nav = page.getByRole("dialog", { name: "Navigation", exact: true });
+    await expect(nav.getByRole("link", { name: "Projects", exact: true })).toBeVisible();
+    await page.keyboard.press("Tab");
+    expect(await nav.evaluate((e) => e.contains(document.activeElement))).toBe(true);
+    await page.keyboard.press("Escape");
+    await expect(nav).toHaveCount(0);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
+      390,
+    );
+    const first = await page.locator(".workspace-skeleton-card").first().boundingBox();
+    expect(first?.width).toBe(366);
   });
-  await trigger.click();
-  const drawer = page.getByRole("dialog", { name: "Board Views", exact: true });
-  await expect(drawer).toHaveAttribute("data-vaul-drawer-direction", "bottom");
-  await drawer.getByRole("link", { name: "Activity", exact: true }).click();
-  await expect(drawer).toBeVisible();
-  await expect(drawer.getByRole("link", { name: "Activity", exact: true })).toHaveAttribute(
-    "aria-current",
-    "page",
-  );
-  await page.keyboard.press("Escape");
-  await expect(drawer).toHaveCount(0);
-  await expect(
-    page.getByRole("button", { name: "Board views: Activity", exact: true }),
-  ).toBeFocused();
-  await page.getByRole("button", { name: "Open navigation", exact: true }).click();
-  const nav = page.getByRole("dialog", { name: "Navigation", exact: true });
-  await expect(nav.getByRole("link", { name: "Projects", exact: true })).toBeVisible();
-  await page.keyboard.press("Tab");
-  expect(await nav.evaluate((e) => e.contains(document.activeElement))).toBe(true);
-  await page.keyboard.press("Escape");
-  await expect(nav).toHaveCount(0);
-  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
-  const first = await page.locator(".workspace-skeleton-card").first().boundingBox();
-  expect(first?.width).toBe(366);
-});
+}

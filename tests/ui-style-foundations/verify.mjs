@@ -201,6 +201,30 @@ async function checkSlider(page, style) {
   }
 }
 
+const expectedConfirmation = {
+  nova: [16, 14],
+  vega: [24, 14],
+  maia: [24, 26],
+  lyra: [16, 0],
+  mira: [16, 14],
+  luma: [24, 26],
+  sera: [24, 0],
+  rhea: [24, 24],
+};
+
+async function checkConfirmation(page, style) {
+  const [padding, corner] = expectedConfirmation[style];
+  const trigger = page.getByRole("button", { name: "Open confirmation", exact: true });
+  const dialog = page.getByRole("alertdialog", { name: "Example confirmation", exact: true });
+  await trigger.click();
+  await expect(dialog).toHaveCSS("padding-top", `${padding}px`);
+  await expect(dialog).toHaveCSS("border-top-left-radius", `${corner}px`);
+  await expect(dialog.getByRole("button", { name: "Cancel", exact: true })).toBeFocused();
+  await page.keyboard.press("Escape");
+  await expect(dialog).toHaveCount(0);
+  await expect(trigger).toBeFocused();
+}
+
 async function checkToggles(page, style) {
   const [boxSize, boxRadius, switchWidth, switchHeight, smallWidth, smallHeight] =
     expectedToggles[style];
@@ -290,6 +314,7 @@ try {
       await checkSurface(style, "dialog");
       await page.keyboard.press("Escape");
       await expect(page.getByTestId("dialog")).toHaveCount(0);
+      await checkConfirmation(page, style);
       const [height, triggerRadius, popupRadius, itemPadding] = expectedSelect[style];
       const trigger = page.getByRole("combobox", { name: "Example select" });
       await expect(trigger).toHaveCSS("height", `${height}px`);
