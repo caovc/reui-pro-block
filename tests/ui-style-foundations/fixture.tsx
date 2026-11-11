@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Item } from "@/components/ui/item";
+import { Progress } from "@/components/ui/progress";
 import {
   Select,
   SelectContent,
@@ -31,6 +32,11 @@ import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getUiStyleCss, UI_STYLES } from "@/foundations/styles";
 import { uiFoundation } from "@/lib/ui-foundation";
+import {
+  Progress as LabeledProgress,
+  ProgressLabel,
+  ProgressValue,
+} from "@/templates/workflow/free/flowly-progress";
 import "@/index.css";
 
 export function Fixture() {
@@ -74,6 +80,12 @@ export function Fixture() {
       <Card data-testid="card">Card</Card>
       <Item data-testid="item">Item</Item>
       <Alert data-testid="alert">Alert</Alert>
+      <Progress aria-label="Progress example" value={50} />
+      <Progress aria-label="Custom progress" className="h-5 rounded-sm" value={25} />
+      <LabeledProgress value={50}>
+        <ProgressLabel>Completed items</ProgressLabel>
+        <ProgressValue />
+      </LabeledProgress>
       <div className="flex items-center gap-4">
         <Checkbox aria-label="Example checkbox" />
         <Checkbox aria-label="Custom checkbox" className="size-5 rounded-full" />

@@ -582,6 +582,45 @@ function typographyCss(style: UiStyle) {
   return "";
 }
 
+const progressStyles = {
+  vega: { height: 6, corner: "full" },
+  maia: { height: 12, corner: "4xl" },
+  lyra: { height: 4, corner: "none" },
+  mira: { height: 4, corner: "md" },
+  luma: { height: 12, corner: "full" },
+  sera: { height: 2, corner: "none" },
+  rhea: { height: 8, corner: "2xl" },
+} as const;
+
+function progressCss(style: keyof typeof progressStyles) {
+  const { height, corner } = progressStyles[style];
+  // The shared controls render the track on the root, and ReUI's labeled pattern uses a child track.
+  const track = `:is(${slot("progress")}, ${slot("progress-track")})`;
+  const label = `${slot("progress-label")}${utility("text-sm")}`;
+  const value = `${slot("progress-value")}${utility("text-sm")}`;
+  let typography = "";
+  if (style === "lyra" || style === "mira") {
+    typography = rule(`${label}, ${value}`, {
+      "font-size": length(12),
+      "line-height": style === "lyra" ? "1.3333" : "1.625",
+    });
+  }
+  if (style === "lyra") typography += replace(label, "font-medium", "font-weight", "400");
+  if (style === "sera") {
+    typography = rule(label, { "font-size": length(12), "line-height": "1.3333" });
+    typography += rule(`${label}${utility("font-medium")}`, {
+      "font-weight": "600",
+      "letter-spacing": "0.05em",
+      "text-transform": "uppercase",
+    });
+  }
+  return (
+    replace(track, "h-1", "height", length(height)) +
+    replace(track, "rounded-full", "border-radius", radius(corner)) +
+    typography
+  );
+}
+
 /** Append after the shared theme CSS. The same sheet works for preview portals and ZIPs. */
 export function getUiStyleCss(value?: string | null): string {
   const style = value?.replace(/^(base|radix)-/, "");
@@ -602,6 +641,7 @@ export function getUiStyleCss(value?: string | null): string {
     dialogCss(profile, name),
     sheetPopoverCss(name, { rule, radius, shadow }),
     tabsCss(profile),
+    progressCss(name),
     typographyCss(name),
     replace(slot("alert"), "rounded-lg", "border-radius", radius(profile.alert.radius)),
   ].join("");

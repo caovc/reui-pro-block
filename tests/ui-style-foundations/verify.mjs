@@ -123,6 +123,37 @@ const expectedToggles = {
   rhea: [16, 5, 32, 20, 24, 16],
 };
 
+const expectedProgress = {
+  nova: [4, "pill", 14],
+  vega: [6, "pill", 14],
+  maia: [12, 26, 14],
+  lyra: [4, 0, 12],
+  mira: [4, 8, 12],
+  luma: [12, "pill", 14],
+  sera: [2, 0, 12],
+  rhea: [8, 18, 14],
+};
+
+async function checkProgress(page, style) {
+  const [height, corner, labelSize] = expectedProgress[style];
+  const progress = page.getByRole("progressbar", { name: "Progress example", exact: true });
+  const custom = page.getByRole("progressbar", { name: "Custom progress", exact: true });
+  const labeledTrack = page.locator('[data-slot="progress-track"]');
+  for (const track of [progress, labeledTrack]) {
+    await expect(track).toHaveCSS("height", `${height}px`);
+    const radius = await track.evaluate((node) => parseFloat(getComputedStyle(node).borderRadius));
+    if (corner === "pill") assert.ok(radius > 100);
+    else assert.equal(radius, corner);
+  }
+  await expect(progress).toHaveAttribute("aria-valuenow", "50");
+  await expect(custom).toHaveCSS("height", "20px");
+  await expect(custom).toHaveCSS("border-top-left-radius", "6px");
+  await expect(page.locator('[data-slot="progress-label"]')).toHaveCSS(
+    "font-size",
+    `${labelSize}px`,
+  );
+}
+
 async function checkToggles(page, style) {
   const [boxSize, boxRadius, switchWidth, switchHeight, smallWidth, smallHeight] =
     expectedToggles[style];
@@ -201,6 +232,7 @@ try {
       assert.ok(customRadius > 100, `${style} preserves the custom pill radius`);
       await expect(page.getByTestId("line-tabs")).toHaveCSS("border-top-left-radius", "0px");
       await checkToggles(page, style);
+      await checkProgress(page, style);
       await page.getByRole("button", { name: "Open menu" }).click();
       await checkSurface(style, "menu");
       await page.keyboard.press("Escape");
@@ -222,7 +254,7 @@ try {
       await page.getByRole("option", { name: "Second choice" }).click();
       await expect(trigger).toHaveAttribute("aria-expanded", "false");
       console.log(
-        `${primitive}-${style}: button, input, Frame, Card, Item, menu, dialog, tabs, Select, Checkbox and Switch match`,
+        `${primitive}-${style}: button, input, Frame, Card, Item, menu, dialog, tabs, Select, Checkbox, Switch and Progress match`,
       );
     }
 
