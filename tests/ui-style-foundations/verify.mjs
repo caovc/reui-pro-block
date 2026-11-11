@@ -154,6 +154,29 @@ async function checkProgress(page, style) {
   );
 }
 
+async function checkRadioGroup(page, style) {
+  const group = page.getByRole("radiogroup", { name: "Example radio group", exact: true });
+  const custom = page.getByRole("radiogroup", { name: "Custom radio group", exact: true });
+  const first = group.getByRole("radio", { name: "First radio", exact: true });
+  const second = group.getByRole("radio", { name: "Second radio", exact: true });
+  await expect(group).toHaveCSS("row-gap", style === "nova" || style === "lyra" ? "8px" : "12px");
+  await expect(custom).toHaveCSS("row-gap", "20px");
+  await expect(first).toHaveCSS("width", style === "sera" ? "18px" : "16px");
+  if (style === "rhea") await expect(first).toHaveCSS("border-top-left-radius", "18px");
+  await expect(first).toBeChecked();
+  await first.focus();
+  // Radix defers roving focus and checks whether the arrow is still held.
+  await page.keyboard.down("ArrowDown");
+  try {
+    await expect(second).toBeFocused();
+    await expect(second).toBeChecked();
+  } finally {
+    await page.keyboard.up("ArrowDown");
+  }
+  await first.press("Space");
+  await expect(first).toBeChecked();
+}
+
 async function checkToggles(page, style) {
   const [boxSize, boxRadius, switchWidth, switchHeight, smallWidth, smallHeight] =
     expectedToggles[style];
@@ -233,6 +256,7 @@ try {
       await expect(page.getByTestId("line-tabs")).toHaveCSS("border-top-left-radius", "0px");
       await checkToggles(page, style);
       await checkProgress(page, style);
+      await checkRadioGroup(page, style);
       await page.getByRole("button", { name: "Open menu" }).click();
       await checkSurface(style, "menu");
       await page.keyboard.press("Escape");
@@ -254,7 +278,7 @@ try {
       await page.getByRole("option", { name: "Second choice" }).click();
       await expect(trigger).toHaveAttribute("aria-expanded", "false");
       console.log(
-        `${primitive}-${style}: button, input, Frame, Card, Item, menu, dialog, tabs, Select, Checkbox, Switch and Progress match`,
+        `${primitive}-${style}: button, input, Frame, Card, Item, menu, dialog, tabs, Select, Checkbox, Switch, Progress and Radio Group match`,
       );
     }
 

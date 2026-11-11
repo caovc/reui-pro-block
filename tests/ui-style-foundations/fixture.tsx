@@ -21,6 +21,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Item } from "@/components/ui/item";
 import { Progress } from "@/components/ui/progress";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Select,
   SelectContent,
@@ -86,6 +87,15 @@ export function Fixture() {
         <ProgressLabel>Completed items</ProgressLabel>
         <ProgressValue />
       </LabeledProgress>
+      <div className="flex gap-4">
+        <RadioGroup aria-label="Example radio group" defaultValue="first">
+          <RadioGroupItem aria-label="First radio" value="first" />
+          <RadioGroupItem aria-label="Second radio" value="second" />
+        </RadioGroup>
+        <RadioGroup aria-label="Custom radio group" className="gap-y-5">
+          <RadioGroupItem aria-label="Custom radio" value="custom" />
+        </RadioGroup>
+      </div>
       <div className="flex items-center gap-4">
         <Checkbox aria-label="Example checkbox" />
         <Checkbox aria-label="Custom checkbox" className="size-5 rounded-full" />

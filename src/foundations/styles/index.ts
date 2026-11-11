@@ -1,5 +1,6 @@
 import { profiles } from "./profiles.ts";
 import { styleNotice } from "./notice.ts";
+import { getRadioGroupCss } from "./radio-group.ts";
 import { sheetPopoverCss } from "./sheet-popover.ts";
 import { getToggleControlsCss } from "./toggle-controls.ts";
 
@@ -638,6 +639,7 @@ export function getUiStyleCss(value?: string | null): string {
     menuCss(profile, name),
     selectCss(name),
     getToggleControlsCss(name),
+    getRadioGroupCss(name),
     dialogCss(profile, name),
     sheetPopoverCss(name, { rule, radius, shadow }),
     tabsCss(profile),
