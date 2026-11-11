@@ -581,6 +581,7 @@ export function templateImplementationTargets(template: {
       "miro-detail",
       "miro-chair-board",
       "miro-shell-chrome",
+      "miro-dashboard-charts",
     ],
     verve: [
       "verve-account-settings",
