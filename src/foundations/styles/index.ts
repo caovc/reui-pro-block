@@ -1,4 +1,5 @@
 import { getAlertDialogCss } from "./alert-dialog.ts";
+import { getCommandCss } from "./command.ts";
 import { getFieldCss } from "./field.ts";
 import { getIdentityCss } from "./identity.ts";
 import { profiles } from "./profiles.ts";
@@ -652,6 +653,7 @@ export function getUiStyleCss(value?: string | null): string {
     getRadioGroupCss(name),
     getSliderCss(name),
     dialogCss(profile, name),
+    getCommandCss(name),
     getAlertDialogCss(name),
     sheetPopoverCss(name, { rule, radius, shadow }),
     getTooltipCss(name),
