@@ -155,6 +155,12 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
         "src/blocks/application/rich-text-revisions.ts",
         "src/blocks/application/rich-text-suggestion.ts",
         ...(variant === 3 ? paths("application", "rich-text-contract-review") : []),
+        ...(variant === 4
+          ? [
+              ...paths("application", "rich-text-discussion"),
+              "src/blocks/application/rich-text-collaboration.ts",
+            ]
+          : []),
         ...(variant === 5
           ? [
               ...paths("application", "rich-text-assistant"),

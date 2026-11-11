@@ -12,11 +12,11 @@ for (const width of [1440, 390]) {
     const frameElement = page.getByTitle("Collaborative Editor live preview", { exact: true });
     const frame = page.frameLocator('iframe[title="Collaborative Editor live preview"]');
     const editor = frame.getByRole("textbox", { name: "Rich text document", exact: true });
-    await expect(editor).toContainText("Project overview");
+    await expect(editor.getByText(/Shared reply drafts let/)).toBeVisible();
     const original = await editor.evaluate((node) =>
       (node as HTMLElement & { editor: Editor }).editor.getJSON(),
     );
-    await editor.locator(":scope > h1").hover();
+    await editor.locator(":scope > p").first().hover();
     const plus = frame.getByRole("button", { name: "Add block below", exact: true });
     await expect(plus).toBeVisible();
     const measured = {

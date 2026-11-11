@@ -907,12 +907,13 @@
   padding: 40px 24px 160px;
 }
 .reui-editor[data-kind="5"] main > div:has(.reui-rich-document) {
-  max-width: 720px;
+  max-width: 784px;
+  translate: -32px 0;
   border: 0;
   box-shadow: none;
 }
 .reui-editor[data-kind="5"] .reui-rich-document {
-  padding: 0;
+  padding: 0 0 0 64px;
   font-size: 16px;
   line-height: 28px;
 }
@@ -1018,7 +1019,11 @@
     gap: 8px;
   }
   .reui-editor[data-kind="5"] main {
-    padding-inline: 20px;
+    padding-inline: 64px 20px;
+  }
+  .reui-editor[data-kind="5"] main > div:has(.reui-rich-document) {
+    margin-inline-start: -64px;
+    translate: none;
   }
   .rich-text-assistant-content {
     padding: 12px;
@@ -1053,4 +1058,139 @@
   font-size: 10px;
   line-height: 13px;
   white-space: nowrap;
+}
+
+/* Collaborative workspace, shared selection decorations and comments. */
+.reui-editor[data-kind="4"] {
+  min-height: 100dvh;
+  background: var(--background);
+}
+.reui-editor[data-kind="4"] > header {
+  padding: 8px 24px;
+  min-height: 56px;
+}
+.reui-editor[data-kind="4"] > header h2 {
+  font-size: 16px;
+  font-weight: 500;
+}
+.reui-editor[data-kind="4"] > header p {
+  margin-top: 0;
+  font-size: 12px;
+}
+.reui-editor[data-kind="4"] > header > div:first-child > svg,
+.reui-editor[data-kind="4"] > footer {
+  display: none;
+}
+.rich-text-collaboration-layout {
+  width: min(1152px, 100%);
+  margin-inline: auto;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 322px);
+  align-items: start;
+  gap: 40px;
+  padding: 40px 24px 100px;
+}
+.rich-text-collaboration-layout > main {
+  padding: 0;
+  background: transparent;
+}
+.rich-text-collaboration-layout > main > div:has(.reui-rich-document) {
+  max-width: none;
+  margin-inline-start: -64px;
+  border: 0;
+  box-shadow: none;
+}
+.reui-editor[data-kind="4"] .reui-rich-document {
+  font-size: 16px;
+  line-height: 28px;
+  padding: 0 0 0 64px;
+}
+.reui-editor[data-kind="4"] .reui-rich-document h2 {
+  font-size: 20px;
+  margin: 32px 0 16px;
+}
+.reui-editor[data-kind="4"] .reui-rich-document p {
+  margin: 0 0 16px;
+}
+.reui-editor[data-kind="4"] .reui-rich-document li p {
+  margin: 0;
+}
+.reui-editor[data-kind="4"] .reui-rich-document mark[data-comment] {
+  cursor: pointer;
+  background: light-dark(#fff7e4, #3e3020);
+  border-bottom: 2px solid light-dark(#f0ba32, #a67c18);
+}
+.rich-text-discussion {
+  position: sticky;
+  top: 16px;
+  min-width: 0;
+}
+.rich-text-discussion-thread {
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  gap: 8px;
+}
+.rich-text-discussion-thread [data-slot="item-media"] {
+  margin-top: 2px;
+}
+.rich-text-discussion-quote,
+.rich-text-discussion-message {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  font-size: 14px;
+  line-height: 20px;
+}
+.rich-text-discussion-quote {
+  color: var(--muted-foreground);
+  -webkit-line-clamp: 1;
+}
+.rich-text-discussion-thread[data-open="true"]
+  :is(.rich-text-discussion-quote, .rich-text-discussion-message) {
+  display: block;
+}
+.rich-text-peer-caret {
+  position: relative;
+  display: inline-block;
+  width: 0;
+  height: 1em;
+  vertical-align: text-bottom;
+  border-inline-start: 2px solid var(--peer-color);
+  pointer-events: none;
+}
+.rich-text-peer-caret > span {
+  position: absolute;
+  bottom: 100%;
+  inset-inline-start: -2px;
+  padding: 2px 5px;
+  border-radius: 4px 4px 4px 0;
+  background: var(--peer-color);
+  color: white;
+  font-size: 10px;
+  line-height: 13px;
+  white-space: nowrap;
+}
+@media (max-width: 860px) {
+  .rich-text-collaboration-layout {
+    grid-template-columns: minmax(0, 1fr);
+    padding-inline: 24px;
+    gap: 24px;
+  }
+  .rich-text-discussion {
+    position: static;
+  }
+}
+@media (max-width: 640px) {
+  .reui-editor[data-kind="4"] > header {
+    padding-inline: 12px;
+    gap: 8px;
+  }
+  .rich-text-collaboration-layout {
+    padding-top: 32px;
+  }
+}
+@media (max-width: 1260px) {
+  .rich-text-collaboration-layout {
+    padding-inline-start: 64px;
+  }
 }

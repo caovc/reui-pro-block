@@ -3,7 +3,7 @@ import { useEditorState } from "@tiptap/react";
 import { DragHandle } from "@tiptap/extension-drag-handle-react";
 import { BubbleMenu } from "@tiptap/react/menus";
 import type { Editor } from "@tiptap/core";
-import { closeHistory } from "@tiptap/pm/history";
+import { separateRichTextHistory } from "./rich-text-engine";
 import { Selection, TextSelection, type SelectionBookmark } from "@tiptap/pm/state";
 import { CellSelection, isInTable, selectedRect } from "@tiptap/pm/tables";
 import {
@@ -88,11 +88,11 @@ function WikiTableControls({ editor }: { editor: Editor }) {
       | "deleteTable",
   ) {
     if (!editor.isEditable || editor.isDestroyed) return;
-    editor.view.dispatch(closeHistory(editor.state.tr));
+    separateRichTextHistory(editor);
     try {
       editor.chain().focus()[action]().run();
     } finally {
-      if (!editor.isDestroyed) editor.view.dispatch(closeHistory(editor.state.tr));
+      separateRichTextHistory(editor);
     }
   }
   return (
@@ -298,7 +298,7 @@ export function RichTextBlockActions({
       const previous = editor.state.doc.resolve(target).nodeBefore;
       const next = editor.state.doc.resolve(end).nodeAfter;
       if ((action === "up" && !previous) || (action === "down" && !next)) return false;
-      editor.view.dispatch(closeHistory(editor.state.tr));
+      separateRichTextHistory(editor);
       try {
         if (action === "delete")
           return editor.chain().focus().deleteRange({ from: target, to: end }).run();
@@ -341,7 +341,7 @@ export function RichTextBlockActions({
           })
           .run();
       } finally {
-        if (!editor.isDestroyed) editor.view.dispatch(closeHistory(editor.state.tr));
+        separateRichTextHistory(editor);
       }
     },
     [editor],
@@ -498,7 +498,7 @@ export function RichTextBlockActions({
                 // chain.focus() defers DOM focus, so focus the real view first when
                 // the user adds a block before ever placing a caret in the page.
                 editor.view.focus();
-                editor.view.dispatch(closeHistory(editor.state.tr));
+                separateRichTextHistory(editor);
                 editor
                   .chain()
                   .focus()
@@ -508,7 +508,7 @@ export function RichTextBlockActions({
                   })
                   .setTextSelection(target + node.nodeSize + 2)
                   .run();
-                editor.view.dispatch(closeHistory(editor.state.tr));
+                separateRichTextHistory(editor);
                 onInsert();
               }}
             >

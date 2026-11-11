@@ -19,6 +19,8 @@ const implementationPaths = [
   "src/blocks/application/rich-text-suggestion.ts",
   "src/blocks/application/rich-text-block-actions.tsx",
   "src/blocks/application/editor.css",
+  "src/blocks/application/rich-text-collaboration.ts",
+  "src/blocks/application/rich-text-discussion.tsx",
 ] as const;
 const requiredFiles = [
   editorEntry,
@@ -55,7 +57,6 @@ const collaborativeTarget: SourceTarget = {
   requiredFiles,
 };
 
-// Four source cases plus one actual original archive; runner owns W1R0.
 test.setTimeout(30_000);
 
 for (const selectedPath of implementationPaths) {
@@ -161,6 +162,10 @@ test("Collaborative kind4 actual original starter preserves the changed editor m
     "@tiptap/pm",
     "@tiptap/extension-table",
     "@tiptap/suggestion",
+    "@tiptap/extension-collaboration",
+    "@tiptap/y-tiptap",
+    "yjs",
+    "y-protocols",
   ]) {
     expect(currentPackage.dependencies[dependency]).toBeTruthy();
     expect(packageManifest.dependencies[dependency]).toBe(currentPackage.dependencies[dependency]);
@@ -184,4 +189,28 @@ test("Collaborative kind4 actual original starter preserves the changed editor m
   }
   expect(await readFile(archivePath)).toEqual(archiveBytes);
   expect(faults).toEqual([]);
+});
+
+test("Collaborative Base UI starter exposes the selected primitive and includes the Yjs source", async ({
+  page,
+}, info) => {
+  const implementation = "src/blocks/application/rich-text-collaboration.ts";
+  const target = {
+    ...collaborativeTarget,
+    route: `./base${collaborativeTarget.route}`,
+    selectedPath: implementation,
+  };
+  const { dialog, choice } = await openSource(page, target, "archive");
+  const { files } = await captureOriginalArchive(page, target, dialog, info);
+  const code = await selectSource(page, target, dialog, choice);
+  const source = (await fileBytes(implementation)).toString("utf8");
+  await expect.poll(() => sourceText(code, target)).toBe(source);
+  expect(strFromU8(files[implementation])).toBe(source);
+  expect(Buffer.from(files["src/components/ui/switch.tsx"])).toEqual(
+    await fileBytes("src/foundations/base/ui/switch.tsx"),
+  );
+  expect(JSON.parse(strFromU8(files["components.json"])).style).toBe("base-nova");
+  const pkg = JSON.parse(strFromU8(files["package.json"]));
+  expect(pkg.dependencies.yjs).toBeTruthy();
+  expect(pkg.scripts.build).toContain("vite build --mode base-ui");
 });

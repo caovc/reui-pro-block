@@ -6,6 +6,18 @@ import { RichTextToolbar, RichTextShortcuts } from "./rich-text-toolbar";
 import { AssistantCaret, RichTextAssistant } from "./rich-text-assistant";
 import { Badge as ReuiBadge } from "@/components/reui/badge";
 import {
+  collaborationExtension,
+  connectPreviewRoom,
+  createCollaborationDocument,
+} from "./rich-text-collaboration";
+import {
+  captureDiscussionSelection,
+  CollaborationPresence,
+  RichTextDiscussion,
+  seedDiscussions,
+  type DiscussionSelection,
+} from "./rich-text-discussion";
+import {
   ContractModeControl,
   ContractReviewNavigation,
   ContractSuggestions,
@@ -15,19 +27,22 @@ import {
 import { Command, CommandList, CommandItem, CommandEmpty } from "@/components/ui/command";
 import { RichTextBlockActions } from "./rich-text-block-actions";
 import { RichTextInsertMenu } from "./rich-text-insert-menu";
-import { closeHistory } from "@tiptap/pm/history";
 import { Scrollspy } from "@/components/reui/scrollspy";
 import { EditorContent, useEditor } from "@tiptap/react";
 import { richTextEditorProps } from "./rich-text-selection";
 import type { Editor, JSONContent } from "@tiptap/core";
-import { editorExtensions, normalizeDocument, runEditorCommand } from "./rich-text-engine";
+import {
+  editorExtensions,
+  normalizeDocument,
+  runEditorCommand,
+  separateRichTextHistory,
+} from "./rich-text-engine";
 import type { ClipboardEvent, FormEvent, KeyboardEvent, MouseEvent } from "react";
 import {
   AlignLeft,
   ArrowDownToLine,
   ArrowRight,
   Bold,
-  Check,
   CheckSquare,
   ChevronDown,
   Code2,
@@ -40,23 +55,20 @@ import {
   ListOrdered,
   Quote,
   Redo2,
-  Send,
   Sparkles,
   Table2,
   Underline,
   Strikethrough as TypeIcon,
   MoreHorizontal,
   Undo2,
-  Wifi,
-  WifiOff,
   Share2,
+  MessageSquare,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Switch } from "@/components/ui/switch";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
@@ -87,32 +99,8 @@ import type { BlockProps } from "@/data/types";
 import "../reference.css";
 import "./editor.css";
 
-type Comment = {
-  id: number;
-  author: string;
-  message: string;
-  quote: string;
-  resolved: boolean;
-};
 type Revision = { id: string; before: string; after: string; author: string };
 type OutlineItem = { title: string; level: number; index: number };
-const initialComments: Comment[] = [
-  {
-    id: 1,
-    author: "Olivia Rhye",
-    message:
-      "Could we make the success criteria more specific? A clear target will help us stay aligned.",
-    quote: "Build a more thoughtful product experience.",
-    resolved: false,
-  },
-  {
-    id: 2,
-    author: "Phoenix Baker",
-    message: "Love this direction. Let’s bring it into the next design review.",
-    quote: "Start with the people who use it.",
-    resolved: false,
-  },
-];
 const initialRevisions: Revision[] = [
   { id: "term", before: "30 days", after: "45 days", author: "Olivia Rhye" },
   { id: "fee", before: "$8,000", after: "$9,500", author: "Phoenix Baker" },
@@ -178,6 +166,25 @@ function initialDocument(kind: number) {
       `</table>`,
       `<h2>What’s next</h2>`,
       `<p>Type / to insert a block, or @ to mention a teammate.</p>`,
+    ].join("");
+  if (kind === 4)
+    return [
+      `<p>Shared reply drafts let two support teammates work on the same response before it goes to a customer. This specification covers editing, handoff, and recovery when a teammate loses their connection.</p>`,
+      `<h2>Problem</h2>`,
+      `<p>On a complex ticket, a second agent often pastes a rewrite into an internal note. The ticket owner copies it back and asks the second agent to confirm. This slows down support and increases <mark data-comment="handoff">the time spent handing a draft back and forth</mark>.</p>`,
+      `<h2>Goals</h2>`,
+      `<ul><li>Let two people work on a response while keeping the ticket in view.</li><li>Show who is editing and where they are in the draft.</li><li>Keep offline edits available for the next connection.</li></ul>`,
+      `<h2>Non-Goals</h2>`,
+      `<ul><li>Joint editing on macros and internal notes.</li><li>Formal approval flows for routine replies.</li></ul>`,
+      `<h2>How It Works</h2>`,
+      `<p>Invite a teammate from the ticket composer. Both agents see the current draft and who else is in the room. <mark data-comment="ownership">Only the owner can submit the reply</mark>, and either agent can ask to transfer ownership.</p>`,
+      `<p>If a teammate disconnects, they keep editing their local copy. Both copies merge on reconnect. The status line identifies changes that arrived after a delay.</p>`,
+      `<h2>Permissions</h2>`,
+      `<p>Agents who can reply can join a shared draft. Invite <mark data-comment="permissions">read-only teammates</mark> when they only need context.</p>`,
+      `<h2>Open Questions</h2>`,
+      `<ul><li>How should shared replies count toward response targets?</li><li>Can an agent still edit during the final confirmation?</li></ul>`,
+      `<h2>Launch Checklist</h2>`,
+      `<ul data-task-list="true"><li><input type="checkbox"> Review presence and permission rules</li><li><input type="checkbox"> Check the reconnect path</li><li><input type="checkbox"> Update the support handbook</li></ul>`,
     ].join("");
   if (kind === 5)
     return [
@@ -324,34 +331,14 @@ export default function RichEditorBlock({
   const [linkOpen, setLinkOpen] = useState(false);
   const [url, setUrl] = useState("https://");
   const [linkText, setLinkText] = useState("");
-  const [comments, setComments] = useState<Comment[]>(() => {
-    try {
-      const saved = storageKey && localStorage.getItem(`${storageKey}:comments`);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed)) return parsed;
-      }
-    } catch {
-      /* Start with sample threads. */
-    }
-    return initialComments;
-  });
-  useEffect(() => {
-    if (storageKey) {
-      try {
-        localStorage.setItem(`${storageKey}:comments`, JSON.stringify(comments));
-      } catch {
-        /* Document saving reports unavailable storage separately. */
-      }
-    }
-  }, [comments, storageKey]);
-  const [comment, setComment] = useState("");
-  const [showResolved, setShowResolved] = useState(false);
   const [online, setOnline] = useState(true);
+  const [collaborationActivity, setCollaborationActivity] = useState<string | null>(null);
+  const [discussionDraft, setDiscussionDraft] = useState<DiscussionSelection | null>(null);
+  const room = useRef<ReturnType<typeof connectPreviewRoom> | null>(null);
   const [revisions, setRevisions] = useState<Revision[]>(kind === 3 ? initialRevisions : []);
   const suggesting = kind === 3 && contractMode === "suggesting";
   const [replacement, setReplacement] = useState("");
-  const [panel, setPanel] = useState(kind === 2 ? "outline" : kind === 4 ? "comments" : "");
+  const [panel, setPanel] = useState(kind === 2 ? "outline" : "");
 
   const updateInsertSuggestion = useCallback((state: InsertSuggestion | null) => {
     setInsertSuggestion(state);
@@ -380,23 +367,32 @@ export default function RichEditorBlock({
     }
     return false;
   }, []);
-  const [extensions] = useState(() => [
-    ...editorExtensions(),
-    ...(kind === 5 ? [AssistantCaret] : []),
-    createInsertSuggestions(updateInsertSuggestion, handleInsertKey),
-  ]);
+  const [{ extensions, collaborationDoc }] = useState(() => {
+    const extensions = editorExtensions(kind === 4);
+    const collaborationDoc =
+      kind === 4 ? createCollaborationDocument(extensions, initialContent) : null;
+    if (collaborationDoc) {
+      seedDiscussions(collaborationDoc, storageKey);
+      extensions.push(collaborationExtension(collaborationDoc));
+    }
+    if (kind === 5) extensions.push(AssistantCaret);
+    extensions.push(createInsertSuggestions(updateInsertSuggestion, handleInsertKey));
+    return { extensions, collaborationDoc };
+  });
   const engine = useEditor({
+    immediatelyRender: kind !== 4,
     extensions,
-    content: initialContent,
+    content: collaborationDoc ? undefined : initialContent,
     editable,
     editorProps: richTextEditorProps,
     onCreate: ({ editor: instance }) => {
       editor.current = instance.view.dom as HTMLDivElement;
+      refreshOutline(instance);
       latestHtml.current = instance.getHTML();
       setDocumentHtml(latestHtml.current);
-      refreshOutline(instance);
     },
     onUpdate: ({ editor: instance }) => {
+      if (!instance.isInitialized) return;
       latestHtml.current = instance.getHTML();
       setDocumentHtml(latestHtml.current);
       setIsSaved(false);
@@ -405,6 +401,7 @@ export default function RichEditorBlock({
       refreshOutline(instance);
     },
     onTransaction: ({ editor: instance }) => {
+      if (!instance.isInitialized) return;
       const next = {
         bold: instance.isActive("bold"),
         italic: instance.isActive("italic"),
@@ -421,6 +418,7 @@ export default function RichEditorBlock({
       setCanRedo(instance.can().redo());
     },
     onSelectionUpdate: ({ editor: instance }) => {
+      if (!instance.isInitialized) return;
       savedRange.current = { from: instance.state.selection.from, to: instance.state.selection.to };
       setSelectedText(
         instance.state.doc.textBetween(
@@ -456,7 +454,24 @@ export default function RichEditorBlock({
     };
   }, [engine]);
   useEffect(() => {
-    engine?.setEditable(editable);
+    if (!engine || !collaborationDoc) return;
+    const connection = connectPreviewRoom(engine, collaborationDoc, setCollaborationActivity);
+    room.current = connection;
+    return () => {
+      room.current = null;
+      connection.destroy();
+    };
+  }, [engine, collaborationDoc]);
+  function changeOnline(next: boolean) {
+    const connection = room.current;
+    if (!connection) return;
+    connection.setOnline(next);
+    setOnline(next);
+    if (!next) connection.replay();
+    toast(next ? "Reconnected · edits merged" : "Offline · keep editing locally");
+  }
+  useEffect(() => {
+    engine?.setEditable(editable, false);
   }, [engine, editable]);
   useEffect(() => {
     if (!engine || !documentHtml || !storageKey) return;
@@ -742,34 +757,6 @@ export default function RichEditorBlock({
     );
     setLinkOpen(false);
   }
-  function addComment(e: FormEvent) {
-    e.preventDefault();
-    if (!editable) return;
-    if (!comment.trim()) return;
-    const id = Math.max(0, ...comments.map((item) => item.id)) + 1;
-    const quote = selectedText;
-    setComments([
-      ...comments,
-      {
-        id,
-        author: "Alex Morgan",
-        message: comment.trim(),
-        quote,
-        resolved: false,
-      },
-    ]);
-    if (quote && engine) {
-      restoreSelection();
-      engine
-        .chain()
-        .focus()
-        .setMark("comment", { id: String(id) })
-        .run();
-      snapshot();
-    }
-    setComment("");
-    toast.success("Comment added locally");
-  }
   function reviewRevision(id: string | null, accept: boolean) {
     if (!engine || !editable) return;
     const ids = new Set(
@@ -885,7 +872,7 @@ export default function RichEditorBlock({
   ) : null;
   const plainText = engine?.getText({ blockSeparator: "\n" }) ?? "";
   const words = plainText.trim().split(/\s+/).filter(Boolean).length;
-  const showSidebar = kind === 2 || kind === 4;
+  const showSidebar = kind === 2;
   const documentFrame = kind === 1 && !compact;
   const EditorFrame = documentFrame ? Frame : "div";
   const EditorHeader = documentFrame ? FrameHeader : "header";
@@ -958,7 +945,7 @@ export default function RichEditorBlock({
     } else {
       const item = insertItems.find(([name]) => name === label);
       if (!item) return;
-      engine.view.dispatch(closeHistory(engine.state.tr));
+      separateRichTextHistory(engine);
       try {
         // Delete the trigger and apply the native command in one history event.
         // Separate dispatches can split wrapping commands (for example Quote).
@@ -983,7 +970,7 @@ export default function RichEditorBlock({
         snapshot();
         saveSelection();
       } finally {
-        if (!engine.isDestroyed) engine.view.dispatch(closeHistory(engine.state.tr));
+        separateRichTextHistory(engine);
       }
     }
     setInsertSuggestion(null);
@@ -1058,9 +1045,16 @@ export default function RichEditorBlock({
                   ? "Product design handbook"
                   : kind === 1
                     ? "Project overview"
-                    : kind === 5
-                      ? "Workspace Search Rollout"
-                      : block.name)}
+                    : kind === 4
+                      ? "Shared Drafts"
+                      : kind === 5
+                        ? "Workspace Search Rollout"
+                        : block.name)}
+              {kind === 4 && (
+                <ReuiBadge variant={online ? "success" : "outline"} className="ml-2">
+                  {online ? "Live" : "Offline"}
+                </ReuiBadge>
+              )}
               {kind === 5 && assistantRevisions.length > 0 && (
                 <ReuiBadge variant="secondary" className="ml-2">
                   {assistantRevisions.length}{" "}
@@ -1069,15 +1063,16 @@ export default function RichEditorBlock({
               )}
             </h2>
             <p className="mt-1 text-[10px] text-muted-foreground">
+              {kind === 4 && "Shared reply · Product spec · "}
               {kind === 5 && "Rollout plan · Alex Morgan · "}
               {documentFrame && "Project brief · Edited locally · "}
               {storageError
                 ? "Storage unavailable · keep this tab open"
-                : isSaved
-                  ? "All changes saved"
-                  : online
-                    ? "Unsaved changes"
-                    : "Offline · edits kept in this session"}
+                : !online
+                  ? "Edits save locally"
+                  : isSaved
+                    ? "All changes saved"
+                    : "Unsaved changes"}
             </p>
           </div>
           {kind === 3 && <Badge variant="outline">Draft</Badge>}
@@ -1133,7 +1128,7 @@ export default function RichEditorBlock({
               </Button>
             </>
           )}
-          {(kind === 1 || kind === 2 || kind === 4 || kind === 5) && (
+          {(kind === 1 || kind === 2 || kind === 5) && (
             <div className="hidden items-center gap-1.5 sm:flex">
               {["OR", "PB", "AM", "LS"].map((n) => (
                 <Avatar className="size-7" key={n}>
@@ -1141,6 +1136,13 @@ export default function RichEditorBlock({
                 </Avatar>
               ))}
             </div>
+          )}
+          {kind === 4 && (
+            <CollaborationPresence
+              online={online}
+              activity={collaborationActivity}
+              onOnlineChange={changeOnline}
+            />
           )}
           {kind === 5 && (
             <>
@@ -1177,13 +1179,13 @@ export default function RichEditorBlock({
               </Button>
             </>
           )}
-          {!documentFrame && kind !== 5 && (
+          {!documentFrame && kind < 4 && (
             <Button className="editor-export" variant="outline" size="sm" onClick={download}>
               <ArrowDownToLine />
               Export
             </Button>
           )}
-          {!documentFrame && kind !== 5 && (
+          {!documentFrame && kind < 4 && (
             <Button
               className="editor-save"
               size="sm"
@@ -1200,7 +1202,9 @@ export default function RichEditorBlock({
               <Button
                 size="icon-sm"
                 variant="ghost"
-                aria-label={documentFrame || kind === 5 ? "Document actions" : "Page actions"}
+                aria-label={
+                  documentFrame || kind === 4 || kind === 5 ? "Document actions" : "Page actions"
+                }
               >
                 <MoreHorizontal />
               </Button>
@@ -1216,6 +1220,26 @@ export default function RichEditorBlock({
                   </DropdownMenuItem>
                   <DropdownMenuItem onSelect={() => copyAssistantDocument("all")}>
                     Copy Redline HTML
+                  </DropdownMenuItem>
+                </>
+              ) : kind === 4 ? (
+                <>
+                  <DropdownMenuItem
+                    onSelect={() => {
+                      navigator.clipboard.writeText(location.href).then(
+                        () => toast.success("Document link copied"),
+                        () => toast.error("Clipboard is unavailable"),
+                      );
+                    }}
+                  >
+                    Copy Link
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onSelect={() => copyAssistantDocument("all")}>
+                    Copy HTML
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onSelect={() => room.current?.replay()}>
+                    Replay Session
                   </DropdownMenuItem>
                 </>
               ) : (
@@ -1295,7 +1319,7 @@ export default function RichEditorBlock({
               variant="ghost"
               size="icon-sm"
               aria-label="Toggle document panel"
-              onClick={() => setPanel(panel ? "" : kind === 4 ? "comments" : "outline")}
+              onClick={() => setPanel(panel ? "" : "outline")}
             >
               <AlignLeft />
             </Button>
@@ -1326,7 +1350,18 @@ export default function RichEditorBlock({
           linkOpen={linkOpen}
           onLinkOpenChange={setLinkOpen}
           trailing={
-            kind === 5 ? (
+            kind === 4 ? (
+              <Button
+                variant="ghost"
+                size="icon-sm"
+                aria-label="Comment"
+                disabled={!editable}
+                onMouseDown={keepSelection}
+                onClick={() => setDiscussionDraft(captureDiscussionSelection(engine))}
+              >
+                <MessageSquare />
+              </Button>
+            ) : kind === 5 ? (
               <>
                 <Popover>
                   <PopoverTrigger asChild>
@@ -1574,7 +1609,15 @@ export default function RichEditorBlock({
       )}
       <EditorSurface
         ref={scrollPane}
-        className={`grid flex-1 ${kind === 3 ? "contract-review-layout" : showSidebar && panel ? "xl:grid-cols-[1fr_290px]" : ""}`}
+        className={`grid flex-1 ${
+          kind === 3
+            ? "contract-review-layout"
+            : kind === 4
+              ? "rich-text-collaboration-layout"
+              : showSidebar && panel
+                ? "xl:grid-cols-[1fr_290px]"
+                : ""
+        }`}
       >
         <main className="relative min-w-0 bg-muted/20 p-4 sm:p-7">
           {kind === 2 && (
@@ -1619,6 +1662,15 @@ export default function RichEditorBlock({
             {contractReviewExtra}
           </ContractSuggestions>
         )}
+        {kind === 4 && engine && collaborationDoc && (
+          <RichTextDiscussion
+            editor={engine}
+            doc={collaborationDoc}
+            storageKey={storageKey}
+            draft={discussionDraft}
+            onDraftChange={setDiscussionDraft}
+          />
+        )}
         {showSidebar && panel && (
           <aside className="flex min-w-0 flex-col gap-5 border-t bg-background p-5 xl:border-l xl:border-t-0">
             {panel === "outline" && (
@@ -1662,90 +1714,6 @@ export default function RichEditorBlock({
                 </p>
               </>
             )}
-            {panel === "comments" && (
-              <>
-                <div className="flex items-center justify-between">
-                  <h3 className="text-xs font-semibold">Comments</h3>
-                  <Badge variant="secondary">
-                    {comments.filter((c) => !c.resolved).length} open
-                  </Badge>
-                </div>
-                <div className="flex items-center justify-between rounded-lg bg-muted/30 p-3 text-[10px]">
-                  <span className="flex items-center gap-1.5">
-                    {online ? <Wifi className="size-3" /> : <WifiOff className="size-3" />}
-                    {online ? "Local collaboration demo" : "Offline demo"}
-                  </span>
-                  <Switch
-                    checked={online}
-                    onCheckedChange={(v) => {
-                      setOnline(v);
-                      toast(
-                        v
-                          ? "Reconnected · local edits are retained"
-                          : "Offline mode · continue editing locally",
-                      );
-                    }}
-                    aria-label="Online mode"
-                  />
-                </div>
-                <label className="flex items-center justify-between text-[10px] text-muted-foreground">
-                  Show resolved
-                  <Switch checked={showResolved} onCheckedChange={setShowResolved} />
-                </label>
-                {comments
-                  .filter((c) => showResolved || !c.resolved)
-                  .map((c) => (
-                    <div className="flex flex-col gap-3 rounded-lg border p-3" key={c.id}>
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-medium">{c.author}</span>
-                        <Button
-                          size="icon-sm"
-                          variant="ghost"
-                          aria-label={`${c.resolved ? "Reopen" : "Resolve"} comment ${c.id}`}
-                          onClick={() =>
-                            setComments(
-                              comments.map((v) =>
-                                v.id === c.id ? { ...v, resolved: !v.resolved } : v,
-                              ),
-                            )
-                          }
-                        >
-                          {c.resolved ? <Undo2 /> : <Check />}
-                        </Button>
-                      </div>
-                      {c.quote && (
-                        <blockquote className="border-l-2 pl-2 text-[10px] text-muted-foreground">
-                          {c.quote}
-                        </blockquote>
-                      )}
-                      <p className="text-xs leading-6">{c.message}</p>
-                      {c.resolved && <Badge variant="outline">Resolved</Badge>}
-                    </div>
-                  ))}
-                <form className="flex flex-col gap-3" onSubmit={addComment}>
-                  <Textarea
-                    aria-label="Write a comment"
-                    placeholder="Write a comment…"
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                    rows={3}
-                  />
-                  {selectedText && (
-                    <p className="truncate text-[10px] text-muted-foreground">
-                      On: “{selectedText}”
-                    </p>
-                  )}
-                  <Button type="submit" size="sm" disabled={!comment.trim()}>
-                    <Send />
-                    Add comment
-                  </Button>
-                </form>
-                <p className="text-[10px] leading-5 text-muted-foreground">
-                  Presence and comments are simulated locally. No network collaboration service is
-                  connected.
-                </p>
-              </>
-            )}
           </aside>
         )}
       </EditorSurface>
@@ -1772,12 +1740,8 @@ export default function RichEditorBlock({
           <RichTextShortcuts />
         ) : (
           <span>
-            {kind === 3
-              ? `${revisions.length} changes to review`
-              : kind === 4
-                ? "Session-only collaboration demo"
-                : "Rich HTML document"}{" "}
-            · ⌘S to save
+            {kind === 3 ? `${revisions.length} changes to review` : "Rich HTML document"} · ⌘S to
+            save
           </span>
         )}
       </EditorFooter>

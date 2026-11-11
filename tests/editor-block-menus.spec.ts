@@ -290,7 +290,11 @@ for (const width of [1440, 390]) {
       const editor = await open(page, kind);
       const original = (await state(editor)).doc;
       const samples = [];
-      const targets = [editor.locator(":scope > h1").first(), editor.locator(":scope > p").first()];
+      const headingTag = kind === 4 ? "h2" : "h1";
+      const targets = [
+        editor.locator(`:scope > ${headingTag}`).first(),
+        editor.locator(":scope > p").first(),
+      ];
       // Contract's actual seed document contains headings and paragraphs, with no list.
       if (kind !== 3) targets.push(editor.locator(":scope > ul").first());
       for (const target of targets) {

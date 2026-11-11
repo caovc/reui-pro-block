@@ -1,4 +1,6 @@
 import { Extension, Mark, Node, mergeAttributes, type Editor } from "@tiptap/core";
+import { closeHistory } from "@tiptap/pm/history";
+import { yUndoPluginKey } from "@tiptap/y-tiptap";
 import { RichTextTaskItem } from "./rich-text-task-item";
 import { ContentsView } from "./rich-text-contents";
 import { ReactNodeViewRenderer } from "@tiptap/react";
@@ -49,7 +51,7 @@ const CommentMark = Mark.create({
       renderHTML: (attributes) => ({ "data-comment": attributes.id }),
     },
   }),
-  parseHTML: () => [{ tag: "mark[data-comment]" }],
+  parseHTML: () => [{ tag: "mark[data-comment]", priority: 60 }],
   renderHTML: ({ HTMLAttributes }) => ["mark", mergeAttributes(HTMLAttributes), 0],
 });
 const DocumentAttributes = Extension.create({
@@ -71,11 +73,11 @@ const DocumentAttributes = Extension.create({
   ],
 });
 
-export function editorExtensions() {
+export function editorExtensions(collaborative = false) {
   return [
     StarterKit.configure({
-      link: { openOnClick: false, protocols: ["https", "http", "mailto"] },
-      undoRedo: { newGroupDelay: 300 },
+      link: { openOnClick: false },
+      undoRedo: collaborative ? false : { newGroupDelay: 300 },
     }),
     TableKit.configure({ table: { resizable: true, allowTableNodeSelection: true } }),
     TextStyleKit,
@@ -122,6 +124,13 @@ export function normalizeDocument(html: string) {
     }
   });
   return root.body.innerHTML;
+}
+
+export function separateRichTextHistory(editor: Editor) {
+  if (editor.isDestroyed) return;
+  const sharedHistory = yUndoPluginKey.getState(editor.state);
+  if (sharedHistory) sharedHistory.undoManager.stopCapturing();
+  else editor.view.dispatch(closeHistory(editor.state.tr));
 }
 
 export function runEditorCommand(editor: Editor, name: string, value?: string) {
