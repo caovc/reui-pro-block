@@ -676,7 +676,15 @@ export function templateImplementationTargets(template: {
       "lucent-origins-dialog",
       "lucent-settings",
     ],
-    pulse: ["pulse-knowledge", "pulse-reports", "pulse-settings", "settings-shared"],
+    pulse: [
+      "pulse-knowledge",
+      "pulse-reports",
+      "pulse-settings",
+      "settings-shared",
+      "pulse-board",
+      "pulse-ticket-create",
+      "pulse-ticket-detail",
+    ],
     cohort: [
       "cohort-people",
       "cohort-person-detail",
@@ -730,6 +738,14 @@ export function templateImplementationTargets(template: {
       : []),
     ...(template.family === "collaboration" && ["pulse", "roster"].includes(template.id)
       ? ["src/templates/collaboration/settings-row.css"]
+      : []),
+    ...(template.id === "pulse"
+      ? [
+          "src/templates/collaboration/pulse-ticket-model.ts",
+          "src/templates/collaboration/pulse-ticket-data.ts",
+          "src/templates/collaboration/pulse-ticket-detail.css",
+          "src/templates/collaboration/pulse-ticket-overlay.css",
+        ]
       : []),
     ...(template.id === "tempo"
       ? [

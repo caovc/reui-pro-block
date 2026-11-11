@@ -1,0 +1,81 @@
+.pulse-ticket-detail {
+  min-width: 0;
+  color: var(--foreground);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.pulse-ticket-detail-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 20px;
+}
+
+.pulse-ticket-detail-section {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 20px;
+}
+
+.pulse-ticket-detail-section > h3 {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  text-transform: uppercase;
+}
+
+.pulse-ticket-detail-rows {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+}
+
+.pulse-ticket-detail-row {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: minmax(0, 124px) minmax(0, 1fr);
+  gap: 12px;
+}
+
+.pulse-ticket-detail-row dt {
+  color: var(--muted-foreground);
+}
+
+.pulse-ticket-detail-row dd {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.pulse-ticket-detail .pulse-ticket-detail-assignee {
+  flex-wrap: nowrap;
+  gap: 12px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
+
+.pulse-ticket-detail .pulse-ticket-detail-avatar {
+  width: 36px;
+  height: 36px;
+}
+
+.pulse-ticket-detail-assignee [data-slot="item-content"] {
+  min-width: 0;
+}
+
+.pulse-ticket-detail-assignee [data-slot="item-title"] {
+  display: block;
+  overflow-wrap: anywhere;
+  font-weight: 400;
+  line-height: 20px;
+  -webkit-line-clamp: unset;
+}
