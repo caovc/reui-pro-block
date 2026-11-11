@@ -754,11 +754,14 @@ function FlowEditor({ block }: BlockProps) {
       requestAnimationFrame(() => {
         if (variant === 1 && canvas.current) {
           touched.current = true;
-          setView({
+          const viewport = {
             x: (canvas.current.clientWidth - 896) / 2,
             y: (canvas.current.clientHeight - 762) / 2,
             zoom: 1,
-          });
+          };
+          // Cancel any in-flight zoom before it can overwrite the layout reset.
+          void flowApi.current?.setViewport(viewport, { duration: 0 });
+          setView(viewport);
         } else fit();
       }),
     );
