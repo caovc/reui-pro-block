@@ -418,6 +418,19 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
     return paths("data", `grid-${block.category}`);
   }
   if (block.group === "chart") {
+    if (block.id === "chart-55") {
+      return [
+        ...paths("data", "working-agreements", "working-agreements-matrix", "status-tracker"),
+        "src/blocks/data/working-agreements-model.ts",
+      ];
+    }
+    if (block.id === "chart-56") {
+      return [
+        ...paths("data", "revenue-map", "composed-charts"),
+        "src/blocks/data/revenue-map-model.ts",
+        "src/blocks/data/revenue-map-land.ts",
+      ];
+    }
     if (block.category === "status-tracker") {
       const module =
         variant === 38 ? "release-lanes" : variant === 39 ? "deploy-history" : "cron-run-history";

@@ -193,7 +193,23 @@ export async function verifyOriginalClosure(
   target: SourceTarget,
   files: Record<string, Uint8Array>,
   info: TestInfo,
+  primitive: "base" | "radix" = "radix",
 ) {
+  async function expectedBytes(filename: string) {
+    const ui = "src/components/ui/";
+    if (primitive === "base" && filename.startsWith(ui)) {
+      const basePath = `src/foundations/base/ui/${filename.slice(ui.length)}`;
+      if (
+        await access(resolve(process.cwd(), basePath)).then(
+          () => true,
+          () => false,
+        )
+      ) {
+        return fileBytes(basePath);
+      }
+    }
+    return fileBytes(filename);
+  }
   const generated = new Set(["src/Example.tsx", "src/main.tsx", "src/theme.css"]);
   const verified: { path: string; sha256: string }[] = [];
   for (const [filename, bytes] of Object.entries(files)) {
@@ -204,13 +220,13 @@ export async function verifyOriginalClosure(
     )
       continue;
     expect(Buffer.from(bytes), `${filename}: actual native/family source bytes`).toEqual(
-      await fileBytes(filename),
+      await expectedBytes(filename),
     );
     verified.push({ path: filename, sha256: hash(bytes) });
   }
   for (const filename of target.requiredFiles) {
     expect(files[filename], `${filename}: changed/default/native implementation`).toBeDefined();
-    expect(Buffer.from(files[filename]!), filename).toEqual(await fileBytes(filename));
+    expect(Buffer.from(files[filename]!), filename).toEqual(await expectedBytes(filename));
   }
   const notices = [
     "LICENSE",
@@ -301,7 +317,8 @@ export async function verifyOriginalClosure(
       originalPackage.dependencies["@excalidraw/excalidraw"],
     );
   }
-  expect(packageManifest.scripts.build).toBe("tsc --noEmit && vite build");
+  const mode = primitive === "base" ? " --mode base-ui" : "";
+  expect(packageManifest.scripts.build).toBe(`tsc --noEmit && vite build${mode}`);
   const config = JSON.parse(strFromU8(files["tsconfig.json"]!));
   expect(config.compilerOptions.strict).toBe(true);
   expect(config.compilerOptions.moduleResolution).toBe("bundler");

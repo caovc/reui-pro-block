@@ -1,8 +1,8 @@
 # Bricklane
 
-Independent recreations of **ReUI Pro Blocks and Templates**, built with React, TypeScript, Tailwind CSS and official open-source ReUI components. Bricklane uses an original logo, name, and locally authored demo illustrations. The local development checklist contains **673 entries, 79 categories, 7 groups**, plus **18 template workspaces**. The 2026-11-02 public audit verified all **672 official block IDs** against the sitemap, full public metadata and all 79 category pages. All 672 short display titles match the local catalog; the only extra local entry is retained legacy `solution-dev-ops-7` (Deploy Board). See the [public catalog audit](docs/public-catalog-audit-2026-11-02.md) and [dated response evidence](docs/public-catalog-audit-2026-11-02.json). Metadata coverage does not establish visual or interaction fidelity.
+Independent recreations of **ReUI Pro Blocks and Templates**, built with React, TypeScript, Tailwind CSS and official open-source ReUI components. Bricklane uses an original logo, name, and locally authored demo illustrations. The local development checklist contains **675 entries, 79 categories, 7 groups**, plus **18 template workspaces**. The 2026-11-02 public audit verified all **672 official block IDs** against the sitemap, full public metadata and all 79 category pages. All 672 short display titles matched that snapshot, which also retained legacy `solution-dev-ops-7` (Deploy Board). The catalog now includes [Working Agreements](https://reui.io/blocks/chart/status-tracker/chart-55) and [Revenue Map](https://reui.io/blocks/chart/composed-chart/chart-56). See the [public catalog audit](docs/public-catalog-audit-2026-11-02.md) and [dated response evidence](docs/public-catalog-audit-2026-11-02.json). Metadata coverage does not establish visual or interaction fidelity.
 
-> This is an independent recreation using shared layout families. Catalog coverage is not a claim of 673 pixel-identical copies. No REUI Pro source or premium assets are distributed. See [provenance](THIRD_PARTY_NOTICES.md) and the implementation notes in `docs/`.
+> Bricklane recreates the public previews using shared layout families. The repository contains the independent implementations and assets listed in the [provenance notes](THIRD_PARTY_NOTICES.md).
 
 ## Explore
 
@@ -59,7 +59,7 @@ npm run test:catalog
 npx playwright test tests/templates.spec.ts tests/template-interactions.spec.ts
 ```
 
-Browser tests require Chromium (`npx playwright install chromium`). `PREVIEW_URL` can target an already running local or deployed server. Catalog smoke tests exercise all 673 individual preview routes; site tests exercise navigation, search, responsive controls, theme persistence, favorites, source view and downloads.
+Browser tests require Chromium (`npx playwright install chromium`). `PREVIEW_URL` can target an already running local or deployed server. Catalog smoke tests exercise every individual preview route; site tests exercise navigation, search, responsive controls, theme persistence, favorites, source view and downloads.
 
 ## Project layout
 

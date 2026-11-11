@@ -2,6 +2,7 @@ import type { BlockProps } from "@/data/types";
 import { SalesVsGoal, OperatingMargin } from "./sales-margin-composed";
 import { LiquidityFlows, CashflowTrend } from "./treasury-composed";
 import CanaryRollback from "./canary-composed";
+import RevenueMap from "./revenue-map";
 export default function ComposedChartBlock({ block }: BlockProps) {
   switch (block.id) {
     case "chart-19":
@@ -14,6 +15,8 @@ export default function ComposedChartBlock({ block }: BlockProps) {
       return <OperatingMargin />;
     case "chart-37":
       return <CanaryRollback />;
+    case "chart-56":
+      return <RevenueMap />;
     default:
       return <SalesVsGoal />;
   }

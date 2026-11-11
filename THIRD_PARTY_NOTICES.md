@@ -22,6 +22,10 @@ Radix UI (MIT), Tailwind CSS (MIT), React (MIT), Lucide (ISC), Recharts (MIT), S
 
 The official shadcn CSS utilities are vendored in src/styles/shadcn.css to avoid a runtime dependency on the CLI toolchain.
 
+## Natural Earth
+
+Revenue Map samples the [Natural Earth 1:110m land polygons](https://www.naturalearthdata.com/downloads/110m-physical-vectors/110m-land/) and groups those samples into approximate sales regions. Natural Earth data is in the [public domain](https://www.naturalearthdata.com/about/terms-of-use/).
+
 ## ReUI free Sidebar compositions
 
 AppShell navigation and layout adapt the public MIT-licensed `c-sidebar-1`, `c-sidebar-2` and `c-sidebar-3` examples from the ReUI free registry. Their `sidebar` dependency is vendored at `src/components/ui/sidebar.tsx`, with the shadcn MIT terms above. Adaptations and consumers are recorded in [the AppShell migration audit](docs/appshell-sidebar-migration.md). The shared Tabs composition also follows the free `c-tabs-1` example. No paid AppShell source is included.

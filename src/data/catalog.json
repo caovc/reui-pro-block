@@ -3792,9 +3792,18 @@
         "reference": "https://reui.io/blocks/chart/composed-chart/chart-37",
         "index": 4,
         "description": "Canary latency chart with stacked baseline and regression columns, breach stats and a rollback track"
+      },
+      {
+        "id": "chart-56",
+        "name": "Revenue Map",
+        "category": "composed-chart",
+        "group": "chart",
+        "reference": "https://reui.io/blocks/chart/composed-chart/chart-56",
+        "index": 5,
+        "description": "Revenue by market in a dotted world map with segment and period controls, top regions and monthly revenue per account."
       }
     ],
-    "count": 5
+    "count": 6
   },
   {
     "id": "line-chart",
@@ -4141,9 +4150,18 @@
         "reference": "https://reui.io/blocks/chart/status-tracker/chart-39",
         "index": 2,
         "description": "Pipeline runs list with segmented stage meters, an environment filter and a New deploy dialog"
+      },
+      {
+        "id": "chart-55",
+        "name": "Working Agreements",
+        "category": "status-tracker",
+        "group": "chart",
+        "reference": "https://reui.io/blocks/chart/status-tracker/chart-55",
+        "index": 3,
+        "description": "Team agreement heatmap with weekly outcomes, team and area scores, and controls for pausing weeks or updating targets."
       }
     ],
-    "count": 3
+    "count": 4
   },
   {
     "id": "ai-chat",
