@@ -21,6 +21,31 @@ async function expectRowIds(table: Locator, expected: string[]) {
     .toEqual(expected);
 }
 
+const countryFlags: Record<string, string> = {
+  US: "🇺🇸",
+  JP: "🇯🇵",
+  GB: "🇬🇧",
+  CA: "🇨🇦",
+  DE: "🇩🇪",
+  FR: "🇫🇷",
+  AU: "🇦🇺",
+  ES: "🇪🇸",
+  BR: "🇧🇷",
+  MX: "🇲🇽",
+};
+
+async function expectStoreMetadata(table: Locator, records: typeof storePnlRows) {
+  for (const record of records) {
+    const row = table.locator(`tbody tr[data-row-id="${record.id}"]`);
+    await expect(row.getByText(record.name, { exact: true })).toBeVisible();
+    await expect(
+      row.getByText(`${countryFlags[record.country]} ${record.country} · ${record.kind}`, {
+        exact: true,
+      }),
+    ).toBeVisible();
+  }
+}
+
 async function expectSameTable(original: ElementHandle, table: Locator) {
   expect(await original.evaluate((node) => node.isConnected)).toBe(true);
   expect(await table.evaluate((node, previous) => node === previous, original)).toBe(true);
@@ -142,6 +167,7 @@ for (const width of [1440, 390]) {
     const original = await table.elementHandle();
     if (!original) throw new Error("Store P&L must render its actual native DataGrid table.");
     await expectRowIds(table, ids(storePnlRows.slice(0, 10)));
+    await expectStoreMetadata(table, storePnlRows.slice(0, 10));
     const originalHeaderCount = await table
       .getByRole("columnheader", { includeHidden: true })
       .count();
@@ -157,8 +183,10 @@ for (const width of [1440, 390]) {
     await rankSort.click();
     const descending = storePnlRows.toSorted((a, b) => b.id - a.id);
     await expectRowIds(table, ids(descending.slice(0, 10)));
+    await expectStoreMetadata(table, descending.slice(0, 10));
     await frame.getByRole("button", { name: "Go to page 2", exact: true }).click();
     await expectRowIds(table, ids(descending.slice(10, 20)));
+    await expectStoreMetadata(table, descending.slice(10, 20));
     await expect(frame.getByRole("button", { name: "Go to page 2", exact: true })).toHaveAttribute(
       "aria-current",
       "page",
@@ -211,12 +239,14 @@ for (const width of [1440, 390]) {
       originalHeaderCount - 2,
     );
     await expectRowIds(table, ids(descending.slice(10, 20)));
+    await expectStoreMetadata(table, descending.slice(10, 20));
     await closeColumns(page, trigger);
     await expectSameTable(original, table);
 
     const search = frame.getByRole("textbox", { name: "Search stores...", exact: true });
     await search.fill(selected.name);
     await expectRowIds(table, [String(selected.id)]);
+    await expectStoreMetadata(table, [selected]);
     await expect(table.getByRole("checkbox", { name: selectedName, exact: true })).toBeChecked();
     for (const name of ["Profit vs FY25", "Margin"]) {
       await expect(
@@ -233,6 +263,7 @@ for (const width of [1440, 390]) {
     await closeColumns(page, trigger);
     await search.fill("");
     await expectRowIds(table, ids(descending.slice(0, 10)));
+    await expectStoreMetadata(table, descending.slice(0, 10));
     await expectSameTable(original, table);
     await expect(page.getByRole("table")).toHaveCount(1);
     await expectNoOuterOverflow(page);

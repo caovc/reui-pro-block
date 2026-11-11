@@ -432,6 +432,19 @@ function Delta({ value, inverse = false }: { value: number; inverse?: boolean })
     </div>
   );
 }
+const storeCountryFlags: Readonly<Record<string, string>> = {
+  US: "🇺🇸",
+  JP: "🇯🇵",
+  GB: "🇬🇧",
+  CA: "🇨🇦",
+  DE: "🇩🇪",
+  FR: "🇫🇷",
+  AU: "🇦🇺",
+  ES: "🇪🇸",
+  BR: "🇧🇷",
+  MX: "🇲🇽",
+};
+
 function StorePnl() {
   const sorting = useGridSorting();
   const [search, setSearch] = useState("");
@@ -590,13 +603,12 @@ function StorePnl() {
           value: (r) => r.name,
           size: 250,
           className: cellClass,
-          render: (r, i, _gridRow) => {
+          render: (r) => {
             return (
               <>
                 <span className="font-medium">{r.name}</span>
                 <span className="mt-0.5 block text-xs text-muted-foreground">
-                  {["🇺🇸 US", "🇯🇵 JP", "🇬🇧 GB", "🇨🇦 CA", "🇩🇪 DE"][i % 5]} ·{" "}
-                  {i < 5 ? "Flagship" : "Standard"}
+                  {storeCountryFlags[r.country]} {r.country} · {r.kind}
                 </span>
               </>
             );
