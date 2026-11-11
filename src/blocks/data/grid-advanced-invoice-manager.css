@@ -1,0 +1,140 @@
+:is(.invoice-manager, .invoice-detail-sheet) [data-invoice-tone="danger"] {
+  --invoice-tone: var(--color-destructive);
+  --invoice-tone-text: var(--color-destructive-foreground);
+}
+
+:is(.invoice-manager, .invoice-detail-sheet) [data-invoice-tone="warning"] {
+  --invoice-tone: var(--color-warning);
+  --invoice-tone-text: var(--color-warning-foreground);
+}
+
+:is(.invoice-manager, .invoice-detail-sheet) [data-invoice-tone="good"] {
+  --invoice-tone: var(--color-success);
+  --invoice-tone-text: var(--color-success-foreground);
+}
+
+:is(.invoice-manager, .invoice-detail-sheet) [data-invoice-tone="notice"] {
+  --invoice-tone: var(--color-blue-500);
+  --invoice-tone-text: color-mix(in srgb, var(--color-blue-500) 78%, var(--color-foreground));
+}
+
+:is(.invoice-manager, .invoice-detail-sheet) [data-invoice-tone="purple"] {
+  --invoice-tone: var(--color-info);
+  --invoice-tone-text: var(--color-info-foreground);
+}
+
+:is(.invoice-manager, .invoice-detail-sheet) [data-invoice-tone="neutral"] {
+  --invoice-tone: var(--color-muted-foreground);
+  --invoice-tone-text: var(--color-muted-foreground);
+}
+
+:is(.invoice-manager, .invoice-detail-sheet) .invoice-tone-text {
+  color: var(--invoice-tone-text);
+}
+
+.invoice-dot {
+  background-color: var(--invoice-tone);
+}
+
+.invoice-stat {
+  border-color: color-mix(in srgb, var(--invoice-tone) 36%, var(--color-border));
+  background-color: color-mix(in srgb, var(--invoice-tone) 7%, var(--color-card));
+}
+
+.invoice-group {
+  background-color: color-mix(in srgb, var(--invoice-tone) 9%, var(--color-card));
+  border-bottom: 1px solid var(--color-border);
+}
+
+.invoice-badge[data-invoice-tone="notice"],
+.invoice-step {
+  border-color: color-mix(in srgb, var(--invoice-tone) 36%, var(--color-border));
+  background-color: color-mix(in srgb, var(--invoice-tone) 6%, var(--color-card));
+}
+
+.invoice-badge[data-invoice-tone="notice"],
+.invoice-step svg {
+  color: var(--invoice-tone-text);
+}
+
+.invoice-event-icon {
+  background-color: var(--invoice-tone);
+  color: white;
+}
+
+.invoice-manager .invoice-row {
+  height: 59px;
+}
+
+.invoice-manager .invoice-row:has(.invoice-group) {
+  height: 41px;
+}
+
+.invoice-manager [data-slot="data-grid-table"] th {
+  height: 32px;
+}
+
+.invoice-manager .invoice-customer-trigger {
+  font-size: var(--text-sm);
+}
+
+.invoice-track {
+  position: relative;
+  height: 12px;
+  margin-top: 4px;
+  isolation: isolate;
+}
+
+.invoice-track-divisions {
+  position: absolute;
+  inset: 2px 0;
+  display: flex;
+  gap: 4px;
+}
+
+.invoice-track-divisions > span {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+  border-radius: 999px;
+  background-color: var(--color-muted);
+}
+
+.invoice-track-fill {
+  position: absolute;
+  inset-block: 0;
+  background-color: var(--invoice-tone);
+}
+
+.invoice-track-due {
+  position: absolute;
+  inset-block: 0;
+  width: 2px;
+  border-radius: 2px;
+  background-color: var(--color-background);
+}
+
+.invoice-track-event {
+  position: absolute;
+  top: 4px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: var(--color-background);
+}
+
+.invoice-manager [data-slot="data-grid-table"] {
+  min-width: 1214px;
+}
+
+/* An earlier save notice must not cover the active sheet's footer. */
+body:has(:is(.invoice-editor-sheet, .invoice-detail-sheet)[data-state="open"])
+  [data-sonner-toaster] {
+  z-index: 40;
+}
+
+@media (width < 768px) {
+  .invoice-toolbar-section {
+    width: 100%;
+  }
+}

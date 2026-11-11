@@ -7,6 +7,7 @@ import FilteringGrid from "./grid-filtering";
 import BaseGrid from "./grid-base";
 import ColumnsGrid from "./grid-columns";
 import AdvancedGrid from "./grid-advanced";
+import InvoiceManager from "./grid-advanced-invoice-manager";
 import ProjectBudget from "./grid-advanced-project-budget";
 import GroupingGrid from "./grid-grouping";
 import DragDropGrid from "./grid-drag-drop";
@@ -46,6 +47,7 @@ export default function DataBlock({ block }: BlockProps) {
   if (block.id === "solution-map-1") return <DispatchMap />;
   if (block.id === "solution-dev-ops-7") return <DeployBoard block={block} />;
   if (block.id === "data-grid-advanced-27") return <ProjectBudget />;
+  if (block.id === "data-grid-advanced-28") return <InvoiceManager />;
   if (block.group === "data-grid") {
     const refined = {
       base: BaseGrid,

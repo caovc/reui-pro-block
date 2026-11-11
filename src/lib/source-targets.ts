@@ -367,6 +367,14 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
   if (block.group === "data-grid") {
     if (block.id === "data-grid-base-9") return paths("data", "grid-base-api-request-logs");
     if (block.id === "data-grid-advanced-27") return paths("data", "grid-advanced-project-budget");
+    if (block.id === "data-grid-advanced-28") {
+      const module = "grid-advanced-invoice-manager";
+      return [
+        ...paths("data", module, `${module}-controls`, `${module}-panels`),
+        `src/blocks/data/${module}-model.ts`,
+        `src/blocks/data/${module}.css`,
+      ];
+    }
     if (block.category === "advanced") {
       const modules: Record<string, string> = {
         "data-grid-advanced-8": "grid-advanced-sheets",

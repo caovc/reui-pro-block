@@ -3251,9 +3251,18 @@
         "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-27",
         "index": 19,
         "description": "Project budget with live spend, schedule, contingency, line forecasts and decision history."
+      },
+      {
+        "id": "data-grid-advanced-28",
+        "name": "Invoice Manager",
+        "category": "advanced",
+        "group": "data-grid",
+        "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-28",
+        "index": 20,
+        "description": "Grouped accounts receivable with payment timelines, collections actions, and customer payment details."
       }
     ],
-    "count": 20
+    "count": 21
   },
   {
     "id": "columns",

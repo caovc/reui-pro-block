@@ -3,7 +3,7 @@ import catalog from "../src/data/catalog.json" with { type: "json" };
 const blocks = catalog.flatMap((c) => c.blocks);
 test("catalog snapshot is complete and identifiers are unique", async () => {
   expect(catalog).toHaveLength(79);
-  expect(blocks).toHaveLength(678);
+  expect(blocks).toHaveLength(679);
   expect(new Set(blocks.map((b) => `${b.group}/${b.category}/${b.id}`)).size).toBe(blocks.length);
   expect(catalog.every((c) => c.count === c.blocks.length && c.count > 0)).toBeTruthy();
   for (const category of catalog) {
