@@ -67,10 +67,17 @@ function routeParameters(query: string | undefined) {
   return parameters.toString();
 }
 
+function sharedPreset(url: URL) {
+  const value = new URLSearchParams(url.hash.split("?")[1]).get("preset");
+  return value ? JSON.parse(value) : null;
+}
+
 async function chooseLibrary(page: Page, root: URL, library: Library) {
   const current = new URL(page.url());
   const control = libraryControl(await customizer(page));
-  if (current.pathname !== libraryEntry(root, library).pathname) {
+  const switching = current.pathname !== libraryEntry(root, library).pathname;
+  const style = await page.locator("html").getAttribute("data-ui-style");
+  if (switching) {
     await choose(page, control, library);
   }
   await expect(page).toHaveURL((url) => {
@@ -84,6 +91,12 @@ async function chooseLibrary(page: Page, root: URL, library: Library) {
     );
   });
   await expect(libraryControl(await customizer(page))).toContainText(library);
+  if (switching) {
+    expect(sharedPreset(new URL(page.url()))).toMatchObject({
+      primitive: primitiveId(library),
+      style,
+    });
+  }
 }
 
 async function chooseStyle(page: Page, name: Style) {
@@ -144,8 +157,7 @@ test("Customize switches both libraries, preserves the route, and shares a real 
   expect(shared.origin).toBe(root.origin);
   expect(shared.pathname).toBe(libraryEntry(root, "Base UI").pathname);
   expect(shared.hash.split("?")[0]).toBe(blockRoute);
-  const preset = JSON.parse(new URLSearchParams(shared.hash.split("?")[1]).get("preset")!);
-  expect(preset).toMatchObject({ primitive: "base", style: "lyra" });
+  expect(sharedPreset(shared)).toMatchObject({ primitive: "base", style: "lyra" });
 
   const recipient = await browser.newContext({ viewport: desktop, reducedMotion: "no-preference" });
   try {
