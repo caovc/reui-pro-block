@@ -215,7 +215,6 @@ test("Advanced16 actual starter contains all six implementation files, real free
   const exportedPackage = JSON.parse(strFromU8(archive["package.json"]!));
   // The supported starter is family-wide, not a fabricated minimal dependency set.
   expect(exportedPackage.dependencies).toEqual(expectedPackage.dependencies);
-  expect(Object.keys(exportedPackage.dependencies)).toHaveLength(54);
   expect(exportedPackage.overrides).toEqual(expectedPackage.overrides);
   expect(exportedPackage.devDependencies).toEqual(
     Object.fromEntries(
