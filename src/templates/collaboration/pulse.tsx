@@ -24,7 +24,7 @@ import {
 } from "@/components/reui/frame";
 import { PulseBoard } from "./pulse-board";
 import { PulseCreateTicketFields } from "./pulse-ticket-create";
-import { PulseTicketDetail } from "./pulse-ticket-detail";
+import { PulseTicketDetail, PulseTicketDetailHeader } from "./pulse-ticket-detail";
 import "./pulse-ticket-overlay.css";
 import { ReferenceGrid } from "./reference-grid";
 import { useEffect, useMemo, useRef, useState, type MouseEventHandler } from "react";
@@ -38,9 +38,11 @@ import {
   MoreHorizontal,
   Bell,
   SlidersHorizontal,
+  X,
 } from "lucide-react";
 import { Badge } from "@/components/reui/badge";
 import { Textarea } from "@/components/ui/textarea";
+import { SheetClose } from "@/components/ui/sheet";
 import {
   Select,
   SelectTrigger,
@@ -162,6 +164,7 @@ export default function Pulse() {
     [tickets, query, filter, priority],
   );
   const creatingBoardTicket = create && !editing && view === "Tickets";
+  const detailTicket = create ? null : selected;
   const currentPage = Math.min(page, Math.max(1, Math.ceil(filtered.length / 5)));
 
   function openTicket(ticket: TicketRecord, opener?: HTMLButtonElement) {
@@ -711,6 +714,21 @@ export default function Pulse() {
         <PulseSettings model={settingsModel} />
       )}
       <ReferenceSheet
+        header={detailTicket ? <PulseTicketDetailHeader ticketId={detailTicket.id} /> : undefined}
+        closeButton={
+          detailTicket ? (
+            <SheetClose asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="absolute"
+                aria-label="Close ticket detail"
+              >
+                <X className="size-3.5" aria-hidden="true" />
+              </Button>
+            </SheetClose>
+          ) : undefined
+        }
         title={
           create
             ? editing

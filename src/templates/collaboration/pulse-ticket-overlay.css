@@ -3,9 +3,22 @@
   padding: 0;
 }
 
-.ct-reference-sheet:has(.pulse-ticket-detail) .ct-sheet-heading [data-slot="sheet-title"] {
-  font-size: 18px;
-  line-height: 24px;
+.ct-reference-sheet[data-slot="sheet-content"]:has(.pulse-ticket-detail) {
+  border-radius: 14px;
+}
+
+.ct-reference-sheet:has(.pulse-ticket-detail) .ct-sheet-heading {
+  display: flex;
+  height: 41px;
+  flex-shrink: 0;
+  align-items: center;
+  padding: 4px 72px 4px 20px;
+}
+
+.ct-reference-sheet:has(.pulse-ticket-detail) > [data-slot="sheet-close"] {
+  top: 20px;
+  right: 20px;
+  transform: translateY(-50%);
 }
 
 /* The shared Sheet body is intentionally bare; this form owns its observed inset. */

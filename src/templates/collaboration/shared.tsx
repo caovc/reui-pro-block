@@ -112,38 +112,45 @@ export function Avatar({ name }: { name: string }) {
 }
 export function ReferenceSheet({
   title,
+  header,
   description,
   open,
   onClose,
   onCloseAutoFocus,
   children,
   footer,
+  closeButton,
   width = 480,
 }: {
   title: string;
+  /** A custom header keeps the native SheetTitle in the body. */
+  header?: ReactNode;
   description?: string;
   open: boolean;
   onClose: () => void;
   onCloseAutoFocus?: ComponentProps<typeof SheetContent>["onCloseAutoFocus"];
   children: ReactNode;
   footer?: ReactNode;
+  closeButton?: ReactNode;
   width?: number;
 }) {
   return (
     <Sheet open={open} onOpenChange={(v) => !v && onClose()}>
       <SheetContent
         className="ct-reference-sheet"
+        showCloseButton={closeButton == null}
         onCloseAutoFocus={onCloseAutoFocus}
         style={{ width, maxWidth: "calc(100vw - 32px)" }}
       >
         <div className="ct-sheet-heading">
-          <SheetTitle>{title}</SheetTitle>
+          {header ?? <SheetTitle>{title}</SheetTitle>}
           <SheetDescription className={description ? "" : "sr-only"}>
             {description || title}
           </SheetDescription>
         </div>
         <div className="ct-sheet-body">{children}</div>
         {footer && <div className="ct-sheet-footer">{footer}</div>}
+        {closeButton}
       </SheetContent>
     </Sheet>
   );

@@ -32,7 +32,9 @@ for (const primitive of ["radix", "base"] as const) {
 
     await opener.press("Enter");
     const editedDetail = page.getByRole("dialog", { name: editedSubject, exact: true });
-    await expect(editedDetail.getByText("TCK-4863", { exact: true })).toBeVisible();
+    await expect(
+      editedDetail.locator(".ct-sheet-heading").getByText("TCK-4863", { exact: true }),
+    ).toBeVisible();
     await editedDetail.getByRole("button", { name: "Delete", exact: true }).click();
     await expect(editedDetail).toBeHidden();
     await expect(opener).toHaveCount(0);

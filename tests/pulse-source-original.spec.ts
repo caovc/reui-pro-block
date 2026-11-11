@@ -54,11 +54,11 @@ const selectedPaths = [
 ] as const;
 const frozenHashes: Readonly<Record<string, string>> = {
   "src/templates/collaboration/pulse.tsx":
-    "639e70a88522aaec1f9e4bdcd161a5648de305655325f15e38868dcce2101069",
+    "b238af2e9c6648d1ae643e1818566232df46ac8283b486c82a0322be98e2dd8e",
   "src/templates/collaboration/pulse-board.tsx":
     "7a40fbffe45f51eaa2a904af760c9a7c104fba9764028774c2a338f8b7075cbe",
   "src/templates/collaboration/shared.tsx":
-    "3457fb4f8612cd76907848a43d3f80c78df7022413c4488aa75427c3b9f17574",
+    "91e173fb8b2312f6212b37d3db1c8c3c34041f6eaf700c440d8d207542b88dd2",
   "src/templates/collaboration/pulse-ticket-model.ts":
     "8cf66bdf88091ffc5ea3bfbe694d42a97d8e6399c22d54d8f21375b224277da3",
   "src/templates/collaboration/pulse-ticket-data.ts":
@@ -66,11 +66,11 @@ const frozenHashes: Readonly<Record<string, string>> = {
   "src/templates/collaboration/pulse-ticket-create.tsx":
     "f75e2c28ec2b5b58f1c520eb6cf938efb1262b6b99a9014fdd1f55f2b9570339",
   "src/templates/collaboration/pulse-ticket-detail.tsx":
-    "81ef6ebf8651f517a0afcf0694fcae034287967d24efd5b638c7ac39bde42a13",
+    "9f33bf5aeaa9e832713036886c3740dd8c1a226f22a40f6978786a94941f9dae",
   "src/templates/collaboration/pulse-ticket-detail.css":
-    "fad5126f5a8e0feb2d06e1aadb418009ee985fb315f23234cd38feee5069b768",
+    "0895141704fb37b6847798dafe169ce74840b7c20c76eb461c9c895b7757d256",
   "src/templates/collaboration/pulse-ticket-overlay.css":
-    "84e79b0d8dc8eab4bc7560c05379b68b69491805901f59aaea7ba0c86fa46d2a",
+    "389226ca7964953e1580670eb0b8da72c814375b9f0216ae1c910af35b0ecc22",
 };
 const archiveOnlyHashes: Readonly<Record<string, string>> = {
   "src/templates/collaboration/assets/SOURCES.md":
