@@ -71,10 +71,27 @@ export function resolveDocumentRevisions(
   });
   if (ambiguous || ranges.length === 0) return false;
   const transaction = editor.state.tr;
+  // A generated paragraph belongs to the addition only while every child
+  // carries the same revision. Keep any later manual content in that paragraph.
+  const addedBlocks: { from: number; to: number; node: Node }[] = [];
+  editor.state.doc.descendants((node, from) => {
+    const id = node.attrs.assistantRevision;
+    if (typeof id === "string" && ids.has(id)) {
+      addedBlocks.push({ from, to: from + node.nodeSize, node });
+    }
+  });
   const keepType = accept ? "revisionInsert" : "revisionDelete";
   for (const { from, to, mark } of ranges.reverse()) {
     if (mark.type.name === keepType) transaction.removeMark(from, to, mark);
     else transaction.delete(from, to);
+  }
+  for (const { from, to, node } of addedBlocks.reverse()) {
+    const mapped = transaction.mapping.map(from);
+    const result = transaction.doc.nodeAt(mapped);
+    if (!result || result.attrs.assistantRevision !== node.attrs.assistantRevision) continue;
+    if (!accept && result.content.size === 0)
+      transaction.delete(mapped, transaction.mapping.map(to));
+    else transaction.setNodeMarkup(mapped, undefined, { ...result.attrs, assistantRevision: null });
   }
   if (!transaction.docChanged) return false;
   editor.view.dispatch(closeHistory(transaction));

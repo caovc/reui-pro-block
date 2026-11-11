@@ -55,7 +55,18 @@ const CommentMark = Mark.create({
 const DocumentAttributes = Extension.create({
   name: "documentAttributes",
   addGlobalAttributes: () => [
-    { types: ["paragraph"], attributes: { class: { default: null } } },
+    {
+      types: ["paragraph"],
+      attributes: {
+        class: { default: null },
+        assistantRevision: {
+          default: null,
+          parseHTML: (element) => element.getAttribute("data-assistant-revision"),
+          renderHTML: ({ assistantRevision }) =>
+            assistantRevision ? { "data-assistant-revision": assistantRevision } : {},
+        },
+      },
+    },
     { types: ["heading"], attributes: { id: { default: null } } },
   ],
 });

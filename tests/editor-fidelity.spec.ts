@@ -26,14 +26,90 @@ test("contract toolbar retains editing and suggesting input modes", async ({ pag
   await expect(editor.locator("ins").filter({ hasText: "X" })).toHaveText("X");
 });
 
-test("assistant toolbar retains the existing generate shortcut", async ({ page }) => {
-  await page.goto("/#/preview/application/rich-text-editor/rich-text-editor-5");
-  await page.getByRole("button", { name: "Ask assistant", exact: true }).click();
-  await expect(page.getByRole("button", { name: "Apply suggestion", exact: true })).toBeVisible();
-  await expect(
-    page.getByRole("button", { name: "Generate suggestion", exact: true }),
-  ).toBeEnabled();
-});
+for (const primitive of ["radix", "base"] as const) {
+  const assistantRoute = `./${primitive === "base" ? "base/" : ""}#/preview/application/rich-text-editor/rich-text-editor-5`;
+
+  test(`${primitive} assistant stages native revisions and keeps projections, review and undo consistent`, async ({
+    page,
+  }) => {
+    await page.goto(assistantRoute);
+    await expect(page.locator("html")).toHaveAttribute("data-ui-primitive", primitive);
+    const editor = page.getByRole("textbox", { name: "Rich text document", exact: true });
+    const review = page.getByRole("region", { name: "Review assistant edits" });
+    const view = page.getByRole("combobox", { name: "Suggestion view" });
+    await expect(review).toBeVisible();
+    await expect(editor.locator("ins")).toHaveCount(3);
+
+    await page.getByRole("button", { name: "Ask Assist", exact: true }).click();
+    const prompt = page.getByRole("textbox", { name: "Ask Assist", exact: true });
+    await prompt.fill("Fix the typos");
+    await prompt.press("Enter");
+    await expect(page.getByRole("button", { name: "Stop", exact: true })).toBeVisible();
+    await expect(editor).toHaveAttribute("contenteditable", "false");
+    await expect(review).toContainText("5 edits");
+    await expect(editor.locator("ins").filter({ hasText: /^occurred$/ })).toBeVisible();
+    await expect(editor.locator("ins").filter({ hasText: /^separate$/ })).toBeVisible();
+
+    await view.click();
+    await page.getByRole("option", { name: "Final", exact: true }).click();
+    await expect(editor.locator("del:visible")).toHaveCount(0);
+    await expect(review.getByRole("button", { name: "Accept", exact: true })).toBeDisabled();
+    await view.click();
+    await page.getByRole("option", { name: "Original", exact: true }).click();
+    await expect(editor.locator("ins:visible")).toHaveCount(0);
+    await view.click();
+    await page.getByRole("option", { name: "All Markup", exact: true }).click();
+
+    await review.getByRole("button", { name: "Next edit", exact: true }).click();
+    await expect(review).toContainText("2 of 5");
+    await review.getByRole("button", { name: "Reject", exact: true }).click();
+    await expect(review).toContainText("4 edits");
+    await expect(editor.locator("ins").filter({ hasText: /^receive$/ })).toHaveCount(0);
+    await page.getByRole("button", { name: "Undo", exact: true }).click();
+    await expect(editor.locator("ins").filter({ hasText: /^receive$/ })).toHaveCount(1);
+
+    await review.getByRole("button", { name: "All edits", exact: true }).click();
+    await page.getByRole("menuitem", { name: "Accept all", exact: true }).click();
+    await expect(editor.locator("[data-revision]")).toHaveCount(0);
+    await expect(editor).toContainText("if a rollback has occurred");
+    await expect(editor).toContainText("a separate search macro");
+    await page.reload();
+    await expect(editor.locator("[data-revision]")).toHaveCount(0);
+  });
+
+  test(`${primitive} assistant can stop a run and remove a rejected generated paragraph`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(assistantRoute);
+    await expect(page.locator("html")).toHaveAttribute("data-ui-primitive", primitive);
+    const editor = page.getByRole("textbox", { name: "Rich text document", exact: true });
+    await expect(editor.getByRole("heading", { name: "Workspace Search Rollout" })).toBeVisible();
+    const originalParagraphs = await editor.locator(":scope > p").count();
+    await page.getByRole("button", { name: "Ask Assist", exact: true }).click();
+    const prompt = page.getByRole("textbox", { name: "Ask Assist", exact: true });
+    await prompt.fill("Add a summary");
+    await prompt.press("Enter");
+    await page.getByRole("button", { name: "Stop", exact: true }).click();
+    await expect(prompt).toBeVisible();
+    await expect(editor).toHaveAttribute("contenteditable", "true");
+    await expect(editor.locator("[data-assistant-revision]")).toHaveCount(0);
+    await prompt.fill("Add a summary");
+    await prompt.press("Enter");
+    const review = page.getByRole("region", { name: "Review assistant edits" });
+    await expect(review).toContainText("4 edits");
+    const addition = editor.locator("[data-assistant-revision]");
+    await expect(addition).toContainText("Summary");
+    await review.getByRole("button", { name: "All edits", exact: true }).click();
+    await page.getByRole("menuitem", { name: "Edit 4", exact: true }).click();
+    await review.getByRole("button", { name: "Reject", exact: true }).click();
+    await expect(addition).toHaveCount(0);
+    await expect(editor.locator(":scope > p")).toHaveCount(originalParagraphs);
+    const dock = await page.getByRole("complementary", { name: "Writing assistant" }).boundingBox();
+    expect(dock!.x).toBeGreaterThanOrEqual(0);
+    expect(dock!.x + dock!.width).toBeLessThanOrEqual(390);
+  });
+}
 
 test("registry task checkbox changes the native document and undo restores it", async ({
   page,

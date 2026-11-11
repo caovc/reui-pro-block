@@ -877,3 +877,180 @@
     margin-inline: 4px 8px;
   }
 }
+
+/* Rollout plan and the floating assistant dock. */
+.reui-editor[data-kind="5"] {
+  min-height: 100dvh;
+  background: var(--background);
+}
+.reui-editor[data-kind="5"] > header {
+  padding: 8px 24px;
+  min-height: 56px;
+}
+.reui-editor[data-kind="5"] > header h2 {
+  font-size: 16px;
+  font-weight: 500;
+}
+.reui-editor[data-kind="5"] > header p {
+  margin-top: 0;
+  font-size: 12px;
+}
+.reui-editor[data-kind="5"] > header > div:first-child > svg,
+.reui-editor[data-kind="5"] > footer {
+  display: none;
+}
+.reui-editor[data-kind="5"] .rich-text-toolbar {
+  padding: 8px max(12px, calc((100% - 720px) / 2));
+}
+.reui-editor[data-kind="5"] main {
+  background: var(--background);
+  padding: 40px 24px 160px;
+}
+.reui-editor[data-kind="5"] main > div:has(.reui-rich-document) {
+  max-width: 720px;
+  border: 0;
+  box-shadow: none;
+}
+.reui-editor[data-kind="5"] .reui-rich-document {
+  padding: 0;
+  font-size: 16px;
+  line-height: 28px;
+}
+.reui-editor[data-kind="5"] .reui-rich-document h1 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+.reui-editor[data-kind="5"] .reui-rich-document h2 {
+  font-size: 20px;
+  margin: 32px 0 16px;
+}
+.reui-editor[data-kind="5"] .reui-rich-document p {
+  margin: 0 0 16px;
+}
+.reui-editor[data-kind="5"] :is(.reui-rich-document, .rich-text-assistant-diff) ins {
+  color: light-dark(#00634c, #84e2c7);
+  background: light-dark(#e0f5ef, #173c32);
+  text-decoration: none;
+  border-bottom: 1px solid light-dark(#52c6a6, #418975);
+  padding: 0;
+}
+.reui-editor[data-kind="5"] :is(.reui-rich-document, .rich-text-assistant-diff) del {
+  color: light-dark(#b50016, #fda4ad);
+  background: light-dark(#fce2e5, #481f29);
+  padding: 0;
+}
+.reui-editor[data-kind="5"][data-contract-markup="final"] .reui-rich-document del[data-revision],
+.reui-editor[data-kind="5"][data-contract-markup="original"]
+  .reui-rich-document
+  ins[data-revision] {
+  display: none;
+}
+.reui-editor[data-kind="5"][data-contract-markup="final"] .reui-rich-document ins[data-revision],
+.reui-editor[data-kind="5"][data-contract-markup="original"]
+  .reui-rich-document
+  del[data-revision] {
+  color: inherit;
+  background: transparent;
+  border: 0;
+  text-decoration: none;
+}
+.rich-text-assistant-dock {
+  position: fixed;
+  z-index: 25;
+  inset-inline: 12px;
+  bottom: max(20px, env(safe-area-inset-bottom));
+  width: min(576px, calc(100% - 24px));
+  margin-inline: auto;
+  font-size: 14px;
+}
+.rich-text-assistant-card {
+  overflow: hidden;
+  border: 1px solid transparent;
+  border-radius: 15px;
+  background:
+    linear-gradient(var(--background), var(--background)) padding-box,
+    linear-gradient(120deg, #ff9268, #fdcd65, #70d0e0, #c27bfd) border-box;
+  box-shadow: 0 2px 12px #0000000a;
+}
+.rich-text-assistant-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: color-mix(in oklab, var(--muted) 90%, #dcccff);
+  font-weight: 550;
+}
+.rich-text-assistant-content {
+  padding: 16px;
+}
+.rich-text-assistant-diff {
+  width: 100%;
+  height: auto;
+  min-height: 42px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  white-space: normal;
+  text-align: left;
+  font-weight: 400;
+}
+.rich-text-assistant-diff > span {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  align-items: baseline;
+  gap: 8px;
+  width: 100%;
+}
+.rich-text-assistant-diff > span > span {
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.rich-text-assistant-diff :is(del, ins) {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+@media (max-width: 640px) {
+  .reui-editor[data-kind="5"] > header {
+    padding-inline: 12px;
+    gap: 8px;
+  }
+  .reui-editor[data-kind="5"] main {
+    padding-inline: 20px;
+  }
+  .rich-text-assistant-content {
+    padding: 12px;
+  }
+}
+.reui-editor[data-kind="5"] .reui-rich-document li p {
+  margin: 0;
+}
+.reui-editor[data-kind="5"][data-contract-markup="original"]
+  .reui-rich-document
+  [data-assistant-revision]:not(:has(:not(ins))) {
+  display: none;
+}
+.rich-text-assistant-caret {
+  position: relative;
+  display: inline-block;
+  width: 0;
+  height: 1em;
+  vertical-align: text-bottom;
+  font-size: 0;
+  border-inline-start: 2px solid #8b5cf6;
+}
+.rich-text-assistant-caret::after {
+  content: "Assist";
+  position: absolute;
+  bottom: 100%;
+  inset-inline-start: -2px;
+  padding: 2px 5px;
+  border-radius: 4px 4px 4px 0;
+  background: #6d28d9;
+  color: white;
+  font-size: 10px;
+  line-height: 13px;
+  white-space: nowrap;
+}

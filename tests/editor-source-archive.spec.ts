@@ -4,7 +4,9 @@ import { createHash } from "node:crypto";
 import { join } from "node:path";
 import { unzipSync, strFromU8 } from "fflate";
 import {
+  captureOriginalArchive,
   openSource,
+  selectSource,
   sourceText,
   verifyOriginalClosure,
   type SourceTarget,
@@ -39,6 +41,32 @@ const documentTarget: SourceTarget = {
   selectedPath: editorEntry,
   requiredFiles: closure,
 };
+
+for (const primitive of ["radix", "base"] as const) {
+  test(`AI Writing Assistant exposes and downloads its implementation for ${primitive}`, async ({
+    page,
+  }, info) => {
+    const implementation = "src/blocks/application/rich-text-assistant.tsx";
+    const plan = "src/blocks/application/rich-text-assistant-plan.ts";
+    const target: SourceTarget = {
+      ...documentTarget,
+      id: "rich-text-editor-5",
+      name: "AI Writing Assistant",
+      route: `./${primitive === "base" ? "base/" : ""}#/block/application/rich-text-editor/rich-text-editor-5`,
+      selectedPath: implementation,
+      requiredFiles: [...closure, implementation, plan],
+    };
+    const { dialog, choice } = await openSource(page, target, "archive");
+    const { files } = await captureOriginalArchive(page, target, dialog, info);
+    const code = await selectSource(page, target, dialog, choice);
+    const assistant = await readFile(implementation, "utf8");
+    await expect.poll(() => sourceText(code, target)).toBe(assistant);
+    expect(strFromU8(files[implementation])).toBe(assistant);
+    expect(strFromU8(files[plan])).toBe(await readFile(plan, "utf8"));
+    expect(JSON.parse(strFromU8(files["components.json"])).style).toBe(`${primitive}-nova`);
+  });
+}
+
 const meshTarget: SourceTarget = {
   id: "mesh",
   kind: "template",

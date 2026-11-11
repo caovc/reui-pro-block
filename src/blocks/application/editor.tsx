@@ -3,6 +3,8 @@ import { createInsertSuggestions, type InsertSuggestion } from "./rich-text-sugg
 import { collectDocumentRevisions, resolveDocumentRevisions } from "./rich-text-revisions";
 import { Frame, FramePanel, FrameHeader, FrameFooter } from "@/components/reui/frame";
 import { RichTextToolbar, RichTextShortcuts } from "./rich-text-toolbar";
+import { AssistantCaret, RichTextAssistant } from "./rich-text-assistant";
+import { Badge as ReuiBadge } from "@/components/reui/badge";
 import {
   ContractModeControl,
   ContractReviewNavigation,
@@ -47,7 +49,7 @@ import {
   Undo2,
   Wifi,
   WifiOff,
-  X,
+  Share2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -177,8 +179,28 @@ function initialDocument(kind: number) {
       `<h2>What’s next</h2>`,
       `<p>Type / to insert a block, or @ to mention a teammate.</p>`,
     ].join("");
+  if (kind === 5)
+    return [
+      `<h1>Workspace Search Rollout</h1>`,
+      `<p><del data-revision="opening">At this point in time, we plan to make workspace search available in a number of stages to give the team time to find and fix problems.</del> <ins data-revision="opening">We will release workspace search in four stages and fix regressions before expanding access.</ins></p>`,
+      `<p>The rollout begins in October. This plan describes each stage, the checks that unlock it, and the team responsible for signing off.</p>`,
+      `<h2>Stages</h2>`,
+      `<ol><li><strong>Internal.</strong> Trial the update with the support team.</li>`,
+      `<li><strong>Beta.</strong> Invite 30 workspaces. Participants will <del data-revision="beta">recieve</del><ins data-revision="beta">receive</ins> a short survey.</li>`,
+      `<li><strong>General availability.</strong> Enable search for every standard workspace.</li>`,
+      `<li><strong>Enterprise.</strong> Follow a week later, after reviewing indexing capacity.</li></ol>`,
+      `<h2>Success metrics</h2>`,
+      `<p><del data-revision="metrics">A stage can only move forward after all three metrics have remained stable for a period of three days.</del> <ins data-revision="metrics">Advance after three consecutive days of stable metrics.</ins></p>`,
+      `<ul><li>Median searches complete within 250 ms.</li><li>Fewer than 5% of common queries return no results.</li><li>Support volume stays within its weekly baseline.</li></ul>`,
+      `<p>Pause the rollout if a rollback has occured in the past 24 hours.</p>`,
+      `<h2>Risks</h2>`,
+      `<p>We are going to test large workspace indexes in order to avoid load spikes. The runbook owner is still TBD.</p>`,
+      `<p>Support needs a seperate search macro for beta. Who will own the first draft?</p>`,
+      `<h2>Sign-off</h2>`,
+      `<ul><li>Search quality review, Nora Vale</li><li>Confirm support readiness, Leo Grant</li><li>Review release notes, Mira Stone</li></ul>`,
+    ].join("");
   return [
-    `<h1>${kind === 5 ? "A better way to start your next project" : "Project overview"}</h1>`,
+    `<h1>Project overview</h1>`,
     `<p class="document-subtitle">ACME WORKSPACE / PRODUCT STRATEGY</p>`,
     `<p>Build a more thoughtful product experience. This document brings together our goals, the context behind them, and a clear starting point for the work ahead.</p>`,
     `<h2>What we’re building</h2>`,
@@ -246,7 +268,6 @@ export default function RichEditorBlock({
   const editor = useRef<HTMLDivElement>(null);
   const scrollPane = useRef<HTMLDivElement>(null);
   const savedRange = useRef<{ from: number; to: number } | null>(null);
-  const timer = useRef<ReturnType<typeof setInterval> | null>(null);
   const [documentHtml, setDocumentHtml] = useState("");
   const storageKey = initialHtml === undefined ? `bricklane:rich-text:${block.id}` : undefined;
   const loadHtml = () => {
@@ -279,9 +300,12 @@ export default function RichEditorBlock({
   const [contractMode, setContractMode] = useState<ContractMode>("suggesting");
   const [contractMarkup, setContractMarkup] = useState<ContractMarkup>("all");
   const [activeRevisionId, setActiveRevisionId] = useState<string | null>(null);
+  const [assistantDock, setAssistantDock] = useState<"review" | "ask" | null>("review");
+  const [assistantRunning, setAssistantRunning] = useState(false);
   const editable =
     !readOnly &&
     !locked &&
+    (kind !== 5 || (!assistantRunning && contractMarkup === "all")) &&
     (kind !== 3 || (contractMode !== "viewing" && contractMarkup === "all"));
   const [active, setActive] = useState({
     bold: false,
@@ -327,14 +351,7 @@ export default function RichEditorBlock({
   const [revisions, setRevisions] = useState<Revision[]>(kind === 3 ? initialRevisions : []);
   const suggesting = kind === 3 && contractMode === "suggesting";
   const [replacement, setReplacement] = useState("");
-  const [prompt, setPrompt] = useState("Make this more concise and actionable.");
-  const [suggestion, setSuggestion] = useState("");
-  const [running, setRunning] = useState(false);
-  const [trace, setTrace] = useState(0);
-  const [aiBase, setAiBase] = useState("");
-  const [panel, setPanel] = useState(
-    kind === 3 ? "review" : kind === 4 ? "comments" : kind === 5 ? "assistant" : "outline",
-  );
+  const [panel, setPanel] = useState(kind === 2 ? "outline" : kind === 4 ? "comments" : "");
 
   const updateInsertSuggestion = useCallback((state: InsertSuggestion | null) => {
     setInsertSuggestion(state);
@@ -365,6 +382,7 @@ export default function RichEditorBlock({
   }, []);
   const [extensions] = useState(() => [
     ...editorExtensions(),
+    ...(kind === 5 ? [AssistantCaret] : []),
     createInsertSuggestions(updateInsertSuggestion, handleInsertKey),
   ]);
   const engine = useEditor({
@@ -440,12 +458,6 @@ export default function RichEditorBlock({
   useEffect(() => {
     engine?.setEditable(editable);
   }, [engine, editable]);
-  useEffect(
-    () => () => {
-      if (timer.current) clearInterval(timer.current);
-    },
-    [],
-  );
   useEffect(() => {
     if (!engine || !documentHtml || !storageKey) return;
     const timeout = setTimeout(() => {
@@ -810,48 +822,26 @@ export default function RichEditorBlock({
     setReplacement("");
     setSelectedText("");
   }
-  function runAssistant(action = "Improve writing") {
-    if (running) return;
-    const base =
-      selectedText ||
-      editor.current?.querySelector("p:not(.document-subtitle)")?.textContent ||
-      "Build a more thoughtful product experience.";
-    setAiBase(base);
-    setSuggestion("");
-    setTrace(0);
-    setRunning(true);
-    const output = /summary|summarize/i.test(action + " " + prompt)
-      ? `Focus on a simpler workflow, share context early, and improve the experience through small, measurable steps.`
-      : /expand/i.test(action + " " + prompt)
-        ? `${base} Start by identifying the most important task, then define a clear success measure. Share an early version with your team and use their feedback to guide the next iteration.`
-        : base
-            .replace(/We are going to /g, "We will ")
-            .replace(/We believe /g, "")
-            .replace(/in order to /g, "to ")
-            .replace(
-              /a more thoughtful product experience/g,
-              "a clear, thoughtful product experience",
-            ) + " Set a clear goal, share the first draft, and improve it together.";
-    let index = 0;
-    timer.current = setInterval(() => {
-      index += 6;
-      setSuggestion(output.slice(0, index));
-      setTrace(Math.min(2, Math.floor((index / output.length) * 3)));
-      if (index >= output.length) {
-        clearInterval(timer.current!);
-        timer.current = null;
-        setRunning(false);
-        setTrace(3);
-      }
-    }, 28);
-  }
-  function applySuggestion() {
-    if (!suggestion || running) return;
-    restoreSelection();
-    if (selectedText) command("insertText", suggestion);
-    else insertHtml(`<h2>Suggested direction</h2><p>${escapeHtml(suggestion)}</p>`);
-    setSuggestion("");
-    toast.success("Suggestion applied to the document");
+  const assistantRevisions = kind === 5 && engine ? collectDocumentRevisions(engine) : [];
+  function copyAssistantDocument(projection: ContractMarkup) {
+    if (!engine) return;
+    const html = engine.getHTML();
+    const exported = new DOMParser().parseFromString(html, "text/html");
+    if (projection !== "all") {
+      exported
+        .querySelectorAll(projection === "final" ? "del[data-revision]" : "ins[data-revision]")
+        .forEach((fragment) => fragment.remove());
+    }
+    const content =
+      projection === "all"
+        ? html
+        : Array.from(exported.body.children)
+            .map((block) => block.textContent)
+            .join("\n\n");
+    navigator.clipboard.writeText(content).then(
+      () => toast.success(projection === "all" ? "Redline HTML copied" : "Document text copied"),
+      () => toast.error("Clipboard is unavailable"),
+    );
   }
   function download() {
     const html = `<!doctype html><html lang="en"><meta charset="utf-8"><title>${escapeHtml(documentTitle ?? block.name)}</title><body>${engine?.getHTML() ?? ""}</body></html>`;
@@ -895,7 +885,7 @@ export default function RichEditorBlock({
   ) : null;
   const plainText = engine?.getText({ blockSeparator: "\n" }) ?? "";
   const words = plainText.trim().split(/\s+/).filter(Boolean).length;
-  const showSidebar = kind > 1;
+  const showSidebar = kind === 2 || kind === 4;
   const documentFrame = kind === 1 && !compact;
   const EditorFrame = documentFrame ? Frame : "div";
   const EditorHeader = documentFrame ? FrameHeader : "header";
@@ -1010,7 +1000,7 @@ export default function RichEditorBlock({
       data-compact={compact}
       data-readonly={!editable}
       data-kind={kind}
-      data-contract-markup={kind === 3 ? contractMarkup : undefined}
+      data-contract-markup={kind === 3 || kind === 5 ? contractMarkup : undefined}
       data-contract-mode={kind === 3 ? contractMode : undefined}
       data-full-width={fullWidth}
       data-small-text={smallText}
@@ -1068,9 +1058,18 @@ export default function RichEditorBlock({
                   ? "Product design handbook"
                   : kind === 1
                     ? "Project overview"
-                    : block.name)}
+                    : kind === 5
+                      ? "Workspace Search Rollout"
+                      : block.name)}
+              {kind === 5 && assistantRevisions.length > 0 && (
+                <ReuiBadge variant="secondary" className="ml-2">
+                  {assistantRevisions.length}{" "}
+                  {assistantRevisions.length === 1 ? "suggestion" : "suggestions"}
+                </ReuiBadge>
+              )}
             </h2>
             <p className="mt-1 text-[10px] text-muted-foreground">
+              {kind === 5 && "Rollout plan · Alex Morgan · "}
               {documentFrame && "Project brief · Edited locally · "}
               {storageError
                 ? "Storage unavailable · keep this tab open"
@@ -1134,7 +1133,7 @@ export default function RichEditorBlock({
               </Button>
             </>
           )}
-          {(kind === 1 || kind === 2 || kind === 4) && (
+          {(kind === 1 || kind === 2 || kind === 4 || kind === 5) && (
             <div className="hidden items-center gap-1.5 sm:flex">
               {["OR", "PB", "AM", "LS"].map((n) => (
                 <Avatar className="size-7" key={n}>
@@ -1143,13 +1142,48 @@ export default function RichEditorBlock({
               ))}
             </div>
           )}
-          {!documentFrame && (
+          {kind === 5 && (
+            <>
+              <Select
+                value={contractMarkup}
+                onValueChange={(value) => changeContractMarkup(value as ContractMarkup)}
+              >
+                <SelectTrigger size="sm" aria-label="Suggestion view" disabled={assistantRunning}>
+                  <SelectValue>
+                    {contractMarkup === "all"
+                      ? "All Markup"
+                      : contractMarkup === "final"
+                        ? "Final"
+                        : "Original"}
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent position="popper" align="end">
+                  <SelectItem value="all">All Markup</SelectItem>
+                  <SelectItem value="final">Final</SelectItem>
+                  <SelectItem value="original">Original</SelectItem>
+                </SelectContent>
+              </Select>
+              <Button
+                size="xs"
+                onClick={() => {
+                  navigator.clipboard.writeText(location.href).then(
+                    () => toast.success("Document link copied"),
+                    () => toast.error("Clipboard is unavailable"),
+                  );
+                }}
+              >
+                <Share2 />
+                Share
+              </Button>
+            </>
+          )}
+          {!documentFrame && kind !== 5 && (
             <Button className="editor-export" variant="outline" size="sm" onClick={download}>
               <ArrowDownToLine />
               Export
             </Button>
           )}
-          {!documentFrame && (
+          {!documentFrame && kind !== 5 && (
             <Button
               className="editor-save"
               size="sm"
@@ -1166,98 +1200,102 @@ export default function RichEditorBlock({
               <Button
                 size="icon-sm"
                 variant="ghost"
-                aria-label={documentFrame ? "Document actions" : "Page actions"}
+                aria-label={documentFrame || kind === 5 ? "Document actions" : "Page actions"}
               >
                 <MoreHorizontal />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              {documentFrame && (
+              {kind === 5 ? (
                 <>
-                  <DropdownMenuCheckboxItem
-                    checked={!locked}
-                    onCheckedChange={() => setLocked(false)}
-                  >
-                    Editing
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem
-                    checked={locked}
-                    onCheckedChange={() => setLocked(true)}
-                  >
-                    Viewing
-                  </DropdownMenuCheckboxItem>
+                  <DropdownMenuItem onSelect={() => copyAssistantDocument("final")}>
+                    Copy Final Text
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onSelect={() => copyAssistantDocument("original")}>
+                    Copy Original Text
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onSelect={() => copyAssistantDocument("all")}>
+                    Copy Redline HTML
+                  </DropdownMenuItem>
+                </>
+              ) : (
+                <>
+                  {documentFrame && (
+                    <>
+                      <DropdownMenuCheckboxItem
+                        checked={!locked}
+                        onCheckedChange={() => setLocked(false)}
+                      >
+                        Editing
+                      </DropdownMenuCheckboxItem>
+                      <DropdownMenuCheckboxItem
+                        checked={locked}
+                        onCheckedChange={() => setLocked(true)}
+                      >
+                        Viewing
+                      </DropdownMenuCheckboxItem>
+                      <DropdownMenuSeparator />
+                    </>
+                  )}
+                  {!documentFrame && (
+                    <>
+                      <DropdownMenuCheckboxItem checked={fullWidth} onCheckedChange={setFullWidth}>
+                        Full Width
+                      </DropdownMenuCheckboxItem>
+                      <DropdownMenuCheckboxItem checked={smallText} onCheckedChange={setSmallText}>
+                        Small Text
+                      </DropdownMenuCheckboxItem>
+                      <DropdownMenuCheckboxItem checked={locked} onCheckedChange={setLocked}>
+                        Lock Page
+                      </DropdownMenuCheckboxItem>
+                    </>
+                  )}
                   <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onSelect={async () => {
+                      try {
+                        await navigator.clipboard.writeText(engine?.getHTML() || "");
+                        toast.success("HTML copied");
+                      } catch {
+                        toast.error("Clipboard is unavailable");
+                      }
+                    }}
+                  >
+                    Copy HTML
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onSelect={async () => {
+                      try {
+                        await navigator.clipboard.writeText(engine?.getText() || "");
+                        toast.success("Text copied");
+                      } catch {
+                        toast.error("Clipboard is unavailable");
+                      }
+                    }}
+                  >
+                    Copy Text
+                  </DropdownMenuItem>
+                  {!documentFrame && (
+                    <DropdownMenuItem onSelect={download}>Export HTML</DropdownMenuItem>
+                  )}
+                  {documentFrame && (
+                    <DropdownMenuItem
+                      disabled={!editable}
+                      onSelect={() => engine?.chain().focus().clearContent().run()}
+                    >
+                      Clear Document
+                    </DropdownMenuItem>
+                  )}
                 </>
-              )}
-              {!documentFrame && (
-                <>
-                  <DropdownMenuCheckboxItem checked={fullWidth} onCheckedChange={setFullWidth}>
-                    Full Width
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem checked={smallText} onCheckedChange={setSmallText}>
-                    Small Text
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem checked={locked} onCheckedChange={setLocked}>
-                    Lock Page
-                  </DropdownMenuCheckboxItem>
-                </>
-              )}
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onSelect={async () => {
-                  try {
-                    await navigator.clipboard.writeText(engine?.getHTML() || "");
-                    toast.success("HTML copied");
-                  } catch {
-                    toast.error("Clipboard is unavailable");
-                  }
-                }}
-              >
-                Copy HTML
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onSelect={async () => {
-                  try {
-                    await navigator.clipboard.writeText(engine?.getText() || "");
-                    toast.success("Text copied");
-                  } catch {
-                    toast.error("Clipboard is unavailable");
-                  }
-                }}
-              >
-                Copy Text
-              </DropdownMenuItem>
-              {!documentFrame && (
-                <DropdownMenuItem onSelect={download}>Export HTML</DropdownMenuItem>
-              )}
-              {documentFrame && (
-                <DropdownMenuItem
-                  disabled={!editable}
-                  onSelect={() => engine?.chain().focus().clearContent().run()}
-                >
-                  Clear Document
-                </DropdownMenuItem>
               )}
             </DropdownMenuContent>
           </DropdownMenu>
-          {showSidebar && kind !== 3 && (
+          {showSidebar && (
             <Button
               variant="ghost"
               size="icon-sm"
               aria-label="Toggle document panel"
-              onClick={() =>
-                setPanel(
-                  panel
-                    ? ""
-                    : kind === 3
-                      ? "review"
-                      : kind === 4
-                        ? "comments"
-                        : kind === 5
-                          ? "assistant"
-                          : "outline",
-                )
-              }
+              onClick={() => setPanel(panel ? "" : kind === 4 ? "comments" : "outline")}
             >
               <AlignLeft />
             </Button>
@@ -1289,18 +1327,44 @@ export default function RichEditorBlock({
           onLinkOpenChange={setLinkOpen}
           trailing={
             kind === 5 ? (
-              <Button
-                size="sm"
-                variant="ghost"
-                className="ml-auto"
-                onClick={() => {
-                  setPanel("assistant");
-                  runAssistant();
-                }}
-              >
-                <Sparkles />
-                Ask assistant
-              </Button>
+              <>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button size="icon-sm" variant="ghost" aria-label="Contents">
+                      <List />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent align="end" className="w-56">
+                    <nav className="flex flex-col" aria-label="Document contents">
+                      {outline.map(({ title, index }) => (
+                        <Button
+                          key={index}
+                          size="sm"
+                          variant="ghost"
+                          className="justify-start"
+                          onClick={() => {
+                            editor.current
+                              ?.querySelector(`#editor-heading-${index}`)
+                              ?.scrollIntoView({ behavior: "smooth", block: "center" });
+                          }}
+                        >
+                          {title}
+                        </Button>
+                      ))}
+                    </nav>
+                  </PopoverContent>
+                </Popover>
+                <Button
+                  size="icon-sm"
+                  variant="ghost"
+                  aria-label="Ask Assist"
+                  aria-pressed={assistantDock === "ask"}
+                  disabled={assistantRunning}
+                  onClick={() => setAssistantDock(assistantDock === "ask" ? null : "ask")}
+                >
+                  <Sparkles />
+                </Button>
+              </>
             ) : undefined
           }
         />
@@ -1506,20 +1570,6 @@ export default function RichEditorBlock({
               </PopoverContent>
             </Popover>
           </>
-          {kind === 5 && (
-            <Button
-              size="sm"
-              variant="ghost"
-              className="ml-auto"
-              onClick={() => {
-                setPanel("assistant");
-                runAssistant();
-              }}
-            >
-              <Sparkles />
-              Ask assistant
-            </Button>
-          )}
         </div>
       )}
       <EditorSurface
@@ -1569,7 +1619,7 @@ export default function RichEditorBlock({
             {contractReviewExtra}
           </ContractSuggestions>
         )}
-        {showSidebar && kind !== 3 && panel && (
+        {showSidebar && panel && (
           <aside className="flex min-w-0 flex-col gap-5 border-t bg-background p-5 xl:border-l xl:border-t-0">
             {panel === "outline" && (
               <>
@@ -1696,110 +1746,19 @@ export default function RichEditorBlock({
                 </p>
               </>
             )}
-            {panel === "assistant" && (
-              <>
-                <div className="flex items-center justify-between">
-                  <h3 className="flex items-center gap-2 text-xs font-semibold">
-                    <Sparkles className="size-4" />
-                    Writing assistant
-                  </h3>
-                  <Badge variant="outline">Local demo</Badge>
-                </div>
-                <p className="text-[10px] leading-5 text-muted-foreground">
-                  Select a passage to work on, or improve the document’s introduction.
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {["Improve writing", "Summarize", "Expand"].map((action) => (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      key={action}
-                      disabled={running}
-                      onClick={() => runAssistant(action)}
-                    >
-                      {action}
-                    </Button>
-                  ))}
-                </div>
-                <Field>
-                  <FieldLabel htmlFor="assistant-prompt">Instructions</FieldLabel>
-                  <Textarea
-                    id="assistant-prompt"
-                    rows={3}
-                    value={prompt}
-                    onChange={(e) => setPrompt(e.target.value)}
-                    placeholder="How should we improve this?"
-                  />
-                </Field>
-                <Button size="sm" disabled={running} onClick={() => runAssistant()}>
-                  <Sparkles />
-                  {running ? "Drafting suggestion…" : "Generate suggestion"}
-                </Button>
-                {(running || suggestion) && (
-                  <>
-                    <Separator />
-                    <div className="flex flex-col gap-2">
-                      {["Read selected context", "Draft a revision", "Prepare for your review"].map(
-                        (t, i) => (
-                          <p
-                            className="flex items-center gap-2 text-[10px] text-muted-foreground"
-                            key={t}
-                          >
-                            {trace > i ? (
-                              <Check className="size-3" />
-                            ) : (
-                              <span className="size-2.5 rounded-full border" />
-                            )}
-                            {t}
-                          </p>
-                        ),
-                      )}
-                    </div>
-                    <div className="rounded-lg border bg-muted/20 p-3">
-                      <p className="mb-2 text-[10px] font-medium text-muted-foreground">
-                        {running ? "DRAFTING" : "SUGGESTION"}
-                      </p>
-                      <p className="text-xs leading-6" aria-live="polite">
-                        {suggestion || "Reading the document…"}
-                      </p>
-                    </div>
-                    {!running && (
-                      <div className="flex gap-2">
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="flex-1"
-                          onClick={() => {
-                            setSuggestion("");
-                            setAiBase("");
-                          }}
-                        >
-                          <X />
-                          Discard
-                        </Button>
-                        <Button size="sm" className="flex-1" onClick={applySuggestion}>
-                          <Check />
-                          Apply suggestion
-                        </Button>
-                      </div>
-                    )}
-                    {aiBase && (
-                      <details className="text-[10px] text-muted-foreground">
-                        <summary className="cursor-pointer">Original passage</summary>
-                        <p className="mt-2 leading-5">{aiBase}</p>
-                      </details>
-                    )}
-                  </>
-                )}
-                <p className="mt-auto text-[10px] leading-5 text-muted-foreground">
-                  This assistant uses deterministic local text transformations. No AI API is
-                  connected.
-                </p>
-              </>
-            )}
           </aside>
         )}
       </EditorSurface>
+      {kind === 5 && engine && (
+        <RichTextAssistant
+          editor={engine}
+          revisions={assistantRevisions}
+          dock={assistantDock}
+          onDockChange={setAssistantDock}
+          onRunningChange={setAssistantRunning}
+          canRun={editable}
+        />
+      )}
       <EditorFooter className="flex flex-row flex-wrap items-center justify-between gap-2 border-t px-5 py-3 text-[10px] text-muted-foreground">
         <span>
           {words.toLocaleString()} words
