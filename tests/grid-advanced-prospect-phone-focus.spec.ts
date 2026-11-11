@@ -4,7 +4,7 @@ test("phone filtered editor Save restores a visible fallback after its company r
   page,
 }, testInfo) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("./#/preview/data-grid/advanced/data-grid-advanced-22");
+  await page.goto("./#/preview/data-grid/advanced/data-grid-advanced-23");
   await page.getByRole("button", { name: "My Accounts", exact: true }).click();
   await expect(page.locator("tbody tr")).toHaveCount(7);
   await page.locator('tbody button[aria-label^="Open "]').first().click();

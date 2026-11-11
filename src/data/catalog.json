@@ -3227,11 +3227,20 @@
       },
       {
         "id": "data-grid-advanced-22",
-        "name": "Prospect Database",
+        "name": "Job Schedule",
         "category": "advanced",
         "group": "data-grid",
         "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-22",
         "index": 17,
+        "description": "A weekday scheduling grid with crew load, job details, material tracking and editable crew plans."
+      },
+      {
+        "id": "data-grid-advanced-23",
+        "name": "Prospect Database",
+        "category": "advanced",
+        "group": "data-grid",
+        "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-23",
+        "index": 18,
         "description": "Prospect account database with structured filters, intent summaries, lists and account handover."
       },
       {
@@ -3240,11 +3249,11 @@
         "category": "advanced",
         "group": "data-grid",
         "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-27",
-        "index": 18,
+        "index": 19,
         "description": "Project budget with live spend, schedule, contingency, line forecasts and decision history."
       }
     ],
-    "count": 19
+    "count": 20
   },
   {
     "id": "columns",

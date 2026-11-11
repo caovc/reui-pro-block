@@ -833,6 +833,7 @@ function newProspect(): Prospect {
 }
 
 export function ProspectEditor({
+  open,
   record,
   records,
   onClose,
@@ -840,6 +841,7 @@ export function ProspectEditor({
   onSave,
   onDelete,
 }: {
+  open: boolean;
   record: Prospect | null;
   records: Prospect[];
   onClose: () => void;
@@ -870,7 +872,7 @@ export function ProspectEditor({
     setDraft((previous) => ({ ...previous, [key]: value }));
   return (
     <Sheet
-      open
+      open={open}
       onOpenChange={(open) => {
         if (!open) onClose();
       }}

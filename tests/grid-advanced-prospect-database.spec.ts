@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-const route = "./#/preview/data-grid/advanced/data-grid-advanced-22";
+const route = "./#/preview/data-grid/advanced/data-grid-advanced-23";
 const companyRow = (page: import("@playwright/test").Page, name: string) =>
   page
     .getByRole("row")
@@ -32,12 +32,11 @@ test("intent cards keep the base-filter denominator and compose My Accounts and 
   page,
 }) => {
   await page.goto(route);
-  await page.getByRole("radio", { name: /^High intent, score 70/ }).click();
+  await page.getByLabel(/^High intent, score 70/).click();
   await expect(page.locator("tbody tr")).toHaveCount(10);
   await page.getByRole("button", { name: "My Accounts", exact: true }).click();
   await expect(
-    page.getByRole("radio", {
-      name: "High intent, score 70 and up: 5 of 7, 0 unassigned",
+    page.getByLabel("High intent, score 70 and up: 5 of 7, 0 unassigned", {
       exact: true,
     }),
   ).toBeVisible();
@@ -327,7 +326,7 @@ test("free Cascader updates actual native visibility and Settings reset restores
     0,
   );
   await page.getByRole("button", { name: "Settings", exact: true }).click();
-  await page.getByLabel("Resizable columns", { exact: true }).uncheck();
+  await page.getByRole("switch", { name: "Resizable columns", exact: true }).uncheck();
   await page.keyboard.press("Escape");
   await expect(page.locator('[data-slot="data-grid-table-resize-handle"]')).toHaveCount(0);
   await page.getByRole("button", { name: "Settings", exact: true }).click();

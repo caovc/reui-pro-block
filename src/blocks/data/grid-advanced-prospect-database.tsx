@@ -246,7 +246,7 @@ export default function ProspectDatabase({ loadCompanies }: Props = {}) {
   const [resizable, setResizable] = useState(true);
   const [movable, setMovable] = useState(false);
   const [detailsId, setDetailsId] = useState<string | null>(null);
-  const [editor, setEditor] = useState<{ record: Prospect | null } | null>(null);
+  const [editor, setEditor] = useState<{ record: Prospect | null; open: boolean } | null>(null);
   const [handover, setHandover] = useState(false);
   const [deleteIds, setDeleteIds] = useState<string[] | null>(null);
   const [newListIds, setNewListIds] = useState<string[] | null>(null);
@@ -279,8 +279,13 @@ export default function ProspectDatabase({ loadCompanies }: Props = {}) {
   const openEditor = useCallback((record: Prospect | null, opener?: HTMLElement) => {
     editorOpener.current = opener ?? detailsOpener.current;
     restoreEditorFocus.current = false;
-    setEditor({ record });
+    setEditor({ record, open: true });
   }, []);
+  const closeEditor = () => {
+    restoreEditorFocus.current = true;
+    // Keep the Sheet mounted through its close so both foundations can restore focus.
+    setEditor((current) => (current ? { ...current, open: false } : null));
+  };
   const openDetails = useCallback((id: string, opener?: HTMLElement) => {
     if (opener) detailsOpener.current = opener;
     restoreDetailsFocus.current = false;
@@ -1070,22 +1075,20 @@ export default function ProspectDatabase({ loadCompanies }: Props = {}) {
       {editor && (
         <ProspectEditor
           key={editor.record?.id ?? "new"}
+          open={editor.open}
           record={editor.record}
           records={book.companies}
-          onClose={() => {
-            restoreEditorFocus.current = true;
-            setEditor(null);
-          }}
+          onClose={closeEditor}
           onCloseAutoFocus={(event) => {
             event.preventDefault();
             if (!restoreEditorFocus.current) return;
             restoreEditorFocus.current = false;
             restoreAccountFocus(editorOpener.current);
+            setEditor((current) => (current?.open ? current : null));
           }}
           onSave={(record) => {
             commit({ type: "upsert", record }, editor.record ? "Company updated" : "Company added");
-            restoreEditorFocus.current = true;
-            setEditor(null);
+            closeEditor();
           }}
           onDelete={(record) => {
             setEditor(null);

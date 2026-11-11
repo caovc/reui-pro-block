@@ -378,9 +378,17 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
         "data-grid-advanced-15": "grid-advanced-retail-pnl-outlook",
         "data-grid-advanced-16": "grid-advanced-store-kpi-board",
         "data-grid-advanced-17": "grid-advanced-support-scorecard",
-        "data-grid-advanced-22": "grid-advanced-prospect-database",
+        "data-grid-advanced-22": "grid-advanced-job-schedule",
+        "data-grid-advanced-23": "grid-advanced-prospect-database",
       };
       const module = modules[block.id];
+      if (block.id === "data-grid-advanced-22") {
+        return [
+          ...paths("data", module, `${module}-grid`, `${module}-forms`, `${module}-details`),
+          `src/blocks/data/${module}-model.ts`,
+          ...paths("data", "grid-advanced"),
+        ];
+      }
       if (block.id === "data-grid-advanced-17") {
         return [
           ...paths("data", module, `${module}-panels`),
