@@ -155,7 +155,6 @@
   border-radius: 8px;
 }
 .psp [data-slot="tabs-trigger"][data-state="active"] {
-  background: var(--background);
   color: var(--foreground);
 }
 .psp [data-slot="tabs-content"] {

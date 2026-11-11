@@ -1,8 +1,9 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
-import { expect, test, type Locator, type Page } from "@playwright/test";
+import { expect, test, type Locator, type Page, type TestInfo } from "@playwright/test";
 
 test.use({ colorScheme: "light", deviceScaleFactor: 1 });
+const previewRoute = "./#/preview/marketing/pricing/pricing-3";
 
 async function tabTo(page: Page, target: Locator) {
   for (let attempt = 0; attempt < 20; attempt++) {
@@ -47,9 +48,12 @@ function expectVisibleNativeRing(style: Awaited<ReturnType<typeof settledStyle>>
   }
 }
 
-test("Pricing3 native keyboard focus stays visible on selected team tabs at desktop and 390px", async ({
-  page,
-}, testInfo) => {
+async function verifyNativeFocus(
+  page: Page,
+  testInfo: TestInfo,
+  route: string,
+  requireDark = false,
+) {
   const observations: unknown[] = [];
   try {
     for (const viewport of [
@@ -58,7 +62,8 @@ test("Pricing3 native keyboard focus stays visible on selected team tabs at desk
     ]) {
       await page.setViewportSize(viewport);
       await page.goto("about:blank");
-      await page.goto(process.env.PRICING3_URL || "./#/preview/marketing/pricing/pricing-3");
+      await page.goto(route);
+      if (requireDark) await expect(page.locator("html")).toHaveClass(/\bdark\b/);
       const root = page.locator('[data-pricing-variant="3"]');
       await expect(root).toBeVisible();
       await page.evaluate(() => document.fonts.ready);
@@ -70,9 +75,12 @@ test("Pricing3 native keyboard focus stays visible on selected team tabs at desk
       const rootColors = await root.evaluate((element) => ({
         background: getComputedStyle(element).backgroundColor,
         color: getComputedStyle(element).color,
+        dark: element.closest(".dark") !== null,
       }));
+      // The original selected tab uses 30% of the dark input token (15% alpha).
+      const selectedBackground = rootColors.dark ? "oklab(1 0 0 / 0.045)" : rootColors.background;
       expectVisibleNativeRing(startupStyle, `${viewport.width}px Startup`);
-      expect.soft(startupStyle.background).toBe(rootColors.background);
+      expect.soft(startupStyle.background).toBe(selectedBackground);
       expect.soft(startupStyle.color).toBe(rootColors.color);
       expect.soft(startupStyle.radius).toBe("8px");
       expect(
@@ -88,6 +96,7 @@ test("Pricing3 native keyboard focus stays visible on selected team tabs at desk
       await page.keyboard.press("Space");
       const growthStyle = await settledStyle(growth);
       expectVisibleNativeRing(growthStyle, `${viewport.width}px Growth after ArrowRight/Space`);
+      expect.soft(growthStyle.background).toBe(selectedBackground);
       const desktop = viewport.width >= 768;
       const surface = desktop
         ? root.getByRole("table", { name: "Compare pricing plans" })
@@ -128,4 +137,15 @@ test("Pricing3 native keyboard focus stays visible on selected team tabs at desk
     await writeFile(path, JSON.stringify(observations, null, 2), "utf8");
     await testInfo.attach("native-focus-observations", { path, contentType: "application/json" });
   }
+}
+
+test("Pricing3 native keyboard focus stays visible on selected team tabs at desktop and 390px", ({
+  page,
+}, testInfo) => verifyNativeFocus(page, testInfo, process.env.PRICING3_URL || previewRoute));
+
+test("Pricing3 dark selected team tabs keep the original native fill and keyboard focus", async ({
+  page,
+}, testInfo) => {
+  test.skip(Boolean(process.env.PRICING3_URL), "A standalone URL already sets its initial theme.");
+  await verifyNativeFocus(page, testInfo, `${previewRoute}?theme=dark`, true);
 });
