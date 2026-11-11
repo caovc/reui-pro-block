@@ -12,6 +12,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Avatar, AvatarFallback, AvatarGroup, AvatarGroupCount } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -28,7 +30,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Item } from "@/components/ui/item";
 import { Progress } from "@/components/ui/progress";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -42,13 +46,12 @@ import {
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
+import { Toggle } from "@/components/ui/toggle";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { getUiStyleCss, UI_STYLES } from "@/foundations/styles";
 import { uiFoundation } from "@/lib/ui-foundation";
-import {
-  Progress as LabeledProgress,
-  ProgressLabel,
-  ProgressValue,
-} from "@/templates/workflow/free/flowly-progress";
+import { Progress as LabeledProgress } from "@/templates/workflow/free/flowly-progress";
 import "@/index.css";
 
 export function Fixture() {
@@ -75,6 +78,16 @@ export function Fixture() {
         </Button>
       </div>
       <Input aria-label="Example input" data-testid="input" />
+      <FieldGroup data-testid="example-field-group">
+        <Field>
+          <FieldLabel htmlFor="style-example-textarea">Note</FieldLabel>
+          <Textarea id="style-example-textarea" />
+        </Field>
+        <InputGroup aria-label="Example input group">
+          <InputGroupAddon>USD</InputGroupAddon>
+          <InputGroupInput aria-label="Amount" />
+        </InputGroup>
+      </FieldGroup>
       <Select defaultValue="first">
         <SelectTrigger aria-label="Example select">
           <SelectValue />
@@ -94,10 +107,20 @@ export function Fixture() {
       <Alert data-testid="alert">Alert</Alert>
       <Progress aria-label="Progress example" value={50} />
       <Progress aria-label="Custom progress" className="h-5 rounded-sm" value={25} />
-      <LabeledProgress value={50}>
-        <ProgressLabel>Completed items</ProgressLabel>
-        <ProgressValue />
+      <LabeledProgress aria-labelledby="style-progress-label" value={50}>
+        <span id="style-progress-label" data-slot="progress-label" className="text-sm font-medium">
+          Completed items
+        </span>
       </LabeledProgress>
+      <div className="flex items-center gap-4">
+        <AvatarGroup>
+          <Avatar>
+            <AvatarFallback>SL</AvatarFallback>
+          </Avatar>
+          <AvatarGroupCount data-testid="avatar-count">+2</AvatarGroupCount>
+        </AvatarGroup>
+        <Badge data-testid="identity-badge">Active</Badge>
+      </div>
       <div className="flex gap-4">
         <RadioGroup aria-label="Example radio group" defaultValue="first">
           <RadioGroupItem aria-label="First radio" value="first" />
@@ -125,6 +148,18 @@ export function Fixture() {
           defaultValue={[50]}
           orientation="vertical"
         />
+        <Toggle aria-label="Standalone toggle">Text</Toggle>
+        <ToggleGroup aria-label="Vertical options" type="multiple" orientation="vertical">
+          <ToggleGroupItem aria-label="First toggle" value="first">
+            First
+          </ToggleGroupItem>
+          <ToggleGroupItem disabled value="disabled">
+            Unavailable
+          </ToggleGroupItem>
+          <ToggleGroupItem aria-label="Last toggle" value="last">
+            Last
+          </ToggleGroupItem>
+        </ToggleGroup>
       </div>
       <Tabs defaultValue="first">
         <TabsList data-testid="tabs">

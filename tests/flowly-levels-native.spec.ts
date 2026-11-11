@@ -58,9 +58,11 @@ async function enterSettings(page: Page, section: string, width: number) {
   await page.evaluate(async () => document.fonts.ready);
 }
 
-async function open(page: Page, section: string, width: number) {
+async function open(page: Page, section: string, width: number, library = "radix") {
   await page.setViewportSize({ width, height: width === 390 ? 844 : 1000 });
-  await page.goto("/#/template-preview/flowly");
+  await page.goto(
+    library === "base" ? "/base/#/template-preview/flowly" : "/#/template-preview/flowly",
+  );
   await enterSettings(page, section, width);
 }
 
@@ -133,11 +135,14 @@ async function access(page: Page) {
   };
 }
 
-for (const width of [1440, 390]) {
-  test(`Flowly Level ${width}: Invite pressed buttons preserve native focus, selection, description and draft reset`, async ({
+const levelCases = ["radix", "base"].flatMap((library) =>
+  [1440, 390].map((width) => ({ library, width })),
+);
+for (const { library, width } of levelCases) {
+  test(`Flowly Level ${library} ${width}: Invite pressed buttons preserve native focus, selection, description and draft reset`, async ({
     page,
   }, info) => {
-    await open(page, "Members", width);
+    await open(page, "Members", width, library);
     const trigger = page.getByRole("button", { name: "Invite member", exact: true });
     await trigger.click();
     let dialog = page.getByRole("dialog", { name: "Invite Member", exact: true });
@@ -149,8 +154,14 @@ for (const width of [1440, 390]) {
     await expect(group.getByRole("button")).toHaveCount(3);
     await expect(group.getByRole("radio")).toHaveCount(0);
     await expect(editor).toHaveAttribute("aria-pressed", "true");
-    await expect(admin).toHaveAttribute("tabindex", "0");
     await expect(editor).toHaveAttribute("tabindex", "-1");
+    if (library === "base") {
+      await expect(admin).toHaveAttribute("tabindex", "0");
+      await expect(editor).toHaveAttribute("data-pressed", "");
+    } else {
+      await expect(group).toHaveAttribute("tabindex", "0");
+      await expect(editor).toHaveAttribute("data-state", "on");
+    }
     await expect(dialog.getByLabel("Name", { exact: true })).toBeFocused();
     const measured = await capture(page, info, "invite-level-default", group);
     expect(measured.group.gap).toBe("0px");
@@ -205,10 +216,10 @@ for (const width of [1440, 390]) {
     await expect(trigger).toBeFocused();
   });
 
-  test(`Flowly Level ${width}: Access whole cards preserve native radio keyboard, draft, save and Undo`, async ({
+  test(`Flowly Level ${library} ${width}: Access whole cards preserve native radio keyboard, draft, save and Undo`, async ({
     page,
   }, info) => {
-    await open(page, "Members", width);
+    await open(page, "Members", width, library);
     let { trigger, dialog, levels } = await access(page);
     let editor = levels.getByRole("radio", { name: /^Editor/ });
     let viewer = levels.getByRole("radio", { name: /^Viewer/ });
@@ -222,8 +233,10 @@ for (const width of [1440, 390]) {
     const columns = new Set(measured.cards.map((card) => Math.round(card.x)));
     expect(columns.size).toBe(width === 1440 ? 2 : 1);
     for (const card of measured.cards) expect(card.height).toBeCloseTo(width === 1440 ? 76 : 60, 1);
+    if (library === "base") await expect(editor).toHaveAttribute("data-checked", "");
+    else await expect(editor).toHaveAttribute("data-state", "checked");
     for (const item of measured.items) {
-      expect(item.tag).toBe("SPAN");
+      expect(item.tag).toBe(library === "base" ? "SPAN" : "BUTTON");
       expect(item.role).toBe("radio");
       expect(item.width).toBeCloseTo(16, 1);
       expect(item.height).toBeCloseTo(16, 1);
@@ -237,16 +250,21 @@ for (const width of [1440, 390]) {
     await expect(viewer).toBeChecked();
     await expect(viewer).toBeFocused();
     await expect(save).toBeEnabled();
-    await viewer.press("ArrowUp");
+    // Radix moves focus on a timer and checks the held arrow when focus arrives.
+    await page.keyboard.down("ArrowUp");
     await expect(editor).toBeFocused();
+    await page.keyboard.up("ArrowUp");
     await expect(editor).toBeChecked();
     await expect(save).toBeDisabled();
+    const first = library === "base" ? editor : levels.getByRole("radio", { name: /^Owner/ });
+    const last = library === "base" ? editor : viewer;
     await editor.press("Home");
-    await expect(editor).toBeFocused();
+    await expect(first).toBeFocused();
     await expect(editor).toBeChecked();
-    await editor.press("End");
-    await expect(editor).toBeFocused();
+    await first.press("End");
+    await expect(last).toBeFocused();
     await expect(editor).toBeChecked();
+    await editor.focus();
     await editor.press("Space");
     await expect(editor).toBeChecked();
     await expect(save).toBeDisabled();

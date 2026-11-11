@@ -44,6 +44,8 @@ const archiveTarget: SourceTarget = {
     "src/blocks/application/dialog-variants/workspace/settings-panel.tsx",
     "src/blocks/application/dialog-variants/workspace/workspace.css",
     "src/components/ui/field.tsx",
+    "src/components/ui/radio-group.tsx",
+    "src/components/ui/toggle-group.tsx",
     "src/components/ui/toggle.tsx",
     "src/lib/utils.ts",
     "src/components/ui/checkbox.tsx",
@@ -125,4 +127,25 @@ test("Flowly settings options actual original ZIP preserves changed implementati
   const { files } = await captureOriginalArchive(page, target, dialog, info);
   await verifyOriginalClosure(target, files, info);
   expect(faults).toEqual([]);
+});
+
+test("Flowly Base UI source dialog and ZIP use the Base UI radio and toggle groups", async ({
+  page,
+}, info) => {
+  const target = { ...archiveTarget, route: `/base${archiveTarget.route}` };
+  const { dialog, choice } = await openSource(page, target, "archive");
+  const { files } = await captureOriginalArchive(page, target, dialog, info);
+  for (const group of ["radio-group", "toggle-group"]) {
+    const selectedPath = `src/components/ui/${group}.tsx`;
+    const expected = await fileBytes(`src/foundations/base/ui/${group}.tsx`);
+    expect(Buffer.from(files[selectedPath]), selectedPath).toEqual(expected);
+    const consumer = `src/templates/workflow/free/flowly-${group}.tsx`;
+    expect(Buffer.from(files[consumer]), consumer).toEqual(await fileBytes(consumer));
+    const selected = { ...target, selectedPath };
+    await selectSource(page, selected, dialog, choice);
+    await expect.poll(() => sourceText(dialog, selected)).toBe(expected.toString("utf8"));
+  }
+  expect(JSON.parse(Buffer.from(files["components.json"]).toString("utf8")).style).toBe(
+    "base-nova",
+  );
 });

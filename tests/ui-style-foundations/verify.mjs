@@ -225,6 +225,65 @@ async function checkConfirmation(page, style) {
   await expect(trigger).toBeFocused();
 }
 
+const expectedIdentity = {
+  nova: [26, 14, 32],
+  vega: [26, 14, 36],
+  maia: [26, 14, 36],
+  lyra: [0, 12, 32],
+  mira: ["pill", 12, 28],
+  luma: [22, 14, 36],
+  sera: [0, 14, 40],
+  rhea: [18, 14, 32],
+};
+
+async function checkIdentityAndToggle(page, style) {
+  const [corner, countFontSize, toggleHeight] = expectedIdentity[style];
+  const badge = page.getByTestId("identity-badge");
+  if (corner === "pill") {
+    const badgeRadius = await badge.evaluate((node) =>
+      parseFloat(getComputedStyle(node).borderRadius),
+    );
+    assert.ok(badgeRadius > 100);
+  } else {
+    await expect(badge).toHaveCSS("border-top-left-radius", `${corner}px`);
+  }
+  await expect(page.getByTestId("avatar-count")).toHaveCSS("font-size", `${countFontSize}px`);
+  await expect(page.getByRole("button", { name: "Standalone toggle" })).toHaveCSS(
+    "height",
+    `${toggleHeight}px`,
+  );
+  const name = { name: "Vertical options", exact: true };
+  const group = page.getByRole("group", name).or(page.getByRole("toolbar", name));
+  const first = group.getByRole("button", { name: "First toggle" });
+  const last = group.getByRole("button", { name: "Last toggle" });
+  await expect(group).toHaveCSS("flex-direction", "column");
+  await first.press("ArrowDown");
+  await expect(last).toBeFocused();
+  await last.press("ArrowUp");
+  await expect(first).toBeFocused();
+}
+
+const expectedTextEntry = {
+  nova: [10, 32, 10, 20],
+  vega: [8, 36, 8, 28],
+  maia: [14, 36, 26, 28],
+  lyra: [0, 32, 0, 20],
+  mira: [8, 28, 8, 16],
+  luma: [18, 36, 26, 28],
+  sera: [0, 40, 0, 40],
+  rhea: [18, 32, 18, 24],
+};
+
+async function checkTextEntry(page, style) {
+  const [textareaCorner, groupHeight, groupCorner, fieldGap] = expectedTextEntry[style];
+  const textarea = page.getByRole("textbox", { name: "Note", exact: true });
+  const group = page.getByRole("group", { name: "Example input group", exact: true });
+  await expect(textarea).toHaveCSS("border-top-left-radius", `${textareaCorner}px`);
+  await expect(group).toHaveCSS("height", `${groupHeight}px`);
+  await expect(group).toHaveCSS("border-top-left-radius", `${groupCorner}px`);
+  await expect(page.getByTestId("example-field-group")).toHaveCSS("row-gap", `${fieldGap}px`);
+}
+
 async function checkToggles(page, style) {
   const [boxSize, boxRadius, switchWidth, switchHeight, smallWidth, smallHeight] =
     expectedToggles[style];
@@ -306,6 +365,8 @@ try {
       await checkProgress(page, style);
       await checkRadioGroup(page, style);
       await checkSlider(page, style);
+      await checkIdentityAndToggle(page, style);
+      await checkTextEntry(page, style);
       await page.getByRole("button", { name: "Open menu" }).click();
       await checkSurface(style, "menu");
       await page.keyboard.press("Escape");

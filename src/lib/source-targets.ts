@@ -733,6 +733,9 @@ export function templateImplementationTargets(template: {
   ];
   return [
     ...modules.map((module) => `src/templates/${template.family}/${module}.tsx`),
+    ...(["flowly", "tempo", "flux", "cohort", "roster", "surge"].includes(template.id)
+      ? ["src/components/ui/template-progress.tsx"]
+      : []),
     ...(template.family === "business" && ["surge", "manifest"].includes(template.id)
       ? ["src/components/ui/motion-policy.ts"]
       : []),

@@ -1,10 +1,14 @@
 import { getAlertDialogCss } from "./alert-dialog.ts";
+import { getFieldCss } from "./field.ts";
+import { getIdentityCss } from "./identity.ts";
 import { profiles } from "./profiles.ts";
 import { styleNotice } from "./notice.ts";
 import { getRadioGroupCss } from "./radio-group.ts";
 import { sheetPopoverCss } from "./sheet-popover.ts";
 import { getSliderCss } from "./slider.ts";
+import { getTextEntryCss } from "./text-entry.ts";
 import { getToggleControlsCss } from "./toggle-controls.ts";
+import { getToggleGroupCss } from "./toggle-group.ts";
 import { getTooltipCss } from "./tooltip.ts";
 
 export const UI_STYLES = ["nova", "vega", "maia", "lyra", "mira", "luma", "sera", "rhea"] as const;
@@ -636,12 +640,15 @@ export function getUiStyleCss(value?: string | null): string {
     `/* Bricklane: ${name} component style */\n`,
     buttonCss(profile, name),
     inputCss(profile),
+    getTextEntryCss(name),
+    getFieldCss(name),
     focusCss(profile),
     frameAndCardCss(profile, name),
     itemCss(profile),
     menuCss(profile, name),
     selectCss(name),
     getToggleControlsCss(name),
+    getToggleGroupCss(name),
     getRadioGroupCss(name),
     getSliderCss(name),
     dialogCss(profile, name),
@@ -650,6 +657,7 @@ export function getUiStyleCss(value?: string | null): string {
     getTooltipCss(name),
     tabsCss(profile),
     progressCss(name),
+    getIdentityCss(name),
     typographyCss(name),
     replace(slot("alert"), "rounded-lg", "border-radius", radius(profile.alert.radius)),
   ].join("");

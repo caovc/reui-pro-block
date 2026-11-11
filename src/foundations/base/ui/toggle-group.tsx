@@ -71,6 +71,7 @@ function ToggleGroup(props: ToggleGroupSingleProps | ToggleGroupMultipleProps) {
   return (
     <ToggleGroupPrimitive
       {...rest}
+      orientation={orientation}
       multiple={multiple}
       value={baseValue}
       defaultValue={baseDefaultValue}
