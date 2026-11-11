@@ -141,9 +141,16 @@ export function resolveOverlayFocus<Interaction>(
   callback: ((event: Event) => void) | undefined,
   focus: FocusTarget<Interaction>,
   fallback?: () => FocusResult,
+  target?: HTMLElement | null,
 ): FocusResult {
   if (callback) {
     const event = new Event("focus", { cancelable: true });
+    if (target) {
+      Object.defineProperties(event, {
+        target: { value: target },
+        currentTarget: { value: target },
+      });
+    }
     callback(event);
     if (event.defaultPrevented) return false;
   }
@@ -155,8 +162,11 @@ export function resolveOverlayFocus<Interaction>(
 export function overlayFocus<Interaction>(
   callback: ((event: Event) => void) | undefined,
   focus: FocusTarget<Interaction>,
+  target?: React.RefObject<HTMLElement | null>,
 ): FocusTarget<Interaction> {
-  return callback ? (interaction) => resolveOverlayFocus(interaction, callback, focus) : focus;
+  return callback
+    ? (interaction) => resolveOverlayFocus(interaction, callback, focus, undefined, target?.current)
+    : focus;
 }
 
 export function overlayMotionStyle<State>(

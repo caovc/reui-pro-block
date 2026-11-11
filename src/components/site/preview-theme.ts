@@ -1,3 +1,11 @@
+import {
+  uiFoundation,
+  uiPrimitiveOptions,
+  uiStyleOptions,
+  type UiFoundation,
+} from "../../lib/ui-foundation.ts";
+import { getUiStyleCss } from "../../foundations/styles/index.ts";
+
 const additionalAccents = {
   fuchsia: {
     light: "oklch(0.518 0.253 323.949)",
@@ -69,7 +77,7 @@ export const themeOptions = {
   menu: ["default", "solid", "outline"],
   menuAccent: ["default", "subtle", "bold"],
 } as const;
-export type PreviewTheme = {
+export type PreviewTheme = UiFoundation & {
   base: string;
   accent: string;
   chart: string;
@@ -82,6 +90,8 @@ export type PreviewTheme = {
   menuAccent: string;
 };
 export const defaultTheme: PreviewTheme = {
+  primitive: "radix",
+  style: "nova",
   base: "default",
   accent: "default",
   chart: "default",
@@ -97,6 +107,9 @@ export function normalizeTheme(value: unknown): PreviewTheme {
   const result = { ...defaultTheme };
   if (!value || typeof value !== "object") return result;
   const record = value as Record<string, unknown>;
+  result.primitive =
+    uiPrimitiveOptions.find(({ value }) => value === record.primitive)?.value ?? result.primitive;
+  result.style = uiStyleOptions.find(({ value }) => value === record.style)?.value ?? result.style;
   for (const key of Object.keys(themeOptions) as (keyof typeof themeOptions)[]) {
     if ((themeOptions[key] as readonly unknown[]).includes(record[key]))
       result[key] = record[key] as string;
@@ -119,7 +132,12 @@ export function loadTheme(): PreviewTheme {
   if (params.has("preset")) return readTheme(params);
   try {
     const saved = localStorage.getItem(previewThemeStorageKey);
-    if (saved !== null) return normalizeTheme(JSON.parse(saved));
+    if (saved !== null) {
+      const value = JSON.parse(saved);
+      const theme = normalizeTheme(value);
+      const savedPrimitive = uiPrimitiveOptions.find(({ value: key }) => key === value?.primitive);
+      return { ...theme, primitive: savedPrimitive?.value ?? uiFoundation.primitive };
+    }
     const legacyValue = JSON.parse(localStorage.getItem("blocks-preview-theme-v1") || "null");
     // The v1 toolbar used green as an Emerald alias. New presets have a real Green palette.
     if (legacyValue?.accent === "green") legacyValue.accent = "emerald";
@@ -129,9 +147,9 @@ export function loadTheme(): PreviewTheme {
     if (legacy.accent === "blue" && !legacy.custom) legacy.accent = "default";
     if (legacy.base === "neutral") legacy.base = "default";
     if (legacy.radius === "0.625") legacy.radius = "default";
-    return legacy;
+    return { ...legacy, primitive: uiFoundation.primitive };
   } catch {
-    return { ...defaultTheme };
+    return { ...defaultTheme, primitive: uiFoundation.primitive };
   }
 }
 export function isThemeDark(theme: PreviewTheme, inherited: boolean, system: boolean) {
@@ -196,7 +214,7 @@ export function themeCSS(theme: PreviewTheme) {
     theme.menuAccent === "default"
       ? ""
       : `--sidebar-accent: ${theme.menuAccent === "bold" ? "var(--primary)" : "color-mix(in oklch, var(--primary) 10%, var(--background))"}; --sidebar-accent-foreground: ${theme.menuAccent === "bold" ? "var(--primary-foreground)" : "var(--foreground)"};`;
-  return `/* Bricklane global theme — append after your existing theme CSS. */
+  return `${getUiStyleCss(theme.style)}\n/* Bricklane global theme — append after your existing theme CSS. */
 :root:root {${theme.base === "default" ? "" : palette(false)}
   ${theme.radius === "default" ? "" : `--radius: ${theme.radius}rem;`}
   ${bodyFont ? `--font-sans: ${bodyFont};` : ""}
@@ -243,6 +261,8 @@ export function applyTheme(theme: PreviewTheme, dark: boolean) {
   if (theme.radius === "default") document.documentElement.style.removeProperty("--radius");
   else document.documentElement.style.setProperty("--radius", `${theme.radius}rem`);
   document.documentElement.dataset.accent = theme.accent;
+  document.documentElement.dataset.uiStyle = theme.style;
+  document.documentElement.dataset.uiPrimitive = uiFoundation.primitive;
   let style = document.getElementById("preview-preset");
   if (!style) {
     style = document.createElement("style");

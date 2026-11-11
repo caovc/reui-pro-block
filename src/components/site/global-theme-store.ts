@@ -1,4 +1,5 @@
 import { useSyncExternalStore } from "react";
+import { getUiPresetUrl, uiFoundation } from "@/lib/ui-foundation";
 import {
   defaultTheme,
   isThemeDark,
@@ -14,6 +15,18 @@ let snapshot: ThemeSnapshot | undefined;
 let inheritedDark = false;
 const listeners = new Set<() => void>();
 let lastTrigger: HTMLElement | null = null;
+export const reopenCustomizerKey = "bricklane-reopen-customizer";
+
+function takeCustomizerState() {
+  if (window.parent !== window) return false;
+  try {
+    const reopen = sessionStorage.getItem(reopenCustomizerKey) === "true";
+    sessionStorage.removeItem(reopenCustomizerKey);
+    return reopen;
+  } catch {
+    return false;
+  }
+}
 
 function storedDark() {
   try {
@@ -30,7 +43,7 @@ function getSnapshot(): ThemeSnapshot {
     const params = new URLSearchParams(location.hash.split("?")[1]);
     inheritedDark = params.has("theme") ? params.get("theme") === "dark" : storedDark();
     const theme = loadTheme();
-    snapshot = { theme, dark: resolveDark(theme), customizerOpen: false };
+    snapshot = { theme, dark: resolveDark(theme), customizerOpen: takeCustomizerState() };
   }
   return snapshot;
 }
@@ -43,6 +56,15 @@ export function setGlobalTheme(value: PreviewTheme, persist = true) {
   const current = getSnapshot();
   publish({ ...current, theme, dark: resolveDark(theme) });
   if (persist) {
+    const params = new URLSearchParams(location.hash.split("?")[1]);
+    if (
+      window.parent === window &&
+      params.has("preset") &&
+      theme.primitive === uiFoundation.primitive
+    ) {
+      const url = getUiPresetUrl(theme);
+      if (url.href !== location.href) history.replaceState(history.state, "", url);
+    }
     try {
       localStorage.setItem(previewThemeStorageKey, JSON.stringify(theme));
     } catch {
@@ -69,7 +91,12 @@ export function closeGlobalCustomizer() {
   if (matchMedia("(min-width: 1024px)").matches) restoreCustomizerFocus();
 }
 export function restoreCustomizerFocus() {
-  if (lastTrigger?.isConnected) lastTrigger.focus({ preventScroll: true });
+  const target = lastTrigger?.isConnected
+    ? lastTrigger
+    : Array.from(
+        document.querySelectorAll<HTMLElement>('[aria-controls="preview-customizer"]'),
+      ).find((element) => element.getClientRects().length > 0);
+  target?.focus({ preventScroll: true });
 }
 export function resetGlobalTheme() {
   setGlobalTheme({ ...defaultTheme });
@@ -82,6 +109,10 @@ export function useGlobalTheme() {
   return useSyncExternalStore(subscribe, getSnapshot);
 }
 
+export function getCurrentPreviewTheme(): PreviewTheme {
+  return { ...getSnapshot().theme, primitive: uiFoundation.primitive };
+}
+
 // Each same-origin document owns one store. Storage events synchronize open
 // tabs and iframe previews; React subscribers synchronize routes in this tab.
 if (typeof window !== "undefined") {
@@ -90,7 +121,8 @@ if (typeof window !== "undefined") {
       try {
         const value = localStorage.getItem(previewThemeStorageKey);
         inheritedDark = storedDark();
-        setGlobalTheme(value ? normalizeTheme(JSON.parse(value)) : { ...defaultTheme }, false);
+        const theme = value ? normalizeTheme(JSON.parse(value)) : defaultTheme;
+        setGlobalTheme({ ...theme, primitive: uiFoundation.primitive }, false);
       } catch {
         /* Ignore malformed external storage values. */
       }
@@ -102,7 +134,7 @@ if (typeof window !== "undefined") {
   });
   window.addEventListener("hashchange", () => {
     const params = new URLSearchParams(location.hash.split("?")[1]);
-    if (params.has("preset")) setGlobalTheme(readTheme(params));
+    if (params.has("preset")) setGlobalTheme(readTheme(params), window.parent === window);
   });
   matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
     const current = getSnapshot();

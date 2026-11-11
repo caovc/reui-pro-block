@@ -3,6 +3,7 @@ import { FileCode2 } from "lucide-react";
 import { toast } from "sonner";
 import type { BlockMeta } from "@/data/types";
 import { blockFiles } from "@/lib/source";
+import { uiFoundation } from "@/lib/ui-foundation";
 import {
   CodeBlock,
   CodeBlockCopyButton,
@@ -18,10 +19,15 @@ import {
   SelectGroup,
   SelectItem,
 } from "@/components/ui/select";
+import { useGlobalTheme } from "./global-theme-store";
 import "./code-viewer.css";
 
 export function CodeViewer({ block, dark }: { block: BlockMeta; dark: boolean }) {
-  const files = useMemo(() => blockFiles(block), [block]);
+  const { theme } = useGlobalTheme();
+  const files = useMemo(
+    () => blockFiles(block, { ...theme, primitive: uiFoundation.primitive }),
+    [block, theme],
+  );
   const names = Object.keys(files);
   const [selected, setSelected] = useState(names[0]);
   const filename = selected in files ? selected : names[0];

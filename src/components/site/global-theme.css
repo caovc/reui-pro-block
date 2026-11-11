@@ -95,6 +95,10 @@
 .theme-setting-row[data-slot="select-trigger"]:hover {
   background: var(--muted);
 }
+.theme-setting-row[data-slot="select-trigger"]:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: -2px;
+}
 .theme-setting-row > [data-slot="select-icon"] {
   display: none;
 }

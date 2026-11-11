@@ -2,10 +2,12 @@ import { lazy, Suspense, useEffect, useLayoutEffect, useState, type ReactNode } 
 import { SlidersHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetDescription } from "@/components/ui/sheet";
+import { getUiPresetUrl, navigateToUiPrimitive, uiFoundation } from "@/lib/ui-foundation";
 import { applyTheme, readTheme } from "./preview-theme";
 import {
   closeGlobalCustomizer,
   openGlobalCustomizer,
+  reopenCustomizerKey,
   restoreCustomizerFocus,
   setGlobalTheme,
   useGlobalTheme,
@@ -41,6 +43,17 @@ export function GlobalThemeRoot({ children }: { children: ReactNode }) {
     applyTheme(theme, dark);
   }, [theme, dark]);
   useEffect(() => {
+    if (window.parent !== window || theme.primitive === uiFoundation.primitive) return;
+    if (customizerOpen) {
+      try {
+        sessionStorage.setItem(reopenCustomizerKey, "true");
+      } catch {
+        // The library can still switch when session storage is unavailable.
+      }
+    }
+    navigateToUiPrimitive(theme.primitive, theme);
+  }, [theme, customizerOpen]);
+  useEffect(() => {
     const media = matchMedia("(max-width: 1023px)");
     const resize = () => setMobile(media.matches);
     const navigate = () => setHash(location.hash);
@@ -57,7 +70,7 @@ export function GlobalThemeRoot({ children }: { children: ReactNode }) {
   }, []);
   const isolated = /^#\/(preview|template-preview)\//.test(hash);
   const templateWorkspace = /^#\/templates\/[^/?]+/.test(hash);
-  const presetLink = `${location.origin}${location.pathname}${hash.split("?")[0] || "#/"}?${new URLSearchParams({ preset: JSON.stringify(theme) })}`;
+  const presetLink = getUiPresetUrl(theme).href;
   const panel = (
     <Suspense
       fallback={

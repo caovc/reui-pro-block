@@ -120,6 +120,7 @@ function DialogContent({
   className,
   children,
   render,
+  ref,
   style,
   portalContainer,
   forceMount,
@@ -136,6 +137,7 @@ function DialogContent({
   ...props
 }: OverlayChildProps<DialogPrimitive.Popup.Props> &
   OverlayDismissHandlers & {
+    ref?: React.Ref<HTMLDivElement>;
     portalContainer?: DialogPrimitive.Portal.Props["container"];
     forceMount?: true;
     onOpenAutoFocus?: (event: Event) => void;
@@ -143,6 +145,21 @@ function DialogContent({
     showCloseButton?: boolean;
   }) {
   const reduceAnimations = useMotionPolicy();
+  const popup = React.useRef<HTMLDivElement>(null);
+  const setPopup = React.useCallback(
+    (element: HTMLDivElement | null) => {
+      popup.current = element;
+      if (typeof ref === "function") {
+        const cleanup = ref(element);
+        if (cleanup)
+          return () => {
+            popup.current = null;
+            cleanup();
+          };
+      } else if (ref) ref.current = element;
+    },
+    [ref],
+  );
   useOverlayDismissHandlers(DialogDismissContext, {
     onEscapeKeyDown,
     onPointerDownOutside,
@@ -163,12 +180,13 @@ function DialogContent({
       <DialogOverlay />
       <DialogPrimitive.Popup
         data-slot="dialog-content"
+        ref={setPopup}
         className={overlayClassName(
           "fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 rounded-xl bg-popover p-4 text-sm text-popover-foreground ring-1 ring-foreground/10 duration-100 outline-none sm:max-w-sm data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
           className,
         )}
         style={overlayMotionStyle(style, reduceAnimations)}
-        initialFocus={overlayFocus(onOpenAutoFocus, initialFocus)}
+        initialFocus={overlayFocus(onOpenAutoFocus, initialFocus, popup)}
         finalFocus={overlayFocus(onCloseAutoFocus, finalFocus)}
         render={(elementProps, state) => (
           <OverlayModalElement elementProps={elementProps} render={element.render} state={state} />

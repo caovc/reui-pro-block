@@ -86,7 +86,7 @@ async function chooseLibrary(page: Page, root: URL, library: Library) {
     return (
       url.origin === root.origin &&
       url.pathname === libraryEntry(root, library).pathname &&
-      route === oldRoute &&
+      route === (oldRoute || "#/") &&
       routeParameters(query) === routeParameters(oldQuery)
     );
   });

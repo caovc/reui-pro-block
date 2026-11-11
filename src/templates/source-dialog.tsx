@@ -2,6 +2,8 @@ import { useMemo, useRef, useState } from "react";
 import { Download } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { useGlobalTheme } from "@/components/site/global-theme-store";
+import { uiFoundation } from "@/lib/ui-foundation";
 import {
   CodeBlock,
   CodeBlockContent,
@@ -36,7 +38,11 @@ export default function TemplateSourceDialog({
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
-  const files = useMemo(() => templateFiles(template), [template]);
+  const { theme } = useGlobalTheme();
+  const files = useMemo(
+    () => templateFiles(template, { ...theme, primitive: uiFoundation.primitive }),
+    [template, theme],
+  );
   const [selection, setSelection] = useState({
     templateId: template.id,
     filename: Object.keys(files)[0],

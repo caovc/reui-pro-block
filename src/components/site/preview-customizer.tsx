@@ -36,6 +36,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Frame, FrameHeader, FrameTitle, FramePanel } from "@/components/reui/frame";
 import { ColorPicker } from "@/components/reui/color-picker";
+import { uiPrimitiveOptions, uiStyleOptions } from "@/lib/ui-foundation";
 import {
   accents,
   fonts,
@@ -47,6 +48,8 @@ import {
 } from "./preview-theme";
 
 const labels: Record<string, string> = {
+  ...Object.fromEntries(uiPrimitiveOptions.map(({ value, label }) => [value, label])),
+  ...Object.fromEntries(uiStyleOptions.map(({ value, label }) => [value, label])),
   inter: "Inter",
   geist: "Geist",
   system: "System",
@@ -80,6 +83,7 @@ function Setting({
   colors,
   fontPreview,
   custom,
+  autoFocus,
 }: {
   label: string;
   name?: string;
@@ -90,13 +94,16 @@ function Setting({
   colors?: Record<string, string>;
   fontPreview?: boolean;
   custom?: string;
+  autoFocus?: boolean;
 }) {
   return (
     <Select value={value} onValueChange={onChange}>
-      <SelectTrigger aria-label={name} className="theme-setting-row">
+      <SelectTrigger aria-label={name} className="theme-setting-row" autoFocus={autoFocus}>
         <span className="theme-row-copy">
           <span className="theme-row-label">{label}</span>
-          <span className="theme-row-value">{custom ? "Custom" : <SelectValue />}</span>
+          <span className="theme-row-value">
+            {custom ? "Custom" : <SelectValue>{title(value)}</SelectValue>}
+          </span>
         </span>
         <span className="theme-row-icon" aria-hidden="true">
           {colors ? (
@@ -212,7 +219,7 @@ export function PreviewCustomizer({
       if (
         !value ||
         typeof value !== "object" ||
-        !Object.keys(themeOptions).some((key) => key in value)
+        !["primitive", "style", ...Object.keys(themeOptions)].some((key) => key in value)
       )
         throw new Error();
       onChange(normalizeTheme(value));
@@ -234,8 +241,21 @@ export function PreviewCustomizer({
           </Button>
         </FrameHeader>
         <FramePanel className="theme-customizer-fields">
-          <Foundation label="Component Library" value="Radix UI" icon={<Library />} />
-          <Foundation label="Style" value="Nova" icon={<Shapes />} />
+          <Setting
+            label="Component Library"
+            value={theme.primitive}
+            options={uiPrimitiveOptions.map(({ value }) => value)}
+            onChange={(value) => update("primitive", value)}
+            icon={<Library />}
+            autoFocus
+          />
+          <Setting
+            label="Style"
+            value={theme.style}
+            options={uiStyleOptions.map(({ value }) => value)}
+            onChange={(value) => update("style", value)}
+            icon={<Shapes />}
+          />
           <Setting
             label="Base Color"
             name="Base color"

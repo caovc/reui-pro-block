@@ -88,11 +88,13 @@ const compactButtonRadii = [
 
 function buttonCss(profile: Profile, style: keyof typeof profiles) {
   const { button } = profile;
+  // A trigger composed with Button can replace its slot while retaining its button variants.
+  const selector = `:is(${slot("button")}, ${utility("group/button")}[data-size][data-variant])`;
   const buttons = buttonSizes
     .map((name, index) => {
       const [height, padding] = button.sizes[index];
-      const control = `${slot("button")}[data-size="${name}"]`;
-      const icon = `${slot("button")}[data-size="icon${name === "default" ? "" : `-${name}`}"]`;
+      const control = `${selector}[data-size="${name}"]`;
+      const icon = `${selector}[data-size="icon${name === "default" ? "" : `-${name}`}"]`;
       const smallIndex = name === "xs" ? 0 : name === "sm" ? 1 : undefined;
       let corner = radius(
         smallIndex === undefined
@@ -129,7 +131,6 @@ function buttonCss(profile: Profile, style: keyof typeof profiles) {
     })
     .join("");
 
-  const selector = slot("button");
   if (button.typography === "editorial") {
     return (
       buttons +
