@@ -57,7 +57,7 @@ import type {
   EventCalendarViewSettings,
 } from "@/components/reui/event-calendar/event-calendar-types";
 import { addDays, type Locale } from "date-fns";
-import { Slot } from "radix-ui";
+import { Slot, Slottable } from "@/components/ui/slot";
 
 import { cn } from "cn";
 
@@ -1762,7 +1762,7 @@ function EventCalendar<TData = unknown>({
     [instance],
   );
 
-  const Comp = asChild ? Slot.Root : "div";
+  const Comp = asChild ? Slot : "div";
 
   return (
     <EventCalendarContext.Provider value={instance}>
@@ -1781,8 +1781,8 @@ function EventCalendar<TData = unknown>({
           {...rest}
         >
           {/* Slottable keeps the announcer sibling legal when asChild slots
-              the consumer element (Slot.Root allows one non-Slottable child). */}
-          <Slot.Slottable>{children}</Slot.Slottable>
+              the consumer element (Slot allows one non-Slottable child). */}
+          <Slottable>{children}</Slottable>
           <div data-slot="event-calendar-announcer" aria-live="polite" className="sr-only" />
         </Comp>
       </EventCalendarViewConfigContext.Provider>

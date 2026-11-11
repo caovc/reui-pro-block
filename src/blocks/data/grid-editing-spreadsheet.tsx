@@ -11,7 +11,12 @@ import {
   Undo2,
   X,
 } from "lucide-react";
-import { ContextMenu } from "radix-ui";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu";
 import {
   useTable,
   type ColumnDef,
@@ -328,6 +333,7 @@ export default function SpreadsheetGrid({ block }: BlockProps) {
     [newField, setNewField] = useState(""),
     [fieldKind, setFieldKind] = useState("Text");
   const api = useRef<DataGridCellSelectionApi | null>(null),
+    pendingMenuEdit = useRef<{ rowId: string; columnId: string } | null>(null),
     pending = useRef(false),
     timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(
@@ -729,49 +735,61 @@ export default function SpreadsheetGrid({ block }: BlockProps) {
           },
         },
         cell: ({ row }) => (
-          <ContextMenu.Root>
-            <ContextMenu.Trigger asChild>
+          <ContextMenu>
+            <ContextMenuTrigger asChild>
               <div className="flex min-h-7 items-center">{renderValue(row.original, field)}</div>
-            </ContextMenu.Trigger>
-            <ContextMenu.Portal>
-              <ContextMenu.Content className="z-50 min-w-44 rounded-lg border bg-popover p-1 text-sm shadow-md">
-                {[
-                  {
-                    title: "Edit cell",
-                    action: () => api.current?.focusCell(row.id, field.key, { edit: true }),
+            </ContextMenuTrigger>
+            <ContextMenuContent
+              className="z-50 min-w-44 rounded-lg border bg-popover p-1 text-sm shadow-md"
+              onCloseAutoFocus={(event) => {
+                const target = pendingMenuEdit.current;
+                if (!target || target.rowId !== row.id || target.columnId !== field.key) return;
+                pendingMenuEdit.current = null;
+                event.preventDefault();
+                // Release the menu's focus scope before opening the cell editor.
+                requestAnimationFrame(() => {
+                  api.current?.focusCell(target.rowId, target.columnId, { edit: true });
+                });
+              }}
+            >
+              {[
+                {
+                  title: "Edit cell",
+                  action: () => {
+                    pendingMenuEdit.current = { rowId: row.id, columnId: field.key };
                   },
-                  { title: "Fill range down", action: fillDown },
-                  {
-                    title: "Open details",
-                    action: () => setDetail(row.original),
-                  },
-                  {
-                    title: "Duplicate row",
-                    action: () =>
-                      commit([
-                        ...rows,
-                        {
-                          ...row.original,
-                          id: Math.max(...rows.map((r) => r.id)) + 1,
-                        },
-                      ]),
-                  },
-                  {
-                    title: "Delete row",
-                    action: () => commit(rows.filter((r) => r.id !== row.original.id)),
-                  },
-                ].map((item) => (
-                  <ContextMenu.Item
-                    key={item.title}
-                    className="cursor-default rounded px-2 py-1.5 outline-none focus:bg-accent"
-                    onSelect={item.action}
-                  >
-                    {item.title}
-                  </ContextMenu.Item>
-                ))}
-              </ContextMenu.Content>
-            </ContextMenu.Portal>
-          </ContextMenu.Root>
+                },
+                { title: "Fill range down", action: fillDown },
+                {
+                  title: "Open details",
+                  action: () => setDetail(row.original),
+                },
+                {
+                  title: "Duplicate row",
+                  action: () =>
+                    commit([
+                      ...rows,
+                      {
+                        ...row.original,
+                        id: Math.max(...rows.map((r) => r.id)) + 1,
+                      },
+                    ]),
+                },
+                {
+                  title: "Delete row",
+                  action: () => commit(rows.filter((r) => r.id !== row.original.id)),
+                },
+              ].map((item) => (
+                <ContextMenuItem
+                  key={item.title}
+                  className="cursor-default rounded px-2 py-1.5 outline-none focus:bg-accent"
+                  onSelect={item.action}
+                >
+                  {item.title}
+                </ContextMenuItem>
+              ))}
+            </ContextMenuContent>
+          </ContextMenu>
         ),
       })),
     ],

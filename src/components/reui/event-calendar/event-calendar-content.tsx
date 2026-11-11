@@ -17,7 +17,7 @@ import {
   EventCalendarWeekView,
 } from "@/components/reui/event-calendar/event-calendar-time-grid";
 import type { CalendarView } from "@/components/reui/event-calendar/event-calendar-types";
-import { Slot } from "radix-ui";
+import { Slot } from "@/components/ui/slot";
 
 import { cn } from "cn";
 
@@ -58,7 +58,7 @@ function EventCalendarContent({
   // ? ProMonth : undefined }}` would erase the default and render <undefined />.
   const ActiveView = resolved[view] ?? DEFAULT_VIEW_COMPONENTS[view];
 
-  const Comp = asChild ? Slot.Root : "div";
+  const Comp = asChild ? Slot : "div";
 
   return (
     <Comp

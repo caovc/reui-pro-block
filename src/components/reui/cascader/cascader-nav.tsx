@@ -17,7 +17,7 @@ import type {
 } from "@/components/reui/cascader/cascader-types";
 import { Combobox as ComboboxPrimitive } from "@base-ui/react";
 import { useDirection } from "@base-ui/react/direction-provider";
-import { Slot } from "radix-ui";
+import { Slot } from "@/components/ui/slot";
 
 import { cn } from "cn";
 
@@ -34,18 +34,9 @@ function PathChevron() {
 /* -------------------------------------------------------------------------- */
 
 /**
- * The child element `Slot.Root` should be handed, with this part's own content
- * already cloned inside it, REPLACING that element's own children.
- *
- * `CascaderBreadcrumb` and `CascaderValue` BUILD their children, so handing
- * `Slot.Root` that content directly deleted the part: Radix clones its child to
- * merge props onto it, and a Fragment or an array rejects them. Answers `null`
- * for anything that is not a single element, so the caller falls back to its
- * default tag rather than vanishing.
- *
- * The base twin ships no counterpart: Base UI's `useRender` already splits the
- * element (`render`) from the content (the merged `children`), and this is the
- * same split expressed the Radix way.
+ * Breadcrumb and value parts build their own content. Put it inside the
+ * consumer element before Slot merges the part's props onto that element.
+ * Without a consumer element the caller uses its default tag.
  */
 function cascaderSlotChild(
   child: React.ReactNode,
@@ -72,7 +63,7 @@ export interface CascaderNavProps extends React.ComponentProps<"div"> {
  * breadcrumb belongs with the list below: it describes the rows, not the field.
  */
 function CascaderNav({ className, asChild = false, children, ...props }: CascaderNavProps) {
-  const Comp = asChild ? Slot.Root : "div";
+  const Comp = asChild ? Slot : "div";
 
   return (
     <Comp
@@ -111,7 +102,7 @@ function CascaderBack({ className, asChild = false, children, ...props }: Cascad
   const hidden = mode !== "drill" || path.length === 0;
   if (hidden) return null;
 
-  const Comp = asChild ? Slot.Root : "button";
+  const Comp = asChild ? Slot : "button";
 
   return (
     <Comp
@@ -243,11 +234,7 @@ function CascaderBreadcrumb({
     ...props,
   };
 
-  return slotChild ? (
-    <Slot.Root {...shared}>{slotChild}</Slot.Root>
-  ) : (
-    <nav {...shared}>{trail}</nav>
-  );
+  return slotChild ? <Slot {...shared}>{slotChild}</Slot> : <nav {...shared}>{trail}</nav>;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -619,7 +606,7 @@ function CascaderValue({
     );
   }
 
-  // See `cascaderSlotChild`: `Slot.Root` cannot clone the Fragment the default
+  // See `cascaderSlotChild`: `Slot` cannot clone the Fragment the default
   // branch produces, so the consumer's element has to receive the content.
   const slotChild = asChild ? cascaderSlotChild(slotElement, content) : null;
 
@@ -629,11 +616,7 @@ function CascaderValue({
     ...props,
   };
 
-  return slotChild ? (
-    <Slot.Root {...shared}>{slotChild}</Slot.Root>
-  ) : (
-    <span {...shared}>{content}</span>
-  );
+  return slotChild ? <Slot {...shared}>{slotChild}</Slot> : <span {...shared}>{content}</span>;
 }
 
 export { CascaderNav, CascaderBack, CascaderBreadcrumb, CascaderInput, CascaderValue };

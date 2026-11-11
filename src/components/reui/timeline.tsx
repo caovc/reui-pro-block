@@ -8,7 +8,7 @@
 
 import type { HTMLAttributes, TimeHTMLAttributes } from "react";
 import { createContext, useCallback, useContext, useState } from "react";
-import { Slot } from "radix-ui";
+import { Slot } from "@/components/ui/slot";
 
 import { cn } from "cn";
 
@@ -96,7 +96,7 @@ interface TimelineDateProps extends TimeHTMLAttributes<HTMLTimeElement> {
 }
 
 function TimelineDate({ asChild = false, className, ...props }: TimelineDateProps) {
-  const Comp = asChild ? Slot.Root : "time";
+  const Comp = asChild ? Slot : "time";
 
   return (
     <Comp
@@ -126,7 +126,7 @@ function TimelineIndicator({
   children,
   ...props
 }: TimelineIndicatorProps) {
-  const Comp = asChild ? Slot.Root : "div";
+  const Comp = asChild ? Slot : "div";
 
   return (
     <Comp

@@ -51,7 +51,7 @@ import {
   type AnimateLayoutChanges,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Slot } from "radix-ui";
+import { Slot } from "@/components/ui/slot";
 import { createPortal } from "react-dom";
 
 import { cn } from "cn";
@@ -586,7 +586,7 @@ function Kanban<T>({
     [columns, setColumns, getItemValue, columnIds, activeId, findContainer, isColumn, modifiers],
   );
 
-  const Comp = asChild ? Slot.Root : "div";
+  const Comp = asChild ? Slot : "div";
 
   return (
     <KanbanContext.Provider value={contextValue}>
@@ -620,7 +620,7 @@ export interface KanbanBoardProps extends HTMLAttributes<HTMLDivElement> {
 
 function KanbanBoard({ className, asChild = false, children, ...props }: KanbanBoardProps) {
   const { columnIds } = useContext(KanbanContext);
-  const Comp = asChild ? Slot.Root : "div";
+  const Comp = asChild ? Slot : "div";
 
   return (
     <SortableContext items={columnIds} strategy={rectSortingStrategy}>
@@ -672,7 +672,7 @@ function KanbanColumn({
     transform: CSS.Transform.toString(transform),
   } as CSSProperties;
 
-  const Comp = asChild ? Slot.Root : "div";
+  const Comp = asChild ? Slot : "div";
 
   if (isOverlay) {
     return (
@@ -736,7 +736,7 @@ function KanbanColumnHandle({
 }: KanbanColumnHandleProps) {
   const { attributes, listeners, isDragging, disabled } = useContext(ColumnContext);
 
-  const Comp = asChild ? Slot.Root : "div";
+  const Comp = asChild ? Slot : "div";
 
   return (
     <Comp
@@ -796,7 +796,7 @@ function KanbanItem({
     transform: CSS.Transform.toString(transform),
   } as CSSProperties;
 
-  const Comp = asChild ? Slot.Root : "div";
+  const Comp = asChild ? Slot : "div";
 
   if (isOverlay) {
     return (
@@ -847,7 +847,7 @@ function KanbanItemHandle({
 }: KanbanItemHandleProps) {
   const { listeners, isDragging, disabled } = useContext(ItemContext);
 
-  const Comp = asChild ? Slot.Root : "div";
+  const Comp = asChild ? Slot : "div";
 
   return (
     <Comp
@@ -888,7 +888,7 @@ function KanbanColumnContent({
     return items.map(getItemId);
   }, [columns, getItemId, value]);
 
-  const Comp = asChild ? Slot.Root : "div";
+  const Comp = asChild ? Slot : "div";
 
   return (
     <SortableContext items={itemIds} strategy={verticalListSortingStrategy}>

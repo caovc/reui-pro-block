@@ -21,7 +21,7 @@ import {
   toZoned,
 } from "@/components/reui/gantt/gantt-lib";
 import type { GanttOccurrence, GanttSegment } from "@/components/reui/gantt/gantt-types";
-import { Slot } from "radix-ui";
+import { Slot } from "@/components/ui/slot";
 
 import { cn } from "cn";
 import { ContextMenu, ContextMenuContent, ContextMenuTrigger } from "@/components/ui/context-menu";
@@ -263,7 +263,7 @@ function GanttBar<TData = unknown>({
     </>
   );
 
-  const Comp = asChild ? Slot.Root : "button";
+  const Comp = asChild ? Slot : "button";
 
   const barButton = (
     <Comp

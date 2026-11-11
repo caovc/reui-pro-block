@@ -24,7 +24,7 @@ import type {
 } from "@/components/reui/event-calendar/event-calendar-types";
 import { IconStack } from "@/components/reui/icon-stack";
 import { addDays, format } from "date-fns";
-import { Slot } from "radix-ui";
+import { Slot } from "@/components/ui/slot";
 
 import { cn } from "cn";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -161,7 +161,7 @@ function EventCalendarAgendaView({
     </>
   );
 
-  const Comp = asChild ? Slot.Root : "div";
+  const Comp = asChild ? Slot : "div";
 
   return (
     <EventCalendarViewContext.Provider value={{ view: "agenda" }}>

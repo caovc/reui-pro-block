@@ -49,7 +49,7 @@ import type {
   EventCalendarSegment,
 } from "@/components/reui/event-calendar/event-calendar-types";
 import { addDays, format, getWeek } from "date-fns";
-import { Slot } from "radix-ui";
+import { Slot } from "@/components/ui/slot";
 
 import { cn } from "cn";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -180,7 +180,7 @@ function EventCalendarMonthView({
   }, [autoFit, measureCap, weeks.length, anchorDate]);
   const resolvedCap = cap === "auto" ? (autoFit ? (autoCap ?? 3) : 3) : cap;
 
-  const Comp = asChild ? Slot.Root : "div";
+  const Comp = asChild ? Slot : "div";
 
   return (
     <EventCalendarViewContext.Provider value={{ view: "month" }}>

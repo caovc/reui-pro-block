@@ -14,7 +14,7 @@ import {
 import { toZoned } from "@/components/reui/gantt/gantt-lib";
 import type { GanttScale } from "@/components/reui/gantt/gantt-types";
 import { format } from "date-fns";
-import { Slot } from "radix-ui";
+import { Slot } from "@/components/ui/slot";
 
 import { cn } from "cn";
 import { Button } from "@/components/ui/button";
@@ -190,7 +190,7 @@ function GanttTitle({
   ...props
 }: GanttTitleProps) {
   const { title } = useGanttNavigation();
-  const Comp = asChild ? Slot.Root : "div";
+  const Comp = asChild ? Slot : "div";
   return (
     <Comp
       data-slot="gantt-title"
@@ -371,7 +371,7 @@ interface GanttToolbarProps extends HTMLAttributes<HTMLDivElement> {
 /** Free slot for consumer toolbar buttons; pure layout shell. */
 function GanttToolbar({ className, asChild = false, children, ...props }: GanttToolbarProps) {
   const viewConfig = useGanttViewConfig();
-  const Comp = asChild ? Slot.Root : "div";
+  const Comp = asChild ? Slot : "div";
   return (
     <Comp
       data-slot="gantt-toolbar"
@@ -394,7 +394,7 @@ interface GanttNavProps extends HTMLAttributes<HTMLDivElement> {
  */
 function GanttNav({ className, asChild = false, children, ...props }: GanttNavProps) {
   const viewConfig = useGanttViewConfig();
-  const Comp = asChild ? Slot.Root : "div";
+  const Comp = asChild ? Slot : "div";
   return (
     <Comp
       data-slot="gantt-nav"

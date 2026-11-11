@@ -20,7 +20,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { Slot } from "radix-ui";
+import { Slot } from "@/components/ui/slot";
 
 import { cn } from "cn";
 
@@ -277,7 +277,7 @@ function StepperTrigger({
 
   // `asChild` composes onto the consumer's element via Slot, so the trigger
   // keeps its ref, tab semantics, and keyboard handlers either way.
-  const Comp = asChild ? Slot.Root : "button";
+  const Comp = asChild ? Slot : "button";
 
   return (
     <Comp

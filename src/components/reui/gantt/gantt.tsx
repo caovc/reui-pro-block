@@ -58,7 +58,7 @@ import type {
   GanttUpdateResult,
 } from "@/components/reui/gantt/gantt-types";
 import type { Locale } from "date-fns";
-import { Slot } from "radix-ui";
+import { Slot, Slottable } from "@/components/ui/slot";
 
 import { cn } from "cn";
 
@@ -1682,7 +1682,7 @@ function Gantt<TData = unknown>({
     if (apiRef) apiRef.current = instance.api;
   }, [apiRef, instance]);
 
-  const Comp = asChild ? Slot.Root : "div";
+  const Comp = asChild ? Slot : "div";
 
   return (
     <GanttContext.Provider value={instance}>
@@ -1698,8 +1698,8 @@ function Gantt<TData = unknown>({
           {...rest}
         >
           {/* Slottable keeps the announcer sibling legal when asChild slots
-              the consumer element (Slot.Root allows one non-Slottable child). */}
-          <Slot.Slottable>{children}</Slot.Slottable>
+              the consumer element (Slot allows one non-Slottable child). */}
+          <Slottable>{children}</Slottable>
           <div data-slot="gantt-announcer" aria-live="polite" className="sr-only" />
         </Comp>
       </GanttViewConfigContext.Provider>

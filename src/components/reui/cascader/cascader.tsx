@@ -78,7 +78,7 @@ import type {
   CascaderSelectable,
 } from "@/components/reui/cascader/cascader-types";
 import { Combobox as ComboboxPrimitive } from "@base-ui/react";
-import { Slot } from "radix-ui";
+import { Slot } from "@/components/ui/slot";
 
 import { cn } from "cn";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -2631,7 +2631,7 @@ function CascaderPanel({
   ...props
 }: CascaderPanelProps) {
   const { mode } = useCascaderActions();
-  const Comp = asChild ? Slot.Root : "div";
+  const Comp = asChild ? Slot : "div";
 
   const handleKeyDown = React.useCallback(
     (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -2844,15 +2844,14 @@ export interface CascaderStatusProps extends ComboboxPrimitive.Status.Props {
 function CascaderStatus({ className, children, asChild = false, ...props }: CascaderStatusProps) {
   const { announcement } = useCascaderState();
 
-  // `asChild` only engages when there IS an element to slot into: with a bare
-  // string, Radix's `Slot` answers `null` and deletes the live region.
+  // Plain text still needs the default live region element.
   const asSlot = asChild && React.isValidElement(children);
 
   return (
     <ComboboxPrimitive.Status
       data-slot="cascader-status"
       className={cn("sr-only", className)}
-      {...(asSlot ? { render: <Slot.Root /> } : null)}
+      {...(asSlot ? { render: <Slot /> } : null)}
       {...props}
     >
       {children ?? announcement}

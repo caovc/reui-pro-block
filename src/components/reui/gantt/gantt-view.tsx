@@ -69,7 +69,7 @@ import {
   startOfWeek,
   type Locale,
 } from "date-fns";
-import { Slot } from "radix-ui";
+import { Slot } from "@/components/ui/slot";
 
 import { cn } from "cn";
 import { Button } from "@/components/ui/button";
@@ -2412,7 +2412,7 @@ function GanttView({
     />
   );
 
-  const Comp = asChild ? Slot.Root : "div";
+  const Comp = asChild ? Slot : "div";
 
   return (
     <Comp
