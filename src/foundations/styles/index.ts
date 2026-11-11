@@ -2,7 +2,9 @@ import { profiles } from "./profiles.ts";
 import { styleNotice } from "./notice.ts";
 import { getRadioGroupCss } from "./radio-group.ts";
 import { sheetPopoverCss } from "./sheet-popover.ts";
+import { getSliderCss } from "./slider.ts";
 import { getToggleControlsCss } from "./toggle-controls.ts";
+import { getTooltipCss } from "./tooltip.ts";
 
 export const UI_STYLES = ["nova", "vega", "maia", "lyra", "mira", "luma", "sera", "rhea"] as const;
 export type UiStyle = (typeof UI_STYLES)[number];
@@ -640,8 +642,10 @@ export function getUiStyleCss(value?: string | null): string {
     selectCss(name),
     getToggleControlsCss(name),
     getRadioGroupCss(name),
+    getSliderCss(name),
     dialogCss(profile, name),
     sheetPopoverCss(name, { rule, radius, shadow }),
+    getTooltipCss(name),
     tabsCss(profile),
     progressCss(name),
     typographyCss(name),

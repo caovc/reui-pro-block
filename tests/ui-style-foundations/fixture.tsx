@@ -29,6 +29,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getUiStyleCss, UI_STYLES } from "@/foundations/styles";
@@ -101,6 +102,19 @@ export function Fixture() {
         <Checkbox aria-label="Custom checkbox" className="size-5 rounded-full" />
         <Switch aria-label="Example switch" />
         <Switch aria-label="Small switch" size="sm" />
+      </div>
+      <div className="flex h-44 items-center gap-6">
+        <Slider
+          data-testid="horizontal-slider"
+          aria-label="Horizontal slider"
+          defaultValue={[50]}
+        />
+        <Slider
+          data-testid="vertical-slider"
+          aria-label="Vertical slider"
+          defaultValue={[50]}
+          orientation="vertical"
+        />
       </div>
       <Tabs defaultValue="first">
         <TabsList data-testid="tabs">

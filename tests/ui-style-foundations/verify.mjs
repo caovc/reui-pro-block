@@ -177,6 +177,30 @@ async function checkRadioGroup(page, style) {
   await expect(first).toBeChecked();
 }
 
+const expectedSlider = {
+  nova: [4, 12, 12],
+  vega: [6, 16, 16],
+  maia: [12, 16, 16],
+  lyra: [4, 12, 12],
+  mira: [4, 12, 12],
+  luma: [8, 24, 16],
+  sera: [2, 12, 12],
+  rhea: [4, 16, 16],
+};
+
+async function checkSlider(page, style) {
+  const [trackSize, thumbWidth, thumbHeight] = expectedSlider[style];
+  for (const direction of ["horizontal", "vertical"]) {
+    const root = page.getByTestId(`${direction}-slider`);
+    const track = root.locator('[data-slot="slider-track"]');
+    const thumb = root.locator('[data-slot="slider-thumb"]');
+    const vertical = direction === "vertical";
+    await expect(track).toHaveCSS(vertical ? "width" : "height", `${trackSize}px`);
+    await expect(thumb).toHaveCSS("width", `${vertical ? thumbHeight : thumbWidth}px`);
+    await expect(thumb).toHaveCSS("height", `${vertical ? thumbWidth : thumbHeight}px`);
+  }
+}
+
 async function checkToggles(page, style) {
   const [boxSize, boxRadius, switchWidth, switchHeight, smallWidth, smallHeight] =
     expectedToggles[style];
@@ -257,6 +281,7 @@ try {
       await checkToggles(page, style);
       await checkProgress(page, style);
       await checkRadioGroup(page, style);
+      await checkSlider(page, style);
       await page.getByRole("button", { name: "Open menu" }).click();
       await checkSurface(style, "menu");
       await page.keyboard.press("Escape");
@@ -278,7 +303,7 @@ try {
       await page.getByRole("option", { name: "Second choice" }).click();
       await expect(trigger).toHaveAttribute("aria-expanded", "false");
       console.log(
-        `${primitive}-${style}: button, input, Frame, Card, Item, menu, dialog, tabs, Select, Checkbox, Switch, Progress and Radio Group match`,
+        `${primitive}-${style}: shared controls and overlays match, including Progress, Radio Group and Slider`,
       );
     }
 
