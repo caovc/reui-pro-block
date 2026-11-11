@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
 import { createServer } from "vite";
+import { UI_STYLES } from "../src/foundations/styles/index.ts";
 
 const root = new URL("../", import.meta.url);
 const readSource = (path) => readFile(new URL(path, root), "utf8");
@@ -25,10 +26,9 @@ test("template source resolves the selected UI foundation and exports the copied
   const template = templates.find(({ id }) => id === "filebox");
   assert.ok(template);
 
-  for (const [primitive, style] of [
-    ["radix", "nova"],
-    ["base", "lyra"],
-  ]) {
+  for (const [primitive, style] of ["radix", "base"].flatMap((primitive) =>
+    UI_STYLES.map((style) => [primitive, style]),
+  )) {
     const theme = { ...defaultTheme, primitive, style, accent: "emerald", mode: "dark" };
     const files = templateFiles(template, theme);
     const expectedButton =

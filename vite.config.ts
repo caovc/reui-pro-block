@@ -2,7 +2,7 @@ import path from "node:path";
 import { existsSync } from "node:fs";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
-import { createServer, defineConfig, normalizePath, type Plugin } from "vite";
+import { createServer, defineConfig, normalizePath, type Plugin, type ViteDevServer } from "vite";
 
 const src = normalizePath(path.resolve(import.meta.dirname, "src"));
 const sharedUi = `${src}/components/ui/`;
@@ -39,20 +39,29 @@ function useBaseUi(): Plugin {
 }
 
 function serveBaseUi(): Plugin {
+  let baseServer: ViteDevServer | undefined;
   return {
     name: "bricklane-serve-base-ui",
     async configureServer(server) {
       const base = await createServer({
         mode: "base-ui",
         configFile: server.config.configFile,
-        server: { middlewareMode: true, ws: false },
+        server: {
+          middlewareMode: true,
+          ws: server.httpServer ? { server: server.httpServer } : false,
+        },
       });
-      server.httpServer?.once("close", () => void base.close());
+      baseServer = base;
       server.middlewares.use((request, response, next) => {
         if (request.url === "/base" || request.url?.startsWith("/base/")) {
           base.middlewares(request, response, next);
         } else next();
       });
+    },
+    async closeBundle() {
+      const base = baseServer;
+      baseServer = undefined;
+      await base?.close();
     },
   };
 }

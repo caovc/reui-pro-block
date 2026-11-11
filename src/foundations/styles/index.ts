@@ -394,6 +394,86 @@ function menuCss(profile: Profile, style: UiStyle) {
   return sections.join("");
 }
 
+// Shared geometry from the official shadcn Select variants for both libraries.
+const selectStyles = {
+  vega: { height: [36, 32], trigger: "md", popup: "md", item: "sm", padding: [8, 6], gap: 8 },
+  maia: { height: [36, 32], trigger: "4xl", popup: "2xl", item: "xl", padding: [12, 8], gap: 10 },
+  lyra: { height: [32, 28], trigger: "none", popup: "none", item: "none", padding: [8, 8], gap: 8 },
+  mira: { height: [28, 24], trigger: "md", popup: "lg", item: "md", padding: [8, 4], gap: 8 },
+  luma: { height: [36, 32], trigger: "3xl", popup: "3xl", item: "2xl", padding: [12, 8], gap: 10 },
+  sera: {
+    height: [40, 36],
+    trigger: "none",
+    popup: "none",
+    item: "none",
+    padding: [12, 8],
+    gap: 10,
+  },
+  rhea: { height: [32, 28], trigger: "2xl", popup: "2xl", item: "xl", padding: [8, 6], gap: 8 },
+} as const;
+
+function selectCss(style: keyof typeof selectStyles) {
+  const selected = selectStyles[style];
+  const trigger = `${slot("select-trigger")}:where(:not(.theme-setting-row))`;
+  const popup = slot("select-content");
+  const item = slot("select-item");
+  const [widthPadding, heightPadding] = selected.padding;
+  const compact = style === "lyra" || style === "mira";
+  const sections = [
+    replace(
+      `${trigger}[data-size="default"]`,
+      "data-[size=default]:h-8",
+      "height",
+      length(selected.height[0]),
+    ),
+    replace(
+      `${trigger}[data-size="sm"]`,
+      "data-[size=sm]:h-7",
+      "height",
+      length(selected.height[1]),
+    ),
+    replace(trigger, "rounded-lg", "border-radius", radius(selected.trigger)),
+    replace(
+      trigger,
+      "data-[size=sm]:rounded-[min(var(--radius-md),10px)]",
+      "border-radius",
+      radius(selected.trigger),
+    ),
+    replace(popup, "rounded-lg", "border-radius", radius(selected.popup)),
+    replace(item, "rounded-md", "border-radius", radius(selected.item)),
+    replace(item, "pl-1.5", "padding-inline-start", length(widthPadding)),
+    replace(item, "py-1", "padding-block", length(heightPadding)),
+    replace(item, "gap-1.5", "gap", length(selected.gap)),
+  ];
+
+  if (compact)
+    sections.push(
+      rule(`:is(${trigger}, ${item})${utility("text-sm")}`, {
+        "font-size": length(12),
+        "line-height": style === "mira" ? "1.625" : "1.3333",
+      }),
+    );
+  if (style === "mira") sections.push(replace(popup, "min-w-36", "min-width", length(128)));
+  if (style === "mira" || style === "rhea")
+    sections.push(
+      rule(`${item}${utility("py-1")}`, {
+        "min-height": length(28),
+      }),
+    );
+  if (style === "maia" || style === "luma" || style === "rhea") {
+    sections.push(shadow(`${popup}${utility("shadow-md")}`, style === "maia" ? "2xl" : "lg"));
+  }
+  if (style === "sera")
+    sections.push(
+      replace(trigger, "pl-2.5", "padding-inline-start", "0"),
+      replace(trigger, "pr-2", "padding-inline-end", "0"),
+      rule(`${trigger}${utility("border-input")}:not(:focus-visible, [aria-invalid="true"])`, {
+        "border-color": "transparent transparent var(--input)",
+      }),
+    );
+  return sections.join("");
+}
+
 function dialogCss(profile: Profile, style: UiStyle) {
   const { dialog } = profile;
   const content = slot("dialog-content");
@@ -515,6 +595,7 @@ export function getUiStyleCss(value?: string | null): string {
     frameAndCardCss(profile, name),
     itemCss(profile),
     menuCss(profile, name),
+    selectCss(name),
     dialogCss(profile, name),
     tabsCss(profile),
     typographyCss(name),

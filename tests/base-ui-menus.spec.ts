@@ -50,6 +50,18 @@ test("Base UI context menu runs the action on the clicked flow node", async ({ p
   await expect(node).toContainText("Enterprise customer");
 });
 
+test("Base UI returns focus to the HTTP method button inside the InputGroup", async ({
+  page,
+  baseURL,
+}) => {
+  await openBase(page, baseURL, "preview/application/navbar/navbar-10");
+  const method = page.getByRole("button", { name: /^HTTP method:/ });
+  await method.click();
+  await page.getByRole("menuitem", { name: "POST", exact: true }).click();
+  await expect(method).toHaveAccessibleName("HTTP method: POST");
+  await expect(method).toBeFocused();
+});
+
 test("Base UI workspace menu returns focus inside the mobile Sidebar on Escape", async ({
   page,
   baseURL,

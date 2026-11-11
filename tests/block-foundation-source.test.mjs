@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { assembleBlockFiles } from "../src/lib/source-files.ts";
+import { UI_STYLES } from "../src/foundations/styles/index.ts";
 import {
   getFoundationComponentsConfig,
   selectFoundationSources,
@@ -49,14 +50,13 @@ test("block closure follows the selected foundation's providers and helper impor
 });
 
 test("starter registry configuration matches the chosen foundation and exported theme entry", () => {
-  for (const [foundation, style] of [
-    [base, "base-maia"],
-    [radix, "radix-nova"],
-  ]) {
-    const config = getFoundationComponentsConfig(foundation);
-    assert.equal(config.style, style);
-    assert.equal(config.tailwind.css, "src/theme.css");
-    assert.equal(config.aliases.ui, "@/components/ui");
-    assert.equal(config.registries["@reui"], "https://reui.io/r/{style}/{name}.json");
+  for (const primitive of ["base", "radix"]) {
+    for (const style of UI_STYLES) {
+      const config = getFoundationComponentsConfig({ primitive, style });
+      assert.equal(config.style, `${primitive}-${style}`);
+      assert.equal(config.tailwind.css, "src/theme.css");
+      assert.equal(config.aliases.ui, "@/components/ui");
+      assert.equal(config.registries["@reui"], "https://reui.io/r/{style}/{name}.json");
+    }
   }
 });

@@ -19,15 +19,23 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Item } from "@/components/ui/item";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { getUiStyleCss, UI_STYLES } from "@/foundations/styles";
+import { uiFoundation } from "@/lib/ui-foundation";
 import "@/index.css";
 
 export function Fixture() {
   const [style, setStyle] = useState("nova");
 
   return (
-    <main className="grid max-w-xl gap-4 p-8">
+    <main className="grid max-w-xl gap-4 p-8" data-library={uiFoundation.primitive}>
       <style id="fixture-style">{getUiStyleCss(style)}</style>
       <label>
         Component style
@@ -47,6 +55,17 @@ export function Fixture() {
         </Button>
       </div>
       <Input aria-label="Example input" data-testid="input" />
+      <Select defaultValue="first">
+        <SelectTrigger aria-label="Example select">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent position="popper" data-testid="select-content">
+          <SelectItem value="first" data-testid="select-item">
+            First choice
+          </SelectItem>
+          <SelectItem value="second">Second choice</SelectItem>
+        </SelectContent>
+      </Select>
       <Frame data-testid="frame">
         <FramePanel>Frame panel</FramePanel>
       </Frame>

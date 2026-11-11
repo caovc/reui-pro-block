@@ -1,6 +1,4 @@
 import assert from "node:assert/strict";
-import { createServer as createHttpServer } from "node:http";
-import { once } from "node:events";
 import { fileURLToPath } from "node:url";
 import { expect } from "@playwright/test";
 import { chromium } from "playwright";
@@ -102,75 +100,102 @@ const properties = {
   tabs: ["height", "border-top-left-radius"],
 };
 
+const expectedSelect = {
+  nova: [32, 10, 10, 4],
+  vega: [36, 8, 8, 6],
+  maia: [36, 26, 18, 8],
+  lyra: [32, 0, 0, 8],
+  mira: [28, 8, 10, 4],
+  luma: [36, 22, 22, 8],
+  sera: [40, 0, 0, 8],
+  rhea: [32, 18, 18, 6],
+};
+
 const root = fileURLToPath(new URL("../../", import.meta.url));
 const vite = await createViteServer({
   root,
   appType: "mpa",
-  server: { middlewareMode: true, hmr: false, watch: null },
+  server: { host: "127.0.0.1", port: 0, watch: null },
 });
-const server = createHttpServer(vite.middlewares);
 let browser;
 try {
-  server.listen(0, "127.0.0.1");
-  await once(server, "listening");
+  await vite.listen();
   browser = await chromium.launch();
-  const page = await browser.newPage({ viewport: { width: 900, height: 1100 } });
-  const url = `http://127.0.0.1:${server.address().port}/tests/ui-style-foundations/fixture.html`;
-  await page.goto(url);
-  const select = page.getByRole("combobox", { name: "Component style" });
+  for (const primitive of ["radix", "base"]) {
+    const page = await browser.newPage({ viewport: { width: 900, height: 1100 } });
+    const prefix = primitive === "base" ? "/base" : "";
+    const url = `http://127.0.0.1:${vite.httpServer.address().port}${prefix}/tests/ui-style-foundations/fixture.html`;
+    await page.goto(url);
+    await expect(page.locator("main")).toHaveAttribute("data-library", primitive);
+    const select = page.getByRole("combobox", { name: "Component style" });
 
-  async function checkSurface(style, surface) {
-    for (const [index, property] of properties[surface].entries()) {
-      await expect(page.getByTestId(surface)).toHaveCSS(
-        property,
-        `${expected[style][surface][index]}px`,
+    async function checkSurface(style, surface) {
+      for (const [index, property] of properties[surface].entries()) {
+        await expect(page.getByTestId(surface)).toHaveCSS(
+          property,
+          `${expected[style][surface][index]}px`,
+        );
+      }
+    }
+
+    assert.equal(getUiStyleCss("nova"), "");
+    assert.equal(getUiStyleCss("radix-nova"), "");
+    assert.equal(getUiStyleCss("constructor"), "");
+
+    for (const style of UI_STYLES) {
+      await select.selectOption(style);
+      assert.equal(await page.locator("#fixture-style").textContent(), getUiStyleCss(style));
+      assert.equal(getUiStyleCss(`base-${style}`), getUiStyleCss(`radix-${style}`));
+      for (const surface of ["button", "input", "frame", "card", "item", "tabs"]) {
+        await checkSurface(style, surface);
+      }
+      await expect(page.getByTestId("custom-button")).toHaveCSS("height", "48px");
+      const customRadius = await page.getByTestId("custom-button").evaluate((button) => {
+        return Number.parseFloat(getComputedStyle(button).borderTopLeftRadius);
+      });
+      assert.ok(customRadius > 100, `${style} preserves the custom pill radius`);
+      await expect(page.getByTestId("line-tabs")).toHaveCSS("border-top-left-radius", "0px");
+      await page.getByRole("button", { name: "Open menu" }).click();
+      await checkSurface(style, "menu");
+      await page.keyboard.press("Escape");
+      await expect(page.getByTestId("menu")).toHaveCount(0);
+      await page.getByRole("button", { name: "Open dialog" }).click();
+      await checkSurface(style, "dialog");
+      await page.keyboard.press("Escape");
+      await expect(page.getByTestId("dialog")).toHaveCount(0);
+      const [height, triggerRadius, popupRadius, itemPadding] = expectedSelect[style];
+      const trigger = page.getByRole("combobox", { name: "Example select" });
+      await expect(trigger).toHaveCSS("height", `${height}px`);
+      await expect(trigger).toHaveCSS("border-top-left-radius", `${triggerRadius}px`);
+      await trigger.click();
+      await expect(page.getByTestId("select-content")).toHaveCSS(
+        "border-top-left-radius",
+        `${popupRadius}px`,
+      );
+      await expect(page.getByTestId("select-item")).toHaveCSS("padding-top", `${itemPadding}px`);
+      await page.getByRole("option", { name: "Second choice" }).click();
+      await expect(trigger).toHaveAttribute("aria-expanded", "false");
+      console.log(
+        `${primitive}-${style}: button, input, Frame, Card, Item, menu, dialog, tabs and Select match`,
       );
     }
+
+    await select.selectOption("sera");
+    await expect(page.getByTestId("button")).toHaveCSS("text-transform", "uppercase");
+    await expect(page.getByTestId("input")).toHaveCSS("border-top-color", "rgba(0, 0, 0, 0)");
+    await select.selectOption("nova");
+    await checkSurface("nova", "button");
+
+    // The exact CSS returned for a starter also works after a fresh page load.
+    await page.reload();
+    const exported = await page.addStyleTag({ content: getUiStyleCss("luma") });
+    await checkSurface("luma", "frame");
+    await checkSurface("luma", "button");
+    await exported.evaluate((element) => element.remove());
+    await checkSurface("nova", "button");
+    await page.close();
   }
-
-  assert.equal(getUiStyleCss("nova"), "");
-  assert.equal(getUiStyleCss("radix-nova"), "");
-  assert.equal(getUiStyleCss("constructor"), "");
-
-  for (const style of UI_STYLES) {
-    await select.selectOption(style);
-    assert.equal(await page.locator("#fixture-style").textContent(), getUiStyleCss(style));
-    assert.equal(getUiStyleCss(`base-${style}`), getUiStyleCss(`radix-${style}`));
-    for (const surface of ["button", "input", "frame", "card", "item", "tabs"]) {
-      await checkSurface(style, surface);
-    }
-    await expect(page.getByTestId("custom-button")).toHaveCSS("height", "48px");
-    const customRadius = await page.getByTestId("custom-button").evaluate((button) => {
-      return Number.parseFloat(getComputedStyle(button).borderTopLeftRadius);
-    });
-    assert.ok(customRadius > 100, `${style} preserves the custom pill radius`);
-    await expect(page.getByTestId("line-tabs")).toHaveCSS("border-top-left-radius", "0px");
-    await page.getByRole("button", { name: "Open menu" }).click();
-    await checkSurface(style, "menu");
-    await page.keyboard.press("Escape");
-    await expect(page.getByTestId("menu")).toHaveCount(0);
-    await page.getByRole("button", { name: "Open dialog" }).click();
-    await checkSurface(style, "dialog");
-    await page.keyboard.press("Escape");
-    await expect(page.getByTestId("dialog")).toHaveCount(0);
-    console.log(`${style}: button, input, Frame, Card, Item, menu, dialog and tabs match`);
-  }
-
-  await select.selectOption("sera");
-  await expect(page.getByTestId("button")).toHaveCSS("text-transform", "uppercase");
-  await expect(page.getByTestId("input")).toHaveCSS("border-top-color", "rgba(0, 0, 0, 0)");
-  await select.selectOption("nova");
-  await checkSurface("nova", "button");
-
-  // The exact CSS returned for a starter also works after a fresh page load.
-  await page.reload();
-  const exported = await page.addStyleTag({ content: getUiStyleCss("luma") });
-  await checkSurface("luma", "frame");
-  await checkSurface("luma", "button");
-  await exported.evaluate((element) => element.remove());
-  await checkSurface("nova", "button");
 } finally {
   await browser?.close();
   await vite.close();
-  server.close();
 }

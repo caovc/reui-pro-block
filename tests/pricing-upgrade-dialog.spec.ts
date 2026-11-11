@@ -223,7 +223,9 @@ test("native dialog dismisses and restores focus, reopens with state, and keeps 
   await page.keyboard.up("ArrowUp");
   for (let i = 0; i < 9; i++) {
     await page.keyboard.press("Tab");
-    expect(await dialog.evaluate((el) => el.contains(document.activeElement))).toBe(true);
+    await expect
+      .poll(() => dialog.evaluate((el) => el.contains(document.activeElement)))
+      .toBe(true);
   }
   await expect(dialog.locator('.pud-plan-panel[data-active="false"]')).toHaveCount(2);
   for (const panel of await dialog.locator('.pud-plan-panel[data-active="false"]').all()) {
