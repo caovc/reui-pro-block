@@ -1,0 +1,113 @@
+.finance-grid [data-tone="focus"] {
+  --finance-tone: var(--color-info);
+  --finance-tone-text: var(--color-info-foreground);
+}
+.finance-grid [data-tone="success"] {
+  --finance-tone: var(--color-success);
+  --finance-tone-text: var(--color-success-foreground);
+}
+.finance-grid [data-tone="info"] {
+  --finance-tone: var(--color-blue-500);
+  --finance-tone-text: color-mix(in srgb, var(--color-blue-500) 82%, var(--color-foreground));
+}
+.finance-grid [data-tone="warning"] {
+  --finance-tone: var(--color-warning);
+  --finance-tone-text: var(--color-warning-foreground);
+}
+.finance-grid [data-tone="destructive"] {
+  --finance-tone: var(--color-destructive);
+  --finance-tone-text: var(--color-destructive-foreground);
+}
+.finance-grid [data-tone="muted"] {
+  --finance-tone: var(--color-muted-foreground);
+  --finance-tone-text: var(--color-foreground);
+}
+.finance-grid .finance-tile {
+  border-color: color-mix(in srgb, var(--finance-tone) 29%, var(--color-border));
+  background: color-mix(in srgb, var(--finance-tone) 6%, var(--color-card));
+}
+.finance-grid .finance-tone {
+  color: var(--finance-tone-text);
+}
+.finance-grid .finance-dot {
+  background-color: var(--finance-tone);
+}
+.finance-grid .finance-meter {
+  background: color-mix(in srgb, var(--finance-tone) 17%, transparent);
+}
+.finance-grid .finance-meter [data-slot="progress-indicator"] {
+  background: var(--finance-tone);
+}
+.finance-grid .finance-schedule {
+  position: relative;
+  min-width: 6rem;
+  height: 1rem;
+  isolation: isolate;
+}
+.finance-grid .finance-schedule-intervals {
+  position: absolute;
+  inset: 1px 0;
+  display: flex;
+  gap: 4px;
+}
+.finance-grid .finance-schedule-intervals i {
+  flex: 1;
+  border-radius: 2px;
+  background: var(--color-muted);
+}
+.finance-grid .finance-schedule-compact .finance-schedule-intervals {
+  inset: 4px 0;
+}
+.finance-grid .finance-schedule-compact .finance-schedule-intervals i {
+  border-radius: 999px;
+}
+.finance-grid .finance-schedule-plan,
+.finance-grid .finance-schedule-elapsed {
+  position: absolute;
+  top: 4px;
+  height: 8px;
+  border-radius: 999px;
+}
+.finance-grid .finance-schedule-plan {
+  background: color-mix(in srgb, var(--finance-tone) 24%, var(--color-muted));
+}
+.finance-grid .finance-schedule-elapsed {
+  background: var(--finance-tone);
+}
+.finance-grid .finance-schedule-marker {
+  position: absolute;
+  top: 2px;
+  height: 12px;
+  width: 2px;
+  border-radius: 2px;
+  background: var(--color-foreground);
+}
+.finance-grid .finance-schedule-slip {
+  position: absolute;
+  top: 3px;
+  height: 10px;
+  width: 5px;
+  border-radius: 1px;
+  border: 1px dashed var(--finance-tone);
+}
+.finance-grid [data-budget-density="compact"] tbody tr[data-row-id] {
+  height: 41px;
+}
+.finance-grid [data-budget-density="comfortable"] tbody tr[data-row-id] {
+  height: 52px;
+}
+
+.finance-grid [data-budget-density] [data-slot="scroll-area-viewport"] {
+  max-height: min(59vh, 31rem);
+}
+.finance-grid [data-slot="data-grid-table-foot"] {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+}
+
+@media (width < 768px) {
+  .finance-grid [data-budget-density] [data-slot="scroll-area-viewport"] {
+    max-height: min(63vh, 31.75rem);
+  }
+}

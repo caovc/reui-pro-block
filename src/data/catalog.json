@@ -3233,9 +3233,18 @@
         "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-22",
         "index": 17,
         "description": "Prospect account database with structured filters, intent summaries, lists and account handover."
+      },
+      {
+        "id": "data-grid-advanced-27",
+        "name": "Project Budget",
+        "category": "advanced",
+        "group": "data-grid",
+        "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-27",
+        "index": 18,
+        "description": "Project budget with live spend, schedule, contingency, line forecasts and decision history."
       }
     ],
-    "count": 18
+    "count": 19
   },
   {
     "id": "columns",

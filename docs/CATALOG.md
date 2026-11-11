@@ -1,8 +1,8 @@
 # Local implementation and public reference checklist
 
-Updated 2026-11-02 from `src/data/catalog.json`. The local catalog has 673 entries across 79 categories and 7 groups, plus 18 templates. Entries record reachable implementations and reference URLs; they do not assert pixel-identical completion.
+Updated 2026-11-11 from `src/data/catalog.json`. The local catalog has 677 entries across 79 categories and 7 groups, plus 18 templates. Each entry records a reachable implementation and its public reference.
 
-The 2026-11-02 public audit verified 672 official block IDs: the sitemap, full public metadata and all 79 category pages contain the same complete ID set. Every official ID is present locally, and all 672 short display titles match. The sole extra local entry is retained legacy `solution-dev-ops-7` (Deploy Board), outside the current official public indexes. The audit does not establish when that entry left the indexes or whether its old URL remains reachable.
+The 2026-11-02 audit found the same 672 block IDs in the sitemap, public metadata and all 79 category pages. The local snapshot matched all 672 IDs and short titles and included Bricklane's historical `solution-dev-ops-7` (Deploy Board). The November 11 update tracks the additions and the new Prospect Database route. [Update plan](plans/2026-11-11-catalog-update.md)
 
 See the [public catalog audit](public-catalog-audit-2026-11-02.md) and [response URLs, timestamps and SHA-256 evidence](public-catalog-audit-2026-11-02.json). These are metadata findings as of the recorded fetch window, separate from implementation fidelity and release acceptance. The [follow-up plan](catalog-followup-plan-2026-10-26.md) records scoped validation, retained failures and the pending next CI and Pages deployment.
 
@@ -392,7 +392,7 @@ See the [public catalog audit](public-catalog-audit-2026-11-02.md) and [response
 - [Cloud Rate Card](https://reui.io/blocks/data-grid/base/data-grid-base-8) — `data-grid-base-8`
 - [API Request Logs](https://reui.io/blocks/data-grid/base/data-grid-base-9) — `data-grid-base-9`
 
-## Data Grid / Advanced (17)
+## Data Grid / Advanced (19)
 
 - [Ad Campaign Performance](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-1) — `data-grid-advanced-1`
 - [Regional Store P&L](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-2) — `data-grid-advanced-2`
@@ -410,7 +410,9 @@ See the [public catalog audit](public-catalog-audit-2026-11-02.md) and [response
 - [Strategy Scorecard](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-14) — `data-grid-advanced-14`
 - [Retail P&L Outlook](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-15) — `data-grid-advanced-15`
 - [Store KPI Board](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-16) — `data-grid-advanced-16`
+- [Support Scorecard](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-17) — `data-grid-advanced-17`
 - [Prospect Database](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-22) — `data-grid-advanced-22`
+- [Project Budget](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-27) — `data-grid-advanced-27`
 
 ## Data Grid / Columns (5)
 
@@ -486,13 +488,14 @@ See the [public catalog audit](public-catalog-audit-2026-11-02.md) and [response
 - [Data Sync Activity](https://reui.io/blocks/chart/bar-chart/chart-45) — `chart-45`
 - [Sync Run History](https://reui.io/blocks/chart/bar-chart/chart-47) — `chart-47`
 
-## Charts / Composed Chart (5)
+## Charts / Composed Chart (6)
 
 - [Liquidity Flows](https://reui.io/blocks/chart/composed-chart/chart-19) — `chart-19`
 - [Sales vs Goal](https://reui.io/blocks/chart/composed-chart/chart-20) — `chart-20`
 - [Cashflow Trend](https://reui.io/blocks/chart/composed-chart/chart-21) — `chart-21`
 - [Operating Margin](https://reui.io/blocks/chart/composed-chart/chart-36) — `chart-36`
 - [Canary Rollback](https://reui.io/blocks/chart/composed-chart/chart-37) — `chart-37`
+- [Revenue Map](https://reui.io/blocks/chart/composed-chart/chart-56) — `chart-56`
 
 ## Charts / Line Chart (6)
 
@@ -540,11 +543,12 @@ See the [public catalog audit](public-catalog-audit-2026-11-02.md) and [response
 - [SLO Budgets](https://reui.io/blocks/chart/sparkline/chart-44) — `chart-44`
 - [Connection Health](https://reui.io/blocks/chart/sparkline/chart-46) — `chart-46`
 
-## Charts / Status Tracker (3)
+## Charts / Status Tracker (4)
 
 - [Cron Run History](https://reui.io/blocks/chart/status-tracker/chart-34) — `chart-34`
 - [Release Lanes](https://reui.io/blocks/chart/status-tracker/chart-38) — `chart-38`
 - [Deploy History](https://reui.io/blocks/chart/status-tracker/chart-39) — `chart-39`
+- [Working Agreements](https://reui.io/blocks/chart/status-tracker/chart-55) — `chart-55`
 
 ## AI & Agents / AI Chat (13)
 
