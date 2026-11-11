@@ -84,11 +84,7 @@ for (const library of ["radix", "base"] as const) {
       await page.getByRole("option", { name: "Status", exact: true }).click();
       await page.getByRole("option", { name: "is", exact: true }).click();
       const late = page.getByRole("option", { name: "Late", exact: true });
-      const value = schedule
-        .getByRole("toolbar", { name: "Filters", exact: true })
-        .getByRole("button", { name: "Select...", exact: true });
-      await expect(late.or(value).first()).toBeVisible();
-      if (await value.isVisible()) await value.click();
+      await expect(late).toBeVisible();
       await late.click();
       await expect(table.locator("tbody tr[data-row-id]")).toHaveCount(2);
       await expect(jobButton(page, "Pike Kitchen")).toBeVisible();
