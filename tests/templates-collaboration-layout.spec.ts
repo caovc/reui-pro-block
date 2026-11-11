@@ -91,15 +91,17 @@ test("Pulse mobile provider drawer returns focus after Escape and actual navigat
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/#/template-preview/pulse");
-  const trigger = page.getByRole("button", { name: "Open navigation", exact: true });
+  const trigger = page.getByRole("button", { name: "Toggle Sidebar", exact: true });
   await trigger.click();
-  const drawer = page.getByRole("dialog", { name: "Help Desk", exact: true });
+  const drawer = page.getByRole("dialog", { name: "Sidebar", exact: true });
   await expect.poll(async () => (await drawer.boundingBox())?.width).toBeCloseTo(292.5, 1);
   await expect(page.locator('[data-slot="sidebar-trigger"]')).toHaveCount(1);
   await page.keyboard.press("Escape");
   await expect(trigger).toBeFocused();
   await trigger.click();
   await drawer.getByRole("button", { name: "Settings", exact: true }).click();
+  await expect(drawer).toBeVisible();
+  await page.keyboard.press("Escape");
   await expect(drawer).toBeHidden();
   await expect(trigger).toBeFocused();
   await expect(page.locator('.ct-settings-section[aria-label="General Settings"]')).toBeVisible();

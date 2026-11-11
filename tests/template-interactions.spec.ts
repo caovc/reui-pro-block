@@ -148,18 +148,25 @@ test("Pulse ticket details open on the right and editing updates the selected ti
   page,
 }) => {
   await open(page, "pulse");
-  await page.getByText("TCK-4863", { exact: true }).click();
-  const detail = page.getByRole("dialog", { name: "TCK-4863" });
+  const ticket = page.getByRole("button", { name: "Open TCK-4863", exact: true });
+  await ticket.click();
+  const detail = page.getByRole("dialog", {
+    name: "Nightly export has finished empty since the schema change",
+    exact: true,
+  });
   await expect(detail).toContainText("Quanta Devices");
   expect((await detail.boundingBox())!.x).toBeGreaterThan(800);
-  await detail.getByRole("button", { name: "Edit", exact: true }).click();
-  const editor = page.getByRole("dialog", { name: "Edit escalation" });
-  await editor
-    .getByRole("textbox", { name: "What is blocking it" })
-    .fill("Invoice reconciliation is awaiting a reply.");
+  await detail.getByRole("button", { name: "More ticket actions", exact: true }).click();
+  await page.getByRole("menuitem", { name: "Edit ticket", exact: true }).click();
+  const editor = page.getByRole("dialog", { name: "Edit escalation", exact: true });
+  const updatedSubject = "Invoice reconciliation is awaiting a reply.";
+  await editor.getByRole("textbox", { name: "What is blocking it" }).fill(updatedSubject);
   await editor.getByRole("button", { name: "Save changes", exact: true }).click();
-  await page.getByText("TCK-4863", { exact: true }).click();
-  await expect(detail).toContainText("Invoice reconciliation is awaiting a reply.");
+  await expect(editor).toBeHidden();
+  await ticket.click();
+  await expect(page.getByRole("dialog", { name: updatedSubject, exact: true })).toContainText(
+    "Quanta Devices",
+  );
 });
 
 test("Filebox password reset returns to the sign-in and opens its drive", async ({ page }) => {

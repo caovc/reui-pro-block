@@ -253,12 +253,16 @@ test("Roster settings delete drafts, validate duplicate names and restore organi
 test("Pulse shared mobile navigation continues opening real leaf pages", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/#/template-preview/pulse");
-  await page.getByRole("button", { name: "Open navigation", exact: true }).click();
-  await page.getByRole("dialog").getByRole("button", { name: "Reports", exact: true }).click();
-  await expect(page.getByRole("dialog")).toHaveCount(0);
+  const trigger = page.getByRole("button", { name: "Toggle Sidebar", exact: true });
+  const sidebar = page.getByRole("dialog", { name: "Sidebar", exact: true });
+  await trigger.click();
+  await sidebar.getByRole("button", { name: "Reports", exact: true }).click();
+  await page.keyboard.press("Escape");
+  await expect(sidebar).toBeHidden();
   await expect(page.locator(".ct-report-scorecard")).toBeVisible();
-  await page.getByRole("button", { name: "Open navigation", exact: true }).click();
-  await page.getByRole("dialog").getByRole("button", { name: "Settings", exact: true }).click();
-  await expect(page.getByRole("dialog")).toHaveCount(0);
+  await trigger.click();
+  await sidebar.getByRole("button", { name: "Settings", exact: true }).click();
+  await page.keyboard.press("Escape");
+  await expect(sidebar).toBeHidden();
   await expect(page.getByRole("textbox", { name: "Help desk name", exact: true })).toBeVisible();
 });

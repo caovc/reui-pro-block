@@ -2,17 +2,29 @@ import { expect, test, type Locator, type Page, type TestInfo } from "@playwrigh
 
 const widths = [1440, 390] as const;
 
+async function navigatePulse(page: Page, width: number, name: "Dashboard" | "Settings") {
+  if (width === 390) {
+    await page.getByRole("button", { name: "Toggle Sidebar", exact: true }).click();
+    const sidebar = page.getByRole("dialog", { name: "Sidebar", exact: true });
+    await sidebar.getByRole("button", { name, exact: true }).click();
+    await page.keyboard.press("Escape");
+    await expect(sidebar).toBeHidden();
+  } else {
+    await page.getByRole("button", { name, exact: true }).filter({ visible: true }).first().click();
+  }
+}
+
 async function openSettings(page: Page, id: "pulse" | "roster", width: number) {
   await page.setViewportSize({ width, height: width === 390 ? 844 : 1000 });
   await page.goto(`/#/template-preview/${id}`);
-  if (width === 390) {
-    await page.getByRole("button", { name: "Open navigation", exact: true }).click();
-  }
-  const visibleButton = (name: string) =>
-    page.getByRole("button", { name, exact: true }).filter({ visible: true }).first();
   if (id === "pulse") {
-    await visibleButton("Settings").click();
+    await navigatePulse(page, width, "Settings");
   } else {
+    if (width === 390) {
+      await page.getByRole("button", { name: "Open navigation", exact: true }).click();
+    }
+    const visibleButton = (name: string) =>
+      page.getByRole("button", { name, exact: true }).filter({ visible: true }).first();
     if (!(await visibleButton("Organisation").isVisible())) await visibleButton("Settings").click();
     await visibleButton("Organisation").click();
   }
@@ -261,16 +273,9 @@ async function pulseFlow(page: Page, info: TestInfo, width: number) {
   await colorRow.getByRole("option", { name: "Violet", exact: true }).click();
   await root.getByRole("button", { name: "Save changes", exact: true }).click();
   await expect(root.getByText("All changes saved", { exact: true })).toBeVisible();
-  async function navigate(name: "Dashboard" | "Settings") {
-    if (width === 390) {
-      await page.getByRole("button", { name: "Open navigation", exact: true }).click();
-    }
-    await page.getByRole("button", { name, exact: true }).filter({ visible: true }).first().click();
-    await expect(page.getByRole("dialog")).toHaveCount(0);
-  }
-  await navigate("Dashboard");
+  await navigatePulse(page, width, "Dashboard");
   await expect(name).toHaveCount(0);
-  await navigate("Settings");
+  await navigatePulse(page, width, "Settings");
   await expect(name).toHaveValue(savedName);
   await expect(week).toHaveText("Tuesday");
   await expect(colorRow.getByRole("option", { name: "Violet", exact: true })).toHaveAttribute(

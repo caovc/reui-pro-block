@@ -289,8 +289,11 @@ test("Pulse settings reject invalid domains and import a unique domain list", as
 test("Pulse settings keep mobile domain and regional controls usable", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/#/template-preview/pulse");
-  await page.getByRole("button", { name: "Open navigation", exact: true }).click();
-  await page.getByRole("button", { name: "Settings", exact: true }).first().click();
+  await page.getByRole("button", { name: "Toggle Sidebar", exact: true }).click();
+  const sidebar = page.getByRole("dialog", { name: "Sidebar", exact: true });
+  await sidebar.getByRole("button", { name: "Settings", exact: true }).click();
+  await page.keyboard.press("Escape");
+  await expect(sidebar).toBeHidden();
   await page.getByRole("combobox", { name: "Region", exact: true }).click();
   await page.getByRole("option", { name: "European Union", exact: true }).click();
   await page.getByRole("button", { name: "Add domain", exact: true }).click();
