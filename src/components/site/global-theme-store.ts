@@ -51,26 +51,39 @@ function publish(next: ThemeSnapshot) {
   snapshot = next;
   for (const listener of listeners) listener();
 }
-export function setGlobalTheme(value: PreviewTheme, persist = true) {
-  const theme = normalizeTheme(value);
+function publishTheme(theme: PreviewTheme) {
   const current = getSnapshot();
   publish({ ...current, theme, dark: resolveDark(theme) });
-  if (persist) {
-    const params = new URLSearchParams(location.hash.split("?")[1]);
-    if (
-      window.parent === window &&
-      params.has("preset") &&
-      theme.primitive === uiFoundation.primitive
-    ) {
-      const url = getUiPresetUrl(theme);
-      if (url.href !== location.href) history.replaceState(history.state, "", url);
-    }
-    try {
-      localStorage.setItem(previewThemeStorageKey, JSON.stringify(theme));
-    } catch {
-      /* The in-memory theme remains usable when storage is unavailable. */
-    }
+}
+function persistTheme(theme: PreviewTheme) {
+  try {
+    localStorage.setItem(previewThemeStorageKey, JSON.stringify(theme));
+  } catch {
+    /* The in-memory theme remains usable when storage is unavailable. */
   }
+}
+export function setGlobalTheme(value: PreviewTheme, persist = true) {
+  const theme = normalizeTheme(value);
+  publishTheme(theme);
+  if (!persist) return;
+  const params = new URLSearchParams(location.hash.split("?")[1]);
+  if (
+    window.parent === window &&
+    params.has("preset") &&
+    theme.primitive === uiFoundation.primitive
+  ) {
+    const url = getUiPresetUrl(theme);
+    if (url.href !== location.href) history.replaceState(history.state, "", url);
+  }
+  persistTheme(theme);
+}
+export function syncGlobalThemeFromUrl() {
+  const params = new URLSearchParams(location.hash.split("?")[1]);
+  if (!params.has("preset")) return;
+  // Reading a shared preset must preserve the incoming route and its raw query.
+  const theme = readTheme(params);
+  publishTheme(theme);
+  if (window.parent === window) persistTheme(theme);
 }
 export function toggleGlobalTheme() {
   const current = getSnapshot();
@@ -132,10 +145,7 @@ if (typeof window !== "undefined") {
       publish({ ...current, dark: resolveDark(current.theme) });
     }
   });
-  window.addEventListener("hashchange", () => {
-    const params = new URLSearchParams(location.hash.split("?")[1]);
-    if (params.has("preset")) setGlobalTheme(readTheme(params), window.parent === window);
-  });
+  window.addEventListener("hashchange", syncGlobalThemeFromUrl);
   matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
     const current = getSnapshot();
     publish({ ...current, dark: resolveDark(current.theme) });

@@ -215,12 +215,16 @@ function untouchedRawEntries(value: string) {
     });
 }
 
-async function expectTheme(page: Page, mode: "light" | "dark") {
+async function expectTheme(page: Page, mode: "light" | "dark", { legacy = false } = {}) {
   await expect(page.locator("html")).toHaveClass(mode === "dark" ? /dark/ : /^(?!.*\bdark\b)/);
   const currentHash = await hash(page);
   expect(untouchedRawEntries(currentHash)).toEqual(untouchedRawEntries(themeQuery));
   const params = new URLSearchParams(currentHash.slice(currentHash.indexOf("?") + 1));
-  expect(JSON.parse(params.get("preset")!)).toEqual({ ...originalPreset, mode });
+  expect(JSON.parse(params.get("preset")!)).toEqual({
+    ...originalPreset,
+    ...(legacy ? {} : { primitive: "radix", style: "nova" }),
+    mode,
+  });
 }
 
 for (const id of merchants) {
@@ -256,7 +260,7 @@ for (const id of merchants) {
       page,
     }) => {
       await open(page, id, width, "/account/preferences", themeQuery);
-      await expectTheme(page, "light");
+      await expectTheme(page, "light", { legacy: true });
       const popup = await openAccountMenu(page, width);
       const themeRole = id === "surge" || id === "manifest" ? "radio" : "menuitemradio";
       if (id === "surge" || id === "manifest") {

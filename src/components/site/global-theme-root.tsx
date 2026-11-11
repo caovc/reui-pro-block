@@ -3,13 +3,14 @@ import { SlidersHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { getUiPresetUrl, navigateToUiPrimitive, uiFoundation } from "@/lib/ui-foundation";
-import { applyTheme, readTheme } from "./preview-theme";
+import { applyTheme } from "./preview-theme";
 import {
   closeGlobalCustomizer,
   openGlobalCustomizer,
   reopenCustomizerKey,
   restoreCustomizerFocus,
   setGlobalTheme,
+  syncGlobalThemeFromUrl,
   useGlobalTheme,
 } from "./global-theme-store";
 import "./global-theme.css";
@@ -61,8 +62,7 @@ export function GlobalThemeRoot({ children }: { children: ReactNode }) {
     window.addEventListener("hashchange", navigate);
     // Opening an explicit preset is a global choice. Ordinary iframe loading
     // only reads storage and must never overwrite a newer parent selection.
-    if (new URLSearchParams(location.hash.split("?")[1]).has("preset") && window.parent === window)
-      setGlobalTheme(readTheme(new URLSearchParams(location.hash.split("?")[1])));
+    if (window.parent === window) syncGlobalThemeFromUrl();
     return () => {
       media.removeEventListener("change", resize);
       window.removeEventListener("hashchange", navigate);

@@ -116,6 +116,8 @@ export async function expectPreset(
     .poll(() => page.evaluate(() => JSON.parse(localStorage.getItem("blocks-preview-theme-v2")!)))
     .toEqual({
       ...preferences,
+      primitive: "radix",
+      style: "nova",
       mode,
     });
 }
