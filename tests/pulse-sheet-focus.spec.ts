@@ -6,7 +6,7 @@ for (const primitive of ["radix", "base"] as const) {
   test(`Pulse ${primitive} restores Dashboard focus after dismissing, editing and deleting a ticket`, async ({
     page,
   }) => {
-    await page.goto(`${primitive === "base" ? "/base/" : "/"}#/template-preview/pulse`);
+    await page.goto(`${primitive === "base" ? "./base/" : "./"}#/template-preview/pulse`);
     await expect(page.locator("html")).toHaveAttribute("data-ui-primitive", primitive);
 
     const subject = "Nightly export has finished empty since the schema change";
