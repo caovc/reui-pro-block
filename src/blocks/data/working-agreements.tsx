@@ -68,6 +68,7 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { downloadCsv } from "./data-utils";
+import { ReuiScoreRings } from "./reui-free-chart-primitives";
 import { WorkingAgreementsMatrix } from "./working-agreements-matrix";
 import {
   agreementAreas,
@@ -91,58 +92,6 @@ const sortOptions = [
 ] as const;
 type Sort = (typeof sortOptions)[number]["id"];
 type AreaFilter = AgreementArea | "all";
-
-function ScoreRings({
-  values,
-  label,
-}: {
-  values: { score: number; color: string }[];
-  label: string;
-}) {
-  return (
-    <svg role="img" aria-label={label} viewBox="0 0 52 52" className="size-12 shrink-0">
-      {values.map(({ score, color }, index) => {
-        const radius = 22 - index * 4.5;
-        return (
-          <g key={color} transform="rotate(-90 26 26)">
-            <circle
-              cx="26"
-              cy="26"
-              r={radius}
-              fill="none"
-              stroke={color}
-              strokeOpacity=".19"
-              strokeWidth="3.4"
-            />
-            <circle
-              cx="26"
-              cy="26"
-              r={radius}
-              fill="none"
-              stroke={color}
-              strokeWidth="3.4"
-              strokeLinecap="round"
-              pathLength="100"
-              strokeDasharray={`${score} 100`}
-            />
-          </g>
-        );
-      })}
-      {values.length === 1 && (
-        <text
-          x="26"
-          y="26"
-          textAnchor="middle"
-          dominantBaseline="central"
-          fill="currentColor"
-          fontSize="12"
-        >
-          {values[0].score}%
-        </text>
-      )}
-    </svg>
-  );
-}
 
 const scoreConfig = { score: { label: "Weeks kept", color: "#2ba99e" } };
 
@@ -187,10 +136,12 @@ function AgreementSummary({ score }: { score: ReturnType<typeof agreementScore> 
           </span>
         </div>
         <div className="flex items-center gap-3">
-          <ScoreRings
+          <ReuiScoreRings
             values={[{ score: score.total, color: "#2ba99e" }]}
             label={`${score.total}% of finished weeks kept`}
-          />
+          >
+            <span className="text-xs">{score.total}%</span>
+          </ReuiScoreRings>
           <div className="min-w-0 flex-1">
             <div className="text-xs text-muted-foreground">Weekly score</div>
             <ChartContainer
@@ -235,7 +186,10 @@ function AgreementSummary({ score }: { score: ReturnType<typeof agreementScore> 
               </li>
             ))}
           </ul>
-          <ScoreRings values={score.areaScores} label="Weeks kept by area, four concentric rings" />
+          <ReuiScoreRings
+            values={score.areaScores}
+            label="Weeks kept by area, four concentric rings"
+          />
         </div>
       </section>
     </FramePanel>

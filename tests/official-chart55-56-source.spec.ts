@@ -41,6 +41,7 @@ const targets: { target: SourceTarget; leaves: string[] }[] = [
       requiredFiles: [
         ...agreements,
         `${chartFiles}status-tracker.tsx`,
+        `${chartFiles}reui-free-chart-primitives.tsx`,
         "src/components/reui/frame.tsx",
         "src/components/reui/number-field.tsx",
         "src/components/reui/badge.tsx",

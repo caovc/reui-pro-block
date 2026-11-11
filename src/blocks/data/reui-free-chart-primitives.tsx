@@ -23,6 +23,7 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from "@/components/ui/chart";
+import { cn } from "@/lib/utils";
 
 // c-chart-8 True3DBar: retained four faces, projection, face opacities and corners.
 // Props narrowed from the upstream SVGProps/any signature to the coordinates used here.
@@ -231,6 +232,68 @@ export function ReuiDonut({
           {children}
         </PieChart>
       </ChartContainer>
+    </div>
+  );
+}
+
+// Compact c-chart-25 for status summaries and numeric scores in table cells.
+const scoreRingConfig = { score: { label: "Score" } } satisfies ChartConfig;
+
+export function ReuiScoreRings({
+  values,
+  label,
+  size = 48,
+  className,
+  children,
+}: {
+  values: readonly { score: number; color: string }[];
+  label: string;
+  size?: number;
+  className?: string;
+  children?: ReactNode;
+}) {
+  const data = values.toReversed().map(({ score, color }) => ({ score, fill: color }));
+  return (
+    <div
+      className={cn("relative inline-grid shrink-0 place-items-center align-middle", className)}
+      style={{ width: size, height: size }}
+      role="img"
+      aria-label={label}
+      data-reui-chart="c-chart-25"
+    >
+      <ChartContainer
+        config={scoreRingConfig}
+        className="size-full min-w-0 aspect-square"
+        initialDimension={{ width: size, height: size }}
+        aria-hidden="true"
+      >
+        <RadialBarChart
+          accessibilityLayer={false}
+          data={data}
+          innerRadius={values.length === 1 ? "70%" : "25%"}
+          outerRadius="96%"
+          margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
+          startAngle={90}
+          endAngle={-270}
+        >
+          <PolarAngleAxis
+            type="number"
+            domain={[0, 100]}
+            angleAxisId={0}
+            tick={false}
+            tickLine={false}
+            axisLine={false}
+          />
+          <RadialBar
+            dataKey="score"
+            background={{ fill: "var(--muted)" }}
+            barSize={size > 32 ? 3.2 : 2.5}
+            cornerRadius={10}
+            isAnimationActive={false}
+          />
+        </RadialBarChart>
+      </ChartContainer>
+      {children && <span className="pointer-events-none absolute tabular-nums">{children}</span>}
     </div>
   );
 }
