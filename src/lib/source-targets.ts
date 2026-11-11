@@ -767,6 +767,7 @@ export function templateImplementationTargets(template: {
   ];
   return [
     ...modules.map((module) => `src/templates/${template.family}/${module}.tsx`),
+    ...(template.id === "mesh" ? ["src/components/reui/progress-circle.tsx"] : []),
     ...(["flowly", "tempo", "flux", "cohort", "roster", "surge"].includes(template.id)
       ? ["src/components/ui/template-progress.tsx"]
       : []),

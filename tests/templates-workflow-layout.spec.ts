@@ -231,6 +231,18 @@ for (const primitive of ["radix", "base"] as const) {
     const taskPreview = page.locator('[data-drag-preview="item"]');
     await expect(taskPreview).toContainText(taskName);
     await expect(taskPreview).toHaveAttribute("inert", "");
+    const previewFooter = taskPreview.locator(".wf-mesh-task-footer");
+    await expect(previewFooter).toContainText("Nora Vale");
+    await expect(previewFooter.locator('[data-slot="badge"]')).toHaveText("Oct 17");
+    await expect(previewFooter.locator('[role="progressbar"]')).toHaveAttribute(
+      "aria-valuenow",
+      "68",
+    );
+    const footerBox = (await previewFooter.boundingBox())!;
+    const metricsBox = (await previewFooter.locator(".wf-mesh-task-metrics").boundingBox())!;
+    expect(Math.abs(footerBox.x + footerBox.width - metricsBox.x - metricsBox.width)).toBeLessThan(
+      1,
+    );
     expect(Math.abs((await taskPreview.boundingBox())!.width - taskBox.width)).toBeLessThan(1);
     await page.keyboard.press("Escape");
     await page.mouse.up();
@@ -243,6 +255,56 @@ for (const primitive of ["radix", "base"] as const) {
     await page.keyboard.press("Escape");
     await expect(lanePreview).toHaveCount(0);
     await expect(handle).toBeFocused();
+  });
+
+  test(`${primitive} Mesh task metadata aligns at opposite ends on desktop and phone`, async ({
+    page,
+  }) => {
+    const prefix = primitive === "base" ? "./base/" : "./";
+    await page.setViewportSize({ width: 1920, height: 900 });
+    await page.goto(`${prefix}#/template-preview/mesh`);
+    await expect(page.locator("html")).toHaveAttribute("data-ui-primitive", primitive);
+    await page.getByRole("button", { name: "Projects", exact: true }).click();
+
+    const board = page.getByRole("region", { name: "Q4 Launch Board", exact: true });
+    const card = board
+      .locator(".wf-board-card")
+      .filter({ hasText: "Write the Route Planner product brief" });
+    const footer = card.locator(".wf-mesh-task-footer");
+    const owner = footer.locator(".wf-person");
+    const metrics = footer.locator(".wf-mesh-task-metrics");
+    const date = metrics.locator('[data-slot="badge"]');
+    const completion = metrics.getByRole("progressbar", { name: "Completion" });
+    await expect(owner).toHaveText("Leo Grant");
+    await expect(date).toHaveText("Sep 24");
+    await expect(completion).toHaveAttribute("aria-valuenow", "100");
+    const indicator = '[data-slot="progress-circle-indicator"]';
+    await expect(completion.locator(indicator)).toHaveClass(/text-emerald-500/);
+    await expect(board.locator('[aria-valuenow="68"]').locator(indicator)).toHaveClass(
+      /text-amber-500/,
+    );
+    await expect(board.locator('[aria-valuenow="12"]').locator(indicator)).toHaveClass(
+      /text-rose-500/,
+    );
+
+    for (const width of [1920, 390]) {
+      await page.setViewportSize({ width, height: 900 });
+      const row = (await footer.boundingBox())!;
+      const person = (await owner.boundingBox())!;
+      const numbers = (await metrics.boundingBox())!;
+      expect(Math.abs(row.x - person.x)).toBeLessThan(1);
+      expect(Math.abs(row.x + row.width - numbers.x - numbers.width)).toBeLessThan(1);
+      expect(numbers.x - person.x - person.width).toBeGreaterThanOrEqual(8);
+      expect(person.height).toBe(24);
+      expect(numbers.height).toBe(20);
+      expect(Math.abs(person.y + person.height / 2 - numbers.y - numbers.height / 2)).toBeLessThan(
+        1,
+      );
+      expect((await date.locator("svg").boundingBox())?.width).toBe(14);
+      expect((await completion.locator('[data-slot="progress-circle"]').boundingBox())?.width).toBe(
+        17,
+      );
+    }
   });
 }
 

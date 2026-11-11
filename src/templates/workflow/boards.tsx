@@ -14,6 +14,8 @@ import {
   KanbanOverlay,
 } from "@/components/reui/kanban";
 import { Frame, FramePanel } from "@/components/reui/frame";
+import { Badge } from "@/components/reui/badge";
+import { ProgressCircle } from "@/components/reui/progress-circle";
 export type Task = {
   health?: string;
   id: string;
@@ -261,6 +263,41 @@ const tempoRows = [
   ["Done", "Low", "1043", "design", "Motion guidelines", "Sophie Bennett", "Jul 06", 100],
   ["Done", "Medium", "1045", "qa", "Accessibility regression tests", "Liam Carter", "Jul 05", 100],
 ];
+function MeshTaskFooter({ task }: { task: Task }) {
+  const progress = Math.max(0, Math.min(100, task.progress));
+  const ringColor =
+    progress >= 75 ? "text-emerald-500" : progress >= 40 ? "text-amber-500" : "text-rose-500";
+
+  return (
+    <footer className="wf-mesh-task-footer">
+      <Person name={task.owner} />
+      <div className="wf-mesh-task-metrics">
+        <Badge variant="outline" className="gap-1.5 bg-background font-normal">
+          <CalendarDays className="size-3.5 text-muted-foreground" aria-hidden="true" />
+          <span>{task.date}</span>
+        </Badge>
+        <div
+          className="wf-mesh-task-completion"
+          role="progressbar"
+          aria-label="Completion"
+          aria-valuenow={progress}
+        >
+          <div className="grid size-5 shrink-0 place-items-center" aria-hidden="true">
+            <ProgressCircle
+              value={progress}
+              size={17}
+              strokeWidth={2}
+              trackClassName="text-border"
+              indicatorClassName={`${ringColor} motion-reduce:transition-none`}
+            />
+          </div>
+          <span>{progress}%</span>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
 export function ProjectBoard({
   kind,
   createOpen,
@@ -316,18 +353,22 @@ export function ProjectBoard({
           </div>
           {kind === "tempo" && <small className="wf-muted">{t.tag}</small>}
           <strong className={t.status === "Done" ? "wf-completed" : ""}>{t.name}</strong>
-          <footer>
-            <Person name={t.owner} index={i} />
-            <span className="wf-date-chip">
-              <CalendarDays className="size-3" />
-              {t.date}
-            </span>
-            <span
-              className="wf-board-progress"
-              style={{ "--progress": `${t.progress}%` } as React.CSSProperties}
-            />
-            <span>{t.progress}%</span>
-          </footer>
+          {kind === "mesh" ? (
+            <MeshTaskFooter task={t} />
+          ) : (
+            <footer>
+              <Person name={t.owner} index={i} />
+              <span className="wf-date-chip">
+                <CalendarDays className="size-3" />
+                {t.date}
+              </span>
+              <span
+                className="wf-board-progress"
+                style={{ "--progress": `${t.progress}%` } as React.CSSProperties}
+              />
+              <span>{t.progress}%</span>
+            </footer>
+          )}
         </FramePanel>
       </Frame>
     );

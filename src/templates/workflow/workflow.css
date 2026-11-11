@@ -2499,21 +2499,27 @@
 .wf-board-card-meta > small {
   font-size: 11px;
 }
-.wf-mesh-board .wf-board-progress {
-  flex: none;
-  height: 16px;
-  width: 16px;
-  min-width: 16px;
-  border-radius: 50%;
-  background: conic-gradient(#10b981 var(--progress), #e5e5e5 var(--progress));
-  position: relative;
+.wf-board-card-frame .wf-mesh-task-footer {
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 3px;
 }
-.wf-mesh-board .wf-board-progress:after {
-  content: "";
-  position: absolute;
-  inset: 2px;
-  border-radius: 50%;
-  background: white;
+.wf-mesh-task-footer > .wf-person {
+  max-width: none;
+  gap: 8px;
+  font-weight: 500;
+  line-height: 16px;
+}
+.wf-mesh-task-metrics,
+.wf-mesh-task-completion {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 6px;
+  color: var(--foreground);
+  font-size: 12px;
+  line-height: 16px;
+  font-variant-numeric: tabular-nums;
 }
 .wf-mesh .wf-content:has(.wf-native-board) {
   padding-top: 15px;

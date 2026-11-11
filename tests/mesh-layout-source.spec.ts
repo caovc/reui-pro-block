@@ -22,6 +22,7 @@ const implementationPaths = [
   "src/templates/workflow/workflow-layout.css",
   "src/templates/workflow/workflow.css",
   "src/templates/workflow/boards.tsx",
+  "src/components/reui/progress-circle.tsx",
 ] as const;
 const archiveTarget: SourceTarget = {
   id: "mesh",
