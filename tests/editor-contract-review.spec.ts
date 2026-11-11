@@ -22,13 +22,17 @@ async function selection(editor: Locator) {
 
 async function moveCaretTo(page: Page, editor: Locator, target: number) {
   await expect.poll(async () => (await selection(editor)).synchronized).toBe(true);
-  const caret = await selection(editor);
-  expect(caret.from).toBe(caret.to);
-  const key = caret.from > target ? "ArrowLeft" : "ArrowRight";
-  for (let step = 0; step < Math.abs(caret.from - target); step++) await page.keyboard.press(key);
-  await expect
-    .poll(() => selection(editor))
-    .toMatchObject({ from: target, to: target, synchronized: true });
+  let caret = await selection(editor);
+  const limit = Math.abs(caret.from - target) * 2 + 2;
+  // Chromium can visit another DOM caret at a mark boundary without changing
+  // the editor position. Read the synchronized position after each key.
+  for (let step = 0; caret.from !== target && step < limit; step++) {
+    expect(caret.from).toBe(caret.to);
+    await page.keyboard.press(caret.from > target ? "ArrowLeft" : "ArrowRight");
+    await expect.poll(async () => (await selection(editor)).synchronized).toBe(true);
+    caret = await selection(editor);
+  }
+  expect(caret).toMatchObject({ from: target, to: target, synchronized: true });
 }
 
 async function splitRevision(page: Page, editor: Locator, tag: "ins" | "del", text: string) {
