@@ -3217,16 +3217,25 @@
         "description": "Store sales KPIs with country groups, monthly comparison charts, native sliders and local store editing."
       },
       {
+        "id": "data-grid-advanced-17",
+        "name": "Support Scorecard",
+        "category": "advanced",
+        "group": "data-grid",
+        "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-17",
+        "index": 16,
+        "description": "Support agent QA and customer satisfaction scorecard with nested filters, reviews and coaching."
+      },
+      {
         "id": "data-grid-advanced-22",
         "name": "Prospect Database",
         "category": "advanced",
         "group": "data-grid",
         "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-22",
-        "index": 16,
+        "index": 17,
         "description": "Prospect account database with structured filters, intent summaries, lists and account handover."
       }
     ],
-    "count": 17
+    "count": 18
   },
   {
     "id": "columns",

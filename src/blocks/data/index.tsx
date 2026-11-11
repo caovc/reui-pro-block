@@ -71,6 +71,7 @@ export default function DataBlock({ block }: BlockProps) {
       "data-grid-advanced-14",
       "data-grid-advanced-15",
       "data-grid-advanced-16",
+      "data-grid-advanced-17",
       "data-grid-advanced-22",
     ].includes(block.id);
     return (
