@@ -7,6 +7,7 @@ import { AiOperations } from "./ai-operations";
 import { useAiOperationsModel } from "./ai-operations-model";
 import { useTempoReportsModel } from "./workflow-models";
 import { useState } from "react";
+import { SidebarNavigation } from "@/components/reui/sidebar";
 import {
   Activity,
   ArrowRight,
@@ -103,6 +104,17 @@ const seed = [
     ref: "DOC-18",
   },
 ];
+const taskNavigationItems = ["My tasks", "Team tasks", "Board", "Calendar"].map((label) => ({
+  label,
+}));
+const savedViewItems = [
+  { label: "Assigned to me", icon: <CircleUser />, badge: "12" },
+  { label: "Active sprint", icon: <Activity />, badge: "24" },
+  { label: "Week ahead", icon: <CalendarDays />, badge: "8" },
+  { label: "Recent activity", icon: <Clock />, badge: "4" },
+];
+type TaskScope = "My tasks" | "Team tasks";
+
 export default function Tempo() {
   const operationsModel = useAiOperationsModel();
   const segmentRecords = useTempoReportsModel();
@@ -117,11 +129,42 @@ export default function Tempo() {
   const [newTask, setNewTask] = useState(false);
   const [selected, setSelected] = useState("");
   const [taskView, setTaskView] = useState("List");
+  const [taskScope, setTaskScope] = useState<TaskScope>("Team tasks");
+  const [savedView, setSavedView] = useState("");
+  const myTasks = view === "Tasks" && taskView === "List" && taskScope === "My tasks";
   const filtered = rows.filter(
     (r) =>
       `${r.name} ${r.owner} ${r.id}`.toLowerCase().includes(query.toLowerCase()) &&
-      (!exception || r.status === "Blocked"),
+      (!exception || r.status === "Blocked") &&
+      (!myTasks || r.owner === "Alex Johnson"),
   );
+
+  function navigate(value: string) {
+    setSavedView("");
+    setView(value);
+  }
+
+  function selectTaskNavigation(value: string) {
+    setSavedView("");
+    setQuery("");
+    setException(false);
+    if (value === "My tasks" || value === "Team tasks") {
+      setTaskScope(value);
+      setTaskView("List");
+    } else {
+      setTaskView(value);
+    }
+  }
+
+  function selectSavedView(value: string) {
+    setView("Tasks");
+    setSavedView(value);
+    setQuery("");
+    setException(false);
+    setTaskScope(value === "Assigned to me" ? "My tasks" : "Team tasks");
+    setTaskView(value === "Week ahead" ? "Calendar" : value === "Active sprint" ? "Board" : "List");
+  }
+
   const taskFields: WorkflowField<(typeof seed)[number]>[] = [
     {
       key: "id",
@@ -249,7 +292,7 @@ export default function Tempo() {
       dark
       retainExtraWhenCollapsed
       view={view}
-      setView={setView}
+      setView={navigate}
       sidebarHeader={<TempoSidebarHeader notificationsModel={notificationsModel} />}
       headerContent={({ view: currentView, onOpenSettings }) => (
         <TempoHeader
@@ -269,7 +312,7 @@ export default function Tempo() {
         <TempoContextPanel
           open={contextOpen}
           onShowAll={() => {
-            setView("Tasks");
+            navigate("Tasks");
             setTaskView("Calendar");
           }}
         />
@@ -282,18 +325,13 @@ export default function Tempo() {
       ]}
       taskNavigation={
         view === "Tasks" ? (
-          <div className="wf-task-subnav">
-            {["My tasks", "Team tasks", "Board", "Calendar"].map((x) => (
-              <Button
-                key={x}
-                variant={taskView === x ? "secondary" : "ghost"}
-                size="sm"
-                onClick={() => setTaskView(x.includes("tasks") ? "List" : x)}
-              >
-                {x}
-              </Button>
-            ))}
-          </div>
+          <SidebarNavigation
+            className="wf-task-subnav wf-native-navigation tempo-task-navigation"
+            items={taskNavigationItems}
+            active={savedView ? "" : taskView === "List" ? taskScope : taskView}
+            onSelect={selectTaskNavigation}
+            showTooltips={false}
+          />
         ) : undefined
       }
       extra={
@@ -313,35 +351,15 @@ export default function Tempo() {
             </div>
           )}
 
-          <div className="wf-nav-group">
-            <p>Saved Views</p>
-            {[
-              { label: "Assigned to me", icon: CircleUser, count: "12" },
-              { label: "Active sprint", icon: Activity, count: "24" },
-              { label: "Week ahead", icon: CalendarDays, count: "8" },
-              { label: "Recent activity", icon: Clock, count: "4" },
-            ].map(({ label, icon: Icon, count }) => (
-              <Button
-                key={label}
-                variant="ghost"
-                className="wf-nav-button"
-                onClick={() => {
-                  setView("Tasks");
-                  setTaskView(
-                    label === "Week ahead"
-                      ? "Calendar"
-                      : label === "Active sprint"
-                        ? "Board"
-                        : "List",
-                  );
-                  setQuery(label === "Assigned to me" ? "Alex" : "");
-                }}
-              >
-                <Icon />
-                {label}
-                <small>{count}</small>
-              </Button>
-            ))}
+          <div className="wf-nav-group tempo-saved-views">
+            <SidebarNavigation
+              className="wf-native-navigation"
+              label="Saved Views"
+              items={savedViewItems}
+              active={view === "Tasks" ? savedView : ""}
+              onSelect={selectSavedView}
+              showTooltips={false}
+            />
           </div>
           <TempoUsage />
         </>
@@ -411,7 +429,7 @@ export default function Tempo() {
             </div>
             <div className="wf-summary">
               <span>128 tasks were completed this week, 8% above target across all projects.</span>
-              <Button variant="ghost" size="sm" onClick={() => setView("Reports")}>
+              <Button variant="ghost" size="sm" onClick={() => navigate("Reports")}>
                 Show full analytics
                 <ArrowRight />
               </Button>
@@ -512,8 +530,14 @@ export default function Tempo() {
           open={newTask}
           onClose={() => setNewTask(false)}
           onCreate={(value) => {
-            setRows([...rows, { ...value, id: `TASK-${2054 + rows.length - seed.length}` }]);
-            setView("Tasks");
+            setRows((current) => [
+              { ...value, id: `TASK-${2054 + current.length - seed.length}` },
+              ...current,
+            ]);
+            navigate("Tasks");
+            setTaskScope("Team tasks");
+            setQuery("");
+            setException(false);
             setTaskView("List");
           }}
         />

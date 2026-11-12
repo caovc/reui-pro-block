@@ -106,6 +106,31 @@
   display: none;
 }
 
+.tempo-task-navigation {
+  width: auto;
+}
+
+.tempo-task-navigation [data-slot="sidebar-menu"] {
+  gap: 3px;
+}
+
+.tempo-saved-views [data-slot="sidebar-menu-badge"] {
+  right: 8px;
+  border: 0;
+  padding: 0;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+/* Card actions move below the title at this breakpoint. Let the queue header
+   grow with its wrapped controls so the following table cannot cover them. */
+@media (max-width: 1200px) {
+  .wf-root.wf-reui .wf-tempo-queue > [data-slot="card-header"] {
+    height: auto;
+    min-height: 58px;
+  }
+}
+
 /* The existing overview used fixed light header fills. Keep those surfaces
    readable when the actual global theme changes, scoped to Tempo consumers. */
 .dark .wf-root.wf-reui .wf-summary,
