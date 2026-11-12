@@ -9,6 +9,11 @@ const assets = import.meta.glob("/src/blocks/**/assets/**/*.{jpg,jpeg,png,webp,s
   import: "default",
   eager: true,
 }) as Record<string, string>;
+const rawSvgAssets = import.meta.glob("/src/blocks/**/assets/**/*.svg", {
+  query: "?raw",
+  import: "default",
+  eager: true,
+}) as Record<string, string>;
 const packageManifest = import.meta.glob("/package.json", {
   query: "?raw",
   import: "default",
@@ -35,6 +40,12 @@ export async function downloadBundle(block: BlockMeta) {
           (referenceFont && path.startsWith("/src/blocks/assets/")),
       )
       .map(async ([path, url]) => {
+        if (path.endsWith(".svg")) {
+          const source = rawSvgAssets[path];
+          if (source === undefined) throw new Error(`Could not include raw SVG ${path}`);
+          payload[path.slice(1)] = strToU8(source);
+          return;
+        }
         const response = await fetch(url);
         if (!response.ok) throw new Error(`Could not include asset ${path}`);
         payload[path.slice(1)] = new Uint8Array(await response.arrayBuffer());
