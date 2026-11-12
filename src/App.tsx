@@ -240,6 +240,8 @@ export default function App() {
   const [sidebar, setSidebar] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const searchTrigger = useRef<HTMLButtonElement>(null);
+  const searchReturnFocus = useRef<HTMLElement | null>(null);
   const [about, setAbout] = useState(false);
   const [page, setPage] = useState(1);
   const segments = hash.split("?")[0].split("/").filter(Boolean);
@@ -278,12 +280,17 @@ export default function App() {
           document.querySelector<HTMLInputElement>('[aria-label="Search templates"]')?.focus();
           return;
         }
+        if (!searchOpen) {
+          const active = document.activeElement;
+          searchReturnFocus.current =
+            active instanceof HTMLElement && active !== document.body ? active : null;
+        }
         setSearchOpen((v) => !v);
       }
     };
     window.addEventListener("keydown", listener);
     return () => window.removeEventListener("keydown", listener);
-  }, [isTemplates]);
+  }, [isTemplates, searchOpen]);
   function toggleFavorite(b: BlockMeta) {
     const key = blockKey(b);
     setFavorites((current) =>
@@ -510,15 +517,19 @@ export default function App() {
         </nav>
         <div className="header-actions">
           <Button
+            ref={searchTrigger}
             variant="outline"
             className="search-trigger"
-            onClick={() =>
-              isTemplates
-                ? document
-                    .querySelector<HTMLInputElement>('[aria-label="Search templates"]')
-                    ?.focus()
-                : setSearchOpen(true)
-            }
+            onClick={(event) => {
+              if (isTemplates) {
+                document
+                  .querySelector<HTMLInputElement>('[aria-label="Search templates"]')
+                  ?.focus();
+                return;
+              }
+              if (!searchOpen) searchReturnFocus.current = event.currentTarget;
+              setSearchOpen(true);
+            }}
           >
             <Search data-icon="inline-start" />
             <span>{isTemplates ? "Search templates..." : "Search blocks..."}</span>
@@ -847,7 +858,21 @@ export default function App() {
         </SheetContent>
       </Sheet>
       <Dialog open={searchOpen} onOpenChange={setSearchOpen}>
-        <DialogContent className="gap-0 p-0">
+        <DialogContent
+          className="gap-0 p-0"
+          onCloseAutoFocus={(event) => {
+            const target = [searchReturnFocus.current, searchTrigger.current].find(
+              (element) =>
+                element?.isConnected &&
+                element.getClientRects().length > 0 &&
+                getComputedStyle(element).visibility === "visible",
+            );
+            if (target) {
+              event.preventDefault();
+              target.focus({ preventScroll: true });
+            }
+          }}
+        >
           <DialogTitle className="sr-only">Search all blocks</DialogTitle>
           <DialogDescription className="sr-only">
             Find a layout by name or category.

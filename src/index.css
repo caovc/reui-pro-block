@@ -282,6 +282,16 @@ a {
   color: var(--muted-foreground);
   font-size: 12px;
 }
+.site-header .search-trigger > span {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.site-header .search-trigger > kbd,
+.site-header .search-trigger > svg {
+  flex-shrink: 0;
+}
 kbd {
   font-family: inherit;
   font-size: 10px;

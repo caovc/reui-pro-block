@@ -6,11 +6,17 @@ Implemented on 2026-10-23 for the user’s request to make the preview customize
 
 The global Customize button is available in the site header and template toolbar. A compact, full-height left rail replaces the category sidebar on desktop; phones use the existing modal Sheet, including focus containment and Escape/trigger focus restoration. The panel follows the public ReUI reference’s small labels, selected values, right-side icons/swatches, pop-out options and pinned preset actions. It uses Bricklane’s original branding and loads no ReUI reference media.
 
-Settings apply to site chrome, catalog miniatures, component iframes, template workspaces and template thumbnail iframes. A shared React store keeps routes consistent, while storage events synchronize other open same-origin tabs and frames. Changing appearance does not remount interactive block previews. Explicit preset links apply the shared theme; Open preset also accepts a copied link or theme JSON and validates it before application. Reset preserves the original component tokens through genuine Default options.
+Settings apply to site chrome, catalog miniatures, component iframes, template workspaces and template thumbnail iframes. A shared React store keeps routes consistent, while storage events synchronize other open same-origin tabs and frames. Color, font, radius, mode, and style changes update interactive previews in place. Switching the component library opens the matching build and reloads its document. Explicit preset links apply the shared theme; Open preset also accepts a copied link or theme JSON and validates it before application. Reset preserves the original component tokens through genuine Default options.
 
 Controls cover base palette, accent and custom HEX, chart palette, heading/body fonts, radius, menu appearance, menu accent, and light/dark/system modes. Inter is loaded from the existing local, OFL-licensed font asset. Menu appearance targets the host navigation and official sidebar menu buttons. Explicit global fonts also override the template/reference font scope; explicit theme colors bridge Limelight’s local accent token. Decorative artwork and chart series with fixed, nonsemantic colors retain those colors.
 
-Radix UI, Nova and Lucide identify the installed foundations. They are not presented as fake switches to unimplemented primitive libraries, alternate component styles or icon sets.
+The Component Library control selects Radix UI or Base UI. The root build uses Radix; `base/` uses a separate Base UI build whose Vite resolver selects the actual alternate primitive modules. Switching libraries preserves the current hash route and theme preset. Lucide remains the installed icon library.
+
+The Style control exposes Nova, Vega, Maia, Lyra, Mira, Luma, Sera, and Rhea for both libraries. Nova uses the component defaults; the other styles apply component profiles for dimensions, spacing, corners, typography, and overlays. Changing style updates the generated theme CSS without changing the build. Explicit colors, fonts, and radius remain separate theme choices; there is no independent font-size control.
+
+The source viewer and exports select the current library's implementation before collecting dependencies, while starter `components.json`, theme CSS, and HTML record the selected library and style. Some official free ReUI components intentionally share implementations across libraries: both official NumberField variants use Base UI, as do the DataGrid scrollbar primitives. A dependency on Base UI inside a Radix starter does not by itself mean the library selection is wrong.
+
+These implementation facts were checked against source and focused tooling on 2026-11-12. On the 5210 production candidate, 32 browser cases passed across all sixteen library/style combinations: representative Prospect form/select/overlay controls, followed by style persistence through reload, a signed-in Manifest demo workspace, and return to the block. This does not certify every component, all viewports and theme choices, the next candidate, or parity with the current official customizer. The [foundation and style audit](qa/2026-11-12-foundation-style-audit.md) records the exact scope, remaining export checks, and limits.
 
 ## Actual reuse and project glue
 
@@ -20,7 +26,9 @@ Radix UI, Nova and Lucide identify the installed foundations. They are not prese
 - The former preview-only settings state, duplicate dark preference handling and inline customizer layout have been removed. The host store, theme token generation, preset import and cross-document synchronization are site-specific glue.
 - SourcePanel still receives the same current `PreviewTheme` and uses `themeCSS(theme)` for its displayed/copied/downloaded CSS. Component implementation/source-target mappings are unaffected by the host-only modules.
 
-## Verification
+## Verification — 2026-10-23 snapshot
+
+The results below describe the original customizer milestone, before the later library and style controls. They do not replace the current foundation/style audit.
 
 The test flow is: open Customize → change settings → navigate among catalog, block and template pages → confirm all surfaces retain the same theme; open another same-origin tab → confirm live synchronization without losing input; import a preset and reject invalid input; close the mobile Sheet and restore focus.
 
