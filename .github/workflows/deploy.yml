@@ -85,7 +85,7 @@ jobs:
           mkdir -p dist
           tar -xf .pages-artifact/artifact.tar -C dist
       - name: Run the complete suite shard
-        run: npm test -- --shard=${{ matrix.shard }}/4 --reporter=list,blob --workers=1
+        run: npm test -- --shard=${{ matrix.shard }}/4 --reporter=list,blob,github --workers=1
       - name: Upload failed browser test diagnostics
         if: failure()
         uses: actions/upload-artifact@v4
