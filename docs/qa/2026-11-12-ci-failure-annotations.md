@@ -26,14 +26,24 @@ Its 2471-byte blob has SHA256
 The applied one-line patch has SHA256
 `ba579a6689425fc2d77c3384222888116685910432cedae151979cc422d3976a`.
 
-GitHub ingestion still needs verification against a real applicable run.
-Annotation limits or termination before reporter callbacks can omit details,
+GitHub ingestion is verified for exact SHA
+`8e05661e73e56590d224c958b732f1eab4bfe170`, run `43297522859`,
+[browser shard 4](https://github.com/caovc/reui-pro-block/actions/runs/43297522859/job/131474508627).
+The retained paginated annotations contain the original failing test title at
+`tests/templates.spec.ts:117:1`, assertion location `125:85`, the Mesh iframe
+locator, the original 5000ms timeout and full formatted error stack. The official
+summary records one failed test and 724 passed; the separate process-exit
+annotation is not another failed test. Original evidence:
+`/tmp/ci-template-thumbnail-theme-8e-5460-prep-20261112/original-annotations.stdout.json`.
+Annotation limits or termination before reporter callbacks can still omit details,
 so the existing blob and diagnostic artifacts remain necessary.
 
 ## Earlier failures
 
 Run `43276208221` failed browser shards 1 and 4. Their check-run metadata reports
 exit code 1 without test names or stacks; the canonical public job pages require
-sign-in, and a normal detailed-log download was blocked at the blob host. Those
-actual failures remain unknown. This change cannot recover their old logs and
-does not identify them with independently observed local Source timeouts.
+sign-in, and a normal detailed-log download was blocked at the blob host.
+Run `43287988328` also failed browser shards 2 and 4; its actual test names and
+stacks remain unknown. The verified later annotation does not identify either
+run's failures. This change cannot recover their old logs and does not identify
+them with independently observed local Source timeouts.
