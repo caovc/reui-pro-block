@@ -23,7 +23,8 @@ export const STRATA_ROUTES = [
   "/logs/errors-payments",
   "/calendar/on-call-payments",
 ] as const;
-export type StrataRoute = (typeof STRATA_ROUTES)[number];
+export const STRATA_AUTH_ROUTES = ["/sign-in", "/sign-up"] as const;
+export type StrataRoute = (typeof STRATA_ROUTES)[number] | (typeof STRATA_AUTH_ROUTES)[number];
 
 export interface StrataOwner {
   id: string;

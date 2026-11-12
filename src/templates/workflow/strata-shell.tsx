@@ -1,21 +1,38 @@
-import { useEffect, useMemo, useRef, useState, type ComponentType, type ReactNode } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ComponentType,
+  type ReactNode,
+  type RefObject,
+} from "react";
 import { hotkeysCoreFeature, syncDataLoaderFeature } from "@headless-tree/core";
 import { useTree } from "@headless-tree/react";
 import {
   Activity,
   Blocks,
   CalendarDays,
-  Check,
   ChevronRight,
   ChevronsUpDown,
   FileText,
   House,
   Layers,
   LayoutGrid,
+  CreditCard,
+  KeyRound,
+  LogOut,
+  Monitor,
+  Moon,
+  Palette,
   Plus,
   Search,
   Settings,
+  Shield,
+  SlidersHorizontal,
+  Sun,
   Tag,
+  UserRound,
   X,
 } from "lucide-react";
 import { BrandMark } from "@/components/brand-mark";
@@ -25,6 +42,8 @@ import { Tree, TreeItem, TreeItemLabel } from "@/components/reui/tree";
 import { SidebarProvider, SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import {
   DropdownMenu,
@@ -32,6 +51,8 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -75,7 +96,7 @@ const navigation: { label: string; items: NavigationItem[] }[] = [
   },
 ];
 
-const workspaces = [
+const defaultWorkspaces = [
   { name: "Bricklane Core", description: "Production · EU West" },
   { name: "Bricklane Edge", description: "Staging · US East" },
   { name: "Bricklane Labs", description: "Sandbox · EU West" },
@@ -93,9 +114,15 @@ type ShellProps = {
   onNavigate: (route: StrataRoute) => void;
   href: (route: StrataRoute) => string;
   workspace: number;
+  workspaceOptions?: readonly { name: string; description: string }[];
   onWorkspaceChange: (workspace: number) => void;
   onCreateWorkspace: () => void;
+  workspaceTriggerRef?: RefObject<HTMLButtonElement | null>;
   onAccountAction: (action: string) => void;
+  accountTriggerRef?: RefObject<HTMLButtonElement | null>;
+  account?: { name: string; description: string; email: string; avatar?: string };
+  themeMode?: "light" | "dark" | "system";
+  onThemeChange?: (mode: "light" | "dark" | "system") => void;
   pinnedRoutes: readonly StrataRoute[];
   onTogglePin: (route: StrataRoute) => void;
   children: ReactNode;
@@ -105,7 +132,7 @@ type ShellProps = {
 export function StrataShell(props: ShellProps) {
   return (
     <TooltipProvider>
-      <SidebarProvider className="strata-root h-dvh min-h-0 overflow-hidden">
+      <SidebarProvider className="strata-root h-[calc(100dvh-var(--template-toolbar-height,0px))] min-h-0 overflow-hidden">
         <ShellContent {...props} />
       </SidebarProvider>
     </TooltipProvider>
@@ -250,9 +277,20 @@ function ShellContent({
   onNavigate,
   href,
   workspace,
+  workspaceOptions = defaultWorkspaces,
   onWorkspaceChange,
   onCreateWorkspace,
+  workspaceTriggerRef,
   onAccountAction,
+  accountTriggerRef,
+  account = {
+    name: "Maya Ellis",
+    description: "Platform workspace",
+    email: "maya@bricklane.test",
+    avatar: demoAvatar("Maya Ellis"),
+  },
+  themeMode = "system",
+  onThemeChange,
   pinnedRoutes,
   onTogglePin,
   children,
@@ -260,6 +298,10 @@ function ShellContent({
   const { isMobile, state, setOpenMobile, setOpen, triggerRef } = useSidebar();
   const collapsed = !isMobile && state === "collapsed";
   const [query, setQuery] = useState("");
+  const [workspaceMenuOpen, setWorkspaceMenuOpen] = useState(false);
+  const createWorkspaceRequested = useRef(false);
+  const [accountMenuOpen, setAccountMenuOpen] = useState(false);
+  const signOutRequested = useRef(false);
   const [headerTarget, setHeaderTarget] = useState<HTMLDivElement | null>(null);
   const search = useRef<HTMLInputElement>(null);
   const navigate = (next: StrataRoute) => {
@@ -283,7 +325,8 @@ function ShellContent({
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [isMobile, setOpenMobile, setOpen]);
-  const selectedWorkspace = workspaces[workspace] ?? workspaces[0];
+  const selectedWorkspace =
+    workspaceOptions[workspace] ?? workspaceOptions[0] ?? defaultWorkspaces[0];
   const matches = (item: NavigationItem) =>
     item.label.toLowerCase().includes(query.trim().toLowerCase());
   const groups = navigation.map((group) =>
@@ -312,9 +355,13 @@ function ShellContent({
         mobileClassName="strata-sidebar"
         header={
           <>
-            <DropdownMenu>
+            <DropdownMenu open={workspaceMenuOpen} onOpenChange={setWorkspaceMenuOpen}>
               <DropdownMenuTrigger asChild>
-                <button className="strata-workspace" aria-label="Switch workspace">
+                <button
+                  ref={workspaceTriggerRef}
+                  className="strata-workspace"
+                  aria-label={`Switch workspace, current ${selectedWorkspace.name}`}
+                >
                   <BrandMark className="size-6 shrink-0 text-foreground" />
                   {!collapsed && (
                     <>
@@ -327,11 +374,27 @@ function ShellContent({
                   )}
                 </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="strata-menu w-64" align="start">
+              <DropdownMenuContent
+                className="strata-menu w-64"
+                align="start"
+                onCloseAutoFocus={(event) => {
+                  if (!createWorkspaceRequested.current) return;
+                  event.preventDefault();
+                  createWorkspaceRequested.current = false;
+                  onCreateWorkspace();
+                }}
+              >
                 <DropdownMenuLabel>Workspaces</DropdownMenuLabel>
-                <DropdownMenuGroup>
-                  {workspaces.map((item, index) => (
-                    <DropdownMenuItem key={item.name} onSelect={() => onWorkspaceChange(index)}>
+                <DropdownMenuRadioGroup
+                  value={String(workspace)}
+                  onValueChange={(value) => {
+                    const index = Number(value);
+                    if (Number.isInteger(index) && workspaceOptions[index])
+                      onWorkspaceChange(index);
+                  }}
+                >
+                  {workspaceOptions.map((item, index) => (
+                    <DropdownMenuRadioItem key={`${index}-${item.name}`} value={String(index)}>
                       <BrandMark className="size-6 shrink-0" />
                       <span className="flex-1">
                         <span className="block">{item.name}</span>
@@ -339,12 +402,16 @@ function ShellContent({
                           {item.description}
                         </span>
                       </span>
-                      {workspace === index && <Check className="size-4" />}
-                    </DropdownMenuItem>
+                    </DropdownMenuRadioItem>
                   ))}
-                </DropdownMenuGroup>
+                </DropdownMenuRadioGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onSelect={onCreateWorkspace}>
+                <DropdownMenuItem
+                  onSelect={() => {
+                    createWorkspaceRequested.current = true;
+                    setWorkspaceMenuOpen(false);
+                  }}
+                >
                   <Plus /> New Workspace
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -377,38 +444,145 @@ function ShellContent({
               href={href}
               onNavigate={navigate}
             />
-            <DropdownMenu>
+            <DropdownMenu open={accountMenuOpen} onOpenChange={setAccountMenuOpen}>
               <DropdownMenuTrigger asChild>
-                <button className="strata-workspace strata-account" aria-label="Account menu">
-                  <img src={demoAvatar("Maya Ellis")} alt="" />
+                <button
+                  ref={accountTriggerRef}
+                  className="strata-workspace strata-account"
+                  aria-label="Account menu"
+                >
+                  <Avatar>
+                    <AvatarImage src={account.avatar || undefined} alt="" />
+                    <AvatarFallback>
+                      {account.name
+                        .split(/\s+/)
+                        .map((part) => part[0])
+                        .slice(0, 2)
+                        .join("")}
+                    </AvatarFallback>
+                  </Avatar>
                   {!collapsed && (
                     <>
                       <span>
-                        <strong>Maya Ellis</strong>
-                        <small>Platform workspace</small>
+                        <strong>{account.name}</strong>
+                        <small>{account.description}</small>
                       </span>
                       <ChevronsUpDown className="size-3.5" />
                     </>
                   )}
                 </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="strata-menu w-52" side="top" align="start">
-                <DropdownMenuLabel>Local demo account</DropdownMenuLabel>
+              <DropdownMenuContent
+                className="strata-menu w-56"
+                side={isMobile ? "top" : "right"}
+                align="end"
+                sideOffset={8}
+                collisionPadding={8}
+                onCloseAutoFocus={(event) => {
+                  if (!signOutRequested.current) return;
+                  event.preventDefault();
+                  signOutRequested.current = false;
+                  onAccountAction("Sign Out");
+                }}
+              >
+                <DropdownMenuLabel className="strata-account-summary">
+                  <Avatar>
+                    <AvatarImage src={account.avatar || undefined} alt="" />
+                    <AvatarFallback>{account.name.slice(0, 1)}</AvatarFallback>
+                  </Avatar>
+                  <span>
+                    <strong>{account.name}</strong>
+                    <small>{account.email}</small>
+                  </span>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                   {[
-                    "Profile",
-                    "General",
-                    "API keys",
-                    "Security",
-                    "Billing",
-                    "Theme",
-                    "Sign Out",
-                  ].map((action) => (
-                    <DropdownMenuItem key={action} onSelect={() => onAccountAction(action)}>
-                      {action}
+                    { label: "Profile", icon: UserRound },
+                    { label: "General", icon: SlidersHorizontal },
+                    { label: "API keys", icon: KeyRound },
+                    { label: "Security", icon: Shield },
+                    { label: "Billing", icon: CreditCard },
+                  ].map(({ label, icon: Icon }) => (
+                    <DropdownMenuItem
+                      key={label}
+                      onSelect={() => {
+                        onAccountAction(label);
+                        if (isMobile) setOpenMobile(false);
+                      }}
+                    >
+                      <Icon />
+                      {label}
                     </DropdownMenuItem>
                   ))}
                 </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem
+                    className="strata-account-theme"
+                    onSelect={(event) => event.preventDefault()}
+                    onKeyDown={(event) => {
+                      if (
+                        event.target === event.currentTarget &&
+                        ["Enter", " ", "ArrowRight"].includes(event.key)
+                      ) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        const group = event.currentTarget.querySelector(
+                          '[data-slot="toggle-group"]',
+                        );
+                        const selected = group?.querySelector<HTMLButtonElement>(
+                          'button[data-state="on"], button[aria-pressed="true"]',
+                        );
+                        (selected ?? group?.querySelector<HTMLButtonElement>("button"))?.focus();
+                      }
+                    }}
+                  >
+                    <Palette />
+                    <span>Theme</span>
+                    <ToggleGroup
+                      type="single"
+                      value={themeMode}
+                      variant="outline"
+                      size="sm"
+                      aria-label="Theme"
+                      onValueChange={(value) => {
+                        if (value !== "light" && value !== "dark" && value !== "system") return;
+                        if (onThemeChange) onThemeChange(value);
+                        else onAccountAction(`Theme:${value}`);
+                      }}
+                      onClick={(event) => event.stopPropagation()}
+                      onKeyDown={(event) => {
+                        if (
+                          ["Enter", " ", "ArrowLeft", "ArrowRight", "Home", "End"].includes(
+                            event.key,
+                          )
+                        )
+                          event.stopPropagation();
+                      }}
+                    >
+                      <ToggleGroupItem value="light" aria-label="Light">
+                        <Sun />
+                      </ToggleGroupItem>
+                      <ToggleGroupItem value="dark" aria-label="Dark">
+                        <Moon />
+                      </ToggleGroupItem>
+                      <ToggleGroupItem value="system" aria-label="System">
+                        <Monitor />
+                      </ToggleGroupItem>
+                    </ToggleGroup>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onSelect={() => {
+                    signOutRequested.current = true;
+                    setAccountMenuOpen(false);
+                  }}
+                >
+                  <LogOut />
+                  Sign Out
+                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </>

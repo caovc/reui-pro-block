@@ -1,0 +1,140 @@
+.strata-workspace-dialog[data-slot="dialog-content"] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 360px);
+  width: min(768px, calc(100vw - 32px));
+  max-width: none;
+  min-height: min(512px, calc(100dvh - 32px));
+  max-height: calc(100dvh - 32px);
+  gap: 8px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 8px;
+}
+.strata-workspace-fields {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  padding: 48px 32px 16px 24px;
+}
+.strata-workspace-heading {
+  gap: 8px;
+  text-align: left;
+}
+.strata-workspace-heading [data-slot="dialog-title"] {
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 500;
+}
+.strata-workspace-heading [data-slot="dialog-description"] {
+  font-size: 14px;
+  line-height: 20px;
+}
+.strata-workspace-inputs {
+  min-width: 0;
+  gap: 16px;
+  margin-top: 24px;
+}
+.strata-workspace-footer {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+.strata-workspace-preview {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  border-radius: var(--radius);
+  background: linear-gradient(155deg, #041325, #086e75 48%, #a6e8bb);
+}
+.strata-workspace-preview-frame {
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+}
+.strata-workspace-preview-card {
+  min-width: 0;
+  padding: 20px;
+  background: var(--popover);
+  color: var(--popover-foreground);
+}
+.strata-workspace-preview-title {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.strata-workspace-preview-mark {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  place-items: center;
+  border-radius: var(--radius);
+  background: #009e91;
+  color: white;
+}
+.strata-workspace-preview-mark svg {
+  width: 28px;
+  height: 28px;
+}
+.strata-workspace-preview-title > div {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+.strata-workspace-preview-title strong {
+  overflow-wrap: anywhere;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+}
+.strata-workspace-preview-title > div > span {
+  color: var(--muted-foreground);
+  font-size: 14px;
+  line-height: 20px;
+}
+.strata-workspace-preview-card dl {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+  font-size: 14px;
+  line-height: 20px;
+}
+.strata-workspace-preview-card dl > div {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 12px;
+}
+.strata-workspace-preview-card dt {
+  color: var(--muted-foreground);
+}
+.strata-workspace-preview-card dd {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+  text-align: right;
+}
+@media (max-width: 639px) {
+  .strata-workspace-dialog[data-slot="dialog-content"] {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+  }
+  .strata-workspace-fields {
+    padding: 24px 16px 16px;
+  }
+  .strata-workspace-footer {
+    margin-top: 24px;
+  }
+  .strata-workspace-preview {
+    padding: 24px;
+  }
+}

@@ -6,10 +6,10 @@ import { readFile } from "node:fs/promises";
 test("template catalog filters, searches, and opens a full workspace", async ({ page }) => {
   await page.goto("/#/templates");
   await expect(page.getByRole("heading", { name: "Full-page Templates" })).toBeVisible();
-  await expect(page.locator(".template-list-row")).toHaveCount(18);
+  await expect(page.locator(".template-list-row")).toHaveCount(19);
   await page.getByRole("tab", { name: "Landing 2" }).click();
   await expect(page.locator(".template-list-row")).toHaveCount(2);
-  await page.getByRole("tab", { name: "All Templates 18" }).click();
+  await page.getByRole("tab", { name: "All Templates 19" }).click();
   await page.getByRole("textbox", { name: "Search templates" }).fill("echo");
   await expect(page.locator(".template-list-row")).toHaveCount(1);
   await page.getByRole("link", { name: "Open template", exact: true }).click();
@@ -20,7 +20,7 @@ test("template catalog filters, searches, and opens a full workspace", async ({ 
   await page.getByRole("textbox", { name: "Search templates" }).fill("unfindable-template");
   await expect(page.getByRole("heading", { name: "No matching templates" })).toBeVisible();
   await page.getByRole("button", { name: "Clear filters", exact: true }).click();
-  await expect(page.locator(".template-list-row")).toHaveCount(18);
+  await expect(page.locator(".template-list-row")).toHaveCount(19);
 });
 
 for (const template of templates) {

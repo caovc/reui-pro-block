@@ -235,6 +235,7 @@ export function StrataOverview({
     [model.jobs, environment],
   );
   const metrics = useMemo(() => strataJobsMetrics(jobs, model.runs), [jobs, model.runs]);
+  const pausedJob = jobs.find((job) => !job.enabled);
   const rows = useMemo<TableJob[]>(
     () =>
       jobs.map((job) => ({
@@ -293,7 +294,7 @@ export function StrataOverview({
         size: 142,
         cell: ({ row }) => (
           <div className="strata-job-name">
-            <span>{strataCronLabel(row.original.cron)}</span>
+            <span>{strataCronLabel(row.original.cron, "long")}</span>
             <code>{row.original.cron}</code>
           </div>
         ),
@@ -542,7 +543,8 @@ export function StrataOverview({
           </p>
           <div className="strata-job-subline">
             <span>Paused</span>
-            <strong>{jobs.find((job) => !job.enabled)?.name ?? "No paused jobs"}</strong>
+            <strong>{pausedJob?.name ?? "No paused jobs"}</strong>
+            {pausedJob?.pausedAt !== undefined && <span>{ago(pausedJob.pausedAt)}</span>}
           </div>
           {jobs.length > 0 && (
             <MiniTrend

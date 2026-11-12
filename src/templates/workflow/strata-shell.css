@@ -66,10 +66,57 @@
   color: var(--muted-foreground);
   flex-shrink: 0;
 }
-.strata-account > img {
+.strata-account > [data-slot="avatar"] {
+  flex: 0 0 24px;
   width: 24px;
   height: 24px;
   border-radius: 50%;
+}
+.strata-account-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+}
+.strata-account-summary > [data-slot="avatar"] {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+.strata-account-summary > span {
+  min-width: 0;
+}
+.strata-account-summary strong,
+.strata-account-summary small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.strata-account-summary strong {
+  font-size: 14px;
+  font-weight: 500;
+}
+.strata-account-summary small {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 400;
+}
+.strata-account-theme > span {
+  flex: 1;
+}
+.strata-account-theme [data-slot="toggle-group"] {
+  margin-left: auto;
+  gap: 0;
+}
+.strata-account-theme [data-slot="toggle-group-item"] {
+  width: 24px;
+  height: 24px;
+  padding: 3px;
+}
+.strata-account-theme [data-slot="toggle-group-item"] > svg {
+  width: 14px;
+  height: 14px;
 }
 .strata-workspace:focus-visible {
   outline: 2px solid var(--ring);
@@ -173,7 +220,7 @@
   font-size: 12px;
 }
 .strata-main {
-  height: 100dvh;
+  height: calc(100dvh - var(--template-toolbar-height, 0px));
   background: var(--background);
 }
 .strata-header {

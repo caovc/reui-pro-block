@@ -2,7 +2,56 @@
 
 最后更新：2026-11-12。用户要求持续协调开发，不能在一个里程碑或进度汇报后结束整体工作。本文是恢复点，不是“全部完成”声明。
 
-## 最新接续点（约17:25 UTC，优先于下面历史检查点）
+## 最新接续点（约20:05 UTC，优先于下面历史检查点）
+
+- 当前 main 是已推送的 `b09f29072eef43d5906ea9a210f12f89950a6f86`，对应 run43287988328 已完成 build，四 browser 仍执行中。前一448的 run43276208221 最终 browser1/4 失败，2/3及build成功、deploy skipped；实际失败名和stack尚未取得，已分别向用户请求日志。正常GitHub job页面需要登录，日志下载仍被策略拦截，不把本地Source超时冒称CI根因。最新实际成功Pages仍是cb0/7746519113。
+- 原只读watcher达到两小时上限后正常结束，CI owner核实零活跃副本，再续起唯一 pid259531/session95466，约21:55到期。canonical记录仍为 `/tmp/reui-continuous-ci-watch/latest.json`；恢复时先读实际新时间，勿照旧记录再起重复实例。
+- Strata公开父、目录19、真实路由与账号/workspace/auth整合已构成独立可预览里程碑。本批只提交公开UI、域测、永久phone-popup回归和范围文档，不混入仍未通过完整业务门禁的Source worker、Vite worker配置或更严格SVG测试helper。使用实际免费ReUI组件与原创Bricklane素材。
+- 5422新增48样式shell首轮48/48，96张截图逐张查看；覆盖两真实foundation与8styles的desktopTheme/phoneWorkspace/phoneAccount。public pins v2首轮16/16，16图全view；v2只在物理工具栏测量中包含被原生Sheet aria-hidden的背景toolbar，原失败与原DOM保留。Calendar12/Auth20/原workspace2/Theme+SignOut12/永久popup4也已分别完成，不相加伪称同轮全矩阵。余26 workspace/account与19 Source Copy/file仍待执行。
+- 5422原ZIP最终完整报告已交接，436成员严格一致、9生成、433成员对旧包未变；原postinstall/strictbuild和5442新dist smoke通过。明确使用经728包与两锁核对的物理依赖复制，非再次fresh install。详见本批公开QA文档。
+- 当前共享源还包含Source隔离WIP：5360的真实免费highlightCode worker原三文件patch已精确推广到工作树但未提交，原始patch SHA d1cecebbd073068f1483f6ad21b55d81cca64c871675e4a9a8f8faeb9530f490。新组合5450全appTypes114.628s、node1.680s、双Vite13.687/15.273s通过。原Filebox1在首次5s动作改善后，完整30s仍失败，绝不称业务门禁通过。
+- 5450所有15原生click均在原5s内，但drive→auth选择4846.734ms仍窄；3文件DOM/Clipboard/download及真实ZIP258成员/原字节/DriveSVG333通过，第二次打开后的默认文件重复冷高亮跨过ZIP/Node闭包阶段。末DOMpoll仅0.313ms即整体截止，无法据此声称raw不等。原失败、完整trace和实际帧保留在 `/tmp/template-source-5450-filebox-original-20261112-4cmqucm0`。Source owner正准备有界完整模型缓存私有提案，未应用或重新浏览器执行。
+- 当前format/lint退出0、350 tooling tests通过。六owner均按6.1 Sol xhigh接续；Root独占Git与重构建，静态工作并行，native窗口串行。接下来先提交推送已验证公开UI并跟踪新SHA；再审缓存新候选、原Filebox/Pulse/CodeBlock/Map门禁，接余26、Source19和真实Base Cohort2。一次提交或状态回答不结束持续协调。
+
+## 历史接续点（约19:15 UTC）
+
+- Head/main已推送 `b09f29072eef43d5906ea9a210f12f89950a6f86`（block SVG11行+完整QA），run43287988328排队。448fcef的run43276208221构建成功、四browser执行中；最新实际成功线上为cb0/Pages7746519113（18:48:17Z），不能沿旧C2或把WIP Strata算上线。现只读watcher实际pid211065、原session31486仍活，约19:53到有界上限；无需重起双实例。
+- 5430原AppShell33完整门禁已完成：442成员/433原字节/21SVG/31assets/24notices全过；正常install127.716s/712packages、原strictbuild50.528s、5441独立artifactsmoke1首轮5.538s。原442、ZIP、lock、246public、428dist及host source/artifact全前后不变，2新图实际view。证据 `/tmp/export02b-fresh-5430-20261112-je6v_eu0/final-original-project-handoff.md`。Source drawer仍Loading那张图不冒完整viewer验收，Base/其他styles/group仍分开。
+- 最新Strata实际候选为5422：在5421仅Shell phone account menu top+8px collision/Cron/Overview source周期+paused7d三runtime及6域测变动。限定Types17.047s、双Vite14.227/11.183s过；新增6+旧jobs8域测14/14。实际 `/tmp/reui-5422-source`、candidate、source-manifest.json，25overrides/1627runtime，未混入block collector或私有Source worker。
+- STRATA-SHELL-01已真实old5421 Base390 red（menu x231/right455）再new5422 additive4首轮全过；8+1图实际view，phone x8/right232/y494/bottom779.65625，两库两宽所有10controls真hit/Pointer Theme/System同步/真Escape焦点过。原v2 accountTheme+SignOut12/12和原2workspace创建结果保留，不把旧phone裁切图删去。
+- Root已把只4已验additive提为共享3个新tests（spec db43640a、helpers fb32eaea、geometry bd8019b3），尚未Git提交。永久提取版在系统Chromium的私有基础设施适配config首轮4/4过45.492s，8新图实际view；repo默认Playwright缓存binary不存在，不谎称其默认路径可运行，repo主config未改。CI自身安装浏览器按原流程运行。私有48style矩阵已冻结（spec33cfd537/configee497fed），覆盖原desktopTheme16+phoneWorkspace16及新增phoneAccount16；当前唯一native窗在执行此48，不启动其他browser或重编译。
+- Calendar5422 public v3原12首轮12/12过117.856s，24新图实际view、12trace完整、4真实Back/Forward，1152记录GET全200，所有runtime错误/写attempt为0。精确public desktop scroll105/9AMy296、phone116/9AMy325与源加36工具栏匹配；原5382的8/4及裸69/68未证原因保持。报告 `/tmp/strata-calendar-5422-native-20261112-bo9txfil/review-report.md`。Auth20此前首批全过，12图/隐私与写guard已view核验，模块未改变。
+- 新5422原ZIP首轮过：1548299B/436members SHA902c9592740537f7cd8dfd2ddde0f4922a72ffd047627dd4ab27a520cc92bea4，427原成员exact+9生成，19promoted/7family/18notices/399source/1767edges完整。对旧436仅上述3runtime变，其余433包括9生成/package完全相同。与旧正常安装的728实际包/两锁/provenance精确匹配后复制依赖、原postinstall与原strictbuild56.568s均首轮过；明确freshInstall=false。独立5442新dist475 smoke1首轮10.193s，3新图实际view，新旧原包/475dist/public246/锁均未漂。完整证据 `/tmp/strata-public-export-5422-20261112-fr2zs5vf/final-handoff.md`，不要说重复coldinstall。
+- 新tracked测试helper04d33e57移除旧SVG比较豁免，所有media统一已有完整Buffer comparator；fmt/lint与既有3单测过，但当前原Filebox/Pulse stronger native仍未跑，不能重写旧Base319字节边界。Source19 Copy/File、public pins16、余26workspace/account仍未跑；Source worker全部私有。
+- 18:53左右环境连接重新启动后，源码/WIP/tmp与watcher/安装进程均保留，模型agents已重置。已重新以6.1 Sol xhigh恢复六owner：strata_ui_review、calendar_qa、ci_monitor、source_export_qa、block_export_owner、foundation_audit。Root没有重做代码或重复install；从真实install-result接strictbuild完成。旧5422 HTTP监听留存但empty reply，Root只停该exact preview并以同一artifact重起，日志改文件；新preview5422 session91310，旧HTTP失败在无case/browser前保留。
+- Signal最新官方目录/详情正常GET再次确认20卡和固定真实preview `reui-template-signal.vercel.app`。此host仍不在生效rev1，未重试旧CONNECT403；可选媒体host `asritjtgazoshiobjtcv.supabase.co`。仅缺Signal，本地新19目录仍WIP未推。Source firstDay匿名完整4图已view：Sunday→Calendar仍Mon19-Sun25→正常UI返回General已Monday，0写/错误；不捏造全局Sunday源合同，不推广其他六项。网络/环境只记录所需设置，禁止Root发布环境。
+- 下一：48style native结束交窗后优先public pins16、Source19file/strictSVG原业务，完成reviewable Strata Git里程碑并查新exact SHA CI；所有Git仍Root唯一writer，先按文件显式提交，不能把helper/其他WIP误暂存。新的检查点或任何一批通过都不是整体结束。
+
+## 历史接续点（约18:20 UTC）
+
+- 已推送 `448fcefb3e439fc8cd12e971da9b15bfe9b6bf7d`，仅模板SVG原始字节修复和QA文档。run43276208221排队，cb0的四browser仍运行，不能取消健康流水线。最新成功线上仍C2/Pages7745135457，watcher31486正常持续。
+- SVG5400真实Pulse ZIP首轮1/1过，258CRC/SHA全验、249原成员bytes exact、8许可、233源/829本地依赖边完整。对旧5390仅DriveSVG从319变333，其余257成员完全相同；没有在新5400包重复install/build/smoke，也不冒称执行。
+- Strata公共5420全量Types/双构建通过，但原Radix1440 core1在原5s仍Loading；13.45s原trace才出现完整Overview。112已记请求均200，不能仅归因网络未完。5421唯二loader改动：renderer直接lazy Strata，family index延迟Strata并有真实Suspense，其余6旧模板import不改、源码导出仍完整7家族。
+- 5421完整app/node Types123.39/1.29s与双Vite12.30/11.46s过。原同core1在Radix1440、Base390分批各1/1过，原30/5/0retry/spec不变；6张新图已实际查看，workspace defaults/真实Select/livepreview/Create/5项radio/checked/Escape/触发器焦点与36px公共toolbar高度均过。仅2/40覆盖，其余38未执行，不称整矩阵全绿。候选 `/tmp/reui-5421-source`、`/tmp/reui-5421-candidate`，preview5421 session24838。
+- 真实Strata原ZIP首轮1/1过，1548023B/436成员、427原成员逐字节相等、9生成文件、399源/1767本地边无缺失，19 promoted TSX及7家族全保、18许可记录完整。该闭包实际没有SVG资产，favicon333bytes独立严格比对；不能冒称覆盖DriveSVG。证据 `/tmp/strata-public-export-5421-20261112-TUiUSD`。当前唯一CPU窗是Lucent对原未修改解压包normal install→原strict build，smoke另待GO。
+- Calendar三prop最终7–20/scrollTo9，b17e3fe2。新5421只读6图已全实际view，两库public桌面viewport273/727/832、scroll105、9AMy296与源一致；手机313/531/832、scroll116、9AMy325恰为源加36工具栏。裸桌面最终max69但scroll68、卡y297，原因仍未证，不用最终clamp假解释。原12仍8/4；新v3交互12尚未执行。
+- General审阅确认2项已接通（全局theme、同挂载auth landing），7项只表单state（dateFormat/firstDay/refresh/markdown/timestamps/reduceMotion/tooltips），已记STRATA-GEN-01待办。源原版效果尚未推定；CI owner准备匿名firstDay/dateFormat原生Source探针，未ready不能自行browser。当前无本地native验收，远程源窄探针仅在Root明确许可CPU重叠窗内进行，不作本地性能推论。
+- 剩余冻结native：Atlas公共40中38未选与8style32；Foundation Auth20/public pins16；Chart Calendar v3 12；Lucent Strata19文件Copy/file与原项目smoke。Source worker仍私有；其合同26和真Base业务1通过不等于新公开Strata或所有SVG通过。
+- EXPORT02b仅新共享WIP `src/lib/bundle.ts`（776d4ede）11行，21SVG encoderprobe过，native未执行。独立5430 source从448HEAD+这1文件准备，1620runtime/public、无新公共Strata/QA/worker，尚未TSC/build，等待当前install/build CPU窗释放；Manifest准备其精确ledger/原FleetCenter AppShell33下载门禁，不得引用5421结果。
+- 其余公共Strata代码仍未提交，SCV07 cron/paused7d仍仅私有proposal。Root唯一Git writer，不能把bundle WIP误暂存进Strata里程碑；也不因本检查点结束整体协调。
+
+## 历史接续点（约17:55 UTC）
+
+- 已推送 `cb0dd5df45be89b0f192972522cd0939fbd8ff0e`：65个未注册Strata runtime/domain文件和5份范围文档。该SHA的run43269301294构建成功、四浏览器分片运行中，不能沿用前一SHA结论。
+- 当前最新成功线上是 `c2efdbff4191ed67a0026f9f6d236dfa4f236231`，run43263389053构建、四分片、部署全部成功；Pages7745135457于17:49:44Z成功。只读watcher旧6896正常达到两小时上限，已由CI owner核实无旧实例后续起session31486，约19:53到期，canonical latest.json恢复更新。
+- Source5410实际adapter合同两库26/26首轮通过，保留原30/5、零重试、单worker、完整trace。覆盖八种换行、真实DOM/Clipboard/单文件字节、快速A-B-A、关闭重开和worker入口故障；不是完整Filebox性能/原ZIP验收。worker仍私有，生产SourceDialog未推广。true-Base完整Filebox一例仍待独立根origin5361和唯一native窗口。
+- Calendar5382原12首轮8pass/4fail，无runtime/spec/预算改动。两桌面默认scrollTop预期69而实际68，两桌面pin流程另有全页Unpin严格命中两个控件的oracle问题；全部四create流程及手机默认/Ownership/history通过。额外真实视觉证据确认consumer的8–21小时范围比源7–20偏一小时，Chart获准仅修consumer并保留原失败；69/68原因单独定位，不能靠放宽断言关闭视觉问题。
+- Root正在整合实际公共Strata父、目录/renderer/sourceTargets，含workspace模型、五个账户Settings query快捷入口、真实全局主题、SignOut确认与已观测sign-in/up；目前均未提交、未构建或native验收，不当作已上线19th。Auth4文件由Foundation交付，Workspace4文件由Atlas交付；Root纠正头像flex、公共36px工具栏高度、账户快捷入口关闭手机Sidebar及Theme键盘入口。139项Strata纯域测通过，不能替代公共界面验收。
+- 5400是仅SVG原始字节导出的独立候选，限定Types和双构建已过；Manifest正在冻结完整真实ZIP验证，当前没有native通过声明。Root共享source.ts已应用7行修复但未提交。5410/5400不混入即将构建的5420公共父结论。
+- 当前分工：Root公共整合/唯一Git writer和重构建调度；Foundation准备Auth native；Atlas准备workspace/account/Theme/SignOut native；Chart修已确认Calendar小时范围并整理原证据；Lucent完成26合同证据及Base Filebox预检；Manifest准备SVG导出native；CI owner持续exact SHA监测。native browser与重构建错峰，静态开发并行。恢复后先核当前资源/消息，不能重复此前已发GO。
+- 用户再次询问如何持续协调。现有授权已充分，不需要反复要求“继续”；所有里程碑仍使用commentary接续。平台停止采样或聊天关闭后不能自行常驻/唤醒，跨会话靠本记录和外部调度接续，不能承诺后台永久开发。
+
+## 历史接续点（约17:25 UTC）
 
 - Main当前已推送c2efdbff4191ed67a0026f9f6d236dfa4f236231（byte比较工具4文件）。新run43263389053 build和browser1已成功，2/3/4执行中；成功线上仍d2d1e97/Pages7743634413。新SHA不能沿旧部署结论。Root6896只读watcher持续，CI owner保活。
 - Strata5382实际13route私有parent2ba1151b，限定Types39.65s+双Vite11.24/8.61过；其65个新runtime/domain文件与共享repo已逐字节核对一致。默认原38经v3 35pass/1Base缺省aria oracle失败/2未跑，v4仅BaseSettings+两Merges3/3过；39输出图已全部实际view、所有runtime附件空。Base省略horizontal aria是实际库合同，不强迫添加Radix属性。证据`/tmp/strata-thirteen-5382-native-review-20261112.md`。

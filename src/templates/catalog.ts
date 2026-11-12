@@ -11,6 +11,17 @@ export interface TemplateMeta {
 }
 export const templates: TemplateMeta[] = [
   {
+    id: "strata",
+    name: "Strata",
+    category: "Dashboard",
+    subtitle: "Observability dashboard",
+    description:
+      "Explore services, events, monitors and deployments in an interactive local observability workspace.",
+    reference: "https://strata-observability.reui.io/",
+    family: "workflow",
+    features: ["Services and SLOs", "Logs and monitors", "Deployments and on-call"],
+  },
+  {
     id: "mesh",
     name: "Mesh",
     category: "SaaS",

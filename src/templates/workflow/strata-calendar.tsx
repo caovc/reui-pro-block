@@ -646,10 +646,10 @@ function CalendarPage({
         onSelectionChange={model.setSelection}
         timeZone="UTC"
         weekStartsOn={1}
-        dayStartHour={8}
-        dayEndHour={21}
+        dayStartHour={7}
+        dayEndHour={20}
         interval={60}
-        scrollToHour={10}
+        scrollToHour={9}
         nowIndicator={false}
         scrollbars="native"
         navButtonSize="default"

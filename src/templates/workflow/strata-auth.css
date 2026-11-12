@@ -1,0 +1,157 @@
+.strata-auth {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100svh - var(--template-toolbar-height, 0px));
+  min-width: 0;
+  color: var(--foreground);
+  background-color: var(--muted);
+  background-image: radial-gradient(
+    color-mix(in oklch, var(--foreground) 5%, transparent) 0.5px,
+    transparent 0.5px
+  );
+  background-size: 3px 3px;
+}
+.strata-auth-main {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  padding: 40px 16px;
+}
+.strata-auth-group {
+  width: min(448px, 100%);
+  min-width: 0;
+}
+.strata-auth-frame {
+  width: 100%;
+}
+.strata-auth-panel[data-slot="frame-panel"] {
+  min-width: 0;
+  padding: 52px 44px 44px;
+}
+.strata-auth-header[data-slot="frame-panel-header"] {
+  align-items: center;
+  padding: 0;
+  text-align: center;
+}
+.strata-auth-mark,
+.strata-auth-mark > svg {
+  display: block;
+  width: 36px;
+  height: 36px;
+}
+.strata-auth-header [data-slot="frame-panel-title"] {
+  margin-top: 24px;
+  font-family: var(--font-heading, inherit);
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 36px;
+  letter-spacing: -0.025em;
+}
+.strata-auth-header [data-slot="frame-panel-description"] {
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 20px;
+}
+.strata-auth-form {
+  margin-top: 32px;
+}
+.strata-auth-fields[data-slot="field-group"] {
+  gap: 16px;
+}
+.strata-auth-fields [data-slot="field"] {
+  gap: 4px;
+}
+.strata-auth-fields [data-slot="field-label"] {
+  min-height: 20px;
+}
+.strata-auth-password-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+}
+.strata-auth-forgot[data-slot="button"] {
+  flex-shrink: 0;
+  height: auto;
+  padding: 0;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+}
+.strata-auth-submit[data-slot="button"] {
+  width: 100%;
+  margin-top: 20px;
+}
+.strata-auth-social {
+  display: grid;
+  gap: 16px;
+  margin-top: 32px;
+}
+.strata-auth-providers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  min-width: 0;
+}
+.strata-auth-providers > [data-slot="button"] {
+  flex: 1 1 0;
+  min-width: max-content;
+  max-width: 100%;
+  padding-inline: 8px;
+}
+.strata-auth-route-hint {
+  margin: 16px 0 0;
+  color: var(--muted-foreground);
+  text-align: center;
+  font-size: 14px;
+  line-height: 22px;
+}
+.strata-auth-route-hint > a {
+  color: var(--foreground);
+  font-weight: 500;
+}
+.strata-auth-demo-note {
+  margin: 8px 0 0;
+  color: var(--muted-foreground);
+  text-align: center;
+  font-size: 12px;
+  line-height: 16px;
+}
+.strata-auth-footer {
+  padding: 0 16px 16px;
+}
+.strata-auth-footer > nav {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+.strata-auth-footer a {
+  color: var(--muted-foreground);
+  font-size: 14px;
+  line-height: 20px;
+}
+.strata-auth-route-hint > a:focus-visible,
+.strata-auth-footer a:focus-visible {
+  border-radius: var(--radius-sm);
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+}
+@media (max-width: 479px) {
+  .strata-auth-main {
+    padding-block: 32px;
+  }
+  .strata-auth-panel[data-slot="frame-panel"] {
+    padding: 32px 24px;
+  }
+  .strata-auth-providers {
+    gap: 8px;
+  }
+  .strata-auth-providers > [data-slot="button"] {
+    gap: 4px;
+    padding-inline: 6px;
+  }
+}

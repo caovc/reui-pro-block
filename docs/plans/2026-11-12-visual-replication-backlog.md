@@ -74,6 +74,68 @@ runtime stayed frozen throughout. See
 
 ## Related release gates
 
+- `STRATA-SHELL-01` (P2, confirmed in both foundation phone screenshots):
+  the account popup opens to the right of the240px Sidebar at approximately
+  x230, clipping its email and Dark/System controls beyond the390px viewport.
+  The12 keyboard/Sign Out cases passed but did not assert popup containment;
+  they cannot establish that the controls are pointer-accessible. The consumer
+  now opens above its trigger on phones with8px collision padding, retaining
+  desktop right placement. `atlas_header_fix` owns full popup/control bounds,
+  actual hit-testing and pointer/keyboard validation on the next candidate.
+  Candidate5421 and its cropped screenshots remain unchanged evidence.
+
+- `STRATA-GEN-01` (P2, local functionality gap; reference behavior unverified):
+  seven visible General preferences currently update only React form state:
+  date format, first day of week, auto refresh, Markdown, timestamp display,
+  reduced motion and tooltips. Calendar still fixes Monday/UTC; timestamp
+  renderers, tooltip consumers and motion policy do not read these choices.
+  Theme has a real global-theme path, and Landing page is used by the local
+  auth continuation. `foundation_style_audit` owns the exact call-path audit;
+  next verify the public anonymous reference's corresponding behavior and
+  implement applicable frontend effects through existing free components.
+  A changed selection alone must not be reported as a completed preference.
+  A fresh anonymous reference probe subsequently selected Sunday, navigated
+  through the real sidebar to Calendar, and returned to Settings. The reference
+  still showed Monday19–Sunday25, and its selection had reset to Monday on
+  return; four screenshots were inspected with no attempted write or runtime
+  fault. This preference has no observed cross-page effect in that source
+  flow. Treat it as an observed demo limitation rather than inventing a global
+  Sunday requirement; the other six preferences remain individually unverified.
+
+- Latest exact-SHA release: `c2efdbff4191ed67a0026f9f6d236dfa4f236231`,
+  run `43263389053`, completed build, all four browser shards and Pages
+  successfully. Deployment `7745135457` succeeded at 17:49:44Z. The later
+  Strata core commit `cb0dd5df45be89b0f192972522cd0939fbd8ff0e` has its own
+  running validation; the successful prior release does not validate that SHA
+  or the uncommitted public Strata integration.
+- `STRATA-CAL-01` (P2, corrected consumer awaiting new rendered validation):
+  the local time range 08:00–21:00 places events one hour earlier in the
+  viewport than the observed 07:00–20:00 reference. Source time-gutter geometry
+  and the free calendar's deliberately omitted first-hour label establish the
+  difference. The consumer now uses 07:00–20:00 and the matching 09:00 scroll
+  target. Calendar5382's original 12-case run remains 8 passed / 4 failed;
+  desktop scrollTop69 versus68 and duplicate Unpin locators are separately
+  recorded test-oracle questions, not evidence that the visual repair passed.
+  `chart55_mobile_fix` owns the evidence and follow-up validation.
+- `EXPORT-01` scoped fresh-package gate completed on the unchanged5390
+  Radix/Nova Pulse export: native download, all258 member CRC/SHA checks,
+  eight license/notice files, strict333-byte inline favicon including final LF,
+  normal fresh install, original strict build and built-artifact smoke passed.
+  Original archive and members were unchanged. Other libraries/styles/templates
+  remain outside this result.
+- `EXPORT-02` (P3, template repair awaiting native verification): Vite's inline
+  SVG serialization changes the original Drive artwork from333 to319 bytes.
+  The source collector now takes SVG asset bytes from the actual raw module;
+  other binary assets retain their existing byte-fetch path. Isolated5400
+  semantic checks and both production builds passed; real ZIP verification is
+  queued with `manifest_axis_qa`.
+- `EXPORT-02b` (P3, static block-export finding; native ZIP not yet checked):
+  the analogous block collector in `src/lib/bundle.ts` uses the same inline
+  asset path. An actual Vite encoder probe changes all21 selected small SVGs.
+  A private minimal raw-module proposal preserves21/21 original assets and the
+  existing WOFF2 fallback. Do not claim a repaired block export before its own
+  real download, raw-byte/closure/license checks and build gate.
+
 - Fresh exact-SHA verification at14:00 UTC: `d127fb1` run `43218584940`
   completed build, all four browser shards and Pages successfully. Its successful
   deployment is7738573232. This closes that run's earlier chart/Lucent CI gate;

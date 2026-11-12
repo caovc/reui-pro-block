@@ -596,6 +596,26 @@ export function templateImplementationTargets(template: {
     filebox: "drive",
   };
   const secondaryModules: Record<string, string[]> = {
+    strata: [
+      "strata-overview",
+      "strata-services",
+      "strata-logs",
+      "strata-monitors",
+      "strata-monitor-details",
+      "strata-releases",
+      "strata-release-board",
+      "strata-calendar",
+      "strata-sources",
+      "strata-settings",
+      "strata-settings-general",
+      "strata-settings-profile",
+      "strata-settings-api",
+      "strata-settings-security",
+      "strata-settings-billing",
+      "strata-shell",
+      "strata-workspace-form",
+      "strata-auth",
+    ],
     surge: [
       "commerce-account-settings",
       "atlas-account-settings",

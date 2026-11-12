@@ -1,9 +1,9 @@
 import { useSyncExternalStore } from "react";
-import { STRATA_ROUTES, type StrataRoute } from "./strata-domain.ts";
+import { STRATA_AUTH_ROUTES, STRATA_ROUTES, type StrataRoute } from "./strata-domain.ts";
 import { strataSettingsQuery, type StrataSettingsTab } from "./strata-settings-routing.ts";
 
 function isStrataRoute(path: string): path is StrataRoute {
-  return (STRATA_ROUTES as readonly string[]).includes(path);
+  return ([...STRATA_ROUTES, ...STRATA_AUTH_ROUTES] as readonly string[]).includes(path);
 }
 
 /** Keep preset/query bytes and the gallery/preview mount during local navigation. */
@@ -28,6 +28,16 @@ export function strataRouteHref(hash: string, destination: StrataRoute) {
       ? strataSettingsQuery(current.query, null)
       : current.query;
   return `#${current.mount}${suffix}${query}`;
+}
+
+/** Recover an unknown leaf without leaving its preview or dropping theme parameters. */
+export function strataOverviewHref(hash: string) {
+  const raw = hash.replace(/^#/, "");
+  const question = raw.indexOf("?");
+  const path = question < 0 ? raw : raw.slice(0, question);
+  const query = question < 0 ? "" : raw.slice(question);
+  const mount = path.match(/^(\/(?:templates|template-preview)\/strata)(?=\/|$)/)?.[1];
+  return `#${mount ?? "/"}${strataSettingsQuery(query, null)}`;
 }
 
 export function strataSettingsHref(hash: string, tab: StrataSettingsTab) {

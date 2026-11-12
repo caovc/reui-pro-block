@@ -85,9 +85,25 @@ export const STRATA_CRON_PRESETS = [
   { label: "Monthly", expression: "0 9 1 * *" },
 ] as const;
 
-export function strataCronLabel(expression: string): string {
+export function strataCronLabel(
+  expression: string,
+  minuteUnit: "short" | "long" = "short",
+): string {
   const preset = STRATA_CRON_PRESETS.find((item) => item.expression === expression);
-  if (preset) return preset.label === "Hourly" ? "Hourly at :00" : preset.label;
+  if (preset) {
+    const label = preset.label === "Hourly" ? "Hourly at :00" : preset.label;
+    return minuteUnit === "long" ? label.replace(/ min$/, " minutes") : label;
+  }
+  const interval = Number(expression.match(/^\*\/(\d+) \* \* \* \*$/)?.[1]);
+  if (interval >= 1 && interval < 60 && 60 % interval === 0) {
+    const unit = minuteUnit === "long" ? (interval === 1 ? "minute" : "minutes") : "min";
+    return `Every ${interval} ${unit}`;
+  }
+  const daily = expression.match(/^(\d+) (\d+) \* \* \*$/);
+  if (daily && Number(daily[1]) < 60 && Number(daily[2]) < 24)
+    return `Daily at ${daily[2].padStart(2, "0")}:${daily[1].padStart(2, "0")}`;
   const minute = expression.match(/^(\d+) \* \* \* \*$/)?.[1];
-  return minute ? `Hourly at :${minute.padStart(2, "0")}` : "Custom schedule";
+  return minute && Number(minute) < 60
+    ? `Hourly at :${minute.padStart(2, "0")}`
+    : "Custom schedule";
 }
