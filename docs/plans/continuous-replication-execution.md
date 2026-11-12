@@ -13,21 +13,21 @@
 
 ## 已有基线
 
-- 当前已推送基线：`7579c5fedcafb6d1247104d2e7fd7b12b735f671`，包括 Job 直接筛选、六种可创建类型和手机新建表单。此前 `ba2958a` 修复 Base 禁用选项 Escape 被兼容层误取消；`d127fb1` 修复 CI 图表边界及 Lucent 菜单就绪检查。
+- Job密度/工具栏里程碑已提交推送：`9ae5e9243aef3260be960220b6b69d7479053e95`，run43233734705待执行。此前 `7579c5f` 包括Job直接筛选、六种可创建类型和手机表单；`ba2958a` 修复Base禁用选项Escape被兼容层误取消；`d127fb1` 修复CI图表边界及Lucent菜单就绪检查。
 - 5270 本地产物完成全量 TypeScript、两库生产构建、格式/lint、202项 tooling。Job 原55例首轮52通过、3失败，失败保留；共享修复后三个原定点通过、七项 Base 共享回归通过。最终表单18/18及22张新截图完成，另两库动态日期说明已观察。
 - 这些是有范围的结果，不是新候选单轮55/55，也不表示所有679个 block 和18个模板都已全面复验。
 - Actions 当前需重新读取 API：`d127fb1` run `43218584940`，`7579c5f` run `43224303995`。不能沿用旧状态；完整日志重定向域在当前运行策略中仍受限。
 
 ## 当前并行任务与所有权
 
-| 任务                 | 所有者                   | 当前事实                                                                                               | 下一步                                                                                                |
-| -------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------- |
-| CI 与部署            | `ci_review`              | 逐精确 SHA 读取状态，健康运行保留                                                                      | 检查上述两run；真实失败先提取证据再分派修复                                                           |
-| Job V03 密度         | `chart55_mobile_fix`     | 5280修正oracle版18/18、原22/22、风险3/3通过；28新图实看，首失败保留                                    | Root提交推送四文件，继续exact-SHA CI；该owner接续Strata Logs                                          |
-| Source 性能          | `lucent_current`         | 原5270 Filebox首菜单原5秒动作门禁两次失败；尚无pointerdown，fresh采样显示初始高亮/样式与稳定性检查成本 | 候选A仅稳定模板CodeBlock身份、Copy按文件重置；不能声称A解决首挂载。分开构建、测试并继续优化firstmount |
-| Strata               | Root / 三个独立叶owner   | 13个href、三个实际页面两宽/24图；Root共享clock/身份/路由类型与header portal合同已落盘                  | Atlas做Jobs；Manifest做Services/SLO；Chart做Logs；Root做shell并排队其余真实参考，不注册空模板         |
-| Signal               | `manifest_axis_qa`       | detail200；预览Vercel域和公开图Supabase域均CONNECT403                                                  | 先完成公开功能说明/免费组件映射；网络真正生效后再取UI与路由，不把营销说明当实测                       |
-| Limelight / Overture | `foundation_style_audit` | 两ID真实独立；期间/计费组和四段tour存在已证实免费组件复用缺口                                          | 迁移真实ToggleGroup/Tabs，补导航状态语义，保留原视觉/业务/原创素材，冻结后双库浏览器验收              |
+| 任务                 | 所有者                   | 当前事实                                                                                                  | 下一步                                                                                                  |
+| -------------------- | ------------------------ | --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| CI 与部署            | `ci_review`              | 逐精确 SHA 读取状态，健康运行保留                                                                         | 检查上述两run；真实失败先提取证据再分派修复                                                             |
+| Job V03 密度         | `chart55_mobile_fix`     | 5280修正oracle版18/18、原22/22、风险3/3通过；28新图实看，首失败保留                                       | Root提交推送四文件，继续exact-SHA CI；该owner接续Strata Logs                                            |
+| Source 性能          | `lucent_current`         | 5280原Filebox首5秒动作仍失败；原CodeBlock3/3通过真实高亮/全文/Wrap/PageDown/焦点/复制与selected ZIP bytes | A仅稳定CodeBlock身份、Copy按文件重置，可独立提交；P2首挂载与完整Filebox闭包继续开放，准备独立非发布探针 |
+| Strata               | Root / 三个独立叶owner   | 13个href、三个实际页面两宽/24图；Root共享clock/身份/路由类型与header portal合同已落盘                     | Atlas做Jobs；Manifest做Services/SLO；Chart做Logs；Root做shell并排队其余真实参考，不注册空模板           |
+| Signal               | `manifest_axis_qa`       | detail200；预览Vercel域和公开图Supabase域均CONNECT403                                                     | 先完成公开功能说明/免费组件映射；网络真正生效后再取UI与路由，不把营销说明当实测                         |
+| Limelight / Overture | `foundation_style_audit` | 两ID真实独立；期间/计费组和四段tour存在已证实免费组件复用缺口                                             | 迁移真实ToggleGroup/Tabs，补导航状态语义，保留原视觉/业务/原创素材，冻结后双库浏览器验收                |
 
 ## 恢复与整合规则
 

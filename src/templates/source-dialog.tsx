@@ -92,7 +92,7 @@ export default function TemplateSourceDialog({
           </DialogDescription>
         </DialogHeader>
         <CodeBlock
-          key={`${template.id}/${filename}`}
+          key={template.id}
           code={files[filename]}
           language={language}
           showLineNumbers
@@ -116,7 +116,7 @@ export default function TemplateSourceDialog({
               <SelectContent
                 onCloseAutoFocus={(event) => {
                   event.preventDefault();
-                  // The keyed CodeBlock replaces the old trigger on file changes.
+                  // Preserve the existing focus handoff to the live template trigger.
                   requestAnimationFrame(() => {
                     const trigger = fileTrigger.current;
                     if (
@@ -141,6 +141,7 @@ export default function TemplateSourceDialog({
                 label="Download template source file"
               />
               <CodeBlockCopyButton
+                key={filename}
                 labels={{ copy: "Copy", copied: "Copied" }}
                 onCopy={() => toast.success("Source copied")}
                 onCopyError={() =>
