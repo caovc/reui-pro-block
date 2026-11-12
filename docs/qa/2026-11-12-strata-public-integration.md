@@ -98,8 +98,11 @@ zero retries and full tracing. They are disjoint from the earlier18 cases.
 All32 PNGs were inspected, and26 case traces plus two identity traces were
 reviewed; source2439/artifact1419 file inventories remained exact. The review
 found `STRATA-SET-02`: the Radix phone Security shortcut leaves its selected
-tab clipped. The behavioral cases did not assert this selected-tab geometry;
-that consumer repair and its22 additional regressions remain separate.
+tab clipped. The behavioral cases did not assert this selected-tab geometry.
+The separate consumer repair now passed all22 reviewed v3 regressions on5461;
+all42 images and22 traces were inspected. See
+`docs/qa/2026-11-12-strata-selected-settings-tabs.md` for retained failures,
+native list-entry evidence and exact scope.
 Evidence: `/tmp/strata-public-parent-remaining26-native-5450-20261112/final-handoff.md`.
 The5450 Strata modules
 exactly match5422. Its independent Source worker/cache work is not used to

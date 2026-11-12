@@ -1,3 +1,4 @@
+import { useLayoutEffect, useRef } from "react";
 import {
   CreditCard,
   ExternalLink,
@@ -50,6 +51,31 @@ export function StrataSettings({
   billingModel: ReturnType<typeof useStrataSettingsBillingModel>;
 }) {
   const isMobile = useIsMobile();
+  const navigationRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    const navigation = navigationRef.current;
+    if (!isMobile || !navigation) return;
+
+    const revealSelectedTab = () => {
+      const selected = navigation.querySelector<HTMLElement>('[role="tab"][aria-selected="true"]');
+      if (!selected) return;
+      const bounds = navigation.getBoundingClientRect();
+      const item = selected.getBoundingClientRect();
+      const left = bounds.left + navigation.clientLeft;
+      const right = left + navigation.clientWidth;
+      const delta =
+        item.left < left ? item.left - left : item.right > right ? item.right - right : 0;
+      if (delta) navigation.scrollBy({ left: delta, behavior: "instant" });
+    };
+
+    revealSelectedTab();
+    const resize = new ResizeObserver(revealSelectedTab);
+    resize.observe(navigation);
+    for (const trigger of navigation.querySelectorAll('[role="tab"]')) resize.observe(trigger);
+    return () => resize.disconnect();
+  }, [isMobile, tab]);
+
   return (
     <section className="strata-settings" aria-label="Settings">
       <h1 className="sr-only">Settings</h1>
@@ -71,7 +97,11 @@ export function StrataSettings({
         orientation={isMobile ? "horizontal" : "vertical"}
         className="strata-settings-tabs"
       >
-        <TabsList className="strata-settings-navigation" aria-label="Settings sections">
+        <TabsList
+          ref={navigationRef}
+          className="strata-settings-navigation"
+          aria-label="Settings sections"
+        >
           {tabs.map(({ id, label, icon: Icon }) => (
             <TabsTrigger key={id} value={id}>
               <Icon />

@@ -77,14 +77,18 @@ runtime stayed frozen throughout. See
 
 ## Related release gates
 
-- `STRATA-SET-02` (P2, selected-tab visibility): after the Radix390 Account
+- `STRATA-SET-02` (P2, fixed and locally verified): after the Radix390 Account
   Security shortcut, the selected Security tab is clipped at the right edge of
   the horizontal tablist; only its icon and initial letter remain visible.
   The same Base flow reveals the complete selected tab. The26 original cases
   passed routing/selection/sidebar assertions but did not require full selected
-  tab visibility. The public-UI owner is preparing a consumer scrollport repair
-  and both-foundation phone checks across all five direct/shortcut destinations.
-  Keep the original screenshot and behavior result. Evidence:
+  tab visibility. The consumer now reveals the selected tab and fixes focus
+  geometry before its color transition. Independent5461 passed all22 original
+  reviewed v3 cases across both foundations/five direct and shortcut tabs/native
+  keyboard paths;42 images and22 complete traces were inspected. The old red,
+  real Radix list-entry diagnostic and first paint failure remain preserved.
+  Scope and test-oracle evidence:
+  `docs/qa/2026-11-12-strata-selected-settings-tabs.md`. Original evidence:
   `/tmp/strata-public-parent-remaining26-native-5450-20261112/native-results/public-parent-native-v3-ra-8b839-ic-mount-and-settings-query/account-security.png`.
 
 - `COHORT-SET-01` (P2, fixed and locally verified): the true Base5422

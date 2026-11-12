@@ -125,6 +125,11 @@
   }
   .strata-settings-navigation [data-slot="tabs-trigger"] {
     width: auto;
+    outline: 2px solid transparent;
+    outline-offset: -2px;
+  }
+  .strata-settings-navigation [data-slot="tabs-trigger"]:focus-visible {
+    outline-color: var(--ring);
   }
   .strata-settings-general .strata-setting-row[data-compact] {
     grid-template-columns: minmax(0, 1fr) auto;
