@@ -105,7 +105,10 @@ export function shouldCancelOverlayDismiss(
   if (!handlers) return false;
   const { reason, event } = details;
   if (reason === "escape-key") {
-    handlers.onEscapeKeyDown?.(event as KeyboardEvent);
+    // Native disabled-option handling may already prevent the key's default.
+    // Only a registered consumer Escape handler can cancel overlay dismissal.
+    if (!handlers.onEscapeKeyDown) return false;
+    handlers.onEscapeKeyDown(event as KeyboardEvent);
     return event.defaultPrevented;
   }
   if (reason === "outside-press") {

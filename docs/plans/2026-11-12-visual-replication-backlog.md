@@ -11,9 +11,9 @@ and unavailable backend services are intentional boundaries.
 | ID         | Priority | Surface and observed difference                                                                                                                     | Owner / status                                                                                                            | Acceptance                                                                                                                                                                    |
 | ---------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | BLOCK-V01  | P2       | Job Schedule attention cards demote the risk headline and omit remaining work hours; the local hierarchy and card height differ from the reference. | `job_attention_qa`: V01 fixed; 22/22 Nova cases passed across both foundations and widths.                                | Risk is the main heading; real local remaining hours are visible; card actions still open or update the correct job at desktop and phone widths, under both UI foundations.   |
-| BLOCK-V02  | P2       | Job Schedule exposes common type/task-state filtering through a different generic entry point.                                                      | `chart55_mobile_fix`: reference semantics captured; implementation frozen for 5250 native validation.                     | Verify the reference filter controls and restore equivalent discoverability without changing the underlying filtering or losing existing actions.                             |
+| BLOCK-V02  | P2       | Job Schedule exposes common type/task-state filtering through a different generic entry point.                                                      | `chart55_mobile_fix`: reference semantics captured; rebuilt 5260 is running the 55-case native suite.                     | Verify the reference filter controls and restore equivalent discoverability without changing the underlying filtering or losing existing actions.                             |
 | BLOCK-V03  | P3       | Job Schedule row density, date-column width and button sizing differ.                                                                               | Job Schedule owner: local density work queued; the outer-spacing finding was withdrawn after image reinspection.          | Preserve the matching 48px/32px outer spacing; compare local Nova row/column/control dimensions while retaining other styles and internal scrolling.                          |
-| BLOCK-V04  | P3       | Job Schedule phone Add Job layout and bounds differ.                                                                                                | `lucent_current`: Create-only layout frozen for 5250 native validation.                                                   | Match the observed form structure where appropriate, with all controls reachable and native Escape/focus recovery preserved.                                                  |
+| BLOCK-V04  | P3       | Job Schedule phone Add Job layout and bounds differ.                                                                                                | `atlas_header_fix`: Create-only layout frozen for 5260 eighteen-case native validation.                                   | Match the observed form structure where appropriate, with all controls reachable and native Escape/focus recovery preserved.                                                  |
 | VT-MAN-001 | P2       | Manifest phone Inventory velocity category ticks collided; the first responsive repair left too little tail-label safety space in CI.               | `manifest_axis_qa`: 5260 first-run 10/10 plus both foundations' Inter/Arial fallback probes passed; exact-SHA CI pending. | No tick collisions or clipping; final phone category remains Outerwear with at least 2px real inner clearance; all bars, accessible data and default chart behavior retained. |
 | VT-ATL-001 | P2       | Atlas phone date control begins above the viewport and Export extends below its header.                                                             | `atlas_header_fix`: pushed `c96fb36`; 32 cases passed, including all eight phone-header styles.                           | Date/Export stay within the viewport and their own header; fix the local clipping without reproducing the reference's separate horizontal-overflow issue.                     |
 
@@ -30,17 +30,29 @@ The Blocks audit now includes both Job Schedule and Working Agreements at deskto
 Manifest and Atlas audit coverage must be read from the template report rather
 than extrapolated to their entire applications.
 
+`BLOCK-V06` (P3): fresh two-foundation Nova phone images still lacked the
+reference's four input placeholders and empty Due Date explanation. The
+Create-only consumer now supplies those strings through its existing free
+Input/Field composition, preserving dynamic planned-finish text and Edit/Crew
+behavior. This adds field height, so 5270 must repeat the eighteen layout and
+keyboard cases before the copy task is closed. See
+`docs/job-schedule-create-layout-2026-11-12.md`.
+
 ## Catalog completeness follow-up
 
 The saved public official catalog contains twenty actual template cards; the
 local catalog has eighteen entries. Two explicit missing entries are confirmed,
-independently of the total count. They require public preview inspection and
+independently of the total count. The other eighteen names, categories and
+normalized public preview URLs match individually; official Dashboard has seven
+entries versus five locally, while the other categories match. The private
+20-entry mapping is in `/tmp/template-catalog-completeness-2026-11-12/`.
+These two missing entries require public preview inspection and
 actual free-component implementation, not only copied card labels:
 
-| ID           | Priority | Official entry                                                                             | Status / acceptance                                                                                                  |
-| ------------ | -------- | ------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
-| TEMPLATE-C01 | P2       | [Signal — Product Analytics](https://reui.io/template/signal-analytics), TanStack Start    | Missing from local catalog and implementation; capture its public preview states before assigning an implementation. |
-| TEMPLATE-C02 | P2       | [Strata — Observability Dashboard](https://reui.io/template/strata-observability), Next.js | Missing from local catalog and implementation; capture its public preview states before assigning an implementation. |
+| ID           | Priority | Official entry                                                                             | Status / acceptance                                                                                                                                                 |
+| ------------ | -------- | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| TEMPLATE-C01 | P2       | [Signal — Product Analytics](https://reui.io/template/signal-analytics), TanStack Start    | Missing from local catalog and implementation; capture its public preview states before assigning an implementation.                                                |
+| TEMPLATE-C02 | P2       | [Strata — Observability Dashboard](https://reui.io/template/strata-observability), Next.js | Existing planned/unregistered gap under the [paused Strata plan](2026-11-03-strata-template-plan.md); capture public preview states before resuming implementation. |
 
 This is an identity/presence check, not a visual or functional acceptance of the
 other eighteen templates. Reference imagery remains private audit evidence.
@@ -77,10 +89,14 @@ other eighteen templates. Reference imagery remains private audit evidence.
   six failures. One original Base case proved an actionable stale toast could
   intercept Add Crew Day inside the next Sheet; the consumer now dismisses that
   notification on panel entry while preserving Undo. Other new-test failures
-  concern inconsistent text accessors, an overlong multi-flow case and missing
-  menu-close/focus readiness. Their evidence is retained; all assertions and
-  budgets remain, and the rebuilt candidate must pass before the Job batch is
-  committed. V04 layout validation remains pending that candidate as well.
+  concern inconsistent text accessors and an overlong multi-flow case; the
+  initial Base menu-readiness hypothesis was later superseded by FSA-07 below.
+  On 5260, the old 22 all passed and the full batch reached 52/55; a targeted
+  recheck passed two of three, while the Base risk menu still failed Escape.
+  Native event capture proved the shared cancellation bug. All failures remain
+  in the evidence record. The Job batch awaits 5270 validation before commit.
+  V04 first passed eighteen 5260 layout cases; added copy is now queued for the
+  rebuilt layout/keyboard verification, rather than reusing that earlier pass.
 - Shared template source viewer: the frozen source batch had two passes and two
   native-action timing failures. Highlighting/worker experiments did not meet
   the original gate and were archived privately; their tracked runtime/test
@@ -108,11 +124,12 @@ foundation/style audit.
 
 ### Findings from the foundation/style review
 
-| ID        | Priority / state              | Evidence and owner                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| --------- | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| FSA-05    | P2, fixed; 16/16 verified     | At 1440px in Sera under both foundations, the Host Search shortcut extends 12.8125px beyond its button and overlaps Customize by 5.8125px. The overlapping point hits Customize. Button boxes themselves remain 7px apart. `lucent_current` completed the Host fitting repair and entry-focus restoration; all sixteen foundation/style cases passed on 5240 with the original budgets. See `docs/host-search-style-fit-2026-11-12.md`. |
-| FSA-06    | P2, fixed; 32 states verified | Non-Nova icon rules overrode responsive desktop auto-width. The shared style rule now preserves intrinsic caption hitboxes and mobile square icons; Handover also restores its actual opener. Both foundations × eight styles × two widths passed on 5240: 30 in the full attempt, then two unchanged Base/Rhea cases in a focused run after a click-navigation wait failure. See `docs/responsive-toolbar-style-fix-2026-11-12.md`.    |
-| EXPORT-01 | P3, queued                    | A preserved real Pulse ZIP installs and passes its original strict build. Its functional browser smoke reaches Chart, Progress and Sheet/focus assertions, but its console gate fails on the browser's `/favicon.ico` 404. Keep this distinct from a fully clean standalone-package smoke.                                                                                                                                              |
+| ID        | Priority / state                        | Evidence and owner                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| --------- | --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| FSA-05    | P2, fixed; 16/16 verified               | At 1440px in Sera under both foundations, the Host Search shortcut extends 12.8125px beyond its button and overlaps Customize by 5.8125px. The overlapping point hits Customize. Button boxes themselves remain 7px apart. `lucent_current` completed the Host fitting repair and entry-focus restoration; all sixteen foundation/style cases passed on 5240 with the original budgets. See `docs/host-search-style-fit-2026-11-12.md`.                                                              |
+| FSA-06    | P2, fixed; 32 states verified           | Non-Nova icon rules overrode responsive desktop auto-width. The shared style rule now preserves intrinsic caption hitboxes and mobile square icons; Handover also restores its actual opener. Both foundations × eight styles × two widths passed on 5240: 30 in the full attempt, then two unchanged Base/Rhea cases in a focused run after a click-navigation wait failure. See `docs/responsive-toolbar-style-fix-2026-11-12.md`.                                                                 |
+| FSA-07    | P2, fixed locally; exact-SHA CI pending | A focused disabled Base Select option natively prevents Escape's default; an empty adapter callback object incorrectly canceled close. The shared adapter now requires an actual Escape callback before honoring cancellation, preserving explicit callbacks and native event identity. Real-source contracts passed 7/7 after a red baseline; 5270 passed the original Job three-case regression and seven Base menu/nested-overlay cases. See `docs/qa/2026-11-12-base-overlay-escape-dismiss.md`. |
+| EXPORT-01 | P3, queued                              | A preserved real Pulse ZIP installs and passes its original strict build. Its functional browser smoke reaches Chart, Progress and Sheet/focus assertions, but its console gate fails on the browser's `/favicon.ico` 404. Keep this distinct from a fully clean standalone-package smoke.                                                                                                                                                                                                           |
 
 The core product interaction/persistence matrix passed 32/32 cases: two real
 foundations, eight styles and two independent behaviors. The formal regression
