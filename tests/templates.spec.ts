@@ -122,6 +122,10 @@ test("template theme persists and reaches catalog thumbnails", async ({ page }) 
   await expect(page.locator("html")).toHaveClass("dark");
   await page.getByRole("link", { name: "Templates", exact: true }).click();
   await expect(page.locator("html")).toHaveClass("dark");
+  await page
+    .locator(".template-list-row")
+    .filter({ has: page.getByRole("link", { name: "Preview Mesh", exact: true }) })
+    .scrollIntoViewIfNeeded();
   await expect(page.frameLocator('iframe[title="Mesh thumbnail"]').locator("html")).toHaveClass(
     "dark",
   );
