@@ -105,23 +105,35 @@ runtime stayed frozen throughout. See
   trace and its two behavioral passes separately from this defect. Evidence:
   `/tmp/cohort-genuine-base-5422-native-20261112-200530/trace-frames/phone-working-saturday-hover.jpeg`.
 
-- `COHORT-SET-02` (P2, visually confirmed; geometry measurement open): in both
-  Sera foundations, Working week's saved/unsaved status is squeezed under or
-  covered by the footer action buttons. Four original clean/dirty PNGs, four
-  original trace frames and matching DOM text are retained. No footer bounding
-  boxes were captured, so exact overlap distances remain unknown. This is a
-  separate consumer footer repair and does not reopen the weekday bounds gate.
-  Evidence: `/tmp/cohort-working-week-v2-5460-first-native-20261112-l5r4j3yv/cohort-set-02-sera-footer-evidence/evidence.json`.
+- `COHORT-SET-02` (P2, fixed and locally verified): both Sera 390 foundations
+  compressed status to 27.40625px; original live text Ranges overlapped Discard
+  by 9.0625px (`changes`) and 10.375px (`Unsaved`). Both first-red results and
+  their native behavior passes remain preserved. The existing mobile footer
+  and action group now wrap. Independent 5462 passed all six unchanged new
+  cases across both foundations/Sera 390+320/Nova 390;18 images and six complete
+  traces were inspected. The permanent six-case extraction preserves every
+  helper/test body and passed its two-case adapter, with six further images
+  and two traces inspected. Those two overlap the six; they are not eight
+  distinct cases. Saved success toasts remain visible over part of the lower
+  disabled action area; all status-fragment centers now hit the status.
+  Other section footers/styles, desktop and official exact Sera layout remain
+  outside this gate. See `docs/qa/2026-11-12-cohort-settings-footer.md`.
 
-- `STRATA-SHELL-01` (P2, confirmed in both foundation phone screenshots):
-  the account popup opens to the right of the240px Sidebar at approximately
-  x230, clipping its email and Dark/System controls beyond the390px viewport.
-  The12 keyboard/Sign Out cases passed but did not assert popup containment;
-  they cannot establish that the controls are pointer-accessible. The consumer
-  now opens above its trigger on phones with8px collision padding, retaining
-  desktop right placement. `atlas_header_fix` owns full popup/control bounds,
-  actual hit-testing and pointer/keyboard validation on the next candidate.
-  Candidate5421 and its cropped screenshots remain unchanged evidence.
+- `STRATA-SHELL-01` (P2, fixed and locally verified): the old5421 phone
+  account popup overflowed to right455px, clipping its email and Theme controls.
+  The consumer now opens above its trigger on phones with8px collision padding,
+  retaining desktop right placement. Candidate5422 passed the four-context
+  additive Nova gate and the same four extracted permanent regressions; the
+  permanent run retained full traces and all eight new images were inspected.
+  A separate first-run48-case matrix passed both foundations/eight styles for
+  desktop Theme, phone Workspace and phone Account; all96 images were inspected.
+  Full popup/email/control bounds, actual center/icon hits, pointer Theme changes,
+  native keyboard selection, Escape and opener focus passed in their stated
+  flows. The overlapping Nova contexts are not additional distinct coverage;
+  other Strata routes and complete-template acceptance remain separate.
+  Candidate5421 red evidence is unchanged. Scope:
+  `docs/qa/2026-11-12-strata-public-integration.md`; final matrix:
+  `/tmp/strata-shell-style-matrix-v3-native-5422-20261112/handoff.md`.
 
 - `STRATA-GEN-01` (P2, local functionality gap; reference behavior unverified):
   seven visible General preferences currently update only React form state:
@@ -141,39 +153,57 @@ runtime stayed frozen throughout. See
   flow. Treat it as an observed demo limitation rather than inventing a global
   Sunday requirement; the other six preferences remain individually unverified.
 
-- Latest exact-SHA release: `c2efdbff4191ed67a0026f9f6d236dfa4f236231`,
-  run `43263389053`, completed build, all four browser shards and Pages
-  successfully. Deployment `7745135457` succeeded at 17:49:44Z. The later
-  Strata core commit `cb0dd5df45be89b0f192972522cd0939fbd8ff0e` has its own
-  running validation; the successful prior release does not validate that SHA
-  or the uncommitted public Strata integration.
-- `STRATA-CAL-01` (P2, corrected consumer awaiting new rendered validation):
-  the local time range 08:00–21:00 places events one hour earlier in the
-  viewport than the observed 07:00–20:00 reference. Source time-gutter geometry
-  and the free calendar's deliberately omitted first-hour label establish the
-  difference. The consumer now uses 07:00–20:00 and the matching 09:00 scroll
-  target. Calendar5382's original 12-case run remains 8 passed / 4 failed;
-  desktop scrollTop69 versus68 and duplicate Unpin locators are separately
-  recorded test-oracle questions, not evidence that the visual repair passed.
-  `chart55_mobile_fix` owns the evidence and follow-up validation.
+- Exact-SHA release status at22:17 UTC: current pushed main is
+  `a0e1d3c7183e0d31d6c6fd8fa9eb38095b1c9769`; run `43314161973`
+  has a successful build and all four browser shards still running. No deployment
+  success is claimed for that SHA. The last confirmed successful Pages release
+  remains `cb0dd5df45be89b0f192972522cd0939fbd8ff0e`, deployment `7746519113`
+  at18:48:17Z. Earlier `c2efdbf` success remains historical; later push/build
+  success does not establish a deployed preview. Public Strata was registered
+  and pushed in `2a933fd`; its local scoped acceptance is recorded above.
+- `STRATA-CAL-01` (P2, fixed; scoped public gate passed): the consumer now
+  uses the observed07:00–20:00 time range and09:00 scroll target. Public5422
+  passed all12 first-run Nova interaction cases across both foundations and
+  desktop/phone widths; all24 images and12 full traces were inspected. Desktop
+  scroll105/card y296 matches the reference; phone scroll116/card y325 includes
+  the real36px public toolbar. The original5382 run remains8 passed/4 failed,
+  including the duplicate Unpin locator errors. Bare desktop's actual68/final
+  max69 and card y297 remain an unexplained separate1px follow-up; the public
+  pass does not identify that cause. Seven other styles and complete Calendar
+  acceptance remain separate. Scope:
+  `docs/qa/2026-11-12-strata-public-integration.md`; exact geometry and old limits:
+  `/tmp/strata-calendar-5422-native-20261112-bo9txfil/review-report.md`.
 - `EXPORT-01` scoped fresh-package gate completed on the unchanged5390
   Radix/Nova Pulse export: native download, all258 member CRC/SHA checks,
   eight license/notice files, strict333-byte inline favicon including final LF,
   normal fresh install, original strict build and built-artifact smoke passed.
   Original archive and members were unchanged. Other libraries/styles/templates
   remain outside this result.
-- `EXPORT-02` (P3, template repair awaiting native verification): Vite's inline
-  SVG serialization changes the original Drive artwork from333 to319 bytes.
-  The source collector now takes SVG asset bytes from the actual raw module;
-  other binary assets retain their existing byte-fetch path. Isolated5400
-  semantic checks and both production builds passed; real ZIP verification is
-  queued with `manifest_axis_qa`.
-- `EXPORT-02b` (P3, static block-export finding; native ZIP not yet checked):
-  the analogous block collector in `src/lib/bundle.ts` uses the same inline
-  asset path. An actual Vite encoder probe changes all21 selected small SVGs.
-  A private minimal raw-module proposal preserves21/21 original assets and the
-  existing WOFF2 fallback. Do not claim a repaired block export before its own
-  real download, raw-byte/closure/license checks and build gate.
+- `EXPORT-02` (P3, fixed; scoped native ZIP gates passed): the template
+  collector now reads SVG bytes from actual raw modules. Radix/Nova Pulse5400's
+  native original ZIP passed all258 members/249 repository-byte comparisons,
+  closure/license checks and strict333-byte Drive SVG/favicon assertions. Its
+  other257 members exactly match the prior5390 package whose fresh install,
+  strict build and artifact smoke passed; those phases were not repeated on5400.
+  True Base/Nova Filebox5452 separately passed its complete original native flow,
+  all263 ZIP members/254 repository-byte comparisons and the actual333-byte Drive
+  SVG including final LF. No standalone install/build was run for that Base ZIP.
+  Historical319-byte/skip results are unchanged; the5452 pass does not validate
+  the newer5453 Source picker or every foundation/style/template. Scope:
+  `docs/qa/2026-11-12-template-svg-source-fidelity.md`; Base proof:
+  `/tmp/filebox-base-5452-native-20261112-GFrjnt/final-handoff.md`.
+- `EXPORT-02b` (P3, fixed; scoped original-package gate passed): the block
+  collector now takes SVG bytes from actual raw modules, preserving the existing
+  binary fallback. Candidate5430's real Radix/Nova Fleet Center/AppShell33 starter
+  passed native download, all442 member CRC/SHA checks,433 repository-byte
+  comparisons,21 SVGs,31 assets,24 license/notice records and strict333-byte
+  inline favicon. Normal install, the unmodified strict build and the independent
+  5441 built-artifact smoke passed; two smoke images were inspected. Original ZIP,
+  members and built files remained unchanged. This is one block starter; Base,
+  other styles/families and complete Source/Clipboard/single-file flows remain
+  separate. Historical encoder-probe evidence is retained. Scope:
+  `docs/qa/2026-11-12-block-svg-source-fidelity.md`; final original-package report:
+  `/tmp/export02b-fresh-5430-20261112-je6v_eu0/final-original-project-handoff.md`.
 
 - Fresh exact-SHA verification at14:00 UTC: `d127fb1` run `43218584940`
   completed build, all four browser shards and Pages successfully. Its successful

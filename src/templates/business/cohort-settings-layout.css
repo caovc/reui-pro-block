@@ -211,6 +211,18 @@
 }
 
 @media (max-width: 767px) {
+  /* Let the native footer actions move as a group before status text is squeezed. */
+  .bt-cohort-settings .bt-setting-save {
+    flex-wrap: wrap;
+  }
+
+  .bt-cohort-settings .bt-setting-save > div {
+    max-width: 100%;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    margin-inline-start: auto;
+  }
+
   .bt-cohort-settings .bt-setting-row.workspace-settings-row {
     grid-template-columns: minmax(0, 1fr);
     gap: 16px;

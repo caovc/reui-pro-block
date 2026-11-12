@@ -54,9 +54,10 @@ Extraction evidence:
 `/tmp/cohort-working-week-permanent16-v2-extraction-20261112/handoff.md` and
 `/tmp/cohort-permanent-v2-5460-four-first-native-20261112-zgj9z97o/`.
 
-`COHORT-SET-02` remains open: both Sera foundations visibly crowd the Working
-week footer status under its action buttons. The original images and DOM text
-are preserved; footer geometry needs separate measurement. This does not close
-all Cohort settings or all template/style combinations. Official precise
-weekday wrapping was unavailable, so this is a verified local accessibility
-repair, not a claim of complete reference pixel equivalence.
+The separate `COHORT-SET-02` footer repair is now locally verified on 5462;
+see `docs/qa/2026-11-12-cohort-settings-footer.md` for its independent measured
+red, six-case run and permanent extraction adapter. The original footer images
+and DOM evidence remain preserved. These scoped repairs do not close all
+Cohort settings or template/style combinations. Official precise weekday
+wrapping was unavailable, so this is a verified local accessibility repair,
+not a claim of complete reference pixel equivalence.
