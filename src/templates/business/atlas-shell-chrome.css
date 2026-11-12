@@ -217,7 +217,14 @@
 }
 @media (max-width: 767px) {
   .bt-layout.bt-atlas .atlas-topbar {
-    padding-inline: 24px;
+    height: auto;
+    flex-wrap: wrap;
+    padding: 12px 24px;
+  }
+  .bt-layout.bt-atlas .atlas-topbar > .bt-topbar-right:not(:empty) {
+    min-width: 0;
+    flex-basis: 100%;
+    margin-left: 0;
   }
   .bt-layout.bt-atlas .atlas-topbar .bt-mobile-menu {
     width: 16px;
