@@ -336,7 +336,7 @@ export function ScheduleGrid({
         const tint = date === SCHEDULE_TODAY ? "bg-primary/6" : boundary ? "border-s" : "";
         return {
           id: date,
-          size: 41,
+          size: 37,
           enableSorting: false,
           header: () => <DayHeader date={date} />,
           cell: ({ row }) => (
@@ -413,7 +413,7 @@ export function ScheduleGrid({
           columnsPinnable: true,
           cellBorder: gridlines,
         }}
-        tableClassNames={{ base: "min-w-[1189px]", bodyRow: compact ? "h-11" : "h-[57px]" }}
+        tableClassNames={{ base: "min-w-[1109px]", bodyRow: compact ? "h-12" : "h-[57px]" }}
       >
         <DataGridContainer>
           <DataGridScrollArea orientation="horizontal">

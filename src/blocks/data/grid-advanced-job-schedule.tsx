@@ -605,18 +605,18 @@ export default function JobSchedule() {
             <ButtonGroup aria-label="Schedule dates">
               <Button
                 variant="outline"
-                size="icon-sm"
+                size="icon"
                 aria-label="Previous week"
                 onClick={() => setWeek((current) => current - 1)}
               >
                 <ChevronLeft />
               </Button>
-              <Button variant="outline" size="sm" onClick={() => setWeek(0)}>
+              <Button variant="outline" onClick={() => setWeek(0)}>
                 Today
               </Button>
               <Button
                 variant="outline"
-                size="icon-sm"
+                size="icon"
                 aria-label="Next week"
                 onClick={() => setWeek((current) => current + 1)}
               >
@@ -626,7 +626,7 @@ export default function JobSchedule() {
             {schedule.undo.length > 0 && (
               <Button
                 variant="outline"
-                size="icon-sm"
+                size="icon"
                 aria-label="Undo last schedule change"
                 onClick={undo}
               >
@@ -635,10 +635,13 @@ export default function JobSchedule() {
             )}
             <Button
               ref={addButton}
-              size="sm"
+              size="icon"
+              className="gap-1.5 sm:w-auto sm:px-2.5"
+              aria-label="Add Job"
               onClick={(event) => openPanel({ kind: "new" }, event.currentTarget)}
             >
-              <Plus /> Add Job
+              <Plus />
+              <span className="hidden sm:inline">Add Job</span>
             </Button>
           </div>
         </FrameHeader>
@@ -664,10 +667,10 @@ export default function JobSchedule() {
               query={query}
               onQueryChange={setQuery}
               showClear
-              size="sm"
+              size="default"
               className="order-last min-w-0 basis-full sm:order-none sm:flex-1 sm:basis-auto"
               trigger={
-                <Button variant="outline" size="sm">
+                <Button variant="outline">
                   <ListFilter /> Filter
                 </Button>
               }
@@ -675,7 +678,7 @@ export default function JobSchedule() {
             <Button
               ref={searchButton}
               variant={searchOpen ? "secondary" : "outline"}
-              size="icon-sm"
+              size="icon"
               className="sm:hidden"
               aria-label={searchOpen ? "Hide job search" : "Show job search"}
               aria-expanded={searchOpen}
@@ -722,7 +725,12 @@ export default function JobSchedule() {
             </InputGroup>
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" size="sm" aria-label="Schedule settings">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="gap-1.5 sm:w-auto sm:px-2.5"
+                  aria-label="Schedule settings"
+                >
                   <Settings2 />
                   <span className="hidden sm:inline">Settings</span>
                 </Button>

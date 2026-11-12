@@ -23,9 +23,9 @@
 | 任务                 | 所有者                   | 当前事实                                                                                               | 下一步                                                                                                |
 | -------------------- | ------------------------ | ------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------- |
 | CI 与部署            | `ci_review`              | 逐精确 SHA 读取状态，健康运行保留                                                                      | 检查上述两run；真实失败先提取证据再分派修复                                                           |
-| Job V03 密度         | `chart55_mobile_fix`     | main/grid局部代码及18例专项已静态冻结；外距48/32px保持                                                 | 构建5280并验证日期列、行高、手机图标及两库/多style交互，再提交                                        |
+| Job V03 密度         | `chart55_mobile_fix`     | 5280修正oracle版18/18、原22/22、风险3/3通过；28新图实看，首失败保留                                    | Root提交推送四文件，继续exact-SHA CI；该owner接续Strata Logs                                          |
 | Source 性能          | `lucent_current`         | 原5270 Filebox首菜单原5秒动作门禁两次失败；尚无pointerdown，fresh采样显示初始高亮/样式与稳定性检查成本 | 候选A仅稳定模板CodeBlock身份、Copy按文件重置；不能声称A解决首挂载。分开构建、测试并继续优化firstmount |
-| Strata               | `atlas_header_fix`       | 正常TLS公开预览可访问；已记录13个侧栏href，实际查看Overview/Services/Logs两宽及24图                    | 固定共享模型和shell合同，分叶实现；其余页面先取证，不臆造空页或auth路径                               |
+| Strata               | Root / 三个独立叶owner   | 13个href、三个实际页面两宽/24图；Root共享clock/身份/路由类型与header portal合同已落盘                  | Atlas做Jobs；Manifest做Services/SLO；Chart做Logs；Root做shell并排队其余真实参考，不注册空模板         |
 | Signal               | `manifest_axis_qa`       | detail200；预览Vercel域和公开图Supabase域均CONNECT403                                                  | 先完成公开功能说明/免费组件映射；网络真正生效后再取UI与路由，不把营销说明当实测                       |
 | Limelight / Overture | `foundation_style_audit` | 两ID真实独立；期间/计费组和四段tour存在已证实免费组件复用缺口                                          | 迁移真实ToggleGroup/Tabs，补导航状态语义，保留原视觉/业务/原创素材，冻结后双库浏览器验收              |
 
@@ -38,6 +38,10 @@
 - 每完成一项立即更新本记录和视觉待办，分派下一项；只有完成标准达成、用户叫停或所有可做路径均被外部阻塞时，才结束整轮。
 
 ## 网络与私有证据
+
+14:00 UTC新核对：D `d127fb1` 的run43218584940全绿，Pages deployment7738573232成功；
+7579 run43224303995的build/browser1成功，余三分片仍运行；72f69a3 run43229592153待执行。
+后续milestone必须重查实际状态，不能从该记录推断新commit已部署。
 
 当前运行环境仍为 network revision1；新草稿已保存精确 Signal 预览域和公共图域，并保留原规则与既有日志域。工具返回 `requires_publish: true`，保存草稿不等于应用。用户禁止 agent 发布环境，因此不自动发布，也不绕过代理/TLS；独立开发继续。
 

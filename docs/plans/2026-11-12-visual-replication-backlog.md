@@ -12,7 +12,7 @@ and unavailable backend services are intentional boundaries.
 | ---------- | ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | BLOCK-V01  | P2                | Job Schedule attention cards demote the risk headline and omit remaining work hours; the local hierarchy and card height differ from the reference. | `job_attention_qa`: V01 fixed; 22/22 Nova cases passed across both foundations and widths.                                | Risk is the main heading; real local remaining hours are visible; card actions still open or update the correct job at desktop and phone widths, under both UI foundations.   |
 | BLOCK-V02  | P2, fixed locally | Job Schedule lacked the common direct type/state/risk filter entries.                                                                               | `chart55_mobile_fix`: original22 passed; full55 first52/55, then rebuilt5270 targeted3/3; all24 filter images reviewed.   | Real query/search/paging/count/reset behavior, original22 fixtures preserved, six creatable types, global risk counts and honest empty state; exact-SHA CI still required.    |
-| BLOCK-V03  | P3                | Job Schedule row density, date-column width and button sizing differ.                                                                               | Job Schedule owner: local density work queued; the outer-spacing finding was withdrawn after image reinspection.          | Preserve the matching 48px/32px outer spacing; compare local Nova row/column/control dimensions while retaining other styles and internal scrolling.                          |
+| BLOCK-V03  | P3, fixed locally | Job Schedule row density, date-column width and button sizing differ.                                                                               | `chart55_mobile_fix`: 5280 corrected-oracle18/18, unchanged22/22 and risk3/3; 28 new images inspected.                    | Matching48/32px outer spacing retained; rows48px, phone dates37px, native scrolling and two-foundation/eight-style toolbar coverage. Exact-SHA CI remains separate.           |
 | BLOCK-V04  | P3, fixed locally | Job Schedule phone Add Job frame and columns differed.                                                                                              | `atlas_header_fix`: final5270 first-run18/18 with copy included; all22 matrix images and2 dynamic-state images reviewed.  | Both foundations, all8 phone styles plus Nova desktops; fields, internal scroll, footer, native keyboard and opener focus remain usable.                                      |
 | VT-MAN-001 | P2                | Manifest phone Inventory velocity category ticks collided; the first responsive repair left too little tail-label safety space in CI.               | `manifest_axis_qa`: 5260 first-run 10/10 plus both foundations' Inter/Arial fallback probes passed; exact-SHA CI pending. | No tick collisions or clipping; final phone category remains Outerwear with at least 2px real inner clearance; all bars, accessible data and default chart behavior retained. |
 | VT-ATL-001 | P2                | Atlas phone date control begins above the viewport and Export extends below its header.                                                             | `atlas_header_fix`: pushed `c96fb36`; 32 cases passed, including all eight phone-header styles.                           | Date/Export stay within the viewport and their own header; fix the local clipping without reproducing the reference's separate horizontal-overflow issue.                     |
@@ -59,7 +59,28 @@ actual free-component implementation, not only copied card labels:
 This is an identity/presence check, not a visual or functional acceptance of the
 other eighteen templates. Reference imagery remains private audit evidence.
 
+Strata reference work has resumed: thirteen sidebar hrefs are recorded; Overview,
+Services and Logs were actually captured at desktop/phone widths, with24 images
+inspected. Root owns the shared shell/contract; independent Jobs, Services/SLO
+and Logs leaves are in progress. Unvisited routes and account destinations still
+need reference capture. No nineteenth entry is registered or claimed complete.
+
+Job V03's first18-case attempt had2 passes and16 failures from two confirmed
+new-test oracle errors: desktop fluid columns versus phone nominal widths, and
+the visible-text accessor on a style element. Evidence is retained. The corrected
+spec passed18/18, followed by unchanged original22/22 and risk/complex3/3 on5280;
+runtime stayed frozen throughout. See
+`docs/qa/2026-11-12-job-schedule-density-fix.md` for exact boundaries.
+
 ## Related release gates
+
+- Fresh exact-SHA verification at14:00 UTC: `d127fb1` run `43218584940`
+  completed build, all four browser shards and Pages successfully. Its successful
+  deployment is7738573232. This closes that run's earlier chart/Lucent CI gate;
+  the older failed runs below remain historical evidence. `7579c5f` run
+  `43224303995` has successful build/browser1 with browsers2/3/4 still running;
+  docs-only `72f69a3` run `43229592153` is pending. These later runs have not
+  deployed and require fresh status checks.
 
 - CI regression: the user supplied the sole failing test from Filebox run
   `43191814435` (665 other cases passed). `templates-source-round3.spec.ts`
