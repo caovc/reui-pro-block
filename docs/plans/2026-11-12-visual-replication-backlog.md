@@ -1,0 +1,59 @@
+# Visual replication verification backlog · 2026-11-12
+
+This is a representative audit of previously delivered surfaces, not a claim
+that the complete block or template catalog has been visually verified. Findings
+require newly captured, inspected reference and local screenshots. Original
+Bricklane branding, licensed replacement artwork, disclosed local fixture data,
+and unavailable backend services are intentional boundaries.
+
+## Confirmed findings and assignments
+
+| ID         | Priority | Surface and observed difference                                                                                                                     | Owner / status                                                 | Acceptance                                                                                                                                                                  |
+| ---------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| BLOCK-V01  | P2       | Job Schedule attention cards demote the risk headline and omit remaining work hours; the local hierarchy and card height differ from the reference. | `job_attention_qa`: implemented; candidate validation pending. | Risk is the main heading; real local remaining hours are visible; card actions still open or update the correct job at desktop and phone widths, under both UI foundations. |
+| BLOCK-V02  | P2       | Job Schedule exposes common type/task-state filtering through a different generic entry point.                                                      | Job Schedule owner: queued after V01.                          | Verify the reference filter controls and restore equivalent discoverability without changing the underlying filtering or losing existing actions.                           |
+| BLOCK-V03  | P3       | Job Schedule outer spacing, row density and button sizing differ.                                                                                   | Job Schedule owner: queued visual polish.                      | Compare the actual embedded preview canvas before changing margins; preserve usable row targets and horizontal scrolling.                                                   |
+| BLOCK-V04  | P3       | Job Schedule phone Add Job layout and bounds differ.                                                                                                | Job Schedule owner: queued visual polish.                      | Match the observed form structure where appropriate, with all controls reachable and native Escape/focus recovery preserved.                                                |
+| VT-MAN-001 | P2       | Manifest phone Inventory velocity renders all category ticks, which collide; the reference omits some ticks to keep labels readable.                | `manifest_axis_qa`: implemented; candidate validation pending. | No tick collisions at 390px; retain every bar, its data and accessible category/value information, desktop labels, and unchanged defaults for other chart consumers.        |
+| VT-ATL-001 | P2       | Atlas phone date control begins above the viewport and Export extends below its header.                                                             | `atlas_header_fix`: implemented; candidate validation pending. | Date/Export stay within the viewport and their own header; fix the local clipping without reproducing the reference's separate horizontal-overflow issue.                   |
+
+Atlas phone Threat Vectors has a much smaller, 0.1953px Beacon/Day0 tick overlap (P3); Manifest's confirmed overlaps reach 20.1987px. The Atlas follow-up is assigned to `manifest_axis_qa` for the shared opt-in axis behavior, with the Atlas consumer edit owned by `atlas_header_fix` to avoid simultaneous edits. Keep all nine Atlas categories, both series and their accessible data.
+
+`BLOCK-V05` (P2): Working Agreements phone hid the earlier 21 of 26 weeks. The reference retains all 26 weeks in an internally scrollable matrix; the local view stopped keyboard navigation at August 31. `chart55_mobile_fix` restored all weeks, the default five-week viewport and accessible historical scrolling/keyboard navigation. Candidate 5200 passed the complete four-case Nova suite across Base/Radix and desktop/phone after an initial cold-entry failure and a passing focused recheck; the failure evidence is retained. Ten fresh screenshots were inspected. See `docs/qa/2026-11-12-chart55-mobile-history-fix.md`; full style-matrix and source-export gates are separate. Ready for the root's Git milestone.
+
+Evidence and capture limits are recorded in the corresponding audit reports:
+
+- `docs/qa/2026-11-12-block-visual-audit.md`
+- `docs/qa/2026-11-12-template-visual-audit.md`
+
+The Blocks audit now includes both Job Schedule and Working Agreements at desktop and phone widths, including observed overlay/focus and horizontal-scrolling behavior. It does not cover every block.
+Manifest and Atlas audit coverage must be read from the template report rather
+than extrapolated to their entire applications.
+
+## Related release gates
+
+- Roster calendar/date milestone: committed and pushed as `30b9f45`; its exact
+  Actions run is tracked independently from the previous successful deployment.
+- Shared template source viewer: the frozen source batch had two passes and two
+  native-action timing failures. A dedicated source-viewer owner is investigating
+  main-thread highlighting/rendering. Keep the existing action/test budgets,
+  tracing, real clipboard and original ZIP verification; do not relabel this gate
+  as passed.
+- Every fix needs scoped rendered validation and an independent, reviewable Git
+  milestone. Commit, push, Actions success and Pages deployment are separate
+  states. Reference screenshots remain private audit evidence outside the
+  application and downloadable source projects.
+
+## Foundation and style verification
+
+The user's follow-up makes real Base UI / Radix UI support and all eight styles
+a priority: Nova, Vega, Maia, Lyra, Mira, Luma, Sera and Rhea. The dedicated
+`foundation_style_audit` owner is reviewing primitive resolution, rendered
+controls and overlays, settings persistence across navigation, and exported
+project configuration. A selection label or a `data-ui-style` attribute alone
+does not establish support. Representative coverage and any confirmed gaps will
+be recorded in `docs/qa/2026-11-12-foundation-style-audit.md`.
+
+Individual fix validations below are scoped to the styles they actually run;
+two-foundation Nova coverage must not be described as a complete 16-combination
+foundation/style audit.

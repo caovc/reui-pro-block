@@ -140,7 +140,7 @@ for (const primitive of ["radix", "base"] as const) {
     test.describe("390px touch preview", () => {
       test.use({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
 
-      test("Working Agreements shows five recent weeks and opens a week on tap", async ({
+      test("Working Agreements shows five recent weeks and keeps all history reachable", async ({
         page,
       }) => {
         await page.goto(entry + agreementsRoute);
@@ -148,11 +148,76 @@ for (const primitive of ["radix", "base"] as const) {
         const review = matrix.getByRole("row").filter({
           has: page.getByRole("rowheader", { name: /Reviews within a day/ }),
         });
-        await expect(review.getByRole("button")).toHaveCount(5);
-        await review.getByRole("button", { name: /week of Sep 28/ }).tap();
-        await expect(
-          page.getByRole("dialog", { name: /Reviews within a day, week of Sep 28/ }),
-        ).toBeVisible();
+        await expect(matrix.getByRole("columnheader", { name: /Week of/ })).toHaveCount(26);
+        await expect(review.getByRole("button")).toHaveCount(26);
+        await expect
+          .poll(() =>
+            review.evaluate((row) => {
+              const container = row.closest<HTMLElement>('[data-slot="table-container"]')!;
+              const label = row.querySelector<HTMLElement>('[scope="row"]')!;
+              const right = container.getBoundingClientRect().right;
+              const left = label.getBoundingClientRect().right;
+              return Array.from(row.querySelectorAll<HTMLButtonElement>("[data-agreement-week]"))
+                .filter((button) => {
+                  const box = button.getBoundingClientRect();
+                  return box.left >= left - 0.5 && box.right <= right + 0.5;
+                })
+                .map((button) => Number(button.dataset.agreementWeek));
+            }),
+          )
+          .toEqual([21, 22, 23, 24, 25]);
+        const container = matrix.locator("..");
+        await expect
+          .poll(() => container.evaluate((node) => node.scrollWidth > node.clientWidth))
+          .toBe(true);
+        const currentWeek = review.getByRole("button", { name: /week of Sep 28/ });
+        await currentWeek.tap();
+        const currentCard = page.getByRole("dialog", {
+          name: "Reviews within a day, week of Sep 28",
+        });
+        await expect(currentCard).toBeVisible();
+        await expect(currentCard.getByText("7 of 9 PRs so far")).toBeVisible();
+        await page.keyboard.press("Escape");
+        await expect(currentCard).toBeHidden();
+        await expect(currentWeek).toBeFocused();
+        for (let step = 0; step < 5; step++) await page.keyboard.press("ArrowLeft");
+        const augustWeek = review.getByRole("button", { name: /week of Aug 24/ });
+        await expect(augustWeek).toBeFocused();
+        await expect
+          .poll(() =>
+            augustWeek.evaluate((button) => {
+              const viewport = button.closest<HTMLElement>('[data-slot="table-container"]')!;
+              const label = button.closest("tr")!.querySelector<HTMLElement>('[scope="row"]')!;
+              const box = button.getBoundingClientRect();
+              return (
+                box.left >= label.getBoundingClientRect().right - 0.5 &&
+                box.right <= viewport.getBoundingClientRect().right + 0.5
+              );
+            }),
+          )
+          .toBe(true);
+        await augustWeek.press("Enter");
+        const augustCard = page.getByRole("dialog", {
+          name: "Reviews within a day, week of Aug 24",
+        });
+        await expect(augustCard.getByText("Week of Aug 24 to Aug 30")).toBeVisible();
+        await page.keyboard.press("Escape");
+        await expect(augustCard).toBeHidden();
+        await expect(augustWeek).toBeFocused();
+
+        await container.evaluate((node) => {
+          node.scrollLeft = 0;
+        });
+        const firstWeek = review.getByRole("button", { name: /week of Apr 6:/ });
+        await firstWeek.tap();
+        const firstCard = page.getByRole("dialog", {
+          name: "Reviews within a day, week of Apr 6",
+        });
+        await expect(firstCard.getByText("Week of Apr 6 to Apr 12")).toBeVisible();
+        await expect(firstCard.getByRole("button", { name: "Edit Target" })).toHaveCount(0);
+        await page.keyboard.press("Escape");
+        await expect(firstCard).toBeHidden();
+        await expect(firstWeek).toBeFocused();
         await expect
           .poll(() => page.evaluate(() => document.documentElement.scrollWidth))
           .toBeLessThanOrEqual(390);

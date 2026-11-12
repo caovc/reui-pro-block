@@ -1,4 +1,4 @@
-import { useRef, useState, type KeyboardEvent } from "react";
+import { useLayoutEffect, useRef, useState, type KeyboardEvent } from "react";
 import { Activity, Brain, Rocket, SquareCode, TrendingDown, TrendingUp } from "lucide-react";
 import { Badge } from "@/components/reui/badge";
 import { Button } from "@/components/ui/button";
@@ -23,12 +23,6 @@ import {
 
 const areaIcons = { review: SquareCode, release: Rocket, reliability: Activity, knowledge: Brain };
 const desktopOnly = "hidden @min-[880px]:table-cell";
-
-function weekVisibility(index: number) {
-  if (index >= 21) return "table-cell";
-  if (index >= 13) return "hidden @md:table-cell";
-  return desktopOnly;
-}
 
 function weekDetail(row: AgreementRow, week: AgreementWeek) {
   const outcome = agreementOutcomes[week.outcome].detail;
@@ -71,7 +65,7 @@ function WeekTile({
           aria-label={`${row.name}, week of ${week.label}: ${weekDetail(row, week)}`}
           tabIndex={week.current ? 0 : -1}
           data-agreement-week={week.index}
-          className="h-7 w-full min-w-0 rounded-sm px-0 hover:bg-muted @min-[880px]:h-[22px]"
+          className="h-7 w-full min-w-0 scroll-ml-[212px] rounded-sm px-0 hover:bg-muted @min-[880px]:h-[22px] @min-[880px]:scroll-ml-0"
         >
           <span aria-hidden="true" className={cn("size-4 rounded-[3px]", outcome.fill)} />
         </Button>
@@ -194,7 +188,8 @@ function focusNeighbor(event: KeyboardEvent<HTMLTableElement>) {
   }
   if (next) {
     event.preventDefault();
-    next.focus();
+    next.focus({ preventScroll: true });
+    next.scrollIntoView({ block: "nearest", inline: "nearest" });
   }
 }
 
@@ -211,10 +206,25 @@ export function WorkingAgreementsMatrix({
   onPause: (row: AgreementRow, pause: boolean) => void;
   onEdit: (row: AgreementRow, trigger: HTMLButtonElement) => void;
 }) {
+  const matrix = useRef<HTMLTableElement>(null);
+
+  useLayoutEffect(() => {
+    const container = matrix.current?.parentElement;
+    if (!container) return;
+    const showCurrentWeek = () => {
+      container.scrollLeft = container.scrollWidth - container.clientWidth;
+    };
+    showCurrentWeek();
+    const observer = new ResizeObserver(showCurrentWeek);
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, [teamName]);
+
   return (
     <Table
+      ref={matrix}
       aria-label={`${teamName} working agreements by week`}
-      className="table-fixed"
+      className="min-w-[852px] table-fixed @min-[880px]:min-w-0"
       onKeyDown={focusNeighbor}
     >
       <TableHeader>
@@ -224,7 +234,7 @@ export function WorkingAgreementsMatrix({
           >
             Area
           </TableHead>
-          <TableHead className="h-14 pl-4 text-xs font-normal text-muted-foreground @min-[880px]:w-[174px]">
+          <TableHead className="sticky left-0 z-20 h-14 w-[212px] bg-card pl-4 text-xs font-normal text-muted-foreground @min-[880px]:static @min-[880px]:w-[174px] @min-[880px]:bg-transparent">
             <span className="block">Agreement</span>
             <span className="mt-1 block truncate">{sortHint}</span>
           </TableHead>
@@ -234,7 +244,6 @@ export function WorkingAgreementsMatrix({
               <TableHead
                 key={week.index}
                 className={cn(
-                  weekVisibility(index),
                   "relative h-14 w-6 p-0 text-center text-xs tabular-nums @min-[880px]:w-auto",
                   week.current && "w-10",
                 )}
@@ -282,7 +291,7 @@ export function WorkingAgreementsMatrix({
         return (
           <TableBody key={area.id} className="border-t">
             <TableRow className="border-0 hover:bg-transparent @min-[880px]:hidden">
-              <TableCell className="overflow-visible pt-3 pb-1 pl-4 text-xs text-muted-foreground">
+              <TableCell className="sticky left-0 z-10 overflow-visible bg-card pt-3 pb-1 pl-4 text-xs text-muted-foreground">
                 <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
                   <Icon aria-hidden="true" className="size-3.5" />
                   {area.label} <span aria-hidden="true">·</span> {kept}/{finished} kept
@@ -315,7 +324,7 @@ export function WorkingAgreementsMatrix({
                 <TableHead
                   scope="row"
                   className={cn(
-                    "h-auto py-2 pl-4 text-sm font-normal whitespace-normal @min-[880px]:py-0",
+                    "sticky left-0 z-10 h-auto bg-card py-2 pl-4 text-sm font-normal whitespace-normal @min-[880px]:static @min-[880px]:bg-transparent @min-[880px]:py-0",
                     index === 0 && "@min-[880px]:pt-2",
                     index === areaRows.length - 1 && "@min-[880px]:pb-2",
                   )}
@@ -333,11 +342,7 @@ export function WorkingAgreementsMatrix({
                 {row.weeks.map((week) => (
                   <TableCell
                     key={week.index}
-                    className={cn(
-                      weekVisibility(week.index),
-                      "p-0 text-center",
-                      week.current && "pr-4 @min-[880px]:pr-0",
-                    )}
+                    className={cn("p-0 text-center", week.current && "pr-4 @min-[880px]:pr-0")}
                   >
                     <WeekTile row={row} week={week} onPause={onPause} onEdit={onEdit} />
                   </TableCell>
