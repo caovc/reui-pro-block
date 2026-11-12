@@ -4,6 +4,19 @@
   gap: 16px;
 }
 
+.ct-filebox-auth .ct-login-notice {
+  border: 0;
+}
+
+.ct-filebox-auth .ct-login-notice [data-slot="alert-description"] {
+  display: block;
+  text-align: center;
+}
+
+.ct-filebox-auth .ct-login-notice [data-slot="alert-description"] p {
+  line-height: inherit;
+}
+
 .ct-filebox-auth .filebox-auth-form > [data-slot="field-group"] {
   gap: 16px;
 }

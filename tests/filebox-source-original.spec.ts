@@ -32,6 +32,7 @@ const target: SourceTarget = {
     "src/components/ui/card.tsx",
     "src/components/ui/field.tsx",
     "src/components/ui/input-group.tsx",
+    "src/components/reui/alert.tsx",
     "src/components/brand-mark.tsx",
   ],
 };
@@ -44,9 +45,9 @@ const frozenHashes: Readonly<Record<string, string>> = {
   "src/templates/collaboration/drive.tsx":
     "cb8759e26384816a708b5eff76dac5202cf4273bd2dc5d6081e1ced437142ad5",
   "src/templates/collaboration/filebox-auth.tsx":
-    "abcd590a27e62250681be45c8dce16e78f7aa066f3739f01aa4ead68e78ca462",
+    "8215968a5c5c1d0f145c05a451e4a015c2ab21bfbbb357b265472607e760b1b0",
   "src/templates/collaboration/filebox-auth.css":
-    "3fdd087e5402a1609fcd0f9267835475c4d006bfbd28d8cccb3147c150e0a5fe",
+    "5eeb4c94ee0bea0a4d5c97c9e40eb41934aba8f7e5155bfb855cceaf132ca755",
 };
 
 test("Filebox changed source: actual full default, real view/Copy/single files and original ZIP", async ({

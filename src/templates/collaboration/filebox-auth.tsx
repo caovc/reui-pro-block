@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import { OAuthIcon, FormDivider } from "@/blocks/application/auth-shared";
+import { Alert, AlertDescription } from "@/components/reui/alert";
 import { Field, FieldDescription, FieldGroup, FieldLabel } from "@/components/ui/field";
 import {
   InputGroup,
@@ -26,14 +27,32 @@ export function FileboxAuth({ onLogin }: { onLogin: () => void }) {
   const [visible, setVisible] = useState(false);
   const [forgot, setForgot] = useState(false);
   const [sent, setSent] = useState(false);
+  const resetEmailRef = useRef<HTMLInputElement>(null);
+  const resetStatusRef = useRef<HTMLDivElement>(null);
+  const forgotButtonRef = useRef<HTMLButtonElement>(null);
+  const restoreSignInFocus = useRef(false);
+
+  useEffect(() => {
+    if (forgot) {
+      if (sent) resetStatusRef.current?.focus();
+      else resetEmailRef.current?.focus();
+    } else if (restoreSignInFocus.current) {
+      forgotButtonRef.current?.focus();
+      restoreSignInFocus.current = false;
+    }
+  }, [forgot, sent]);
 
   return (
     <div className="ct-app ct-drive-login ct-filebox-auth">
       <div className="ct-login-container">
         {!forgot && (
-          <p className="ct-login-notice">
-            This is a live demo. The credentials are filled in, just click <b>Sign in.</b>
-          </p>
+          <Alert className="ct-login-notice" role="note" aria-label="Demo sign-in">
+            <AlertDescription>
+              <p>
+                This is a live demo. The credentials are filled in, just click <b>Sign in.</b>
+              </p>
+            </AlertDescription>
+          </Alert>
         )}
         <Card>
           <CardHeader>
@@ -57,15 +76,19 @@ export function FileboxAuth({ onLogin }: { onLogin: () => void }) {
                 }}
               >
                 {sent ? (
-                  <p role="status">Reset link prepared for this local demo.</p>
+                  <Alert ref={resetStatusRef} role="status" tabIndex={-1}>
+                    <AlertDescription>Reset link prepared for this local demo.</AlertDescription>
+                  </Alert>
                 ) : (
                   <>
                     <Field>
                       <FieldLabel htmlFor="filebox-reset-email">Email</FieldLabel>
                       <Input
+                        ref={resetEmailRef}
                         id="filebox-reset-email"
                         name="email"
                         type="email"
+                        autoComplete="email"
                         placeholder="you@example.com"
                         aria-describedby="filebox-reset-email-description"
                         required
@@ -83,6 +106,7 @@ export function FileboxAuth({ onLogin }: { onLogin: () => void }) {
                   onClick={() => {
                     setForgot(false);
                     setSent(false);
+                    setVisible(false);
                   }}
                 >
                   <ArrowLeft />
@@ -119,7 +143,9 @@ export function FileboxAuth({ onLogin }: { onLogin: () => void }) {
                       <FieldLabel htmlFor="filebox-login-email">Email or username</FieldLabel>
                       <Input
                         id="filebox-login-email"
+                        name="username"
                         type="email"
+                        autoComplete="username"
                         defaultValue="alex.rivera@bricklane.example"
                         required
                       />
@@ -127,14 +153,24 @@ export function FileboxAuth({ onLogin }: { onLogin: () => void }) {
                     <Field>
                       <div className="filebox-auth-password-label">
                         <FieldLabel htmlFor="filebox-login-password">Password</FieldLabel>
-                        <button type="button" className="ct-subtle" onClick={() => setForgot(true)}>
+                        <button
+                          ref={forgotButtonRef}
+                          type="button"
+                          className="ct-subtle"
+                          onClick={() => {
+                            restoreSignInFocus.current = true;
+                            setForgot(true);
+                          }}
+                        >
                           Forgot password?
                         </button>
                       </div>
                       <InputGroup>
                         <InputGroupInput
                           id="filebox-login-password"
+                          name="password"
                           type={visible ? "text" : "password"}
+                          autoComplete="current-password"
                           defaultValue="password"
                           required
                         />

@@ -149,6 +149,40 @@ test.afterEach(async ({ page }, info) => {
 });
 
 for (const width of [1440, 390]) {
+  test(`Base Filebox reset keyboard focus and masked return ${width}`, async ({ page }, info) => {
+    await page.setViewportSize({ width, height: width === 390 ? 844 : 1000 });
+    await page.goto(`/base/${mount("filebox")}${rawQuery}`);
+    await expect(page).toHaveTitle("Bricklane — Blocks & Templates");
+    const surface = auth(page);
+    const password = surface.getByLabel("Password", { exact: true });
+    await surface.getByRole("button", { name: "Show password", exact: true }).click();
+    await expect(password).toHaveAttribute("type", "text");
+    const forgot = surface.getByRole("button", { name: "Forgot password?", exact: true });
+    await forgot.focus();
+    await page.keyboard.press("Enter");
+    const email = surface.getByRole("textbox", { name: "Email", exact: true });
+    await expect(email).toBeFocused();
+    await page.keyboard.press("Enter");
+    await expect(email).toBeFocused();
+    await expect(surface.getByRole("status")).toHaveCount(0);
+    await email.fill("alex.rivera@bricklane.example");
+    await page.keyboard.press("Enter");
+    await expect(surface.getByRole("status")).toHaveText(
+      "Reset link prepared for this local demo.",
+    );
+    await expect(surface.getByRole("status")).toBeFocused();
+    await boundedControls(page, surface);
+    await evidence(page, info, "base-reset-success-focus");
+    await page.keyboard.press("Tab");
+    await expect(
+      surface.getByRole("button", { name: "Back to sign in", exact: true }),
+    ).toBeFocused();
+    await page.keyboard.press("Enter");
+    await expect(forgot).toBeFocused();
+    await expect(password).toHaveAttribute("type", "password");
+    await expectHash(page, `${mount("filebox")}${rawQuery}`);
+  });
+
   test(`Filebox free auth native validation, password, reset and bounded controls ${width}`, async ({
     page,
   }, info) => {
@@ -174,6 +208,8 @@ for (const width of [1440, 390]) {
     const email = surface.getByRole("textbox", { name: "Email or username", exact: true });
     const password = surface.getByLabel("Password", { exact: true });
     await expect(email).toHaveValue("alex.rivera@bricklane.example");
+    await expect(email).toHaveAttribute("autocomplete", "username");
+    await expect(password).toHaveAttribute("autocomplete", "current-password");
     await expect(email).toHaveAttribute("required", "");
     await expect(password).toHaveAttribute("required", "");
     await email.fill("");
@@ -195,16 +231,24 @@ for (const width of [1440, 390]) {
     await expect(password).toHaveAttribute("type", "password");
     await expect(password).toHaveValue("Local password value 42");
 
-    await surface.getByRole("button", { name: "Forgot password?", exact: true }).click();
+    await surface.getByRole("button", { name: "Show password", exact: true }).click();
+    await expect(password).toHaveAttribute("type", "text");
+    const forgot = surface.getByRole("button", { name: "Forgot password?", exact: true });
+    await forgot.focus();
+    await page.keyboard.press("Enter");
     await expect(surface.locator('[data-slot="card-title"]')).toHaveText("Reset your password");
     await expect(surface.locator('[data-slot="card-title"]')).toBeVisible();
     const resetEmail = surface.getByRole("textbox", { name: "Email", exact: true });
     const send = surface.getByRole("button", { name: "Send reset link", exact: true });
+    await expect(resetEmail).toBeFocused();
+    await expect(resetEmail).toHaveAttribute("autocomplete", "email");
     await boundedControls(page, surface);
+    await evidence(page, info, "local-reset-input-focus");
     await send.click();
     expect(
       await resetEmail.evaluate((node) => (node as HTMLInputElement).validity.valueMissing),
     ).toBe(true);
+    await expect(resetEmail).toBeFocused();
     await expect(surface.getByRole("status")).toHaveCount(0);
     await resetEmail.fill("invalid-email");
     await send.click();
@@ -217,11 +261,35 @@ for (const width of [1440, 390]) {
     await expect(surface.getByRole("status")).toHaveText(
       "Reset link prepared for this local demo.",
     );
+    await expect(surface.getByRole("status")).toBeFocused();
+    await evidence(page, info, "local-reset-success-focus");
     await expect(page.locator(".ct-drive-window")).toHaveCount(0);
-    await surface.getByRole("button", { name: "Back to sign in", exact: true }).click();
+    await page.keyboard.press("Tab");
+    await expect(
+      surface.getByRole("button", { name: "Back to sign in", exact: true }),
+    ).toBeFocused();
+    await page.keyboard.press("Enter");
+    await expect(forgot).toBeFocused();
     await expect(email).toHaveValue("alex.rivera@bricklane.example");
     await expect(password).toHaveValue("password");
     await expect(password).toHaveAttribute("type", "password");
+    await expect(
+      surface.getByRole("button", { name: "Show password", exact: true }),
+    ).toHaveAttribute("aria-pressed", "false");
+
+    // A cancelled reset follows the same native return path without submitting.
+    await page.keyboard.press("Enter");
+    await expect(resetEmail).toBeFocused();
+    await expect(resetEmail).toHaveValue("");
+    await page.keyboard.press("Tab");
+    await expect(send).toBeFocused();
+    await page.keyboard.press("Tab");
+    await expect(
+      surface.getByRole("button", { name: "Back to sign in", exact: true }),
+    ).toBeFocused();
+    await page.keyboard.press("Enter");
+    await expect(forgot).toBeFocused();
+    await expect(surface.getByRole("status")).toHaveCount(0);
     await boundedControls(page, surface);
     await signIn(page).click();
     await expect(auth(page)).toHaveCount(0);
