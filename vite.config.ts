@@ -74,6 +74,7 @@ export default defineConfig(({ command, mode, isPreview }) => {
     cacheDir: useBase ? "node_modules/.vite-base" : undefined,
     plugins: [useBase ? useBaseUi() : dev && serveBaseUi(), react(), tailwindcss()],
     build: useBase ? { outDir: "dist/base" } : undefined,
+    worker: { format: "es" },
     resolve: {
       dedupe: ["@radix-ui/react-focus-scope", "@radix-ui/react-dismissable-layer"],
       alias: { "@": src },

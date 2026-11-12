@@ -252,12 +252,15 @@ runtime stayed frozen throughout. See
   regression, seven Base menu/nested-overlay cases, and all eighteen final
   layout cases with the added copy. This is staged acceptance with explicit
   source boundaries, not a claim of a full55/55 rerun on5270.
-- Shared template source viewer: the frozen source batch had two passes and two
-  native-action timing failures. Highlighting/worker experiments did not meet
-  the original gate and were archived privately; their tracked runtime/test
-  changes were restored to main before 5240/5250. This performance task remains
-  open. Keep the existing action/test budgets, tracing, real clipboard and
-  original ZIP verification; the passing focused Roster case does not close it.
+- Shared template source viewer (P2, bounded milestone fixed and locally
+  verified): actual free CodeBlock/highlighter worker and `c-combobox-21` passed
+  candidate 5458's original critical 3 and phone 4 flows, plus private core 26,
+  natural cache 4 and genuine transport fault 2. Original raw/real Clipboard/file/ZIP
+  checks and budgets remain. Four permanent focus cases are registered; their
+  overlapping direct extraction 2 passed. Historical failures remain preserved.
+  All-style/stable-matrix and exact-SHA CI/Pages acceptance are separate; the
+  exported Base app's NewFolder Escape-focus smoke remains open. Scope:
+  `docs/qa/2026-11-12-source-worker-cache-focus.md`.
 - Every fix needs scoped rendered validation and an independent, reviewable Git
   milestone. Commit, push, Actions success and Pages deployment are separate
   states. Reference screenshots remain private audit evidence outside the
@@ -329,3 +332,40 @@ generator now retains that LF and the strict check compares the entire decoded
 string without normalization. Candidate5300 stays immutable; its actual ZIP gate
 must not be called byte-identical. A later candidate and fresh ZIP still require
 native download, original strict build and console smoke verification.
+
+- `COHORT-SET-03` (P2, scoped correction locally verified; exact-SHA CI pending):
+  main4d's broad mobile footer rule made the original phone Profile footer76px,
+  violating the existing48px contract in Actions43320050985/browser1 and the
+  unchanged frozen5458 first local red. Restricting the two selectors to the
+  actual Working week section preserves all five declarations and the free
+  Frame/Button/ToggleGroup. Frozen5466's unchanged original phone case passed
+  once at354×48px. Its original permanent Working week footer six produced
+  four passes/two Base failures only at the final status hit, where a normally
+  exiting native sheet-overlay still covered the background after the dialog
+  had become aria-hidden. Both traces later show the overlay unmounted without
+  another interaction. A private test-only correction waits for zero actual
+  sheet overlays after each existing Escape/hidden check using the original5s
+  budget; all hit/Range/bounds/keyboard/30s/R0/fulltrace assertions remain.
+  Corrected footer six passed their first native invocation on the same5466
+  runtime, exit0 at23:33:27.600705Z,49.177s wall, without rebuild/phone repeat.
+  All30 status hits/12overlay asserts/18viewedPNG/6complete auditedtraces passed;
+  both full before/after2453source/1430artifact/1632sharedRuntime/12HTTP guards
+  passed. Initial4/2 and the phone pass remain separate. Savedtoast still covers
+  part of lower disabled actions; other Sera section footers remain outside
+  the correction and visibly retain compressed status/320px Locations actions.
+  See `docs/qa/2026-11-12-cohort-settings-footer.md` and
+  `/tmp/cohort-footer-readiness-5466-six-native-20261112-attempt-01/`.
+
+- `COHORT-SET-04` (P2, visual follow-up open): Sera Locations/Departments
+  footers still compress saved-status text; the 320px Locations actions extend
+  right in the reviewed 5466 footer screenshots. These sections are outside
+  the Working week selector correction and have no dedicated measured gate yet.
+  Preserve Profile's original 48px Nova contract when reviewing them. Evidence:
+  `/tmp/cohort-footer-readiness-5466-six-native-20261112-attempt-01/`.
+- `FILEBOX-FOCUS-01` (P2, exported-app smoke open): the unchanged original
+  Base package installed and strictly built, but its first own-dist smoke failed
+  New Folder opener focus after Escape. Login, popup and removal passed; Create
+  was not reached and the actual focus destination was not captured. The
+  original 263 members remain unchanged. Consumer/native-focus investigation
+  is queued; this does not change Source viewer acceptance. Evidence:
+  `/tmp/filebox-base-original-fresh-smoke-5465-native-20261112-p8z2nv7k/`.

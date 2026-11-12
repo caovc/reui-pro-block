@@ -40,7 +40,9 @@ for (const example of [
     const sourceFile = files[example.id === "roster" ? 2 : 1];
     await page.getByRole("option", { name: sourceFile, exact: true }).click();
     const source = await readFile(join(process.cwd(), sourceFile), "utf8");
-    expect(await page.locator(".template-source-code").textContent()).toBe(source);
+    await expect
+      .poll(() => page.locator(".template-source-code").textContent(), { timeout: 5000 })
+      .toBe(source);
     await page.getByRole("button", { name: "Copy", exact: true }).click();
     expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(source);
     // Cohort promotes its actual People detail/editor leaves before Settings.
@@ -54,7 +56,9 @@ for (const example of [
           page.getByRole("combobox", { name: "Template source file", exact: true }),
         ).toHaveText(path);
         const expected = await readFile(join(process.cwd(), path), "utf8");
-        expect(await page.locator(".template-source-code").textContent()).toBe(expected);
+        await expect
+          .poll(() => page.locator(".template-source-code").textContent(), { timeout: 5000 })
+          .toBe(expected);
         await page.getByRole("button", { name: "Copy", exact: true }).click();
         expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(expected);
         extraSources.set(path, expected);

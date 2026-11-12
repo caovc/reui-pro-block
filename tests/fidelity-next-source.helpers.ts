@@ -276,15 +276,11 @@ export async function verifyOriginalClosure(
   );
   const mediaNotes = new Set<string>();
   for (const filename of mediaFiles) {
-    // Vite may serialize SVG XML differently; original ZIP asset SHA is inventoried
-    // for root's separate received-project audit. Other original binary media stay raw.
-    if (!filename.endsWith(".svg")) {
-      expectRawBytes(
-        files[filename]!,
-        await fileBytes(filename),
-        `${filename}: original binary media bytes`,
-      );
-    }
+    expectRawBytes(
+      files[filename]!,
+      await fileBytes(filename),
+      `${filename}: original media bytes`,
+    );
     const note = `${posix.dirname(filename)}/ATTRIBUTION.md`;
     const exists = await access(resolve(process.cwd(), note)).then(
       () => true,
