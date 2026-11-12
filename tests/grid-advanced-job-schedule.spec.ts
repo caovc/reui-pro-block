@@ -30,6 +30,155 @@ for (const library of ["radix", "base"] as const) {
       ).toBeVisible();
     });
 
+    for (const width of [1440, 390]) {
+      test.describe(`attention at ${width}px`, () => {
+        test.use({ viewport: { width, height: width === 390 ? 844 : 1000 } });
+
+        test("cards show risk, client and live workload without clipping", async ({
+          page,
+        }, info) => {
+          const schedule = frame(page);
+          const attention = schedule.getByRole("region", {
+            name: "Schedule attention",
+            exact: true,
+          });
+          await expect(schedule.getByText("10 crew members", { exact: true })).toBeVisible();
+          const cases = [
+            { name: "Farrow Kitchen", risk: "3 workdays past due", detail: "23h left" },
+            { name: "Pike Kitchen", risk: "2 workdays past due", detail: "31h left" },
+            { name: "Dawson Exterior", risk: "Rain day to make up", detail: "8h" },
+            { name: "Ramos Kitchen", risk: "No delivery date", detail: "Quartz countertop" },
+          ];
+          await expect(attention.getByRole("article")).toHaveCount(4);
+          for (const { name, risk, detail } of cases) {
+            const card = attention.getByRole("article", { name: `${name}: ${risk}`, exact: true });
+            await card.scrollIntoViewIfNeeded();
+            const heading = card.getByRole("heading", { name: risk, level: 3, exact: true });
+            const client = card.getByText(name, { exact: true });
+            const workload = card.getByText(detail, { exact: true });
+            await expect(heading).toBeVisible();
+            await expect(client).toBeVisible();
+            await expect(workload).toBeVisible();
+            const titleBox = await heading.boundingBox();
+            const clientBox = await client.boundingBox();
+            const workloadBox = await workload.boundingBox();
+            expect(titleBox!.y + titleBox!.height).toBeLessThanOrEqual(clientBox!.y);
+            expect(clientBox!.y + clientBox!.height).toBeLessThanOrEqual(workloadBox!.y);
+            expect(await heading.evaluate((node) => node.scrollWidth <= node.clientWidth)).toBe(
+              true,
+            );
+            expect(await card.evaluate((node) => node.scrollWidth <= node.clientWidth)).toBe(true);
+          }
+          expect(await page.locator("body").evaluate((node) => node.scrollWidth)).toBe(width);
+          expect(await attention.evaluate((node) => node.scrollWidth > node.clientWidth)).toBe(
+            width === 390,
+          );
+          await attention.evaluate((node) => {
+            node.scrollLeft = 0;
+          });
+          await page.screenshot({
+            path: info.outputPath(`attention-${width}.png`),
+            animations: "disabled",
+          });
+        });
+
+        test("View opens each matching late job and restores opener focus", async ({ page }) => {
+          const attention = frame(page).getByRole("region", {
+            name: "Schedule attention",
+            exact: true,
+          });
+          for (const [name, client] of [
+            ["Farrow Kitchen", "Noel Farrow"],
+            ["Pike Kitchen", "Jana Pike"],
+          ]) {
+            const view = attention.getByRole("button", { name: `View ${name}`, exact: true });
+            await view.press("Enter");
+            const detail = page.getByRole("dialog", { name, exact: true });
+            await expect(detail).toBeVisible();
+            await expect(
+              detail.getByRole("tab", { name: "Overview", exact: true }),
+            ).toHaveAttribute("aria-selected", "true");
+            await expect(detail.getByText(client, { exact: true })).toBeVisible();
+            await page.keyboard.press("Escape");
+            await expect(view).toBeFocused();
+          }
+        });
+
+        test("Make Up and Set Date open the matching job and restore opener focus", async ({
+          page,
+        }) => {
+          const attention = frame(page).getByRole("region", {
+            name: "Schedule attention",
+            exact: true,
+          });
+          const makeUp = attention.getByRole("button", {
+            name: "Make Up Dawson Exterior",
+            exact: true,
+          });
+          await makeUp.click();
+          const slide = page.getByRole("dialog", { name: "Slide Schedule", exact: true });
+          await expect(slide.getByText("Dawson Exterior", { exact: true })).toBeVisible();
+          await expect(slide.getByRole("combobox", { name: "Reason", exact: true })).toContainText(
+            "Rain or weather",
+          );
+          await page.keyboard.press("Escape");
+          await expect(makeUp).toBeFocused();
+
+          const setDate = attention.getByRole("button", {
+            name: "Set Date Ramos Kitchen",
+            exact: true,
+          });
+          await setDate.click();
+          const materials = page.getByRole("dialog", { name: "Ramos Kitchen", exact: true });
+          await expect(materials.getByRole("tab", { name: /^Materials/ })).toHaveAttribute(
+            "aria-selected",
+            "true",
+          );
+          await expect(
+            materials.getByRole("button", {
+              name: "Delivery date for Quartz countertop",
+              exact: true,
+            }),
+          ).toBeVisible();
+          await page.keyboard.press("Escape");
+          await expect(setDate).toBeFocused();
+        });
+      });
+    }
+
+    test("attention workload follows crew day edits and Undo", async ({ page }) => {
+      await page.setViewportSize({ width: 1440, height: 1000 });
+      const schedule = frame(page);
+      const attention = schedule.getByRole("region", { name: "Schedule attention", exact: true });
+      for (const { day, risk, initial, updated } of [
+        {
+          day: "Edit Crew Day, Farrow Kitchen, Tue, Oct 27, Planned, 7 hours",
+          risk: "Farrow Kitchen: 3 workdays past due",
+          initial: "23h left",
+          updated: "23.5h left",
+        },
+        {
+          day: "Edit Crew Day, Dawson Exterior, Mon, Oct 26, Lost, 8 hours, Trim paint",
+          risk: "Dawson Exterior: Rain day to make up",
+          initial: "8h",
+          updated: "8.5h",
+        },
+      ]) {
+        const card = attention.getByRole("article", { name: risk, exact: true });
+        await expect(card.getByText(initial, { exact: true })).toBeVisible();
+        await schedule.getByRole("button", { name: day, exact: true }).click();
+        const editor = page.getByRole("dialog", { name: "Edit Crew Day", exact: true });
+        await editor.getByRole("button", { name: "Increase hours", exact: true }).click();
+        await editor.getByRole("button", { name: "Save Crew Day", exact: true }).click();
+        await expect(editor).toBeHidden();
+        await expect(card.getByText(updated, { exact: true })).toBeVisible();
+        await schedule
+          .getByRole("button", { name: "Undo last schedule change", exact: true })
+          .click();
+        await expect(card.getByText(initial, { exact: true })).toBeVisible();
+      }
+    });
+
     test("weekday grid supports paging, selection, search, expansion, settings and date navigation", async ({
       page,
     }) => {

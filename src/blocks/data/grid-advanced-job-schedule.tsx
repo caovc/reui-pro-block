@@ -42,6 +42,7 @@ import {
   ChevronLeft,
   ChevronRight,
   CircleAlert,
+  Clock,
   CloudRain,
   ListFilter,
   Package,
@@ -65,6 +66,7 @@ import {
   addCrewDay,
   createJob,
   createScheduleSeed,
+  crew,
   crewMember,
   jobDate,
   jobName,
@@ -74,6 +76,7 @@ import {
   logJob,
   nextCrewDate,
   scheduleWindow,
+  taskHours,
   type Job,
 } from "./grid-advanced-job-schedule-model";
 
@@ -115,7 +118,7 @@ function AttentionCards({
   const lateJobs = jobs
     .flatMap((job) => {
       const progress = jobProgress(job);
-      return progress.status === "Late" ? [{ job, days: progress.late }] : [];
+      return progress.status === "Late" ? [{ job, days: progress.late, left: progress.left }] : [];
     })
     .sort((a, b) => b.days - a.days)
     .slice(0, 2);
@@ -136,11 +139,13 @@ function AttentionCards({
     )
     .at(0);
   const cards = [
-    ...lateJobs.map(({ job, days }) => ({
+    ...lateJobs.map(({ job, days, left }) => ({
       key: job.id,
       job,
       icon: CircleAlert,
-      label: `${days} workdays late`,
+      label: `${days} workdays past due`,
+      detail: `${left}h left`,
+      detailIcon: Clock,
       action: "View",
       variant: "destructive-light" as const,
       run: (opener: HTMLElement) => onOpen(job, "overview", opener),
@@ -151,7 +156,11 @@ function AttentionCards({
             key: `lost-${lost.job.id}`,
             job: lost.job,
             icon: CloudRain,
-            label: lost.day.reason ?? "Lost crew day",
+            label: /rain|weather/i.test(lost.day.reason ?? "")
+              ? "Rain day to make up"
+              : "Lost crew day to make up",
+            detail: `${taskHours(lost.day)}h`,
+            detailIcon: Clock,
             action: "Make Up",
             variant: "warning-light" as const,
             run: (opener: HTMLElement) => onMakeUp(lost.job, lost.day.date, opener),
@@ -164,7 +173,9 @@ function AttentionCards({
             key: `material-${missing.job.id}`,
             job: missing.job,
             icon: Package,
-            label: `${missing.material.name} · date missing`,
+            label: "No delivery date",
+            detail: missing.material.name,
+            detailIcon: Package,
             action: "Set Date",
             variant: "info-light" as const,
             run: (opener: HTMLElement) => onOpen(missing.job, "materials", opener),
@@ -180,34 +191,48 @@ function AttentionCards({
       role="region"
       className="flex min-w-0 snap-x scroll-px-3 gap-2 overflow-x-auto p-3"
     >
-      {cards.map(({ key, job, icon: Icon, label, action, variant, run }) => (
-        <Card size="sm" key={key} className="min-w-[234px] grow basis-0 snap-start">
-          <CardHeader className="gap-x-1.5">
-            <CardTitle className="flex items-center gap-1.5 truncate">
-              <Badge variant={variant} size="sm" className="size-5 shrink-0 p-0">
-                <Icon aria-hidden="true" />
-              </Badge>
-              <span className="truncate" title={jobName(job)}>
-                {jobName(job)}
-              </span>
-            </CardTitle>
-            <CardDescription className="truncate text-xs" title={label}>
-              {label}
-            </CardDescription>
-            <CardAction>
-              <Button
-                variant="outline"
-                size="sm"
-                aria-label={`${action} ${jobName(job)}`}
-                onClick={(event) => run(event.currentTarget)}
-              >
-                {action}
-                <ArrowRight className="hidden size-3 sm:block" />
-              </Button>
-            </CardAction>
-          </CardHeader>
-        </Card>
-      ))}
+      {cards.map(
+        ({ key, job, icon: Icon, label, detail, detailIcon: DetailIcon, action, variant, run }) => (
+          <Card
+            size="sm"
+            key={key}
+            role="article"
+            aria-label={`${jobName(job)}: ${label}`}
+            className="min-w-[274px] grow basis-0 snap-start"
+          >
+            <CardHeader className="gap-x-1.5 has-data-[slot=card-action]:grid-cols-[minmax(0,1fr)_auto]">
+              <CardTitle role="heading" aria-level={3} className="min-w-0 truncate" title={label}>
+                {label}
+              </CardTitle>
+              <CardDescription className="flex min-w-0 flex-col gap-1">
+                <span className="flex min-w-0 items-center gap-1.5">
+                  <Badge variant={variant} size="sm" className="size-5 shrink-0 p-0">
+                    <Icon aria-hidden="true" />
+                  </Badge>
+                  <span className="truncate" title={jobName(job)}>
+                    {jobName(job)}
+                  </span>
+                </span>
+                <span className="flex min-w-0 items-center gap-1.5" title={detail}>
+                  <DetailIcon aria-hidden="true" className="size-3.5 shrink-0" />
+                  <span className="truncate">{detail}</span>
+                </span>
+              </CardDescription>
+              <CardAction>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  aria-label={`${action} ${jobName(job)}`}
+                  onClick={(event) => run(event.currentTarget)}
+                >
+                  {action}
+                  <ArrowRight className="hidden size-3 sm:block" />
+                </Button>
+              </CardAction>
+            </CardHeader>
+          </Card>
+        ),
+      )}
     </div>
   );
 }
@@ -567,15 +592,17 @@ export default function JobSchedule() {
     <section aria-label="Job schedule" className="mx-auto w-full min-w-0 max-w-[1216px]">
       <Frame dense>
         <FrameHeader className="flex-row flex-wrap items-center justify-between gap-3 p-3 sm:px-4">
-          <div>
+          <div className="min-w-0">
             <FrameTitle>
               <h1>Job Schedule</h1>
             </FrameTitle>
-            <FrameDescription className="flex items-center gap-1.5 tabular-nums">
+            <FrameDescription className="flex flex-wrap items-center gap-x-1.5 tabular-nums">
               <CalendarDays className="size-3.5" />
               {jobDate(dates[0])} – {jobDate(dates[dates.length - 1])}
               <span aria-hidden="true">·</span>
               {jobs.length} jobs
+              <span aria-hidden="true">·</span>
+              <span>{crew.length} crew members</span>
             </FrameDescription>
           </div>
           <div className="flex flex-wrap items-center gap-2">
