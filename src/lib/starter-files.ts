@@ -1,5 +1,14 @@
 import type { PreviewTheme } from "@/components/site/preview-theme";
 
+// Original Bricklane mark, embedded so exported previews need no host favicon.
+const starterFavicon =
+  encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="8" fill="#242321"/>
+  <rect x="6" y="6" width="6" height="20" rx="1.25" fill="#fffaf3"/>
+  <rect x="16" y="6" width="10" height="8" rx="1.25" fill="#d57755"/>
+  <rect x="16" y="18" width="10" height="8" rx="1.25" fill="#fffaf3"/>
+</svg>`);
+
 /** Load the theme first so its Tailwind layer order precedes component styles. */
 export const starterMain = `import "./theme.css";
 import { createRoot } from "react-dom/client";
@@ -36,6 +45,7 @@ export function starterHTML(theme: PreviewTheme, dark: boolean) {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,${starterFavicon}" />
     <title>Component preview</title>
   </head>
   <body>
