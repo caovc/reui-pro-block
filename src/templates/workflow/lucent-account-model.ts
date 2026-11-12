@@ -145,6 +145,7 @@ export function useLucentAccountModel() {
     // effect releases tracked object URLs after that DOM replacement commits.
     setAvatarVersion((version) => version + 1);
     toast.success("Profile saved", {
+      style: { pointerEvents: "none" },
       description: "Your profile was updated in this local preview.",
     });
   }
@@ -156,6 +157,7 @@ export function useLucentAccountModel() {
     setAvatarError("");
     setAvatarVersion((version) => version + 1);
     toast.success("Changes discarded", {
+      style: { pointerEvents: "none" },
       description: "Your profile is back to its saved values.",
     });
   }
@@ -164,6 +166,7 @@ export function useLucentAccountModel() {
     if (billingInvalid) return;
     billingSaved.current = { ...billing };
     toast.success("Billing updated", {
+      style: { pointerEvents: "none" },
       description: "Billing details were saved in this local preview.",
     });
   }
@@ -171,6 +174,7 @@ export function useLucentAccountModel() {
   function resetPreferences() {
     setPreferences({ ...preferencesDefaults });
     toast.success("Preferences reset", {
+      style: { pointerEvents: "none" },
       description: "Default preferences restored in this local preview.",
     });
   }
@@ -178,6 +182,7 @@ export function useLucentAccountModel() {
   function savePreferences() {
     preferencesSaved.current = { ...preferences };
     toast.success("Preferences saved", {
+      style: { pointerEvents: "none" },
       description: "Your preferences were saved in this local preview.",
     });
   }
@@ -186,6 +191,7 @@ export function useLucentAccountModel() {
     if (!["Free", "Pro", "Team"].includes(nextPlan)) return;
     setPlan(nextPlan);
     toast.success(`${nextPlan} plan selected`, {
+      style: { pointerEvents: "none" },
       description: "Local preview only. No subscription or payment was changed.",
     });
   }
@@ -193,6 +199,7 @@ export function useLucentAccountModel() {
   function updateDemoCard() {
     setBilling((current) => ({ ...current, cardLast4: "1234" }));
     toast.success("Demo card updated", {
+      style: { pointerEvents: "none" },
       description: "Local preview only. No payment method was submitted.",
     });
   }

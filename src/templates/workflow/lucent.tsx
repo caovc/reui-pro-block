@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { useLucentSecurityModel, useLucentIntegrationsModel } from "./workflow-models";
 import { LucentSecurity, LucentIntegrations } from "./lucent-settings";
-import { useState } from "react";
+import { useRef, useState, type Dispatch, type SetStateAction } from "react";
 import {
   Activity,
   ClipboardCheck,
@@ -22,12 +22,32 @@ import {
   ChevronRight,
   Home,
   Layers,
+  Ellipsis,
+  Plug,
   Plus,
   Rocket,
   Settings,
   Shield,
   Users,
 } from "lucide-react";
+import { SidebarCollection, SidebarNavigation } from "@/components/reui/sidebar";
+import { SidebarMenuAction, useSidebar } from "@/components/ui/sidebar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import {
   Shell,
   Logo,
@@ -61,7 +81,48 @@ import { LucentGeneralSettings } from "./lucent-general-settings";
 import { LucentNotificationRules } from "./lucent-notification-rules";
 import "@/blocks/reference.css";
 import "./lucent-preferences.css";
-const services = ["api-gateway", "orders-db", "edge-cache", "recommender"];
+// These are the existing local deployment fixtures, shared with service details.
+const serviceCatalog = [
+  {
+    name: "api-gateway",
+    version: "v3.14.0",
+    environment: "Production",
+    status: "Degraded",
+    owner: "Marcus Webb",
+    team: "Edge & routing",
+  },
+  {
+    name: "orders-db",
+    version: "v2.13.0",
+    environment: "Production",
+    status: "Down",
+    owner: "Rafael Duarte",
+    team: "Data platform",
+  },
+  {
+    name: "edge-cache",
+    version: "v1.12.0",
+    environment: "Production",
+    status: "Healthy",
+    owner: "Amelia Hart",
+    team: "Edge & routing",
+  },
+  {
+    name: "recommender",
+    version: "v3.11.0",
+    environment: "Canary",
+    status: "Healthy",
+    owner: "Adam Reyes",
+    team: "Model serving",
+  },
+];
+const services = serviceCatalog.map((service) => service.name);
+const initialPinnedServices = ["api-gateway", "recommender", "orders-db", "edge-cache"];
+const settingsNavigation = [
+  { label: "Integrations", icon: <Plug /> },
+  { label: "Security", icon: <Shield /> },
+  { label: "Settings", icon: <Settings /> },
+];
 const initialFlags = [
   "Checkout canary routing",
   "Edge failover router",
@@ -69,6 +130,142 @@ const initialFlags = [
   "Cold storage read path",
   "Async migration runner",
 ];
+
+function LucentServicesNavigation({
+  onOpen,
+  pinned,
+  setPinned,
+}: {
+  onOpen: (name: string, returnFocus?: HTMLElement) => void;
+  pinned: string[];
+  setPinned: Dispatch<SetStateAction<string[]>>;
+}) {
+  const { state, isMobile } = useSidebar();
+  const navigation = useRef<HTMLDivElement>(null);
+  const actionTriggers = useRef(new Map<string, HTMLButtonElement>());
+  const detailsRequested = useRef(false);
+  const rows = pinned.flatMap((name) => {
+    const service = serviceCatalog.find((item) => item.name === name);
+    return service ? [service] : [];
+  });
+  const icon = (status: string) => (
+    <span className="wf-service-dot" data-health={status} aria-hidden="true" />
+  );
+  return (
+    <div className="lucent-services-navigation" ref={navigation}>
+      {!isMobile && state === "collapsed" ? (
+        <SidebarNavigation
+          className="wf-native-navigation"
+          items={rows.map((service) => ({
+            label: `${service.name}, ${service.status}. Open service details`,
+            icon: icon(service.status),
+          }))}
+          active=""
+          onSelect={(label) => {
+            const service = rows.find((item) => label.startsWith(`${item.name},`));
+            if (service) onOpen(service.name);
+          }}
+        />
+      ) : (
+        <SidebarCollection
+          label="Services"
+          onSelect={onOpen}
+          rows={rows.map((service) => ({
+            label: service.name,
+            icon: icon(service.status),
+            badge: <span className="sr-only">{service.status}. Open service details</span>,
+            actions: (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <SidebarMenuAction
+                    showOnHover
+                    aria-label={`Actions for ${service.name}`}
+                    ref={(element) => {
+                      if (element) actionTriggers.current.set(service.name, element);
+                      else actionTriggers.current.delete(service.name);
+                    }}
+                  >
+                    <Ellipsis />
+                  </SidebarMenuAction>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  className="reui-reference min-w-44"
+                  side="right"
+                  align="start"
+                  onCloseAutoFocus={(event) => {
+                    if (detailsRequested.current) {
+                      event.preventDefault();
+                      detailsRequested.current = false;
+                    } else if (!actionTriggers.current.get(service.name)?.isConnected) {
+                      event.preventDefault();
+                      navigation.current
+                        ?.querySelector<HTMLButtonElement>("button[aria-expanded]")
+                        ?.focus();
+                    }
+                  }}
+                >
+                  <DropdownMenuLabel>Local pinned services</DropdownMenuLabel>
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem
+                      onSelect={() => {
+                        detailsRequested.current = true;
+                        onOpen(service.name, actionTriggers.current.get(service.name));
+                      }}
+                    >
+                      Details
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onSelect={async () => {
+                        try {
+                          await navigator.clipboard.writeText(service.name);
+                          toast.success("Service name copied");
+                        } catch {
+                          toast.error("Could not copy the service name");
+                        }
+                      }}
+                    >
+                      Copy name
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onSelect={() => {
+                        setPinned((current) => [
+                          service.name,
+                          ...current.filter((name) => name !== service.name),
+                        ]);
+                        toast.success(`${service.name} moved to the top of the local pinned list`);
+                      }}
+                    >
+                      Pin to top
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    variant="destructive"
+                    onSelect={() => {
+                      setPinned((current) => current.filter((name) => name !== service.name));
+                      toast.success(`${service.name} removed from the local pinned list`, {
+                        action: {
+                          label: "Undo",
+                          onClick: () =>
+                            setPinned((current) =>
+                              current.includes(service.name) ? current : [...current, service.name],
+                            ),
+                        },
+                      });
+                    }}
+                  >
+                    Remove
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ),
+          }))}
+        />
+      )}
+    </div>
+  );
+}
+
 export default function Lucent() {
   const securityModel = useLucentSecurityModel();
   const integrationModel = useLucentIntegrationsModel();
@@ -95,6 +292,15 @@ export default function Lucent() {
   const [approved, setApproved] = useState<string[]>([]);
   const [renewed, setRenewed] = useState<string[]>([]);
   const [invite, setInvite] = useState(false);
+  const [serviceDetails, setServiceDetails] = useState("");
+  const [pinnedServices, setPinnedServices] = useState(initialPinnedServices);
+  const serviceReturnFocus = useRef<HTMLElement | null>(null);
+  const activeService = serviceCatalog.find((service) => service.name === serviceDetails);
+  const openService = (name: string, returnFocus?: HTMLElement) => {
+    serviceReturnFocus.current = returnFocus ?? (document.activeElement as HTMLElement | null);
+    setServiceDetails(name);
+  };
+  const activeNavigation = accountRoute.account ? "" : view;
   const deploymentList = (
     <Panel
       title={view === "Infrastructure" ? "Services" : "Deployment ledger"}
@@ -116,23 +322,19 @@ export default function Lucent() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {services
-            .filter((x) => x.includes(query.toLowerCase()))
-            .map((x, i) => (
-              <TableRow key={x}>
-                <TableCell>{x}</TableCell>
+          {serviceCatalog
+            .filter((service) => service.name.includes(query.toLowerCase()))
+            .map((service) => (
+              <TableRow key={service.name}>
+                <TableCell>{service.name}</TableCell>
+                <TableCell>{service.version}</TableCell>
+                <TableCell>{service.environment}</TableCell>
                 <TableCell>
-                  v{3 - (i % 3)}.{14 - i}.0
+                  <Status>{service.status}</Status>
                 </TableCell>
-                <TableCell>{i === 3 ? "Canary" : "Production"}</TableCell>
+                <TableCell>{service.owner}</TableCell>
                 <TableCell>
-                  <Status>{i === 1 ? "Down" : i === 0 ? "Degraded" : "Healthy"}</Status>
-                </TableCell>
-                <TableCell>
-                  {["Marcus Webb", "Rafael Duarte", "Amelia Hart", "Adam Reyes"][i]}
-                </TableCell>
-                <TableCell>
-                  <Button variant="outline" size="sm" onClick={() => setSelected(x)}>
+                  <Button variant="outline" size="sm" onClick={() => openService(service.name)}>
                     Inspect
                   </Button>
                 </TableCell>
@@ -148,7 +350,7 @@ export default function Lucent() {
   return (
     <Shell
       brand="DevOps"
-      view={view}
+      view={accountRoute.account ? "Account" : view}
       setView={setView}
       accountMenu={
         <LucentAccountMenu
@@ -206,27 +408,21 @@ export default function Lucent() {
         { label: "Observability", icon: Activity },
         { label: "Reliability", icon: Shield },
       ]}
+      retainExtraWhenCollapsed
       extra={
-        <div className="wf-nav-group">
-          <p>Services</p>
-          {services.map((x) => (
-            <Button
-              variant="ghost"
-              className="wf-nav-button"
-              key={x}
-              onClick={() => setSelected(x)}
-            >
-              <span className="wf-service-dot" />
-              {x}
-            </Button>
-          ))}
+        <div className="wf-nav-group lucent-navigation">
+          <LucentServicesNavigation
+            onOpen={openService}
+            pinned={pinnedServices}
+            setPinned={setPinnedServices}
+          />
           <div className="wf-nav-spacer" />
-          {["Integrations", "Security", "Settings"].map((x) => (
-            <Button key={x} variant="ghost" className="wf-nav-button" onClick={() => setView(x)}>
-              <Settings />
-              {x}
-            </Button>
-          ))}
+          <SidebarNavigation
+            className="wf-native-navigation lucent-settings-navigation"
+            items={settingsNavigation}
+            active={activeNavigation}
+            onSelect={setView}
+          />
         </div>
       }
       actions={
@@ -574,6 +770,63 @@ export default function Lucent() {
           </Button>
         </div>
       </Detail>
+      <Sheet open={!!activeService} onOpenChange={(open) => !open && setServiceDetails("")}>
+        <SheetContent
+          className="lucent-service-sheet"
+          onCloseAutoFocus={(event) => {
+            event.preventDefault();
+            const target = [
+              serviceReturnFocus.current,
+              ...document.querySelectorAll<HTMLElement>(
+                '.wf-devops [data-slot="sidebar"] [aria-current="page"], .wf-devops button[aria-label="Open navigation"]',
+              ),
+            ].find(
+              (element) =>
+                element?.isConnected &&
+                element.getClientRects().length &&
+                getComputedStyle(element).visibility !== "hidden",
+            );
+            target?.focus({ preventScroll: true });
+          }}
+        >
+          <SheetHeader>
+            <SheetTitle>{activeService?.name}</SheetTitle>
+            <SheetDescription>{activeService?.team} · Local demo service</SheetDescription>
+          </SheetHeader>
+          {activeService && (
+            <Panel title="Service details" className="lucent-service-overview">
+              <dl className="lucent-service-metadata">
+                <div>
+                  <dt>Status</dt>
+                  <dd>
+                    <Status>{activeService.status}</Status>
+                  </dd>
+                </div>
+                {[
+                  ["Version", activeService.version],
+                  ["Environment", activeService.environment],
+                  ["Owner", activeService.owner],
+                ].map(([label, value]) => (
+                  <div key={label}>
+                    <dt>{label}</dt>
+                    <dd>{value}</dd>
+                  </div>
+                ))}
+              </dl>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setServiceDetails("");
+                  setView("Delivery");
+                }}
+              >
+                View deployments
+                <ChevronRight />
+              </Button>
+            </Panel>
+          )}
+        </SheetContent>
+      </Sheet>
     </Shell>
   );
 }
