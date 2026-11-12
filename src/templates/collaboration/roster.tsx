@@ -17,7 +17,17 @@ import {
 } from "@/components/reui/frame";
 import { RosterDirectory } from "./roster-directory";
 import { rosterPersonNames } from "./roster-directory-data";
-import { RosterCalendar } from "./roster-calendar";
+import {
+  RosterCalendar,
+  rosterCalendarTimeZone,
+  type RosterCalendarEvent,
+} from "./roster-calendar";
+import type {
+  EventCalendarOccurrence,
+  EventCalendarSlotInfo,
+} from "@/components/reui/event-calendar/event-calendar-types";
+import { toZoned } from "@/components/reui/event-calendar/event-calendar-lib";
+import { addDays, format } from "date-fns";
 import { useState } from "react";
 import { Plus, CalendarDays, Users, UserPlus, UserMinus, ArrowRight, Check } from "lucide-react";
 import { Badge } from "@/components/reui/badge";
@@ -84,8 +94,11 @@ export default function Roster() {
   const pending = approvalState.requests.filter((r) => r.decision === "Pending");
   const [modal, setModal] = useState("");
   const [detail, setDetail] = useState<string[] | null>(null);
-  const [events, setEvents] = useState(baseEvents);
-  const [eventDay, setEventDay] = useState(0);
+  const [addedEvents, setAddedEvents] = useState<RosterCalendarEvent[]>([]);
+  const [eventSlot, setEventSlot] = useState<EventCalendarSlotInfo | null>(null);
+  const [selectedEvent, setSelectedEvent] = useState<EventCalendarOccurrence<{
+    notes?: string;
+  }> | null>(null);
   function changeView(next: string) {
     if (rosterSettingsTabs.includes(next)) settingsState.setTab(next);
     setView(next);
@@ -125,10 +138,15 @@ export default function Roster() {
   const monthName = "Jul 1, 2026 - Jul 30, 2026";
   const calendar = (
     <RosterCalendar
-      events={events}
-      onOpen={setModal}
-      onCreate={(day) => {
-        setEventDay(day);
+      events={baseEvents}
+      additions={addedEvents}
+      onOpen={(occurrence) => {
+        setSelectedEvent(occurrence);
+        setModal(occurrence.event.title);
+      }}
+      onCreate={(slot) => {
+        setSelectedEvent(null);
+        setEventSlot(slot);
         setModal("New event");
       }}
     />
@@ -468,40 +486,77 @@ export default function Roster() {
       )}
       <ReferenceSheet
         title={modal}
-        open={!!modal && !["Add person", "Add candidate", "New event"].includes(modal)}
-        onClose={() => setModal("")}
+        open={!!modal && !!selectedEvent}
+        onClose={() => {
+          setModal("");
+          setSelectedEvent(null);
+        }}
         footer={
-          <Button variant="outline" className="ml-auto" onClick={() => setModal("")}>
+          <Button
+            variant="outline"
+            className="ml-auto"
+            onClick={() => {
+              setModal("");
+              setSelectedEvent(null);
+            }}
+          >
             Close
           </Button>
         }
       >
         <section className="ct-detail-section">
-          <Badge variant="secondary">All day</Badge>
-          <h3 className="mt-6">{modal.includes("Ingrid") ? "13 Jul - 14 Jul" : "July 2026"}</h3>
-          <p>All day · {modal.includes("Ingrid") ? "2 calendar days" : "1 calendar day"}</p>
+          <Badge variant="secondary">{selectedEvent?.allDay ? "All day" : "Scheduled"}</Badge>
+          {selectedEvent && (
+            <>
+              <h3 className="mt-6">
+                {format(toZoned(selectedEvent.start, rosterCalendarTimeZone), "d MMM yyyy")}
+              </h3>
+              <p>
+                {selectedEvent.allDay
+                  ? "All day"
+                  : format(toZoned(selectedEvent.start, rosterCalendarTimeZone), "HH:mm")}
+                {" – "}
+                {format(
+                  selectedEvent.allDay
+                    ? addDays(toZoned(selectedEvent.end, rosterCalendarTimeZone), -1)
+                    : toZoned(selectedEvent.end, rosterCalendarTimeZone),
+                  selectedEvent.allDay ? "d MMM yyyy" : "d MMM yyyy, HH:mm",
+                )}
+              </p>
+            </>
+          )}
         </section>
         <section className="ct-detail-section">
           <h3>{modal.includes("leave") ? "Time off" : "Team event"}</h3>
           <p>{modal.includes("Ingrid") ? "2 working days" : "Scheduled on the team calendar"}</p>
         </section>
-        <section className="ct-detail-section">
-          <div className="ct-person">
-            <Avatar name={modal.split(":")[0]} />
-            <div>
-              <b>{modal.split(":")[0]}</b>
-              <p className="ct-muted text-xs">
-                {modal.includes("Ingrid")
-                  ? "Finance Manager, Finance, reports to Isabel Ferreira"
-                  : "Roster UK"}
-              </p>
+        {selectedEvent?.event.data?.notes && (
+          <section className="ct-detail-section">
+            <h3>Notes</h3>
+            <p className="whitespace-pre-wrap">{selectedEvent.event.data.notes}</p>
+          </section>
+        )}
+        {modal.includes(":") && (
+          <section className="ct-detail-section">
+            <div className="ct-person">
+              <Avatar name={modal.split(":")[0]} />
+              <div>
+                <b>{modal.split(":")[0]}</b>
+                <p className="ct-muted text-xs">
+                  {modal.includes("Ingrid")
+                    ? "Finance Manager, Finance, reports to Isabel Ferreira"
+                    : "Roster UK"}
+                </p>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
       </ReferenceSheet>
       <Modal
         title={modal}
-        open={!!modal && ["Add person", "Add candidate", "New event"].includes(modal)}
+        open={
+          !!modal && !selectedEvent && ["Add person", "Add candidate", "New event"].includes(modal)
+        }
         onClose={() => setModal("")}
       >
         <form
@@ -521,13 +576,34 @@ export default function Roster() {
                 ],
                 ...p,
               ]);
-            else if (modal === "New event") setEvents((e) => ({ ...e, [eventDay]: name }));
+            else if (modal === "New event" && eventSlot) {
+              setAddedEvents((current) => [
+                ...current,
+                {
+                  id: `roster-event-${crypto.randomUUID()}`,
+                  title: name,
+                  start: new Date(eventSlot.date),
+                  end: new Date(eventSlot.end ?? addDays(eventSlot.date, 1)),
+                  allDay: eventSlot.allDay,
+                  color: "#10b981",
+                  data: { notes: String(data.get("notes") || "") },
+                },
+              ]);
+            }
             toast.success(modal === "New event" ? "Event added" : "Saved to workspace");
             setModal("");
           }}
         >
           {modal === "Add person" || modal === "Add candidate" || modal === "New event" ? (
             <>
+              {modal === "New event" && eventSlot && (
+                <p className="ct-muted">
+                  {format(
+                    toZoned(eventSlot.date, rosterCalendarTimeZone),
+                    eventSlot.allDay ? "EEEE, d MMMM yyyy" : "EEEE, d MMMM yyyy, HH:mm",
+                  )}
+                </p>
+              )}
               <label>
                 {modal === "New event" ? "Event title" : "Full name"}
                 <Input name="name" required autoFocus />
@@ -535,7 +611,7 @@ export default function Roster() {
               <label>
                 {modal === "New event" ? "Notes" : "Department"}
                 <Input
-                  name="department"
+                  name={modal === "New event" ? "notes" : "department"}
                   defaultValue={modal === "New event" ? "" : "Engineering"}
                 />
               </label>

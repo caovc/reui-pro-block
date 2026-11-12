@@ -745,6 +745,7 @@ export function templateImplementationTargets(template: {
       "cohort-shell-chrome",
     ],
     roster: [
+      "roster-calendar",
       "roster-approvals",
       "roster-import",
       "roster-directory",

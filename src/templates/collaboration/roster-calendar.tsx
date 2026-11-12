@@ -2,7 +2,11 @@ import { useMemo, useState } from "react";
 import { EventCalendar } from "@/components/reui/event-calendar/event-calendar";
 import { EventCalendarContent } from "@/components/reui/event-calendar/event-calendar-content";
 import { EventCalendarNav } from "@/components/reui/event-calendar/event-calendar-nav";
-import type { CalendarEvent } from "@/components/reui/event-calendar/event-calendar-types";
+import type {
+  CalendarEvent,
+  EventCalendarOccurrence,
+  EventCalendarSlotInfo,
+} from "@/components/reui/event-calendar/event-calendar-types";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,29 +15,36 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button, Avatar } from "./shared";
 import { ChevronDown } from "lucide-react";
+import { TZDate } from "@date-fns/tz";
+
+export const rosterCalendarTimeZone = "Asia/Shanghai";
+export type RosterCalendarEvent = CalendarEvent<{ notes?: string }>;
+
 export function RosterCalendar({
   events,
+  additions,
   onOpen,
   onCreate,
 }: {
   events: Record<number, string>;
-  onOpen: (title: string) => void;
-  onCreate: (day: number) => void;
+  additions: RosterCalendarEvent[];
+  onOpen: (occurrence: EventCalendarOccurrence<{ notes?: string }>) => void;
+  onCreate: (slot: EventCalendarSlotInfo) => void;
 }) {
   const [timeOff, setTimeOff] = useState(true);
   const [team, setTeam] = useState(true);
   const [moved, setMoved] = useState<Record<string, { start: Date; end: Date }>>({});
-  const calendarEvents = useMemo<CalendarEvent[]>(
+  const calendarEvents = useMemo<RosterCalendarEvent[]>(
     () =>
       Object.entries(events)
         .filter(([, title]) => (title.includes("leave") ? timeOff : team))
-        .map(([key, title]) => ({
+        .map<RosterCalendarEvent>(([key, title]) => ({
           id: key,
           title,
-          start: moved[key]?.start ?? new Date(2026, 6, Number(key) - 1),
+          start: moved[key]?.start ?? new TZDate(2026, 6, Number(key) - 1, rosterCalendarTimeZone),
           end:
             moved[key]?.end ??
-            new Date(
+            new TZDate(
               2026,
               6,
               Number(key) +
@@ -44,6 +55,7 @@ export function RosterCalendar({
                     : title.includes("Abena")
                       ? 3
                       : 0),
+              rosterCalendarTimeZone,
             ),
           allDay: true,
           color: title.includes("leave") ? "#f59e0b" : "#10b981",
@@ -54,8 +66,8 @@ export function RosterCalendar({
                 {
                   id: "marco",
                   title: "Marco Bianchi: annual leave",
-                  start: moved.marco?.start ?? new Date(2026, 7, 3),
-                  end: moved.marco?.end ?? new Date(2026, 7, 7),
+                  start: moved.marco?.start ?? new TZDate(2026, 7, 3, rosterCalendarTimeZone),
+                  end: moved.marco?.end ?? new TZDate(2026, 7, 7, rosterCalendarTimeZone),
                   allDay: true,
                   color: "#f59e0b",
                 },
@@ -68,28 +80,37 @@ export function RosterCalendar({
                 {
                   id: "checkin",
                   title: "Week 3 check-in",
-                  start: moved.checkin?.start ?? new Date(2026, 6, 27),
-                  end: moved.checkin?.end ?? new Date(2026, 6, 28),
+                  start: moved.checkin?.start ?? new TZDate(2026, 6, 27, rosterCalendarTimeZone),
+                  end: moved.checkin?.end ?? new TZDate(2026, 6, 28, rosterCalendarTimeZone),
                   allDay: true,
                   color: "#10b981",
                 },
               ]
             : [],
+        )
+        .concat(
+          team
+            ? additions.map((event) => ({
+                ...event,
+                start: moved[event.id]?.start ?? event.start,
+                end: moved[event.id]?.end ?? event.end,
+              }))
+            : [],
         ),
-    [events, timeOff, team, moved],
+    [events, additions, timeOff, team, moved],
   );
   return (
     <EventCalendar
       className="ct-roster-calendar"
       events={calendarEvents}
-      defaultDate={new Date(2026, 6, 1)}
+      defaultDate={new TZDate(2026, 6, 1, rosterCalendarTimeZone)}
       defaultView="month"
       views={["month", "week", "day", "agenda"]}
       weekStartsOn={1}
       fixedWeeks
-      timeZone="Asia/Shanghai"
-      onEventClick={(o) => onOpen(o.event.title)}
-      onSlotClick={(slot) => onCreate(slot.date.getDate() + 1)}
+      timeZone={rosterCalendarTimeZone}
+      onEventClick={onOpen}
+      onSlotClick={onCreate}
       onEventUpdate={(update) => {
         setMoved((m) => ({ ...m, [update.event.id]: { start: update.start, end: update.end } }));
         return true;

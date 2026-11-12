@@ -26,6 +26,7 @@ const target: SourceTarget = {
   selectedPath: "src/templates/collaboration/roster.tsx",
   requiredFiles: [
     "src/templates/collaboration/roster.tsx",
+    "src/templates/collaboration/roster-calendar.tsx",
     "src/templates/collaboration/roster-directory.tsx",
     "src/templates/collaboration/roster-directory-data.ts",
     "src/templates/workflow/free/flowly-progress.tsx",
@@ -36,10 +37,15 @@ const target: SourceTarget = {
     "src/components/ui/toggle-group.tsx",
   ],
 };
-const selectedPaths = ["src/templates/collaboration/roster.tsx"] as const;
+const selectedPaths = [
+  "src/templates/collaboration/roster.tsx",
+  "src/templates/collaboration/roster-calendar.tsx",
+] as const;
 const frozenHashes: Readonly<Record<string, string>> = {
   "src/templates/collaboration/roster.tsx":
-    "2ebca6c6a2e0514e1a84888d7fd68723cf732cbc8e126e1017f8f1e113de41d6",
+    "614c7c5849c3ed5275a7d4d27412d144eccb7078c6c7af9803425964d3368b39",
+  "src/templates/collaboration/roster-calendar.tsx":
+    "3e230c355f5198383081b29a7e649d852b060a1edac57fa75f98efd932308f51",
 };
 
 test("Roster changed source: actual full default, real view/Copy/single files and original ZIP", async ({
@@ -70,7 +76,7 @@ test("Roster changed source: actual full default, real view/Copy/single files an
   const options = await listbox.getByRole("option").allTextContents();
   expect(options[0], "actual implementation opens before generated usage").toBe(target.defaultPath);
   for (const filename of selectedPaths) expect(options).toContain(filename);
-  // Roster changes the existing full consumer; no synthetic secondary is added.
+  // Both entries expose the actual consumer implementation, including calendar callbacks.
   await page.keyboard.press("Escape");
   await expect(listbox).toHaveCount(0);
   await expect(choice).toBeFocused();
