@@ -19,6 +19,7 @@ const rawSources = import.meta.glob(
     "/src/data/**/*.{ts,json}",
     "/src/index.css",
     "/src/styles/shadcn.css",
+    "/src/**/*.svg",
   ],
   { query: "?raw", import: "default", eager: true },
 ) as Record<string, string>;
@@ -216,6 +217,12 @@ export async function downloadTemplate(
   );
   await Promise.all(
     [...requiredAssets].map(async (path) => {
+      if (path.endsWith(".svg")) {
+        const source = rawSources[path];
+        if (source === undefined) throw new Error(`Unable to bundle raw SVG ${path}`);
+        payload[path.slice(1)] = strToU8(source);
+        return;
+      }
       const response = await fetch(assets[path]);
       if (!response.ok) throw new Error(`Unable to bundle ${path}`);
       payload[path.slice(1)] = new Uint8Array(await response.arrayBuffer());
