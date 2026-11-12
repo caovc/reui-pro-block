@@ -7,6 +7,8 @@ import { PulseReports } from "./pulse-reports";
 import { usePulseReportState } from "./pulse-report-model";
 import { PulseDirectory, initialDirectoryRecords } from "./pulse-directory";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Progress } from "@/components/ui/template-progress";
+import { ReuiTrend, type TrendSeries } from "@/blocks/data/trend-foundation";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -64,54 +66,51 @@ import {
   type PulseTicket as TicketRecord,
 } from "./pulse-ticket-model";
 
+// Preserve the twelve positions from the previous local chart as weekly rates.
+// The actual free ReUI chart composition supplies responsive axes and tooltips.
+const resolutionWeeks = [
+  { name: "Mar 24", resolution: 58 },
+  { name: "Mar 31", resolution: 57 },
+  { name: "Apr 7", resolution: 59.5 },
+  { name: "Apr 14", resolution: 60.8 },
+  { name: "Apr 21", resolution: 59.8 },
+  { name: "Apr 28", resolution: 62.3 },
+  { name: "May 5", resolution: 64.2 },
+  { name: "May 12", resolution: 63.3 },
+  { name: "May 19", resolution: 66.3 },
+  { name: "May 26", resolution: 68.3 },
+  { name: "Jun 2", resolution: 69 },
+  { name: "Jun 9", resolution: 70.7 },
+];
+
+const resolutionSeries: TrendSeries[] = [
+  {
+    key: "resolution",
+    label: "First contact resolution",
+    color: "var(--ct-green)",
+    kind: "area",
+    curve: "linear",
+    opacity: 0.3,
+    dots: true,
+  },
+];
+
+function formatResolutionRate(value: number) {
+  return `${value}%`;
+}
+
 function ResolutionChart() {
   return (
-    <svg
-      viewBox="0 0 600 330"
-      className="ct-chart"
-      aria-label="First contact resolution increased from 58 to 70 percent"
-    >
-      <defs>
-        <linearGradient id="pulse-fill" x1="0" y1="0" x2="0" y2="1">
-          <stop stopColor="var(--ct-green)" stopOpacity=".15" />
-          <stop offset="1" stopColor="var(--ct-green)" stopOpacity="0" />
-        </linearGradient>
-      </defs>
-      {[40, 50, 60, 70, 80].map((v, i) => (
-        <g key={v}>
-          <line x1="45" x2="590" y1={285 - i * 60} y2={285 - i * 60} />
-          <text x="0" y={290 - i * 60}>
-            {v}%
-          </text>
-        </g>
-      ))}
-      <path
-        d="M45 177 L92 183 L138 168 L184 160 L231 166 L278 151 L324 140 L371 145 L418 127 L464 115 L511 111 L558 101 V285H45Z"
-        fill="url(#pulse-fill)"
+    <div className="pulse-resolution-chart">
+      <ReuiTrend
+        label="First contact resolution by week"
+        data={resolutionWeeks}
+        series={resolutionSeries}
+        domain={[40, 80]}
+        format={formatResolutionRate}
+        height={350}
       />
-      <path
-        d="M45 177 L92 183 L138 168 L184 160 L231 166 L278 151 L324 140 L371 145 L418 127 L464 115 L511 111 L558 101"
-        fill="none"
-        stroke="var(--ct-green)"
-        strokeWidth="2"
-      />
-      {[177, 183, 168, 160, 166, 151, 140, 145, 127, 115, 111, 101].map((y, i) => (
-        <circle
-          key={i}
-          cx={45 + i * 46.6}
-          cy={y}
-          r="3.2"
-          stroke="var(--ct-green)"
-          strokeWidth="2"
-          fill="var(--background)"
-        />
-      ))}
-      {["Mar 24", "Apr 7", "Apr 21", "May 5", "May 19", "Jun 2"].map((t, i) => (
-        <text key={t} x={35 + i * 93} y="315">
-          {t}
-        </text>
-      ))}
-    </svg>
+    </div>
   );
 }
 export default function Pulse() {
@@ -373,9 +372,12 @@ export default function Pulse() {
               render: (t) => (
                 <>
                   {t.stage}
-                  <div className="ct-progress">
-                    <span style={{ width: t.stage === "Escalated" ? "50%" : "35%" }} />
-                  </div>
+                  <Progress
+                    className="pulse-stage-progress"
+                    aria-label={`${t.id} stage indicator`}
+                    aria-valuetext={t.stage}
+                    value={t.stage === "Escalated" ? 50 : 35}
+                  />
                 </>
               ),
             },

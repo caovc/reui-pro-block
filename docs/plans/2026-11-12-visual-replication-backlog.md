@@ -61,3 +61,20 @@ be recorded in `docs/qa/2026-11-12-foundation-style-audit.md`.
 Individual fix validations below are scoped to the styles they actually run;
 two-foundation Nova coverage must not be described as a complete 16-combination
 foundation/style audit.
+
+### Findings from the foundation/style review
+
+| ID        | Priority / state                          | Evidence and owner                                                                                                                                                                                                                                                                                                                                                                |
+| --------- | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| FSA-05    | P2, confirmed; fix assigned               | At 1440px in Sera under both foundations, the Host Search shortcut extends 12.8125px beyond its button and overlaps Customize by 5.8125px. The overlapping point hits Customize. Button boxes themselves remain 7px apart. `lucent_current` owns the Host-only fitting repair and a regression across both foundations/eight styles.                                              |
+| FSA-06    | P2, confirmed; shared-style investigation | Non-Nova Prospect toolbar buttons retain icon-only widths while their responsive desktop labels are visible. The actual Add Company width changes from Nova's 139.031px to 28–40px in the other profiles; fresh returned-page screenshots show overlapping labels. `atlas_header_fix` owns shared-style root-cause preparation, with the audit owner supplying geometry evidence. |
+| EXPORT-01 | P3, queued                                | A preserved real Pulse ZIP installs and passes its original strict build. Its functional browser smoke reaches Chart, Progress and Sheet/focus assertions, but its console gate fails on the browser's `/favicon.ico` 404. Keep this distinct from a fully clean standalone-package smoke.                                                                                        |
+
+The core product interaction/persistence matrix passed 32/32 cases: two real
+foundations, eight styles and two independent behaviors. The formal regression
+is committed and pushed as `5b6f065`; this result does not close the two visual
+findings above or the separate source-viewer performance gate. The audit report
+records actual screenshot-review coverage, successful ZIP/default-source
+subsets and incomplete Copy/single-file source chains separately.
+
+Pulse Dashboard business milestone: 5220 passed 16/16 Nova cases (Radix 11, Base 5), with actual free ReuiTrend and Progress. The historical preserved ZIP installs and strictly builds; its favicon-only console smoke failure and the separate current source-viewer gate remain open. See `docs/pulse-dashboard-free-primitives-release-2026-11-12.md`.

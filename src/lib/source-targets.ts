@@ -785,7 +785,7 @@ export function templateImplementationTargets(template: {
   return [
     ...modules.map((module) => `src/templates/${template.family}/${module}.tsx`),
     ...(template.id === "mesh" ? ["src/components/reui/progress-circle.tsx"] : []),
-    ...(["flowly", "tempo", "flux", "cohort", "roster", "surge"].includes(template.id)
+    ...(["flowly", "tempo", "flux", "cohort", "roster", "surge", "pulse"].includes(template.id)
       ? ["src/components/ui/template-progress.tsx"]
       : []),
     ...(template.family === "business" && ["surge", "manifest"].includes(template.id)
@@ -796,6 +796,8 @@ export function templateImplementationTargets(template: {
       : []),
     ...(template.id === "pulse"
       ? [
+          "src/blocks/data/trend-foundation.tsx",
+          "src/templates/collaboration/pulse-secondary.css",
           "src/templates/collaboration/pulse-ticket-model.ts",
           "src/templates/collaboration/pulse-ticket-data.ts",
           "src/templates/collaboration/pulse-ticket-detail.css",

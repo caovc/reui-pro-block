@@ -54,7 +54,7 @@ const selectedPaths = [
 ] as const;
 const frozenHashes: Readonly<Record<string, string>> = {
   "src/templates/collaboration/pulse.tsx":
-    "b238af2e9c6648d1ae643e1818566232df46ac8283b486c82a0322be98e2dd8e",
+    "d7ff39ab2bd7ec247ca9255e7d13b67b24e627fd33401c135cea37d3600a55f9",
   "src/templates/collaboration/pulse-board.tsx":
     "7a40fbffe45f51eaa2a904af760c9a7c104fba9764028774c2a338f8b7075cbe",
   "src/templates/collaboration/shared.tsx":

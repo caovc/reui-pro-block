@@ -1,3 +1,45 @@
+.ct-pulse .pulse-resolution-chart {
+  position: relative;
+  min-width: 0;
+  height: 350px;
+}
+
+.ct-pulse .pulse-resolution-chart .recharts-area-dot {
+  fill: var(--background);
+  stroke: var(--ct-green);
+  stroke-width: 2px;
+}
+
+.ct-pulse .pulse-resolution-chart .recharts-cartesian-grid line {
+  stroke-dasharray: 2 6;
+}
+
+.ct-pulse .pulse-resolution-chart .recharts-cartesian-axis-tick-value {
+  fill: var(--muted-foreground);
+  font-size: 12px;
+}
+
+/* Keyboard readouts stay inside the chart, preserving the card and alert positions. */
+.ct-pulse .pulse-resolution-chart > [role="group"] > [role="status"] {
+  position: absolute;
+  right: 8px;
+  bottom: 36px;
+  left: 8px;
+  z-index: 1;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--background);
+}
+
+.ct-pulse .pulse-stage-progress {
+  gap: 0;
+  margin: 8px 0;
+}
+
+.ct-pulse .pulse-stage-progress [data-slot="progress-indicator"] {
+  background: var(--ct-green);
+}
+
 .ct-kb-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
