@@ -28,6 +28,18 @@ export type SourceTarget = {
 export const fileBytes = (filename: string) => readFile(resolve(process.cwd(), filename));
 export const hash = (bytes: Uint8Array) => createHash("sha256").update(bytes).digest("hex");
 
+// Compare every raw byte with Node's native Buffer comparator. Keep complete
+// hashes only in failure diagnostics so passing steps do not serialize Buffers.
+export function expectRawBytes(actual: Uint8Array, expected: Uint8Array, label: string) {
+  const actualBytes = Buffer.from(actual);
+  const expectedBytes = Buffer.from(expected);
+  const equal = actualBytes.equals(expectedBytes);
+  const message = equal
+    ? label
+    : `${label}\nActual: ${actualBytes.length} bytes, SHA256 ${hash(actualBytes)}\nExpected: ${expectedBytes.length} bytes, SHA256 ${hash(expectedBytes)}`;
+  expect(equal, message).toBe(true);
+}
+
 async function assertOriginalSourceDefault(dialog: Locator, target: SourceTarget) {
   await expect(dialog).toBeVisible();
   if (target.kind === "block") {
@@ -219,14 +231,16 @@ export async function verifyOriginalClosure(
       !/\.(?:[cm]?[jt]sx?|css|json)$/.test(filename)
     )
       continue;
-    expect(Buffer.from(bytes), `${filename}: actual native/family source bytes`).toEqual(
+    expectRawBytes(
+      bytes,
       await expectedBytes(filename),
+      `${filename}: actual native/family source bytes`,
     );
     verified.push({ path: filename, sha256: hash(bytes) });
   }
   for (const filename of target.requiredFiles) {
     expect(files[filename], `${filename}: changed/default/native implementation`).toBeDefined();
-    expect(Buffer.from(files[filename]!), filename).toEqual(await expectedBytes(filename));
+    expectRawBytes(files[filename]!, await expectedBytes(filename), filename);
   }
   const notices = [
     "LICENSE",
@@ -240,7 +254,7 @@ export async function verifyOriginalClosure(
   }
   for (const filename of notices) {
     expect(files[filename], `${filename}: actual original notice/font`).toBeDefined();
-    expect(Buffer.from(files[filename]!), filename).toEqual(await fileBytes(filename));
+    expectRawBytes(files[filename]!, await fileBytes(filename), filename);
   }
   expect(strFromU8(files["src/components/reui/REUI-LICENSE.txt"]!)).toContain("MIT License");
   expect(strFromU8(files["src/blocks/assets/Inter-LICENSE.txt"]!)).toContain(
@@ -251,8 +265,10 @@ export async function verifyOriginalClosure(
     /(?:ATTRIBUTION|LICENSES?|NOTICES|provenance).*\.(?:md|txt)$/i.test(basename(name)),
   );
   for (const filename of attributionFiles) {
-    expect(Buffer.from(files[filename]!), `${filename}: original attribution bytes`).toEqual(
+    expectRawBytes(
+      files[filename]!,
       await fileBytes(filename),
+      `${filename}: original attribution bytes`,
     );
   }
   const mediaFiles = Object.keys(files).filter((name) =>
@@ -263,8 +279,10 @@ export async function verifyOriginalClosure(
     // Vite may serialize SVG XML differently; original ZIP asset SHA is inventoried
     // for root's separate received-project audit. Other original binary media stay raw.
     if (!filename.endsWith(".svg")) {
-      expect(Buffer.from(files[filename]!), `${filename}: original binary media bytes`).toEqual(
+      expectRawBytes(
+        files[filename]!,
         await fileBytes(filename),
+        `${filename}: original binary media bytes`,
       );
     }
     const note = `${posix.dirname(filename)}/ATTRIBUTION.md`;
@@ -274,7 +292,7 @@ export async function verifyOriginalClosure(
     );
     if (exists) {
       expect(files[note], `${filename}: existing media attribution retained`).toBeDefined();
-      expect(Buffer.from(files[note]!), note).toEqual(await fileBytes(note));
+      expectRawBytes(files[note]!, await fileBytes(note), note);
       mediaNotes.add(note);
     }
   }
@@ -299,7 +317,7 @@ export async function verifyOriginalClosure(
     expect(packageManifest.scripts.postinstall).toBe("node scripts/copy-excalidraw-assets.mjs");
     const script = "scripts/copy-excalidraw-assets.mjs";
     expect(files[script], "Mesh original normal-install asset preparation script").toBeDefined();
-    expect(Buffer.from(files[script]!)).toEqual(await fileBytes(script));
+    expectRawBytes(files[script]!, await fileBytes(script), script);
     const noticeDirectory = "src/blocks/application/assets/excalidraw";
     const engineNotices = (await readdir(resolve(process.cwd(), noticeDirectory))).filter((name) =>
       /\.(?:md|txt)$/.test(name),
@@ -311,7 +329,7 @@ export async function verifyOriginalClosure(
         files[full],
         `${full}: original engine/font license needed by postinstall`,
       ).toBeDefined();
-      expect(Buffer.from(files[full]!)).toEqual(await fileBytes(full));
+      expectRawBytes(files[full]!, await fileBytes(full), full);
     }
     expect(packageManifest.dependencies["@excalidraw/excalidraw"]).toBe(
       originalPackage.dependencies["@excalidraw/excalidraw"],

@@ -2,6 +2,29 @@
 
 最后更新：2026-11-12。用户要求持续协调开发，不能在一个里程碑或进度汇报后结束整体工作。本文是恢复点，不是“全部完成”声明。
 
+## 最新接续点（约16:50 UTC，优先于下面历史检查点）
+
+- 精确main `d2d1e97a53ca7e39b5a5c6658117e4c3bad06535` 的run43252176828 completed/success，build+4browser+deploy全部过；Pages deployment7743634413 success16:48:45Z，网站 https://caovc.github.io/reui-pro-block/ 。旧c636未知failure保历史，不能据分片号宣称根因修复。Root6896只读watcher持续，后续push需新SHA核验。
+- 当前新增可独立提交的test-utility：完整Buffer.equals取代8处深buffer比较，不少任何成员/字节/许可证/依赖/AST断言；实际ZIP229对2737529B单次纯Node旧2151.4ms/新17.8ms，三负例双算法拒绝。Root准备仅helper+3永久二进制/offset/CRLF/诊断域测+QA文档/本记录，不把Strata WIP暂存。Source worker仍私有未推广。
+- Source5370仅tests clone5360并换helperbc3586，使用同5360真实产物/3runtime hash。原Filebox完整1/1通过29984ms（余量很窄，非稳定矩阵）；15click原5s均过、两次真实Escape/opener过，真实DOM/Clipboard/3file/原ZIP四路bytes相等，258members/229verified/827edges。原5360旧helper30deadline失败保留，末focus收尾竞态不当runtime bug。CodeBlock3和Map1此前已过；Base/LF/rapid/close/error合同未闭合，Lucent准备私有5410 actual-adapter harness，不伪token/ZIP。
+- Strata5322 corrected14+6通过；首浮点精确240与Recharts3.8 label sibling两个new oracle错误保留。实际图/JSON另证Review control在phone right389而父Frame378（11px被裁），desktop同态；新CSSf962 flex:1/width0已静态修，尚待新clip-ancestor native。不能把20main-bound通过称无剪裁。
+- Strata5380从d2d+65runtime/test覆盖及私有九页harnessfba冻结，限定语义Types通过；随后5381仅10项更新：真实API说明toasts/Yearly10倍报价、Calendar纯forPreset、RootSettings稳态手机横nav/全宽。限定Types24.8s+双构建6.2/4.2s+127域测全过，private preview5381 session18199。它仍未注册公开19th；主源码全部untrackedWIP。
+- 九页原38首轮2pass/1fail/35notrun，仅Logsroot重复命中TreeItem与section；另静态发现range实际portal在header。两项scope-only更正v2已--list38，spec41ac68e4…，旧failure保留；native暂等Manifest CPU窗口。Foundation负责v2 38与独立13route16pin新harness，Chart准备Calendar12Flow与Review祖先裁切spec，尚不冒通过。
+- 最新Settings手机源06早竖栏属于响应式过渡：14点击General、15 freshGET最终均横tabs/366全卡，16 DOM与PNG稳定且15/16像素完全相同。Root已actualview14；CIScout已更正全部旧私有报告。Profile由preDOM竖到PNG横亦证明采样跨响应式阶段。源本窗22console502+22chunkERR_ABORTED无URL时间映射，phoneCalendar空白仍unknown，不定因。新证据`/tmp/strata-settings-actions-reference-20261112/`。
+- EXPORT01新5390是精确d2d、零runtime覆盖、不含Strata/私有worker；dualVite过，preview5390 session96528。真实Pulse下载1/1 9s、258成员CRC/SHA/8许可/inlinefavicon严格333bytes含LF全部过；不可变原ZIP与解压包在`/tmp/pulse-export01-fresh-5390-20261112-nuaofhyh/`。Manifest获normal install+原strictbuild CPU窗，smoke浏览器仍等GO，不能repair解压源码。已知Drive原创SVG319vs磁盘333为Vite内联序列化，parsedXML相等但raw不同，另作EXPORT02静态定位，不用favicon例外掩盖。
+- Atlas只在私有目录准备Overview cron/paused age补丁，不写共享；其他owner当前全部runtime冻结。Root唯一Git writer/生产构建调度者。继续取证→开发→验收→推送→新SHA Actions，不在当前全绿部署或任何检查点结束整体工作。
+
+## 最新接续点（约16:20 UTC，优先于下面历史检查点）
+
+- 已推送当前HEAD/main `d2d1e97a53ca7e39b5a5c6658117e4c3bad06535`，包含营销真实ToggleGroup/Tabs、Trial opener回焦、favicon333bytes末LF。run43252176828最新build成功、browser1–4运行中，须读共享watcher最新时间；不把push或build成功称部署已更新。c636的browser4真实失败名仍待用户日志，异步问题保留，其他开发持续。
+- Root只读CI watcher当前session6896；旧59394已结束。CI owner仍metadata-only监视，不以10min检查点结束整体协调。
+- Strata5321原14例：12默认通过；13删除pin后tree数据读取undefined导致页面真正崩溃，1未跑。trace有实际pageError，不是单纯focus oracle；Root新shell用稳定全catalog取数据、同步只render可见项，未弱化旧断言。5322私有snapshot已准备，只覆盖shell03dcc2b5…与LogsCSS38b509c4…，尚未构建/验收。
+- 新独立双库390原5321 bbox：main390但scrollWidth1180，Logs宽366而grid track1168，summary与两Frame1168，chart1134。修正只给Logs根grid加minmax(0,1fr)，不裁切隐藏控件；12旧docwidth通过不等于内部无溢出。测量在`/tmp/strata-core-5321-geometry-20261112/measurements.json`，浏览器已关。
+- Source5350单次instrumented仍原5s首次click失败；真实2177ms长任务主要codeToHast/tokenizeLine2/findNextMatchSync，grammar约2081ms，其他约idle/program未解析，不许诺worker足够。新5360仅在5350之上改SourceDialog/new module worker/Vite ES worker3项（c3ada6a8/f4be95f3/c11442fa），完整ready一次提交、实际free高亮，不恢复旧progressive/CSS/popper实验。私有snapshot和manifest已准备，Root fullTS+dualbuild session48800进行；未跑browser，P2未闭合。
+- 新remote19图逐张实际view，15成功状态：Neon Configure、四pin实际GET、5General与2Profile真实options；07/08/09目标未进入和19Scopes未激活保留作探针边界，不能称产品bug或schema。证据`/tmp/strata-source-pins-reference-20261112/`；browser16:15已交回。SettingsAPI Edit/Scopes、BillingYearly/portal、手机pin/深表单仍open。
+- Calendar已补实际NewEvent/6Ownership及normal/pin独立缓存：22域测/限定语义Types通过，新freeze在`/tmp/strata-calendar-observed-schema-freeze.sha256`。Sources已补11provider首步+Neon实际Configure，13域测过，真实外部连接/Datasets未实现且不造成功。Releases/Board Merges已真实TabsContent+7record/5merged1merging1blocked，14域测过；源PNG7与稍晚ARIA8为时态差，已记清。
+- Root正在Settings壳/General/Profile/纯query-routing，Atlas并行API/Security/Billing；Foundation准备九页私有harness36默认+2Merges，不注册空模板。Settings路由与identity6域测过；所有新UI尚未整合构建/浏览器验收。Chart接Logs pin，Manifest接Services pin；Monitors pin自动Sheet仍需接续。全Strata runtime仍untrackedWIP，不能git add .。
+
 ## 最新接续点（约15:45 UTC，优先于下面历史检查点）
 
 - Main已推送到c6363f0；run43235459944最终build和browser1/2/3成功、browser4 job131248280752失败、deploy skipped。API仅exit1，真实失败名仍缺；已异步请用户提供该新job片段，不能猜旧Roster/Lucent原因。最近成功Pages仍7579c5f / deployment7739954144。
