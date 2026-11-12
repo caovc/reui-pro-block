@@ -381,7 +381,9 @@ for (const library of ["radix", "base"] as const) {
       await add.click();
       const editor = page.getByRole("dialog", { name: "Add Job", exact: true });
       await expect(editor).toBeVisible();
-      expect((await editor.boundingBox())?.width).toBeCloseTo(390, 0);
+      const editorBounds = await editor.boundingBox();
+      expect(editorBounds?.width).toBeCloseTo(358, 0);
+      await expect.poll(async () => (await editor.boundingBox())?.x).toBeCloseTo(16, 0);
       await editor.getByRole("textbox", { name: "Client", exact: true }).fill("Cleo Orchard");
       await editor.getByRole("textbox", { name: "Street", exact: true }).fill("27 Juniper Walk");
       await editor.getByRole("textbox", { name: "Town", exact: true }).fill("North Haven");

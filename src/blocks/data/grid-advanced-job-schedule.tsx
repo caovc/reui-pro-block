@@ -1,10 +1,5 @@
 import { Badge } from "@/components/reui/badge";
-import {
-  Filters,
-  createFilterQuery,
-  flattenFilterRules,
-  type FilterField,
-} from "@/components/reui/filters/filters";
+import { Filters, createFilterQuery, flattenFilterRules } from "@/components/reui/filters/filters";
 import {
   Frame,
   FrameDescription,
@@ -55,8 +50,10 @@ import {
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import { JobDetails, type JobTab } from "./grid-advanced-job-schedule-details";
+import { JobScheduleDirectFilters } from "./grid-advanced-job-schedule-filters";
 import {
   CrewDayForm,
+  createJobSheetClassName,
   HoldForm,
   JobProfileForm,
   SlideForm,
@@ -71,11 +68,11 @@ import {
   jobDate,
   jobName,
   jobProgress,
-  jobStatuses,
-  jobTypes,
+  jobScheduleFilterFields,
   logJob,
   nextCrewDate,
   scheduleWindow,
+  summarizeJobFilters,
   taskHours,
   type Job,
 } from "./grid-advanced-job-schedule-model";
@@ -90,21 +87,6 @@ type Panel =
   | { kind: "new" }
   | { kind: "details"; jobId: string; tab: JobTab }
   | (JobEditor & { jobId: string; returnTab?: JobTab });
-
-const fields: FilterField<string | string[]>[] = [
-  {
-    id: "type",
-    label: "Job Type",
-    type: "select",
-    options: jobTypes.map((value) => ({ label: value, value })),
-  },
-  {
-    id: "status",
-    label: "Status",
-    type: "select",
-    options: jobStatuses.map((value) => ({ label: value, value })),
-  },
-];
 
 function AttentionCards({
   jobs,
@@ -255,9 +237,11 @@ export default function JobSchedule() {
   const deletionOpener = useRef<HTMLElement>(null);
   const searchInput = useRef<HTMLInputElement>(null);
   const searchButton = useRef<HTMLButtonElement>(null);
+  const filterTrigger = useRef<HTMLButtonElement>(null);
   const settingsId = useId();
   const jobs = schedule.jobs;
   const dates = useMemo(() => scheduleWindow(week), [week]);
+  const filterSummary = useMemo(() => summarizeJobFilters(jobs), [jobs]);
   const visible = useMemo(() => {
     const rules = flattenFilterRules(query);
     const text = search.trim().toLocaleLowerCase();
@@ -270,6 +254,17 @@ export default function JobSchedule() {
       )
         return false;
       return rules.every((rule) => {
+        if (rule.path[0] === "attention") {
+          const flags = filterSummary.attentionByJob[job.id];
+          const hasRisk = Object.values(flags).some(Boolean);
+          if (rule.operator === "empty") return !hasRisk !== !!rule.negated;
+          if (rule.operator === "not_empty") return hasRisk !== !!rule.negated;
+          if (!rule.value?.length) return true;
+          const values = typeof rule.value === "string" ? [rule.value] : rule.value;
+          const match = values.some((value) => flags[value as keyof typeof flags] ?? false);
+          const invert = rule.operator === "is_not" || rule.operator === "is_none_of";
+          return match !== (invert !== !!rule.negated);
+        }
         if (rule.operator === "empty") return false;
         if (rule.operator === "not_empty") return true;
         if (!rule.value?.length) return true;
@@ -280,7 +275,7 @@ export default function JobSchedule() {
         return match !== (invert !== !!rule.negated);
       });
     });
-  }, [jobs, query, search]);
+  }, [jobs, query, search, filterSummary]);
 
   const rememberOpener = useCallback((target: HTMLElement) => {
     opener.current = target;
@@ -295,6 +290,7 @@ export default function JobSchedule() {
 
   const openPanel = useCallback(
     (next: Panel, target?: HTMLElement) => {
+      toast.dismiss("schedule-change");
       if (target) rememberOpener(target);
       setPanel(next);
     },
@@ -657,13 +653,19 @@ export default function JobSchedule() {
 
         <FramePanel className="min-w-0 p-0">
           <div className="flex flex-wrap items-center gap-2 px-3 py-2 sm:px-4">
+            <JobScheduleDirectFilters
+              query={query}
+              onQueryChange={setQuery}
+              summary={filterSummary}
+              typeTriggerRef={filterTrigger}
+            />
             <Filters
-              fields={fields}
+              fields={jobScheduleFilterFields}
               query={query}
               onQueryChange={setQuery}
               showClear
               size="sm"
-              className="min-w-0 flex-1"
+              className="order-last min-w-0 basis-full sm:order-none sm:flex-1 sm:basis-auto"
               trigger={
                 <Button variant="outline" size="sm">
                   <ListFilter /> Filter
@@ -755,6 +757,11 @@ export default function JobSchedule() {
             onCrew={openCrew}
             onAction={rowAction}
             onOpener={rememberOpener}
+            onClearFilters={() => {
+              setQuery(createFilterQuery());
+              setSearch("");
+              filterTrigger.current?.focus({ preventScroll: true });
+            }}
           />
         </FramePanel>
       </Frame>
@@ -767,7 +774,10 @@ export default function JobSchedule() {
       >
         <SheetContent
           ref={panelRef}
-          className="gap-0 data-[side=right]:w-full data-[side=right]:sm:max-w-[512px]"
+          className={cn(
+            "gap-0 data-[side=right]:w-full data-[side=right]:sm:max-w-[512px]",
+            panel?.kind === "new" && createJobSheetClassName,
+          )}
           onCloseAutoFocus={(event) => {
             event.preventDefault();
             restoreFocus();

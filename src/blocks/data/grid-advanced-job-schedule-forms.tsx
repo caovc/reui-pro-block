@@ -51,6 +51,10 @@ import {
 type Option = string | { value: string; label: string };
 const crewOptions = crew.map(({ id, name }) => ({ value: id, label: name }));
 
+// Only the new-job consumer uses the reference's inset phone frame.
+export const createJobSheetClassName =
+  "max-sm:data-[side=right]:inset-4 max-sm:data-[side=right]:h-[calc(100dvh-2rem)] max-sm:data-[side=right]:w-[calc(100%-2rem)] max-sm:overflow-hidden max-sm:rounded-[14px]";
+
 export function JobSelect({
   id,
   label,
@@ -232,19 +236,28 @@ function TextField({
   name,
   value,
   type = "text",
+  placeholder,
   required,
 }: {
   label: string;
   name: string;
   value?: string;
   type?: "text" | "tel";
+  placeholder?: string;
   required?: boolean;
 }) {
   const id = useId();
   return (
     <Field>
       <FieldLabel htmlFor={id}>{label}</FieldLabel>
-      <Input id={id} name={name} type={type} defaultValue={value} required={required} />
+      <Input
+        id={id}
+        name={name}
+        type={type}
+        defaultValue={value}
+        placeholder={placeholder}
+        required={required}
+      />
     </Field>
   );
 }
@@ -301,13 +314,37 @@ export function JobProfileForm({
       onCancel={onCancel}
       error={error}
     >
-      <div className="grid grid-cols-2 gap-3">
-        <TextField label="Client" name="client" value={job?.client} required />
-        <TextField label="Phone" name="phone" type="tel" value={job?.phone} />
+      <div className={job ? "grid grid-cols-2 gap-3" : "grid grid-cols-1 gap-3 sm:grid-cols-2"}>
+        <TextField
+          label="Client"
+          name="client"
+          value={job?.client}
+          placeholder={job ? undefined : "Full name"}
+          required
+        />
+        <TextField
+          label="Phone"
+          name="phone"
+          type="tel"
+          value={job?.phone}
+          placeholder={job ? undefined : "(312) 555-0100"}
+        />
       </div>
-      <TextField label="Street" name="street" value={job?.street} required />
-      <TextField label="Town" name="town" value={job?.town} required />
-      <div className="grid grid-cols-2 gap-3">
+      <TextField
+        label="Street"
+        name="street"
+        value={job?.street}
+        placeholder={job ? undefined : "House number and street"}
+        required
+      />
+      <TextField
+        label="Town"
+        name="town"
+        value={job?.town}
+        placeholder={job ? undefined : "Town"}
+        required
+      />
+      <div className={job ? "grid grid-cols-2 gap-3" : "grid grid-cols-1 gap-3 sm:grid-cols-2"}>
         {!job && (
           <Field>
             <FieldLabel htmlFor={`${id}-type`}>Job Type</FieldLabel>
@@ -348,9 +385,11 @@ export function JobProfileForm({
         value={due}
         onChange={setDue}
         description={
-          type && start && !job
-            ? `Defaults to ${jobDate(plannedFinish(type, start), true)}.`
-            : undefined
+          job
+            ? undefined
+            : type && start
+              ? `Defaults to ${jobDate(plannedFinish(type, start), true)}.`
+              : "Left empty, it matches the planned finish"
         }
       />
     </JobForm>

@@ -1,3 +1,5 @@
+import type { FilterField } from "@/components/reui/filters/filters-types";
+
 export const SCHEDULE_TODAY = "2026-10-27";
 export const SCHEDULE_START = "2026-10-19";
 
@@ -14,13 +16,47 @@ export const crew = [
   { id: "mara", name: "Mara Finch", role: "Site assistant" },
 ] as const;
 
-export const jobTypes = [
+const seedJobTypes = [
   "Kitchen Remodel",
   "Bath Remodel",
   "Exterior Paint",
   "Basement Finish",
 ] as const;
-export const jobStatuses = ["Late", "On Track", "On Hold", "Not Started", "Complete"] as const;
+export const jobTypes = [...seedJobTypes, "Tile Floor", "Deck Build"] as const;
+export const jobStatuses = ["Not Started", "On Track", "Late", "On Hold", "Complete"] as const;
+export const jobTypeOptions = [
+  { value: "Bath Remodel", label: "Bathroom Remodel", color: "bg-sky-500" },
+  { value: "Kitchen Remodel", label: "Kitchen Remodel", color: "bg-orange-500" },
+  { value: "Basement Finish", label: "Basement Finish", color: "bg-violet-500" },
+  { value: "Tile Floor", label: "Tile Floor", color: "bg-teal-500" },
+  { value: "Deck Build", label: "Deck Build", color: "bg-emerald-500" },
+  { value: "Exterior Paint", label: "Exterior Paint", color: "bg-amber-500" },
+] as const;
+export const jobAttentionOptions = [
+  { value: "lost-days", label: "Lost Days" },
+  { value: "late-materials", label: "Late Materials" },
+  { value: "booked-twice", label: "Booked Twice" },
+] as const;
+export const jobScheduleFilterFields: FilterField<string | string[]>[] = [
+  {
+    id: "type",
+    label: "Job Type",
+    type: "select",
+    options: jobTypeOptions.map(({ value, label }) => ({ value, label })),
+  },
+  {
+    id: "status",
+    label: "Status",
+    type: "select",
+    options: jobStatuses.map((value) => ({ value, label: value })),
+  },
+  {
+    id: "attention",
+    label: "Needs attention",
+    type: "select",
+    options: jobAttentionOptions.map(({ value, label }) => ({ value, label })),
+  },
+];
 export const slideReasons = [
   "Rain or weather",
   "Late materials",
@@ -33,6 +69,7 @@ export const dayStates = ["Planned", "Done", "Lost"] as const;
 
 export type JobType = (typeof jobTypes)[number];
 export type JobStatus = (typeof jobStatuses)[number];
+export type JobAttention = (typeof jobAttentionOptions)[number]["value"];
 export type DayState = (typeof dayStates)[number];
 
 export interface Assignment {
@@ -136,6 +173,30 @@ const templates: Record<JobType, readonly PlanStep[]> = {
     [7, "felix", "Prime and paint", 8],
     [9, null, "Hang doors and finish trim", 8],
   ],
+  "Tile Floor": [
+    [0, null, "Protect the room and lift old flooring", 6],
+    [1, null, "Level and inspect the substrate", 7],
+    [2, "hana", "Set the floor tile and edge trims", 8],
+    [3, "hana", "Grout joints and clean the surface", 6],
+    [4, null, "Seal edges and complete the floor walkthrough", 4],
+  ],
+  "Deck Build": [
+    [0, null, "Mark the deck footprint and footing positions", 7],
+    [1, "kiran", "Set footings and support posts", 8],
+    [2, "kiran", "Frame the deck and check joist spacing", 8],
+    [3, null, "Lay deck boards and finish the edges", 8],
+    [4, null, "Fit stairs and secure the railings", 7],
+    [5, null, "Inspect fixings and clear the work area", 5],
+  ],
+};
+
+const primaryMaterials: Record<JobType, string> = {
+  "Kitchen Remodel": "Quartz countertop",
+  "Bath Remodel": "Porcelain wall tile",
+  "Exterior Paint": "Exterior primer",
+  "Basement Finish": "Fire-rated drywall",
+  "Tile Floor": "Porcelain floor tile and edge trims",
+  "Deck Build": "Treated deck boards and exterior fixings",
 };
 
 export function isWorkday(value: string) {
@@ -203,6 +264,8 @@ export function jobName(job: JobProfile) {
     "Bath Remodel": "Bath",
     "Exterior Paint": "Exterior",
     "Basement Finish": "Basement",
+    "Tile Floor": "Floor",
+    "Deck Build": "Deck",
   };
   return `${job.client.trim().split(/\s+/).at(-1) ?? ""} ${suffix[job.type]}`;
 }
@@ -287,13 +350,27 @@ export function addCrewDay(job: Job, day: CrewDay, previousDate: string | null):
 }
 
 export function createJob(profile: JobProfile): Job {
+  const newTrade = profile.type === "Tile Floor" || profile.type === "Deck Build";
   return {
     ...profile,
     id: crypto.randomUUID(),
     hold: "",
     notes: "",
     days: plannedDays(profile.type, profile.start, profile.lead),
-    materials: [],
+    materials: newTrade
+      ? [
+          {
+            id: "material-main",
+            name: primaryMaterials[profile.type],
+            supplier: "Juniper Trade Co.",
+            order: "Quote pending",
+            cost: profile.type === "Tile Floor" ? 480 : 1250,
+            arrives: profile.start,
+            needed: shiftWorkday(profile.start, 2),
+            received: false,
+          },
+        ]
+      : [],
     inspections: [],
     history: [
       { id: "created", title: "Job created", detail: `Starts ${jobDate(profile.start, true)}` },
@@ -331,6 +408,37 @@ export function crewConflicts(jobId: string, days: CrewDay[], jobs: readonly Job
     }
   }
   return [...conflicts.values()];
+}
+
+export function jobAttentionFlags(job: Job, jobs: readonly Job[]): Record<JobAttention, boolean> {
+  return {
+    "lost-days": job.days.some((day) => day.state === "Lost" && !day.madeUp),
+    // Local demo contract: a missing arrival date is a risk even before needed.
+    "late-materials": job.materials.some(
+      (material) => !material.received && (!material.arrives || material.arrives > material.needed),
+    ),
+    "booked-twice": crewConflicts(job.id, job.days, jobs).length > 0,
+  };
+}
+
+export function summarizeJobFilters(jobs: readonly Job[]) {
+  const typeCounts = Object.fromEntries(jobTypes.map((type) => [type, 0])) as Record<
+    JobType,
+    number
+  >;
+  const attentionCounts: Record<JobAttention, number> = {
+    "lost-days": 0,
+    "late-materials": 0,
+    "booked-twice": 0,
+  };
+  const attentionByJob: Record<string, Record<JobAttention, boolean>> = {};
+  for (const job of jobs) {
+    typeCounts[job.type]++;
+    const flags = jobAttentionFlags(job, jobs);
+    attentionByJob[job.id] = flags;
+    for (const { value } of jobAttentionOptions) if (flags[value]) attentionCounts[value]++;
+  }
+  return { typeCounts, attentionCounts, attentionByJob };
 }
 
 export function slidePlan(
@@ -437,7 +545,8 @@ export function createScheduleSeed(): Job[] {
   };
 
   return clients.map((client, index) => {
-    const type = special[index]?.type ?? jobTypes[index % jobTypes.length];
+    // Adding a supported trade must not reshuffle the validated 22-job fixture.
+    const type = special[index]?.type ?? seedJobTypes[index % seedJobTypes.length];
     const start = special[index]?.start ?? shiftWorkday(SCHEDULE_START, index - 4);
     const lead = crew[(index * 3) % crew.length].id;
     const due = special[index]?.due ?? shiftWorkday(plannedFinish(type, start), 2);
@@ -447,12 +556,7 @@ export function createScheduleSeed(): Job[] {
       if (day.date < SCHEDULE_TODAY) return { ...day, state: "Done" as const };
       return day;
     });
-    const baseMaterial = {
-      "Kitchen Remodel": "Quartz countertop",
-      "Bath Remodel": "Porcelain wall tile",
-      "Exterior Paint": "Exterior primer",
-      "Basement Finish": "Fire-rated drywall",
-    }[type];
+    const baseMaterial = primaryMaterials[type];
     const order = 21430 + index * 3;
     const materials = [
       {

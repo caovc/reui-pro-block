@@ -19,6 +19,14 @@ import {
 import { FrameFooter } from "@/components/reui/frame";
 import { Button } from "@/components/ui/button";
 import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
@@ -40,6 +48,7 @@ import {
   Pencil,
   Play,
   Plus,
+  SearchX,
   Trash2,
 } from "lucide-react";
 import { createContext, useContext, useMemo } from "react";
@@ -265,6 +274,7 @@ export function ScheduleGrid({
   onCrew,
   onAction,
   onOpener,
+  onClearFilters,
 }: {
   jobs: Job[];
   visible: Job[];
@@ -275,6 +285,7 @@ export function ScheduleGrid({
   onCrew: OpenCrew;
   onAction: (job: Job, action: JobAction) => void;
   onOpener: (opener: HTMLElement) => void;
+  onClearFilters: () => void;
 }) {
   const loads = useMemo(
     () => Object.fromEntries(dates.map((date) => [date, crewLoad(jobs, date)])),
@@ -380,7 +391,22 @@ export function ScheduleGrid({
       <DataGrid
         table={table}
         recordCount={visible.length}
-        emptyMessage="No jobs match these filters."
+        emptyMessage={
+          <Empty className="min-h-52">
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <SearchX />
+              </EmptyMedia>
+              <EmptyTitle>No Matching Jobs</EmptyTitle>
+              <EmptyDescription>Pick another filter or clear the search.</EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              <Button variant="outline" size="sm" onClick={onClearFilters}>
+                Clear Filters
+              </Button>
+            </EmptyContent>
+          </Empty>
+        }
         tableLayout={{
           dense: compact,
           width: "fixed",
@@ -393,54 +419,56 @@ export function ScheduleGrid({
           <DataGridScrollArea orientation="horizontal">
             <DataGridTable
               footerContent={
-                <DataGridTableFootRow>
-                  <DataGridTableFootRowCell
-                    colSpan={2}
-                    className="sticky start-0 z-30 bg-card px-3"
-                  >
-                    <span className="text-xs font-medium">Crew Load</span>
-                    <span className="ml-2 text-[10px] text-muted-foreground">People · Hours</span>
-                  </DataGridTableFootRowCell>
-                  {dates.map((date) => {
-                    const { people, hours } = loads[date];
-                    return (
-                      <DataGridTableFootRowCell
-                        key={date}
-                        className={cn(
-                          "px-0 text-center",
-                          date === SCHEDULE_TODAY && "bg-primary/6",
-                        )}
-                      >
-                        <span
-                          aria-label={`${people} people, ${hours} hours on ${jobDate(date)}`}
-                          role="img"
+                visible.length > 0 ? (
+                  <DataGridTableFootRow>
+                    <DataGridTableFootRowCell
+                      colSpan={2}
+                      className="sticky start-0 z-30 bg-card px-3"
+                    >
+                      <span className="text-xs font-medium">Crew Load</span>
+                      <span className="ml-2 text-[10px] text-muted-foreground">People · Hours</span>
+                    </DataGridTableFootRowCell>
+                    {dates.map((date) => {
+                      const { people, hours } = loads[date];
+                      return (
+                        <DataGridTableFootRowCell
+                          key={date}
+                          className={cn(
+                            "px-0 text-center",
+                            date === SCHEDULE_TODAY && "bg-primary/6",
+                          )}
                         >
                           <span
-                            aria-hidden="true"
-                            className="mx-auto flex min-h-2 max-w-5 flex-wrap justify-center gap-0.5"
+                            aria-label={`${people} people, ${hours} hours on ${jobDate(date)}`}
+                            role="img"
                           >
-                            {Array.from({ length: Math.min(people, 6) }, (_, dot) => (
-                              <span
-                                key={dot}
-                                className={cn(
-                                  "size-1 rounded-full",
-                                  people > 5 ? "bg-amber-500" : "bg-primary/65",
-                                )}
-                              />
-                            ))}
+                            <span
+                              aria-hidden="true"
+                              className="mx-auto flex min-h-2 max-w-5 flex-wrap justify-center gap-0.5"
+                            >
+                              {Array.from({ length: Math.min(people, 6) }, (_, dot) => (
+                                <span
+                                  key={dot}
+                                  className={cn(
+                                    "size-1 rounded-full",
+                                    people > 5 ? "bg-amber-500" : "bg-primary/65",
+                                  )}
+                                />
+                              ))}
+                            </span>
+                            <span
+                              aria-hidden="true"
+                              className="text-[10px] tabular-nums text-muted-foreground"
+                            >
+                              {hours ? `${hours}h` : "—"}
+                            </span>
                           </span>
-                          <span
-                            aria-hidden="true"
-                            className="text-[10px] tabular-nums text-muted-foreground"
-                          >
-                            {hours ? `${hours}h` : "—"}
-                          </span>
-                        </span>
-                      </DataGridTableFootRowCell>
-                    );
-                  })}
-                  <DataGridTableFootRowCell colSpan={2} />
-                </DataGridTableFootRow>
+                        </DataGridTableFootRowCell>
+                      );
+                    })}
+                    <DataGridTableFootRowCell colSpan={2} />
+                  </DataGridTableFootRow>
+                ) : undefined
               }
             />
           </DataGridScrollArea>

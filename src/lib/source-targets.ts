@@ -392,7 +392,14 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
       const module = modules[block.id];
       if (block.id === "data-grid-advanced-22") {
         return [
-          ...paths("data", module, `${module}-grid`, `${module}-forms`, `${module}-details`),
+          ...paths(
+            "data",
+            module,
+            `${module}-grid`,
+            `${module}-forms`,
+            `${module}-details`,
+            `${module}-filters`,
+          ),
           `src/blocks/data/${module}-model.ts`,
           ...paths("data", "grid-advanced"),
         ];
