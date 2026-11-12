@@ -162,4 +162,39 @@ findings above or the separate source-viewer performance gate. The audit report
 records actual screenshot-review coverage, successful ZIP/default-source
 subsets and incomplete Copy/single-file source chains separately.
 
+`FSA-08` (P2): on5290 Radix/Vega phone, the real Limelight Trial Dialog closed
+after Escape but did not restore its connected pricing opener. The consumer now
+captures that real button and uses the existing Modal close-focus callback;
+submission clears that reference and retains the original return to Home. Shared
+Dialog/Modal code is unchanged. On fresh5300, Nova8/8 and twelve non-Nova phone
+cases passed. Base/Sera's case expired after an anomalously slow successful
+attribute check, before its Trial flow; this does not prove a Tabs focus bug or a
+Sera Trial pass. Base/Rhea and original regressions are separately in progress.
+Preserve the failed trace and remaining scope instead of claiming a complete
+single-run matrix.
+
+The subsequent original Base/Rhea case passed, as did all five scoped existing
+regressions (four Radix, one Base after correcting its real native accordion
+state locator). A separate diagnostic directly imported the unchanged Base/Sera
+case with lightweight timing observations and passed its complete Trial focus
+flow in8.0s. Its three images were viewed. This verifies that bounded flow in a
+separate run; the original deadline and its unknown cause remain recorded.
+
+Strata initial private integration found `SCV-01` (P2): the three Logs Frame
+headers inherited a column direction, shifting the event table roughly90px
+below the reference. The leaf CSS now preserves actual desktop title/action
+rows and phone wrapping, using the correct free Frame description slot. A
+separate phone sidebar width precedence issue produced292.5px instead of the
+observed240px. Both repairs await the fresh5321 rendered check. Cross-review of
+four local images also recorded five P3 differences in private
+`/tmp/strata-core-5320-visual-review.md`; these are not a full-template verdict.
+
 Pulse Dashboard business milestone: 5220 passed 16/16 Nova cases (Radix 11, Base 5), with actual free ReuiTrend and Progress. The historical preserved ZIP installs and strictly builds; its favicon-only console smoke failure and the separate current source-viewer gate remain open. See `docs/pulse-dashboard-free-primitives-release-2026-11-12.md`.
+
+The first favicon generator check compared trimmed XML, which did not establish
+exact byte equality: candidate5300 embeds332 bytes while public/favicon.svg has333,
+including its final LF. Independent export review found this difference. The
+generator now retains that LF and the strict check compares the entire decoded
+string without normalization. Candidate5300 stays immutable; its actual ZIP gate
+must not be called byte-identical. A later candidate and fresh ZIP still require
+native download, original strict build and console smoke verification.

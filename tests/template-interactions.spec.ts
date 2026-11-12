@@ -188,7 +188,10 @@ test("Limelight trial CTA scrolls to pricing without replacing the host route", 
     .toBeLessThan(150);
   await expect(page).toHaveURL(/#\/template-preview\/limelight$/);
   await expect(page.getByRole("dialog")).toHaveCount(0);
-  await page.getByRole("button", { name: "Yearly", exact: true }).click();
+  await expect(page.locator("html")).toHaveAttribute("data-ui-primitive", /^(base|radix)$/);
+  const choiceRole =
+    (await page.locator("html").getAttribute("data-ui-primitive")) === "base" ? "button" : "radio";
+  await page.getByRole(choiceRole, { name: "Yearly", exact: true }).click();
   await expect(page.locator("#lime-pricing")).toContainText("year");
 });
 

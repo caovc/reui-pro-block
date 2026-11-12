@@ -147,15 +147,18 @@ test("Filespace restore and move update the selected file metadata", async ({ pa
 
 test("Limelight updates every console metric and preserves host navigation", async ({ page }) => {
   await page.goto(`./#/template-preview/limelight`);
+  await expect(page.locator("html")).toHaveAttribute("data-ui-primitive", /^(base|radix)$/);
+  const primitive = await page.locator("html").getAttribute("data-ui-primitive");
+  const choiceRole = primitive === "base" ? "button" : "radio";
   const console = page.locator("#lime-home .ct-console");
-  await console.getByRole("button", { name: "Month", exact: true }).click();
+  await console.getByRole(choiceRole, { name: "Month", exact: true }).click();
   await expect(console.locator(".ct-console-stats strong")).toContainText([
     "251,580",
     "41",
     "221ms",
     "0.11%",
   ]);
-  await console.getByRole("button", { name: "Year", exact: true }).click();
+  await console.getByRole(choiceRole, { name: "Year", exact: true }).click();
   await expect(console.locator(".ct-console-stats strong")).toContainText([
     "2,852,270",
     "44",
@@ -165,13 +168,22 @@ test("Limelight updates every console metric and preserves host navigation", asy
   await page.getByRole("button", { name: "Pricing", exact: true }).first().click();
   await expect(page.locator("#lime-pricing")).toBeInViewport();
   await expect(page).toHaveURL(/#\/template-preview\/limelight$/);
-  await page.getByRole("button", { name: "Yearly", exact: true }).click();
+  await page.getByRole(choiceRole, { name: "Yearly", exact: true }).click();
   await expect(page.locator(".ct-lime-price-note")).toContainText("Ten months on the invoice");
   await page.getByRole("button", { name: "FAQ", exact: true }).first().click();
-  await page.getByRole("button", { name: "What does the trial include?", exact: true }).click();
-  await expect(page.locator('[data-slot="accordion-content"][data-state="open"]')).toContainText(
-    "14 day trial",
+  const question = page.getByRole("button", {
+    name: "What does the trial include?",
+    exact: true,
+  });
+  await question.click();
+  await expect(question).toHaveAttribute("aria-expanded", "true");
+  const answer = page.locator(
+    primitive === "base"
+      ? '[data-slot="accordion-content"][data-open]'
+      : '[data-slot="accordion-content"][data-state="open"]',
   );
+  await expect(answer).toBeVisible();
+  await expect(answer).toContainText("14 day trial");
 });
 
 test("Overture validates an email and confirms a local waitlist signup", async ({ page }) => {

@@ -2,7 +2,7 @@ import { ConsoleMetrics, ConsoleThroughput } from "./marketing-console-charts";
 import { GitHubMark as Github } from "@/components/icons/github-mark";
 import { LimelightTestimonials } from "./limelight-testimonials";
 import { portraitAssets } from "./photo-assets";
-import { useState, useRef } from "react";
+import { useState, useRef, useId } from "react";
 import { Scrollspy } from "@/components/reui/scrollspy";
 import {
   ArrowRight,
@@ -32,6 +32,11 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Textarea } from "@/components/ui/textarea";
+// Official free ReUI c-toggle-group-5 / c-tabs-7 compositions (MIT, Keenthemes).
+// https://reui.io/r/radix-nova/c-toggle-group-5.json
+// https://reui.io/r/radix-nova/c-tabs-7.json
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { Button, Input, Modal, Mark } from "./shared";
 import "./marketing.css";
@@ -101,18 +106,22 @@ function Console({ cue = 0 }: { cue?: number }) {
                     <b>Operations overview</b>
                     <p>Throughput, latency, and what is waiting on a person.</p>
                   </div>
-                  <div className="ct-console-segment">
+                  <ToggleGroup
+                    type="single"
+                    value={period}
+                    onValueChange={(value) => {
+                      if (value) setPeriod(value);
+                    }}
+                    size="sm"
+                    aria-label="Console period"
+                    className="ct-console-segment"
+                  >
                     {["Week", "Month", "Year"].map((p) => (
-                      <button
-                        type="button"
-                        className={period === p ? "active" : ""}
-                        onClick={() => setPeriod(p)}
-                        key={p}
-                      >
+                      <ToggleGroupItem value={p} key={p}>
                         {p}
-                      </button>
+                      </ToggleGroupItem>
                     ))}
-                  </div>
+                  </ToggleGroup>
                 </div>
                 <ConsoleMetrics period={period} />
                 <div className="ct-console-foot">
@@ -327,10 +336,12 @@ function Overture() {
 function Limelight() {
   const scrollTarget = useRef<Document>(document);
   const navRef = useRef<HTMLElement>(null);
+  const navId = useId();
   const [activeSection, setActiveSection] = useState("lime-home");
   const [yearly, setYearly] = useState(false);
   const [cue, setCue] = useState(0);
   const [trial, setTrial] = useState(false);
+  const trialOpener = useRef<HTMLButtonElement | null>(null);
   const [menu, setMenu] = useState(false);
   const [sent, setSent] = useState(false);
   const [light, setLight] = useState(false);
@@ -351,7 +362,7 @@ function Limelight() {
           <Zap fill="currentColor" />
           <b>Limelight</b>
         </button>
-        <nav ref={navRef} className={menu ? "open" : ""}>
+        <nav ref={navRef} id={navId} className={menu ? "open" : ""}>
           <Scrollspy
             history={false}
             onUpdate={setActiveSection}
@@ -375,6 +386,7 @@ function Limelight() {
             type="button"
             className="ct-lime-theme"
             aria-label="Toggle landing theme"
+            aria-pressed={light}
             onClick={() => setLight(!light)}
           >
             <Sun size={17} />
@@ -386,6 +398,8 @@ function Limelight() {
             type="button"
             className="ct-lime-menu"
             aria-label="Open menu"
+            aria-expanded={menu}
+            aria-controls={navId}
             onClick={() => setMenu(!menu)}
           >
             <Menu />
@@ -451,15 +465,15 @@ function Limelight() {
           <p>
             Every cue below is the live console, not demo data. The run fits inside a coffee break.
           </p>
-          <div className="ct-lime-tour">
-            <div>
+          <Tabs
+            value={String(cue)}
+            onValueChange={(value) => setCue(Number(value))}
+            orientation="vertical"
+            className="ct-lime-tour"
+          >
+            <TabsList variant="line" aria-label="Production tour">
               {cues.map((c, i) => (
-                <button
-                  type="button"
-                  className={cue === i ? "active" : ""}
-                  key={c}
-                  onClick={() => setCue(i)}
-                >
+                <TabsTrigger value={String(i)} aria-label={c} key={c}>
                   <span>0{i + 1}</span>
                   <div>
                     <h3>{c}</h3>
@@ -476,11 +490,15 @@ function Limelight() {
                       </p>
                     )}
                   </div>
-                </button>
+                </TabsTrigger>
               ))}
-            </div>
-            <Console cue={cue + 1} />
-          </div>
+            </TabsList>
+            {cues.map((c, i) => (
+              <TabsContent value={String(i)} key={c}>
+                <Console cue={i + 1} />
+              </TabsContent>
+            ))}
+          </Tabs>
         </section>
         <section id="lime-features" className="ct-lime-section">
           <h2>Four acts, one console</h2>
@@ -577,20 +595,18 @@ function Limelight() {
               </p>
             </div>
             <div className="ct-lime-billing">
-              <button
-                type="button"
-                className={!yearly ? "active" : ""}
-                onClick={() => setYearly(false)}
+              <ToggleGroup
+                type="single"
+                value={yearly ? "yearly" : "monthly"}
+                onValueChange={(value) => {
+                  if (value) setYearly(value === "yearly");
+                }}
+                spacing={0}
+                aria-label="Billing period"
               >
-                Monthly
-              </button>
-              <button
-                type="button"
-                className={yearly ? "active" : ""}
-                onClick={() => setYearly(true)}
-              >
-                Yearly
-              </button>
+                <ToggleGroupItem value="monthly">Monthly</ToggleGroupItem>
+                <ToggleGroupItem value="yearly">Yearly</ToggleGroupItem>
+              </ToggleGroup>
               <small>2 months free</small>
             </div>
           </div>
@@ -652,7 +668,14 @@ function Limelight() {
                 </strong>
                 <Button
                   className={i === 1 ? "ct-lime-cta" : "ct-lime-outline"}
-                  onClick={() => (i === 2 ? scroll("Contact") : setTrial(true))}
+                  onClick={(event) => {
+                    if (i === 2) {
+                      scroll("Contact");
+                      return;
+                    }
+                    trialOpener.current = event.currentTarget;
+                    setTrial(true);
+                  }}
                 >
                   {i === 2 ? "Talk to sales" : "Start free trial"}
                   <ArrowRight />
@@ -819,12 +842,24 @@ function Limelight() {
         </div>
         <p>© 2026 Limelight · Independent recreation</p>
       </footer>
-      <Modal title="Start your free trial" open={trial} onClose={() => setTrial(false)}>
+      <Modal
+        title="Start your free trial"
+        open={trial}
+        onClose={() => setTrial(false)}
+        onCloseAutoFocus={(event) => {
+          const opener = trialOpener.current;
+          trialOpener.current = null;
+          if (!opener?.isConnected) return;
+          event.preventDefault();
+          opener.focus({ preventScroll: true });
+        }}
+      >
         <form
           className="ct-form"
           onSubmit={(e) => {
             e.preventDefault();
             toast.success("Your local demo workspace is ready");
+            trialOpener.current = null;
             setTrial(false);
             scroll("Home");
           }}

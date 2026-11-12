@@ -2,6 +2,16 @@
 
 最后更新：2026-11-12。用户要求持续协调开发，不能在一个里程碑或进度汇报后结束整体工作。本文是恢复点，不是“全部完成”声明。
 
+## 最新接续点（约15:45 UTC，优先于下面历史检查点）
+
+- Main已推送到c6363f0；run43235459944最终build和browser1/2/3成功、browser4 job131248280752失败、deploy skipped。API仅exit1，真实失败名仍缺；已异步请用户提供该新job片段，不能猜旧Roster/Lucent原因。最近成功Pages仍7579c5f / deployment7739954144。
+- Root新增只读CI后台快照：`/tmp/reui-continuous-ci-watch/{watch.py,latest.json,changes.jsonl}`，当前两小时有界进程session6896（修正终态缓存后重启），每45s读取metadata，不cancel/write/publish；模型仍须读变更并协调。它不意味着聊天关闭后模型继续开发。
+- 营销5300六文件完成Root审阅：全TS/双构建/202tooling；正式新增用例分批21/22通过，Sera原30s超时保留。随后直接import原case的单次instrumented诊断完整通过含Trial回焦，3新图实际view；不宣称同一轮全绿。旧Radix4与修正Base原生accordion状态后的Base1通过。候选/文档精确范围见营销QA报告。
+- Strata原六个未访主页面已取得两宽12稳定默认图并逐张view，另一个Calendar过渡图排除。新窄schema含NewMonitor、Merges、CalendarNewEvent/Ownership、NewSource第一步和Settings五tab。私有目录分别为`/tmp/strata-six-main-defaults-20261112/`和`/tmp/strata-narrow-schemas-20261112/`。部分源旗帜图GET被代理拒绝，不声称零console错误。
+- 初三页私有harness5320：全TS/双构建/41领域测试过；原native首批3 desktop通过、phoneOverview侧栏292.5px而非240px失败、10未跑。交叉视觉另证Logs三header堆叠令表下移约90px。新5321只改Root侧栏width优先级和Logs header CSS，双构建过，待重跑原14并actual view。它不是catalog注册或公开19th template。
+- Source5350新document-ready候选只改私有SourceDialog，SHA3d69bb14…；全TS/双构建通过，原Filebox首5s click仍fail，原CodeBlock3/3过。前5310关闭syntax、5330只popper亦未过首gate，均不推广。Shared tracked SourceDialog仍已提交A ad72；P2开放。
+- Strata默认叶静态已分派并交付：Overview8域测、Services11、Logs19（schema2+headerCSS）、Monitors9（已加真实NewMonitor）、Calendar15、Sources10、Releases/Board10。Root尚未公开注册，新增leaf大多未render验证，remaining动作/pinned详情/Settings与auth仍需接续。Owner哈希和限制在各`/tmp`handoff；不能暂存未验收WIP或称完整模板。
+
 ## 完成标准
 
 1. 先核对官方目录和真实页面身份，再完成相应本地页面及可见交互。当前已确认官方20个模板、本地18个入口；Signal、Strata 缺项不能用空卡片、改计数或通用页面替代。
@@ -38,6 +48,15 @@
 - 每完成一项立即更新本记录和视觉待办，分派下一项；只有完成标准达成、用户叫停或所有可做路径均被外部阻塞时，才结束整轮。
 
 ## 网络与私有证据
+
+最近恢复点（约14:50 UTC）：
+
+- 已推送HEAD `c6363f0ba91669d63382af86d1b951b2b3da9d2c`，包含V03、Source身份与首版favicon生成修复。Root尚未提交的图标末LF修正用完整字符串检查通过333bytes；5300旧332bytes保持原样。
+- `7579c5f` 的run43224303995全部成功，Pages deployment7739954144成功；c636 run43235459944 build成功、四browser执行中。旧pending9ae/ed自动被新push替换，未手动取消健康run。
+- 营销5300基于c636加六项冻结覆盖，排除全部StrataWIP；全TS/双构建/格式/lint/202tooling通过。Nova8/8、非Nova首12pass/1Sera整case超时/1未跑，正在原Radix4+Base1及未跑Rhea，勿把后续分段证据冒称首轮全绿。FSA-08真实Trial回焦修复已在该候选，待Root最终整合提交。
+- Source私有CSS-only原例失败且实际丢行号，无CSS几何control通过；CSS几何例未到宽度/Wrap验证就超时。不应用该CSS。5310只关闭整个syntaxpipeline做诊断，原Filebox首click5s仍失败，不能发布或关闭P2；正式代码保留真实高亮。
+- Strata三叶静态交付，Root私有三页集成harness仅有语法检查，未build/browser/目录注册。Logs按真实新建表单Schema继续调整；Overview枚举已按真HeaderEnv改Sandbox；Services空history保留null和真实TabsContent。其余六主页面仍未访，CI owner已备仅GET六页优先runner。
+- Foundation目前独占本地原生browser，其他仅静态；Source5310浏览器已退出。Root独占Git writer，勿暂存Strata未验收文件。
 
 14:00 UTC新核对：D `d127fb1` 的run43218584940全绿，Pages deployment7738573232成功；
 7579 run43224303995的build/browser1成功，余三分片仍运行；72f69a3 run43229592153待执行。

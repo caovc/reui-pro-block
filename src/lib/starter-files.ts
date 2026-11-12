@@ -7,7 +7,8 @@ const starterFavicon =
   <rect x="6" y="6" width="6" height="20" rx="1.25" fill="#fffaf3"/>
   <rect x="16" y="6" width="10" height="8" rx="1.25" fill="#d57755"/>
   <rect x="16" y="18" width="10" height="8" rx="1.25" fill="#fffaf3"/>
-</svg>`);
+</svg>
+`);
 
 /** Load the theme first so its Tailwind layer order precedes component styles. */
 export const starterMain = `import "./theme.css";

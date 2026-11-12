@@ -258,12 +258,15 @@
   border-radius: 15px;
 }
 .ct-console-segment button {
+  height: auto;
+  min-width: 0;
   padding: 3px 8px;
   color: #aaa;
   font-size: 10px;
+  font-weight: inherit;
   border-radius: 15px;
 }
-.ct-console-segment button.active {
+.ct-console-segment button:is([data-state="on"], [data-pressed]) {
   background: #383838;
   color: #fff;
 }
@@ -429,23 +432,41 @@
   gap: 55px;
   margin-top: 55px;
 }
-.ct-lime-tour > div:first-child {
+.ct-lime-tour [data-slot="tabs-list"] {
   display: flex;
   flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 0;
+  width: 100%;
+  height: auto;
+  padding: 0;
 }
-.ct-lime-tour > div:first-child > button {
+.ct-lime-tour [data-slot="tabs-trigger"] {
   display: flex;
+  flex: none;
   align-items: flex-start;
+  justify-content: flex-start;
   gap: 20px;
+  height: auto;
+  min-width: 0;
   padding: 25px 0;
+  border: 0;
   border-bottom: 1px solid var(--lime-border);
+  border-radius: 0;
+  background: transparent;
   text-align: left;
+  white-space: normal;
+  font-weight: inherit;
   color: var(--lime-muted);
 }
-.ct-lime-tour > div:first-child > button.active {
+.ct-lime-tour [data-slot="tabs-trigger"][data-state="active"] {
   color: var(--lime-text);
 }
-.ct-lime-tour > div:first-child > button > span {
+.ct-lime-tour [data-slot="tabs-trigger"]::after {
+  display: none;
+}
+.ct-lime-tour [data-slot="tabs-trigger"] > span {
   font-size: 12px;
   color: var(--lime);
   padding-top: 4px;
@@ -468,6 +489,9 @@
 }
 .ct-lime-tour .ct-console-status {
   display: none;
+}
+.ct-lime-tour [data-slot="tabs-content"] {
+  min-width: 0;
 }
 .ct-lime-features {
   display: grid;
@@ -574,11 +598,12 @@
   flex-shrink: 0;
 }
 .ct-lime-billing button {
+  height: auto;
   padding: 8px 12px;
   border-radius: 8px;
   color: var(--lime-muted);
 }
-.ct-lime-billing button.active {
+.ct-lime-billing button:is([data-state="on"], [data-pressed]) {
   background: var(--lime-panel);
   color: var(--lime-text);
 }
@@ -1087,7 +1112,7 @@
   .ct-lime-tour {
     grid-template-columns: 1fr;
   }
-  .ct-lime-tour > div:first-child {
+  .ct-lime-tour [data-slot="tabs-list"] {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 15px;
@@ -1221,7 +1246,7 @@
   .ct-lime-section h2 {
     font-size: 32px;
   }
-  .ct-lime-tour > div:first-child {
+  .ct-lime-tour [data-slot="tabs-list"] {
     display: flex;
   }
   .ct-lime-features {
@@ -1435,7 +1460,7 @@
   border-radius: 999px;
   padding: 8px 20px;
 }
-.ct-lime-billing button.active {
+.ct-lime-billing button:is([data-state="on"], [data-pressed]) {
   background: #3d3d3d;
 }
 .ct-lime-billing small {
