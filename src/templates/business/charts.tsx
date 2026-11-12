@@ -1,4 +1,5 @@
 import { ReuiStripePattern } from "@/blocks/data/reui-free-chart-primitives";
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { useId } from "react";
 import {
   Area,
@@ -13,15 +14,22 @@ import {
   YAxis,
 } from "recharts";
 const colors = ["#ff508d", "#b485ff", "#9290ff", "#ffb23e", "#49ccbd", "#48caff", "#55cda5"];
+const businessBarsChartConfig = {
+  Units: { label: "Units" },
+  Blocked: { label: "Blocked" },
+  Watched: { label: "Watched" },
+};
 export function BusinessBars({
   labels,
   large = false,
   multi = false,
+  responsiveAxis = false,
   values,
 }: {
   labels: string[];
   large?: boolean;
   multi?: boolean;
+  responsiveAxis?: boolean;
   values?: number[];
 }) {
   const uid = useId().replaceAll(":", "");
@@ -34,58 +42,102 @@ export function BusinessBars({
     Watched: cyan[i],
     Units: values?.[i] ?? single[i],
   }));
+  const chart = (
+    <BarChart
+      accessibilityLayer
+      data={data}
+      margin={{ top: 12, right: responsiveAxis ? 8 : 0, left: 0, bottom: 0 }}
+      barCategoryGap={large ? "8%" : "12%"}
+      barGap={2}
+    >
+      <defs>
+        <ReuiStripePattern id={uid} color="#5277f0" />
+        {colors.map((color, index) => (
+          <ReuiStripePattern key={color} id={`${uid}color${index}`} color={color} />
+        ))}
+      </defs>
+      <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="2 4" />
+      <XAxis
+        dataKey="name"
+        tickLine={false}
+        axisLine={false}
+        tick={{ fontSize: 12, fill: "var(--muted-foreground)" }}
+        interval={responsiveAxis ? "preserveEnd" : 0}
+        minTickGap={responsiveAxis ? 8 : undefined}
+        height={30}
+      />
+      {responsiveAxis ? (
+        <ChartTooltip
+          cursor={{ fill: "var(--muted)", opacity: 0.5 }}
+          content={<ChartTooltipContent hideIndicator />}
+        />
+      ) : (
+        <Tooltip
+          cursor={{ fill: "var(--muted)", opacity: 0.5 }}
+          contentStyle={{ borderRadius: 8, border: "1px solid var(--border)", fontSize: 12 }}
+        />
+      )}
+      {multi ? (
+        <>
+          <Bar
+            dataKey="Blocked"
+            fill={`url(#${uid})`}
+            radius={[6, 6, 0, 0]}
+            isAnimationActive={false}
+          >
+            {responsiveAxis
+              ? data.map((entry) => (
+                  <Cell
+                    key={entry.name}
+                    role="img"
+                    aria-label={`${entry.name}: ${entry.Blocked} Blocked`}
+                  />
+                ))
+              : null}
+          </Bar>
+          <Bar dataKey="Watched" fill="#83d7ee" radius={[6, 6, 0, 0]} isAnimationActive={false}>
+            {responsiveAxis
+              ? data.map((entry) => (
+                  <Cell
+                    key={entry.name}
+                    role="img"
+                    aria-label={`${entry.name}: ${entry.Watched} Watched`}
+                  />
+                ))
+              : null}
+          </Bar>
+        </>
+      ) : (
+        <Bar dataKey="Units" radius={[8, 8, 0, 0]} isAnimationActive={false}>
+          {data.map((entry, i) => (
+            <Cell
+              key={i}
+              fill={large ? `url(#${uid}color${i % 7})` : colors[i % 7]}
+              role={responsiveAxis ? "img" : undefined}
+              aria-label={responsiveAxis ? `${entry.name}: ${entry.Units} units` : undefined}
+            />
+          ))}
+        </Bar>
+      )}
+    </BarChart>
+  );
   return (
     <div className={`bt-rechart bt-chart-bars ${large ? "bt-chart-large" : ""}`}>
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart
-          data={data}
-          margin={{ top: 12, right: 0, left: 0, bottom: 0 }}
-          barCategoryGap={large ? "8%" : "12%"}
-          barGap={2}
+      {responsiveAxis ? (
+        // Adapted composition from free ReUI c-chart-2/3, with our existing data and dimensions.
+        // MIT (c) 2025 Keenthemes Inc; components/reui/REUI-LICENSE.txt.
+        <ChartContainer
+          config={businessBarsChartConfig}
+          className="h-full w-full aspect-auto"
+          data-reui-chart="c-chart-2 c-chart-3"
         >
-          <defs>
-            <ReuiStripePattern id={uid} color="#5277f0" />
-            {colors.map((color, index) => (
-              <ReuiStripePattern key={color} id={`${uid}color${index}`} color={color} />
-            ))}
-          </defs>
-          <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="2 4" />
-          <XAxis
-            dataKey="name"
-            tickLine={false}
-            axisLine={false}
-            tick={{ fontSize: 12, fill: "var(--muted-foreground)" }}
-            interval={0}
-            height={30}
-          />
-          <Tooltip
-            cursor={{ fill: "var(--muted)", opacity: 0.5 }}
-            contentStyle={{ borderRadius: 8, border: "1px solid var(--border)", fontSize: 12 }}
-          />
-          {multi ? (
-            <>
-              <Bar
-                dataKey="Blocked"
-                fill={`url(#${uid})`}
-                radius={[6, 6, 0, 0]}
-                isAnimationActive={false}
-              />
-              <Bar
-                dataKey="Watched"
-                fill="#83d7ee"
-                radius={[6, 6, 0, 0]}
-                isAnimationActive={false}
-              />
-            </>
-          ) : (
-            <Bar dataKey="Units" radius={[8, 8, 0, 0]} isAnimationActive={false}>
-              {data.map((_, i) => (
-                <Cell key={i} fill={large ? `url(#${uid}color${i % 7})` : colors[i % 7]} />
-              ))}
-            </Bar>
-          )}
-        </BarChart>
-      </ResponsiveContainer>
+          {chart}
+        </ChartContainer>
+      ) : (
+        <ResponsiveContainer width="100%" height="100%">
+          {chart}
+        </ResponsiveContainer>
+      )}
     </div>
   );
 }

@@ -25,13 +25,13 @@ import {
   Badge,
   Button,
   Spark,
-  Bars,
   Area,
   DataTable,
   RecordDialog,
   toast,
   exportCsv,
 } from "./shared";
+import { BusinessBars } from "./charts";
 import { AtlasAccountSettings } from "./atlas-account-settings";
 import { useAtlasAccountSettingsModel } from "./atlas-account-settings-model";
 import { useAtlasAccountRoute } from "./atlas-account-route";
@@ -268,8 +268,9 @@ export default function Atlas() {
                     </span>
                   }
                 >
-                  <Bars
+                  <BusinessBars
                     multi
+                    responsiveAxis
                     labels={[
                       "Bot",
                       "Phish",
