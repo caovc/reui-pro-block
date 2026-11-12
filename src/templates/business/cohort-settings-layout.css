@@ -212,11 +212,11 @@
 
 @media (max-width: 767px) {
   /* Let the native footer actions move as a group before status text is squeezed. */
-  .bt-cohort-settings .bt-setting-save {
+  .bt-cohort-settings [data-setting-section="working"] .bt-setting-save {
     flex-wrap: wrap;
   }
 
-  .bt-cohort-settings .bt-setting-save > div {
+  .bt-cohort-settings [data-setting-section="working"] .bt-setting-save > div {
     max-width: 100%;
     flex-wrap: wrap;
     justify-content: flex-end;

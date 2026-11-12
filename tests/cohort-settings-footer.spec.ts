@@ -59,6 +59,7 @@ async function openOrganisation(page: Page, baseURL: string, primitive: Primitiv
   await expect(menu.getByRole("button", { name: "Organisation", exact: true })).toBeFocused();
   await page.keyboard.press("Escape");
   await expect(menu).toBeHidden();
+  await expect(page.locator('[data-slot="sheet-overlay"]')).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Open menu", exact: true })).toBeFocused();
   await expect(working(page)).toHaveAttribute("data-slot", "frame");
   await expect(working(page)).toHaveAttribute("data-setting-section", "working");
@@ -472,6 +473,7 @@ for (const primitive of ["radix", "base"] as const) {
         await menu.getByRole("button", { name: "Organisation", exact: true }).click();
         await page.keyboard.press("Escape");
         await expect(menu).toBeHidden();
+        await expect(page.locator('[data-slot="sheet-overlay"]')).toHaveCount(0);
         await expect(working(page).getByRole("status")).toHaveText("All changes saved");
         expect(await selection(page)).toEqual(dirtyDays);
         assertGeometry(await sample("saved-after-route-return", true), false, primitive, style);
