@@ -1,0 +1,500 @@
+.strata-settings-api,
+.strata-settings-security,
+.strata-settings-billing {
+  width: 100%;
+  min-width: 0;
+  container-type: inline-size;
+}
+.strata-settings-billing {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.strata-settings-local-note {
+  margin: 0;
+  padding: 12px 16px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 18px;
+}
+.strata-settings-inline-error {
+  display: block;
+  color: var(--destructive);
+  font-size: 12px;
+}
+.strata-settings-check-label,
+.strata-settings-footer-actions,
+.strata-settings-badges {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.strata-settings-wrap-code {
+  overflow-wrap: anywhere;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+.strata-api-actions,
+.strata-api-actions > label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.strata-api-actions > label {
+  color: var(--muted-foreground);
+  font-weight: 400;
+}
+.strata-api-integration {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 16px;
+}
+.strata-api-monogram,
+.strata-billing-monogram {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--muted-foreground);
+  background: var(--muted);
+  font-size: 10px;
+  font-weight: 600;
+}
+.strata-api-integration > span:last-child {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 2px;
+}
+.strata-api-integration strong,
+.strata-api-integration small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.strata-api-integration strong {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+}
+.strata-api-integration small {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 16px;
+}
+.strata-api-copy-wrap {
+  display: block;
+  min-width: 0;
+}
+.strata-api-key[data-slot="button"] {
+  display: flex;
+  width: 100%;
+  height: 22px;
+  min-width: 0;
+  justify-content: space-between;
+  gap: 6px;
+  border: 1px solid var(--border);
+  padding: 0 4px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 400;
+}
+.strata-api-key > code {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.strata-api-key > svg {
+  width: 12px;
+  height: 12px;
+  color: var(--muted-foreground);
+}
+.strata-api-grid tbody tr {
+  height: 51px;
+}
+.strata-api-pagination {
+  background: color-mix(in oklch, var(--muted) 40%, var(--background));
+}
+.strata-api-scopes {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.strata-api-scopes > li {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+.strata-security-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.strata-settings-security .strata-setting-label [data-slot="field-description"],
+.strata-security-factor [data-slot="field-description"] {
+  font-size: 12px;
+  line-height: 16px;
+}
+.strata-security-provider {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.strata-security-health[data-slot="button"] {
+  width: 16px;
+  height: 16px;
+  padding: 0;
+}
+.strata-security-health[data-status="Connected"] {
+  color: var(--success);
+}
+.strata-security-health[data-status="Error"] {
+  color: var(--destructive);
+}
+.strata-security-health[data-status="Not configured"] {
+  color: var(--warning);
+}
+.strata-security-metadata {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 40px;
+  min-width: 0;
+}
+.strata-security-metadata > code {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--foreground);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+.strata-security-provider-actions,
+.strata-security-token {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.strata-security-token > [data-slot="input-group"] {
+  min-width: 0;
+  flex: 1;
+}
+.strata-security-value-copy {
+  position: relative;
+}
+.strata-security-value-copy > input {
+  padding-right: 34px;
+}
+.strata-security-value-copy > .strata-security-copy {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+}
+.strata-security-factors {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.strata-security-factor[data-slot="field"] {
+  align-items: start;
+  gap: 12px;
+}
+.strata-security-factor [data-slot="field-label"] {
+  font-weight: 400;
+}
+.strata-security-domain {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: start;
+  gap: 8px;
+}
+.strata-security-domain > input {
+  min-width: 0;
+  flex: 1;
+}
+.strata-security-domain > [data-slot="field-error"] {
+  width: 100%;
+}
+.strata-security-save-state {
+  min-width: 0;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.strata-billing-subscription {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px;
+}
+.strata-billing-subscription h2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 8px;
+  font-size: 20px;
+  font-weight: 600;
+}
+.strata-billing-subscription p,
+.strata-billing-plan > p {
+  margin: 0;
+  color: var(--muted-foreground);
+  font-size: 14px;
+  line-height: 20px;
+}
+.strata-billing-price {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.strata-billing-price > strong {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32px;
+}
+.strata-billing-subscription .strata-billing-price > strong {
+  font-size: 20px;
+}
+.strata-billing-price > span {
+  color: var(--muted-foreground);
+  font-size: 14px;
+}
+.strata-billing-period {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+  border-top: 1px solid var(--border);
+}
+.strata-billing-period > div {
+  padding: 16px;
+  border-right: 1px solid var(--border);
+}
+.strata-billing-period > div:last-child {
+  border: 0;
+}
+.strata-billing-period dt,
+.strata-billing-period span,
+.strata-billing-plan > small {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 20px;
+}
+.strata-billing-period dd {
+  margin: 4px 0;
+  font-size: 14px;
+}
+.strata-billing-plans {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.strata-billing-plan {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 8px;
+  padding: 16px;
+  border-right: 1px solid var(--border);
+}
+.strata-billing-plan:last-child {
+  border-right: 0;
+}
+.strata-billing-plan-title {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.strata-billing-plan-title > h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 400;
+}
+.strata-billing-plan > p {
+  font-size: 12px;
+}
+.strata-billing-plan .strata-billing-price {
+  margin-top: 8px;
+}
+.strata-billing-plan > ul {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 8px 0;
+  padding: 0;
+  list-style: none;
+}
+.strata-billing-plan > ul > li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.strata-billing-plan > ul svg {
+  width: 16px;
+  height: 16px;
+  color: var(--muted-foreground);
+}
+.strata-billing-plan > button,
+.strata-billing-plan > [data-slot="dialog-trigger"] {
+  margin-top: auto;
+  width: 100%;
+}
+.strata-billing-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.strata-billing-usage {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 16px;
+}
+.strata-billing-usage > div > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+.strata-billing-usage span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+.strata-billing-usage span > svg {
+  width: 16px;
+  height: 16px;
+  color: var(--muted-foreground);
+}
+.strata-billing-usage [data-slot="progress"] {
+  height: 6px;
+}
+.strata-billing-near-limit [data-slot="progress-indicator"] {
+  background: var(--warning);
+}
+.strata-billing-payment,
+.strata-billing-invoices {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.strata-billing-payment {
+  gap: 20px;
+  padding: 16px;
+}
+.strata-billing-payment > li,
+.strata-billing-invoices > li {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 16px;
+}
+.strata-billing-payment > li > span,
+.strata-billing-invoices > li > span {
+  min-width: 0;
+}
+.strata-billing-payment > li > span:last-child {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: end;
+  gap: 6px;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+.strata-billing-payment svg {
+  width: 20px;
+  height: 14px;
+}
+.strata-billing-payment small,
+.strata-billing-invoices small {
+  display: block;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 18px;
+}
+.strata-billing-invoices > li {
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.strata-billing-invoices > li:last-child {
+  border-bottom: 0;
+}
+.strata-billing-invoices strong {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+.strata-billing-invoices > li > div {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: end;
+  gap: 8px;
+}
+.strata-billing-invoices > li > div > strong {
+  min-width: 72px;
+  justify-content: end;
+}
+.strata-billing-quote {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+  margin: 0;
+}
+.strata-billing-quote dt {
+  color: var(--muted-foreground);
+}
+.strata-billing-quote dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+@container (max-width: 650px) {
+  .strata-api-actions {
+    flex-wrap: wrap;
+  }
+  .strata-settings-api .strata-settings-section-header,
+  .strata-settings-security .strata-settings-section-header,
+  .strata-settings-billing .strata-settings-section-header {
+    flex-wrap: wrap;
+  }
+  .strata-security-provider-actions,
+  .strata-security-token {
+    flex-wrap: wrap;
+  }
+  .strata-security-metadata {
+    margin-left: 0;
+  }
+  .strata-billing-subscription {
+    flex-wrap: wrap;
+  }
+  .strata-billing-period,
+  .strata-billing-plans,
+  .strata-billing-columns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .strata-billing-period > div,
+  .strata-billing-plan {
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .strata-billing-payment > li,
+  .strata-billing-invoices > li {
+    flex-wrap: wrap;
+  }
+}

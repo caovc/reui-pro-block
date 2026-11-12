@@ -1,0 +1,284 @@
+.strata-root {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-sans);
+  font-size: 14px;
+}
+
+/* The consumer's explicit mobile width takes precedence over Sheet's 75% side width. */
+.strata-sidebar[data-mobile="true"] {
+  width: var(--sidebar-width);
+  max-width: 100vw;
+}
+
+.strata-sidebar [data-slot="sidebar-header"],
+.strata-sidebar [data-slot="sidebar-footer"] {
+  gap: 8px;
+  padding: 16px;
+}
+
+.strata-sidebar [data-slot="sidebar-content"] {
+  gap: 24px;
+  padding: 8px 16px;
+}
+.strata-sidebar [data-slot="sidebar-header"] {
+  padding-bottom: 8px;
+}
+
+.strata-workspace {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 40px;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: color-mix(in oklch, var(--muted) 45%, var(--background));
+  text-align: left;
+  cursor: pointer;
+}
+
+.strata-workspace > span {
+  flex: 1;
+  min-width: 0;
+}
+
+.strata-workspace strong,
+.strata-workspace small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.strata-workspace strong {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 17px;
+}
+.strata-workspace small {
+  color: var(--muted-foreground);
+  font-size: 11px;
+  line-height: 13px;
+}
+.strata-workspace > svg:last-child {
+  color: var(--muted-foreground);
+  flex-shrink: 0;
+}
+.strata-account > img {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+.strata-workspace:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+.strata-search {
+  height: 32px;
+}
+.strata-search kbd {
+  padding: 1px 4px;
+  border-radius: 4px;
+  background: var(--muted);
+  font-size: 11px;
+}
+.strata-navigation-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 8px 8px;
+  color: var(--muted-foreground);
+  font-size: 13px;
+}
+.strata-navigation-label > span {
+  border: 1px solid var(--border);
+  padding: 0 5px;
+  border-radius: 5px;
+  font-size: 12px;
+}
+.strata-navigation-group [data-slot="tree-item"] {
+  border-radius: var(--radius-md);
+  color: var(--muted-foreground);
+  text-decoration: none;
+}
+.strata-navigation-row {
+  position: relative;
+}
+.strata-navigation-row > a {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+.strata-navigation-row[data-pinned] [data-slot="tree-item-label"] {
+  padding-right: 32px;
+}
+.strata-unpin {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  opacity: 0;
+}
+.strata-navigation-row:hover .strata-unpin,
+.strata-navigation-row:focus-within .strata-unpin {
+  opacity: 1;
+}
+.strata-navigation-group [data-slot="tree-item-label"] {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 8px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 400;
+}
+.strata-navigation-group [data-slot="tree-item-label"] > svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  opacity: 0.75;
+}
+.strata-navigation-group [data-slot="tree-item-label"] > span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.strata-navigation-group [aria-current="page"] [data-slot="tree-item-label"] {
+  color: var(--foreground);
+  border-color: var(--border);
+  background: var(--muted);
+  font-weight: 500;
+}
+.strata-navigation-group [data-slot="tree-item"]:hover [data-slot="tree-item-label"] {
+  background: var(--accent);
+}
+.strata-navigation-group [data-slot="tree-item"]:focus-visible [data-slot="tree-item-label"] {
+  outline: 2px solid var(--ring);
+  outline-offset: -2px;
+}
+.strata-sidebar [data-slot="sidebar-footer"] .strata-navigation-label {
+  display: none;
+}
+.strata-rail {
+  display: grid;
+  gap: 4px;
+}
+.strata-no-navigation {
+  color: var(--muted-foreground);
+  padding: 0 8px;
+  font-size: 12px;
+}
+.strata-main {
+  height: 100dvh;
+  background: var(--background);
+}
+.strata-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 48px;
+  min-height: 48px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--border);
+}
+.strata-header > [data-slot="sidebar-trigger"] {
+  width: 24px;
+  height: 24px;
+  color: var(--muted-foreground);
+}
+.strata-header-divider {
+  width: 1px;
+  height: 16px;
+  background: var(--border);
+}
+.strata-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  font-size: 14px;
+}
+.strata-breadcrumb > span {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.strata-breadcrumb > span:not(:last-child) {
+  color: var(--muted-foreground);
+}
+.strata-breadcrumb > svg {
+  width: 14px;
+  height: 14px;
+  color: var(--muted-foreground);
+  flex-shrink: 0;
+}
+.strata-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  min-width: 0;
+}
+.strata-mobile-brand {
+  display: none;
+}
+.group[data-collapsible="icon"] .strata-sidebar [data-slot="sidebar-header"],
+.group[data-collapsible="icon"] .strata-sidebar [data-slot="sidebar-content"],
+.group[data-collapsible="icon"] .strata-sidebar [data-slot="sidebar-footer"] {
+  padding-right: 8px;
+  padding-left: 8px;
+}
+.group[data-collapsible="icon"] .strata-workspace {
+  justify-content: center;
+  padding: 4px;
+}
+.strata-page-scroll {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  overflow: auto;
+  padding: 16px;
+}
+.strata-menu {
+  font-family: var(--font-sans);
+}
+
+@media (max-width: 767px) {
+  .strata-mobile-brand {
+    display: block;
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+  }
+  .strata-page-scroll {
+    padding: 12px;
+  }
+  .strata-header {
+    gap: 8px;
+    padding: 0 12px;
+  }
+  .strata-breadcrumb {
+    font-size: 13px;
+  }
+  .strata-breadcrumb > span:not(:last-child),
+  .strata-breadcrumb > svg {
+    display: none;
+  }
+  .strata-header-divider {
+    display: none;
+  }
+  .strata-header-actions {
+    gap: 6px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .strata-root [data-slot="sidebar-container"],
+  .strata-root [data-slot="sidebar-gap"] {
+    transition: none;
+  }
+}

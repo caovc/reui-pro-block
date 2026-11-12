@@ -5,21 +5,33 @@ Status on2026-11-12: implementation in progress; no Strata preview is registered
 The 2026-11-03 [official catalog](https://reui.io/templates) contains 19 templates; the local catalog contains 18. The missing entry is [Strata](https://reui.io/template/strata-observability), whose detail page records an October 29 addition. Its [public preview](https://strata-observability.reui.io/) is the visual reference. The published scope is 13 product pages plus two authentication screens.
 
 The newer2026-11-12 catalog check found20 official templates and18 local entries,
-with both Signal and Strata missing. Strata's thirteen actual sidebar hrefs are
-recorded privately. Overview, Services and Logs have genuine desktop/phone
-reference captures; independent Jobs/cron, SLO/event-budget and Logs/export leaves
-now exist as unregistered work in progress, with eight, eleven and thirteen
-initial domain tests respectively. Those checks are static/business evidence,
-not rendered visual or functional acceptance.
+with both Signal and Strata missing. All nine main page defaults now have actual
+desktop/phone reference captures. The four pinned destinations were also visited:
+a checkout service filter, an automatically opened monitor Sheet, an error-log
+filter and an on-call calendar filter. Mobile pinned Calendar rendering remains
+uncertain after the reference window recorded failed script requests; account
+and authentication destinations are still unverified.
+
+The unregistered implementation now contains all nine main page modules, five
+Settings sections, independent Jobs/cron, timed SLO budgets, Logs/export,
+Monitors, release history/Merges, Calendar and source-provider models. The latest
+127 domain checks passed. Private candidate5382 passed scoped semantic TypeScript
+and both production builds. Its default-page/native-navigation matrix covered
+38 cases in two batches:35 passed before a Base orientation oracle failure,
+then the corrected Base Settings case and two previously unrun Merges cases
+passed. All39 emitted screenshots were actually viewed. This is scoped Nova
+default/keyboard evidence, not all-style or complete workflow acceptance.
 
 Root owns the shared shell, original brand, route/query contract and header
-portal. Independent review found and corrected accessible names, native link
-activation, Unpin and search consistency before browser validation. Later source
-capture confirmed Sandbox in the actual environment menu and the real multi-field
-Logs form; owned leaves are being corrected against that evidence. The remaining
-six main pages, pinned details and account/auth destinations still need their
-own actual reference captures and implementation. Do not infer fifteen verified
-screens or advertise an empty nineteenth template.
+portal. Browser review corrected mobile Sheet width, a real Tree data-removal
+crash, Logs grid containment and Settings tab/header presentation. Review-button
+clip-ancestor interactions, four pinned-route flows, Calendar creation, non-Nova
+styles and original exported-project gates remain separate. Earlier mobile
+Settings captures with a160px sidebar were responsive transition frames; stable
+fresh captures show horizontal tabs and full-width cards. API Scopes/Edit are
+the observed information toasts, and yearly prices preserve the current monthly
+subscription until a separate action. No authentication screens or empty
+nineteenth entry are advertised.
 
 ## 1. Establish the actual reference and free-component map
 

@@ -2,6 +2,18 @@
 
 最后更新：2026-11-12。用户要求持续协调开发，不能在一个里程碑或进度汇报后结束整体工作。本文是恢复点，不是“全部完成”声明。
 
+## 最新接续点（约17:25 UTC，优先于下面历史检查点）
+
+- Main当前已推送c2efdbff4191ed67a0026f9f6d236dfa4f236231（byte比较工具4文件）。新run43263389053 build和browser1已成功，2/3/4执行中；成功线上仍d2d1e97/Pages7743634413。新SHA不能沿旧部署结论。Root6896只读watcher持续，CI owner保活。
+- Strata5382实际13route私有parent2ba1151b，限定Types39.65s+双Vite11.24/8.61过；其65个新runtime/domain文件与共享repo已逐字节核对一致。默认原38经v3 35pass/1Base缺省aria oracle失败/2未跑，v4仅BaseSettings+两Merges3/3过；39输出图已全部实际view、所有runtime附件空。Base省略horizontal aria是实际库合同，不强迫添加Radix属性。证据`/tmp/strata-thirteen-5382-native-review-20261112.md`。
+- 5382修正手机Settings justify-center导致Profile左负溢出；仅inactive真实横滚tabs可越viewport，nativeHome/End/Arrow五tab逐个focus/aria/panel/BBox与scrollLeft0→155→0真过。Collapsible asChild改slot导致小pill的CSS也已class限定修正。新CSShash65796b3b/b2210861。
+- Logs专项Review4/4首轮真过、8图全部actualview。phone controlRight/contentRight=361/361；desktop=1406.984375相等，所有clip祖先内保至少16px，Tab/Enter4→3及可见撤回3→4全过。原11px被裁图保留，未靠主容器宽度冒称修复。Calendar12与四pin16还未native。
+- Fresh5390精确d2d Pulse原ZIP gate已完成：真实下载1、258CRC/SHA/8license/favicon333、normalinstall165.3s、原strictbuild39.8s、5391实际artifactsmoke1全过，三张新图actualview。全原成员前后hash不变，没有repair。原ZIPsha51b761c8…，证据`/tmp/pulse-export01-fresh-5390-20261112-nuaofhyh/final-handoff.md`。只这一份RadixNova；旧5300/5297历史失败保留。EXPORT02 DriveSVG319vs333另有私有7行collector修复patch，尚未应用/构建/native。
+- Base只读审阅未证实缺Base文件引入直接Radix交互回退；61shared/41Base/36替换，25中性或组合共享项逐一追caller，替换后1005本地renderer modules直接Radix runtime import为0。cmdk外包依赖不代表实际挂载其Dialog。确认旧绝对/#测试在默认CIroot不能靠baseURL=/base变Base；4分片也不是两库矩阵。新QA文档/优先补测清单已准备，不用静态闭包冒全站native。Atlas另有SCV07/pausedAge私有2文件patch+6域测，未改当前65freeze。
+- Source true-Base Filebox adapted flow与5410实际adapter13cases×2已静态freeze未跑。Base可用独立serve5360/base根，必须html primitiveproof、Base原始closure映射和strict--mode base-ui，不假改baseURL；Budget30/5保留。5410只c3ada模块末追加export+真实worker/10rawfixtures，无假token/ZIP，待Root独立build。5370一次Radix29984ms仍窄余量，P2未闭合。
+- 最新共享shell参考6图全部actualview：NewWorkspace是双栏CreateDialog，name空/EnvProduction/RegionEUWest，右实时preview+Owner；Account先open→Profile最后确实/settings?tab=profile，中间progressframe不当完成；Theme是inline Light/Dark/System radio，SignOut仅inspect无href未点。本窗0网络/console失败，browser17:23已关交回。证据`/tmp/strata-shell-actions-reference-20261112/`。接续真实公共Strata父不能发布QAalert或捏造authURL。
+- Root准备提交已验证的65个未注册Strata模块及scope/基础层审阅文档作为可review开发里程碑；不含private QA入口、不改catalog18计数。后续公共父/注册/sourceTargets与原ZIP仍要接续。Root唯一Git writer，所有agent现共享runtime冻结，其他提案只/tmp。
+
 ## 最新接续点（约16:50 UTC，优先于下面历史检查点）
 
 - 精确main `d2d1e97a53ca7e39b5a5c6658117e4c3bad06535` 的run43252176828 completed/success，build+4browser+deploy全部过；Pages deployment7743634413 success16:48:45Z，网站 https://caovc.github.io/reui-pro-block/ 。旧c636未知failure保历史，不能据分片号宣称根因修复。Root6896只读watcher持续，后续push需新SHA核验。

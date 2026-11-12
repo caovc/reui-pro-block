@@ -1,0 +1,145 @@
+.strata-settings {
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+}
+.strata-settings-tabs[data-slot="tabs"] {
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr);
+  gap: 16px;
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+}
+.strata-settings-navigation[data-slot="tabs-list"] {
+  display: flex;
+  align-items: stretch;
+  flex-direction: column;
+  gap: 4px;
+  width: 160px;
+  height: fit-content;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+}
+.strata-settings-navigation [data-slot="tabs-trigger"] {
+  flex: none;
+  justify-content: flex-start;
+  gap: 12px;
+  width: 160px;
+  height: 34px;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: var(--radius-lg);
+  font-weight: 400;
+  box-shadow: none;
+}
+.strata-settings-navigation [data-slot="tabs-trigger"][data-state="active"],
+.strata-settings-navigation [data-slot="tabs-trigger"][data-active] {
+  background: var(--muted);
+  color: var(--foreground);
+  box-shadow: none;
+}
+.strata-settings-content {
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  padding-bottom: 16px;
+}
+.strata-settings-content > [data-slot="tabs-content"] {
+  min-width: 0;
+}
+.strata-settings-stack {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+  min-width: 0;
+}
+.strata-profile-photo {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.strata-profile-photo [data-slot="avatar"] {
+  width: 40px;
+  height: 40px;
+}
+.strata-profile-photo [data-slot="button"] {
+  height: 28px;
+  padding: 4px 10px;
+  font-size: 13px;
+}
+.strata-profile-details {
+  display: grid;
+  gap: 12px;
+}
+.strata-profile-details > div {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+.strata-profile-details label {
+  font-size: 14px;
+  line-height: 20px;
+}
+.strata-profile-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
+}
+.strata-profile-footer > span {
+  flex: 1;
+  min-width: 0;
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.strata-profile-footer > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.strata-settings-error,
+.strata-profile-footer > [role="alert"] {
+  color: var(--destructive);
+  font-size: 12px;
+}
+@media (max-width: 767px) {
+  .strata-settings-tabs[data-slot="tabs"] {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: 20px;
+  }
+  .strata-settings-navigation[data-slot="tabs-list"] {
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    gap: 4px;
+    width: 100%;
+    height: 34px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .strata-settings-navigation [data-slot="tabs-trigger"] {
+    width: auto;
+  }
+  .strata-settings-general .strata-setting-row[data-compact] {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 16px;
+  }
+  .strata-settings-general .strata-setting-row[data-compact] .strata-setting-control {
+    justify-content: flex-end;
+  }
+  .strata-settings-general .strata-setting-row[data-compact] .strata-setting-select {
+    width: 160px;
+  }
+  .strata-profile-footer > div {
+    width: 100%;
+  }
+  .strata-profile-footer > div > [data-slot="button"] {
+    width: 100%;
+  }
+}

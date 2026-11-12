@@ -1,0 +1,405 @@
+.strata-release-board,
+.strata-board-frame,
+.strata-board-panel {
+  min-width: 0;
+}
+
+.strata-board-frame {
+  --frame-gap: 0px;
+}
+
+.strata-board-frame > [data-slot="frame-panel-header"] {
+  min-height: 56px;
+  padding: 8px 16px;
+}
+
+.strata-board-panel {
+  padding: 0;
+}
+
+.strata-board-panel [data-slot="tabs"],
+.strata-board-panel [data-slot="tabs-content"] {
+  min-width: 0;
+  gap: 0;
+  margin: 0;
+}
+
+.strata-board-toolbar {
+  display: flex;
+  min-width: 0;
+  min-height: 49px;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+  padding: 0 16px;
+}
+
+.strata-board-toolbar [data-slot="tabs-list"] {
+  height: 48px;
+  flex-shrink: 0;
+  padding: 0;
+}
+
+.strata-board-toolbar [data-slot="tabs-trigger"] {
+  flex: none;
+  gap: 6px;
+  padding-right: 12px;
+  padding-left: 12px;
+}
+
+.strata-board-filters {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.strata-board-filters [data-slot="input-group"] {
+  width: 224px;
+  min-width: 0;
+}
+
+.strata-board-filters [data-slot="select-trigger"] {
+  min-width: 126px;
+}
+
+.strata-board-clock {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 12px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.strata-board-time {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.strata-board-time > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.strata-board-time > span > span {
+  display: inline-flex;
+  width: 15px;
+  height: 25px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  background: linear-gradient(
+    var(--muted) 47%,
+    color-mix(in srgb, var(--border) 70%, var(--muted)) 50%,
+    var(--muted) 53%
+  );
+  color: var(--foreground);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.strata-board-time > span > [data-colon="true"] {
+  width: 3px;
+  background: none;
+}
+
+.strata-board-clock .strata-board-time > span {
+  gap: 2px;
+}
+
+.strata-board-clock .strata-board-time > span > span {
+  width: 11px;
+  height: 18px;
+  font-size: 12px;
+}
+
+.strata-board-time small {
+  font-size: 12px;
+}
+
+.strata-board-grid thead tr {
+  height: 41px;
+}
+
+.strata-board-grid th {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.strata-board-grid tbody tr {
+  height: 42px;
+}
+
+.strata-board-grid td {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+.strata-board-tile,
+.strata-board-tile-icon,
+.strata-board-status {
+  display: flex;
+  min-width: 0;
+  height: 25px;
+  align-items: center;
+  overflow: hidden;
+  border: 0;
+  border-radius: 1px;
+  padding: 0 9px;
+  background: linear-gradient(
+    color-mix(in srgb, var(--muted) 80%, var(--background)) 47%,
+    var(--muted) 52%
+  );
+  font-size: 14px;
+  line-height: 24px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.strata-board-service {
+  display: flex;
+  min-width: 0;
+  gap: 3px;
+}
+
+.strata-board-service > .strata-board-tile {
+  flex: 1;
+}
+
+.strata-board-tile-icon {
+  width: 25px;
+  flex-shrink: 0;
+  justify-content: center;
+  padding: 0;
+}
+
+.strata-board-tile-icon svg {
+  width: 15px;
+  height: 15px;
+}
+
+.strata-board-status-cell {
+  min-width: 0;
+}
+
+.strata-board-status-line {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 10px;
+}
+
+.strata-board-status {
+  width: 154px;
+  flex-shrink: 0;
+  justify-content: flex-start;
+}
+
+.strata-board-status[data-status="failed"] {
+  background: linear-gradient(
+    color-mix(in srgb, var(--destructive) 11%, var(--background)) 48%,
+    color-mix(in srgb, var(--destructive) 17%, var(--background)) 52%
+  );
+  color: var(--destructive);
+}
+
+.strata-board-status:is([data-status="deployed"], [data-status="merged"]) {
+  background: color-mix(in srgb, var(--success, #08b981) 14%, var(--background));
+  color: var(--success, #08b981);
+}
+
+.strata-board-status:is([data-status="queued"], [data-status="approval"], [data-status="blocked"]) {
+  background: color-mix(in srgb, var(--warning, #e8b64c) 16%, var(--background));
+  color: var(--warning-foreground);
+}
+
+.strata-board-status[data-status="scheduled"] {
+  color: var(--muted-foreground);
+}
+
+.strata-board-dot,
+.strata-board-footer i {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--border);
+}
+
+.strata-board-dot[data-status="rolling"],
+.strata-board-dot[data-status="merging"],
+.strata-board-footer i[data-status="rolling"] {
+  background: var(--success, #08b981);
+}
+
+.strata-board-dot[data-status="approval"],
+.strata-board-footer i[data-status="approval"] {
+  background: color-mix(in srgb, var(--warning, #e8b64c) 35%, var(--background));
+}
+
+.strata-board-wait {
+  color: var(--warning-foreground);
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.strata-board-idle-rows > div {
+  display: grid;
+  height: 42px;
+  grid-template-columns: 75px 203px 86px 113px 144px 154px;
+  align-items: center;
+  gap: 16px;
+  border-top: 1px solid var(--border);
+  padding: 6px 16px;
+}
+
+.strata-board-idle-rows span {
+  height: 25px;
+  border-radius: 1px;
+  background: linear-gradient(
+    color-mix(in srgb, var(--muted) 80%, var(--background)) 47%,
+    var(--muted) 52%
+  );
+}
+
+.strata-board-footer {
+  display: flex;
+  min-height: 26px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 4px 16px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+
+.strata-board-footer > div,
+.strata-board-footer > div > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.strata-board-footer > div {
+  gap: 16px;
+}
+
+@media (max-width: 1100px) and (min-width: 768px) {
+  .strata-board-clock > span {
+    display: none;
+  }
+
+  .strata-board-filters [data-slot="input-group"] {
+    width: 160px;
+  }
+}
+
+@media (max-width: 767px) {
+  .strata-board-toolbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0 8px;
+    padding: 0;
+  }
+
+  .strata-board-toolbar [data-slot="tabs-list"] {
+    height: 44px;
+    padding-left: 12px;
+  }
+
+  .strata-board-filters {
+    grid-row: 2;
+    grid-column: 1 / -1;
+    width: 100%;
+    border-top: 1px solid var(--border);
+    padding: 8px 16px;
+  }
+
+  .strata-board-filters [data-slot="input-group"] {
+    width: 0;
+    flex: 1;
+  }
+
+  .strata-board-filters [data-slot="select-trigger"] {
+    min-width: 128px;
+  }
+
+  .strata-board-clock {
+    grid-row: 1;
+    grid-column: 2;
+    padding-right: 16px;
+  }
+
+  .strata-board-clock > span,
+  .strata-board-clock small,
+  .strata-board-tv,
+  .strata-board-idle-rows {
+    display: none;
+  }
+
+  .strata-board-grid tbody tr {
+    height: 56px;
+  }
+
+  .strata-board-grid td {
+    padding: 6px 16px;
+  }
+
+  .strata-board-grid td:first-child {
+    padding-right: 0;
+  }
+
+  .strata-board-time > span {
+    gap: 2px;
+  }
+
+  .strata-board-time > span > span {
+    width: 12px;
+    height: 19px;
+    font-size: 12px;
+  }
+
+  .strata-board-status {
+    width: 132px;
+    height: 19px;
+    padding: 0 8px;
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .strata-board-status-line {
+    gap: 6px;
+  }
+
+  .strata-board-dot {
+    width: 9px;
+    height: 9px;
+  }
+
+  .strata-board-wait {
+    font-size: 12px;
+  }
+
+  .strata-board-row-summary {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    margin: 4px 0 0 21px;
+    color: var(--muted-foreground);
+    font-size: 12px;
+    line-height: 16px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

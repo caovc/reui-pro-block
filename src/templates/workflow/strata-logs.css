@@ -1,0 +1,501 @@
+.strata-logs {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+  width: 100%;
+  min-width: 0;
+}
+.strata-logs-summary {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  gap: 16px;
+  min-width: 0;
+}
+.strata-logs-header-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.strata-log-range-select {
+  display: none;
+}
+.strata-log-frame-header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 16px;
+}
+.strata-log-frame-header h2 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+}
+.strata-log-frame-header [data-slot="frame-panel-description"] {
+  font-size: 12px;
+  line-height: 16px;
+}
+.strata-log-levels {
+  gap: 8px;
+}
+.strata-log-levels [data-slot="toggle-group-item"] {
+  gap: 5px;
+  font-weight: 400;
+}
+.strata-log-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+.strata-log-info {
+  background: #10b981;
+}
+.strata-log-warn {
+  background: #f59e0b;
+}
+.strata-log-error {
+  background: #ef4444;
+}
+.strata-log-volume-body {
+  min-width: 0;
+  padding: 16px;
+}
+.strata-log-total,
+.strata-log-review-count {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+}
+.strata-log-total strong,
+.strata-log-review-count strong {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 30px;
+}
+.strata-log-total > span,
+.strata-log-review-count > span {
+  color: var(--muted-foreground);
+}
+.strata-log-volume-note {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 3px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 18px;
+}
+.strata-log-volume-note > span {
+  opacity: 0.5;
+}
+.strata-log-chart {
+  width: 100%;
+  height: 230px;
+  margin-top: 12px;
+  aspect-ratio: auto;
+}
+.strata-log-warnings {
+  min-height: 326px;
+  padding: 16px;
+}
+.strata-log-review-count {
+  flex-wrap: wrap;
+}
+.strata-log-review-count > small {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 6px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.strata-log-review-progress {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 12px;
+  margin: 22px 0 18px;
+}
+.strata-log-review-progress [data-slot="progress-track"] {
+  order: 0;
+  height: 8px;
+  flex: 1;
+  width: auto;
+  min-width: 0;
+  border-radius: 2px;
+  background: repeating-linear-gradient(130deg, #fbbf24 0 2px, #fef3c7 2px 5px);
+}
+.strata-log-review-progress [data-slot="progress-indicator"] {
+  background: #10b981;
+}
+.strata-log-review-progress > span {
+  order: 1;
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.strata-log-warning-list {
+  display: grid;
+  gap: 12px;
+}
+.strata-log-warning-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+.strata-log-warning-main {
+  display: flex;
+  flex: 1;
+  align-items: flex-start;
+  gap: 8px;
+  width: 0;
+  height: auto;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 400;
+}
+.strata-log-warning-main > span:nth-child(2) {
+  flex: 1;
+  min-width: 0;
+}
+.strata-log-warning-owner {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  line-height: 20px;
+}
+.strata-log-warning-event {
+  display: block;
+  overflow: hidden;
+  color: var(--muted-foreground);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 16px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.strata-log-warning-event > span {
+  padding: 0 4px;
+  opacity: 0.5;
+}
+.strata-log-warning-main > time {
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 400;
+}
+.strata-log-review-control {
+  flex-shrink: 0;
+  opacity: 0;
+}
+.strata-log-warning-row:hover .strata-log-review-control,
+.strata-log-warning-row:focus-within .strata-log-review-control {
+  opacity: 1;
+}
+.strata-log-warning-row[data-reviewed="true"] .strata-log-review-control {
+  opacity: 1;
+}
+.strata-log-warning-row[data-reviewed="true"] .strata-log-warning-event {
+  text-decoration: line-through;
+}
+.strata-log-no-warnings {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 28px 0;
+  color: var(--muted-foreground);
+}
+.strata-log-no-warnings > svg {
+  width: 16px;
+  height: 16px;
+}
+.strata-log-table-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.strata-log-table-actions [data-slot="select-trigger"] {
+  min-width: 130px;
+}
+.strata-log-events-panel {
+  min-width: 0;
+  overflow: hidden;
+  padding: 0;
+}
+.strata-log-table-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.strata-log-table-toolbar > [data-slot="filters"] {
+  margin-left: auto;
+}
+.strata-log-search {
+  width: 256px;
+  max-width: 100%;
+}
+.strata-log-search input {
+  min-width: 0;
+}
+.strata-log-selection {
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.strata-logs-grid table {
+  min-width: 1166px;
+}
+.strata-logs[data-density="compact"] table tbody tr[data-row-id] {
+  height: 37px;
+}
+.strata-logs[data-density="comfortable"] table tbody tr[data-row-id] {
+  height: 45px;
+}
+.strata-logs table thead th {
+  font-weight: 400;
+}
+.strata-log-time[data-slot="button"] {
+  display: inline;
+  height: auto;
+  padding: 0;
+  color: var(--foreground);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 16px;
+}
+.strata-log-owner,
+.strata-log-resource,
+.strata-log-source {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.strata-log-owner > span:last-child,
+.strata-log-resource > span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.strata-log-resource > svg,
+.strata-log-source > svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+}
+.strata-log-source {
+  color: var(--muted-foreground);
+}
+.strata-log-mono {
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+.strata-log-muted {
+  color: var(--muted-foreground);
+}
+.strata-log-truncate {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.strata-log-sheet {
+  min-height: 0;
+}
+.strata-log-form {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+.strata-log-form > [data-slot="field-group"] {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  gap: 24px;
+  padding: 20px;
+}
+.strata-log-form-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.strata-log-form-footer {
+  flex-shrink: 0;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 8px;
+  border-top: 1px solid var(--border);
+  padding: 12px 20px;
+}
+.strata-log-create-sheet[data-side="right"] {
+  inset: 16px 16px 16px auto;
+  width: calc(100vw - 32px);
+  max-width: 576px;
+  height: calc(100dvh - 32px);
+  overflow: hidden;
+  border-radius: 16px;
+}
+.strata-log-create-sheet > [data-slot="sheet-header"] {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.strata-log-form-columns > [data-slot="field"] {
+  min-width: 0;
+}
+.strata-log-form-segmented {
+  width: 100%;
+}
+.strata-log-form-segmented > [data-slot="toggle-group-item"] {
+  flex: 1;
+  min-width: 0;
+  gap: 5px;
+}
+.strata-log-form-segmented .strata-log-dot {
+  width: 6px;
+  height: 6px;
+}
+.strata-log-option-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.strata-log-option-label > svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+}
+.strata-log-option-label > span:last-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.strata-log-resource-handle {
+  max-width: 85px;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--muted-foreground);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.strata-log-details {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0 16px 16px;
+}
+.strata-log-details [data-slot="tabs-list"] {
+  flex-shrink: 0;
+}
+.strata-log-details dl {
+  display: grid;
+  gap: 12px;
+  padding: 16px 0;
+}
+.strata-log-details dl > div {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1fr);
+  gap: 16px;
+}
+.strata-log-details dt {
+  color: var(--muted-foreground);
+  font-size: 13px;
+}
+.strata-log-details dd {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: 13px;
+}
+.strata-log-detail-message,
+.strata-log-details pre {
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+.strata-log-detail-message {
+  margin-bottom: 16px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: var(--muted-foreground);
+}
+.strata-log-details [data-slot="tabs-content"] > [data-slot="button"] {
+  margin: 0 8px 8px 0;
+}
+.strata-log-details pre {
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background: var(--muted);
+  font-size: 11px;
+}
+
+@media (max-width: 1000px) {
+  .strata-logs-summary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 767px) {
+  .strata-log-ranges {
+    display: none;
+  }
+  .strata-log-range-select {
+    display: block;
+    width: 62px;
+  }
+  .strata-logs-header-controls {
+    gap: 8px;
+  }
+  .strata-log-levels {
+    flex-basis: 100%;
+  }
+  .strata-log-chart {
+    height: 244px;
+  }
+  .strata-log-review-count > small {
+    flex-basis: 100%;
+    margin: 0;
+  }
+  .strata-log-warnings {
+    min-height: 326px;
+  }
+  .strata-log-review-control {
+    opacity: 1;
+  }
+  .strata-log-events-header {
+    align-items: flex-start;
+  }
+  .strata-log-table-actions {
+    width: 100%;
+  }
+  .strata-log-table-actions > [aria-label="Display settings"] > span {
+    display: none;
+  }
+  .strata-log-table-toolbar {
+    padding: 8px 12px;
+  }
+  .strata-log-search {
+    width: 100%;
+  }
+}

@@ -1,0 +1,288 @@
+/* Calendar-specific composition of the free EventCalendar. No calendar engine overrides. */
+.strata-calendar-page {
+  width: calc(100% + 32px);
+  height: calc(100% + 32px);
+  min-height: 0;
+  min-width: 0;
+  margin: -16px;
+  display: flex;
+  flex-direction: column;
+}
+.strata-calendar {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+}
+.strata-calendar-nav {
+  flex-shrink: 0;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 16px;
+}
+.strata-calendar-navigation {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 4px;
+}
+.strata-calendar-step,
+.strata-calendar-filters {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.strata-calendar-filters {
+  gap: 8px;
+}
+.strata-calendar-title {
+  min-width: 0;
+  margin-inline-start: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.strata-calendar [data-slot="event-calendar-time-grid"] {
+  --ec-month-bar-h: 100px;
+}
+.strata-calendar [data-slot="event-calendar-day-header"] {
+  padding-block: 6px;
+  font-weight: 400;
+}
+.strata-calendar-event:not([data-view="month"]):not([data-view="agenda"]) {
+  align-items: flex-start;
+  padding: 6px;
+}
+.strata-calendar-event-card {
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  line-height: 1.4;
+}
+.strata-calendar-event-top {
+  display: flex;
+  min-width: 0;
+  gap: 6px;
+  align-items: center;
+  justify-content: space-between;
+}
+.strata-calendar-event-meta {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--muted-foreground);
+}
+.strata-calendar-event-meta svg,
+.strata-calendar-event-summary svg {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+}
+.strata-calendar-category {
+  max-width: 100%;
+  color: white;
+  border: 0;
+  height: 20px;
+  line-height: 1;
+  padding-inline: 6px;
+}
+.strata-calendar-event-title {
+  min-width: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+.strata-calendar-event-summary {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 6px;
+  color: var(--muted-foreground);
+}
+.strata-calendar-event-progress {
+  margin-top: auto;
+  gap: 0;
+}
+.strata-calendar-event-progress [data-slot="progress-track"] {
+  height: 4px;
+  border-radius: 0;
+  background: color-mix(in oklab, var(--background), transparent 25%);
+}
+.strata-calendar-event-progress [data-slot="progress-indicator"] {
+  background: var(--foreground);
+}
+.strata-calendar-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--ec-event-color);
+}
+.strata-calendar-menu {
+  min-width: 200px;
+}
+.strata-calendar-sheet {
+  width: min(100%, 480px);
+  max-width: 480px;
+  padding: 0;
+}
+.strata-calendar-sheet > [data-slot="sheet-header"],
+.strata-calendar-sheet > [data-slot="sheet-footer"] {
+  padding: 24px;
+}
+.strata-calendar-create-sheet {
+  inset: 16px;
+  left: auto;
+  width: calc(100vw - 32px);
+  max-width: 512px;
+  height: calc(100dvh - 32px);
+  border: 0;
+  border-radius: 14px;
+  overflow: hidden;
+}
+.strata-calendar-create-sheet > [data-slot="sheet-header"] {
+  border-bottom: 1px solid var(--border);
+  padding: 14px 20px;
+}
+.strata-calendar-create-sheet .strata-calendar-form-body {
+  padding: 20px;
+}
+.strata-calendar-create-sheet [data-slot="field-label"] {
+  font-weight: 400;
+}
+.strata-calendar-create-sheet .strata-calendar-form-footer {
+  padding: 12px 20px;
+  background: var(--muted);
+}
+.strata-calendar-all-day {
+  justify-content: space-between;
+}
+.strata-calendar-date-trigger,
+.strata-calendar-time-trigger {
+  width: 100%;
+  min-width: 0;
+  justify-content: space-between;
+  font-weight: 400;
+}
+.strata-calendar-date-trigger {
+  justify-content: flex-start;
+}
+.strata-calendar-date-popover {
+  max-width: calc(100vw - 32px);
+}
+.strata-calendar-form {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.strata-calendar-form-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 8px 24px 24px;
+}
+.strata-calendar-form-grid {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.strata-calendar-status-grid {
+  grid-template-columns: minmax(0, 2.2fr) minmax(0, 1fr);
+}
+.strata-calendar-form-grid [data-slot="input"],
+.strata-calendar-form [data-slot="select-trigger"] {
+  width: 100%;
+  min-width: 0;
+}
+.strata-calendar-form-footer {
+  flex-shrink: 0;
+  border-top: 1px solid var(--border);
+  padding: 16px 24px;
+}
+.strata-calendar-detail {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 0 24px 24px;
+}
+.strata-calendar-detail dl {
+  width: 100%;
+  display: grid;
+  gap: 12px;
+}
+.strata-calendar-detail dl > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.strata-calendar-detail dt {
+  color: var(--muted-foreground);
+}
+.strata-calendar-commit {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+}
+.strata-calendar-commit svg {
+  width: 16px;
+  height: 16px;
+}
+.strata-calendar-checklist {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 16px;
+}
+.strata-calendar-checklist h3 {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-weight: 500;
+}
+.strata-calendar-checklist label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  line-height: 1.5;
+  cursor: pointer;
+}
+@media (max-width: 767px) {
+  .strata-calendar-page {
+    width: calc(100% + 24px);
+    height: calc(100% + 24px);
+    margin: -12px;
+  }
+  .strata-calendar-nav {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding-inline: 12px;
+  }
+  .strata-calendar-title {
+    margin-inline-start: 8px;
+  }
+  .strata-calendar-filters {
+    align-self: flex-start;
+  }
+  .strata-calendar-form-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

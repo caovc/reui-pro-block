@@ -1,0 +1,344 @@
+.strata-releases {
+  display: grid;
+  min-width: 0;
+  gap: 16px;
+}
+
+.strata-release-environments,
+.strata-release-history {
+  --frame-gap: 0px;
+  min-width: 0;
+}
+
+.strata-release-frame-header {
+  min-height: 54px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 16px;
+}
+
+.strata-release-frame-header [data-slot="frame-panel-description"] {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.strata-release-environment-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 38px;
+}
+
+.strata-release-environment-step {
+  position: relative;
+  min-width: 0;
+}
+
+.strata-release-environments .strata-release-environment-card {
+  display: flex;
+  min-height: 236px;
+  margin: 0;
+  flex-direction: column;
+  padding: 16px;
+}
+
+.strata-release-environment-heading {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+}
+
+.strata-release-environment-heading h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.strata-release-environment-heading > button {
+  margin-left: auto;
+}
+
+.strata-release-environment-cluster {
+  margin: 2px 0 16px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.strata-release-environment-cluster code {
+  font-family: var(--font-mono);
+}
+
+.strata-release-environment-service,
+.strata-release-environment-version,
+.strata-release-environment-commit,
+.strata-release-environment-footer,
+.strata-release-author {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+}
+
+.strata-release-environment-service > svg,
+.strata-release-deploy-cell svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.strata-release-environment-service > span:first-of-type {
+  min-width: 0;
+  overflow: hidden;
+  font-size: 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.strata-release-environment-service > [data-slot="badge"] {
+  margin-left: auto;
+}
+
+.strata-release-environment-version {
+  margin: 8px 0;
+}
+
+.strata-release-environment-version strong {
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 600;
+}
+
+.strata-release-environment-version > span {
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+
+.strata-release-environment-commit {
+  margin-bottom: 12px;
+}
+
+.strata-release-environment-commit > span,
+.strata-release-commit-cell > span {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--muted-foreground);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.strata-release-environment-commit code,
+.strata-release-commit-cell code {
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 1px 4px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.strata-release-pipeline {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+  outline-offset: 4px;
+}
+
+.strata-release-stage-track {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  gap: 4px;
+}
+
+.strata-release-stage-track > [data-slot="progress"] {
+  height: 6px;
+  flex: 1;
+  border-radius: 3px;
+  background: var(--muted);
+}
+
+.strata-release-stage-track > [data-stage="passed"] [data-slot="progress-indicator"] {
+  background: var(--success, #08b981);
+}
+
+.strata-release-stage-track > [data-stage="failed"] [data-slot="progress-indicator"] {
+  background: var(--destructive);
+}
+
+.strata-release-stage-track > [data-stage="current"] [data-slot="progress-indicator"] {
+  background: var(--foreground);
+}
+
+.strata-release-pipeline > span:last-child {
+  flex-shrink: 0;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.strata-release-environment-footer {
+  margin-top: auto;
+  padding-top: 10px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+
+.strata-release-author {
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.strata-release-author [data-slot="avatar"] {
+  width: 16px;
+  height: 16px;
+  font-size: 8px;
+}
+
+.strata-release-author [data-slot="avatar-fallback"] {
+  border: 1px solid var(--border);
+  background: var(--muted);
+  font-size: inherit;
+}
+
+.strata-release-promote {
+  position: absolute;
+  z-index: 1;
+  top: calc(50% - 14px);
+  right: -34px;
+}
+
+.strata-release-promote-down {
+  display: none;
+}
+
+.strata-release-history-panel {
+  min-width: 0;
+  padding: 0;
+}
+
+.strata-release-history-panel [data-slot="tabs"],
+.strata-release-history-panel [data-slot="tabs-content"] {
+  min-width: 0;
+  gap: 0;
+  margin: 0;
+}
+
+.strata-release-history-panel [data-slot="tabs-list"] {
+  width: 100%;
+  height: 40px;
+  justify-content: flex-start;
+  gap: 12px;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--border);
+  padding: 0 16px;
+}
+
+.strata-release-history-panel [data-slot="tabs-trigger"] {
+  flex: none;
+  gap: 6px;
+}
+
+.strata-release-tab-count {
+  display: inline-flex;
+  min-width: 19px;
+  height: 19px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0 5px;
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 400;
+}
+
+.strata-release-history-toolbar {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid var(--border);
+  padding: 8px 16px;
+}
+
+.strata-release-history-toolbar [data-slot="input-group"] {
+  width: 256px;
+  min-width: 0;
+}
+
+.strata-release-history-grid table {
+  min-width: 1166px;
+}
+
+.strata-release-history-grid tbody tr {
+  height: 51px;
+}
+
+.strata-release-history-grid td {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.strata-release-deploy-cell > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.strata-release-deploy-cell small {
+  display: flex;
+  gap: 5px;
+  color: var(--muted-foreground);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.strata-release-commit-cell {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+}
+
+.strata-release-started {
+  display: grid;
+  gap: 2px;
+}
+
+.strata-release-started small {
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+
+@media (max-width: 767px) {
+  .strata-release-environment-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 44px;
+  }
+
+  .strata-release-promote {
+    top: auto;
+    right: calc(50% - 14px);
+    bottom: -36px;
+  }
+
+  .strata-release-promote-right {
+    display: none;
+  }
+
+  .strata-release-promote-down {
+    display: block;
+  }
+
+  .strata-release-history-toolbar [data-slot="input-group"] {
+    flex: 1;
+  }
+}

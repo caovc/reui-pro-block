@@ -1,0 +1,379 @@
+.strata-overview {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 16px;
+}
+.strata-jobs-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+.strata-job-metric {
+  min-width: 0;
+  padding: 0;
+  gap: 0;
+  overflow: hidden;
+}
+.strata-job-metric > [data-slot="frame-panel"] {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  min-height: 168px;
+}
+.strata-job-metric > [data-slot="frame-panel-footer"] {
+  padding: 8px 16px;
+}
+.strata-job-metric-title {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.strata-job-metric-title h2 {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+.strata-job-metric-title p,
+.strata-job-muted {
+  font-size: 12px;
+  color: var(--muted-foreground);
+  line-height: 16px;
+}
+.strata-job-value {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 600;
+}
+.strata-job-value small {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--muted-foreground);
+}
+.strata-job-subline {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 8px;
+  font-size: 12px;
+  line-height: 20px;
+}
+.strata-job-subline strong {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+}
+.strata-job-subline > span {
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+}
+.strata-job-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  color: var(--muted-foreground);
+  font-size: 11px;
+  line-height: 16px;
+}
+.strata-job-legend > div {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.strata-job-legend > div > span {
+  height: 8px;
+  width: 3px;
+  border-radius: 2px;
+}
+.strata-job-legend strong {
+  font-weight: 400;
+}
+.strata-job-next-foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.strata-jobs-frame {
+  min-width: 0;
+}
+.strata-jobs-frame-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+}
+.strata-jobs-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+  padding: 8px 16px;
+}
+.strata-jobs-search {
+  width: 256px;
+  max-width: 100%;
+}
+.strata-job-tabs {
+  width: 100%;
+  justify-content: flex-start;
+  gap: 12px;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--border);
+  padding: 0 16px;
+}
+.strata-job-tabs [data-slot="tabs-trigger"] {
+  flex: none;
+  gap: 6px;
+  padding: 10px 4px;
+}
+.strata-job-tabs [data-slot="tabs-trigger"] > span {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0 5px;
+  font-size: 12px;
+  line-height: 18px;
+}
+.strata-job-name {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.strata-job-name > span,
+.strata-job-name code {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.strata-job-name code,
+.strata-job-target code {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--muted-foreground);
+}
+.strata-job-owner {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+.strata-job-owner > [data-slot="avatar"] {
+  flex-shrink: 0;
+}
+.strata-job-target {
+  min-width: 0;
+  max-width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+.strata-job-target > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.strata-job-target svg {
+  height: 15px;
+  width: 15px;
+  flex-shrink: 0;
+}
+.strata-job-target code {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.strata-job-target:focus-visible,
+.strata-job-history:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+.strata-job-history {
+  width: 118px;
+  display: block;
+  cursor: help;
+}
+.strata-jobs-table tbody tr {
+  height: 51px;
+}
+.strata-jobs-bottom {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 16px;
+}
+.strata-jobs-bottom > div {
+  min-width: 0;
+}
+.strata-jobs-runtime-header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+}
+.strata-job-outcomes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.strata-job-outcomes [data-slot="toggle-group-item"] {
+  flex: none;
+  gap: 5px;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+.strata-job-outcomes [data-slot="toggle-group-item"] > span {
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+}
+.strata-job-outcomes strong {
+  font-weight: 500;
+}
+.strata-runtime-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.strata-runtime-summary strong {
+  font-size: 24px;
+  color: var(--foreground);
+}
+.strata-jobs-up-next {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.strata-upcoming-job {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  justify-content: flex-start;
+  gap: 8px;
+  padding: 10px 0;
+  height: auto;
+  min-height: 38px;
+  font-weight: 400;
+}
+.strata-upcoming-job > span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.strata-upcoming-job > time {
+  margin-left: auto;
+  flex-shrink: 0;
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.strata-jobs-environment {
+  width: 176px;
+}
+.strata-env-phone {
+  display: none;
+}
+.strata-job-sheet[data-side="right"] {
+  inset: 16px 16px 16px auto;
+  height: calc(100dvh - 32px);
+  width: min(576px, calc(100vw - 32px));
+  max-width: none;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  gap: 0;
+  overflow: hidden;
+}
+.strata-job-fields {
+  min-height: 0;
+  flex: 1;
+  overflow: auto;
+  padding: 20px;
+  gap: 20px;
+}
+.strata-job-footer {
+  flex-shrink: 0;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  border-top: 1px solid var(--border);
+  background: var(--muted);
+}
+.strata-cron-presets {
+  display: flex;
+  width: 100%;
+}
+.strata-cron-presets > button {
+  flex: 1;
+  padding-inline: 8px;
+}
+.strata-cron-mobile {
+  display: none;
+}
+@media (max-width: 1100px) {
+  .strata-jobs-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .strata-jobs-bottom {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 639px) {
+  .strata-jobs-metrics {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .strata-jobs-environment {
+    width: 62px;
+  }
+  .strata-env-desktop {
+    display: none;
+  }
+  .strata-env-phone {
+    display: inline;
+  }
+  .strata-jobs-search {
+    width: auto;
+    flex: 1;
+    min-width: 0;
+  }
+  .strata-jobs-toolbar,
+  .strata-jobs-frame-header {
+    padding-inline: 16px;
+  }
+  .strata-job-sheet .strata-job-fields {
+    padding: 20px;
+  }
+  .strata-cron-presets {
+    display: none;
+  }
+  .strata-cron-mobile {
+    display: block;
+  }
+  .strata-job-footer > p {
+    max-width: 105px;
+  }
+}

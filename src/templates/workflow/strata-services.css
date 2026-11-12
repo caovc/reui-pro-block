@@ -1,0 +1,572 @@
+.strata-services {
+  width: 100%;
+  min-width: 0;
+}
+
+.strata-services-frame {
+  --frame-gap: 0px;
+  --frame-px: 0px;
+  --frame-py: 0px;
+  min-width: 0;
+}
+
+.strata-services-frame-header {
+  min-height: 57px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 16px;
+}
+
+.strata-services-frame-header [data-slot="frame-panel-description"] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.strata-services-panel {
+  min-width: 0;
+  padding: 0;
+}
+
+.strata-services-tabs {
+  gap: 0;
+}
+
+.strata-services-tabs-viewport {
+  overflow-x: auto;
+  border-bottom: 1px solid var(--border);
+  padding: 4px 12px;
+  scrollbar-width: none;
+}
+
+.strata-services-tabs-viewport [data-slot="tabs-list"] {
+  height: 33px;
+  min-width: max-content;
+  padding: 0;
+}
+
+.strata-services-tabs-viewport [data-slot="tabs-trigger"] {
+  flex: none;
+  gap: 6px;
+  padding: 2px 8px;
+  font-weight: 400;
+}
+
+.strata-slo-tab-count {
+  display: inline-flex;
+  height: 20px;
+  min-width: 20px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0 5px;
+  color: var(--muted-foreground);
+  font-size: 11px;
+}
+
+.strata-services-filters {
+  display: flex;
+  min-height: 53px;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+  padding: 10px 16px;
+}
+
+.strata-services-search {
+  width: 256px;
+  min-width: 0;
+  margin-right: auto;
+}
+
+.strata-services-objective {
+  width: 160px;
+  min-width: 0;
+}
+
+.strata-services-team {
+  width: 128px;
+  min-width: 0;
+}
+
+.strata-services-window {
+  flex-shrink: 0;
+}
+
+.strata-services-window [data-slot="toggle-group-item"] {
+  min-width: 37px;
+  padding-inline: 8px;
+  font-weight: 400;
+}
+
+.strata-services-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  min-width: 0;
+}
+
+.strata-services-table-wrap {
+  height: 500px;
+  min-width: 0;
+}
+
+.strata-services-table,
+.strata-services-table [data-slot="data-grid-scroll-area"] {
+  height: 100%;
+  min-height: 0;
+}
+
+.strata-services-table [data-slot="data-grid-table"] tbody tr {
+  height: 52px;
+}
+
+.strata-services-table [data-slot="data-grid-table"] :is(td, th) {
+  padding-inline: 8px;
+}
+
+.strata-services-table [data-slot="data-grid-table"] thead {
+  background: var(--card);
+}
+
+.strata-services-table [data-slot="data-grid-table"] tbody td {
+  padding-block: 5px;
+}
+
+.strata-slo-name-cell {
+  min-width: 0;
+}
+
+.strata-slo-name-cell > button {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.strata-slo-name-cell > button:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: -2px;
+}
+
+.strata-slo-name-cell > div {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 5px;
+  margin-top: 2px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+
+.strata-slo-name-cell > div > span:first-of-type {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.strata-slo-name-cell svg {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+}
+
+.strata-services-avatar {
+  width: 20px;
+  height: 20px;
+  font-size: 9px;
+}
+
+.strata-slo-spark {
+  width: 88px;
+  height: 24px;
+  aspect-ratio: auto;
+}
+
+.strata-slo-budget {
+  color: #00b887;
+  font-variant-numeric: tabular-nums;
+}
+
+.strata-slo-budget[data-negative="true"],
+.strata-slo-spent {
+  color: #ef4444;
+}
+
+.strata-slo-budget[data-empty="true"],
+.strata-slo-quiet {
+  color: var(--muted-foreground);
+}
+
+.strata-slo-alert {
+  gap: 4px;
+  padding: 0 4px;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.strata-slo-alert svg {
+  width: 12px;
+  height: 12px;
+}
+
+.strata-budget-index {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 16px;
+  border-left: 1px solid var(--border);
+  padding: 16px;
+}
+
+.strata-budget-index > header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.strata-budget-index h2 {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.strata-budget-index header p {
+  margin-top: 3px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+
+.strata-budget-selection {
+  width: fit-content;
+  max-width: 100%;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--foreground);
+  padding: 6px 12px;
+  color: var(--background);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.strata-budget-selection > span {
+  padding-inline: 6px;
+  opacity: 0.5;
+}
+
+.strata-budget-chart {
+  width: 100%;
+  height: 336px;
+  aspect-ratio: auto;
+}
+
+.strata-budget-dot {
+  cursor: pointer;
+}
+
+.strata-budget-tooltip {
+  font-variant-numeric: tabular-nums;
+}
+
+.strata-budget-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  font-size: 12px;
+}
+
+.strata-budget-legend > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--muted-foreground);
+}
+
+.strata-budget-legend i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.strata-budget-legend strong {
+  color: var(--foreground);
+  font-weight: 500;
+}
+
+.strata-budget-empty {
+  display: grid;
+  min-height: 300px;
+  place-items: center;
+  color: var(--muted-foreground);
+  font-size: 13px;
+}
+
+.strata-services-footer {
+  min-height: 33px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 16px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+
+.strata-services-footer > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.strata-services-footer svg {
+  width: 13px;
+  height: 13px;
+}
+
+.strata-slo-sheet[data-slot="sheet-content"] {
+  inset: 16px 16px 16px auto;
+  width: min(576px, calc(100vw - 32px));
+  max-width: none;
+  height: auto;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  font-family: "Inter", Arial, sans-serif;
+}
+
+.strata-slo-sheet > [data-slot="sheet-header"] {
+  min-height: 73px;
+  flex-shrink: 0;
+  gap: 2px;
+  border-bottom: 1px solid var(--border);
+  padding: 12px 20px;
+}
+
+.strata-slo-form {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+}
+
+.strata-slo-form-body {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 24px;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.strata-slo-form-body [data-slot="field-legend"] {
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.strata-slo-form-body [data-slot="field-group"] {
+  gap: 20px;
+}
+
+.strata-slo-form-body [data-slot="field"] {
+  gap: 7px;
+}
+
+.strata-slo-form-body [data-slot="field-label"] {
+  font-weight: 400;
+}
+
+.strata-slo-definition-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 20px 16px;
+}
+
+.strata-slo-wide-field {
+  grid-column: 1 / -1;
+}
+
+.strata-slo-choice-row {
+  width: 100%;
+}
+
+.strata-slo-choice-row [data-slot="toggle-group-item"] {
+  min-width: 0;
+  flex: 1;
+  padding-inline: 6px;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.strata-slo-allowance {
+  color: var(--muted-foreground);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.strata-slo-allowance strong {
+  color: var(--foreground);
+  font-weight: 500;
+}
+
+.strata-slo-switch-row {
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.strata-slo-switch-row > div {
+  flex: 1;
+}
+
+.strata-slo-switch-row [data-slot="field-description"] {
+  margin-top: 3px;
+  font-size: 14px;
+}
+
+.strata-slo-sheet [data-slot="select-trigger"] {
+  width: 100%;
+}
+
+.strata-slo-form > [data-slot="sheet-footer"] {
+  flex-shrink: 0;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 8px;
+  border-top: 1px solid var(--border);
+  padding: 12px 20px;
+}
+
+.strata-slo-details-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.strata-slo-details-body h3 {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.strata-slo-details-body p {
+  color: var(--muted-foreground);
+  line-height: 1.5;
+}
+
+.strata-slo-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 16px;
+  font-size: 13px;
+}
+
+.strata-slo-details-grid dt {
+  color: var(--muted-foreground);
+}
+
+.strata-slo-details-grid dd {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.strata-slo-detail-pair {
+  display: contents;
+}
+
+@media (max-width: 1100px) {
+  .strata-services-content {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .strata-budget-index {
+    border-top: 1px solid var(--border);
+    border-left: 0;
+  }
+}
+
+@media (max-width: 760px) {
+  .strata-services-frame-header {
+    padding-inline: 16px;
+  }
+
+  .strata-services-filters {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 8px;
+    padding: 12px 16px 10px;
+  }
+
+  .strata-services-search {
+    grid-column: 1 / -1;
+    width: auto;
+    margin-right: 0;
+  }
+
+  .strata-services-objective {
+    order: 2;
+    width: 100%;
+  }
+
+  .strata-services-team {
+    order: 3;
+    width: 100%;
+  }
+
+  .strata-services-window {
+    order: 4;
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .strata-services-window [data-slot="toggle-group-item"] {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .strata-services-table-wrap {
+    height: 439px;
+  }
+
+  .strata-services-table [data-slot="data-grid-table"] :is(td, th) {
+    padding-inline: 16px;
+  }
+
+  .strata-slo-name-cell > div > span:first-of-type {
+    max-width: 116px;
+  }
+
+  .strata-services-pin {
+    width: 32px;
+    padding: 0;
+  }
+
+  .strata-services-pin > span,
+  .strata-slo-measure-description,
+  .strata-services-measured {
+    display: none;
+  }
+
+  .strata-services-footer {
+    flex-wrap: wrap;
+    padding-inline: 16px;
+  }
+
+  .strata-slo-definition-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .strata-slo-sheet > [data-slot="sheet-header"],
+  .strata-slo-form-body,
+  .strata-slo-form > [data-slot="sheet-footer"] {
+    padding-inline: 16px;
+  }
+}
