@@ -43,27 +43,30 @@ additional dynamic-state images were viewed; this scoped copy task is closed. Se
 ## Catalog completeness follow-up
 
 The saved public official catalog contains twenty actual template cards; the
-local catalog has eighteen entries. Two explicit missing entries are confirmed,
-independently of the total count. The other eighteen names, categories and
-normalized public preview URLs match individually; official Dashboard has seven
-entries versus five locally, while the other categories match. The private
+local catalog now has nineteen after the public Strata milestone `2a933fd`.
+The original two missing entries are tracked below. The other eighteen names,
+categories and normalized public preview URLs previously matched individually;
+official Dashboard now has seven entries versus six locally, while the other
+categories match. The private
 20-entry mapping is in `/tmp/template-catalog-completeness-2026-11-12/`.
-These two missing entries require public preview inspection and
-actual free-component implementation, not only copied card labels:
+These entries require public preview inspection and actual free-component
+implementation, not only copied card labels:
 
-| ID           | Priority | Official entry                                                                             | Status / acceptance                                                                                                                                                 |
-| ------------ | -------- | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| TEMPLATE-C01 | P2       | [Signal — Product Analytics](https://reui.io/template/signal-analytics), TanStack Start    | Missing from local catalog and implementation; capture its public preview states before assigning an implementation.                                                |
-| TEMPLATE-C02 | P2       | [Strata — Observability Dashboard](https://reui.io/template/strata-observability), Next.js | Existing planned/unregistered gap under the [paused Strata plan](2026-11-03-strata-template-plan.md); capture public preview states before resuming implementation. |
+| ID           | Priority | Official entry                                                                             | Status / acceptance                                                                                                                                                        |
+| ------------ | -------- | ------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| TEMPLATE-C01 | P2       | [Signal — Product Analytics](https://reui.io/template/signal-analytics), TanStack Start    | Missing from local catalog and implementation; capture its public preview states before assigning an implementation.                                                       |
+| TEMPLATE-C02 | P2       | [Strata — Observability Dashboard](https://reui.io/template/strata-observability), Next.js | Public implementation registered and pushed in `2a933fd`; independent route, interaction, source and style acceptance remains explicitly scoped in the integration report. |
 
 This is an identity/presence check, not a visual or functional acceptance of the
 other eighteen templates. Reference imagery remains private audit evidence.
 
-Strata reference work has resumed: thirteen sidebar hrefs are recorded; Overview,
-Services and Logs were actually captured at desktop/phone widths, with24 images
-inspected. Root owns the shared shell/contract; independent Jobs, Services/SLO
-and Logs leaves are in progress. Unvisited routes and account destinations still
-need reference capture. No nineteenth entry is registered or claimed complete.
+Strata now composes thirteen observed product routes plus the observed sign-in
+and sign-up destinations. Root owns the public shell/contract. The independent
+modules, local workspace/account behavior and public entry are implemented;
+completed rendered scopes and outstanding acceptance are recorded in
+`docs/qa/2026-11-12-strata-public-integration.md`. Registration does not establish
+complete visual or functional acceptance. Signal remains the only missing entry;
+its confirmed preview host is still outside the currently enforced allowlist.
 
 Job V03's first18-case attempt had2 passes and16 failures from two confirmed
 new-test oracle errors: desktop fluid columns versus phone nominal widths, and
@@ -73,6 +76,38 @@ runtime stayed frozen throughout. See
 `docs/qa/2026-11-12-job-schedule-density-fix.md` for exact boundaries.
 
 ## Related release gates
+
+- `STRATA-SET-02` (P2, selected-tab visibility): after the Radix390 Account
+  Security shortcut, the selected Security tab is clipped at the right edge of
+  the horizontal tablist; only its icon and initial letter remain visible.
+  The same Base flow reveals the complete selected tab. The26 original cases
+  passed routing/selection/sidebar assertions but did not require full selected
+  tab visibility. The public-UI owner is preparing a consumer scrollport repair
+  and both-foundation phone checks across all five direct/shortcut destinations.
+  Keep the original screenshot and behavior result. Evidence:
+  `/tmp/strata-public-parent-remaining26-native-5450-20261112/native-results/public-parent-native-v3-ra-8b839-ic-mount-and-settings-query/account-security.png`.
+
+- `COHORT-SET-01` (P2, fixed and locally verified): the true Base5422
+  Working group row is362.1875px wide at x34, ending396.1875px, while its clipping
+  FramePanel ends373px with overflow hidden. The original phone trace visibly
+  clips Sunday. Both original Base desktop/phone behavior cases passed, but
+  they never asserted containment or hit ownership for all seven days. The
+  consumer now constrains and wraps the existing group. Independent5460 passed
+  all16 phone cases across both foundations/eight styles and the original two
+  Base flows;36 screenshots were inspected. The new old5422 red also proved
+  Sunday's full box exceeded its clipping edge8.1875px while all centers hit.
+  See `docs/qa/2026-11-12-cohort-working-week-containment.md` for permanent
+  coverage and scope. Official visual equivalence is not established. Preserve the original
+  trace and its two behavioral passes separately from this defect. Evidence:
+  `/tmp/cohort-genuine-base-5422-native-20261112-200530/trace-frames/phone-working-saturday-hover.jpeg`.
+
+- `COHORT-SET-02` (P2, visually confirmed; geometry measurement open): in both
+  Sera foundations, Working week's saved/unsaved status is squeezed under or
+  covered by the footer action buttons. Four original clean/dirty PNGs, four
+  original trace frames and matching DOM text are retained. No footer bounding
+  boxes were captured, so exact overlap distances remain unknown. This is a
+  separate consumer footer repair and does not reopen the weekday bounds gate.
+  Evidence: `/tmp/cohort-working-week-v2-5460-first-native-20261112-l5r4j3yv/cohort-set-02-sera-footer-evidence/evidence.json`.
 
 - `STRATA-SHELL-01` (P2, confirmed in both foundation phone screenshots):
   the account popup opens to the right of the240px Sidebar at approximately

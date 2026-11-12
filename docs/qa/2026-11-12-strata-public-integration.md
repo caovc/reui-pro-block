@@ -92,14 +92,27 @@ Evidence: `/tmp/strata-public-export-5422-20261112-fr2zs5vf/final-handoff.md`.
 ## Remaining acceptance
 
 The Auth batch passed20/20 at both foundations/widths, with12 screenshots and
-runtime/credential-boundary records inspected. Remaining workspace/account
-shortcuts and19 source Copy/single-file cases remain prepared but unrun. Results
-must be recorded before claiming those scopes. Base/non-Nova exported projects have
+runtime/credential-boundary records inspected. The remaining26 original
+workspace/account cases passed on5450 in150.453s with the original30s/5s budgets,
+zero retries and full tracing. They are disjoint from the earlier18 cases.
+All32 PNGs were inspected, and26 case traces plus two identity traces were
+reviewed; source2439/artifact1419 file inventories remained exact. The review
+found `STRATA-SET-02`: the Radix phone Security shortcut leaves its selected
+tab clipped. The behavioral cases did not assert this selected-tab geometry;
+that consumer repair and its22 additional regressions remain separate.
+Evidence: `/tmp/strata-public-parent-remaining26-native-5450-20261112/final-handoff.md`.
+The5450 Strata modules
+exactly match5422. Its independent Source worker/cache work is not used to
+establish these UI results. The19 source Copy/single-file cases remain prepared
+but unrun. Base/non-Nova exported projects have
 not been through this original-package gate. The private Source worker is not
 part of this public UI milestone. Its shared viewer's original5s first-click
-failure was reproduced independently; the off-main candidate passed that
-interaction but still reached the whole30s deadline later. Both failures remain
-recorded, and that separate performance work is ongoing.
+failure was reproduced independently. The later off-main/popover5452 candidate
+passed the complete original Filebox flow under Radix in25.341s and true Base
+in23.841s, including strict SVG bytes. Pulse's nine-file flow still reaches the
+whole30s deadline at its seventh selection. All earlier failures remain recorded;
+the new actual free Combobox consumer is only a private, unvalidated proposal.
+This separate Source performance work remains open.
 
 `STRATA-GEN-01` tracks seven General preferences that currently change only
 form state. Theme and local-auth landing are wired. An anonymous reference

@@ -132,6 +132,12 @@
   gap: 12px;
 }
 
+/* Preserve the free ToggleGroup's item sizes and spacing within its settings row. */
+.bt-cohort-settings .cohort-working-days {
+  max-width: 100%;
+  flex-wrap: wrap;
+}
+
 .bt-cohort-settings .bt-setting-save {
   min-height: 48px;
   flex-direction: row;

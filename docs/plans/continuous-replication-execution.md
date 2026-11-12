@@ -2,7 +2,53 @@
 
 最后更新：2026-11-12。用户要求持续协调开发，不能在一个里程碑或进度汇报后结束整体工作。本文是恢复点，不是“全部完成”声明。
 
-## 最新接续点（约20:05 UTC，优先于下面历史检查点）
+## 最新接续点（21:37 UTC，优先于下面历史检查点）
+
+- main仍8e05661已push；新工作由Root唯一Git writer协调，Source4与未完成Settings修复保持WIP。8e run43297522859已最终failure：build/browser1/2/3success，仅browser4fail、deploy skipped。真实failure annotation已可读：tests/templates.spec.ts117主题持久化/缩略图，125:85 Mesh iframe html待dark时5s元素未找到；本job1failed724passed46.7m。官方github reporter的success summary与真实title/location/stack都实际进入GitHub，旧448/b09未知名不追认修复。线上成功仍cb0。唯一watcher259531约21:55有界到期，续起前核活进程，勿重复。
+- CI owner/source_copy已实际静态核和本地原case单次red复现10.351s。1280×720、scrollY0、父html dark正确，但Mesh thumbnail top878.234375大于viewport720+IO margin150=870，Skeleton有而iframe无；只Strata iframe已挂。产品既有主题存储/iframe初始化链保持。Root审并精确应用tests/templates.spec.ts唯一4行真实父card.scrollIntoViewIfNeeded前提，原5s和暗/重载/浅色所有断言不变；patch bd913220，fixed1新单次首轮9.979s通过，全部5个原主题断言保持，child dark638ms/light589ms，2图实际view。原CI annotation/本地红全留。准备包 `/tmp/ci-template-thumbnail-theme-8e-5460-prep-20261112`，原红 `/tmp/ci-template-thumbnail-theme-original-5460-native-20261112-e8EZC2`。
+- Cohort weekday实际原旧5422 baseNova新case首次red：Sunday fullright380.1875超过FramePanel client372，7center却都命中。Root已审apply独立6行CSS ad107c53，5460首轮两真库8styles16/16与原Base2/2全部过，36PNG全部实际view、18trace CRC/原body/2082GET200/238可取body及54font响应exact，source1636/artifact1391/harness/HTTP全前后不漂。其余1844JS无embedded body不冒全字节比对。报告 `/tmp/cohort-working-week-v2-5460-first-native-20261112-l5r4j3yv/handoff.md`。
+- 新COHORT-SET-02/P2另open：两库Sera footer状态文案被动作按钮挤压/覆盖，4原PNG及4JPEG/DOM已留，但无bbox不编造。修复weekday不等于关闭footer；已写Cohort新QA草稿，待必要提交核对及时push。
+- 永久Cohort16提取v2 b9b01605已Root精确apply共享，仅2新tests；原完整casebody/helper逆变换回已验7172/1b13字节，保30/5/R0/fulltrace/390，移除多余serial以沿用正常4shards。静态fmt/lint/list4/16/无私有路径已过，提取版Nova/Sera两库4子集首轮全过，8图实际view、4完整trace及全后guard通过；这是抽取adapter验证，不冒第二轮16或新增不同功能覆盖。Source/Settings WIP不能误暂存。
+- Strata旧5450 Security新red1真实right437.859375>390。5460 v2新22首轮0pass/1fail/21notrun，在程序focus ManageBilling→1Tab后期望Profile失败。独立只读Profile1仍原断言fail但附件真实证实焦点在Radix本来就tabindex0的list。v3 c686只允许该确切Radix入口再1nativeTab，Base无fallback/最终焦点/paint/contain/hit和预算不变；v3首轮仍0/1/21，键盘成功，paint即时width2/offset-1失败。真实free transition-all与颜色alpha插值、目标CSS却-2，几何过渡为有证据候选，不改oracle/不等延时。
+- Root已精确apply CSS-only b0eb4b54，新SettingsCSS7fb95b9c把透明outline2/-2预置于未focus，focus只换颜色；新5461仅5460这1CSS差异，SourceWIP排除，原v3外部spec未改。沿用5460scoped Types9.334，新双Vite12.599/9.263过；preview5461 session5119，rootindexe7a82387/Baseba6a186e HTTP200 exact。manifest `/tmp/reui-5461-source-manifest.json`；22新native首轮22/22通过95.118s，21:43:40.544666Z退出；全部前后guard通过，42图/22trace离线审阅继续。旧所有失败/诊断保持。
+- Source5451真实CDP已诊断：auth主SelectItemAlignedPosition getBRect self采样约1027.951ms，worker仅145.8ms；其余scrollUp/Presence/RemoveScroll独立，不误归chunk名字。真实coalescible token不足1%，未动renderer。5452=5451仅Source SelectContent popper，scoped5.971/dual9.593,9.045过，预览5452 session34462。原Radix Filebox完整首轮25.341s PASS，原ZIP258/229raw/829edges/9media/SVG333全过；Pulse仍30s在第7file选择截止，仅前6四路完成。Source P2未关闭，不推完工。
+- 真Base5452在同Base artifact独立根5454 session72284，原完整Filebox适配1首轮23.841s PASS，原19inline/15native/4Escape/focus全过。原ZIP969881B/263members SHAa265b6ed、254实际原bytes+9generated、29Base映射、native234source/847edges、9media strict04全比、DriveSVG333含LF；source2442/双artifact1419/HTTP20全前后exact，5图实际view。未install/build独立包、不冒其他style。报告 `/tmp/filebox-base-5452-native-20261112-GFrjnt/final-handoff.md`，旧5361SVGskip边界保留。
+- Source新免费picker已静态研究与两文件私有提案 `/tmp/source-free-picker-research-20261112-8bdo73fy/README.md`，patch c923026d，0cc→ef6503fb，新host-only picker7ffcde71。实际已装官方c21/c26在radix/base registry本就共享真实Base Combo，支持modal=false/limit-1；外层SourceDialog仍各自defaultmodaltrue，沿既有WorkspaceFinal portalContainer+surface state callback+Escape/finalFocus已验模式，完整filename顺序/query独立空/真实roles，无假模型/减行减选项。原worker/cache/Copy/ZIP代码exact，新picker不进入模板ZIP/glob。尚未Rootapply/semanticTypes/build/native；Sourceshared仍0cc，不能把私有提案当新产品。
+- 当前共享UI有CohortCSSad1、SettingsTSX26b6e117/CSS7fb，以及Cohort2/Settings2新tests；Settings共享spec仍v2 f400，v3仅私有。SourceDialog0cc/workerf4be/Vitec114/stricthelper04未提交。Root独占构建与Git；browser唯一当前给实际CI原/fixed主题case，静态并行。下一优先CI固定case结果→Cohort可review提交→5461v3全22与Source新Combo候选，Base/19Source/缓存状态和footer仍独立待办。
+
+## 历史接续点（约20:32 UTC）
+
+- Root未新增主分支runtime提交：main仍已push的8e05661，当前Source4+3QA/plan文档为共享WIP。唯一CI watcher259531活跃；b09 build/browser1/3success、2/4仍跑，8e run43297522859 pending，最后成功Pages仍cb0。各新SHA必须独立查，不沿用旧绿。
+- Strata原26最终审阅完成：26首轮全过150.453s，32PNG逐张view，26case+2identity完整trace，2490记录GET200、26faults空、107native动作max1076.104ms；旧source2439/artifact1419精确ledger无增减漂移。最终 `/tmp/strata-public-parent-remaining26-native-5450-20261112/final-handoff.md`。离线v1 parser误把4个verbose DOM提示算fault，原件保留，v2据真实messageType纠正；未重跑case/改oracle。新STRATA-SET-02/P2 selectedSecurity phone裁切已加入backlog，不用26行为pass关闭视觉问题。
+- 5451完整app/node Types113.917/2.655s、双Vite13.048/11.915s过，真实preview5451 session5703/stdout文件 `/tmp/reui-5451-preview.log`。完整artifact1419、source2441、3083subjects guards和根/Base HTTP均exact。Root source snapshot基线8e、Sourcecache35e74e14/workerf4be95f3/Vitec114/helper04d33未改，无QA入口。
+- 5451原Filebox1仍whole30 FAIL，report32317ms，15nativeclick均<5；完整3file DOM/真实Clipboard/单file、258原ZIP/229原字节/829闭包边真过，但deadline后才完成第二DOM/末Escape/focus/fourwayproof，整体不是pass。精确阶段表/6帧实际view见 `/tmp/template-source-5451-filebox-original-20261112-8xqrrigc/review-report.md`；cachehit只有单次workerGET和实际DOM一致迹象，未构造/postMessage插桩不能直接证明。
+- 同5451其余5原case各一次：Pulse1 whole30 FAIL，第7ticket-detail Copy后新Clipboardpoll仅0.976ms即deadline；前6四路成功，后2CSS/原ZIP/close未到，不称Clipboard内容错。28nativeclick max3080.824ms都<5。CodeBlock3首轮PASS9.7/9.9/8.3s，实际原MapSDK1 PASS6.3s。初CLI wrapper位置过滤只收前4，保该实际集合，之后精确title list1再第一次跑Map；不算Map重试。Source WIP仍不promote。
+- 原spec19次inline Buffer深比较已用真实3文件/443548bytes每侧做一次Node计时：565.425ms wall vs已有strict helper4.377ms，原trace合499.571ms；18真实末byte/截尾负例全拒绝。开销有限，不能称rootcause或用改oracle冒修复，原spec未动。证据 `/tmp/filebox-buffer-equality-cpu-20261112-BdHUlU/README.md`。
+- Root已审并给唯一CDP诊断GO `/tmp/source-5451-cdp-diagnostic-plan-20261112-ldky3kwx/README.md`：只cold Source初开→nativeauth两段，30/5/fulltrace+browser真实CPU/timeline/worker metadata，无Copy/ZIP/完整case重试/假模型。source_export_resume2正准备执行，Root无compile/browser。真实DOM1373line+1373line-content+5910真彩token；非结构无样式token span0，不能凭猜测删节点声称优化。采样后才提有证据的最小改动。
+- 官方General两case各首次严格TLS因CERT失败，0PNG，无消费者结论。唯一normalcurl200/verify0证明系统/Node trust正常。Root审独立infra脚本ffa34eb7，在require_escalated正式可写执行上下文只goto一次，严格TLS/Cloudproxy原样，HTTP200/titleStrata/cert及networkerrors空，3479ms，20:25:41.842Z正常close。现NSS已含同管理CA，NSS只读初始化差异仍候选非唯一证明；未改CA/HOME/发布环境。原两失败保留，正式上下文两原runner fresh命令待下一明确窗口，不自动重试。
+- 两个独立UI修复只/tmp READY未apply：Cohort runtime.patch89669db3仅consumer CSS6行，原4focused静态过，owner正扩完整两库8style16；Strata runtime-only.patch ceca59f4仅Settings TSX/CSS，22新case static/list过，regression patchb7692cb0。保持实际免费ToggleGroup/Tabs，官方精确Cohort换行视觉合同未知。Root待Source诊断交窗后先原旧候选red，再独立新UI候选Types/dual/原2+focusedstyle/22回归，验证后及时commit/push。Source19仍未bind/native。
+
+## 历史接续点（约20:16 UTC）
+
+- 约20:13云环境再次重连；Root按exact environment id等待工具返回ready。源码、/tmp、CI watcher、原Strata26 OS进程全保留；旧模型agents已从live tree消失。Root新建六个6.1 Sol xhigh owner，suffix resume2，不能依赖environment_context过时名字或重起现存测试。Root唯一Git writer/重构建调度不变。
+- 原26实际start20:11:22.516Z、duration150452.911ms，20:13:52完成26passed/0failed/0notrun。原30/5/R0/W1/maxfail1/fulltrace不变；只读接续owner没有重跑case。postflight实际checkedAtUTC20:14:57.184551Z，全1628runtime/31overrides和原两库HTTP/index/entry均不漂；共享仅先前授权SourceDialog独立cache差异。26完整trace/截图正在离线逐项审阅。所有手写近似时间以证据真实字段优先，不能把估计时间当测试事件。
+- Root已于20:15:30左右开始新5451 fullTypes/dual，session36551（脚本 `/tmp/reui-next-source-candidate.py 5451 --build`）。source/manifest已冻结baseline8e/4overrides/1628runtime；新artifact未完成，不得先跑Source native。旧5450原Filebox整体30s失败照旧。6原gate准备由source_export_resume2接续，Source19准备由source_copy_resume2接续；原26/allpublicUI不与缓存性能结论混同。
+- Calendar reference owner获显式仅dateFormat与timestamps两case远端官方源窗口，各fresh匿名/GET守卫/单次120s/原30/5。可与Root编译CPU重叠，仅取参考行为，不作本地性能推论；结束立即关闭browser并交窗。其余4项未经GO不运行，不复制premium源码/素材。5451原生性能门禁等这两项与编译都结束后才启动。
+- 当前main仍8e05661已push；最新canonical见20:15:56，新run43297522859 pending，2a自动cancelled，b09 build/browser1success、余browserrunning。唯一watcher259531持续，没有重复实例；最后成功Pages仍cb0。Cohort P2修复只/tmp提案待整合。公开QA已记录26pass/图审未完，Source19仍未跑。
+
+## 历史接续点（约20:12 UTC）
+
+- Root已提交并推送公开Strata `2a933fd01371a8bfd83505a0c09c7ee91f813372`（30明确文件，27code/tests+3docs，Source worker/Vite/helper均未暂存）。然后独立推送 `8e05661e73e56590d224c958b732f1eab4bfe170`：仅CI官方github reporter一行和QA文档。当前main是8e，run43297522859 pending；2a的pending run43296348545实际无jobs被GitHub自动取消，未人工取消。新SHA包含公开Strata，不能把排队称部署完成。
+- b09的run43287988328当前build/browser1成功、2/3/4执行中。448最终browser1/4失败的真实名/stack仍未知，待用户日志；官方reporter不能追补旧日志。唯一watcher259531/session95466继续，最新成功Pages仍cb0/7746519113。
+- CI一行把既有list,blob追加github，没有新增JSON/权限/预算/退出语义变动。实际独立无browser deliberate-failure probe按真实Playwright1.64.1退出1，11项title/location/error/stack/encoding/list/blob验证全过；远端GitHub annotation ingestion未实际验证。见 `docs/qa/2026-11-12-ci-failure-annotations.md`。
+- 真Base Cohort原2flow在不可变5422首轮2/2通过43.494s，4图实际view、2完整trace和runtime空、前后hash/HTTP/实际Base路径与html证明全部过。但phone Working group右侧Sunday被FramePanel裁切，新增COHORT-SET-01/P2；此2case从未测7按钮可达性，不能以行为pass关闭缺陷。Foundation在/tmp准备consumer-only修复和两库Nova/Sera七按钮几何/命中/焦点回归，不直接改共享。
+- Strata余26原case正在唯一native窗口，尚未结果。原26未开browser前guard捕获Root已应用独立Source cache共享差异，失败预检原件保留；Root精确授权只许共享SourceDialog c3ada→35e74e14，5450 snapshot/artifact仍全部原hash严格冻结。原spec/预算/断言未改，不构成case重试。所有61 Strata runtime与5422 exact。
+- Root已审并精确应用Source consumer cache一文件patch SHA a0ee235257df8ab07c48746c07feb903eb737276b6846b34829396607779ac24，共享SourceDialog现35e74e14。最大9条、raw262144 UTF16 units、retained serialized payload8MiB（非heap测量），exact template/file/language/raw；只缓存验证完整且真有高亮的官方Line[]，sticky transport失败先cache，hit已有worker仍留真实error监听，close仍terminate。不clone/freeze大模型，不改free renderer/DOM/raw/预算，尚未提交。
+- 新5451 snapshot已准备：baseline8e，4overrides/1628runtime，manifest `/tmp/reui-5451-source-manifest.json`。实际source `/tmp/reui-5451-source`，artifact尚未构建，不称cache性能通过。Root等原26交窗才全Types/双构建；原5450整体30s失败保持，不能原产物重跑转绿。
+- Strata19 Copy/file静态READY `/tmp/strata19-source-native-prep-20261112/README.md`：19模块/65公开依赖 exact，strict helper04d33e57真字节，不跑ZIP也不能冒SVG门禁。artifact尚未绑定，Root待5451业务验证后明确给窗口。官方General其余6消费者参考合同仍未知，Calendar owner只准备匿名GET守卫探针，尚未启动browser。
+- 所有共享runtime从原26重新GO时冻结，其他提案只/tmp。Root仍唯一Git writer/重构建调度；静态并行、native错峰。接下来原26交窗→5451 fullTypes/dual→原Filebox/Pulse/CodeBlock/Map→Source19/缓存合同；并接Cohort修复。新全绿、提交或汇报都不结束整体任务。
+
+## 历史接续点（约20:05 UTC）
 
 - 当前 main 是已推送的 `b09f29072eef43d5906ea9a210f12f89950a6f86`，对应 run43287988328 已完成 build，四 browser 仍执行中。前一448的 run43276208221 最终 browser1/4 失败，2/3及build成功、deploy skipped；实际失败名和stack尚未取得，已分别向用户请求日志。正常GitHub job页面需要登录，日志下载仍被策略拦截，不把本地Source超时冒称CI根因。最新实际成功Pages仍是cb0/7746519113。
 - 原只读watcher达到两小时上限后正常结束，CI owner核实零活跃副本，再续起唯一 pid259531/session95466，约21:55到期。canonical记录仍为 `/tmp/reui-continuous-ci-watch/latest.json`；恢复时先读实际新时间，勿照旧记录再起重复实例。
