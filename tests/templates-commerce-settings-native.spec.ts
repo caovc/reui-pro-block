@@ -116,7 +116,7 @@ const COMMERCE_NOTIFICATION_SOURCE_SHA256 = {
   "src/templates/business/commerce-settings-notifications.tsx":
     "177d073b8d895864dc5ab9cd263ce667fe8478985ae4a0b88c6e91c8b1b1b4d7",
   "src/templates/business/commerce-settings-header.css":
-    "cf40e930ede4286739ef5f612a58e3b568ea6d44e127113ebc9b98b47a9b1310",
+    "fd1e2e285216dfdde216cdbbcc1d5b18519b74faf8172c46e40c617b2d2d6aa2",
   "src/templates/business/commerce-settings-domains.css":
     "bf1388ab10e4ac4adcc9c71de9faf5340272432dd1ffe078b4a1516e8195fdc9",
 };

@@ -46,7 +46,7 @@ export function BusinessBars({
     <BarChart
       accessibilityLayer
       data={data}
-      margin={{ top: 12, right: responsiveAxis ? 8 : 0, left: 0, bottom: 0 }}
+      margin={{ top: 12, right: responsiveAxis ? 16 : 0, left: 0, bottom: 0 }}
       barCategoryGap={large ? "8%" : "12%"}
       barGap={2}
     >

@@ -142,6 +142,14 @@ for (const { name, entryPrefix } of [
           expect(tick.x).toBeGreaterThanOrEqual(box!.x - 1);
           expect(tick.right).toBeLessThanOrEqual(box!.x + box!.width + 1);
         }
+        if (width === 390) {
+          const finalTick = ticks.at(-1);
+          expect(finalTick?.label).toBe("Outerwear");
+          expect(
+            finalTick?.right,
+            "the final category needs a real 2px inner gutter",
+          ).toBeLessThanOrEqual(box!.x + box!.width - 2);
+        }
         if (width === 1440)
           expect(ticks.map((tick) => tick.label)).toEqual(rows.map(([name]) => name));
         for (const [index, [category, units]] of rows.entries()) {

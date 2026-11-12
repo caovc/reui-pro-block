@@ -186,3 +186,9 @@
 | FSA-06  | P2 / 已修复，Atlas owned 共享层 | 5240 两库八 style 两宽的 32 个状态已验证：首轮 30 加原配置定点 2；首次 navigation-wait 失败保留。真实按钮命中、四项动作、方形手机图标与消费者 Handover 返焦均已检查。详见 `docs/responsive-toolbar-style-fix-2026-11-12.md`。                                           |
 
 目前正式 16 组合 × 2 代表行为全部通过；团队已实际审阅64张指定视口图，但不代表全站所有 style 的视觉都无问题。FSA-05 / FSA-06 的确认与修复状态如上单列；不能因 core 32/32 通过宣称视觉没有问题。尚未覆盖官网完整八 style 列表及同态对照、5220 完整 core 32 矩阵、移动端完整矩阵、dark / 字体 / radius 等极端组合、所有模板/blocks、全部 native primitive、提取后 starter 构建和完整第二源码文件的 Copy / 单文件 UI 链。Source 文件选择性能由独立任务继续跟踪，未被这 32 例覆盖或结案。
+
+### 5250：实际 library 切换与分享补验
+
+主会话在 5250 双生产构建上，独占运行已有 `ui-foundations.spec.ts` 的 `Customize switches both libraries, preserves the route, and shares a real style`，原用例通过（17.7秒）。通过实际 Customizer 从 Radix 切到 Base，依次选择 Nova、Lyra 并比较真实控件外观；刷新后保留 Base/Lyra；点击 Copy preset link 并读取真实剪贴板，在新 browser context 打开该链接后恢复同样的路由、foundation、style 和控件外观；最后切回 Radix 仍保留 Lyra。未改用例、断言或预算。这补充的是 Nova/Lyra 的跨入口完整路径，不扩大为八 style 的全部切换组合。
+
+同批已有 Roster 原生源码用例也通过（17.7秒），保留真实 clipboard 与 ZIP bytes 检查；两例合计 39.4秒、exit 0。完整日志 `/tmp/reui-5250-entry-roster.log`，输出目录 `/tmp/reui-5250-entry-roster`。5250 full TypeScript、两套 Vite 生产构建、格式检查、lint 和 tooling 195/195 均已通过；这仍不关闭前述两个非 Nova 完整导出用例及 Source 性能任务。

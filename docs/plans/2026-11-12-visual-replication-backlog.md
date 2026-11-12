@@ -8,14 +8,14 @@ and unavailable backend services are intentional boundaries.
 
 ## Confirmed findings and assignments
 
-| ID         | Priority | Surface and observed difference                                                                                                                     | Owner / status                                                                                                   | Acceptance                                                                                                                                                                  |
-| ---------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| BLOCK-V01  | P2       | Job Schedule attention cards demote the risk headline and omit remaining work hours; the local hierarchy and card height differ from the reference. | `job_attention_qa`: V01 fixed; 22/22 Nova cases passed across both foundations and widths.                       | Risk is the main heading; real local remaining hours are visible; card actions still open or update the correct job at desktop and phone widths, under both UI foundations. |
-| BLOCK-V02  | P2       | Job Schedule exposes common type/task-state filtering through a different generic entry point.                                                      | `chart55_mobile_fix`: reference semantics captured; implementation frozen for 5250 native validation.            | Verify the reference filter controls and restore equivalent discoverability without changing the underlying filtering or losing existing actions.                           |
-| BLOCK-V03  | P3       | Job Schedule row density, date-column width and button sizing differ.                                                                               | Job Schedule owner: local density work queued; the outer-spacing finding was withdrawn after image reinspection. | Preserve the matching 48px/32px outer spacing; compare local Nova row/column/control dimensions while retaining other styles and internal scrolling.                        |
-| BLOCK-V04  | P3       | Job Schedule phone Add Job layout and bounds differ.                                                                                                | `lucent_current`: Create-only layout frozen for 5250 native validation.                                          | Match the observed form structure where appropriate, with all controls reachable and native Escape/focus recovery preserved.                                                |
-| VT-MAN-001 | P2       | Manifest phone Inventory velocity renders all category ticks, which collide; the reference omits some ticks to keep labels readable.                | `manifest_axis_qa`: axis fixed; all ten Nova cases passed across both foundations (Radix 4 + focused 1, Base 5). | No tick collisions at 390px; retain every bar, its data and accessible category/value information, desktop labels, and unchanged defaults for other chart consumers.        |
-| VT-ATL-001 | P2       | Atlas phone date control begins above the viewport and Export extends below its header.                                                             | `atlas_header_fix`: pushed `c96fb36`; 32 cases passed, including all eight phone-header styles.                  | Date/Export stay within the viewport and their own header; fix the local clipping without reproducing the reference's separate horizontal-overflow issue.                   |
+| ID         | Priority | Surface and observed difference                                                                                                                     | Owner / status                                                                                                            | Acceptance                                                                                                                                                                    |
+| ---------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| BLOCK-V01  | P2       | Job Schedule attention cards demote the risk headline and omit remaining work hours; the local hierarchy and card height differ from the reference. | `job_attention_qa`: V01 fixed; 22/22 Nova cases passed across both foundations and widths.                                | Risk is the main heading; real local remaining hours are visible; card actions still open or update the correct job at desktop and phone widths, under both UI foundations.   |
+| BLOCK-V02  | P2       | Job Schedule exposes common type/task-state filtering through a different generic entry point.                                                      | `chart55_mobile_fix`: reference semantics captured; implementation frozen for 5250 native validation.                     | Verify the reference filter controls and restore equivalent discoverability without changing the underlying filtering or losing existing actions.                             |
+| BLOCK-V03  | P3       | Job Schedule row density, date-column width and button sizing differ.                                                                               | Job Schedule owner: local density work queued; the outer-spacing finding was withdrawn after image reinspection.          | Preserve the matching 48px/32px outer spacing; compare local Nova row/column/control dimensions while retaining other styles and internal scrolling.                          |
+| BLOCK-V04  | P3       | Job Schedule phone Add Job layout and bounds differ.                                                                                                | `lucent_current`: Create-only layout frozen for 5250 native validation.                                                   | Match the observed form structure where appropriate, with all controls reachable and native Escape/focus recovery preserved.                                                  |
+| VT-MAN-001 | P2       | Manifest phone Inventory velocity category ticks collided; the first responsive repair left too little tail-label safety space in CI.               | `manifest_axis_qa`: 5260 first-run 10/10 plus both foundations' Inter/Arial fallback probes passed; exact-SHA CI pending. | No tick collisions or clipping; final phone category remains Outerwear with at least 2px real inner clearance; all bars, accessible data and default chart behavior retained. |
+| VT-ATL-001 | P2       | Atlas phone date control begins above the viewport and Export extends below its header.                                                             | `atlas_header_fix`: pushed `c96fb36`; 32 cases passed, including all eight phone-header styles.                           | Date/Export stay within the viewport and their own header; fix the local clipping without reproducing the reference's separate horizontal-overflow issue.                     |
 
 Atlas phone Threat Vectors has a much smaller, 0.1953px Beacon/Day0 tick overlap (P3); Manifest's confirmed overlaps reach 20.1987px. The coordinated opt-in repair is verified under both foundations at 390px and 1440px. All nine Atlas categories, both series and their accessible data remain. `manifest_axis_qa` owns the shared chart change; the Atlas consumer was coordinated with `atlas_header_fix`.
 
@@ -29,6 +29,21 @@ Evidence and capture limits are recorded in the corresponding audit reports:
 The Blocks audit now includes both Job Schedule and Working Agreements at desktop and phone widths, including observed overlay/focus and horizontal-scrolling behavior. It does not cover every block.
 Manifest and Atlas audit coverage must be read from the template report rather
 than extrapolated to their entire applications.
+
+## Catalog completeness follow-up
+
+The saved public official catalog contains twenty actual template cards; the
+local catalog has eighteen entries. Two explicit missing entries are confirmed,
+independently of the total count. They require public preview inspection and
+actual free-component implementation, not only copied card labels:
+
+| ID           | Priority | Official entry                                                                             | Status / acceptance                                                                                                  |
+| ------------ | -------- | ------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
+| TEMPLATE-C01 | P2       | [Signal — Product Analytics](https://reui.io/template/signal-analytics), TanStack Start    | Missing from local catalog and implementation; capture its public preview states before assigning an implementation. |
+| TEMPLATE-C02 | P2       | [Strata — Observability Dashboard](https://reui.io/template/strata-observability), Next.js | Missing from local catalog and implementation; capture its public preview states before assigning an implementation. |
+
+This is an identity/presence check, not a visual or functional acceptance of the
+other eighteen templates. Reference imagery remains private audit evidence.
 
 ## Related release gates
 
@@ -44,15 +59,34 @@ than extrapolated to their entire applications.
   remain blocked by the current runtime policy; API metadata remains available.
 - The subsequent exact-SHA run `43205749833` (`e8c18f3`) completed with build
   and browser shards 1/2/4 successful, shard 3 failed and deployment skipped.
-  Its annotation contains only exit code 1; the failing test is not yet known.
-  The coordinator requested the actual log excerpt rather than assigning a
-  speculative fix. Current Host fix `c1c769c` has passed build and is running
-  all four browser shards in `43211491500`; no deployment is claimed.
+  The user supplied the actual log: 686 passed and three failed. Lucent Services
+  phone navigation did not unmount after Escape following Pin to top
+  (`lucent-service-navigation.spec.ts:136`). Both foundations' Manifest phone
+  tick bounds exceeded the existing 358px limit at 358.428558px
+  (`manifest-inventory-velocity-native.spec.ts:143`). On rebuilt 5260, the
+  chart fix passed all ten original cases plus four foundation/font probes;
+  the Services test now proves native menu dismissal and trigger focus before
+  the unchanged Escape assertion, and all four foundation/width cases passed.
+  Original assertions and budgets remain; exact-SHA CI is still required.
+  At 12:25 UTC, Host fix `c1c769c` had successful build/browser 1, failed
+  browser 3 and running browsers 2/4 in `43211491500`; the responsive-button
+  fix `994208f` remained queued in `43214196674`. Both still contain the
+  unchanged 8px chart rule and pre-readiness Services test. This new candidate
+  must complete its own CI; no new deployment is claimed.
+- Job candidate 5250 completed the original/new first round with 33 passes and
+  six failures. One original Base case proved an actionable stale toast could
+  intercept Add Crew Day inside the next Sheet; the consumer now dismisses that
+  notification on panel entry while preserving Undo. Other new-test failures
+  concern inconsistent text accessors, an overlong multi-flow case and missing
+  menu-close/focus readiness. Their evidence is retained; all assertions and
+  budgets remain, and the rebuilt candidate must pass before the Job batch is
+  committed. V04 layout validation remains pending that candidate as well.
 - Shared template source viewer: the frozen source batch had two passes and two
-  native-action timing failures. A dedicated source-viewer owner is investigating
-  main-thread highlighting/rendering. Keep the existing action/test budgets,
-  tracing, real clipboard and original ZIP verification; do not relabel this gate
-  as passed.
+  native-action timing failures. Highlighting/worker experiments did not meet
+  the original gate and were archived privately; their tracked runtime/test
+  changes were restored to main before 5240/5250. This performance task remains
+  open. Keep the existing action/test budgets, tracing, real clipboard and
+  original ZIP verification; the passing focused Roster case does not close it.
 - Every fix needs scoped rendered validation and an independent, reviewable Git
   milestone. Commit, push, Actions success and Pages deployment are separate
   states. Reference screenshots remain private audit evidence outside the

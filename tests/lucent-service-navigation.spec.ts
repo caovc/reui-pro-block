@@ -131,6 +131,8 @@ for (const width of [1440, 390]) {
     await actions.click();
     await dropdown.getByRole("menuitem", { name: "Pin to top", exact: true }).click();
     await expect(buttons.first()).toContainText("recommender");
+    await expect(dropdown).toHaveCount(0);
+    await expect(actions).toBeFocused();
     if (width === 390) {
       await page.keyboard.press("Escape");
       await expect(sidebar).toHaveCount(0);
