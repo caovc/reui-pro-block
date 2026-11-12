@@ -20,7 +20,7 @@ for (const example of [
   {
     id: "roster",
     family: "collaboration",
-    modules: ["roster", "roster-approvals", "roster-import"],
+    modules: ["roster", "roster-calendar", "roster-approvals", "roster-import"],
   },
   { id: "echo", family: "workflow", modules: ["echo", "echo-sidebar", "echo-settings"] },
 ]) {
@@ -36,8 +36,10 @@ for (const example of [
     expect((await page.getByRole("option").allTextContents()).slice(0, files.length)).toEqual(
       files,
     );
-    await page.getByRole("option", { name: files[1], exact: true }).click();
-    const source = await readFile(join(process.cwd(), files[1]), "utf8");
+    // Calendar is promoted first, but retain the original Approvals view/Copy/ZIP checks.
+    const sourceFile = files[example.id === "roster" ? 2 : 1];
+    await page.getByRole("option", { name: sourceFile, exact: true }).click();
+    const source = await readFile(join(process.cwd(), sourceFile), "utf8");
     expect(await page.locator(".template-source-code").textContent()).toBe(source);
     await page.getByRole("button", { name: "Copy", exact: true }).click();
     expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(source);
@@ -62,7 +64,7 @@ for (const example of [
     await page.getByRole("button", { name: "Download project", exact: true }).click();
     const download = await pending;
     const zip = unzipSync(new Uint8Array(await readFile((await download.path())!)));
-    expect(strFromU8(zip[files[1]])).toBe(source);
+    expect(strFromU8(zip[sourceFile])).toBe(source);
     for (const [path, expected] of extraSources) {
       expect(zip[path], path).toBeDefined();
       expect(strFromU8(zip[path]), path).toBe(expected);

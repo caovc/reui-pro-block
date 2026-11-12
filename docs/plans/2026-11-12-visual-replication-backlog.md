@@ -32,12 +32,16 @@ than extrapolated to their entire applications.
 
 ## Related release gates
 
-- Roster calendar/date milestone: committed and pushed as `30b9f45`; exact
-  Actions run `43187414379` failed in browser shard 4 after build and the other
-  three shards passed. Both newly changed Roster specs are absent from that
-  shard's exact-commit test list; the failed test remains unknown. Detailed logs
-  and artifacts are blocked by the current runtime network policy. The CI owner
-  tracks the cumulative Filebox and Chart55 runs; no new deployment is claimed.
+- CI regression: the user supplied the sole failing test from Filebox run
+  `43191814435` (665 other cases passed). `templates-source-round3.spec.ts`
+  still expected the old three-file Roster order after Calendar became a
+  promoted implementation. The fixture now asserts all four files while
+  retaining the original Approvals DOM, real clipboard and ZIP-byte checks.
+  Focused UI verification passed 1/1 in 13.4s, and all four members of its real
+  original ZIP match disk bytes. See
+  `docs/ci-roster-source-order-fixture-fix-2026-11-12.md`. The new exact-SHA
+  Actions run and deployment still require verification. Detailed log downloads
+  remain blocked by the current runtime policy; API metadata remains available.
 - Shared template source viewer: the frozen source batch had two passes and two
   native-action timing failures. A dedicated source-viewer owner is investigating
   main-thread highlighting/rendering. Keep the existing action/test budgets,
