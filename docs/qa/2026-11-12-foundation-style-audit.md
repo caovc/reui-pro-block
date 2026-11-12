@@ -1,6 +1,6 @@
 # Foundation × Style 审阅（2026-11-12）
 
-**审阅结论：真实双 foundation / 八 style 已有代表行为证据，但尚不能宣称视觉和导出全面通过。**5210 core 32/32 通过；另已确认 FSA-05 Sera Host 快捷键溢出遮挡、FSA-06 非 Nova responsive 按钮宽度覆盖，其中 FSA-05 已在 5240 完成两库八 style 的 16/16 专项回归，FSA-06 的共享层专项仍在复验；5220 两个完整导出 case 为 0/2，已完成的 ZIP / 默认文件子集保留为独立证据。
+**审阅结论：真实双 foundation / 八 style 已有代表行为证据，但尚不能宣称视觉和导出全面通过。**5210 core 32/32 通过；FSA-05 Sera Host 快捷键溢出已在 5240 完成两库八 style 的 16/16 专项回归；FSA-06 responsive 按钮已完成两库八 style、两宽的全部 32 个状态（首轮 30 个通过，另两例保持原配置定点通过，首次等待超时仍保留）。5220 两个完整导出 case 为 0/2，已完成的 ZIP / 默认文件子集保留为独立证据。
 
 本报告关注真实的 Base UI / Radix UI 实现、八种 style 的实际表现，以及预览、持久化和导出的一致性。当前完成的是**源码审阅、真实 Vite resolver 验证、Filebox 的 16 组合 tooling，以及 5210 production 的 16 组合 × 2 个真实行为，共 32/32 browser cases**。官网取证目前只确认两个 library 选项，尚未取得官网完整八 style 菜单或同态视觉对照。这里的产品通过范围仅为下面明确列出的代表流程。没有修改 runtime、Vite 配置或其他会话的 WIP，没有执行 Git 写操作。
 
@@ -139,13 +139,15 @@
 
 5220，1440×1000，light，Radix 和 Base 结果一致，fonts loaded。只读测量：Search 按钮右界 990.921875，Customize 左界 997.921875，按钮盒仍相隔 7px；kbd 右界 1003.734375，越出 Search 12.8125px，并与 Customize 相交 5.8125px。kbd 中心命中 Search，最右侧及交叠区的 `elementFromPoint` 命中 Customize。因此这是内部内容溢出及相邻遮挡，不是两个按钮盒互相重叠。
 
-原 JSON / PNG 在私有 `host-bbox-5220-results/`。源码为固定 198px 的 `.search-trigger`、无 shrink/truncate 的文字 span 和 `margin-left:auto` 的 kbd，Sera 大写字距和 padding 增大后不足。主会话已交 Lucent 负责最小 Host CSS 修复，保留免费 ReUI Button 和 style 实现；本报告作者没有改 runtime。此处尚未记录修复后浏览器结果。
+原 JSON / PNG 在私有 `host-bbox-5220-results/`。旧源码为固定 198px 的 `.search-trigger`、无 shrink/truncate 的文字 span 和 `margin-left:auto` 的 kbd，Sera 大写字距和 padding 增大后不足。Lucent 的消费者 CSS 修复保留免费 ReUI Button 和 style 实现，5240 两库八 style 的 16/16 专项已通过，并补齐鼠标及 Ctrl+K 原入口返焦。修复后截图与数据见 `docs/host-search-style-fit-2026-11-12.md`；本报告作者没有改 runtime。
 
 ### FSA-06 — P2：非 Nova style 把 responsive 桌面文字按钮锁为 icon 宽度
 
 5210 fresh returned-block 截图中，两 foundation 的七个非 Nova 均出现 Hand Over / Add Company / My Accounts / Columns 这四个 icon 动作的标签挤出狭窄按钮，并影响相邻 Filter 可读性；Filter 自身为 default size，不把它归为第五个 icon-width 实例；Nova 正常。保留的实际 Radix Add Company 宽度为 Nova 139.03125px，Vega / Maia / Luma 36px，Lyra / Rhea 32px，Mira 28px，Sera 40px。消费者源码明确使用 `size=icon` 加 `sm:w-auto` 和桌面可见 span；当前 style 层把宽度重新固定，覆盖了消费者 responsive auto-width。5220 的相关 style 实现 SHA 与取证时一致。
 
 已由主会话确认为共享 style 层 P2，并交 Atlas 准备修法。随后在 5220 保持源未修，完成 Nova / Vega × 两 foundation 的四个只读 context（1440×1000、fonts loaded、原 30 秒 / 5 秒、failure trace），测量完成 4/4，0 console error / warning / pageerror。这里的 4/4 表示取证成功，不表示有缺陷的 Vega 视觉通过。
+
+后续 5240 修复在保留 icon 尺寸的同时，为显式 auto-width 按钮恢复内在文字宽度；手机隐藏 caption 时仍保持方形。专项覆盖两库 × 八 style × 桌面/手机及四个真实动作、Escape 与入口返焦：首轮 30 通过、Base/Rhea 桌面点击已送达但 navigation wait 超时、最后手机未跑；保持同源码、同测试、30秒/5秒和零重试，定点两例随后 2/2 通过。首次 trace 仍保留，未加 noWaitAfter、force 或提高预算。全部 32 个有效状态截图已由专项 owner 实际查看；主会话另查看 Sera 桌面、Vega 桌面和 Mira 手机。详见 `docs/responsive-toolbar-style-fix-2026-11-12.md`。这不等于全站或单轮 32/32 验收。
 
 | 动作        | Nova 按钮宽 / caption 宽  | Vega 按钮宽 / caption 宽 | Vega caption 的实际 hit-test                     |
 | ----------- | ------------------------- | ------------------------ | ------------------------------------------------ |
@@ -180,7 +182,7 @@
 | FSA-02  | 代表产品验收已完成（非全库）    | 已新增正式 `tests/foundation-style-product-native.spec.ts`，本轮 5210 代表产品 32/32 通过，补入 CI 的 *.spec.ts 匹配；控件与持久化子矩阵完成。两非 Nova 导出、官网同态及全库其它组件不在此完成结论内。                                                                  |
 | FSA-03  | 已披露的设计意图 / 非缺陷       | `docs/global-theme-customizer.md` 原有明确契约：Decorative artwork and chart series with fixed, nonsemantic colors retain those colors。`BusinessBars` / `BusinessArea` 固定 series 色按此已披露设计意图保留观察，不列为产品缺陷；本轮不扩大图表配色场景。              |
 | FSA-04  | 文档修正 / 已完成               | 已小范围修正 `docs/global-theme-customizer.md` 的固定 Radix/Nova 旧说明，说明真实双入口、八 style、合法共享 primitive 及本轮未验证边界；旧浏览器结果标明为 2026-10-23 快照。                                                                                            |
-| FSA-05  | P2 / 已确认，Lucent owned       | Sera Host 已在 5240 两库八 style 专项 16/16 通过；保持样式并修复内容收缩、鼠标/Escape/Ctrl+K 原入口返焦。详见 `docs/host-search-style-fit-2026-11-12.md`。                                                                                                              |
-| FSA-06  | P2 / 已确认，Atlas owned 共享层 | 非 Nova icon width 覆盖 responsive auto-width；5220 Nova/Vega 双库 bbox / hit-test 已补，待共享修复后专项验证。                                                                                                                                                         |
+| FSA-05  | P2 / 已修复，Lucent owned       | Sera Host 已在 5240 两库八 style 专项 16/16 通过；保持样式并修复内容收缩、鼠标/Escape/Ctrl+K 原入口返焦。详见 `docs/host-search-style-fit-2026-11-12.md`。                                                                                                              |
+| FSA-06  | P2 / 已修复，Atlas owned 共享层 | 5240 两库八 style 两宽的 32 个状态已验证：首轮 30 加原配置定点 2；首次 navigation-wait 失败保留。真实按钮命中、四项动作、方形手机图标与消费者 Handover 返焦均已检查。详见 `docs/responsive-toolbar-style-fix-2026-11-12.md`。                                           |
 
 目前正式 16 组合 × 2 代表行为全部通过；团队已实际审阅64张指定视口图，但不代表全站所有 style 的视觉都无问题。FSA-05 / FSA-06 的确认与修复状态如上单列；不能因 core 32/32 通过宣称视觉没有问题。尚未覆盖官网完整八 style 列表及同态对照、5220 完整 core 32 矩阵、移动端完整矩阵、dark / 字体 / radius 等极端组合、所有模板/blocks、全部 native primitive、提取后 starter 构建和完整第二源码文件的 Copy / 单文件 UI 链。Source 文件选择性能由独立任务继续跟踪，未被这 32 例覆盖或结案。

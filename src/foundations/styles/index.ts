@@ -137,6 +137,12 @@ function buttonCss(profile: Profile, style: keyof typeof profiles) {
           width: length(height),
           height: length(height),
         }),
+        // Responsive captions need an intrinsic hitbox when they become visible.
+        // Hidden captions contribute no width, preserving the square icon size.
+        rule(
+          `${icon}${utility(`size-${originalHeights[index]}`)}:is(${utility("w-auto")}, [class*=":w-auto"])`,
+          { "min-width": "max-content" },
+        ),
         replace(control, compactButtonRadii[index], "border-radius", corner),
         replace(icon, compactButtonRadii[index], "border-radius", corner),
       ].join("");

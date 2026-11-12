@@ -247,7 +247,7 @@ export default function ProspectDatabase({ loadCompanies }: Props = {}) {
   const [movable, setMovable] = useState(false);
   const [detailsId, setDetailsId] = useState<string | null>(null);
   const [editor, setEditor] = useState<{ record: Prospect | null; open: boolean } | null>(null);
-  const [handover, setHandover] = useState(false);
+  const [handover, setHandover] = useState<{ open: boolean } | null>(null);
   const [deleteIds, setDeleteIds] = useState<string[] | null>(null);
   const [newListIds, setNewListIds] = useState<string[] | null>(null);
   const [loadPhase, setLoadPhase] = useState<"loading" | "ready" | "error">(
@@ -260,6 +260,8 @@ export default function ProspectDatabase({ loadCompanies }: Props = {}) {
   const restoreDetailsFocus = useRef(false);
   const editorOpener = useRef<HTMLElement | null>(null);
   const restoreEditorFocus = useRef(false);
+  const handoverOpener = useRef<HTMLElement | null>(null);
+  const restoreHandoverFocus = useRef(false);
   const restoreAccountFocus = useCallback((opener: HTMLElement | null) => {
     for (const candidate of [opener, searchRef.current, addCompanyRef.current]) {
       if (
@@ -285,6 +287,11 @@ export default function ProspectDatabase({ loadCompanies }: Props = {}) {
     restoreEditorFocus.current = true;
     // Keep the Sheet mounted through its close so both foundations can restore focus.
     setEditor((current) => (current ? { ...current, open: false } : null));
+  };
+  const closeHandover = () => {
+    restoreHandoverFocus.current = true;
+    // Keep the Dialog mounted through its close before restoring the real opener.
+    setHandover((current) => (current ? { open: false } : null));
   };
   const openDetails = useCallback((id: string, opener?: HTMLElement) => {
     if (opener) detailsOpener.current = opener;
@@ -690,7 +697,11 @@ export default function ProspectDatabase({ loadCompanies }: Props = {}) {
               size="icon"
               className="sm:w-auto sm:gap-1.5 sm:px-2.5"
               aria-label="Hand Over"
-              onClick={() => setHandover(true)}
+              onClick={(event) => {
+                handoverOpener.current = event.currentTarget;
+                restoreHandoverFocus.current = false;
+                setHandover({ open: true });
+              }}
             >
               <ArrowLeftRight />
               <span className="hidden sm:inline">Hand Over</span>
@@ -1098,11 +1109,19 @@ export default function ProspectDatabase({ loadCompanies }: Props = {}) {
       )}
       {handover && (
         <ProspectHandover
+          open={handover.open}
           records={book.companies}
-          onClose={() => setHandover(false)}
+          onClose={closeHandover}
+          onCloseAutoFocus={(event) => {
+            event.preventDefault();
+            if (!restoreHandoverFocus.current) return;
+            restoreHandoverFocus.current = false;
+            restoreAccountFocus(handoverOpener.current);
+            setHandover((current) => (current?.open ? current : null));
+          }}
           onCommit={(from, to, count) => {
             commit({ type: "handover", from, to }, `${count} accounts handed over`);
-            setHandover(false);
+            closeHandover();
           }}
         />
       )}

@@ -1015,12 +1015,16 @@ export function ProspectEditor({
 }
 
 export function ProspectHandover({
+  open,
   records,
   onClose,
+  onCloseAutoFocus,
   onCommit,
 }: {
+  open: boolean;
   records: Prospect[];
   onClose: () => void;
+  onCloseAutoFocus: (event: Event) => void;
   onCommit: (from: ProspectOwnerId, to: ProspectOwnerId, count: number) => void;
 }) {
   const [from, setFrom] = useState<ProspectOwnerId>("mara");
@@ -1030,12 +1034,15 @@ export function ProspectHandover({
   const moving = records.filter((record) => preview.eligibleIds.includes(record.id));
   return (
     <Dialog
-      open
+      open={open}
       onOpenChange={(open) => {
         if (!open) onClose();
       }}
     >
-      <DialogContent className="prospect-handover-dialog gap-4 p-4">
+      <DialogContent
+        className="prospect-handover-dialog gap-4 p-4"
+        onCloseAutoFocus={onCloseAutoFocus}
+      >
         <DialogHeader>
           <DialogTitle>Hand Over Accounts</DialogTitle>
           <DialogDescription>
