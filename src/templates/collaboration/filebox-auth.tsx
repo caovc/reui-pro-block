@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import { OAuthIcon, FormDivider } from "@/blocks/application/auth-shared";
 import { Alert, AlertDescription } from "@/components/reui/alert";
@@ -43,7 +43,10 @@ export function FileboxAuth({ onLogin }: { onLogin: () => void }) {
   }, [forgot, sent]);
 
   return (
-    <div className="ct-app ct-drive-login ct-filebox-auth">
+    <div
+      className="ct-app ct-drive-login ct-filebox-auth"
+      data-auth-view={forgot ? "reset" : "sign-in"}
+    >
       <div className="ct-login-container">
         {!forgot && (
           <Alert className="ct-login-notice" role="note" aria-label="Demo sign-in">
@@ -54,11 +57,13 @@ export function FileboxAuth({ onLogin }: { onLogin: () => void }) {
             </AlertDescription>
           </Alert>
         )}
-        <Card>
+        <Card className={forgot ? undefined : "shadow-sm"}>
           <CardHeader>
             <div className="ct-login-heading">
               <Mark />
-              <CardTitle>{forgot ? "Reset your password" : "Welcome back"}</CardTitle>
+              <CardTitle role="heading" aria-level={1}>
+                {forgot ? "Reset your password" : "Welcome back"}
+              </CardTitle>
               <CardDescription>
                 {forgot
                   ? "We will send a link to the address on your account."
@@ -80,38 +85,37 @@ export function FileboxAuth({ onLogin }: { onLogin: () => void }) {
                     <AlertDescription>Reset link prepared for this local demo.</AlertDescription>
                   </Alert>
                 ) : (
-                  <>
-                    <Field>
-                      <FieldLabel htmlFor="filebox-reset-email">Email</FieldLabel>
-                      <Input
-                        ref={resetEmailRef}
-                        id="filebox-reset-email"
-                        name="email"
-                        type="email"
-                        autoComplete="email"
-                        placeholder="you@example.com"
-                        aria-describedby="filebox-reset-email-description"
-                        required
-                      />
-                      <FieldDescription id="filebox-reset-email-description">
-                        The address you sign in with.
-                      </FieldDescription>
-                    </Field>
-                    <Button type="submit">Send reset link</Button>
-                  </>
+                  <Field>
+                    <FieldLabel htmlFor="filebox-reset-email">Email</FieldLabel>
+                    <Input
+                      ref={resetEmailRef}
+                      id="filebox-reset-email"
+                      name="email"
+                      type="email"
+                      autoComplete="email"
+                      placeholder="you@example.com"
+                      aria-describedby="filebox-reset-email-description"
+                      required
+                    />
+                    <FieldDescription id="filebox-reset-email-description">
+                      The address you sign in with.
+                    </FieldDescription>
+                  </Field>
                 )}
-                <Button
-                  variant="ghost"
-                  type="button"
-                  onClick={() => {
-                    setForgot(false);
-                    setSent(false);
-                    setVisible(false);
-                  }}
-                >
-                  <ArrowLeft />
-                  Back to sign in
-                </Button>
+                <div className="filebox-auth-reset-actions">
+                  {!sent && <Button type="submit">Send reset link</Button>}
+                  <Button
+                    variant="ghost"
+                    type="button"
+                    onClick={() => {
+                      setForgot(false);
+                      setSent(false);
+                      setVisible(false);
+                    }}
+                  >
+                    Back to sign in
+                  </Button>
+                </div>
               </form>
             ) : (
               <>
@@ -144,7 +148,7 @@ export function FileboxAuth({ onLogin }: { onLogin: () => void }) {
                       <Input
                         id="filebox-login-email"
                         name="username"
-                        type="email"
+                        type="text"
                         autoComplete="username"
                         defaultValue="alex.rivera@bricklane.example"
                         required
@@ -153,17 +157,18 @@ export function FileboxAuth({ onLogin }: { onLogin: () => void }) {
                     <Field>
                       <div className="filebox-auth-password-label">
                         <FieldLabel htmlFor="filebox-login-password">Password</FieldLabel>
-                        <button
+                        <Button
                           ref={forgotButtonRef}
                           type="button"
-                          className="ct-subtle"
+                          variant="link"
+                          className="filebox-auth-forgot"
                           onClick={() => {
                             restoreSignInFocus.current = true;
                             setForgot(true);
                           }}
                         >
                           Forgot password?
-                        </button>
+                        </Button>
                       </div>
                       <InputGroup>
                         <InputGroupInput

@@ -45,9 +45,9 @@ const frozenHashes: Readonly<Record<string, string>> = {
   "src/templates/collaboration/drive.tsx":
     "cb8759e26384816a708b5eff76dac5202cf4273bd2dc5d6081e1ced437142ad5",
   "src/templates/collaboration/filebox-auth.tsx":
-    "8215968a5c5c1d0f145c05a451e4a015c2ab21bfbbb357b265472607e760b1b0",
+    "007fe5c8db12a18e55f4b39180e8a97212103c6fbeb7acf9f9ee3fdeefd68175",
   "src/templates/collaboration/filebox-auth.css":
-    "5eeb4c94ee0bea0a4d5c97c9e40eb41934aba8f7e5155bfb855cceaf132ca755",
+    "cd5afd2604bb331ee807b6688dcfc7189cc72eb05f60ad725b9b29f662aa8132",
 };
 
 test("Filebox changed source: actual full default, real view/Copy/single files and original ZIP", async ({

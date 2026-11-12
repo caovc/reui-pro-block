@@ -1,7 +1,7 @@
 import { writeFile } from "node:fs/promises";
 import { expect, test, type Locator, type Page, type TestInfo } from "@playwright/test";
 
-// Local migration acceptance, not an original-site geometry oracle.
+// Public reference measured 2026-11-12 at DPR1, light, after fonts settled.
 // Parent runs with --workers=1 --retries=0 --max-failures=1.
 test.describe.configure({ retries: 0, timeout: 30000 });
 test.use({ deviceScaleFactor: 1, colorScheme: "light", actionTimeout: 5000 });
@@ -86,6 +86,27 @@ async function boundedControls(page: Page, surface: Locator) {
     expect(box).not.toBeNull();
     expect(box!.x).toBeGreaterThanOrEqual(0);
     expect(box!.x + box!.width).toBeLessThanOrEqual(width + 0.75);
+  }
+}
+
+async function referenceGeometry(surface: Locator, width: number, view: "sign-in" | "reset") {
+  const card = await surface.locator('[data-slot="card"]').boundingBox();
+  expect(card).not.toBeNull();
+  const expected =
+    view === "sign-in"
+      ? { width: width === 390 ? 358 : 416, height: width === 390 ? 508.5 : 480.5 }
+      : { width: width === 390 ? 358 : 384, height: width === 390 ? 340.25 : 320.25 };
+  expect(Math.abs(card!.width - expected.width), `${view} reference card width`).toBeLessThan(0.75);
+  expect(Math.abs(card!.height - expected.height), `${view} reference card height`).toBeLessThan(
+    0.75,
+  );
+  if (view === "sign-in" && width === 1440) {
+    const google = await surface.getByRole("button", { name: "Google", exact: true }).boundingBox();
+    const apple = await surface.getByRole("button", { name: "Apple", exact: true }).boundingBox();
+    expect(google).not.toBeNull();
+    expect(apple).not.toBeNull();
+    expect(Math.abs(google!.width - 170)).toBeLessThan(0.75);
+    expect(Math.abs(apple!.x - google!.x - google!.width - 12)).toBeLessThan(0.75);
   }
 }
 
@@ -203,19 +224,21 @@ for (const width of [1440, 390]) {
     ).toHaveCount(1);
     await expect(surface.locator(".ct-password, .ct-login-divider")).toHaveCount(0);
     await boundedControls(page, surface);
+    await referenceGeometry(surface, width, "sign-in");
     await evidence(page, info, "local-auth-controls");
 
     const email = surface.getByRole("textbox", { name: "Email or username", exact: true });
     const password = surface.getByLabel("Password", { exact: true });
     await expect(email).toHaveValue("alex.rivera@bricklane.example");
+    await expect(email).toHaveAttribute("type", "text");
     await expect(email).toHaveAttribute("autocomplete", "username");
     await expect(password).toHaveAttribute("autocomplete", "current-password");
     await expect(email).toHaveAttribute("required", "");
     await expect(password).toHaveAttribute("required", "");
     await email.fill("");
     await invalidSubmit(page, email, "valueMissing");
-    await email.fill("not-an-email");
-    await invalidSubmit(page, email, "typeMismatch");
+    await email.fill("alex.rivera");
+    expect(await email.evaluate((node) => (node as HTMLInputElement).checkValidity())).toBe(true);
     await email.fill("alex.rivera@bricklane.example");
     await password.fill("");
     await invalidSubmit(page, password, "valueMissing");
@@ -241,8 +264,10 @@ for (const width of [1440, 390]) {
     const resetEmail = surface.getByRole("textbox", { name: "Email", exact: true });
     const send = surface.getByRole("button", { name: "Send reset link", exact: true });
     await expect(resetEmail).toBeFocused();
+    await expect(resetEmail).toHaveAttribute("type", "email");
     await expect(resetEmail).toHaveAttribute("autocomplete", "email");
     await boundedControls(page, surface);
+    await referenceGeometry(surface, width, "reset");
     await evidence(page, info, "local-reset-input-focus");
     await send.click();
     expect(
@@ -291,6 +316,8 @@ for (const width of [1440, 390]) {
     await expect(forgot).toBeFocused();
     await expect(surface.getByRole("status")).toHaveCount(0);
     await boundedControls(page, surface);
+    // A plain username must reach the real local workspace through native submit.
+    await email.fill("alex.rivera");
     await signIn(page).click();
     await expect(auth(page)).toHaveCount(0);
     await expect(page.getByRole("columnheader", { name: /Name/ })).toBeVisible();
