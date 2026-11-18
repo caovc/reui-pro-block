@@ -33,9 +33,9 @@ for (const example of [
     await page.getByRole("button", { name: "View template source", exact: true }).click();
     const files = example.modules.map((module) => `src/templates/${example.family}/${module}.tsx`);
     await page.getByRole("combobox", { name: "Template source file", exact: true }).click();
-    expect((await page.getByRole("option").allTextContents()).slice(0, files.length)).toEqual(
-      files,
-    );
+    await expect
+      .poll(async () => (await page.getByRole("option").allTextContents()).slice(0, files.length))
+      .toEqual(files);
     // Calendar is promoted first, but retain the original Approvals view/Copy/ZIP checks.
     const sourceFile = files[example.id === "roster" ? 2 : 1];
     await page.getByRole("option", { name: sourceFile, exact: true }).click();
