@@ -1,4 +1,4 @@
-import { ReuiStripePattern } from "@/blocks/data/reui-free-chart-primitives";
+import { ReuiDotPattern, ReuiStripePattern } from "@/blocks/data/reui-free-chart-primitives";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { useId } from "react";
 import {
@@ -12,6 +12,8 @@ import {
   Tooltip,
   XAxis,
   YAxis,
+  useChartWidth,
+  usePlotArea,
 } from "recharts";
 const colors = ["#ff508d", "#b485ff", "#9290ff", "#ffb23e", "#49ccbd", "#48caff", "#55cda5"];
 // Standard Tailwind 500 category hues; the default shared palette remains unchanged.
@@ -29,12 +31,32 @@ const businessBarsChartConfig = {
   Blocked: { label: "Blocked" },
   Watched: { label: "Watched" },
 };
+// Fill the native chart surface above its category axis using the actual free dot pattern.
+function InventoryDotGrid({ fill }: { fill: string }) {
+  const width = useChartWidth();
+  const plot = usePlotArea();
+  if (!width || !plot) return null;
+  return (
+    <CartesianGrid
+      x={0}
+      y={0}
+      width={width}
+      height={plot.y + plot.height}
+      horizontal={false}
+      vertical={false}
+      fill={fill}
+      fillOpacity={1}
+    />
+  );
+}
+
 export function BusinessBars({
   labels,
   large = false,
   multi = false,
   responsiveAxis = false,
   inventoryPattern = false,
+  inventoryGrid = false,
   values,
 }: {
   labels: string[];
@@ -42,6 +64,7 @@ export function BusinessBars({
   multi?: boolean;
   responsiveAxis?: boolean;
   inventoryPattern?: boolean;
+  inventoryGrid?: boolean;
   values?: number[];
 }) {
   const uid = useId().replaceAll(":", "");
@@ -85,8 +108,23 @@ export function BusinessBars({
             {...stripePaint}
           />
         ))}
+        {inventoryGrid && (
+          <ReuiDotPattern
+            id={`${uid}grid`}
+            color="var(--border)"
+            size={10}
+            radius={1.1}
+            backgroundOpacity={0}
+            dotOpacity={0.4}
+            patternTransform="translate(-3 -3)"
+          />
+        )}
       </defs>
-      <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="2 4" />
+      {inventoryGrid ? (
+        <InventoryDotGrid fill={`url(#${uid}grid)`} />
+      ) : (
+        <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="2 4" />
+      )}
       <XAxis
         dataKey="name"
         tickLine={false}
@@ -152,7 +190,10 @@ export function BusinessBars({
     </BarChart>
   );
   return (
-    <div className={`bt-rechart bt-chart-bars ${large ? "bt-chart-large" : ""}`}>
+    <div
+      className={`bt-rechart bt-chart-bars ${large ? "bt-chart-large" : ""}`}
+      data-inventory-grid={inventoryGrid || undefined}
+    >
       {responsiveAxis ? (
         // Adapted composition from free ReUI c-chart-2/3, with our existing data and dimensions.
         // MIT (c) 2025 Keenthemes Inc; components/reui/REUI-LICENSE.txt.

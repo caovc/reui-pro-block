@@ -361,3 +361,8 @@
 .manifest-stock-search-popover {
   width: min(288px, calc(100vw - 16px));
 }
+
+/* The native inventory dot field replaces the inherited desktop-only 5px texture. */
+.bt-manifest .manifest-dashboard-velocity [data-inventory-grid="true"] {
+  background-image: none;
+}

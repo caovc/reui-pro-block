@@ -487,3 +487,7 @@ native download, original strict build and console smoke verification.
   native cases and four source checks passed. The Base and Radix downloads
   each built and passed the filtered cancellation and Undo browser scenario.
   Mobile breadcrumb wrapping and pagination spacing remain visual follow-ups.
+- Manifest's plot now displays the reference 10px dot grid at phone and
+  desktop sizes. The repeating tile was calibrated against the saved
+  reference raster. Four Base/Radix geometry checks and two default
+  controls passed. Both foundations retain seven accessible inventory bars.

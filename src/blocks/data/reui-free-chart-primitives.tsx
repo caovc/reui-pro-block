@@ -118,23 +118,34 @@ export function ReuiDotPattern({
   id,
   color,
   opacity = 1,
+  size = 5,
+  radius = 1.4,
+  backgroundOpacity = 0.1,
+  dotOpacity = 0.6,
+  patternTransform,
 }: {
   id: string;
   color: string;
   opacity?: number;
+  size?: number;
+  radius?: number;
+  backgroundOpacity?: number;
+  dotOpacity?: number;
+  patternTransform?: string;
 }) {
   return (
     <pattern
       id={id}
       x="0"
       y="0"
-      width="5"
-      height="5"
+      width={size}
+      height={size}
       patternUnits="userSpaceOnUse"
       data-reui-chart="c-chart-4"
+      patternTransform={patternTransform}
     >
-      <rect width="5" height="5" fill={color} opacity={0.1 * opacity} />
-      <circle cx="5" cy="5" r="1.4" fill={color} opacity={0.6 * opacity} />
+      <rect width={size} height={size} fill={color} opacity={backgroundOpacity * opacity} />
+      <circle cx="5" cy="5" r={radius} fill={color} opacity={dotOpacity * opacity} />
     </pattern>
   );
 }
