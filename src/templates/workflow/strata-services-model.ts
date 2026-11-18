@@ -11,9 +11,11 @@ import {
   aggregateSloEvents,
   evaluateSlo,
   sloDailyHistory,
+  sloThreeDayBudgetHistory,
   validateSloDraft,
   type SloEventBucket,
   type SloEvaluation,
+  type SloBudgetHistoryPeriod,
   type SloIndicator,
   type SloWindowDays,
   type StrataSloDefinition,
@@ -29,6 +31,7 @@ interface SloSeed {
 export interface StrataSloRow extends StrataSloDefinition {
   evaluation: SloEvaluation;
   history: (number | null)[];
+  budgetHistory: SloBudgetHistoryPeriod[];
   serviceName: string;
   team: string;
   ownerName: string;
@@ -114,6 +117,36 @@ function initialSeeds(): SloSeed[] {
   ];
 }
 
+/** Independent authored daily bad-event counts, oldest first: days90 through4.
+ * Generated and checked against the exact7/28/30/90-day aggregate counts in QA.
+ * Hourly observations and every other SLO keep their original fixture generation.
+ */
+const STRATA_AUTHORED_DAILY_BAD_COUNTS: Readonly<Partial<Record<string, readonly number[]>>> = {
+  "SLO-101": [
+    3195, 3283, 3363, 3430, 3484, 3523, 3546, 3552, 3541, 3513, 3469, 3410, 3338, 3256, 3165, 3068,
+    2968, 2868, 2770, 2678, 2594, 2521, 2460, 2413, 2383, 2369, 2372, 2392, 2428, 2480, 356029,
+    2623, 2710, 2805, 2904, 3004, 3103, 3199, 3287, 3366, 3433, 3486, 3524, 3547, 3552, 3540, 3511,
+    3467, 3407, 3335, 3253, 3161, 3064, 2964, 2864, 2766, 2675, 2591, 2518, 2458, 9086, 9448, 2369,
+    2372, 2393, 2430, 2482, 2549, 2627, 2714, 2809, 2908, 3008, 3107, 3202, 3290, 3369, 3435, 3488,
+    3526, 3547, 3552, 129023, 49780, 3464, 3405, 3332,
+  ],
+  "SLO-102": [
+    452, 468, 485, 501, 516, 531, 544, 555, 564, 571, 575, 576, 574, 570, 563, 554, 543, 530, 515,
+    499, 483, 467, 451, 436, 422, 410, 400, 392, 387, 384, 384, 387, 393, 401, 411, 424, 438, 453,
+    469, 485, 501, 517, 531, 544, 555, 564, 571, 575, 576, 574, 570, 563, 554, 542, 529, 514, 499,
+    483, 466, 49924, 1182, 1224, 25761, 400, 392, 387, 384, 385, 388, 393, 401, 412, 424, 438, 454,
+    470, 486, 502, 518, 532, 545, 48, 48, 3216, 1072, 1072, 1072,
+  ],
+  "SLO-103": [
+    3178, 3166, 2567, 3194, 3148, 2569, 3225, 3136, 2564, 3240, 3117, 2565, 3250, 3081, 2573, 3264,
+    3062, 2576, 3273, 3049, 2603, 3286, 3029, 2609, 3308, 3015, 2595, 3319, 2996, 2619, 3325, 2957,
+    2626, 3334, 2937, 2637, 3340, 2924, 2661, 3347, 2904, 2674, 3359, 2891, 2684, 3364, 2871, 2698,
+    3366, 2834, 2709, 3369, 2816, 2724, 3371, 2803, 2756, 3372, 2785, 2773, 3574, 3574, 55365, 1168,
+    1129, 1093, 1062, 1035, 1014, 1000, 993, 993, 1000, 1014, 1034, 1061, 1092, 1128, 1167, 1208,
+    1250, 124, 124, 7151, 2383, 2383, 2385,
+  ],
+};
+
 function buildLedger(item: SloSeed, index: number): SloEventBucket[] {
   const { definition, initialBudgetPct, estimatedRunwayDays } = item;
   const errorFraction = (100 - definition.objectivePct) / 100;
@@ -153,6 +186,11 @@ function buildLedger(item: SloSeed, index: number): SloEventBucket[] {
       hour / 24,
       true,
     );
+  }
+  const authoredDailyBad = STRATA_AUTHORED_DAILY_BAD_COUNTS[definition.id];
+  if (authoredDailyBad) {
+    for (const [position, bad] of authoredDailyBad.entries()) buckets[position].bad = bad;
+    return buckets;
   }
   // Calibrate the independent historical ledger once. All view-time numbers
   // are subsequently derived from real windowed counts, never scalar factors.
@@ -205,6 +243,12 @@ export function selectStrataSloRows(
       ownerName: owner?.name ?? "Unassigned",
       evaluation: evaluateSlo(definition, ledger, STRATA_NOW_MS, overrides),
       history: sloDailyHistory(definition, ledger, STRATA_NOW_MS),
+      budgetHistory: sloThreeDayBudgetHistory(
+        definition,
+        ledger,
+        STRATA_NOW_MS,
+        overrides.objectivePct,
+      ),
     };
   });
 }

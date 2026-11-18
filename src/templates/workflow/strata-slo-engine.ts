@@ -54,6 +54,14 @@ export interface SloEvaluation extends SloBudget {
   runwayDays: number | null;
 }
 
+export interface SloBudgetHistoryPeriod {
+  startMs: number;
+  endMs: number;
+  total: number;
+  bad: number;
+  remainingPct: number | null;
+}
+
 function validObjective(objectivePct: number): number {
   if (!Number.isFinite(objectivePct) || objectivePct <= 0 || objectivePct >= 100) {
     throw new RangeError("An SLO objective must be above 0 and below 100 percent.");
@@ -203,6 +211,27 @@ export function sloDailyHistory(
     const end = nowMs - (days - index - 1) * SLO_DAY_MS;
     const counts = aggregateSloEvents(ownBuckets, end - SLO_DAY_MS, end);
     return counts.total ? ((counts.total - counts.bad) / counts.total) * 100 : null;
+  });
+}
+
+/** Independent local rule: thirty non-overlapping three-day event budgets. */
+export function sloThreeDayBudgetHistory(
+  definition: StrataSloDefinition,
+  buckets: readonly SloEventBucket[],
+  nowMs: number,
+  objectivePct = definition.objectivePct,
+): SloBudgetHistoryPeriod[] {
+  const ownBuckets = buckets.filter((bucket) => bucket.sloId === definition.id);
+  return Array.from({ length: 30 }, (_, index) => {
+    const endMs = nowMs - (29 - index) * 3 * SLO_DAY_MS;
+    const startMs = endMs - 3 * SLO_DAY_MS;
+    const counts = aggregateSloEvents(ownBuckets, startMs, endMs);
+    return {
+      startMs,
+      endMs,
+      ...counts,
+      remainingPct: calculateSloBudget(objectivePct, counts.total, counts.bad).remainingPct,
+    };
   });
 }
 

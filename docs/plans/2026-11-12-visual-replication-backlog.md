@@ -135,7 +135,7 @@ runtime stayed frozen throughout. See
   `docs/qa/2026-11-12-strata-public-integration.md`; final matrix:
   `/tmp/strata-shell-style-matrix-v3-native-5422-20261112/handoff.md`.
 
-- `STRATA-GEN-01` (P2, local functionality gap; reference behavior unverified):
+- `STRATA-GEN-01` (P2, local functionality gap; reference behavior partly observed):
   seven visible General preferences currently update only React form state:
   date format, first day of week, auto refresh, Markdown, timestamp display,
   reduced motion and tooltips. Calendar still fixes Monday/UTC; timestamp
@@ -151,7 +151,25 @@ runtime stayed frozen throughout. See
   return; four screenshots were inspected with no attempted write or runtime
   fault. This preference has no observed cross-page effect in that source
   flow. Treat it as an observed demo limitation rather than inventing a global
-  Sunday requirement; the other six preferences remain individually unverified.
+  Sunday requirement.
+  The isolated official date-format flow subsequently confirmed a native
+  DD/MM/YYYY selection. Unsaved Calendar New Event Starts/Ends/Due each
+  remained “October 19th, 2026” before and after; returning to General displayed
+  MM/DD/YYYY. The earlier date attempt stopped before selection because a
+  closing sheet overlay covered Settings; a separately approved five-second
+  real-pointer ownership gate preserved all original geometry checks.
+  The already-completed timestamp flow selected Local time, found all ten
+  actual EVT IDs with unchanged Time strings, then captured UTC on return.
+  Both completed UI sequences **failed** their unchanged final health gate
+  on `/settings` `net::ERR_ABORTED`; six screenshots per sequence were reviewed.
+  The failed request's cause and contribution to the returned state are unknown.
+  These are bounded source observations, not health passes or complete
+  numeric-date/global-timezone contracts. No Save/Create occurred and the
+  timestamp case was not repeated. Evidence:
+  `/tmp/strata-general-dateFormat-pointer-ready-native-20261118-attempt-01/HANDOFF.md`
+  and `/tmp/strata-general-timestamps-native-preference-20261112-attempt-01/HANDOFF.md`.
+  Auto refresh, Markdown, reduced motion and tooltips remain individually
+  unverified on the source; do not infer their consumer requirements from labels.
 
 - Exact-SHA release status at22:17 UTC: current pushed main is
   `a0e1d3c7183e0d31d6c6fd8fa9eb38095b1c9769`; run `43314161973`

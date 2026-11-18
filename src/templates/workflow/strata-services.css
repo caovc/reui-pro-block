@@ -183,9 +183,24 @@
 }
 
 .strata-slo-spark {
+  position: relative;
   width: 88px;
-  height: 24px;
+  height: 28px;
   aspect-ratio: auto;
+}
+
+.strata-slo-spark:is(:hover, :focus-within) {
+  z-index: 2;
+}
+
+.strata-slo-history-tooltip {
+  width: max-content;
+  max-width: min(360px, calc(100vw - 32px));
+  white-space: nowrap;
+}
+
+.strata-slo-history-tooltip .strata-budget-tooltip {
+  font-weight: 600;
 }
 
 .strata-slo-budget {

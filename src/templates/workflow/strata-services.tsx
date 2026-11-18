@@ -23,6 +23,8 @@ import {
   ReferenceLine,
   XAxis,
   YAxis,
+  usePlotArea,
+  useYAxisScale,
 } from "recharts";
 import {
   Frame,
@@ -167,15 +169,51 @@ function SloAlertBadge({ row }: { row: StrataSloRow }) {
   return <span className="strata-slo-quiet">Quiet</span>;
 }
 
-/** Free c-chart-13/17 Area composition from MiniTrend, with nullable SLI history.
+/** Native zero-budget paint boundary for the existing free chart composition. */
+function SloBudgetPaint({ id }: { id: string }) {
+  const plot = usePlotArea();
+  const scale = useYAxisScale();
+  const zeroY = scale?.(0);
+  if (!plot || zeroY === undefined || plot.height <= 0) return null;
+  const offset = Math.max(0, Math.min(1, (zeroY - plot.y) / plot.height));
+  return (
+    <defs>
+      <linearGradient
+        id={`${id}-stroke`}
+        gradientUnits="userSpaceOnUse"
+        x1={plot.x}
+        x2={plot.x}
+        y1={plot.y}
+        y2={plot.y + plot.height}
+      >
+        <stop offset={offset} stopColor="#08b981" />
+        <stop offset={offset} stopColor="#ef4444" />
+      </linearGradient>
+      <linearGradient
+        id={`${id}-fill`}
+        gradientUnits="userSpaceOnUse"
+        x1={plot.x}
+        x2={plot.x}
+        y1={plot.y}
+        y2={plot.y + plot.height}
+      >
+        <stop offset={offset} stopColor="#08b981" stopOpacity={0.16} />
+        <stop offset={offset} stopColor="#ef4444" stopOpacity={0.2} />
+      </linearGradient>
+    </defs>
+  );
+}
+
+/** Free c-chart-13/17 Area composition with nullable signed event-budget history.
  * MIT (c) 2025 Keenthemes Inc.; components/reui/REUI-LICENSE.txt.
- * MiniTrend accepts number[] only. ReuiTrend supports nulls but reserves 28px
- * of vertical margins, exceeding this 24px row chart. Keep the free container,
- * hidden axes, Area and gradient; extend only gaps, domain and compact margins.
+ * Keep the actual free container, native axes/Area/Tooltip and gradient layout.
+ * The compact diverging domain and three-day period model are application logic.
  */
 function SloHistory({ row }: { row: StrataSloRow }) {
   const gradient = `strata-slo-history-${useId().replaceAll(":", "")}`;
-  const observed = row.history.filter((value): value is number => value !== null);
+  const observed = row.budgetHistory
+    .map((period) => period.remainingPct)
+    .filter((value): value is number => value !== null);
   if (!observed.length)
     return (
       <span
@@ -185,34 +223,59 @@ function SloHistory({ row }: { row: StrataSloRow }) {
         No data
       </span>
     );
+  const belowBudget = observed.filter((value) => value < 0).length;
+  const utcLabel = (timestamp: number) =>
+    new Date(timestamp).toISOString().slice(0, 16).replace("T", " ");
+  const periodLabel = (startMs: number, endMs: number) =>
+    `${utcLabel(startMs)} – ${utcLabel(endMs)} UTC`;
   const minimum = Math.min(...observed);
+  const lowestPeriod = row.budgetHistory.find((period) => period.remainingPct === minimum)!;
+  const plotted = row.budgetHistory.map((period) => ({
+    name: periodLabel(period.startMs, period.endMs),
+    // Bound this compact view, while preserving the real value for its readout.
+    value: period.remainingPct === null ? null : Math.max(-100, Math.min(100, period.remainingPct)),
+    rawValue: period.remainingPct,
+  }));
   return (
     <ChartContainer
-      config={{ value: { label: "Good events", color: "#08b981" } }}
+      config={{ value: { label: "Budget left", color: "#08b981" } }}
       className="strata-slo-spark"
       data-reui-chart="c-chart-13 c-chart-17"
       role="img"
-      aria-label={`${row.name}: 90-day good-event history. ${row.history.length - observed.length} days without observations.`}
+      aria-label={`${row.name}, budget left per 3 days over 90 days. ${belowBudget} of 30 periods below zero. ${row.budgetHistory.length - observed.length} periods without observations. Lowest budget ${formatSloBudget(minimum)} for ${periodLabel(lowestPeriod.startMs, lowestPeriod.endMs)}. Values outside ±100% appear at the chart edge.`}
     >
       <ComposedChart
         accessibilityLayer={false}
-        data={row.history.map((value, index) => ({ name: `Day ${index + 1}`, value }))}
-        margin={{ top: 2, bottom: 0, left: 0, right: 0 }}
+        data={plotted}
+        margin={{ top: 2, bottom: 2, left: 0, right: 0 }}
       >
-        <defs>
-          <linearGradient id={gradient} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#08b981" stopOpacity={0.35} />
-            <stop offset="95%" stopColor="#08b981" stopOpacity={0} />
-          </linearGradient>
-        </defs>
+        <SloBudgetPaint id={gradient} />
         <XAxis dataKey="name" hide />
-        <YAxis domain={[minimum - Math.max(0.01, (100 - minimum) * 0.1), 100]} hide />
+        <YAxis domain={[-100, 100]} allowDataOverflow hide />
+        <ReferenceLine y={0} stroke="var(--border)" strokeWidth={1} />
+        <ChartTooltip
+          cursor={false}
+          content={
+            <ChartTooltipContent
+              className="strata-slo-history-tooltip"
+              indicator="dot"
+              formatter={(_value, _name, item) => (
+                <span className="strata-budget-tooltip">
+                  {formatSloBudget((item.payload as { rawValue: number | null }).rawValue)} budget
+                  left
+                </span>
+              )}
+            />
+          }
+        />
         <Area
           dataKey="value"
           type="linear"
-          stroke="#08b981"
-          strokeWidth={1}
-          fill={`url(#${gradient})`}
+          stroke={`url(#${gradient}-stroke)`}
+          strokeWidth={1.25}
+          fill={`url(#${gradient}-fill)`}
+          baseValue={0}
+          activeDot={false}
           connectNulls={false}
           isAnimationActive={false}
         />
