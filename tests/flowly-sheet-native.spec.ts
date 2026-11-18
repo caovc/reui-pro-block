@@ -231,6 +231,13 @@ for (const width of [1440, 390]) {
     // Copy feedback stays inline: a normal footer Cancel must remain reachable.
     await expect(copied).toBeVisible();
     await dialog.getByRole("button", { name: "Cancel", exact: true }).click();
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+    await expect(trigger).toBeFocused();
+    // Reopen the saved member through its real menu before checking Details.
+    await trigger.click();
+    await page.getByRole("menuitem", { name: "View member", exact: true }).click();
+    await settledDialog(dialog);
+    await expect(dialog).toBeFocused();
     await expect(dialog.getByRole("tab", { name: "Details", exact: true })).toBeVisible();
     const footer = dialog.locator(".fs-drawer-footer-member");
     await expect(footer.getByRole("button", { name: "Reset Session", exact: true })).toBeVisible();

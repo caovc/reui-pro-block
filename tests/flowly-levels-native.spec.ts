@@ -270,8 +270,7 @@ for (const { library, width } of levelCases) {
     await expect(save).toBeDisabled();
     await levels.locator('label[for="member-access-viewer"]').click();
     await dialog.getByRole("button", { name: "Cancel", exact: true }).click();
-    // Preserve the separate known Cancel-to-details behavior; verify draft disposal here.
-    if (await page.getByRole("dialog").count()) await page.keyboard.press("Escape");
+    // Cancel closes the sheet; reopening must discard the unsaved draft.
     await expect(page.getByRole("dialog")).toHaveCount(0);
     await expect(trigger).toBeFocused();
     ({ trigger, dialog, levels } = await access(page));

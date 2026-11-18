@@ -371,8 +371,7 @@ for (const width of [1440, 390]) {
     await screenshot(page, info, "access-checkboxes");
     await areas.locator('label[for="member-area-billing"]').click();
     await dialog.getByRole("button", { name: "Cancel", exact: true }).click();
-    // Do not lock in the known local Cancel-to-details mismatch; only verify draft disposal.
-    if (await page.getByRole("dialog").count()) await page.keyboard.press("Escape");
+    // Cancel closes the sheet; reopening must discard the unsaved draft.
     await expect(page.getByRole("dialog")).toHaveCount(0);
     await expect(trigger).toBeFocused();
     ({ trigger, dialog } = await openAccess(page));
