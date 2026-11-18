@@ -20,6 +20,7 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { useGlobalTheme } from "./global-theme-store";
+import { useSourceDocument } from "./source-document";
 import "./code-viewer.css";
 
 export function CodeViewer({ block, dark }: { block: BlockMeta; dark: boolean }) {
@@ -32,9 +33,18 @@ export function CodeViewer({ block, dark }: { block: BlockMeta; dark: boolean })
   const [selected, setSelected] = useState(names[0]);
   const filename = selected in files ? selected : names[0];
   const language = filename.endsWith(".css") ? "css" : filename.endsWith(".json") ? "json" : "tsx";
+  const source = useSourceDocument({
+    scope: "block",
+    documentId: `${block.group}/${block.id}`,
+    filename,
+    code: files[filename],
+    language,
+  });
   return (
     <CodeBlock
       code={files[filename]}
+      lines={source.lines}
+      aria-busy={source.loading}
       language={language}
       showLineNumbers
       label={`Source code: ${filename}`}
@@ -77,6 +87,13 @@ export function CodeViewer({ block, dark }: { block: BlockMeta; dark: boolean })
           />
         </div>
       </CodeBlockHeader>
+      {(source.loading || source.highlightUnavailable) && (
+        <p role="status" className="text-muted-foreground px-3 py-1 text-xs">
+          {source.loading
+            ? "Loading source…"
+            : "Syntax highlighting unavailable. Showing original source."}
+        </p>
+      )}
     </CodeBlock>
   );
 }

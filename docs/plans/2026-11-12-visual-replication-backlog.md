@@ -467,3 +467,10 @@ native download, original strict build and console smoke verification.
   their accessible values. Four paint checks, two live style and resize
   checks and two Atlas default-pattern controls passed. Default shared
   pattern output was compared separately against the prior renderer.
+- Working Agreements source drawer now loads its file viewer separately
+  from the starter controls. Theme CSS is prepared when first opened.
+  The block viewer and expanded CSS use the same worker-backed highlighting
+  implementation as template source. Both original drawer tests passed
+  including ZIP, full source, copy and single-file download
+  (21.1s Radix/Vega, 17.7s Base/Lyra). Four Theme CSS interaction checks
+  and 14 source and template regressions passed with the original timeouts.

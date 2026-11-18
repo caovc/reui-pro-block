@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import { ArrowDownToLine, Terminal } from "lucide-react";
 import { toast } from "sonner";
 import type { BlockMeta } from "@/data/types";
@@ -10,8 +10,50 @@ import {
   CodeBlockCopyButton,
   CodeBlockDownloadButton,
 } from "@/components/reui/code-block/code-block";
-import { CodeViewer } from "./code-viewer";
 import { themeCSS, type PreviewTheme } from "./preview-theme";
+import { useSourceDocument } from "./source-document";
+
+const CodeViewer = lazy(() =>
+  import("./code-viewer").then((module) => ({ default: module.CodeViewer })),
+);
+
+function ThemeSource({ code }: { code: string }) {
+  const source = useSourceDocument({
+    scope: "theme",
+    documentId: "preview-theme",
+    filename: "preview-theme.css",
+    code,
+    language: "css",
+  });
+  return (
+    <CodeBlock
+      code={code}
+      lines={source.lines}
+      aria-busy={source.loading}
+      language="css"
+      showLineNumbers
+      label="Theme CSS"
+    >
+      <CodeBlockHeader>
+        <span>preview-theme.css</span>
+        <div className="flex">
+          <CodeBlockDownloadButton filename="preview-theme.css" label="Download theme CSS" />
+          <CodeBlockCopyButton
+            key={code}
+            onCopyError={() => toast.error("Could not copy theme CSS")}
+          />
+        </div>
+      </CodeBlockHeader>
+      {(source.loading || source.highlightUnavailable) && (
+        <p role="status" className="text-muted-foreground px-3 py-1 text-xs">
+          {source.loading
+            ? "Loading source…"
+            : "Syntax highlighting unavailable. Showing original source."}
+        </p>
+      )}
+    </CodeBlock>
+  );
+}
 
 const managers = ["pnpm", "npm", "yarn", "bun"] as const;
 export function SourcePanel({
@@ -25,6 +67,7 @@ export function SourcePanel({
 }) {
   const [manager, setManager] = useState<string>("pnpm");
   const [downloading, setDownloading] = useState(false);
+  const [themeSourceRequested, setThemeSourceRequested] = useState(false);
   const command = `${manager} install\n${manager === "yarn" ? "yarn dev" : `${manager} run dev`}`;
   const themeCode = themeCSS(theme);
   async function download() {
@@ -86,26 +129,28 @@ export function SourcePanel({
           Full implementation with imports, demo data and interactions. Shared components and the
           usage example are available in the file selector.
         </p>
-        <CodeViewer key={`${block.group}/${block.id}`} block={block} dark={dark} />
+        <Suspense
+          fallback={
+            <p role="status" className="text-sm text-muted-foreground">
+              Loading source code…
+            </p>
+          }
+        >
+          <CodeViewer key={`${block.group}/${block.id}`} block={block} dark={dark} />
+        </Suspense>
       </section>
-      <details className="preset-source">
+      <details
+        className="preset-source"
+        onToggle={(event) => {
+          if (event.currentTarget.open) setThemeSourceRequested(true);
+        }}
+      >
         <summary>Theme CSS · current customization</summary>
         <p>
           Append this CSS after the starter’s existing theme. Apply the <code>dark</code> class to
           the root element for dark mode.
         </p>
-        <CodeBlock code={themeCode} language="css" showLineNumbers label="Theme CSS">
-          <CodeBlockHeader>
-            <span>preview-theme.css</span>
-            <div className="flex">
-              <CodeBlockDownloadButton filename="preview-theme.css" label="Download theme CSS" />
-              <CodeBlockCopyButton
-                key={themeCode}
-                onCopyError={() => toast.error("Could not copy theme CSS")}
-              />
-            </div>
-          </CodeBlockHeader>
-        </CodeBlock>
+        {themeSourceRequested && <ThemeSource code={themeCode} />}
       </details>
     </div>
   );
