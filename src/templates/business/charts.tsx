@@ -14,6 +14,16 @@ import {
   YAxis,
 } from "recharts";
 const colors = ["#ff508d", "#b485ff", "#9290ff", "#ffb23e", "#49ccbd", "#48caff", "#55cda5"];
+// Standard Tailwind 500 category hues; the default shared palette remains unchanged.
+const inventoryColors = [
+  "oklch(0.645 0.246 16.439)",
+  "oklch(0.606 0.25 292.717)",
+  "oklch(0.585 0.233 277.117)",
+  "oklch(0.769 0.188 70.08)",
+  "oklch(0.704 0.14 182.503)",
+  "oklch(0.685 0.169 237.323)",
+  "oklch(0.696 0.17 162.48)",
+];
 const businessBarsChartConfig = {
   Units: { label: "Units" },
   Blocked: { label: "Blocked" },
@@ -24,12 +34,14 @@ export function BusinessBars({
   large = false,
   multi = false,
   responsiveAxis = false,
+  inventoryPattern = false,
   values,
 }: {
   labels: string[];
   large?: boolean;
   multi?: boolean;
   responsiveAxis?: boolean;
+  inventoryPattern?: boolean;
   values?: number[];
 }) {
   const uid = useId().replaceAll(":", "");
@@ -42,6 +54,19 @@ export function BusinessBars({
     Watched: cyan[i],
     Units: values?.[i] ?? single[i],
   }));
+  // Reuse the free 8px diagonal path: this scale gives 5px perpendicular spacing.
+  // Rotating the original path retains its geometry; compensating width keeps a 1px stroke.
+  const inventoryStripeScale = (5 * Math.SQRT2) / 8;
+  const inventoryStripeOffset = Math.SQRT1_2 / 2;
+  const stripePaint = inventoryPattern
+    ? {
+        secondaryStroke: false,
+        backgroundOpacity: 0.5,
+        strokeOpacity: 1,
+        strokeWidth: 1 / inventoryStripeScale,
+        patternTransform: `translate(${inventoryStripeOffset},${-inventoryStripeOffset}) rotate(90) scale(${inventoryStripeScale})`,
+      }
+    : {};
   const chart = (
     <BarChart
       accessibilityLayer
@@ -52,8 +77,13 @@ export function BusinessBars({
     >
       <defs>
         <ReuiStripePattern id={uid} color="#5277f0" />
-        {colors.map((color, index) => (
-          <ReuiStripePattern key={color} id={`${uid}color${index}`} color={color} />
+        {(inventoryPattern ? inventoryColors : colors).map((color, index) => (
+          <ReuiStripePattern
+            key={color}
+            id={`${uid}color${index}`}
+            color={color}
+            {...stripePaint}
+          />
         ))}
       </defs>
       <CartesianGrid vertical={false} stroke="var(--border)" strokeDasharray="2 4" />

@@ -71,26 +71,45 @@ export function ReuiStripePattern({
   id,
   color,
   opacity = 1,
+  secondaryStroke = true,
+  backgroundOpacity = 0.1,
+  strokeOpacity = 0.6,
+  strokeWidth = 1.5,
+  patternTransform,
 }: {
   id: string;
   color: string;
   opacity?: number;
+  secondaryStroke?: boolean;
+  backgroundOpacity?: number;
+  strokeOpacity?: number;
+  strokeWidth?: number;
+  patternTransform?: string;
 }) {
   return (
-    <pattern id={id} patternUnits="userSpaceOnUse" width="8" height="8" data-reui-chart="c-chart-3">
-      <rect width="8" height="8" fill={color} opacity={0.1 * opacity} />
+    <pattern
+      id={id}
+      patternUnits="userSpaceOnUse"
+      width="8"
+      height="8"
+      data-reui-chart="c-chart-3"
+      patternTransform={patternTransform}
+    >
+      <rect width="8" height="8" fill={color} opacity={backgroundOpacity * opacity} />
       <path
         d="M0,8 L8,0 M4,12 L12,4 M-4,4 L4,-4"
         stroke={color}
-        strokeWidth="1.5"
-        opacity={0.6 * opacity}
+        strokeWidth={strokeWidth}
+        opacity={strokeOpacity * opacity}
       />
-      <path
-        d="M2,10 L10,2 M6,14 L14,6 M-2,6 L6,-2"
-        stroke={color}
-        strokeWidth="1"
-        opacity={0.3 * opacity}
-      />
+      {secondaryStroke && (
+        <path
+          d="M2,10 L10,2 M6,14 L14,6 M-2,6 L6,-2"
+          stroke={color}
+          strokeWidth="1"
+          opacity={0.3 * opacity}
+        />
+      )}
     </pattern>
   );
 }

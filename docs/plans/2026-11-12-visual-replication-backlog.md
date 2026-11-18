@@ -461,3 +461,9 @@ native download, original strict build and console smoke verification.
   iframe. Baseline and candidate Sera/Rhea both passed locally. All six
   paired screenshots and the measured hit stacks matched. The historical
   click target remains unknown. Scaled previews retain their transform.
+- Manifest Inventory Velocity now uses the observed 50% base fill and a single
+  descending 1px stripe every 5px. The phone and desktop reference used live
+  demo categories. Local acceptance retains all seven local categories and
+  their accessible values. Four paint checks, two live style and resize
+  checks and two Atlas default-pattern controls passed. Default shared
+  pattern output was compared separately against the prior renderer.

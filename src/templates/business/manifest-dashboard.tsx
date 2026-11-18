@@ -247,6 +247,7 @@ export function ManifestDashboard({
           <BusinessBars
             large
             responsiveAxis
+            inventoryPattern
             values={[11, 14, 15, 15, 12, 10, 17]}
             labels={[
               "Accessories",
