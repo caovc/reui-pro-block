@@ -5,10 +5,13 @@
 ## 11 月 18 日重连
 
 - 已快进到远端 `5bfe1f2`，该提交更新六个测试文件。Actions run `44253141969` 构建与三个浏览器分片通过，第 4 分片有两个失败、735 个通过，部署跳过。
-- Flux 在打开菜单后立即读取到空选项列表。等待相同文件前缀及顺序后，原用例通过，耗时 8.3 秒。提交为 `c0e72c3`。Job Schedule 在 Base UI、1440px 下点击 Lost Days 超时，另行诊断。
+- Flux 在打开菜单后立即读取到空选项列表。等待相同文件前缀及顺序后，原用例通过，耗时 8.3 秒。提交为 `c0e72c3`。Job Schedule 快速切换时，旧菜单将焦点从新打开的筛选器夺回。修复和永久回归已推送为 `2024de1`，合计十项验证通过。
 - Filebox 候选 5469 的原始双库构建通过，耗时 126.363 秒。Nova 桌面 Radix/Base 的 New Folder 原生用例均已通过，涵盖 Escape 焦点、创建和重命名。独立 Base 导出包的 263 项校验、全新安装、严格构建、登录后创建文件夹均已通过，永久键盘用例两项通过。已推送 `71081b8`（Actions run `44266585745`）。Quick Entry 的修复已通过 Nova 桌面双库四项原生检查，另有两项永久测试直接运行通过。已推送至 main 的提交为 `56b7f2a`，对应 Actions run `44264169336`。
 
-## 最新接续点（23:41 UTC，优先于下面历史检查点）
+- Strata Overview 的 SLO 标签和超出目标的采样点已推送为 `71779c1`，两库八样式、两个宽度共 32 项通过。Cohort Sera 部门及地点页脚修复推送为 `2a6e38d`，八项针对性检查及七项对照通过。
+- 在 390px 的 Working Agreements 中，Sera 样式的周按钮宽于表格单元，两套组件库都能复现鼠标打开相邻周。构建 5480 的 28 次边缘点击校验通过；其他手机样式中发现 Luma 的最左周按钮有 2px 被遮挡，单独跟进。Prospect Database 的 Base/Sera 交接账户弹窗仍有远端失败，已开始采集真实焦点及点击时序。71779c1 的第 4 分片 739 项通过；第 2 分片另有 Tiptap 选区失败，部署跳过。Strata Services 的官网可访问性标签显示每三天的剩余预算。旧候选绘制每日达标比例，已退回重做。
+
+## 11 月 12 日历史接续点（23:41 UTC）
 
 - Root已完成本批验证并开始两个逻辑commit：CohortCI修复3268510400ced6826dc9f8acc95325a156920f24（CSS scope、footer readiness测试、QA3files），SourceViewer+Round3 full-byte等待+永久focus4+QA/计划随后；push以最终head为准，勿把commit当已push。Round3 corrected全5首过：Cohort11079/Flux6757/Pulse4514/Roster4982/Echo4980ms，8DOM/Clipboard/selectedZIP字节链、5ZIP1735成员CRC完整审，原blankLoading失败仍保留；报告 `/tmp/source-round3-5466-offline-audit-20261112/handoff.md`。全仓format2104files过/lint exit0有既存warning。FileboxNewFolder只读诊断23:45:30.806首FAIL，原263/dist/lock前后exact，独立实际目标/根因解读中，原smoke目标仍unknown。
 - Git main仍4d0e3ee已push，Source5未提交；新增Source永久focus4共享464bfb已通过直接adapter2（5470/5180ms，8focus断言，2trace/4JPEGview），全proof在 `/tmp/source-picker-permanent-adapter2-5458-first-native-20261112-9b758324/final-handoff.md`。Source当前Main5458 fullbuild101.988/critical3/phone4/core26+natural4+realFault2全已审，原asyncnull故障注入失败保留；QA已准备。Base原263包正常freshinstall80.464/strictbuild20.778实过，own34dist5465 smoke首FAIL：NewFolder Escape后opener未获焦，实际目标未捕/Create未到；所有263+dist+lock保持，不能冒export运行绿。独立consumer诊断静态READY `/tmp/filebox-new-folder-focus-diagnostic-prep-20261112`，现owner filebox_focus_resume4。

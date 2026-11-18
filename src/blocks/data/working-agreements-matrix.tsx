@@ -65,7 +65,7 @@ function WeekTile({
           aria-label={`${row.name}, week of ${week.label}: ${weekDetail(row, week)}`}
           tabIndex={week.current ? 0 : -1}
           data-agreement-week={week.index}
-          className="h-7 w-full min-w-0 scroll-ml-[212px] rounded-sm px-0 hover:bg-muted @min-[880px]:h-[22px] @min-[880px]:scroll-ml-0"
+          className="h-7 w-full max-w-full min-w-0 scroll-ml-[212px] rounded-sm px-0 hover:bg-muted @min-[880px]:h-[22px] @min-[880px]:scroll-ml-0"
         >
           <span aria-hidden="true" className={cn("size-4 rounded-[3px]", outcome.fill)} />
         </Button>
