@@ -1,10 +1,16 @@
 import { readFile } from "node:fs/promises";
 import { test, expect } from "@playwright/test";
+import { editorSelectionFailureNotice } from "./editor-selection-failure-notice";
 
 const endDocument = process.platform === "darwin" ? "Meta+ArrowDown" : "Control+End";
 const startLine = process.platform === "darwin" ? "Meta+ArrowLeft" : "Home";
 const selectLine = process.platform === "darwin" ? "Meta+Shift+ArrowRight" : "Shift+End";
 const route = (kind: number) => `/#/preview/application/rich-text-editor/rich-text-editor-${kind}`;
+
+test.afterEach(() => {
+  const notice = editorSelectionFailureNotice(test.info());
+  if (notice) console.log(notice);
+});
 
 test("Tiptap edits, formats and restores the saved document with native undo and redo", async ({
   page,
