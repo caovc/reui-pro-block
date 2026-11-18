@@ -449,3 +449,8 @@ native download, original strict build and console smoke verification.
   gaps in Workspace and 1px gaps in Services. Two live Nova → Sera → Nova
   checks passed. The initial baseline locator missed the collapsible
   Infrastructure row and was corrected before the baseline measurements.
+- Flowly's official Change access dialog closes on Cancel and restores the
+  originating menu trigger. A fresh webhook endpoint selects only run.failed.
+  Both behaviors now match on Base and Radix at 390px and 1440px. Eight
+  targeted baseline failures became eight passes. Eight existing edit-flow
+  checks and two actual starter ZIP source checks passed on the candidate.

@@ -673,10 +673,7 @@ export function FlowlyMemberDrawer({
               Remove Access
             </Button>
             <div>
-              <Button
-                variant="outline"
-                onClick={() => model.setDialog({ kind: "member", id, mode: "details" })}
-              >
+              <Button variant="outline" onClick={() => model.setDialog(null)}>
                 Cancel
               </Button>
               <Button disabled={!dirty} onClick={save}>

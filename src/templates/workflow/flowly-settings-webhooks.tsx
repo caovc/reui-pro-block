@@ -466,7 +466,7 @@ export function FlowlyWebhookCreate({ model }: { model: FlowlySettingsModel }) {
     id: crypto.randomUUID(),
     url: "",
     description: "",
-    events: ["run.completed"],
+    events: ["run.failed"],
     status: "Delivering",
     success: "100%",
     retry: "24 hours",
