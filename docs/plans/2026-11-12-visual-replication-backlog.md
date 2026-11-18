@@ -383,3 +383,22 @@ native download, original strict build and console smoke verification.
   remains uninstrumented. Other styles, phone, pickers, Filebox/export and
   deployment gates remain separate. See
   `docs/qa/2026-11-13-quick-entry-status-focus.md`.
+
+## November 18 browser review
+
+- Filebox New Folder return focus is fixed in `71081b8`. Both foundations
+  passed the Nova desktop regression, and the independently installed Base
+  download passed its own browser smoke test. See
+  `docs/qa/2026-11-18-filebox-new-folder.md`.
+- Strata Overview now displays the 99.5% SLO label and below-target markers.
+  All 32 foundation/style/width combinations passed, as did the existing Cron
+  regression. See `docs/qa/2026-11-18-strata-slo-chart.md`.
+- Working Agreements historical-week access passed on 390px Nova and Sera
+  under Radix and Base. On Sera, adjacent week controls measure 40px across
+  in columns spaced 24px apart. Check which week receives pointer input near
+  the edges. The four functional passes cover center hits and keyboard access.
+- Cohort Departments and Locations have a confirmed Sera footer overflow
+  under both foundations. At 320px the status region has zero width and the
+  actions extend 8.6px past the viewport. At 390px status text overlaps
+  Discard. Candidate verification includes the existing Profile and Working
+  week footer regressions.

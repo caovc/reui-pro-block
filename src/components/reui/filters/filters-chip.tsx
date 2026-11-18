@@ -433,15 +433,18 @@ export interface FilterValuePopoverProps<V = unknown, O = unknown> {
   className?: string;
 }
 
-// Radix restores focus in a task after an exiting portal unmounts. A user
-// can open the next editor before that task runs; keep its focus rather
-// than returning to the old trigger and dismissing the new popover.
+// An exiting portal can restore focus after the next native popup opens.
+// Keep that popup's focus, including its trigger before an item gains focus.
 function preserveActiveFilterPopoverFocus(event: Event) {
   const closingPanel = event.target;
-  if (!(closingPanel instanceof HTMLElement)) return;
-  const focused = closingPanel.ownerDocument.activeElement;
-  const activePanel = focused?.closest('[data-slot="popover-content"][data-state="open"]');
-  if (activePanel && activePanel !== closingPanel) event.preventDefault();
+  // Base's compatibility callback has no popup target; read its active document.
+  const ownerDocument = closingPanel instanceof HTMLElement ? closingPanel.ownerDocument : document;
+  const focused = ownerDocument.activeElement;
+  const activePanel = focused?.closest(
+    '[data-slot="popover-content"][data-state="open"], [data-slot="select-content"][data-state="open"]',
+  );
+  const expandedSelect = focused?.matches('[data-slot="select-trigger"][aria-expanded="true"]');
+  if ((activePanel && activePanel !== closingPanel) || expandedSelect) event.preventDefault();
 }
 
 export function FilterValuePopover<V, O>({
