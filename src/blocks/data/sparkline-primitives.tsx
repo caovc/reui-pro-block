@@ -5,7 +5,17 @@
  * composition; hidden axes and responsive compact dimensions extend the examples.
  */
 import { useId, useState, type ReactNode } from "react";
-import { Area, Bar, Cell, ComposedChart, Line, ReferenceLine, XAxis, YAxis } from "recharts";
+import {
+  Area,
+  Bar,
+  Cell,
+  ComposedChart,
+  Line,
+  ReferenceDot,
+  ReferenceLine,
+  XAxis,
+  YAxis,
+} from "recharts";
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart";
 import { Badge } from "@/components/reui/badge";
 import { ReuiDotPattern } from "./reui-free-chart-primitives";
@@ -67,6 +77,8 @@ export function MiniTrend({
   format = (v: number) => v.toLocaleString(),
   names,
   threshold,
+  thresholdLabel,
+  thresholdMarkerColor,
   bars = false,
   pins = false,
   beads = false,
@@ -87,6 +99,8 @@ export function MiniTrend({
   format?: (v: number) => string;
   names?: string[];
   threshold?: number;
+  thresholdLabel?: string;
+  thresholdMarkerColor?: string;
   bars?: boolean;
   pins?: boolean;
   beads?: boolean;
@@ -177,6 +191,17 @@ export function MiniTrend({
               stroke="var(--muted-foreground)"
               strokeOpacity={0.5}
               strokeDasharray="3 3"
+              label={
+                thresholdLabel
+                  ? {
+                      value: thresholdLabel,
+                      position: "insideTopLeft",
+                      fill: "var(--muted-foreground)",
+                      fontSize: 10,
+                      offset: 4,
+                    }
+                  : undefined
+              }
             />
           )}
           {tooltips && (
@@ -245,6 +270,20 @@ export function MiniTrend({
               isAnimationActive={false}
             />
           )}
+          {threshold !== undefined &&
+            thresholdMarkerColor &&
+            rows
+              .filter((row) => row.value < threshold)
+              .map((row) => (
+                <ReferenceDot
+                  key={row.name}
+                  x={row.name}
+                  y={row.value}
+                  r={2}
+                  fill={thresholdMarkerColor}
+                  stroke="none"
+                />
+              ))}
         </ComposedChart>
       </ChartContainer>
       {keyboard && point !== null && (

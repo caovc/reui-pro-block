@@ -598,6 +598,8 @@ export function StrataOverview({
               area
               color={tones.healthy}
               threshold={99.5}
+              thresholdLabel="SLO 99.5%"
+              thresholdMarkerColor={tones.timeout}
               height={54}
               domain={[Math.min(95, ...rates.map((hour) => hour.successRate!)) - 1, 100.5]}
               keyboard
