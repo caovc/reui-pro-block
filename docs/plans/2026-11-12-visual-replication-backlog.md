@@ -443,3 +443,9 @@ native download, original strict build and console smoke verification.
   Four existing account-popup cases passed. The initial focus comparison
   sampled an in-progress outline animation. The corrected check waited
   for the final ring color within the existing timeout.
+- Lucent cadence verification passed on both foundations at 390px and
+  1440px. Four baseline cases measured 32px rows with zero gap in both
+  groups. After the scoped change, four cases measured 32px rows plus 4px
+  gaps in Workspace and 1px gaps in Services. Two live Nova → Sera → Nova
+  checks passed. The initial baseline locator missed the collapsible
+  Infrastructure row and was corrected before the baseline measurements.

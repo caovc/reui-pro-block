@@ -88,3 +88,16 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+
+/* Lucent's 32px rows keep the public sidebar's group-specific cadence. */
+:is(.wf-root.wf-devops [data-slot="sidebar"][data-state="expanded"], .wf-native-mobile.wf-devops)
+  [data-slot="sidebar-content"]
+  > .wf-native-navigation
+  > [data-slot="sidebar-group-content"]
+  > [data-slot="sidebar-menu"] {
+  row-gap: 4px;
+}
+
+.lucent-services-navigation > [data-slot="collapsible"] [data-slot="sidebar-menu"] {
+  row-gap: 1px;
+}
