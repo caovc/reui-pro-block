@@ -424,3 +424,22 @@ native download, original strict build and console smoke verification.
   foundations and both widths. It gives status 252px at 320px and 322px at
   390px. The Nova Profile header/footer retained their 52px/48px geometry,
   and six Working week controls passed.
+- Lucent Services Workspace rows have the same 32px height locally and in
+  the reference. Their centers advance 32px locally and 36px on the reference.
+  The Services group has a separate 1px reference gap. Verify both groups,
+  the collapsed rail, and a live style switch on Base and Radix.
+- Manifest Inventory Velocity bars have a lighter stripe treatment and a
+  different diagonal direction from the reference. Track this separately
+  from category tick bounds. Compare a chart-scoped change on both foundations.
+- Working Agreements source drawer timed out on the starter download in both
+  original source tests. The header download worked on Base/Lyra and
+  Radix/Vega. Verify the drawer download, copy and single-file actions on
+  the original test path after isolating source viewer loading.
+- Strata Services on the light reference has white inactive rows on a white
+  sidebar. The local canvas was RGB 250 while inactive rows were white.
+  Binding the Strata sidebar token to the background matched the reference
+  and preserved the active RGB 245 fill. Eight paired Base/Radix cases at
+  390px and 1440px covered system light/dark, hover, focus and navigation.
+  Four existing account-popup cases passed. The initial focus comparison
+  sampled an in-progress outline animation. The corrected check waited
+  for the final ring color within the existing timeout.

@@ -5,6 +5,10 @@
   font-size: 14px;
 }
 
+.strata-sidebar {
+  --sidebar: var(--background);
+}
+
 /* The consumer's explicit mobile width takes precedence over Sheet's 75% side width. */
 .strata-sidebar[data-mobile="true"] {
   width: var(--sidebar-width);
