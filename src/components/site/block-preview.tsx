@@ -191,7 +191,7 @@ export function PreviewPanel({ block }: { block: BlockMeta; dark: boolean }) {
                     style={{
                       width: desired,
                       height: Math.max(760, 640 / scale),
-                      transform: `scale(${scale})`,
+                      transform: scale === 1 ? undefined : `scale(${scale})`,
                     }}
                     className="live-frame"
                   />

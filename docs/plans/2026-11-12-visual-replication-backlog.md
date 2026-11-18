@@ -454,3 +454,10 @@ native download, original strict build and console smoke verification.
   Both behaviors now match on Base and Radix at 390px and 1440px. Eight
   targeted baseline failures became eight passes. Eight existing edit-flow
   checks and two actual starter ZIP source checks passed on the candidate.
+- Prospect Database still had one Base/Rhea failure in run 44298655283.
+  Escape and return focus were captured, but the preview document recorded
+  no trusted pointer event. The desktop preview now omits its identity CSS
+  transform, which allows Playwright to check pointer hits in an unscaled
+  iframe. Baseline and candidate Sera/Rhea both passed locally. All six
+  paired screenshots and the measured hit stacks matched. The historical
+  click target remains unknown. Scaled previews retain their transform.
