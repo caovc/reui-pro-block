@@ -397,8 +397,9 @@ native download, original strict build and console smoke verification.
   under Radix and Base. On Sera, adjacent week controls measure 40px across
   in columns spaced 24px apart. On both foundations, real pointer clicks on the right edge
   of Apr 6, Jun 29, and Sep 21 opened the following week. Constraining the existing week button to its cell width fixed all 28
-  edge-hit checks across Nova/Sera and both foundations. Luma has a separate
-  visibility issue at the sticky boundary; the phone matrix is still open.
+  edge-hit checks across Nova/Sera and both foundations. Luma also clipped the first button by 2px. The initial
+  scroll now keeps all five buttons fully visible whenever they fit. Build
+  5481 passed 16 phone cases, 16 desktop cases and four permanent regressions.
 - Cohort Departments and Locations have a confirmed Sera footer overflow
   under both foundations. At 320px the status region has zero width and the
   actions extend 8.6px past the viewport. At 390px status text overlaps

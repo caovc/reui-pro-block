@@ -209,10 +209,30 @@ export function WorkingAgreementsMatrix({
   const matrix = useRef<HTMLTableElement>(null);
 
   useLayoutEffect(() => {
-    const container = matrix.current?.parentElement;
-    if (!container) return;
+    const table = matrix.current;
+    const container = table?.parentElement;
+    if (!table || !container) return;
     const showCurrentWeek = () => {
-      container.scrollLeft = container.scrollWidth - container.clientWidth;
+      const maximum = Math.max(0, container.scrollWidth - container.clientWidth);
+      let target = maximum;
+      if (maximum > 0) {
+        const row = table.querySelector<HTMLTableRowElement>("[data-agreement-row]");
+        const label = row?.querySelector<HTMLElement>('[scope="row"]');
+        const weeks = row?.querySelectorAll<HTMLButtonElement>("[data-agreement-week]");
+        if (label && weeks && weeks.length >= 5 && getComputedStyle(label).position === "sticky") {
+          const first = weeks[weeks.length - 5].getBoundingClientRect();
+          const last = weeks[weeks.length - 1].getBoundingClientRect();
+          const labelWidth = label.getBoundingClientRect().width;
+          if (container.clientWidth - labelWidth >= last.right - first.left) {
+            // Keep the latest five complete before spending room on trailing padding.
+            target = Math.min(
+              maximum,
+              Math.max(0, first.left - table.getBoundingClientRect().left - labelWidth),
+            );
+          }
+        }
+      }
+      container.scrollLeft = target;
     };
     showCurrentWeek();
     const observer = new ResizeObserver(showCurrentWeek);
