@@ -303,6 +303,7 @@ export default function Drive({ id }: { id: string }) {
   ]);
   const headerRef = useRef<HTMLElement>(null);
   const previewReturn = useRef<{ fileId: string; origin: string } | null>(null);
+  const newFolderReturn = useRef<HTMLButtonElement | null>(null);
   const [query, setQuery] = useState("");
   const [type, setType] = useState("All types");
   const [layout, setLayout] = useState("list");
@@ -741,7 +742,10 @@ export default function Drive({ id }: { id: string }) {
                     variant="outline"
                     size="icon"
                     aria-label="New Folder"
-                    onClick={() => setModal("New Folder")}
+                    onClick={(event) => {
+                      newFolderReturn.current = event.currentTarget;
+                      setModal("New Folder");
+                    }}
                   >
                     <FolderPlus />
                   </Button>
@@ -1198,8 +1202,17 @@ export default function Drive({ id }: { id: string }) {
         />
         <Modal
           onCloseAutoFocus={(event) => {
+            const folderOpener = newFolderReturn.current;
+            newFolderReturn.current = null;
             const returnTo = previewReturn.current;
             previewReturn.current = null;
+            if (folderOpener?.isConnected) {
+              folderOpener.focus({ preventScroll: true });
+              if (document.activeElement === folderOpener) {
+                event.preventDefault();
+                return;
+              }
+            }
             if (!returnTo || returnTo.origin !== window.location.hash) return;
             const scope = headerRef.current?.closest(".ct-drive-native-root");
             const opener = Array.from(
