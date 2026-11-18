@@ -369,3 +369,17 @@ native download, original strict build and console smoke verification.
   original 263 members remain unchanged. Consumer/native-focus investigation
   is queued; this does not change Source viewer acceptance. Evidence:
   `/tmp/filebox-base-original-fresh-smoke-5465-native-20261112-p8z2nv7k/`.
+
+- `DIALOG-12-01` (P2, fixed locally; exact-SHA CI pending): Base Nova desktop
+  Quick Entry Status Escape removed the child popup but left focus on the
+  parent DIV through the original 5s assertion. Candidate 5466's two Radix
+  passes, Base Escape failure and unexecuted Base selection remain preserved.
+  The single free ReUI Combobox 21 consumer now focuses its connected trigger
+  before Escape/item-press unmounts the popup input, retaining native
+  finalFocus, modality and portal behavior. Candidate 5467 passed the original
+  four Radix/Base × Escape/selection cases; the direct permanent shared-test
+  subset also passed Radix selection and Base Escape with original bodies and
+  budgets. Coverage is Nova at 1440×1000; Quick Entry's exact event ordering
+  remains uninstrumented. Other styles, phone, pickers, Filebox/export and
+  deployment gates remain separate. See
+  `docs/qa/2026-11-13-quick-entry-status-focus.md`.
