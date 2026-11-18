@@ -1,0 +1,99 @@
+/* Surge-owned page shell composed from the actual ReUI Frame and DataGrid. */
+.surge-purchase-orders {
+  min-width: 0;
+  color: var(--foreground);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.surge-purchase-orders-heading {
+  display: flex;
+  min-height: 32px;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.surge-purchase-orders-heading h1 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 28px;
+}
+
+.surge-purchase-orders-frame,
+.surge-purchase-orders-panel {
+  min-width: 0;
+}
+
+.surge-purchase-orders-panel {
+  overflow: hidden;
+  padding: 0;
+}
+
+.surge-purchase-orders-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.surge-purchase-orders-search {
+  width: 240px;
+  max-width: 100%;
+}
+
+.surge-purchase-status {
+  width: 176px;
+}
+
+.surge-purchase-orders-grid table {
+  min-width: 970px;
+}
+
+@media (max-width: 767px) {
+  .surge-purchase-orders-heading {
+    min-height: 28px;
+  }
+
+  .surge-purchase-orders-heading h1 {
+    font-size: 18px;
+  }
+
+  .surge-purchase-orders-search {
+    width: 100%;
+  }
+}
+
+.surge-purchase-order-identity,
+.surge-purchase-order-date {
+  display: flex;
+  flex-direction: column;
+}
+
+.surge-purchase-order-identity code {
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.surge-purchase-order-identity small,
+.surge-purchase-order-date small {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.surge-purchase-total {
+  font-weight: 500;
+}
+
+.surge-purchase-orders-grid th {
+  height: 40px;
+  padding-inline: 16px;
+}
+
+.surge-purchase-orders-grid td {
+  padding: 8px 16px;
+}

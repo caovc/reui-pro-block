@@ -480,3 +480,10 @@ native download, original strict build and console smoke verification.
   checks on Base and Radix, four existing regressions and two permanent
   zero-count/UTC tests passed. Earlier candidates omitted two tracks or
   displayed Invalid Date. The local event fixtures remain independent.
+- Surge Inventory now includes Purchase orders. Both foundations support
+  direct navigation, search, status filtering, sorting, pagination, receipt
+  into inventory, cancellation and Undo. With Draft selected, cancelling the
+  last matching row returns focus to the search field. Sixteen targeted
+  native cases and four source checks passed. The Base and Radix downloads
+  each built and passed the filtered cancellation and Undo browser scenario.
+  Mobile breadcrumb wrapping and pagination spacing remain visual follow-ups.

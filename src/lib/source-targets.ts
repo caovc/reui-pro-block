@@ -632,6 +632,7 @@ export function templateImplementationTargets(template: {
       "surge-dashboard",
       "surge-date-range",
       "surge-operations",
+      "surge-purchase-orders",
     ],
     manifest: [
       "commerce-account-settings",

@@ -62,6 +62,8 @@ import { useSurgeRoute } from "./surge-route";
 import { SurgeDashboard } from "./surge-dashboard";
 import { useSurgeReportingPeriod } from "./surge-reporting-period";
 import { SurgeOperations } from "./surge-operations";
+import { SurgePurchaseOrders } from "./surge-purchase-orders";
+import { useSurgePurchaseOrdersState } from "./surge-purchase-orders-model";
 import { useSurgeOperationsState } from "./surge-operations-model";
 import { SurgeBreadcrumb, SurgeSidebarAccount } from "./surge-shell-chrome";
 import { ManifestAuth } from "./manifest-auth";
@@ -131,6 +133,7 @@ export default function CommerceTemplate({ id }: { id: string }) {
   const manifestRouting = useManifestRoute(id === "manifest");
   const surgeReporting = useSurgeReportingPeriod();
   const surgeOperations = useSurgeOperationsState();
+  const purchaseOrders = useSurgePurchaseOrdersState();
   const account = useCommerceAccountSettingsModel();
   const accountModel = { ...account, section: accountRouting.section ?? account.section };
   const [page, setPage] = useState("Dashboard");
@@ -449,7 +452,7 @@ export default function CommerceTemplate({ id }: { id: string }) {
       navGroups={
         id === "surge"
           ? {
-              Inventory: ["Stock ledger", "Reorder queue"],
+              Inventory: ["Stock ledger", "Reorder queue", "Purchase orders"],
               Customers: ["All customers", "Groups"],
               Settings: Object.values(commerceSettingsNavigation),
             }
@@ -615,6 +618,12 @@ export default function CommerceTemplate({ id }: { id: string }) {
             orderUsage={{ count: orders.length, label: "Orders in this preview" }}
           />
         )
+      ) : id === "surge" && active === "Purchase orders" ? (
+        <SurgePurchaseOrders
+          model={purchaseOrders}
+          products={products}
+          onProductsChange={setProducts}
+        />
       ) : id === "surge" && (active === "Reorder queue" || active === "Groups") ? (
         <SurgeOperations
           page={active}

@@ -5,6 +5,7 @@ const pagePaths: Record<string, string> = {
   Products: "/products",
   Inventory: "/inventory",
   "Reorder queue": "/inventory/reorder",
+  "Purchase orders": "/inventory/purchase-orders",
   Customers: "/customers",
   Groups: "/customers/groups",
   Categories: "/categories",

@@ -390,7 +390,12 @@ export function SurgeBreadcrumb({
   onNavigate: (page: string) => void;
 }) {
   const [open, setOpen] = useState(false);
-  const parent = page === "Reorder queue" ? "Inventory" : page === "Groups" ? "Customers" : null;
+  const parent =
+    page === "Reorder queue" || page === "Purchase orders"
+      ? "Inventory"
+      : page === "Groups"
+        ? "Customers"
+        : null;
   return (
     <Breadcrumb className="surge-breadcrumb" data-dashboard={page === "Dashboard"}>
       <BreadcrumbList>

@@ -65,6 +65,18 @@ test("Surge route adapters do not take over another template or unknown standalo
     assert.equal(readSurgeRoute(hash).page, null);
     assert.equal(surgePageHref(hash, "Groups"), hash);
   }
-  assert.equal(readSurgeRoute("#/templates/surge/inventory/purchase-orders").page, null);
+  assert.equal(readSurgeRoute("#/templates/surge/inventory/purchase-orders/extra").page, null);
   assert.equal(readSurgeRoute("#/products/new/extra").createProduct, false);
+});
+
+test("Surge Purchase orders remains a distinct page at hosted and standalone mounts with opaque queries", () => {
+  const query = "?preset=%7B%22mode%22%3A%22dark%22%7D&x=one+two&x=one%20two";
+  for (const mount of ["/templates/surge", "/template-preview/surge", ""]) {
+    const from = `#${mount || "/"}${query}`;
+    const orders = surgePageHref(from, "Purchase orders");
+    assert.equal(orders, `#${mount}/inventory/purchase-orders${query}`);
+    assert.equal(readSurgeRoute(orders).page, "Purchase orders");
+    assert.equal(readSurgeRoute(orders).query, query);
+    assert.equal(surgePageHref(orders, "Stock ledger"), `#${mount}/inventory${query}`);
+  }
 });
