@@ -491,3 +491,8 @@ native download, original strict build and console smoke verification.
   desktop sizes. The repeating tile was calibrated against the saved
   reference raster. Four Base/Radix geometry checks and two default
   controls passed. Both foundations retain seven accessible inventory bars.
+- Filebox and Filespace now expose the Drive button size and variant to the
+  style selectors. Across both builds the Sera storage action now measures
+  40px. Eighteen desktop and phone cases passed. A Base/Sera starter also
+  passed a clean install, strict build and browser keyboard checks. The
+  separate foundation-specific composition of navigation links remains open.
