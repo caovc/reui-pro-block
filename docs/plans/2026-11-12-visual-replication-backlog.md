@@ -282,12 +282,12 @@ foundation/style audit.
 
 ### Findings from the foundation/style review
 
-| ID        | Priority / state                             | Evidence and owner                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| --------- | -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| FSA-05    | P2, fixed; 16/16 verified                    | At 1440px in Sera under both foundations, the Host Search shortcut extends 12.8125px beyond its button and overlaps Customize by 5.8125px. The overlapping point hits Customize. Button boxes themselves remain 7px apart. `lucent_current` completed the Host fitting repair and entry-focus restoration; all sixteen foundation/style cases passed on 5240 with the original budgets. See `docs/host-search-style-fit-2026-11-12.md`.                                                              |
-| FSA-06    | P2, fixed; 32 states verified                | Non-Nova icon rules overrode responsive desktop auto-width. The shared style rule now preserves intrinsic caption hitboxes and mobile square icons; Handover also restores its actual opener. Both foundations × eight styles × two widths passed on 5240: 30 in the full attempt, then two unchanged Base/Rhea cases in a focused run after a click-navigation wait failure. See `docs/responsive-toolbar-style-fix-2026-11-12.md`.                                                                 |
-| FSA-07    | P2, fixed locally; exact-SHA CI pending      | A focused disabled Base Select option natively prevents Escape's default; an empty adapter callback object incorrectly canceled close. The shared adapter now requires an actual Escape callback before honoring cancellation, preserving explicit callbacks and native event identity. Real-source contracts passed 7/7 after a red baseline; 5270 passed the original Job three-case regression and seven Base menu/nested-overlay cases. See `docs/qa/2026-11-12-base-overlay-escape-dismiss.md`. |
-| EXPORT-01 | P3, generator repaired; fresh ZIP smoke open | A preserved real Pulse ZIP installs/builds but its console smoke fails on `/favicon.ico`404. Shared starter HTML now embeds the original Bricklane SVG favicon as a data URI; the decoded bytes match public/favicon.svg and theme attributes remain. The historical ZIP and failed smoke are untouched. Verify a newly downloaded, unmodified ZIP in its own browser window before closing this gate.                                                                                               |
+| ID        | Priority / state                        | Evidence and owner                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| --------- | --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| FSA-05    | P2, fixed; 16/16 verified               | At 1440px in Sera under both foundations, the Host Search shortcut extends 12.8125px beyond its button and overlaps Customize by 5.8125px. The overlapping point hits Customize. Button boxes themselves remain 7px apart. `lucent_current` completed the Host fitting repair and entry-focus restoration; all sixteen foundation/style cases passed on 5240 with the original budgets. See `docs/host-search-style-fit-2026-11-12.md`.                                                              |
+| FSA-06    | P2, fixed; 32 states verified           | Non-Nova icon rules overrode responsive desktop auto-width. The shared style rule now preserves intrinsic caption hitboxes and mobile square icons; Handover also restores its actual opener. Both foundations × eight styles × two widths passed on 5240: 30 in the full attempt, then two unchanged Base/Rhea cases in a focused run after a click-navigation wait failure. See `docs/responsive-toolbar-style-fix-2026-11-12.md`.                                                                 |
+| FSA-07    | P2, fixed locally; exact-SHA CI pending | A focused disabled Base Select option natively prevents Escape's default; an empty adapter callback object incorrectly canceled close. The shared adapter now requires an actual Escape callback before honoring cancellation, preserving explicit callbacks and native event identity. Real-source contracts passed 7/7 after a red baseline; 5270 passed the original Job three-case regression and seven Base menu/nested-overlay cases. See `docs/qa/2026-11-12-base-overlay-escape-dismiss.md`. |
+| EXPORT-01 | P3, complete on fresh Pulse 5390        | A preserved real Pulse ZIP installs/builds but its console smoke fails on `/favicon.ico`404. Shared starter HTML now embeds the original Bricklane SVG favicon as a data URI; the decoded bytes match public/favicon.svg and theme attributes remain. The historical ZIP and failed smoke are untouched. The fresh Radix/Nova Pulse ZIP passed its install, build and browser smoke on 5390.                                                                                                         |
 
 The core product interaction/persistence matrix passed 32/32 cases: two real
 foundations, eight styles and two independent behaviors. The formal regression
@@ -356,18 +356,17 @@ native download, original strict build and console smoke verification.
   See `docs/qa/2026-11-12-cohort-settings-footer.md` and
   `/tmp/cohort-footer-readiness-5466-six-native-20261112-attempt-01/`.
 
-- `COHORT-SET-04` (P2, visual follow-up open): Sera Locations/Departments
-  footers still compress saved-status text; the 320px Locations actions extend
-  right in the reviewed 5466 footer screenshots. These sections are outside
-  the Working week selector correction and have no dedicated measured gate yet.
-  Preserve Profile's original 48px Nova contract when reviewing them. Evidence:
+- `COHORT-SET-04` (P2, fixed in `2a6e38d`; original finding): Sera Locations/Departments
+  footers compressed saved-status text; the 320px Locations actions extended
+  right in the reviewed 5466 footer screenshots. The November 18 review records the dedicated two-foundation gate and the
+  original 48px Nova Profile control. Evidence:
   `/tmp/cohort-footer-readiness-5466-six-native-20261112-attempt-01/`.
-- `FILEBOX-FOCUS-01` (P2, exported-app smoke open): the unchanged original
+- `FILEBOX-FOCUS-01` (P2, fixed in `71081b8`; original finding): the unchanged original
   Base package installed and strictly built, but its first own-dist smoke failed
   New Folder opener focus after Escape. Login, popup and removal passed; Create
   was not reached and the actual focus destination was not captured. The
-  original 263 members remain unchanged. Consumer/native-focus investigation
-  is queued; this does not change Source viewer acceptance. Evidence:
+  original 263 members remain unchanged. The November 18 review records the subsequent consumer repair and standalone
+  Base project smoke. Evidence:
   `/tmp/filebox-base-original-fresh-smoke-5465-native-20261112-p8z2nv7k/`.
 
 - `DIALOG-12-01` (P2, fixed locally; exact-SHA CI pending): Base Nova desktop

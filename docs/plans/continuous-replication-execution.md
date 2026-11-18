@@ -9,7 +9,10 @@
 - Filebox 候选 5469 的原始双库构建通过，耗时 126.363 秒。Nova 桌面 Radix/Base 的 New Folder 原生用例均已通过，涵盖 Escape 焦点、创建和重命名。独立 Base 导出包的 263 项校验、全新安装、严格构建、登录后创建文件夹均已通过，永久键盘用例两项通过。已推送 `71081b8`（Actions run `44266585745`）。Quick Entry 的修复已通过 Nova 桌面双库四项原生检查，另有两项永久测试直接运行通过。已推送至 main 的提交为 `56b7f2a`，对应 Actions run `44264169336`。
 
 - Strata Overview 的 SLO 标签和超出目标的采样点已推送为 `71779c1`，两库八样式、两个宽度共 32 项通过。Cohort Sera 部门及地点页脚修复推送为 `2a6e38d`，八项针对性检查及七项对照通过。
-- 在 390px 的 Working Agreements 中，Sera 样式的周按钮宽于表格单元，两套组件库都能复现鼠标打开相邻周。构建 5480 的 28 次边缘点击校验通过；其他手机样式中发现 Luma 的最左周按钮有 2px 被遮挡，单独跟进。Prospect Database 的 Base/Sera 交接账户弹窗仍有远端失败，已开始采集真实焦点及点击时序。71779c1 的第 4 分片 739 项通过；第 2 分片另有 Tiptap 选区失败，部署跳过。Strata Services 的官网可访问性标签显示每三天的剩余预算。旧候选绘制每日达标比例，已退回重做。
+- 在 390px 的 Working Agreements 中，Sera 样式的周按钮宽于表格单元，两套组件库都能复现鼠标打开相邻周。构建 5480 的 28 次边缘点击校验通过；Luma 的最左周按钮原有 2px 被遮挡，`5f4addf` 修复初始滚动位置后，两库八种样式的手机与桌面矩阵 32 项、永久回归 4 项均通过。Prospect Database 的 Base/Sera 和 Base/Rhea 交接账户弹窗仍有远端失败，已开始采集真实焦点及点击时序。71779c1 的第 4 分片 739 项通过；第 2 分片另有 Tiptap 选区失败，部署跳过。Strata Services 的官网可访问性标签显示每三天的剩余预算。旧候选绘制每日达标比例，已退回重做。
+
+- 环境第 2 版策略已生效。官方目录有 20 个模板，Signal 的 `reui-template-signal.vercel.app` 尚未列入访问名单。官网主域可访问，官方 Working Agreements 默认参考截图和本地测量已留存。
+- 从 Git archive 创建快照时，复用已安装依赖会跳过正常安装时的 `postinstall`。在首次构建前运行仓库的 `npm run postinstall`，即可生成 Excalidraw 所需的静态字体和许可证。
 
 ## 11 月 12 日历史接续点（23:41 UTC）
 

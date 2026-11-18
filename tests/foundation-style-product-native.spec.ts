@@ -1,3 +1,5 @@
+import { armHandoverFailureObserver } from "./foundation-style-handover-observer";
+
 import { expect, test, type Locator, type Page, type TestInfo } from "@playwright/test";
 
 const styles = ["nova", "vega", "maia", "lyra", "mira", "luma", "sera", "rhea"] as const;
@@ -83,6 +85,7 @@ async function selectStyle(page: Page, entry: string, primitive: Primitive, styl
     .click();
   await page.getByRole("button", { name: "Close customizer", exact: true }).click();
   await expectFoundation(page, primitive, style);
+  await armHandoverFailureObserver(page);
 }
 
 async function evidence(page: Page, info: TestInfo, name: string, details: object) {
