@@ -397,7 +397,7 @@ test("Workflow source view, Copy and actual project download contain the native 
   const expected = await readFile(join(process.cwd(), module), "utf8");
   await page.getByRole("combobox", { name: "Template source file", exact: true }).click();
   await page.getByRole("option", { name: module, exact: true }).click();
-  expect(await page.locator(".template-source-code").textContent()).toBe(expected);
+  await expect.poll(() => page.locator(".template-source-code").textContent()).toBe(expected);
   await page.getByRole("button", { name: "Copy", exact: true }).click();
   expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(expected);
   const pending = page.waitForEvent("download");

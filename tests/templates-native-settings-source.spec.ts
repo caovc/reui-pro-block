@@ -64,16 +64,16 @@ for (const id of ["echo", "flowly", "lucent"]) {
     await expect(
       page.getByRole("combobox", { name: "Template source file", exact: true }),
     ).toContainText(`src/templates/workflow/${id}.tsx`);
-    expect(await page.locator(".template-source-code").textContent()).toBe(
-      await readFile(join(process.cwd(), `src/templates/workflow/${id}.tsx`), "utf8"),
-    );
+    await expect
+      .poll(() => page.locator(".template-source-code").textContent())
+      .toBe(await readFile(join(process.cwd(), `src/templates/workflow/${id}.tsx`), "utf8"));
     const selected = new Map<string, string>();
     for (const path of modules) {
       const choice = page.getByRole("combobox", { name: "Template source file", exact: true });
       await choice.click();
       await page.getByRole("option", { name: path, exact: true }).click();
       const expected = await readFile(join(process.cwd(), path), "utf8");
-      expect(await page.locator(".template-source-code").textContent()).toBe(expected);
+      await expect.poll(() => page.locator(".template-source-code").textContent()).toBe(expected);
       await page.getByRole("button", { name: "Copy", exact: true }).click();
       expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(expected);
       const singlePending = page.waitForEvent("download");

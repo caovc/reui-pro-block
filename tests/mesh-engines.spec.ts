@@ -304,11 +304,14 @@ test("Mesh actual source preview, copy, file and project contain the same engine
   for (const path of paths) {
     const select = page.getByRole("combobox", { name: "Template source file", exact: true });
     await select.click();
-    if (path === paths[0])
-      expect((await page.getByRole("option").allTextContents()).slice(0, 3)).toEqual(paths);
+    if (path === paths[0]) {
+      await expect
+        .poll(async () => (await page.getByRole("option").allTextContents()).slice(0, 3))
+        .toEqual(paths);
+    }
     await page.getByRole("option", { name: path, exact: true }).click();
     const source = await readFile(join(process.cwd(), path), "utf8");
-    expect(await page.locator(".template-source-code").textContent()).toBe(source);
+    await expect.poll(() => page.locator(".template-source-code").textContent()).toBe(source);
     await page.getByRole("button", { name: "Copy", exact: true }).click();
     expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(source);
     const download = page.waitForEvent("download");
