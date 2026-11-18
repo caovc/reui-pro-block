@@ -23,3 +23,20 @@ The public Base/Nova default capture also showed 26 weeks, a 348px viewport,
 852px content and 504px initial scroll at 390px. That reference run reached
 the rendered default after its first interaction assertion timed out. Its
 screenshot and geometry support the default-state comparison.
+
+## Summary spacing and exported starters
+
+At 390px the public Base/Nova table started at y=421. The local table moved from
+414 to 421 after matching the reference font, progress label, panel spacing and
+one-pixel header gap. The bar uses the exact ratio and displays the rounded
+percentage. The final build passed four Nova phone checks across Base and Radix
+with default and serif settings, including portalled controls and Escape.
+
+Header downloads produced a 365-member Base/Lyra archive and a 360-member
+Radix/Vega archive. Both contained the reference CSS, Inter font and license.
+Each extracted starter built with reused pinned dependencies and passed a
+browser smoke check of its compiled output, served font, popup and focus.
+
+Both original source-drawer tests timed out waiting for download before their
+copy and individual-file checks. The header download results cover a separate
+entry point. The drawer flow remains open for investigation.

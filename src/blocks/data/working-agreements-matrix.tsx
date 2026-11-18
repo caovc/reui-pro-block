@@ -74,7 +74,7 @@ function WeekTile({
         aria-label={`${row.name}, week of ${week.label}`}
         align="center"
         side="top"
-        className="w-64 gap-2.5"
+        className="reui-reference w-64 gap-2.5"
         onCloseAutoFocus={(event) => {
           if (openingEditor.current) event.preventDefault();
         }}

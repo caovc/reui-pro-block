@@ -68,6 +68,7 @@ import {
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { downloadCsv } from "./data-utils";
+import "../reference.css";
 import { ReuiScoreRings } from "./reui-free-chart-primitives";
 import { WorkingAgreementsMatrix } from "./working-agreements-matrix";
 import {
@@ -97,9 +98,10 @@ const scoreConfig = { score: { label: "Weeks kept", color: "#2ba99e" } };
 
 function AgreementSummary({ score }: { score: ReturnType<typeof agreementScore> }) {
   const fillId = useId().replaceAll(":", "");
+  const progressValue = score.activeCount > 0 ? (score.onTrack / score.activeCount) * 100 : 0;
   return (
     <FramePanel className="grid divide-y px-0 py-0 @min-[880px]:grid-cols-3 @min-[880px]:divide-x @min-[880px]:divide-y-0">
-      <section aria-label="This Week" className="flex min-w-0 flex-col gap-1.5 px-4 py-3.5">
+      <section aria-label="This Week" className="flex min-w-0 flex-col gap-2 px-4 py-3">
         <div className="flex justify-between gap-1 text-xs text-muted-foreground">
           <h4>This Week</h4>
           <span>Day 2 of 5</span>
@@ -112,14 +114,14 @@ function AgreementSummary({ score }: { score: ReturnType<typeof agreementScore> 
         </div>
         <div className="relative">
           <Progress
-            value={score.progress}
+            value={progressValue}
             aria-label="Agreements on track"
-            className="h-3 bg-teal-100 dark:bg-teal-950 [&_[data-slot=progress-indicator]]:bg-teal-700 dark:[&_[data-slot=progress-indicator]]:bg-teal-500"
+            className="h-3 bg-teal-100 dark:bg-teal-950 [&_[data-slot=progress-indicator]]:rounded-full [&_[data-slot=progress-indicator]]:bg-teal-700 dark:[&_[data-slot=progress-indicator]]:bg-teal-500"
           />
           {score.progress > 16 && (
             <span
-              className="absolute top-0 -translate-x-full pr-2 text-[10px] leading-3 text-white tabular-nums"
-              style={{ left: `${score.progress}%` }}
+              className="absolute top-0 -translate-x-full pr-1.5 text-xs leading-3 font-medium text-white tabular-nums"
+              style={{ left: `${progressValue}%` }}
               aria-hidden="true"
             >
               {score.progress}%
@@ -127,7 +129,7 @@ function AgreementSummary({ score }: { score: ReturnType<typeof agreementScore> 
           )}
         </div>
       </section>
-      <section aria-label="Team Score" className="flex min-w-0 flex-col gap-1.5 px-4 py-3">
+      <section aria-label="Team Score" className="flex min-w-0 flex-col gap-2 px-4 py-3">
         <div className="flex justify-between gap-1 text-xs text-muted-foreground">
           <h4>Team Score</h4>
           <span className="whitespace-nowrap">
@@ -142,7 +144,7 @@ function AgreementSummary({ score }: { score: ReturnType<typeof agreementScore> 
           >
             <span className="text-xs">{score.total}%</span>
           </ReuiScoreRings>
-          <div className="min-w-0 flex-1">
+          <div className="flex min-w-0 flex-1 flex-col gap-1">
             <div className="text-xs text-muted-foreground">Weekly score</div>
             <ChartContainer
               config={scoreConfig}
@@ -171,7 +173,7 @@ function AgreementSummary({ score }: { score: ReturnType<typeof agreementScore> 
           </div>
         </div>
       </section>
-      <section aria-label="Weeks Kept by Area" className="flex min-w-0 flex-col gap-2 px-4 py-3.5">
+      <section aria-label="Weeks Kept by Area" className="flex min-w-0 flex-col gap-2 px-4 py-3">
         <h4 className="text-xs text-muted-foreground">Weeks Kept by Area</h4>
         <div className="flex items-center justify-between gap-2">
           <ul className="grid gap-x-2.5 gap-y-1 text-xs text-muted-foreground min-[330px]:grid-cols-2">
@@ -220,7 +222,7 @@ function EditTargetDialog({
   return (
     <Dialog open={open} onOpenChange={(next) => !next && onClose()}>
       <DialogContent
-        className="max-w-[min(calc(100vw-2rem),25rem)]"
+        className="reui-reference max-w-[min(calc(100vw-2rem),25rem)] [--font-heading:var(--font-sans)]"
         onOpenAutoFocus={(event) => {
           if (!input.current) return;
           event.preventDefault();
@@ -384,10 +386,10 @@ export default function WorkingAgreements() {
   }
 
   return (
-    <section className="@container mx-auto min-h-svh w-full max-w-[984px] px-4 py-4 sm:px-6 sm:py-6">
-      <Frame className="min-w-0">
+    <section className="reui-reference @container mx-auto min-h-svh w-full max-w-[984px] px-4 py-4 sm:px-6 sm:py-6">
+      <Frame spacing="default" className="min-w-0">
         <FrameHeader className="gap-2 @md:flex-row @md:items-center @md:justify-between">
-          <div>
+          <div className="flex flex-col gap-px">
             <FrameTitle>
               <h3>Working Agreements</h3>
             </FrameTitle>
@@ -409,7 +411,7 @@ export default function WorkingAgreements() {
                   {teamName}
                 </SelectValue>
               </SelectTrigger>
-              <SelectContent align="start" position="popper">
+              <SelectContent align="start" position="popper" className="reui-reference">
                 <SelectGroup>
                   {agreementTeams.map((item) => (
                     <SelectItem key={item.id} value={item.id} textValue={item.label}>
@@ -435,7 +437,7 @@ export default function WorkingAgreements() {
                     <SlidersHorizontal />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuContent align="end" className="reui-reference w-48">
                   <DropdownMenuGroup>
                     <DropdownMenuLabel>Area</DropdownMenuLabel>
                     <DropdownMenuRadioGroup
@@ -484,7 +486,7 @@ export default function WorkingAgreements() {
                     <Ellipsis />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
+                <DropdownMenuContent align="end" className="reui-reference">
                   <DropdownMenuGroup>
                     <DropdownMenuItem
                       disabled={visible.length === 0}
