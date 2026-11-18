@@ -223,6 +223,24 @@
     margin-inline-start: auto;
   }
 
+  /* Sera list sections keep saved status above intact native footer actions on phones. */
+  :root[data-ui-style="sera"]
+    .bt-cohort-settings
+    :is([data-setting-section="departments"], [data-setting-section="locations"])
+    > .bt-setting-save {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  :root[data-ui-style="sera"]
+    .bt-cohort-settings
+    :is([data-setting-section="departments"], [data-setting-section="locations"])
+    > .bt-setting-save
+    > div {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
   .bt-cohort-settings .bt-setting-row.workspace-settings-row {
     grid-template-columns: minmax(0, 1fr);
     gap: 16px;

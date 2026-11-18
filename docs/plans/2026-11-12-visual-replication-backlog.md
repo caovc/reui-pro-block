@@ -395,10 +395,12 @@ native download, original strict build and console smoke verification.
   regression. See `docs/qa/2026-11-18-strata-slo-chart.md`.
 - Working Agreements historical-week access passed on 390px Nova and Sera
   under Radix and Base. On Sera, adjacent week controls measure 40px across
-  in columns spaced 24px apart. Check which week receives pointer input near
-  the edges. The four functional passes cover center hits and keyboard access.
+  in columns spaced 24px apart. On both foundations, real pointer clicks on the right edge
+  of Apr 6, Jun 29, and Sep 21 opened the following week. The four functional passes cover center hits and keyboard access.
 - Cohort Departments and Locations have a confirmed Sera footer overflow
   under both foundations. At 320px the status region has zero width and the
   actions extend 8.6px past the viewport. At 390px status text overlaps
-  Discard. Candidate verification includes the existing Profile and Working
-  week footer regressions.
+  Discard. The scoped footer grid passed eight Sera cases across both
+  foundations and both widths. It gives status 252px at 320px and 322px at
+  390px. The Nova Profile header/footer retained their 52px/48px geometry,
+  and six Working week controls passed.
