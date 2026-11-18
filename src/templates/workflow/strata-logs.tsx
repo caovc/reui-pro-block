@@ -1,5 +1,14 @@
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
-import { Bar, BarChart, CartesianGrid, ReferenceLine, XAxis, YAxis } from "recharts";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  Rectangle,
+  ReferenceLine,
+  XAxis,
+  YAxis,
+} from "recharts";
 import {
   ArrowRight,
   Bookmark,
@@ -41,6 +50,7 @@ import {
   FrameTitle,
 } from "@/components/reui/frame";
 import { Badge } from "@/components/reui/badge";
+import { ReuiStripePattern } from "@/blocks/data/reui-free-chart-primitives";
 import { Filters, type FilterField } from "@/components/reui/filters/filters";
 import { DataGridColumnVisibility } from "@/components/reui/data-grid/data-grid-column-visibility";
 import {
@@ -358,6 +368,7 @@ function LogRange({ model }: { model: LogsModel }) {
 }
 
 function EventVolume({ events, model }: { events: StrataLogEvent[]; model: LogsModel }) {
+  const patternId = useId().replaceAll(":", "");
   const summary = useMemo(() => summarizeStrataLogs(events), [events]);
   const visible = useMemo(
     () => events.filter((event) => model.levels.includes(event.level)),
@@ -432,9 +443,20 @@ function EventVolume({ events, model }: { events: StrataLogEvent[]; model: LogsM
         >
           <BarChart
             data={buckets}
+            barCategoryGap="20%"
             margin={{ top: 20, right: 40, left: -22, bottom: 0 }}
             accessibilityLayer
           >
+            <defs>
+              {STRATA_LOG_LEVELS.map((level) => (
+                <ReuiStripePattern
+                  secondaryStroke={false}
+                  key={level}
+                  id={`${patternId}-${level}`}
+                  color={`var(--color-${level})`}
+                />
+              ))}
+            </defs>
             <CartesianGrid vertical={false} strokeDasharray="3 4" />
             <XAxis
               dataKey="timestamp"
@@ -447,9 +469,12 @@ function EventVolume({ events, model }: { events: StrataLogEvent[]; model: LogsM
             <ChartTooltip
               content={
                 <ChartTooltipContent
-                  labelFormatter={(time) =>
-                    new Date(Number(time)).toLocaleString("en-US", { timeZone: "UTC" })
-                  }
+                  labelFormatter={(_label, payload) => {
+                    const bucket = payload?.[0]?.payload as { timestamp: number } | undefined;
+                    return bucket
+                      ? `${new Date(bucket.timestamp).toLocaleString("en-US", { timeZone: "UTC" })} UTC`
+                      : "Event volume";
+                  }}
                 />
               }
             />
@@ -470,10 +495,15 @@ function EventVolume({ events, model }: { events: StrataLogEvent[]; model: LogsM
                 dataKey={level}
                 stackId="events"
                 fill={`var(--color-${level})`}
-                fillOpacity={0.55}
+                background={level === "info" ? { fill: "var(--muted)", radius: 4 } : false}
+                shape={level === "info" ? <Rectangle /> : undefined}
                 radius={level === "error" ? [2, 2, 0, 0] : 0}
                 isAnimationActive={false}
-              />
+              >
+                {buckets.map((bucket) => (
+                  <Cell key={bucket.timestamp} fill={`url(#${patternId}-${level})`} />
+                ))}
+              </Bar>
             ))}
           </BarChart>
         </ChartContainer>

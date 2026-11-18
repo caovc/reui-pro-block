@@ -474,3 +474,9 @@ native download, original strict build and console smoke verification.
   including ZIP, full source, copy and single-file download
   (21.1s Radix/Vega, 17.7s Base/Lyra). Four Theme CSS interaction checks
   and 14 source and template regressions passed with the original timeouts.
+- Strata Logs now shows striped event levels over a track for every bucket,
+  including zero-count buckets. Keyboard and pointer tooltips use the
+  bucket's UTC timestamp and counts. Eight light/dark desktop and phone
+  checks on Base and Radix, four existing regressions and two permanent
+  zero-count/UTC tests passed. Earlier candidates omitted two tracks or
+  displayed Invalid Date. The local event fixtures remain independent.
