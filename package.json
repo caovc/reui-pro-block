@@ -16,7 +16,9 @@
     "format:check": "oxfmt --check",
     "format:staged": "git-format-staged -f 'oxfmt --stdin-filepath \"{}\"' '*.ts' '*.tsx' '*.js' '*.mjs' '*.cjs' '*.css' '*.json' '*.md' '*.yml' '*.yaml' '*.html'",
     "prepare": "husky",
-    "test:tooling": "node --test tests/*.test.mjs",
+    "mcp:ui-patterns": "node scripts/reui-pattern-mcp/server.mjs",
+    "test:mcp": "node --test scripts/reui-pattern-mcp/*.test.mjs",
+    "test:tooling": "node --test tests/*.test.mjs scripts/reui-pattern-mcp/*.test.mjs",
     "postinstall": "node scripts/copy-excalidraw-assets.mjs"
   },
   "dependencies": {
