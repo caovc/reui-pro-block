@@ -41,11 +41,14 @@ can use:
 
 ```json
 {
+  "$schema": "https://opencode.ai/config.json",
   "mcp": {
-    "bricklane-ui-patterns": {
-      "type": "local",
-      "command": ["node", "/absolute/path/to/reui-template/scripts/reui-pattern-mcp/server.mjs"],
-      "enabled": true
+    "servers": {
+      "bricklane-ui-patterns": {
+        "type": "local",
+        "command": ["node", "/absolute/path/to/reui-template/scripts/reui-pattern-mcp/server.mjs"],
+        "cwd": "/absolute/path/to/reui-template"
+      }
     }
   }
 }
