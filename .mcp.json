@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "bricklane-ui-patterns": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["scripts/reui-pattern-mcp/server.mjs"]
+    }
+  }
+}

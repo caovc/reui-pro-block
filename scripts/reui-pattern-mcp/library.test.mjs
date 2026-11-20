@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { once } from "node:events";
+import { readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { test } from "node:test";
@@ -24,6 +25,37 @@ test("local index reflects the catalogs and does not fetch remote metadata", asy
   assert.equal(result.counts.templates, 18);
   assert.ok(result.counts.reuiComponents > 0);
   assert.ok(result.counts.evidenceDocuments > 0);
+  assert.deepEqual(result.coverage.sourceMappings.blocks, { resolved: 673, total: 673 });
+  assert.deepEqual(result.coverage.sourceMappings.templates, { resolved: 18, total: 18 });
+  assert.deepEqual(result.coverage.manualGuides.blocks, { documented: 0, total: 673 });
+  assert.deepEqual(result.coverage.manualGuides.templates, { documented: 1, total: 18 });
+  assert.equal(result.coverage.scenarioSemantics.status, "metadata-only");
+  assert.equal(result.coverage.search.semanticEmbeddings, false);
+  assert.equal(result.coverage.search.remoteSources, false);
+});
+
+test("project agent configs launch the local stdio server without remote ReUI endpoints", () => {
+  const configs = [
+    JSON.parse(readFileSync(path.join(root, ".mcp.json"), "utf8")).mcpServers[
+      "bricklane-ui-patterns"
+    ],
+    JSON.parse(readFileSync(path.join(root, ".cursor/mcp.json"), "utf8")).mcpServers[
+      "bricklane-ui-patterns"
+    ],
+    JSON.parse(readFileSync(path.join(root, "opencode.json"), "utf8")).mcp.servers[
+      "bricklane-ui-patterns"
+    ],
+  ];
+
+  for (const config of configs) {
+    const command = [config.command, ...(config.args ?? [])].join(" ");
+    assert.match(command, /scripts\/reui-pattern-mcp\/server\.mjs/);
+    assert.doesNotMatch(JSON.stringify(config), /https?:\/\/.*reui\.io/);
+  }
+
+  const codexConfig = readFileSync(path.join(root, ".codex/config.toml"), "utf8");
+  assert.match(codexConfig, /command = "node"/);
+  assert.match(codexConfig, /scripts\/reui-pattern-mcp\/server\.mjs/);
 });
 
 test("all catalog blocks and templates resolve to existing local implementation paths", async () => {

@@ -1,0 +1,4 @@
+[mcp_servers.bricklane_ui_patterns]
+command = "node"
+args = ["scripts/reui-pattern-mcp/server.mjs"]
+cwd = "."

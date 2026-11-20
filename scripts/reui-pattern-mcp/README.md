@@ -35,28 +35,11 @@ Use `read_source` to inspect additional files.
 
 ## Configure an MCP client
 
-Configure the client to launch Node with the absolute path to
-`scripts/reui-pattern-mcp/server.mjs`. For example, an OpenCode configuration
-can use:
-
-```json
-{
-  "$schema": "https://opencode.ai/config.json",
-  "mcp": {
-    "servers": {
-      "bricklane-ui-patterns": {
-        "type": "local",
-        "command": ["node", "/absolute/path/to/reui-template/scripts/reui-pattern-mcp/server.mjs"],
-        "cwd": "/absolute/path/to/reui-template"
-      }
-    }
-  }
-}
-```
-
-If the MCP client starts the process from another working directory, set
-`REUI_PATTERN_ROOT` to this repository's absolute path in the client's MCP
-environment configuration.
+Project-scoped registrations are included for Codex (`.codex/config.toml`),
+Claude Code (`.mcp.json`), OpenCode (`opencode.json`), and Cursor
+(`.cursor/mcp.json`). The `start` parent workspace also has local registrations
+for its UI agents. See [`docs/agent-setup.md`](../../docs/agent-setup.md) for
+connection checks and setup for other stdio-compatible clients.
 
 ## Provenance and use
 
@@ -70,3 +53,13 @@ Blocks and templates are local compositions. Their sample records, permissions,
 and local-only actions are reference material, not product or backend contracts.
 The server returns local paths and source evidence so the consuming agent can
 verify the current implementation.
+
+## Catalog coverage
+
+The local catalogs currently contain 79 block categories, 673 block entries,
+and 18 full templates. Automated tests verify that every current catalog entry
+resolves to an existing source path. This is not full semantic scenario
+annotation: there are currently no block manuals and one template manual.
+`list_catalog` reports path and guide coverage separately. Search uses weighted
+lexical matching rather than embeddings; inspect actual source for interaction,
+state, and provenance claims.

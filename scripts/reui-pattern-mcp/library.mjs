@@ -228,22 +228,33 @@ function matchesKind(entry, kind) {
   return !kind || kind === "all" || entry.kind === kind;
 }
 
-function templateGuidePath(root, id) {
-  return path.join(root, "docs", "agent-guides", "templates", `${id}.md`);
-}
-
 async function loadLibrary(root) {
   const rootPath = path.resolve(root);
-  const [catalogText, sourceTargets, templateCatalog, componentEntries, evidencePaths] =
-    await Promise.all([
-      readFile(path.join(rootPath, "src/data/catalog.json"), "utf8"),
-      loadTypeScriptModule(rootPath, "src/lib/source-targets.ts"),
-      loadTypeScriptModule(rootPath, "src/templates/catalog.ts"),
-      collectComponentEntries(rootPath),
-      findEvidenceDocuments(rootPath),
-    ]);
+  const [
+    catalogText,
+    sourceTargets,
+    templateCatalog,
+    componentEntries,
+    evidencePaths,
+    blockGuidePaths,
+    templateGuidePaths,
+  ] = await Promise.all([
+    readFile(path.join(rootPath, "src/data/catalog.json"), "utf8"),
+    loadTypeScriptModule(rootPath, "src/lib/source-targets.ts"),
+    loadTypeScriptModule(rootPath, "src/templates/catalog.ts"),
+    collectComponentEntries(rootPath),
+    findEvidenceDocuments(rootPath),
+    walkFiles(rootPath, "docs/agent-guides/blocks", (file) => file.endsWith(".md")),
+    walkFiles(rootPath, "docs/agent-guides/templates", (file) => file.endsWith(".md")),
+  ]);
 
   const categories = JSON.parse(catalogText);
+  const blockGuidesById = new Map(
+    blockGuidePaths.map((guide) => [path.basename(guide, ".md"), guide]),
+  );
+  const templateGuidesById = new Map(
+    templateGuidePaths.map((guide) => [path.basename(guide, ".md"), guide]),
+  );
   const blocks = categories.flatMap((category) =>
     category.blocks.map((block) => ({
       ...block,
@@ -280,6 +291,7 @@ async function loadLibrary(root) {
       sourcePath,
       sourceCandidates: existingCandidates,
       importedComponents,
+      guide: blockGuidesById.get(block.id),
       tags: [block.group, block.category, block.categoryLabel, ...importedComponents],
       _searchText: `${block.id} ${block.name} ${block.description ?? ""} ${sourcePath ?? ""} ${importedComponents.join(" ")}`,
     });
@@ -294,13 +306,7 @@ async function loadLibrary(root) {
     const sourcePath = existingCandidates[0];
     const source = await readPrimarySource(rootPath, sourcePath);
     const importedComponents = source ? componentReferences(source) : [];
-    let guide;
-    try {
-      await stat(templateGuidePath(rootPath, template.id));
-      guide = asProjectPath(rootPath, templateGuidePath(rootPath, template.id));
-    } catch {
-      guide = undefined;
-    }
+    const guide = templateGuidesById.get(template.id);
 
     records.push({
       id: template.id,
@@ -389,6 +395,8 @@ export async function searchLibrary(library, input) {
 export async function listCatalog(library, input = {}) {
   const index = await library.index();
   const kind = input.kind ?? "all";
+  const blockRecords = index.records.filter((entry) => entry.kind === "block");
+  const templateRecords = index.records.filter((entry) => entry.kind === "template");
   const categories = index.categories.map((category) => ({
     id: category.id,
     name: category.name,
@@ -408,6 +416,38 @@ export async function listCatalog(library, input = {}) {
         (entry) => entry.kind === "component" && entry.family === "ui",
       ).length,
       evidenceDocuments: index.records.filter((entry) => entry.kind === "evidence").length,
+    },
+    coverage: {
+      sourceMappings: {
+        blocks: {
+          resolved: blockRecords.filter((entry) => entry.sourcePath).length,
+          total: blockRecords.length,
+        },
+        templates: {
+          resolved: templateRecords.filter((entry) => entry.sourcePath).length,
+          total: templateRecords.length,
+        },
+      },
+      manualGuides: {
+        blocks: {
+          documented: blockRecords.filter((entry) => entry.guide).length,
+          total: blockRecords.length,
+        },
+        templates: {
+          documented: templateRecords.filter((entry) => entry.guide).length,
+          total: templateRecords.length,
+        },
+      },
+      scenarioSemantics: {
+        status: "metadata-only",
+        note: "Names, descriptions, categories, features, source paths and direct component imports support discovery; every scenario has not been manually annotated for use cases, interactions, states or responsive behavior.",
+      },
+      search: {
+        strategy:
+          "weighted lexical matching over local metadata, paths, component source text and selected evidence documents",
+        semanticEmbeddings: false,
+        remoteSources: false,
+      },
     },
     ...(kind === "all" || kind === "category" || kind === "block" ? { categories } : {}),
     ...(kind === "all" || kind === "template"

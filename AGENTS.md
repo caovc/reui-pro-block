@@ -34,6 +34,14 @@
 - 多会话仍需串行协调 Git 写操作；批量格式化后重新读取文件再编辑，不要用旧快照覆盖其他变更。
 - 修改组件路由或新增分拆文件时，同步维护 `src/lib/source-targets.ts`，确保代码预览默认展示实际实现，且查看、复制、单文件下载与完整项目下载内容一致。
 
+## 本地 UI Pattern MCP 与 Agent Skill（所有 Agent）
+
+- 本仓库的只读 UI Pattern MCP 位于 `scripts/reui-pattern-mcp/`；它只读取当前 checkout，不访问 ReUI 网站，也不安装或修改源码。启动方式、MCP 客户端配置和 Codex、Claude Code、OpenCode、Cursor 的连接/校验说明见 `docs/agent-setup.md`。
+- 处理 UI、Block 或 Template 任务时，先使用本地 skill `.agents/skills/reui-patterns/SKILL.md`；Codex、OpenCode 和 Cursor 可发现 `.agents/skills/`，Claude Code 使用 `.claude/skills/reui-patterns/` 镜像。无论客户端是否自动加载 skill，都遵循本节和对应工具文档。
+- MCP 工具：先用 `search_library` 搜索 `kind: "component"`，优先复用已有免费 ReUI 实现；再搜索 `kind: "block"` / `"template"` 找布局与组合。用 `resolve_entry` 定位并用 `read_source` / `search_source` 核验源码。
+- `list_catalog` 的 source mapping 数量代表目录项已解析到现存文件，不代表每个场景都有完整的人工语义标注。当前搜索为本地加权词法匹配；源码、当前项目约定和可验证的 provenance 证据才是依据，示例数据/权限/假操作不是产品契约。完整覆盖状态见 `docs/agent-setup.md` 和 MCP `list_catalog`。
+- 不使用 hosted ReUI MCP 或远程 ReUI 搜索作为此仓库的检索/事实来源。旧审计文档只作带日期的证据，必须回到当前实现核对。
+
 <!-- CODEGRAPH_START -->
 
 ## CodeGraph
