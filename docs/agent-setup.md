@@ -53,8 +53,11 @@ available. No remote ReUI account or sign-in is involved.
 opencode mcp list
 ```
 
-The parent `start/opencode.json` also points to this local server for host
-projects using the library. It replaces the previous hosted ReUI MCP entry.
+The parent workspace uses the user's global OpenCode MCP entry, which points
+directly to this server by absolute path. Its root `opencode.json` intentionally
+has no workspace-relative MCP `cwd`, so opening a nested project cannot redirect
+the server to a nonexistent `nested-project/reui-template` directory. This
+template's own `opencode.json` is used when opening `reui-template` directly.
 
 ### Cursor
 
