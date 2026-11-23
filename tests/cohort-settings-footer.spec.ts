@@ -466,6 +466,13 @@ for (const primitive of ["radix", "base"] as const) {
         await expect(working(page).getByRole("status")).toHaveText("All changes saved");
         expect(await selection(page)).toEqual(dirtyDays);
         assertGeometry(await sample("saved"), false, primitive, style);
+        await group(page).getByRole("button", { name: "Monday", exact: true }).click();
+        await expect(working(page).getByRole("status")).toHaveText("Unsaved changes");
+        await footer(page).evaluate((node) => node.scrollIntoView({ block: "end" }));
+        assertGeometry(await sample("edited-again-after-save", true), true, primitive, style);
+        await discard.click();
+        await expect(working(page).getByRole("status")).toHaveText("All changes saved");
+        expect(await selection(page)).toEqual(dirtyDays);
         await page.getByRole("button", { name: "Open menu", exact: true }).click();
         const menu = page.getByRole("dialog", { name: "Cohort", exact: true });
         await expect(menu.getByRole("button", { name: "Policies", exact: true })).toBeVisible();

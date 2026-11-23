@@ -28,6 +28,12 @@ public detail page supplies the available reference evidence.
   phone style checks and two desktop controls passed, including New Job
   keyboard entry and return focus. The selected CSS matched both actual ZIPs.
 
+- Cohort's save confirmation covered enabled Working week buttons after a
+  second edit at 320px and 390px in both foundations. Phone settings now use
+  their existing live save status in the footer. Both 390px Sera regression
+  cases failed on the original build. All six phone cases passed on the fix,
+  along with both desktop confirmation checks and both exact source/ZIP checks.
+
 ## Confirmed findings and assignments
 
 | ID         | Priority          | Surface and observed difference                                                                                                                     | Owner / status                                                                                                            | Acceptance                                                                                                                                                                    |

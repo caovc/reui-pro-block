@@ -203,7 +203,7 @@ function SettingsSection({
       return;
     }
     model.setSaved((old) => ({ ...old, [id]: model.draft[id] }));
-    toast.success(`${title} saved`);
+    if (window.matchMedia("(min-width: 768px)").matches) toast.success(`${title} saved`);
   }
   return (
     <CohortSettingsFrame
