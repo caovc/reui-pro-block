@@ -147,10 +147,10 @@ function ProvinceLocator({
   rows: RankedScaleup[];
   onSelect: (next: ScaleupProvince | "all") => void;
 }) {
-  const counts = new Map<ScaleupProvince, number>();
-  for (const { company } of rows) {
-    counts.set(company.province, (counts.get(company.province) ?? 0) + 1);
-  }
+  const count =
+    selected === "all"
+      ? rows.length
+      : rows.filter(({ company }) => company.province === selected).length;
   return (
     <Frame className="min-w-0">
       <FrameHeader>
@@ -182,7 +182,7 @@ function ProvinceLocator({
             {selected === "all" ? "Netherlands" : provinceName(selected)}
           </Badge>
           <span className="text-xs text-muted-foreground">
-            {selected === "all" ? rows.length : (counts.get(selected) ?? 0)} companies
+            {count} {count === 1 ? "company" : "companies"}
           </span>
         </div>
       </FramePanel>

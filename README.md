@@ -1,6 +1,6 @@
 # Bricklane
 
-Independent recreations of **ReUI Pro Blocks and Templates**, built with React, TypeScript, Tailwind CSS and official open-source ReUI components. Bricklane uses an original logo, name, and locally authored demo illustrations. The November 11 catalog matches all **678 public ReUI block IDs and short titles**. Bricklane also keeps its historical Deploy Board, for **679 entries across 79 categories and 7 groups**, alongside **18 template workspaces**. See the [current catalog](docs/CATALOG.md) and [November 11 update plan](docs/plans/2026-11-11-catalog-update.md).
+Independent implementations of **ReUI Pro Blocks and Templates**, built with React, TypeScript, Tailwind CSS and official open-source ReUI components. Bricklane uses an original logo, name and locally authored demo illustrations. The catalog includes **680 blocks across 79 categories and 7 groups**, including the historical Deploy Board, alongside **21 template workspaces**. See the [current catalog](docs/CATALOG.md) and [development and verification record](docs/plans/continuous-replication-execution.md).
 
 > Bricklane recreates the public previews using shared layout families. The repository contains the independent implementations and assets listed in the [provenance notes](THIRD_PARTY_NOTICES.md).
 
@@ -14,12 +14,12 @@ Independent recreations of **ReUI Pro Blocks and Templates**, built with React, 
 - Light/dark theme, preview accent and radius customization
 - Persistent favorites and hash deep links compatible with GitHub Pages
 - Stateful local demo interactions (no paid APIs or backend required)
-- **Templates**: 18 distinct full-page demo workspaces, with category filters, search, live thumbnails, and direct routes at `#/templates/:id`
+- 21 full-page template workspaces with category filters, search, live thumbnails, and direct routes at `#/templates/:id`
 - Template source viewer and runnable ZIP exports, including the selected template family's local dependencies
 
 ## Templates
 
-Open `#/templates` from the top navigation or sidebar. The collection covers Mesh, Flowly, Echo, Verve, Limelight, Manifest, Lucent, Overture, Atlas, Tempo, Miro, Cohort, Filespace, Roster, Pulse, Surge, Filebox, and Flux. Each template opens outside the block browser in its own workspace; the slim preview toolbar provides a return link, source view, theme switch, and original preview link.
+Open `#/templates` from the top navigation or sidebar. The collection covers Strata, Margin, Signal, Mesh, Flowly, Echo, Verve, Limelight, Manifest, Lucent, Overture, Atlas, Tempo, Miro, Cohort, Filespace, Roster, Pulse, Surge, Filebox and Flux. Each template opens in its own workspace. The preview toolbar provides a return link, source view, theme switch and public reference link.
 
 These are independent React implementations based on the public previews. They preserve the main visual structure and provide local demo interactions. They are not the original premium projects or complete replacements for their server-side features: authentication, AI responses, invitations, email delivery, and production data services require your own backend. Laravel/Next.js/TanStack server architecture is not reproduced.
 
@@ -109,7 +109,7 @@ Lucent Security now composes actual free ReUI Item, Frame and Separator instead 
 
 Lucent Session timeout now offers the observed five choices, including30 minutes and Never, through its existing free ReUI Select. Desktop/phone native2, actual source/download2 and the untouched308-member original project normal-install/postinstall/strict/native2 pass. [Timeout evidence](docs/lucent-timeout-options-release-2026-11-03.json) records preserved24-hour behavior, local navigation state and remaining HMR/backend limits; full CI and Pages are separate gates.
 
-The 2026-11-03 [official template catalog](https://reui.io/templates) lists 19 templates. This repository currently implements 18; Strata is a newly discovered coverage gap, not an implemented preview. Its official detail page dates its addition to 2026-10-29. The [Strata development plan](docs/plans/2026-11-03-strata-template-plan.md) tracks the missing implementation and its release gates.
+Strata joined the public catalog on 2026-10-29. Bricklane’s Strata workspace includes services, logs, monitors, deployments and account flows. Its implementation and verification milestones are recorded in the [development and verification record](docs/plans/continuous-replication-execution.md).
 
 Document Editor now retains its native Link form during rapid close/reopen, using the existing popup primitives and an editor-specific generation/focus guard. The earlier QA selector correction alone did not resolve the later2131-pass/1-fail CI lifecycle failure. Necessary site2/source2 and the untouched415-member project normal-install/original-postinstall/strict/native2 pass. [Link lifecycle evidence](docs/editor-link-reopen-release-2026-11-03.json) records original failures, exact export comparisons and the limited advanced-entrypoint scope. Full CI and Pages remain separate gates.
 

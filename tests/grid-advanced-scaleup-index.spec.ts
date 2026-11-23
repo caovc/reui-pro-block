@@ -49,6 +49,7 @@ for (const library of ["radix", "base"] as const) {
       const province = map.getByRole("button", { name: "Show companies in Zeeland", exact: true });
       await province.click();
       await expect(province).toHaveAttribute("aria-pressed", "true");
+      await expect(map.locator("..").getByText("1 company", { exact: true })).toBeVisible();
       await expect(register.getByText("1 of 16 companies", { exact: true })).toBeVisible();
       const company = register.getByRole("button", { name: fixture.name, exact: true });
       await company.press("Enter");
