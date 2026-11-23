@@ -523,6 +523,9 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
       ];
       return paths("data", module, "ai-chat-workspace-variants");
     }
+    if (block.category === "ai-chat" && variant === 7) {
+      return paths("data", "ai-chat-comparison");
+    }
     if (block.category === "agent-activity") {
       const modules = [
         "agent-activity-approval",

@@ -1,3 +1,4 @@
+import ModelComparison from "./ai-chat-comparison";
 import DispatchMap from "./solution-map-variants/dispatch-map";
 import DeployBoard from "./solution-dev-ops-variants/deploy-board";
 import WorkspaceChatVariants from "./ai-chat-workspace-variants";
@@ -123,6 +124,7 @@ export default function DataBlock({ block }: BlockProps) {
   ) {
     return <WorkspaceChatVariants block={block} />;
   }
+  if (block.group === "ai-agents" && block.id === "ai-chat-7") return <ModelComparison />;
   if (block.group === "ai-agents")
     return block.category === "ai-chat" ? (
       <ChatBlock block={block} />
