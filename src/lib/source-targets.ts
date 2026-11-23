@@ -366,6 +366,14 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
   }
   if (block.group === "data-grid") {
     if (block.id === "data-grid-base-9") return paths("data", "grid-base-api-request-logs");
+    if (block.id === "data-grid-advanced-20") {
+      const module = "grid-advanced-scaleup-index";
+      return [
+        ...paths("data", module),
+        `src/blocks/data/${module}-model.ts`,
+        `src/blocks/data/${module}.css`,
+      ];
+    }
     if (block.id === "data-grid-advanced-27") return paths("data", "grid-advanced-project-budget");
     if (block.id === "data-grid-advanced-28") {
       const module = "grid-advanced-invoice-manager";

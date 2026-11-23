@@ -23,7 +23,8 @@
 
 - Atlas 工时表已接入日期范围、筛选、排序、分页、新增与编辑、按日查看和报表同步。两套组件库的 48 项浏览器检查覆盖 320px、390px 和桌面，以及八种样式和相邻页面。实际 Base 和 Radix ZIP 均通过全新安装、严格构建和运行检查。
 - Margin 已通过 12 项纯模型、14 项核心浏览器和 32 项样式与视口检查。实际 Radix 与 Base 下载包的 81 和 86 个文件均校验原始字节，两份项目各自完成严格构建和浏览器运行，复用同一套清洁安装的依赖。
-- 官网 Blocks 目录的 79 个分类已重核，公开条目共 687 个。本地共 679 个，其中包含历史 Deploy Board。新增 Advanced Data Grid 待办为 Supplier Quality Board、Category Forecast、Scale-up Index、Sales to Target、Category Margin、Brand Scorecard、Family Budget、Inventory Manager 和 Vendor SLA Scorecard。实现和验收后再注册目录。
+- 官网 Blocks 目录的 79 个分类已重核，公开条目共 687 个。此次发现九个新增 Advanced Data Grid 条目。Scale-up Index 已验收，本地共 680 个，其中包含历史 Deploy Board。其余八项为 Supplier Quality Board、Category Forecast、Sales to Target、Category Margin、Brand Scorecard、Family Budget、Inventory Manager 和 Vendor SLA Scorecard。
+- Scale-up Index 使用真实 ReUI DataGrid、Frame 和原生单选菜单，实现年度与省份筛选、排名与奖牌、资格检查、撤销、经营历史和 CSV。两套组件库的 8 项浏览器检查和 32 项样式与视口检查均通过。Radix 391 文件与 Base 396 文件的实际下载均完成全新安装、严格构建和运行检查，原始文件逐字节保持。
 - Project Budget 和 Invoice Manager 的 320px 复审覆盖两套组件库和八种样式。32 项均通过，手机工具栏留在视口内，新增弹窗支持键盘打开、Escape 关闭及返回原触发控件。
 - Project Budget 的 320px 统计卡轨道宽 286px，修正前首卡超出 2px，第二张完全不可见。首卡缩至 254px 后，下一张露出 20px，长说明在 360px 以下换行。修正通过 8 项原生及导出测试、16 项 320px 样式验证和 4 项较宽视口对照。
 - `33598b3` 的 Actions run `45120805794` 最终有 3,023 项通过、19 项失败。第 1 分片的 17 项 Base Chat 已另行修复。第 2 分片报告 Filebox 的 Drive 源码固定哈希发生变化，以及 Mesh 缩略图元素未找到。冻结的 `33598b3` 产物复现了同一 Mesh 失败。全局主题测试滚动到实际 Mesh 卡片后通过，深色与 Emerald 色值断言和原有等待时间保持。
@@ -242,7 +243,7 @@
 
 ## 完成标准
 
-1. 先核对官方目录和真实页面身份，再完成相应本地页面及可见交互。2026-11-23 核对了官方 21 个模板入口和 687 个 Blocks。本地已有 21 个模板入口，另有九个 Advanced Data Grid 条目待实现与验收。
+1. 先核对官方目录和真实页面身份，再完成相应本地页面及可见交互。2026-11-23 核对了官方 21 个模板入口和 687 个 Blocks。本地已有 21 个模板入口，新增 Advanced Data Grid 的推进记录见本日进展。
 2. 实际优先复用 ReUI 官方免费实现，保留 Bricklane 原创品牌、许可和明确的本地模拟数据边界。不得把付费源码、原站 logo、头像、截图和提取的 SVG 分发到产品或 ZIP。
 3. 逐项完成已确认的视觉和功能问题，对已宣称完成的 blocks/templates 继续有范围的审阅。目录入口存在或一张截图相似不等于所有页面完成。
 4. Base UI / Radix UI 必须是真实组件实现；八种 style 在适用的桌面、手机、弹层和键盘行为中验证。代表性通过不得扩大为全部目录通过。

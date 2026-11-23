@@ -3226,12 +3226,21 @@
         "description": "Support agent QA and customer satisfaction scorecard with nested filters, reviews and coaching."
       },
       {
+        "id": "data-grid-advanced-20",
+        "name": "Scale-up Index",
+        "category": "advanced",
+        "group": "data-grid",
+        "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-20",
+        "index": 17,
+        "description": "Dutch scale-up index grid ranking provinces with medals, map rails and Yes, No and N/A check cells"
+      },
+      {
         "id": "data-grid-advanced-22",
         "name": "Job Schedule",
         "category": "advanced",
         "group": "data-grid",
         "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-22",
-        "index": 17,
+        "index": 18,
         "description": "A weekday scheduling grid with crew load, job details, material tracking and editable crew plans."
       },
       {
@@ -3240,7 +3249,7 @@
         "category": "advanced",
         "group": "data-grid",
         "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-23",
-        "index": 18,
+        "index": 19,
         "description": "Prospect account database with structured filters, intent summaries, lists and account handover."
       },
       {
@@ -3249,7 +3258,7 @@
         "category": "advanced",
         "group": "data-grid",
         "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-27",
-        "index": 19,
+        "index": 20,
         "description": "Project budget with live spend, schedule, contingency, line forecasts and decision history."
       },
       {
@@ -3258,11 +3267,11 @@
         "category": "advanced",
         "group": "data-grid",
         "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-28",
-        "index": 20,
+        "index": 21,
         "description": "Grouped accounts receivable with payment timelines, collections actions, and customer payment details."
       }
     ],
-    "count": 21
+    "count": 22
   },
   {
     "id": "columns",
