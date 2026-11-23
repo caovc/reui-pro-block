@@ -22,9 +22,11 @@ public detail page supplies the available reference evidence.
 - Surge's mobile purchase-order breadcrumb and pagination were repaired in
   `8462a0a`. The scoped browser run covered both foundations, four widths and
   the real source export.
-- Strata Overview's card spacing remains a visual review item. The archived
-  Nova phone comparison showed the Next Run row about 26px lower locally.
-  The older screenshot establishes a lead for new measurement.
+- Strata Overview now uses 8px card gaps and content-sized metric panels on
+  phones. Fresh Nova measurements under both foundations move Next Run from
+  720px to 700px, compared with about 694px in the archived reference. All 16
+  phone style checks and two desktop controls passed, including New Job
+  keyboard entry and return focus. The selected CSS matched both actual ZIPs.
 
 ## Confirmed findings and assignments
 

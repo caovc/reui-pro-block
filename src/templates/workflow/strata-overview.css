@@ -345,6 +345,10 @@
 @media (max-width: 639px) {
   .strata-jobs-metrics {
     grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+  .strata-job-metric > [data-slot="frame-panel"] {
+    min-height: 0;
   }
   .strata-jobs-environment {
     width: 62px;
