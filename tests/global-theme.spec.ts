@@ -30,6 +30,10 @@ test("global appearance reaches the catalog, block previews and templates", asyn
   await choose(page, "Preview mode", "Dark");
   await expect(page.locator("html")).toHaveClass("dark");
   await page.goto("./#/templates");
+  await page
+    .locator(".template-list-row")
+    .filter({ has: page.getByRole("link", { name: "Preview Mesh", exact: true }) })
+    .scrollIntoViewIfNeeded();
   await expect(page.frameLocator('iframe[title="Mesh thumbnail"]').locator("html")).toHaveClass(
     "dark",
   );

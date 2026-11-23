@@ -43,7 +43,7 @@ const selectedPaths = [
 ] as const;
 const frozenHashes: Readonly<Record<string, string>> = {
   "src/templates/collaboration/drive.tsx":
-    "ab49d4896b8ec178406daee14dc9841e0a7f097fa3bef7b5fbc3e6d04fe5da8e",
+    "905ca13300022f490893096a659c49e2f8a7a1bf0344a87e8abe8f7ad376cdcb",
   "src/templates/collaboration/filebox-auth.tsx":
     "007fe5c8db12a18e55f4b39180e8a97212103c6fbeb7acf9f9ee3fdeefd68175",
   "src/templates/collaboration/filebox-auth.css":
