@@ -17,7 +17,13 @@ const quickLinks = [
   { label: "Token audit", icon: ClipboardList, color: "text-amber-500" },
 ];
 
-export function FluxQuickLinks({ onSelect }: { onSelect: (label: string) => void }) {
+export function FluxQuickLinks({
+  onSelect,
+  failureHref,
+}: {
+  onSelect: (label: string) => void;
+  failureHref?: string;
+}) {
   return (
     <div className="wf-flux-quick-links">
       <SidebarCollection
@@ -28,7 +34,7 @@ export function FluxQuickLinks({ onSelect }: { onSelect: (label: string) => void
         rows={quickLinks.map(({ label, icon: Icon, color }) => ({
           label,
           icon: <Icon className={color} />,
-          href: "#/template-preview/flux",
+          href: label === "Failures" && failureHref ? failureHref : "#/template-preview/flux",
         }))}
       />
     </div>

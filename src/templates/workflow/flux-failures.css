@@ -1,0 +1,389 @@
+/* Original Flux triage composition. Free ReUI controls retain their own skins. */
+.flux-failures-page {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 20px;
+}
+.flux-failures-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.flux-failures-heading h1 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32px;
+}
+.flux-failures-heading p {
+  margin-top: 4px;
+  color: var(--muted-foreground);
+  font-size: 13px;
+  line-height: 20px;
+}
+.flux-failures-heading .flux-failure-eyebrow {
+  margin: 0 0 6px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.flux-failure-overview [data-slot="frame-panel"] {
+  display: grid;
+  grid-template-columns: minmax(170px, 1fr) 3fr;
+  align-items: center;
+  gap: 24px;
+}
+.flux-failure-summary-lead {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.flux-failure-summary-lead > svg {
+  width: 22px;
+  height: 22px;
+  color: var(--destructive);
+}
+.flux-failure-summary-lead strong {
+  font-size: 14px;
+  font-weight: 600;
+}
+.flux-failure-summary-lead p,
+.flux-failure-metrics dt {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 20px;
+}
+.flux-failure-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+.flux-failure-metrics > div {
+  border-inline-start: 1px solid var(--border);
+  padding-inline-start: 20px;
+}
+.flux-failure-metrics dd {
+  margin-top: 4px;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 28px;
+  font-variant-numeric: tabular-nums;
+}
+.flux-failure-metrics small {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 400;
+}
+.flux-failures-table-heading {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.flux-failures-grid-panel {
+  padding: 0;
+}
+.flux-failures-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 14px 8px;
+}
+.flux-failures-search {
+  min-width: 220px;
+  flex: 1;
+}
+.flux-failures-toolbar [data-slot="select-trigger"] {
+  max-width: 190px;
+}
+.flux-failures-results {
+  display: flex;
+  min-height: 35px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 14px 8px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.flux-failures-results > span:last-child {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.flux-failures-results svg {
+  width: 14px;
+  height: 14px;
+}
+.flux-failures-table [data-slot="data-grid-table"] {
+  min-width: 1160px;
+}
+.flux-failures-table tbody tr {
+  height: 68px;
+}
+.flux-failure-run button {
+  display: -webkit-box;
+  overflow: hidden;
+  text-align: start;
+  line-height: 18px;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.flux-failure-run button:hover {
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.flux-failure-run button:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+}
+.flux-failure-run small,
+.flux-failure-owner small,
+.flux-failure-step small {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted-foreground);
+  font-size: 11px;
+  line-height: 16px;
+}
+.flux-failure-owner small {
+  padding-inline-start: 32px;
+}
+.flux-failure-step code,
+.flux-failures-table time {
+  font-size: 12px;
+}
+.flux-failures-pagination {
+  flex-wrap: wrap;
+  gap: 8px;
+  border-top: 1px solid var(--border);
+  padding: 12px 14px;
+}
+.flux-failure-session-note {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  text-align: center;
+}
+.flux-failure-sheet.fs-drawer[data-side="right"] {
+  inset: 0 0 0 auto;
+  display: flex;
+  width: min(580px, 100vw);
+  max-width: 580px;
+  height: 100dvh;
+  flex-direction: column;
+  gap: 0;
+  overflow: hidden;
+  border: 0;
+  border-inline-start: 1px solid var(--border);
+  border-radius: 0;
+  padding: 0;
+}
+.flux-failure-sheet .fs-drawer-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  flex-direction: column;
+  gap: 18px;
+  overflow-y: auto;
+  padding: 22px;
+}
+.flux-failure-sheet .fs-drawer-header {
+  flex-shrink: 0;
+  gap: 6px;
+  border-bottom: 1px solid var(--border);
+  padding: 22px;
+}
+.flux-failure-sheet .fs-drawer-footer {
+  display: flex;
+  flex-shrink: 0;
+  border-top: 1px solid var(--border);
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 16px 22px;
+}
+.flux-failure-detail .fs-drawer-footer > button:first-child {
+  margin-inline-end: auto;
+}
+.flux-failure-identity > div,
+.flux-failure-section-heading,
+.flux-failure-edit-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.flux-failure-identity code,
+.flux-failure-identity p,
+.flux-failure-section-heading > span {
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.flux-failure-identity h2 {
+  margin: 12px 0 6px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 26px;
+}
+.flux-failure-tabs {
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  gap: 20px;
+}
+.flux-failure-tabs [data-slot="tabs-list"] {
+  width: 100%;
+}
+.flux-failure-tabs [data-slot="tabs-trigger"] {
+  flex: 1;
+}
+.flux-failure-tabs [data-slot="tabs-content"] {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 20px;
+}
+.flux-failure-tabs [data-slot="tabs-content"][hidden] {
+  display: none;
+}
+.flux-failure-tabs [data-slot="timeline-title"] {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px;
+}
+.flux-failure-tabs [data-slot="timeline-title"] time {
+  color: var(--muted-foreground);
+  font-size: 11px;
+  font-weight: 400;
+}
+.flux-failure-tabs [data-slot="timeline-content"] p {
+  margin-top: 4px;
+  overflow-wrap: anywhere;
+  font-size: 12px;
+}
+.flux-failure-facts {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr);
+  gap: 18px 12px;
+  font-size: 13px;
+  line-height: 20px;
+}
+.flux-failure-facts dt {
+  color: var(--muted-foreground);
+}
+.flux-failure-facts dd {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.flux-failure-facts small {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.flux-failure-next-step {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  border-top: 1px solid var(--border);
+  padding-top: 20px;
+}
+.flux-failure-next-step h3,
+.flux-failure-section-heading h3 {
+  font-size: 13px;
+  font-weight: 600;
+}
+.flux-failure-next-step p,
+.flux-failure-help,
+.flux-failure-draft-hint {
+  color: var(--muted-foreground);
+  font-size: 12px;
+  line-height: 20px;
+}
+.flux-failure-field-pair,
+.flux-failure-step-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.flux-failure-sheet [data-slot="select-trigger"] {
+  max-width: 100%;
+}
+.flux-failure-json {
+  min-height: 240px;
+  font-family: var(--font-mono, monospace);
+  font-size: 12px;
+  line-height: 20px;
+}
+.flux-failure-edit-actions {
+  justify-content: flex-end;
+  margin-top: 18px;
+}
+@media (max-width: 1199px) {
+  .flux-failure-overview [data-slot="frame-panel"] {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+  .flux-failure-metrics > div:first-child {
+    border-inline-start: 0;
+    padding-inline-start: 0;
+  }
+}
+@media (max-width: 639px) {
+  .flux-failures-heading {
+    align-items: flex-start;
+  }
+  .flux-failures-heading h1 {
+    font-size: 22px;
+  }
+  .flux-failures-heading > button {
+    margin-top: 25px;
+  }
+  .flux-failure-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .flux-failure-metrics > div:nth-child(odd) {
+    border-inline-start: 0;
+    padding-inline-start: 0;
+  }
+  .flux-failures-search {
+    flex-basis: 100%;
+  }
+  .flux-failures-table-heading {
+    align-items: flex-start;
+  }
+  .flux-failures-toolbar [data-slot="select-trigger"] {
+    max-width: 100%;
+    flex: 1;
+  }
+  .flux-failure-sheet .fs-drawer-header,
+  .flux-failure-sheet .fs-drawer-body {
+    padding: 18px;
+  }
+  .flux-failure-sheet .fs-drawer-footer {
+    padding: 14px;
+  }
+  .flux-failure-field-pair {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.flux-failure-sheet .fs-drawer-body h3 {
+  margin: 0;
+}
+.flux-failure-form .fs-drawer-footer > button:first-child {
+  margin-inline-end: 0;
+}

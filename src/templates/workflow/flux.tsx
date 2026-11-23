@@ -46,6 +46,9 @@ import { RunTree } from "./run-tree";
 import { ApprovalInbox } from "./approvals";
 import { FluxFlags } from "./flux-flags";
 import { FluxQuickLinks } from "./flux-sidebar-quick-links";
+import { FluxFailuresWorkspace } from "./flux-failures-workspace";
+import { useFluxFailureWorkspace } from "./flux-runs-state";
+import { useFluxRunRoute } from "./flux-runs-route";
 const agentSeed = ["Refund Triage", "Invoice Reconciler", "Support Router", "Contract Reader"];
 const incidents = [
   {
@@ -97,17 +100,17 @@ export default function Flux() {
   const providerModel = useFluxProviderModel();
   const evidenceModel = useFluxEvidenceModel();
   const flagRecords = useFluxFlagsModel();
-  const [view, setView] = useState("Overview");
+  const { view, navigate: setView, href: runHref } = useFluxRunRoute();
+  const failures = useFluxFailureWorkspace();
   const [profileValues, setProfileValues] = useState<SettingsValues>(() => ({
     ...fluxProfileSeed,
   }));
   const settingsView = fluxSettingsView(view);
   const [agents] = useState(agentSeed);
-  const [riskOnly, setRiskOnly] = useState(false);
   const [period, setPeriod] = useState("Last 24 hours");
   const [selected, setSelected] = useState("");
   const [tools, setTools] = useState(["orders.read", "payments.refund", "knowledge.search"]);
-  const tree = <RunTree open={setSelected} initialRisk={riskOnly} />;
+  const tree = <RunTree open={setSelected} />;
   return (
     <Shell
       brand="AgentOps"
@@ -128,7 +131,7 @@ export default function Flux() {
       }
       nav={[
         { label: "Overview", icon: LayoutDashboard },
-        { label: "Runs", icon: Play },
+        { label: "Runs", icon: Play, children: ["All runs", "Failures"] },
         { label: "Approvals", icon: ShieldCheck, count: "8" },
         { label: "Evals", icon: FlaskConical },
         { label: "Flags", icon: Flag },
@@ -148,12 +151,7 @@ export default function Flux() {
       ]}
       extra={
         <>
-          <FluxQuickLinks
-            onSelect={(label) => {
-              setView(label === "Failures" ? "Runs" : label);
-              setRiskOnly(label === "Failures");
-            }}
-          />
+          <FluxQuickLinks failureHref={runHref("Failures")} onSelect={setView} />
           <Frame dense spacing="xs" className="wf-flux-spending-limit">
             <FrameHeader>
               <FrameTitle className="text-xs leading-4">Spending Limit</FrameTitle>
@@ -278,8 +276,10 @@ export default function Flux() {
           </div>
           {tree}
         </>
-      ) : view === "Runs" ? (
+      ) : view === "All runs" ? (
         tree
+      ) : view === "Failures" ? (
+        <FluxFailuresWorkspace model={failures} />
       ) : settingsView ? (
         <FluxSettingsRoute key={settingsView} view={settingsView} />
       ) : view === "Evals" ? (

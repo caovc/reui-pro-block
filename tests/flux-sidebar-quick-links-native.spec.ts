@@ -2,7 +2,7 @@ import { expect, test, type Locator, type Page, type TestInfo } from "@playwrigh
 import { writeFile } from "node:fs/promises";
 
 const shortcuts = [
-  { name: "Failures", view: "Runs", heading: null },
+  { name: "Failures", view: "Failures", heading: null },
   { name: "Connections", view: "Connections", heading: /^Provider Connections$/ },
   { name: "Routing rules", view: "Routing rules", heading: /^Routing Rules/ },
   { name: "Spend overview", view: "Spend overview", heading: /^Cost Dashboard/ },
@@ -59,15 +59,9 @@ async function checkDestination(page: Page, name: string, view: string, heading:
   if (heading) {
     await expect(page.locator(".wf-content .wf-page-heading h1")).toHaveText(heading);
   } else {
-    // Failures intentionally preserves the existing RunTree alias in this narrow group migration.
-    const tree = page.locator(".wf-run-tree");
-    await expect(tree).toHaveCount(1);
-    await expect(
-      tree.locator(".wf-tree-name strong").filter({ hasText: /^Refund Triage$/ }),
-    ).toHaveCount(1);
-    await expect(
-      tree.locator(".wf-tree-name strong").filter({ hasText: /^Invoice Reconciler$/ }),
-    ).toHaveCount(0);
+    await expect(page.locator(".flux-failures-page")).toBeVisible();
+    await expect(page.locator(".flux-failures-page h1")).toContainText("Failures");
+    await expect(page.locator(".wf-run-tree")).toHaveCount(0);
   }
   const primary = page.locator(".wf-native-navigation");
   await expect(primary.getByRole("button", { name: view, exact: true })).toHaveAttribute(
@@ -90,7 +84,7 @@ async function checkDestination(page: Page, name: string, view: string, heading:
   await expect(selected).toHaveCount(0);
   await expect(group.getByRole("link", { name, exact: true })).toHaveAttribute(
     "href",
-    "#/template-preview/flux",
+    name === "Failures" ? "#/template-preview/flux/runs/failures" : "#/template-preview/flux",
   );
 }
 
@@ -151,7 +145,9 @@ for (const width of [1440, 390]) {
         await link.click();
       }
       await checkDestination(page, shortcut.name, shortcut.view, shortcut.heading);
-      await expect(page).toHaveURL(initialUrl);
+      await expect(page).toHaveURL(
+        shortcut.name === "Failures" ? `${initialUrl}/runs/failures` : initialUrl,
+      );
       if (width === 390) await expect(drawer).toBeVisible();
     }
     await page.screenshot({ path: info.outputPath("quick-links-native.png"), fullPage: false });
@@ -160,13 +156,19 @@ for (const width of [1440, 390]) {
       await expect(drawer).toHaveCount(0);
       await expect(trigger).toBeFocused();
       await trigger.click();
-      await drawer.getByRole("button", { name: "Runs", exact: true }).click();
+      const runs = drawer.getByRole("button", { name: "Runs", exact: true });
+      if ((await runs.getAttribute("aria-expanded")) === "false") await runs.click();
+      await expect(runs).toHaveAttribute("aria-expanded", "true");
+      await drawer.getByRole("button", { name: "All runs", exact: true }).click();
       await expect(drawer).toHaveCount(0);
       await expect(trigger).toBeFocused();
     } else {
-      await page.getByRole("button", { name: "Runs", exact: true }).click();
+      await page
+        .locator(".wf-native-navigation")
+        .getByRole("button", { name: "All runs", exact: true })
+        .click();
     }
-    // All other shortcuts clear the original risk-only seed, verified through actual rows after returning to Runs.
+    // The separate All runs destination preserves the complete existing RunTree.
     await expect(
       page.locator(".wf-run-tree .wf-tree-name strong").filter({ hasText: /^Invoice Reconciler$/ }),
     ).toBeVisible();

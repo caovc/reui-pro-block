@@ -35,6 +35,7 @@ export function SettingsDrawer({
   headerVariant = "default",
   headerIdentity,
   footerVariant = "default",
+  className,
 }: {
   title: string;
   description?: string;
@@ -46,6 +47,7 @@ export function SettingsDrawer({
   headerVariant?: "default" | "member" | "invite";
   headerIdentity?: { leading: ReactNode; titleAccessory: ReactNode };
   footerVariant?: "default" | "member" | "invite";
+  className?: string;
 }) {
   const contentRef = useRef<HTMLDivElement>(null);
   const trigger = useRef(
@@ -61,6 +63,7 @@ export function SettingsDrawer({
       <SheetContent
         className={cn(
           "reui-reference fs-drawer",
+          className,
           headerVariant === "member" && "fs-drawer-member",
           headerVariant === "invite" && "fs-drawer-invite",
         )}

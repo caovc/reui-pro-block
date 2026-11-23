@@ -733,6 +733,11 @@ export function templateImplementationTargets(template: {
       "flux-settings-header",
       "approvals",
       "flux-sidebar-quick-links",
+      "flux-failures-workspace",
+      "flux-failures",
+      "flux-failure-detail",
+      "flux-failure-form",
+      "flux-failure-badge",
       "free/flowly-progress",
       "workflow-account-settings",
       "workflow-account-menu",
@@ -865,6 +870,11 @@ export function templateImplementationTargets(template: {
     ...(template.id === "flux"
       ? [
           "src/templates/workflow/flux-approvals.css",
+          "src/templates/workflow/flux-failures.css",
+          "src/templates/workflow/flux-runs-model.ts",
+          "src/templates/workflow/flux-runs-state.ts",
+          "src/templates/workflow/flux-runs-route.ts",
+          "src/templates/workflow/flux-runs-route-model.ts",
           "src/templates/workflow/flux-sidebar-quick-links.css",
         ]
       : []),
