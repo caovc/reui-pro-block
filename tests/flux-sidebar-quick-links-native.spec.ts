@@ -168,7 +168,22 @@ for (const width of [1440, 390]) {
         .getByRole("button", { name: "All runs", exact: true })
         .click();
     }
-    // The separate All runs destination preserves the complete existing RunTree.
+    // All runs now opens the queue; the separate Run tree preserves its original behavior.
+    await expect(page.locator(".flux-queue-page")).toBeVisible();
+    if (width === 390) {
+      await trigger.click();
+      const runs = drawer.getByRole("button", { name: "Runs", exact: true });
+      if ((await runs.getAttribute("aria-expanded")) === "false") await runs.click();
+      await drawer.getByRole("button", { name: "Run tree", exact: true }).click();
+      await expect(drawer).toHaveCount(0);
+      await expect(trigger).toBeFocused();
+    } else {
+      await page
+        .locator(".wf-native-navigation")
+        .getByRole("button", { name: "Run tree", exact: true })
+        .click();
+    }
+    await expect(page).toHaveURL(`${initialUrl}/runs`);
     await expect(
       page.locator(".wf-run-tree .wf-tree-name strong").filter({ hasText: /^Invoice Reconciler$/ }),
     ).toBeVisible();

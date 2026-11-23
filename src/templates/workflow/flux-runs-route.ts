@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { fluxRunHref, readFluxRunRoute, type FluxRunView } from "./flux-runs-route-model";
 
-const isRunView = (view: string): view is FluxRunView => view === "All runs" || view === "Failures";
+const isRunView = (view: string): view is Exclude<FluxRunView, "Overview"> =>
+  view === "All runs" || view === "Failures" || view === "Run tree";
 
 /** The remaining Flux views retain their existing session-local navigation contract. */
 export function useFluxRunRoute() {
@@ -23,7 +24,7 @@ export function useFluxRunRoute() {
     if (isRunView(next)) {
       const href = fluxRunHref(window.location.hash, next);
       if (href !== window.location.hash) window.location.hash = href;
-    } else if (current.view === "All runs" || current.view === "Failures") {
+    } else if (current.view && current.view !== "Overview") {
       // Clear an owned run suffix while retaining this existing non-run view locally.
       window.history.pushState(
         window.history.state,

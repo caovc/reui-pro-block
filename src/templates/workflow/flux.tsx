@@ -49,6 +49,8 @@ import { FluxQuickLinks } from "./flux-sidebar-quick-links";
 import { FluxFailuresWorkspace } from "./flux-failures-workspace";
 import { useFluxFailureWorkspace } from "./flux-runs-state";
 import { useFluxRunRoute } from "./flux-runs-route";
+import { FluxQueueWorkspace } from "./flux-queue-workspace";
+import { useFluxQueueWorkspace } from "./flux-queue-state";
 const agentSeed = ["Refund Triage", "Invoice Reconciler", "Support Router", "Contract Reader"];
 const incidents = [
   {
@@ -102,6 +104,7 @@ export default function Flux() {
   const flagRecords = useFluxFlagsModel();
   const { view, navigate: setView, href: runHref } = useFluxRunRoute();
   const failures = useFluxFailureWorkspace();
+  const queue = useFluxQueueWorkspace();
   const [profileValues, setProfileValues] = useState<SettingsValues>(() => ({
     ...fluxProfileSeed,
   }));
@@ -131,7 +134,7 @@ export default function Flux() {
       }
       nav={[
         { label: "Overview", icon: LayoutDashboard },
-        { label: "Runs", icon: Play, children: ["All runs", "Failures"] },
+        { label: "Runs", icon: Play, children: ["All runs", "Failures", "Run tree"] },
         { label: "Approvals", icon: ShieldCheck, count: "8" },
         { label: "Evals", icon: FlaskConical },
         { label: "Flags", icon: Flag },
@@ -277,6 +280,8 @@ export default function Flux() {
           {tree}
         </>
       ) : view === "All runs" ? (
+        <FluxQueueWorkspace model={queue} />
+      ) : view === "Run tree" ? (
         tree
       ) : view === "Failures" ? (
         <FluxFailuresWorkspace model={failures} />

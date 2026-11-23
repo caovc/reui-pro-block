@@ -4,7 +4,7 @@ The Failures destination uses an original layout within Flux's established shell
 
 ## Scope and assumptions
 
-- `#/template-preview/flux/runs/failures` and `#/templates/flux/runs/failures` open the failure ledger. All runs has its own `/runs/all-runs` destination and retains the existing RunTree. Run Queue remains a separate follow-up.
+- `#/template-preview/flux/runs/failures` and `#/templates/flux/runs/failures` open the failure ledger. All runs opens the original Run Queue at `/runs/all-runs`. The existing RunTree remains available as Run tree at `/runs`.
 - Hash routing preserves opaque query bytes and supports browser Back/Forward. Other Flux views retain session-local navigation.
 - The ledger begins with eight independent demonstration records. The metrics cover all records, while the record count, table and CSV export reflect the intersecting status, error, agent and text filters. Exposure is the sum of refund amounts on active records; backoff and payload counts exclude dismissed records; owners counts distinct owners on active records.
 - Records, filters and table state survive navigation within this mounted Flux session. Reloading resets them. Opening another browser tab creates an independent local workspace.

@@ -182,7 +182,10 @@ for (const width of [1440, 390]) {
       .getByRole("button", { name: "All runs", exact: true })
       .click();
     await expect(page).toHaveURL(/\/runs\/all-runs\?opaque=a%2Fb\+z$/);
-    await expect(page.locator(".wf-run-tree")).toBeVisible();
+    await expect(page.locator(".flux-queue-page")).toBeVisible();
+    await expect(
+      page.getByRole("heading", { level: 1, name: "Run Queue", exact: true }),
+    ).toBeVisible();
     await page.goBack();
     await expect(screen).toBeVisible();
     await expect(

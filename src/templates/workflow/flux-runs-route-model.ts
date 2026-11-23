@@ -1,8 +1,9 @@
-export type FluxRunView = "Overview" | "All runs" | "Failures";
+export type FluxRunView = "Overview" | "All runs" | "Failures" | "Run tree";
 const paths: Record<FluxRunView, string> = {
   Overview: "",
   "All runs": "/runs/all-runs",
   Failures: "/runs/failures",
+  "Run tree": "/runs",
 };
 
 /** Recognizes only this template's observed run routes, preserving opaque preset queries. */
