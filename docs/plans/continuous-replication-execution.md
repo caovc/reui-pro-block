@@ -20,6 +20,9 @@
 
 - Drive 累计提交 `33598b3` 的远端第 1 分片报 17 项 Base Chat 7 失败。十条详细注解均显示点击后立即读取 `aria-controls` 得到空值。测试现等待真实原生模型列表挂载，使用原有 5 秒与 30 秒预算。干净的 `33598b3` 产物上 20 项 Base 定点检查首轮通过，包含远端失败的全部用例。
 
+- Atlas 工时表已接入日期范围、筛选、排序、分页、新增与编辑、按日查看和报表同步。两套组件库的 48 项浏览器检查覆盖 320px、390px 和桌面，以及八种样式和相邻页面。实际 Base 和 Radix ZIP 均通过全新安装、严格构建和运行检查。
+- 官网 Blocks 目录的 79 个分类已重核，公开条目共 687 个。本地含 679 个及唯一的历史 Deploy Board。新增 Advanced Data Grid 待办为 Supplier Quality Board、Category Forecast、Scale-up Index、Sales to Target、Category Margin、Brand Scorecard、Family Budget、Inventory Manager 和 Vendor SLA Scorecard。实现和验收后再注册目录。
+
 ## 11 月 18 日验收进展
 
 - 已确认 Pages 部署 `7881288443` 对应 `5bc3541`，四个浏览器分片和构建全部通过。稍后的 `ba8817a` 已推送 Strata Services 每三天剩余预算图，两库八种桌面样式及两项响应式检查通过。

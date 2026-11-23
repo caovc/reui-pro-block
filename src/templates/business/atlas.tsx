@@ -8,6 +8,7 @@ import {
 } from "./atlas-access";
 import AtlasUsers from "./atlas-users";
 import { useState } from "react";
+import { AtlasTimesheets, useAtlasTimesheetState } from "./atlas-timesheets";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -27,8 +28,6 @@ import {
   Spark,
   Area,
   DataTable,
-  RecordDialog,
-  toast,
   exportCsv,
 } from "./shared";
 import { BusinessBars } from "./charts";
@@ -44,6 +43,7 @@ export default function Atlas() {
   const auditState = useAtlasAuditState();
   const account = useAtlasAccountSettingsModel();
   const routing = useAtlasAccountRoute();
+  const timesheets = useAtlasTimesheetState();
   const [page, setPage] = useState("Dashboard");
   const active = routing.section ? "Settings" : page;
   const setActive = (next: string) => {
@@ -62,13 +62,6 @@ export default function Atlas() {
     ...account,
     section: routing.section ?? account.section,
   };
-  const [newUser, setNewUser] = useState(false);
-  const [users, setUsers] = useState([
-    ["Amara Ortiz", "amara@example.com", "Administrator", "Active"],
-    ["Theo Mercer", "theo@example.com", "Developer", "Active"],
-    ["Lena Hoffman", "lena@example.com", "Editor", "Invited"],
-    ["Isaac Chen", "isaac@example.com", "Developer", "Active"],
-  ]);
   const [selected, setSelected] = useState("");
   const items = ["Dashboard", "Deals", "Products", "Billing", "Users", "Reports"];
   return (
@@ -367,36 +360,7 @@ export default function Atlas() {
                   ))}
                 </Panel>
               </div>
-              <Panel
-                title="Timesheets"
-                description="Weekly team timesheets"
-                action={
-                  <Button variant="outline" size="sm" onClick={() => setNewUser(true)}>
-                    New entry
-                  </Button>
-                }
-              >
-                <DataTable
-                  columns={[
-                    "People",
-                    "Mon, Mar 23",
-                    "Tue, Mar 24",
-                    "Wed, Mar 25",
-                    "Thu, Mar 26",
-                    "Fri, Mar 27",
-                    "Total",
-                  ]}
-                  rows={users.map((u, i) => [
-                    u[0],
-                    i === 0 ? "6h 30m" : "8h",
-                    "5h 30m",
-                    "7h",
-                    "6h",
-                    "4h 30m",
-                    i === 0 ? "29h 30m" : "39h 30m",
-                  ])}
-                />
-              </Panel>
+              <AtlasTimesheets model={timesheets} onViewEntry={() => setActive("Dashboard")} />
             </>
           ) : active === "Deals" ? (
             <Panel title="Open deals" description="Current sales opportunities">
@@ -457,28 +421,6 @@ export default function Atlas() {
           )}
         </>
       )}
-      <RecordDialog
-        title="New timesheet entry"
-        open={newUser}
-        onOpenChange={setNewUser}
-        fields={
-          active === "Users"
-            ? [
-                { name: "name", label: "Full name" },
-                { name: "email", label: "Email address", type: "email" },
-                { name: "role", label: "Role", value: "Editor" },
-              ]
-            : [
-                { name: "name", label: "Full name" },
-                { name: "hours", label: "Tracked hours", type: "number" },
-              ]
-        }
-        onSave={(v) => {
-          if (active === "Users") setUsers((x) => [...x, [v.name, v.email, v.role, "Invited"]]);
-          else setSelected(`${v.name}: ${v.hours} tracked hours added to this week.`);
-          toast.success("Record saved");
-        }}
-      />
     </Shell>
   );
 }

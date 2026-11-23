@@ -680,7 +680,7 @@ export function templateImplementationTargets(template: {
       "verve-settings-webhooks",
       "verve-workspace-settings",
     ],
-    atlas: ["atlas-account-settings", "atlas-shell-chrome"],
+    atlas: ["atlas-account-settings", "atlas-shell-chrome", "atlas-timesheets"],
     filespace: [
       "drive-layout",
       "free/drive-button",
