@@ -164,7 +164,7 @@ export function StrataMonitorForm({
       }}
     >
       <SheetTrigger asChild>
-        <Button>
+        <Button className="strata-monitor-create-trigger">
           <Plus /> New Monitor
         </Button>
       </SheetTrigger>

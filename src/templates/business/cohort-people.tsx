@@ -767,7 +767,7 @@ export function CohortPeople({
                   />
                 </label>
               ))}
-              <label>
+              <div className="cohort-person-manager-field">
                 <PersonFieldLabel
                   label="Manager"
                   help="The person this employee reports to in the organisation chart."
@@ -779,7 +779,7 @@ export function CohortPeople({
                   )}
                   onChange={(manager) => setDraft({ ...draft, manager })}
                 />
-              </label>
+              </div>
               <label>
                 <PersonFieldLabel
                   label="Department"

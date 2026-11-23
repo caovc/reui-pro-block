@@ -164,6 +164,50 @@ test("Cohort mobile View and Edit have independent scrolling, visible footer and
     .toBe(true);
 });
 
+for (const primitive of ["radix", "base"] as const) {
+  test(`Cohort mobile Manager keeps focus after Escape and keyboard selection in ${primitive}`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 320, height: 844 });
+    const entry = primitive === "base" ? "./base/" : "./";
+    const preset = new URLSearchParams({
+      preset: JSON.stringify({ primitive, style: "sera", mode: "light" }),
+    });
+    await page.goto(`${entry}#/template-preview/cohort/people?${preset}`);
+    await expect(page.locator("html")).toHaveAttribute("data-ui-primitive", primitive);
+    await page.getByRole("button", { name: "Sign in", exact: true }).click();
+    await action(page, "Amara Okafor", "Edit person");
+    const editor = page.getByRole("dialog", { name: "Edit Amara Okafor", exact: true });
+    const name = editor.getByRole("textbox", { name: "Full name", exact: true });
+    const manager = editor.getByRole("combobox", { name: "Manager", exact: true });
+    const search = editor.getByRole("combobox", { name: "Search managers", exact: true });
+    const popup = editor.locator('[data-slot="combobox-content"]');
+    const priorManager = await manager.innerText();
+    await name.fill("Amara unsaved draft");
+
+    await manager.click();
+    await expect(search).toBeFocused();
+    await page.keyboard.press("Escape");
+    await expect(popup).toHaveCount(0);
+    await expect(manager).toBeFocused();
+    await expect(manager).toHaveText(priorManager, { useInnerText: true });
+
+    await manager.click();
+    await search.fill("Nobody");
+    await expect(
+      editor.getByRole("option", { name: "Nobody (top of the org chart)" }),
+    ).toBeVisible();
+    await page.keyboard.press("ArrowDown");
+    await page.keyboard.press("Enter");
+    await expect(popup).toHaveCount(0);
+    await expect(manager).toContainText("Nobody (top of the org chart)");
+    await expect(manager).toBeFocused();
+    await expect(name).toHaveValue("Amara unsaved draft");
+    await page.keyboard.press("Escape");
+    await expect(editor).toBeHidden();
+  });
+}
+
 test("Cohort photo upload, save and removal follow the selected employee", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await openDirectory(page);

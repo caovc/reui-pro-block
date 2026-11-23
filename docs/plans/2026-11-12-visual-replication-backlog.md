@@ -14,6 +14,21 @@ Deploy Board. Signal has a local implementation with ten views. Its independent
 reference preview still returns HTTP 403 in the cloud environment, so the
 public detail page supplies the available reference evidence.
 
+- Cohort's Manager picker returned focus to its help button after selection.
+  On Base UI, Escape also left focus on the editor sheet. The Manager row now
+  keeps its help button outside native label activation and restores focus to
+  the picker on close. The original keyboard and pointer checks passed in ten
+  contexts, including Nova and Sera at 320px and 390px, with the draft intact.
+- Strata Monitors clipped New Monitor and Create Monitor in Sera at 320px in
+  both foundations. The narrower header trigger preserves its full caption,
+  and the footer wraps its original actions within the sheet. Two permanent
+  tests check the visible labels, hit targets, validation and focus return.
+  The 20-case browser matrix passed both foundations and all eight styles at
+  320px, plus Sera at 389px and 390px.
+- Follow-up for Cohort's employee editor. At 320px, both Sera screenshots
+  show the Reset footer label clipped at the left edge. Measure the footer
+  action bounds and test their native hit targets independently of Manager.
+
 - Drive navigation now uses the true Radix and Base link compositions in
   `33598b3`. Both download projects completed a fresh install, strict build
   and browser check. `448bfcc` updates the affected Filebox source assertion.
@@ -215,8 +230,10 @@ runtime stayed frozen throughout. See
   timestamp case was not repeated. Evidence:
   `/tmp/strata-general-dateFormat-pointer-ready-native-20261118-attempt-01/HANDOFF.md`
   and `/tmp/strata-general-timestamps-native-preference-20261112-attempt-01/HANDOFF.md`.
-  Auto refresh, Markdown, reduced motion and tooltips remain individually
-  unverified on the source; do not infer their consumer requirements from labels.
+  The November 23 tooltip probe reached a Chromium certificate trust error
+  before the official Settings page loaded. A separate certificate-verified
+  HTTP request returned 200. Auto refresh, Markdown, reduced motion and
+  tooltips remain individually unverified in the reference browser.
 
 - Exact-SHA release status at22:17 UTC: current pushed main is
   `a0e1d3c7183e0d31d6c6fd8fa9eb38095b1c9769`; run `43314161973`

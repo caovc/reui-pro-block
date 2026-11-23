@@ -311,8 +311,12 @@
   gap: 20px;
   padding: 20px 16px;
 }
-.cohort-person-editor[data-slot="sheet-content"] .bt-person-form > label {
+.cohort-person-editor[data-slot="sheet-content"]
+  .bt-person-form
+  > :is(label, .cohort-person-manager-field) {
+  display: grid;
   grid-template-columns: 194.5px minmax(0, 1fr);
+  align-items: center;
   gap: 12px;
   font-size: 14px;
   font-weight: 500;
@@ -352,7 +356,9 @@
   .cohort-person-editor[data-slot="sheet-content"] .bt-person-form {
     gap: 20px;
   }
-  .cohort-person-editor[data-slot="sheet-content"] .bt-person-form > label {
+  .cohort-person-editor[data-slot="sheet-content"]
+    .bt-person-form
+    > :is(label, .cohort-person-manager-field) {
     grid-template-columns: minmax(0, 1fr);
     gap: 12px;
   }

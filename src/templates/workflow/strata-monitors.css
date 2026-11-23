@@ -614,6 +614,23 @@
   .strata-monitor-form-footer {
     padding: 12px 16px;
   }
+  .strata-monitor-form-footer > div {
+    flex-shrink: 1;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    min-width: 0;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 389px) {
+  .strata-monitor-create-trigger {
+    /* Fit the complete label even when the style profile uses wide button padding. */
+    padding-inline: 8px !important;
+  }
+  .strata-monitor-create-trigger > svg {
+    display: none;
+  }
 }
 
 @media (max-width: 1100px) {

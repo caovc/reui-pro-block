@@ -65,6 +65,7 @@ export function PersonManagerPicker({
   onChange: (id: string) => void;
 }) {
   const portal = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
   const options: ManagerOption[] = [
     { id: "", name: "Nobody (top of the org chart)" },
     ...people.map((person) => ({ id: person.id, name: person.name, person })),
@@ -75,6 +76,12 @@ export function PersonManagerPicker({
       <Combobox
         items={options}
         value={manager}
+        onOpenChange={(open, details) => {
+          if (!open && (details.reason === "escape-key" || details.reason === "item-press")) {
+            // Return focus before the parent editor handles the popup's removal.
+            triggerRef.current?.focus({ preventScroll: true });
+          }
+        }}
         onValueChange={(option: ManagerOption | null) => onChange(option?.id ?? "")}
         itemToStringValue={(option: ManagerOption) => option.name}
         isItemEqualToValue={(option: ManagerOption, selected: ManagerOption) =>
@@ -83,6 +90,7 @@ export function PersonManagerPicker({
         autoHighlight
       >
         <ComboboxTrigger
+          ref={triggerRef}
           aria-label="Manager"
           render={
             <Button
@@ -98,6 +106,7 @@ export function PersonManagerPicker({
         </ComboboxTrigger>
         <ComboboxContent
           portalContainer={portal}
+          finalFocus={triggerRef}
           className="max-w-(--anchor-width) min-w-(--anchor-width)"
         >
           <ComboboxInput
