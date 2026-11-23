@@ -362,6 +362,9 @@
     grid-template-columns: minmax(0, 1fr);
     gap: 12px;
   }
+  .cohort-person-editor[data-slot="sheet-content"] .bt-dialog-actions {
+    flex-wrap: wrap;
+  }
   .cohort-profile-details > div {
     grid-template-columns: 124px minmax(0, 1fr);
   }

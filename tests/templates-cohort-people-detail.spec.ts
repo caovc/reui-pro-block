@@ -20,6 +20,20 @@ async function action(page: Page, name: string, action: string) {
   await page.getByRole("menuitem", { name: action, exact: true }).click();
 }
 
+async function openMobilePersonEditor(page: Page, primitive: "radix" | "base") {
+  await page.setViewportSize({ width: 320, height: 844 });
+  const entry = primitive === "base" ? "./base/" : "./";
+  const preset = new URLSearchParams({
+    preset: JSON.stringify({ primitive, style: "sera", mode: "light" }),
+  });
+  await page.goto(`${entry}#/template-preview/cohort/people?${preset}`);
+  await expect(page.locator("html")).toHaveAttribute("data-ui-primitive", primitive);
+  await expect(page.locator("html")).toHaveAttribute("data-ui-style", "sera");
+  await page.getByRole("button", { name: "Sign in", exact: true }).click();
+  await action(page, "Amara Okafor", "Edit person");
+  return page.getByRole("dialog", { name: "Edit Amara Okafor", exact: true });
+}
+
 test("Cohort View has individual contract, leave, review and activity rather than the edit form", async ({
   page,
 }) => {
@@ -168,16 +182,7 @@ for (const primitive of ["radix", "base"] as const) {
   test(`Cohort mobile Manager keeps focus after Escape and keyboard selection in ${primitive}`, async ({
     page,
   }) => {
-    await page.setViewportSize({ width: 320, height: 844 });
-    const entry = primitive === "base" ? "./base/" : "./";
-    const preset = new URLSearchParams({
-      preset: JSON.stringify({ primitive, style: "sera", mode: "light" }),
-    });
-    await page.goto(`${entry}#/template-preview/cohort/people?${preset}`);
-    await expect(page.locator("html")).toHaveAttribute("data-ui-primitive", primitive);
-    await page.getByRole("button", { name: "Sign in", exact: true }).click();
-    await action(page, "Amara Okafor", "Edit person");
-    const editor = page.getByRole("dialog", { name: "Edit Amara Okafor", exact: true });
+    const editor = await openMobilePersonEditor(page, primitive);
     const name = editor.getByRole("textbox", { name: "Full name", exact: true });
     const manager = editor.getByRole("combobox", { name: "Manager", exact: true });
     const search = editor.getByRole("combobox", { name: "Search managers", exact: true });
@@ -205,6 +210,54 @@ for (const primitive of ["radix", "base"] as const) {
     await expect(name).toHaveValue("Amara unsaved draft");
     await page.keyboard.press("Escape");
     await expect(editor).toBeHidden();
+  });
+
+  test(`Cohort Sera 320px keeps Reset and Save changes inside the ${primitive} editor`, async ({
+    page,
+  }) => {
+    const editor = await openMobilePersonEditor(page, primitive);
+    const name = editor.getByRole("textbox", { name: "Full name", exact: true });
+    const footer = editor.locator(".bt-dialog-actions");
+    const reset = footer.getByRole("button", { name: "Reset", exact: true });
+    const save = footer.getByRole("button", { name: "Save changes", exact: true });
+    await name.fill("Reset this draft");
+    await page.evaluate(() => document.fonts.ready);
+
+    for (const button of [reset, save]) {
+      await expect(button).toBeEnabled();
+      await expect
+        .poll(() =>
+          button.evaluate((element) => {
+            const outer = element.closest(".bt-dialog-actions")?.getBoundingClientRect();
+            const bounds = element.getBoundingClientRect();
+            const hit = document.elementFromPoint(
+              bounds.x + bounds.width / 2,
+              bounds.y + bounds.height / 2,
+            );
+            return {
+              insideFooter: Boolean(
+                outer && bounds.left >= outer.left && bounds.right <= outer.right,
+              ),
+              insideViewport:
+                bounds.left >= 0 &&
+                bounds.right <= innerWidth &&
+                bounds.top >= 0 &&
+                bounds.bottom <= innerHeight,
+              ownsHitTarget: element.contains(hit),
+            };
+          }),
+        )
+        .toEqual({ insideFooter: true, insideViewport: true, ownsHitTarget: true });
+    }
+
+    await reset.click();
+    await expect(name).toHaveValue("Amara Okafor");
+    await name.fill("Amara footer QA");
+    await save.click();
+    await expect(editor).toBeHidden();
+    await expect(
+      page.getByRole("button", { name: "Actions for Amara footer QA", exact: true }),
+    ).toBeVisible();
   });
 }
 

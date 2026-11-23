@@ -25,9 +25,13 @@ public detail page supplies the available reference evidence.
   tests check the visible labels, hit targets, validation and focus return.
   The 20-case browser matrix passed both foundations and all eight styles at
   320px, plus Sera at 389px and 390px.
-- Follow-up for Cohort's employee editor. At 320px, both Sera screenshots
-  show the Reset footer label clipped at the left edge. Measure the footer
-  action bounds and test their native hit targets independently of Manager.
+- Cohort's editor footer placed Reset 16.7px beyond the left edge of the
+  320px Sera viewport in both foundations. Phone footer actions now wrap
+  when their native widths exceed the space in the sheet. The two permanent
+  tests reproduce the old clipping and verify full hit targets, Reset's draft
+  restoration and Save changes on the repaired editor. Both Manager tests
+  also pass with the resized footer. The four native Edit and Add checks
+  cover both foundations, full labels, form scrolling and persisted inputs.
 
 - Drive navigation now uses the true Radix and Base link compositions in
   `33598b3`. Both download projects completed a fresh install, strict build
