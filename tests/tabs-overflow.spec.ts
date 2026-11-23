@@ -299,6 +299,11 @@ test("filled tabs have no invisible underline overflow and real source scrolling
   const source = dialog.locator(".source-code");
   await source.getByRole("button", { name: "Copy", exact: true }).click();
   await expect.poll(() => page.evaluate(() => navigator.clipboard.readText())).toBe(expected);
+  await expect
+    .poll(async () =>
+      (await source.locator('[data-slot="code-block-line-content"]').allTextContents()).join("\n"),
+    )
+    .toBe(expected);
   const viewport = source.locator('[data-slot="code-block-viewport"]');
   expect(await viewport.evaluate((node) => node.scrollHeight > node.clientHeight)).toBe(true);
   await viewport.evaluate((node) => node.scrollTo({ top: 120, behavior: "instant" }));
