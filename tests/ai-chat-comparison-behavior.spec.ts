@@ -1,14 +1,15 @@
 import { test, expect, type Locator, type Page } from "@playwright/test";
 import { readFile } from "node:fs/promises";
-import { comparisonEvidence, openComparison } from "./ai-chat-comparison-native-helpers";
+import {
+  comparisonEvidence,
+  openComparison,
+  comparisonModelControls,
+} from "./ai-chat-comparison-native-helpers";
 test.describe.configure({ timeout: 30000, retries: 0 });
 async function choose(page: Page, shell: Locator, index: number, name: RegExp) {
   const trigger = shell.getByRole("combobox").nth(index);
   await trigger.click();
-  const controls = await shell
-    .locator('[role="combobox"]')
-    .nth(index)
-    .getAttribute("aria-controls");
+  const controls = await comparisonModelControls(page, shell, index);
   expect(controls).toBeTruthy();
   const list = page.getByRole("listbox").and(page.locator(`[id="${controls}"]`));
   await expect(list).toBeVisible();

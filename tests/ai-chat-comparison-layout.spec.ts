@@ -1,5 +1,9 @@
 import { test, expect } from "@playwright/test";
-import { comparisonEvidence, openComparison } from "./ai-chat-comparison-native-helpers";
+import {
+  comparisonEvidence,
+  openComparison,
+  comparisonModelControls,
+} from "./ai-chat-comparison-native-helpers";
 test.describe.configure({ timeout: 30000, retries: 0 });
 for (const primitive of ["radix", "base"] as const) {
   for (const width of [1440, 390]) {
@@ -57,10 +61,7 @@ for (const primitive of ["radix", "base"] as const) {
       }
       const trigger = shell.getByRole("combobox").first();
       await trigger.click();
-      const controls = await shell
-        .locator('[role="combobox"]')
-        .first()
-        .getAttribute("aria-controls");
+      const controls = await comparisonModelControls(page, shell);
       expect(controls).toBeTruthy();
       // Modal Radix hides its trigger from the accessibility tree while open.
       // Base keeps a hidden option collection for closed-trigger typeahead.

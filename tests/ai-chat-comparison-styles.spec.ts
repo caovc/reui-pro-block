@@ -1,5 +1,9 @@
 import { test, expect } from "@playwright/test";
-import { openComparison, comparisonEvidence } from "./ai-chat-comparison-native-helpers";
+import {
+  openComparison,
+  comparisonEvidence,
+  comparisonModelControls,
+} from "./ai-chat-comparison-native-helpers";
 test.describe.configure({ timeout: 30000, retries: 0 });
 // Nova's four independent-layout cases are separate; this is the remaining seven styles.
 for (const primitive of ["base", "radix"] as const)
@@ -43,7 +47,7 @@ for (const primitive of ["base", "radix"] as const)
         }
         const trigger = shell.getByRole("combobox").first();
         await trigger.click();
-        const id = await shell.locator('[role="combobox"]').first().getAttribute("aria-controls");
+        const id = await comparisonModelControls(page, shell);
         expect(id).toBeTruthy();
         const popup = page.getByRole("listbox").and(page.locator(`[id="${id}"]`));
         await expect(popup).toBeVisible();

@@ -1,4 +1,4 @@
-import { expect, type Page, type TestInfo } from "@playwright/test";
+import { expect, test, type Locator, type Page, type TestInfo } from "@playwright/test";
 export type ComparisonPrimitive = "base" | "radix";
 export async function openComparison(
   page: Page,
@@ -105,4 +105,42 @@ export async function comparisonEvidence(page: Page, info: TestInfo, name: strin
   expect(send!.rect.bottom).toBeLessThanOrEqual(geometry.viewport.height);
   expect(send!.rect.right).toBeLessThanOrEqual(geometry.viewport.width);
   return geometry;
+}
+
+/** Wait for the actual model Select list, whose ID is published after its refs mount. */
+export async function comparisonModelControls(page: Page, shell: Locator, index = 0) {
+  const trigger = shell.locator('.comparison-pane-header [role="combobox"]').nth(index);
+  let controls: string | null = null;
+  const started = Date.now();
+  const samples: { elapsedMs: number; controls: string | null; modelListVisible: boolean }[] = [];
+  try {
+    await expect
+      .poll(
+        async () => {
+          const id = await trigger.getAttribute("aria-controls");
+          // A reply's CodeBlock also exposes a listbox. Only the native Select surface
+          // controlled by this exact model trigger can satisfy readiness.
+          const list = id
+            ? page
+                .locator(
+                  '[data-slot="select-content"][role="listbox"], [data-slot="select-content"] [role="listbox"]',
+                )
+                .and(page.locator(`[id=${JSON.stringify(id)}]`))
+                .filter({ has: page.getByRole("option", { name: /Claude Sonnet 5/ }) })
+            : null;
+          const modelListVisible = list ? await list.isVisible() : false;
+          samples.push({ elapsedMs: Date.now() - started, controls: id, modelListVisible });
+          if (modelListVisible) controls = id;
+          return modelListVisible;
+        },
+        { timeout: 5000 },
+      )
+      .toBe(true);
+  } finally {
+    await test.info().attach("model-list-readiness", {
+      body: JSON.stringify(samples),
+      contentType: "application/json",
+    });
+  }
+  return controls;
 }
