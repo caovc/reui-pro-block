@@ -6,6 +6,26 @@ require newly captured, inspected reference and local screenshots. Original
 Bricklane branding, licensed replacement artwork, disclosed local fixture data,
 and unavailable backend services are intentional boundaries.
 
+## November 23 status
+
+The current public catalog comparison covers 687 block entries and 21 template
+entries. All are registered locally. Bricklane also retains the historical
+Deploy Board. Signal has a local implementation with ten views. Its independent
+reference preview still returns HTTP 403 in the cloud environment, so the
+public detail page supplies the available reference evidence.
+
+- Drive navigation now uses the true Radix and Base link compositions in
+  `33598b3`. Both download projects completed a fresh install, strict build
+  and browser check. `448bfcc` updates the affected Filebox source assertion.
+- Filebox New Folder restores Escape focus in `71081b8`. The standalone Base
+  download was tested after a fresh install and strict build.
+- Surge's mobile purchase-order breadcrumb and pagination were repaired in
+  `8462a0a`. The scoped browser run covered both foundations, four widths and
+  the real source export.
+- Strata Overview's card spacing remains a visual review item. The archived
+  Nova phone comparison showed the Next Run row about 26px lower locally.
+  The older screenshot establishes a lead for new measurement.
+
 ## Confirmed findings and assignments
 
 | ID         | Priority          | Surface and observed difference                                                                                                                     | Owner / status                                                                                                            | Acceptance                                                                                                                                                                    |

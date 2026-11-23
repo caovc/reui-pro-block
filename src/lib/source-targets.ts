@@ -392,6 +392,15 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
         `src/blocks/data/${module}.css`,
       ];
     }
+    if (block.id === "data-grid-advanced-21") {
+      const module = "grid-advanced-sales-target";
+      return [
+        ...paths("data", module, `${module}-cells`, `${module}-panels`),
+        `src/blocks/data/${module}-model.ts`,
+        `src/blocks/data/${module}-view-model.ts`,
+        `src/blocks/data/${module}.css`,
+      ];
+    }
     if (block.id === "data-grid-advanced-27") return paths("data", "grid-advanced-project-budget");
     if (block.id === "data-grid-advanced-28") {
       const module = "grid-advanced-invoice-manager";

@@ -1,0 +1,339 @@
+.st-page,
+.st-editor {
+  --st-actual: var(--color-emerald-600);
+  --st-target: var(--color-zinc-300);
+}
+.dark .st-page,
+.dark .st-editor {
+  --st-actual: var(--color-emerald-400);
+  --st-target: var(--color-zinc-600);
+}
+.st-page {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  max-width: 1560px;
+  flex-direction: column;
+  gap: 20px;
+  margin-inline: auto;
+  padding: 32px 24px;
+}
+.st-heading,
+.st-calendar-header,
+.st-chart-header,
+.st-grid-header {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.st-heading h1 {
+  font-size: 22px;
+  font-weight: 650;
+  letter-spacing: -0.03em;
+}
+.st-heading p,
+.st-grid-footer {
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.st-heading p {
+  margin-top: 4px;
+}
+.st-month-controls,
+.st-grid-tools,
+.st-filter-bar,
+.st-expansion-tools,
+.st-chart-legend,
+.st-profile-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.st-month-controls [role="combobox"] {
+  min-width: 128px;
+}
+.st-month-navigation {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 4px;
+}
+.st-period-cards {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.st-period-cards dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.st-period-cards dt {
+  color: var(--muted-foreground);
+  font-size: 11px;
+}
+.st-period-cards dd {
+  margin-top: 3px;
+  font-size: 16px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+.st-period-cards dl > div:first-child dd {
+  font-size: 22px;
+  letter-spacing: -0.025em;
+}
+.st-chart-legend {
+  font-size: 11px;
+}
+.st-chart-legend span::before {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-inline-end: 5px;
+  border-radius: 2px;
+  background: var(--st-actual);
+  content: "";
+}
+.st-chart-legend span + span::before {
+  background: var(--st-target);
+}
+.st-year-chart,
+.st-month-strip {
+  min-width: 0;
+  width: 100%;
+}
+.st-year-chart [data-slot="chart"],
+.st-month-strip [data-slot="chart"] {
+  aspect-ratio: auto;
+}
+.st-grid {
+  min-width: 0;
+}
+.st-grid-header {
+  padding: 16px;
+}
+.st-grid-tools {
+  flex-wrap: wrap;
+}
+.st-filter-bar {
+  flex-wrap: wrap;
+  padding: 4px 16px 12px;
+}
+.st-search {
+  width: min(300px, 100%);
+}
+.st-expansion-tools {
+  flex-wrap: wrap;
+  margin-inline-start: auto;
+}
+.st-region-rail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 0 16px 12px;
+}
+.st-scroll-area {
+  height: 580px;
+  width: 100%;
+}
+.st-table {
+  font-size: 12px;
+}
+.st-table th {
+  height: 34px;
+}
+.st-table .st-period-header {
+  border-inline-start: 1px solid var(--border);
+  text-align: center;
+  font-size: 11px;
+  font-weight: 600;
+}
+.st-table .st-metric-cell {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.st-table [data-negative="true"] {
+  color: var(--destructive);
+}
+.st-store-cell,
+.st-region-cell {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 7px;
+}
+.st-store-cell > div {
+  min-width: 0;
+}
+.st-store-cell small {
+  display: block;
+  overflow: hidden;
+  color: var(--muted-foreground);
+  font-size: 10px;
+  text-overflow: ellipsis;
+}
+.st-region-cell strong {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.st-table th[data-col-id="store"] [data-slot="data-grid-table-head-cell-band"] > div > div {
+  width: 100%;
+  min-width: 0;
+  margin-inline-start: 0;
+  gap: 4px;
+}
+.st-table th[data-col-id="store"] [data-slot="dropdown-menu-trigger"] {
+  display: block;
+  min-width: 0;
+  flex: 1 1 0;
+  overflow: hidden;
+  padding-inline: 4px;
+  text-overflow: ellipsis;
+}
+.st-table th[data-col-id="store"] [data-slot="dropdown-menu-trigger"] + span {
+  min-width: max-content;
+  flex: 0 0 auto;
+  margin-inline-end: 0;
+}
+.st-store-name {
+  display: block;
+  overflow: hidden;
+  text-align: start;
+  text-overflow: ellipsis;
+  height: auto;
+  max-width: 100%;
+  justify-content: start;
+  padding: 0;
+  color: var(--foreground);
+  font-size: 12px;
+}
+.st-region-cell > svg {
+  width: 16px;
+  height: 16px;
+  color: var(--muted-foreground);
+}
+.st-body-row:has(.st-region-cell) > td {
+  background: var(--muted);
+  font-weight: 600;
+}
+/* Native rowPinning owns row order. This consumer keeps that total visible
+   below the real two-tier header while its own viewport scrolls. */
+.st-total-row > td {
+  position: sticky;
+  top: var(--data-grid-scrollbar-header-height, 68px);
+  z-index: 35;
+  background: var(--background);
+  box-shadow: 0 1px var(--border);
+}
+/* Native pinned-column cells have inline z-index 30. Keep this intersecting
+   pinned total label above its other sticky cells and below the header (40). */
+.st-total-row > td[data-pinned] {
+  z-index: 39 !important;
+}
+.st-grid-footer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px 16px;
+}
+.st-empty {
+  padding: 20px;
+  text-align: center;
+}
+.st-empty p {
+  margin: 4px 0 12px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.st-editor[data-side="right"] {
+  width: min(100vw, 520px);
+  max-width: 520px;
+}
+.st-editor-body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.st-editor-amounts {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.st-profile-heading {
+  justify-content: space-between;
+}
+.st-profile-heading h2 {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: 18px;
+  font-weight: 600;
+}
+.st-editor-variance {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  border-block: 1px solid var(--border);
+  padding-block: 12px;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+@media (max-width: 760px) {
+  .st-editor-amounts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .st-page {
+    gap: 16px;
+    padding: 24px 12px;
+  }
+  .st-period-cards {
+    grid-template-columns: 1fr;
+  }
+  .st-period-cards dl {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .st-period-cards dd,
+  .st-period-cards dl > div:first-child dd {
+    font-size: 14px;
+  }
+  .st-month-navigation {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+  .st-expansion-tools {
+    width: 100%;
+    margin-inline-start: 0;
+  }
+  .st-scroll-area {
+    height: 500px;
+  }
+}
+@media (max-width: 480px) {
+  .st-period-cards dl {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.st-attainment[data-pace="above"] {
+  --st-heat: color-mix(in oklch, var(--success) 18%, transparent);
+}
+.st-attainment[data-pace="below"] {
+  --st-heat: color-mix(in oklch, var(--warning) 18%, transparent);
+}
+.st-attainment:not([data-pace="none"]) {
+  background-color: transparent;
+  background-image: linear-gradient(
+    to right,
+    var(--st-heat) var(--st-attainment-fill),
+    transparent var(--st-attainment-fill)
+  );
+}

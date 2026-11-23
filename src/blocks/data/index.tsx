@@ -14,6 +14,7 @@ import InventoryManager from "./grid-advanced-inventory-manager";
 import VendorSlaScorecard from "./grid-advanced-vendor-sla";
 import ProjectBudget from "./grid-advanced-project-budget";
 import ScaleupIndex from "./grid-advanced-scaleup-index";
+import SalesTarget from "./grid-advanced-sales-target";
 import SupplierQualityBoard from "./grid-advanced-supplier-quality";
 import CategoryForecast from "./grid-advanced-category-forecast";
 import GroupingGrid from "./grid-grouping";
@@ -56,6 +57,7 @@ export default function DataBlock({ block }: BlockProps) {
   if (block.id === "data-grid-advanced-18") return <SupplierQualityBoard />;
   if (block.id === "data-grid-advanced-19") return <CategoryForecast />;
   if (block.id === "data-grid-advanced-20") return <ScaleupIndex />;
+  if (block.id === "data-grid-advanced-21") return <SalesTarget />;
   if (block.id === "data-grid-advanced-27") return <ProjectBudget />;
   if (block.id === "data-grid-advanced-28") return <InvoiceManager />;
   if (block.id === "data-grid-advanced-29") return <FamilyBudget />;
