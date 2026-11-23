@@ -344,7 +344,10 @@ export function SurgePurchaseOrders({
           </div>
           <DomainGridSurface
             table={table}
-            paginationControls={{ sizes: [8, 10, 25, 50] }}
+            paginationControls={{
+              sizes: [8, 10, 25, 50],
+              className: "surge-purchase-orders-pagination",
+            }}
             scrollArea="horizontal"
             className="surge-purchase-orders-grid"
           />

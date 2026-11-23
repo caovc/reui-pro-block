@@ -397,7 +397,11 @@ export function SurgeBreadcrumb({
         ? "Customers"
         : null;
   return (
-    <Breadcrumb className="surge-breadcrumb" data-dashboard={page === "Dashboard"}>
+    <Breadcrumb
+      className="surge-breadcrumb"
+      data-dashboard={page === "Dashboard"}
+      data-purchase-orders={page === "Purchase orders"}
+    >
       <BreadcrumbList>
         <BreadcrumbItem>
           <DropdownMenu open={open} onOpenChange={setOpen}>

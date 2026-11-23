@@ -97,3 +97,57 @@
 .surge-purchase-orders-grid td {
   padding: 8px 16px;
 }
+
+/* Keep the free breadcrumb's parent link readable beside the mobile actions. */
+@media (max-width: 767px) {
+  .bt-layout.bt-surge
+    > .bt-workspace
+    > .surge-topbar:has(.surge-breadcrumb[data-purchase-orders="true"]) {
+    height: auto;
+    flex-wrap: wrap;
+    padding-block: 8px;
+  }
+
+  .surge-topbar > .bt-top-content:has(.surge-breadcrumb[data-purchase-orders="true"]) {
+    order: 1;
+    flex-basis: 100%;
+  }
+
+  .surge-breadcrumb[data-purchase-orders="true"] [data-slot="breadcrumb-list"] {
+    flex-wrap: wrap;
+  }
+
+  .surge-breadcrumb[data-purchase-orders="true"] [data-slot="breadcrumb-item"] {
+    white-space: nowrap;
+  }
+}
+
+/* The ReUI pagination keeps its own state and accessible control labels. */
+@media (max-width: 639px) {
+  .surge-purchase-orders-pagination {
+    align-items: stretch;
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .surge-purchase-orders-pagination > div:first-child {
+    order: 0;
+    justify-content: space-between;
+    padding: 0;
+  }
+
+  .surge-purchase-orders-pagination > div:last-child {
+    order: 1;
+    gap: 12px;
+    padding: 0;
+  }
+
+  .surge-purchase-orders-pagination > div:last-child > div:first-child {
+    order: 0;
+  }
+
+  .surge-purchase-orders-pagination button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
