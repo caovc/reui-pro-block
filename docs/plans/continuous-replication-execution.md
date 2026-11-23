@@ -11,7 +11,7 @@
 - Signal 的目录详情可访问，独立应用预览域仍返回 403。本地独立实现提供 10 个视图、演示登录、数据源联动、漏斗校验、留存编辑、图表导出和路线图锁定规则。使用 ReUI Frame、徽标、图表和 Gantt 等免费实现与原创数据。双库生产构建、12 项浏览器检查、32 项样式与视口检查、两份导出包的严格构建和运行检查均通过。导出构建复用了同一清洁安装的依赖。未核对的官方页面及交互继续保留在待办。
 
 - Drive 侧栏导航分别使用 Radix 的真实 `asChild` 和 Base 的 `render`。两库共 42 项本地浏览器检查通过，覆盖八种样式、默认样式、焦点、Get More Storage、返回焦点、修饰键及中键保留真实链接。两份实际项目下载都经过全新安装、严格构建和浏览器检查。
-- 11 月 23 日重新读取官方目录后确认 21 个模板入口。本地已接入 20 个，新增缺口是 11 月 19 日发布的 Margin。公开详情和预览首页可访问，首页导航提供总览、损益、预算、情景、现金流、应收、交易和审批。下一步按公开功能做独立的本地财务演示。
+- 11 月 23 日重新读取官方目录后确认 21 个模板入口。本地接入 Margin 后达到 21 个。独立实现的 Ledger Studio 包含总览、损益、预算、情景、现金流、应收、交易和审批，以及演示登录和通知。预算、情景、收款与分录写入原始本地数据模型，图表和下载反映相同的账务结果。
 
 - 已从 `33598b3` 单独构建，确认导出模块没有混入待提交的主题修复。Signal 与 Drive 的 14 项生产集成检查及 Signal 32 项样式检查均通过。这组干净产物替代了先前共享工作区的生产验收证据。
 - Flux 增加独立的 Failures 空间，可筛选、录入、编辑、重试、撤销与检查运行资料。打开详情时，保存和关闭失败项的撤销动作留在原生弹层内。Base 全部 20 项通过，Radix 对涉及最终变更的交互和源码做了复验。两份实际下载项目通过严格构建和运行检查。Run Queue 作为下一独立页面跟踪。
@@ -21,7 +21,8 @@
 - Drive 累计提交 `33598b3` 的远端第 1 分片报 17 项 Base Chat 7 失败。十条详细注解均显示点击后立即读取 `aria-controls` 得到空值。测试现等待真实原生模型列表挂载，使用原有 5 秒与 30 秒预算。干净的 `33598b3` 产物上 20 项 Base 定点检查首轮通过，包含远端失败的全部用例。
 
 - Atlas 工时表已接入日期范围、筛选、排序、分页、新增与编辑、按日查看和报表同步。两套组件库的 48 项浏览器检查覆盖 320px、390px 和桌面，以及八种样式和相邻页面。实际 Base 和 Radix ZIP 均通过全新安装、严格构建和运行检查。
-- 官网 Blocks 目录的 79 个分类已重核，公开条目共 687 个。本地含 679 个及唯一的历史 Deploy Board。新增 Advanced Data Grid 待办为 Supplier Quality Board、Category Forecast、Scale-up Index、Sales to Target、Category Margin、Brand Scorecard、Family Budget、Inventory Manager 和 Vendor SLA Scorecard。实现和验收后再注册目录。
+- Margin 已通过 12 项纯模型、14 项核心浏览器和 32 项样式与视口检查。实际 Radix 与 Base 下载包的 81 和 86 个文件均校验原始字节，两份项目各自完成严格构建和浏览器运行，复用同一套清洁安装的依赖。
+- 官网 Blocks 目录的 79 个分类已重核，公开条目共 687 个。本地共 679 个，其中包含历史 Deploy Board。新增 Advanced Data Grid 待办为 Supplier Quality Board、Category Forecast、Scale-up Index、Sales to Target、Category Margin、Brand Scorecard、Family Budget、Inventory Manager 和 Vendor SLA Scorecard。实现和验收后再注册目录。
 
 ## 11 月 18 日验收进展
 

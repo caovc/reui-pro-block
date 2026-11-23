@@ -599,6 +599,7 @@ export function templateImplementationTargets(template: {
     filebox: "drive",
   };
   const secondaryModules: Record<string, string[]> = {
+    margin: ["margin-planning", "margin-ledger"],
     signal: ["signal-chart", "signal-goals", "signal-roadmap", "signal-accounts"],
     strata: [
       "strata-overview",
@@ -823,6 +824,13 @@ export function templateImplementationTargets(template: {
     ...modules.map((module) => `src/templates/${template.family}/${module}.tsx`),
     ...(["filebox", "filespace"].includes(template.id)
       ? ["src/components/ui/drive-button.tsx"]
+      : []),
+    ...(template.id === "margin"
+      ? [
+          "src/templates/workflow/margin-model.ts",
+          "src/templates/workflow/margin-currency.ts",
+          "src/templates/workflow/margin.css",
+        ]
       : []),
     ...(template.id === "signal"
       ? ["src/templates/workflow/signal-model.ts", "src/templates/workflow/signal.css"]

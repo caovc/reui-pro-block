@@ -1,5 +1,5 @@
 import { Component, lazy, Suspense } from "react";
-import type { ReactNode } from "react";
+import type { ComponentType, ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { templates } from "./catalog";
@@ -8,6 +8,12 @@ import { TemplateSurface } from "./surface";
 const Workflow = lazy(() => import("./workflow"));
 const Strata = lazy(() => import("./workflow/strata"));
 const Signal = lazy(() => import("./workflow/signal"));
+const Margin = lazy(() => import("./workflow/margin"));
+const dedicatedTemplates: Partial<Record<string, ComponentType>> = {
+  strata: Strata,
+  signal: Signal,
+  margin: Margin,
+};
 const Business = lazy(() => import("./business"));
 const Collaboration = lazy(() => import("./collaboration"));
 
@@ -39,6 +45,7 @@ export function TemplateRenderer({ id }: { id: string }) {
         </Button>
       </div>
     );
+  const Dedicated = dedicatedTemplates[id];
   return (
     <TemplateBoundary key={id}>
       <Suspense
@@ -50,10 +57,8 @@ export function TemplateRenderer({ id }: { id: string }) {
         }
       >
         <TemplateSurface id={id}>
-          {template.id === "strata" ? (
-            <Strata />
-          ) : template.id === "signal" ? (
-            <Signal />
+          {Dedicated ? (
+            <Dedicated />
           ) : template.family === "workflow" ? (
             <Workflow id={id} />
           ) : template.family === "business" ? (

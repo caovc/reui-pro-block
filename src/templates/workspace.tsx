@@ -56,7 +56,11 @@ export default function TemplateWorkspace({
               rel="noopener noreferrer"
               className="template-reference"
             >
-              <span>{id === "signal" ? "Template reference" : "Original preview"}</span>
+              <span>
+                {template.reference.startsWith("https://reui.io/template/")
+                  ? "Template reference"
+                  : "Original preview"}
+              </span>
               <ExternalLink size={13} />
             </a>
           )}

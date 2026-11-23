@@ -8,6 +8,7 @@ export interface TemplateMeta {
   reference: string;
   family: "workflow" | "business" | "collaboration";
   features: string[];
+  standaloneEntry?: true;
 }
 export const templates: TemplateMeta[] = [
   {
@@ -22,7 +23,20 @@ export const templates: TemplateMeta[] = [
     features: ["Services and SLOs", "Logs and monitors", "Deployments and on-call"],
   },
   {
+    id: "margin",
+    name: "Margin",
+    category: "Dashboard",
+    subtitle: "Finance and planning",
+    description:
+      "Review local books, revise forecasts, follow receivables, and apply journal approval rules.",
+    reference: "https://reui.io/template/margin-finance",
+    family: "workflow",
+    standaloneEntry: true,
+    features: ["Profit and loss", "Cash planning", "Receivables and approvals"],
+  },
+  {
     id: "signal",
+    standaloneEntry: true,
     name: "Signal",
     category: "Dashboard",
     subtitle: "Product analytics",
