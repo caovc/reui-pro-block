@@ -32,7 +32,7 @@ import {
 import { Badge } from "@/components/reui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
-import { Button as DriveButton } from "./free/drive-button";
+import { Button as DriveButton, NavigationButton } from "./free/drive-button";
 import { Item, ItemMedia, ItemContent, ItemTitle, ItemDescription } from "@/components/ui/item";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -498,38 +498,33 @@ export default function Drive({ id }: { id: string }) {
           ["Favourites", Star],
           ["Bin", Trash2],
         ].map(([label, Icon]) => (
-          <DriveButton
+          <NavigationButton
             key={String(label)}
             variant={view === label ? "secondary" : "ghost"}
             className="ct-drive-view-link"
-            nativeButton={false}
-            render={
-              <a
-                href={routing.href({
-                  kind: "files",
-                  location: driveFolderLocation(String(label), files, treeFolders, headerBindings),
-                })}
-                aria-current={view === label ? "page" : undefined}
-                onClick={(event) => {
-                  if (
-                    event.defaultPrevented ||
-                    event.button !== 0 ||
-                    event.metaKey ||
-                    event.ctrlKey ||
-                    event.altKey ||
-                    event.shiftKey
-                  ) {
-                    return;
-                  }
-                  event.preventDefault();
-                  openFolder(String(label));
-                }}
-              />
-            }
+            href={routing.href({
+              kind: "files",
+              location: driveFolderLocation(String(label), files, treeFolders, headerBindings),
+            })}
+            aria-current={view === label ? "page" : undefined}
+            onClick={(event) => {
+              if (
+                event.defaultPrevented ||
+                event.button !== 0 ||
+                event.metaKey ||
+                event.ctrlKey ||
+                event.altKey ||
+                event.shiftKey
+              ) {
+                return;
+              }
+              event.preventDefault();
+              openFolder(String(label));
+            }}
           >
             {typeof Icon !== "string" && <Icon />}
             {String(label)}
-          </DriveButton>
+          </NavigationButton>
         ))}
       </div>
       <Separator decorative={false} />

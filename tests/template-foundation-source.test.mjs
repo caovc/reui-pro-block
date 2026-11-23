@@ -33,9 +33,17 @@ test("template source resolves the selected UI foundation and exports the copied
     const files = templateFiles(template, theme);
     const expectedButton =
       primitive === "base" ? "src/foundations/base/ui/button.tsx" : "src/components/ui/button.tsx";
+    const expectedDriveButton =
+      primitive === "base"
+        ? "src/foundations/base/ui/drive-button.tsx"
+        : "src/components/ui/drive-button.tsx";
 
     assert.equal(Object.keys(files)[0], "src/templates/collaboration/drive.tsx");
     assert.equal(files["src/components/ui/button.tsx"], await readSource(expectedButton));
+    assert.equal(
+      files["src/components/ui/drive-button.tsx"],
+      await readSource(expectedDriveButton),
+    );
     assert.ok(
       !Object.keys(files).some((path) => /^src\/foundations\/base\/ui\/.*\.tsx?$/.test(path)),
     );

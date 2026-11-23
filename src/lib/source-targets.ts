@@ -816,6 +816,9 @@ export function templateImplementationTargets(template: {
   ];
   return [
     ...modules.map((module) => `src/templates/${template.family}/${module}.tsx`),
+    ...(["filebox", "filespace"].includes(template.id)
+      ? ["src/components/ui/drive-button.tsx"]
+      : []),
     ...(template.id === "signal"
       ? ["src/templates/workflow/signal-model.ts", "src/templates/workflow/signal.css"]
       : []),
