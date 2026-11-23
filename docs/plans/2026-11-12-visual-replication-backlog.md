@@ -30,6 +30,13 @@ The Blocks audit now includes both Job Schedule and Working Agreements at deskto
 Manifest and Atlas audit coverage must be read from the template report rather
 than extrapolated to their entire applications.
 
+The November 23 Project Budget review found that a 288px health card exceeded
+its 286px rail at a 320px viewport. The rail now shows the full 254px first card
+and exposes 20px of the next one. Long captions wrap at narrow widths. Both
+foundations passed eight styles at 320px, including native Tab and arrow-key
+scrolling. Four wider layout checks and eight focused browser and source tests
+also passed. The existing free Frame, Chart and Progress remain in use.
+
 `BLOCK-V06` (P3): fresh two-foundation Nova phone images still lacked the
 reference's four input placeholders and empty Due Date explanation. The
 Create-only consumer now supplies those strings through its existing free

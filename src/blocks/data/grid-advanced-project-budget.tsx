@@ -150,7 +150,7 @@ function BudgetHealthTile({
 }) {
   return (
     <article
-      className="finance-tile w-72 shrink-0 rounded-xl border px-3 py-2.5 md:w-auto md:min-w-0"
+      className="finance-tile w-72 max-w-[calc(100%-2rem)] shrink-0 rounded-xl border px-3 py-2.5 md:w-auto md:min-w-0 md:max-w-none"
       data-tone={tone}
       aria-label={`${title}: ${financeAmount(amount)}, ${secondary}, ${progress}% ${caption}`}
     >
@@ -163,7 +163,9 @@ function BudgetHealthTile({
           <div className="text-base leading-5 font-semibold tabular-nums">
             {financeAmount(amount)}
           </div>
-          <div className="truncate text-xs text-muted-foreground">{secondary}</div>
+          <div className="truncate text-xs text-muted-foreground max-[360px]:whitespace-normal">
+            {secondary}
+          </div>
         </div>
         <ChartContainer
           config={{ value: { color: "var(--finance-tone)" } }}
@@ -189,7 +191,7 @@ function BudgetHealthTile({
         value={Math.min(100, progress)}
         className="finance-meter mt-3 h-1.5"
       />
-      <p className="mt-2 truncate text-xs text-muted-foreground">
+      <p className="mt-2 truncate text-xs text-muted-foreground max-[360px]:whitespace-normal">
         <span className="finance-tone font-medium tabular-nums">{progress}%</span> {caption}
       </p>
     </article>

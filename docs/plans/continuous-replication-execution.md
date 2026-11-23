@@ -24,6 +24,7 @@
 - Margin 已通过 12 项纯模型、14 项核心浏览器和 32 项样式与视口检查。实际 Radix 与 Base 下载包的 81 和 86 个文件均校验原始字节，两份项目各自完成严格构建和浏览器运行，复用同一套清洁安装的依赖。
 - 官网 Blocks 目录的 79 个分类已重核，公开条目共 687 个。本地共 679 个，其中包含历史 Deploy Board。新增 Advanced Data Grid 待办为 Supplier Quality Board、Category Forecast、Scale-up Index、Sales to Target、Category Margin、Brand Scorecard、Family Budget、Inventory Manager 和 Vendor SLA Scorecard。实现和验收后再注册目录。
 - Project Budget 和 Invoice Manager 的 320px 复审覆盖两套组件库和八种样式。32 项均通过，手机工具栏留在视口内，新增弹窗支持键盘打开、Escape 关闭及返回原触发控件。
+- Project Budget 的 320px 统计卡轨道宽 286px，修正前首卡超出 2px，第二张完全不可见。首卡缩至 254px 后，下一张露出 20px，长说明在 360px 以下换行。修正通过 8 项原生及导出测试、16 项 320px 样式验证和 4 项较宽视口对照。
 - `33598b3` 的 Actions run `45120805794` 最终有 3,023 项通过、19 项失败。第 1 分片的 17 项 Base Chat 已另行修复。第 2 分片报告 Filebox 的 Drive 源码固定哈希发生变化，以及 Mesh 缩略图元素未找到。冻结的 `33598b3` 产物复现了同一 Mesh 失败。全局主题测试滚动到实际 Mesh 卡片后通过，深色与 Emerald 色值断言和原有等待时间保持。
 - 已将 Filebox 的固定 Drive 哈希更新为双库导航迁移后的实际文件。其余固定哈希和完整校验逻辑保持。两项修正均在干净的 `ead10af` 生产产物通过，Filebox 的源码查看、真实剪贴板、单文件和原始 ZIP 中三个指定文件逐字节一致。
 

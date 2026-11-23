@@ -127,4 +127,31 @@ for (const primitive of ["radix", "base"] as const) {
       project.getByRole("button", { name: "Load-test support", exact: true }),
     ).toBeVisible();
   });
+
+  test(`Project Budget shows the next health card at 320px in ${primitive}`, async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 780 });
+    await page.goto(route);
+    const rail = page.getByRole("region", { name: "Budget health", exact: true });
+    await expect(rail.getByRole("article")).toHaveCount(4);
+    const { firstCardOverflow, nextCardVisiblePixels } = await rail.evaluate((node) => {
+      const bounds = node.getBoundingClientRect();
+      const cards = node.querySelectorAll("article");
+      return {
+        firstCardOverflow: cards[0].getBoundingClientRect().right - bounds.right,
+        nextCardVisiblePixels: bounds.right - cards[1].getBoundingClientRect().left,
+      };
+    });
+    expect(firstCardOverflow).toBeLessThanOrEqual(0);
+    expect(nextCardVisiblePixels).toBeGreaterThanOrEqual(16);
+    const contingency = rail
+      .getByRole("article", { name: /^Total Budget:/ })
+      .getByText(/contingency$/);
+    await expect(contingency).toBeVisible();
+    expect(await contingency.evaluate((node) => node.scrollWidth > node.clientWidth)).toBe(false);
+
+    await page.getByRole("button", { name: "Add Line", exact: true }).press("Tab");
+    await expect(rail).toBeFocused();
+    await page.keyboard.press("ArrowRight");
+    await expect.poll(() => rail.evaluate((node) => node.scrollLeft)).toBeGreaterThan(0);
+  });
 }
