@@ -85,14 +85,17 @@ function collect(
         visit(normalize(`${resolved.slice(0, resolved.lastIndexOf("/"))}/${target}`));
     }
   }
-  visit(`/src/templates/${template.family}/index.tsx`);
+  const entry = template.id === "signal" ? "workflow/signal" : template.family;
+  const entryFile = template.id === "signal" ? entry : `${entry}/index.tsx`;
+  const component = template.id === "signal" ? "<Template />" : `<Template id="${template.id}" />`;
+  visit(`/src/templates/${entryFile}`);
   visit("/src/templates/surface.tsx");
   visit("/src/components/ui/tooltip.tsx");
   visit("/src/components/ui/sonner.tsx");
   visit("/src/components/site/global-theme-store.ts");
   visit("/src/components/site/preview-theme.ts");
   files["src/Example.tsx"] = `import { useLayoutEffect } from 'react';
-import Template from '@/templates/${template.family}';
+import Template from '@/templates/${entry}';
 import { TemplateSurface } from '@/templates/surface';
 import { setInheritedPreviewTheme, useGlobalTheme } from '@/components/site/global-theme-store';
 import { applyTheme } from '@/components/site/preview-theme';
@@ -105,7 +108,7 @@ export default function Example() {
   useLayoutEffect(() => applyTheme(theme, dark), [theme, dark]);
   return (
     <TemplateSurface id="${template.id}">
-      <Template id="${template.id}" />
+      ${component}
     </TemplateSurface>
   );
 }\n`;
@@ -186,8 +189,12 @@ export default function Example() {
     null,
     2,
   );
+  const demoDescription =
+    template.id === "signal"
+      ? "An original local analytics workspace based on the features described in the public catalog."
+      : `Independent React recreation of the publicly visible ${template.name} preview.`;
   files["README.md"] =
-    `# ${template.name}\n\nIndependent React recreation of the publicly visible ${template.name} preview.\nReference: ${template.reference}\n\nRun npm install, then npm run dev (Node.js 24+). Entry: src/Example.tsx.\n\nInteractions use local demo data. No production backend, authentication, AI provider, email delivery, or original premium source is included. Shared family modules are included as transitive dependencies. Demo portraits, integration badges, and wallpaper illustrations are original local SVG artwork. No original ReUI preview media is loaded. Licensed stock photos may still require an internet connection. Bundled fonts and licensed images retain their license notices; no premium source or premium media binaries are bundled.\n`;
+    `# ${template.name}\n\n${demoDescription}\nReference: ${template.reference}\n\nRun npm install, then npm run dev (Node.js 24+). Entry: src/Example.tsx.\n\nInteractions use local demo data. No production backend, authentication, AI provider, email delivery, or original premium source is included. Shared family modules are included as transitive dependencies. Demo portraits, integration badges, and wallpaper illustrations are original local SVG artwork. No original ReUI preview media is loaded. Licensed stock photos may still require an internet connection. Bundled fonts and licensed images retain their license notices; no premium source or premium media binaries are bundled.\n`;
   files["LICENSE"] = meta["/LICENSE"];
   files["THIRD_PARTY_NOTICES.md"] = meta["/THIRD_PARTY_NOTICES.md"];
   return { files, requiredAssets };

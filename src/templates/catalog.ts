@@ -22,6 +22,17 @@ export const templates: TemplateMeta[] = [
     features: ["Services and SLOs", "Logs and monitors", "Deployments and on-call"],
   },
   {
+    id: "signal",
+    name: "Signal",
+    category: "Dashboard",
+    subtitle: "Product analytics",
+    description:
+      "Explore product adoption and retention, manage source health, and plan team goals in a local analytics workspace.",
+    reference: "https://reui.io/template/signal-analytics",
+    family: "workflow",
+    features: ["Cohort analysis", "KPI scorecard", "Campaign health"],
+  },
+  {
     id: "mesh",
     name: "Mesh",
     category: "SaaS",

@@ -56,7 +56,7 @@ export default function TemplateWorkspace({
               rel="noopener noreferrer"
               className="template-reference"
             >
-              <span>Original preview</span>
+              <span>{id === "signal" ? "Template reference" : "Original preview"}</span>
               <ExternalLink size={13} />
             </a>
           )}

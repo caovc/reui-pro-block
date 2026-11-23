@@ -7,6 +7,7 @@ import { TemplateSurface } from "./surface";
 
 const Workflow = lazy(() => import("./workflow"));
 const Strata = lazy(() => import("./workflow/strata"));
+const Signal = lazy(() => import("./workflow/signal"));
 const Business = lazy(() => import("./business"));
 const Collaboration = lazy(() => import("./collaboration"));
 
@@ -51,6 +52,8 @@ export function TemplateRenderer({ id }: { id: string }) {
         <TemplateSurface id={id}>
           {template.id === "strata" ? (
             <Strata />
+          ) : template.id === "signal" ? (
+            <Signal />
           ) : template.family === "workflow" ? (
             <Workflow id={id} />
           ) : template.family === "business" ? (

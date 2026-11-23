@@ -599,6 +599,7 @@ export function templateImplementationTargets(template: {
     filebox: "drive",
   };
   const secondaryModules: Record<string, string[]> = {
+    signal: ["signal-chart", "signal-goals", "signal-roadmap", "signal-accounts"],
     strata: [
       "strata-overview",
       "strata-services",
@@ -815,6 +816,9 @@ export function templateImplementationTargets(template: {
   ];
   return [
     ...modules.map((module) => `src/templates/${template.family}/${module}.tsx`),
+    ...(template.id === "signal"
+      ? ["src/templates/workflow/signal-model.ts", "src/templates/workflow/signal.css"]
+      : []),
     ...(template.id === "mesh" ? ["src/components/reui/progress-circle.tsx"] : []),
     ...(["flowly", "tempo", "flux", "cohort", "roster", "surge", "pulse"].includes(template.id)
       ? ["src/components/ui/template-progress.tsx"]
