@@ -383,6 +383,20 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
         `src/blocks/data/${module}.css`,
       ];
     }
+    const planningModules: Record<string, string> = {
+      "data-grid-advanced-29": "grid-advanced-family-budget",
+      "data-grid-advanced-30": "grid-advanced-inventory-manager",
+      "data-grid-advanced-31": "grid-advanced-vendor-sla",
+    };
+    if (planningModules[block.id]) {
+      const module = planningModules[block.id];
+      return [
+        ...paths("data", module, "grid-advanced-planning-controls"),
+        `src/blocks/data/${module}-model.ts`,
+        "src/blocks/data/grid-advanced-planning-common.ts",
+        "src/blocks/data/grid-advanced-model-grid.tsx",
+      ];
+    }
     if (block.category === "advanced") {
       const modules: Record<string, string> = {
         "data-grid-advanced-8": "grid-advanced-sheets",

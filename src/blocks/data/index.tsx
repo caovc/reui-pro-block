@@ -9,6 +9,9 @@ import BaseGrid from "./grid-base";
 import ColumnsGrid from "./grid-columns";
 import AdvancedGrid from "./grid-advanced";
 import InvoiceManager from "./grid-advanced-invoice-manager";
+import FamilyBudget from "./grid-advanced-family-budget";
+import InventoryManager from "./grid-advanced-inventory-manager";
+import VendorSlaScorecard from "./grid-advanced-vendor-sla";
 import ProjectBudget from "./grid-advanced-project-budget";
 import ScaleupIndex from "./grid-advanced-scaleup-index";
 import GroupingGrid from "./grid-grouping";
@@ -51,6 +54,9 @@ export default function DataBlock({ block }: BlockProps) {
   if (block.id === "data-grid-advanced-20") return <ScaleupIndex />;
   if (block.id === "data-grid-advanced-27") return <ProjectBudget />;
   if (block.id === "data-grid-advanced-28") return <InvoiceManager />;
+  if (block.id === "data-grid-advanced-29") return <FamilyBudget />;
+  if (block.id === "data-grid-advanced-30") return <InventoryManager />;
+  if (block.id === "data-grid-advanced-31") return <VendorSlaScorecard />;
   if (block.group === "data-grid") {
     const refined = {
       base: BaseGrid,

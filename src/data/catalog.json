@@ -3269,9 +3269,36 @@
         "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-28",
         "index": 21,
         "description": "Grouped accounts receivable with payment timelines, collections actions, and customer payment details."
+      },
+      {
+        "id": "data-grid-advanced-29",
+        "name": "Family Budget",
+        "category": "advanced",
+        "group": "data-grid",
+        "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-29",
+        "index": 22,
+        "description": "Family budget grid with colored section rails, editable cells, cash flow trends and net worth"
+      },
+      {
+        "id": "data-grid-advanced-30",
+        "name": "Inventory Manager",
+        "category": "advanced",
+        "group": "data-grid",
+        "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-30",
+        "index": 23,
+        "description": "Inventory grid with department rails, a month end count, stock flow trends and a reorder calculator"
+      },
+      {
+        "id": "data-grid-advanced-31",
+        "name": "Vendor SLA Scorecard",
+        "category": "advanced",
+        "group": "data-grid",
+        "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-31",
+        "index": 24,
+        "description": "Vendor SLA scorecard grid with area sections, gap to target bars, trend lines and capped credits"
       }
     ],
-    "count": 22
+    "count": 25
   },
   {
     "id": "columns",
