@@ -7,6 +7,7 @@ import {
   fileBytes,
   hash,
   openSource,
+  readStarterBlockMetadata,
   selectSource,
   sourceText,
   verifyOriginalClosure,
@@ -172,12 +173,7 @@ for (const target of targets) {
     const example = strFromU8(files["src/Example.tsx"]!);
     expect(example).toContain("import DataBlock from '@/blocks/data'");
     expect(example).toContain("<DataBlock block={block} />");
-    const wrapperMatch = example.match(
-      /const block = ([\s\S]*?)\n\nexport default function Example/,
-    );
-    expect(wrapperMatch, "Original generated wrapper keeps the real catalog entry").not.toBeNull();
-    if (!wrapperMatch) throw new Error(`Original ${target.id} wrapper metadata missing`);
-    const wrapperMetadata = JSON.parse(wrapperMatch[1]);
+    const wrapperMetadata = readStarterBlockMetadata(example);
     expect(wrapperMetadata).toEqual(catalogBlock);
 
     const standaloneMedia = Object.keys(files).filter((filename) =>

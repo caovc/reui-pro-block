@@ -7,6 +7,7 @@ import {
   fileBytes,
   hash,
   openSource,
+  readStarterBlockMetadata,
   selectSource,
   sourceText,
   verifyOriginalClosure,
@@ -125,13 +126,8 @@ test("Flow2 actual original ZIP: native source, catalog wrapper, dependencies an
   const example = strFromU8(files["src/Example.tsx"]!);
   expect(example).toContain("import ApplicationBlock from '@/blocks/application'");
   expect(example).toContain("<ApplicationBlock block={block} />");
-  const wrapperMatch = example.match(/const block = ([\s\S]*?)\n\nexport default function Example/);
-  expect(
-    wrapperMatch,
-    "Actual generated wrapper contains original catalog metadata",
-  ).not.toBeNull();
-  if (!wrapperMatch) throw new Error("Original Flow2 wrapper metadata missing");
-  expect(JSON.parse(wrapperMatch[1])).toEqual(catalogBlock);
+  const wrapperMetadata = readStarterBlockMetadata(example);
+  expect(wrapperMetadata).toEqual(catalogBlock);
 
   const originalPackage = JSON.parse((await fileBytes("package.json")).toString("utf8"));
   const packageManifest = JSON.parse(strFromU8(files["package.json"]!));
@@ -154,7 +150,7 @@ test("Flow2 actual original ZIP: native source, catalog wrapper, dependencies an
       {
         id: target.id,
         catalogIndex: catalogBlock?.index,
-        actualWrapperMetadata: JSON.parse(wrapperMatch[1]),
+        actualWrapperMetadata: wrapperMetadata,
         exampleSHA256: hash(files["src/Example.tsx"]!),
         archiveSHA256: hash(archiveBytes),
         nativeDependencies: {

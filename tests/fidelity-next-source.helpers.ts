@@ -28,6 +28,24 @@ export type SourceTarget = {
 export const fileBytes = (filename: string) => readFile(resolve(process.cwd(), filename));
 export const hash = (bytes: Uint8Array) => createHash("sha256").update(bytes).digest("hex");
 
+export function readStarterBlockMetadata(example: string): unknown {
+  const source = ts.createSourceFile(
+    "Example.tsx",
+    example,
+    ts.ScriptTarget.Latest,
+    false,
+    ts.ScriptKind.TSX,
+  );
+  const block = source.statements
+    .filter(ts.isVariableStatement)
+    .flatMap((statement) => statement.declarationList.declarations)
+    .find(({ name }) => ts.isIdentifier(name) && name.text === "block");
+  if (!block?.initializer || !ts.isObjectLiteralExpression(block.initializer)) {
+    throw new Error("Original starter is missing its block metadata object");
+  }
+  return JSON.parse(block.initializer.getText(source));
+}
+
 // Compare every raw byte with Node's native Buffer comparator. Keep complete
 // hashes only in failure diagnostics so passing steps do not serialize Buffers.
 export function expectRawBytes(actual: Uint8Array, expected: Uint8Array, label: string) {
