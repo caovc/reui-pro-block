@@ -366,6 +366,24 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
   }
   if (block.group === "data-grid") {
     if (block.id === "data-grid-base-9") return paths("data", "grid-base-api-request-logs");
+    if (["data-grid-advanced-18", "data-grid-advanced-19"].includes(block.id)) {
+      const module =
+        block.id === "data-grid-advanced-18"
+          ? "grid-advanced-supplier-quality"
+          : "grid-advanced-category-forecast";
+      const editor = block.id === "data-grid-advanced-18" ? "editors" : "editor";
+      return [
+        ...paths(
+          "data",
+          module,
+          `${module}-${editor}`,
+          "grid-advanced-review-ui",
+          "grid-advanced-review-charts",
+        ),
+        `src/blocks/data/${module}-model.ts`,
+        "src/blocks/data/grid-advanced-review.css",
+      ];
+    }
     if (block.id === "data-grid-advanced-20") {
       const module = "grid-advanced-scaleup-index";
       return [

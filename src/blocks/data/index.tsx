@@ -14,6 +14,8 @@ import InventoryManager from "./grid-advanced-inventory-manager";
 import VendorSlaScorecard from "./grid-advanced-vendor-sla";
 import ProjectBudget from "./grid-advanced-project-budget";
 import ScaleupIndex from "./grid-advanced-scaleup-index";
+import SupplierQualityBoard from "./grid-advanced-supplier-quality";
+import CategoryForecast from "./grid-advanced-category-forecast";
 import GroupingGrid from "./grid-grouping";
 import DragDropGrid from "./grid-drag-drop";
 import EditingGrid from "./grid-editing";
@@ -51,6 +53,8 @@ import {
 export default function DataBlock({ block }: BlockProps) {
   if (block.id === "solution-map-1") return <DispatchMap />;
   if (block.id === "solution-dev-ops-7") return <DeployBoard block={block} />;
+  if (block.id === "data-grid-advanced-18") return <SupplierQualityBoard />;
+  if (block.id === "data-grid-advanced-19") return <CategoryForecast />;
   if (block.id === "data-grid-advanced-20") return <ScaleupIndex />;
   if (block.id === "data-grid-advanced-27") return <ProjectBudget />;
   if (block.id === "data-grid-advanced-28") return <InvoiceManager />;

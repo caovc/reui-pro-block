@@ -3226,12 +3226,30 @@
         "description": "Support agent QA and customer satisfaction scorecard with nested filters, reviews and coaching."
       },
       {
+        "id": "data-grid-advanced-18",
+        "name": "Supplier Quality Board",
+        "category": "advanced",
+        "group": "data-grid",
+        "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-18",
+        "index": 17,
+        "description": "Supplier quality grid with a lot score swarm per row, accept rate and spend sparklines"
+      },
+      {
+        "id": "data-grid-advanced-19",
+        "name": "Category Forecast",
+        "category": "advanced",
+        "group": "data-grid",
+        "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-19",
+        "index": 18,
+        "description": "Category sales forecast grid with a month heatmap, department growth sliders and plan bullets"
+      },
+      {
         "id": "data-grid-advanced-20",
         "name": "Scale-up Index",
         "category": "advanced",
         "group": "data-grid",
         "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-20",
-        "index": 17,
+        "index": 19,
         "description": "Dutch scale-up index grid ranking provinces with medals, map rails and Yes, No and N/A check cells"
       },
       {
@@ -3240,7 +3258,7 @@
         "category": "advanced",
         "group": "data-grid",
         "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-22",
-        "index": 18,
+        "index": 20,
         "description": "A weekday scheduling grid with crew load, job details, material tracking and editable crew plans."
       },
       {
@@ -3249,7 +3267,7 @@
         "category": "advanced",
         "group": "data-grid",
         "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-23",
-        "index": 19,
+        "index": 21,
         "description": "Prospect account database with structured filters, intent summaries, lists and account handover."
       },
       {
@@ -3258,7 +3276,7 @@
         "category": "advanced",
         "group": "data-grid",
         "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-24",
-        "index": 20,
+        "index": 22,
         "description": "Gross margin review grid with tree cells by month, a promotion dot band and a drill path"
       },
       {
@@ -3267,7 +3285,7 @@
         "category": "advanced",
         "group": "data-grid",
         "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-25",
-        "index": 21,
+        "index": 23,
         "description": "Brand scorecard grid with brands as columns and a monthly range band under each brand mark"
       },
       {
@@ -3276,7 +3294,7 @@
         "category": "advanced",
         "group": "data-grid",
         "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-27",
-        "index": 22,
+        "index": 24,
         "description": "Project budget with live spend, schedule, contingency, line forecasts and decision history."
       },
       {
@@ -3285,7 +3303,7 @@
         "category": "advanced",
         "group": "data-grid",
         "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-28",
-        "index": 23,
+        "index": 25,
         "description": "Grouped accounts receivable with payment timelines, collections actions, and customer payment details."
       },
       {
@@ -3294,7 +3312,7 @@
         "category": "advanced",
         "group": "data-grid",
         "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-29",
-        "index": 24,
+        "index": 26,
         "description": "Family budget grid with colored section rails, editable cells, cash flow trends and net worth"
       },
       {
@@ -3303,7 +3321,7 @@
         "category": "advanced",
         "group": "data-grid",
         "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-30",
-        "index": 25,
+        "index": 27,
         "description": "Inventory grid with department rails, a month end count, stock flow trends and a reorder calculator"
       },
       {
@@ -3312,11 +3330,11 @@
         "category": "advanced",
         "group": "data-grid",
         "reference": "https://reui.io/blocks/data-grid/advanced/data-grid-advanced-31",
-        "index": 26,
+        "index": 28,
         "description": "Vendor SLA scorecard grid with area sections, gap to target bars, trend lines and capped credits"
       }
     ],
-    "count": 27
+    "count": 29
   },
   {
     "id": "columns",

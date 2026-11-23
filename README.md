@@ -1,6 +1,6 @@
 # Bricklane
 
-Independent implementations of **ReUI Pro Blocks and Templates**, built with React, TypeScript, Tailwind CSS and official open-source ReUI components. Bricklane uses an original logo, name and locally authored demo illustrations. The catalog includes **685 blocks across 79 categories and 7 groups**, including the historical Deploy Board, alongside **21 template workspaces**. See the [current catalog](docs/CATALOG.md) and [development and verification record](docs/plans/continuous-replication-execution.md).
+Independent implementations of **ReUI Pro Blocks and Templates**, built with React, TypeScript, Tailwind CSS and official open-source ReUI components. Bricklane uses an original logo, name and locally authored demo illustrations. The catalog includes **687 blocks across 79 categories and 7 groups**, including the historical Deploy Board, alongside **21 template workspaces**. See the [current catalog](docs/CATALOG.md) and [development and verification record](docs/plans/continuous-replication-execution.md).
 
 > Bricklane recreates the public previews using shared layout families. The repository contains the independent implementations and assets listed in the [provenance notes](THIRD_PARTY_NOTICES.md).
 
