@@ -86,6 +86,59 @@ test("entry preserves five title drafts and selected status across tabs", async 
   await page.getByRole("button", { name: "Create Action", exact: true }).click();
   await expect(page.getByRole("alert")).toContainText("QA action");
 });
+
+for (const primitive of ["radix", "base"] as const) {
+  test(`entry keeps its Action tab visible on a narrow ${primitive} phone`, async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 844 });
+    const entry = primitive === "base" ? "./base/" : "./";
+    const preset = new URLSearchParams({
+      preset: JSON.stringify({ primitive, style: "sera", mode: "light" }),
+    });
+    await page.goto(`${entry}#/preview/application/dialog/dialog-12?${preset}`);
+    await expect(page.locator("html")).toHaveAttribute("data-ui-primitive", primitive);
+    await expect(page.locator("html")).toHaveAttribute("data-ui-style", "sera");
+    const launcher = page.getByRole("button", { name: "Open quick entry", exact: true });
+    await launcher.click();
+    const dialog = page.getByRole("dialog", { name: "Create entry", exact: true });
+    const tabs = dialog.getByRole("tablist");
+    const action = tabs.getByRole("tab", { name: "Action", exact: true });
+    const pulse = tabs.getByRole("tab", { name: "Pulse", exact: true });
+    await page.evaluate(() => document.fonts.ready.then(() => undefined));
+
+    async function expectActionVisible() {
+      await expect(action).toBeFocused();
+      await expect(action).toHaveAttribute("aria-selected", "true");
+      await expect
+        .poll(() =>
+          action.evaluate((button) => {
+            const viewport = button.closest('[role="tablist"]')!;
+            const left = viewport.getBoundingClientRect().left + viewport.clientLeft;
+            const range = document.createRange();
+            range.selectNodeContents(button);
+            const label = range.getBoundingClientRect();
+            const { x, y, width, height } = button.getBoundingClientRect();
+            return (
+              label.left >= left &&
+              label.right <= left + viewport.clientWidth &&
+              button.contains(document.elementFromPoint(x + width / 2, y + height / 2))
+            );
+          }),
+        )
+        .toBe(true);
+    }
+
+    await expectActionVisible();
+    await action.press("End");
+    await expect(pulse).toBeFocused();
+    await expect.poll(() => tabs.evaluate((node) => node.scrollLeft)).toBeGreaterThan(0);
+    await pulse.press("Home");
+    await expectActionVisible();
+    await page.keyboard.press("Escape");
+    await expect(dialog).toHaveCount(0);
+    await expect(launcher).toBeFocused();
+  });
+}
+
 test("template prefills fields but retains user labels and resolves real due date", async ({
   page,
 }) => {

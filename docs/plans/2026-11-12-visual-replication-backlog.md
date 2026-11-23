@@ -34,6 +34,12 @@ public detail page supplies the available reference evidence.
   cases failed on the original build. All six phone cases passed on the fix,
   along with both desktop confirmation checks and both exact source/ZIP checks.
 
+- Quick Entry's selected Action label was clipped at 320px in Nova and
+  fully hidden at 320px and 390px in Sera. Home selected it while the list
+  remained at scroll position zero. Starting the existing ReUI TabsList at
+  the leading edge restores the label and native hit target. All eight phone
+  tab cases, eight Status popup cases and two Nova desktop checks passed.
+
 ## Confirmed findings and assignments
 
 | ID         | Priority          | Surface and observed difference                                                                                                                     | Owner / status                                                                                                            | Acceptance                                                                                                                                                                    |

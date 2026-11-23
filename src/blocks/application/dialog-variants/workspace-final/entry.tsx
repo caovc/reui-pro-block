@@ -100,7 +100,7 @@ export default function QuickEntryDialog() {
           className="final-entry-tabs"
         >
           <div className="px-6">
-            <TabsList className="max-w-full overflow-x-auto">
+            <TabsList className="max-w-full justify-start overflow-x-auto">
               {entryTypes.map((entry) => (
                 <TabsTrigger value={entry.id} key={entry.id}>
                   {entry.label}
