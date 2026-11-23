@@ -334,10 +334,12 @@
 .strata-cron-mobile {
   display: none;
 }
-@media (max-width: 1100px) {
+@media (max-width: 1023px) {
   .strata-jobs-metrics {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+}
+@media (max-width: 1100px) {
   .strata-jobs-bottom {
     grid-template-columns: minmax(0, 1fr);
   }

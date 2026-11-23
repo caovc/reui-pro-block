@@ -40,6 +40,12 @@ public detail page supplies the available reference evidence.
   the leading edge restores the label and native hit target. All eight phone
   tab cases, eight Status popup cases and two Nova desktop checks passed.
 
+- At 1024px the official Strata Overview renders four metric cards in one row.
+  Bricklane's two rows pushed Jobs down to 508px. The 1024px column breakpoint
+  puts Jobs at 312px with four readable cards. All 16 foundation/style cases
+  passed metric text bounds and New Job focus checks. The 1000px and 1101px
+  Nova controls also passed. Both actual downloaded projects contain the exact CSS.
+
 ## Confirmed findings and assignments
 
 | ID         | Priority          | Surface and observed difference                                                                                                                     | Owner / status                                                                                                            | Acceptance                                                                                                                                                                    |
