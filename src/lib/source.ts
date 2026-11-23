@@ -25,9 +25,18 @@ const raw = import.meta.glob(
 export function blockFiles(
   block: BlockMeta,
   selection: UiFoundation | PreviewTheme = getCurrentPreviewTheme(),
+  resolvedDark?: boolean,
 ) {
   const theme = { ...defaultTheme, ...selection };
-  const files = assembleBlockFiles(block, selectFoundationSources(raw, theme), themeCSS(theme));
+  const dark =
+    resolvedDark ??
+    (typeof document === "undefined"
+      ? theme.mode === "dark"
+      : document.documentElement.classList.contains("dark"));
+  const files = assembleBlockFiles(block, selectFoundationSources(raw, theme), themeCSS(theme), {
+    theme,
+    dark,
+  });
   files["components.json"] = JSON.stringify(getFoundationComponentsConfig(theme), null, 2) + "\n";
   return files;
 }

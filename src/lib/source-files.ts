@@ -1,10 +1,12 @@
 import type { BlockMeta } from "@/data/types";
+import type { PreviewTheme } from "@/components/site/preview-theme";
 import { blockImplementationCandidates, implementationFirst } from "./source-targets.ts";
 
 export function assembleBlockFiles(
   block: BlockMeta,
   raw: Readonly<Record<string, string>>,
   customizationCss?: string,
+  exportedTheme?: { theme: PreviewTheme; dark: boolean },
 ) {
   const family =
     block.group === "application"
@@ -12,7 +14,33 @@ export function assembleBlockFiles(
       : ["marketing", "ecommerce"].includes(block.group)
         ? "commerce"
         : "data";
-  const entry = `import ${family === "application" ? "Application" : family === "commerce" ? "Commerce" : "Data"}Block from '@/blocks/${family}'\n\n// Independent implementation. Local demo data; connect your own backend.\nconst block = ${JSON.stringify(block, null, 2)}\n\nexport default function Example() {\n  return <${family === "application" ? "Application" : family === "commerce" ? "Commerce" : "Data"}Block block={block} />\n}\n`;
+  const component = `${family === "application" ? "Application" : family === "commerce" ? "Commerce" : "Data"}Block`;
+  const themeImports = exportedTheme
+    ? `import { useLayoutEffect } from 'react';
+import { setInheritedPreviewTheme, useGlobalTheme } from '@/components/site/global-theme-store';
+import { applyTheme } from '@/components/site/preview-theme';
+`
+    : "";
+  const themeSetup = exportedTheme
+    ? `const exportedTheme = ${JSON.stringify(exportedTheme.theme, null, 2)} as const;
+setInheritedPreviewTheme(exportedTheme, ${exportedTheme.dark});
+
+`
+    : "";
+  const themeEffect = exportedTheme
+    ? `  const { theme, dark } = useGlobalTheme();
+  useLayoutEffect(() => applyTheme(theme, dark), [theme, dark]);
+`
+    : "";
+  const entry = `${themeImports}import ${component} from '@/blocks/${family}';
+
+// Independent implementation. Local demo data; connect your own backend.
+const block = ${JSON.stringify(block, null, 2)};
+
+${themeSetup}export default function Example() {
+${themeEffect}  return <${component} block={block} />;
+}
+`;
   const result: Record<string, string> = { [`${block.id}.tsx`]: entry };
   const seen = new Set<string>();
   function visit(path: string) {
@@ -46,6 +74,10 @@ export function assembleBlockFiles(
   // Resolve the starter's providers through the selected foundation as well.
   visit("/src/components/ui/tooltip");
   visit("/src/components/ui/sonner");
+  if (exportedTheme) {
+    visit("/src/components/site/global-theme-store.ts");
+    visit("/src/components/site/preview-theme.ts");
+  }
   // Keep the shared body, focus and interaction rules too. Stopping at the
   // html rule omitted the preview's 14px baseline from standalone downloads.
   // Site-specific chrome begins at .brand, after these shared element rules.

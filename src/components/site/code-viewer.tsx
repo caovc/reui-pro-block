@@ -26,8 +26,8 @@ import "./code-viewer.css";
 export function CodeViewer({ block, dark }: { block: BlockMeta; dark: boolean }) {
   const { theme } = useGlobalTheme();
   const files = useMemo(
-    () => blockFiles(block, { ...theme, primitive: uiFoundation.primitive }),
-    [block, theme],
+    () => blockFiles(block, { ...theme, primitive: uiFoundation.primitive }, dark),
+    [block, theme, dark],
   );
   const names = Object.keys(files);
   const [selected, setSelected] = useState(names[0]);

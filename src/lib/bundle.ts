@@ -22,7 +22,7 @@ const packageManifest = import.meta.glob("/package.json", {
 export async function downloadBundle(block: BlockMeta) {
   const theme = getCurrentPreviewTheme();
   const dark = document.documentElement.classList.contains("dark");
-  const files = blockFiles(block, theme);
+  const files = blockFiles(block, theme, dark);
   const mode = theme.primitive === "base" ? " --mode base-ui" : "";
   const engineSetup = excalidrawExportFiles(files);
   const payload: Record<string, Uint8Array> = {};
