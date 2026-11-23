@@ -235,13 +235,14 @@ function ReturnStemShape(props: BarShapeProps) {
   return <Rectangle x={x} y={y} width={1} height={height} fill="var(--border)" />;
 }
 
-function ReturnTickShape(props: ScatterShapeProps & { fill?: string }) {
+function ReturnTickShape(props: ScatterShapeProps & { fill?: unknown }) {
   const x = Number(props.cx);
   const y = Number(props.cy);
   if (![x, y].every(Number.isFinite)) return null;
   // Native Scatter owns cx/cy. Drawing the2px tick upward keeps a real zero
   // inside the viewport, matching the original bottom-positioned mark.
-  return <Rectangle x={x - 3} y={y - 2} width={6} height={2} fill={props.fill} />;
+  const fill = typeof props.fill === "string" ? props.fill : undefined;
+  return <Rectangle x={x - 3} y={y - 2} width={6} height={2} fill={fill} />;
 }
 
 export function ReturnsHistory({ values }: { values: (number | null)[] }) {
