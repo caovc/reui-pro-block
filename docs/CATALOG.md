@@ -1,6 +1,6 @@
 # Local implementation and public reference checklist
 
-Updated 2026-11-23 from `src/data/catalog.json`. The local catalog has 683 blocks across 79 categories and 7 groups, including Bricklane's historical Deploy Board. The site also has 21 template workspaces. See the current public catalog comparison in the [development and verification record](plans/continuous-replication-execution.md).
+Updated 2026-11-23 from `src/data/catalog.json`. The local catalog has 685 blocks across 79 categories and 7 groups, including Bricklane's historical Deploy Board. The site also has 21 template workspaces. See the current public catalog comparison in the [development and verification record](plans/continuous-replication-execution.md).
 
 The 2026-11-02 audit found the same 672 block IDs in the sitemap, public metadata and all 79 category pages. The local snapshot matched all 672 IDs and short titles and included Bricklane's historical `solution-dev-ops-7` (Deploy Board). The November 11 update tracks the additions and the new Prospect Database route. [Update plan](plans/2026-11-11-catalog-update.md)
 
@@ -392,7 +392,7 @@ See the [public catalog audit](public-catalog-audit-2026-11-02.md) and [response
 - [Cloud Rate Card](https://reui.io/blocks/data-grid/base/data-grid-base-8) — `data-grid-base-8`
 - [API Request Logs](https://reui.io/blocks/data-grid/base/data-grid-base-9) — `data-grid-base-9`
 
-## Data Grid / Advanced (25)
+## Data Grid / Advanced (27)
 
 - [Ad Campaign Performance](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-1) — `data-grid-advanced-1`
 - [Regional Store P&L](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-2) — `data-grid-advanced-2`
@@ -414,6 +414,8 @@ See the [public catalog audit](public-catalog-audit-2026-11-02.md) and [response
 - [Scale-up Index](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-20) — `data-grid-advanced-20`
 - [Job Schedule](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-22) — `data-grid-advanced-22`
 - [Prospect Database](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-23) — `data-grid-advanced-23`
+- [Category Margin](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-24) — `data-grid-advanced-24`
+- [Brand Scorecard](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-25) — `data-grid-advanced-25`
 - [Project Budget](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-27) — `data-grid-advanced-27`
 - [Invoice Manager](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-28) — `data-grid-advanced-28`
 - [Family Budget](https://reui.io/blocks/data-grid/advanced/data-grid-advanced-29) — `data-grid-advanced-29`

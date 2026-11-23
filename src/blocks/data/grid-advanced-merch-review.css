@@ -1,0 +1,212 @@
+.merch-review {
+  display: grid;
+  gap: 1rem;
+  width: min(100%, 88rem);
+  min-width: 0;
+  margin-inline: auto;
+  color: var(--foreground);
+  font-size: 0.875rem;
+}
+
+.merch-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  padding-block: 0.5rem;
+}
+
+.merch-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 0.75rem;
+}
+
+.merch-toolbar > input {
+  width: min(100%, 19rem);
+}
+
+.merch-toolbar > [data-slot="field"] {
+  width: 12rem;
+  min-width: 0;
+}
+
+.merch-drill {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.merch-drill > svg {
+  width: 0.875rem;
+  height: 0.875rem;
+  color: var(--muted-foreground);
+}
+
+.merch-month-reading {
+  display: flex;
+  height: auto;
+  min-height: 2.5rem;
+  flex-direction: column;
+  align-items: start;
+  gap: 0.15rem;
+  padding: 0.25rem 0.4rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.merch-month-reading small {
+  color: var(--muted-foreground);
+  font-size: 0.65rem;
+}
+
+.merch-month-reading small[data-negative] {
+  color: var(--destructive);
+}
+
+.merch-month-reading[data-under-target] > span {
+  text-decoration: underline;
+  text-decoration-color: var(--destructive);
+  text-underline-offset: 0.25rem;
+}
+
+.merch-promotion-band {
+  display: flex;
+  align-items: center;
+  gap: 0.1rem;
+}
+
+.merch-promo-dot span {
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: 50%;
+  background: var(--muted-foreground);
+  opacity: 0.25;
+}
+
+.merch-promo-dot[data-active="true"] span {
+  width: 0.55rem;
+  height: 0.55rem;
+  background: var(--primary);
+  opacity: 1;
+}
+
+.merch-detail-sheet[data-slot="sheet-content"] {
+  width: min(100%, 42rem);
+  max-width: 42rem;
+}
+
+.merch-detail-sheet .merch-summary {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.merch-editor {
+  width: calc(100vw - 2rem);
+  max-width: 46rem;
+  max-height: calc(100dvh - 2rem);
+  overflow-y: auto;
+}
+
+.merch-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.merch-brand-heading {
+  width: 100%;
+  min-height: 8.5rem;
+  padding-block: 0.5rem;
+  white-space: normal;
+}
+
+.merch-brand-open {
+  height: auto;
+  min-width: 0;
+  align-items: center;
+  justify-content: start;
+  padding: 0;
+  text-align: start;
+  white-space: normal;
+}
+
+.merch-brand-open > span:last-child {
+  max-width: 7.5rem;
+  line-height: 1.2;
+}
+
+.merch-range {
+  width: 100%;
+  height: 2.4rem;
+  min-width: 0;
+}
+
+.merch-portfolio-heading {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.merch-portfolio-heading span {
+  font-size: 0.65rem;
+  font-weight: 400;
+  color: var(--muted-foreground);
+}
+
+.merch-brand-value {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.5rem 0.6rem;
+  border-radius: var(--radius-md);
+  font-variant-numeric: tabular-nums;
+}
+
+.merch-brand-value[data-standing="positive"] {
+  background: color-mix(in oklab, var(--primary) 8%, transparent);
+}
+
+.merch-brand-value[data-standing="negative"] {
+  background: color-mix(in oklab, var(--destructive) 7%, transparent);
+}
+
+.merch-brand-value > span {
+  font-size: 0.65rem;
+  color: var(--muted-foreground);
+}
+
+.merch-metric-title {
+  display: grid;
+  gap: 0.15rem;
+  padding-left: 0.6rem;
+  border-left: 3px solid var(--chart-1);
+}
+
+.merch-metric-title[data-section="Margin"] {
+  border-color: var(--chart-2);
+}
+
+.merch-metric-title[data-section="Inventory"] {
+  border-color: var(--chart-3);
+}
+
+.merch-metric-title > span {
+  font-size: 0.65rem;
+  color: var(--muted-foreground);
+}
+
+@media (max-width: 40rem) {
+  .merch-summary,
+  .merch-fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .merch-toolbar > [data-slot="field"],
+  .merch-toolbar > input {
+    width: 100%;
+  }
+}
+
+@media (max-width: 24rem) {
+  .merch-fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

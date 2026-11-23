@@ -35,6 +35,8 @@ import { cellClass, cn, money, useGridSorting } from "./grid-advanced-utils";
 import RetailPnlOutlook from "./grid-advanced-retail-pnl-outlook";
 import StoreKpiBoard from "./grid-advanced-store-kpi-board";
 import SupportScorecard from "./grid-advanced-support-scorecard";
+import CategoryMargin from "./grid-advanced-category-margin";
+import BrandScorecard from "./grid-advanced-brand-scorecard";
 type Campaign = (typeof campaignPerformanceRows)[number];
 const campaignSeed: Campaign[] = campaignPerformanceRows;
 function CampaignGrid({ targets = false }: { targets?: boolean }) {
@@ -1151,6 +1153,10 @@ export default function AdvancedGrid({ block }: BlockProps) {
       return <JobSchedule />;
     case "data-grid-advanced-23":
       return <ProspectDatabase />;
+    case "data-grid-advanced-24":
+      return <CategoryMargin />;
+    case "data-grid-advanced-25":
+      return <BrandScorecard />;
     default:
       return null;
   }

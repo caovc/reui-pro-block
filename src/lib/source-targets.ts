@@ -397,6 +397,18 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
         "src/blocks/data/grid-advanced-model-grid.tsx",
       ];
     }
+    if (["data-grid-advanced-24", "data-grid-advanced-25"].includes(block.id)) {
+      const module =
+        block.id === "data-grid-advanced-24"
+          ? "grid-advanced-category-margin"
+          : "grid-advanced-brand-scorecard";
+      return [
+        ...paths("data", module, "grid-advanced-merch-review-ui", "grid-advanced-model-grid"),
+        "src/blocks/data/grid-advanced-merch-review-model.ts",
+        "src/blocks/data/grid-advanced-merch-review-state.ts",
+        "src/blocks/data/grid-advanced-merch-review.css",
+      ];
+    }
     if (block.category === "advanced") {
       const modules: Record<string, string> = {
         "data-grid-advanced-8": "grid-advanced-sheets",
