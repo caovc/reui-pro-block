@@ -1,5 +1,5 @@
 /* eslint-disable react/only-export-components */
-import { useRef, useState } from "react";
+import { useId, useRef, useState } from "react";
 import { CohortPersonDetail } from "./cohort-person-detail";
 import { PersonFieldLabel, PersonManagerPicker } from "./cohort-person-editor-fields";
 import { cohortProfileData, employeeIdsByInitialName } from "./cohort-person-profile-data";
@@ -276,6 +276,7 @@ export function CohortPeople({
   const [remove, setRemove] = useState<CohortPerson | null>(null);
   const uploadVersion = useRef(0);
   const editorContent = useRef<HTMLDivElement>(null);
+  const editorFieldId = useId();
   const [uploadState, upload] = useFileUpload({
     accept: "image/*",
     maxSize: 5 * 1024 * 1024,
@@ -750,9 +751,10 @@ export function CohortPeople({
                 ["Full name", "name"],
                 ["Job title", "title"],
               ].map(([label, key]) => (
-                <label key={key}>
+                <div key={key} className="cohort-person-editor-field">
                   <PersonFieldLabel
                     label={label === "Full name" ? "Full Name" : "Job Title"}
+                    htmlFor={`${editorFieldId}-${key}`}
                     help={
                       key === "title"
                         ? "The job title shown in the directory and employee record."
@@ -760,14 +762,15 @@ export function CohortPeople({
                     }
                   />
                   <Input
+                    id={`${editorFieldId}-${key}`}
                     required
                     aria-label={label}
                     value={draft[key as "name"]}
                     onChange={(e) => setDraft({ ...draft, [key]: e.target.value })}
                   />
-                </label>
+                </div>
               ))}
-              <div className="cohort-person-manager-field">
+              <div className="cohort-person-editor-field">
                 <PersonFieldLabel
                   label="Manager"
                   help="The person this employee reports to in the organisation chart."
@@ -780,18 +783,20 @@ export function CohortPeople({
                   onChange={(manager) => setDraft({ ...draft, manager })}
                 />
               </div>
-              <label>
+              <div className="cohort-person-editor-field">
                 <PersonFieldLabel
                   label="Department"
+                  htmlFor={`${editorFieldId}-department`}
                   help="The department this person belongs to."
                 />
                 <Choice
+                  id={`${editorFieldId}-department`}
                   label="Person department"
                   value={draft.department}
                   onChange={(department) => setDraft({ ...draft, department })}
                   options={departmentOptions || departments}
                 />
-              </label>
+              </div>
               <label>
                 <PersonFieldLabel label="Location" />
                 <Choice
@@ -801,18 +806,20 @@ export function CohortPeople({
                   options={locationOptions || [...new Set(people.map((p) => p.location))]}
                 />
               </label>
-              <label>
+              <div className="cohort-person-editor-field">
                 <PersonFieldLabel
                   label="Employment Type"
+                  htmlFor={`${editorFieldId}-employment`}
                   help="The working arrangement for this employee’s contract."
                 />
                 <Choice
+                  id={`${editorFieldId}-employment`}
                   label="Employment Type"
                   value={draft.employment || "Full-time"}
                   onChange={(employment) => setDraft({ ...draft, employment })}
                   options={employmentOptions || ["Full-time", "Part-time", "Contract"]}
                 />
-              </label>
+              </div>
               <label>
                 <PersonFieldLabel label="Start Date" />
                 <Input

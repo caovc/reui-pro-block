@@ -10,12 +10,14 @@ import {
 import { Button } from "./shared";
 import { Badge } from "@/components/reui/badge";
 export function Choice({
+  id,
   label,
   value,
   onChange,
   options,
   placeholder,
 }: {
+  id?: string;
   label: string;
   value: string;
   onChange: (v: string) => void;
@@ -24,7 +26,7 @@ export function Choice({
 }) {
   return (
     <Select value={value} onValueChange={onChange}>
-      <SelectTrigger aria-label={label} className="w-full">
+      <SelectTrigger id={id} aria-label={label} className="w-full">
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>

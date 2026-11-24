@@ -13,15 +13,24 @@ import {
   ComboboxValue,
 } from "@/components/ui/combobox";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { CircleHelp, UserRound } from "lucide-react";
 import { TinyAvatar } from "@/blocks/data/grid-advanced-shared";
 import type { CohortPerson } from "./cohort-people";
 
-export function PersonFieldLabel({ label, help }: { label: string; help?: string }) {
+export function PersonFieldLabel({
+  label,
+  help,
+  htmlFor,
+}: {
+  label: string;
+  help?: string;
+  htmlFor?: string;
+}) {
   return (
     <span className="cohort-person-field-label">
-      {label}
+      {htmlFor ? <Label htmlFor={htmlFor}>{label}</Label> : label}
       {help && (
         <Tooltip>
           <TooltipTrigger asChild>

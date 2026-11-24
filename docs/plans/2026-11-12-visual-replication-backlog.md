@@ -6,6 +6,22 @@ require newly captured, inspected reference and local screenshots. Original
 Bricklane branding, licensed replacement artwork, disclosed local fixture data,
 and unavailable backend services are intentional boundaries.
 
+## November 24 status
+
+- Cohort's Job Title, Department and Employment Type captions activated
+  their help buttons in both foundations. Each affected caption now
+  uses the existing Label bound to its Input or Select trigger. The tooltip
+  keeps a separate button. The phone regressions verify native caption
+  activation, keyboard dismissal of the Radix Select and the independent
+  Job Title help tooltip.
+- Strata Calendar gave the active date less than 1px of room in Sera at
+  320px. New event and Ownership also extended past the viewport. The
+  existing free EventCalendar gives the mobile date its own row, wraps
+  filters as needed and fits the complete New event label in the header.
+  The 20-case browser check covers both foundations, eight styles at 320px,
+  Sera at 390px and desktop Nova. Date movement, full control bounds, and
+  keyboard return focus in the Sera regressions passed.
+
 ## November 23 status
 
 The current public catalog comparison covers 687 block entries and 21 template

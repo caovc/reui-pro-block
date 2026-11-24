@@ -276,13 +276,27 @@
     gap: 8px;
     padding-inline: 12px;
   }
+  .strata-calendar-navigation {
+    flex-wrap: wrap;
+  }
   .strata-calendar-title {
-    margin-inline-start: 8px;
+    flex-basis: 100%;
+    margin-inline-start: 0;
   }
   .strata-calendar-filters {
-    align-self: flex-start;
+    flex-wrap: wrap;
   }
   .strata-calendar-form-grid {
     grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 389px) {
+  .strata-calendar-create-trigger {
+    /* Fit the complete label when the style profile uses wide button padding. */
+    padding-inline: 8px !important;
+  }
+  .strata-calendar-create-trigger > svg {
+    display: none;
   }
 }

@@ -313,7 +313,7 @@
 }
 .cohort-person-editor[data-slot="sheet-content"]
   .bt-person-form
-  > :is(label, .cohort-person-manager-field) {
+  > :is(label, .cohort-person-editor-field) {
   display: grid;
   grid-template-columns: 194.5px minmax(0, 1fr);
   align-items: center;
@@ -358,7 +358,7 @@
   }
   .cohort-person-editor[data-slot="sheet-content"]
     .bt-person-form
-    > :is(label, .cohort-person-manager-field) {
+    > :is(label, .cohort-person-editor-field) {
     grid-template-columns: minmax(0, 1fr);
     gap: 12px;
   }
@@ -376,6 +376,9 @@
   gap: 6px;
   min-height: 19.25px;
   line-height: 19.25px;
+}
+.cohort-person-editor .cohort-person-field-label > label {
+  font: inherit;
 }
 .cohort-person-field-label button {
   width: 24px;

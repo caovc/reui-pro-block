@@ -179,6 +179,50 @@ test("Cohort mobile View and Edit have independent scrolling, visible footer and
 });
 
 for (const primitive of ["radix", "base"] as const) {
+  test(`Cohort ${primitive} editor captions activate their controls independently of help`, async ({
+    page,
+  }) => {
+    await openMobilePersonEditor(page, primitive);
+    const form = page.locator(".cohort-person-editor .bt-person-form");
+    for (const [caption, role, name] of [
+      ["Job Title", "textbox", "Job title"],
+      ["Department", "combobox", "Person department"],
+      ["Employment Type", "combobox", "Employment Type"],
+    ] as const) {
+      const text = form.getByText(caption, { exact: true });
+      const control = form.getByRole(role, { name, exact: true, includeHidden: true });
+      await text.scrollIntoViewIfNeeded();
+      const point = await text.evaluate((element) => {
+        const range = document.createRange();
+        range.selectNodeContents(element.firstChild!);
+        const { x, y, width, height } = range.getBoundingClientRect();
+        return { x: x + width / 2, y: y + height / 2 };
+      });
+      await page.mouse.click(point.x, point.y);
+      await expect
+        .poll(() =>
+          control.evaluate(
+            (element) =>
+              element === document.activeElement ||
+              element.getAttribute("aria-expanded") === "true",
+          ),
+        )
+        .toBe(true);
+      if ((await control.getAttribute("aria-expanded")) === "true") {
+        await page.keyboard.press("Escape");
+        await expect(control).toHaveAttribute("aria-expanded", "false");
+      }
+      await expect(control).toBeFocused();
+      await expect(
+        form.getByRole("button", { name: `About ${caption}`, exact: true }),
+      ).not.toBeFocused();
+    }
+    await form.getByRole("button", { name: "About Job Title", exact: true }).hover();
+    await expect(page.getByRole("tooltip")).toContainText(
+      "The job title shown in the directory and employee record.",
+    );
+  });
+
   test(`Cohort mobile Manager keeps focus after Escape and keyboard selection in ${primitive}`, async ({
     page,
   }) => {

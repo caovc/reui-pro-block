@@ -629,7 +629,11 @@ function CalendarPage({
           <Star fill={pinnedRoutes.includes(pinRoute) ? "currentColor" : "none"} />
           <span className="hidden md:inline">Pin</span>
         </Button>
-        <Button ref={addButton} onClick={(event) => openNew(undefined, event.currentTarget)}>
+        <Button
+          ref={addButton}
+          className="strata-calendar-create-trigger"
+          onClick={(event) => openNew(undefined, event.currentTarget)}
+        >
           <Plus />
           New event
         </Button>
