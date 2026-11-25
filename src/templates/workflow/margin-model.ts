@@ -72,6 +72,10 @@ export type MarginBook = {
   journals: Journal[];
   rules: ControlRule[];
 };
+export type MarginPageProps = {
+  book: MarginBook;
+  onBookChange: (book: MarginBook) => void;
+};
 export type ProjectBudget = {
   name: string;
   budgetCents: number;

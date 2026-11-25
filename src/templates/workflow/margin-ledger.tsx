@@ -60,7 +60,6 @@ import {
   bookSeries,
   buildLedger,
   createInvoice,
-  createMarginBook,
   evaluateRules,
   financeCsv,
   invoiceBalance,
@@ -76,6 +75,7 @@ import {
   type InvoiceLane,
   type LedgerEntry,
   type MarginBook,
+  type MarginPageProps,
 } from "./margin-model";
 
 const laneLabels: Record<InvoiceLane, string> = {
@@ -439,8 +439,7 @@ function InvoiceDetail({
   );
 }
 
-export function MarginReceivables() {
-  const [book, setBook] = useState(createMarginBook);
+export function MarginReceivables({ book, onBookChange: setBook }: MarginPageProps) {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 5 });
   const [period, setPeriod] = useState("2026-11");
   const [plan, setPlan] = useState("all");
@@ -711,8 +710,7 @@ function JournalCreate({
   );
 }
 
-export function MarginTransactions() {
-  const [book, setBook] = useState(createMarginBook);
+export function MarginTransactions({ book, onBookChange: setBook }: MarginPageProps) {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
   const [period, setPeriod] = useState("2026-11");
   const [account, setAccount] = useState("all");
@@ -1004,8 +1002,7 @@ function RuleEditor({
   );
 }
 
-export function MarginControls() {
-  const [book, setBook] = useState(createMarginBook);
+export function MarginControls({ book, onBookChange: setBook }: MarginPageProps) {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 5 });
   const [kind, setKind] = useState<ControlAction["kind"]>("manual-journal");
   const [amount, setAmount] = useState(2_500_000);
@@ -1016,7 +1013,12 @@ export function MarginControls() {
   const [running, setRunning] = useState(false);
   const [error, setError] = useState("");
   const nextId = useRef(1);
-  const ruleId = useRef(1);
+  const ruleId = useRef(
+    Math.max(
+      0,
+      ...book.rules.map((rule) => Number(rule.id.match(/^local-rule-(\d+)$/)?.[1]) || 0),
+    ) + 1,
+  );
   const traceOpener = useRef<HTMLElement | null>(null);
   const addLog = useCallback(
     (action: ControlAction) => {

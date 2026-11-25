@@ -205,11 +205,16 @@ export default function QuickEntryDialog() {
                     <FieldError>Enter a valid email address.</FieldError>
                   )}
                 </Field>
-                <div className="flex gap-2">
-                  <Button variant="outline" onClick={() => setInviteOpen(false)}>
+                <div className="flex flex-wrap gap-2">
+                  <Button
+                    variant="outline"
+                    className="max-w-full max-sm:h-auto! max-sm:min-h-10 max-sm:whitespace-normal max-sm:py-2"
+                    onClick={() => setInviteOpen(false)}
+                  >
                     Dismiss invitation
                   </Button>
                   <Button
+                    className="max-w-full max-sm:h-auto! max-sm:min-h-10 max-sm:whitespace-normal max-sm:py-2"
                     disabled={!emailValid}
                     onClick={() => {
                       setInviteSaved(inviteEmail.trim().toLowerCase());

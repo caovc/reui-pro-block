@@ -238,7 +238,7 @@
   height: 16px;
   pointer-events: none;
 }
-.echo-account-theme-option:has([data-state="checked"]) {
+.echo-account-theme-option:has([aria-checked="true"]) {
   background: var(--background);
   color: var(--foreground);
   box-shadow: 0 1px 2px #00000012;

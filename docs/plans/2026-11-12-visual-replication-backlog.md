@@ -6,6 +6,15 @@ require newly captured, inspected reference and local screenshots. Original
 Bricklane branding, licensed replacement artwork, disclosed local fixture data,
 and unavailable backend services are intentional boundaries.
 
+## November 25 review
+
+- Quick Entry's invitation actions overflowed their card in both foundations at 320px in Sera. The Save invitation draft button extended to 493px. Narrow actions now wrap inside the card. All 20 native checks passed across both foundations, eight styles at 320px, Sera at 390px and desktop Nova. They include both button labels, pointer hits, save, dismiss and focus return.
+- The Echo theme picker now highlights the natively checked radio on both the account menu and the General tab. On the previous version, Base UI reported the correct selection without a distinctive background, icon color or shadow. Nova desktop and Sera mobile passed on both foundations after the fix.
+- Margin's invoice, collection, journal and approval-rule edits now survive finance-page navigation in the same workspace. Eight cross-page tests failed on the deployed baseline and passed after the change. A separate 390px review found that the second row of Receivables filters overlaps the invoice-created feedback.
+- Rechecked the 16 original 320px Cohort editor captures from November 24. Full Name, Job Title and Location are legible in the six frames previously flagged during visual review. OCR also reads all three captions in every capture. These frames do not establish a missing-text defect.
+- The public catalog still lists 79 block categories and 21 templates. Both catalog pages returned HTTPS 200. Chromium rejected the certificate before rendering either page, so this check supplies catalog evidence only.
+- Follow up on the account theme pickers in Atlas, Miro and Surge, the Drive profile appearance picker, and Dispatch Map's stop and vehicle selection. Each uses RadioGroupItem with CSS that targets Radix's checked attribute. Inspect Base UI's visible selection after keyboard and pointer changes alongside the existing role and focus checks.
+
 ## November 24 status
 
 - Cohort's Job Title, Department and Employment Type captions activated

@@ -34,10 +34,11 @@ import {
   invoiceLane,
   marginPages,
   type MarginPage,
+  type MarginPageProps,
 } from "./margin-model";
 import "./margin.css";
 
-const views: Record<MarginPage, ComponentType> = {
+const views: Record<MarginPage, ComponentType<MarginPageProps>> = {
   "": MarginDashboard,
   "plan/pnl": MarginProfitLoss,
   "plan/budgets": MarginBudgets,
@@ -56,25 +57,7 @@ const pages = marginPages.map(([path, name]) => ({
 
 const signIn = { path: "/sign-in", name: "Sign in", component: MarginSignIn } as const;
 
-const openingBook = createMarginBook();
 const initialBudget = initialProjectBudget();
-const collectionQueue = openingBook.invoices.filter(
-  (invoice) => invoiceLane(invoice) === "needs-you",
-);
-const notices = [
-  {
-    id: "collections",
-    title: `${collectionQueue.length} invoices need attention`,
-    path: "/cash/receivables",
-    destination: "Review receivables",
-  },
-  {
-    id: "budget",
-    title: initialBudget.decision,
-    path: "/plan/budgets",
-    destination: "Review project budget",
-  },
-];
 
 function subscribe(listener: () => void) {
   window.addEventListener("hashchange", listener);
@@ -140,6 +123,25 @@ function MarginSignIn() {
 
 export default function Margin() {
   const { active, href } = useMarginPage();
+  // One in-memory book belongs to this mounted demo workspace, across finance pages.
+  const [book, setBook] = useState(createMarginBook);
+  const collectionQueue = book.invoices.filter(
+    (invoice) => invoiceLane(invoice, book.asOf) === "needs-you",
+  );
+  const notices = [
+    {
+      id: "collections",
+      title: `${collectionQueue.length} invoices need attention`,
+      path: "/cash/receivables",
+      destination: "Review receivables",
+    },
+    {
+      id: "budget",
+      title: initialBudget.decision,
+      path: "/plan/budgets",
+      destination: "Review project budget",
+    },
+  ];
   const [searchOpen, setSearchOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [read, setRead] = useState<string[]>([]);
@@ -256,7 +258,7 @@ export default function Margin() {
         </div>
         <section aria-labelledby="margin-title" className="margin-content">
           <h1 id="margin-title">{active.name}</h1>
-          <View key={active.path} />
+          <View key={active.path} book={book} onBookChange={setBook} />
         </section>
       </div>
       <CommandDialog

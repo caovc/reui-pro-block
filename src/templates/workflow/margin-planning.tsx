@@ -26,13 +26,13 @@ import {
   acquisitionModel,
   allocateCashPlan,
   bookSeries,
-  createMarginBook,
   decideBudget,
   financeCsv,
   forecastMonths,
   initialAcquisition,
   initialProjectBudget,
   monthSummary,
+  type MarginPageProps,
 } from "./margin-model";
 
 const monthFormatter = new Intl.DateTimeFormat("en-US", { month: "short", timeZone: "UTC" });
@@ -229,10 +229,9 @@ function FinanceTable({
   );
 }
 
-export function MarginDashboard() {
+export function MarginDashboard({ book }: MarginPageProps) {
   const [month, setMonth] = useState("2026-11");
   const [plan, setPlan] = useState("all");
-  const book = createMarginBook();
   const months = bookSeries(book).map((row) => row.month);
   const selectedBook =
     plan === "all"
@@ -347,17 +346,6 @@ export function MarginDashboard() {
   );
 }
 
-const actuals = bookSeries(createMarginBook());
-const latest = actuals.at(-1)!;
-const startingForecast = {
-  startMonth: "2026-12",
-  months: 4,
-  revenueCents: latest.netRevenueCents,
-  growthBps: 240,
-  costRateBps: 4400,
-  operatingCents: latest.operatingCents,
-};
-
 function percentToBps(value: FormDataEntryValue | null) {
   const amount = Number(value);
   if (value === null || value === "" || !Number.isFinite(amount))
@@ -365,8 +353,17 @@ function percentToBps(value: FormDataEntryValue | null) {
   return Math.round(amount * 100);
 }
 
-export function MarginProfitLoss() {
-  const [assumptions, setAssumptions] = useState(startingForecast);
+export function MarginProfitLoss({ book }: MarginPageProps) {
+  const actuals = bookSeries(book);
+  const latest = actuals.at(-1)!;
+  const [assumptions, setAssumptions] = useState(() => ({
+    startMonth: "2026-12",
+    months: 4,
+    revenueCents: latest.netRevenueCents,
+    growthBps: 240,
+    costRateBps: 4400,
+    operatingCents: latest.operatingCents,
+  }));
   const [adjustments, setAdjustments] = useState<Record<string, number>>({});
   const [error, setError] = useState("");
   const planned = forecastMonths(assumptions).map((row) => {
@@ -796,7 +793,9 @@ const cashWeights = [
   { name: "Partner", weight: 20 },
 ];
 
-export function MarginCashFlow() {
+export function MarginCashFlow({ book }: MarginPageProps) {
+  const actuals = bookSeries(book);
+  const latest = actuals.at(-1)!;
   const [target, setTarget] = useState(latest.cashInCents);
   const [error, setError] = useState("");
   const allocated = allocateCashPlan(
