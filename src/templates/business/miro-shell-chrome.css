@@ -337,7 +337,7 @@
   height: 14px;
 }
 
-.miro-account-theme-option:has([data-state="checked"]) {
+.miro-account-theme-option:has([aria-checked="true"]) {
   color: var(--foreground);
   background: var(--background);
   box-shadow: 0 1px 3px rgb(0 0 0 / 0.15);

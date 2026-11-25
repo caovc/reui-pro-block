@@ -272,7 +272,7 @@
   height: 14px;
   pointer-events: none;
 }
-.surge-account-theme-option:has([data-state="checked"]) {
+.surge-account-theme-option:has([aria-checked="true"]) {
   color: var(--foreground);
   background: var(--background);
   box-shadow: 0 1px 2px #00000012;

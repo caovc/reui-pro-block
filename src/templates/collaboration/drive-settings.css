@@ -539,6 +539,7 @@
   gap: 2px;
 }
 .ds-theme-option {
+  position: relative;
   display: flex;
   width: 24px;
   height: 24px;
@@ -546,7 +547,10 @@
   justify-content: center;
   border-radius: 6px;
 }
-.ds-theme-option:has([data-state="checked"]) {
+.ds-theme-option > [data-slot="radio-group-item"] {
+  position: absolute;
+}
+.ds-theme-option:has([aria-checked="true"]) {
   background: var(--accent);
   color: var(--accent-foreground);
 }

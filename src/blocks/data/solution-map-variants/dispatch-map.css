@@ -335,7 +335,7 @@
   font-size: 10px;
   cursor: pointer;
 }
-.dm-stop-choice:has([data-state="checked"]) > span {
+.dm-stop-choice:has([aria-checked="true"]) > span {
   border-color: var(--primary);
   background: var(--primary);
   color: var(--primary-foreground);
@@ -611,7 +611,7 @@
   padding: 12px;
   cursor: pointer;
 }
-.dm-candidate:has([data-state="checked"]) {
+.dm-candidate:has([aria-checked="true"]) {
   border-color: var(--ring);
   background: var(--muted);
 }

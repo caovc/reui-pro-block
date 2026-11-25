@@ -558,11 +558,21 @@ export function MarginReceivables({ book, onBookChange: setBook }: MarginPagePro
       </div>
       <Tabs value={lane} onValueChange={setLane}>
         <TabsList className="h-auto w-full flex-wrap justify-start">
-          <TabsTrigger value="open">Open</TabsTrigger>
-          <TabsTrigger value="needs-you">Needs attention</TabsTrigger>
-          <TabsTrigger value="waiting">Awaiting reply</TabsTrigger>
-          <TabsTrigger value="next-30-days">Due soon</TabsTrigger>
-          <TabsTrigger value="all">All invoices</TabsTrigger>
+          <TabsTrigger className="h-auto" value="open">
+            Open
+          </TabsTrigger>
+          <TabsTrigger className="h-auto" value="needs-you">
+            Needs attention
+          </TabsTrigger>
+          <TabsTrigger className="h-auto" value="waiting">
+            Awaiting reply
+          </TabsTrigger>
+          <TabsTrigger className="h-auto" value="next-30-days">
+            Due soon
+          </TabsTrigger>
+          <TabsTrigger className="h-auto" value="all">
+            All invoices
+          </TabsTrigger>
         </TabsList>
       </Tabs>
       <Feedback>{message}</Feedback>
