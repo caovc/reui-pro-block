@@ -25,6 +25,9 @@ and unavailable backend services are intentional boundaries.
 - The gallery contained 21 templates but the header and sidebar on the home page both displayed 18. The navigation badges now read the same catalog as the gallery.
 - On the public Roster dashboard, pressing Enter on Time reveals links to Time off and Timesheets. The dashboard stays on screen until a child is chosen. The same action in both local foundations went directly to Team calendar and offered neither destination. The calendar remains an existing local workflow with its own date and event coverage.
 
+- Actions `46118601815` found one Dispatch Map regression in Nova at 390px. The default toolbar rose from 65px to 89px because its controls and three 8px gaps needed 367.55px in a 366px row. All four groups still accepted clicks.
+- The mobile toolbar now uses a 6px horizontal gap and retains the 8px vertical gap. The default 65px check and its original Fleet and List interactions passed. Both foundations passed the eight-style checks for visible controls and usable map space. Nova, Lyra and Mira fit one row at 390px. The other five styles wrap.
+
 ## November 25 review
 
 - Quick Entry's invitation actions overflowed their card in both foundations at 320px in Sera. The Save invitation draft button extended to 493px. Narrow actions now wrap inside the card. All 20 native checks passed across both foundations, eight styles at 320px, Sera at 390px and desktop Nova. They include both button labels, pointer hits, save, dismiss and focus return.

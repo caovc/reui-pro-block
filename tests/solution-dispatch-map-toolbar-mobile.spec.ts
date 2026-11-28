@@ -10,6 +10,75 @@ const localStyle = {
 };
 
 for (const primitive of ["radix", "base"] as const) {
+  test(`${primitive} Nova keeps the 390px dispatch toolbar on one row with native actions`, async ({
+    page,
+  }, info) => {
+    const errors: string[] = [];
+    page.on("pageerror", (error) => errors.push(error.message));
+    await page.route("https://tiles.openfreemap.org/styles/*", (route) =>
+      route.fulfill({ json: localStyle }),
+    );
+    await page.setViewportSize({ width: 390, height: 844 });
+    const preset = new URLSearchParams({
+      preset: JSON.stringify({ primitive, style: "nova", mode: "light" }),
+    });
+    await page.goto(
+      `${primitive === "base" ? "./base/" : "./"}#/preview/solutions/map/solution-map-1?${preset}`,
+    );
+    await expect(page).toHaveTitle("Dispatch Map — Preview");
+    await expect(page.locator("html")).toHaveAttribute("data-ui-primitive", primitive);
+    await expect(page.locator("html")).toHaveAttribute("data-ui-style", "nova");
+    await page.getByRole("button", { name: "Pause simulation", exact: true }).click();
+    const toolbar = page.locator(".dm-toolbar");
+    const firstHeight = (await toolbar.boundingBox())!.height;
+    await page.evaluate(() => document.fonts.ready.then(() => undefined));
+    const header = (await toolbar.boundingBox())!;
+    const controls = await toolbar
+      .locator('button:visible, [role="combobox"]:visible')
+      .evaluateAll((elements) =>
+        elements.map((element) => {
+          const bounds = element.getBoundingClientRect();
+          return {
+            name: element.getAttribute("aria-label") ?? element.textContent?.trim(),
+            x: bounds.x,
+            y: bounds.y,
+            right: bounds.right,
+            bottom: bounds.bottom,
+            hit: element.contains(
+              document.elementFromPoint(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2),
+            ),
+          };
+        }),
+      );
+    await info.attach("nova-390-toolbar-geometry", {
+      body: JSON.stringify({ firstHeight, header, controls }, null, 2),
+      contentType: "application/json",
+    });
+    expect(firstHeight).toBe(65);
+    expect(header.height).toBe(65);
+    for (const control of controls) {
+      expect(control.x, control.name).toBeGreaterThanOrEqual(0);
+      expect(control.right, control.name).toBeLessThanOrEqual(390);
+      expect(control.y, control.name).toBeGreaterThanOrEqual(header.y);
+      expect(control.bottom, control.name).toBeLessThanOrEqual(header.y + header.height);
+      expect(control.hit, control.name).toBe(true);
+    }
+    for (const [name, dialogName] of [
+      ["Search dispatch", "Search dispatch"],
+      ["Review exceptions", "Exceptions"],
+      ["New delivery", "New delivery"],
+    ]) {
+      const trigger = page.getByRole("button", { name, exact: true });
+      await trigger.click();
+      const dialog = page.getByRole("dialog", { name: dialogName, exact: true });
+      await expect(dialog).toBeVisible();
+      await page.keyboard.press("Escape");
+      await expect(dialog).toBeHidden();
+      await expect(trigger).toBeFocused();
+    }
+    expect(errors).toEqual([]);
+  });
+
   test(`${primitive} Sera keeps mobile dispatch controls reachable and resizes the real map`, async ({
     page,
   }, info) => {
