@@ -439,7 +439,7 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
               `src/blocks/data/${module}-overview.css`,
               `src/blocks/data/${module}-drivers.css`,
             ]
-          : []),
+          : [...paths("data", `${module}-plots`), `src/blocks/data/${module}.css`]),
         ...paths("data", "grid-advanced-merch-review-ui", "grid-advanced-model-grid"),
         "src/blocks/data/grid-advanced-merch-review-model.ts",
         "src/blocks/data/grid-advanced-merch-review-state.ts",

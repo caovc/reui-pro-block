@@ -346,7 +346,7 @@ export function MerchDrivers({
             {merchMonthLabel(month)} · Recorded local trading data
           </SheetDescription>
         </SheetHeader>
-        <div className="grid gap-4 px-4 pb-6">
+        <div className="grid min-w-0 grid-cols-1 gap-4 px-4 pb-6">
           <MerchSummary>
             <MerchStat label="Net sales" value={merchMoney(current.netCents)} />
             <MerchStat label="Gross margin" value={merchPercent(current.marginBps)} />
@@ -357,8 +357,8 @@ export function MerchDrivers({
             <MerchStat label="Sell-through" value={merchPercent(current.sellThroughBps)} />
           </MerchSummary>
           {children}
-          <Tabs defaultValue="drivers">
-            <TabsList className="w-full">
+          <Tabs defaultValue="drivers" className="min-w-0">
+            <TabsList className="w-full min-w-0 max-w-full justify-start overflow-x-auto">
               <TabsTrigger value="drivers">Sales drivers</TabsTrigger>
               <TabsTrigger value="plan">Plan and quarters</TabsTrigger>
               <TabsTrigger value="offers">Promotions</TabsTrigger>
