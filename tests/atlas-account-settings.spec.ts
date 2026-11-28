@@ -1,6 +1,36 @@
 // Exercises account routes and the actual free settings/sidebar components.
 import { expect, test } from "@playwright/test";
 
+for (const primitive of ["radix", "base"] as const) {
+  test(`Atlas ${primitive} highlights Settings only inside account routes`, async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 1000 });
+    const entry = primitive === "base" ? "./base/" : "./";
+    await page.goto(`${entry}#/template-preview/atlas`);
+    const footer = page.locator(".atlas-footer-navigation:visible");
+    const settings = footer.getByRole("link", { name: "Settings", exact: true });
+    const team = footer.getByRole("button", { name: "Team", exact: true });
+    const background = () => settings.evaluate((link) => getComputedStyle(link).backgroundColor);
+    await expect(settings).toHaveAttribute("data-active", "false");
+    const inactive = await background();
+    await settings.click();
+    // Keep the pointer off the sidebar so its hover paint cannot mask the active state.
+    await page.mouse.move(1000, 55);
+    const sections = page.getByRole("navigation", { name: "Account sections" });
+    for (const section of ["Profile", "Security", "Preferences"]) {
+      await sections.getByRole("link", { name: section, exact: true }).click();
+      await expect(page).toHaveURL(new RegExp(`/account/${section.toLowerCase()}$`));
+      await expect(settings).toHaveAttribute("aria-current", "location");
+      await expect(settings).toHaveAttribute("data-active", "true");
+      await expect.poll(background).not.toBe(inactive);
+      await expect(team).toHaveCSS("background-color", inactive);
+    }
+    await page.getByRole("link", { name: "Dashboard", exact: true }).click();
+    await expect(settings).toHaveAttribute("data-active", "false");
+    await expect(settings).not.toHaveAttribute("aria-current", /.+/);
+    await expect(settings).toHaveCSS("background-color", inactive);
+  });
+}
+
 for (const width of [1440, 390]) {
   test(`Atlas account settings save and cancel profile changes at ${width}`, async ({ page }) => {
     const errors: string[] = [];

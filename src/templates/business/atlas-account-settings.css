@@ -312,6 +312,12 @@
     justify-content: flex-start;
   }
 
+  .bt-atlas .atlas-account-settings .aas-avatar > div:nth-child(2) {
+    min-width: 0;
+    max-width: 100%;
+    flex-wrap: wrap;
+  }
+
   .atlas-account-settings .aas-profile .workspace-settings-control {
     max-width: none;
   }

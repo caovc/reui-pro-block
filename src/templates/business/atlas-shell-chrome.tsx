@@ -205,6 +205,7 @@ export function AtlasFooterNavigation({
           <SidebarMenuButton
             size="sm"
             tooltip={label}
+            isActive={label === "Settings" && routing.section !== null}
             asChild={label === "Settings"}
             onClick={
               label === "Settings"
@@ -215,6 +216,7 @@ export function AtlasFooterNavigation({
             {label === "Settings" ? (
               <a
                 href={routing.href("profile")}
+                aria-current={routing.section ? "location" : undefined}
                 onClick={(event) => {
                   if (isModifiedClick(event)) return;
                   event.preventDefault();

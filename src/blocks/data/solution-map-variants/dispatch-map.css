@@ -653,7 +653,10 @@
 
 @media (max-width: 767px) {
   .dm-toolbar {
-    padding: 0 12px;
+    flex-basis: auto;
+    flex-wrap: wrap;
+    min-height: 65px;
+    padding: 10px 12px;
     gap: 8px;
   }
   .dm-brand strong,
