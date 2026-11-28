@@ -142,7 +142,7 @@ for (const primitive of ["radix", "base"] as const) {
         group.getByRole("button", { name: "Choose timesheet week, 13–19 Jul" }),
       ).toBeVisible();
       await expect(page.locator(".ct-timesheets-grid").getByRole("columnheader").nth(1)).toHaveText(
-        /Mon\s*13 Jul/,
+        "Mon, 13 Jul",
       );
       await next.click();
       await expect(date).toBeVisible();
