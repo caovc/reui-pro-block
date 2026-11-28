@@ -201,6 +201,54 @@
     padding-inline: 8px;
   }
 }
+
+:root[data-ui-style="nova"] .final-entry-dialog[data-slot="dialog-content"][role="dialog"] {
+  gap: 0;
+  padding: 16px;
+}
+
+:root[data-ui-style="nova"] .final-entry-dialog > [data-slot="dialog-header"] {
+  padding: 0;
+}
+
+:root[data-ui-style="nova"] .final-entry-dialog .final-entry-tabs {
+  gap: 20px;
+  margin-top: 16px;
+}
+
+:root[data-ui-style="nova"] .final-entry-dialog .final-entry-tabs > div:first-child {
+  padding: 0;
+}
+
+:root[data-ui-style="nova"] .final-entry-dialog .final-entry-body {
+  gap: 20px;
+  padding: 0;
+}
+
+:root[data-ui-style="nova"]
+  .final-entry-dialog
+  .final-entry-body
+  > [role="tabpanel"]
+  > [data-slot="field-group"] {
+  gap: 16px;
+}
+
+:root[data-ui-style="nova"]
+  .final-entry-dialog
+  .final-entry-field-label
+  > [data-slot="field-label"] {
+  line-height: 1;
+}
+
+:root[data-ui-style="nova"] .final-entry-dialog .final-entry-properties {
+  row-gap: 12px;
+}
+
+:root[data-ui-style="nova"] .final-entry-dialog .final-entry-footer[data-slot="dialog-footer"] {
+  margin: 24px -16px -16px;
+  padding: 16px;
+}
+
 .final-project-dialog {
   --tw-translate-x: 0px;
   --tw-translate-y: 0px;

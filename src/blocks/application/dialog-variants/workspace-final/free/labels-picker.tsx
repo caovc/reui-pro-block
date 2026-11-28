@@ -171,7 +171,7 @@ export function EntryLabelsPicker({
   value: string[];
   onChange: (value: string[]) => void;
 }) {
-  const { triggerRef, onOpenChange } = useEntryPickerFocus();
+  const { triggerRef, actionsRef, onTriggerKeyDown, onOpenChange } = useEntryPickerFocus();
   const labels = labelOptions.filter((label) => value.includes(label.id));
   function handleLabelsChange(nextItems: LabelSelectionItem[]) {
     onChange(
@@ -187,6 +187,7 @@ export function EntryLabelsPicker({
     <Field className="min-w-0">
       <Combobox
         multiple
+        actionsRef={actionsRef}
         items={labelSelectionOptions}
         value={labels}
         onOpenChange={onOpenChange}
@@ -198,6 +199,7 @@ export function EntryLabelsPicker({
         <ComboboxTrigger
           ref={triggerRef}
           id={id}
+          onKeyDown={onTriggerKeyDown}
           render={
             <Button
               type="button"

@@ -135,12 +135,13 @@ export function EntryPriorityPicker({
   value: string;
   onChange: (value: string) => void;
 }) {
-  const { triggerRef, onOpenChange } = useEntryPickerFocus();
+  const { triggerRef, actionsRef, onTriggerKeyDown, onOpenChange } = useEntryPickerFocus();
   const priority = priorityOptions.find((item) => item.value === value) ?? priorityOptions[0];
 
   return (
     <Field className="min-w-0">
       <Combobox
+        actionsRef={actionsRef}
         items={priorityOptions}
         value={priority}
         onOpenChange={onOpenChange}
@@ -151,6 +152,7 @@ export function EntryPriorityPicker({
         <ComboboxTrigger
           ref={triggerRef}
           id={id}
+          onKeyDown={onTriggerKeyDown}
           render={
             <Button
               type="button"

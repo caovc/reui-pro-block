@@ -6,6 +6,14 @@ import {
   SidebarWorkspaceSwitcher,
 } from "@/components/reui/sidebar";
 import { AppShellLayout, AppShellInset } from "@/components/reui/layout";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import { SearchPalette } from "@/blocks/application/shells/chrome";
 import { useGlobalTheme, setGlobalTheme } from "@/components/site/global-theme-store";
@@ -117,6 +125,7 @@ export function ReferenceSheet({
   open,
   onClose,
   onCloseAutoFocus,
+  onEscapeKeyDown,
   children,
   footer,
   closeButton,
@@ -129,6 +138,7 @@ export function ReferenceSheet({
   open: boolean;
   onClose: () => void;
   onCloseAutoFocus?: ComponentProps<typeof SheetContent>["onCloseAutoFocus"];
+  onEscapeKeyDown?: ComponentProps<typeof SheetContent>["onEscapeKeyDown"];
   children: ReactNode;
   footer?: ReactNode;
   closeButton?: ReactNode;
@@ -140,6 +150,7 @@ export function ReferenceSheet({
         className="ct-reference-sheet"
         showCloseButton={closeButton == null}
         onCloseAutoFocus={onCloseAutoFocus}
+        onEscapeKeyDown={onEscapeKeyDown}
         style={{ width, maxWidth: "calc(100vw - 32px)" }}
       >
         <div className="ct-sheet-heading">
@@ -199,6 +210,7 @@ type ShellProps = {
   query: string;
   setQuery: (v: string) => void;
   rosterIdentity?: { name: string; company: string; photo: boolean; image: string };
+  childHref?: ComponentProps<typeof SidebarNavigation>["childHref"];
 };
 export function Shell(props: ShellProps) {
   return (
@@ -218,9 +230,14 @@ function CollaborationShell({
   query,
   setQuery,
   rosterIdentity,
+  childHref,
 }: ShellProps) {
   const { state, isMobile, setOpenMobile } = useSidebar();
   const collapsed = !isMobile && state === "collapsed";
+  const timeTrailLinks =
+    kind === "roster" && ["Time off", "Timesheets"].includes(view)
+      ? { people: childHref?.("People"), time: childHref?.("Time off") }
+      : undefined;
   const { theme } = useGlobalTheme();
   const [invite, setInvite] = useState(false);
   const [inviteEmail, setInviteEmail] = useState("");
@@ -449,7 +466,9 @@ function CollaborationShell({
                   "Directory",
                   "Import",
                   "Hiring",
-                  "Time",
+                  "Time off",
+                  "Timesheets",
+                  "Team calendar",
                   ...rosterSettingsTabs,
                 ]
               : nav
@@ -458,11 +477,18 @@ function CollaborationShell({
         />
       </div>
       <SidebarNavigation
+        childHref={kind === "roster" ? childHref : undefined}
         {...(kind === "pulse" ? { closeOnSelect: false } : {})}
         className="ct-free-navigation"
         menuClassName={kind === "roster" ? "min-w-48" : undefined}
         label={kind === "roster" ? "Workspace" : "Platform"}
-        active={kind === "roster" && view === "People" ? "Directory" : view}
+        active={
+          kind === "roster" && view === "People"
+            ? "Directory"
+            : kind === "roster" && ["Time", "Team calendar"].includes(view)
+              ? "Time"
+              : view
+        }
         items={nav.map((name, index) => {
           const Icon = kind === "roster" ? icons[index] : pulseIcons[index];
           return {
@@ -472,9 +498,11 @@ function CollaborationShell({
             children:
               kind === "roster" && name === "People"
                 ? ["Directory", "Import"]
-                : kind === "roster" && name === "Settings"
-                  ? rosterSettingsTabs
-                  : undefined,
+                : kind === "roster" && name === "Time"
+                  ? ["Time off", "Timesheets"]
+                  : kind === "roster" && name === "Settings"
+                    ? rosterSettingsTabs
+                    : undefined,
           };
         })}
         onSelect={navigate}
@@ -670,18 +698,57 @@ function CollaborationShell({
                     aria-label={kind === "pulse" ? "Toggle Sidebar" : "Open navigation"}
                   />
                 )}
-                <Home size={15} />
-                <span>{kind === "roster" ? "People" : "Home"}</span>
-                {(kind === "roster" || view !== "Dashboard") && (
+                {timeTrailLinks?.people && timeTrailLinks.time ? (
+                  <Breadcrumb className="ct-roster-time-trail">
+                    <BreadcrumbList>
+                      <BreadcrumbItem className="ct-roster-time-trail-people">
+                        <BreadcrumbLink href={timeTrailLinks.people}>
+                          <Home aria-hidden="true" />
+                          People
+                        </BreadcrumbLink>
+                      </BreadcrumbItem>
+                      <BreadcrumbSeparator>
+                        <span />
+                      </BreadcrumbSeparator>
+                      <BreadcrumbItem>
+                        <BreadcrumbLink href={timeTrailLinks.time}>Time</BreadcrumbLink>
+                      </BreadcrumbItem>
+                      <BreadcrumbSeparator>
+                        <span />
+                      </BreadcrumbSeparator>
+                      <BreadcrumbItem>
+                        <BreadcrumbPage>{view}</BreadcrumbPage>
+                      </BreadcrumbItem>
+                    </BreadcrumbList>
+                  </Breadcrumb>
+                ) : (
                   <>
-                    <span className="ct-muted">{kind === "roster" ? "–" : "/"}</span>
-                    {kind === "roster" && rosterSettingsTabs.includes(view) && (
+                    <Home size={15} />
+                    <span>{kind === "roster" ? "People" : "Home"}</span>
+                    {(kind === "roster" || view !== "Dashboard") && (
                       <>
-                        <span>Settings</span>
-                        <span className="ct-muted">–</span>
+                        <span className="ct-muted">{kind === "roster" ? "–" : "/"}</span>
+                        {kind === "roster" && ["Time off", "Timesheets"].includes(view) && (
+                          <>
+                            <span>Time</span>
+                            <span className="ct-muted">–</span>
+                          </>
+                        )}
+                        {kind === "roster" && rosterSettingsTabs.includes(view) && (
+                          <>
+                            <span>Settings</span>
+                            <span className="ct-muted">–</span>
+                          </>
+                        )}
+                        <b>
+                          {view === "People"
+                            ? "Directory"
+                            : view === "Time"
+                              ? "Team calendar"
+                              : view}
+                        </b>
                       </>
                     )}
-                    <b>{view === "People" ? "Directory" : view}</b>
                   </>
                 )}
                 <div className="ct-grow" />

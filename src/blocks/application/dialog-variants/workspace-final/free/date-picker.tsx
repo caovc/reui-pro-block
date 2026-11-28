@@ -181,7 +181,7 @@ export function EntryDatePicker({
   value: DateSelectionValue;
   onValueChange: (value: DateSelectionValue) => void;
 }) {
-  const { triggerRef, onOpenChange } = useEntryPickerFocus();
+  const { triggerRef, actionsRef, onTriggerKeyDown, onOpenChange } = useEntryPickerFocus();
   const today = React.useMemo(() => startOfDay(referenceNow), [referenceNow]);
   const [pickerOpen, setPickerOpen] = React.useState(false);
   const [draftDate, setDraftDate] = React.useState<Date | undefined>(
@@ -278,6 +278,7 @@ export function EntryDatePicker({
   return (
     <>
       <Combobox
+        actionsRef={actionsRef}
         items={dateOptions}
         value={activePreset}
         onOpenChange={onOpenChange}
@@ -288,6 +289,7 @@ export function EntryDatePicker({
         <ComboboxTrigger
           ref={triggerRef}
           id={id}
+          onKeyDown={onTriggerKeyDown}
           render={
             <Button
               type="button"

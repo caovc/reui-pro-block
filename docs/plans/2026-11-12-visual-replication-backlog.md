@@ -28,6 +28,28 @@ and unavailable backend services are intentional boundaries.
 - Actions `46118601815` found one Dispatch Map regression in Nova at 390px. The default toolbar rose from 65px to 89px because its controls and three 8px gaps needed 367.55px in a 366px row. All four groups still accepted clicks.
 - The mobile toolbar now uses a 6px horizontal gap and retains the 8px vertical gap. The default 65px check and its original Fleet and List interactions passed. Both foundations passed the eight-style checks for visible controls and usable map space. Nova, Lyra and Mira fit one row at 390px. The other five styles wrap.
 
+- The initial routed implementation exposed two buttons for the Time destinations. The public sidebar supplies anchors with usable URLs. Both local foundations failed the native link check on the first candidate. The regression exercises a Control-click in a new tab and keyboard navigation in the collapsed menu.
+- At 1440×1000 the public Roster Timesheets screenshot includes all ten people and pagination. Both initial local builds showed 70.7px rows. The pagination ended at 1028.17px and was reachable by scrolling. At 390px the public view showed six complete rows and part of the seventh. The local frame showed five complete rows and part of the sixth.
+- A single-day Time off entry on the 390px local month view displayed its dot and portrait with no visible title characters. The public view retained an abbreviated name. The desktop month picker also placed the Previous month arrow over its caption.
+- The public Quick Entry Brief measured 661px high at 390×844 and 621px at 1440×1000. Both local foundations exceeded each height by 72.25px. Measurements located the excess in the top inset, header and form spacing, field labels and gap before the footer.
+- The updated Nova Brief matches both reference heights on each foundation, including the header, body, property grid and footer bounds. The template keeps the selected site font. Natural tab text widths differ between the tested local Geist and public Inter fonts.
+- In the public Revenue Map and both local foundations, the Enterprise filter opened and selected on phones and desktops. All 13 regional controls remained available and the document fitted the viewport. The local region and segment values come from the project's original revenue fixtures.
+- The updated Timesheets rows measure 66px. The pagination footer ends at 954.14px at 1440×1000. At 390px six rows are fully visible and the seventh is partially visible. The public Time pages also expose a linked breadcrumb, and the week picker joins three controls edge to edge with a trailing calendar icon. Both features have dedicated route and geometry regressions.
+- In the downloaded Base UI Quick Entry, pressing Escape immediately after opening Labels left the combobox expanded when its trigger still held focus. The trigger now closes the open native popup. The dedicated keyboard check follows both the trigger and input focus paths on each foundation.
+
+- In the old Base UI phone workflow, the “Leave updated” notification intercepted the center of the enabled Delete button. Roster now shows the update in a live status beside the page heading. The full booking, edit and deletion sequence passed at 390px and 1440px on both foundations.
+- Opening the legacy Team calendar event, pressing Escape, and clicking an empty August 14 cell within 180ms dropped the new press in the old Base UI build. A new pointer press on a slot now retires the previous chip press. Rapid slot creation and genuine cross-week dragging were verified separately.
+- The mobile dashboard previously exposed the displayed calendar date as its accessible button name. A candidate changed the name to “Open team calendar”, which broke the existing mobile dashboard regression. The date is restored as its name, with the calendar action described by its title.
+
+- On both official Timesheets viewports, Sign off 21 is a text button and the seven 112px weekday headers center labels such as “Mon, 20 Jul”. The employee cell has a 16px left inset, a 32px portrait and a 10px gap before the name. The earlier local grid showed a leading check, omitted the comma, aligned the weekday headings left and used smaller portraits.
+- In Base UI Quick Entry the same open-trigger Escape issue also affected Status, Assignee, Due date and Priority. Each failure used a trusted key event with focus still on the expanded trigger. Status, Assignee and Priority closed normally with focus in their search fields. Due date uses a list of preset dates.
+
+- A second Atlas desktop comparison found that the public default and local Nova in both foundations align the account tab and navigation rule at y=174. Local Sera paints its active underline 2px lower. Top, center and bottom clicks and keyboard navigation all worked on the three tabs, with 18px before the next card. The public account pages did not expose a Sera preset control during this review.
+
+- The public Strata General page let an anonymous visitor turn Show tooltips off. After navigating to Monitors, Refresh still displayed a hint on hover and keyboard focus. Returning to General showed the switch on again. On the same General page the visible Sync from Stripe header control showed no hint on hover with the setting on, so that control could not establish an immediate off-state effect.
+
+- Open follow-up for Category Margin (data-grid-advanced-24). At 390px and 1440px, the public block starts inside Apparel. Back goes up to Fieldline and a visible department cell drills down again. Both local foundations initially show All departments and support a Home drill and return. At the same department depth, the public phone header starts at y=319 and the first product starts at y=415. Locally they start at y=790.5 and y=822.5, with no complete product row visible at 844px height. The public desktop header starts at y=283 versus y=511.25 locally. The local summary card, stacked controls and second table header account for the displacement. The follow-up will retain Bricklane’s independent department and product data.
+
 ## November 25 review
 
 - Quick Entry's invitation actions overflowed their card in both foundations at 320px in Sera. The Save invitation draft button extended to 493px. Narrow actions now wrap inside the card. All 20 native checks passed across both foundations, eight styles at 320px, Sera at 390px and desktop Nova. They include both button labels, pointer hits, save, dismiss and focus return.
@@ -155,7 +177,9 @@ the dynamic planned-finish text correctly. All22 fresh matrix images and two
 additional dynamic-state images were viewed; this scoped copy task is closed. See
 `docs/job-schedule-create-layout-2026-11-12.md`.
 
-## Catalog completeness follow-up
+## November 12 catalog snapshot
+
+The November 28 catalog check found 21 public templates and 21 local entries, including Signal and Strata. The table below records the original assignments. Signal’s independent visual comparison still depends on access to its preview.
 
 The saved public official catalog contains twenty actual template cards; the
 local catalog now has nineteen after the public Strata milestone `2a933fd`.

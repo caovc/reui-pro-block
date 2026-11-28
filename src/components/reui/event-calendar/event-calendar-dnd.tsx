@@ -87,7 +87,7 @@ function wasRecentDrag(): boolean {
  * dialog. Refreshed on release so it covers long presses; the chip's own
  * click-to-edit is unaffected (only grid slot-clicks check it).
  */
-let lastChipPressAt = 0;
+let lastChipPressAt = Number.NEGATIVE_INFINITY;
 function markChipPress(): void {
   lastChipPressAt = performance.now();
   window.addEventListener(
@@ -963,6 +963,8 @@ function useEventCalendarGestures<TData = unknown>() {
   const beginCreate = useCallback(
     (e: React.PointerEvent, day: Date, allDay: boolean) => {
       if (e.button !== 0) return;
+      // A new press on a slot cannot be the trailing click from the previous chip.
+      if (e.isPrimary) lastChipPressAt = Number.NEGATIVE_INFINITY;
       if (!instance.getState().interactions.selectSlot) return;
       beginGesture({
         instance,

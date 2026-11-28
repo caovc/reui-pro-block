@@ -57,7 +57,7 @@ function EntryFieldLabel({
   // An exiting hint must not keep an Escape layer after focus moves to a field.
   const [retired, setRetired] = useState(false);
   return (
-    <div className="flex items-center gap-1.5">
+    <div className="final-entry-field-label flex items-center gap-1.5">
       <FieldLabel htmlFor={htmlFor}>{label}</FieldLabel>
       <Tooltip
         open={open}

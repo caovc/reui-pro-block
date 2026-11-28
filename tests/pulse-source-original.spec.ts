@@ -58,7 +58,7 @@ const frozenHashes: Readonly<Record<string, string>> = {
   "src/templates/collaboration/pulse-board.tsx":
     "7a40fbffe45f51eaa2a904af760c9a7c104fba9764028774c2a338f8b7075cbe",
   "src/templates/collaboration/shared.tsx":
-    "91e173fb8b2312f6212b37d3db1c8c3c34041f6eaf700c440d8d207542b88dd2",
+    "21f8697ff27183b734f2a98e0d818cd82c6b507c1666cd28dc4e41912a36ded4",
   "src/templates/collaboration/pulse-ticket-model.ts":
     "8cf66bdf88091ffc5ea3bfbe694d42a97d8e6399c22d54d8f21375b224277da3",
   "src/templates/collaboration/pulse-ticket-data.ts":

@@ -1,0 +1,261 @@
+.ct-roster .ct-timesheets {
+  overflow: hidden;
+  background: var(--background);
+}
+.ct-roster .ct-heading:has(+ .ct-timesheets) {
+  margin-bottom: 16px;
+}
+.ct-roster .ct-heading:has(+ .ct-timesheets) h1 {
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 600;
+}
+.ct-timesheets > [data-slot="frame-panel-header"] {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 16px;
+  background: var(--muted);
+}
+.ct-timesheets-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-block: 1px solid var(--border);
+}
+.ct-timesheets-toolbar > [data-slot="select-trigger"] {
+  width: 180px;
+}
+.ct-timesheet-week {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-left: auto;
+  max-width: 100%;
+}
+.ct-timesheet-week-date {
+  width: 10.5rem;
+  min-width: 0;
+  flex-shrink: 1;
+  justify-content: space-between;
+  font-weight: 400;
+  padding-right: 0.625rem;
+}
+.ct-timesheets-grid table {
+  min-width: 1334px;
+}
+.ct-timesheets-grid td {
+  height: 66px;
+}
+.ct-timesheets-grid th:first-child,
+.ct-timesheets-grid .ct-timesheet-person-cell {
+  padding-inline-start: 1rem;
+  padding-inline-end: 0.5rem;
+}
+.ct-timesheets-grid th:nth-child(n + 2):nth-child(-n + 8) {
+  padding-inline: 0.5rem;
+  text-align: center;
+}
+.ct-timesheet-person-heading {
+  display: inline-flex;
+  height: 100%;
+  align-items: center;
+  font-size: 0.8125rem;
+  line-height: 1.125rem;
+  font-weight: 400;
+}
+.ct-timesheet-day-heading {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 400;
+}
+.ct-timesheet-person {
+  min-width: 0;
+  gap: 0.625rem;
+  white-space: nowrap;
+}
+.ct-timesheet-person > span:last-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ct-timesheet-person-name {
+  display: block;
+  overflow: hidden;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  text-overflow: ellipsis;
+}
+.ct-timesheet-person small {
+  overflow: hidden;
+  padding-top: 0.125rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 400;
+  text-overflow: ellipsis;
+}
+.ct-timesheet-day {
+  width: 100%;
+  height: auto !important;
+  min-height: 52px;
+  padding: 2px 8px !important;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-weight: 400;
+}
+.ct-timesheet-day [data-slot="progress"] {
+  width: 50px;
+  height: 4px;
+}
+.ct-timesheet-day [data-slot="progress-indicator"] {
+  background: var(--timesheet-work-color);
+}
+.ct-timesheet-day small,
+.ct-timesheet-total small {
+  color: var(--muted-foreground);
+  font-size: 11px;
+}
+.ct-timesheet-total {
+  font-weight: 500;
+  white-space: nowrap;
+}
+.ct-timesheet-total small {
+  display: block;
+  margin-top: 3px;
+  font-weight: 400;
+}
+.ct-timesheet-actions {
+  display: flex;
+  gap: 0;
+}
+.ct-timesheet-sheet-header > small {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  color: var(--muted-foreground);
+  font-family: monospace;
+  font-size: 12px;
+}
+.ct-timesheet-sheet-header > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.ct-timesheet-sheet-close {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+}
+.ct-reference-sheet:has(.ct-timesheet-detail) .ct-sheet-heading {
+  padding: 16px 20px;
+}
+.ct-timesheet-detail section {
+  padding: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.ct-timesheet-summary > div:first-child {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.ct-timesheet-summary strong {
+  font-size: 34px;
+  line-height: 1.2;
+  letter-spacing: -1px;
+}
+.ct-timesheet-summary > div:first-child > small {
+  margin-left: auto;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.ct-timesheet-summary [data-slot="progress-indicator"] {
+  background: var(--color-emerald-500);
+}
+.ct-timesheet-target {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.ct-timesheet-summary p {
+  margin-top: 12px;
+  color: var(--muted-foreground);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.ct-timesheet-detail section > h3 {
+  margin-bottom: 14px;
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+.ct-timesheet-breakdown dl {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 10px 16px;
+  font-size: 14px;
+}
+.ct-timesheet-breakdown dt {
+  color: var(--muted-foreground);
+}
+.ct-timesheet-daily [data-slot="timeline-title"] {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  font-weight: 400;
+}
+.ct-timesheet-daily [data-slot="timeline-title"] small {
+  color: var(--muted-foreground);
+  font-size: 12px;
+}
+.ct-timesheet-timeline-dot {
+  width: 12px;
+  height: 12px;
+  top: 4px;
+  border: 2px solid var(--background);
+  outline: 1px solid var(--border);
+}
+.ct-timesheet-daily [data-slot="timeline-content"] small {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+  font-size: 12px;
+}
+.ct-timesheet-confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+@media (max-width: 700px) {
+  .ct-timesheets > [data-slot="frame-panel-header"] {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .ct-timesheets-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-block: 12px;
+  }
+  .ct-timesheet-week {
+    margin-left: 0;
+  }
+}

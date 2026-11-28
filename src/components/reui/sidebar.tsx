@@ -279,6 +279,7 @@ export function SidebarNavigation({
   items,
   active,
   onSelect,
+  childHref,
   label,
   initialExpanded = [],
   collapsed: collapsedProp,
@@ -290,6 +291,7 @@ export function SidebarNavigation({
   items: SidebarNavigationItem[];
   active: string;
   onSelect: (value: string) => void;
+  childHref?: (value: string) => string | undefined;
   label?: string;
   initialExpanded?: string[];
   collapsed?: boolean;
@@ -310,11 +312,36 @@ export function SidebarNavigation({
         current.includes(activeParent) ? current : [...current, activeParent],
       );
   }, [activeParent]);
-  function select(value: string) {
-    onSelect(value);
+  function closeMobile(value: string) {
     if (isMobile && (typeof closeOnSelect === "function" ? closeOnSelect(value) : closeOnSelect)) {
       setOpenMobile(false);
     }
+  }
+  function select(value: string) {
+    onSelect(value);
+    closeMobile(value);
+  }
+  function childLink(value: string) {
+    const href = childHref?.(value);
+    if (!href) return null;
+    return (
+      <a
+        href={href}
+        aria-current={active === value ? "page" : undefined}
+        onClick={(event) => {
+          if (
+            !event.defaultPrevented &&
+            !event.ctrlKey &&
+            !event.metaKey &&
+            !event.shiftKey &&
+            !event.altKey
+          )
+            closeMobile(value);
+        }}
+      >
+        <span>{value}</span>
+      </a>
+    );
   }
   return (
     <SidebarGroup className={cn("p-0", className)}>
@@ -362,11 +389,18 @@ export function SidebarNavigation({
                     >
                       <DropdownMenuLabel>{item.label}</DropdownMenuLabel>
                       <DropdownMenuGroup>
-                        {item.children.map((child) => (
-                          <DropdownMenuItem key={child} onSelect={() => select(child)}>
-                            {child}
-                          </DropdownMenuItem>
-                        ))}
+                        {item.children.map((child) => {
+                          const link = childLink(child);
+                          return (
+                            <DropdownMenuItem
+                              key={child}
+                              asChild={Boolean(link)}
+                              onSelect={link ? undefined : () => select(child)}
+                            >
+                              {link || child}
+                            </DropdownMenuItem>
+                          );
+                        })}
                       </DropdownMenuGroup>
                     </DropdownMenuContent>
                   </DropdownMenu>
@@ -403,13 +437,15 @@ export function SidebarNavigation({
                         {item.children.map((child) => (
                           <SidebarMenuSubItem key={child}>
                             <SidebarMenuSubButton asChild isActive={active === child}>
-                              <button
-                                type="button"
-                                aria-current={active === child ? "page" : undefined}
-                                onClick={() => select(child)}
-                              >
-                                <span>{child}</span>
-                              </button>
+                              {childLink(child) || (
+                                <button
+                                  type="button"
+                                  aria-current={active === child ? "page" : undefined}
+                                  onClick={() => select(child)}
+                                >
+                                  <span>{child}</span>
+                                </button>
+                              )}
                             </SidebarMenuSubButton>
                           </SidebarMenuSubItem>
                         ))}

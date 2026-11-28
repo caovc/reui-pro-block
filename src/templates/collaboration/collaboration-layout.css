@@ -177,6 +177,30 @@
   gap: 8px;
   flex-shrink: 0;
 }
+.ct-roster-time-trail {
+  min-width: 0;
+}
+.ct-roster-time-trail [data-slot="breadcrumb-list"] {
+  flex-wrap: nowrap;
+}
+.ct-roster-time-trail [data-slot="breadcrumb-link"] {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+.ct-roster-time-trail [data-slot="breadcrumb-link"] > svg {
+  width: 1rem;
+  height: 1rem;
+}
+.ct-roster-time-trail [data-slot="breadcrumb-separator"] {
+  display: flex;
+  align-items: center;
+}
+.ct-roster-time-trail [data-slot="breadcrumb-separator"] > span {
+  width: 0.5rem;
+  height: 0.125rem;
+  background: currentColor;
+}
 .ct-layout.ct-roster .ct-layout-inset > * {
   flex-shrink: 0;
 }
@@ -330,6 +354,10 @@
   background: var(--sidebar);
 }
 @media (max-width: 767px) {
+  .ct-roster-time-trail-people,
+  .ct-roster-time-trail [data-slot="breadcrumb-separator"] {
+    display: none;
+  }
   .ct-layout.ct-roster .ct-layout-inset {
     margin: 0;
     height: 100%;

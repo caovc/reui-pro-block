@@ -104,12 +104,15 @@ export function EntryStatusPicker({
   value: string;
   onChange: (value: string) => void;
 }) {
-  const { triggerRef, onOpenChange } = useEntryPickerFocus({ restoreOnSelection: true });
+  const { triggerRef, actionsRef, onTriggerKeyDown, onOpenChange } = useEntryPickerFocus({
+    restoreOnSelection: true,
+  });
   const status = statusOptions.find((item) => item.value === value) ?? statusOptions[0];
 
   return (
     <Field className="min-w-0">
       <Combobox
+        actionsRef={actionsRef}
         items={statusOptions}
         value={status}
         onOpenChange={onOpenChange}
@@ -120,6 +123,7 @@ export function EntryStatusPicker({
         <ComboboxTrigger
           ref={triggerRef}
           id={id}
+          onKeyDown={onTriggerKeyDown}
           render={
             <Button
               type="button"

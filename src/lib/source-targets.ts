@@ -856,6 +856,8 @@ export function templateImplementationTargets(template: {
       "roster-directory",
       "roster-settings",
       "settings-shared",
+      "roster-time-off",
+      "roster-timesheets",
     ],
     echo: [
       "echo-sidebar",

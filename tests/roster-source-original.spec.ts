@@ -27,6 +27,12 @@ const target: SourceTarget = {
   requiredFiles: [
     "src/templates/collaboration/roster.tsx",
     "src/templates/collaboration/roster-calendar.tsx",
+    "src/templates/collaboration/roster-time-off.tsx",
+    "src/templates/collaboration/roster-time-off-model.ts",
+    "src/templates/collaboration/roster-route.ts",
+    "src/templates/collaboration/roster-time-off.css",
+    "src/templates/collaboration/roster-timesheets.tsx",
+    "src/templates/collaboration/roster-timesheets.css",
     "src/templates/collaboration/roster-directory.tsx",
     "src/templates/collaboration/roster-directory-data.ts",
     "src/templates/workflow/free/flowly-progress.tsx",
@@ -40,10 +46,13 @@ const target: SourceTarget = {
 const selectedPaths = [
   "src/templates/collaboration/roster.tsx",
   "src/templates/collaboration/roster-calendar.tsx",
+  "src/templates/collaboration/roster-time-off.tsx",
 ] as const;
 const frozenHashes: Readonly<Record<string, string>> = {
+  "src/templates/collaboration/roster-time-off.tsx":
+    "9d2cdffa8fee2efada97468bf73593392e7892767a5faf17464ccbb49d847b20",
   "src/templates/collaboration/roster.tsx":
-    "614c7c5849c3ed5275a7d4d27412d144eccb7078c6c7af9803425964d3368b39",
+    "eb1e4b03113b7d0c99e8b04b1cb26f5c28506a82fdd33ab69501f15188976635",
   "src/templates/collaboration/roster-calendar.tsx":
     "3e230c355f5198383081b29a7e649d852b060a1edac57fa75f98efd932308f51",
 };
@@ -76,7 +85,7 @@ test("Roster changed source: actual full default, real view/Copy/single files an
   const options = await listbox.getByRole("option").allTextContents();
   expect(options[0], "actual implementation opens before generated usage").toBe(target.defaultPath);
   for (const filename of selectedPaths) expect(options).toContain(filename);
-  // Both entries expose the actual consumer implementation, including calendar callbacks.
+  // Entries expose the actual consumer implementations, including both calendar workflows.
   await page.keyboard.press("Escape");
   await expect(listbox).toHaveCount(0);
   await expect(choice).toBeFocused();
@@ -199,5 +208,77 @@ test("Roster changed source: actual full default, real view/Copy/single files an
       null,
       2,
     ) + "\n",
+  );
+});
+
+test("Roster Timesheets: actual view, Copy, single file and original ZIP preserve the independent page", async ({
+  page,
+  context,
+}, info) => {
+  const filename = "src/templates/collaboration/roster-timesheets.tsx";
+  const selected = { ...target, selectedPath: filename };
+  const expected = await fileBytes(filename);
+  const frozen = "4cdab7c2aa6aebda844800108d5f6fae6db73fa8c4b01e0bbe3f82e14ff9940b";
+  expect(hash(expected), "the actual formatted Timesheets implementation").toBe(frozen);
+  const faults: string[] = [];
+  page.on("pageerror", (error) => faults.push(error.message));
+  await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+  const { opener, dialog, choice } = await openSource(page, target);
+  await selectSource(page, selected, dialog, choice);
+  await expect.poll(() => sourceText(dialog, selected)).toBe(expected.toString("utf8"));
+  const viewed = Buffer.from(await sourceText(dialog, selected), "utf8");
+  expect(viewed).toEqual(expected);
+  await dialog.getByRole("button", { name: "Copy", exact: true }).click();
+  await expect
+    .poll(() => page.evaluate(() => navigator.clipboard.readText()))
+    .toBe(expected.toString("utf8"));
+  const copied = Buffer.from(await page.evaluate(() => navigator.clipboard.readText()), "utf8");
+  expect(copied).toEqual(expected);
+  const pending = page.waitForEvent("download");
+  await dialog.getByRole("button", { name: "Download template source file", exact: true }).click();
+  const download = await pending;
+  const singlePath = info.outputPath("roster-timesheets.tsx");
+  await download.saveAs(singlePath);
+  expect(await download.failure()).toBeNull();
+  expect(download.suggestedFilename()).toBe("roster-timesheets.tsx");
+  expect(await readFile(singlePath)).toEqual(expected);
+  await page.keyboard.press("Escape");
+  await expect(dialog).toHaveCount(0);
+  await expect(opener).toBeFocused();
+  const original = await openSource(page, target, "archive");
+  const { files, archivePath, archiveBytes } = await captureOriginalArchive(
+    page,
+    target,
+    original.dialog,
+    info,
+  );
+  await verifyOriginalClosure(target, files, info);
+  expect(Buffer.from(files[filename])).toEqual(expected);
+  for (const path of [
+    "src/templates/collaboration/roster-timesheets.css",
+    "src/templates/collaboration/roster-route.ts",
+    "src/templates/collaboration/roster-time-off.tsx",
+    "src/templates/collaboration/roster-time-off-model.ts",
+  ]) {
+    expect(Buffer.from(files[path]), `${path}: original ZIP member`).toEqual(await fileBytes(path));
+  }
+  expect(await fileBytes(filename)).toEqual(expected);
+  expect(faults).toEqual([]);
+  await writeFile(
+    info.outputPath("roster-timesheets-source-proof.json"),
+    JSON.stringify(
+      {
+        filename,
+        originalSHA256: frozen,
+        viewSHA256: hash(viewed),
+        realClipboardSHA256: hash(copied),
+        singleFileSHA256: hash(await readFile(singlePath)),
+        originalZIPMemberSHA256: hash(Buffer.from(files[filename])),
+        archivePath,
+        archiveBytes,
+      },
+      null,
+      2,
+    ),
   );
 });

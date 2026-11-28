@@ -1,3 +1,7 @@
+import { rosterPageHref, useRosterRoute } from "./roster-route";
+import { RosterTimeOff } from "./roster-time-off";
+import { useRosterTimeOffState } from "./roster-time-off-model";
+import { RosterTimesheets, useRosterTimesheetsState } from "./roster-timesheets";
 import { RosterSettings } from "./roster-settings";
 import { rosterSettingsTabs, useRosterSettingsState } from "./roster-settings-model";
 import { RosterImport } from "./roster-import";
@@ -82,8 +86,10 @@ const baseEvents: Record<number, string> = {
   37: "Screening: Product Manager",
 };
 export default function Roster() {
-  const [view, setView] = useState("Dashboard");
+  const { view, navigate: setView } = useRosterRoute();
   const settingsState = useRosterSettingsState();
+  const leaveState = useRosterTimeOffState();
+  const timesheetsState = useRosterTimesheetsState();
   const hiringState = useRosterHiringState();
   const [initialHiring] = useState(() => structuredClone(hiringState.columns));
   const importState = useRosterImportState(rosterPersonNames);
@@ -118,11 +124,15 @@ export default function Roster() {
       JSON.stringify(hiringState.columns) !== JSON.stringify(initialHiring) ||
       hiringState.scheduled.length > 0,
     notes: false,
-    leave: false,
-    timesheets: false,
+    leave: leaveState.hasChanges,
+    timesheets: timesheetsState.hasChanges,
   };
   function clearChanges(key: string) {
-    if (key === "people") {
+    if (key === "leave") {
+      leaveState.reset();
+    } else if (key === "timesheets") {
+      timesheetsState.reset();
+    } else if (key === "people") {
       setPeople(initialPeople);
       importState.setApplied([]);
       importState.setResult(null);
@@ -223,6 +233,11 @@ export default function Roster() {
   return (
     <Shell
       kind="roster"
+      childHref={(label) =>
+        ["People", "Time off", "Timesheets"].includes(label)
+          ? rosterPageHref(window.location.hash, label)
+          : undefined
+      }
       view={view}
       setView={changeView}
       query={query}
@@ -231,7 +246,12 @@ export default function Roster() {
       extra={
         view === "Dashboard" ? (
           <>
-            <Button size="sm" variant="outline" onClick={() => setView("Time")}>
+            <Button
+              size="sm"
+              variant="outline"
+              title="Open team calendar"
+              onClick={() => setView("Time")}
+            >
               <CalendarDays />
               {monthName}
             </Button>
@@ -463,7 +483,11 @@ export default function Roster() {
         <RosterImport model={importState} onPeople={() => setView("People")} />
       ) : view === "Approvals" ? (
         <RosterApprovals model={approvalState} />
-      ) : view === "Time" ? (
+      ) : view === "Time off" ? (
+        <RosterTimeOff model={leaveState} />
+      ) : view === "Timesheets" ? (
+        <RosterTimesheets model={timesheetsState} />
+      ) : view === "Time" || view === "Team calendar" ? (
         <>
           <div className="ct-heading">
             <div>
@@ -477,7 +501,10 @@ export default function Roster() {
         <RosterHiring query={query} state={hiringState} />
       ) : (
         <RosterSettings
-          model={settingsState}
+          model={{
+            ...settingsState,
+            tab: rosterSettingsTabs.includes(view) ? view : settingsState.tab,
+          }}
           onTabChange={changeView}
           onFlowsSave={saveApprovalFlows}
           onClear={clearChanges}

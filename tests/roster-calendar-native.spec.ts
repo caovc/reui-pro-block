@@ -51,7 +51,7 @@ for (const width of [1440, 390]) {
     await page.goto("/#/template-preview/roster");
     await expect(page).toHaveTitle("Bricklane — Blocks & Templates");
     await expect(page.getByText("Workforce overview", { exact: true })).toBeVisible();
-    await navigate(page, "Time");
+    await page.getByRole("button", { name: "Jul 1, 2026 - Jul 30, 2026", exact: true }).click();
     await expect(page.getByRole("heading", { name: "Team calendar", exact: true })).toBeVisible();
     const calendar = page.locator(".ct-roster-calendar");
     const event = (title: string) =>
@@ -138,7 +138,7 @@ for (const width of [1440, 390]) {
     await expect(cancelled).toHaveCount(0);
     await expect(event("Cancelled event")).toHaveCount(0);
     await navigate(page, "Dashboard");
-    await navigate(page, "Time");
+    await page.getByRole("button", { name: "Jul 1, 2026 - Jul 30, 2026", exact: true }).click();
     await expect(event("August planning workshop")).toHaveCount(0);
     await expect(event("Ingrid Larsen: annual leave")).toBeVisible();
     await calendar.locator('[data-slot="event-calendar-nav-next"]').click();

@@ -134,7 +134,7 @@ export function EntryAssigneePicker({
   onChange: (value: string) => void;
   onInvite: () => void;
 }) {
-  const { triggerRef, onOpenChange } = useEntryPickerFocus();
+  const { triggerRef, actionsRef, onTriggerKeyDown, onOpenChange } = useEntryPickerFocus();
   const lead = leadOptions.find((option) => option.value === value) ?? noLeadOption;
   const setLead = (option: LeadOption | null) =>
     option?.value === "invite" ? onInvite() : onChange(option?.value ?? "none");
@@ -142,6 +142,7 @@ export function EntryAssigneePicker({
   return (
     <Field className="max-w-xs">
       <Combobox
+        actionsRef={actionsRef}
         items={leadOptions}
         value={lead}
         onOpenChange={onOpenChange}
@@ -152,6 +153,7 @@ export function EntryAssigneePicker({
         <ComboboxTrigger
           ref={triggerRef}
           id={id}
+          onKeyDown={onTriggerKeyDown}
           render={
             <Button
               type="button"
