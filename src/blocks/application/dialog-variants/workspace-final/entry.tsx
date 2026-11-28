@@ -1,6 +1,15 @@
 import { useRef, useState } from "react";
 import { addDays, format } from "date-fns";
-import { LayoutGrid, Plus } from "lucide-react";
+import {
+  Bell,
+  CircleDot,
+  FileText,
+  Image as ImageIcon,
+  Info,
+  LayoutDashboard,
+  Plus,
+  Send,
+} from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/reui/alert";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,6 +26,7 @@ import { Input } from "@/components/ui/input";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { DialogLauncher } from "../first-run/support";
 import { EntryStatusPicker } from "./free/status-picker";
 import { EntryPriorityPicker } from "./free/priority-picker";
@@ -26,6 +36,64 @@ import { EntryDatePicker, type DateSelectionValue } from "./free/date-picker";
 import { entryTypes } from "./entry-data";
 
 type EntryId = (typeof entryTypes)[number]["id"];
+const entryTitleIcons = {
+  action: CircleDot,
+  brief: FileText,
+  nudge: Bell,
+  canvas: ImageIcon,
+  pulse: LayoutDashboard,
+};
+
+function EntryFieldLabel({
+  htmlFor,
+  label,
+  help,
+}: {
+  htmlFor: string;
+  label: string;
+  help: string;
+}) {
+  const [open, setOpen] = useState(false);
+  // An exiting hint must not keep an Escape layer after focus moves to a field.
+  const [retired, setRetired] = useState(false);
+  return (
+    <div className="flex items-center gap-1.5">
+      <FieldLabel htmlFor={htmlFor}>{label}</FieldLabel>
+      <Tooltip
+        open={open}
+        onOpenChange={(next) => {
+          if (next) setRetired(false);
+          setOpen(next);
+        }}
+      >
+        <TooltipTrigger asChild>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-xs"
+            className="size-4! p-0! text-muted-foreground"
+            aria-label={`${label} help`}
+            onBlur={() => setRetired(true)}
+          >
+            <Info className="size-3.5" />
+          </Button>
+        </TooltipTrigger>
+        {!retired && (
+          <TooltipContent
+            collisionPadding={8}
+            className="max-w-64"
+            onEscapeKeyDown={(event) => {
+              if (open) event.stopPropagation();
+            }}
+          >
+            {help}
+          </TooltipContent>
+        )}
+      </Tooltip>
+    </div>
+  );
+}
+
 export default function QuickEntryDialog() {
   const [open, setOpen] = useState(false);
   const [referenceNow, setReferenceNow] = useState(() => new Date());
@@ -109,41 +177,56 @@ export default function QuickEntryDialog() {
             </TabsList>
           </div>
           <div className="final-entry-body">
-            {entryTypes.map((entry) => (
-              <TabsContent key={entry.id} value={entry.id} className="mt-0">
-                <FieldGroup>
-                  <Field>
-                    <FieldLabel htmlFor={`entry-title-${entry.id}`}>Title</FieldLabel>
-                    <InputGroup>
-                      <InputGroupAddon>
-                        <LayoutGrid />
-                      </InputGroupAddon>
-                      <InputGroupInput
-                        id={`entry-title-${entry.id}`}
-                        value={drafts[entry.id].title}
-                        placeholder={entry.titleHint}
-                        maxLength={160}
-                        onChange={(event) => updateDraft(entry.id, "title", event.target.value)}
+            {entryTypes.map((entry) => {
+              const TitleIcon = entryTitleIcons[entry.id];
+              return (
+                <TabsContent key={entry.id} value={entry.id} className="mt-0">
+                  <FieldGroup>
+                    <Field>
+                      <EntryFieldLabel
+                        htmlFor={`entry-title-${entry.id}`}
+                        label="Title"
+                        help="Name the outcome this entry should achieve."
                       />
-                    </InputGroup>
-                  </Field>
-                  <Field>
-                    <FieldLabel htmlFor={`entry-notes-${entry.id}`}>Notes</FieldLabel>
-                    <Textarea
-                      id={`entry-notes-${entry.id}`}
-                      className="min-h-24"
-                      value={drafts[entry.id].notes}
-                      placeholder={entry.notesHint}
-                      maxLength={2000}
-                      onChange={(event) => updateDraft(entry.id, "notes", event.target.value)}
-                    />
-                  </Field>
-                </FieldGroup>
-              </TabsContent>
-            ))}
+                      <InputGroup>
+                        <InputGroupAddon>
+                          <TitleIcon className="size-4" aria-hidden="true" />
+                        </InputGroupAddon>
+                        <InputGroupInput
+                          id={`entry-title-${entry.id}`}
+                          value={drafts[entry.id].title}
+                          placeholder={entry.titleHint}
+                          maxLength={160}
+                          onChange={(event) => updateDraft(entry.id, "title", event.target.value)}
+                        />
+                      </InputGroup>
+                    </Field>
+                    <Field>
+                      <EntryFieldLabel
+                        htmlFor={`entry-notes-${entry.id}`}
+                        label="Notes"
+                        help="Include the context someone needs to take the next step."
+                      />
+                      <Textarea
+                        id={`entry-notes-${entry.id}`}
+                        className="min-h-24"
+                        value={drafts[entry.id].notes}
+                        placeholder={entry.notesHint}
+                        maxLength={2000}
+                        onChange={(event) => updateDraft(entry.id, "notes", event.target.value)}
+                      />
+                    </Field>
+                  </FieldGroup>
+                </TabsContent>
+              );
+            })}
             <div className="final-entry-properties">
               <Field>
-                <FieldLabel htmlFor="entry-status">Status</FieldLabel>
+                <EntryFieldLabel
+                  htmlFor="entry-status"
+                  label="Status"
+                  help="Choose the stage that reflects the entry's current progress."
+                />
                 <EntryStatusPicker
                   id="entry-status"
                   value={status}
@@ -152,7 +235,11 @@ export default function QuickEntryDialog() {
                 />
               </Field>
               <Field>
-                <FieldLabel htmlFor="entry-assignee">Assignee</FieldLabel>
+                <EntryFieldLabel
+                  htmlFor="entry-assignee"
+                  label="Assignee"
+                  help="Choose who is responsible for the next follow-up."
+                />
                 <EntryAssigneePicker
                   id="entry-assignee"
                   value={assignee}
@@ -162,7 +249,11 @@ export default function QuickEntryDialog() {
                 />
               </Field>
               <Field>
-                <FieldLabel htmlFor="entry-date">Due date</FieldLabel>
+                <EntryFieldLabel
+                  htmlFor="entry-date"
+                  label="Due date"
+                  help="Choose when this entry should be reviewed or followed up."
+                />
                 <EntryDatePicker
                   id="entry-date"
                   value={date}
@@ -172,7 +263,11 @@ export default function QuickEntryDialog() {
                 />
               </Field>
               <Field>
-                <FieldLabel htmlFor="entry-priority">Priority</FieldLabel>
+                <EntryFieldLabel
+                  htmlFor="entry-priority"
+                  label="Priority"
+                  help="Show the urgency the receiving team should notice first."
+                />
                 <EntryPriorityPicker
                   id="entry-priority"
                   value={priority}
@@ -181,7 +276,11 @@ export default function QuickEntryDialog() {
                 />
               </Field>
               <Field>
-                <FieldLabel htmlFor="entry-labels">Labels</FieldLabel>
+                <EntryFieldLabel
+                  htmlFor="entry-labels"
+                  label="Labels"
+                  help="Group this entry with the workstream it belongs to."
+                />
                 <EntryLabelsPicker
                   id="entry-labels"
                   value={labels}
@@ -249,6 +348,7 @@ export default function QuickEntryDialog() {
               setOpen(false);
             }}
           >
+            <Send className="size-4" data-icon="inline-start" aria-hidden="true" />
             {active.action}
           </Button>
         </DialogFooter>

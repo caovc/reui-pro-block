@@ -15,7 +15,15 @@ and unavailable backend services are intentional boundaries.
 - On the official Atlas desktop account page, Settings has a 28px-high gray sidebar background. In the equivalent local profile, both foundations kept the inactive color, including after switching account sections with the pointer away from the sidebar. The footer now uses the native SidebarMenuButton active state for all three account routes.
 - In both foundations at 390px and a 32px browser default font, the Atlas Profile photo Remove button extended to 457px beyond the form edge at 366px. Both controls fit at 16px. The phone action group now wraps inside the card.
 - The 390px Dispatch toolbar clipped its New delivery icon in Vega, Maia, Luma and Sera on both foundations. Sera also clipped Exceptions. The toolbar now wraps when the native controls need a second row. All 16 style and foundation combinations passed the bounds and keyboard focus checks. Sera at 320px and 390px retained a visible map canvas below the toolbar, and desktop retained the full New delivery caption.
-- At 390px in the public Quick Create Entry preview, the selected Brief tab shows Status and Assignee on one row, Due date and Priority on the next, and Labels above the footer. The local Nova dialog stacked all five properties and required scrolling to reach Labels. Brief selection and focus worked on both local foundations. Track the responsive layout separately from the earlier Escape fix.
+- At 390px in the public Quick Create Entry preview, the selected Brief tab shows Status and Assignee on one row, Due date and Priority on the next, and Labels above the footer. The local Nova dialog stacked all five properties and required scrolling to reach Labels. Brief selection and focus worked on both local foundations. At 320px the five controls still need the available row width. Both phone widths are checked independently.
+- The public Quick Entry form has seven separate keyboard-focusable field-help buttons at 390px and 1440px. Each displays field-specific text on hover or keyboard focus. The local form had captions and working controls but omitted those hints. Its new help buttons sit outside each native label.
+- Before the picker repair, closing Assignee, Due date, Priority or Labels with Escape in Base UI sent focus to the outer Quick Entry dialog. The four Radix controls restored their triggers. The native close callback now restores the corresponding connected button before the popup unmounts.
+
+- Miro's public Procedure Mix uses Completed and Scheduled for the legend, pointer tooltip and keyboard tooltip. The local legend matched, but both foundations displayed Blocked and Watched for the same bars at 390px and 1440px. In the local fixture the Checkup values were 41 and 75, and the next keyboard category, Scaling, had 36 and 89.
+- The Quick Entry phone properties now wrap by the space their labels need. Across 80 checks the eight styles retained readable controls, including Sera at a real 32px browser default font. A separate comparison found the Nova 390px dialog is still about 71px taller than the public Brief screenshot. The field columns and their 32px–358px outer bounds match.
+- After the Procedure Mix repair, both foundations retained four legible ticks at 320px and 390px and all eight at 1440px. In all three viewports keyboard users could read every category and both fixture values. The chart uses the same colors and names in its legend and tooltip.
+- The gallery contained 21 templates but the header and sidebar on the home page both displayed 18. The navigation badges now read the same catalog as the gallery.
+- On the public Roster dashboard, pressing Enter on Time reveals links to Time off and Timesheets. The dashboard stays on screen until a child is chosen. The same action in both local foundations went directly to Team calendar and offered neither destination. The calendar remains an existing local workflow with its own date and event coverage.
 
 ## November 25 review
 
@@ -276,6 +284,12 @@ runtime stayed frozen throughout. See
   before the official Settings page loaded. A separate certificate-verified
   HTTP request returned 200. Auto refresh, Markdown, reduced motion and
   tooltips remain individually unverified in the reference browser.
+  On November 28, Chromium reached General with the normal system trust chain.
+  With Tooltips checked, hovering Refresh displayed its hint. The association
+  check did not resolve a linked tooltip, so the off state was not exercised.
+  A separate Reduce animations check reached the initially unchecked switch
+  and Date format control, then timed out before recording a popup animation.
+  Neither run established how toggling the preference changes the public UI.
 
 - Exact-SHA release status at22:17 UTC: current pushed main is
   `a0e1d3c7183e0d31d6c6fd8fa9eb38095b1c9769`; run `43314161973`

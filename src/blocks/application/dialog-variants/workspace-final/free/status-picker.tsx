@@ -2,9 +2,10 @@
 // https://reui.io/r/radix-nova/c-combobox-21.json
 // Adapters: controlled form value/id, Lucide icon adapter; original picker/glyph behavior retained.
 "use client";
-import { useRef, type ComponentProps } from "react";
+import type { ComponentProps } from "react";
 
 import { cn } from "@/lib/utils";
+import { useEntryPickerFocus } from "./use-entry-picker-focus";
 import { Button } from "@/components/ui/button";
 import {
   Combobox,
@@ -103,7 +104,7 @@ export function EntryStatusPicker({
   value: string;
   onChange: (value: string) => void;
 }) {
-  const triggerRef = useRef<HTMLButtonElement>(null);
+  const { triggerRef, onOpenChange } = useEntryPickerFocus({ restoreOnSelection: true });
   const status = statusOptions.find((item) => item.value === value) ?? statusOptions[0];
 
   return (
@@ -111,16 +112,7 @@ export function EntryStatusPicker({
       <Combobox
         items={statusOptions}
         value={status}
-        onOpenChange={(open, details) => {
-          if (
-            !open &&
-            (details.reason === "escape-key" || details.reason === "item-press") &&
-            triggerRef.current?.isConnected
-          ) {
-            // Keep focus inside the parent modal while the popup input unmounts.
-            triggerRef.current.focus({ preventScroll: true });
-          }
-        }}
+        onOpenChange={onOpenChange}
         onValueChange={(item) => item && onChange(item.value)}
         itemToStringValue={(item: StatusOption) => item.label}
         autoHighlight

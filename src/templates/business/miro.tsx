@@ -48,6 +48,7 @@ type Appointment = {
   end?: string;
 };
 export default function Miro() {
+  const [procedureLegendPortal, setProcedureLegendPortal] = useState<HTMLDivElement | null>(null);
   const clinicRecords = useClinicRecords();
   const ledger = useMemo(
     () => adaptMiroClinicInvoices(clinicRecords.invoices),
@@ -374,11 +375,15 @@ export default function Miro() {
                           <h2>Procedure Mix</h2>
                           <p>Chair Demand</p>
                         </div>
-                        <span className="text-xs text-muted-foreground">
-                          ● Completed　● Scheduled
-                        </span>
+                        <div
+                          ref={setProcedureLegendPortal}
+                          role="group"
+                          aria-label="Procedure Mix series"
+                          className="text-xs text-muted-foreground"
+                        />
                       </div>
                       <MiroProcedureMixChart
+                        legendPortal={procedureLegendPortal}
                         labels={[
                           "Checkup",
                           "Scaling",

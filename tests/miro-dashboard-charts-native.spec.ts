@@ -119,6 +119,28 @@ async function theme(page: Page, width: number, mode: "Dark" | "Light") {
   else await expect(page.locator("html")).not.toHaveClass(/\bdark\b/);
 }
 
+async function chairView(page: Page, calendar: Locator, view: "Week" | "Day") {
+  const primitive = await page.locator("html").getAttribute("data-ui-primitive");
+  expect(["radix", "base"]).toContain(primitive);
+  const control = calendar.getByRole(primitive === "base" ? "button" : "radio", {
+    name: view,
+    exact: true,
+  });
+  await control.click();
+  if (primitive === "base") await expect(control).toHaveAttribute("aria-pressed", "true");
+  else await expect(control).toBeChecked();
+  await expect(
+    calendar.locator(
+      `[data-slot="event-calendar-${view === "Week" ? "time-grid" : "resource-view"}"]`,
+    ),
+  ).toBeVisible();
+  await expect(
+    calendar.locator(
+      `[data-slot="event-calendar-${view === "Week" ? "resource-view" : "time-grid"}"]`,
+    ),
+  ).toBeHidden();
+}
+
 function plots(page: Page) {
   const cards = page.locator(".miro-chart-card");
   return {
@@ -196,10 +218,10 @@ async function hoverProcedure(card: Locator, index: number) {
     8,
   );
   await firstSeries.nth(index).hover();
-  const [label, blocked, watched] = procedureRows[index];
+  const [label, completed, scheduled] = procedureRows[index];
   return tooltip(card, label, [
-    ["Blocked", blocked],
-    ["Watched", watched],
+    ["Completed", completed],
+    ["Scheduled", scheduled],
   ]);
 }
 async function hoverMonth(page: Page, card: Locator, index: number) {
@@ -295,7 +317,21 @@ for (const width of [1440, 390]) {
     await open(page, width);
     const chart = plots(page);
     await expect(chart.cards).toHaveCount(2);
-    await expect(chart.procedure).toContainText("● Completed　● Scheduled");
+    const legend = chart.procedure.getByRole("group", {
+      name: "Procedure Mix series",
+      exact: true,
+    });
+    for (const [name, color] of [
+      ["Completed", "rgb(82, 119, 240)"],
+      ["Scheduled", "rgb(131, 215, 238)"],
+    ]) {
+      const item = legend.getByText(name, { exact: true });
+      await expect(item).toBeVisible();
+      const swatch = item.locator(":scope > div");
+      await expect(swatch).toHaveCount(1);
+      await expect(swatch).toBeVisible();
+      await expect(swatch).toHaveCSS("background-color", color);
+    }
     await expect(chart.volume).toContainText("+12.8%");
     const geometry = {
       procedure: await boundedPlot(chart.procedure),
@@ -357,10 +393,8 @@ for (const width of [1440, 390]) {
 
     await navigate(page, width, "Calendar", "/calendar");
     const calendar = page.locator(".miro-chair-calendar");
-    await calendar.getByRole("radio", { name: "Week", exact: true }).click();
-    await expect(calendar.getByRole("radio", { name: "Week", exact: true })).toBeChecked();
-    await calendar.getByRole("radio", { name: "Day", exact: true }).click();
-    await expect(calendar.getByRole("radio", { name: "Day", exact: true })).toBeChecked();
+    await chairView(page, calendar, "Week");
+    await chairView(page, calendar, "Day");
     const nav = await navigation(page, width);
     const mini = nav.locator(".miro-mini-calendar");
     const beforeMonth = await mini.locator(".rdp-caption_label").innerText();
@@ -389,7 +423,21 @@ for (const width of [1440, 390]) {
     };
     await hoverProcedure(chart.procedure, 0);
     await hoverMonth(page, chart.volume, 11);
-    await expect(chart.procedure).toContainText("● Completed　● Scheduled");
+    const legend = chart.procedure.getByRole("group", {
+      name: "Procedure Mix series",
+      exact: true,
+    });
+    for (const [name, color] of [
+      ["Completed", "rgb(82, 119, 240)"],
+      ["Scheduled", "rgb(131, 215, 238)"],
+    ]) {
+      const item = legend.getByText(name, { exact: true });
+      await expect(item).toBeVisible();
+      const swatch = item.locator(":scope > div");
+      await expect(swatch).toHaveCount(1);
+      await expect(swatch).toBeVisible();
+      await expect(swatch).toHaveCSS("background-color", color);
+    }
     await expect(chart.volume).toContainText("+12.8%");
     await evidence(page, info, `plots-${width}-route-views-restored`, { returned, beforeMonth });
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(

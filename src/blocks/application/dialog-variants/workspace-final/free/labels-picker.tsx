@@ -6,6 +6,7 @@
 import type { ComponentProps } from "react";
 
 import { cn } from "@/lib/utils";
+import { useEntryPickerFocus } from "./use-entry-picker-focus";
 import { Button } from "@/components/ui/button";
 import {
   Combobox,
@@ -170,6 +171,7 @@ export function EntryLabelsPicker({
   value: string[];
   onChange: (value: string[]) => void;
 }) {
+  const { triggerRef, onOpenChange } = useEntryPickerFocus();
   const labels = labelOptions.filter((label) => value.includes(label.id));
   function handleLabelsChange(nextItems: LabelSelectionItem[]) {
     onChange(
@@ -187,12 +189,14 @@ export function EntryLabelsPicker({
         multiple
         items={labelSelectionOptions}
         value={labels}
+        onOpenChange={onOpenChange}
         onValueChange={handleLabelsChange}
         itemToStringValue={(item: LabelSelectionItem) => item.searchText}
         isItemEqualToValue={isLabelSelectionItemEqual}
         autoHighlight
       >
         <ComboboxTrigger
+          ref={triggerRef}
           id={id}
           render={
             <Button

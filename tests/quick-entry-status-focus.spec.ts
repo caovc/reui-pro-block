@@ -104,7 +104,12 @@ async function stableReturn(page: Page, trigger: Locator, info: TestInfo, cycle:
   });
   for (const sample of samples) expect(sample).toMatchObject({ focused: true, connected: true });
   await page.keyboard.press("Tab");
+  const assigneeHelp = page.getByRole("button", { name: "Assignee help", exact: true });
+  await expect(assigneeHelp).toBeFocused();
+  await page.keyboard.press("Tab");
   await expect(page.locator("#entry-assignee")).toBeFocused();
+  await page.keyboard.press("Shift+Tab");
+  await expect(assigneeHelp).toBeFocused();
   await page.keyboard.press("Shift+Tab");
   await expect(trigger).toBeFocused();
 }

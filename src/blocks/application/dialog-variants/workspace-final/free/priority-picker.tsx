@@ -5,6 +5,7 @@
 import type { ComponentProps } from "react";
 
 import { cn } from "@/lib/utils";
+import { useEntryPickerFocus } from "./use-entry-picker-focus";
 import { Button } from "@/components/ui/button";
 import {
   Combobox,
@@ -134,6 +135,7 @@ export function EntryPriorityPicker({
   value: string;
   onChange: (value: string) => void;
 }) {
+  const { triggerRef, onOpenChange } = useEntryPickerFocus();
   const priority = priorityOptions.find((item) => item.value === value) ?? priorityOptions[0];
 
   return (
@@ -141,11 +143,13 @@ export function EntryPriorityPicker({
       <Combobox
         items={priorityOptions}
         value={priority}
+        onOpenChange={onOpenChange}
         onValueChange={(item) => item && onChange(item.value)}
         itemToStringValue={(item: PriorityOption) => item.label}
         autoHighlight
       >
         <ComboboxTrigger
+          ref={triggerRef}
           id={id}
           render={
             <Button

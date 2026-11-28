@@ -38,9 +38,9 @@ const selectedPaths = [
 ] as const;
 const frozenHashes: Readonly<Record<string, string>> = {
   "src/templates/business/miro.tsx":
-    "ae926ed483934f1545a812cfebfe1206709b8745b47bb85287757a6f0e10f4a3",
+    "4e4413b552e6ab55a5ad613b46c5cef9073960d9fd7cf168cb3083e48c407815",
   "src/templates/business/miro-dashboard-charts.tsx":
-    "2bfd359aa946558127c3cf8c41a1f510c103ce33ce9e871753bc5832042e9e31",
+    "74dd76ace3ae834a42933c20cd14f0a7ee7d1f3e057b3a70f24a0ae862c6a0bc",
   "src/templates/business/miro-dashboard-charts.css":
     "a3f762b673d27c18119708b9274bc7b4c008a1f01636beb7d1d4f60a42cb0c9f",
 };

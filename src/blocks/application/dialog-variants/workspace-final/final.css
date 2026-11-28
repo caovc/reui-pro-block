@@ -166,6 +166,40 @@
   .final-entry-properties {
     grid-template-columns: minmax(0, 1fr);
   }
+
+  .final-entry-dialog[data-slot="dialog-content"][role="dialog"] {
+    gap: 20px;
+    padding: 0;
+  }
+
+  .final-entry-dialog > [data-slot="dialog-header"],
+  .final-entry-dialog .final-entry-tabs > div:first-child,
+  .final-entry-dialog .final-entry-body {
+    padding-inline: 16px;
+  }
+
+  .final-entry-dialog .final-entry-footer[data-slot="dialog-footer"] {
+    padding: 16px;
+  }
+
+  .final-entry-dialog .final-entry-properties {
+    --quick-entry-track-min: 9.5rem;
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(min(100%, max(var(--quick-entry-track-min), calc((100% - 12px) / 2))), 1fr)
+    );
+  }
+
+  :root[data-ui-style="sera"] .final-entry-dialog .final-entry-properties {
+    --quick-entry-track-min: 9.75rem;
+  }
+
+  :root[data-ui-style="sera"]
+    .final-entry-dialog
+    .final-entry-properties
+    [data-slot="combobox-trigger"][id^="entry-"] {
+    padding-inline: 8px;
+  }
 }
 .final-project-dialog {
   --tw-translate-x: 0px;

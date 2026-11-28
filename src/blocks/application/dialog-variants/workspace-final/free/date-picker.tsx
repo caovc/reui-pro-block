@@ -17,6 +17,7 @@ import {
 } from "date-fns";
 
 import { cn } from "@/lib/utils";
+import { useEntryPickerFocus } from "./use-entry-picker-focus";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -180,6 +181,7 @@ export function EntryDatePicker({
   value: DateSelectionValue;
   onValueChange: (value: DateSelectionValue) => void;
 }) {
+  const { triggerRef, onOpenChange } = useEntryPickerFocus();
   const today = React.useMemo(() => startOfDay(referenceNow), [referenceNow]);
   const [pickerOpen, setPickerOpen] = React.useState(false);
   const [draftDate, setDraftDate] = React.useState<Date | undefined>(
@@ -278,11 +280,13 @@ export function EntryDatePicker({
       <Combobox
         items={dateOptions}
         value={activePreset}
+        onOpenChange={onOpenChange}
         onValueChange={handleOptionChange}
         itemToStringValue={(item: DateOption) => item.searchText}
         autoHighlight
       >
         <ComboboxTrigger
+          ref={triggerRef}
           id={id}
           render={
             <Button

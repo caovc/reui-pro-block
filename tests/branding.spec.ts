@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { templates } from "../src/templates/catalog";
 
 test("Bricklane identity persists across navigation and explains the independent recreation", async ({
   page,
@@ -18,9 +19,14 @@ test("Bricklane identity persists across navigation and explains the independent
   await expect(about).toContainText("ReUI Pro Blocks and Templates");
   await expect(about).toContainText("not affiliated with or endorsed by ReUI or KeenThemes");
   await page.keyboard.press("Escape");
+  const total = String(templates.length);
+  await expect(page.locator('a[href="#/templates"] [data-slot="badge"]')).toHaveText([
+    total,
+    total,
+  ]);
   await page
     .getByRole("navigation", { name: "Main navigation" })
-    .getByRole("link", { name: "Templates 18", exact: true })
+    .getByRole("link", { name: `Templates ${total}`, exact: true })
     .click();
   await expect(page).toHaveTitle("Templates — Bricklane");
   await brand.click();

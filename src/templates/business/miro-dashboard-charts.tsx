@@ -11,13 +11,15 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
+  ChartLegend,
+  ChartLegendContent,
   type ChartConfig,
 } from "@/components/ui/chart";
 import "./miro-dashboard-charts.css";
 
-const procedureChartConfig = {
-  Blocked: { label: "Blocked", color: "#5277f0" },
-  Watched: { label: "Watched", color: "#83d7ee" },
+const miroProcedureChartConfig = {
+  Completed: { label: "Completed", color: "#5277f0" },
+  Scheduled: { label: "Scheduled", color: "#83d7ee" },
 } satisfies ChartConfig;
 const volumeChartConfig = {
   Appointments: { label: "Appointments", color: "#edb91f" },
@@ -33,29 +35,41 @@ const procedurePatternColors = [
   "#55cda5",
 ];
 
-export function MiroProcedureMixChart({ labels }: { labels: string[] }) {
+function procedureSeriesColor(dataKey: unknown) {
+  return dataKey === "Completed" || dataKey === "Scheduled"
+    ? miroProcedureChartConfig[dataKey].color
+    : undefined;
+}
+
+export function MiroProcedureMixChart({
+  labels,
+  legendPortal,
+}: {
+  labels: string[];
+  legendPortal?: HTMLElement | null;
+}) {
   const uid = useId().replaceAll(":", "");
   const blue = [41, 36, 62, 27, 52, 22, 67, 45, 17],
     cyan = [75, 89, 40, 58, 82, 70, 42, 77, 34],
     single = [48, 88, 92, 84, 72, 76, 68, 81, 43];
   const data = labels.map((name, i) => ({
     name,
-    Blocked: blue[i],
-    Watched: cyan[i],
+    Completed: blue[i],
+    Scheduled: cyan[i],
     Units: single[i],
   }));
   return (
     <div className="bt-rechart bt-chart-bars">
-      <ChartContainer config={procedureChartConfig} className="miro-dashboard-chart">
+      <ChartContainer config={miroProcedureChartConfig} className="miro-dashboard-chart">
         <BarChart
           accessibilityLayer
           data={data}
-          margin={{ top: 12, right: 0, left: 0, bottom: 0 }}
+          margin={{ top: 12, right: 12, left: 12, bottom: 0 }}
           barCategoryGap="12%"
           barGap={2}
         >
           <defs>
-            <ReuiStripePattern id={uid} color="var(--color-Blocked)" />
+            <ReuiStripePattern id={uid} color="var(--color-Completed)" />
             {procedurePatternColors.map((color, index) => (
               <ReuiStripePattern key={color} id={`${uid}color${index}`} color={color} />
             ))}
@@ -66,22 +80,54 @@ export function MiroProcedureMixChart({ labels }: { labels: string[] }) {
             tickLine={false}
             axisLine={false}
             tick={{ fontSize: 12, fill: "var(--muted-foreground)" }}
-            interval={0}
+            interval="preserveStartEnd"
+            minTickGap={8}
             height={30}
           />
           <ChartTooltip
             cursor={{ fill: "var(--muted)", opacity: 0.5 }}
-            content={<ChartTooltipContent hideIndicator className="miro-dashboard-chart-tooltip" />}
+            content={(props) => (
+              <ChartTooltipContent
+                active={props.active}
+                label={props.label}
+                payload={props.payload?.map((entry) => ({
+                  ...entry,
+                  color: procedureSeriesColor(entry.dataKey) ?? entry.color,
+                  payload: {
+                    ...entry.payload,
+                    fill: procedureSeriesColor(entry.dataKey) ?? entry.payload?.fill,
+                  },
+                }))}
+                indicator="dot"
+                className="miro-dashboard-chart-tooltip [&_.shrink-0]:size-2 [&_.shrink-0]:rounded-full"
+              />
+            )}
           />
+          {legendPortal && (
+            <ChartLegend
+              portal={legendPortal}
+              content={(props) => (
+                <ChartLegendContent
+                  payload={props.payload?.map((entry) => ({
+                    ...entry,
+                    color: procedureSeriesColor(entry.dataKey) ?? entry.color,
+                  }))}
+                  className="p-0 text-xs [&>div>div]:rounded-full"
+                />
+              )}
+            />
+          )}
           <Bar
-            dataKey="Blocked"
+            dataKey="Completed"
+            name={miroProcedureChartConfig.Completed.label}
             fill={`url(#${uid})`}
             radius={[6, 6, 0, 0]}
             isAnimationActive={false}
           />
           <Bar
-            dataKey="Watched"
-            fill="var(--color-Watched)"
+            dataKey="Scheduled"
+            name={miroProcedureChartConfig.Scheduled.label}
+            fill="var(--color-Scheduled)"
             radius={[6, 6, 0, 0]}
             isAnimationActive={false}
           />

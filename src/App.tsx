@@ -364,7 +364,7 @@ export default function App() {
             <Monitor data-icon="inline-start" />
             Templates
             <Badge variant="outline" className="ml-auto">
-              18
+              {templates.length}
             </Badge>
           </a>
         </Button>
@@ -505,7 +505,7 @@ export default function App() {
             href="#/templates"
             aria-current={isTemplates ? "page" : undefined}
           >
-            Templates<Badge variant="secondary">18</Badge>
+            Templates<Badge variant="secondary">{templates.length}</Badge>
           </a>
           <a href="https://ui.shadcn.com/docs/components" target="_blank" rel="noreferrer">
             Components

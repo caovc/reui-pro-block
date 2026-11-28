@@ -6,6 +6,7 @@ import type { ComponentProps } from "react";
 import { demoAvatar } from "@/lib/demo-artwork";
 
 import { cn } from "@/lib/utils";
+import { useEntryPickerFocus } from "./use-entry-picker-focus";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -133,6 +134,7 @@ export function EntryAssigneePicker({
   onChange: (value: string) => void;
   onInvite: () => void;
 }) {
+  const { triggerRef, onOpenChange } = useEntryPickerFocus();
   const lead = leadOptions.find((option) => option.value === value) ?? noLeadOption;
   const setLead = (option: LeadOption | null) =>
     option?.value === "invite" ? onInvite() : onChange(option?.value ?? "none");
@@ -142,11 +144,13 @@ export function EntryAssigneePicker({
       <Combobox
         items={leadOptions}
         value={lead}
+        onOpenChange={onOpenChange}
         onValueChange={setLead}
         itemToStringValue={(item: LeadOption) => item.label}
         autoHighlight
       >
         <ComboboxTrigger
+          ref={triggerRef}
           id={id}
           render={
             <Button
