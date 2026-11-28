@@ -15,12 +15,18 @@ async function settleSheet(sheet: Locator) {
     await Promise.all(element.getAnimations().map((animation) => animation.finished));
   });
 }
-async function open(page: Page, width = 1440, style: object = localStyle) {
+async function open(
+  page: Page,
+  width = 1440,
+  style: object = localStyle,
+  primitive: "radix" | "base" = "radix",
+) {
   await page.setViewportSize({ width, height: width === 390 ? 844 : 1000 });
   await page.route("https://tiles.openfreemap.org/styles/*", (request) =>
     request.fulfill({ json: style }),
   );
-  await page.goto(route);
+  await page.goto(primitive === "base" ? "./base/#/preview/solutions/map/solution-map-1" : route);
+  await expect(page.locator("html")).toHaveAttribute("data-ui-primitive", primitive);
   await expect(page.locator(".dm-root")).toBeVisible();
   await page.getByRole("button", { name: "Pause simulation", exact: true }).click();
 }
@@ -246,93 +252,95 @@ test("create delivery keeps its actual fields and reports a real local submissio
   await expect(command.getByRole("option")).toContainText("V02");
 });
 
-test("controlled dispatch overlays return focus after Escape, Cancel and a real Save", async ({
-  page,
-}) => {
-  await open(page);
-  const search = page.getByRole("button", { name: "Search dispatch", exact: true });
-  await search.click();
-  const command = page.getByRole("dialog", { name: "Search dispatch", exact: true });
-  await command.getByPlaceholder("Search vans, drivers, stops…").press("Escape");
-  await expect(command).toBeHidden();
-  await expect(search).toBeFocused();
+for (const primitive of ["radix", "base"] as const) {
+  test(`${primitive} controlled dispatch overlays return focus after Escape, Cancel and a real Save`, async ({
+    page,
+  }) => {
+    await open(page, 1440, localStyle, primitive);
+    const search = page.getByRole("button", { name: "Search dispatch", exact: true });
+    await search.click();
+    const command = page.getByRole("dialog", { name: "Search dispatch", exact: true });
+    await command.getByPlaceholder("Search vans, drivers, stops…").press("Escape");
+    await expect(command).toBeHidden();
+    await expect(search).toBeFocused();
 
-  const create = page.getByRole("button", { name: "New delivery", exact: true });
-  await create.click();
-  let action = page.getByRole("dialog", { name: "New delivery", exact: true });
-  await action.getByRole("button", { name: "Cancel", exact: true }).click();
-  await expect(action).toBeHidden();
-  await expect(create).toBeFocused();
-  await create.click();
-  action = page.getByRole("dialog", { name: "New delivery", exact: true });
-  await action.press("Escape");
-  await expect(action).toBeHidden();
-  await expect(create).toBeFocused();
-  await create.click();
-  action = page.getByRole("dialog", { name: "New delivery", exact: true });
-  await action.getByLabel("Customer", { exact: true }).fill("Focus-return delivery");
-  await action.getByLabel("Address", { exact: true }).fill("152 Pine Street, Seattle");
-  await action.getByRole("combobox", { name: "Assign vehicle", exact: true }).click();
-  await page.getByRole("option", { name: /V02 · Milo Reed/ }).click();
-  await action.getByRole("button", { name: "Create delivery", exact: true }).click();
-  await expect(action).toBeHidden();
-  await expect(create).toBeFocused();
-});
+    const create = page.getByRole("button", { name: "New delivery", exact: true });
+    await create.click();
+    let action = page.getByRole("dialog", { name: "New delivery", exact: true });
+    await action.getByRole("button", { name: "Cancel", exact: true }).click();
+    await expect(action).toBeHidden();
+    await expect(create).toBeFocused();
+    await create.click();
+    action = page.getByRole("dialog", { name: "New delivery", exact: true });
+    await action.press("Escape");
+    await expect(action).toBeHidden();
+    await expect(create).toBeFocused();
+    await create.click();
+    action = page.getByRole("dialog", { name: "New delivery", exact: true });
+    await action.getByLabel("Customer", { exact: true }).fill("Focus-return delivery");
+    await action.getByLabel("Address", { exact: true }).fill("152 Pine Street, Seattle");
+    await action.getByRole("combobox", { name: "Assign vehicle", exact: true }).click();
+    await page.getByRole("option", { name: /V02 · Milo Reed/ }).click();
+    await action.getByRole("button", { name: "Create delivery", exact: true }).click();
+    await expect(action).toBeHidden();
+    await expect(create).toBeFocused();
+  });
 
-test("nested vehicle dialogs restore their opener and retirement uses a live fallback", async ({
-  page,
-}) => {
-  await open(page);
-  await page.getByRole("tab", { name: "List", exact: true }).click();
-  await page.getByRole("button", { name: "Select V02", exact: true }).click();
-  const sheet = page.getByRole("dialog", { name: "V02", exact: true });
-  await settleSheet(sheet);
-  await sheet.getByRole("tab", { name: "Vehicle", exact: true }).click();
-  const edit = sheet.getByRole("button", { name: "Edit van", exact: true });
-  await edit.click();
-  const editor = page.getByRole("dialog", { name: "Edit V02", exact: true });
-  await editor.getByRole("button", { name: "Cancel", exact: true }).click();
-  await expect(editor).toBeHidden();
-  await expect(edit).toBeFocused();
+  test(`${primitive} nested vehicle dialogs restore their opener and retirement uses a live fallback`, async ({
+    page,
+  }) => {
+    await open(page, 1440, localStyle, primitive);
+    await page.getByRole("tab", { name: "List", exact: true }).click();
+    await page.getByRole("button", { name: "Select V02", exact: true }).click();
+    const sheet = page.getByRole("dialog", { name: "V02", exact: true });
+    await settleSheet(sheet);
+    await sheet.getByRole("tab", { name: "Vehicle", exact: true }).click();
+    const edit = sheet.getByRole("button", { name: "Edit van", exact: true });
+    await edit.click();
+    const editor = page.getByRole("dialog", { name: "Edit V02", exact: true });
+    await editor.getByRole("button", { name: "Cancel", exact: true }).click();
+    await expect(editor).toBeHidden();
+    await expect(edit).toBeFocused();
 
-  const message = sheet.getByRole("button", { name: "Message", exact: true });
-  await message.click();
-  const note = page.getByRole("dialog", { name: "Message driver", exact: true });
-  await note.getByLabel("Message", { exact: true }).fill("Local focus regression note");
-  await note.getByRole("button", { name: "Record message", exact: true }).click();
-  await expect(note).toBeHidden();
-  await expect(message).toBeFocused();
+    const message = sheet.getByRole("button", { name: "Message", exact: true });
+    await message.click();
+    const note = page.getByRole("dialog", { name: "Message driver", exact: true });
+    await note.getByLabel("Message", { exact: true }).fill("Local focus regression note");
+    await note.getByRole("button", { name: "Record message", exact: true }).click();
+    await expect(note).toBeHidden();
+    await expect(message).toBeFocused();
 
-  const retire = sheet.getByRole("button", { name: "Retire van", exact: true });
-  await retire.click();
-  const confirm = page.getByRole("alertdialog", { name: "Retire V02?", exact: true });
-  await confirm.getByRole("button", { name: "Cancel", exact: true }).click();
-  await expect(confirm).toBeHidden();
-  await expect(retire).toBeFocused();
-  await retire.click();
-  await confirm.getByRole("button", { name: "Retire van", exact: true }).click();
-  await expect(confirm).toBeHidden();
-  await expect(retire).toBeDisabled();
-  await expect(sheet.getByRole("heading", { name: "V02", exact: true })).toBeFocused();
-  await sheet.press("Escape");
-  await expect(sheet).toBeHidden();
-  await expect(page.getByRole("button", { name: "Search dispatch", exact: true })).toBeFocused();
-});
+    const retire = sheet.getByRole("button", { name: "Retire van", exact: true });
+    await retire.click();
+    const confirm = page.getByRole("alertdialog", { name: "Retire V02?", exact: true });
+    await confirm.getByRole("button", { name: "Cancel", exact: true }).click();
+    await expect(confirm).toBeHidden();
+    await expect(retire).toBeFocused();
+    await retire.click();
+    await confirm.getByRole("button", { name: "Retire van", exact: true }).click();
+    await expect(confirm).toBeHidden();
+    await expect(retire).toBeDisabled();
+    await expect(sheet.getByRole("heading", { name: "V02", exact: true })).toBeFocused();
+    await sheet.press("Escape");
+    await expect(sheet).toBeHidden();
+    await expect(page.getByRole("button", { name: "Search dispatch", exact: true })).toBeFocused();
+  });
 
-test("phone command selection leaves native focus in the destination Fleet sheet", async ({
-  page,
-}) => {
-  await open(page, 390);
-  await selectVan(page, "V18", "Sana");
-  const fleet = page.getByRole("dialog", { name: "Fleet panel", exact: true });
-  await settleSheet(fleet);
-  await expect
-    .poll(() => fleet.evaluate((element) => element.contains(document.activeElement)))
-    .toBe(true);
-  await fleet.press("Escape");
-  await expect(fleet).toBeHidden();
-  await expect(page.getByRole("button", { name: "Search dispatch", exact: true })).toBeFocused();
-});
+  test(`${primitive} phone command selection leaves native focus in the destination Fleet sheet`, async ({
+    page,
+  }) => {
+    await open(page, 390, localStyle, primitive);
+    await selectVan(page, "V18", "Sana");
+    const fleet = page.getByRole("dialog", { name: "Fleet panel", exact: true });
+    await settleSheet(fleet);
+    await expect
+      .poll(() => fleet.evaluate((element) => element.contains(document.activeElement)))
+      .toBe(true);
+    await fleet.press("Escape");
+    await expect(fleet).toBeHidden();
+    await expect(page.getByRole("button", { name: "Search dispatch", exact: true })).toBeFocused();
+  });
+}
 
 test("native map attribution has the complete credits without a duplicate fallback row", async ({
   page,

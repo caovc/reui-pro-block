@@ -86,7 +86,7 @@ export default function QuickEntryDialog() {
         ref={surface}
         className="final-entry-dialog"
         onEscapeKeyDown={(event) => {
-          if (surface.current?.querySelector('[data-slot="combobox-content"]'))
+          if (surface.current?.querySelector('[data-slot="combobox-content"][data-open]'))
             event.preventDefault();
         }}
       >

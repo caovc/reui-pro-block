@@ -63,25 +63,34 @@ export function useDispatchFocus(
   const restore = useCallback(
     (layer: Layer, event: Event) => {
       event.preventDefault();
-      if (latest.current.open[layer] || latest.current.placing) return;
       const origin = origins.current[layer];
-      const opener = available(origin?.element) ? origin.element : origin?.resolve?.();
-      const parent = (Object.keys(latest.current.open) as Layer[])
-        .filter((name) => name !== layer && latest.current.open[name])
-        .sort((a, b) => (origins.current[b]?.serial ?? 0) - (origins.current[a]?.serial ?? 0))[0];
-      if (parent) {
-        // A newly opened destination owns autofocus; an old layer cannot reclaim it.
-        if ((origins.current[parent]?.serial ?? 0) > (origin?.serial ?? 0)) return;
-        const surface = document.querySelector<HTMLElement>(
-          `[data-dm-focus-layer="${parent}"][data-state="open"]`,
-        );
-        if (!surface) return;
-        if (available(opener) && surface.contains(opener)) opener.focus();
-        else (surface.querySelector<HTMLElement>("[data-dm-focus-fallback]") ?? surface).focus();
-        return;
-      }
-      if (available(opener)) opener.focus();
-      else if (available(fallback.current)) fallback.current.focus();
+      // Base resolves finalFocus during child layout cleanup, before the parent
+      // commits its closed layers. Read that state after the complete commit.
+      queueMicrotask(() => {
+        if (
+          origins.current[layer] !== origin ||
+          latest.current.open[layer] ||
+          latest.current.placing
+        )
+          return;
+        const opener = available(origin?.element) ? origin.element : origin?.resolve?.();
+        const parent = (Object.keys(latest.current.open) as Layer[])
+          .filter((name) => name !== layer && latest.current.open[name])
+          .sort((a, b) => (origins.current[b]?.serial ?? 0) - (origins.current[a]?.serial ?? 0))[0];
+        if (parent) {
+          // A newly opened destination owns autofocus; an old layer cannot reclaim it.
+          if ((origins.current[parent]?.serial ?? 0) > (origin?.serial ?? 0)) return;
+          const surface = document.querySelector<HTMLElement>(
+            `[data-dm-focus-layer="${parent}"][data-state="open"]`,
+          );
+          if (!surface) return;
+          if (available(opener) && surface.contains(opener)) opener.focus();
+          else (surface.querySelector<HTMLElement>("[data-dm-focus-fallback]") ?? surface).focus();
+          return;
+        }
+        if (available(opener)) opener.focus();
+        else if (available(fallback.current)) fallback.current.focus();
+      });
     },
     [fallback],
   );

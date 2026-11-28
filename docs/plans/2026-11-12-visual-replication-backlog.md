@@ -6,6 +6,13 @@ require newly captured, inspected reference and local screenshots. Original
 Bricklane branding, licensed replacement artwork, disclosed local fixture data,
 and unavailable backend services are intentional boundaries.
 
+## November 28 review
+
+- The Sera 320px Quick Entry invitation flow was the only failed case in Actions run `45554925051`. A closing assignee picker still made its parent consume Escape. Holding its native exit animation reproduced the issue on both foundations. The same check found the issue in Create Project's status picker. Each fix is scoped to the dialog consuming the picker.
+- In Atlas's 390px Sera profile, Preferences extended to 402px. At 320px and 390px, both foundations let the document scroll horizontally. The mobile account navigation now wraps links when needed and keeps their existing destinations.
+- Dispatch Map mounted a second, zero-size overview donut in its hidden desktop panel on phones. A separate Base UI interaction returned focus to the document body after cancelling New delivery. Native visibility, selection, scrolling and focus are checked independently.
+- The Atlas phone navigation passed all 40 scoped cases. Desktop Sera showed a 2px button overhang below the navigation rule in both foundations, with visible labels, reachable centers and 17px before the next card. Compare the desktop underline against the reference before changing its geometry. A 390px capture at a 32px browser font also showed a clipped Profile photo Remove action. Verify that control separately from navigation.
+
 ## November 25 review
 
 - Quick Entry's invitation actions overflowed their card in both foundations at 320px in Sera. The Save invitation draft button extended to 493px. Narrow actions now wrap inside the card. All 20 native checks passed across both foundations, eight styles at 320px, Sera at 390px and desktop Nova. They include both button labels, pointer hits, save, dismiss and focus return.

@@ -78,6 +78,54 @@ test("status and priority support actual keyboard selection and submenu Escape s
   await expect(page.getByRole("button", { name: "Open project form", exact: true })).toBeFocused();
 });
 
+for (const primitive of ["radix", "base"] as const) {
+  test(`${primitive} Create Project handles Escape while its status picker is closing`, async ({
+    page,
+  }, info) => {
+    await page.setViewportSize({ width: 320, height: 844 });
+    const entry = primitive === "base" ? "./base/" : "./";
+    const preset = new URLSearchParams({
+      preset: JSON.stringify({ primitive, style: "sera", mode: "light" }),
+    });
+    await page.goto(`${entry}#/preview/application/dialog/dialog-9?${preset}`);
+    await expect(page.locator("html")).toHaveAttribute("data-ui-primitive", primitive);
+    await expect(page.locator("html")).toHaveAttribute("data-ui-style", "sera");
+    // Hold the native closing animation at its first frame for a deterministic second Escape.
+    await page.addStyleTag({
+      content:
+        '[data-slot="combobox-content"][data-closed] { animation-play-state: paused !important; }',
+    });
+    const launcher = page.getByRole("button", { name: "Open project form", exact: true });
+    await launcher.click();
+    const dialog = page.getByRole("dialog", { name: "Create Project", exact: true });
+    const status = dialog.locator("#workspace-project-status");
+    await status.click();
+    await expect(status).toHaveAttribute("aria-expanded", "true");
+    await expect(page.getByPlaceholder("Change status")).toBeFocused();
+    await page.keyboard.press("Escape");
+    await expect(status).toHaveAttribute("aria-expanded", "false");
+    await expect(dialog).toBeVisible();
+    await expect(dialog.locator('[data-slot="combobox-content"][data-closed]')).toHaveCount(1);
+    await expect(dialog.locator('[data-slot="combobox-content"][data-open]')).toHaveCount(0);
+    await info.attach("native-closed-popup", {
+      body: JSON.stringify(
+        await dialog.evaluate((node) => ({
+          openPopupCount: node.querySelectorAll('[data-slot="combobox-content"][data-open]').length,
+          closedPopupCount: node.querySelectorAll('[data-slot="combobox-content"][data-closed]')
+            .length,
+          activeId: document.activeElement?.id,
+          activeRole: document.activeElement?.getAttribute("role"),
+        })),
+      ),
+      contentType: "application/json",
+    });
+    await page.screenshot({ path: info.outputPath("closed-popup-parent-open.png") });
+    await page.keyboard.press("Escape");
+    await expect(dialog).toHaveCount(0);
+    await expect(launcher).toBeFocused();
+  });
+}
+
 test("multi-member and label clear paths still gate creation and retain typed values", async ({
   page,
 }) => {

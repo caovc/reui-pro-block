@@ -288,6 +288,22 @@
 }
 
 @media (max-width: 767px) {
+  .bt-atlas .atlas-account-settings .aas-nav {
+    height: auto;
+    flex-wrap: wrap;
+  }
+
+  .bt-atlas .atlas-account-settings .aas-nav a[data-slot="button"][data-size="default"] {
+    min-width: 0;
+    max-width: 100%;
+    min-height: 38px;
+    height: auto;
+    padding-inline: 12px;
+    line-height: 1.45;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
   .atlas-account-settings .aas-profile .workspace-settings-row {
     grid-template-columns: minmax(0, 1fr);
   }

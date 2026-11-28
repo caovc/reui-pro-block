@@ -99,3 +99,34 @@ export function registerInvitationCase(primitive: "radix" | "base", style = "ser
 }
 
 for (const primitive of ["radix", "base"] as const) registerInvitationCase(primitive);
+
+for (const primitive of ["radix", "base"] as const) {
+  test(`${primitive} Quick Entry handles Escape while its assignee picker is closing`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 320, height: 844 });
+    const entry = primitive === "base" ? "./base/" : "./";
+    const preset = new URLSearchParams({
+      preset: JSON.stringify({ primitive, style: "sera", mode: "light" }),
+    });
+    await page.goto(`${entry}#/preview/application/dialog/dialog-12?${preset}`);
+    // Keep the real exit animation at its first frame so a fast second Escape is deterministic.
+    await page.addStyleTag({
+      content:
+        '[data-slot="combobox-content"][data-closed] { animation-play-state: paused !important; }',
+    });
+    const launcher = page.getByRole("button", { name: "Open quick entry", exact: true });
+    await launcher.click();
+    const dialog = page.getByRole("dialog", { name: "Create entry", exact: true });
+    const assignee = dialog.locator("#entry-assignee");
+    await assignee.click();
+    await expect(assignee).toHaveAttribute("aria-expanded", "true");
+    await expect(page.getByPlaceholder("Select assignee")).toBeFocused();
+    await page.keyboard.press("Escape");
+    await expect(assignee).toHaveAttribute("aria-expanded", "false");
+    await expect(dialog.locator('[data-slot="combobox-content"][data-closed]')).toHaveCount(1);
+    await page.keyboard.press("Escape");
+    await expect(dialog).toHaveCount(0);
+    await expect(launcher).toBeFocused();
+  });
+}

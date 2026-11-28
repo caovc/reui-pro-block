@@ -91,7 +91,7 @@ export default function ProjectCoverDialog() {
       <DialogSurface
         id={9}
         onEscapeKeyDown={(event) => {
-          if (surface.current?.querySelector('[data-slot="combobox-content"]'))
+          if (surface.current?.querySelector('[data-slot="combobox-content"][data-open]'))
             event.preventDefault();
         }}
         title="Create Project"

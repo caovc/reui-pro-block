@@ -68,6 +68,7 @@ export function MetricRows({ rows }: { rows: [string, ReactNode][] }) {
 }
 
 type Props = {
+  showOverviewChart: boolean;
   onDialog: (dialog: DispatchDialog) => void;
   onDetails: () => void;
   onFit: () => void;
@@ -97,35 +98,39 @@ export function FleetPanel(props: Props) {
           action={<span className="text-xs text-muted-foreground">Seattle</span>}
         >
           <div className="dm-today">
-            <ReuiDonut
-              label={`${summary.delivered} of ${summary.total} deliveries completed`}
-              rows={[
-                { name: "Delivered", value: summary.delivered, color: "var(--chart-2)" },
-                { name: "To go", value: pending.length, color: "var(--muted)" },
-                { name: "Failed", value: failed, color: "var(--destructive)" },
-              ]}
-              active={active}
-              onActive={setActive}
-              innerRadius={39}
-              outerRadius={52}
-              className="h-32 w-32 shrink-0"
-              center={
-                <>
-                  <text
-                    y="0"
-                    textAnchor="middle"
-                    fill="var(--foreground)"
-                    fontSize="23"
-                    fontWeight="600"
-                  >
-                    {summary.delivered}
-                  </text>
-                  <text y="17" textAnchor="middle" fill="var(--muted-foreground)" fontSize="10">
-                    of {summary.total} stops
-                  </text>
-                </>
-              }
-            />
+            {props.showOverviewChart ? (
+              <ReuiDonut
+                label={`${summary.delivered} of ${summary.total} deliveries completed`}
+                rows={[
+                  { name: "Delivered", value: summary.delivered, color: "var(--chart-2)" },
+                  { name: "To go", value: pending.length, color: "var(--muted)" },
+                  { name: "Failed", value: failed, color: "var(--destructive)" },
+                ]}
+                active={active}
+                onActive={setActive}
+                innerRadius={39}
+                outerRadius={52}
+                className="h-32 w-32 shrink-0"
+                center={
+                  <>
+                    <text
+                      y="0"
+                      textAnchor="middle"
+                      fill="var(--foreground)"
+                      fontSize="23"
+                      fontWeight="600"
+                    >
+                      {summary.delivered}
+                    </text>
+                    <text y="17" textAnchor="middle" fill="var(--muted-foreground)" fontSize="10">
+                      of {summary.total} stops
+                    </text>
+                  </>
+                }
+              />
+            ) : (
+              <div className="h-32 w-32 shrink-0" aria-hidden="true" />
+            )}
             <MetricRows
               rows={[
                 ["Delivered", summary.delivered],

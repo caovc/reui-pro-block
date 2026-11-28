@@ -121,8 +121,9 @@ function DispatchWorkspace() {
     setView("map");
     map.current?.center(position);
   };
-  const panel = (
+  const renderPanel = (showOverviewChart: boolean) => (
     <FleetPanel
+      showOverviewChart={showOverviewChart}
       onDialog={openAction}
       onDetails={openDetails}
       onFit={() => map.current?.fit(true)}
@@ -280,7 +281,7 @@ function DispatchWorkspace() {
             }}
           />
           <aside className="dm-desktop-panel" aria-label="Fleet panel">
-            {panel}
+            {renderPanel(!phone && view === "map")}
           </aside>
           <Sheet
             open={fleetOpen && phone && view === "map"}
@@ -311,7 +312,7 @@ function DispatchWorkspace() {
                   Fleet overview, selected route and delivery actions.
                 </SheetDescription>
               </SheetHeader>
-              {panel}
+              {renderPanel(true)}
             </SheetContent>
           </Sheet>
         </div>
