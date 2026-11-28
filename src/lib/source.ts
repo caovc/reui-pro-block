@@ -14,6 +14,7 @@ const raw = import.meta.glob(
     "/src/components/site/{global-theme-store,preview-theme}.ts",
     "/src/components/icons/*.{ts,tsx}",
     "/src/components/reui/**/*.{ts,tsx,css}",
+    "/src/templates/workflow/free/flowly-toggle-group.tsx",
     "/src/hooks/*.{ts,tsx}",
     "/src/lib/{utils,download,demo-artwork,maplibre-runtime,ui-foundation}.ts",
     "/src/data/types.ts",

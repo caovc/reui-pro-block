@@ -300,6 +300,7 @@ export function DomainGridSurface<T extends object>({
   paginationControls,
   scrollArea,
   renderFrame,
+  beforeTable,
 }: {
   table: DomainTable<T>;
   children?: ReactNode;
@@ -313,16 +314,21 @@ export function DomainGridSurface<T extends object>({
   paginationControls?: boolean | { noun?: string; sizes?: number[]; className?: string };
   scrollArea?: "horizontal" | "vertical" | "both";
   renderFrame?: DomainGridFrame<T>;
+  beforeTable?: ReactNode;
 }) {
   const content = (
     <>
       <DataGridContainer className={cn("min-w-0 rounded-none border-0", className)}>
         {scrollArea ? (
           <DataGridScrollArea orientation={scrollArea}>
+            {beforeTable}
             {children || <DataGridTable footerContent={footerContent} />}
           </DataGridScrollArea>
         ) : (
-          children || <DataGridTable footerContent={footerContent} />
+          <>
+            {beforeTable}
+            {children || <DataGridTable footerContent={footerContent} />}
+          </>
         )}
         {layout?.cellSelection && <DataGridCellSelection<T> />}
       </DataGridContainer>
@@ -440,12 +446,14 @@ export function DomainRecordGrid<T extends object>({
   paginationControls,
   scrollArea,
   renderFrame,
+  beforeTable,
 }: {
   data: T[];
   fields: DomainField<T>[];
   paginationControls?: boolean | { noun?: string; sizes?: number[]; className?: string };
   scrollArea?: "horizontal" | "vertical" | "both";
   renderFrame?: DomainGridFrame<T>;
+  beforeTable?: ReactNode;
   rowFilter?: (record: T) => boolean;
   search?: string;
   filters?: ColumnFiltersState;
@@ -546,6 +554,7 @@ export function DomainRecordGrid<T extends object>({
       paginationControls={paginationControls}
       scrollArea={scrollArea}
       renderFrame={renderFrame}
+      beforeTable={beforeTable}
     />
   );
 }

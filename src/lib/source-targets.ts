@@ -425,12 +425,22 @@ export function blockImplementationCandidates(block: BlockMeta): string[] {
       ];
     }
     if (["data-grid-advanced-24", "data-grid-advanced-25"].includes(block.id)) {
-      const module =
-        block.id === "data-grid-advanced-24"
-          ? "grid-advanced-category-margin"
-          : "grid-advanced-brand-scorecard";
+      const categoryMargin = block.id === "data-grid-advanced-24";
+      const module = categoryMargin
+        ? "grid-advanced-category-margin"
+        : "grid-advanced-brand-scorecard";
       return [
-        ...paths("data", module, "grid-advanced-merch-review-ui", "grid-advanced-model-grid"),
+        ...paths("data", module),
+        ...(categoryMargin
+          ? [
+              ...paths("data", `${module}-overview`, `${module}-drivers`),
+              `src/blocks/data/${module}-metrics.ts`,
+              `src/blocks/data/${module}.css`,
+              `src/blocks/data/${module}-overview.css`,
+              `src/blocks/data/${module}-drivers.css`,
+            ]
+          : []),
+        ...paths("data", "grid-advanced-merch-review-ui", "grid-advanced-model-grid"),
         "src/blocks/data/grid-advanced-merch-review-model.ts",
         "src/blocks/data/grid-advanced-merch-review-state.ts",
         "src/blocks/data/grid-advanced-merch-review.css",

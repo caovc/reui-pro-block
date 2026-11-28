@@ -1,0 +1,103 @@
+[data-merch-review="category-margin"] {
+  --category-margin-driver-up: #99e4df;
+  --category-margin-driver-down: #ffa4bb;
+  --category-margin-driver-level: #d4d4d4;
+  --category-margin-driver-new: #e5e5e5;
+}
+
+[data-merch-review="category-margin"] .category-driver-cell,
+[data-merch-review="category-margin"] .category-driver-quarters {
+  width: 100%;
+  min-width: 0;
+}
+
+[data-merch-review="category-margin"] .category-driver-sales-plot {
+  width: 100%;
+  height: 2rem;
+}
+
+[data-merch-review="category-margin"] .category-driver-year {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: end;
+  gap: 0.25rem;
+  min-width: 0;
+  font-size: 0.6875rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+[data-merch-review="category-margin"] .category-driver-year-plot {
+  flex: 1 1 0;
+  width: 1.75rem;
+  max-width: 1.75rem;
+  min-width: 0.75rem;
+  height: 1.75rem;
+}
+
+[data-merch-review="category-margin"] .category-driver-quarter-plot {
+  width: 100%;
+  height: 1.75rem;
+}
+
+[data-merch-review="category-margin"] .category-driver-quarter-note {
+  display: block;
+  color: var(--muted-foreground);
+  font-size: 0.625rem;
+  line-height: 1.2;
+}
+
+[data-merch-review="category-margin"] .category-driver-stock {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  height: 2rem;
+  font-size: 0.6875rem;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+[data-merch-review="category-margin"] .category-driver-cover {
+  justify-content: end;
+}
+
+[data-merch-review="category-margin"] .category-driver-stock > span {
+  position: relative;
+  z-index: 1;
+  padding-inline: 0.2rem;
+}
+
+[data-merch-review="category-margin"] .category-driver-stock-progress {
+  position: absolute;
+  inset-inline: 0;
+  height: 1.25rem;
+  border-radius: 0;
+  background: transparent;
+}
+
+[data-merch-review="category-margin"]
+  .category-driver-stock-progress
+  [data-slot="progress-indicator"] {
+  border-radius: 0;
+  background: var(--category-margin-driver-up);
+}
+
+[data-merch-review="category-margin"] .category-driver-cover .category-driver-stock-progress {
+  transform: scaleX(-1);
+}
+
+[data-merch-review="category-margin"] .category-driver-cover [data-slot="progress-indicator"] {
+  background: var(--category-margin-driver-level);
+}
+
+[data-merch-review="category-margin"] .category-driver-plan-plot {
+  width: 100%;
+  height: 2.625rem;
+}
+
+[data-merch-review="category-margin"] .category-driver-empty {
+  color: var(--muted-foreground);
+  font-size: 0.6875rem;
+}
